@@ -84,7 +84,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   private const string c_script = "ExecutionEngine.js";
+  private const string c_smartNavigationScript = "SmartNavigation.js";
   public const string PageTokenID = "wxePageToken";
+  private const string c_smartNavigationID = "smartNavigation";
 
   private IWxePage _page;
   private WxeForm _form;
@@ -142,6 +144,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
 
     _form.ReturningToken = string.Empty;    
+
+    string smartNavigationValue = null;
+    if (postBackCollection != null)
+      smartNavigationValue = postBackCollection[c_smartNavigationID];
+     _page.RegisterHiddenField (c_smartNavigationID, smartNavigationValue);
+
   
     Page page = (Page) _page;
     string key = "wxeDoSubmit";
@@ -162,6 +170,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     key = "wxeScript";
     string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_script);
+    HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
+    
+    key = "smartNavigationScript";
+    url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_smartNavigationScript);
     HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
 
     RegisterSessionManagement();
@@ -209,11 +221,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       else
         abortMessage = "null";
 
+      string smartNavigationFieldID = "'" + c_smartNavigationID + "'";
       string key = "wxeInitialize";
       PageUtility.RegisterStartupScriptBlock ((Page)_page, key,
             "Wxe_Initialize ('" + _form.ClientID + "', " 
           + refreshIntervall.ToString() + ", " + refreshPath + ", " 
-          + abortPath + ", " + abortMessage + ");");
+          + abortPath + ", " + abortMessage + ", " + smartNavigationFieldID + ");");
     }
   }
 

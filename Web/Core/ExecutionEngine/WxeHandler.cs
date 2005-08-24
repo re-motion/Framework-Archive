@@ -247,7 +247,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNull ("functionState", functionState);
     if (functionState.IsAborted)
-      throw new ApplicationException ("The functionState is aborted.");
+      throw new InvalidOperationException ("The function state " + functionState.FunctionToken + " is aborted.");
 
     WxeContext wxeContext = new WxeContext (context); 
     wxeContext.FunctionToken = functionState.FunctionToken;
@@ -263,7 +263,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNull ("function", function);
     ArgumentUtility.CheckNotNull ("context", context);
     if (function.IsAborted)
-      throw new ApplicationException ("The function is aborted.");
+      throw new InvalidOperationException ("The function " + function.GetType().FullName + " is aborted.");
 
     function.AppendCatchExceptionTypes (typeof(WxeUserCancelException));
     function.Execute (context);
