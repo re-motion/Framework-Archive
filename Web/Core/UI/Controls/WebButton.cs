@@ -1,10 +1,14 @@
 using System;
+using System.Collections;
+using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 using Rubicon.NullableValueTypes;
+using Rubicon.Web.UI.Globalization;
+using Rubicon.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -13,7 +17,7 @@ namespace Rubicon.Web.UI.Controls
 /// <include file='doc\include\UI\Controls\WebButton.xml' path='WebButton/Class/*' />
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
 public class WebButton : 
-    Button
+    Button, IResourceDispatchTarget
 #if ! net20
     // Required because Page.ProcessPostData always registers the last IPostBackEventHandler in the controls 
     // collection for controls (buttons) having PostData but no IPostBackDataHandler. 
@@ -253,6 +257,62 @@ public class WebButton :
     set { _useSubmitBehavior = value; }
   } 
 #endif
+
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    ResourceDispatcher.RegisterDispatchTarget (this);
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    DispatchByElementName (values);
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected virtual void DispatchByElementName (IDictionary values)
+  {
+    //  Dispatch simple properties
+    ResourceDispatcher.DispatchGenericByPropertyName (this, values);
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    DispatchByElementValue (values);
+  }
+
+  /// <summary> 
+  ///   Dispatches the resources passed in <paramref name="values"/> to the control's properties. 
+  /// </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected virtual void DispatchByElementValue (NameValueCollection values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+
+    //  Dispatch simple properties
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Text = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (AccessKey);
+    if (! StringUtility.IsNullOrEmpty (key))
+      AccessKey = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (ToolTip);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ToolTip = (string) values[key];
+
+    if (Icon != null)
+      Icon.DispatchByElementValue (values);
+  }
 
   /// <summary> 
   ///   Gets or sets the flag that determines whether to use a legacy (i.e. input) element for the button or the modern 
