@@ -50,6 +50,7 @@ public class TestWxeBasePage:
     }
 
     EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
+    EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
     base.OnInit (e);
   }
 

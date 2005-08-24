@@ -1,3 +1,8 @@
+1.2.67
+======
+- BocTreeView
+  * Bugfix: Bei aktiver LookAheadNavigation war nach einem RefreshTreeNodes das Toplevel des Trees wieder collapsed.
+  
 1.2.66
 ======
 - BocList
