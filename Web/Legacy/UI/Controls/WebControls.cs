@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 
 using Microsoft.Web.UI.WebControls;
 
@@ -66,6 +67,11 @@ public class TabStrip : Microsoft.Web.UI.WebControls.TabStrip, IResourceDispatch
 
   public void Dispatch (IDictionary values)
   {
+    ((IResourceDispatchTarget)this).DispatchByElementName (values);
+  }
+
+  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
+  {
     foreach (DictionaryEntry entry in values)
     {
       string key = entry.Key.ToString ();
@@ -79,6 +85,10 @@ public class TabStrip : Microsoft.Web.UI.WebControls.TabStrip, IResourceDispatch
         tab.Text = text;
       }
     }
+  }
+
+  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
+  {
   }
 
   public TabItem GetTabByName (string tabName)
