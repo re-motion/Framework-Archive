@@ -62,6 +62,12 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   {
   }
 
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    ResourceDispatcher.RegisterDispatchTarget (this);
+  }
+
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
     //  Is PostBack caused by this tab strip ?
@@ -360,7 +366,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   ///   Dispatches the resources passed in <paramref name="values"/> to the <see cref="WebTabStrip"/>'s properties. 
   /// </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  public void Dispatch (IDictionary values)
+  public virtual void DispatchByElementName (IDictionary values)
   {
     HybridDictionary tabValues = new HybridDictionary();
     HybridDictionary propertyValues = new HybridDictionary();
@@ -429,10 +435,19 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     }
 
     //  Dispatch simple properties
-    ResourceDispatcher.DispatchGeneric (this, propertyValues);
+    ResourceDispatcher.DispatchGenericByPropertyName (this, propertyValues);
 
     //  Dispatch to collections
-    Tabs.Dispatch (tabValues, this, "Tabs");
+    Tabs.DispatchByElementName (tabValues, this, "Tabs");
+  }
+
+  /// <summary> 
+  ///   Dispatches the resources passed in <paramref name="values"/> to the <see cref="WebTabStrip"/>'s properties. 
+  /// </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  public virtual void DispatchByElementValue (NameValueCollection values)
+  {
+    Tabs.DispatchByElementValue (values);
   }
 
   /// <summary> Sets the selected tab. </summary>
