@@ -237,11 +237,11 @@ public class BocTreeView: BusinessObjectBoundWebControl
         if (! node.IsEvaluated)
         {
           bool isEvaluated = (bool) values[2];
-          bool isExpanded = (bool) values[1];
           if (isEvaluated)
             node.EvaluateExpand();
-          node.IsExpanded = isExpanded;
         }
+        bool isExpanded = (bool) values[1];
+        node.IsExpanded = isExpanded;
         if (node.Children.Count == 0)
           node.IsExpanded = false;
         ApplyNodesViewStateRecursive ((Pair[]) nodeViewState.Second, node.Children);
