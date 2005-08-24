@@ -58,7 +58,8 @@
       </para><para>
         The control supports resource dispatching to its properties through the 
         <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>.
-        Use the following resource identifiers for dispatching strings to the <b>BocBooleanValue</b>.
+        Use the following resource identifiers for dispatching strings to the <b>BocBooleanValue</b>
+        or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
       </para>
       <list type="table">
         <listheader>
