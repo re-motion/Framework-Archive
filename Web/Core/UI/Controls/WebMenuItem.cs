@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Web.UI;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -284,6 +286,29 @@ public class WebMenuItem: IControlItem
     if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
       return;
     PreRender();
+  }
+
+  public virtual void DispatchByElementValue (NameValueCollection values)
+  {
+    string key;
+    key = ResourceDispatcher.GetDispatchByElementValueKey (Category);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Category = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Text = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (Icon);
+    if (! StringUtility.IsNullOrEmpty (key))
+      Icon = (string) values[key];
+
+    key = ResourceDispatcher.GetDispatchByElementValueKey (DisabledIcon);
+    if (! StringUtility.IsNullOrEmpty (key))
+      DisabledIcon = (string) values[key];
+
+    if (Command != null)
+      Command.DispatchByElementValue (values);
   }
 }
 
