@@ -1054,15 +1054,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   }
   /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
+  void IResourceDispatchTarget.Dispatch (IDictionary values)
   {
     ArgumentUtility.CheckNotNull ("values", values);
-    DispatchByElementName (values);
+    Dispatch (values);
   }
 
   /// <summary> Implementation of <see cref="IResourceDispatchTarget"/>. </summary>
   /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Dispatch/*' />
-  protected virtual void DispatchByElementName (IDictionary values)
+  protected virtual void Dispatch (IDictionary values)
   {
     EnsureTransformationStep (TransformationStep.PreLoadViewStateTransformationCompleted);
 
@@ -1153,9 +1153,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
           IResourceDispatchTarget resourceDispatchTarget = control as IResourceDispatchTarget;
 
           if (resourceDispatchTarget != null) //  Control knows how to dispatch
-            resourceDispatchTarget.DispatchByElementName (controlValues);       
+            resourceDispatchTarget.Dispatch (controlValues);       
           else
-            ResourceDispatcher.DispatchGenericByPropertyName (control, controlValues);
+            ResourceDispatcher.DispatchGeneric (control, controlValues);
 
           //  Access key support for Labels      
           Label label = control as Label;
@@ -1200,30 +1200,12 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
   }
 
-
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
-  {
-    ArgumentUtility.CheckNotNull ("values", values);
-    DispatchByElementValue (values);
-  }
-
-  /// <summary> 
-  ///   Dispatches the resources passed in <paramref name="values"/> to the control's properties. 
-  /// </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected virtual void DispatchByElementValue (NameValueCollection values)
-  {
-  }
-
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
 
     NamingContainer.Load += new EventHandler(NamingContainer_Load);
     NamingContainer.PreRender += new EventHandler(NamingContainer_PreRender);
-    ResourceDispatcher.RegisterDispatchTarget (this);
   }
 
   private void NamingContainer_Load (object sender, EventArgs e)

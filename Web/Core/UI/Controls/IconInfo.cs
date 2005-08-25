@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Runtime.Serialization;
 using Rubicon.Utilities;
+using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
@@ -140,16 +141,18 @@ public sealed class IconInfo: ISerializable
     _height = Unit.Empty;
   }
 
-  public void DispatchByElementValue (NameValueCollection values)
+  public void LoadResources (IResourceManager resourceManager)
   {
-    string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (Url);
-    if (! StringUtility.IsNullOrEmpty (key))
-      Url = (string) values[key];
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (AlternateText);
+    string key;
+    key = ResourceManagerUtility.GetGlobalResourceKey (Url);
     if (! StringUtility.IsNullOrEmpty (key))
-      AlternateText = (string) values[key];
+      Url = resourceManager.GetString (key);
+
+    key = ResourceManagerUtility.GetGlobalResourceKey (AlternateText);
+    if (! StringUtility.IsNullOrEmpty (key))
+      AlternateText = resourceManager.GetString (key);
   }
 }
 

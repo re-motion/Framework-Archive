@@ -6,6 +6,7 @@ using System.ComponentModel.Design;
 using System.Web.UI;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -288,27 +289,29 @@ public class WebMenuItem: IControlItem
     PreRender();
   }
 
-  public virtual void DispatchByElementValue (NameValueCollection values)
+  public virtual void LoadResources (IResourceManager resourceManager)
   {
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (Category);
+    key = ResourceManagerUtility.GetGlobalResourceKey (Category);
     if (! StringUtility.IsNullOrEmpty (key))
-      Category = (string) values[key];
+      Category = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (! StringUtility.IsNullOrEmpty (key))
-      Text = (string) values[key];
+      Text = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (Icon);
+    key = ResourceManagerUtility.GetGlobalResourceKey (Icon);
     if (! StringUtility.IsNullOrEmpty (key))
-      Icon = (string) values[key];
+      Icon = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (DisabledIcon);
+    key = ResourceManagerUtility.GetGlobalResourceKey (DisabledIcon);
     if (! StringUtility.IsNullOrEmpty (key))
-      DisabledIcon = (string) values[key];
+      DisabledIcon = resourceManager.GetString (key);
 
     if (Command != null)
-      Command.DispatchByElementValue (values);
+      Command.LoadResources (resourceManager);
   }
 }
 

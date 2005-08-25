@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Web.UI;
 using log4net;
 using Rubicon.Utilities;
+using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
@@ -20,7 +21,7 @@ public interface IControlItem
 {
   Control OwnerControl { get; set; }
   string ItemID { get; }
-  void DispatchByElementValue (NameValueCollection values);
+  void LoadResources (IResourceManager resourceManager);
 }
 
 /// <summary>
@@ -247,7 +248,7 @@ public class ControlItemCollection: CollectionBase
     }
   }
 
-  public void DispatchByElementName (IDictionary values, Control parent, string collectionName)
+  public void Dispatch (IDictionary values, Control parent, string collectionName)
   {
     string parentID = string.Empty;
     string page = string.Empty;
@@ -263,20 +264,20 @@ public class ControlItemCollection: CollectionBase
       
       IControlItem item = Find (id);
       if (item != null)
-        ResourceDispatcher.DispatchGenericByPropertyName (item, (IDictionary) entry.Value);
+        ResourceDispatcher.DispatchGeneric (item, (IDictionary) entry.Value);
       else  //  Invalid collection element
         s_log.Debug ("'" + parentID + "' on page '" + page + "' does not contain an item with an ID of '" + id + "' inside the collection '" + collectionName + "'.");
     }
   }
 
-  public void DispatchByElementValue (NameValueCollection values)
+  public void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("values", values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
     for (int i = 0; i < InnerList.Count; i++)
     {
       IControlItem controlItem = (IControlItem) InnerList[i];
-      controlItem.DispatchByElementValue (values);
+      controlItem.LoadResources (resourceManager);
     }
   }
 }

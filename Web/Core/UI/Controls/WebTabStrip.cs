@@ -10,6 +10,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 using Rubicon.Web.UI.Design;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -60,12 +61,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   public WebTabStrip()
     :this (null)
   {
-  }
-
-  protected override void OnInit(EventArgs e)
-  {
-    base.OnInit (e);
-    ResourceDispatcher.RegisterDispatchTarget (this);
   }
 
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
@@ -196,7 +191,11 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       Page.RegisterRequiresPostBack (this);
 
     EnsureTabsRestored();
+    
     base.OnPreRender (e);
+  
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
+    LoadResources (resourceManager);
   }
 
   protected override HtmlTextWriterTag TagKey
@@ -362,11 +361,17 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     writer.RenderEndTag();
   }
 
-  /// <summary> 
-  ///   Dispatches the resources passed in <paramref name="values"/> to the <see cref="WebTabStrip"/>'s properties. 
-  /// </summary>
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  public virtual void DispatchByElementName (IDictionary values)
+  void IResourceDispatchTarget.Dispatch (IDictionary values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    Dispatch (values);
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected virtual void Dispatch (IDictionary values)
   {
     HybridDictionary tabValues = new HybridDictionary();
     HybridDictionary propertyValues = new HybridDictionary();
@@ -435,19 +440,19 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     }
 
     //  Dispatch simple properties
-    ResourceDispatcher.DispatchGenericByPropertyName (this, propertyValues);
+    ResourceDispatcher.DispatchGeneric (this, propertyValues);
 
     //  Dispatch to collections
-    Tabs.DispatchByElementName (tabValues, this, "Tabs");
+    Tabs.Dispatch (tabValues, this, "Tabs");
   }
 
-  /// <summary> 
-  ///   Dispatches the resources passed in <paramref name="values"/> to the <see cref="WebTabStrip"/>'s properties. 
-  /// </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  public virtual void DispatchByElementValue (NameValueCollection values)
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    Tabs.DispatchByElementValue (values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode ((Control) this))
+      return;
+    Tabs.LoadResources (resourceManager);
   }
 
   /// <summary> Sets the selected tab. </summary>

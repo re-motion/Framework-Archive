@@ -11,6 +11,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -502,13 +503,13 @@ public class Command: IControlItem
     get { return null; }
   }
 
-  public virtual void DispatchByElementValue (NameValueCollection values)
+  public virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("values", values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    string key = ResourceDispatcher.GetDispatchByElementValueKey (ToolTip);
+    string key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
     if (! StringUtility.IsNullOrEmpty (key))
-      ToolTip = (string) values[key];
+      ToolTip = resourceManager.GetString (key);
   }
 }
 

@@ -17,7 +17,7 @@ namespace Rubicon.Web.UI.Controls
 /// <include file='doc\include\UI\Controls\WebButton.xml' path='WebButton/Class/*' />
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
 public class WebButton : 
-    Button, IResourceDispatchTarget
+    Button
 #if ! net20
     // Required because Page.ProcessPostData always registers the last IPostBackEventHandler in the controls 
     // collection for controls (buttons) having PostData but no IPostBackDataHandler. 
@@ -54,6 +54,14 @@ public class WebButton :
     return false;
   }
 #endif
+
+  protected override void OnPreRender(EventArgs e)
+  {
+    base.OnPreRender (e);
+
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
+    LoadResources (resourceManager);
+  }
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
@@ -258,60 +266,29 @@ public class WebButton :
   } 
 #endif
 
-  protected override void OnInit(EventArgs e)
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    base.OnInit (e);
-    ResourceDispatcher.RegisterDispatchTarget (this);
-  }
-
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
-  {
-    ArgumentUtility.CheckNotNull ("values", values);
-    DispatchByElementName (values);
-  }
-
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected virtual void DispatchByElementName (IDictionary values)
-  {
-    //  Dispatch simple properties
-    ResourceDispatcher.DispatchGenericByPropertyName (this, values);
-  }
-
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
-  {
-    ArgumentUtility.CheckNotNull ("values", values);
-    DispatchByElementValue (values);
-  }
-
-  /// <summary> 
-  ///   Dispatches the resources passed in <paramref name="values"/> to the control's properties. 
-  /// </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected virtual void DispatchByElementValue (NameValueCollection values)
-  {
-    ArgumentUtility.CheckNotNull ("values", values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (ControlHelper.IsDesignMode (this))
+      return;
 
     //  Dispatch simple properties
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (! StringUtility.IsNullOrEmpty (key))
-      Text = (string) values[key];
+      Text = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (AccessKey);
+    key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
     if (! StringUtility.IsNullOrEmpty (key))
-      AccessKey = (string) values[key];
+      AccessKey = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (ToolTip);
+    key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
     if (! StringUtility.IsNullOrEmpty (key))
-      ToolTip = (string) values[key];
+      ToolTip = resourceManager.GetString (key);
 
     if (Icon != null)
-      Icon.DispatchByElementValue (values);
+      Icon.LoadResources (resourceManager);
   }
 
   /// <summary> 

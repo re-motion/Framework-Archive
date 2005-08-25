@@ -15,7 +15,7 @@ namespace Rubicon.Web.UI.Globalization
 public interface IResourceDispatchTarget
 {
   /// <summary>
-  ///   <b>DispatchByElementName</b> is called by the parent control
+  ///   <b>Dispatch</b> is called by the parent control
   ///   and receives the resources as an <b>IDictonary</b>.
   /// </summary>
   /// <remarks>
@@ -33,8 +33,7 @@ public interface IResourceDispatchTarget
   /// <param name="values">
   ///   An <b>IDictonary</b>: &lt;string key, string value&gt;.
   /// </param>
-  void DispatchByElementName (IDictionary values);
-  void DispatchByElementValue (NameValueCollection values);
+  void Dispatch (IDictionary values);
 }
 
 }

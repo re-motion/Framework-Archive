@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
+using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
@@ -315,14 +316,16 @@ public class WebTreeNode: IControlItem
     }
   }
 
-  public virtual void DispatchByElementValue (NameValueCollection values)
+  public virtual void LoadResources (IResourceManager resourceManager)
   {
-    string key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+
+    string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (! StringUtility.IsNullOrEmpty (key))
-      Text = (string) values[key];
+      Text = resourceManager.GetString (key);
 
     if (Icon != null)
-      Icon.DispatchByElementValue (values);
+      Icon.LoadResources (resourceManager);
   }
 }
 
