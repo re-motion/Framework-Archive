@@ -1,26 +1,24 @@
-function SN_Element (id, top, left)
+function SmartNavigation_Element (id, top, left)
 {
   this.ID = id;
   this.Top = top;
   this.Left = left;
   
-  this.ToString = SN_Element_ToString;  
+  this.ToString = function ()
+  {
+    if (this.ID == null || this.ID == '')
+      return '';
+    else
+      return this.ID + ' ' + this.Top + ' ' + this.Left;
+  }
 }
 
-function SN_Element_ToString()
-{
-  if (this.ID == null || this.ID == '')
-    return '';
-  else
-    return this.ID + ' ' + this.Top + ' ' + this.Left;
-}
-
-function SN_Element_Static_Parse (value)
+SmartNavigation_Element.Parse = function (value)
 {
   if (value != null && value != '')
   {
     var fields = value.split (' ');
-    return new SN_Element (fields[0], fields[1], fields[2]);
+    return new SmartNavigation_Element (fields[0], fields[1], fields[2]);
   }
   else
   {
@@ -28,49 +26,30 @@ function SN_Element_Static_Parse (value)
   }
 }
 
-function SmartNavigationRestore (data)
+function SmartNavigation_Restore (data)
 {
   if (data == null || data == '')
     return;
     
   var dataFields = data.split ('*');
+  if (dataFields.length < 2)
+    return;
   
-  var sneScrollParent = null;
-  if (dataFields.length > 1)
+  var snBody = SmartNavigation_Element.Parse (dataFields.shift());
+  document.body.scrollTop = snBody.Top;
+  document.body.scrollLeft = snBody.Left;
+  
+  for (var i = 0; i < dataFields.length - 1; i++)
   {
-    if (dataFields[0] != null && dataFields[0] != '')
-    {
-      sneScrollParent = SN_Element_Static_Parse (dataFields[0]);
-    }
+    var snElement = SmartNavigation_Element.Parse (dataFields[i]);
+    SmartNavigation_SetScrollPosition (snElement);
   }
+  var snScrollElement = null;
   
-  var focusElementID = null;
-  var focusElementTop = 0;
-  var focusElementLeft = 0;
-  if (dataFields.length > 0)
+  var snFocusElement = SmartNavigation_Element.Parse (dataFields.pop());
+  if (snFocusElement != null)
   {
-    if (dataFields[dataFields.length - 1] != null && dataFields[dataFields.length - 1] != '')
-    {
-      var focusElementFields = dataFields[dataFields.length - 1].split (' ');
-      focusElementID = focusElementFields[0];
-      focusElementTop = focusElementFields[1];
-      focusElementLeft = focusElementFields[2];
-    }
-  }
-  
-  if (sneScrollParent != null)
-  {
-    var scrollParent = document.getElementById (sneScrollParent.ID);
-    if (scrollParent != null)
-    {
-      scrollParent.scrollTop = sneScrollParent.Top;
-      scrollParent.scrollLeft = sneScrollParent.Left;
-    }
-  }
-  
-  if (focusElementID != null && focusElementID != '')
-  {
-    var focusElement = document.getElementById (focusElementID);
+    var focusElement = document.getElementById (snFocusElement.ID);
     if (focusElement != null)
     {
 //      focusElement.offsetTop = focusElementTop;
@@ -80,34 +59,71 @@ function SmartNavigationRestore (data)
   }
 }
 
-function SmartNavigationBackup ()
+function SmartNavigation_Backup (activeElement)
 {
-  var activeElement = window.document.activeElement;
-  
-  var scrollParent = null;
-  for (var currentNode = activeElement; currentNode != null; currentNode = currentNode.offsetParent)
-  {
-    if (   currentNode.style.overflow.toLowerCase() == 'auto' 
-        || currentNode.style.overflow.toLowerCase() == 'scroll')
-    {
-      scrollParent = currentNode;
-      break;
-    }
-  }
-  
   var data = '';
-  if (scrollParent != null)
+  var snScrollElements = new Array();
+  
+  if (document.body.id == null || document.body.id == '')
   {
-    var sneScrollParent = new SN_Element (scrollParent.id, scrollParent.scrollTop, scrollParent.scrollLeft);
-    data += sneScrollParent.ToString();
+    var snBody = new SmartNavigation_Element ('body', document.body.scrollTop, document.body.scrollLeft);
+    snScrollElements.push (snBody);
   }
-  data += '*'; 
+  snScrollElements = snScrollElements.concat (SmartNavigation_GetScrollPositions (document.body));
+  
+  for (var i = 0; i < snScrollElements.length; i++)
+  {
+    var snScrollElement = snScrollElements[i];
+    data += snScrollElement.ToString();
+    data += '*'; 
+  }
   
   if (activeElement != null)
   {
-    var sneActiveElement = new SN_Element (activeElement.id, activeElement.offsetTop, activeElement.offsetLeft);
+    var sneActiveElement = new SmartNavigation_Element (activeElement.id, 0, 0);
     data += sneActiveElement.ToString();
   }
 
   return data;
+}
+
+function SmartNavigation_GetScrollPositions (currentElement)
+{
+  var snElements = new Array();
+  if (currentElement != null)
+  {
+    if (   currentElement.id != null && currentElement.id != ''
+        && (currentElement.scrollTop != 0 || currentElement.scrollLeft != 0))
+    {
+      var snCurrentElement = SmartNavigation_GetScrollPosition (currentElement);
+      snElements.push (snCurrentElement);
+    }
+    
+    for (var i = 0; i < currentElement.children.length; i++)
+    {
+      var element = currentElement.children[i];
+      var snChildElements = SmartNavigation_GetScrollPositions (element);
+      snElements = snElements.concat (snChildElements);
+    }
+  }
+  return snElements;  
+}
+
+function SmartNavigation_GetScrollPosition (htmlElement)
+{
+  if (htmlElement != null)
+    return new SmartNavigation_Element (htmlElement.id, htmlElement.scrollTop, htmlElement.scrollLeft);
+  else
+    return null;
+}
+
+function SmartNavigation_SetScrollPosition (snElement)
+{
+  if (snElement == null)
+    return;
+  var htmlElement = document.getElementById (snElement.ID)
+  if (htmlElement == null)
+    return;
+  htmlElement.scrollTop = snElement.Top;
+  htmlElement.scrollLeft = snElement.Left;
 }
