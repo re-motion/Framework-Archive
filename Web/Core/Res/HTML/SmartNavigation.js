@@ -1,4 +1,4 @@
-function SmartNavigation_Element (id, top, left)
+function SmartScrolling_Element (id, top, left)
 {
   this.ID = id;
   this.Top = top;
@@ -13,12 +13,12 @@ function SmartNavigation_Element (id, top, left)
   }
 }
 
-SmartNavigation_Element.Parse = function (value)
+SmartScrolling_Element.Parse = function (value)
 {
   if (value != null && value != '')
   {
     var fields = value.split (' ');
-    return new SmartNavigation_Element (fields[0], fields[1], fields[2]);
+    return new SmartScrolling_Element (fields[0], fields[1], fields[2]);
   }
   else
   {
@@ -26,104 +26,114 @@ SmartNavigation_Element.Parse = function (value)
   }
 }
 
-function SmartNavigation_Restore (data)
+function SmartScrolling_Restore (data)
 {
   if (data == null || data == '')
     return;
     
   var dataFields = data.split ('*');
-  if (dataFields.length < 2)
+  if (dataFields.length == 0)
     return;
   
-  var snBody = SmartNavigation_Element.Parse (dataFields.shift());
-  document.body.scrollTop = snBody.Top;
-  document.body.scrollLeft = snBody.Left;
+  var sseBody = SmartScrolling_Element.Parse (dataFields.shift());
+  document.body.scrollTop = sseBody.Top;
+  document.body.scrollLeft = sseBody.Left;
   
-  for (var i = 0; i < dataFields.length - 1; i++)
+  for (var i = 0; i < dataFields.length; i++)
   {
-    var snElement = SmartNavigation_Element.Parse (dataFields[i]);
-    SmartNavigation_SetScrollPosition (snElement);
-  }
-  var snScrollElement = null;
-  
-  var snFocusElement = SmartNavigation_Element.Parse (dataFields.pop());
-  if (snFocusElement != null)
-  {
-    var focusElement = document.getElementById (snFocusElement.ID);
-    if (focusElement != null)
-    {
-//      focusElement.offsetTop = focusElementTop;
-//      focusElement.offsetLeft = focusElementLeft;
-      focusElement.focus();
-    }
-  }
+    var scrollElement = SmartScrolling_Element.Parse (dataFields[i]);
+    SmartScrolling_SetScrollPosition (scrollElement);
+  } 
 }
 
-function SmartNavigation_Backup (activeElement)
+function SmartScrolling_Backup (activeElement)
 {
   var data = '';
-  var snScrollElements = new Array();
+  var scrollElements = new Array();
   
   if (document.body.id == null || document.body.id == '')
   {
-    var snBody = new SmartNavigation_Element ('body', document.body.scrollTop, document.body.scrollLeft);
-    snScrollElements.push (snBody);
+    var sseBody = new SmartScrolling_Element ('body', document.body.scrollTop, document.body.scrollLeft);
+    scrollElements.push (sseBody);
   }
-  snScrollElements = snScrollElements.concat (SmartNavigation_GetScrollPositions (document.body));
+  scrollElements = scrollElements.concat (SmartScrolling_GetScrollPositions (document.body));
   
-  for (var i = 0; i < snScrollElements.length; i++)
+  for (var i = 0; i < scrollElements.length; i++)
   {
-    var snScrollElement = snScrollElements[i];
-    data += snScrollElement.ToString();
-    data += '*'; 
-  }
-  
-  if (activeElement != null)
-  {
-    var sneActiveElement = new SmartNavigation_Element (activeElement.id, 0, 0);
-    data += sneActiveElement.ToString();
+    if (i > 0)
+      data += '*'; 
+    var scrollElement = scrollElements[i];
+    data += scrollElement.ToString();
   }
 
   return data;
 }
 
-function SmartNavigation_GetScrollPositions (currentElement)
+function SmartScrolling_GetScrollPositions (currentElement)
 {
-  var snElements = new Array();
+  var scrollElements = new Array();
   if (currentElement != null)
   {
     if (   currentElement.id != null && currentElement.id != ''
         && (currentElement.scrollTop != 0 || currentElement.scrollLeft != 0))
     {
-      var snCurrentElement = SmartNavigation_GetScrollPosition (currentElement);
-      snElements.push (snCurrentElement);
+      var sseCurrentElement = SmartScrolling_GetScrollPosition (currentElement);
+      scrollElements.push (sseCurrentElement);
     }
     
     for (var i = 0; i < currentElement.children.length; i++)
     {
       var element = currentElement.children[i];
-      var snChildElements = SmartNavigation_GetScrollPositions (element);
-      snElements = snElements.concat (snChildElements);
+      var scrollChilden = SmartScrolling_GetScrollPositions (element);
+      scrollElements = scrollElements.concat (scrollChilden);
     }
   }
-  return snElements;  
+  return scrollElements;  
 }
 
-function SmartNavigation_GetScrollPosition (htmlElement)
+function SmartScrolling_GetScrollPosition (htmlElement)
 {
   if (htmlElement != null)
-    return new SmartNavigation_Element (htmlElement.id, htmlElement.scrollTop, htmlElement.scrollLeft);
+    return new SmartScrolling_Element (htmlElement.id, htmlElement.scrollTop, htmlElement.scrollLeft);
   else
     return null;
 }
 
-function SmartNavigation_SetScrollPosition (snElement)
+function SmartScrolling_SetScrollPosition (scrollElement)
 {
-  if (snElement == null)
+  if (scrollElement == null)
     return;
-  var htmlElement = document.getElementById (snElement.ID)
+  var htmlElement = document.getElementById (scrollElement.ID)
   if (htmlElement == null)
     return;
-  htmlElement.scrollTop = snElement.Top;
-  htmlElement.scrollLeft = snElement.Left;
+  htmlElement.scrollTop = scrollElement.Top;
+  htmlElement.scrollLeft = scrollElement.Left;
 }
+
+function SmartFocus_Backup (activeElement)
+{
+  var data = '';  
+  if (activeElement != null)
+  {
+    data += activeElement.id;
+  }
+  
+  return data;
+}
+
+function SmartFocus_Restore (data)
+{
+  if (data == null || data == '')
+    return;
+
+  var activeElementID = data;
+  if (activeElementID != null && activeElementID != '')
+  {
+    var activeElement = document.getElementById (activeElementID);
+    if (activeElement != null)
+    {
+      activeElement.focus();
+    }
+  }
+}
+

@@ -1,14 +1,14 @@
 var _wxe_context = null;
 
-function Wxe_Initialize (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartNavigationFieldID)
+function Wxe_Initialize (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID)
 {
-  _wxe_context = new Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartNavigationFieldID);
+  _wxe_context = new Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID);
   window.onload = Wxe_OnLoad;
   window.onbeforeunload = Wxe_OnBeforeUnload; // IE, Mozilla 1.7, Firefox 0.9
   window.onunload = Wxe_OnUnload;
 }
 
-function Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartNavigationFieldID)
+function Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID)
 {
   this.TheForm = document.forms[theFormID];
   if (refreshInterval > 0)
@@ -22,20 +22,25 @@ function Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMes
   this.IsAbortConfirmationEnabled = this.IsAbortEnabled && abortMessage != null;
   this.IsSubmit = false;
   this.AspnetDoPostBack = null;
-  this.SmartNavigationField = this.TheForm.elements[smartNavigationFieldID];
+  this.SmartScrollingField = this.TheForm.elements[smartScrollingFieldID];
+  this.SmartFocusField = this.TheForm.elements[smartFocusFieldID];
   
   this.Backup = function()
   {
-    return;
-    if (this.SmartNavigationField != null)
-      this.SmartNavigationField.value = SmartNavigation_Backup (document.activeElement);
+  return;
+    if (this.SmartScrollingField != null)
+      this.SmartScrollingField.value = SmartScrolling_Backup (document.activeElement);
+    if (this.SmartFocusField != null)
+      this.SmartFocusField.value = SmartFocus_Backup (document.activeElement);
   }
   
   this.Restore = function()
   {
-    return;
-    if (this.SmartNavigationField != null)
-  	  SmartNavigation_Restore (this.SmartNavigationField.value);
+  return;
+    if (this.SmartScrollingField != null)
+  	  SmartScrolling_Restore (this.SmartScrollingField.value);
+    if (this.SmartFocusField != null)
+  	  SmartFocus_Restore (this.SmartFocusField.value);
   }
 }
 

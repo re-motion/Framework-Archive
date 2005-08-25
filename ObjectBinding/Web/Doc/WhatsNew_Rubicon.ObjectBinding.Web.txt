@@ -70,6 +70,9 @@
   * Css-Klassen bocTextValueReadOnly bzw bocReferenceValueReadOnly zu readOnly umbenannt.
     Selektor ist nun: .bocTextValue.readOnly bzw .bocReferenceValue.readOnly
 
+- BocTextBox, BocMultiLineTextBox, BocDateTimeValue
+  * Im Read-Only Modus wird die Breite und Höhe nur ausgegeben, wenn sie bei CommonStyle oder LabelStyle angegeben ist.
+
 - BOCs allgemein:
   * Werten die Rubicon.Web.Configuration.WebConfiguration.WaiConfiguration Werte aus und werfen im WAI-Debug Modus
     eine entsprechende WaiException wenn die Einstellungen nicht WAI-konform sind.

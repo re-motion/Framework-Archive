@@ -86,7 +86,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private const string c_script = "ExecutionEngine.js";
   private const string c_smartNavigationScript = "SmartNavigation.js";
   public const string PageTokenID = "wxePageToken";
-  private const string c_smartNavigationID = "smartNavigation";
+  private const string c_smartScrollingID = "smartScrolling";
+  private const string c_smartFocusID = "smartFocus";
 
   private IWxePage _page;
   private WxeForm _form;
@@ -145,10 +146,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     _form.ReturningToken = string.Empty;    
 
-    string smartNavigationValue = null;
+    string smartScrollingValue = null;
+    string smartFocusValue = null;
     if (postBackCollection != null)
-      smartNavigationValue = postBackCollection[c_smartNavigationID];
-     _page.RegisterHiddenField (c_smartNavigationID, smartNavigationValue);
+    {
+      smartScrollingValue = postBackCollection[c_smartScrollingID];
+      smartFocusValue = postBackCollection[c_smartFocusID];
+    }
+    _page.RegisterHiddenField (c_smartScrollingID, smartScrollingValue);
+    _page.RegisterHiddenField (c_smartFocusID, smartFocusValue);
 
   
     Page page = (Page) _page;
@@ -221,12 +227,14 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       else
         abortMessage = "null";
 
-      string smartNavigationFieldID = "'" + c_smartNavigationID + "'";
+      string smartScrollingFieldID = "'" + c_smartScrollingID + "'";
+      string smartFocusFieldID = "'" + c_smartFocusID + "'";
       string key = "wxeInitialize";
       PageUtility.RegisterStartupScriptBlock ((Page)_page, key,
             "Wxe_Initialize ('" + _form.ClientID + "', " 
           + refreshIntervall.ToString() + ", " + refreshPath + ", " 
-          + abortPath + ", " + abortMessage + ", " + smartNavigationFieldID + ");");
+          + abortPath + ", " + abortMessage + ", "
+          + smartScrollingFieldID + ", " + smartFocusFieldID + ");");
     }
   }
 
