@@ -121,6 +121,23 @@ public class ResourceManagerUtility
     return s_chachedResourceManagers[type] as IResourceManager;
   }
 
+  private const string c_globalResourceKeyPrefix = "#res:";
+
+  public static bool IsGlobalResourceKey (string elementValue)
+  {
+    if (StringUtility.IsNullOrEmpty (elementValue))
+      return false;
+    return elementValue.StartsWith (c_globalResourceKeyPrefix);
+  }
+
+  public static string GetGlobalResourceKey (string elementValue)
+  {
+    if (IsGlobalResourceKey (elementValue))
+      return elementValue.Substring (c_globalResourceKeyPrefix.Length);
+    else
+      return null;
+  }
+
   //  No construction for static only class
   /// <exclude />
 	private ResourceManagerUtility()
