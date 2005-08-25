@@ -248,6 +248,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     EnsureChildControls();
     base.OnPreRender (e);
 
+    LoadResources (GetResourceManager());
+
     if (! IsDesignMode && ! IsReadOnly)
       Page.RegisterRequiresPostBack (this);
     
@@ -544,16 +546,17 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected override void DispatchByElementValue (NameValueCollection values)
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected override void LoadResources (IResourceManager resourceManager)
   {
-    base.DispatchByElementValue (values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (IsDesignMode)
+      return;
+    base.LoadResources (resourceManager);
 
-    //  Dispatch simple properties
-    string key = ResourceDispatcher.GetDispatchByElementValueKey (ErrorMessage);
+    string key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
     if (! StringUtility.IsNullOrEmpty (key))
-      ErrorMessage = (string) values[key];
+      ErrorMessage = resourceManager.GetString (key);
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>

@@ -33,7 +33,8 @@ public class BocReferenceValue:
     BusinessObjectBoundModifiableWebControl, 
     IPostBackEventHandler, 
     IPostBackDataHandler,
-    IBocMenuItemContainer
+    IBocMenuItemContainer,
+    IResourceDispatchTarget
 {
   // constants
 	
@@ -295,7 +296,15 @@ public class BocReferenceValue:
 
   /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected override void DispatchByElementName (IDictionary values)
+  void IResourceDispatchTarget.Dispatch (IDictionary values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    Dispatch (values);
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected virtual void Dispatch  (IDictionary values)
   {
     HybridDictionary optionsMenuItemValues = new HybridDictionary();
     HybridDictionary propertyValues = new HybridDictionary();
@@ -388,42 +397,41 @@ public class BocReferenceValue:
     }
 
     //  Dispatch simple properties
-    ResourceDispatcher.DispatchGenericByPropertyName (this, propertyValues);
+    ResourceDispatcher.DispatchGeneric (this, propertyValues);
 
     //  Dispatch compound element properties
     if (Command != null)
-      ResourceDispatcher.DispatchGenericByPropertyName (Command, commandValues);
+      ResourceDispatcher.DispatchGeneric (Command, commandValues);
 
     //  Dispatch to collections
-    OptionsMenuItems.DispatchByElementName (optionsMenuItemValues, this, "OptionsMenuItems");
+    OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
   }
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected override void DispatchByElementValue (NameValueCollection values)
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected override void LoadResources  (IResourceManager resourceManager)
   {
-    base.DispatchByElementValue (values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (IsDesignMode)
+      return;
+    base.LoadResources (resourceManager);
 
-    //  Dispatch simple properties
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (Select);
+    key = ResourceManagerUtility.GetGlobalResourceKey (Select);
     if (! StringUtility.IsNullOrEmpty (key))
-      Select = (string) values[key];
+      Select = resourceManager.GetString (key);
     
-    key = ResourceDispatcher.GetDispatchByElementValueKey (OptionsTitle);
+    key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
     if (! StringUtility.IsNullOrEmpty (key))
-      OptionsTitle = (string) values[key];
+      OptionsTitle = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (ErrorMessage);
+    key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
     if (! StringUtility.IsNullOrEmpty (key))
-      ErrorMessage = (string) values[key];
+      ErrorMessage = resourceManager.GetString (key);
 
-    //  Dispatch compound element properties
     if (Command != null)
-      Command.DispatchByElementValue (values);
+      Command.LoadResources (resourceManager);
 
-    //  Dispatch to collections
-    OptionsMenuItems.DispatchByElementValue (values);
+    OptionsMenuItems.LoadResources (resourceManager);
   }
 
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
@@ -473,6 +481,8 @@ public class BocReferenceValue:
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
+
+    LoadResources (GetResourceManager());
 
     if (!IsDesignMode)
     {

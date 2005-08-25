@@ -178,6 +178,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     EnsureChildControls();
     base.OnPreRender (e);
 
+    LoadResources (GetResourceManager());
+
     bool isReadOnly = IsReadOnly;
     if (isReadOnly)
       PreRenderReadOnlyMode();
@@ -434,21 +436,22 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected override void DispatchByElementValue (NameValueCollection values)
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected override void LoadResources (IResourceManager resourceManager)
   {
-    base.DispatchByElementValue (values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (IsDesignMode)
+      return;
+    base.LoadResources (resourceManager);
 
-    //  Dispatch simple properties
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (TrueDescription);
+    key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
     if (! StringUtility.IsNullOrEmpty (key))
-      TrueDescription = (string) values[key];
+      TrueDescription = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (FalseDescription);
+    key = ResourceManagerUtility.GetGlobalResourceKey (FalseDescription);
     if (! StringUtility.IsNullOrEmpty (key))
-      FalseDescription = (string) values[key];
+      FalseDescription = resourceManager.GetString (key);
   }
 
   private void DetermineClientScriptLevel() 

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -72,9 +73,8 @@ public abstract class BusinessObjectControlItem: IControlItem
     set { throw new NotSupportedException ("Implement ItemID in a specialized class, if the class supports IDs."); }
   }
 
-  public virtual void DispatchByElementValue (NameValueCollection values)
+  public virtual void LoadResources (IResourceManager resourceManager)
   {
-    //TODO: Dispatch to global
   }
 }
 

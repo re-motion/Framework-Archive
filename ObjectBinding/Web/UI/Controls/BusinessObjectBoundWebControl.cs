@@ -36,7 +36,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <seealso cref="ISmartControl"/>
 /// <seealso cref="IBusinessObjectBoundModifiableWebControl"/>
 /// <seealso cref="IBusinessObjectDataSourceControl"/>
-public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, ISmartControl, IResourceDispatchTarget
+public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, ISmartControl
 {
   /// <summary>
   ///   Gets or sets the <b>ID</b> of the <see cref="IBusinessObjectDataSourceControl"/> encapsulating the 
@@ -196,7 +196,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     base.OnInit (e);
     EnsureChildControls();
     _binding.EnsureDataSource();
-    ResourceDispatcher.RegisterDispatchTarget (this);
   }
 
   /// <summary> Overrides <see cref="Control.OnLoad"/>. </summary>
@@ -496,42 +495,21 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     _controlExistedInPreviousRequest = true;
   }
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("values", values);
-    DispatchByElementName (values);
-  }
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (IsDesignMode)
+      return;
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected virtual void DispatchByElementName (IDictionary values)
-  {
-    //  Dispatch simple properties
-    ResourceDispatcher.DispatchGenericByPropertyName (this, values);
-  }
-
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
-  {
-    ArgumentUtility.CheckNotNull ("values", values);
-    DispatchByElementValue (values);
-  }
-
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected virtual void DispatchByElementValue (NameValueCollection values)
-  {
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (AccessKey);
+    key = ResourceManagerUtility.GetGlobalResourceKey (AccessKey);
     if (! StringUtility.IsNullOrEmpty (key))
-      AccessKey = (string) values[key];
+      AccessKey = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (ToolTip);
+    key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
     if (! StringUtility.IsNullOrEmpty (key))
-      ToolTip = (string) values[key];
+      ToolTip = resourceManager.GetString (key);
   }
 
   protected bool IsWcagDebuggingEnabled

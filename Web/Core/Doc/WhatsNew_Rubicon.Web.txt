@@ -1,3 +1,10 @@
+1.2.67
+======
+- ResourceDispatching aus 1.2.66 überarbeitet.
+  * Globale Resourcen verwenden nun das Prefix "#res:" bei der Angabe in der Property.
+    Im Resource-File werden sie ohne Prefix eingetragen.
+  * "auto:" Resourcen wie gehabt.
+
 1.2.66
 ======
 - Rubicon.Web.UI.Globalization.ResourceDispatcher

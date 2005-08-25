@@ -206,6 +206,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     string imageUrl;
     string description;
 
+    LoadResources (resourceManager);
+
     if (_value == NaBoolean.True)
     {
       imageUrl = trueIconUrl;
@@ -416,29 +418,30 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected override void DispatchByElementValue (NameValueCollection values)
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected override void LoadResources (IResourceManager resourceManager)
   {
-    base.DispatchByElementValue (values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (IsDesignMode)
+      return;
+    base.LoadResources (resourceManager);
 
-    //  Dispatch simple properties
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (TrueDescription);
+    key = ResourceManagerUtility.GetGlobalResourceKey (TrueDescription);
     if (! StringUtility.IsNullOrEmpty (key))
-      TrueDescription = (string) values[key];
+      TrueDescription = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (FalseDescription);
+    key = ResourceManagerUtility.GetGlobalResourceKey (FalseDescription);
     if (! StringUtility.IsNullOrEmpty (key))
-      FalseDescription = (string) values[key];
+      FalseDescription = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (NullDescription);
+    key = ResourceManagerUtility.GetGlobalResourceKey (NullDescription);
     if (! StringUtility.IsNullOrEmpty (key))
-      NullDescription = (string) values[key];
+      NullDescription = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (ErrorMessage);
+    key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
     if (! StringUtility.IsNullOrEmpty (key))
-      ErrorMessage = (string) values[key];
+      ErrorMessage = resourceManager.GetString (key);
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>

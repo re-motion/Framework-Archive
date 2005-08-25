@@ -15,6 +15,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Globalization;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -122,15 +123,15 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
     get { return "ColumnDefinition"; }
   }
 
-  public override void DispatchByElementValue (NameValueCollection values)
+  public override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("values", values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    base.LoadResources (resourceManager);
 
-    base.DispatchByElementValue (values);
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (ColumnTitle);
+    key = ResourceManagerUtility.GetGlobalResourceKey (ColumnTitle);
     if (! StringUtility.IsNullOrEmpty (key))
-      ColumnTitle = (string) values[key];
+      ColumnTitle = resourceManager.GetString (key);
   }
 }
 
@@ -270,19 +271,19 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   {
     get { return "CommandColumnDefinition"; }
   }
-  public override void DispatchByElementValue (NameValueCollection values)
+  public override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("values", values);
-    base.DispatchByElementValue (values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    base.LoadResources (resourceManager);
     
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (Text);
+    key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (! StringUtility.IsNullOrEmpty (key))
-      Text = (string) values[key];
+      Text = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (IconPath);
+    key = ResourceManagerUtility.GetGlobalResourceKey (IconPath);
     if (! StringUtility.IsNullOrEmpty (key))
-      IconPath = (string) values[key];
+      IconPath = resourceManager.GetString (key);
   }
 }
 
@@ -733,30 +734,30 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   {
     get { return "EditDetailsColumnDefinition"; }
   }
-  public override void DispatchByElementValue (NameValueCollection values)
+  public override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("values", values);
-    base.DispatchByElementValue (values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    base.LoadResources (resourceManager);
     
     string key;
-    key = ResourceDispatcher.GetDispatchByElementValueKey (EditText);
+    key = ResourceManagerUtility.GetGlobalResourceKey (EditText);
     if (! StringUtility.IsNullOrEmpty (key))
-      EditText = (string) values[key];
+      EditText = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (SaveText);
+    key = ResourceManagerUtility.GetGlobalResourceKey (SaveText);
     if (! StringUtility.IsNullOrEmpty (key))
-      SaveText = (string) values[key];
+      SaveText = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (CancelText);
+    key = ResourceManagerUtility.GetGlobalResourceKey (CancelText);
     if (! StringUtility.IsNullOrEmpty (key))
-      CancelText = (string) values[key];
+      CancelText = resourceManager.GetString (key);
 
     if (EditIcon != null)
-      EditIcon.DispatchByElementValue (values);
+      EditIcon.LoadResources (resourceManager);
     if (SaveIcon != null)
-      SaveIcon.DispatchByElementValue (values);
+      SaveIcon.LoadResources (resourceManager);
     if (CancelIcon != null)
-      CancelIcon.DispatchByElementValue (values);
+      CancelIcon.LoadResources (resourceManager);
   }
 }
 

@@ -40,7 +40,8 @@ public class BocList:
     IPostBackEventHandler, 
     IPostBackDataHandler, 
     IComparer,
-    IBocMenuItemContainer
+    IBocMenuItemContainer,
+    IResourceDispatchTarget
 {
   //  constants
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
@@ -1053,13 +1054,16 @@ public class BocList:
     }
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
+
+    EnsureRowEditModeValidatorsRestored();
+    
+    LoadResources (GetResourceManager());
+
     if (!IsDesignMode)
     {
       PreRenderMenuItems();
     }
 
-    EnsureRowEditModeValidatorsRestored();
-    
     if (IsEditDetailsModeActive)
     {
       Pair[] sortedRows = EnsureGotIndexedRowsSorted();
@@ -3504,7 +3508,15 @@ public class BocList:
 
   /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected override void DispatchByElementName (IDictionary values)
+  void IResourceDispatchTarget.Dispatch (IDictionary values)
+  {
+    ArgumentUtility.CheckNotNull ("values", values);
+    Dispatch (values);
+  }
+
+  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
+  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
+  protected virtual void Dispatch  (IDictionary values)
   {
     HybridDictionary fixedColumnValues = new HybridDictionary();
     HybridDictionary optionsMenuItemValues = new HybridDictionary();
@@ -3585,50 +3597,50 @@ public class BocList:
     }
 
     //  Dispatch simple properties
-    ResourceDispatcher.DispatchGenericByPropertyName (this, propertyValues);
+    ResourceDispatcher.DispatchGeneric (this, propertyValues);
 
     //  Dispatch to collections
-    _fixedColumns.DispatchByElementName (fixedColumnValues, this, "FixedColumns");
-    OptionsMenuItems.DispatchByElementName (optionsMenuItemValues, this, "OptionsMenuItems");
-    ListMenuItems.DispatchByElementName (listMenuItemValues, this, "ListMenuItems");
+    _fixedColumns.Dispatch (fixedColumnValues, this, "FixedColumns");
+    OptionsMenuItems.Dispatch (optionsMenuItemValues, this, "OptionsMenuItems");
+    ListMenuItems.Dispatch (listMenuItemValues, this, "ListMenuItems");
   }
 
-  /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
-  /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
-  protected override void DispatchByElementValue (NameValueCollection values)
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected override void LoadResources  (IResourceManager resourceManager)
   {
-    base.DispatchByElementValue (values);
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (IsDesignMode)
+      return;
+    base.LoadResources (resourceManager);
 
-    //  Dispatch simple properties
     string key;    
-    key = ResourceDispatcher.GetDispatchByElementValueKey (IndexColumnTitle);
+    key = ResourceManagerUtility.GetGlobalResourceKey (IndexColumnTitle);
     if (! StringUtility.IsNullOrEmpty (key))
-      IndexColumnTitle = (string) values[key];
+      IndexColumnTitle = resourceManager.GetString (key);
     
-    key = ResourceDispatcher.GetDispatchByElementValueKey (PageInfo);
+    key = ResourceManagerUtility.GetGlobalResourceKey (PageInfo);
     if (! StringUtility.IsNullOrEmpty (key))
-      PageInfo = (string) values[key];
+      PageInfo = resourceManager.GetString (key);
     
-    key = ResourceDispatcher.GetDispatchByElementValueKey (EmptyListMessage);
+    key = ResourceManagerUtility.GetGlobalResourceKey (EmptyListMessage);
     if (! StringUtility.IsNullOrEmpty (key))
-      EmptyListMessage = (string) values[key];
+      EmptyListMessage = resourceManager.GetString (key);
     
-    key = ResourceDispatcher.GetDispatchByElementValueKey (OptionsTitle);
+    key = ResourceManagerUtility.GetGlobalResourceKey (OptionsTitle);
     if (! StringUtility.IsNullOrEmpty (key))
-      OptionsTitle = (string) values[key];
+      OptionsTitle = resourceManager.GetString (key);
     
-    key = ResourceDispatcher.GetDispatchByElementValueKey (AvailableViewsListTitle);
+    key = ResourceManagerUtility.GetGlobalResourceKey (AvailableViewsListTitle);
     if (! StringUtility.IsNullOrEmpty (key))
-      AvailableViewsListTitle = (string) values[key];
+      AvailableViewsListTitle = resourceManager.GetString (key);
 
-    key = ResourceDispatcher.GetDispatchByElementValueKey (ErrorMessage);
+    key = ResourceManagerUtility.GetGlobalResourceKey (ErrorMessage);
     if (! StringUtility.IsNullOrEmpty (key))
-      ErrorMessage = (string) values[key];
+      ErrorMessage = resourceManager.GetString (key);
 
-    //  Dispatch to collections
-    _fixedColumns.DispatchByElementValue (values);
-    OptionsMenuItems.DispatchByElementValue (values);
-    ListMenuItems.DispatchByElementValue (values);
+    _fixedColumns.LoadResources (resourceManager);
+    OptionsMenuItems.LoadResources (resourceManager);
+    ListMenuItems.LoadResources (resourceManager);
   }
 
   /// <summary>
