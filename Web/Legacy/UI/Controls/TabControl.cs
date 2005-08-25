@@ -786,11 +786,6 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 
   public void Dispatch (IDictionary values)
   {
-    ((IResourceDispatchTarget)this).DispatchByElementName (values);
-  }
-
-  void IResourceDispatchTarget.DispatchByElementName (IDictionary values)
-  {
     foreach (DictionaryEntry entry in values)
     {
       string key = entry.Key.ToString ();
@@ -821,10 +816,6 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
         Rubicon.Utilities.ReflectionUtility.SetFieldOrPropertyValue (this, key, text);
       }
     }
-  }
-
-  void IResourceDispatchTarget.DispatchByElementValue (NameValueCollection values)
-  {
   }
 
   private TabMenu GetMenuByName (Tab tab, string menuName)
