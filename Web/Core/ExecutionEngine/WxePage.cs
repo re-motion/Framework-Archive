@@ -21,7 +21,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.ExecutionEngine
 {
 
-public interface IWxePage: IPage, IWxeTemplateControl
+public interface IWxePage: ISmartNavigablePage, IWxeTemplateControl
 {
   NameValueCollection GetPostBackCollection ();
   void ExecuteNextStep ();
@@ -65,7 +65,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// <summary>
   ///   Gets or sets the flag that determines whether abort the session upon closing the window. 
   ///  </summary>
-  /// <value> <see langowrd="true"/> to abort the session. </value>
+  /// <value> <see langowrd="true"/> to abort the session upon navigtion away from the page. </value>
   bool IsAbortEnabled { get; }
 }
 
@@ -95,6 +95,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private NameValueCollection _postbackCollection = null;
   /// <summary> The <see cref="WxeFunctionState"/> designated by <b>WxeForm.ReturningToken</b>. </summary>
   private WxeFunctionState _returningFunctionState = null;
+  private bool _isSmartNavigationDataDisacarded = false;
+  private string _smartFocusID = null;
 
   private bool _executeNextStep = false;
   private HttpResponse _response; // used for cleanup in Dispose
@@ -121,6 +123,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       _page.RegisterHiddenField (WxePageInfo.PageTokenID, _page.CurrentStep.PageToken);
 
     _page.Load += new EventHandler (Page_Load);
+    _page.PreRender +=new EventHandler(Page_PreRender);
     _page.Unload += new EventHandler(Page_Unload);
   }
 
@@ -146,17 +149,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     _form.ReturningToken = string.Empty;    
 
-    string smartScrollingValue = null;
-    string smartFocusValue = null;
-    if (postBackCollection != null)
-    {
-      smartScrollingValue = postBackCollection[c_smartScrollingID];
-      smartFocusValue = postBackCollection[c_smartFocusID];
-    }
-    _page.RegisterHiddenField (c_smartScrollingID, smartScrollingValue);
-    _page.RegisterHiddenField (c_smartFocusID, smartFocusValue);
+  }
 
-  
+  /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
+  private void Page_PreRender (object sender, EventArgs e)
+  {
+    NameValueCollection postBackCollection = _page.GetPostBackCollection();
+
+    _page.RegisterHiddenField (WxeHandler.Parameters.WxeFunctionToken, WxeContext.Current.FunctionToken);
+
     Page page = (Page) _page;
     string key = "wxeDoSubmit";
     PageUtility.RegisterClientScriptBlock (page, key,
@@ -178,11 +179,32 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_script);
     HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
     
-    key = "smartNavigationScript";
-    url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_smartNavigationScript);
-    HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
+    if (_page.IsSmartScrollingEnabled || _page.IsSmartFocusingEnabled)
+    {
+      key = "smartNavigationScript";
+      url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_smartNavigationScript);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
+    }
 
-    RegisterSessionManagement();
+    RegisterWxeInitializationScript(); 
+    
+    if (_page.IsSmartScrollingEnabled)
+    {
+      string smartScrollingValue = null;
+      if (postBackCollection != null && !_isSmartNavigationDataDisacarded)
+        smartScrollingValue = postBackCollection[c_smartScrollingID];
+      _page.RegisterHiddenField (c_smartScrollingID, smartScrollingValue);
+    }
+
+    if (_page.IsSmartFocusingEnabled)
+    {
+      string smartFocusValue = null;
+      if (postBackCollection != null && !_isSmartNavigationDataDisacarded)
+        smartFocusValue = postBackCollection[c_smartFocusID];
+      if (! StringUtility.IsNullOrEmpty (_smartFocusID))
+        smartFocusValue = _smartFocusID;
+      _page.RegisterHiddenField (c_smartFocusID, smartFocusValue);
+    }
   }
 
   /// <summary> Handles the <b>Unload</b> event of the page. </summary>
@@ -200,8 +222,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
-  protected void RegisterSessionManagement()
+  protected void RegisterWxeInitializationScript()
   {
+    int refreshIntervall = 0;
+    string refreshPath = "null";
+    string abortPath = "null";
+    string abortMessage = "null";
     if (WxeHandler.IsSessionManagementEnabled)
     {
       //  Ensure the registration of "__doPostBack" on the page.
@@ -210,32 +236,33 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       bool isAbortConfirmationEnabled = _page.IsAbortConfirmationEnabled;
       bool isAbortEnabled = _page.IsAbortEnabled;
 
-      int refreshIntervall = WxeHandler.RefreshInterval * 60000;
       string resumePath = WxeContext.Current.GetResumePath (false);
-      string refreshPath = 
-          "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Refresh + "'";
+
+      refreshIntervall = WxeHandler.RefreshInterval * 60000;
+      refreshPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Refresh + "'";
       
-      string abortPath;
       if (isAbortEnabled)
         abortPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Abort + "'";
-      else
-        abortPath = "null";
       
-      string abortMessage;
       if (isAbortEnabled && isAbortConfirmationEnabled)
-        abortMessage = "'" + GetResourceManager().GetString (ResourceIdentifier.AbortMessage) + "'";
-      else
-        abortMessage = "null";
+        abortMessage = "'" + GetResourceManager().GetString (ResourceIdentifier.AbortMessage) + "'";        
 
-      string smartScrollingFieldID = "'" + c_smartScrollingID + "'";
-      string smartFocusFieldID = "'" + c_smartFocusID + "'";
-      string key = "wxeInitialize";
-      PageUtility.RegisterStartupScriptBlock ((Page)_page, key,
-            "Wxe_Initialize ('" + _form.ClientID + "', " 
-          + refreshIntervall.ToString() + ", " + refreshPath + ", " 
-          + abortPath + ", " + abortMessage + ", "
-          + smartScrollingFieldID + ", " + smartFocusFieldID + ");");
     }
+
+    string smartScrollingFieldID = "null";
+    string smartFocusFieldID = "null";
+
+    if (_page.IsSmartScrollingEnabled)
+      smartScrollingFieldID = "'" + c_smartScrollingID + "'";
+    if (_page.IsSmartFocusingEnabled)
+      smartFocusFieldID = "'" + c_smartFocusID + "'";
+   
+    string key = "wxeInitialize";
+    PageUtility.RegisterStartupScriptBlock ((Page)_page, key,
+          "Wxe_Initialize ('" + _form.ClientID + "', " 
+        + refreshIntervall.ToString() + ", " + refreshPath + ", " 
+        + abortPath + ", " + abortMessage + ", "
+        + smartScrollingFieldID + ", " + smartFocusFieldID + ");");
   }
 
   public NameValueCollection EnsurePostBackModeDetermined (HttpContext context)
@@ -402,6 +429,30 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     return GetResourceManager (typeof (ResourceIdentifier));
   }
+
+  /// <summary> Clears scrolling and focus information on the page. </summary>
+  public void DiscardSmartNavigationData ()
+  {
+    _isSmartNavigationDataDisacarded = true;
+  }
+
+  /// <summary> Sets the focus to the passed control. </summary>
+  /// <param name="control"> The <see cref="IFocusableControl"/> to assign the focus to. </param>
+  public void SetFocus (IFocusableControl control)
+  {
+    ArgumentUtility.CheckNotNull ("control", control);
+    if (StringUtility.IsNullOrEmpty (control.FocusID))
+      return;
+    SetFocus (control.FocusID);
+  }
+
+  /// <summary> Sets the focus to the passed control ID. </summary>
+  /// <param name="id"> The client side ID of the control to assign the focus to. </param>
+  public void SetFocus (string id)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+    _smartFocusID = id;
+  }
 }
 
 /// <summary>
@@ -420,6 +471,8 @@ public class WxePage: Page, IWxePage
   private PostLoadInvoker _postLoadInvoker;
   private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
+  private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
+  private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
 
   // protected HtmlForm Form; - won't work in VS 2005
 
@@ -601,9 +654,7 @@ public class WxePage: Page, IWxePage
   }
 
   /// <summary> Gets the evaluated value for the <see cref="EnableAbortConfirmation"/> property. </summary>
-  /// <value>
-  ///   <see langowrd="true"/> if <see cref="EnableAbortConfirmation"/> is <see cref="NaBooleanEnum.True"/>. 
-  /// </value>
+  /// <value> <see langowrd="true"/> if <see cref="EnableAbortConfirmation"/> is <see cref="NaBooleanEnum.True"/>. </value>
   protected virtual bool IsAbortConfirmationEnabled
   {
     get { return _enableAbortConfirmation == NaBooleanEnum.True; }
@@ -647,6 +698,106 @@ public class WxePage: Page, IWxePage
   bool IWxePage.IsAbortEnabled
   {
     get { return IsAbortEnabled; }
+  }
+
+  /// <summary> Gets or sets the flag that determines whether to use smart scrolling. </summary>
+  /// <value> 
+  ///   <see cref="NaBooleanEnum.True"/> to use smart scrolling. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  /// </value>
+  /// <remarks>
+  ///   Use <see cref="IsSmartScrollingEnabled"/> to evaluate this property.
+  /// </remarks>
+  [Description("The flag that determines whether to use smart scrolling. Undefined is interpreted as true.")]
+  [Category ("Behavior")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public virtual NaBooleanEnum EnableSmartScrolling
+  {
+    get { return _enableSmartScrolling; }
+    set { _enableSmartScrolling = value; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableSmartScrolling"/> property. </summary>
+  /// <value> 
+  ///   <see langowrd="false"/> if <see cref="EnableSmartScrolling"/> is <see cref="NaBooleanEnum.False"/>
+  ///   or the <see cref="SmartNavigationConfiguration.EnableScrolling"/> configuration setting is 
+  ///   <see langword="false"/>.
+  /// </value>
+  protected virtual bool IsSmartScrollingEnabled
+  {
+    get
+    {
+      if (! WebConfiguration.Current.SmartNavigation.EnableScrolling)
+        return false;
+      return _enableSmartScrolling != NaBooleanEnum.False; 
+    }
+  }
+
+  /// <summary> Implementation of <see cref="ISmartNavigablePage.IsSmartScrollingEnabled"/>. </summary>
+  /// <value> The value returned by <see cref="IsSmartScrollingEnabled"/>. </value>
+  bool ISmartNavigablePage.IsSmartScrollingEnabled
+  {
+    get { return IsSmartScrollingEnabled; }
+  }
+
+  /// <summary> Gets or sets the flag that determines whether to use smart navigation. </summary>
+  /// <value> 
+  ///   <see cref="NaBooleanEnum.True"/> to use smart navigation. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  /// </value>
+  /// <remarks>
+  ///   Use <see cref="IsSmartFocusingEnabled"/> to evaluate this property.
+  /// </remarks>
+  [Description("The flag that determines whether to use smart navigation. Undefined is interpreted as true.")]
+  [Category ("Behavior")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public virtual NaBooleanEnum EnableSmartFocusing
+  {
+    get { return _enableSmartFocusing; }
+    set { _enableSmartFocusing = value; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableSmartFocusing"/> property. </summary>
+  /// <value> 
+  ///   <see langowrd="false"/> if <see cref="EnableSmartFocusing"/> is <see cref="NaBooleanEnum.False"/>
+  ///   or the <see cref="SmartNavigationConfiguration.EnableFocusing"/> configuration setting is 
+  ///   <see langword="false"/>.
+  /// </value>
+  protected virtual bool IsSmartFocusingEnabled
+  {
+    get
+    {
+      if (! WebConfiguration.Current.SmartNavigation.EnableFocusing)
+        return false;
+      return _enableSmartFocusing != NaBooleanEnum.False; 
+    }
+  }
+
+  /// <summary> Implementation of <see cref="ISmartNavigablePage.IsSmartFocusingEnabled"/>. </summary>
+  /// <value> The value returned by <see cref="IsSmartFocusingEnabled"/>. </value>
+  bool ISmartNavigablePage.IsSmartFocusingEnabled
+  {
+    get { return IsSmartFocusingEnabled; }
+  }
+
+  /// <summary> Clears scrolling and focus information on the page. </summary>
+  public void DiscardSmartNavigationData ()
+  {
+    _wxeInfo.DiscardSmartNavigationData();
+  }
+
+  /// <summary> Sets the focus to the passed control. </summary>
+  /// <param name="control"> The <see cref="IFocusableControl"/> to assign the focus to. </param>
+  public void SetFocus (IFocusableControl control)
+  {
+    _wxeInfo.SetFocus (control);
+  }
+
+  /// <summary> Sets the focus to the passed control ID. </summary>
+  /// <param name="id"> The client side ID of the control to assign the focus to. </param>
+  public void SetFocus (string id)
+  {
+    _wxeInfo.SetFocus (id);
   }
 }
 

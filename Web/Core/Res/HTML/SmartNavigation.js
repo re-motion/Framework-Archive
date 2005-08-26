@@ -81,9 +81,9 @@ function SmartScrolling_GetScrollPositions (currentElement)
       scrollElements.push (sseCurrentElement);
     }
     
-    for (var i = 0; i < currentElement.children.length; i++)
+    for (var i = 0; i < currentElement.childNodes.length; i++)
     {
-      var element = currentElement.children[i];
+      var element = currentElement.childNodes[i];
       var scrollChilden = SmartScrolling_GetScrollPositions (element);
       scrollElements = scrollElements.concat (scrollChilden);
     }

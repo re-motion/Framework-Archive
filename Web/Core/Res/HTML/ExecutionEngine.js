@@ -3,9 +3,7 @@ var _wxe_context = null;
 function Wxe_Initialize (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID)
 {
   _wxe_context = new Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID);
-  window.onload = Wxe_OnLoad;
-  window.onbeforeunload = Wxe_OnBeforeUnload; // IE, Mozilla 1.7, Firefox 0.9
-  window.onunload = Wxe_OnUnload;
+  Wxe_SetEventHandlers ();
 }
 
 function Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID)
@@ -22,26 +20,79 @@ function Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMes
   this.IsAbortConfirmationEnabled = this.IsAbortEnabled && abortMessage != null;
   this.IsSubmit = false;
   this.AspnetDoPostBack = null;
-  this.SmartScrollingField = this.TheForm.elements[smartScrollingFieldID];
-  this.SmartFocusField = this.TheForm.elements[smartFocusFieldID];
+  if (smartScrollingFieldID != null)
+    this.SmartScrollingField = this.TheForm.elements[smartScrollingFieldID];
+  if (smartFocusFieldID != null)
+    this.SmartFocusField = this.TheForm.elements[smartFocusFieldID];
+  var _activeElement = null;
   
-  this.Backup = function()
+  this.GetActiveElement = function()
   {
-  return;
-    if (this.SmartScrollingField != null)
-      this.SmartScrollingField.value = SmartScrolling_Backup (document.activeElement);
-    if (this.SmartFocusField != null)
-      this.SmartFocusField.value = SmartFocus_Backup (document.activeElement);
+    if (window.document.activeElement != null)
+      return window.document.activeElement;
+    else
+      return _activeElement;
+  }
+
+  this.SetActiveElement = function (value)
+  {
+    _activeElement = value;
   }
   
-  this.Restore = function()
+  this.Backup = function ()
   {
-  return;
+    if (this.SmartScrollingField != null)
+      this.SmartScrollingField.value = SmartScrolling_Backup (this.GetActiveElement());
+    if (this.SmartFocusField != null)
+      this.SmartFocusField.value = SmartFocus_Backup (this.GetActiveElement());
+  }
+  
+  this.Restore = function ()
+  {
     if (this.SmartScrollingField != null)
   	  SmartScrolling_Restore (this.SmartScrollingField.value);
     if (this.SmartFocusField != null)
   	  SmartFocus_Restore (this.SmartFocusField.value);
   }
+}
+  
+function Wxe_SetEventHandlers ()
+{
+  window.onload = Wxe_OnLoad;
+  window.onbeforeunload = Wxe_OnBeforeUnload; // IE, Mozilla 1.7, Firefox 0.9
+  window.onunload = Wxe_OnUnload;
+  
+  var isMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
+  if (! isMsIE)
+  	Wxe_SetFocusEventHandlers (document.body);
+}
+
+function Wxe_SetFocusEventHandlers (currentElement)
+{
+  if (currentElement != null)
+  {
+    if (currentElement.id != null && currentElement.id != '' && Wxe_IsFocusableTag (currentElement.tagName))
+    {
+		  currentElement.onfocus = Wxe_OnElementFocus;
+		  currentElement.onblur  = Wxe_OnElementBlur;
+    }
+    
+    for (var i = 0; i < currentElement.childNodes.length; i++)
+    {
+      var element = currentElement.childNodes[i];
+      Wxe_SetFocusEventHandlers (element);
+    }
+  }
+}
+
+function Wxe_IsFocusableTag (tagName) 
+{
+  tagName = tagName.toLowerCase();
+  return (tagName == "input" ||
+          tagName == "textarea" ||
+          tagName == "select" ||
+          tagName == "button" ||
+          tagName == "a");
 }
 
 function Wxe_Refresh()
@@ -87,7 +138,7 @@ function Wxe_OnBeforeUnload ()
 {
   if (_wxe_context.IsAbortConfirmationEnabled && ! _wxe_context.IsSubmit)
   {
-    var activeElement = window.document.activeElement;
+    var activeElement = _wxe_context.GetActiveElement();
     var isJavaScriptAnchor = false;
     if (  activeElement != null
         && activeElement.tagName.toLowerCase() == 'a'
@@ -119,28 +170,18 @@ function Wxe_OnUnload()
   }
 }
 
-/*
-<!--StartFragment -->
-<pre>var activeElement = <font color="navy"><b>null</b></font>;
-function blurHandler(evt) <font color="navy">{</font>
-	activeElement = <font color="navy"><b>null</b></font>;
-<font color="navy">}</font>
-function focusHandler(evt) <font color="navy">{</font>
+function Wxe_OnElementBlur (evt) 
+{
+	_wxe_context.SetActiveElement (null);
+}
+
+function Wxe_OnElementFocus (evt)
+{
 	var e = evt ? evt : window.event;
-	<font color="navy"><b>if</b></font> (!e) <font color="navy"><b>return</b></font>;
-	<font color="navy"><b>if</b></font> (e.target)
-		activeElement = e.target;
-	<font color="navy"><b>else</b></font> <font color="navy"><b>if</b></font>(e.srcElement) activeElement = e.srcElement;
-  
-<font color="navy">}</font>
-function loadHandler() <font color="navy">{</font>
-	var i, j;
-	
-	<font color="navy"><b>for</b></font> (i = 0; i &lt; document.forms.length; i++)
-		<font color="navy"><b>for</b></font> (j = 0; j &lt; document.forms[i].elements.length; j++) <font color="navy">{</font>
-			document.forms[i].elements[j].onfocus = focusHandler
-			document.forms[i].elements[j].onblur  = blurHandler
-		<font color="navy">}</font>
-<font color="navy">}</font>
-window.onload = loadHandler</pre>
-*/
+	if (!e) 
+	  return;
+	if (e.target)
+		_wxe_context.SetActiveElement (e.target);
+	else if (e.srcElement)
+	  _wxe_context.SetActiveElement (e.srcElement);
+}
