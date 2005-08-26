@@ -1,3 +1,24 @@
+1.2.68
+======
+- ResourceDispatching
+  * Bugfix: gab es in der Seite keine Resourcen so warf der WebButton und der WebTreeView eine ArgumentNullException.
+    Aufgetreten mit 1.2.67.
+    
+- Execution Engine
+  * Der Function Token wird nun nicht mehr als Query String übergeben bei einem PostBack sondern mittels HiddenField. 
+  
+- WxePage
+  * Neue Property EnableSmartFocusing/IsSmartFocusingEnabled um seitenspezifisch das wiederherstellen des Focus   
+    zu deaktivieren (Default: true)
+  * Neue Property EnableSmartScrollinging/IsSmartScrollingEnabled um seitenspezifisch das wiederherstellen der
+    ScrollPosition zu deaktivieren (Default: true)
+  * Neue Methode SetFocus zum setzen des zu fokusierenden Controls.
+
+- Smart Navigation
+  * Stellt die ScrollPostionen und den Fecous wieder her.
+  * Neuer Bereich in der Rubicon.Web Config: SmartNavigation
+  * Standardmäßig aktivert.
+
 1.2.67
 ======
 - ResourceDispatching aus 1.2.66 überarbeitet.
@@ -42,6 +63,7 @@
   * Neue Property EnableAbort/IsAbortEnabled um seitenspezifisch den Sessionabbruch einzustellen (Default: true)
   * Neue Property EnableAbortConfirmation/IsAbortConfirmationEnabled um seitenspezifisch den Abbruchdialog zu 
     aktivieren (Default: false)
+  * Benötigt nun Resourcen
   
 - Execution Engine Configuration
   * Neue Optionen: EnableSessionManagement und RefreshInterval
