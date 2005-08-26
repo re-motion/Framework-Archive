@@ -449,7 +449,9 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   /// <summary> Loads the resources into the control's properties. </summary>
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
+
     if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode ((Control) this))
       return;
     Tabs.LoadResources (resourceManager);

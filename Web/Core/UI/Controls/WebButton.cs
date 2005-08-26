@@ -269,7 +269,9 @@ public class WebButton :
   /// <summary> Loads the resources into the control's properties. </summary>
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
+
     if (ControlHelper.IsDesignMode (this))
       return;
 

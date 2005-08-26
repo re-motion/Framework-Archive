@@ -286,7 +286,8 @@ public class WebTab: IControlItem
 
   public virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
 
     string key = ResourceManagerUtility.GetGlobalResourceKey (Text);
     if (! StringUtility.IsNullOrEmpty (key))
