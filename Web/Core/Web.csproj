@@ -500,6 +500,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\ISmartNavigablePage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\ITemplateControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -651,6 +656,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\IconInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\IFocusableControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
