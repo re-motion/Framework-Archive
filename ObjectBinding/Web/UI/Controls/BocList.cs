@@ -3608,7 +3608,8 @@ public class BocList:
   /// <summary> Loads the resources into the control's properties. </summary>
   protected override void LoadResources  (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     if (IsDesignMode)
       return;
     base.LoadResources (resourceManager);

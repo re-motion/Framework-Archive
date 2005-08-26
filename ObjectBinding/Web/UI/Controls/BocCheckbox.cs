@@ -26,7 +26,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
+public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
 {
 	// constants
 
@@ -439,7 +439,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Loads the resources into the control's properties. </summary>
   protected override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     if (IsDesignMode)
       return;
     base.LoadResources (resourceManager);
@@ -614,6 +615,11 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     get { return true; }
   }
 
+  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  public string FocusID
+  { 
+    get { return IsReadOnly ? null : _checkBox.ClientID; }
+  }
   /// <summary> Gets the string representation of this control's <see cref="Value"/>. </summary>
   /// <remarks> 
   ///   <para>

@@ -125,7 +125,8 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
 
   public override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     base.LoadResources (resourceManager);
 
     string key;
@@ -273,7 +274,8 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   }
   public override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     base.LoadResources (resourceManager);
     
     string key;
@@ -736,7 +738,8 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   }
   public override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     base.LoadResources (resourceManager);
     
     string key;

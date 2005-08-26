@@ -498,7 +498,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <summary> Loads the resources into the control's properties. </summary>
   protected virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     if (IsDesignMode)
       return;
 

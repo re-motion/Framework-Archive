@@ -26,7 +26,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
+public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
 {
 	// constants
 
@@ -421,7 +421,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// <summary> Loads the resources into the control's properties. </summary>
   protected override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     if (IsDesignMode)
       return;
     base.LoadResources (resourceManager);
@@ -559,6 +560,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     get { return true; }
   }
 
+  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  public string FocusID
+  { 
+    get { return IsReadOnly ? null : _hyperLink.ClientID; }
+  }
   /// <summary> Gets the string representation of this control's <see cref="Value"/>. </summary>
   /// <remarks> 
   ///   <para>

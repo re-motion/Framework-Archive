@@ -25,7 +25,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
+public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
 {
 	// constants
 
@@ -260,6 +260,21 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   {
     if (IsReadOnly)
     {
+      bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+      bool isLabelHeightEmpty = _label.Height.IsEmpty && StringUtility.IsNullOrEmpty (_label.Style["height"]);
+      if (! isControlHeightEmpty && isLabelHeightEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+
+      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+      bool isLabelWidthEmpty = _label.Width.IsEmpty &&StringUtility.IsNullOrEmpty (_label.Style["width"]);
+      if (! isControlWidthEmpty && isLabelWidthEmpty)
+      {
+        if (! Width.IsEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["width"]);
+      }
+
       _label.RenderControl (writer);
     }
     else
@@ -349,7 +364,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <summary> Loads the resources into the control's properties. </summary>
   protected override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     if (IsDesignMode)
       return;
     base.LoadResources (resourceManager);
@@ -499,6 +515,12 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   public override bool UseLabel
   {
     get { return true; }
+  }
+
+  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  public string FocusID
+  { 
+    get { return IsReadOnly ? null : _textBox.ClientID; }
   }
 
   /// <summary> Occurs when the <see cref="Value"/> property changes between postbacks. </summary>

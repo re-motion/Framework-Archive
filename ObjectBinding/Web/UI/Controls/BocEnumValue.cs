@@ -12,6 +12,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -21,7 +22,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
+public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
 {
 	// constants
 
@@ -280,6 +281,21 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     if (IsReadOnly)
     {
+      bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+      bool isLabelHeightEmpty = _label.Height.IsEmpty && StringUtility.IsNullOrEmpty (_label.Style["height"]);
+      if (! isControlHeightEmpty && isLabelHeightEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+
+      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+      bool isLabelWidthEmpty = _label.Width.IsEmpty &&StringUtility.IsNullOrEmpty (_label.Style["width"]);
+      if (! isControlWidthEmpty && isLabelWidthEmpty)
+      {
+        if (! Width.IsEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["width"]);
+      }
+
       _label.RenderControl (writer);
     }
     else
@@ -366,7 +382,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Loads the resources into the control's properties. </summary>
   protected override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     if (IsDesignMode)
       return;
     base.LoadResources (resourceManager);
@@ -682,6 +699,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     
       return ! (isDropDownList || isListBox);
     }
+  }
+
+  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  public string FocusID
+  { 
+    get { return IsReadOnly ? null : _listControl.ClientID; }
   }
 
   /// <summary> This event is fired when the selection is changed between postbacks. </summary>

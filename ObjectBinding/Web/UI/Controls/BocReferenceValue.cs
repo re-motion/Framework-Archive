@@ -34,7 +34,8 @@ public class BocReferenceValue:
     IPostBackEventHandler, 
     IPostBackDataHandler,
     IBocMenuItemContainer,
-    IResourceDispatchTarget
+    IResourceDispatchTarget, 
+    IFocusableControl
 {
   // constants
 	
@@ -410,7 +411,8 @@ public class BocReferenceValue:
   /// <summary> Loads the resources into the control's properties. </summary>
   protected override void LoadResources  (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     if (IsDesignMode)
       return;
     base.LoadResources (resourceManager);
@@ -1420,6 +1422,12 @@ public class BocReferenceValue:
   public override bool UseLabel
   {
     get { return false; }
+  }
+
+  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  public string FocusID
+  { 
+    get { return IsReadOnly ? null : _dropDownList.ClientID; }
   }
 
   /// <summary> This event is fired when the selection is changed between postbacks. </summary>

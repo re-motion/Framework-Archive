@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler
+public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
 {
   //  constants
 
@@ -274,6 +274,21 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     if (IsReadOnly)
     {
+      bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
+      bool isLabelHeightEmpty = _label.Height.IsEmpty && StringUtility.IsNullOrEmpty (_label.Style["height"]);
+      if (! isControlHeightEmpty && isLabelHeightEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
+
+      bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
+      bool isLabelWidthEmpty = _label.Width.IsEmpty &&StringUtility.IsNullOrEmpty (_label.Style["width"]);
+      if (! isControlWidthEmpty && isLabelWidthEmpty)
+      {
+        if (! Width.IsEmpty)
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+        else
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["width"]);
+      }
+
       _label.RenderControl (writer);
     }
     else
@@ -284,7 +299,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
           writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
       bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
-      bool isTextBoxWidthEmpty = _textBox.Width.IsEmpty &&StringUtility.IsNullOrEmpty (_textBox.Style["width"]);
+      bool isTextBoxWidthEmpty = _textBox.Width.IsEmpty && StringUtility.IsNullOrEmpty (_textBox.Style["width"]);
       if (isTextBoxWidthEmpty)
       {
         if (isControlWidthEmpty)
@@ -364,7 +379,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Loads the resources into the control's properties. </summary>
   protected override void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
     if (IsDesignMode)
       return;
     base.LoadResources (resourceManager);
@@ -743,6 +759,12 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   public override bool UseLabel
   {
     get { return true; }
+  }
+
+  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  public string FocusID
+  { 
+    get { return IsReadOnly ? null : _textBox.ClientID; }
   }
 
   /// <summary> Gets the <see cref="TextBox"/> used in edit mode. </summary>
