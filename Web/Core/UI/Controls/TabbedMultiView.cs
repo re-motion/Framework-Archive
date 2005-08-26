@@ -138,6 +138,9 @@ public class TabbedMultiView: WebControl, IControl
     public override void OnSelectionChanged()
     {
       TabbedMultiView multiView = ((TabbedMultiView) OwnerControl);
+      ISmartNavigablePage smartNavigablePage = multiView.Page as ISmartNavigablePage;
+      if (smartNavigablePage != null)
+        smartNavigablePage.DiscardSmartNavigationData ();
       TabView view = (TabView) multiView.MultiViewInternal.FindControl (_target);
       multiView.SetActiveView (view);
     }
