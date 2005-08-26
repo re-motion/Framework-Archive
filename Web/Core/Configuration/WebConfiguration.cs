@@ -82,9 +82,10 @@ public class WebConfiguration: IConfigurationSectionHandler
     }
   }
 
-  ExecutionEngineConfiguration _executionEngine = new ExecutionEngineConfiguration();
-  WcagConfiguration _wcag = new WcagConfiguration();
-  ResourceConfiguration _resources = new ResourceConfiguration();
+  private ExecutionEngineConfiguration _executionEngine = new ExecutionEngineConfiguration();
+  private WcagConfiguration _wcag = new WcagConfiguration();
+  private ResourceConfiguration _resources = new ResourceConfiguration();
+  private SmartNavigationConfiguration _smartNavigation = new SmartNavigationConfiguration();
 
   /// <summary> Gets or sets the <see cref="ExecutionEngineConfiguration"/> entry. </summary>
   [XmlElement ("executionEngine")]
@@ -108,6 +109,14 @@ public class WebConfiguration: IConfigurationSectionHandler
   {
     get { return _resources; }
     set { _resources = value; }
+  }
+
+  /// <summary> Gets or sets the <see cref="SmartNavigationConfiguration"/> entry. </summary>
+  [XmlElement ("smartNavigation")]
+  public SmartNavigationConfiguration SmartNavigation
+  {
+    get { return _smartNavigation; }
+    set { _smartNavigation = value; }
   }
 
   object IConfigurationSectionHandler.Create (object parent, object configContext, XmlNode section)
@@ -139,8 +148,13 @@ public class ExecutionEngineConfiguration
   /// <summary> Gets or sets a flag that determines whether session management is employed. </summary>
   /// <value> <see langword="true"/> to enable session management. Defaults to <see langword="true"/>. </value>
   /// <remarks> 
-  ///   Session management relies on javascript and is not fully supported by browsers other than Internet Explorer.
-  ///   (No confirmation dialog is presented upon leaving the page.)
+  ///   Session management relies on javascript and is fully supported by browsers other than 
+  ///   <list type="bullet">
+  ///     <item> Internet Explorer 5.01+</item>
+  ///     <item> Firefox 0.9+</item>
+  ///     <item> Mozila 1.7+</item>
+  ///   </list>
+  ///   Other browsers present no confirmation dialog upon leaving the page.
   /// </remarks>
   [XmlAttribute ("enableSessionManagement")]
   public bool EnableSessionManagement
@@ -256,4 +270,29 @@ public class ResourceConfiguration
   }
 }
 
+/// <summary> Configuration section entry for configuring the <b>Rubicon.Web.ExecutionEngine</b>. </summary>
+[XmlType (Namespace = WebConfiguration.SchemaUri)]
+public class SmartNavigationConfiguration
+{
+  private bool _enableScrolling = true;
+  private bool _enableFocusing = true;
+
+  /// <summary> Gets or sets a flag that determines whether to enable smart scrolling. </summary>
+  /// <value> <see langword="true"/> to enable smart scrolling. Defaults to <see langword="true"/>. </value>
+  [XmlAttribute ("enableScrolling")]
+  public bool EnableScrolling
+  {
+    get { return _enableScrolling; }
+    set { _enableScrolling = value; }
+  }
+
+  /// <summary> Gets or sets a flag that determines whether to enable smart focus. </summary>
+  /// <value> <see langword="true"/> to enable smart focusing. Defaults to <see langword="true"/>. </value>
+  [XmlAttribute ("enableFocusing")]
+  public bool EnableFocusing
+  {
+    get { return _enableFocusing; }
+    set { _enableFocusing = value; }
+  }
+}
 }
