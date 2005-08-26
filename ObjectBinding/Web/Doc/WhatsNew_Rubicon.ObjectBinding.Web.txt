@@ -1,3 +1,12 @@
+1.2.68
+======
+- BocTreeView
+  * Bugfix: Warf eine ArgumentNullException falls auf der Page keine Resourcen verwendet wurden.
+    Aufgetreten mit 1.2.67
+      
+- BocTextValue, BocMultilineTextValue, BocDateTimeValue
+  * Bugfix für Width-Bug (siehe 1.2.57)
+        
 1.2.67
 ======
 - BocTreeView
@@ -8,6 +17,11 @@
 - BocList
   * Neues Feature: Anzeige des Row Index, inkl Verwendung als Label für die Selection-Checkbox
     Aktiviert über Property Index
+  * BocCommandColumnDefinition.Label wurde entfernt. (siehe auch 1.1.34)
+    Designer-Properties müssen durch Search auf die ASPX-Files manuell herausgelöscht werden.
+    Seiten die mit Version 1.1.34 oder höher erstellt wurden, besitzen diese Property nicht mehr.
+      ACHTUNG: Kein Kompilerfehler. Probleme nur im VS Designer bzw als Exception auf der gerenderten Seite sichtbar.
+
 - BocList, BocReferenceValue, BocDropDownMenu
   * Bugfix: MenuItems haben auch zur DesignTime die PreRender-Werte ausgewertet.
   
@@ -71,7 +85,8 @@
     Selektor ist nun: .bocTextValue.readOnly bzw .bocReferenceValue.readOnly
 
 - BocTextBox, BocMultiLineTextBox, BocDateTimeValue
-  * Im Read-Only Modus wird die Breite und Höhe nur ausgegeben, wenn sie bei CommonStyle oder LabelStyle angegeben ist.
+  * Bug: Im Read-Only Modus wird die Breite und Höhe nur ausgegeben, 
+    wenn sie bei CommonStyle oder LabelStyle angegeben ist.
 
 - BOCs allgemein:
   * Werten die Rubicon.Web.Configuration.WebConfiguration.WaiConfiguration Werte aus und werfen im WAI-Debug Modus
