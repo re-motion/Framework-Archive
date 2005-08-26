@@ -143,7 +143,8 @@ public sealed class IconInfo: ISerializable
 
   public void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
 
     string key;
     key = ResourceManagerUtility.GetGlobalResourceKey (Url);
