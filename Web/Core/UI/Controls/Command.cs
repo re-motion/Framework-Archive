@@ -505,7 +505,8 @@ public class Command: IControlItem
 
   public virtual void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
 
     string key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
     if (! StringUtility.IsNullOrEmpty (key))

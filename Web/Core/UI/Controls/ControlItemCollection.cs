@@ -272,7 +272,8 @@ public class ControlItemCollection: CollectionBase
 
   public void LoadResources (IResourceManager resourceManager)
   {
-    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+    if (resourceManager == null)
+      return;
 
     for (int i = 0; i < InnerList.Count; i++)
     {
