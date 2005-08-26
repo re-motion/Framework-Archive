@@ -111,9 +111,7 @@ public class WxeContext
     return WxeContext.GetResumePath (HttpContext.Request, HttpContext.Response, FunctionToken, absolute);
   }
 
-  /// <summary>
-  ///   Gets the path that resumes the function with specified token.
-  /// </summary>
+  /// <summary> Gets the path that resumes the function with specified token. </summary>
   /// <param name="functionToken"> The token of function to resume. </param>
   /// <param name="absolute"> 
   ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
@@ -127,6 +125,29 @@ public class WxeContext
     else
       path = System.IO.Path.GetFileName (request.Url.AbsolutePath);
     return path + "?" + WxeHandler.Parameters.WxeFunctionToken + "=" + functionToken;
+  }
+
+  /// <summary> Gets the path for to the <b>WxeHandler</b> used in the request. </summary>
+  /// <param name="absolute"> 
+  ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
+  ///   are returned.
+  /// </param>
+  public string GetPath (bool absolute)
+  {
+    return WxeContext.GetPath (HttpContext.Request, HttpContext.Response, absolute);
+  }
+
+  /// <summary> Gets the path for to the <b>WxeHandler</b> used in the <paramref name="request"/>. </summary>
+  /// <param name="absolute"> 
+  ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
+  ///   are returned.
+  /// </param>
+  public static string GetPath (HttpRequest request, HttpResponse response, bool absolute)
+  {
+    if (absolute)
+      return response.ApplyAppPathModifier (request.Url.AbsolutePath);
+    else
+      return System.IO.Path.GetFileName (request.Url.AbsolutePath);
   }
 }
 

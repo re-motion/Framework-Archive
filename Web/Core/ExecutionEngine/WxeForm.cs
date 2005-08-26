@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.ComponentModel;
 using Rubicon.Utilities;
+using Rubicon.Web.UI;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -54,7 +55,7 @@ public class WxeForm: HtmlForm
   {
     if (WxeContext.Current != null)
     {
-      string action = WxeContext.Current.GetResumePath (false);
+      string action = WxeContext.Current.GetPath (false);
       writer.WriteAttribute ("action", action);
       Attributes.Remove ("action");
     }
@@ -92,8 +93,17 @@ public class WxeForm: HtmlForm
 
   protected override void Render(HtmlTextWriter writer)
   {
-    if (WxeHandler.IsSessionManagementEnabled && ! Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended)
-      throw new ApplicationException ("The Rubicon.Web.UI.Controls.HtmlHeadContents element is missing on the page.");
+    if (! Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended)
+    {
+      ISmartNavigablePage smartNavigablePage = Page as ISmartNavigablePage;
+      if (   WxeHandler.IsSessionManagementEnabled
+          || (   smartNavigablePage != null
+              && (   smartNavigablePage.IsSmartScrollingEnabled 
+                  || smartNavigablePage.IsSmartFocusingEnabled)))
+      {
+        throw new ApplicationException ("The Rubicon.Web.UI.Controls.HtmlHeadContents element is missing on the page.");
+      }
+    }
     base.Render (writer);
   }
 
