@@ -15,6 +15,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Diagnostics;
 using Rubicon.NullableValueTypes;
+using System.Text.RegularExpressions;
 
 namespace OBWTest
 {
@@ -46,6 +47,10 @@ public class StartForm : System.Web.UI.Page
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
+  }
+
+  private void SerializeTestFunction()
+  {
     BinaryFormatter formatter = new BinaryFormatter();
     Stream stream = new MemoryStream();
     formatter.Serialize(stream, new object[] {new SerializeTestFunction()});
@@ -87,49 +92,49 @@ public class StartForm : System.Web.UI.Page
       naTypes[i+17] = NaSingle.Null;
     }
 
-    DateTime start;
-    DateTime end;
+    long start;
+    long end;
 
     Debug.WriteLine("");
 
     BinaryFormatter nas1formatter = new BinaryFormatter();
     Stream nas1Stream = new MemoryStream();
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     nas1formatter.Serialize(nas1Stream, nas1);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Serializing Nullables in class interface version: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Serializing Nullables in class interface version: {0} ms", (end - start)/10000));
 
     BinaryFormatter nas2formatter = new BinaryFormatter();
     Stream nas2Stream = new MemoryStream();
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     nas2formatter.Serialize(nas2Stream, nas2);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Serializing Nullables in class attribute version: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Serializing Nullables in class attribute version: {0} ms", (end - start)/10000));
 
     nas1Stream.Position = 0;
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     NaS1[] nas1Deserialized = (NaS1[]) nas1formatter.Deserialize(nas1Stream);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Deserializing Nullables in class interface version: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Deserializing Nullables in class interface version: {0} ms", (end - start)/10000));
 
     nas2Stream.Position = 0;
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     NaS2[] nas2Deserialized = (NaS2[]) nas2formatter.Deserialize(nas2Stream);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Deserializing Nullables in class attribute: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Deserializing Nullables in class attribute: {0} ms", (end - start)/10000));
 
     BinaryFormatter naTypesformatter = new BinaryFormatter();
     Stream naTypesStream = new MemoryStream();
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     naTypesformatter.Serialize(naTypesStream, naTypes);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Serializing Nullables: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Serializing Nullables: {0} ms", (end - start)/10000));
 
     naTypesStream.Position = 0;
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     object[] naTypesDeserialized = (object[]) naTypesformatter.Deserialize(naTypesStream);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Deserializing Nullables {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Deserializing Nullables {0} ms", (end - start)/10000));
 
     Debug.WriteLine("");
   }
@@ -144,36 +149,36 @@ public class StartForm : System.Web.UI.Page
     for (int i = 0; i < s1.Length; i++)
       s2[i] = new S2 (i, "test test test test", "test test test test", "test test test test");
 
-    DateTime start;
-    DateTime end;
+    long start;
+    long end;
 
     Debug.WriteLine("");
 
     BinaryFormatter s1formatter = new BinaryFormatter();
     Stream s1Stream = new MemoryStream();
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     s1formatter.Serialize(s1Stream, s1);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Serializing Interface version: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Serializing Interface version: {0} ms", (end - start)/10000));
     
     BinaryFormatter s2formatter = new BinaryFormatter();
     Stream s2Stream = new MemoryStream();
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     s2formatter.Serialize(s2Stream, s2);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Serializing Attribute version: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Serializing Attribute version: {0} ms", (end - start)/10000));
 
     s1Stream.Position = 0;
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     S1[] s1Deserialized = (S1[]) s1formatter.Deserialize(s1Stream);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Deserializing Interface version: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Deserializing Interface version: {0} ms", (end - start)/10000));
 
     s2Stream.Position = 0;
-    start = DateTime.Now;
+    start = DateTime.Now.Ticks;
     S2[] s2Deserialized = (S2[]) s2formatter.Deserialize(s2Stream);
-    end = DateTime.Now;
-    Debug.WriteLine (string.Format ("Deserializing Attribute version: {0}", end.Ticks - start.Ticks));
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Deserializing Attribute version: {0} ms", (end - start)/10000));
 
     Debug.WriteLine("");
   }
