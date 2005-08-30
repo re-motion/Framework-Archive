@@ -1,3 +1,8 @@
+1.3.0 (Noch nicht offiziell)
+=====
+- Rubicon.Web.UI.Controls.EmailAddressValidator
+  * Validator Control für Email-Adressen
+
 1.2.68
 ======
 - ResourceDispatching
