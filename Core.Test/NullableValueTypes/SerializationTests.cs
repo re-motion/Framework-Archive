@@ -88,6 +88,19 @@ public class SerializationTests
     CheckSerialization (NaSingle.MaxValue);
   }
 
+  [Test]
+  public void SerializeNaDouble ()
+  {
+    CheckSerialization (NaDouble.Null);
+    CheckSerialization (new NaDouble (32));
+    CheckSerialization (new NaDouble (-32));
+    CheckSerialization (new NaDouble (321.12345F));
+    CheckSerialization (new NaDouble (-321.12345F));
+    CheckSerialization (NaDouble.Zero);
+    CheckSerialization (NaDouble.MinValue);
+    CheckSerialization (NaDouble.MaxValue);
+  }
+
   private object SerializeAndDeserialize (object obj)
   {
     MemoryStream stream = new MemoryStream ();
