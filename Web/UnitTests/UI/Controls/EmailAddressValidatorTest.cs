@@ -16,107 +16,129 @@ public class EmailAddressValidatorTest
     _validator = new EmailAddressValidatorMock();
   }
 
+  #region public void MatchValidEmailAddress*
+
+	[Test]
+  public void MatchValidEmailAddress()
+  {
+    string text = @"jdoe@provider.net";
+    bool result = _validator.IsMatchComplete (text);
+    Assert.AreEqual (true, result);
+  }
+
+  #endregion
+
+  #region public void MatchValidUserPart*
+
+	[Test]
+  public void MatchValidUserPartSingleCharacter()
+  {
+    string text = @"j";
+    bool result = _validator.IsMatchUserPart (text);
+    Assert.AreEqual (true, result);
+  }
+
 	[Test]
   public void MatchValidUserPartAllLowerCase()
   {
     string text = @"jdoe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithCapitalCharacterTheInFront()
+  public void MatchValidUserPartWithLeadingCapitalCharacter()
   {
     string text = @"Jdoe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithCapitalCharacterInTheMiddle()
+  public void MatchValidUserPartWithMiddleCapitalCharacter()
   {
     string text = @"jDoe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithCapitalCharacterInTheEnd()
+  public void MatchValidUserPartWithTrailingCapitalCharacter()
   {
     string text = @"jdoE";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithNumberInTheFront()
+  public void MatchValidUserPartWithLeadingDigit()
   {
     string text = @"2jdoe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithNumberInTheMiddle()
+  public void MatchValidUserPartWithMiddleDigit()
   {
     string text = @"j2doe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithNumberInTheEnd()
+  public void MatchValidUserPartWithTrailingDigit()
   {
     string text = @"jdoe2";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithUnderscoreInTheFront()
+  public void MatchValidUserPartWithLeadingUnderscore()
   {
     string text = @"_jdoe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithUnderscoreInTheMiddle()
+  public void MatchValidUserPartWithMiddleUnderscore()
   {
     string text = @"j_doe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithUnderscoreInTheEnd()
+  public void MatchValidUserPartWithTrailingUnderscore()
   {
     string text = @"jdoe_";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithUmlautInTheFront()
+  public void MatchValidUserPartWithLeadingUmlaut()
   {
     string text = @"äjdoe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithUmlautInTheMiddle()
+  public void MatchValidUserPartWithMiddleUmlaut()
   {
     string text = @"jädoe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchValidUserPartWithUmlautInTheEnd()
+  public void MatchValidUserPartWithTrailingUmlaut()
   {
     string text = @"jdoeä";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
@@ -124,7 +146,7 @@ public class EmailAddressValidatorTest
   public void MatchValidUserPartWithHyphen()
   {
     string text = @"j-doe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (true, result);
   }
 
@@ -132,209 +154,315 @@ public class EmailAddressValidatorTest
   public void MatchValidUserPartWithDot()
   {
     string text = @"j.doe";
-    bool result = _validator.IsMatchUserPart (emailAddress);
+    bool result = _validator.IsMatchUserPart (text);
+    Assert.AreEqual (true, result);
+  }
+
+  #endregion
+
+  #region public void MatchValidDomainPart*
+
+	[Test]
+  public void MatchValidDomainPartTwoCharacters()
+  {
+    string text = @"pr.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid2()
+  public void MatchValidDomainPartAllLowerCase()
   {
-    string emailAddress = @"john.doe@provider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"provider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid3()
+  public void MatchValidDomainPartWithLeadingCapitalCharacter()
   {
-    string emailAddress = @"john-doe@provider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"Provider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid4()
+  public void MatchValidDomainPartWithMiddleCapitalCharacter()
   {
-    string emailAddress = @"jdoe@national.provider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"proVider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid5()
+  public void MatchValidDomainPartWithTrailingCapitalCharacter()
   {
-    string emailAddress = @"jdoe@national-provider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"provideR.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid6()
+  public void MatchValidDomainPartWithLeadingDigit()
   {
-    string emailAddress = @"jdoe@national-provider.at";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"2provider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid7()
+  public void MatchValidDomainPartWithMiddleDigit()
   {
-    string emailAddress = @"jdoe@national-provider.abcdefghi";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"pro2vider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid8()
+  public void MatchValidDomainPartWithTrailingDigit()
   {
-    string emailAddress = @"2jdoe@nationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"provider2.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid9()
+  public void MatchValidDomainPartWithLeadingUnderscore()
   {
-    string emailAddress = @"jdoe@2nationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"_provider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid10()
+  public void MatchValidDomainPartWithMiddleUnderscore()
   {
-    string emailAddress = @"j_doe@nationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"pro_vider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid11()
+  public void MatchValidDomainPartWithTrailingUnderscore()
   {
-    string emailAddress = @"jdoe@national_provider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"provider_.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressValid12()
+  public void MatchValidDomainPartWithLeadingUmlaut()
   {
-    string emailAddress = @"jdoe@nat_ional.prov_ider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"äprovider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (true, result);
   }
 
 	[Test]
-  public void MatchEmailAddressMissing1()
+  public void MatchValidDomainPartWithMiddleUmlaut()
   {
-    string emailAddress = @"jdoenationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"proävider.net";
+    bool result = _validator.IsMatchDomainPart (text);
+    Assert.AreEqual (true, result);
+  }
+
+	[Test]
+  public void MatchValidDomainPartWithTrailingUmlaut()
+  {
+    string text = @"providerä.net";
+    bool result = _validator.IsMatchDomainPart (text);
+    Assert.AreEqual (true, result);
+  }
+
+	[Test]
+  public void MatchValidDomainPartWithHyphen()
+  {
+    string text = @"pro-vider.net";
+    bool result = _validator.IsMatchDomainPart (text);
+    Assert.AreEqual (true, result);
+  }
+
+	[Test]
+  public void MatchValidDomainPartWithDot()
+  {
+    string text = @"pro.vider.net";
+    bool result = _validator.IsMatchDomainPart (text);
+    Assert.AreEqual (true, result);
+  }
+
+	[Test]
+  public void MatchValidDomainPartWithTwoCharacterRoot()
+  {
+    string text = @"provider.ab";
+    bool result = _validator.IsMatchDomainPart (text);
+    Assert.AreEqual (true, result);
+  }
+
+	[Test]
+  public void MatchValidDomainPartWithNineCharacterRoot()
+  {
+    string text = @"provider.abcdefghi";
+    bool result = _validator.IsMatchDomainPart (text);
+    Assert.AreEqual (true, result);
+  }
+
+  #endregion
+
+  #region public void MatchInvalidEmailAddress*
+
+	[Test]
+  public void MatchInvalidEmailAddressNoAtCharacter()
+  {
+    string text = @"jdoeprovider.net";
+    bool result = _validator.IsMatchComplete (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressMissing2()
+  public void MatchInvalidEmailAddressTwoAtCharacter()
   {
-    string emailAddress = @"jdoe@nationalprovidernet";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"jdoe@pro@vider.net";
+    bool result = _validator.IsMatchComplete (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressMissing3()
+  public void MatchInvalidEmailAddressNoCharacters()
   {
-    string emailAddress = @"jdoe@nationalprovider.n";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"";
+    bool result = _validator.IsMatchComplete (text);
+    Assert.AreEqual (false, result);
+  }
+
+  #endregion
+
+  #region public void MatchInvalidUserPart*
+
+	[Test]
+  public void MatchInvalidUserPartWithNoCharacters()
+  {
+    string text = @"";
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressMissing4()
+  public void MatchInvalidUserPartWithLeadingWhitespace()
   {
-    string emailAddress = @"jdoe@nationalprovider.";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @" jdoe";
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressMissing5()
+  public void MatchInvalidUserPartWithTrailingWhitespace()
   {
-    string emailAddress = @"@nationalprovider.";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"jdoe ";
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid1()
+  public void MatchInvalidUserPartWithLeadingHyphen()
   {
-    string emailAddress = @"jdoe@nationalprovider-net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"-jdoe";
+    bool result = _validator.IsMatchUserPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid2()
+  public void MatchInvalidUserPartWithTrailingHyphen()
   {
-    string emailAddress = @"_jdoe@nationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"jdoe-";
+    bool result = _validator.IsMatchUserPart (text);
+    Assert.AreEqual (false, result);
+  }
+
+  #endregion
+
+  #region public void MatchInvalidDomainPart*
+
+	[Test]
+  public void MatchInvalidDomainPartWithNoCharacters()
+  {
+    string text = @"";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid3()
+  public void MatchInvalidDomainPartSingleCharacter()
   {
-    string emailAddress = @"jdoe@_nationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"p.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid4()
+  public void MatchInvalidDomainPartWithLeadingWhitespace()
   {
-    string emailAddress = @"jdoe_@nationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @" provider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid5()
+  public void MatchInvalidDomainPartWithTrailingWhitespace()
   {
-    string emailAddress = @"jdoe@nationalprovider_.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"provider.net ";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid6()
+  public void MatchInvalidDomainPartWithLeadingHyphen()
   {
-    string emailAddress = @" jdoe@nationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"-provider.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid7()
+  public void MatchInvalidDomainPartWithTrailingHyphen()
   {
-    string emailAddress = @"jdoe@nationalprovider.net ";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"provider-.net";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid8()
+  public void MatchInvalidDomainPartWithMissingTld()
   {
-    string emailAddress = @"jdöe@nationalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"provider.";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (false, result);
   }
 
 	[Test]
-  public void MatchEmailAddressInvalid9()
+  public void MatchInvalidDomainPartWithMissingTldAndDot()
   {
-    string emailAddress = @"jdoe@nätionalprovider.net";
-    bool result = _validator.IsMatch (emailAddress);
+    string text = @"provider";
+    bool result = _validator.IsMatchDomainPart (text);
     Assert.AreEqual (false, result);
   }
+
+	[Test]
+  public void MatchInvalidDomainPartWithSingleCharacterTld()
+  {
+    string text = @"provider.a";
+    bool result = _validator.IsMatchDomainPart (text);
+    Assert.AreEqual (false, result);
+  }
+
+	[Test]
+  public void MatchInvalidDomainPartWithTenCharacterTld()
+  {
+    string text = @"provider.abcdefghij";
+    bool result = _validator.IsMatchDomainPart (text);
+    Assert.AreEqual (false, result);
+  }
+
+  #endregion
 }
 
 }
