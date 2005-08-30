@@ -113,6 +113,11 @@
                     Project = "{B719A305-0493-4C72-88FE-9A2FC6964578}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "system.web"
+                    AssemblyName = "system.web"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.web.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -128,6 +133,16 @@
                 />
                 <File
                     RelPath = "ExecutionEngine\WxeParameterDeclarationTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\EmailAddressValidatorMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\EmailAddressValidatorTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
