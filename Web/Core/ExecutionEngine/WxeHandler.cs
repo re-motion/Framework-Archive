@@ -194,9 +194,9 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionState == null || functionState.IsExpired)
       throw new ApplicationException ("Page timeout."); // TODO: display error message
     if (functionState.IsAborted)
-      throw new ApplicationException ("WxeFunctionState {0} is aborted." + functionState.FunctionToken); // TODO: display error message
+      throw new InvalidOperationException ("WxeFunctionState {0} is aborted." + functionState.FunctionToken); // TODO: display error message
   
-    string action = context.Request[Parameters.WxeAction];
+    string action = context.Request.Params[Parameters.WxeAction];
     bool isRefresh = StringUtility.AreEqual (action, Actions.Refresh, true);
     bool isAbort =   StringUtility.AreEqual (action, Actions.Abort, true) 
                   || StringUtility.AreEqual (action, Actions.Cancel, true);
