@@ -3,6 +3,12 @@
 - Rubicon.Web.UI.Controls.EmailAddressValidator
   * Validator Control für Email-Adressen
 
+1.2.71
+======
+- WxeHandler
+  * Bugfix: Wurde die Refresh bzw Abort WxeAction nicht via QueryString übergeben, wurde sie nicht ausgewertet.
+    Auswirkungen in der Praxis: keine
+
 1.2.68
 ======
 - ResourceDispatching
