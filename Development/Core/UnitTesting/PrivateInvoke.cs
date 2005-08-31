@@ -64,6 +64,29 @@ public sealed class PrivateInvoke
     return callMethod;
   }
 
+  private static PropertyInfo GetPropertyRecursive (Type type, BindingFlags bindingFlags, string propertyName)
+  {
+    PropertyInfo property = null;
+    for (; type != null; type = type.BaseType)
+    {
+      property = type.GetProperty (propertyName, bindingFlags);
+      if (property != null)
+        return property;
+    }
+    return null;
+  }
+
+  private static FieldInfo GetFieldRecursive (Type type, BindingFlags bindingFlags, string fieldName)
+  {
+    FieldInfo field = null;
+    for (; type != null; type = type.BaseType)
+    {
+      field = type.GetField (fieldName, bindingFlags);
+      if (field != null)
+        return field;
+    }
+    return null;
+  }
 
   #region InvokeMethod methods
 
@@ -210,7 +233,7 @@ public sealed class PrivateInvoke
 
   private static object GetPropertyInternal (object instance, Type type, BindingFlags bindingFlags, string propertyName)
   {
-    PropertyInfo property = type.GetProperty (propertyName, bindingFlags);
+    PropertyInfo property = GetPropertyRecursive (type, bindingFlags, propertyName);
     try
     {
       return property.GetValue (instance, new object[] {});
@@ -252,7 +275,7 @@ public sealed class PrivateInvoke
 
   private static void SetPropertyInternal (object instance, Type type, BindingFlags bindingFlags, string propertyName, object value)
   {
-    PropertyInfo property = type.GetProperty (propertyName, bindingFlags);
+    PropertyInfo property = GetPropertyRecursive (type, bindingFlags, propertyName);
     try
     {
       property.SetValue (instance, value, new object[] {});
@@ -293,7 +316,7 @@ public sealed class PrivateInvoke
 
   private static object GetFieldInternal (object instance, Type type, BindingFlags bindingFlags, string fieldName)
   {
-    FieldInfo field = type.GetField (fieldName, bindingFlags);
+    FieldInfo field = GetFieldRecursive (type, bindingFlags, fieldName);
     try
     {
       return field.GetValue (instance);
@@ -334,7 +357,7 @@ public sealed class PrivateInvoke
 
   private static void SetFieldInternal (object instance, Type type, BindingFlags bindingFlags, string fieldName, object value)
   {
-    FieldInfo field = type.GetField (fieldName, bindingFlags);
+    FieldInfo field = GetFieldRecursive (type, bindingFlags, fieldName);
     try
     {
       field.SetValue (instance, value);
