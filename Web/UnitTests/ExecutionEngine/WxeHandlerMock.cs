@@ -1,0 +1,59 @@
+using System;
+using System.Collections;
+using System.Web;
+using System.Web.UI;
+using System.Web.SessionState;
+using System.Reflection;
+using System.Globalization;
+using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
+using Rubicon.Web.Configuration;
+using Rubicon.Web.ExecutionEngine;
+
+namespace Rubicon.Web.Test.ExecutionEngine
+{
+
+public class WxeHandlerMock: WxeHandler
+{
+  public new void CheckTimeoutConfiguration (HttpContext context)
+  {
+    base.CheckTimeoutConfiguration (context);
+  }
+
+  public new WxeFunctionState CreateNewFunction (HttpContext context, string typeName, string functionToken)
+  {
+    return base.CreateNewFunction (context, typeName, functionToken);
+  }
+
+  public new WxeFunctionState ResumeExistingFunction (HttpContext context, string functionToken)
+  {
+    return base.ResumeExistingFunction (context, functionToken);
+  }
+
+  public new void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
+  {
+    base.ProcessFunctionState (context, functionState, isNewFunction);
+  }
+
+  public new void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
+  {
+    base.ExecuteFunctionState (context, functionState, isNewFunction);
+  }
+
+  public new virtual void ExecuteFunction (WxeFunction function, WxeContext context, bool isNew)
+  {
+    base.ExecuteFunction (function, context, isNew);
+  }
+
+  public new void CleanUpFunctionState (WxeFunctionState functionState)
+  {
+    base.CleanUpFunctionState (functionState);
+  }
+
+  public new void ProcessReturnUrl (HttpContext context, string returnUrl)
+  {
+    base.ProcessReturnUrl (context, returnUrl);
+  }
+}
+
+}
