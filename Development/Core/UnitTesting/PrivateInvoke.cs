@@ -66,8 +66,7 @@ public sealed class PrivateInvoke
 
   private static PropertyInfo GetPropertyRecursive (Type type, BindingFlags bindingFlags, string propertyName)
   {
-    PropertyInfo property = null;
-    for (; type != null; type = type.BaseType)
+    for (PropertyInfo property = null; type != null; type = type.BaseType)
     {
       property = type.GetProperty (propertyName, bindingFlags);
       if (property != null)
@@ -78,8 +77,7 @@ public sealed class PrivateInvoke
 
   private static FieldInfo GetFieldRecursive (Type type, BindingFlags bindingFlags, string fieldName)
   {
-    FieldInfo field = null;
-    for (; type != null; type = type.BaseType)
+    for (FieldInfo field = null; type != null; type = type.BaseType)
     {
       field = type.GetField (fieldName, bindingFlags);
       if (field != null)
