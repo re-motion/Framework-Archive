@@ -133,6 +133,11 @@ public abstract class WxeFunction: WxeStepList
     SetCatchExceptionTypes (exceptionTypes);
   }
 
+  public Type[] GetCatchExceptionTypes()
+  {
+    return (Type[]) _catchExceptionTypes.Clone();
+  }
+
   /// <summary>
   ///   Contains any exception that occured during execution (only if <see cref="CatchExceptions"/> is <c>true</c>).
   /// </summary>
