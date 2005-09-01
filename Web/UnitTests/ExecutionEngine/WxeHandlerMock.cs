@@ -20,14 +20,14 @@ public class WxeHandlerMock: WxeHandler
     base.CheckTimeoutConfiguration (context);
   }
 
-  public new WxeFunctionState CreateNewFunction (HttpContext context, string typeName, string functionToken)
+  public new WxeFunctionState CreateNewFunctionState (HttpContext context, string typeName, string functionToken)
   {
-    return base.CreateNewFunction (context, typeName, functionToken);
+    return base.CreateNewFunctionState (context, typeName, functionToken);
   }
 
-  public new WxeFunctionState ResumeExistingFunction (HttpContext context, string functionToken)
+  public new WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)
   {
-    return base.ResumeExistingFunction (context, functionToken);
+    return base.ResumeExistingFunctionState (context, functionToken);
   }
 
   public new void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)

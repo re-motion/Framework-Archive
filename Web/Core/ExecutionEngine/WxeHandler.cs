@@ -108,12 +108,12 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     if (hasTypeName)
     {
-      _currentFunctionState = CreateNewFunction (context, typeName, functionToken);
+      _currentFunctionState = CreateNewFunctionState (context, typeName, functionToken);
       ProcessFunctionState (context, _currentFunctionState, true);
     }
     else if (hasFunctionToken)
     {
-      _currentFunctionState = ResumeExistingFunction (context, functionToken);
+      _currentFunctionState = ResumeExistingFunctionState (context, functionToken);
       if (_currentFunctionState != null)
         ProcessFunctionState (context, _currentFunctionState, false);
     }
@@ -144,8 +144,8 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   }
 
   /// <summary> Initializes a new <see cref="WxeFunction"/>, encapsulated in a <see cref="WxeFunctionState"/> object. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CreateNewFunction/*' />
-  protected WxeFunctionState CreateNewFunction (HttpContext context, string typeName, string functionToken)
+  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CreateNewFunctionState/*' />
+  protected WxeFunctionState CreateNewFunctionState (HttpContext context, string typeName, string functionToken)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
@@ -161,7 +161,19 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       functionStates.CleanUpExpired();
     }
 
-    Type type = TypeUtility.GetType (typeName, true, false);
+    Type type = null;
+    try
+    {
+      type = TypeUtility.GetType (typeName, true, false);
+    }
+    catch (TypeLoadException e)
+    {
+      throw new ArgumentException ("The function type '" + typeName + "' is invalid.", typeName, e);
+    }
+    catch (System.IO.FileNotFoundException e)
+    {
+      throw new ArgumentException ("The function type '" + typeName + "' is invalid.", typeName, e);
+    }
     WxeFunction function = (WxeFunction) Activator.CreateInstance (type);
 
     WxeFunctionState functionState;
@@ -180,8 +192,8 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   }
 
   /// <summary> Resumes an existing <see cref="WxeFunction"/>. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ResumeExistingFunction/*' />
-  protected WxeFunctionState ResumeExistingFunction (HttpContext context, string functionToken)
+  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ResumeExistingFunctionState/*' />
+  protected WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
