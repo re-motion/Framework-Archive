@@ -20,13 +20,16 @@ namespace Rubicon.Web.ExecutionEngine
 public class WxeHandler: IHttpHandler, IRequiresSessionState
 {
   /// <summary> Contains a list of parameters supported by the <see cref="WxeHandler"/>. </summary>
-  /// <remarks> The string representations of the individual parameters are identical to the field names. </remarks>
+  /// <remarks> 
+  ///   The available parameters are <see cref="WxeFunctionType"/>, <see cref="WxeFunctionToken"/>,
+  ///   <see cref="WxeReturnUrl"/>, and <see cref="WxeAction"/>.
+  /// </remarks>
   public class Parameters
   {
     /// <summary> Denotes the type of the <see cref="WxeFunction"/> to initialize. </summary>
     /// <remarks> 
-    ///   The argument may be presented as a regular .net Type string or the abbreviated version as specified in
-    ///   <see cref="TypeUtility.ParseAbbreviatedTypeName"/>.
+    ///     The argument may be presented as a regular .net Type string or the abbreviated version as specified in
+    ///     <see cref="TypeUtility.ParseAbbreviatedTypeName"/>.
     /// </remarks>
     public const string WxeFunctionType = "WxeFunctionType";
 
@@ -46,7 +49,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   }
 
   /// <summary> Denotes the arguments supported for the <see cref="Parameters.WxeAction"/> parameter. </summary>
-  /// <remarks> The string representations of the individual argument values are identical to the field names. </remarks>
+  /// <remarks> The available actions are <see cref="Refresh"/> and <see cref="Abort"/>. </remarks>
   public class Actions
   {
     /// <summary> Denotes a session refresh. </summary>
