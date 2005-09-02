@@ -3,6 +3,9 @@
 - Rubicon.Web.UI.Controls.EmailAddressValidator
   * Validator Control für Email-Adressen
 
+- Rubicon.Web.ExecutionEngine.WxeContext
+  * FunctionToken: Set-Accessor entfernt. Nur noch via Konstruktor setzbar.
+  
 1.2.71
 ======
 - WxeHandler
