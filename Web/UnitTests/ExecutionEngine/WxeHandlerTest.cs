@@ -18,7 +18,7 @@ namespace Rubicon.Web.Test.ExecutionEngine
 public class WxeHandlerTest
 {
   private HttpContext _httpContext;
-  private WxeContext _wxeContext;
+  private WxeContextMock _wxeContext;
   private WxeHandlerMock _wxeHandler;
 
   protected const string c_functionTokenForFunctionStateWithEnabledCleanUp = "00000000-Enabled-CleanUp";
@@ -49,7 +49,7 @@ public class WxeHandlerTest
     _httpContext = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/default.html", null);
     HttpContextHelper.SetCurrent (_httpContext);
 
-    _wxeContext = new WxeContext (_httpContext);
+    _wxeContext = new WxeContextMock (_httpContext);
     PrivateInvoke.InvokeNonPublicStaticMethod (typeof (WxeContext), "SetCurrent", _wxeContext);
 
     _wxeHandler = new WxeHandlerMock();
