@@ -117,20 +117,30 @@ public class WxePageStep: WxeStep
 
   public override void Execute (WxeContext context)
   {
-    if (_function != null)
+    if (_function == null)
     {
-      _function.Execute (context);
-      context.ReturningFunction = _function;
-      _function = null;
-      context.IsPostBack = true;
-      context.PostBackCollection = _postBackCollection;
-      _postBackCollection = null;
-      context.IsReturningPostBack = true;
+      //  This is the PageStep if it isn't executing a sub-function
+      
+      //  Use the Page's postback data
+      context.PostBackCollection = null;
+      context.IsReturningPostBack = false;
     }
     else
     {
-      context.PostBackCollection = null;
-      context.IsReturningPostBack = false;
+      //  This is the PageStep currently executing a sub-function
+      
+      _function.Execute (context);
+      
+      //  This is the PageStep after the sub-function has completed execution
+      
+      //  Provide the executed sub-function to the executing page
+      context.ReturningFunction = _function;
+      _function = null;
+      context.IsPostBack = true;
+      //  Provide the backed up postback data to the executing page
+      context.PostBackCollection = _postBackCollection;
+      _postBackCollection = null;
+      context.IsReturningPostBack = true;
     }
 
     try 
