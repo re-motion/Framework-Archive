@@ -264,8 +264,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionState.IsAborted)
       throw new InvalidOperationException ("The function state " + functionState.FunctionToken + " is aborted.");
 
-    WxeContext wxeContext = new WxeContext (context); 
-    wxeContext.FunctionToken = functionState.FunctionToken;
+    WxeContext wxeContext = new WxeContext (context, functionState.FunctionToken); 
     WxeContext.SetCurrent (wxeContext);
 
     ExecuteFunction (functionState.Function, wxeContext, isNewFunction);
