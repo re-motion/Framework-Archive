@@ -941,24 +941,38 @@ public class BocReferenceValue:
     RefreshBusinessObjectList (businessObjects);
   }
 
+  /// <summary> Clears the list of <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode. </summary>
+  /// <remarks> If the value is not required, the null item will displayed anyway. </remarks>
+  public void ClearBusinessObjectList()
+  {
+    RefreshBusinessObjectList (null);
+  }
+
+  /// <summary> Calls <see cref="PopulateBusinessObjectList"/> if the list has not yet been populated. </summary>
+  protected void EnsureBusinessObjectListPopulated()
+  {
+    if (_isBusinessObejectListPopulated)
+      return;
+    PopulateBusinessObjectList();
+  }
+
+
   /// <summary>
   ///   Queries <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> for the
-  ///   <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode.
+  ///   <see cref="IBusinessObjectWithIdentity"/> objects to be displayed in edit mode and sets the list with the
+  ///   objects returned by the query.
   /// </summary>
   /// <remarks> 
   ///   <para>
   ///     Uses the <see cref="Select"/> statement to query the <see cref="Property"/>'s 
   ///     <see cref="IBusinessObjectReferenceProperty.SearchAvailableObjects"/> method for the list contents.
   ///   </para><para>
-  ///     Only populates the list, if it is not already populated and <see cref="EnableSelectStatement"/>
-  ///     is not <see cref="NaBooleanEnum.False"/>.
+  ///     Only populates the list if <see cref="EnableSelectStatement"/> is not <see cref="NaBooleanEnum.False"/>.
+  ///     Otherwise the list will be left empty.
   ///   </para>  
   /// </remarks>
-  protected void EnsureBusinessObjectListPopulated()
+  protected void PopulateBusinessObjectList()
   {
-    if (_isBusinessObejectListPopulated)
-      return;
-
     if (! IsSelectStatementEnabled)
       return;
 
@@ -977,7 +991,7 @@ public class BocReferenceValue:
   /// <summary> Populates the <see cref="DropDownList"/> with the items passed in <paramref name="businessObjects"/>. </summary>
   /// <param name="businessObjects">
   ///   The <see cref="IList"/> of <see cref="IBusinessObjectWithIdentity"/> objects to populate the 
-  ///   <see cref="DropDownList"/>.
+  ///   <see cref="DropDownList"/>. Use <see langword="null"/> to clear the list.
   /// </param>
   /// <remarks> This method controls the actual refilling of the <see cref="DropDownList"/>. </remarks>
   protected virtual void RefreshBusinessObjectList (IList businessObjects)
