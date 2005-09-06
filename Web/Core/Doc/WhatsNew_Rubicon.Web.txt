@@ -29,7 +29,7 @@
   * Neue Methode SetFocus zum setzen des zu fokusierenden Controls.
 
 - Smart Navigation
-  * Stellt die ScrollPostionen und den Fecous wieder her.
+  * Stellt die ScrollPostionen und den Focus wieder her.
   * Neuer Bereich in der Rubicon.Web Config: SmartNavigation
   * Standardm‰ﬂig aktivert.
 
