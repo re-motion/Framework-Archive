@@ -153,6 +153,7 @@ public class WxeStepList: WxeStep
 
   protected override void AbortRecursive()
   {
+    base.AbortRecursive();
     foreach (WxeStep step in _steps)
       step.Abort ();
   }
