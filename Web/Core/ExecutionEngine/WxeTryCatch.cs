@@ -199,6 +199,7 @@ public class WxeTryCatch: WxeStep
 
   protected override void AbortRecursive()
   {
+    base.AbortRecursive();
     _trySteps.Abort ();
 
     if (_catchBlocks != null)
