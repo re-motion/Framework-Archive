@@ -17,6 +17,8 @@ public abstract class WxeStep
 {
   private WxeStep _parentStep = null;
   private bool _isAborted = false;
+  [NonSerialized]
+  private bool _isAborting = false;
 
   public WxeStep ParentStep
   {
@@ -102,10 +104,12 @@ public abstract class WxeStep
   /// </remarks>
   public void Abort()
   {
-    if (! _isAborted)
+    if (! _isAborted && ! _isAborting)
     {
+      _isAborting = true;
       AbortRecursive();
       _isAborted = true;
+      _isAborting = false;
     }
   }
 
