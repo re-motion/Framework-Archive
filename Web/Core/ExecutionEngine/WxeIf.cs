@@ -68,6 +68,7 @@ public abstract class WxeIf: WxeStep
 
   protected override void AbortRecursive()
   {
+    base.AbortRecursive();
     if (_stepList != null)
       _stepList.Abort();
   }
