@@ -257,6 +257,14 @@ public class WxePageStep: WxeStep
     LosFormatter formatter = new LosFormatter ();
     return formatter.Deserialize (_viewState);
   }
+
+  protected override void AbortRecursive()
+  {
+    base.AbortRecursive ();
+    if (_function != null)
+      _function.Abort();
+  }
+
 }
 
 }

@@ -135,7 +135,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     _wxeForm.LoadPostData +=new EventHandler(Form_LoadPostData);
     _page.PreRender +=new EventHandler(Page_PreRender);
-    _page.Unload += new EventHandler(Page_Unload);
   }
 
   private void Form_LoadPostData (object sender, EventArgs e)
@@ -236,21 +235,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       if (! StringUtility.IsNullOrEmpty (_smartFocusID))
         smartFocusValue = _smartFocusID;
       page.RegisterHiddenField (c_smartFocusID, smartFocusValue);
-    }
-  }
-
-  /// <summary> Handles the <b>Unload</b> event of the page. </summary>
-  /// <remarks> 
-  ///   Aborts the <see cref="_returningFunctionState"/> if its <see cref="WxeFunctionState.Function"/> is the root 
-  ///   function.
-  /// </remarks>
-  private void Page_Unload(object sender, EventArgs e)
-  {
-    if (_returningFunctionState != null)
-    {
-      bool isRootFunction = _returningFunctionState.Function == _returningFunctionState.Function.RootFunction;
-      if (isRootFunction)
-        WxeFunctionStateCollection.Instance.Abort (_returningFunctionState);
     }
   }
 
@@ -474,6 +458,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </remarks>
   public void Dispose ()
   {
+    if (_returningFunctionState != null)
+    {
+      bool isRootFunction = _returningFunctionState.Function == _returningFunctionState.Function.RootFunction;
+      if (isRootFunction)
+        WxeFunctionStateCollection.Instance.Abort (_returningFunctionState);
+    }
+
     if (_executeNextStep)
     {
       _response.Clear(); // throw away page trace output
@@ -674,6 +665,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
     NameValueCollection result = _wxeInfo.EnsurePostBackModeDetermined (Context);
     _wxeInfo.Initialize (Context);
     OnPreInit();
+    OnBeforeInit();
     return result;
   }
 
@@ -686,6 +678,10 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   {
   }
 
+  [Obsolete ("Use OnPreInit instead.") ]
+  protected virtual void OnBeforeInit()
+  {
+  }
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
     if (WebConfiguration.Current.ExecutionEngine.ViewStateInSession)
