@@ -142,6 +142,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\TestFunctionWithNesting.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\TestStep.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeContextMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -163,6 +173,11 @@
                 />
                 <File
                     RelPath = "ExecutionEngine\WxeParameterDeclarationTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeStepTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
