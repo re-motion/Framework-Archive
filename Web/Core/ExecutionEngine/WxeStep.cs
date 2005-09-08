@@ -15,6 +15,17 @@ namespace Rubicon.Web.ExecutionEngine
 [Serializable]
 public abstract class WxeStep
 {
+  public static WxeFunction GetFunction (WxeStep step)
+  {
+    for (; step != null; step = step.ParentStep)
+    {
+      WxeFunction function = step as WxeFunction;
+      if (function != null)
+        return function;
+    }
+    return null;
+  }
+
   private WxeStep _parentStep = null;
   private bool _isAborted = false;
   [NonSerialized]
@@ -56,18 +67,7 @@ public abstract class WxeStep
 
   public WxeFunction ParentFunction
   {
-    get 
-    {
-      for (WxeStep step = ParentStep;
-           step != null;
-           step = step.ParentStep)
-      {
-        WxeFunction function = step as WxeFunction;
-        if (function != null)
-          return function;
-      }
-      return null;
-    }
+    get { return WxeStep.GetFunction (ParentStep); }
   }
 
   protected static WxeVariableReference varref (string localVariable)

@@ -12,6 +12,7 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.ExecutionEngine
 {
 
+/// <summary> This exception is used by the execution engine to end the execution of a <see cref="WxePageStep"/>. </summary>
 [Serializable]
 public class WxeExecuteNextStepException: Exception
 {
@@ -26,6 +27,10 @@ public class WxeExecuteNextStepException: Exception
   }
 }
 
+/// <summary> 
+///   Throw this exception to cancel the execution of a <see cref="WxeFunction"/> while executing a 
+///   <see cref="WxePageStep"/>. 
+/// </summary>
 [Serializable]
 public class WxeUserCancelException: Exception
 {
@@ -172,21 +177,25 @@ public class WxePageStep: WxeStep
   ///   Executes the specified WXE function, then returns to this page.
   /// </summary>
   /// <remarks>
-  ///   Note that if you call this method from a postback event handler, the postback event will be raised again when the user
-  ///   returns to this page. You can either manually check whether the event was re-posted using 
-  ///   <see cref="WxeContext.IsReturningPostBack"/> or suppress the re-post by calling <see cref="ExecuteFunctionNoRepost"/>.
+  ///   Note that if you call this method from a postback event handler, the postback event will be raised again when 
+  ///   the user returns to this page. You can either manually check whether the event was re-posted using 
+  ///   <see cref="IWxePage.IsReturningPostBack"/> or suppress the re-post by calling 
+  ///   <see cref="ExecuteFunctionNoRepost"/>.
   /// </remarks>
   public void ExecuteFunction (IWxePage page, WxeFunction function)
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
-    SaveFormValues (page);
     InternalExecuteFunction (page, function);
   }
 
+  /// <summary>
+  ///   Executes the specified WXE function, then returns to this page without raising the postback event after
+  ///   the user returns.
+  /// </summary>
+  /// <remarks> Invoke this method by calling <see cref="IWxePage.ExecuteFunctionNoRepost"/>. </remarks>
   internal void ExecuteFunctionNoRepost (IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
   {
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
-    SaveFormValues (page);
 
     if (usesEventTarget)
     {
@@ -198,6 +207,7 @@ public class WxePageStep: WxeStep
       ArgumentUtility.CheckNotNull ("sender", sender);
       _postBackCollection.Remove (sender.UniqueID);
     }
+
     InternalExecuteFunction (page, function);
   }
 
@@ -214,24 +224,6 @@ public class WxePageStep: WxeStep
     saveViewStateMethod.Invoke (page, new object[0]); 
 
     Execute();
-  }
-
-  private void SaveFormValues (IWxePage page)
-  {
-    // TODO: save values of input controls
-
-    //  foreach (Control child in page.Controls)
-    //  {
-    //    if (child is System.Web.UI.HtmlControls.HtmlForm)
-    //    {
-    //      System.Web.UI.WebControls.TextBox[] textBoxes = (System.Web.UI.WebControls.TextBox[]) 
-    //          ControlHelper.GetControlsRecursive (child, typeof (System.Web.UI.WebControls.TextBox));
-    //      foreach (System.Web.UI.WebControls.TextBox textBox in textBoxes)
-    //      {
-    //        string s = textBox.Text;
-    //      }
-    //    }
-    //  }
   }
 
   public string PageToken
