@@ -24,3 +24,15 @@ td.bocReferenceValueContent a:hover
 	border-style: solid;
 	background-color: #fee197;	
 }
+
+.bocReferenceValue
+{
+}
+
+.bocReferenceValue.readOnly
+{
+}
+
+.bocReferenceValue.disabled
+{
+}
