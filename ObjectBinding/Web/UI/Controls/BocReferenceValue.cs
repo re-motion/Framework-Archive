@@ -1790,7 +1790,7 @@ public class BocReferenceValue:
   /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/> when it is displayed in read-only mode. </summary>
   /// <remarks> 
   ///   <para> Class: <c>readOnly</c>. </para>
-  ///   <para> Applied in addition to the regular CSS-Class. Use <b>.bocReferenceValue.readOnly</b> as a selector.</para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <c>.bocReferenceValue.readOnly</c> as a selector. </para>
   /// </remarks>
   protected virtual string CssClassReadOnly
   { get { return "readOnly"; } }
@@ -1798,7 +1798,7 @@ public class BocReferenceValue:
   /// <summary> Gets the CSS-Class applied to the <see cref="BocReferenceValue"/> when it is displayed in read-only mode. </summary>
   /// <remarks> 
   ///   <para> Class: <c>disabled</c>. </para>
-  ///   <para> Applied in addition to the regular CSS-Class. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <c>.bocReferenceValue.disabled</c> as a selector. </para>
   /// </remarks>
   protected virtual string CssClassDisabled
   { get { return "disabled"; } }
