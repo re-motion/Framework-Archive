@@ -515,6 +515,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Res\HTML\BocBooleanValue.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\BocBooleanValue.js"
                     BuildAction = "Content"
                 />
@@ -523,7 +527,15 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\BocCheckboxValue.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\BocDateTimeValue.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\BocEnumValue.css"
                     BuildAction = "Content"
                 />
                 <File
@@ -535,12 +547,20 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\BocMultilineTextValue.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\BocReferenceValue.css"
                     BuildAction = "Content"
                 />
                 <File
                     RelPath = "Res\HTML\BocReferenceValue.js"
                     SubType = "Code"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\BocTextValue.css"
                     BuildAction = "Content"
                 />
                 <File
