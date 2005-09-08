@@ -5,9 +5,13 @@
 
 - Rubicon.Web.ExecutionEngine.WxeContext
   * FunctionToken: Set-Accessor entfernt. Nur noch via Konstruktor setzbar.
+
+- Rubicon.Web.ExecutionEngine.WxeHandler
+  * CurrentFunction zu RootFunction umbenannt.
   
-- WxePageStep
+- Rubicon.Web.ExecutionEngine.WxePageStep
   * Bugfix: Die gerade executed Function wurde nicht aborted, wenn der Step aborted wurde.
+
     
 1.2.71
 ======
