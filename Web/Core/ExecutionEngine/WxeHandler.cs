@@ -65,10 +65,16 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and its context. </summary>
   WxeFunctionState _currentFunctionState;
 
+  //TODO: Remove
+  [Obsolete ("Use RootFunction instead.")]
+  public WxeFunction CurrentFunction
+  {
+    get { return RootFunction; }
+  }
+
   /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>
   /// <value> The <see cref="WxeFunction"/> invoked by the <see cref="Parameters.WxeFunctionType"/> parameter. </value>
-  //TODO: Find a better name
-  public WxeFunction CurrentFunction
+  public WxeFunction RootFunction
   {
     get { return _currentFunctionState.Function; }
   }
