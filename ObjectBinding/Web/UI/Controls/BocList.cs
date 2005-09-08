@@ -1903,6 +1903,9 @@ public class BocList:
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableOpeningTag (HtmlTextWriter writer)
   {
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
+    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
@@ -1914,7 +1917,8 @@ public class BocList:
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   private void RenderTableClosingTag (HtmlTextWriter writer)
   {
-    writer.RenderEndTag();
+    writer.RenderEndTag(); // table
+    writer.RenderEndTag(); // div
   }
 
   /// <summary> Renderes the column group, which provides the table's column layout. </summary>
