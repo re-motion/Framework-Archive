@@ -1,10 +1,14 @@
+/* Style applied to the div surrounding the BocList's table. */
+div.bocListTable
+{
+}
+
 /*  Style applied to the BocList's table's outer structure.  */
 table.bocListTable
 {
   border-collapse: collapse;
   border-style: none;
 }
-
 
 /*  Style applied to the table head block of the BocList's table.  */
 tbody.bocListTableBody
