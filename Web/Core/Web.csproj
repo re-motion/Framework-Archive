@@ -184,6 +184,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\ExecutionEngine\IWxePage.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\ExecutionEngine\WxeHandler.xml"
                     BuildAction = "Content"
                 />
@@ -274,6 +278,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxePageInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxePageStep.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -300,6 +309,11 @@
                 />
                 <File
                     RelPath = "ExecutionEngine\WxeTemplateControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeTemplateControlInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
