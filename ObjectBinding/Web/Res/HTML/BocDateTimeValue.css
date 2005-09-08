@@ -10,3 +10,15 @@ div.bocDateTimeValue td
 {
   padding: 0px;  
 }
+
+.bocDateTimeValue
+{
+}
+
+.bocDateTimeValue.readOnly
+{
+}
+
+.bocDateTimeValue.disabled
+{
+}
