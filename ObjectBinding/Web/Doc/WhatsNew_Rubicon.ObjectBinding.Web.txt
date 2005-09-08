@@ -3,6 +3,11 @@
 - BocReferenceValue
   * ClearBusinessObjectList
     Neue Methode. Löscht die Liste der zur Auswahl angeboteten BusinessObjects.
+
+- BocList
+  * Der Table in der BocList ist nun von einem DIV umschlossen. 
+    Als CSS-Klasse wird wie beim Table selbst bocListTable verwendet. Es muss daher bei grundsätzlich der  
+    Name inklusive Tag-Selector in CSS-Files verwendet werden (div.bocListTable bzw table.bocListTable).
     
 1.2.68
 ======
