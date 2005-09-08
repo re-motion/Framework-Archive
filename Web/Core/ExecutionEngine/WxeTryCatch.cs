@@ -240,7 +240,7 @@ public class WxeCatchBlock: WxeStepList
     { 
       WxeExceptionAttribute exceptionAttribute = WxeExceptionAttribute.GetAttribute (this.GetType());
       if (exceptionAttribute == null)
-        return typeof (Exception); 
+        return typeof (Exception);
       else
         return exceptionAttribute.ExceptionType;
     }
