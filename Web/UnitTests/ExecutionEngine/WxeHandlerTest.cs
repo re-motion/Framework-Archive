@@ -347,7 +347,7 @@ public class WxeHandlerTest
     Assert.AreEqual (_httpContext,  function.WxeContext.HttpContext);
     Assert.AreEqual (_functionStateWithEnabledCleanUp.FunctionToken, function.WxeContext.FunctionToken);
     Assert.AreEqual (_httpContext, function.WxeContext.HttpContext);
-    Assert.AreEqual (3, function.LastExecutedStepNumber);
+    Assert.AreEqual ("4", function.LastExecutedStepID);
   }
 
   [Test]
@@ -370,7 +370,7 @@ public class WxeHandlerTest
     Assert.AreEqual (1, catchExceptionTypes.Length);
     Assert.AreSame (typeof (WxeUserCancelException), catchExceptionTypes[0]);
 
-    Assert.AreEqual (3, function.LastExecutedStepNumber);
+    Assert.AreEqual ("4", function.LastExecutedStepID);
   }
 
   [Test]
