@@ -12,6 +12,8 @@
 - Rubicon.Web.ExecutionEngine.WxePageStep
   * Bugfix: Die gerade executed Function wurde nicht aborted, wenn der Step aborted wurde.
 
+- Rubicon.Web.ExecutionEngine.WxeStep
+  * ParentStep Set-Accessor in SetParentStep-Methode umgeschrieben.
     
 1.2.71
 ======
