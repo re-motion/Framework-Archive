@@ -365,6 +365,7 @@ public class BocCustomCellRenderArguments: BocCustomCellArguments
   ///   preventing the row from being selected/highlighted when clicking on the link itself instead of the row.
   ///   This string is inserted after the return value of <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
   /// </remarks>
+  [EditorBrowsable (EditorBrowsableState.Advanced)]
   public string OnClick
   {
     get { return _onClick; }
