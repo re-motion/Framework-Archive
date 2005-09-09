@@ -51,7 +51,7 @@ public abstract class WxeIf: WxeStep
       throw new ApplicationException ("Type " + stepListType.FullName + " must be derived from WxeStepList.");
 
     WxeStepList resultList = (WxeStepList) System.Activator.CreateInstance (stepListType);
-    resultList.ParentStep = this;
+    resultList.SetParentStep (this);
     return resultList;
   }
 
