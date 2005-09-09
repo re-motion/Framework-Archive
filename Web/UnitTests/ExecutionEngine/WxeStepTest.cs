@@ -9,13 +9,14 @@ using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Utilities;
+using Rubicon.Collections;
 using Rubicon.Web.Test.AspNetFramework;
 
 namespace Rubicon.Web.Test.ExecutionEngine
 {
 
 [TestFixture]
-public class WxeStepTest
+public class WxeStepTest: WxeTest
 {
   private TestFunction _rootFunction;
   private TestFunction _nestedLevel1Function;
@@ -26,8 +27,10 @@ public class WxeStepTest
   private TestStep _standAloneStep;
 
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
+
     _rootFunction = new TestFunction();
     _nestedLevel1Function = new TestFunction();
     _nestedLevel2Function = new TestFunction();
@@ -49,11 +52,6 @@ public class WxeStepTest
     _nestedLevel2Function.Add (new TestStep());
     _nestedLevel2Function.Add (new TestStep());
     _nestedLevel2Function.Add (_nestedLevel2FunctionStep);
-  }
-
-  [TearDown]
-  public virtual void TearDown()
-  {
   }
 
   [Test]
@@ -124,6 +122,52 @@ public class WxeStepTest
   {
     WxeFunction rootFunction = _rootFunction.RootFunction;
     Assert.AreSame (_rootFunction, rootFunction);    
+  }
+
+  [Test]
+  public void AbortStep()
+  {
+    _standAloneStep.Abort ();
+    Assert.IsTrue (_standAloneStep.IsAbortRecursiveCalled);
+    Assert.IsTrue (_standAloneStep.IsAborted);
+  }
+
+  [Test]
+  public void ExecuteStep()
+  {
+    _standAloneStep.Execute ();
+    Assert.IsTrue (_standAloneStep.IsExecuteCalled);
+    Assert.AreSame (CurrentWxeContext, _standAloneStep.WxeContext);
+  }
+
+  [Test]
+  public void SetParentStep()
+  {
+    TestStep parentStep = new TestStep();
+    _standAloneStep.SetParentStep (parentStep);
+    Assert.AreSame (parentStep, _standAloneStep.ParentStep);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void SetParentStepNull()
+  {
+    _standAloneStep.SetParentStep (null);
+    Assert.Fail();
+  }
+
+  [Test]
+  public void GetVariablesForFunctionStep()
+  {
+    NameObjectCollection variables = _nestedLevel2FunctionStep.Variables;
+    Assert.AreSame (_nestedLevel2Function.Variables, variables);
+  }
+
+  [Test]
+  public void GetVariablesForStandAloneStep()
+  {
+    NameObjectCollection variables = _standAloneStep.Variables;
+    Assert.IsNull (variables);
   }
 }
 

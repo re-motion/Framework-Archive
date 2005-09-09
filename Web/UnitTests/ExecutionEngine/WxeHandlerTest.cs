@@ -15,10 +15,8 @@ namespace Rubicon.Web.Test.ExecutionEngine
 {
 
 [TestFixture]
-public class WxeHandlerTest
+public class WxeHandlerTest: WxeTest
 {
-  private HttpContext _httpContext;
-  private WxeContextMock _wxeContext;
   private WxeHandlerMock _wxeHandler;
 
   protected const string c_functionTokenForFunctionStateWithEnabledCleanUp = "00000000-Enabled-CleanUp";
@@ -44,13 +42,9 @@ public class WxeHandlerTest
   private string _returnUrl = "newReturnUrl.html";
 
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
-    _httpContext = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/default.html", null);
-    HttpContextHelper.SetCurrent (_httpContext);
-
-    _wxeContext = new WxeContextMock (_httpContext);
-    PrivateInvoke.InvokeNonPublicStaticMethod (typeof (WxeContext), "SetCurrent", _wxeContext);
+    base.SetUp();
 
     _wxeHandler = new WxeHandlerMock();
 
@@ -80,7 +74,7 @@ public class WxeHandlerTest
 
     TestFunction rootFunction = new TestFunction();
     TestFunction childFunction = new TestFunction();
-    childFunction.ParentStep = rootFunction;
+    rootFunction.Add (childFunction);
     _functionStateWithChildFunction = 
         new TestWxeFunctionState (childFunction, c_functionTokenForFunctionStateWithChildFunction, 10, true);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithChildFunction);
@@ -93,7 +87,7 @@ public class WxeHandlerTest
   }
 
   [TearDown]
-  public virtual void TearDown()
+  public override void TearDown()
   {
     WxeFunctionStateCollection.Instance.Abort (_functionStateWithEnabledCleanUp);
     WxeFunctionStateCollection.Instance.Abort (_functionStateWithDisabledCleanUp);
@@ -101,13 +95,15 @@ public class WxeHandlerTest
     WxeFunctionStateCollection.Instance.Abort (_functionStateAborted);
     WxeFunctionStateCollection.Instance.Abort (_functionStateExpired);
     WxeFunctionStateCollection.Instance.Abort (_functionStateWithChildFunction);
+ 
+    base.TearDown();
   }
 
   [Test]
   public void CreateNewFunctionStateStateWithFunctionToken()
   {
     WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (_httpContext, _functionTypeName, c_functionTokenForNewFunctionState);
+        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionTypeName, c_functionTokenForNewFunctionState);
 
     Assert.IsNotNull (functionState);
     Assert.AreEqual (c_functionTokenForNewFunctionState, functionState.FunctionToken);
@@ -124,7 +120,7 @@ public class WxeHandlerTest
   public void CreateNewFunctionStateStateWithoutFunctionToken()
   {
     WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (_httpContext, _functionTypeName, null);
+        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionTypeName, null);
 
     Assert.IsNotNull (functionState);
     Assert.IsNotNull (functionState.FunctionToken);
@@ -142,7 +138,7 @@ public class WxeHandlerTest
   public void CreateNewFunctionStateStateWithInvalidFunctionType()
   {
     WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (_httpContext, _invalidFunctionTypeName, null);
+        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _invalidFunctionTypeName, null);
 
     Assert.Fail();
   }
@@ -152,10 +148,10 @@ public class WxeHandlerTest
   {
     NameValueCollection parameters = new NameValueCollection();
     parameters.Set (WxeHandler.Parameters.WxeReturnUrl, _returnUrl);
-    HttpContextHelper.SetParams (_httpContext, parameters);
+    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
 
     WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (_httpContext, _functionTypeName, null);
+        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionTypeName, null);
 
     Assert.IsNotNull (functionState);
     Assert.IsNotNull (functionState.FunctionToken);
@@ -174,10 +170,10 @@ public class WxeHandlerTest
     string agrumentValue = "True";
     NameValueCollection parameters = new NameValueCollection();
     parameters.Set (TestFunction.Parameter1Name, agrumentValue);
-    HttpContextHelper.SetParams (_httpContext, parameters);
+    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
 
     WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (_httpContext, _functionTypeName, null);
+        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionTypeName, null);
 
     Assert.IsNotNull (functionState);
     Assert.IsNotNull (functionState.FunctionToken);
@@ -198,7 +194,7 @@ public class WxeHandlerTest
     Thread.Sleep (20);
 
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
     
     Assert.AreSame (_functionStateWithEnabledCleanUp, functionState);
     Assert.IsTrue (_functionStateWithEnabledCleanUp.LastAccess > timeBeforeRefresh);
@@ -215,7 +211,7 @@ public class WxeHandlerTest
   public void RetrieveMissingFunctionState()
   {
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForMissingFunctionState);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForMissingFunctionState);
     Assert.Fail();
   }
 
@@ -224,7 +220,7 @@ public class WxeHandlerTest
   public void RetrieveFunctionStateWithMissingFunction()
   {
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForFunctionStateWithMissingFunction);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
     Assert.Fail();
   }
 
@@ -233,7 +229,7 @@ public class WxeHandlerTest
   public void RetrieveExpiredFunctionState()
   {
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForExpiredFunctionState);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
     Assert.Fail();
   }
 
@@ -242,7 +238,7 @@ public class WxeHandlerTest
   public void RetrieveAbortedFunctionState()
   {
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForAbortedFunctionState);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForAbortedFunctionState);
     Assert.Fail();
   }
 
@@ -251,13 +247,13 @@ public class WxeHandlerTest
   {
     NameValueCollection parameters = new NameValueCollection();
     parameters.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
-    HttpContextHelper.SetParams (_httpContext, parameters);
+    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
 
     DateTime timeBeforeRefresh = DateTime.Now;
     Thread.Sleep (20);
 
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
 
     Assert.IsNull (functionState);
     Assert.IsTrue (_functionStateWithEnabledCleanUp.LastAccess > timeBeforeRefresh);
@@ -270,13 +266,13 @@ public class WxeHandlerTest
   {
     NameValueCollection parameters = new NameValueCollection();
     parameters.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
-    HttpContextHelper.SetParams (_httpContext, parameters);
+    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
 
     DateTime timeBeforeRefresh = DateTime.Now;
     Thread.Sleep (20);
 
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForFunctionStateWithMissingFunction);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
 
     Assert.IsNull (functionState);
     Assert.IsTrue (_functionStateWithMissingFunction.LastAccess > timeBeforeRefresh);
@@ -289,10 +285,10 @@ public class WxeHandlerTest
   {
     NameValueCollection parameters = new NameValueCollection();
     parameters.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
-    HttpContextHelper.SetParams (_httpContext, parameters);
+    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
 
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
 
     Assert.IsNull (functionState);
     Assert.IsTrue (_functionStateWithEnabledCleanUp.IsAborted);
@@ -307,10 +303,10 @@ public class WxeHandlerTest
   {
     NameValueCollection parameters = new NameValueCollection();
     parameters.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
-    HttpContextHelper.SetParams (_httpContext, parameters);
+    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
 
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (_httpContext, c_functionTokenForFunctionStateWithMissingFunction);
+        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
 
     Assert.IsNull (functionState);
     Assert.IsTrue (_functionStateWithMissingFunction.IsAborted);
@@ -340,13 +336,14 @@ public class WxeHandlerTest
   [Test]
   public void ExecuteFunctionState()
   {
-    _wxeHandler.ExecuteFunctionState (_httpContext, _functionStateWithEnabledCleanUp, true);
+    _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateWithEnabledCleanUp, true);
     TestFunction function = (TestFunction) _functionStateWithEnabledCleanUp.Function;
 
-    Assert.AreSame (WxeContext.Current,  function.WxeContext);
-    Assert.AreEqual (_httpContext,  function.WxeContext.HttpContext);
-    Assert.AreEqual (_functionStateWithEnabledCleanUp.FunctionToken, function.WxeContext.FunctionToken);
-    Assert.AreEqual (_httpContext, function.WxeContext.HttpContext);
+    WxeContext wxeContext = function.TestStep.WxeContext;
+    Assert.AreSame (WxeContext.Current, wxeContext);
+    Assert.AreEqual (CurrentHttpContext, wxeContext.HttpContext);
+    Assert.AreEqual (_functionStateWithEnabledCleanUp.FunctionToken, wxeContext.FunctionToken);
+    Assert.AreEqual (CurrentHttpContext, wxeContext.HttpContext);
     Assert.AreEqual ("4", function.LastExecutedStepID);
   }
 
@@ -354,7 +351,7 @@ public class WxeHandlerTest
   [ExpectedException (typeof (InvalidOperationException))]
   public void ExecuteAbortedFunctionState()
   {
-    _wxeHandler.ExecuteFunctionState (_httpContext, _functionStateAborted, true);
+    _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateAborted, true);
     Assert.Fail();
   }
 
@@ -362,9 +359,10 @@ public class WxeHandlerTest
   public void ExecuteFunction()
   {
     TestFunction function = (TestFunction) _functionStateWithEnabledCleanUp.Function;
-    _wxeHandler.ExecuteFunction (function, _wxeContext, true);
+    _wxeHandler.ExecuteFunction (function, CurrentWxeContext, true);
     
-    Assert.AreSame (_wxeContext, function.WxeContext);
+    WxeContext wxeContext = function.TestStep.WxeContext;
+    Assert.AreSame (WxeContext.Current, wxeContext);
 
     Type[] catchExceptionTypes = function.GetCatchExceptionTypes();
     Assert.AreEqual (1, catchExceptionTypes.Length);
@@ -378,7 +376,7 @@ public class WxeHandlerTest
   public void ExecuteAbortedFunction()
   {
     TestFunction function = (TestFunction) _functionStateAborted.Function;
-    _wxeHandler.ExecuteFunction (function, _wxeContext, true);
+    _wxeHandler.ExecuteFunction (function, CurrentWxeContext, true);
     Assert.Fail();
   }
 }

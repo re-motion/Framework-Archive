@@ -9,7 +9,6 @@ public class TestFunction: WxeFunction
   public static readonly string Parameter1Name = "Parameter1";
   public static readonly string ReturnUrlValue = "DefaultReturn.html";
 
-  private WxeContext _wxeContext;
   private string _lastExecutedStepID;
 
   public TestFunction()
@@ -40,19 +39,11 @@ public class TestFunction: WxeFunction
     _lastExecutedStepID = "2";
   }
 
-  private void Step3()
-  {
-    _lastExecutedStepID = "3";
-  }
-  
+  private TestStep Step3 = new TestStep();
+
   private void Step4()
   {
     _lastExecutedStepID = "4";
-  }
-
-  public WxeContext WxeContext
-  {
-    get { return _wxeContext; }
   }
 
   public string LastExecutedStepID
@@ -60,12 +51,10 @@ public class TestFunction: WxeFunction
     get { return _lastExecutedStepID; }
   }
 
-  public override void Execute (WxeContext context)
+  public TestStep TestStep
   {
-    _wxeContext = context;
-    base.Execute (context);
+    get { return Step3; }
   }
-
 }
 
 }
