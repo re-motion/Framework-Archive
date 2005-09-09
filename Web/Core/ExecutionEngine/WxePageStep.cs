@@ -14,7 +14,7 @@ namespace Rubicon.Web.ExecutionEngine
 
 /// <summary> This exception is used by the execution engine to end the execution of a <see cref="WxePageStep"/>. </summary>
 [Serializable]
-public class WxeExecuteNextStepException: Exception
+public class WxeExecuteNextStepException: WxeException
 {
   public WxeExecuteNextStepException()
     : base ("This exception does not indicate an error. It is used to roll back the call stack. It is recommended to disable breaking on this exeption type while debugging.")
@@ -32,12 +32,13 @@ public class WxeExecuteNextStepException: Exception
 ///   <see cref="WxePageStep"/>. 
 /// </summary>
 [Serializable]
-public class WxeUserCancelException: Exception
+public class WxeUserCancelException: WxeException
 {
   public WxeUserCancelException()
     : this ("User cancelled this step.")
   {
   }
+
   public WxeUserCancelException(string message)
     : base (message)
   {
@@ -217,7 +218,7 @@ public class WxePageStep: WxeStep
       throw new InvalidOperationException ("Cannot execute function while another function executes.");
 
     _function = function; 
-    _function.ParentStep = this;    
+    _function.SetParentStep (this);    
 
     // page.SaveVieState()
     MethodInfo saveViewStateMethod = typeof (Page).GetMethod ("SavePageViewState", BindingFlags.Instance | BindingFlags.NonPublic);

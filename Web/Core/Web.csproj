@@ -192,7 +192,15 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\ExecutionEngine\WxeMethodStep.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\ExecutionEngine\WxePage.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\ExecutionEngine\WxeStep.xml"
                     BuildAction = "Content"
                 />
                 <File
@@ -238,6 +246,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeForm.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -264,6 +277,11 @@
                 />
                 <File
                     RelPath = "ExecutionEngine\WxeLauncher.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeMethodStep.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

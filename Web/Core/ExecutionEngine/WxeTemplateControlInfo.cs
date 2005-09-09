@@ -37,15 +37,8 @@ public class WxeTemplateControlInfo
     if (wxeHandler == null)
       throw new HttpException ("No current WxeHandler found.");
 
-    _currentStep = (wxeHandler == null) ? null : wxeHandler.RootFunction.ExecutingStep as WxePageStep;
-
-    WxeStep step = _currentStep;
-    do {
-      _currentFunction = step as WxeFunction;
-      if (_currentFunction != null)
-        break;
-      step = step.ParentStep;
-    } while (step != null);
+    _currentStep = wxeHandler.RootFunction.ExecutingStep as WxePageStep;
+    _currentFunction = WxeStep.GetFunction (_currentStep);
   }
 
   public WxePageStep CurrentStep

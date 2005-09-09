@@ -44,11 +44,11 @@ public class WxeStepList: WxeStep
 
     innerList._steps = this._steps;
     foreach (WxeStep step in innerList._steps)
-      step.ParentStep = innerList;
+      step.SetParentStep (innerList);
 
     this._steps = new ArrayList(1);
     this._steps.Add (innerList);
-    innerList.ParentStep = this;
+    innerList.SetParentStep (this);
   }
 
   public override void Execute (WxeContext context)
@@ -78,7 +78,7 @@ public class WxeStepList: WxeStep
   public void Add (WxeStep step)
   {
     _steps.Add (step);
-    step.ParentStep = this;
+    step.SetParentStep (this);
   }
 
   public void AddStepList (WxeStepList steps)

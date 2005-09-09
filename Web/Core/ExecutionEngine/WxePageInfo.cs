@@ -55,6 +55,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private bool _executeNextStep = false;
   private HttpResponse _response; // used for cleanup in Dispose
 
+  /// <summary> Initializes a new instance of the <b>WxePageInfo</b> type. </summary>
+  /// <param name="page"> 
+  ///   The <see cref="IWxePage"/> containing this <b>WxePageInfo</b> object. 
+  ///   The page must be derived from <see cref="System.Web.UI.Page">System.Web.UI.Page</see>.
+  /// </param>
   public WxePageInfo (IWxePage page)
   {
     ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));

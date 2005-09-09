@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
@@ -9,15 +10,18 @@ using Rubicon.Collections;
 namespace Rubicon.Web.ExecutionEngine
 {
 
-/// <summary>
-/// Performs a single operation in a web application as part of a <see cref="WxeFunction"/>.
-/// </summary>
+/// <summary> Performs a single operation in a web application as part of a <see cref="WxeFunction"/>. </summary>
+/// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Class/*' />
 [Serializable]
 public abstract class WxeStep
 {
+  /// <summary> Gets the <see cref="WxeFunction"/> for the passed <see cref="WxeStep"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetFunction/*' />
   public static WxeFunction GetFunction (WxeStep step)
   {
-    for (; step != null; step = step.ParentStep)
+    for (; 
+          step != null; 
+          step = step.ParentStep)
     {
       WxeFunction function = step as WxeFunction;
       if (function != null)
@@ -26,55 +30,90 @@ public abstract class WxeStep
     return null;
   }
 
-  private WxeStep _parentStep = null;
-  private bool _isAborted = false;
-  [NonSerialized]
-  private bool _isAborting = false;
-
-  public WxeStep ParentStep
-  {
-    get { return _parentStep; }
-    set { _parentStep = value; }
-  }
-
-  public void Execute ()
-  {
-    Execute (WxeContext.Current);
-  }
-
-  public abstract void Execute (WxeContext context);
-
-  public virtual WxeStep ExecutingStep 
-  {
-    get { return this; }
-  }
-
-  public virtual NameObjectCollection Variables
-  {
-    get { return (_parentStep == null) ? null : _parentStep.Variables; }
-  }
-
-  public WxeFunction RootFunction
-  {
-    get
-    {
-      WxeStep s = this;
-      while (s.ParentStep != null)
-        s = s.ParentStep;
-      return s as WxeFunction;
-    }
-  }
-
-  public WxeFunction ParentFunction
-  {
-    get { return WxeStep.GetFunction (ParentStep); }
-  }
-
+  /// <summary> Used to pass a variable by reference to a <see cref="WxeFunction"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/varref/*' />
   protected static WxeVariableReference varref (string localVariable)
   {
     return new WxeVariableReference (localVariable);
   }
 
+  private WxeStep _parentStep = null;
+  private bool _isAborted = false;
+  /// <summary> 
+  ///   <see langword="true"/> during the execution of <see cref="Abort"/>. Used to prevent circular aborting.
+  /// </summary>
+  [NonSerialized]
+  private bool _isAborting = false;
+
+  /// <summary> Executes the <see cref="WxeStep"/>. </summary>
+  /// <remarks> 
+  ///   Calls <see cref="M:Rubicon.Web.ExecutionEngine.WxeStep.Execute(Rubicon.Web.ExecutionEngine.WxeContext">WxeContext</see>,
+  ///   passing the <see cref="WxeContext.Current"/> <see cref="WxeContext"/> as argument.
+  /// </remarks>
+  public void Execute ()
+  {
+    Execute (WxeContext.Current);
+  }
+
+  /// <summary> Executes the <see cref="WxeStep"/>. </summary>
+  /// <param name="context"> The <see cref="WxeContext"/> containing the information about the execution. </param>
+  /// <remarks> Override this method to implement your execution logic. </remarks>
+  public abstract void Execute (WxeContext context);
+
+  /// <summary> Gets the scope's variables collection. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Variables/*' />
+  public virtual NameObjectCollection Variables
+  {
+    get { return (_parentStep == null) ? null : _parentStep.Variables; }
+  }
+
+  /// <summary> Gets the parent step of the the <see cref="WxeStep"/>. </summary>
+  /// <value> The <see cref="WxeStep"/> assigned using <see cref="SetParentStep"/>. </value>
+  public WxeStep ParentStep
+  {
+    get { return _parentStep; }
+  }
+
+  /// <summary> Sets the parent step of this <see cref="WxeStep"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/SetParentStep/*' />
+  public void SetParentStep (WxeStep parentStep)
+  {
+    ArgumentUtility.CheckNotNull ("parentStep", parentStep);
+    _parentStep = parentStep;
+  }
+
+  /// <summary> Gets the step currently being executed. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ExecutingStep/*' />
+  public virtual WxeStep ExecutingStep 
+  {
+    get { return this; }
+  }
+
+  /// <summary> Gets the root <see cref="WxeFunction"/> of the execution hierarchy. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/RootFunction/*' />
+  public WxeFunction RootFunction
+  {
+    get
+    {
+      WxeStep step = this;
+      while (step.ParentStep != null)
+        step = step.ParentStep;
+      return step as WxeFunction;
+    }
+  }
+
+  /// <summary> Gets the parent <see cref="WxeFunction"/> for this <see cref="WxeStep"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/ParentFunction/*' />
+  public WxeFunction ParentFunction
+  {
+    get { return WxeStep.GetFunction (ParentStep); }
+  }
+
+  /// <summary> 
+  ///   Gets the <see cref="Exception"/> caught by the <see cref="WxeTryCatch"/> block encapsulating this 
+  ///   <see cref="WxeStep"/>.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/CurrentException/*' />
   protected Exception CurrentException
   {
     get 
@@ -84,24 +123,22 @@ public abstract class WxeStep
            step = step.ParentStep)
       {
         if (step is WxeCatchBlock)
-          return ((WxeCatchBlock)step).Exception;
+          return ((WxeCatchBlock) step).Exception;
       }
 
       return null;
     }
   }
 
+  /// <summary> Gets a flag describing whether the <see cref="WxeStep"/> has been aborted. </summary>
+  /// <value> <see langword="true"/> once <see cref="AbortRecursive"/> as finished executing. </value>
   public bool IsAborted
   {
     get { return _isAborted; }
   }
   
   /// <summary> Aborts the <b>WxeStep</b> by calling <see cref="AbortRecursive"/>. </summary>
-  /// <remarks> 
-  ///   A single <b>WxeStep</b> is usually not aborted. This method is usually called by aborting the 
-  ///   a <see cref="WxeFunctionState"/> and subsequently the contained <see cref="WxeFunction"/>, which is derived
-  ///   from <b>WxeStep</b>.
-  /// </remarks>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Abort/*' />
   public void Abort()
   {
     if (! _isAborted && ! _isAborting)
@@ -113,98 +150,10 @@ public abstract class WxeStep
     }
   }
 
+  /// <summary> Contains the aborting logic for the <see cref="WxeStep"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/AbortRecursive/*' />
   protected virtual void AbortRecursive()
   {
-  }
-}
-
-public delegate void WxeMethod ();
-public delegate void WxeMethodWithContext (WxeContext context);
-
-/// <summary> Performs a step implemented by an instance method of a <see cref="WxeFunction"/>. </summary>
-/// <example>
-///   An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a <b>WxeMethodStep</b>
-///   <code>
-/// public class MyFunction: WxeFunction 
-/// {
-///   ...
-///   // Step2
-///   private void Step3
-///   {
-///     // Do something
-///   }
-///   // Step4
-///   ...
-/// }
-///   </code>
-/// </example>
-[Serializable]
-public class WxeMethodStep: WxeStep
-{
-  /// <summary> The <see cref="WxeStepList"/> containing the <b>Method</b> used for this <b>WxeMethodStep</b>. </summary>
-  private WxeStepList _target;
-  /// <summary> The name of the method to be invoked in this <b>WxeMethodStep</b>. </summary>
-  private string _methodName;
-  /// <summary> <see langword="true"/> if the method has a context, i.e. parameters. </summary>
-  private bool _hasContext;
-  /// <summary> The cached <see cref="WxeMethod"/> delegate used to invoke this <b>WxeMethodStep</b>. </summary>
-  [NonSerialized]
-  private WxeMethod _method;
-  /// <summary> The cached <see cref="WxeMethodWithContext"/> delegate used to invoke this <b>WxeMethodStep</b>. </summary>
-  [NonSerialized]
-  private WxeMethodWithContext _methodWithContext;
-
-  /// <summary> Initalizes a new instance of the <b>WxeMethodStep</b> type. </summary>
-  /// <param name="target">
-  ///   The <see cref="WxeStepList"/> containing the <b>Method</b> used for this <b>WxeMethodStep</b>. 
-  ///   Must not be <see langword="null"/>.
-  /// </param>
-  /// <param name="method"> 
-  ///   The <see cref="MethodInfo"/> of the <b>Method</b> used for this <b>MethodStep</b>. 
-  ///   Must not be <see langword="null"/>. The specified method must be part of the <paramref name="target"/>'s type.
-  /// </param>
-  public WxeMethodStep (WxeStepList target, MethodInfo method)
-  {
-    ArgumentUtility.CheckNotNull ("target", target);
-    ArgumentUtility.CheckNotNull ("method", method);
-    if (target.GetType() != method.DeclaringType)
-      throw new ArgumentException ("The DeclaringType of 'method' does not match the type of 'target'.");
-    _target = target;
-    _methodName = method.Name;
-    _hasContext = method.GetParameters().Length > 0;
-  }
-
-//  public WxeMethodStep (WxeMethod method)
-//    : this ((WxeStepList) method.Target, method.Method.Name, false)
-//  {
-//    ArgumentUtility.CheckNotNull ("method", method);
-//    _method = method;
-//  }
-//
-//  public WxeMethodStep (WxeMethodWithContext method)
-//    : this ((WxeStepList) method.Target, method.Method.Name, true)
-//  {
-//    ArgumentUtility.CheckNotNull ("method", method);
-//    _methodWithContext = method;
-//  }
-
-  public override void Execute (WxeContext context)
-  {
-    if (_hasContext)
-    {
-      if (_methodWithContext == null)
-      {
-        _methodWithContext = 
-          (WxeMethodWithContext) Delegate.CreateDelegate (typeof (WxeMethodWithContext), _target, _methodName, false);
-      }
-      _methodWithContext (context);
-    }
-    else
-    {
-      if (_method == null)
-        _method = (WxeMethod) Delegate.CreateDelegate (typeof (WxeMethod), _target, _methodName, false);
-      _method ();
-    }
   }
 }
 

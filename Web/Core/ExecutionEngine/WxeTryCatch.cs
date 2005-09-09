@@ -52,7 +52,7 @@ public class WxeTryCatch: WxeStep
   public WxeTryCatch (Type tryStepListType, Type finallyStepListType, params Type[] catchBlockTypes)
   {
     _trySteps = (WxeStepList) Activator.CreateInstance (tryStepListType);
-    _trySteps.ParentStep = this;
+    _trySteps.SetParentStep (this);
 
     _catchBlocks = new ArrayList();
     if (catchBlockTypes != null)
@@ -64,7 +64,7 @@ public class WxeTryCatch: WxeStep
     if (finallyStepListType != null)
     {
       _finallySteps = (WxeStepList) Activator.CreateInstance (finallyStepListType);
-      _finallySteps.ParentStep = this;
+      _finallySteps.SetParentStep (this);
     }
     else
     {
@@ -85,13 +85,13 @@ public class WxeTryCatch: WxeStep
     if (tryBlockType == null)
       throw new ApplicationException ("Try/catch block type " + type.FullName + " has no nested type named \"Try\".");
     _trySteps = (WxeStepList) Activator.CreateInstance (tryBlockType);
-    _trySteps.ParentStep = this;
+    _trySteps.SetParentStep (this);
 
     Type finallyBlockType = type.GetNestedType ("Finally", BindingFlags.Public | BindingFlags.NonPublic);
     if (finallyBlockType != null)
     {
       _finallySteps = (WxeStepList) Activator.CreateInstance (finallyBlockType);
-      _finallySteps.ParentStep = this;
+      _finallySteps.SetParentStep (this);
     }
     else
     {
@@ -184,7 +184,7 @@ public class WxeTryCatch: WxeStep
   public void Add (WxeCatchBlock catchBlock)
   {
     _catchBlocks.Add (catchBlock);
-    catchBlock.ParentStep = this;
+    catchBlock.SetParentStep (this);
   }
 
   public WxeStepList TrySteps
