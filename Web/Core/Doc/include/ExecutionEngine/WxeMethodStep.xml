@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<WxeMethodStep>
+  <Class>
+    <remarks>
+    </remarks>
+    <example>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a <b>WxeMethodStep</b>.
+<code>
+[Serializable]
+public class MyFunction: WxeFunction
+{
+  ...
+  // Step2
+  private void Step3 ()
+  {
+    // Your execution logic for this method step.
+  }
+  // Step4
+  ...
+}
+</code>    
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a <b>WxeMethodStep</b>
+      accepting a <see cref="WxeContext"/> as parameter.
+<code>
+[Serializable]
+public class MyFunction: WxeFunction
+{
+  ...
+  // Step2
+  private void Step3 (WxeContext context)
+  {
+    // Your execution logic for this method step.
+  }
+  // Step4
+  ...
+}
+</code>    
+    </example>
+  </Class>
+  <Ctor>
+    <param name="target">
+      The <see cref="WxeStepList"/> containing the <b>Method</b> used for this <b>WxeMethodStep</b>. 
+      Must not be <see langword="null"/>.
+    </param>
+    <param name="method"> 
+      The <see cref="MethodInfo"/> of the <b>Method</b> used for this <b>MethodStep</b>. 
+      Must not be <see langword="null"/>. The specified method must be part of the <paramref name="target"/>'s type.
+    </param>
+  </Ctor>
+</WxeMethodStep>
