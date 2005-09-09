@@ -17,5 +17,7 @@
     <form id=Form method=post runat="server">
     <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton><rubicon:WebButton id="WebButton1" runat="server"></rubicon:WebButton>
     </form>
+    <script language="javascript">
+    </script>
   </body>
 </html>
