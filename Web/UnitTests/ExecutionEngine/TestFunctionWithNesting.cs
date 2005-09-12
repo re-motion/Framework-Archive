@@ -30,33 +30,33 @@ public class TestFunctionWithNesting: WxeFunction
     set { Variables["Parameter1"] = value; }
   }
 
-  private void Step1()
+  void Step1()
   {
     _lastExecutedStepID = "1";
   }
   
-  private void Step2()
+  void Step2()
   {
     _lastExecutedStepID = "2";
   }
 
-  private class Step3: WxeFunction
+  class Step3: WxeFunction
   {
     public Step3()
 	  {
 	  }
 
-    private void Step1()
+    void Step1()
     {
       TestFunctionWithNesting._lastExecutedStepID = "3.1";
     }
     
-    private void Step2()
+    void Step2()
     {
       TestFunctionWithNesting._lastExecutedStepID = "3.2";
     }
     
-    private void Step3_()
+    void Step3_()
     {
       TestFunctionWithNesting._lastExecutedStepID = "3.3";
     }
@@ -68,7 +68,7 @@ public class TestFunctionWithNesting: WxeFunction
 
   }
   
-  private void Step4()
+  void Step4()
   {
     _lastExecutedStepID = "4";
   }
