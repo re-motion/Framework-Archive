@@ -8,8 +8,10 @@ public class TestFunction: WxeFunction
 {
   public static readonly string Parameter1Name = "Parameter1";
   public static readonly string ReturnUrlValue = "DefaultReturn.html";
-
+  
+  private WxeContext _wxeContextStep2;
   private string _lastExecutedStepID;
+  private string _executionOrder = string.Empty;
 
   public TestFunction()
 	{
@@ -29,19 +31,20 @@ public class TestFunction: WxeFunction
     set { Variables["Parameter1"] = value; }
   }
 
-  private void Step1()
+  void Step1()
   {
     _lastExecutedStepID = "1";
   }
   
-  private void Step2()
+  void Step2 (WxeContext context)
   {
+    _wxeContextStep2 = context;
     _lastExecutedStepID = "2";
   }
 
-  private TestStep Step3 = new TestStep();
+  TestStep Step3 = new TestStep();
 
-  private void Step4()
+  void Step4()
   {
     _lastExecutedStepID = "4";
   }
@@ -51,9 +54,19 @@ public class TestFunction: WxeFunction
     get { return _lastExecutedStepID; }
   }
 
+  public string ExecutionOrder
+  {
+    get { return _executionOrder; }
+  }
+
   public TestStep TestStep
   {
     get { return Step3; }
+  }
+
+  public WxeContext WxeContextStep2
+  {
+    get { return _wxeContextStep2; }
   }
 }
 

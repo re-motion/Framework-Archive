@@ -2,6 +2,16 @@
 <WxeMethodStep>
   <Class>
     <remarks>
+      <para>
+        A <b>WxeMethodStep</b> is usually used when it is necessary to incorporate logic to be executed before or 
+        after another step is executed, e.g. before and after executing a <see cref="WxePageStep"/>.
+      </para><para>
+        A <b>WxeMethodStep</b> can be embedded in a <see cref="WxeStepList"/> or <see cref="WxeFunction"/> in the
+        form of a non-public instance method. Its signature must match either the <see cref="WxeMethod"/> or 
+        <see cref="WxeMethodWithContext"/> delegate, i.e. no parameters or a single parameter of the 
+        <see cref="WxeContext"/> type.
+      </para>
+    
     </remarks>
     <example>
       An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a <b>WxeMethodStep</b>.
@@ -11,7 +21,7 @@ public class MyFunction: WxeFunction
 {
   ...
   // Step2
-  private void Step3 ()
+  void Step3 ()
   {
     // Your execution logic for this method step.
   }
@@ -27,7 +37,7 @@ public class MyFunction: WxeFunction
 {
   ...
   // Step2
-  private void Step3 (WxeContext context)
+  void Step3 (WxeContext context)
   {
     // Your execution logic for this method step.
   }
@@ -39,12 +49,14 @@ public class MyFunction: WxeFunction
   </Class>
   <Ctor>
     <param name="target">
-      The <see cref="WxeStepList"/> containing the <b>Method</b> used for this <b>WxeMethodStep</b>. 
+      The <see cref="WxeStepList"/> containing the <b>Method</b> executed by this <b>WxeMethodStep</b>. 
       Must not be <see langword="null"/>.
     </param>
     <param name="method"> 
-      The <see cref="MethodInfo"/> of the <b>Method</b> used for this <b>MethodStep</b>. 
-      Must not be <see langword="null"/>. The specified method must be part of the <paramref name="target"/>'s type.
+      The <see cref="MethodInfo"/> of the <b>Method</b> executed by this <b>MethodStep</b>. 
+      Must not be <see langword="null"/>. The specified method must be an instance method of the 
+      <paramref name="target"/>'s type. Its signature must match either the <see cref="WxeMethod"/> or 
+      <see cref="WxeMethodWithContext"/> delegate.
     </param>
   </Ctor>
 </WxeMethodStep>

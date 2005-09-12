@@ -22,16 +22,16 @@ public delegate void WxeMethodWithContext (WxeContext context);
 [Serializable]
 public class WxeMethodStep: WxeStep
 {
-  /// <summary> The <see cref="WxeStepList"/> containing the <b>Method</b> used for this <b>WxeMethodStep</b>. </summary>
+  /// <summary> The <see cref="WxeStepList"/> containing the <b>Method</b> executed by this <b>WxeMethodStep</b>. </summary>
   private WxeStepList _target;
-  /// <summary> The name of the method to be invoked in this <b>WxeMethodStep</b>. </summary>
+  /// <summary> The name of the method executed by this <b>WxeMethodStep</b>. </summary>
   private string _methodName;
-  /// <summary> <see langword="true"/> if the metho has a parameter of type <see cref="WxeContext"/>. </summary>
+  /// <summary> <see langword="true"/> if the method has a parameter of type <see cref="WxeContext"/>. </summary>
   private bool _hasContext;
-  /// <summary> The cached <see cref="WxeMethod"/> delegate used to invoke this <b>WxeMethodStep</b>. </summary>
+  /// <summary> The cached <see cref="WxeMethod"/> delegate used during execution of this <b>WxeMethodStep</b>. </summary>
   [NonSerialized]
   private WxeMethod _method;
-  /// <summary> The cached <see cref="WxeMethodWithContext"/> delegate used to invoke this <b>WxeMethodStep</b>. </summary>
+  /// <summary> The cached <see cref="WxeMethodWithContext"/> delegate used during execution of this <b>WxeMethodStep</b>. </summary>
   [NonSerialized]
   private WxeMethodWithContext _methodWithContext;
 
@@ -42,34 +42,35 @@ public class WxeMethodStep: WxeStep
     ArgumentUtility.CheckNotNull ("target", target);
     ArgumentUtility.CheckNotNull ("method", method);
 
-    if (target.GetType() != method.DeclaringType || method.IsStatic)
-      throw new WxeException ("Method step '" + method.Name + "' is no instance method of the type '" + target.GetType().FullName + "'.");
+    Type targetType = target.GetType();
+    Type declaringType = method.DeclaringType;
+    
+    bool isAssignable = declaringType.IsAssignableFrom (targetType);
+    if (! isAssignable || method.IsStatic)
+      throw new WxeException ("Method step '" + method.Name + "' is not an instance method of the type '" + targetType.FullName + "'.");
     
     ParameterInfo[] parameters = method.GetParameters();
     if (parameters.Length > 1)
-      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + method.DeclaringType.FullName + "', does not support more than one parameter.");
+      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + declaringType.FullName + "', does not support more than one parameter.");
     if (parameters.Length == 1 && ! typeof (WxeContext).IsAssignableFrom (parameters[0].ParameterType))
-      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + method.DeclaringType.FullName + "', may only have a parameter of type WxeContext.");
+      throw new WxeException ("Method step '" + method.Name + "', declared in type '" + declaringType.FullName + "', may only have a parameter of type WxeContext.");
 
     _target = target;
     _methodName = method.Name;
-
     _hasContext = parameters.Length == 1;
   }
 
-//  public WxeMethodStep (WxeMethod method)
-//    : this ((WxeStepList) method.Target, method.Method.Name, false)
-//  {
-//    ArgumentUtility.CheckNotNull ("method", method);
-//    _method = method;
-//  }
-//
-//  public WxeMethodStep (WxeMethodWithContext method)
-//    : this ((WxeStepList) method.Target, method.Method.Name, true)
-//  {
-//    ArgumentUtility.CheckNotNull ("method", method);
-//    _methodWithContext = method;
-//  }
+  //  public WxeMethodStep (WxeMethod method)
+  //    : this ((WxeStepList) method.Target, method.Method)
+  //  {
+  //    _method = method;
+  //  }
+  //
+  //  public WxeMethodStep (WxeMethodWithContext method)
+  //    : this ((WxeStepList) method.Target, method.Method)
+  //  {
+  //    _methodWithContext = method;
+  //  }
 
   /// <summary> Executes the method provided during the initizalion of this <see cref="WxeMethodStep"/>. </summary>
   /// <param name="context"> The <see cref="WxeContext"/> containing the information about the execution. </param>

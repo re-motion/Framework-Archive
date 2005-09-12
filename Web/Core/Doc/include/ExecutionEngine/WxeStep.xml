@@ -2,12 +2,18 @@
 <WxeStep>
   <Class>
     <remarks>
-      Extend the <b>WxeStep</b> type if you require a single step with a specialized execution and/or aborting logic.
-      An example would be a step encapsulating behavior common accross more than one <see cref="WxeFunction"/>.
+      <para>
+        Extend the <b>WxeStep</b> type if you require a single step with a specialized execution and/or aborting 
+        logic. An example would be a step encapsulating behavior common accross more than one 
+        <see cref="WxeFunction"/>.
+      </para><para>
+        A <b>WxeStep</b> can be embedded in a <see cref="WxeStepList"/> or <see cref="WxeFunction"/> in the
+        form of a non-public instance field or as a non-public nested class.
+      </para>
       <note type="inheritinfo">
         In order to allow the usage of a state server, is is required to apply the 
-        <see cref="SerializableAttribute"/> extending <b>WxeStep</b>. In addition, all fields not marked with the 
-        <see cref="NonSerializedAttribute"/> must be of a serializable type.
+        <see cref="SerializableAttribute"/> when extending <b>WxeStep</b>. In addition, all fields not marked with 
+        the <see cref="NonSerializedAttribute"/> must be of a serializable type.
       </note>
     </remarks>
     <example>
@@ -36,7 +42,35 @@ public class MyFunction: WxeFunction
 {
   ...
   // Step 2
-  private WxeStep Step3 = new WxeAdvancedStep();
+  WxeStep Step3 = new WxeAdvancedStep();
+  // Step 4
+  ...
+}
+</code>    
+    An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a class derived from
+    <see cref="WxeStep"/>.
+<code>
+[Serializable]
+public class MyFunction: WxeFunction
+{
+  ...
+  // Step 2
+  
+  [Serializable]
+  class Step3: WxeStep
+  {
+    public override void Execute (WxeContext context)
+    {
+      // Your execution logic goes here.
+    }
+    
+    public override void AbortRecursice ()
+    {
+      base.AbortRecursive();
+      // Your clean-up code, if necessary.
+    }
+  }
+  
   // Step 4
   ...
 }
