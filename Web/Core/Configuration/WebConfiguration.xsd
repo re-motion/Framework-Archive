@@ -20,7 +20,7 @@
                 <xs:element name="resources" minOccurs="0" maxOccurs="1">
                     <xs:complexType>
                         <xs:attribute name="root" type="xs:string" default="res" />
-                        <xs:attribute name="relativeToApplicationRoot" type="xs:boolean" default="true" />
+                        <xs:attribute name="rootMode" type="tns:ResourceRootMode" default="AbsoluteWithApplicationRoot" />
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="smartNavigation" minOccurs="0" maxOccurs="1">
@@ -38,6 +38,13 @@
             <xs:enumeration value="A" />
             <xs:enumeration value="AA" />
             <xs:enumeration value="AAA" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ResourceRootMode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Relative" />
+            <xs:enumeration value="Absolute" />
+            <xs:enumeration value="AbsoluteWithApplicationRoot" />
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

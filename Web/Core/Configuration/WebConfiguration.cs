@@ -234,39 +234,56 @@ public class WcagConfiguration
   }
 }
 
+/// <summary>
+///   Enumeration listing the options for interpreting the <see cref="ResourceConfiguration.Root"/> folder setting.
+/// </summary>
+public enum ResourceRootMode
+{
+  /// <summary> The <see cref="ResourceConfiguration.Root"/> folder specifies a relative path. </summary>
+  Relative,
+  /// <summary> The <see cref="ResourceConfiguration.Root"/> folder is transformed into an absolute path.  </summary>
+  Absolute, 
+  /// <summary> 
+  ///   The <see cref="ResourceConfiguration.Root"/> folder is prepended with the application root and 
+  ///   transformed into an absolute path.
+  /// </summary>
+  AbsoluteWithApplicationRoot
+}
+
 /// <summary> Configuration section entry for specifying the resources root. </summary>
 /// <seealso cref="Rubicon.Web.ResourceUrlResolver"/>
 [XmlType (Namespace = WebConfiguration.SchemaUri)]
 public class ResourceConfiguration
 {
   private string _root = "res";
-  private bool _relativeToApplicationRoot = true;
+  private ResourceRootMode _rootMode = ResourceRootMode.AbsoluteWithApplicationRoot;
 
   /// <summary> Gets or sets the root folder for all resources. </summary>
   /// <value> 
   ///   A string specifying an absolute path or a path relative to the application root. Defaults to <c>res</c>.
   /// </value>
-  /// <remarks> Trailing slashes are removed. </remarks>
+  /// <remarks> Leading and trailing slashes are removed. </remarks>
 /// <seealso cref="Rubicon.Web.ResourceUrlResolver"/>
   [XmlAttribute ("root")]
   public string Root
   {
     get { return _root; }
-    set { _root = Rubicon.Utilities.StringUtility.NullToEmpty(value).TrimEnd ('/'); }
+    set { _root = Rubicon.Utilities.StringUtility.NullToEmpty(value).Trim ('/'); }
   }
 
   /// <summary> 
-  ///   Gets or sets a flag Specifying whether the <see cref="Root"/> folder is relative to the application root. 
+  ///   Gets or sets a value specifying whether the <see cref="Root"/> folder is relative, absolute, or 
+  ///   absolute and prepended with the the application root. 
   /// </summary>
   /// <value> 
-  ///   If <see langword="true"/>, the <see cref="Root"/> is prepended with the application root,
-  ///   thereby transforming the resource path into an absolute path. Defaults to <see langword="true"/>.
+  ///   A value of the <see cref="ResourceRootMode"/> enumeration. 
+  ///   Defaults to <see cref="ResourceRootMode.Relative"/>.
   /// </value>
-  [XmlAttribute ("relativeToApplicationRoot")]
-  public bool RelativeToApplicationRoot
+  [XmlAttribute ("rootPath")]
+  public ResourceRootMode RootMode
   {
-    get { return _relativeToApplicationRoot; }
-    set { _relativeToApplicationRoot = value; }
+    get { return _rootMode; }
+    set { _rootMode = value; }
   }
 }
 
