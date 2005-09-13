@@ -31,7 +31,10 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
 
   public NaBoolean GetDefaultValue (IBusinessObjectClass objectClass)
   {
-    return NaBoolean.Null;
+    if (IsNullableType)
+      return NaBoolean.Null;
+
+    return NaBoolean.False;
   }
 
   protected internal override object FromInternalType (object internalValue)
