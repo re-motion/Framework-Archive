@@ -128,7 +128,7 @@ public class WxeStepList: WxeStep
         type, 
         "Step", 
         MemberTypes.Field | MemberTypes.Method | MemberTypes.NestedType, 
-        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly);
+        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
     foreach (MemberInfo member in members)
     {
