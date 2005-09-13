@@ -6,6 +6,7 @@ using System.Text;
 using System.Globalization;
 using System.Runtime.Serialization;
 using Rubicon.Collections;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -127,6 +128,7 @@ public class WxeVariableReference
 
   public WxeVariableReference (string variableName)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("variableName", variableName);
     _name = variableName;
   }
 
