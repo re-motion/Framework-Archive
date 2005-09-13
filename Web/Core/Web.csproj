@@ -200,6 +200,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\ExecutionEngine\WxePageStep.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\ExecutionEngine\WxeStep.xml"
                     BuildAction = "Content"
                 />
@@ -247,6 +251,11 @@
                 />
                 <File
                     RelPath = "ExecutionEngine\WxeException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeExecuteNextStepException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -337,6 +346,11 @@
                 />
                 <File
                     RelPath = "ExecutionEngine\WxeTryCatch.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeUserCancelException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
