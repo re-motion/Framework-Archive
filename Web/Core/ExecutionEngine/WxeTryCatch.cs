@@ -6,6 +6,18 @@ using System.Runtime.Serialization;
 namespace Rubicon.Web.ExecutionEngine
 {
 
+[Serializable]
+[Obsolete ("Use WxeStepList instead")]
+public class WxeTryBlock: WxeStepList
+{
+}
+
+[Serializable]
+[Obsolete ("Use WxeStepList instead")]
+public class WxeFinallyBlock: WxeStepList
+{
+}
+
 [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
 public class WxeExceptionAttribute: Attribute
 {
@@ -81,15 +93,19 @@ public class WxeTryCatch: WxeStep
   {
     Type type = this.GetType();
 
-    Type tryBlockType = type.GetNestedType ("Try", BindingFlags.Public | BindingFlags.NonPublic);
+    Type tryBlockType = type.GetNestedType ("Try", BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
     if (tryBlockType == null)
-      throw new ApplicationException ("Try/catch block type " + type.FullName + " has no nested type named \"Try\".");
+      throw new WxeException ("Try/catch block type " + type.FullName + " has no nested type named \"Try\".");
+    if (! typeof (WxeStepList).IsAssignableFrom (tryBlockType))
+      throw new WxeException ("Type " + tryBlockType.FullName + " must be derived from WxeTryBlock.");
     _trySteps = (WxeStepList) Activator.CreateInstance (tryBlockType);
     _trySteps.SetParentStep (this);
 
-    Type finallyBlockType = type.GetNestedType ("Finally", BindingFlags.Public | BindingFlags.NonPublic);
+    Type finallyBlockType = type.GetNestedType ("Finally", BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
     if (finallyBlockType != null)
     {
+      if (! typeof (WxeStepList).IsAssignableFrom (finallyBlockType))
+        throw new WxeException ("Type " + finallyBlockType.FullName + " must be derived from WxeFinallyBlock.");
       _finallySteps = (WxeStepList) Activator.CreateInstance (finallyBlockType);
       _finallySteps.SetParentStep (this);
     }
@@ -102,11 +118,15 @@ public class WxeTryCatch: WxeStep
         type, 
         "Catch",
         MemberTypes.NestedType,
-        BindingFlags.Public | BindingFlags.NonPublic);
+        BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
 
     _catchBlocks = new ArrayList();
     foreach (Type catchBlockType in catchBlockTypes)
+    {
+      if (! typeof (WxeCatchBlock).IsAssignableFrom (catchBlockType))
+        throw new WxeException ("Type " + catchBlockType.FullName + " must be derived from WxeCatchBlock.");
       Add ((WxeCatchBlock) Activator.CreateInstance (catchBlockType));
+    }
   }
 
   public override void Execute (WxeContext context)
@@ -211,16 +231,6 @@ public class WxeTryCatch: WxeStep
     if (_finallySteps != null)
       _finallySteps.Abort();
   }
-}
-
-[Serializable]
-public class WxeTryBlock: WxeStepList
-{
-}
-
-[Serializable]
-public class WxeFinallyBlock: WxeStepList
-{
 }
 
 [Serializable]
