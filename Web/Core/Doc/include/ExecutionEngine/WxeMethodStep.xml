@@ -11,10 +11,9 @@
         <see cref="WxeMethodWithContext"/> delegate, i.e. no parameters or a single parameter of the 
         <see cref="WxeContext"/> type.
       </para>
-    
     </remarks>
     <example>
-      An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a <b>WxeMethodStep</b>.
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a <b>WxeMethodStep</b>.
 <code>
 [Serializable]
 public class MyFunction: WxeFunction
@@ -29,7 +28,7 @@ public class MyFunction: WxeFunction
   ...
 }
 </code>    
-      An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a <b>WxeMethodStep</b>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a <b>WxeMethodStep</b>
       accepting a <see cref="WxeContext"/> as parameter.
 <code>
 [Serializable]
@@ -58,5 +57,8 @@ public class MyFunction: WxeFunction
       <paramref name="target"/>'s type. Its signature must match either the <see cref="WxeMethod"/> or 
       <see cref="WxeMethodWithContext"/> delegate.
     </param>
+    <exception cref="WxeException">
+      Thrown if the <paramref name="method"/> does not meet the criteria for a <b>WxeMethodStep</b>.
+    </exception>
   </Ctor>
 </WxeMethodStep>
