@@ -3,6 +3,7 @@ using System.Web.UI;
 using System.Web;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.Configuration;
 
 namespace Rubicon.Web
 {
@@ -57,8 +58,8 @@ public sealed class ResourceUrlResolver
 
   /// <summary>
   ///   Returns the physical URL of a resource item.
-  ///   <seealso cref="IResourceUrlResolver"/>.
   /// </summary>
+  /// <seealso cref="IResourceUrlResolver"/>.
   /// <remarks>
   ///   <para>
   ///     Uses the URL &lt;resource root&gt;/&lt;definingType.Assembly&gt;/&lt;ResourceType&gt;/relativeUrl.
@@ -91,27 +92,72 @@ public sealed class ResourceUrlResolver
     ArgumentUtility.CheckNotNull ("resourceType", resourceType);
     ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
 
-    string assemblyName = definingType.Assembly.FullName.Split(',')[0];
+    bool isDesignMode = Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control);
+    string assemblyRoot = GetAssemblyRoot (isDesignMode, definingType.Assembly);
+    return assemblyRoot + resourceType.Name + "/" + relativeUrl;
+  }
+
+  /// <summary> Returns the root folder for all resources belonging to the <paramref name="assembly"/>. </summary>
+  /// <param name="isDesignMode"> <see langword="true"/> if the application is in design mode. </param>
+  /// <returns> 
+  ///   The folder where the resources are expected to be for the <paramref name="assembly"/>. 
+  ///   Always ends on a slash.
+  /// </returns>
+  public static string GetAssemblyRoot (bool isDesignMode, System.Reflection.Assembly assembly)
+  {
+    ArgumentUtility.CheckNotNull ("assembly", assembly);
+    
+    string root = GetRoot (isDesignMode);
+    string assemblyName = assembly.FullName.Split (new char[]{','}, 2)[0];
+
+    return root + assemblyName + "/";
+  }
+
+  /// <summary> Returns the root folder for all resources. </summary>
+  /// <param name="isDesignMode"> <see langword="true"/> if the application is in design mode. </param>
+  /// <returns> 
+  ///   The folder where the resources are expected to be. Ends on a slash unless the root folder is an 
+  ///   empty string.
+  /// </returns>
+  public static string GetRoot (bool isDesignMode)
+  {
     string root;
-    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control))
+    
+    if (isDesignMode)
       root = GetDesignTimeRoot();
     else 
       root = GetRunTimeRoot();
-    if (! root.EndsWith ("/"))
+
+    if (root.Length > 0 && ! root.EndsWith ("/"))
       root += "/";
-    return root + assemblyName + "/" + resourceType.Name + "/" + relativeUrl;
+    return root;
   }
 
   private static string GetRunTimeRoot()
   {
-    string root = Configuration.WebConfiguration.Current.Resources.Root;
+    string root = WebConfiguration.Current.Resources.Root;
 
-    if (Configuration.WebConfiguration.Current.Resources.RelativeToApplicationRoot)
+    switch (WebConfiguration.Current.Resources.RootMode)
     {
-      if (! root.StartsWith ("/"))
-        root = "/" + root;
-      if (HttpRuntime.AppDomainAppVirtualPath != "/")
-        root = HttpRuntime.AppDomainAppVirtualPath + root;
+      case ResourceRootMode.AbsoluteWithApplicationRoot:
+      {
+        if (HttpRuntime.AppDomainAppVirtualPath != "/")
+          root = HttpRuntime.AppDomainAppVirtualPath + "/" + root;
+        if (! root.StartsWith ("/"))
+          root = "/" + root;
+        break;
+      }
+      case ResourceRootMode.Absolute:
+      {
+        if (! root.StartsWith ("/"))
+          root = "/" + root;
+        break;
+      }
+      case ResourceRootMode.Relative:
+      {
+        // root is always relative by default
+        break;
+      }
     }
     return root;
   }
