@@ -1,22 +1,20 @@
 using System;
-using System.Collections;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Collections.Specialized;
 using System.Globalization;
-using System.ComponentModel;
 using System.Reflection;
-using Rubicon.NullableValueTypes;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
 using Rubicon.Globalization;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI;
-using Rubicon.Web.Utilities;
-using Rubicon.Web.Configuration;
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
+using Rubicon.Web.Configuration;
+using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UI;
+using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -78,7 +76,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
 
     if (_page.CurrentStep != null)
-      _page.RegisterHiddenField (WxePageInfo.PageTokenID, _page.CurrentStep.PageToken);
+      _page.RegisterHiddenField (WxePageInfo.PageTokenID, CurrentStep.PageToken);
 
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
     _page.PreRender += new EventHandler(Page_PreRender);
@@ -387,6 +385,20 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       WxeContext wxeContext = WxeContext.Current;
       return ((wxeContext == null) ? null : wxeContext.ReturningFunction); 
     }
+  }
+
+  /// <summary> aves the viewstate into the executing <see cref="WxePageStep"/>. </summary>
+  /// <param name="viewState"> An <b>ASP.NET</b> viewstate object. </param>
+  public void SavePageStateToPersistenceMedium (object viewState)
+  {
+    CurrentStep.SavePageStateToPersistenceMedium (viewState);
+  }
+
+  /// <summary> Returns the viewstate previously saved into the executing <see cref="WxePageStep"/>. </summary>
+  /// <returns> An <b>ASP.NET</b> viewstate object. </returns>
+  public object LoadPageStateFromPersistenceMedium()
+  {
+    return CurrentStep.LoadPageStateFromPersistenceMedium ();
   }
 
   /// <summary> 

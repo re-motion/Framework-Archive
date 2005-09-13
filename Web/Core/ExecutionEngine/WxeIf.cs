@@ -18,16 +18,17 @@ public abstract class WxeIf: WxeStep
     Type type = this.GetType();
     if (_stepList == null)
     {
-      MethodInfo ifMethod = type.GetMethod ("If", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[0], null);
+      MethodInfo ifMethod = type.GetMethod (
+        "If", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, new Type[0], null);
       if (ifMethod == null || ifMethod.ReturnType != typeof (bool))
-        throw new ApplicationException ("If-block " + type.FullName + " does not define method \"bool If()\".");
+        throw new WxeException ("If-block " + type.FullName + " does not define method \"bool If()\".");
 
       bool result = (bool) ifMethod.Invoke (this, new object[0]);
       if (result)
       {
         _stepList = GetResultList ("Then");
         if (_stepList == null)
-          throw new ApplicationException ("If-block " + type.FullName + " does not define nested class \"Then\".");
+          throw new WxeException ("If-block " + type.FullName + " does not define nested class \"Then\".");
       }
       else
       {
@@ -44,11 +45,11 @@ public abstract class WxeIf: WxeStep
   private WxeStepList GetResultList (string name)
   {
     Type type = this.GetType();
-    Type stepListType = type.GetNestedType (name, BindingFlags.Public | BindingFlags.NonPublic);
+    Type stepListType = type.GetNestedType (name, BindingFlags.NonPublic | BindingFlags.DeclaredOnly);
     if (stepListType == null)
       return null;
     if (! typeof (WxeStepList).IsAssignableFrom (stepListType))
-      throw new ApplicationException ("Type " + stepListType.FullName + " must be derived from WxeStepList.");
+      throw new WxeException ("Type " + stepListType.FullName + " must be derived from WxeStepList.");
 
     WxeStepList resultList = (WxeStepList) System.Activator.CreateInstance (stepListType);
     resultList.SetParentStep (this);

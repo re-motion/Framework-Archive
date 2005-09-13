@@ -199,10 +199,11 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   protected virtual void OnBeforeInit()
   {
   }
+
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
     if (WebConfiguration.Current.ExecutionEngine.ViewStateInSession)
-      CurrentStep.SavePageStateToPersistenceMedium (viewState);
+      _wxeInfo.SavePageStateToPersistenceMedium (viewState);
     else
       base.SavePageStateToPersistenceMedium (viewState);
   }
@@ -210,7 +211,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   protected override object LoadPageStateFromPersistenceMedium()
   {
     if (WebConfiguration.Current.ExecutionEngine.ViewStateInSession)
-      return CurrentStep.LoadPageStateFromPersistenceMedium ();
+      return _wxeInfo.LoadPageStateFromPersistenceMedium ();
     else
       return base.LoadPageStateFromPersistenceMedium ();
   }

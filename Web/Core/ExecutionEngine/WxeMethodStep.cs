@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Specialized;
-using System.Runtime.Serialization;
 using System.Reflection;
 using Rubicon.Utilities;
-using Rubicon.Collections;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -57,7 +53,7 @@ public class WxeMethodStep: WxeStep
 
     _target = target;
     _methodName = method.Name;
-    _hasContext = parameters.Length == 1;
+    _hasContext = parameters.Length > 0;
   }
 
   //  public WxeMethodStep (WxeMethod method)

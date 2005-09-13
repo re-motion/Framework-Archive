@@ -12,98 +12,67 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.ExecutionEngine
 {
 
-/// <summary> This exception is used by the execution engine to end the execution of a <see cref="WxePageStep"/>. </summary>
-[Serializable]
-public class WxeExecuteNextStepException: WxeException
-{
-  public WxeExecuteNextStepException()
-    : base ("This exception does not indicate an error. It is used to roll back the call stack. It is recommended to disable breaking on this exeption type while debugging.")
-  {
-  }
-
-  protected WxeExecuteNextStepException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
-  {
-  }
-}
-
-/// <summary> 
-///   Throw this exception to cancel the execution of a <see cref="WxeFunction"/> while executing a 
-///   <see cref="WxePageStep"/>. 
-/// </summary>
-[Serializable]
-public class WxeUserCancelException: WxeException
-{
-  public WxeUserCancelException()
-    : this ("User cancelled this step.")
-  {
-  }
-
-  public WxeUserCancelException(string message)
-    : base (message)
-  {
-  }
-  public WxeUserCancelException(string message, Exception innerException)
-    : base (message, innerException)
-  {
-  }
-
-  protected WxeUserCancelException (SerializationInfo info, StreamingContext context)
-    : base (info, context)
-  {
-  }
-}
-
+/// <summary> This step interrupts the server side execution to display a page to the user. </summary>
+/// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Class/*' />
 [Serializable]
 public class WxePageStep: WxeStep
 {
   private string _page = null;
   private string _pageref = null;
-  [NonSerialized]
-  private Assembly _resourceAssembly = null;
-  private string _resourceAssemblyName = null;
+  private string _pageRoot;
   private string _pageToken;
   private WxeFunction _function;
   private NameValueCollection _postBackCollection;
   private string _viewState;
 
+  /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
   public WxePageStep (string page)
+    : this (null, page)
   {
-    _page = page;
-    init();
   }
 
+  /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page" or @name="resourceAssembly"]' />
   protected WxePageStep (Assembly resourceAssembly, string page)
   {
-    _resourceAssembly = resourceAssembly;
+    ArgumentUtility.CheckNotNullOrEmpty ("page", page);
+
     _page = page;
-    init();
-  }
-  public WxePageStep (WxeVariableReference page)
-  {
-    _pageref = page.Name;
-    init();
-  }
-  protected WxePageStep (Assembly resourceAssembly, WxeVariableReference page)
-  {
-    _resourceAssembly = resourceAssembly;
-    _pageref = page.Name;
-    init();
+    Initialize (resourceAssembly);
   }
 
-  private void init()
+  /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref"]' />
+  public WxePageStep (WxeVariableReference pageref)
+    : this (null, pageref)
+  {
+  }
+
+  /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="pageref" or @name="resourceAssembly"]' />
+  protected WxePageStep (Assembly resourceAssembly, WxeVariableReference pageref)
+  {
+    ArgumentUtility.CheckNotNull ("pageref", pageref);
+
+    _pageref = pageref.Name;
+    Initialize (resourceAssembly);
+  }
+
+  /// <summary> Common initalization code for the <see cref="WxePageStep"/>. </summary>
+  /// <param name="resourceAssembly"> The (optional) <see cref="Assembly"/> containing the page. </param>
+  private void Initialize (Assembly resourceAssembly)
   {
     _pageToken = Guid.NewGuid().ToString();
     _function = null;
-    if (_resourceAssembly != null)
-    {
-       _resourceAssemblyName = _resourceAssembly.FullName;
-      int comma = _resourceAssemblyName.IndexOf (',');
-      if (comma >= 0)
-        _resourceAssemblyName = _resourceAssemblyName.Substring (0, comma);
-    }
+
+    if (resourceAssembly == null)
+      _pageRoot = string.Empty;
+    else
+      _pageRoot = ResourceUrlResolver.GetAssemblyRoot (false, resourceAssembly);
   }
 
+  /// <summary> The URL of the page to be displayed by this <see cref="WxePageStep"/>. </summary>
   protected string Page
   { 
     get
@@ -114,13 +83,16 @@ public class WxePageStep: WxeStep
       else if (_pageref != null && Variables[_pageref] != null)
         name = (string) Variables[_pageref];
       else
-        throw new ApplicationException ("No Page specified for " + this.GetType().FullName + ".");
-      if (_resourceAssemblyName != null)
-        name = "res/" + _resourceAssemblyName + "/" + name;
-      return name;
+        throw new WxeException ("No Page specified for " + this.GetType().FullName + ".");
+      return _pageRoot + name;
     }
   }
 
+  /// <summary> 
+  ///   Displays the <see cref="WxePageStep"/>'s page or the sub-function that has been invoked by the 
+  ///   <see cref="ExecuteFunction"/> method.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Execute/*' />
   public override void Execute (WxeContext context)
   {
     if (_function == null)
@@ -163,6 +135,8 @@ public class WxePageStep: WxeStep
     }
   }
 
+  /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecutingStep/*' />
   public override WxeStep ExecutingStep
   {
     get
@@ -174,30 +148,27 @@ public class WxePageStep: WxeStep
     }
   }
 
-  /// <summary>
-  ///   Executes the specified WXE function, then returns to this page.
-  /// </summary>
-  /// <remarks>
-  ///   Note that if you call this method from a postback event handler, the postback event will be raised again when 
-  ///   the user returns to this page. You can either manually check whether the event was re-posted using 
-  ///   <see cref="IWxePage.IsReturningPostBack"/> or suppress the re-post by calling 
-  ///   <see cref="ExecuteFunctionNoRepost"/>.
-  /// </remarks>
+  /// <summary> Executes the specified <see cref="WxeFunction"/>, then returns to this page. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecuteFunction/*' />
   public void ExecuteFunction (IWxePage page, WxeFunction function)
   {
+    //  Back-up postback data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
+    
     InternalExecuteFunction (page, function);
   }
 
   /// <summary>
-  ///   Executes the specified WXE function, then returns to this page without raising the postback event after
-  ///   the user returns.
+  ///   Executes the specified <see cref="WxeFunction"/>, then returns to this page without raising the 
+  ///   postback event after the user returns.
   /// </summary>
-  /// <remarks> Invoke this method by calling <see cref="IWxePage.ExecuteFunctionNoRepost"/>. </remarks>
+  /// <remarks> Invoke this method by calling <see cref="WxePageInfo.ExecuteFunctionNoRepost"/>. </remarks>
   internal void ExecuteFunctionNoRepost (IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
   {
+    //  Back-up post back data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
 
+    //  Remove post back event source from the post back data
     if (usesEventTarget)
     {
       _postBackCollection.Remove (ControlHelper.PostEventSourceID);
@@ -212,6 +183,8 @@ public class WxePageStep: WxeStep
     InternalExecuteFunction (page, function);
   }
 
+  /// <summary> Executes the specified <see cref="WxeFunction"/>, then returns to this page. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/InternalExecuteFunction/*' />
   private void InternalExecuteFunction (IWxePage page, WxeFunction function)
   {
     if (_function != null)
@@ -227,16 +200,22 @@ public class WxePageStep: WxeStep
     Execute();
   }
 
+  /// <summary> Gets the token for this page step. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/PageToken/*' />
   public string PageToken
   {
     get { return _pageToken; }
   }
 
+  /// <summary> Returns the string identifying the <b>ASP.NET</b> page used for this <see cref="WxePageStep"/>. </summary>
+  /// <returns> The value of <see cref="Page"/>. </returns>
   public override string ToString()
   {
     return Page;
   }
 
+  /// <summary> Saves the passed <paramref name="viewState"/> object into the <see cref="WxePageStep"/>. </summary>
+  /// <param name="viewState"> An <b>ASP.NET</b> viewstate object. </param>
   public void SavePageStateToPersistenceMedium (object viewState)
   {
     LosFormatter formatter = new LosFormatter ();
@@ -245,19 +224,26 @@ public class WxePageStep: WxeStep
     _viewState = writer.ToString();
   }
 
+  /// <summary> 
+  ///   Returns the viewstate previsously saved through the <see cref="SavePageStateToPersistenceMedium"/> method. 
+  /// </summary>
+  /// <returns> An <b>ASP.NET</b> viewstate object. </returns>
   public object LoadPageStateFromPersistenceMedium()
   {
     LosFormatter formatter = new LosFormatter ();
     return formatter.Deserialize (_viewState);
   }
-
+  
+  /// <summary> 
+  ///   Aborts the <see cref="WxePageStep"/>. Aborting will cascade to any <see cref="WxeFunction"/> executed
+  ///   in the scope of this step.
+  /// </summary>
   protected override void AbortRecursive()
   {
     base.AbortRecursive ();
     if (_function != null)
       _function.Abort();
   }
-
 }
 
 }
