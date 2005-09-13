@@ -118,7 +118,7 @@ public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
 
   class Step1: WxeTryCatch
   {
-    class Try: WxeTryBlock
+    class Try: WxeStepList
     {
       SampleWxeSubFunction Function { get { return (SampleWxeSubFunction) ParentFunction; } }
 
@@ -175,7 +175,7 @@ public class SampleWxeSubFunction: WxeFunction, ISampleFunctionVariables
       WxeStep Step3 = new WxePageStep ("WebForm1.aspx");
     }
 
-    class Finally: WxeFinallyBlock
+    class Finally: WxeStepList
     {
       SampleWxeSubFunction Function { get { return (SampleWxeSubFunction) ParentFunction; } }
 
