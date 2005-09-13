@@ -22,6 +22,7 @@ public class SessionForm : WxePage
 {
   protected Rubicon.Web.UI.Controls.WebButton PostBackButton;
   protected Rubicon.Web.UI.Controls.WebButton WebButton1;
+  protected System.Web.UI.WebControls.LinkButton LinkButton1;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -35,7 +36,6 @@ public class SessionForm : WxePage
 		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
 		//
 		InitializeComponent();
-		
     base.OnInit(e);
 	}
 	#region Web Form Designer generated code
