@@ -34,7 +34,7 @@ public class WxeAdvancedStep: WxeStep
   }
 }
 </code>
-    An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a field set to the advanced 
+    An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a field set to the advanced 
     step.
 <code>
 [Serializable]
@@ -47,7 +47,7 @@ public class MyFunction: WxeFunction
   ...
 }
 </code>    
-    An example where the 3rd step of the <see cref="WxeFunction"/> <b>MyFunction</b> is a class derived from
+    An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a class derived from
     <see cref="WxeStep"/>.
 <code>
 [Serializable]
