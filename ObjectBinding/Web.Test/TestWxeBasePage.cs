@@ -66,6 +66,12 @@ public class TestWxeBasePage:
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, url);
     }
 
+    key = GetType().FullName + "_Global";
+    if (! HtmlHeadAppender.Current.IsRegistered (key))
+    {
+      HtmlHeadAppender.Current.RegisterStylesheetLink (key, "Html/global.css");
+    }
+
     //  A call to the ResourceDispatcher to get have the automatic resources dispatched
     ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
 
