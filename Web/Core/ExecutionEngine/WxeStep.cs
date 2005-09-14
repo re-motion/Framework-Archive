@@ -16,13 +16,20 @@ public abstract class WxeStep
   /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetFunction/*' />
   public static WxeFunction GetFunction (WxeStep step)
   {
+    return (WxeFunction) WxeStep.GetStepByType (step, typeof (WxeFunction));
+  }
+
+  /// <summary> Gets the first step of the specified <paramref name="type"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetStepByType/*' />
+  protected static WxeStep GetStepByType (WxeStep step, Type type)
+  {
+    ArgumentUtility.CheckNotNullAndType ("type", type, typeof (WxeStep));
     for (; 
           step != null; 
           step = step.ParentStep)
     {
-      WxeFunction function = step as WxeFunction;
-      if (function != null)
-        return function;
+      if (type.IsAssignableFrom (step.GetType()))
+        return step;
     }
     return null;
   }
