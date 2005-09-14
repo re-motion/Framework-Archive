@@ -10,7 +10,11 @@ public class SessionWxeFunction: WxeFunction
 {
   public SessionWxeFunction ()
   {
-    ReturnUrl = "javascript:window.close();";
+  }
+
+  public SessionWxeFunction (params object[] args)
+    : base (args)
+  {
   }
 
   [WxeParameter (0, true)]
