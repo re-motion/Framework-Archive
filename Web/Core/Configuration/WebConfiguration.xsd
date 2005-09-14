@@ -36,8 +36,8 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="Undefined" />
             <xs:enumeration value="A" />
-            <xs:enumeration value="AA" />
-            <xs:enumeration value="AAA" />
+            <xs:enumeration value="DoubleA" />
+            <xs:enumeration value="TripleA" />
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="ResourceRootMode">

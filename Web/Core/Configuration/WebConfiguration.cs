@@ -211,7 +211,7 @@ public class WcagConfiguration
 
   /// <summary> Gets or sets the WCAG conformance level required in this web-application. </summary>
   /// <value> A value of the <see cref="WaiConformanceLevel"/> enumeration. Defaults to <see cref="WaiConformanceLevel.Undefined"/>. </value>
-  [XmlAttribute ("conformancelevel")]
+  [XmlAttribute ("conformanceLevel")]
   public WaiConformanceLevel ConformanceLevel
   {
     get { return _conformanceLevel; }

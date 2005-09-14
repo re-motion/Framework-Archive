@@ -120,4 +120,27 @@ public override void LoadPageStateFromPersistenceMedium()
     <param name="sender"> For calls from event handlers, the control that caused the event. </param>
     <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
   </ExecuteFunctionNoRepost>
+  <RegisterClientSidePageAbortHandler>
+    <param name="key"> Unique key that identifies the function. </param>
+    <param name="function"> The name of the Java Script function to be called. </param>
+    <remarks> 
+      <para>
+        The Java Script function will be called without arguments and a return value will be ignored.
+      </para><para>
+        Any script blocks with the same key parameter values are considered duplicates. 
+      </para>
+    </remarks>
+  </RegisterClientSidePageAbortHandler>
+  <RegisterClientSidePagePostBackHandler>
+    <param name="key"> Unique key that identifies the function. </param>
+    <param name="function"> The name of the Java Script function to be called. </param>
+    <remarks> 
+      <para>
+        The Java Script function will be called with two arguments: Event Target and Event Argument.
+        A return value will be ignored.
+      </para><para>
+        Any script blocks with the same key parameter values are considered duplicates. 
+      </para>
+    </remarks>
+  <RegisterClientSidePagePostBackHandler>
 </IWxePage>

@@ -8,5 +8,5 @@
         <smartNavigation_XmlElement left="9206" top="3725" width="5292" height="2963" selected="0" zOrder="11" index="3" expanded="1" />
     </rubicon.web_XmlElement>
     <WcagLevel_XmlSimpleType left="6428" top="8223" width="5292" height="2963" selected="0" zOrder="14" index="1" expanded="1" />
-    <ResourceRootPath_XmlSimpleType left="15132" top="1000" width="5292" height="2963" selected="0" zOrder="16" index="2" expanded="1" />
+    <ResourceRootMode_XmlSimpleType left="15132" top="1000" width="5292" height="2963" selected="0" zOrder="16" index="2" expanded="1" />
 </XSDDesignerLayout>

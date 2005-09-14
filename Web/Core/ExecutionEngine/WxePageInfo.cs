@@ -53,6 +53,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private bool _executeNextStep = false;
   private HttpResponse _response; // used for cleanup in Dispose
 
+  private NameValueCollection _clientSideAbortEventHandlers = new NameValueCollection();
+
   /// <summary> Initializes a new instance of the <b>WxePageInfo</b> type. </summary>
   /// <param name="page"> 
   ///   The <see cref="IWxePage"/> containing this <b>WxePageInfo</b> object. 
@@ -224,11 +226,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
    
     string key = "wxeInitialize";
-    PageUtility.RegisterStartupScriptBlock ((Page)_page, key,
+    PageUtility.RegisterClientScriptBlock ((Page)_page, key,
           "Wxe_Initialize ('" + _wxeForm.ClientID + "', " 
         + refreshIntervall.ToString() + ", " + refreshPath + ", " 
         + abortPath + ", " + abortMessage + ", "
-        + smartScrollingFieldID + ", " + smartFocusFieldID + ");");
+        + smartScrollingFieldID + ", " + smartFocusFieldID + ", "
+        + "'TestFunction'" + ");");
   }
 
   public NameValueCollection EnsurePostBackModeDetermined (HttpContext context)
@@ -286,7 +289,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,String,Control,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback)
+  public void ExecuteFunction (
+      WxeFunction function, 
+      string target, 
+      string features, 
+      Control sender, 
+      bool returningPostback)
   {
     bool enableCleanUp = !returningPostback;
     WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
@@ -311,9 +319,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       string eventtarget = _page.GetPostBackCollection()[ControlHelper.PostEventSourceID];
       string eventargument = _page.GetPostBackCollection()[ControlHelper.PostEventArgumentID ];
       returnScript = string.Format (
-            "if (window.opener && window.opener.wxeDoPostBack && window.opener.document.getElementById('{0}') && window.opener.document.getElementById('{0}').value == '{1}') \n"
-          + "  window.opener.wxeDoPostBack('{2}', '{3}', '{4}'); \n"
-          + "window.close();", 
+            "\r\n"
+          + "if (   window.opener != null \r\n"
+          + "    && ! window.opener.closed \r\n"
+          + "    && window.opener.wxeDoPostBack != null \r\n"
+          + "    && window.opener.document.getElementById('{0}') != null \r\n"
+          + "    && window.opener.document.getElementById('{0}').value == '{1}') \r\n"
+          + "{{ \r\n"
+          + "  window.opener.wxeDoPostBack('{2}', '{3}', '{4}'); \r\n"
+          + "}} \r\n"
+          + "window.close(); \r\n",
           WxePageInfo.PageTokenID,
           _page.CurrentStep.PageToken,
           eventtarget, 
@@ -323,9 +338,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     else
     {
       returnScript = string.Format (
-            "if (window.opener && window.opener.wxeDoSubmit && window.opener.document.getElementById('{0}') && window.opener.document.getElementById('{0}').value == '{1}') \n"
-          + "  window.opener.wxeDoSubmit('{2}', '{3}'); \n"
-          + "window.close();", 
+            "\r\n"
+          + "if (   window.opener != null \r\n"
+          + "    && ! window.opener.closed \r\n"
+          + "    && window.opener.wxeDoSubmit != null \r\n"
+          + "    && window.opener.document.getElementById('{0}') != null \r\n"
+          + "    && window.opener.document.getElementById('{0}').value == '{1}') \r\n"
+          + "{{ \r\n"
+          + "  window.opener.wxeDoSubmit('{2}', '{3}'); \r\n"
+          + "}} \r\n"
+          + "window.close(); \r\n",
           WxePageInfo.PageTokenID,
           _page.CurrentStep.PageToken,
           sender.ClientID, 
@@ -385,6 +407,21 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       WxeContext wxeContext = WxeContext.Current;
       return ((wxeContext == null) ? null : wxeContext.ReturningFunction); 
     }
+  }
+
+  /// <summary> Implements <see cref="IWxePage.RegisterClientSidePageAbortHandler">IWxePage.RegisterClientSidePageAbortHandler</see>. </summary>
+  public void RegisterClientSidePageAbortHandler (string key, string function)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+    ArgumentUtility.CheckNotNullOrEmpty ("function", function);
+    
+    _clientSideAbortEventHandlers[key] = function;
+  }
+
+  /// <summary> Implements <see cref="IWxePage.RegisterClientSidePagePostBackHandler">IWxePage.RegisterClientSidePagePostBackHandler</see>. </summary>
+  public void RegisterClientSidePagePostBackHandler (string key, string function)
+  {
+    throw new NotImplementedException();
   }
 
   /// <summary> aves the viewstate into the executing <see cref="WxePageStep"/>. </summary>

@@ -74,6 +74,14 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// <value> <see langowrd="true"/> to abort the session upon navigtion away from the page. </value>
   bool IsAbortEnabled { get; }
 
+  /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePageAbortHandler/*' />
+  void RegisterClientSidePageAbortHandler (string key, string function);
+
+  /// <summary> Registers a Java Script function to be executed when the page is posted back. </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePagePostBackHandler/*' />
+  void RegisterClientSidePagePostBackHandler (string key, string function);
+
   /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
@@ -97,21 +105,21 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   }
 
   /// <summary> Executes a WXE function in another window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
   public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
     _wxeInfo.ExecuteFunction (function, target, sender, returningPostback);
   }
 
   /// <summary> Executes a WXE function in another window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
   public void ExecuteFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
     _wxeInfo.ExecuteFunction (function, target, features, sender, returningPostback);
   }
 
   /// <summary> Executes a WXE function in another window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function"]' />
   public void ExecuteFunction (WxeFunction function)
   {
     _wxeInfo.ExecuteFunction (function);
@@ -123,7 +131,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   /// <remarks>
   ///   This overload tries to determine automatically whether the current event was caused by the __EVENTTARGET field.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender"]' />
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
   {
     _wxeInfo.ExecuteFunctionNoRepost (function, sender);
@@ -136,7 +144,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   This overload allows you to specify whether the current event was caused by the __EVENTTARGET field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">ExecuteFunctionNoRepost(WxeFunction,Control)</see>.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
   {
     _wxeInfo.ExecuteFunctionNoRepost (function, sender, usesEventTarget);
@@ -154,6 +162,20 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   public WxeFunction ReturningFunction
   {
     get { return _wxeInfo.ReturningFunction; }
+  }
+
+  /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageAbortHandler/*' />
+  public void RegisterClientSidePageAbortHandler (string key, string function)
+  {
+    _wxeInfo.RegisterClientSidePageAbortHandler (key, function);
+  }
+
+  /// <summary> Registers a Java Script function to be executed when the page is posted back. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePagePostBackHandler/*' />
+  public void RegisterClientSidePagePostBackHandler (string key, string function)
+  {
+    _wxeInfo.RegisterClientSidePagePostBackHandler (key, function);
   }
 
   #endregion
