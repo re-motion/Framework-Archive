@@ -1,6 +1,7 @@
 using System;
 using log4net;
 using Rubicon.Data;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data
 {
@@ -29,14 +30,7 @@ public abstract class WxeTransactionBase: WxeStepList
   /// <returns> True, if one of the parents of the specified Step is a WxeTransactionBase, false otherwise. </returns>
   public static bool HasWxeTransaction (WxeStep step)
   {
-    for (;
-         step != null;
-         step = step.ParentStep)
-    {
-      if (step is WxeTransactionBase)
-        return true;
-    }
-    return false;
+    return WxeStep.GetStepByType (step, typeof (WxeTransactionBase)) != null;
   }
 
   private static ILog s_log = LogManager.GetLogger (typeof (WxeTransactionBase));
@@ -45,6 +39,8 @@ public abstract class WxeTransactionBase: WxeStepList
   private ITransaction _previousTransaction = null;
   private bool _autoCommit;
   private bool _forceRoot;
+  private bool _hasExecutionStarted = false;
+  private bool _isPreviousTransactionRestored = false;
 
   /// <summary> Creates a new instance. </summary>
   /// <param name="steps"> Initial step list. Can be <see langword="null"/>. </param>
@@ -65,64 +61,40 @@ public abstract class WxeTransactionBase: WxeStepList
       AddStepList (steps);
   }
 
-  protected abstract ITransaction CreateTransaction();
-  protected abstract ITransaction GetCurrentTransaction();
-  protected abstract void SetCurrentTransaction (ITransaction transaction);
+  protected abstract ITransaction CurrentTransaction { get; set; }
+  protected abstract ITransaction CreateRootTransaction();
 
-  public override void Execute (WxeContext context)
+  protected virtual ITransaction CreateChildTransaction (ITransaction transaction)
   {
-    s_log.Debug ("Starting Execute of " + this.GetType().Name);
-    
-    if (_transaction == null)
-    {
-      WxeTransactionBase parentTransaction = ParentTransaction;
-      
-      if (   ! _forceRoot 
-          && parentTransaction != null 
-          && parentTransaction.Transaction != null)
-      {
-        _previousTransaction = parentTransaction.Transaction;
-        if (parentTransaction.Transaction.CanCreateChild)
-          _transaction = parentTransaction.Transaction.CreateChild();
-        else
-          _transaction = CreateTransaction();
+    ArgumentUtility.CheckNotNull ("transaction", transaction);
 
-        s_log.Debug ("Created child " + this.GetType().Name + ".");
-      }
-      else
-      {
-        _previousTransaction = GetCurrentTransaction();
-        _transaction = CreateTransaction();
-
-        s_log.Debug ("Created root " + this.GetType().Name + ".");
-      }
-    }
-
-    SetCurrentTransaction (_transaction);
-
-    try
-    {
-      base.Execute (context);
-    }
-    catch (Exception e)
-    {
-      if (e is System.Threading.ThreadAbortException)
-        throw;
-
-      RollbackTransaction();
-      s_log.Debug ("Aborted Execute of " + this.GetType().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType().FullName + ").");
-  
-      throw;
-    }
-
-    if (_autoCommit)
-      CommitTransaction();
+    if (transaction.CanCreateChild)
+      return transaction.CreateChild();
     else
-      RollbackTransaction();
+      return CreateRootTransaction();
+  }
 
-    // TODO: Abort entire function?
-    
-    s_log.Debug ("Finished Execute of " + this.GetType().Name);
+  protected ITransaction CreateTransaction()
+  {
+    WxeTransactionBase parentTransaction = ParentTransaction;
+    ITransaction transaction = null;
+
+    bool isParentTransactionNull = parentTransaction == null || parentTransaction.Transaction == null;
+    if (_forceRoot || isParentTransactionNull)
+    {
+      transaction = CreateRootTransaction();
+      s_log.Debug ("Created root " + this.GetType().Name + ".");
+    }
+    else
+    {
+      if (parentTransaction.Transaction != CurrentTransaction)
+        throw new InvalidOperationException ("The parent transaction does not match the current transaction.");
+
+      transaction = CreateChildTransaction (parentTransaction.Transaction);
+      s_log.Debug ("Created child " + this.GetType().Name + ".");
+    }
+
+    return transaction;
   }
 
   /// <summary> Gets the first parent of type <see cref="WxeTransactionBase"/>. </summary>
@@ -140,32 +112,90 @@ public abstract class WxeTransactionBase: WxeStepList
     get { return _transaction; } 
   }
 
+  /// <summary> Sets the encapsualted transaction. </summary>
+  /// <remarks> Make this method protected virtual once the requirement arises to use an existing transaction. </remarks>
+  /// <exclude/>
+  private void SetTransaction (ITransaction transaction)
+  {
+    ArgumentUtility.CheckNotNull ("transaction", transaction);
+    if (_hasExecutionStarted) throw new InvalidOperationException ("Cannot set the Transaction after the execution has started.");
+    _transaction = transaction;
+  }
+
+  public override void Execute (WxeContext context)
+  {
+    s_log.Debug ("Entering Execute of " + this.GetType().Name);
+    
+    if (! _hasExecutionStarted)
+    {
+      _previousTransaction = CurrentTransaction;
+      if (_transaction == null)
+        _transaction = CreateTransaction();
+      _hasExecutionStarted = true;
+    }
+
+    CurrentTransaction = _transaction;
+
+    try
+    {
+      base.Execute (context);
+    }
+    catch (Exception e)
+    {
+      if (e is System.Threading.ThreadAbortException)
+        throw;
+
+      RollbackTransaction();
+      RestorePreviousTransaction();
+      s_log.Debug ("Aborted Execute of " + this.GetType().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType().FullName + ").");
+  
+      throw;
+    }
+
+    if (_autoCommit)
+      CommitTransaction();
+    else
+      RollbackTransaction();
+    RestorePreviousTransaction();
+    
+    s_log.Debug ("Leaving Execute of " + this.GetType().Name);
+  }
+
   protected override void AbortRecursive()
   {
     s_log.Debug ("Aborting " + this.GetType().Name);
     base.AbortRecursive();
     RollbackTransaction();
+    RestorePreviousTransaction();
   }
 
-  private void CommitTransaction()
+  protected void CommitTransaction()
   {
     if (_transaction != null)
     {
       s_log.Debug ("Committing " + _transaction.GetType().Name + ".");
       _transaction.Commit();
       _transaction = null;
-      SetCurrentTransaction (_previousTransaction);
     }
   }
 
-  private void RollbackTransaction()
+  protected void RollbackTransaction()
   {
     if (_transaction != null)
     {
       s_log.Debug ("Rolling back " + _transaction.GetType().Name + ".");
       _transaction.Rollback();
       _transaction = null;
-      SetCurrentTransaction (_previousTransaction);
+    }
+  }
+
+  protected void RestorePreviousTransaction()
+  {
+    if (_hasExecutionStarted && ! _isPreviousTransactionRestored)
+    {
+      CurrentTransaction = _previousTransaction;
+      _previousTransaction = null;
+      _isPreviousTransactionRestored = true;
     }
   }
 }
