@@ -55,6 +55,34 @@ public class WxeStepTest: WxeTest
   }
 
   [Test]
+  public void GetStepByTypeForNull()
+  {
+    WxeStep step = TestStep.GetStepByType (null, typeof (WxeStep));
+    Assert.IsNull (step);    
+  }
+
+  [Test]
+  public void GetStepByTypeForTestStep()
+  {
+    WxeStep step = TestStep.GetStepByType (_standAloneStep, typeof (TestStep));
+    Assert.AreSame (_standAloneStep, step);    
+  }
+
+  [Test]
+  public void GetStepByTypeForWxeFunction()
+  {
+    WxeStep step = TestStep.GetStepByType (_nestedLevel2FunctionStep, typeof (WxeFunction));
+    Assert.AreSame (_nestedLevel2Function, step);    
+  }
+
+  [Test]
+  public void GetStepByTypeForWrongType()
+  {
+    WxeStep step = TestStep.GetStepByType (_nestedLevel2FunctionStep, typeof (TestFunctionWithInvalidSteps));
+    Assert.IsNull (step);    
+  }
+
+  [Test]
   public void GetFunctionForStep()
   {
     WxeFunction function = WxeStep.GetFunction (_nestedLevel1FunctionStep);

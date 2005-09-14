@@ -6,6 +6,11 @@ namespace Rubicon.Web.Test.ExecutionEngine
 
 public class TestStep: WxeStep
 {
+  public static new WxeStep GetStepByType (WxeStep step, Type type)
+  {
+    return WxeStep.GetStepByType (step, type);
+  }
+
   private bool _isExecuteCalled;
   private bool _isAbortRecursiveCalled;
   private WxeContext _wxeContext;
