@@ -115,7 +115,7 @@ public abstract class WxeTransactionBase: WxeStepList
   /// <summary> Sets the encapsualted transaction. </summary>
   /// <remarks> Make this method protected virtual once the requirement arises to use an existing transaction. </remarks>
   /// <exclude/>
-  private void SetTransaction (ITransaction transaction)
+  protected virtual void SetTransaction (ITransaction transaction)
   {
     ArgumentUtility.CheckNotNull ("transaction", transaction);
     if (_hasExecutionStarted) throw new InvalidOperationException ("Cannot set the Transaction after the execution has started.");
@@ -174,9 +174,19 @@ public abstract class WxeTransactionBase: WxeStepList
     if (_transaction != null)
     {
       s_log.Debug ("Committing " + _transaction.GetType().Name + ".");
-      _transaction.Commit();
+      CommitTransaction(_transaction);
       _transaction = null;
     }
+  }
+
+  private void CommitTransaction (ITransaction transaction)
+  {
+    transaction.Commit();
+  }
+  
+  private void RollbackTransaction (ITransaction transaction)
+  {
+    transaction.Rollback();
   }
 
   protected void RollbackTransaction()
@@ -184,7 +194,7 @@ public abstract class WxeTransactionBase: WxeStepList
     if (_transaction != null)
     {
       s_log.Debug ("Rolling back " + _transaction.GetType().Name + ".");
-      _transaction.Rollback();
+      RollbackTransaction(_transaction);
       _transaction = null;
     }
   }
