@@ -41,7 +41,7 @@ public class WcagUtility
     return WebConfiguration.Current.Wcag.Debug;
   }
 
-  public static Rubicon.Web.Configuration.WaiConformanceLevel GetWaiConformanceLevel()
+  public static WaiConformanceLevel GetWaiConformanceLevel()
   {
     return WebConfiguration.Current.Wcag.ConformanceLevel;
   }
