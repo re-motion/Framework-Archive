@@ -22,6 +22,9 @@ namespace OBWTest
 public class StartForm : System.Web.UI.Page
 {
   protected System.Web.UI.WebControls.Button Button1;
+  protected Rubicon.Web.UI.Controls.WebButton Button1Button;
+  protected Rubicon.Web.UI.Controls.WebButton Submit1Button;
+  protected Rubicon.Web.UI.Controls.WebButton Button2Button;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	#region Web Form Designer generated code
@@ -40,6 +43,9 @@ public class StartForm : System.Web.UI.Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.Button1Button.Click += new System.EventHandler(this.Button1Button_Click);
+    this.Submit1Button.Click += new System.EventHandler(this.Submit1Button_Click);
+    this.Button2Button.Click += new System.EventHandler(this.Button2Button_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -181,6 +187,21 @@ public class StartForm : System.Web.UI.Page
     Debug.WriteLine (string.Format ("Deserializing Attribute version: {0} ms", (end - start)/10000));
 
     Debug.WriteLine("");
+  }
+
+  private void Button1Button_Click(object sender, System.EventArgs e)
+  {
+  
+  }
+
+  private void Submit1Button_Click(object sender, System.EventArgs e)
+  {
+  
+  }
+
+  private void Button2Button_Click(object sender, System.EventArgs e)
+  {
+  
   }
 }
 
