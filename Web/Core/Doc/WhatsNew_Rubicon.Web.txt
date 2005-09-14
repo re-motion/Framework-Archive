@@ -12,6 +12,13 @@
 - Rubicon.Web.ExecutionEngine.WxePageStep
   * Bugfix: Die gerade executed Function wurde nicht aborted, wenn der Step aborted wurde.
 
+- Rubicon.Web.ExecutionEngine.WxePage
+  * ExecuteFunction und ExecuteFunctionNoRepost testen nun, dass der Sender IPostBackDataHandler oder 
+    IPostBackDataHandler implementieren. Damit wird verhindert dass Pages oder UserControls (bzw andere 
+    inkompatible Controls) irrtümlich als Sender verwendet werden.
+    Dieses Verhalten gilt nur, wenn ExecuteFunction bzw ExecuteFunctionNoRepost von einem Event Handler aus 
+    aufgerufen werden.
+    
 - Rubicon.Web.ExecutionEngine.WxeStep
   * ParentStep Set-Accessor in SetParentStep-Methode umgeschrieben.
 
@@ -21,17 +28,17 @@
 - Execution Engine Steps allegemein:
   * Field und Method Steps sind nun auf Non-Public, Instance und Declared-Only beschränkt.
   * Class Steps sind auf Non-Public und Declared-Only beschränkt.
+  
+- Rubicon.Web.UI.Controls.WebButton
+  * Bugfix: In Zusammenarbeit  mit WxePage.ExecuteFunctionNoRepost wurden trotzdem Events ausgelöst, 
+    unter Umständen auch beim falschen WebButton.
 
 - Resources Configuration Section
   * RelativeToApplicationRoot ersetzt durch Enum RootMode. 
     Defaultverhalten bleibt identisch
 
-- WAI Configuration:
+- WAI Configuration Section
   * Bugfix: Die Config-Section hatte einen Bug, wodurch das Conformance-Level nicht ausgewertet wurde.
-  
-- Rubicon.Web.UI.Controls.WebButton
-  * Bugfix: In Zusammenarbeit  mit WxePage.ExecuteFunctionNoRepost wurden trotzdem Events ausgelöst, 
-    unter Umständen auch beim falschen WebButton.
  
 1.2.71
 ======

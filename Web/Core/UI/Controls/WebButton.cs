@@ -42,6 +42,9 @@ public class WebButton :
   {
   }
 
+  /// <remarks>
+  ///   This method is never called if the button is rendered as a legacy button.
+  /// </remarks>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
     ArgumentUtility.CheckNotNull ("postCollection", postCollection);
@@ -50,6 +53,8 @@ public class WebButton :
     bool isScriptedPostBack = ! StringUtility.IsNullOrEmpty (eventTarget);
     if (! isScriptedPostBack && IsLegacyButtonEnabled)
     {
+      // The button can only fire a click event if client script is active or the button is used in legacy mode
+      // A more general fallback is not possible becasue of compatibility issues with ExecuteFunctionNoRepost
       bool isSuccessfulControl = ! StringUtility.IsNullOrEmpty (postCollection[postDataKey]);
       if (isSuccessfulControl)
         Page.RegisterRequiresRaiseEvent (this);
