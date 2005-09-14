@@ -29,10 +29,11 @@
       </list>
       
       <h4 class="dtH4">Usage Notes</h4>
+      <note type="caution">
+        If the button is not used in WAI complient mode, and the page is displayed with disabled client script, 
+        the <b>WebButton</b> will not fire click events. 
+      </note>
       <para>
-        If the button is not used in WAI complient mode, and the page is displayed using Internet Explorer with 
-        disabled client script, the click event of last <b>WebButton</b> on the page is fired. 
-      </para><para>
         Add a <c>&lt;pages validateRequest="false" /&gt;</c> directive to the configuration if you use more that plain
         text in the button.
       </para>
