@@ -1,4 +1,4 @@
-1.3.0 (Noch nicht offiziell)
+1.3.1
 =====
 - Rubicon.Web.UI.Controls.EmailAddressValidator
   * Validator Control für Email-Adressen
@@ -32,6 +32,9 @@
 - Rubicon.Web.UI.Controls.WebButton
   * Bugfix: In Zusammenarbeit  mit WxePage.ExecuteFunctionNoRepost wurden trotzdem Events ausgelöst, 
     unter Umständen auch beim falschen WebButton.
+  * Wird der WebButton im normalen Modeus betrieben (dh UserLegacyButton=false bzw nicht WAI konform),
+    so ist für das korrekte Verhalten zwingend aktiviertes Javascript erforderlich. Andernfalls gäbe es 
+    Inkompatibilitäten mit der WXE.
 
 - Resources Configuration Section
   * RelativeToApplicationRoot ersetzt durch Enum RootMode. 
