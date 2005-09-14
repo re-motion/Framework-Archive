@@ -177,6 +177,8 @@ public class WxePageStep: WxeStep
     else
     {
       ArgumentUtility.CheckNotNull ("sender", sender);
+      if (! (sender is IPostBackEventHandler || sender is IPostBackDataHandler))
+        throw new ArgumentException ("The sender must implement either IPostBackEventHandler or IPostBackDataHandler. Provide the control that raised the post back event.");
       _postBackCollection.Remove (sender.UniqueID);
     }
 

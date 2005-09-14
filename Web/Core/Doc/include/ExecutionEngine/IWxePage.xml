@@ -111,13 +111,21 @@ public override void LoadPageStateFromPersistenceMedium()
     <param name="function"> The WXE new function to be executed. </param>  
     <param name="target"> The HTML frame/window name that will be used to execute the function. </param>
     <param name="features"> The features argument that is passed to the javascript function <b>window.open()</b>. </param>
-    <param name="sender"> For calls from event handlers, the control that caused the event. </param>
+    <param name="sender"> 
+      For calls from event handlers, the control that caused the event 
+      (i.e. the <b>sender</b> argument of the event handler).
+      Valid senders implement either IPostBackEventHandler or IPostBackDataHandler.
+    </param>
     <param name="returningPostback"> <see langword="true"/> if the call should be returned to the current window. </param>
     <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
   </ExecuteFunction>
   <ExecuteFunctionNoRepost>
     <param name="function"> The WXE new function to be executed. </param>  
-    <param name="sender"> For calls from event handlers, the control that caused the event. </param>
+    <param name="sender"> 
+      For calls from event handlers, the control that caused the event 
+      (i.e. the <b>sender</b> argument of the event handler).
+      Valid senders implement either IPostBackEventHandler or IPostBackDataHandler.
+    </param>
     <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
   </ExecuteFunctionNoRepost>
   <RegisterClientSidePageAbortHandler>

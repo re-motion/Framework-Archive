@@ -337,6 +337,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     else
     {
+      if (! (sender is IPostBackEventHandler || sender is IPostBackDataHandler))
+        throw new ArgumentException ("The sender must implement either IPostBackEventHandler or IPostBackDataHandler. Provide the control that raised the post back event.");
+
       returnScript = string.Format (
             "\r\n"
           + "if (   window.opener != null \r\n"
