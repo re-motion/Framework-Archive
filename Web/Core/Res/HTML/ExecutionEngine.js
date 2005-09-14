@@ -1,12 +1,27 @@
 var _wxe_context = null;
 
-function Wxe_Initialize (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID)
+function Wxe_Initialize (
+    theFormID, 
+    refreshInterval, refreshUrl, 
+    abortUrl, abortMessage, 
+    smartScrollingFieldID, smartFocusFieldID,
+    eventHandler)
 {
-  _wxe_context = new Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID);
+  _wxe_context = new Wxe_Context (
+      theFormID, 
+      refreshInterval, refreshUrl, 
+      abortUrl, abortMessage, 
+      smartScrollingFieldID, smartFocusFieldID,
+      eventHandler);
   Wxe_SetEventHandlers ();
 }
 
-function Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMessage, smartScrollingFieldID, smartFocusFieldID)
+function Wxe_Context (
+    theFormID, 
+    refreshInterval, refreshUrl, 
+    abortUrl, abortMessage, 
+    smartScrollingFieldID, smartFocusFieldID,
+    eventHandler)
 {
   this.TheForm = document.forms[theFormID];
   if (refreshInterval > 0)
@@ -25,6 +40,7 @@ function Wxe_Context (theFormID, refreshInterval, refreshUrl, abortUrl, abortMes
   if (smartFocusFieldID != null)
     this.SmartFocusField = this.TheForm.elements[smartFocusFieldID];
   var _activeElement = null;
+  this.AbortHandler = eventHandler
   
   this.GetActiveElement = function()
   {
@@ -161,6 +177,14 @@ function Wxe_OnUnload()
   {
     try 
     {
+      Wxe_OnAbort();      
+    }
+    catch (e)
+    {
+    }
+    
+    try 
+    {
       var image = new Image();
       image.src = _wxe_context.AbortUrl;
     }
@@ -184,4 +208,13 @@ function Wxe_OnElementFocus (evt)
 		_wxe_context.SetActiveElement (e.target);
 	else if (e.srcElement)
 	  _wxe_context.SetActiveElement (e.srcElement);
+}
+
+function Wxe_OnAbort()
+{
+  if (_wxe_context.AbortHandler != null)
+  {
+    var abortHandler = eval (_wxe_context.AbortHandler);
+    abortHandler();
+  }
 }

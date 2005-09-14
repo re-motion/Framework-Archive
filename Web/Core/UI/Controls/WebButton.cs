@@ -44,8 +44,11 @@ public class WebButton :
 
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
-    bool isScriptedPostBack = StringUtility.IsNullOrEmpty (postCollection[ControlHelper.PostEventSourceID]);
-    if (isScriptedPostBack)
+    ArgumentUtility.CheckNotNull ("postCollection", postCollection);
+
+    string eventTarget = postCollection[ControlHelper.PostEventSourceID];
+    bool isScriptedPostBack = ! StringUtility.IsNullOrEmpty (eventTarget);
+    if (! isScriptedPostBack && IsLegacyButtonEnabled)
     {
       bool isSuccessfulControl = ! StringUtility.IsNullOrEmpty (postCollection[postDataKey]);
       if (isSuccessfulControl)
@@ -312,7 +315,7 @@ public class WebButton :
 
   protected bool IsLegacyButtonEnabled
   {
-    get { return ! WcagUtility.IsWaiConformanceLevelARequired() && _useLegacyButton == NaBooleanEnum.True;}
+    get { return WcagUtility.IsWaiConformanceLevelARequired() || _useLegacyButton == NaBooleanEnum.True;}
   }
 
   private string EnsureEndWithSemiColon (string value)
