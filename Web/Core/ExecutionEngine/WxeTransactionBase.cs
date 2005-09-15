@@ -51,7 +51,7 @@ public abstract class WxeTransactionBase: WxeStepList
   /// </value>
   /// <remarks> 
   ///   <note type="inheritinfo">
-  ///     It the <see cref="ITransaction"/> implementation does not support the concept of a current transaction,
+  ///     If the <see cref="ITransaction"/> implementation does not support the concept of a current transaction,
   ///     it is valid to always return <see langword="null"/>.
   ///   </note>
   /// </remarks>
