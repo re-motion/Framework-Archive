@@ -93,6 +93,11 @@
                     Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "nunit.framework"
+                    AssemblyName = "nunit.framework"
+                    HintPath = "..\References\nunit.framework.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -106,6 +111,11 @@
                     RelPath = "AssemblyInfoTemplate.cs"
                     SubType = "Code"
                     BuildAction = "None"
+                />
+                <File
+                    RelPath = "LoadObjectsTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "mapping.xml"
@@ -133,10 +143,12 @@
                 />
                 <File
                     RelPath = "TestDomain\Client.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "TestDomain\File.cs"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
             </Include>
