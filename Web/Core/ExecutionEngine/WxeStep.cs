@@ -23,7 +23,11 @@ public abstract class WxeStep
   /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/GetStepByType/*' />
   protected static WxeStep GetStepByType (WxeStep step, Type type)
   {
-    ArgumentUtility.CheckNotNullAndType ("type", type, typeof (WxeStep));
+    ArgumentUtility.CheckNotNull ("type", type);
+    Type expectedType = typeof (WxeStep);
+    if (! expectedType.IsAssignableFrom (type))
+      throw new ArgumentTypeException ("type", expectedType, type);
+
     for (; 
           step != null; 
           step = step.ParentStep)

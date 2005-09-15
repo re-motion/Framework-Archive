@@ -200,6 +200,7 @@ public abstract class WxeTransactionBase: WxeStepList
     }
   }
 
+  /// <summary> Sets the backed up transaction as the old and new current transaction. </summary>
   protected void RestorePreviousTransaction()
   {
     if (ExecutionStarted && ! _isPreviousTransactionRestored)
