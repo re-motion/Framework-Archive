@@ -128,27 +128,22 @@ public override void LoadPageStateFromPersistenceMedium()
     </param>
     <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
   </ExecuteFunctionNoRepost>
-  <RegisterClientSidePageAbortHandler>
-    <param name="key"> Unique key that identifies the function. </param>
+  <RegisterClientSidePageEventHandler>
+    <param name="pageEvent"> The type of event to register for. </param>
+    <param name="key"> 
+      Forms in combination with <paramref name="pageEvent"/> a unique key that identifies the function.
+    </param>
     <param name="function"> The name of the Java Script function to be called. </param>
     <remarks> 
       <para>
         The Java Script function will be called without arguments and a return value will be ignored.
       </para><para>
-        Any script blocks with the same key parameter values are considered duplicates. 
+        Any script blocks with the same <paramref name="pageEvent"/> and <paremref name="key"/> parameter values 
+        are considered duplicates. 
       </para>
     </remarks>
-  </RegisterClientSidePageAbortHandler>
-  <RegisterClientSidePagePostBackHandler>
-    <param name="key"> Unique key that identifies the function. </param>
-    <param name="function"> The name of the Java Script function to be called. </param>
-    <remarks> 
-      <para>
-        The Java Script function will be called with two arguments: Event Target and Event Argument.
-        A return value will be ignored.
-      </para><para>
-        Any script blocks with the same key parameter values are considered duplicates. 
-      </para>
-    </remarks>
-  <RegisterClientSidePagePostBackHandler>
+    <exception type="InvalidOperationException">
+      Thrown if the method is called after the <b>OnPreRender</b> method of the base page has been invoked invoked.
+    </exception>
+  </RegisterClientSidePageEventHandler>
 </IWxePage>
