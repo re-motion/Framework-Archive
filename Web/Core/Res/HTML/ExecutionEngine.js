@@ -42,7 +42,7 @@ function Wxe_Context (
   if (smartFocusFieldID != null)
     this.SmartFocusField = this.TheForm.elements[smartFocusFieldID];
   var _activeElement = null;
-  this.EventHandlers = eventHandlers
+  var _eventHandlers = eventHandlers
   
   this.GetActiveElement = function()
   {
@@ -73,14 +73,9 @@ function Wxe_Context (
   	  SmartFocus_Restore (this.SmartFocusField.value);
   }
   
-  this.GetAbortEventHandlers = function()
+  this.GetEventHandlers = function (eventName)
   {
-    return this.EventHandlers['OnAbort'];
-  }
-
-  this.GetPostBackEventHandlers = function()
-  {
-    return this.EventHandlers['OnPostBack'];
+    return _eventHandlers[eventName];
   }
 }
 
@@ -145,6 +140,7 @@ function Wxe_Refresh()
 function Wxe_OnLoad()
 {
 	_wxe_context.Restore();
+  Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onload'));
 }
 
 function Wxe_DoPostBack (eventTarget, eventArgument)
@@ -153,6 +149,7 @@ function Wxe_DoPostBack (eventTarget, eventArgument)
   {
 	  _wxe_context.IsSubmit = true;
     _wxe_context.Backup();
+    Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onpostback'));
   }
 	_wxe_context.AspnetDoPostBack (eventTarget, eventArgument);
 }
@@ -163,6 +160,7 @@ function Wxe_FormSubmit ()
   {
     _wxe_context.IsSubmit = true; 
     _wxe_context.Backup();
+    Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onpostback'));
   }
 }
 
@@ -191,13 +189,7 @@ function Wxe_OnUnload()
 {
   if (_wxe_context.IsAbortEnabled && ! _wxe_context.IsSubmit)
   {
-    try 
-    {
-      Wxe_OnAbort();      
-    }
-    catch (e)
-    {
-    }
+    Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onabort'));
     
     try 
     {
@@ -226,16 +218,23 @@ function Wxe_OnElementFocus (evt)
 	  _wxe_context.SetActiveElement (e.srcElement);
 }
 
-function Wxe_OnAbort()
+function Wxe_ExecuteEventHandlers (eventHandlers)
 {
-  var eventHandlers = _wxe_context.GetAbortEventHandlers(); 
   if (eventHandlers != null)
   {
     for (var i = 0; i < eventHandlers.length; i++)
     {
       var eventHandler = Wxe_GetFunctionPointer (eventHandlers[i]);
       if (eventHandler != null)
-        eventHandler();
+      {
+        try
+        {
+          eventHandler();
+        }
+        catch (e)
+        {
+        }
+      }
     }
   }
 }

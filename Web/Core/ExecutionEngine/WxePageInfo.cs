@@ -230,28 +230,30 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
    
     StringBuilder initScript = new StringBuilder (500);
+
+    initScript.Append ("var _wxe_eventHandlers = new Array(); \r\n");
+    initScript.Append ("var _wxe_eventHandlersByEvent = null; \r\n");
     initScript.Append ("\r\n");
-    initScript.Append ("var eventHandlers = new Array(); \r\n");
-    initScript.Append ("var eventHandlersByEvent = null; \r\n");
 
     foreach (WxePageEvents pageEvent in _clientSideEventHandlers.Keys)
     {
       NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
 
-      initScript.Append ("eventHandlersByEvent = new Array(); \r\n");
+      initScript.Append ("_wxe_eventHandlersByEvent = new Array(); \r\n");
 
       for (int i = 0; i < eventHandlers.Keys.Count; i++)
       {
-        initScript.Append ("eventHandlersByEvent.push ('");
+        initScript.Append ("_wxe_eventHandlersByEvent.push ('");
         initScript.Append (eventHandlers.Get (i));
         initScript.Append ("'); \r\n");
       }
       
-      initScript.Append ("eventHandlers['");
-      initScript.Append (pageEvent.ToString());
-      initScript.Append ("'] = eventHandlersByEvent; \r\n");
+      initScript.Append ("_wxe_eventHandlers['");
+      initScript.Append (pageEvent.ToString().ToLower());
+      initScript.Append ("'] = _wxe_eventHandlersByEvent; \r\n");
+      initScript.Append ("\r\n");
     }
-    initScript.Append ("\r\n");
+
     initScript.Append ("Wxe_Initialize ('");
     initScript.Append (_wxeForm.ClientID).Append ("', ");
     initScript.Append (refreshIntervall).Append (", ");
@@ -260,9 +262,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     initScript.Append (abortMessage).Append (", ");
     initScript.Append (smartScrollingFieldID).Append (", ");
     initScript.Append (smartFocusFieldID).Append (", ");
-    initScript.Append ("eventHandlers); \r\n");
-    initScript.Append ("eventHandlers = null; \r\n");
-    initScript.Append ("eventHandlersByEvent = null; \r\n");
+    initScript.Append ("_wxe_eventHandlers); \r\n");
+
+    initScript.Append ("\r\n");
+    initScript.Append ("_wxe_eventHandlers = null; \r\n");
+    initScript.Append ("_wxe_eventHandlersByEvent = null;");
+
     string key = "wxeInitialize";
     PageUtility.RegisterClientScriptBlock ((Page)_page, key, initScript.ToString());
   }

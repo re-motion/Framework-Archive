@@ -21,9 +21,14 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.ExecutionEngine
 {
 
+/// <summary> Specifies the client side events supported for registration by the <see cref="IWxePage"/>. </summary>
 public enum WxePageEvents
 {
+  /// <summary> Rasied when the document has finished loading. </summary>
+  OnLoad,
+  /// <summary> Raised when the user posts back to the sever. </summary>
   OnPostBack,
+  /// <summary> Raised when the user leaves the page. </summary>
   OnAbort
 }
 
