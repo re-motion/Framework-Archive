@@ -465,10 +465,7 @@ public class BocReferenceValue:
     {
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (
-          s_scriptFileKey, 
-          scriptUrl, 
-          HtmlHeadAppender.Priority.Library);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
     }
 
     if (! IsDesignMode && ! Page.IsStartupScriptRegistered (s_startUpScriptKey))
