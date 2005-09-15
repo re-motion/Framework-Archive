@@ -547,7 +547,6 @@ public class BocReferenceValue:
       writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
     }
 
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
     writer.AddStyleAttribute ("display", "inline");
   }
 
@@ -640,7 +639,8 @@ public class BocReferenceValue:
     }
 
     //HACK: Opera has problems with inline tables and may collapse contents unless a cell with width 0% is present
-    if (! isReadOnly && ! hasOptionsMenu && ! _icon.Visible && Context.Request.Browser.Browser == "Opera")
+    if (   !IsDesignMode && !isReadOnly && !hasOptionsMenu && !_icon.Visible 
+        && Context.Request.Browser.Browser == "Opera")
     {
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
       writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
