@@ -107,6 +107,38 @@
                     SubType = "Code"
                     BuildAction = "None"
                 />
+                <File
+                    RelPath = "mapping.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "queries.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "storageProviders.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\CreateDB.sql"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\CreateTestData.sql"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Database\SetupDB.sql"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "TestDomain\Client.cs"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDomain\File.cs"
+                    BuildAction = "Compile"
+                />
             </Include>
         </Files>
     </CSHARP>
