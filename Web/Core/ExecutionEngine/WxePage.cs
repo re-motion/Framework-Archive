@@ -21,6 +21,12 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.ExecutionEngine
 {
 
+public enum WxePageEvents
+{
+  OnPostBack,
+  OnAbort
+}
+
 /// <summary> This interface represents a page that can be used in a <see cref="WxePageStep"/>. </summary>
 /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/Class/*' />
 public interface IWxePage: IPage, IWxeTemplateControl
@@ -75,12 +81,8 @@ public interface IWxePage: IPage, IWxeTemplateControl
   bool IsAbortEnabled { get; }
 
   /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePageAbortHandler/*' />
-  void RegisterClientSidePageAbortHandler (string key, string function);
-
-  /// <summary> Registers a Java Script function to be executed when the page is posted back. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePagePostBackHandler/*' />
-  void RegisterClientSidePagePostBackHandler (string key, string function);
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePageEventHandler/*' />
+  void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function);
 
   /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
@@ -165,17 +167,10 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   }
 
   /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageAbortHandler/*' />
-  public void RegisterClientSidePageAbortHandler (string key, string function)
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageEventHandler/*' />
+  public void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function)
   {
-    _wxeInfo.RegisterClientSidePageAbortHandler (key, function);
-  }
-
-  /// <summary> Registers a Java Script function to be executed when the page is posted back. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePagePostBackHandler/*' />
-  public void RegisterClientSidePagePostBackHandler (string key, string function)
-  {
-    _wxeInfo.RegisterClientSidePagePostBackHandler (key, function);
+    _wxeInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
   }
 
   #endregion

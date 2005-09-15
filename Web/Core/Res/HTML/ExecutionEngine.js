@@ -5,15 +5,17 @@ function Wxe_Initialize (
     refreshInterval, refreshUrl, 
     abortUrl, abortMessage, 
     smartScrollingFieldID, smartFocusFieldID,
-    eventHandler)
+    eventHandlers)
 {
   _wxe_context = new Wxe_Context (
       theFormID, 
       refreshInterval, refreshUrl, 
       abortUrl, abortMessage, 
       smartScrollingFieldID, smartFocusFieldID,
-      eventHandler);
-  Wxe_SetEventHandlers ();
+      eventHandlers);
+  
+  Wxe_SetEventHandlers();
+  Wxe_OverrideAspNetDoPostBack();
 }
 
 function Wxe_Context (
@@ -21,7 +23,7 @@ function Wxe_Context (
     refreshInterval, refreshUrl, 
     abortUrl, abortMessage, 
     smartScrollingFieldID, smartFocusFieldID,
-    eventHandler)
+    eventHandlers)
 {
   this.TheForm = document.forms[theFormID];
   if (refreshInterval > 0)
@@ -40,7 +42,7 @@ function Wxe_Context (
   if (smartFocusFieldID != null)
     this.SmartFocusField = this.TheForm.elements[smartFocusFieldID];
   var _activeElement = null;
-  this.AbortHandler = eventHandler
+  this.EventHandlers = eventHandlers
   
   this.GetActiveElement = function()
   {
@@ -70,6 +72,23 @@ function Wxe_Context (
     if (this.SmartFocusField != null)
   	  SmartFocus_Restore (this.SmartFocusField.value);
   }
+  
+  this.GetAbortEventHandlers = function()
+  {
+    return this.EventHandlers['OnAbort'];
+  }
+
+  this.GetPostBackEventHandlers = function()
+  {
+    return this.EventHandlers['OnPostBack'];
+  }
+}
+
+function Wxe_OverrideAspNetDoPostBack ()
+{
+	_wxe_context.TheForm.onsubmit = Wxe_FormSubmit;
+	_wxe_context.AspnetDoPostBack = __doPostBack;
+	__doPostBack = Wxe_DoPostBack;
 }
   
 function Wxe_SetEventHandlers ()
@@ -125,9 +144,6 @@ function Wxe_Refresh()
 
 function Wxe_OnLoad()
 {
-	_wxe_context.TheForm.onsubmit = Wxe_FormSubmit;
-	_wxe_context.AspnetDoPostBack = __doPostBack;
-	__doPostBack = Wxe_DoPostBack;
 	_wxe_context.Restore();
 }
 
@@ -212,9 +228,26 @@ function Wxe_OnElementFocus (evt)
 
 function Wxe_OnAbort()
 {
-  if (_wxe_context.AbortHandler != null)
+  var eventHandlers = _wxe_context.GetAbortEventHandlers(); 
+  if (eventHandlers != null)
   {
-    var abortHandler = eval (_wxe_context.AbortHandler);
-    abortHandler();
+    for (var i = 0; i < eventHandlers.length; i++)
+    {
+      var eventHandler = Wxe_GetFunctionPointer (eventHandlers[i]);
+      if (eventHandler != null)
+        eventHandler();
+    }
+  }
+}
+
+function Wxe_GetFunctionPointer (functionName)
+{
+  try
+  {
+    return eval (functionName);
+  }
+  catch (e)
+  {
+    return null;
   }
 }

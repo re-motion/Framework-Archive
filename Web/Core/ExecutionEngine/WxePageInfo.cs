@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -53,7 +55,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private bool _executeNextStep = false;
   private HttpResponse _response; // used for cleanup in Dispose
 
-  private NameValueCollection _clientSideAbortEventHandlers = new NameValueCollection();
+  private bool _isPreRendering = false;
+  private AutoInitHashtable _clientSideEventHandlers = new AutoInitHashtable (typeof (NameValueCollection));
 
   /// <summary> Initializes a new instance of the <b>WxePageInfo</b> type. </summary>
   /// <param name="page"> 
@@ -114,6 +117,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
   private void Page_PreRender (object sender, EventArgs e)
   {
+    _isPreRendering = true;
     PreRenderWxe();
     PreRenderSmartNavigation();
   }
@@ -225,13 +229,42 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         smartFocusFieldID = "'" + c_smartFocusID + "'";
     }
    
+    StringBuilder initScript = new StringBuilder (500);
+    initScript.Append ("\r\n");
+    initScript.Append ("var eventHandlers = new Array(); \r\n");
+    initScript.Append ("var eventHandlersByEvent = null; \r\n");
+
+    foreach (WxePageEvents pageEvent in _clientSideEventHandlers.Keys)
+    {
+      NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
+
+      initScript.Append ("eventHandlersByEvent = new Array(); \r\n");
+
+      for (int i = 0; i < eventHandlers.Keys.Count; i++)
+      {
+        initScript.Append ("eventHandlersByEvent.push ('");
+        initScript.Append (eventHandlers.Get (i));
+        initScript.Append ("'); \r\n");
+      }
+      
+      initScript.Append ("eventHandlers['");
+      initScript.Append (pageEvent.ToString());
+      initScript.Append ("'] = eventHandlersByEvent; \r\n");
+    }
+    initScript.Append ("\r\n");
+    initScript.Append ("Wxe_Initialize ('");
+    initScript.Append (_wxeForm.ClientID).Append ("', ");
+    initScript.Append (refreshIntervall).Append (", ");
+    initScript.Append (refreshPath).Append (", ");
+    initScript.Append (abortPath).Append (", ");
+    initScript.Append (abortMessage).Append (", ");
+    initScript.Append (smartScrollingFieldID).Append (", ");
+    initScript.Append (smartFocusFieldID).Append (", ");
+    initScript.Append ("eventHandlers); \r\n");
+    initScript.Append ("eventHandlers = null; \r\n");
+    initScript.Append ("eventHandlersByEvent = null; \r\n");
     string key = "wxeInitialize";
-    PageUtility.RegisterClientScriptBlock ((Page)_page, key,
-          "Wxe_Initialize ('" + _wxeForm.ClientID + "', " 
-        + refreshIntervall.ToString() + ", " + refreshPath + ", " 
-        + abortPath + ", " + abortMessage + ", "
-        + smartScrollingFieldID + ", " + smartFocusFieldID + ", "
-        + "'TestFunction'" + ");");
+    PageUtility.RegisterClientScriptBlock ((Page)_page, key, initScript.ToString());
   }
 
   public NameValueCollection EnsurePostBackModeDetermined (HttpContext context)
@@ -413,18 +446,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary> Implements <see cref="IWxePage.RegisterClientSidePageAbortHandler">IWxePage.RegisterClientSidePageAbortHandler</see>. </summary>
-  public void RegisterClientSidePageAbortHandler (string key, string function)
+  public void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("key", key);
     ArgumentUtility.CheckNotNullOrEmpty ("function", function);
-    
-    _clientSideAbortEventHandlers[key] = function;
-  }
 
-  /// <summary> Implements <see cref="IWxePage.RegisterClientSidePagePostBackHandler">IWxePage.RegisterClientSidePagePostBackHandler</see>. </summary>
-  public void RegisterClientSidePagePostBackHandler (string key, string function)
-  {
-    throw new NotImplementedException();
+    if (_isPreRendering)
+      throw new InvalidOperationException ("RegisterClientSidePageEventHandler must not be called after the PreRender method of the System.Web.UI.Page has been invoked.");
+
+    NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
+    eventHandlers[key] = function;
   }
 
   /// <summary> aves the viewstate into the executing <see cref="WxePageStep"/>. </summary>
