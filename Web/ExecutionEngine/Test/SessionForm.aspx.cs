@@ -35,6 +35,8 @@ public class SessionForm : WxePage
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
+    RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "Page_PostBack", "Page_PostBack");
+    RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "Page_Abort", "Page_Abort");
   }
 
   override protected void OnInit(EventArgs e)

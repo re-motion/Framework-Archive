@@ -149,7 +149,7 @@ function Wxe_DoPostBack (eventTarget, eventArgument)
   {
 	  _wxe_context.IsSubmit = true;
     _wxe_context.Backup();
-    Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onpostback'));
+    Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onpostback'), eventTarget, eventArgument);
   }
 	_wxe_context.AspnetDoPostBack (eventTarget, eventArgument);
 }
@@ -160,7 +160,10 @@ function Wxe_FormSubmit ()
   {
     _wxe_context.IsSubmit = true; 
     _wxe_context.Backup();
-    Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onpostback'));
+    var eventTarget = null;
+    if (_wxe_context.GetActiveElement() != null)
+      eventTarget = _wxe_context.GetActiveElement().id;
+    Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onpostback'), eventTarget, '');
   }
 }
 
@@ -227,9 +230,18 @@ function Wxe_ExecuteEventHandlers (eventHandlers)
       var eventHandler = Wxe_GetFunctionPointer (eventHandlers[i]);
       if (eventHandler != null)
       {
+        var arg1 = null;
+        var arg2 = null;
+        var args = Wxe_ExecuteEventHandlers.arguments;
+        
+        if (args.length > 1)
+          arg1 = args[1];
+        if (args.length > 2)
+          arg2 = args[2];
+          
         try
         {
-          eventHandler();
+          eventHandler (arg1, arg2);
         }
         catch (e)
         {

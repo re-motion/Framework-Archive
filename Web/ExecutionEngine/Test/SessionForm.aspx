@@ -41,6 +41,13 @@
 </p>  
 </form>
     <script language="javascript">
+    function Page_PostBack (eventTarget, eventArgs)
+    {
+    }
+
+    function Page_Abort ()
+    {
+    }
     </script>
   </body>
 </html>

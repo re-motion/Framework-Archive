@@ -24,11 +24,11 @@ namespace Rubicon.Web.ExecutionEngine
 /// <summary> Specifies the client side events supported for registration by the <see cref="IWxePage"/>. </summary>
 public enum WxePageEvents
 {
-  /// <summary> Rasied when the document has finished loading. </summary>
+  /// <summary> Rasied when the document has finished loading. Signature: void Function () </summary>
   OnLoad,
-  /// <summary> Raised when the user posts back to the sever. </summary>
+  /// <summary> Raised when the user posts back to the server. Signature: void Function (eventTargetID, eventArgs) </summary>
   OnPostBack,
-  /// <summary> Raised when the user leaves the page. </summary>
+  /// <summary> Raised when the user leaves the page. Signature: void Function () </summary>
   OnAbort
 }
 

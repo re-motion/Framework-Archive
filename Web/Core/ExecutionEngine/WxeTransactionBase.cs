@@ -220,6 +220,16 @@ public abstract class WxeTransactionBase: WxeStepList
       throw new InvalidOperationException ("Cannot set the Transaction after the execution has started.");
     _transaction = transaction;
   }
+
+  protected bool AutoCommit
+  {
+    get { return _autoCommit; }
+  }
+
+  protected bool ForceRoot
+  {
+    get { return _forceRoot; }
+  }
 }
 
 }
