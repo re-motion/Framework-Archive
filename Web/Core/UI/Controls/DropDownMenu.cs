@@ -139,7 +139,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     {
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.js");
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url, HtmlHeadAppender.Priority.Library);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
     }
 
     //  Startup script initalizing the global values of the script.
