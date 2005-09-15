@@ -29,9 +29,10 @@ public class HtmlHeadAppender
 {
   public enum Priority
   {
-    Library = 0, // Absolute values to emphasize sorted nature of enum valies
-    UserControl = 1,
-    Page = 2
+    Script = 0, // Absolute values to emphasize sorted nature of enum values
+    Library = 1,
+    UserControl = 2,
+    Page = 3
   }
 
   /// <summary> ListDictionary&lt;string key, Control headElement&gt; </summary>
@@ -199,26 +200,10 @@ public class HtmlHeadAppender
   }
 
   /// <summary> Registers a javascript file. </summary>
-  /// <remarks>
-  ///   All calls to <see cref="RegisterJavaScriptInclude"/> must be completed before
-  ///   <see cref="EnsureAppended"/> is called. (Typically during the <c>Render</c> phase.)
-  /// </remarks>
-  /// <param name="key"> The unique key identifying the javascript file in the headers collection. </param>
-  /// <param name="src"> The url of the javascript file. </param>
-  /// <param name="priority"> 
-  ///   The priority level of the head element. Elements are rendered in the following order:
-  ///   Library, UserControl, Page.
-  /// </param>
-  /// <exception cref="HttpException"> 
-  ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
-  /// </exception>
+  [Obsolete ("Use RegisterJavaScriptInclude (string, string) instead.")]
   public void RegisterJavaScriptInclude (string key, string src, Priority priority)
   {
-    HtmlGenericControl headElement = new HtmlGenericControl ("script");
-    headElement.EnableViewState = false;
-    headElement.Attributes.Add ("type", "text/javascript");
-    headElement.Attributes.Add ("src", src);
-    RegisterHeadElement (key, headElement, priority);
+    RegisterJavaScriptInclude (key, src);
   }
 
   /// <summary> Registers a javascript file. </summary>
@@ -237,7 +222,11 @@ public class HtmlHeadAppender
   /// </exception>
   public void RegisterJavaScriptInclude (string key, string src)
   {
-    RegisterJavaScriptInclude (key, src, Priority.Page);
+    HtmlGenericControl headElement = new HtmlGenericControl ("script");
+    headElement.EnableViewState = false;
+    headElement.Attributes.Add ("type", "text/javascript");
+    headElement.Attributes.Add ("src", src);
+    RegisterHeadElement (key, headElement, Priority.Script);
   }
 
   /// <summary> Registers a <see cref="Control"/> containing an HTML head element. </summary>
