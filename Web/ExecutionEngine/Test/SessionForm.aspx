@@ -38,12 +38,9 @@
 <rubicon:webbutton id="ExecuteNoRepostButton" runat="server" Text="Execute, No Repost"></rubicon:webbutton>
 </p><p>
 <rubicon:webbutton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></rubicon:webbutton>
-</p>    </form>
+</p>  
+</form>
     <script language="javascript">
-    function TestFunction()
-    {
-      alert ("Aborting");
-    }
     </script>
   </body>
 </html>
