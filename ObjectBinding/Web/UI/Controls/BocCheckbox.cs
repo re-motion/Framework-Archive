@@ -218,10 +218,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (BocCheckBox), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (
-            s_scriptFileKey, 
-            scriptUrl, 
-            HtmlHeadAppender.Priority.Library);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
       }
 
       if (Enabled)

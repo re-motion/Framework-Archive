@@ -1027,10 +1027,7 @@ public class BocList:
       {
         string scriptUrl = ResourceUrlResolver.GetResourceUrl (
             this, Context, typeof (BocList), ResourceType.Html, c_scriptFileUrl);
-        HtmlHeadAppender.Current.RegisterJavaScriptInclude (
-            s_scriptFileKey, 
-            scriptUrl, 
-            HtmlHeadAppender.Priority.Library);
+        HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
       }
 
       //  Startup script initalizing the global values of the script.
