@@ -12,6 +12,7 @@
           define="${build.csc.define}">
       <sources failonempty="true">
         <includes name="*.cs" />
+        <includes name="Data/**/*.cs" />
         <includes name="Globalization/**/*.cs" />
         <includes name="NullableValueTypes/**/*.cs" />
         <includes name="ObjectBinding/**/*.cs" />
