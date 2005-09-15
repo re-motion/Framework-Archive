@@ -455,6 +455,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     ArgumentUtility.CheckNotNullOrEmpty ("key", key);
     ArgumentUtility.CheckNotNullOrEmpty ("function", function);
+    if (! System.Text.RegularExpressions.Regex.IsMatch (function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
+      throw new ArgumentException ("Invalid function name: '" + function + "'.", "function");
 
     if (_isPreRendering)
       throw new InvalidOperationException ("RegisterClientSidePageEventHandler must not be called after the PreRender method of the System.Web.UI.Page has been invoked.");

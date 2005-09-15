@@ -35,10 +35,6 @@ public class SessionForm : WxePage
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "a", "FunctionA");
-    RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "b", "FunctionB");
-    RegisterClientSidePageEventHandler (WxePageEvents.OnAbort, "a", "FunctionA");
-    RegisterClientSidePageEventHandler (WxePageEvents.OnAbort, "b", "TestFunction");
   }
 
   override protected void OnInit(EventArgs e)

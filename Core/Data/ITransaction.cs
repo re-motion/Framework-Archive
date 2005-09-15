@@ -27,17 +27,21 @@ public interface ITransaction
   ///   Thrown if the method is invoked while <see cref="CanCreateChild"/> is <see langword="false"/>.
   /// </exception>
   ITransaction CreateChild();
+  
+  /// <summary> Allows the transaction to implement clean up logic. </summary>
+  /// <remarks> This method is called when the transaction is no longer needed. </remarks>
+  void Release();
 
   /// <summary> Gets the transaction's parent transaction. </summary>
   /// <value> 
   ///   An instance of the of a type implementing <see cref="ITransaction"/> or <see langword="null"/> if the
   ///   transaction is a root transaction.
   /// </value>
-  ITransaction GetParent { get; }
-  
-  /// <summary> Allows the transaction to implement clean up logic. </summary>
-  /// <remarks> This method is called when the transaction is no longer needed. </remarks>
-  void Release();
+  ITransaction Parent { get; }
+
+  /// <summary> Gets a flag taht describes whether the transaction is a child transaction. </summary>
+  /// <value> <see langword="true"/> if the transaction is a child transaction. </value>
+  bool IsChild { get; }
 }
 
 }
