@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping application="PerformanceTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+	<classes>
+		<class id="Client">
+			<type>Rubicon.Data.DomainObjects.PerformanceTests.TestDomain.Client, Rubicon.Data.DomainObjects.PerformanceTests</type>
+			<entity name="Client"></entity>
+			<storageProviderID>PerformanceTestDomain</storageProviderID>
+			<properties>
+			  <property name="Name">
+					<type>string</type>
+					<column>Name</column>
+					<maxLength>100</maxLength>
+			  </property>
+			  <relationProperty name="Files" relationID="ClientToFile" cardinality="many" isMandatory="false "/>
+			</properties>
+		</class>
+
+		<class id="File">
+			<type>Rubicon.Data.DomainObjects.PerformanceTests.TestDomain.File, Rubicon.Data.DomainObjects.PerformanceTests</type>
+			<entity name="File"></entity>
+			<storageProviderID>PerformanceTestDomain</storageProviderID>
+			<properties>
+			  <property name="Number">
+					<type>string</type>
+					<column>Number</column>
+					<maxLength>100</maxLength>
+			  </property>
+			  <relationProperty name="Client" relationID="ClientToFile" cardinality="one" isMandatory="true">
+			    <column>File</column>
+			  </relationProperty>
+			</properties>
+		</class>
+	</classes>
+</mapping>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<storageProviders 
+		application="PerformanceTests" 
+		xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0 ..\storageProviders.xsd">
+		
+	<storageProvider id="PerformanceTestDomain">
+		<type>Rubicon.Data.DomainObjects.Persistence.Rdbms.SqlProvider, Rubicon.Data.DomainObjects</type>
+		<configuration type="Rubicon.Data.DomainObjects.Persistence.Rdbms.RdbmsProviderDefinition, Rubicon.Data.DomainObjects">
+			<connectionString xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms">Integrated Security=SSPI;Initial Catalog=PerformanceTestDomain;Data Source=localhost</connectionString>		
+		</configuration>
+	</storageProvider>
+
+</storageProviders>
