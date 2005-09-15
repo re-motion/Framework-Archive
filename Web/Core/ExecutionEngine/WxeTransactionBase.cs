@@ -3,43 +3,14 @@ using log4net;
 using Rubicon.Data;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data
-{
-  public interface ITransaction
-  {
-    void Commit();
-    void Rollback();
-    /// <summary> 
-    ///   Gets a flag that describes whether the transaction supports creating child transactions by invoking
-    ///   <see cref="CreateChild"/>.
-    /// </summary>
-    bool CanCreateChild { get; }
-    /// <summary> Creates a new child transaction for the current transaction. </summary>
-    /// <returns> 
-    ///   A new instance of the of a type implementing <see cref="ITransaction"/> that has the creating transaction
-    ///   as a parent.
-    /// </returns>
-    /// <exception cref="NotSupportedException"> 
-    ///   Thrown if the method is invoked while <see cref="CanCreateChild"/> is <see langword="false"/>.
-    /// </exception>
-    ITransaction CreateChild();
-    /// <summary> Allows the <see cref="ITransaction"/> to implement clean up logic. </summary>
-    /// <remarks> This method is called when the transaction is no longer needed. </remarks>
-    void Release();
-  }
-}
 namespace Rubicon.Web.ExecutionEngine
 {
 
-/// <summary>
-/// Creates a scope for a transaction.
-/// </summary>
+/// <summary> Creates a scope for a transaction. </summary>
 [Serializable]
 public abstract class WxeTransactionBase: WxeStepList
 {
-  /// <summary>
-  ///   Finds out wheter the specified step is part of a WxeTransactionBase.
-  /// </summary>
+  /// <summary> Finds out wheter the specified step is part of a <b>WxeTransactionBase</b>. </summary>
   /// <returns> True, if one of the parents of the specified Step is a WxeTransactionBase, false otherwise. </returns>
   public static bool HasWxeTransaction (WxeStep step)
   {
@@ -73,7 +44,27 @@ public abstract class WxeTransactionBase: WxeStepList
       AddStepList (steps);
   }
 
+  /// <summary> Gets the current <see cref="ITransaction"/>. </summary>
+  /// <value> 
+  ///   An instance of a type implementing <see cref="ITransaction"/> or <see langword="null"/> if no current
+  ///   transaction exists.
+  /// </value>
+  /// <remarks> 
+  ///   <note type="inheritinfo">
+  ///     It the <see cref="ITransaction"/> implementation does not support the concept of a current transaction,
+  ///     it is valid to always return <see langword="null"/>.
+  ///   </note>
+  /// </remarks>
   protected abstract ITransaction CurrentTransaction { get; }
+
+  /// <summary> Sets the current <see cref="ITransaction"/> to <paramref name="transaction"/>. </summary>
+  /// <param name="transaction"> The new current transaction. </param>
+  /// <remarks> 
+  ///   <note type="inheritinfo">
+  ///     It the <see cref="ITransaction"/> implementation does not support the concept of a current transaction,
+  ///     it is valid to implement an empty method.
+  ///   </note>
+  /// </remarks>
   protected abstract void SetCurrentTransaction (ITransaction transaction);
 
   /// <summary> Creates a new transaction. </summary>
@@ -87,7 +78,8 @@ public abstract class WxeTransactionBase: WxeStepList
     bool hasParentTransaction = ! _forceRoot && ! isParentTransactionNull;
     if (hasParentTransaction)
     {
-      if (parentTransaction.Transaction != CurrentTransaction)
+      bool hasCurrentTransaction = CurrentTransaction != null;
+      if (hasCurrentTransaction && parentTransaction.Transaction != CurrentTransaction)
         throw new InvalidOperationException ("The parent transaction does not match the current transaction.");
 
       transaction = CreateChildTransaction (parentTransaction.Transaction);
@@ -121,13 +113,6 @@ public abstract class WxeTransactionBase: WxeStepList
       return parentTransaction.CreateChild();
     else
       return CreateRootTransaction();
-  }
-
-  /// <summary> Releases the <paramref name="transaction"/>. </summary>
-  /// <remarks> Make this method protected virtual once the requirement arises to use an external transaction. </remarks>
-  private void ReleaseTransaction (ITransaction transaction)
-  {
-    transaction.Release();
   }
 
   /// <summary> Gets the first parent of type <see cref="WxeTransactionBase"/>. </summary>
@@ -168,7 +153,7 @@ public abstract class WxeTransactionBase: WxeStepList
       if (e is System.Threading.ThreadAbortException)
         throw;
 
-      RollbackTransaction();
+      RollbackAndReleaseTransaction();
       RestorePreviousTransaction();
       s_log.Debug ("Aborted Execute of " + this.GetType().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType().FullName + ").");
   
@@ -176,9 +161,9 @@ public abstract class WxeTransactionBase: WxeStepList
     }
 
     if (_autoCommit)
-      CommitTransaction();
+      CommitAndReleaseTransaction();
     else
-      RollbackTransaction();
+      RollbackAndReleaseTransaction();
     RestorePreviousTransaction();
    
     s_log.Debug ("Leaving Execute of " + this.GetType().Name);
@@ -188,32 +173,29 @@ public abstract class WxeTransactionBase: WxeStepList
   {
     s_log.Debug ("Aborting " + this.GetType().Name);
     base.AbortRecursive();
-    RollbackTransaction();
+    RollbackAndReleaseTransaction();
     RestorePreviousTransaction();
   }
 
-  protected void CommitTransaction()
+
+  protected void CommitAndReleaseTransaction()
   {
     if (_transaction != null)
     {
       s_log.Debug ("Committing " + _transaction.GetType().Name + ".");
-      
-      CommitTransaction (_transaction);
-      ReleaseTransaction (_transaction);
-      
+      _transaction.Commit();
+      _transaction.Release();
       _transaction = null;
     }
   }
 
-  protected void RollbackTransaction()
+  protected void RollbackAndReleaseTransaction()
   {
     if (_transaction != null)
     {
       s_log.Debug ("Rolling back " + _transaction.GetType().Name + ".");
-      
-      RollbackTransaction (_transaction);
-      ReleaseTransaction (_transaction);
-      
+      _transaction.Rollback();
+      _transaction.Release();
       _transaction = null;
     }
   }
@@ -236,20 +218,6 @@ public abstract class WxeTransactionBase: WxeStepList
     if (ExecutionStarted)
       throw new InvalidOperationException ("Cannot set the Transaction after the execution has started.");
     _transaction = transaction;
-  }
-
-  /// <summary> Commits the <paramref name="transaction"/>. </summary>
-  /// <remarks> Make this method protected virtual once the requirement arises to use an external transaction. </remarks>
-  private void CommitTransaction (ITransaction transaction)
-  {
-    transaction.Commit();
-  }
-  
-  /// <summary> Rolls the <paramref name="transaction"/> back. </summary>
-  /// <remarks> Make this method protected virtual once the requirement arises to use an external transaction. </remarks>
-  private void RollbackTransaction (ITransaction transaction)
-  {
-    transaction.Rollback();
   }
 }
 
