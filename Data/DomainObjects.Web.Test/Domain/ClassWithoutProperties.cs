@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain
+namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
 public class ClassWithoutProperties : BindableDomainObject
 {
