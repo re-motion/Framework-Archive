@@ -13,7 +13,7 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"
+                AssemblyName = "Rubicon.Data.DomainObjects.Web.Test"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -22,7 +22,7 @@
                 OutputType = "Library"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = "Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"
+                RootNamespace = "Rubicon.Data.DomainObjects.Web.Test"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -238,6 +238,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "WxeHandler.ashx"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "bin\mapping.xml"
                     BuildAction = "Content"
                 />
@@ -446,6 +450,7 @@
                     RelPath = "Res\Rubicon.Web\UI\WxeHandler.ashx"
                     BuildAction = "None"
                 />
+                <Folder RelPath = "WxeFunctions\" />
             </Include>
         </Files>
     </CSHARP>
