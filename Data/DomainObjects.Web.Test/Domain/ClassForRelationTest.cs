@@ -6,9 +6,9 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain
+namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
-[MultiLingualResources ("Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Globalization.ClassForRelationTest")]
+[MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassForRelationTest")]
 public class ClassForRelationTest : BindableDomainObject
 {
   // types
