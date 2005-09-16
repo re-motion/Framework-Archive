@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain
+namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
 public class ClassWithAllDataTypesSearch : BindableSearchObject
 {
