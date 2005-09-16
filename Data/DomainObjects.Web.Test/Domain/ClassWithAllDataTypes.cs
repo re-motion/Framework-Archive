@@ -7,13 +7,13 @@ using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain
+namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
-[MultiLingualResources ("Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Globalization.ClassWithAllDataTypes")]
+[MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
 public class ClassWithAllDataTypes : BindableDomainObject
 {
   // types
-  [EnumDescriptionResource ("Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Globalization.ClassWithAllDataTypes")]
+  [EnumDescriptionResource ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
   public enum EnumType
   {
     Value0 = 0,
