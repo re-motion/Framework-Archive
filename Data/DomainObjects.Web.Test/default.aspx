@@ -1,4 +1,4 @@
-<%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.DefaultPage" %>
+<%@ Page language="c#" Codebehind="default.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.Web.Test.DefaultPage" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" > 
 <html>
   <head>
