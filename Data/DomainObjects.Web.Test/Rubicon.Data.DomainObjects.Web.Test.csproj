@@ -242,6 +242,22 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "WxeTestPage.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "WxeTestPage.aspx.cs"
+                    DependentUpon = "WxeTestPage.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WxeTestPage.aspx.resx"
+                    DependentUpon = "WxeTestPage.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "bin\mapping.xml"
                     BuildAction = "Content"
                 />
@@ -450,7 +466,11 @@
                     RelPath = "Res\Rubicon.Web\UI\WxeHandler.ashx"
                     BuildAction = "None"
                 />
-                <Folder RelPath = "WxeFunctions\" />
+                <File
+                    RelPath = "WxeFunctions\WxeTestPageFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
             </Include>
         </Files>
     </CSHARP>
