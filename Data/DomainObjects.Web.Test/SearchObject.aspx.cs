@@ -9,10 +9,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Classes;
-using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain;
+using Rubicon.Data.DomainObjects.Web.Test.Classes;
+using Rubicon.Data.DomainObjects.Web.Test.Domain;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
+namespace Rubicon.Data.DomainObjects.Web.Test
 {
 public class SearchObjectPage : BasePage
 {
