@@ -1,1 +1,1 @@
-<%@ Application Codebehind="Global.asax.cs" Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Global" %>
+<%@ Application Codebehind="Global.asax.cs" Inherits="Rubicon.Data.DomainObjects.Web.Test.Global" %>
