@@ -1,7 +1,14 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="ControlWithAllDataTypes.ascx.cs" Inherits="Rubicon.Data.DomainObjects.Web.Test.ControlWithAllDataTypes" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 <%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="ControlWithAllDataTypes.ascx.cs" Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.ControlWithAllDataTypes" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+
+
+
+<P><STRONG><FONT color="#ff3333">Achtung: Auf dieser Seite befinden sich Controls, 
+die mehrfach auf die gleiche Porperty gebunden sind. Dadurch überschreiben sich 
+diese gegenseitig beim Zurückspeichern der Werte. Dies bitte bei Tests 
+beachten!</FONT></STRONG></P>
 <TABLE id="FormGrid" cellSpacing="0" cellPadding="0" border="0" runat="server">
   <tr>
     <td></td>
@@ -343,4 +350,4 @@
 </TABLE>
 <P><br>
   <asp:button id="SaveButton" Text="Speichern" Runat="server"></asp:button></P>
-<P><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><dob:domainobjectdatasourcecontrol id="CurrentObject" runat="server" TypeName="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test"></dob:domainobjectdatasourcecontrol></P>
+<P><rwc:formgridmanager id="FormGridManager" runat="server" visible="true"></rwc:formgridmanager><dob:domainobjectdatasourcecontrol id="CurrentObject" runat="server" TypeName="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test"></dob:domainobjectdatasourcecontrol></P>
