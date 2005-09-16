@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.SessionState;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test 
+namespace Rubicon.Data.DomainObjects.Web.Test 
 {
 	/// <summary>
 	/// Summary description for Global.
