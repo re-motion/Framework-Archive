@@ -40,13 +40,13 @@ CREATE TABLE [File]
 
   -- File columns
   [Number] nvarchar (100) NOT NULL,
-  [File] uniqueidentifier NULL,
+  [Client] uniqueidentifier NULL,
 
   CONSTRAINT [PK_File] PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 
 ALTER TABLE [File] ADD
-  CONSTRAINT [FK_ClientToFile] FOREIGN KEY ([File]) REFERENCES [Client] ([ID])
+  CONSTRAINT [FK_ClientToFile] FOREIGN KEY ([Client]) REFERENCES [Client] ([ID])
 GO
 

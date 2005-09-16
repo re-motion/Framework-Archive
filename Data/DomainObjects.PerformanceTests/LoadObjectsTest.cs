@@ -13,6 +13,7 @@ public class LoadObjectsTest
   // static members and constants
 
   private static ObjectID s_clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
+  private static ObjectID s_fileID = new ObjectID ("File", new Guid ());
 
   // member fields
 
@@ -26,29 +27,26 @@ public class LoadObjectsTest
 
   // methods and properties
 
-  // TODO: implement this
-//  [SetUp]
-//  public void SetUp ()
-//  {
-//    ClientTransaction.SetCurrent (null);
-//    _client = Client.GetObject (s_clientID);
-//  }
-//
-//  [Test]
-//  public void LoadObjectsOverRelationTest ()
-//  {
-//    DateTime startTime = DateTime.Now;
-//    long startTicks = DateTime.Now.Ticks;
-//
-//    DomainObjectCollection files = _client.Files;
-//
-//    DateTime endTime = DateTime.Now;
-//    long endTicks = DateTime.Now.Ticks;
-//
-//    TimeSpan elapsedTime = endTime - startTime;
-//
-//    Console.WriteLine ("Zeit in Millisekunden: {0}", elapsedTime.Milliseconds);
-//  }
+  [SetUp]
+  public void SetUp ()
+  {
+    ClientTransaction.SetCurrent (null);
+    _client = Client.GetObject (s_clientID);
+  }
 
+  [Test]
+  public void LoadObjectsOverRelationTest ()
+  {
+    DateTime startTime = DateTime.Now;
+
+    DomainObjectCollection files = _client.Files;
+
+    DateTime endTime = DateTime.Now;
+    TimeSpan elapsedTime = endTime - startTime;
+
+    Console.WriteLine ("Zeit über DateTime in Millisekunden: {0}", elapsedTime.TotalMilliseconds.ToString ("n"));
+  }
+
+  [Test]
 }
 }
