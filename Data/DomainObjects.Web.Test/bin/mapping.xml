@@ -6,7 +6,7 @@
     xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 mapping.xsd">
 	<classes>
 		<class id="ClassWithAllDataTypes">
-			<type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>
+			<type>Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test</type>
 			<entity name="TableWithAllDataTypes" />
 			<storageProviderID>RpaTest</storageProviderID>
 			<properties>
@@ -35,7 +35,7 @@
 					<column>Double</column>
 				</property>
 				<property name="EnumProperty">
-					<type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>
+					<type>Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.Web.Test</type>
 					<column>Enum</column>
 				</property>
 				<property name="GuidProperty">
@@ -191,7 +191,7 @@
 		</class>
 				
 		<class id="ClassForRelationTest">
-			<type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassForRelationTest, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>
+			<type>Rubicon.Data.DomainObjects.Web.Test.Domain.ClassForRelationTest, Rubicon.Data.DomainObjects.Web.Test</type>
 			<entity name="TableForRelationTest" />
 			<storageProviderID>RpaTest</storageProviderID>
 			<properties>
@@ -212,7 +212,7 @@
 		</class>
 
     <class id="ClassWithoutProperties">
-      <type>Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithoutProperties, Rubicon.Data.DomainObjects.ObjectBinding.Web.Test</type>    
+      <type>Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithoutProperties, Rubicon.Data.DomainObjects.Web.Test</type>    
       <entity name="TableWithoutColumns"></entity>
       <storageProviderID>RpaTest</storageProviderID>
       <properties />
