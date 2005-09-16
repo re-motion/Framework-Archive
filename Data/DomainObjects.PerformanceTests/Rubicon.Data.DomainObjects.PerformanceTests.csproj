@@ -19,9 +19,9 @@
                 DefaultHTMLPageLayout = "Grid"
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
-                OutputType = "Library"
+                OutputType = "Exe"
                 PreBuildEvent = ""
-                PostBuildEvent = ""
+                PostBuildEvent = "copy $(SolutionDir)DomainObjects\*.xsd $(TargetDir)&#xd;&#xa;copy $(ProjectDir)*.xml $(TargetDir)&#xd;&#xa;"
                 RootNamespace = "Rubicon.Data.DomainObjects.PerformanceTests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
@@ -80,7 +80,7 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.XML"
+                    AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
@@ -124,6 +124,11 @@
                 <File
                     RelPath = "queries.xml"
                     BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Root.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "storageProviders.xml"
