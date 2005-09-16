@@ -10,12 +10,12 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Classes;
-using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain;
+using Rubicon.Data.DomainObjects.Web.Test.Classes;
+using Rubicon.Data.DomainObjects.Web.Test.Domain;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Controls;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
+namespace Rubicon.Data.DomainObjects.Web.Test
 {
 	public class EditObjectPage : BasePage
 	{
