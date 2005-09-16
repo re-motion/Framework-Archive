@@ -9,7 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
+namespace Rubicon.Data.DomainObjects.Web.Test
 {
 	/// <summary>
 	/// Summary description for _default.
