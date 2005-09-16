@@ -46,13 +46,13 @@
   <data name="property:Int32Property">
     <value>resx:Zahlen-Eigenschaft (Mussfeld)</value>
   </data>
-  <data name="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes+EnumType.Value0">
+  <data name="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes+EnumType.Value0">
     <value>Wert 0</value>
   </data>
-  <data name="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes+EnumType.Value1">
+  <data name="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes+EnumType.Value1">
     <value>Wert 1</value>
   </data>
-  <data name="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain.ClassWithAllDataTypes+EnumType.Value2">
+  <data name="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes+EnumType.Value2">
     <value>Wert 2</value>
   </data>
   
