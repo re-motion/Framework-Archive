@@ -7,9 +7,9 @@ using System.Web.UI.HtmlControls;
 
 using Rubicon.ObjectBinding;
 
-using Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.Domain;
+using Rubicon.Data.DomainObjects.Web.Test.Domain;
 
-namespace Rubicon.Data.DomainObjects.ObjectBinding.Web.Test
+namespace Rubicon.Data.DomainObjects.Web.Test
 {
 public class ControlWithAllDataTypes : System.Web.UI.UserControl
 {
