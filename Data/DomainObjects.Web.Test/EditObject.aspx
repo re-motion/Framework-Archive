@@ -1,5 +1,5 @@
 <%@ Page language="c#" Codebehind="EditObject.aspx.cs" AutoEventWireup="false" 
-  Inherits="Rubicon.Data.DomainObjects.ObjectBinding.Web.Test.EditObjectPage" %>
+  Inherits="Rubicon.Data.DomainObjects.Web.Test.EditObjectPage" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="rubicon" TagName="ControlWithAllDataTypes" Src="ControlWithAllDataTypes.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
