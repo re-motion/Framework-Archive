@@ -75,8 +75,8 @@ public abstract class WxeTransactionBase: WxeStepList
     ITransaction transaction = null;
 
     bool isParentTransactionNull = parentTransaction == null || parentTransaction.Transaction == null;
-    bool hasParentTransaction = ! _forceRoot && ! isParentTransactionNull;
-    if (hasParentTransaction)
+    bool useParentTransaction = ! _forceRoot && ! isParentTransactionNull;
+    if (useParentTransaction)
     {
       bool hasCurrentTransaction = CurrentTransaction != null;
       if (hasCurrentTransaction && parentTransaction.Transaction != CurrentTransaction)
@@ -177,7 +177,6 @@ public abstract class WxeTransactionBase: WxeStepList
     RestorePreviousTransaction();
   }
 
-
   protected void CommitAndReleaseTransaction()
   {
     if (_transaction != null)
@@ -209,16 +208,6 @@ public abstract class WxeTransactionBase: WxeStepList
       _previousTransaction = null;
       _isPreviousTransactionRestored = true;
     }
-  }
-
-  /// <summary> Sets the encapsualted transaction. </summary>
-  /// <remarks> Make this method protected virtual once the requirement arises to use an external transaction. </remarks>
-  private void SetTransaction (ITransaction transaction)
-  {
-    ArgumentUtility.CheckNotNull ("transaction", transaction);
-    if (ExecutionStarted)
-      throw new InvalidOperationException ("Cannot set the Transaction after the execution has started.");
-    _transaction = transaction;
   }
 
   protected bool AutoCommit
