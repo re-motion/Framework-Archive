@@ -35,6 +35,7 @@ public class WebMenuItem: IControlItem
   private SingleControlItemCollection _command = null;
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
+  private EventHandler _ownerControlPreRender;
 
   public WebMenuItem (
       string itemID, 
@@ -56,6 +57,8 @@ public class WebMenuItem: IControlItem
     _requiredSelection = requiredSelection;
     _isDisabled = isDisabled;
     _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
+
+    _ownerControlPreRender = new EventHandler(OwnerControl_PreRender);
   }
 
   public WebMenuItem ()
@@ -271,10 +274,10 @@ public class WebMenuItem: IControlItem
       if (_ownerControl != value)
       {
         if (_ownerControl != null)
-          _ownerControl.PreRender -= new EventHandler(OwnerControl_PreRender);
+          _ownerControl.PreRender -= _ownerControlPreRender;
         _ownerControl = value;
-        if (_ownerControl != null)
-          _ownerControl.PreRender += new EventHandler(OwnerControl_PreRender);
+        if (_ownerControl != null)          
+          _ownerControl.PreRender += _ownerControlPreRender;
         if (Command != null)
           Command.OwnerControl = value;
         OnOwnerControlChanged();
