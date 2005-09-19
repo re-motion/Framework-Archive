@@ -255,13 +255,27 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
   else
     item.className = _dropDownMenu_itemDisabledClassName;
     
-	if (itemInfo.Href != null && isEnabled)
+	if (isEnabled && itemInfo.Href != null)
   {
-    item.setAttribute ('javascript', itemInfo.Href);
+    var isJavaScript = itemInfo.Href.toLowerCase().indexOf ('javascript:') >= 0;
+    if (isJavaScript)
+    {
+      item.setAttribute ('javascript', itemInfo.Href);
+    }
+    else
+    {
+      item.setAttribute ('javascript', 'window.location = \'' + itemInfo.Href + '\';');
+    }
     item.onclick = function ()
         { 
           DropDownMenu_ClosePopUp();
-          eval (this.getAttribute ('javascript')); 
+          try
+          {
+            eval (this.getAttribute ('javascript')); 
+          }
+          catch (e)
+          {
+          }
         };
   }
 	
