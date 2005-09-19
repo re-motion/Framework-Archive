@@ -399,7 +399,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1em");
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-    writer.RenderBeginTag (HtmlTextWriterTag.A);  // End anchor
+    writer.RenderBeginTag (HtmlTextWriterTag.A);  // Begin anchor
 
     writer.AddStyleAttribute ("vertical-align", "middle");
     writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
