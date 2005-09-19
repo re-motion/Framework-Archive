@@ -7,33 +7,45 @@ div.dropDownMenuHeadFocus
   border-width: 1px;
 }
 
-.dropDownMenuHeadTitle,
-.dropDownMenuHeadTitleFocus
+td.dropDownMenuHeadTitle,
+td.dropDownMenuHeadTitleFocus
 {
   white-space: nowrap;
   vertical-align: middle;
   cursor: default;
 }
 
-.dropDownMenuHeadTitle a,
-.dropDownMenuHeadTitleFocus a
+td.dropDownMenuHeadTitle a,
+td.dropDownMenuHeadTitleFocus a
 {
   color: Blue;
 }
 
 /*  */
-.dropDownMenuHeadButton,
-.dropDownMenuHeadButtonFocus
+td.dropDownMenuHeadButton,
+td.dropDownMenuHeadButtonFocus
 {
   vertical-align: middle;
   cursor: default;
   background-color: #d7e7fd;
 }
 
-.dropDownMenuHeadButton a,
-.dropDownMenuHeadButtonFocus a
+td.dropDownMenuHeadButton a,
+td.dropDownMenuHeadButtonFocus a
 {
   cursor: default;
+  background-color:Transparent;
+  border-style: none;
+	padding: 0px;
+}
+
+td.dropDownMenuHeadButton a:hover,
+td.dropDownMenuHeadButtonFocus a:hover
+{
+  cursor: default;
+  background-color:Transparent;
+  border-style: none;
+	padding: 0px;
 }
 
 /*  */
