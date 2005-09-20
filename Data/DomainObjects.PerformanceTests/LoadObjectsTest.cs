@@ -44,7 +44,7 @@ public class LoadObjectsTest
     DateTime endTime = DateTime.Now;
     TimeSpan elapsedTime = endTime - startTime;
 
-    Console.WriteLine ("Zeit über DateTime in Millisekunden: {0}", elapsedTime.TotalMilliseconds.ToString ("n"));
+    Console.WriteLine ("LoadObjectsOverRelationTest: Elapsed time: {0} ms", elapsedTime.TotalMilliseconds.ToString ("n"));
   }
 }
 }

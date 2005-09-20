@@ -303,6 +303,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\readme.txt"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Domain\ClassForRelationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -330,142 +334,7 @@
                     RelPath = "Globalization\ClassWithAllDataTypes.resx"
                     BuildAction = "EmbeddedResource"
                 />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\BocBooleanValue.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\BocList.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\BocList.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\bocListTemplate.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\HTML\BocReferenceValue.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\CheckBoxFalse.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\CheckBoxNull.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\CheckBoxTrue.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\DatePicker.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveFirst.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveFirstInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveLast.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveLastInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveNext.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MoveNextInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MovePrevious.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\MovePreviousInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\SortAscending.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.ObjectBinding.Web\Image\SortDescending.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\HTML\DatePicker.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\HTML\DropDownMenu.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\HTML\DropDownMenu.htc"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\HTML\DropDownMenu.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\HTML\FormGrid.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\HTML\FormGridTemplate.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\HTML\PopupCalendar.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\Image\DropDownMenuArrow.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\Image\DropDownMenuItemIconPane.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\Image\Help.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\Image\RequiredField.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\Image\Spacer.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\Image\ValidationError.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\UI\DatePickerForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Rubicon.Web\UI\WxeHandler.ashx"
-                    BuildAction = "None"
-                />
+                <Folder RelPath = "Res\" />
                 <File
                     RelPath = "WxeFunctions\WxeTestPageFunction.cs"
                     SubType = "Code"
