@@ -11,6 +11,9 @@ using System.Web.UI.HtmlControls;
 
 using Rubicon.Web.ExecutionEngine;
 
+using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
+using Rubicon.Data.DomainObjects.Web.Test.Domain;
+
 namespace Rubicon.Data.DomainObjects.Web.Test
 {
 	/// <summary>
@@ -18,15 +21,22 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 	/// </summary>
 	public class FirstPage : WxePage
 	{
+    protected WxeTestPageFunction CurrentWxeTestPageFunction
+    {
+      get { return (WxeTestPageFunction) CurrentFunction; }
+    }
+
     protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl ClassWithAllDataTypesDataSource;
     protected Rubicon.ObjectBinding.Web.Controls.BocTextValue StringValue;
+    protected System.Web.UI.WebControls.Button OpenWithNewClientTransactionButton;
+    protected System.Web.UI.WebControls.Button OpenWithSameClientTransactionButton;
+    protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
     protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue BocEnumValue1;
-    protected System.Web.UI.WebControls.Button Button1;
-    protected System.Web.UI.WebControls.Button Button2;
   
 		private void Page_Load(object sender, System.EventArgs e)
 		{
-			// Put user code to initialize the page here
+      ClassWithAllDataTypesDataSource.BusinessObject = ClassWithAllDataTypes.GetObject (CurrentWxeTestPageFunction.ClassWithAllDataTypesID);
+      ClassWithAllDataTypesDataSource.LoadValues (IsPostBack);
 		}
 
 		#region Web Form Designer generated code
@@ -45,9 +55,35 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 		/// </summary>
 		private void InitializeComponent()
 		{    
+      this.OpenWithNewClientTransactionButton.Click += new System.EventHandler(this.OpenWithNewClientTransactionButton_Click);
+      this.OpenWithSameClientTransactionButton.Click += new System.EventHandler(this.OpenWithSameClientTransactionButton_Click);
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
 		#endregion
+
+    private void OpenWithNewClientTransactionButton_Click(object sender, System.EventArgs e)
+    {
+      if (!IsReturningPostBack)
+      {
+        WxeTestPageFunction wxeTestPageFunction = new WxeTestPageFunction (
+            CurrentWxeTestPageFunction.ClassWithAllDataTypesID);
+
+        ExecuteFunction (wxeTestPageFunction, "_blank", OpenWithNewClientTransactionButton, false);
+      }
+    }
+
+    private void OpenWithSameClientTransactionButton_Click(object sender, System.EventArgs e)
+    {
+      if (!IsReturningPostBack)
+      {
+        WxeTestPageFunction wxeTestPageFunction = new WxeTestPageFunction (
+            CurrentWxeTestPageFunction.ClassWithAllDataTypesID, 
+            CurrentWxeTestPageFunction.ClientTransaction);
+
+        ExecuteFunction (wxeTestPageFunction, "_blank", OpenWithSameClientTransactionButton, false);
+      }
+    }
+
 	}
 }

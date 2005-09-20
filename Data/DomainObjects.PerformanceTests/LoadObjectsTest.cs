@@ -46,7 +46,5 @@ public class LoadObjectsTest
 
     Console.WriteLine ("Zeit über DateTime in Millisekunden: {0}", elapsedTime.TotalMilliseconds.ToString ("n"));
   }
-
-  [Test]
 }
 }

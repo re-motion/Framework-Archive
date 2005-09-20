@@ -15,6 +15,17 @@ public class WxeTestPageFunction : WxeFunction
 
   // construction and disposing
 
+  public WxeTestPageFunction ()
+  {
+  }
+
+  public WxeTestPageFunction (ObjectID classWithAllDataTypesID) 
+      : base (classWithAllDataTypesID)
+  {
+    ClientTransaction.SetCurrent (new ClientTransaction ());
+    ClientTransaction = ClientTransaction.Current;
+  }
+
   public WxeTestPageFunction (ObjectID classWithAllDataTypesID, ClientTransaction clientTransaction) 
       : base (classWithAllDataTypesID, clientTransaction)
   {
@@ -35,5 +46,7 @@ public class WxeTestPageFunction : WxeFunction
     get { return (ClientTransaction) Variables["ClientTransaction"]; }
     set { Variables["ClientTransaction"] = value; }
   }
+
+  private WxePageStep Step1 = new WxePageStep ("WxeTestPage.aspx");
 }
 }
