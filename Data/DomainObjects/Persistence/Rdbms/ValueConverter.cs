@@ -83,8 +83,8 @@ public class ValueConverter
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
     
-//    if (propertyDefinition.PropertyType == typeof (ObjectID))
-//      CheckClassIDColumn (classDefinition, propertyDefinition, dataReader);
+    if (propertyDefinition.PropertyType == typeof (ObjectID))
+      CheckClassIDColumn (classDefinition, propertyDefinition, dataReader);
 
     int columnOrdinal = dataReader.GetOrdinal (propertyDefinition.ColumnName);
 

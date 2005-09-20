@@ -224,7 +224,6 @@ public class SqlProviderLoadDataContainerTest : SqlProviderBaseTest
   }
 
   [Test]
-  [Ignore ("Temporary removed for AUVA Build (Performance optimizing)")]
   [ExpectedException (typeof (RdbmsProviderException), 
       "Error while reading property 'ClassWithGuidKey' for class 'ClassWithRelatedClassIDColumnAndNoInheritance':" 
       + " Incorrect database format encountered."
