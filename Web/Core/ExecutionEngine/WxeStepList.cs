@@ -32,15 +32,21 @@ public class WxeStepList: WxeStep
   }
 
   /// <summary>
-  ///   Moves all steps to <c>innerList</c> and makes <c>innerList</c> the only step of this step list.
+  ///   Moves all steps to <paramref name="innerList"/> and makes <paramref name="innerList"/> the only step of 
+  ///   this step list.
   /// </summary>
-  /// <param name="innerList"> This list will be the only step of this function and contain all of the function's steps. Must be empty. </param>
+  /// <param name="innerList"> 
+  ///   This list will be the only step of the <see cref="WxeStepList"/> and contain all of the 
+  ///   <see cref="WxeStepList"/>'s steps. Must be empty and not executing.
+  /// </param>
   protected void Encapsulate (WxeStepList innerList)
   {
     if (this._nextStep != 0 || this._lastExecutedStep != -1)
-      throw new InvalidOperationException ("Cannot encapsulate executing function.");
-    if (innerList._nextStep != 0 || innerList._lastExecutedStep != -1 || innerList._steps.Count > 0)
+      throw new InvalidOperationException ("Cannot encapsulate executing list.");
+    if (innerList._steps.Count > 0)
       throw new ArgumentException ("innerList", "List must be empty.");
+    if (innerList._nextStep != 0 || innerList._lastExecutedStep != -1)
+      throw new ArgumentException ("innerList", "Cannot encapsulate into executing list.");
 
     innerList._steps = this._steps;
     foreach (WxeStep step in innerList._steps)

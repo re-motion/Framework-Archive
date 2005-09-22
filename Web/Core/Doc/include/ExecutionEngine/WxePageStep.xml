@@ -40,7 +40,7 @@
         </item>
         <item>
           <term>
-            The event handler throws the an exception. 
+            The event handler throws an exception. 
           </term>
           <description>
             The execution path will immedeatly leave the page and the exception will be passed through the 
