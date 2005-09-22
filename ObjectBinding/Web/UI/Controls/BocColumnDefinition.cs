@@ -272,6 +272,7 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   {
     get { return "CommandColumnDefinition"; }
   }
+
   public override void LoadResources (IResourceManager resourceManager)
   {
     if (resourceManager == null)
@@ -771,6 +772,67 @@ public enum BocEditDetailsColumnDefintionShow
   Always,
   /// <summary> The column is only shown if the <see cref="BocList"/> is in eidt-mode. </summary>
   EditMode
+}
+
+/// <summary> A column defintion that renders a <see cref="DropDownMenu"/> in the cell. </summary>
+public class BocDropDownMenuColumnDefinition: BocColumnDefinition
+{
+  private string _menuTitleText;
+  private IconInfo _menuTitleIcon;
+
+  public BocDropDownMenuColumnDefinition()
+  {
+    _menuTitleIcon = new IconInfo();
+  }
+
+  /// <summary> Gets the human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "DropDownMenuColumnDefinition"; }
+  }
+
+  /// <summary> Gets or sets the text displayed as the menu title. </summary>
+  /// <value> A <see cref="string"/> displayed as the menu's title. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The menu title, can be empty.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public string MenuTitleText
+  {
+    get { return _menuTitleText; }
+    set { _menuTitleText = StringUtility.NullToEmpty (value); }
+  }
+
+  /// <summary> Gets or sets the icon displayed in the menu's title field. </summary>
+  /// <value> An <see cref="IconInfo"/> displayed in the menu's title field. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Category ("Appearance")]
+  [Description ("An icon displayed in the menu's title field, can be empty.")]
+  [DefaultValue("")]
+  [NotifyParentProperty (true)]
+  public IconInfo MenuTitleIcon
+  {
+    get { return _menuTitleIcon; }
+    set { _menuTitleIcon = value; }
+  }
+
+
+  public override void LoadResources (IResourceManager resourceManager)
+  {
+    if (resourceManager == null)
+      return;
+    base.LoadResources (resourceManager);
+    
+    string key;
+    key = ResourceManagerUtility.GetGlobalResourceKey (MenuTitleText);
+    if (! StringUtility.IsNullOrEmpty (key))
+      MenuTitleText = resourceManager.GetString (key);
+
+    if (MenuTitleIcon != null)
+      MenuTitleIcon.LoadResources (resourceManager);
+  }
 }
 
 }
