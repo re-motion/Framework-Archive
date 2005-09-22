@@ -210,11 +210,15 @@
         the <see cref="ListMenuItems"/> properties to define the <see cref="BocMenuItem"/> objects available in the 
         respective menus.
       </para><para>
-        The menus are displayed to the right of the list of values. The can be hidden individually using the
+        The menus are displayed to the right of the list of values. They can be hidden individually using the
         <see cref="ShowOptionsMenu"/> and <see cref="ShowListMenu"/> properties. The menus are also hidden 
         automatically in case they do not provide a menu item or the list is empty and the 
         <see cref="ShowMenuForEmptyListReadOnlyMode"/> and <see cref="ShowMenuForEmptyListEditMode"/> flags are set to
         <see langword="false"/>.
+      </para><para>
+        By using the <see cref="HiddenMenuItems"/> property, it is possible to hide individual menu items based on
+        their ID. If an ID is seperated by dots, it is possible to specify the ID by entering only the last part of 
+        the ID.
       </para><para>
         You can register an event handler for the click event with the <see cref="MenuItemClick"/> event source.
       </para><para>
@@ -224,12 +228,40 @@
         <see cref="OptionsTitle"/>, and <see cref="ListMenuLineBreaks"/>.
       </para>
       <note type="inheritinfo">
-        Use the <see cref="InitializeMenusItems"/> method to modify the list of menu items and the 
-        <see cref="PreRenderMenuItems"/> methods to change the menu items' properties (such as their visibility).
-        It is required that the list of menu items remains constant accross the page's life cycles. Only the properties
-        may be modified.
+        Override the <see cref="InitializeMenusItems"/> method to modify the list of menu items and the 
+        <see cref="PreRenderMenuItems"/> method to change the menu items' properties (such as their visibility).
+        It is required that the list of menu items remains constant accross the page's life cycles. Only the 
+        properties may be modified.
       </note>
       
+      <h4 class="dtH4">Row Menus</h4>
+      <para>
+        The <b>BocList</b> provides an infrastructure for displaying a <see cref="DropDownMenu"/> in each row. This
+        allows for the creation of row spefic and therefor object specific menu items. Because of the extensive
+        integration into the <b>BocList</b>, this feature is only available when inheriting from the <b>BocList</b>.
+      </para><para>
+        In order to use the row menus, the <see cref="RowMenuDisplay"/> must be set to 
+        <see cref="RowMenuDisplay.Automatic"/> or <see cref="RowMenuDisplay.Manual"/>. In automatic mode, the 
+        <b>BocList</b> will automatically create a menu column. In manual mode, the application
+        developer must add a <see cref="BocDropDownMenuColumnDefinition"/> to the collection of 
+        <see cref="FixedColumns"/> or override the <see cref="GetColumns"/> method and provide the 
+        <see cref="BocDropDownMenuColumnDefinition"/> programmatically.
+      </para><para>
+        Override the <see cref="InitializeRowMenuItems"/> method to populate the list of menu items and the 
+        <see cref="PreRenderRowMenuItems"/> method to change the menu items' properties (such as their visibility).
+        It is required that the list of menu items remains constant for a menu item accross the page's life cycles. 
+        Only the properties may be modified.
+      </para><para>
+        Override the <see cref="OnRowMenuItemEventCommandClick"/> method to handle the click events of the menu items.
+      </para><para>
+        In order to prevent the rendering of the menu in a specific row, simply provide no menu items for this row
+        in the <see cref="InitializeRowMenuItems"/> method.
+      </para><note type="caution">
+        Changing the business object of the row with a menu item that is currently executing an event can result in 
+        the change of the menu items for that row. To prevent side effects, do not modify the list while handling 
+        the event of a row menu item.
+      </note>
+            
       <h4 class="dtH4">Sorting</h4>
       <para>
         The <b>BocList</b>'s rows can be sorted by one or more of its columns. Use the <see cref="EnableSorting"/> flag 
@@ -381,6 +413,14 @@
           </description>
         </item>
         <item>
+          <term> <see cref="FixedColumns"/>[x].MenuTitleText </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:MenuTitleText </para>
+            <para> e.g. auto:MyBocList:FixedColumns:MyItem:MenuTitleText </para>
+            <para> Applies to columns of type <see cref="BocDropDownMenuColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
           <term> <see cref="IndexColumnTitle"/> </term>
           <description>
             <para> &lt;BocList Resource ID&gt;:IndexColumnTitle </para>
@@ -439,13 +479,35 @@
   </OnListItemCommandClick>
   <OnMenuItemEventCommandClick>
     <param name="menuItem"> 
-      The <see cref="BocMenuItem"/> whose command was clicked. 
+      The <see cref="WebMenuItem"/> whose command was clicked. 
     </param>
   </OnMenuItemEventCommandClick>
   <OnMenuItemWxeFunctionCommandClick>
     <param name="menuItem"> 
-      The <see cref="BocMenuItem"/> whose command was clicked. 
+      The <see cref="WebMenuItem"/> whose command was clicked. 
     </param>
   </OnMenuItemWxeFunctionCommandClick>
+  <OnRowMenuItemEventCommandClick>
+    <param name="menuItem"> 
+      The <see cref="WebMenuItem"/> whose command was clicked. 
+    </param>
+    <param name="businessObject"> 
+      The <see cref="IBusinessObject"/> of the row in which the command was clicked. 
+    </param>
+    <param name="listIndex"> 
+      The index of the row in which the command was clicked. 
+    </param>
+  </OnRowMenuItemEventCommandClick>
+  <OnMRowenuItemWxeFunctionCommandClick>
+    <param name="menuItem"> 
+      The <see cref="WebMenuItem"/> whose command was clicked. 
+    </param>
+    <param name="businessObject"> 
+      The <see cref="IBusinessObject"/> of the row in which the command was clicked. 
+    </param>
+    <param name="listIndex"> 
+      The index of the row in which the command was clicked. 
+    </param>
+  </OnRowMenuItemWxeFunctionCommandClick>
 </BocList>
 

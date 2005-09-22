@@ -342,35 +342,47 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   private void RenderHeadTitle (HtmlTextWriter writer)
   {
+    bool hasHeadTitleContents = true;
     if (_renderHeadTitleMethod == null)
     {
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");//"100%");
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadTitle);
-      writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
+      bool hasTitleText = ! StringUtility.IsNullOrEmpty (_titleText);
+      bool hasTitleIcon = _titleIcon != null && ! StringUtility.IsNullOrEmpty (_titleIcon.Url);
+      hasHeadTitleContents = hasTitleText || hasTitleIcon;
 
-      if (Enabled)
+      if (hasHeadTitleContents)
       {
-        writer.RenderBeginTag (HtmlTextWriterTag.A); // Begin title tag
-      }
-      else
-      {
-        writer.AddStyleAttribute (HtmlTextWriterStyle.Color, "GrayText");
-        writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin title tag
-      }
-      RenderIcon (writer, _titleIcon);
-      writer.Write (_titleText);
-      writer.RenderEndTag(); // End title tag
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "1%");//"100%");
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadTitle);
+        writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td
 
-      writer.RenderEndTag(); // End td
+        if (Enabled)
+        {
+          writer.RenderBeginTag (HtmlTextWriterTag.A); // Begin title tag
+        }
+        else
+        {
+          writer.AddStyleAttribute (HtmlTextWriterStyle.Color, "GrayText");
+          writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin title tag
+        }
+        RenderIcon (writer, _titleIcon);
+        writer.Write (_titleText);
+        writer.RenderEndTag(); // End title tag
+
+        writer.RenderEndTag(); // End td
+      }
     }
     else
     {
       _renderHeadTitleMethod (writer, this);
     }
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
-    writer.AddStyleAttribute ("padding-right", "0.3em");
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
-    writer.RenderEndTag();
+
+    if (hasHeadTitleContents)
+    {
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
+      writer.AddStyleAttribute ("padding-right", "0.3em");
+      writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
+      writer.RenderEndTag();
+    }
   }
 
   private void RenderIcon (HtmlTextWriter writer, IconInfo icon)
@@ -394,7 +406,6 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   private void RenderHeadButton (HtmlTextWriter writer)
   {
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0%");
-    writer.AddStyleAttribute ("margin-left", "0.3em");
     writer.AddStyleAttribute ("text-align", "center");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassHeadButton);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin td

@@ -142,6 +142,7 @@ public class BocList:
     SelectAllRowsAlternateText,
     SelectRowAlternateText,
     IndexColumnTitle,
+    /// <summary> The menu title text used for an automatically generated row menu column. </summary>
     RowMenuTitle
   }
 
@@ -279,7 +280,8 @@ public class BocList:
   private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
   private DropDownMenu _optionsMenu;
   private WebMenuItemCollection _listMenuItems;
-  private DropDownMenu[] _rowMenus = null;
+  /// <summary> Triplet &lt; IBusinessObject, listIndex, DropDownMenu &gt;</summary>
+  private Triplet[] _rowMenus = null;
   private PlaceHolder _rowMenusPlaceHolder;
  
   /// <summary> Determines wheter an empty list will still render its headers and the additional column sets list. </summary>
@@ -901,7 +903,7 @@ public class BocList:
   /// </summary>
   private void OptionsMenu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
   {
-    OnMenuItemWxeFunctionCommandClick ((BocMenuItem) e.Item);
+    OnMenuItemWxeFunctionCommandClick (e.Item);
   }
 
   /// <summary> Handles the click to a WXE function command. </summary>
@@ -990,6 +992,8 @@ public class BocList:
         throw new WcagException (1, this, "PageSize");
       if (EnableSorting)
         throw new WcagException (1, this, "EnableSorting");
+      if (RowMenuDisplay == RowMenuDisplay.Automatic)
+        throw new WcagException (1, this, "RowMenuDisplay");
 
       for (int i = 0; i < columns.Length; i++)
       {
@@ -1005,6 +1009,9 @@ public class BocList:
           if (hasPostBackColumnCommand)
             throw new WcagException (1, this, String.Format ("Columns[{0}]", i));
         }
+
+        if (columns[i] is BocDropDownMenuColumnDefinition)
+          throw new WcagException (1, this, String.Format ("Columns[{0}]", i));
       }
     }
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
@@ -1072,6 +1079,7 @@ public class BocList:
     {
       PreRenderMenuItems();
       EnsureRowMenusInitialized();
+      PreRenderRowMenusItems();
     }
 
     if (IsEditDetailsModeActive)
@@ -2678,7 +2686,7 @@ public class BocList:
       return;
     }
 
-    DropDownMenu dropDownMenu = _rowMenus[rowIndex];
+    DropDownMenu dropDownMenu = (DropDownMenu) _rowMenus[rowIndex].Third;
     if (dropDownMenu.MenuItems.Count == 0)
     {
       writer.Write (c_whiteSpace);
@@ -2688,10 +2696,9 @@ public class BocList:
     writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
 
-    if (StringUtility.IsNullOrEmpty (column.MenuTitleText))
-      dropDownMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.RowMenuTitle);
-    else
-      dropDownMenu.TitleText = column.MenuTitleText;
+    dropDownMenu.Enabled = ! IsEditDetailsModeActive;
+
+    dropDownMenu.TitleText = column.MenuTitleText;
     dropDownMenu.TitleIcon = column.MenuTitleIcon;
     dropDownMenu.RenderControl (writer);
     
@@ -3081,6 +3088,9 @@ public class BocList:
     BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
   }
 
+  /// <summary> 
+  ///   Forces the recreation of the menus to be displayed in the <see cref="BocDropDownMenuColumnDefiniton"/>.
+  /// </summary>
   private void ResetRowMenus()
   {
     _rowMenus = null;
@@ -3097,16 +3107,18 @@ public class BocList:
     {
       BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
       dropDownMenuColumn.Width = Unit.Percentage (0);
+      dropDownMenuColumn.MenuTitleText = GetResourceManager().GetString (ResourceIdentifier.RowMenuTitle);
       return dropDownMenuColumn;
     }
     return null;
   }
 
   /// <summary> 
-  ///   Tests that the <paramref name="columnDefinitions"/> array holds only a single 
-  ///   <see cref="BocDropDownMenuColumnDefinition"/>.
+  ///   Tests that the <paramref name="columnDefinitions"/> array holds exactly one
+  ///   <see cref="BocDropDownMenuColumnDefinition"/> if the <see cref="RowMenuDisplay"/> is set to 
+  ///   <see cref="RowMenuDisplay.Automatic"/> or <see cref="RowMenuDisplay.Manual"/>.
   /// </summary>
-  private void CheckForMultipleRowMenuColumns (BocColumnDefinition[] columnDefinitions)
+  private void CheckRowMenuColumns (BocColumnDefinition[] columnDefinitions)
   {
     bool isFound = false;
     for (int i = 0; i < columnDefinitions.Length; i++)
@@ -3118,8 +3130,11 @@ public class BocList:
         isFound = true;
       }
     }
+    if (RowMenuDisplay == RowMenuDisplay.Manual && ! isFound)
+      throw new InvalidOperationException ("No BocDropDownMenuColumnDefinition was found in the BocList '" + ID + "' but the RowMenuDisplay was set to manual.");
   }
 
+  /// <summary> Initializes the menus to be displayed in the <see cref="BocDropDownMenuColumnDefiniton"/>. </summary>
   private void EnsureRowMenusInitialized()
   {
     if (_rowMenus != null)
@@ -3132,9 +3147,10 @@ public class BocList:
       return;
 
     if (IsPagingEnabled)
-      _rowMenus = new DropDownMenu[PageSize.Value];
+      _rowMenus = new Triplet[PageSize.Value];
     else
-      _rowMenus = new DropDownMenu[Value.Count];
+      _rowMenus = new Triplet[Value.Count];
+    _rowMenusPlaceHolder.Controls.Clear();
 
     int firstRow = 0;
     int totalRowCount = Value.Count;
@@ -3154,7 +3170,7 @@ public class BocList:
         idxAbsoluteRows < rowCountWithOffset; 
         idxAbsoluteRows++, idxRelativeRows++)
     {
-      Pair rowPair = (Pair)rows[idxAbsoluteRows];
+      Pair rowPair = rows[idxAbsoluteRows];
       if (rowPair.Second == null)
         throw new NullReferenceException ("Null item found in IList 'Value' of BocList " + ID + ".");
       int originalRowIndex = (int) rowPair.First;
@@ -3164,12 +3180,14 @@ public class BocList:
 
       DropDownMenu dropDownMenu = new DropDownMenu (this);
       dropDownMenu.ID = ID + "_RowMenu_" + originalRowIndex.ToString();
+      dropDownMenu.EventCommandClick += new WebMenuItemClickEventHandler (RowMenu_EventCommandClick);
+      dropDownMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (RowMenu_WxeFunctionCommandClick);
 
       _rowMenusPlaceHolder.Controls.Add (dropDownMenu);
       WebMenuItem[] menuItems = InitializeRowMenusItems (businessObject, originalRowIndex);
       dropDownMenu.MenuItems.AddRange (menuItems);
 
-      _rowMenus[idxRelativeRows] = dropDownMenu;
+      _rowMenus[idxRelativeRows] = new Triplet (businessObject, originalRowIndex, dropDownMenu);
     }
   }
 
@@ -3177,11 +3195,115 @@ public class BocList:
   /// <param name="businessObject"> 
   ///   The <see cref="IBusinessObject"/> of the row for which the menu items are being generated. 
   /// </param>
-  /// <param name="originalRowIndex"> The position of <paramref name="businessObject"/> in the list of values. </param>
+  /// <param name="listIndex"> The position of the <paramref name="businessObject"/> in the list of values. </param>
   /// <returns> A <see cref="WebMenuItem"/> array with the menu items generated by the implementation. </returns>
-  protected virtual WebMenuItem[] InitializeRowMenusItems (IBusinessObject businessObject, int originalRowIndex)
+  protected virtual WebMenuItem[] InitializeRowMenusItems (IBusinessObject businessObject, int listIndex)
   {
     return new WebMenuItem[0];
+  }
+
+  /// <summary> PreRenders the menu items for all row menus. </summary>
+  private void PreRenderRowMenusItems()
+  {
+    if (_rowMenus == null)
+      return;
+
+    for (int i = 0; i < _rowMenus.Length; i++)
+    {
+      Triplet rowMenuTriplet = _rowMenus[i];
+      IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
+      int listIndex = (int) rowMenuTriplet.Second;       
+      DropDownMenu dropDownMenu = (DropDownMenu) rowMenuTriplet.Third;
+      PreRenderRowMenusItems (dropDownMenu.MenuItems, businessObject, listIndex);
+    }
+  }
+
+  /// <summary> PreRenders the menu items for a data row. </summary>
+  /// <param name="menuItems"> The menu items to be displayed for the row. </param>
+  /// <param name="businessObject"> 
+  ///   The <see cref="IBusinessObject"/> of the row for which the menu items are being generated. 
+  /// </param>
+  /// <param name="listIndex"> The position of the <paramref name="businessObject"/> in the list of values. </param>
+  protected virtual void PreRenderRowMenusItems (
+      WebMenuItemCollection menuItems, 
+      IBusinessObject businessObject, 
+      int listIndex)
+  {
+  }
+
+  /// <summary> 
+  ///   Event handler for the <see cref="DropDownMenu.EventCommandClick"/> of the <b>RowMenu</b>.
+  /// </summary>
+  private void RowMenu_EventCommandClick (object sender, WebMenuItemClickEventArgs e)
+  {
+    for (int i = 0; i < _rowMenus.Length; i++)
+    {
+      Triplet rowMenuTriplet = _rowMenus[i];
+      DropDownMenu rowMenu = (DropDownMenu) rowMenuTriplet.Third;
+      if (rowMenu == sender)
+      {
+        IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
+        int listIndex = (int) rowMenuTriplet.Second;       
+        OnRowMenuItemEventCommandClick (e.Item, businessObject, listIndex);
+        return;
+      }
+    }
+  }
+
+  /// <summary> Handles the click on an Event command of a row menu. </summary>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnRowMenuItemEventCommandClick/*' />
+  protected virtual void OnRowMenuItemEventCommandClick (
+      WebMenuItem menuItem, 
+      IBusinessObject businessObject, 
+      int listIndex)
+  {
+    if (menuItem != null && menuItem.Command != null)
+    {
+      if (menuItem is BocMenuItem)
+        ((BocMenuItemCommand) menuItem.Command).OnClick ((BocMenuItem) menuItem);
+      else
+        menuItem.Command.OnClick();
+    }
+  }
+
+  /// <summary> 
+  ///   Event handler for the <see cref="DropDownMenu.WxeFunctionCommandClick"/> of the <b>RowMenu</b>.
+  /// </summary>
+  private void RowMenu_WxeFunctionCommandClick (object sender, WebMenuItemClickEventArgs e)
+  {
+    for (int i = 0; i < _rowMenus.Length; i++)
+    {
+      Triplet rowMenuTriplet = _rowMenus[i];
+      DropDownMenu rowMenu = (DropDownMenu) rowMenuTriplet.Third;
+      if (rowMenu == sender)
+      {
+        IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
+        int listIndex = (int) rowMenuTriplet.Second;       
+        OnRowMenuItemWxeFunctionCommandClick (e.Item, businessObject, listIndex);
+        return;
+      }
+    }
+  }
+
+  /// <summary> Handles the click to a WXE function command or a row menu. </summary>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnRowMenuItemWxeFunctionCommandClick/*' />
+  protected virtual void OnRowMenuItemWxeFunctionCommandClick (
+      WebMenuItem menuItem, 
+      IBusinessObject businessObject, 
+      int listIndex)
+  {
+    if (menuItem != null && menuItem.Command != null)
+    {
+      if (menuItem is BocMenuItem)
+      {
+        BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
+        command.ExecuteWxeFunction ((IWxePage) Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
+      }
+      else
+      {
+        menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+      }
+    }
   }
 
   /// <summary> 
@@ -3267,7 +3389,7 @@ public class BocList:
       SynchronizeSortingOrderColumns (columnDefinitions);
     }
 
-    CheckForMultipleRowMenuColumns (columnDefinitions);
+    CheckRowMenuColumns (columnDefinitions);
 
     return columnDefinitions;
   }
