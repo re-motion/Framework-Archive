@@ -5,6 +5,7 @@ div.dropDownMenuHeadFocus
   border-color: #2254b1;
   border-style: solid;
   border-width: 1px;
+	background-color: White;
 }
 
 td.dropDownMenuHeadTitle,
@@ -13,6 +14,7 @@ td.dropDownMenuHeadTitleFocus
   white-space: nowrap;
   vertical-align: middle;
   cursor: default;
+	background-color: White;
 }
 
 td.dropDownMenuHeadTitle a,

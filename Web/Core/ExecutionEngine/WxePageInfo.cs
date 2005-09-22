@@ -74,6 +74,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     ArgumentUtility.CheckNotNull ("context", context);
     base.Initialize (_page, context);
 
+    // TODO: .net 2.0
+    //_httpContext = context;
+    //_httpContext.Handler = _page;
+
     if (! ControlHelper.IsDesignMode (_page, context))
     {
       _wxeForm = WxeForm.Replace (_page.HtmlForm);
@@ -85,7 +89,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
     _page.PreRender += new EventHandler(Page_PreRender);
+    // TODO: .net 2.0
+    // _page.Unload += new EventHandler(Page_Unload);
   }
+
+  // TODO: .net 2.0
+  //void Page_Unload(object sender, EventArgs e)
+  //{
+  //  _httpContext.Handler = WxeHandler;
+  //}
 
   private void Form_LoadPostData (object sender, EventArgs e)
   {
@@ -522,6 +534,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     if (! _htmlFormFieldInitialized)
     {
       bool isDesignMode = ControlHelper.IsDesignMode (_page);
+
+      /// TODO: .net 2.0
+      //Control page = (Page)_page;
+      //if (((Page)_page).Master != null)
+      //  page = ((Page)_page).Master;
+
       MemberInfo[] fields = _page.GetType().FindMembers (
             MemberTypes.Field, 
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
@@ -551,6 +569,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     get
     {
       EnsureHtmlFormFieldInitialized();
+
+      /// TODO: .net 2.0
+      //Control page = (Page)_page;
+      //if (((Page)_page).Master != null)
+      //  page = ((Page)_page).Master;
+
       if (_htmlFormField != null) // Can only be null without an exception during design mode
         return (HtmlForm) _htmlFormField.GetValue (_page);
       else
@@ -559,6 +583,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     set
     {
       EnsureHtmlFormFieldInitialized();
+
+      /// TODO: .net 2.0
+      //Control page = (Page)_page;
+      //if (((Page)_page).Master != null)
+      //  page = ((Page)_page).Master;
+
       if (_htmlFormField != null) // Can only be null without an exception during design mode
         _htmlFormField.SetValue (_page, value);
     }

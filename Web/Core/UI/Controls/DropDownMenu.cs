@@ -357,8 +357,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
         writer.AddStyleAttribute (HtmlTextWriterStyle.Color, "GrayText");
         writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin title tag
       }
-      if (_titleIcon != null)
-        RenderIcon (writer, _titleIcon);
+      RenderIcon (writer, _titleIcon);
       writer.Write (_titleText);
       writer.RenderEndTag(); // End title tag
 
@@ -376,6 +375,9 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
 
   private void RenderIcon (HtmlTextWriter writer, IconInfo icon)
   {
+    if (icon == null || StringUtility.IsNullOrEmpty (icon.Url))
+      return;
+
     writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
     if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
     {
@@ -406,6 +408,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
     string url = ResourceUrlResolver.GetResourceUrl (
         this, Context, typeof (DropDownMenu), ResourceType.Image, c_dropDownIcon);
     writer.AddAttribute (HtmlTextWriterAttribute.Src, url);
+    writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
     writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag(); // End img
 
