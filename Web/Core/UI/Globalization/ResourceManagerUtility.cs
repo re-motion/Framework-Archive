@@ -121,7 +121,7 @@ public class ResourceManagerUtility
     return s_chachedResourceManagers[type] as IResourceManager;
   }
 
-  private const string c_globalResourceKeyPrefix = "#res:";
+  private const string c_globalResourceKeyPrefix = "$res:";
 
   public static bool IsGlobalResourceKey (string elementValue)
   {
