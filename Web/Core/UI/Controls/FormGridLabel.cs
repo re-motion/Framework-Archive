@@ -43,7 +43,7 @@ public class FormGridLabel: Label, ISmartControl
 
   BaseValidator[] ISmartControl.CreateValidators()
   {
-    return null;
+    return new BaseValidator[0];
   }
 
   Control ISmartControl.TargetControl
