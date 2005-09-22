@@ -36,6 +36,7 @@ public class WebMenuItem: IControlItem
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
   private EventHandler _ownerControlPreRender;
+  private EventHandler _commandClick;
 
   public WebMenuItem (
       string itemID, 
@@ -59,6 +60,9 @@ public class WebMenuItem: IControlItem
     _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
 
     _ownerControlPreRender = new EventHandler(OwnerControl_PreRender);
+    _commandClick = new EventHandler (Command_Click);
+    if (Command != null)
+      Command.Click += _commandClick;
   }
 
   public WebMenuItem ()
@@ -73,8 +77,25 @@ public class WebMenuItem: IControlItem
   {
   }
 
+  private void OwnerControl_PreRender(object sender, EventArgs e)
+  {
+    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
+      return;
+    PreRender();
+  }
+
   /// <summary> Is called when the <see cref="OwnerControl"/> is Pre-Rendered. </summary>
   protected virtual void PreRender()
+  {
+  }
+
+  private void Command_Click (object sender, EventArgs e)
+  {
+    OnClick ();
+  }
+
+  /// <summary> This mehtod is called when a menu item is clicked on the client side. </summary>
+  protected virtual void OnClick ()
   {
   }
 
@@ -200,8 +221,18 @@ public class WebMenuItem: IControlItem
   [NotifyParentProperty (true)]
   public virtual Command Command
   {
-    get { return (Command) _command.Item; }
-    set { _command.Item = value; }
+    get
+    {
+      return (Command) _command.Item; 
+    }
+    set 
+    {
+      if (Command != null)
+        Command.Click -= _commandClick;
+      _command.Item = value; 
+      if (Command != null)
+        Command.Click += _commandClick;
+    }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -283,13 +314,6 @@ public class WebMenuItem: IControlItem
         OnOwnerControlChanged();
       }
     }
-  }
-
-  private void OwnerControl_PreRender(object sender, EventArgs e)
-  {
-    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
-      return;
-    PreRender();
   }
 
   public virtual void LoadResources (IResourceManager resourceManager)
