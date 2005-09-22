@@ -141,7 +141,8 @@ public class BocList:
     GoToPreviousAlternateText,
     SelectAllRowsAlternateText,
     SelectRowAlternateText,
-    IndexColumnTitle
+    IndexColumnTitle,
+    RowMenuTitle
   }
 
   /// <summary> The possible directions for paging through the list. </summary>
@@ -264,16 +265,22 @@ public class BocList:
   /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
   private BocColumnDefinition[] _columnDefinitionsRenderPhase = null;
 
-  private Unit _menuBlockItemOffset = Unit.Empty;
 
-  private DropDownMenu _optionsMenu;
+  /// <summary> Determines whether the options menu is shown. </summary>
+  private bool _showOptionsMenu = true;
+  /// <summary> Determines whether the list menu is shown. </summary>
+  private bool _showListMenu = true;
+  private RowMenuDisplay _rowMenuDisplay = RowMenuDisplay.Undefined;
   private string _optionsTitle;
+  private string[] _hiddenMenuItems;
   private Unit _menuBlockWidth = Unit.Empty;
   private Unit _menuBlockOffset = Unit.Empty;
-  private string[] _hiddenMenuItems;
-
-  private WebMenuItemCollection _listMenuItems;
+  private Unit _menuBlockItemOffset = Unit.Empty;
   private ListMenuLineBreaks _listMenuLineBreaks = ListMenuLineBreaks.All;
+  private DropDownMenu _optionsMenu;
+  private WebMenuItemCollection _listMenuItems;
+  private DropDownMenu[] _rowMenus = null;
+  private PlaceHolder _rowMenusPlaceHolder;
  
   /// <summary> Determines wheter an empty list will still render its headers and the additional column sets list. </summary>
   private bool _showEmptyListEditMode = true;
@@ -299,11 +306,7 @@ public class BocList:
   ///   Contains <see cref="BocListSortingOrderEntry"/> objects in the order of the buttons pressed.
   /// </summary>
   private ArrayList _sortingOrder = new ArrayList();
-
-  /// <summary> Determines whether the options menu is shown. </summary>
-  private bool _showOptionsMenu = true;
-  /// <summary> Determines whether the list menu is shown. </summary>
-  private bool _showListMenu = true;
+  private Pair[] _indexedRowsSorted = null;
 
   /// <summary> Determines whether to enable the selecting of the data rows. </summary>
   private RowSelection _selection = RowSelection.Undefined;
@@ -360,8 +363,6 @@ public class BocList:
   private string _errorMessage;
   private ArrayList _validators;
 
-  private Pair[] _indexedRowsSorted = null;
-
   // construction and disposing
 
   /// <summary> Initializes a new instance of the <see cref="BocList"/> class. </summary>
@@ -371,6 +372,7 @@ public class BocList:
     _rowEditModeControlsPlaceHolder = new PlaceHolder();
     _optionsMenu = new DropDownMenu (this);
     _listMenuItems = new WebMenuItemCollection (this);
+    _rowMenusPlaceHolder = new PlaceHolder();
     _fixedColumns = new BocColumnDefinitionCollection (this);
     _availableViews = new BocListViewCollection (this);
     _validators = new ArrayList();
@@ -389,9 +391,10 @@ public class BocList:
     _availableViewsList.AutoPostBack = true;
     Controls.Add (_availableViewsList);
 
-    _rowEditModeControlsPlaceHolder = new PlaceHolder();
     Controls.Add (_rowEditModeControlsPlaceHolder);
     _rowEditModeControlCollection = _rowEditModeControlsPlaceHolder.Controls;
+
+    Controls.Add (_rowMenusPlaceHolder);
   }
 
   /// <summary> Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls. </summary>
@@ -418,6 +421,7 @@ public class BocList:
     base.OnLoad (e);
     
     EnsureRowEditModeRestored();
+    EnsureRowMenusInitialized();
   }
 
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
@@ -449,7 +453,7 @@ public class BocList:
       throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
   }
 
-    /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
+  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
@@ -1010,6 +1014,12 @@ public class BocList:
     }
   }
 
+  private void ResetRows()
+  {
+    _indexedRowsSorted = null;
+    ResetRowMenus();
+  }
+
   protected override void OnPreRender(EventArgs e)
   {
     EnsureChildControls();
@@ -1050,6 +1060,8 @@ public class BocList:
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
+    CalculateCurrentPage();
+
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
 
     EnsureRowEditModeValidatorsRestored();
@@ -1059,6 +1071,7 @@ public class BocList:
     if (!IsDesignMode)
     {
       PreRenderMenuItems();
+      EnsureRowMenusInitialized();
     }
 
     if (IsEditDetailsModeActive)
@@ -1074,7 +1087,6 @@ public class BocList:
         }
       }
     }
-    CalculateCurrentPage();
   }
 
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
@@ -1145,7 +1157,10 @@ public class BocList:
       }
 
       if (_goTo != GoToOption.Undefined)
+      {
         _selectorControlCheckedState.Clear();
+        ResetRowMenus();
+      }
     }
   }
 
@@ -1715,7 +1730,7 @@ public class BocList:
       int totalRowCount = (Value != null) ? Value.Count : 0;
       int rowCountWithOffset = totalRowCount;
 
-      if (IsPagingEnabled && Value != null)
+      if (IsPagingEnabled && ! IsEmptyList)
       {      
         firstRow = _currentPage * _pageSize.Value;
         rowCountWithOffset = firstRow + _pageSize.Value;
@@ -2320,6 +2335,8 @@ public class BocList:
           writer, 
           idxColumns, 
           column, 
+          rowIndex,
+          absoluteRowIndex,
           originalRowIndex, 
           businessObject, 
           showIcon, 
@@ -2340,6 +2357,7 @@ public class BocList:
   private void RenderDataCell (
       HtmlTextWriter writer, 
       int columnIndex, BocColumnDefinition column, 
+      int rowIndex, int absoluteRowIndex,
       int originalRowIndex, IBusinessObject businessObject,
       bool showIcon, string cssClassTableCell,
       BocListDataRowRenderEventArgs dataRowRenderEventArgs)
@@ -2353,6 +2371,7 @@ public class BocList:
 
     BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
+    BocDropDownMenuColumnDefinition dropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
     BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
 
     if (! IsColumnVisible (column))
@@ -2421,6 +2440,10 @@ public class BocList:
           isEditedRow, 
           dataRowRenderEventArgs.IsModifiableRow, 
           originalRowIndex);
+    }
+    else if (dropDownMenuColumn != null)
+    {
+      RenderDropDownMenuColumnCell (writer, dropDownMenuColumn, rowIndex);
     }
     else if (customColumn != null)
     {
@@ -2642,6 +2665,37 @@ public class BocList:
         writer.Write (c_whiteSpace);
       }
     }
+  }
+
+  private void RenderDropDownMenuColumnCell (
+      HtmlTextWriter writer, 
+      BocDropDownMenuColumnDefinition column,
+      int rowIndex)
+  {
+    if (_rowMenus == null || _rowMenus.Length < rowIndex || _rowMenus[rowIndex] == null)
+    {
+      writer.Write (c_whiteSpace);
+      return;
+    }
+
+    DropDownMenu dropDownMenu = _rowMenus[rowIndex];
+    if (dropDownMenu.MenuItems.Count == 0)
+    {
+      writer.Write (c_whiteSpace);
+      return;
+    }
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
+
+    if (StringUtility.IsNullOrEmpty (column.MenuTitleText))
+      dropDownMenu.TitleText = GetResourceManager().GetString (ResourceIdentifier.RowMenuTitle);
+    else
+      dropDownMenu.TitleText = column.MenuTitleText;
+    dropDownMenu.TitleIcon = column.MenuTitleIcon;
+    dropDownMenu.RenderControl (writer);
+    
+    writer.RenderEndTag(); // End span
   }
 
   private void RenderCommandColumnCell (HtmlTextWriter writer, BocCommandColumnDefinition column)
@@ -3027,6 +3081,128 @@ public class BocList:
     BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
   }
 
+  private void ResetRowMenus()
+  {
+    _rowMenus = null;
+  }
+
+  /// <summary> 
+  ///   Creates a <see cref="BocDropDownMenuColumnDefinition"/> if <see cref="RowMenuDisplay"/> is set to
+  ///   <see cref="RowMenuDisplay.Automatic"/>.
+  /// </summary>
+  /// <returns> A <see cref="BocDropDownMenuColumnDefinition"/> instance or <see langword="null"/>. </returns>
+  private BocDropDownMenuColumnDefinition GetRowMenuColumn()
+  {
+    if (_rowMenuDisplay == RowMenuDisplay.Automatic)
+    {
+      BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
+      dropDownMenuColumn.Width = Unit.Percentage (0);
+      return dropDownMenuColumn;
+    }
+    return null;
+  }
+
+  /// <summary> 
+  ///   Tests that the <paramref name="columnDefinitions"/> array holds only a single 
+  ///   <see cref="BocDropDownMenuColumnDefinition"/>.
+  /// </summary>
+  private void CheckForMultipleRowMenuColumns (BocColumnDefinition[] columnDefinitions)
+  {
+    bool isFound = false;
+    for (int i = 0; i < columnDefinitions.Length; i++)
+    {
+      if (columnDefinitions[i] is BocDropDownMenuColumnDefinition)
+      {
+        if (isFound)
+          throw new InvalidOperationException ("Only a single BocDropDownMenuColumnDefinition is allowed in the BocList '" + ID + "'.");
+        isFound = true;
+      }
+    }
+  }
+
+  private void EnsureRowMenusInitialized()
+  {
+    if (_rowMenus != null)
+      return;
+    if (! AreRowMenusEnabled)
+      return;
+    if (IsDesignMode)
+      return;
+    if (IsEmptyList)
+      return;
+
+    if (IsPagingEnabled)
+      _rowMenus = new DropDownMenu[PageSize.Value];
+    else
+      _rowMenus = new DropDownMenu[Value.Count];
+
+    int firstRow = 0;
+    int totalRowCount = Value.Count;
+    int rowCountWithOffset = totalRowCount;
+
+    if (IsPagingEnabled)
+    {      
+      firstRow = _currentPage * _pageSize.Value;
+      rowCountWithOffset = firstRow + _pageSize.Value;
+      //  Check row count on last page
+      rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
+    }
+
+    Pair[] rows = EnsureGotIndexedRowsSorted();
+
+    for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
+        idxAbsoluteRows < rowCountWithOffset; 
+        idxAbsoluteRows++, idxRelativeRows++)
+    {
+      Pair rowPair = (Pair)rows[idxAbsoluteRows];
+      if (rowPair.Second == null)
+        throw new NullReferenceException ("Null item found in IList 'Value' of BocList " + ID + ".");
+      int originalRowIndex = (int) rowPair.First;
+      IBusinessObject businessObject = rowPair.Second as IBusinessObject;
+      if (businessObject == null)
+        throw new InvalidCastException ("List item " + originalRowIndex + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
+
+      DropDownMenu dropDownMenu = new DropDownMenu (this);
+      dropDownMenu.ID = ID + "_RowMenu_" + originalRowIndex.ToString();
+
+      _rowMenusPlaceHolder.Controls.Add (dropDownMenu);
+      WebMenuItem[] menuItems = InitializeRowMenusItems (businessObject, originalRowIndex);
+      dropDownMenu.MenuItems.AddRange (menuItems);
+
+      _rowMenus[idxRelativeRows] = dropDownMenu;
+    }
+  }
+
+  /// <summary> Creates the menu items for a data row. </summary>
+  /// <param name="businessObject"> 
+  ///   The <see cref="IBusinessObject"/> of the row for which the menu items are being generated. 
+  /// </param>
+  /// <param name="originalRowIndex"> The position of <paramref name="businessObject"/> in the list of values. </param>
+  /// <returns> A <see cref="WebMenuItem"/> array with the menu items generated by the implementation. </returns>
+  protected virtual WebMenuItem[] InitializeRowMenusItems (IBusinessObject businessObject, int originalRowIndex)
+  {
+    return new WebMenuItem[0];
+  }
+
+  /// <summary> 
+  ///   Gets a flag describing whether a <see cref="DropDownMenu"/> is shown in the 
+  ///   <see cref="BocDropDownMenuColumnDefiniton"/>.
+  /// </summary>
+  protected virtual bool AreRowMenusEnabled
+  {
+    get
+    {
+      if (IsWaiConformanceLevelARequired)
+        return false;
+      if (   _rowMenuDisplay == RowMenuDisplay.Undefined
+          || _rowMenuDisplay == RowMenuDisplay.Disabled)
+      {
+        return false;
+      }
+      return true;
+    }
+  }
+
   private BocColumnDefinition[] EnsureColumnsForPreviousLifeCycleGot()
   {
     if (_columnDefinitionsPostBackEventHandlingPhase == null)
@@ -3067,10 +3243,18 @@ public class BocList:
     else
       selectedColumns = new BocColumnDefinition[0];
 
+    BocDropDownMenuColumnDefinition dropDownMenuColumn = GetRowMenuColumn();
+    BocColumnDefinition[] dropDownMenuColumns = null;
+    if (dropDownMenuColumn != null)
+      dropDownMenuColumns = new BocColumnDefinition[1] {dropDownMenuColumn};
+    else
+      dropDownMenuColumns = new BocColumnDefinition[0];
+
     BocColumnDefinition[] columnDefinitions = (BocColumnDefinition[]) ArrayUtility.Combine (
       _fixedColumns.ToArray(),
       allPropertyColumns,
-      selectedColumns);
+      selectedColumns,
+      dropDownMenuColumns);
 
     if (isPostBackEventPhase)
     {
@@ -3082,6 +3266,8 @@ public class BocList:
       columnDefinitions = GetColumns (columnDefinitions);
       SynchronizeSortingOrderColumns (columnDefinitions);
     }
+
+    CheckForMultipleRowMenuColumns (columnDefinitions);
 
     return columnDefinitions;
   }
@@ -3689,7 +3875,7 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
     Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
-    _indexedRowsSorted = null;
+    ResetRows();
     _isDirty = true;
   }
 
@@ -3697,7 +3883,7 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
-    _indexedRowsSorted = null;
+    ResetRows();
     _isDirty = true;
     if (Value == null)
       return -1;
@@ -3724,7 +3910,7 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObjects, Property, false);
-    _indexedRowsSorted = null;
+    ResetRows();
     _isDirty = true;
   }
 
@@ -3742,7 +3928,7 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObject, Property, false);
-    _indexedRowsSorted = null;
+    ResetRows();
     _isDirty = true;
   }
 
@@ -4250,8 +4436,15 @@ public class BocList:
   [Browsable (false)]
   public new IList Value
   {
-    get { return _value; }
-    set { _value = value; }
+    get 
+    { 
+      return _value; 
+    }
+    set 
+    {
+      _value = value; 
+      ResetRows();
+    }
   }
 
   /// <summary> Gets or sets the current value when <see cref="Value"/> through polymorphism. </summary>
@@ -4756,6 +4949,17 @@ public class BocList:
     set { _showListMenu = value; }
   }
 
+  /// <summary> Gets or sets a value that determines if the row menu is being displayed. </summary>
+  /// <value> <see cref="RowMenuDisplay.Undefined"/> is interpreted as <see cref="RowMenuDisplay.Disabled"/>. </value>
+  [Category ("Menu")]
+  [Description ("Enables the row menu. Undefined is interpreted as Disabled.")]
+  [DefaultValue (RowMenuDisplay.Undefined)]
+  public RowMenuDisplay RowMenuDisplay
+  {
+    get { return _rowMenuDisplay; }
+    set { _rowMenuDisplay = value; }
+  }
+
   /// <summary>
   ///   Gets or sets a value that indicating the row selection mode.
   /// </summary>
@@ -5156,128 +5360,6 @@ public class BocList:
   #endregion
 }
 
-/// <summary> Represents the sorting direction for an individual column. </summary>
-/// <remarks> Used when evaluating the current or new sorting order as well as to persist it into the view state. </remarks>
-[Serializable]
-public class BocListSortingOrderEntry
-{
-  /// <summary> Gets or sets the index of the column for which the <see cref="Direction"/> is entered. </summary>
-  private int _columnIndex;
-  [NonSerialized]
-  private BocColumnDefinition _column;
-  /// <summary> Gets or sets the <see cref="SortingDirection"/> for the column at <see cref="ColumnIndex"/>. </summary>
-  private SortingDirection _direction;
-  [NonSerialized]
-  private bool _isEmpty = false;
-
-  /// <summary> Represents a null <see cref="BocListSortingOrderEntry"/>. </summary>
-  public static readonly BocListSortingOrderEntry Empty = new BocListSortingOrderEntry ();
-
-  /// <summary> Initializes a new instance. </summary>
-  public BocListSortingOrderEntry (BocColumnDefinition column, SortingDirection direction)
-  {
-    ArgumentUtility.CheckNotNull ("column", column);
-    _columnIndex = Int32.MinValue;
-    Column = column;
-    _direction = direction;
-  }
-
-  /// <summary> Initializes a new instance. </summary>
-  internal BocListSortingOrderEntry (int columnIndex, SortingDirection direction)
-  {
-    _columnIndex = columnIndex;
-    _column = null;
-    _direction = direction;
-  }
-
-  /// <summary> Initializes the empty instance. </summary>
-  private BocListSortingOrderEntry ()
-  {
-    _isEmpty = true;
-  }
-
-  public bool IsEmpty
-  {
-    get { return _isEmpty; }
-  }
-
-  internal int ColumnIndex
-  {
-    get { return _columnIndex; }
-    set { _columnIndex = value; }
-  }
-
-  /// <summary> The the column to sort by. </summary>
-  /// <remarks>
-  ///   Must not be <see langword="null"/>. 
-  ///   Must be of type <see cref="BocValueColumnDefinition"/> 
-  ///   or <see cref="BocCustomColumnDefinition"/> with <see cref="BocCustomColumnDefinition.IsSortable"/> set
-  ///   <see langword="true"/>.
-  /// </remarks>
-  public BocColumnDefinition Column
-  {
-    get { return _column; }
-    set 
-    {
-      ArgumentUtility.CheckNotNull ("value", value);
-      if (   ! (value is BocValueColumnDefinition) 
-          && ! (   value is BocCustomColumnDefinition
-                && ((BocCustomColumnDefinition) value).IsSortable))
-      {
-        throw new ArgumentException ("BocListSortingOrderEntry can only use columns of type BocValueColumnDefinition or BocCustomColumnDefinition with BocCustomColumnDefinition.IsSortable set true.", "value");
-      }
-      _column = value; 
-    }
-  }
-
-  public SortingDirection Direction
-  {
-    get { return _direction; }
-    set { _direction = value; }
-  }
-
-  /// <summary>
-  ///   Tests whether the specified object is of type <see cref="BocListSortingOrderEntry"/> 
-  ///   and is equivalent to this <see cref="BocListSortingOrderEntry"/>.
-  /// </summary>
-  /// <remarks> Required for identifying the <see cref="BocListSortingOrderEntry"/> in an <see cref="ArrayList"/>. </remarks>
-  /// <param name="obj">
-  ///   The object to test. 
-  /// </param>
-  /// <returns>
-  ///   This method returns <see langword="true"/> if <paramref name="obj"/> 
-  ///   is of type <see cref="BocListSortingOrderEntry"/> and equivalent to this 
-  ///   <see cref="BocListSortingOrderEntry"/>; otherwise, <see langword="false"/>.
-  /// </returns>
-  public override bool Equals (object obj)
-  {
-    if (obj is BocListSortingOrderEntry)
-    {
-      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) obj;
-      return ColumnIndex == entry.ColumnIndex && Direction == entry.Direction;;
-    }
-    return false;
-  }
-
-  /// <summary> Returns a hash code for this <see cref="BocListSortingOrderEntry"/>. </summary>
-  /// <returns> An integer value that specifies the hash code for this  <see cref="BocListSortingOrderEntry"/>. </returns>
-  public override int GetHashCode()
-  {
-    return ColumnIndex.GetHashCode() ^ Direction.GetHashCode();
-  }
-}
-
-/// <summary> The possible sorting directions. </summary>
-public enum SortingDirection
-{
-  /// <summary> Don't sort. </summary>
-  None,
-  /// <summary> Sort ascending. </summary>
-  Ascending,
-  /// <summary> Sort descending. </summary>
-  Descending
-}
-
 public enum RowSelection
 { 
   Undefined = -1,
@@ -5302,84 +5384,15 @@ public enum ListMenuLineBreaks
   BetweenGroups
 }
 
-public delegate void BocListItemEventHandler (object sender, BocListItemEventArgs e);
-
-public class BocListItemEventArgs: EventArgs
+public enum RowMenuDisplay
 {
-  private int _listIndex;
-  private IBusinessObject _businessObject;
-
-  /// <summary> Initializes a new instance. </summary>
-  public BocListItemEventArgs (
-      int listIndex, 
-      IBusinessObject businessObject)
-  {
-    _listIndex = listIndex;
-    _businessObject = businessObject;
-  }
-
-  /// <summary> An index that identifies the <see cref="IBusinessObject"/> that has been edited. </summary>
-  public int ListIndex
-  {
-    get { return _listIndex; }
-  }
-
-  /// <summary>
-  ///   The <see cref="IBusinessObject"/> that has been edited.
-  /// </summary>
-  public IBusinessObject BusinessObject
-  {
-    get { return _businessObject; }
-  }
-}
-
-public delegate void BocListRowEditModeEventHandler (object sender, BocListRowEditModeEventArgs e);
-
-public class BocListRowEditModeEventArgs: BocListItemEventArgs
-{
-  private IBusinessObjectBoundModifiableControl[] _controls;
-  private IBusinessObjectDataSource _dataSource;
-
-  /// <summary> Initializes a new instance. </summary>
-  public BocListRowEditModeEventArgs (
-      int listIndex, 
-      IBusinessObject businessObject,
-      IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundModifiableWebControl[] controls)
-    : base (listIndex, businessObject)
-  {
-    _dataSource = dataSource;
-    _controls = controls;
-  }
-
-  public IBusinessObjectDataSource DataSource
-  {
-    get { return _dataSource; }
-  }
-
-  public IBusinessObjectBoundModifiableControl[] Controls
-  {
-    get { return _controls; }
-  }
-}
-
-public delegate void BocListDataRowRenderEventHandler (object sender, BocListDataRowRenderEventArgs e);
-
-public class BocListDataRowRenderEventArgs: BocListItemEventArgs
-{
-  private bool _isModifiableRow = true;
-
-  /// <summary> Initializes a new instance. </summary>
-  public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject)
-    : base (listIndex, businessObject)
-  {
-  }
-
-  public bool IsModifiableRow
-  {
-    get { return _isModifiableRow; }
-    set { _isModifiableRow = value; }
-  }
+  Undefined,
+  /// <summary> No menus will be shown, even if a <see cref="BocDropDownMenuColumn"/> has been created. </summary>
+  Disabled,
+  /// <summary> The developer must manually provide a <see cref="BocDropDownMenuColumn"/>. </summary>
+  Manual,
+  /// <summary> The <see cref="BocList"/> will automatically create a <see cref="BocDropDownMenuColumn"/>. </summary>
+  Automatic
 }
 
 }
