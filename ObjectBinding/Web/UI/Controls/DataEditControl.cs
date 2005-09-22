@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Web.UI;
 using Rubicon.ObjectBinding;
 using Rubicon.Web.UI;
@@ -67,6 +68,7 @@ public interface IDataEditControl: IControl
   /// <summary>
   /// Provides access to the data source object. For common operations, use the methods of <see cref="IDataEditControl"/> instead.
   /// </summary>
+  [EditorBrowsable (EditorBrowsableState.Advanced)]
   IBusinessObjectDataSourceControl DataSource { get; }
 }
 
@@ -112,6 +114,7 @@ public class DataEditUserControl: UserControl, IDataEditControl
   /// <remarks>
   ///   This method should be abstract, but abstract base classes are not supported by VS.NET designer.
   /// </remarks>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public virtual IBusinessObjectDataSourceControl DataSource
   {
     get { throw new NotImplementedException ("Property DataSource must be overridden by derived classes to return a non-null value."); }
