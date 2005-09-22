@@ -99,4 +99,7 @@
     <data name="Rubicon.ObjectBinding.Web.Controls.BocList.IndexColumnTitle">
         <value>No.</value>
     </data>
+    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RowMenuTitle">
+        <value>Options</value>
+    </data>
 </root>

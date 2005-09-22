@@ -341,41 +341,6 @@
           </description>
         </item>
         <item>
-          <term> <see cref="IndexColumnTitle"/> </term>
-          <description>
-            <para> &lt;BocList Resource ID&gt;:IndexColumnTitle </para>
-            <para> e.g. auto:MyBocList:IndexColumnTitle </para>
-          </description>
-        </item>
-        <item>
-          <term> <see cref="ListMenuItems"/>[x].Text </term>
-          <description>
-            <para> &lt;BocList Resource ID&gt;:ListMenuItems:&lt;Menu Item ID&gt;:Text </para>
-            <para> e.g. auto:MyBocList:ListMenuItems:MyItem:Text </para>
-          </description>
-        </item>
-        <item>
-          <term> <see cref="OptionsTitle"/> </term>
-          <description>
-            <para> &lt;BocList Resource ID&gt;:OptionsTitle </para>
-            <para> e.g. auto:MyBocList:OptionsTitle </para>
-          </description>
-        </item>
-        <item>
-          <term> <see cref="OptionsMenuItems"/>[x].Text </term>
-          <description>
-            <para> &lt;BocList Resource ID&gt;:OptionsMenuItems:&lt;Menu Item ID&gt;:Text </para>
-            <para> e.g. auto:MyBocList:OptionsMenuItems:MyItem:Text </para>
-          </description>
-        </item>
-        <item>
-          <term> <see cref="PageInfo"/> </term>
-          <description>
-            <para> &lt;BocList Resource ID&gt;:PageInfo </para>
-            <para> e.g. auto:MyBocList:PageInfo </para>
-          </description>
-        </item>
-        <item>
           <term> <see cref="FixedColumns"/>[x].ColumnTitle </term>
           <description>
             <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:ColumnTitle </para>
@@ -413,6 +378,48 @@
             <para> &lt;BocList Resource ID&gt;:FixedColumns:&lt;Column ID&gt;:SaveText </para>
             <para> e.g. auto:MyBocList:FixedColumns:MyItem:SaveText </para>
             <para> Applies to columns of type <see cref="BocEditDetailsColumnDefinition"/>. </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="IndexColumnTitle"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:IndexColumnTitle </para>
+            <para> e.g. auto:MyBocList:IndexColumnTitle </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="ListMenuItems"/>[x].Text </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:ListMenuItems:&lt;Menu Item ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:ListMenuItems:MyItem:Text </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="OptionsTitle"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:OptionsTitle </para>
+            <para> e.g. auto:MyBocList:OptionsTitle </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="OptionsMenuItems"/>[x].Text </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:OptionsMenuItems:&lt;Menu Item ID&gt;:Text </para>
+            <para> e.g. auto:MyBocList:OptionsMenuItems:MyItem:Text </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="PageInfo"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:PageInfo </para>
+            <para> e.g. auto:MyBocList:PageInfo </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="RowMenuTitle"/> </term>
+          <description>
+            <para> &lt;BocList Resource ID&gt;:RowMenuTitle </para>
+            <para> e.g. auto:MyBocList:RowMenuTitle </para>
           </description>
         </item>
       </list>
