@@ -18,10 +18,11 @@ public class BocColumnDefinitionCollectionEditor: AdvancedCollectionEditor
   {
     return new Type[] {
       typeof (BocSimpleColumnDefinition), 
-      typeof (BocCompoundColumnDefinition),
       typeof (BocCommandColumnDefinition),
+      typeof (BocCompoundColumnDefinition),
       typeof (BocEditDetailsColumnDefinition),
-      typeof (BocCustomColumnDefinition)};
+      typeof (BocCustomColumnDefinition),
+      typeof (BocDropDownMenuColumnDefinition)};
   }
 }
 
