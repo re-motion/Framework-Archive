@@ -596,7 +596,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     set { Value = value; }
   }
 
-  /// <summary> Gets or sets the current value. </summary>
+  /// <summary> Gets the current value. </summary>
   /// <value> 
   ///   The <see cref="EnumerationValueInfo"/> object
   ///   or <see langword="null"/> if no item / the null item is selected 
