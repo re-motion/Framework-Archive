@@ -216,7 +216,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Controls\BocListEvents.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Controls\BocListItemCommand.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Controls\BocListSortingOrderEntry.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
