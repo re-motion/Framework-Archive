@@ -11,6 +11,10 @@ namespace Rubicon.Web.Configuration
 /// <summary> The configuration section for <b>Rubicon.Web</b>. </summary>
 /// <remarks> Use this classes <see cref="Current"/> property to read the configuration settings from your code. </remarks>
 /// <seealso cref="IConfigurationSectionHandler"/>
+/// <seealso cref="ExecutionEngineConfiguration"/>
+/// <seealso cref="ResourceConfiguration"/>
+/// <seealso cref="SmartNavigationConfiguration"/>
+/// <seealso cref="WcagConfiguration"/>
 /// <example>
 ///   Register the configuration section in the configuration file within the <c>configSections</c> element.
 ///   The <c>configSections</c> element must be precede all configuration sections.
@@ -28,6 +32,24 @@ namespace Rubicon.Web.Configuration
 /// <code>
 /// &lt;rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
 ///   &lt;!-- The configuration section entries. --&gt;
+///   &lt;executionEngine 
+///       functionTimeout="20" 
+///       enableSessionManagement="true" 
+///       refreshInterval="10" 
+///       viewStateInSession="true"
+///   /&gt;
+///   &lt;resources 
+///       root="res" 
+///       rootPath="AbsoluteWithApplicationRoot" 
+///   /&gt;
+///   &lt;smartNavigation 
+///       enableScrolling="true" 
+///       enableFocusing="true" 
+///   /&gt;
+///   &lt;wcag 
+///       conformanceLevel="Undefined" 
+///       debug="false" 
+///   /&gt;
 /// &lt;/rubicon.web&gt;
 /// </code>
 /// </example>
@@ -128,6 +150,24 @@ public class WebConfiguration: IConfigurationSectionHandler
 }
 
 /// <summary> Configuration section entry for configuring the <b>Rubicon.Web.ExecutionEngine</b>. </summary>
+/// <remarks> 
+///   See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+/// </remarks>
+/// <seealso cref="WebConfiguration"/>
+/// <example>
+///   Setting the <c>executionEngine</c> entry's values in the <c>rubicon.web</c> configuration section.
+/// <code>
+/// &lt;rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
+///   &lt;executionEngine 
+///       functionTimeout="20" 
+///       enableSessionManagement="true" 
+///       refreshInterval="10" 
+///       viewStateInSession="true"
+///   /&gt;
+///   &lt;!-- Other configuration section entries. --&gt;
+/// &lt;/rubicon.web&gt;
+/// </code>
+/// </example>
 [XmlType (Namespace = WebConfiguration.SchemaUri)]
 public class ExecutionEngineConfiguration
 {
@@ -203,6 +243,22 @@ public enum WaiConformanceLevel
 }
 
 /// <summary> Configuration section entry for specifying the application wide WAI level. </summary>
+/// <remarks> 
+///   See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+/// </remarks>
+/// <seealso cref="WebConfiguration"/>
+/// <example>
+///   Setting the <c>wcag</c> entry's values in the <c>rubicon.web</c> configuration section.
+/// <code>
+/// &lt;rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
+///   &lt;wcag 
+///       conformanceLevel="Undefined" 
+///       debug="false" 
+///   /&gt;
+///   &lt;!-- Other configuration section entries. --&gt;
+/// &lt;/rubicon.web&gt;
+/// </code>
+/// </example>
 [XmlType (Namespace = WebConfiguration.SchemaUri)]
 public class WcagConfiguration
 {
@@ -251,7 +307,23 @@ public enum ResourceRootMode
 }
 
 /// <summary> Configuration section entry for specifying the resources root. </summary>
+/// <remarks> 
+///   See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+/// </remarks>
+/// <seealso cref="WebConfiguration"/>
 /// <seealso cref="Rubicon.Web.ResourceUrlResolver"/>
+/// <example>
+///   Setting the <c>resources</c> entry's values in the <c>rubicon.web</c> configuration section.
+/// <code>
+/// &lt;rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
+///   &lt;resources 
+///       root="res" 
+///       rootPath="AbsoluteWithApplicationRoot" 
+///   /&gt;
+///   &lt;!-- Other configuration section entries. --&gt;
+/// &lt;/rubicon.web&gt;
+/// </code>
+/// </example>
 [XmlType (Namespace = WebConfiguration.SchemaUri)]
 public class ResourceConfiguration
 {
@@ -288,6 +360,22 @@ public class ResourceConfiguration
 }
 
 /// <summary> Configuration section entry for configuring the <b>Rubicon.Web.ExecutionEngine</b>. </summary>
+/// <remarks> 
+///   See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+/// </remarks>
+/// <seealso cref="WebConfiguration"/>
+/// <example>
+///   Setting the <c>smartNavigation</c> entry's values in the <c>rubicon.web</c> configuration section.
+/// <code>
+/// &lt;rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
+///   &lt;smartNavigation 
+///       enableScrolling="true" 
+///       enableFocusing="true" 
+///   /&gt;
+///   &lt;!-- Other configuration section entries. --&gt;
+/// &lt;/rubicon.web&gt;
+/// </code>
+/// </example>
 [XmlType (Namespace = WebConfiguration.SchemaUri)]
 public class SmartNavigationConfiguration
 {
