@@ -206,7 +206,7 @@ public class WebButton :
   {
     if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
     {
-      if (_useLegacyButton == NaBooleanEnum.True)
+      if (_useLegacyButton != NaBooleanEnum.True)
         throw new WcagException (1, this, "UseLegacyButton");
     }
   }
