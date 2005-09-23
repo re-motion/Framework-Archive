@@ -25,9 +25,13 @@ public abstract class WxeTransactionBase: WxeStepList
   private bool _forceRoot;
   private bool _isPreviousTransactionRestored = false;
 
+  /// <summary> Raises before the transaction is committed. </summary>
   public event EventHandler TransactionCommitting;
+  /// <summary> Raised after the transaction has been committed. </summary>
   public event EventHandler TransactionCommitted;
+  /// <summary> Raised before the transaction is rolled back. </summary>
   public event EventHandler TransactionRollingBack;
+  /// <summary> Raised after the transaction has been rolled back. </summary>
   public event EventHandler TransactionRolledBack;
 
   /// <summary> Creates a new instance. </summary>
@@ -182,6 +186,7 @@ public abstract class WxeTransactionBase: WxeStepList
     RestorePreviousTransaction();
   }
 
+  /// <summary> Commits encasulated <see cref="ITransaction"/> and releases it afterwards. </summary>
   protected void CommitAndReleaseTransaction()
   {
     if (_transaction != null)
@@ -193,6 +198,12 @@ public abstract class WxeTransactionBase: WxeStepList
     }
   }
 
+  /// <summary> Commits the <paramref name="transaction"/>. </summary>
+  /// <param name="transaction"> The <see cref="ITransaction"/> to be committed. </param>
+  /// <remarks> 
+  ///   Calls the <see cref="OnTransactionCommitting"/> method before committing the transaction
+  ///   and the <see cref="OnTransactionCommitted"/> method after the transaction has been committed.
+  /// </remarks>
   protected void CommitTransaction (ITransaction transaction)
   {
     ArgumentUtility.CheckNotNull ("transaction", transaction);
@@ -202,18 +213,23 @@ public abstract class WxeTransactionBase: WxeStepList
     OnTransactionCommitted();
   }
 
+  /// <summary> Called before the transaction is committed. </summary>
+  /// <remarks> Raises the <see cref="TransactionCommitting"/> event. </remarks>
   protected virtual void OnTransactionCommitting()
   {
     if (TransactionCommitting != null)
       TransactionCommitting (this, EventArgs.Empty);
   }
 
+  /// <summary> Called after the transaction has been committed. </summary>
+  /// <remarks> Raises the <see cref="TransactionCommitted"/> event. </remarks>
   protected virtual void OnTransactionCommitted()
   {
     if (TransactionCommitted != null)
       TransactionCommitted (this, EventArgs.Empty);
   }
 
+  /// <summary> Rolls the encasulated <see cref="ITransaction"/> back and relases it afterwards. </summary>
   protected void RollbackAndReleaseTransaction()
   {
     if (_transaction != null)
@@ -225,6 +241,12 @@ public abstract class WxeTransactionBase: WxeStepList
     }
   }
 
+  /// <summary> Rolls the <paramref name="transaction"/> back. </summary>
+  /// <param name="transaction"> The <see cref="ITransaction"/> to be rolled back. </param>
+  /// <remarks> 
+  ///   Calls the <see cref="OnTransactionRollingBack"/> method before rolling back the transaction 
+  ///   and the <see cref="OnTransactionRolledBack"/> method after the transaction has been rolled back.
+  /// </remarks>
   protected void RollbackTransaction (ITransaction transaction)
   {
     ArgumentUtility.CheckNotNull ("transaction", transaction);
@@ -234,12 +256,16 @@ public abstract class WxeTransactionBase: WxeStepList
     OnTransactionRolledBack();
   }
 
+  /// <summary> Called before the transaction is rolled back. </summary>
+  /// <remarks> Raises the <see cref="TransactionRollingBack"/> event. </remarks>
   protected virtual void OnTransactionRollingBack()
   {
     if (TransactionRollingBack != null)
       TransactionRollingBack (this, EventArgs.Empty);
   }
 
+  /// <summary> Called after the transaction has been rolled back. </summary>
+  /// <remarks> Raises the <see cref="TransactionRolledBack"/> event. </remarks>
   protected virtual void OnTransactionRolledBack()
   {
     if (TransactionRolledBack != null)
