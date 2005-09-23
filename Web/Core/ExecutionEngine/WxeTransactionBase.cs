@@ -25,6 +25,11 @@ public abstract class WxeTransactionBase: WxeStepList
   private bool _forceRoot;
   private bool _isPreviousTransactionRestored = false;
 
+  public event EventHandler TransactionCommitting;
+  public event EventHandler TransactionCommitted;
+  public event EventHandler TransactionRollingBack;
+  public event EventHandler TransactionRolledBack;
+
   /// <summary> Creates a new instance. </summary>
   /// <param name="steps"> Initial step list. Can be <see langword="null"/>. </param>
   /// <param name="autoCommit">
@@ -182,10 +187,31 @@ public abstract class WxeTransactionBase: WxeStepList
     if (_transaction != null)
     {
       s_log.Debug ("Committing " + _transaction.GetType().Name + ".");
-      _transaction.Commit();
+      CommitTransaction (_transaction);
       _transaction.Release();
       _transaction = null;
     }
+  }
+
+  protected void CommitTransaction (ITransaction transaction)
+  {
+    ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+    OnTransactionCommitting();
+    transaction.Commit();
+    OnTransactionCommitted();
+  }
+
+  protected virtual void OnTransactionCommitting()
+  {
+    if (TransactionCommitting != null)
+      TransactionCommitting (this, EventArgs.Empty);
+  }
+
+  protected virtual void OnTransactionCommitted()
+  {
+    if (TransactionCommitted != null)
+      TransactionCommitted (this, EventArgs.Empty);
   }
 
   protected void RollbackAndReleaseTransaction()
@@ -193,10 +219,31 @@ public abstract class WxeTransactionBase: WxeStepList
     if (_transaction != null)
     {
       s_log.Debug ("Rolling back " + _transaction.GetType().Name + ".");
-      _transaction.Rollback();
+      RollbackTransaction (_transaction);
       _transaction.Release();
       _transaction = null;
     }
+  }
+
+  protected void RollbackTransaction (ITransaction transaction)
+  {
+    ArgumentUtility.CheckNotNull ("transaction", transaction);
+    
+    OnTransactionRollingBack();
+    transaction.Rollback();
+    OnTransactionRolledBack();
+  }
+
+  protected virtual void OnTransactionRollingBack()
+  {
+    if (TransactionRollingBack != null)
+      TransactionRollingBack (this, EventArgs.Empty);
+  }
+
+  protected virtual void OnTransactionRolledBack()
+  {
+    if (TransactionRolledBack != null)
+      TransactionRolledBack (this, EventArgs.Empty);
   }
 
   /// <summary> Sets the backed up transaction as the old and new current transaction. </summary>
