@@ -1,3 +1,8 @@
+1.3.4
+=====
+- Rubicon.Web.UI.Controls.WebButton hatte einen Bug in der WCAG Validierung.
+- Web Configuration Doku überarbeitet.
+
 1.3.3
 =====
 - ResourceDispatching:
