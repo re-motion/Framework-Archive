@@ -190,7 +190,7 @@ public class WxeTestPage : WxePage
       if (GetInt32Property (new ClientTransaction ()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
 
-      ShowResultText ("Test WxeTransactedFunction (None, AutoCommit = true) executed successfully");
+      ShowResultText ("Test WxeTransactedFunction (None, AutoCommit = false) executed successfully");
     }
   }
 
