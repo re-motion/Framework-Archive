@@ -32,7 +32,7 @@ public abstract class WxeTransactedFunctionBase: WxeFunction//, IDeserialization
   ///     Override this method to initialize your <see cref="WxeTransactionBase"/> implementation.
   ///   </note>
   /// </remarks>
-  public abstract WxeTransactionBase CreateTransaction();
+  public abstract WxeTransactionBase CreateWxeTransaction();
 
   public override void Execute (WxeContext context)
   {
