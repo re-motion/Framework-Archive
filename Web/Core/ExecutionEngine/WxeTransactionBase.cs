@@ -27,10 +27,13 @@ public abstract class WxeTransactionBase: WxeStepList
 
   /// <summary> Raises before the transaction is committed. </summary>
   public event EventHandler TransactionCommitting;
+  
   /// <summary> Raised after the transaction has been committed. </summary>
   public event EventHandler TransactionCommitted;
+  
   /// <summary> Raised before the transaction is rolled back. </summary>
   public event EventHandler TransactionRollingBack;
+
   /// <summary> Raised after the transaction has been rolled back. </summary>
   public event EventHandler TransactionRolledBack;
 
