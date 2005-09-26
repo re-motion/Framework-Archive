@@ -15,7 +15,7 @@
         If you do not rely on the controls to handle form input, there is one exception to the rule of treating 
         an <b>IWxePage</b> as a normal ASP.NET page. The post back data provided by the <see cref="Page.Request"/> 
         object of the <see cref="Page"/> does not necessarily contain the correct data. The execution engine provides 
-        the relevant post back data via the <see cref="GetPostBackData"/> method. 
+        the relevant post back data via the <see cref="GetPostBackCollection"/> method. 
       </para>
       <h4 class="dtH4">Using Flow Control</h4>
       <para>
@@ -65,8 +65,8 @@
         If you cannot derive your pages from the default implementation (e.g., because you need to derive from 
         another class), override your page's <see cref="Page.DeterminePostBackMode"/> and 
         <see cref="Control.Dispose"/> methods to include the initialization and clean-up logic. Override the
-        <see cref="SavePageStateToPersistenceMedium"/> and <see cref="LoadPageStateFromPersistenceMedium"/> methods
-        to save and restore the page's viewstate. Use <see cref="WxePageInfo"/> to implement all methods and 
+        <see cref="Page.SavePageStateToPersistenceMedium"/> and <see cref="Page.LoadPageStateFromPersistenceMedium"/> 
+        methods to save and restore the page's viewstate. Use <see cref="WxePageInfo"/> to implement all methods and 
         properties.
       </note>
     </remarks>
