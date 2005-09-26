@@ -525,5 +525,25 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.IsNotNull (ClientTransactionMock.QueryManager);
     Assert.AreSame (ClientTransactionMock, ClientTransactionMock.QueryManager.ClientTransaction);
   }
+
+  [Test]
+  public void AutoInitializationOfCurrent ()
+  {
+    ClientTransaction.SetCurrent (null);
+    Assert.IsNotNull (ClientTransaction.Current);
+  }
+
+  [Test]
+  public void HasCurrentTrue ()
+  {
+    Assert.IsTrue (ClientTransaction.HasCurrent);
+  }
+
+  [Test]
+  public void HasCurrentFalse ()
+  {
+    ClientTransaction.SetCurrent (null);
+    Assert.IsFalse (ClientTransaction.HasCurrent);
+  }
 }
 }
