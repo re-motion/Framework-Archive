@@ -217,7 +217,7 @@
   <!--======================= PROJECTS =======================-->
 
   <target name="all" 
-      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web,Data.DomainObjects.CodeGenerator,Data.DomainObjects.CodeGenerator.Console" />
+      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web,Data.DomainObjects.CodeGenerator,Data.DomainObjects.CodeGenerator.Console,Data.DomainObjects.Web" />
 
   <target name="forCooNet" 
       depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web" />
@@ -282,6 +282,14 @@
     <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding.Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
+  <target name="Data.DomainObjects.Web" depends="Data.DomainObjects,Web,initialize">
+    <property name="project.name" value="Rubicon.Data.DomainObjects.Web" />
+    <property name="project.dir" value="Data/DomainObjects.Web" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.Web" />
     <property name="project.extension" value="dll" />
     <call target="build" />
   </target>
@@ -508,6 +516,7 @@
         <includes name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
         <includes name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
         <includes name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
+        <includes name="Rubicon.Data.DomainObjects.Web.dll" />
         <includes name="Rubicon.Web.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
@@ -568,6 +577,7 @@
         <includes name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
         <includes name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
         <includes name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
+        <includes name="Rubicon.Data.DomainObjects.Web.dll" />
         <includes name="Rubicon.Web.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
