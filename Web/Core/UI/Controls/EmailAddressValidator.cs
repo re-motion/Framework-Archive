@@ -95,7 +95,7 @@ public class EmailAddressValidator : BaseValidator
 
   /// <summary> Tests the <paramref name="text"/> against the <paramref name="expression"/>.</summary>
   /// <param name="text"> The text to be evaluated. </param>
-  /// <param name="text"> The regular expression to be used. </param>
+  /// <param name="expression"> The regular expression to be used. </param>
   /// <returns> <see langword="true"/> if the regular expression matches. </returns>
   protected bool IsMatch (string text, string expression)
   {
