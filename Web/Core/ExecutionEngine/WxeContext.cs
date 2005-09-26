@@ -67,7 +67,7 @@ public class WxeContext
   }
 
   /// <summary>
-  ///   Gets a flag that corresponds to the <see cref="Page.IsPostBack">Page.IsPostBack</see> flag, but is 
+  ///   Gets a flag that corresponds to the <see cref="System.Web.UI.Page.IsPostBack">Page.IsPostBack</see> flag, but is 
   ///   available from the beginning of the execution cycle, i.e. even before <b>OnInit</b>.
   /// </summary>
   public bool IsPostBack
@@ -97,9 +97,9 @@ public class WxeContext
   ///     <see cref="IWxePage.GetPostBackCollection">IWxePage.GetPostBackCollection</see> method to access the
   ///     postback data.
   ///   </para><para>
-  ///     Control developers should either implement <see cref="IPostBackDataHandler"/> to access postback data
-  ///     relevant to their control or, if they develop a composite control, use the child controls' integrated 
-  ///     data handling features to access the data.
+  ///     Control developers should either implement <see cref="System.Web.UI.IPostBackDataHandler"/> to access 
+  ///     postback data relevant to their control or, if they develop a composite control, use the child controls' 
+  ///     integrated data handling features to access the data.
   ///   </para>
   /// </remarks>
   [EditorBrowsable (EditorBrowsableState.Advanced)]
