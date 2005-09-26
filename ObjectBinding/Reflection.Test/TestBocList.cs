@@ -10,9 +10,9 @@ namespace OBRTest
 public class TestBocList: BocList
 {
 
-  protected override WebMenuItem[] InitializeRowMenusItems(IBusinessObject businessObject, int listIndex)
+  protected override WebMenuItem[] InitializeRowMenuItems(IBusinessObject businessObject, int listIndex)
   {
-    WebMenuItem[] baseMenuItems = base.InitializeRowMenusItems (businessObject, listIndex);
+    WebMenuItem[] baseMenuItems = base.InitializeRowMenuItems (businessObject, listIndex);
 
     WebMenuItem[] menuItems = new WebMenuItem[3];
     WebMenuItem menuItem = new WebMenuItem();
@@ -33,9 +33,9 @@ public class TestBocList: BocList
     return (WebMenuItem[]) ArrayUtility.Combine (baseMenuItems, menuItems);
   }
 
-  protected override void PreRenderRowMenusItems(WebMenuItemCollection menuItems, IBusinessObject businessObject, int listIndex)
+  protected override void PreRenderRowMenuItems(WebMenuItemCollection menuItems, IBusinessObject businessObject, int listIndex)
   {
-    base.PreRenderRowMenusItems (menuItems, businessObject,  listIndex);
+    base.PreRenderRowMenuItems (menuItems, businessObject,  listIndex);
     if (listIndex == 1)
       ((WebMenuItem)menuItems[2]).IsVisible = false;
     else if (listIndex == 2)

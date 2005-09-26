@@ -241,7 +241,7 @@
         integration into the <b>BocList</b>, this feature is only available when inheriting from the <b>BocList</b>.
       </para><para>
         In order to use the row menus, the <see cref="RowMenuDisplay"/> must be set to 
-        <see cref="RowMenuDisplay.Automatic"/> or <see cref="RowMenuDisplay.Manual"/>. In automatic mode, the 
+        <see cref="!:RowMenuDisplay.Automatic"/> or <see cref="!:RowMenuDisplay.Manual"/>. In automatic mode, the 
         <b>BocList</b> will automatically create a menu column. In manual mode, the application
         developer must add a <see cref="BocDropDownMenuColumnDefinition"/> to the collection of 
         <see cref="FixedColumns"/> or override the <see cref="GetColumns"/> method and provide the 
@@ -498,7 +498,7 @@
       The index of the row in which the command was clicked. 
     </param>
   </OnRowMenuItemEventCommandClick>
-  <OnMRowenuItemWxeFunctionCommandClick>
+  <OnRowMenuItemWxeFunctionCommandClick>
     <param name="menuItem"> 
       The <see cref="WebMenuItem"/> whose command was clicked. 
     </param>

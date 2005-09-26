@@ -88,7 +88,10 @@ public class BocListSortingOrderEntry
   ///   Tests whether the specified object is of type <see cref="BocListSortingOrderEntry"/> 
   ///   and is equivalent to this <see cref="BocListSortingOrderEntry"/>.
   /// </summary>
-  /// <remarks> Required for identifying the <see cref="BocListSortingOrderEntry"/> in an <see cref="ArrayList"/>. </remarks>
+  /// <remarks> 
+  ///   Required for identifying the <see cref="BocListSortingOrderEntry"/> in an 
+  ///   <see cref="System.Collections.ArrayList"/>.
+  /// </remarks>
   /// <param name="obj">
   ///   The object to test. 
   /// </param>
