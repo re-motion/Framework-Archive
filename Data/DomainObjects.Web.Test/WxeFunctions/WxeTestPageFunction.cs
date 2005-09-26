@@ -19,32 +19,12 @@ public class WxeTestPageFunction : WxeFunction
   {
   }
 
-  public WxeTestPageFunction (ObjectID classWithAllDataTypesID) 
-      : base (classWithAllDataTypesID)
-  {
-    ClientTransaction.SetCurrent (new ClientTransaction ());
-    ClientTransaction = ClientTransaction.Current;
-  }
-
-  public WxeTestPageFunction (ObjectID classWithAllDataTypesID, ClientTransaction clientTransaction) 
-      : base (classWithAllDataTypesID, clientTransaction)
-  {
-  }
-
   // methods and properties
 
-  [WxeParameter (1, true, WxeParameterDirection.In)]
-  public ObjectID ClassWithAllDataTypesID
+  public ClientTransaction CurrentClientTransaction
   {
-    get { return (ObjectID) Variables["ClassWithAllDataTypesID"]; }
-    set { Variables["ClassWithAllDataTypesID"] = value; }
-  }
-
-  [WxeParameter (2, false, WxeParameterDirection.In)]
-  public ClientTransaction ClientTransaction
-  {
-    get { return (ClientTransaction) Variables["ClientTransaction"]; }
-    set { Variables["ClientTransaction"] = value; }
+    get { return (ClientTransaction) Variables["CurrentClientTransaction"]; }
+    set { Variables["CurrentClientTransaction"] = value;}
   }
 
   private WxePageStep Step1 = new WxePageStep ("WxeTestPage.aspx");

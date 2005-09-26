@@ -28,6 +28,11 @@ public class ClassWithAllDataTypes : BindableDomainObject
     return (ClassWithAllDataTypes) BindableDomainObject.GetObject (id);
   }
 
+  public static new ClassWithAllDataTypes GetObject (ObjectID id, ClientTransaction clientTransaction)
+  {
+    return (ClassWithAllDataTypes) BindableDomainObject.GetObject (id, clientTransaction);
+  }
+
   // member fields
   
   // construction and disposing

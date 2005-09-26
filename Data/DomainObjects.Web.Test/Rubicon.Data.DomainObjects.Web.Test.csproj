@@ -128,6 +128,11 @@
                     Project = "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects.Web"
+                    Project = "{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -234,6 +239,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "TestFailureException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Web.config"
                     BuildAction = "Content"
                 />
@@ -335,6 +345,26 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <Folder RelPath = "Res\" />
+                <File
+                    RelPath = "WxeFunctions\AutoCommitTestTransactedFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WxeFunctions\CreateNoneTestTransactedFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WxeFunctions\CreateRootTestTransactedFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WxeFunctions\NoAutoCommitTestTransactedFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
                 <File
                     RelPath = "WxeFunctions\WxeTestPageFunction.cs"
                     SubType = "Code"
