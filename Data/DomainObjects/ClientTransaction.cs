@@ -29,13 +29,24 @@ namespace Rubicon.Data.DomainObjects
 ///   </item>
 /// </list>
 /// </remarks>
-public class ClientTransaction
+public class ClientTransaction : ITransaction
 {
   // types
 
   // static members and constants
 
   private const string c_callContextKey = "Rubicon.Data.DomainObjects.ClientTransaction.Current";
+
+  /// <summary>
+  /// Gets a value indicating if a <see cref="ClientTransaction"/> is currently set as <see cref="Current"/>. 
+  /// </summary>
+  /// <remarks>
+  /// Even if the value returned by <b>HasCurrent</b> is false, <see cref="Current"/> will return a <see cref="ClientTransaction"/>. See <see cref="Current"/> for further de.
+  /// </remarks>
+  public static bool HasCurrent
+  {
+    get { return GetCurrentInternal () != null ; }
+  }
 
   /// <summary>
   /// Gets the default <b>ClientTransaction</b> of the current thread. 
@@ -45,14 +56,10 @@ public class ClientTransaction
   {
     get 
     {
-      ClientTransaction current = (ClientTransaction) CallContext.GetData (c_callContextKey);
-      if (current == null)
-      {
-        current = new ClientTransaction ();
-        SetCurrent (current);
-      }
+      if (!HasCurrent)
+        SetCurrent (new ClientTransaction ());
       
-      return current;
+      return GetCurrentInternal ();
     }
   }
 
@@ -63,6 +70,11 @@ public class ClientTransaction
   public static void SetCurrent (ClientTransaction clientTransaction)
   {
     CallContext.SetData (c_callContextKey, clientTransaction);
+  }
+
+  private static ClientTransaction GetCurrentInternal ()
+  {
+    return (ClientTransaction) CallContext.GetData (c_callContextKey);
   }
 
   // member fields
@@ -573,5 +585,50 @@ public class ClientTransaction
     
     OnCommitted (new ClientTransactionEventArgs (changedDomainObjects.Clone (true)));
   }
+ 
+  // TODO Doc: Document ITransaction members
+  #region ITransaction Members
+
+  /// <summary>
+  /// Child Transactions are not supported by the framework so an exception is thrown when this method is called.
+  /// </summary>
+  /// <exception cref="System.NotImplementedException">Method is called.</exception>
+  ITransaction ITransaction.CreateChild ()
+  {
+    throw new NotImplementedException ("ClientTransactions do not support nested transactions.");
+  }
+
+  /// <summary>
+  /// Child Transactions are not supported by the framework, therefore the property always returns false.
+  /// </summary>
+  bool ITransaction.IsChild
+  {
+    get { return false; }
+  }
+
+  /// <summary>
+  /// Child Transactions are not supported by the framework, therefore the property always returns false.
+  /// </summary>
+  bool ITransaction.CanCreateChild
+  {
+    get { return false; }
+  }
+
+  /// <summary>
+  /// No action is performed by this method.
+  /// </summary>
+  void ITransaction.Release ()
+  {
+  }
+
+  /// <summary>
+  /// Child Transactions are not supported by the framework, therefore the property always returns null.
+  /// </summary>
+  ITransaction ITransaction.Parent
+  {
+    get { return null; }
+  }
+
+  #endregion
 }
 }
