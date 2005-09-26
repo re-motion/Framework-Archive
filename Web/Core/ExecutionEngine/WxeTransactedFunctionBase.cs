@@ -20,7 +20,7 @@ public abstract class WxeTransactedFunctionBase: WxeFunction//, IDeserialization
   {
   }
 
-  /// <summary> Initializes the <see cref="WxeTransactionBase"/> to be encapsulated. </summary>
+  /// <summary> Creates the <see cref="WxeTransactionBase"/> to be encapsulated. </summary>
   /// <returns>
   ///   The <see cref="WxeTransactionBase"/> instance to be encapsulated in this 
   ///   <see cref="WxeTransactedFunctionBase"/> or <see langword="null"/> if the 
@@ -32,13 +32,13 @@ public abstract class WxeTransactedFunctionBase: WxeFunction//, IDeserialization
   ///     Override this method to initialize your <see cref="WxeTransactionBase"/> implementation.
   ///   </note>
   /// </remarks>
-  public abstract WxeTransactionBase InitializeTransaction();
+  public abstract WxeTransactionBase CreateTransaction();
 
   public override void Execute (WxeContext context)
   {
     if (! ExecutionStarted)
     {
-      _wxeTransaction = InitializeTransaction();
+      _wxeTransaction = CreateTransaction();
 
       if (_wxeTransaction != null)
       {
