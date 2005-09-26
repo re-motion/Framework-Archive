@@ -16,22 +16,26 @@ public class NoAutoCommitTestTransactedFunction : WxeTransactedFunction
   // static members and constants
 
   // member fields
+  private TransactionMode _transactionMode;
 
   // construction and disposing
 
   public NoAutoCommitTestTransactedFunction (TransactionMode transactionMode, ObjectID objectWithAllDataTypes) 
       : base (transactionMode, objectWithAllDataTypes)
   {
+    _transactionMode = transactionMode;
   }
 
   // methods and properties
 
   protected override WxeTransactionBase CreateWxeTransaction ()
   {
-    // TODO: check this with ML: (true, true) should be (false, true)
-    return new WxeTransaction (false, true);
-  }
+    // TODO: check this with ML: Should there be an easier way to Control AutoCommit?
+    if (_transactionMode == TransactionMode.CreateRoot)
+      return new WxeTransaction (false, true);
 
+    return null;
+  }
 
   [WxeParameter (1, true, WxeParameterDirection.In)]
   public ObjectID ObjectWithAllDataTypes

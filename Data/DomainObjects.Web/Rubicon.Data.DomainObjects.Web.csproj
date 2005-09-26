@@ -118,6 +118,10 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Rubicon.Data.DomainObjects.Web.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "ExecutionEngine\TransactionMode.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

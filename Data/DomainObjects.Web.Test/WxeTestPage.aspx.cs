@@ -184,9 +184,8 @@ public class WxeTestPage : WxePage
     {
       CheckCurrentClientTransactionRestored ();
 
-      // TODO: Check with ML the behavior: WxeTransactedFunction performs a Rollback although it did not create a transaction
-      if (GetInt32Property (ClientTransaction.Current) != 5)
-        throw new TestFailureException ("The WxeTransactedFunction wrongly did commit the property value.");
+      if (GetInt32Property (ClientTransaction.Current) != 10)
+        throw new TestFailureException ("The WxeTransactedFunction wrongly did not set the property value.");
 
       if (GetInt32Property (new ClientTransaction ()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
