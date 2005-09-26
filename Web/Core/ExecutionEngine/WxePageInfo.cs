@@ -462,7 +462,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
-  /// <summary> Implements <see cref="IWxePage.RegisterClientSidePageAbortHandler">IWxePage.RegisterClientSidePageAbortHandler</see>. </summary>
+  /// <summary> Implements <see cref="IWxePage.RegisterClientSidePageEventHandler">IWxePage.RegisterClientSidePageEventHandler</see>. </summary>
   public void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("key", key);
@@ -497,7 +497,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   /// <remarks> 
   ///   <para>
-  ///     If <see cref="ExecuteNextStep"/> has been called, <b>Dispose</b> slears the <see cref="HttpResonse"/> 
+  ///     If <see cref="ExecuteNextStep"/> has been called, <b>Dispose</b> clears the <see cref="HttpResponse"/>'s
   ///     output and ends the execution of the current step by throwing a <see cref="WxeExecuteNextStepException"/>. 
   ///     This exception is handled by the Execution Engine framework.
   ///   </para>
@@ -535,7 +535,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       bool isDesignMode = ControlHelper.IsDesignMode (_page);
 
-      /// TODO: .net 2.0
+      // TODO: .net 2.0
       //Control page = (Page)_page;
       //if (((Page)_page).Master != null)
       //  page = ((Page)_page).Master;
@@ -570,7 +570,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       EnsureHtmlFormFieldInitialized();
 
-      /// TODO: .net 2.0
+      // TODO: .net 2.0
       //Control page = (Page)_page;
       //if (((Page)_page).Master != null)
       //  page = ((Page)_page).Master;
@@ -584,7 +584,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       EnsureHtmlFormFieldInitialized();
 
-      /// TODO: .net 2.0
+      // TODO: .net 2.0
       //Control page = (Page)_page;
       //if (((Page)_page).Master != null)
       //  page = ((Page)_page).Master;
