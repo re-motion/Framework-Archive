@@ -38,7 +38,7 @@ public abstract class WxeTransactedFunctionBase: WxeFunction//, IDeserialization
   {
     if (! ExecutionStarted)
     {
-      _wxeTransaction = CreateTransaction();
+      _wxeTransaction = CreateWxeTransaction();
 
       if (_wxeTransaction != null)
       {
