@@ -8,8 +8,8 @@ using System.Web.UI;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("Web Library of Rubicon Persistence Adapter")]
-[assembly: AssemblyDescription("Web Framework for working with the Business Object Controls and the Rubicon Persistence Adapter")]
+[assembly: AssemblyTitle("Rubicon ObjectBinding For DomainObjects Web Library")]
+[assembly: AssemblyDescription("Class library for using Rubicon ObjectBinding and the Rubicon Persistence Framework in web applications.")]
 [assembly: AssemblyConfiguration(".NET Framework: net-1.1, build type: release")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
 [assembly: AssemblyProduct("Rubicon .NET Commons")]
