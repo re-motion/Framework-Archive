@@ -42,11 +42,16 @@ public class WxeTransactedFunction: WxeTransactedFunctionBase
   /// <returns>A new WxeTransaction, if <see cref="TransactionMode"/> has a value of <b>CreateRoot</b>; otherwise null.</returns>
   protected override WxeTransactionBase CreateWxeTransaction ()
   {
-    // TODO: check this with ML: (true, true) is different to default constructor behavior of WxeTransaction
     if (_transactionMode == TransactionMode.CreateRoot)
-      return new WxeTransaction (true, true);
+      return new WxeTransaction (AutoCommit, true);
 
     return null;
+  }
+
+  // TODO Doc:
+  protected virtual bool AutoCommit
+  {
+    get { return true; }
   }
 
   /// <summary>

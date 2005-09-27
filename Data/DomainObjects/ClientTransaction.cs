@@ -586,7 +586,6 @@ public class ClientTransaction : ITransaction
     OnCommitted (new ClientTransactionEventArgs (changedDomainObjects.Clone (true)));
   }
  
-  // TODO Doc: Document ITransaction members
   #region ITransaction Members
 
   /// <summary>

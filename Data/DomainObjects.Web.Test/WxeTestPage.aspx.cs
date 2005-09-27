@@ -117,7 +117,7 @@ public class WxeTestPage : WxePage
       if (GetInt32Property (new ClientTransaction()) != 10)
         throw new TestFailureException ("The WxeTransactedFunction wrongly did not properly commit or set the property value.");
 
-      ShowResultText ("Test WxeTransactedFunction (AutoCommit = true) executed successfully.");
+      ShowResultText ("Test WxeTransactedFunction (TransactionMode = CreateNew, AutoCommit = true) executed successfully.");
     }
   }
 
@@ -138,7 +138,7 @@ public class WxeTestPage : WxePage
       if (GetInt32Property (new ClientTransaction ()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly did set and commit the property value.");
 
-      ShowResultText ("Test WxeTransactedFunction (AutoCommit = false) executed successfully.");
+      ShowResultText ("Test WxeTransactedFunction (TransactionMode = CreateNew, AutoCommit = false) executed successfully.");
     }
   }
 
@@ -164,7 +164,7 @@ public class WxeTestPage : WxePage
       if (GetInt32Property (new ClientTransaction ()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
 
-      ShowResultText ("Test WxeTransactedFunction (None, AutoCommit = true) executed successfully.");
+      ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = true) executed successfully.");
     }
   }
 
@@ -190,7 +190,7 @@ public class WxeTestPage : WxePage
       if (GetInt32Property (new ClientTransaction ()) != 5)
         throw new TestFailureException ("The WxeTransactedFunction wrongly committed the property value.");
 
-      ShowResultText ("Test WxeTransactedFunction (None, AutoCommit = false) executed successfully.");
+      ShowResultText ("Test WxeTransactedFunction (TransactionMode = None, AutoCommit = false) executed successfully.");
     }
   }
 

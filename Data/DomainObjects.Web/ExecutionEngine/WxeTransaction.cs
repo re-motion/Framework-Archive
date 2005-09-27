@@ -12,13 +12,13 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 public class WxeTransaction: WxeTransactionBase
 {
   /// <summary>Creates a new instance with an empty step list and autoCommit enabled that uses the existing transaction, if one exists.</summary>
-  public WxeTransaction () : this (null, false, false)
+  public WxeTransaction () : this (null, true, true)
   {
   }
 
   /// <summary>Creates a new instance with an empty step list that uses the existing transaction, if one exists.</summary>
   /// <param name="autoCommit">If <see langword="true"/>, the transaction is committed after execution, otherwise it is rolled back.</param>
-  public WxeTransaction (bool autoCommit) : this (null, autoCommit, false)
+  public WxeTransaction (bool autoCommit) : this (null, autoCommit, true)
   {
   }
 
