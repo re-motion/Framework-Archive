@@ -6,8 +6,10 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 {
-//TODO Doc: autocommit = true or false?
-
+//TODO Doc: autocommit = true or false? 
+//TODO Doc: Never pass DomainObjects between WXE functions! Use only ObjectIDs, because the other function could use another ClientTransaction.
+//TODO Doc: Provide general namespace information for Rubicon.Data.DomainObjects.Web.ExecutionEngine and integrate it into "Rubicon Commons.chm" start page.
+ 
 /// <summary>
 /// A <see cref="WxeFunction"/> that will always have a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
 /// </summary>
