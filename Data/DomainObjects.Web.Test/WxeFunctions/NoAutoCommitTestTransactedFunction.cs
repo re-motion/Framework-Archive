@@ -28,13 +28,12 @@ public class NoAutoCommitTestTransactedFunction : WxeTransactedFunction
 
   // methods and properties
 
-  protected override WxeTransactionBase CreateWxeTransaction ()
+  protected override bool AutoCommit
   {
-    // TODO: check this with ML: Should there be an easier way to Control AutoCommit?
-    if (_transactionMode == TransactionMode.CreateRoot)
-      return new WxeTransaction (false, true);
-
-    return null;
+    get
+    {
+      return false;
+    }
   }
 
   [WxeParameter (1, true, WxeParameterDirection.In)]

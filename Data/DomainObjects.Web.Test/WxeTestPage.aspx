@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="dow" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Page language="c#" Codebehind="WxeTestPage.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.Data.DomainObjects.Web.Test.WxeTestPage" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="dow" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <HTML>
   <HEAD>
@@ -17,36 +17,38 @@ runat="server">
 <P>
 <asp:Label id="ResultLabel" runat="server">ResultLabel</asp:Label></P>
 <P>
-<TABLE id="Table1" style="WIDTH: 472px; HEIGHT: 127px" cellSpacing="1" cellPadding="1" 
-width="472" border="1">
+<h2>WXE-TransactionMode</h2>
+<TABLE id="Table1" cellSpacing="1" cellPadding="10" border="1">
   <TR>
-    <TD style="WIDTH: 191px">Transactions set correctly:</TD>
+    <TD>TransactionMode = CreateNew:</TD>
     <TD>
-<asp:Button id="WxeTransactedFunctionCreateNewButton" runat="server" Text="TransactionMode = CreateNew"></asp:Button></TD></TR>
+<asp:Button id="WxeTransactedFunctionCreateNewButton" runat="server" Text="Run Test"></asp:Button></TD></TR>
   <TR>
-    <TD style="WIDTH: 191px">Transactions set correctly:</TD>
+    <TD>TransactionMode = None:</TD>
     <TD>
-<asp:Button id="WxeTransactedFunctionNoneButton" runat="server" Text="TransactionMode = None"></asp:Button></TD></TR></TABLE><BR>
-<TABLE id="Table2" style="WIDTH: 472px; HEIGHT: 85px" cellSpacing="1" cellPadding="1" 
-width="472" border="1">
+<asp:Button id="WxeTransactedFunctionNoneButton" runat="server" Text="Run Test"></asp:Button></TD></TR></TABLE><BR>
+
+<h2>Write and read data with different values for TransactionMode and AutoCommit</h2>
+<TABLE id="Table2" cellSpacing="1" cellPadding="10" border="1">
   <TR>
-    <TD style="WIDTH: 190px">
+    <TD>
       <P align=right>TransactionMode:</P></TD>
-    <TD style="WIDTH: 141px">CreateNew</TD>
+    <TD>CreateNew</TD>
     <TD>None</TD></TR>
   <TR>
-    <TD style="WIDTH: 190px">AutoCommit = true</TD>
-    <TD style="WIDTH: 141px">
-<asp:Button id="WxeTransactedFunctionCreateNewAutoCommitButton" runat="server" Text="Test"></asp:Button></TD>
+    <TD>AutoCommit = true</TD>
     <TD>
-<asp:Button id="WxeTransactedFunctionNoneAutoCommitButton" runat="server" Text="Test"></asp:Button></TD></TR>
+<asp:Button id="WxeTransactedFunctionCreateNewAutoCommitButton" runat="server" Text="Run Test"></asp:Button></TD>
+    <TD>
+<asp:Button id="WxeTransactedFunctionNoneAutoCommitButton" runat="server" Text="Run Test"></asp:Button></TD></TR>
   <TR>
-    <TD style="WIDTH: 190px">
-      <P>AutoCommit = false</P></TD>
-    <TD style="WIDTH: 141px">
-<asp:Button id="WxeTransactedFunctionCreateNewNoAutoCommitButton" runat="server" Text="Test"></asp:Button></TD>
     <TD>
-<asp:Button id="WxeTransactedFunctionNoneNoAutoCommitButton" runat="server" Text="Test"></asp:Button></TD></TR></TABLE></P></form>
+      <P>AutoCommit = false</P></TD>
+    <TD>
+<asp:Button id="WxeTransactedFunctionCreateNewNoAutoCommitButton" runat="server" Text="Run Test"></asp:Button></TD>
+    <TD>
+<asp:Button id="WxeTransactedFunctionNoneNoAutoCommitButton" runat="server" Text="Run Test"></asp:Button></TD></TR></TABLE>
+<P></P></form>
 	
   </body>
 </HTML>
