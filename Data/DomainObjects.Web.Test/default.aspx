@@ -10,10 +10,10 @@
   </HEAD>
   <body MS_POSITIONING="GridLayout">
     <form id="Form1" method="post" runat="server">
-      <a href="EditObject.aspx">Bestehendes Objekt editieren</a><br>
-      <a href="NewObject.aspx">Neues Objekt editieren</a><br>
-      <a href="SearchObject.aspx">Objekt suchen</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.WxeTestPageFunction,Rubicon.Data.DomainObjects.Web.Test&ClassWithAllDataTypesID=ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid">WxeFunctionTest</a>
+      <a href="EditObject.aspx" target="_blank">Bestehendes Objekt editieren</a><br>
+      <a href="NewObject.aspx" target="_blank">Neues Objekt editieren</a><br>
+      <a href="SearchObject.aspx" target="_blank">Objekt suchen</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.WxeTestPageFunction,Rubicon.Data.DomainObjects.Web.Test&ClassWithAllDataTypesID=ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid" target="_blank">WxeFunctionTest</a>
     </form>
   </body>
 </HTML>
