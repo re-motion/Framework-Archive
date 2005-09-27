@@ -1,3 +1,13 @@
+1.3.7.0
+=======
+
+- Neue static property: ClientTransaction.HasCurrent eingeführt.
+- Neue Assembly Rubicon.Data.DomainObjects.Web: Enthält WxeTransactedFunction mit WxeTransaction.
+  Die WxeTransactedFunction verwaltet eine aktuelle ClientTransaction. Damit muss dies nicht mehr in der Applikation
+  über die Session gesteuert werden. Ausserdem werden jetzt mehrere parallele Browser-Fenster direkt unterstützt.
+  Subfunktionen können entweder eine neue Transaktion beginnen oder die der übergeordneten WXE-Funktion weiterverwenden.
+  
+
 1.2.43.0
 ========
 
