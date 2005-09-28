@@ -46,9 +46,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void DataContainerMapLookUp ()
   {
-    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-
-    DomainObject domainObject1 = ClientTransactionMock.GetObject (id);
+    DomainObject domainObject1 = ClientTransactionMock.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
 
     DomainObjectCollection domainObjects = (DomainObjectCollection) _eventReceiver.LoadedDomainObjects[0];
@@ -56,7 +54,7 @@ public class ClientTransactionTest : ClientTransactionBaseTest
     Assert.AreSame (domainObject1, domainObjects[0]);
     _eventReceiver.Clear ();
 
-    DomainObject domainObject2 = ClientTransactionMock.GetObject (id);
+    DomainObject domainObject2 = ClientTransactionMock.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
     Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
 
     Assert.AreSame (domainObject1, domainObject2);
@@ -65,8 +63,8 @@ public class ClientTransactionTest : ClientTransactionBaseTest
   [Test]
   public void LoadingOfMultipleSimpleObjects ()
   {
-    ObjectID id1 = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-    ObjectID id2 = new ObjectID ("ClassWithAllDataTypes", new Guid ("{583EC716-8443-4b55-92BF-09F7C8768529}"));
+    ObjectID id1 = DomainObjectIDs.ClassWithAllDataTypes1;
+    ObjectID id2 = DomainObjectIDs.ClassWithAllDataTypes2;
     
     DomainObject domainObject1 = ClientTransactionMock.GetObject (id1);
     Assert.AreEqual (1, _eventReceiver.LoadedDomainObjects.Count);
