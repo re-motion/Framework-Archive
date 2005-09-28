@@ -2,6 +2,7 @@ using System;
 
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Transaction;
 using Rubicon.NullableValueTypes;
@@ -64,6 +65,7 @@ public class TestDataContainerFactory
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Int64Property"], (long) 9223372036854775807));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["SingleProperty"], (float) 6789.321));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringProperty"], "abcdeföäü"));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["BinaryProperty"], ResourceManager.GetImage1 ()));
 
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaBooleanProperty"], new NaBoolean (true)));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaByteProperty"], new NaByte (78)));
@@ -89,6 +91,7 @@ public class TestDataContainerFactory
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaInt64WithNullValueProperty"], NaInt64.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaSingleWithNullValueProperty"], NaSingle.Null));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringWithNullValueProperty"], null));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NullableBinaryProperty"], null));
 
     _clientTransactionMock.SetClientTransaction (dataContainer);
 
