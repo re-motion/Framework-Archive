@@ -806,6 +806,23 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Resources\Image1.png"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Resources\Image2.png"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Resources\ImageLarger1MB.bmp"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Resources\ResourceManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\Ceo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
