@@ -3,7 +3,7 @@
     application="UnitTests" 
     xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
   <classes>
 		<class id="Company">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.UnitTests</type>
