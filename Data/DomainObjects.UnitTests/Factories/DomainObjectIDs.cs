@@ -348,6 +348,7 @@ public sealed class DomainObjectIDs
   #region ClassWithAllDataTypes
   
   public static readonly ObjectID ClassWithAllDataTypes1 = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
+  public static readonly ObjectID ClassWithAllDataTypes2 = new ObjectID ("ClassWithAllDataTypes", new Guid ("{583EC716-8443-4b55-92BF-09F7C8768529}"));
 
   #endregion
   
