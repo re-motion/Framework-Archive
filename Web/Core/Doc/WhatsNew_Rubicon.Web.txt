@@ -1,3 +1,9 @@
+1.3.8
+=====
+- WxeTransactedFunctionBase
+  * Neue Klasse, Method Template für eine WxeFunction mit WxeTransactionBase
+  * Bietet Events und virtuelle Methoden für vor und nach Commit und RollBack
+  
 1.3.7
 =====
 - Execution Engine
