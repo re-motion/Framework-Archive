@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
@@ -21,23 +22,21 @@ public class PropertyValueChecker
 
   // methods and properties
 
+  // TODO Review:
   public void Check (PropertyValue expectedValue, PropertyValue actualValue)
   {
     Assert.IsNotNull (actualValue, expectedValue.Name);
-
     Assert.AreEqual (expectedValue.Name, actualValue.Name, "Name");
-    
-    Assert.AreEqual (expectedValue.Value, actualValue.Value, 
-        string.Format ("Value, expected property name: '{0}'", expectedValue.Name));
-    
+   
+    AreValuesEqual (expectedValue.Value, actualValue.Value, string.Format ("Value, expected property name: '{0}'", expectedValue.Name));
+
     if (expectedValue.Value != null)
     {
       Assert.AreEqual (expectedValue.Value.GetType (), actualValue.Value.GetType (), 
           string.Format ("Type of Value, expected property name: '{0}'", expectedValue.Name));
     }
 
-    Assert.AreEqual (expectedValue.OriginalValue, actualValue.OriginalValue, 
-        string.Format ("OriginalValue, expected property name: '{0}'", expectedValue.Name));
+    AreValuesEqual (expectedValue.OriginalValue, actualValue.OriginalValue, string.Format ("OriginalValue, expected property name: '{0}'", expectedValue.Name));
 
     if (expectedValue.OriginalValue != null)
     {
@@ -47,6 +46,17 @@ public class PropertyValueChecker
 
     Assert.AreEqual (expectedValue.HasChanged, actualValue.HasChanged, 
         string.Format ("HasChanged, expected property name: '{0}'", expectedValue.Name));
+  }
+
+  private void AreValuesEqual (object expected, object actual, string message)
+  {
+    if (expected == actual)
+      return;
+
+    if (expected == null || expected.GetType () != typeof (byte[]))
+      Assert.AreEqual (expected, actual, message);
+    else
+      ResourceManager.AreEqual ((byte[]) expected, (byte[]) actual, message);
   }
 }
 }
