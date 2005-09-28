@@ -315,6 +315,7 @@ CREATE TABLE [TableWithAllDataTypes] (
   [Int64] bigint NOT NULL,
   [Single] real NOT NULL,
   [String] nvarchar (100) NOT NULL,
+  [Binary] image NOT NULL,
   
   [NaBoolean] bit NULL,
   [NaByte] tinyint NULL,
@@ -340,6 +341,7 @@ CREATE TABLE [TableWithAllDataTypes] (
   [NaInt32WithNullValue] int NULL,
   [NaInt64WithNullValue] bigint NULL,
   [NaSingleWithNullValue] real NULL,
+  [NullableBinary] image NULL,
       
   CONSTRAINT [PK_TableWithAllDataTypes] PRIMARY KEY CLUSTERED ([ID])
 ) 
