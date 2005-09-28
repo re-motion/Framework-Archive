@@ -128,6 +128,7 @@
       <xs:enumeration value="int64" />
       <xs:enumeration value="single" />
       <xs:enumeration value="string" />
+      <xs:enumeration value="binary" />
     </xs:restriction>
   </xs:simpleType>
 
