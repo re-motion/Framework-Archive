@@ -231,6 +231,7 @@ public class DomainObject
     }
   }
 
+  // TODO Doc: Write a remark that instead of overriding Delete the programmer should override OnDeleting or OnDeleted instead.
   /// <summary>
   /// Deletes the <b>DomainObject</b>.
   /// </summary>

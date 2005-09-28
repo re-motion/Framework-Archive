@@ -158,6 +158,9 @@ public class DataContainer
     if (value.GetType () == typeof (Guid))
       return (((Guid) value) == Guid.Empty);
 
+    if (value.GetType () == typeof (byte[]))
+      return (((byte[]) value).Length == 0);
+
     return false;
   }
 
@@ -829,6 +832,21 @@ public class DataContainer
     CheckDiscarded ();
 
     return (NaSingle) this[propertyName];
+  }
+
+  /// <summary>
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a byte array.
+  /// </summary>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <exception cref="System.InvalidCastException">The value cannot be casted to a byte array.</exception>
+  public byte[] GetBytes (string propertyName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    CheckDiscarded ();
+
+    return (byte[]) this[propertyName];
   }
 
   #endregion
