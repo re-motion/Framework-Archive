@@ -1,9 +1,13 @@
 1.3.7
 =====
-- Bugfix: Funciton Abort hat im IE utner Umständen nicht korrekt funktioniert:
-  Concurrency Issues beim Reuqest absetzen
-  Neue Implementierung benötigt aktiviertes ActiveX im IE, ansonsten Fallback auf vorherige Lösung.
-
+- Execution Engine
+  * Bugfix: Function Abort hat im IE utner Umständen nicht korrekt funktioniert:
+    Concurrency Issues beim Reuqest absetzen
+    Neue Implementierung benötigt aktiviertes ActiveX im IE, ansonsten Fallback auf vorherige Lösung.
+- Rubicon.Web.ExecutionEngine.WxeTransactionBase
+  * Bugfix: Beim Aborting außerhalb des Execution-Cycles (dh durch einen Abort Request) steht nun die korrekte
+    CurrentTransaction bereit.
+    
 1.3.6
 =====
 - Rubicon.Web.ExecutionEngine.WxeTransactionBase

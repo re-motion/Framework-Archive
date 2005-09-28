@@ -195,7 +195,18 @@ public abstract class WxeTransactionBase: WxeStepList
     if (_transaction != null)
     {
       s_log.Debug ("Committing " + _transaction.GetType().Name + ".");
-      CommitTransaction (_transaction);
+      ITransaction currentTransaction = CurrentTransaction;
+      SetCurrentTransaction (_transaction);
+      try
+      {
+        CommitTransaction (_transaction);
+      }
+      catch (Exception)
+      {
+        SetCurrentTransaction (currentTransaction);
+        throw;
+      }
+      SetCurrentTransaction (currentTransaction);
       _transaction.Release();
       _transaction = null;
     }
@@ -238,7 +249,18 @@ public abstract class WxeTransactionBase: WxeStepList
     if (_transaction != null)
     {
       s_log.Debug ("Rolling back " + _transaction.GetType().Name + ".");
-      RollbackTransaction (_transaction);
+      ITransaction currentTransaction = CurrentTransaction;
+      SetCurrentTransaction (_transaction);
+      try
+      {
+        RollbackTransaction (_transaction);
+      }
+      catch (Exception)
+      {
+        SetCurrentTransaction (currentTransaction);
+        throw;
+      }
+      SetCurrentTransaction (currentTransaction);
       _transaction.Release();
       _transaction = null;
     }
