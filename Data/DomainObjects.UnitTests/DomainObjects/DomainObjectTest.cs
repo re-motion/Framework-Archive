@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.Resources; 
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
 
@@ -29,16 +30,15 @@ public class DomainObjectTest : ClientTransactionBaseTest
 
   // methods and properties
 
+  // TODO Review:
   [Test]
   public void LoadingOfSimpleObject ()
   {
-    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-
-    ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
+    ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
     
-    Assert.AreEqual (id.Value, classWithAllDataTypes.ID.Value, "ID.Value");
-    Assert.AreEqual (id.ClassID, classWithAllDataTypes.ID.ClassID, "ID.ClassID");
-    Assert.AreEqual (id.StorageProviderID, classWithAllDataTypes.ID.StorageProviderID, "ID.StorageProviderID");
+    Assert.AreEqual (DomainObjectIDs.ClassWithAllDataTypes1.Value, classWithAllDataTypes.ID.Value, "ID.Value");
+    Assert.AreEqual (DomainObjectIDs.ClassWithAllDataTypes1.ClassID, classWithAllDataTypes.ID.ClassID, "ID.ClassID");
+    Assert.AreEqual (DomainObjectIDs.ClassWithAllDataTypes1.StorageProviderID, classWithAllDataTypes.ID.StorageProviderID, "ID.StorageProviderID");
 
     Assert.AreEqual (false, classWithAllDataTypes.BooleanProperty, "BooleanProperty");
     Assert.AreEqual (85, classWithAllDataTypes.ByteProperty, "ByteProperty");
@@ -53,6 +53,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (9223372036854775807, classWithAllDataTypes.Int64Property, "Int64Property");
     Assert.AreEqual (6789.321, classWithAllDataTypes.SingleProperty, "SingleProperty");
     Assert.AreEqual ("abcdeföäü", classWithAllDataTypes.StringProperty, "StringProperty");
+    ResourceManager.IsEqualToImage1 (classWithAllDataTypes.BinaryProperty, "BinaryProperty");
 
     Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes.NaBooleanProperty, "NaBooleanProperty");
     Assert.AreEqual (new NaByte (78), classWithAllDataTypes.NaByteProperty, "NaByteProperty");
@@ -78,6 +79,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (NaInt64.Null, classWithAllDataTypes.NaInt64WithNullValueProperty, "NaInt64WithNullValueProperty");
     Assert.AreEqual (NaSingle.Null, classWithAllDataTypes.NaSingleWithNullValueProperty, "NaSingleWithNullValueProperty");
     Assert.AreEqual (null, classWithAllDataTypes.StringWithNullValueProperty, "StringWithNullValueProperty");
+    Assert.AreEqual (null, classWithAllDataTypes.NullableBinaryProperty, "NullableBinaryProperty");
   }
 
   [Test]
