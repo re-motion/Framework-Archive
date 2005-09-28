@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
 
@@ -46,6 +47,7 @@ public class TypeInfoTest
     Check (new TypeInfo (typeof (NaSingle), "single", true, NaSingle.Null), TypeInfo.GetInstance ("single", true));
     Check (new TypeInfo (typeof (string), "string", true, null), TypeInfo.GetInstance ("string", true));
     Check (new TypeInfo (typeof (ObjectID), "objectID", true, null), TypeInfo.GetInstance ("objectID", true));
+    Check (new TypeInfo (typeof (byte[]), "binary", true, null), TypeInfo.GetInstance ("binary", true));  
 
     Check (new TypeInfo (typeof (bool), "boolean", false, false), TypeInfo.GetInstance ("boolean", false));
     Check (new TypeInfo (typeof (byte), "byte", false, byte.MinValue), TypeInfo.GetInstance ("byte", false));
@@ -60,6 +62,7 @@ public class TypeInfoTest
     Check (new TypeInfo (typeof (float), "single", false, float.MinValue), TypeInfo.GetInstance ("single", false));
     Check (new TypeInfo (typeof (string), "string", false, string.Empty), TypeInfo.GetInstance ("string", false));
     Check (new TypeInfo (typeof (ObjectID), "objectID", false, null), TypeInfo.GetInstance ("objectID", false));  
+    Check (new TypeInfo (typeof (byte[]), "binary", false, new byte[0]), TypeInfo.GetInstance ("binary", false));  
   }
 
 
@@ -78,6 +81,7 @@ public class TypeInfoTest
     Check (new TypeInfo (typeof (NaSingle), "single", true, NaSingle.Null), TypeInfo.GetInstance (typeof (NaSingle)));
     Check (new TypeInfo (typeof (string), "string", true, null), TypeInfo.GetInstance (typeof (string)));
     Check (new TypeInfo (typeof (ObjectID), "objectID", true, null), TypeInfo.GetInstance (typeof (ObjectID)));
+    Check (new TypeInfo (typeof (byte[]), "binary", true, null), TypeInfo.GetInstance (typeof (byte[])));
 
     Check (new TypeInfo (typeof (bool), "boolean", false, false), TypeInfo.GetInstance (typeof (bool)));
     Check (new TypeInfo (typeof (byte), "byte", false, byte.MinValue), TypeInfo.GetInstance (typeof (byte)));
@@ -143,7 +147,11 @@ public class TypeInfoTest
     Assert.AreEqual (expected.Type, actual.Type, "Type" + typeMessage);
     Assert.AreEqual (expected.MappingType, actual.MappingType, "MappingType" + typeMessage);
     Assert.AreEqual (expected.IsNullable, actual.IsNullable, "IsNullable" + typeMessage);
-    Assert.AreEqual (expected.DefaultValue, actual.DefaultValue, "DefaultValue" + typeMessage);
+
+    if (expected.Type == typeof (byte[]))
+      ResourceManager.AreEqual ((byte[]) expected.DefaultValue, (byte[]) actual.DefaultValue);
+    else
+      Assert.AreEqual (expected.DefaultValue, actual.DefaultValue, "DefaultValue" + typeMessage);
   }
 }
 }

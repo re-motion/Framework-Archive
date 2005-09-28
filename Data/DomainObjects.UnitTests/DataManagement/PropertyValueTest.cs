@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
@@ -293,6 +294,66 @@ public class PropertyValueTest
     PropertyValue propertyValue = new PropertyValue (definition, string.Empty);
 
     propertyValue.Value = null;
+  }
+
+  // TODO Review:
+  [Test]
+  public void SetNullableBinary ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", true);
+    PropertyValue propertyValue = new PropertyValue (definition, null);
+    Assert.IsNull (propertyValue.Value);
+  }
+
+  // TODO Review:
+  [Test]
+  public void SetNotNullableBinary ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", false);
+    
+    PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
+    ResourceManager.AreEqual (new byte[0], (byte[]) propertyValue.Value);
+
+    propertyValue.Value = ResourceManager.GetImage1 ();
+    ResourceManager.IsEqualToImage1 ((byte[]) propertyValue.Value);
+  }
+
+  // TODO Review:
+  [Test]
+  [ExpectedException (typeof (InvalidTypeException))]
+  public void SetBinaryWithInvalidType ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", false);
+    PropertyValue propertyValue = new PropertyValue (definition, new int[0]);
+  }
+
+  // TODO Review:
+  [Test]
+  [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
+  public void SetNotNullableBinaryToNullViaConstructor ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", false);
+    PropertyValue propertyValue = new PropertyValue (definition, null);
+  }
+
+  // TODO Review:
+  [Test]
+  [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
+  public void SetNotNullableBinaryToNullViaProperty ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", false);
+    PropertyValue propertyValue = new PropertyValue (definition, ResourceManager.GetImage1 ());
+    propertyValue.Value = null;
+  }
+
+  // TODO Review:
+  [Test]
+  [ExpectedException (typeof (ValueTooLongException), "Value for property 'test' is too large. Maximum number of elements: 1000000.")]
+  public void SetBinaryLargerThanMaxLength ()
+  {
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", true, 1000000);
+    PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
+    propertyValue.Value = ResourceManager.GetImageLarger1MB ();
   }
 
   [Test]

@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
@@ -219,6 +220,7 @@ public class DataContainerTest : ClientTransactionBaseTest
     Assert.AreEqual ("Zaphod Beeblebrox", _existingDataContainer.GetString ("Name"));
   }
 
+  // TODO Review:
   [Test]
   public void IsNull ()
   {
@@ -226,10 +228,14 @@ public class DataContainerTest : ClientTransactionBaseTest
 
     Assert.IsTrue (dataContainer.IsNull ("StringWithNullValueProperty"));
     Assert.IsTrue (dataContainer.IsNull ("NaInt32WithNullValueProperty"));
+    Assert.IsTrue (dataContainer.IsNull ("NullableBinaryProperty"));
+
     Assert.IsFalse (dataContainer.IsNull ("NaDateProperty"));
     Assert.IsFalse (dataContainer.IsNull ("Int32Property"));
+    Assert.IsFalse (dataContainer.IsNull ("BinaryProperty"));
   }
 
+  // TODO Review:
   [Test]
   public void IsNullOrEmpty ()
   {
@@ -241,12 +247,38 @@ public class DataContainerTest : ClientTransactionBaseTest
     Assert.IsFalse (dataContainer.IsNullOrEmpty ("Int32Property"));
     Assert.IsFalse (dataContainer.IsNullOrEmpty ("GuidProperty"));
     Assert.IsFalse (dataContainer.IsNullOrEmpty ("StringProperty"));
+    Assert.IsFalse (dataContainer.IsNullOrEmpty ("BinaryProperty"));
 
     dataContainer["GuidProperty"] = Guid.Empty;
     dataContainer["StringProperty"] = string.Empty;
+    dataContainer["BinaryProperty"] = new byte[0];
 
     Assert.IsTrue (dataContainer.IsNullOrEmpty ("GuidProperty"));
     Assert.IsTrue (dataContainer.IsNullOrEmpty ("StringProperty"));    
+    Assert.IsTrue (dataContainer.IsNullOrEmpty ("BinaryProperty"));    
+  }
+
+  // TODO Review:
+  [Test]
+  public void GetBytes ()
+  {
+    DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
+    
+    ResourceManager.AreEqual (ResourceManager.GetImage1 (), dataContainer.GetBytes ("BinaryProperty"));
+    Assert.IsNull (dataContainer.GetBytes ("NullableBinaryProperty"));
+  }
+
+  // TODO Review:
+  [Test]
+  public void SetBytes ()
+  {
+    DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
+    
+    dataContainer["BinaryProperty"] = new byte[0];
+    ResourceManager.AreEqual (new byte[0], dataContainer.GetBytes ("BinaryProperty"));
+
+    dataContainer["NullableBinaryProperty"] = null;
+    Assert.IsNull (dataContainer.GetBytes ("NullableBinaryProperty"));
   }
 }
 }
