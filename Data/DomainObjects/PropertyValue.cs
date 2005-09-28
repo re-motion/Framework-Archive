@@ -289,6 +289,7 @@ public class PropertyValue
     _isDiscarded = true;
   }
 
+  // TODO Review:
   private void CheckValue (object value, PropertyDefinition definition)
   {
     if (value != null)
@@ -299,20 +300,43 @@ public class PropertyValue
           throw new InvalidTypeException (definition.PropertyName, definition.PropertyType, value.GetType ());
       }
 
-      if (value.GetType () == typeof (string) && !definition.MaxLength.IsNull)
-      {
-        string stringValue = (string) value;
-        if (stringValue.Length > definition.MaxLength.Value)
-          throw new ValueTooLongException (definition.PropertyName, definition.MaxLength.Value);
-      }
+      if (value.GetType () == typeof (string))
+        CheckStringValue ((string) value, definition);
+
+      if (value.GetType () == typeof (byte[]))
+        CheckByteArrayValue ((byte[]) value, definition);
     }
     else
     {
-      if (definition.PropertyType == typeof (string) && !definition.IsNullable)
+      if (!definition.IsNullable)
       {
         throw new InvalidOperationException (
             string.Format ("Property '{0}' does not allow null values.", definition.PropertyName));
       }
+    }
+  }
+
+  private void CheckStringValue (string value, PropertyDefinition definition)
+  {
+    if (!definition.MaxLength.IsNull && value.Length > definition.MaxLength.Value)
+    {
+      string message = string.Format (
+          "Value for property '{0}' is too long. Maximum number of characters: {1}.",
+          definition.PropertyName, definition.MaxLength.Value);
+
+      throw new ValueTooLongException (message, definition.PropertyName, definition.MaxLength.Value);
+    }
+  }
+
+  private void CheckByteArrayValue (byte[] value, PropertyDefinition definition)
+  {
+    if (!definition.MaxLength.IsNull && value.Length > definition.MaxLength.Value)
+    {
+      string message = string.Format (
+          "Value for property '{0}' is too large. Maximum number of elements: {1}.", 
+          definition.PropertyName, definition.MaxLength.Value);
+
+      throw new ValueTooLongException (message, definition.PropertyName, definition.MaxLength.Value);
     }
   }
 
