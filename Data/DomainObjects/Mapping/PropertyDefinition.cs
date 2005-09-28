@@ -65,7 +65,8 @@ public class PropertyDefinition
           "Property '{0}' of type 'System.String' must have MaxLength defined.", propertyName);
     }
 
-    if (typeInfo.Type != typeof (string) && !maxLength.IsNull)
+    // TODO Review:
+    if (typeInfo.Type != typeof (string) && typeInfo.Type != typeof (byte[]) && !maxLength.IsNull)
     {
       throw CreateMappingException (
           "MaxLength parameter cannot be supplied with value of type '{0}'.", typeInfo.Type);
