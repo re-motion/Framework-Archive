@@ -10,6 +10,7 @@ using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -51,7 +52,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     Assert.AreEqual (newDataContainer.ID, loadedDataContainer.ID);
   }
 
-
+  // TODO Review:
   [Test]
   public void AllDataTypes ()
   {
@@ -74,6 +75,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     classWithAllDataTypes["Int64Property"] = 424242424242424242;
     classWithAllDataTypes["SingleProperty"] = (float) 42.42;
     classWithAllDataTypes["StringProperty"] = "zyxwvuZaphodBeeblebrox";
+    classWithAllDataTypes["BinaryProperty"] = ResourceManager.GetImage1 ();
 
     classWithAllDataTypes["NaBooleanProperty"] = new NaBoolean (false);
     classWithAllDataTypes["NaByteProperty"] = new NaByte (21);
@@ -109,6 +111,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
       Assert.AreEqual (424242424242424242, classWithAllDataTypes["Int64Property"]);
       Assert.AreEqual (42.42, classWithAllDataTypes["SingleProperty"]);
       Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["StringProperty"]);
+      ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("BinaryProperty"));
 
       Assert.AreEqual (new NaBoolean (false), classWithAllDataTypes["NaBooleanProperty"]);
       Assert.AreEqual (new NaByte (21), classWithAllDataTypes["NaByteProperty"]);
@@ -134,6 +137,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
       Assert.AreEqual (NaInt64.Null, classWithAllDataTypes["NaInt64WithNullValueProperty"]);
       Assert.AreEqual (NaSingle.Null, classWithAllDataTypes["NaSingleWithNullValueProperty"]);
       Assert.IsNull (classWithAllDataTypes["StringWithNullValueProperty"]);
+      Assert.IsNull (classWithAllDataTypes["NullableBinaryProperty"]);
     }
   }
 
@@ -201,6 +205,94 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     Assert.IsNotNull (newCustomerContainer);
     Assert.IsNotNull (newOrderContainer);
     Assert.AreEqual (newCustomerContainer.ID, newOrderContainer.GetObjectID ("Customer"));
+  }
+
+  // TODO Review:
+  [Test]
+  public void SaveNullBinary ()
+  {
+    ObjectID newID;
+    using (Provider)
+    {
+      DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+      newID = dataContainer.ID;
+      
+      SetDefaultValues (dataContainer);      
+      dataContainer["NullableBinaryProperty"] = null;
+
+      DataContainerCollection collection = new DataContainerCollection ();
+      collection.Add (dataContainer);
+
+      Provider.Save (collection);
+    }
+
+    using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
+    {
+      DataContainer dataContainer = sqlProvider.LoadDataContainer (newID);
+      Assert.IsNull (dataContainer["NullableBinaryProperty"]);
+    }    
+  }
+
+  // TODO Review:
+  [Test]
+  public void SaveEmptyBinary ()
+  {
+    ObjectID newID;
+    using (Provider)
+    {
+      DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+      newID = dataContainer.ID;
+      
+      SetDefaultValues (dataContainer);
+      dataContainer["NullableBinaryProperty"] = new byte[0];
+
+      DataContainerCollection collection = new DataContainerCollection ();
+      collection.Add (dataContainer);
+
+      Provider.Save (collection);
+    }
+
+    using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
+    {
+      DataContainer dataContainer = sqlProvider.LoadDataContainer (newID);
+      ResourceManager.IsEmptyImage (dataContainer.GetBytes ("NullableBinaryProperty"));
+    }    
+  }
+
+  // TODO Review:
+  [Test]
+  public void SaveLargeBinary ()
+  {
+    ObjectID newID;
+    using (Provider)
+    {
+      DataContainer dataContainer = Provider.CreateNewDataContainer (TestMappingConfiguration.Current.ClassDefinitions[typeof (ClassWithAllDataTypes)]);
+      newID = dataContainer.ID;
+      
+      SetDefaultValues (dataContainer);
+      dataContainer["BinaryProperty"] = ResourceManager.GetImageLarger1MB ();
+
+      DataContainerCollection collection = new DataContainerCollection ();
+      collection.Add (dataContainer);
+
+      Provider.Save (collection);
+    }
+
+    using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
+    {
+      DataContainer dataContainer = sqlProvider.LoadDataContainer (newID);
+      ResourceManager.IsEqualToImageLarger1MB (dataContainer.GetBytes ("BinaryProperty"));
+    }    
+  }
+
+  private void SetDefaultValues (DataContainer classWithAllDataTypesContainer)
+  {
+    // Note: Date properties must be set, because SQL Server only accepts dates past 1/1/1753.
+    classWithAllDataTypesContainer["DateProperty"] = DateTime.Now;
+    classWithAllDataTypesContainer["DateTimeProperty"] = DateTime.Now;
+
+    // Note: SqlDecimal has problems with Decimal.MinValue => Set this propert too.
+    classWithAllDataTypesContainer["DecimalProperty"] = 10m;
   }
 }
 }

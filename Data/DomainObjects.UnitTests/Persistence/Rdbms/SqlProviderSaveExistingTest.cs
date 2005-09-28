@@ -9,8 +9,9 @@ using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 
-using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -36,7 +37,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value1, classWithAllDataTypes["EnumProperty"]);
       classWithAllDataTypes["EnumProperty"] = ClassWithAllDataTypes.EnumType.Value2;
@@ -49,18 +50,19 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.AreEqual (ClassWithAllDataTypes.EnumType.Value2, classWithAllDataTypes["EnumProperty"]);
     }
   }
 
+  // TODO Review:
   [Test]
   public void SaveAllSimpleDataTypes ()
   {
     using (Provider)
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.AreEqual (false, classWithAllDataTypes["BooleanProperty"]);
       Assert.AreEqual (85, classWithAllDataTypes["ByteProperty"]);
@@ -75,6 +77,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       Assert.AreEqual (9223372036854775807, classWithAllDataTypes["Int64Property"]);
       Assert.AreEqual (6789.321, classWithAllDataTypes["SingleProperty"]);
       Assert.AreEqual ("abcdeföäü", classWithAllDataTypes["StringProperty"]);
+      ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("BinaryProperty"));
 
       classWithAllDataTypes["BooleanProperty"] = true;
       classWithAllDataTypes["ByteProperty"] = (byte) 42;
@@ -89,6 +92,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       classWithAllDataTypes["Int64Property"] = 424242424242424242;
       classWithAllDataTypes["SingleProperty"] = (float) 42.42;
       classWithAllDataTypes["StringProperty"] = "zyxwvuZaphodBeeblebrox";
+      classWithAllDataTypes["BinaryProperty"] = ResourceManager.GetImage2 ();
 
       DataContainerCollection collection = new DataContainerCollection ();
       collection.Add (classWithAllDataTypes);
@@ -98,7 +102,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.AreEqual (true, classWithAllDataTypes["BooleanProperty"]);
       Assert.AreEqual (42, classWithAllDataTypes["ByteProperty"]);
@@ -113,15 +117,17 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       Assert.AreEqual (424242424242424242, classWithAllDataTypes["Int64Property"]);
       Assert.AreEqual (42.42, classWithAllDataTypes["SingleProperty"]);
       Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["StringProperty"]);
+      ResourceManager.IsEqualToImage2 (classWithAllDataTypes.GetBytes ("BinaryProperty"));
     }
   }
 
+  // TODO Review:
   [Test]
   public void SaveAllNullableTypes ()
   {
     using (Provider)
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes["NaBooleanProperty"]);
       Assert.AreEqual (new NaByte (78), classWithAllDataTypes["NaByteProperty"]);
@@ -134,6 +140,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       Assert.AreEqual (new NaInt32 (-2147483647), classWithAllDataTypes["NaInt32Property"]);
       Assert.AreEqual (new NaInt64 (3147483647), classWithAllDataTypes["NaInt64Property"]);
       Assert.AreEqual (new NaSingle (12.456F), classWithAllDataTypes["NaSingleProperty"]);
+      Assert.IsNull (classWithAllDataTypes["NullableBinaryProperty"]);
 
       classWithAllDataTypes["NaBooleanProperty"] = new NaBoolean (false);
       classWithAllDataTypes["NaByteProperty"] = new NaByte (100);
@@ -146,6 +153,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       classWithAllDataTypes["NaInt32Property"] = new NaInt32 (-42);
       classWithAllDataTypes["NaInt64Property"] = new NaInt64 (-41);
       classWithAllDataTypes["NaSingleProperty"] = new NaSingle (-40F);
+      classWithAllDataTypes["NullableBinaryProperty"] = ResourceManager.GetImage1 ();
 
       DataContainerCollection collection = new DataContainerCollection ();
       collection.Add (classWithAllDataTypes);
@@ -155,7 +163,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.AreEqual (new NaBoolean (false), classWithAllDataTypes["NaBooleanProperty"]);
       Assert.AreEqual (new NaByte (100), classWithAllDataTypes["NaByteProperty"]);
@@ -168,15 +176,30 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       Assert.AreEqual (new NaInt32 (-42), classWithAllDataTypes["NaInt32Property"]);
       Assert.AreEqual (new NaInt64 (-41), classWithAllDataTypes["NaInt64Property"]);
       Assert.AreEqual (new NaSingle (-40F), classWithAllDataTypes["NaSingleProperty"]);
+      ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("NullableBinaryProperty"));
     }
   }
 
+  // TODO Review:
   [Test]
   public void SaveAllNullableTypesWithNull ()
   {
+    // Note for NullableProperty: Because the value in the database is already null, the property has
+    //  to be changed first to something different to ensure the null value is written back.
+    using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
+    {
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
+      classWithAllDataTypes["NullableBinaryProperty"] = ResourceManager.GetImage1 ();
+
+      DataContainerCollection collection = new DataContainerCollection ();
+      collection.Add (classWithAllDataTypes);
+
+      Provider.Save (collection);
+    }
+
     using (Provider)
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes["NaBooleanProperty"]);
       Assert.AreEqual (new NaByte (78), classWithAllDataTypes["NaByteProperty"]);
@@ -189,6 +212,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       Assert.AreEqual (new NaInt32 (-2147483647), classWithAllDataTypes["NaInt32Property"]);
       Assert.AreEqual (new NaInt64 (3147483647), classWithAllDataTypes["NaInt64Property"]);
       Assert.AreEqual (new NaSingle (12.456F), classWithAllDataTypes["NaSingleProperty"]);
+      ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("NullableBinaryProperty"));
 
       classWithAllDataTypes["NaBooleanProperty"] = NaBoolean.Null;
       classWithAllDataTypes["NaByteProperty"] = NaByte.Null;
@@ -201,6 +225,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       classWithAllDataTypes["NaInt32Property"] = NaInt32.Null;
       classWithAllDataTypes["NaInt64Property"] = NaInt64.Null;
       classWithAllDataTypes["NaSingleProperty"] = NaSingle.Null;
+      classWithAllDataTypes["NullableBinaryProperty"] = null;
 
       DataContainerCollection collection = new DataContainerCollection ();
       collection.Add (classWithAllDataTypes);
@@ -210,7 +235,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = sqlProvider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
 
       Assert.AreEqual (NaBoolean.Null, classWithAllDataTypes["NaBooleanProperty"]);
       Assert.AreEqual (NaByte.Null, classWithAllDataTypes["NaByteProperty"]);
@@ -223,6 +248,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       Assert.AreEqual (NaInt32.Null, classWithAllDataTypes["NaInt32Property"]);
       Assert.AreEqual (NaInt64.Null, classWithAllDataTypes["NaInt64Property"]);
       Assert.AreEqual (NaSingle.Null, classWithAllDataTypes["NaSingleProperty"]);
+      Assert.IsNull (classWithAllDataTypes["NullableBinaryProperty"]);
     }
   }
 
@@ -231,7 +257,7 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (GetClassWithAllDataTypesID ());
+      DataContainer classWithAllDataTypes = Provider.LoadDataContainer (DomainObjectIDs.ClassWithAllDataTypes1);
       DataContainerCollection collection = new DataContainerCollection ();
       collection.Add (classWithAllDataTypes);
 
@@ -723,12 +749,6 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
       Provider.BeginTransaction ();
       Provider.BeginTransaction ();
     }
-  }
-
-  private ObjectID GetClassWithAllDataTypesID ()
-  {
-    Guid idGuid = new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}");
-    return new ObjectID ("ClassWithAllDataTypes", idGuid);
   }
 }
 }

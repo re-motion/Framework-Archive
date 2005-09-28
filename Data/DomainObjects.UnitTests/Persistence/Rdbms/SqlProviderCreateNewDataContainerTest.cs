@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.UnitTests.Resources;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
@@ -48,6 +49,7 @@ public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
     Assert.IsNull (newContainer["Customer"], "Customer");
   }
 
+  // TODO Review:
   [Test]
   public void CreateClassWithAllDataTypes ()
   {
@@ -67,6 +69,7 @@ public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
     Assert.AreEqual (long.MinValue, newContainer["Int64Property"]);
     Assert.AreEqual (float.MinValue, newContainer["SingleProperty"]);
     Assert.AreEqual (string.Empty, newContainer["StringProperty"]);
+    ResourceManager.AreEqual (new byte[0], (byte[]) newContainer["BinaryProperty"]);
 
     Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanProperty"]);
     Assert.AreEqual (NaByte.Null, newContainer["NaByteProperty"]);
@@ -92,6 +95,7 @@ public class SqlProviderCreateNewDataContainerTest : SqlProviderBaseTest
     Assert.AreEqual (NaInt64.Null, newContainer["NaInt64WithNullValueProperty"]);
     Assert.AreEqual (NaSingle.Null, newContainer["NaSingleWithNullValueProperty"]);
     Assert.AreEqual (null, newContainer["StringWithNullValueProperty"]);
+    Assert.IsNull (newContainer["NullableBinaryProperty"]);
   }
 
   [Test]
