@@ -3,7 +3,7 @@
     application="UnitTests" 
     xmlns="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\queries.xsd">
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\DomainObjects\queries.xsd">
 
   <query id="OrderQuery" type="collection">
     <storageProviderID>TestDomain</storageProviderID>
