@@ -43,7 +43,8 @@ function Wxe_Context (
     this.SmartFocusField = this.TheForm.elements[smartFocusFieldID];
   var _activeElement = null;
   var _eventHandlers = eventHandlers
-  
+  this.IsMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
+ 
   this.GetActiveElement = function()
   {
     if (window.document.activeElement != null)
@@ -92,8 +93,7 @@ function Wxe_SetEventHandlers ()
   window.onbeforeunload = Wxe_OnBeforeUnload; // IE, Mozilla 1.7, Firefox 0.9
   window.onunload = Wxe_OnUnload;
   
-  var isMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
-  if (! isMsIE)
+  if (! _wxe_context.IsMsIE)
   	Wxe_SetFocusEventHandlers (document.body);
 }
 
@@ -127,14 +127,7 @@ function Wxe_IsFocusableTag (tagName)
 
 function Wxe_Refresh()
 {
-  try 
-  {
-    var image = new Image();
-    image.src = _wxe_context.RefreshUrl;
-  }
-  catch (e)
-  {
-  }
+  Wxe_SendSessionRequest (_wxe_context.RefreshUrl)
 }
 
 function Wxe_OnLoad()
@@ -194,10 +187,32 @@ function Wxe_OnUnload()
   {
     Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onabort'));
     
+    Wxe_SendSessionRequest (_wxe_context.AbortUrl);
+  }
+}
+
+function Wxe_SendSessionRequest (url)
+{
+  try 
+  {
+    var xhttp;
+    // Create XHttpRequest
+    if (_wxe_context.IsMsIE) 
+      xhttp = new ActiveXObject('Microsoft.XMLHTTP'); 
+    else
+      xhttp = new XMLHttpRequest(); 
+
+    var method = 'GET'
+    var isSynchronousCall = false;
+    xhttp.open (method, url, isSynchronousCall);
+    xhttp.send ();    
+  }
+  catch (e)
+  {
     try 
     {
       var image = new Image();
-      image.src = _wxe_context.AbortUrl;
+      image.src = url;
     }
     catch (e)
     {
