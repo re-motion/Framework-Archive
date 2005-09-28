@@ -3,6 +3,9 @@
 - BocList
   * InitializeRowMenusItems umbenannt zu InitializeRowMenuItems
   * PreRenderRowMenusItems umbenannt zu PreRenderRowMenuItems
+  * Bugfix: RowMenus haben in Zusammenhang mit Paging nicht korrekt funktioniert:
+    Null-Reference Exception auf der letzten Seite, falls diese nicht korrekt befüllt war.
+    Falsche Menü-Items auf den weiteren Seiten.
   
 1.3.4
 =====

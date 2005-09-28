@@ -1067,7 +1067,7 @@ public class BocList:
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
-    CalculateCurrentPage();
+    CalculateCurrentPage (true);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
 
@@ -1110,7 +1110,7 @@ public class BocList:
     get { return HtmlTextWriterTag.Div; }
   }
 
-  protected void CalculateCurrentPage()
+  protected void CalculateCurrentPage (bool evaluateGoTo)
   {
     if (!IsPagingEnabled || Value == null)
     {
@@ -1121,35 +1121,38 @@ public class BocList:
       _currentPage = _currentRow / _pageSize.Value;
       _pageCount = (int) Math.Ceiling ((double)Value.Count / _pageSize.Value);
 
-      switch (_goTo)
+      if (evaluateGoTo)
       {
-        case GoToOption.First:
+        switch (_goTo)
         {
-          _currentPage = 0;
-          _currentRow = 0;
-          break;
-        }
-        case GoToOption.Last:
-        {
-          _currentPage = _pageCount - 1;
-          _currentRow = _currentPage * _pageSize.Value;
-          break;
-        }
-        case GoToOption.Previous:
-        {
-          _currentPage--;
-          _currentRow = _currentPage * _pageSize.Value;
-          break;
-        }
-        case GoToOption.Next:
-        {
-          _currentPage++;
-          _currentRow = _currentPage * _pageSize.Value;
-          break;
-        }
-        default:
-        {
-          break;
+          case GoToOption.First:
+          {
+            _currentPage = 0;
+            _currentRow = 0;
+            break;
+          }
+          case GoToOption.Last:
+          {
+            _currentPage = _pageCount - 1;
+            _currentRow = _currentPage * _pageSize.Value;
+            break;
+          }
+          case GoToOption.Previous:
+          {
+            _currentPage--;
+            _currentRow = _currentPage * _pageSize.Value;
+            break;
+          }
+          case GoToOption.Next:
+          {
+            _currentPage++;
+            _currentRow = _currentPage * _pageSize.Value;
+            break;
+          }
+          default:
+          {
+            break;
+          }
         }
       }
 
@@ -1164,7 +1167,7 @@ public class BocList:
         _currentRow = 0;
       }
 
-      if (_goTo != GoToOption.Undefined)
+      if (_goTo != GoToOption.Undefined && evaluateGoTo)
       {
         _selectorControlCheckedState.Clear();
         ResetRowMenus();
@@ -1924,6 +1927,7 @@ public class BocList:
   private void RenderTableOpeningTag (HtmlTextWriter writer)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTable);
+    writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID + "_Table");
     writer.RenderBeginTag (HtmlTextWriterTag.Div);
 
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
@@ -3146,11 +3150,14 @@ public class BocList:
     if (IsEmptyList)
       return;
 
+    CalculateCurrentPage (false);
+
     if (IsPagingEnabled)
       _rowMenus = new Triplet[PageSize.Value];
     else
       _rowMenus = new Triplet[Value.Count];
     _rowMenusPlaceHolder.Controls.Clear();
+
 
     int firstRow = 0;
     int totalRowCount = Value.Count;
@@ -3211,10 +3218,13 @@ public class BocList:
     for (int i = 0; i < _rowMenus.Length; i++)
     {
       Triplet rowMenuTriplet = _rowMenus[i];
-      IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
-      int listIndex = (int) rowMenuTriplet.Second;       
-      DropDownMenu dropDownMenu = (DropDownMenu) rowMenuTriplet.Third;
-      PreRenderRowMenuItems (dropDownMenu.MenuItems, businessObject, listIndex);
+      if (rowMenuTriplet != null)
+      {
+        IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
+        int listIndex = (int) rowMenuTriplet.Second;       
+        DropDownMenu dropDownMenu = (DropDownMenu) rowMenuTriplet.Third;
+        PreRenderRowMenuItems (dropDownMenu.MenuItems, businessObject, listIndex);
+      }
     }
   }
 
@@ -3239,13 +3249,16 @@ public class BocList:
     for (int i = 0; i < _rowMenus.Length; i++)
     {
       Triplet rowMenuTriplet = _rowMenus[i];
-      DropDownMenu rowMenu = (DropDownMenu) rowMenuTriplet.Third;
-      if (rowMenu == sender)
+      if (rowMenuTriplet != null)
       {
-        IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
-        int listIndex = (int) rowMenuTriplet.Second;       
-        OnRowMenuItemEventCommandClick (e.Item, businessObject, listIndex);
-        return;
+        DropDownMenu rowMenu = (DropDownMenu) rowMenuTriplet.Third;
+        if (rowMenu == sender)
+        {
+          IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
+          int listIndex = (int) rowMenuTriplet.Second;       
+          OnRowMenuItemEventCommandClick (e.Item, businessObject, listIndex);
+          return;
+        }
       }
     }
   }
@@ -3274,13 +3287,16 @@ public class BocList:
     for (int i = 0; i < _rowMenus.Length; i++)
     {
       Triplet rowMenuTriplet = _rowMenus[i];
-      DropDownMenu rowMenu = (DropDownMenu) rowMenuTriplet.Third;
-      if (rowMenu == sender)
+      if (rowMenuTriplet != null)
       {
-        IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
-        int listIndex = (int) rowMenuTriplet.Second;       
-        OnRowMenuItemWxeFunctionCommandClick (e.Item, businessObject, listIndex);
-        return;
+        DropDownMenu rowMenu = (DropDownMenu) rowMenuTriplet.Third;
+        if (rowMenu == sender)
+        {
+          IBusinessObject businessObject = (IBusinessObject) rowMenuTriplet.First;
+          int listIndex = (int) rowMenuTriplet.Second;       
+          OnRowMenuItemWxeFunctionCommandClick (e.Item, businessObject, listIndex);
+          return;
+        }
       }
     }
   }
