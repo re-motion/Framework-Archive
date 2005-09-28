@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\mapping.xsd">
+<mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
 	<classes>
 		<class id="Company">
 			<!-- Example: Leading and trailing whitespace in type element is ignored. Thus linebreaks can be applied for formatting purposes. -->
@@ -331,6 +331,10 @@
 					<column>String</column>
 					<maxLength>100</maxLength>
 				</property>
+				<property name="BinaryProperty">
+					<type>binary</type>
+					<column>Binary</column>
+				</property>
 				<property name="NaBooleanProperty">
 					<type>boolean</type>
 					<column>NaBoolean</column>
@@ -446,6 +450,12 @@
 					<type>single</type>
 					<column>NaSingleWithNullValue</column>
 					<nullable>true</nullable>
+				</property>
+				<property name="NullableBinaryProperty">
+					<type>binary</type>
+					<column>NullableBinary</column>
+					<nullable>true</nullable>
+					<maxLength>1000000</maxLength>
 				</property>
 			</properties>
 		</class>
