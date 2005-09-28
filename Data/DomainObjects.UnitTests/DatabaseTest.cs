@@ -17,8 +17,6 @@ public class DatabaseTest
   public const string c_testDomainProviderID = "TestDomain";
   public const string c_unitTestStorageProviderStubID = "UnitTestStorageProviderStub";
 
-  private const string c_testDomainFilename = "CreateTestData.sql";
-
   // member fields
 
   // construction and disposing
@@ -34,7 +32,7 @@ public class DatabaseTest
   {
     using (TestDataLoader loader = new TestDataLoader (c_connectionString))
     { 
-      loader.ExecuteSqlFile (c_testDomainFilename);
+      loader.Load ();
     }
   }
 }
