@@ -39,10 +39,13 @@ public abstract class CommandBuilder
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
 
-    AddCommandParameter (command, parameterName, propertyValue.Value);
+    // TODO Review:
+    IDataParameter commandParameter = AddCommandParameter (command, parameterName, propertyValue.Value);
+    if (propertyValue.PropertyType == typeof (byte[]))
+      commandParameter.DbType = DbType.Binary;
   }
 
-  public void AddCommandParameter (IDbCommand command, string parameterName, object parameterValue)
+  public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, object parameterValue)
   {
     ArgumentUtility.CheckNotNull ("command", command);
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
@@ -57,6 +60,7 @@ public abstract class CommandBuilder
       commandParameter.Value = valueConverter.GetDBValue (parameterValue);
 
     command.Parameters.Add (commandParameter);
+    return commandParameter;
   }
 
   
