@@ -124,7 +124,14 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     {
       _currentFunctionState = ResumeExistingFunctionState (context, functionToken);
       if (_currentFunctionState != null)
+      {
         ProcessFunctionState (context, _currentFunctionState, false);
+      }
+      else
+      {
+        context.Response.Clear();
+        context.Response.End();
+      }
     }
     else
     {
