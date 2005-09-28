@@ -40,15 +40,6 @@ public class ValueTooLongException : DomainObjectException
     _maxLength = info.GetInt32 ("MaxLength");
   }
 
-  public ValueTooLongException (string propertyName, int maxLength) : this (
-      string.Format (
-          "Value for property '{0}' is too long. Maximum number of characters: {1}.", 
-          propertyName, maxLength), 
-      propertyName,
-      maxLength)
-  {
-  }
-
   public ValueTooLongException (string message, string propertyName, int maxLength) : base (message) 
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
