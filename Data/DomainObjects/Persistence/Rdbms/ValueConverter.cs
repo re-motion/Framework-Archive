@@ -35,7 +35,7 @@ public class ValueConverter
     return value;
   }
 
-  public virtual ObjectID GetObjectID (
+  public ObjectID GetObjectID (
       ClassDefinition classDefinition, 
       object value)
   {
@@ -241,14 +241,14 @@ public class ValueConverter
     return columnName + "ClassID";
   }
 
-  private RdbmsProviderException CreateRdbmsProviderException (
+  protected RdbmsProviderException CreateRdbmsProviderException (
       string formatString,
       params object[] args)
   {
     return CreateRdbmsProviderException (null, formatString, args);
   }
 
-  private RdbmsProviderException CreateRdbmsProviderException (
+  protected RdbmsProviderException CreateRdbmsProviderException (
       Exception innerException,
       string formatString,
       params object[] args)
