@@ -130,6 +130,12 @@ public class ClassWithAllDataTypes : TestDomainBase
     set { DataContainer.SetValue ("StringProperty", value); }
   }
 
+  public byte[] BinaryProperty
+  {
+    get { return DataContainer.GetBytes ("BinaryProperty"); }
+    set { DataContainer.SetValue ("BinaryProperty", value); }
+  }
+
   public NaBoolean NaBooleanProperty
   {
     get { return DataContainer.GetNaBoolean ("NaBooleanProperty"); }
@@ -266,6 +272,12 @@ public class ClassWithAllDataTypes : TestDomainBase
   {
     get { return DataContainer.GetNaSingle ("NaSingleWithNullValueProperty"); }
     set { DataContainer.SetValue ("NaSingleWithNullValueProperty", value); }
+  }
+
+  public byte[] NullableBinaryProperty
+  {
+    get { return DataContainer.GetBytes ("NullableBinaryProperty"); }
+    set { DataContainer.SetValue ("NullableBinaryProperty", value); }
   }
 }
 }
