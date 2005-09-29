@@ -192,6 +192,7 @@ public class BusinessObjectBinding
   ///   identify the property.
   /// </remarks>
   /// <exception cref="ArgumentException"> Thrown if the <see cref="Control"/> does not support the <b>Property</b>. </exception>
+  /// <exception cref="InvalidOperationException"> Thrown if an invalid <b>Property</b> has been specifed by the <see cref="PropertyIdentifier"/>. </exception>
   public IBusinessObjectProperty Property
   {
     get 
@@ -211,9 +212,24 @@ public class BusinessObjectBinding
             && DataSource.BusinessObjectClass != null 
             && ! StringUtility.IsNullOrEmpty (_propertyIdentifier))
         {
-          IBusinessObjectProperty property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
-          if (property == null || ! Control.SupportsProperty (property))
-            throw new ArgumentException ("The " + this.GetType().Name + " '" + _control.ID + "' does not support the IBusinessObjectProperty '" + _propertyIdentifier + "'.");
+          IBusinessObjectProperty property = 
+              DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
+          if (property == null)
+          {
+            throw new InvalidOperationException (
+                string.Format ("The business object class '{0}' bound to {1} '{2}' via the DataSource " + 
+                        "does not support the business object property '{3}'.",
+                    DataSource.BusinessObjectClass.Identifier, 
+                    this.GetType().Name, 
+                    _control.ID, 
+                    _propertyIdentifier));
+          }
+          if (! Control.SupportsProperty (property))
+          {
+            throw new InvalidOperationException (
+                string.Format ("{0} '{1}' does not support the business object property '{2}'.", 
+                    this.GetType().Name, _control.ID, _propertyIdentifier));
+          }
           _property = property;
         }
 
@@ -232,7 +248,12 @@ public class BusinessObjectBinding
       if (value != null)
       {
         if (! Control.SupportsProperty (value))
-          throw new ArgumentException ("The " + this.GetType().Name + " '" + _control.ID + "' does not support the IBusinessObjectProperty '" + value.Identifier + "'.", "value");
+        {
+          throw new ArgumentException (
+              string.Format ("{0} '{1}' does not support the  business object property '{2}'.", 
+                  this.GetType().Name, _control.ID, value.Identifier), 
+              "value");
+        }
       }
 
       _property = value; 
