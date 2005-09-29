@@ -9,6 +9,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableForR
 DROP TABLE [TableForRelationTest]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithoutColumns') 
+DROP TABLE [TableWithoutColumns]
+GO
+
 CREATE TABLE [TableWithAllDataTypes] (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
@@ -27,7 +31,8 @@ CREATE TABLE [TableWithAllDataTypes] (
   [Int64] bigint NOT NULL,
   [Single] real NOT NULL,
   [String] nvarchar (100) NOT NULL,
-  
+  [Binary] image NOT NULL,
+
   [NaBoolean] bit NULL,
   [NaByte] tinyint NULL,
   [NaDate] dateTime NULL,
@@ -52,6 +57,7 @@ CREATE TABLE [TableWithAllDataTypes] (
   [NaInt32WithNullValue] int NULL,
   [NaInt64WithNullValue] bigint NULL,
   [NaSingleWithNullValue] real NULL,
+  [NullableBinary] image NULL,
   
   [TableForRelationTestMandatory] uniqueidentifier NULL,
   [TableForRelationTestOptional] uniqueidentifier NULL,
