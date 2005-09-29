@@ -213,7 +213,7 @@ public class BusinessObjectBinding
         {
           IBusinessObjectProperty property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
           if (! Control.SupportsProperty (property))
-            throw new ArgumentException ("Property 'Property' does not support the property '" + _propertyIdentifier + "'.");
+            throw new ArgumentException ("The " + this.GetType().Name + " '" + _control.ID + "' does not support the IBusinessObjectProperty '" + _propertyIdentifier + "'.");
           _property = property;
         }
 
@@ -229,8 +229,11 @@ public class BusinessObjectBinding
 
     set 
     {
-      if (! Control.SupportsProperty (value))
-        throw new ArgumentException ("Property 'Property' does not support this value.", "value");
+      if (value != null)
+      {
+        if (! Control.SupportsProperty (value))
+          throw new ArgumentException ("The " + this.GetType().Name + " '" + _control.ID + "' does not support the IBusinessObjectProperty '" + value.Identifier + "'.", "value");
+      }
 
       _property = value; 
       _propertyIdentifier = (value == null) ? string.Empty : value.Identifier;
