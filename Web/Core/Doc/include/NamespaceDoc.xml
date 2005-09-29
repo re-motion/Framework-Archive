@@ -55,8 +55,10 @@ summary
       A web application implemented with the use of the rubicon web controls can enforce WCAG 1.0 level A conformance.
       This feature is activated by setting the 
       <see cref="P:Rubicon.Web.Configuration.WebConfiguration.Wcag">Rubicon.Web.Configuration.WebConfiguration.Wcag</see>
-      entry in the configuration file. It remains the developer's responsibility to ensure conformance with all
-      checkpoints related to inter-control relationships and the web application's content itself.
+      entry in the configuration file. (See the documentation of 
+      <see cref="T:Rubicon.Web.Configuration.WebConfiguration">Rubicon.Web.Configuration.WebConfiguration</see> for 
+      details on using the configuration file.) It remains the developer's responsibility to ensure conformance with 
+      all checkpoints related to inter-control relationships and the web application's content itself.
     </para>
     <para>
       A list of WCAG conform controls can be found in the 
