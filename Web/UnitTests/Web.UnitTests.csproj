@@ -13,7 +13,7 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.Web.UntTests"
+                AssemblyName = "Rubicon.Web.UnitTests"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -22,7 +22,7 @@
                 OutputType = "Library"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = "Rubicon.Web.UntTests"
+                RootNamespace = "Rubicon.Web.UnitTests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -74,11 +74,6 @@
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
                 />
                 <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
                     Name = "Core"
                     Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -92,21 +87,6 @@
                     Name = "nunit.framework"
                     AssemblyName = "nunit.framework"
                     HintPath = "..\..\prereq\Assemblies\nunit.framework.dll"
-                />
-                <Reference
-                    Name = "System.Drawing"
-                    AssemblyName = "System.Drawing"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
-                />
-                <Reference
-                    Name = "System.Windows.Forms"
-                    AssemblyName = "System.Windows.Forms"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
                     Name = "Development.Core"
@@ -132,7 +112,16 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Web.UnitTests.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "AspNetFramework\HttpContextHelper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\WebConfigurationMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -203,6 +192,16 @@
                 />
                 <File
                     RelPath = "UI\Controls\EmailAddressValidatorTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\WebButtonMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\WebButtonTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
