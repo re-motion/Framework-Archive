@@ -146,6 +146,26 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Configuration\ExecutionEngineConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\ResourceConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\SmartNavigationConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\WcagConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\WebConfiguration.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -181,6 +201,26 @@
                 />
                 <File
                     RelPath = "Doc\include\ResourceDispatcher.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\Configuration\ExecutionEngineConfiguration.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\Configuration\ResourceConfiguration.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\Configuration\SmartNavigationConfiguration.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\Configuration\WcagConfiguration.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\Configuration\WebConfiguration.xml"
                     BuildAction = "Content"
                 />
                 <File
