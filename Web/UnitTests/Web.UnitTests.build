@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="nant-schema" name="Rubicon.Web.Test">  
+
+  <target name="build" description="perform a build">
+
+    <csc  target="library" 
+          output="${tests.builddir}/${project.output}.${project.extension}" 
+          unsafe="true" 
+          doc="${project.doc}" 
+          nowarn="1591" 
+          debug="${build.debug}"
+          define="${build.csc.define}">
+      <sources failonempty="true">
+        <includes name="*.cs" />
+        <includes name="AspNetFramework/**/*.cs" />
+        <includes name="ExecutionEngine/**/*.cs" />
+        <includes name="UI/**/*.cs" />
+        <excludes name="AssemblyInfoTemplate.cs" />
+      </sources>
+      <references failonempty="true">
+        <includes name="${tests.builddir}/Rubicon.Core.dll" />
+        <includes name="${tests.builddir}/Rubicon.Development.dll" />
+        <includes name="${tests.builddir}/Rubicon.Web.dll" />
+        <includes name="${tests.builddir}/nunit.framework.dll" />
+        <includes asis="true" name="System.dll"/>
+        <includes asis="true" name="System.Data.dll"/>
+        <includes asis="true" name="System.Web.dll"/>
+      </references>
+    </csc>
+        
+  </target>
+
+</project>
