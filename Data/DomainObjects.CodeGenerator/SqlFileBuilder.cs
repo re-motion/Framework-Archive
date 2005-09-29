@@ -33,6 +33,7 @@ public class SqlFileBuilder : FileBuilder
     s_sqlTypeMapping.Add ("single", "real");
     s_sqlTypeMapping.Add ("string", "nvarchar");
     s_sqlTypeMapping.Add ("objectID", "uniqueidentifier");
+    s_sqlTypeMapping.Add ("binary", "image");
   }
 
   public static string GetDBType (string mappingType, Type propertyType, NaInt32 maxLength)
