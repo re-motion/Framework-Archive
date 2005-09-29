@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using Rubicon.ObjectBinding.Design;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding
 {
@@ -145,7 +146,9 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   Tests whether the <see cref="IBusinessObjectReferenceDataSource"/> can be bound to the 
   ///   <paramref name="property"/>.
   /// </summary>
-  /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to be tested. </param>
+  /// <param name="property"> 
+  ///   The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.
+  /// </param>
   /// <returns>
   ///   <see langword="true"/> if the <paremref name="property"/> is of type 
   ///   <see cref="IBusinessObjectReferenceProperty"/>.
@@ -153,6 +156,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   /// <seealso cref="IBusinessObjectBoundControl.SupportsProperty">IBusinessObjectBoundControl.SupportsProperty</seealso>
   public bool SupportsProperty (IBusinessObjectProperty property)
   {
+    ArgumentUtility.CheckNotNull ("property", property);
     return property is IBusinessObjectReferenceProperty;
   }
 
