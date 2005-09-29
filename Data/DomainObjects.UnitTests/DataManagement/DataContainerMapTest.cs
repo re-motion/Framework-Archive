@@ -108,6 +108,17 @@ public class DataContainerMapTest : ClientTransactionBaseTest
     ObjectID id = _newOrder.ID;
   }
 
+  [Test]
+  [ExpectedException (typeof (ClientTransactionsDifferException), 
+      "Cannot remove DataContainer 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' from DataContainerMap, because it belongs to a different ClientTransaction.")]
+  public void PerformDeleteWithOtherClientTransaction ()
+  {
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    Order order1 = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+
+    _map.PerformDelete (order1.DataContainer);
+  }
+
   private DataContainer CreateNewOrderDataContainer ()
   {
     Order order = new Order ();
