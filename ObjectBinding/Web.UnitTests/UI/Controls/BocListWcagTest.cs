@@ -404,9 +404,6 @@ public class BocListWcagTest
     // Assert.Succeed();
   }
 
-//#error enforce wxecommandcolumn
-//#error enforce eventcommandcolumn
-
 }
 
 }
