@@ -23,10 +23,10 @@
                   <xs:field xpath="@name" />
                 </xs:key>
 
-                <xs:key name="columnKey">
-                  <xs:selector xpath="m:properties/m:property" />
+                <xs:unique name="columnUnique">
+                  <xs:selector xpath="m:properties/m:property | m:properties/m:relationProperty" />
                   <xs:field xpath="m:column" />
-                </xs:key>
+                </xs:unique>
 
               </xs:element>
             </xs:sequence>
@@ -56,7 +56,12 @@
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="property" type="m:propertyType" />
-            <xs:element name="relationProperty" type="m:relationPropertyType" />
+            <xs:element name="relationProperty" type="m:relationPropertyType">
+              <xs:keyref name="oppositeClassToClass" refer="m:classKey">
+					 		<xs:selector xpath="." />
+							<xs:field xpath="m:oppositeClass" />
+ 					 </xs:keyref>
+            </xs:element>
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -77,7 +82,10 @@
 
   <xs:complexType name="relationPropertyType">
     <xs:choice minOccurs="0">
-      <xs:element name="column" type="t:requiredStringType" />
+    	 <xs:sequence>
+	    	 <xs:element name="column" type="t:requiredStringType" />
+	    	 <xs:element name="oppositeClass" type="t:requiredStringType" minOccurs="0" />
+    	 </xs:sequence>	
       <xs:sequence>
         <xs:element name="collectionType" type="t:dotNetType" minOccurs="0" />
         <xs:element name="sortExpression" type="t:requiredStringType" minOccurs="0" />
@@ -120,6 +128,7 @@
       <xs:enumeration value="int64" />
       <xs:enumeration value="single" />
       <xs:enumeration value="string" />
+      <xs:enumeration value="binary" />
     </xs:restriction>
   </xs:simpleType>
 
