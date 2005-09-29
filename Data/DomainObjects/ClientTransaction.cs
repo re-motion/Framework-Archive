@@ -8,6 +8,11 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
 
+// TODO Doc: Document where ClientTransactionsDifferException could be thrown:
+// DomainObject.SetRelatedObject
+// All modifier methods (Remove, RemoveAt, Add, Insert, ...) of DomainObjectCollection
+// ClientTransaction.Delete
+
 namespace Rubicon.Data.DomainObjects
 {
 /// <summary>
@@ -394,7 +399,7 @@ public class ClientTransaction : ITransaction
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated. <i>relationEndPoint</i> must refer to a <see cref="CollectionEndPoint"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
-  internal protected virtual DomainObjectCollection MergeLoadedDomainObjects (
+  internal DomainObjectCollection MergeLoadedDomainObjects (
       DataContainerCollection dataContainers, 
       RelationEndPointID relationEndPointID)
   {
@@ -415,7 +420,7 @@ public class ClientTransaction : ITransaction
   /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
-  internal protected virtual DomainObjectCollection MergeLoadedDomainObjects (
+  internal DomainObjectCollection MergeLoadedDomainObjects (
       DataContainerCollection dataContainers, 
       Type collectionType)
   {
@@ -434,7 +439,7 @@ public class ClientTransaction : ITransaction
   /// <param name="relationEndPointID">The <see cref="DataManagement.RelationEndPointID"/> that should be evaluated.</param>
   /// <returns>A <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
-  internal protected virtual DomainObjectCollection MergeLoadedDomainObjects (
+  internal DomainObjectCollection MergeLoadedDomainObjects (
       DataContainerCollection dataContainers, 
       Type collectionType,
       Type requiredItemType,
