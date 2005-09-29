@@ -223,5 +223,16 @@ public class DataManagerTest : ClientTransactionBaseTest
 
     // expectation: no exception
   }
+
+  [Test]
+  [ExpectedException (typeof (ClientTransactionsDifferException), 
+      "Cannot delete DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid', because it belongs to a different ClientTransaction.")]
+  public void DeleteWithOtherClientTransaction ()
+  {
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    Order order1 = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+
+    _dataManager.Delete (order1);
+  }
 }
 }
