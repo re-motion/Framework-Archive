@@ -6,29 +6,30 @@ using System.Reflection;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
 using Rubicon.Development.UnitTesting;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
 
 [Serializable]
-public class TestWxeFunctionState: WxeFunctionState
+public class WxeFunctionStateMock: WxeFunctionState
 {
-  public TestWxeFunctionState (WxeFunction function, int lifetime, bool enableCleanUp)
+  public WxeFunctionStateMock (WxeFunction function, int lifetime, bool enableCleanUp)
     : base (function, lifetime, enableCleanUp)
   {
   }
 
-  public TestWxeFunctionState (WxeFunction function, string functionToken, bool enableCleanUp)
+  public WxeFunctionStateMock (WxeFunction function, string functionToken, bool enableCleanUp)
     : base (function, functionToken, enableCleanUp)
   {
   }
   
-  public TestWxeFunctionState (WxeFunction function, bool enableCleanUp)
+  public WxeFunctionStateMock (WxeFunction function, bool enableCleanUp)
     : base (function, enableCleanUp)
   {
   }
 
-  public TestWxeFunctionState (WxeFunction function, string functionToken, int lifetime, bool enableCleanUp)
+  public WxeFunctionStateMock (WxeFunction function, string functionToken, int lifetime, bool enableCleanUp)
     : base (function, functionToken, lifetime, enableCleanUp)
   {
   }

@@ -9,9 +9,9 @@ using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Utilities;
-using Rubicon.Web.UntTests.AspNetFramework;
+using Rubicon.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UntTests.ExecutionEngine
+namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
 
 public class WxeTest

@@ -9,9 +9,9 @@ using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Utilities;
-using Rubicon.Web.UntTests.AspNetFramework;
+using Rubicon.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UntTests.ExecutionEngine
+namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
 
 [TestFixture]
@@ -28,12 +28,12 @@ public class WxeHandlerTest: WxeTest
   protected const string c_functionTokenForNewFunctionState = "00000000-New";
   protected const string c_functionTokenForFunctionStateWithChildFunction = "00000000-Has-ChildFunction";
 
-  private TestWxeFunctionState _functionStateWithEnabledCleanUp;
-  private TestWxeFunctionState _functionStateWithDisabledCleanUp;
-  private TestWxeFunctionState _functionStateWithMissingFunction;
-  private TestWxeFunctionState _functionStateAborted;
-  private TestWxeFunctionState _functionStateExpired;
-  private TestWxeFunctionState _functionStateWithChildFunction;
+  private WxeFunctionStateMock _functionStateWithEnabledCleanUp;
+  private WxeFunctionStateMock _functionStateWithDisabledCleanUp;
+  private WxeFunctionStateMock _functionStateWithMissingFunction;
+  private WxeFunctionStateMock _functionStateAborted;
+  private WxeFunctionStateMock _functionStateExpired;
+  private WxeFunctionStateMock _functionStateWithChildFunction;
 
   private Type _functionType;
   private string _functionTypeName;
@@ -51,37 +51,37 @@ public class WxeHandlerTest: WxeTest
     WxeFunctionStateCollection.Instance = new WxeFunctionStateCollection();
 
     _functionStateWithEnabledCleanUp = 
-        new TestWxeFunctionState (new TestFunction(), c_functionTokenForFunctionStateWithEnabledCleanUp, 10, true);
+        new WxeFunctionStateMock (new TestFunction(), c_functionTokenForFunctionStateWithEnabledCleanUp, 10, true);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithEnabledCleanUp);
 
     _functionStateWithDisabledCleanUp = 
-        new TestWxeFunctionState (new TestFunction(), c_functionTokenForFunctionStateWithDisabledCleanUp, 10, false);
+        new WxeFunctionStateMock (new TestFunction(), c_functionTokenForFunctionStateWithDisabledCleanUp, 10, false);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithDisabledCleanUp);
 
     _functionStateWithMissingFunction = 
-        new TestWxeFunctionState (new TestFunction(), c_functionTokenForFunctionStateWithMissingFunction, 10, false);
+        new WxeFunctionStateMock (new TestFunction(), c_functionTokenForFunctionStateWithMissingFunction, 10, false);
     _functionStateWithMissingFunction.Function = null;
     WxeFunctionStateCollection.Instance.Add (_functionStateWithMissingFunction);
 
     _functionStateAborted = 
-        new TestWxeFunctionState (new TestFunction(), c_functionTokenForAbortedFunctionState, 10, true);
+        new WxeFunctionStateMock (new TestFunction(), c_functionTokenForAbortedFunctionState, 10, true);
     WxeFunctionStateCollection.Instance.Add (_functionStateAborted);
     _functionStateAborted.Abort();
 
     _functionStateExpired = 
-        new TestWxeFunctionState (new TestFunction(), c_functionTokenForExpiredFunctionState, 0, true);
+        new WxeFunctionStateMock (new TestFunction(), c_functionTokenForExpiredFunctionState, 0, true);
     WxeFunctionStateCollection.Instance.Add (_functionStateExpired);
 
     TestFunction rootFunction = new TestFunction();
     TestFunction childFunction = new TestFunction();
     rootFunction.Add (childFunction);
     _functionStateWithChildFunction = 
-        new TestWxeFunctionState (childFunction, c_functionTokenForFunctionStateWithChildFunction, 10, true);
+        new WxeFunctionStateMock (childFunction, c_functionTokenForFunctionStateWithChildFunction, 10, true);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithChildFunction);
 
     _functionType = typeof (TestFunction);
     _functionTypeName = _functionType.AssemblyQualifiedName;
-    _invalidFunctionTypeName = "Rubicon.Web.UntTests::ExecutionEngine.InvalidFunction";
+    _invalidFunctionTypeName = "Rubicon.Web.UnitTests::ExecutionEngine.InvalidFunction";
 
     Thread.Sleep (20);
   }

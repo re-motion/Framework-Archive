@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.ExecutionEngine;
 
-namespace Rubicon.Web.UntTests.ExecutionEngine
+namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
 
 public class WxeHandlerMock: WxeHandler

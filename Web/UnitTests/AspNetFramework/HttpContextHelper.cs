@@ -8,7 +8,7 @@ using NUnit.Framework;
 using Rubicon.Utilities;
 using Rubicon.Development.UnitTesting;
 
-namespace Rubicon.Web.UntTests.AspNetFramework
+namespace Rubicon.Web.UnitTests.AspNetFramework
 {
 
 public class HttpContextHelper
