@@ -317,7 +317,9 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <summary>
   ///   Tests whether this <see cref="BusinessObjectBoundWebControl"/> can be bound to the <paramref name="property"/>.
   /// </summary>
-  /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to be tested. </param>
+  /// <param name="property"> 
+  ///   The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.
+  /// </param>
   /// <returns>
   ///   <list type="bullet">
   ///     <item>
@@ -331,6 +333,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// </returns>
   public virtual bool SupportsProperty (IBusinessObjectProperty property)
   {
+    ArgumentUtility.CheckNotNull ("property", property);
+    
     if (SupportedPropertyInterfaces == null)
       return true;
 
@@ -347,9 +351,12 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   ///   Tests whether the <paramref name="property"/>'s type is part of the 
   ///   <paramref name="supportedPropertyInterfaces"/> array.
   /// </summary>
-  /// <param name="property"> The <see cref="IBusinessObjectProperty"/> to be tested. </param>
+  /// <param name="property"> 
+  ///   The <see cref="IBusinessObjectProperty"/> to be tested. Must not be <see langword="null"/>.
+  /// </param>
   /// <param name="supportedPropertyInterfaces"> 
-  ///   The list of interfaces to test the <paramref name="property"/> against. 
+  ///   The list of interfaces to test the <paramref name="property"/> against. Use <see langword="null"/> if no 
+  ///   restrictions are made. Items must not be <see langword="null"/>.
   /// </param>
   /// <returns> 
   ///   <see langword="true"/> if the <paramref name="property"/>'s type is found in the 
@@ -357,6 +364,11 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// </returns>
   public static bool IsPropertyInterfaceSupported (IBusinessObjectProperty property, Type[] supportedPropertyInterfaces)
   {
+    ArgumentUtility.CheckNotNull ("property", property);
+    if (supportedPropertyInterfaces == null)
+      return true;
+    ArgumentUtility.CheckNotNullOrItemsNull ("supportedPropertyInterfaces", supportedPropertyInterfaces);
+
     bool isSupportedPropertyInterface = false;
     for (int i = 0; i < supportedPropertyInterfaces.Length; i++)
     {
