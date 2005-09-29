@@ -156,7 +156,7 @@
   * Neue Property EnableAbort/IsAbortEnabled um seitenspezifisch den Sessionabbruch einzustellen (Default: true)
   * Neue Property EnableAbortConfirmation/IsAbortConfirmationEnabled um seitenspezifisch den Abbruchdialog zu 
     aktivieren (Default: false)
-  * Benötigt nun Resourcen
+  * Benötigt nun Resourcen und den HtmlHeadContents
   
 - Execution Engine Configuration
   * Neue Optionen: EnableSessionManagement und RefreshInterval
