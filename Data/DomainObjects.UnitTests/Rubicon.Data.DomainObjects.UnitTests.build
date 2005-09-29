@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects">
+<project xmlns="nant-schema" name="Rubicon.Data.DomainObjects.UnitTests">
   
   <target name="build" description="perform a build">
     <csc  target="library"
@@ -18,6 +18,9 @@
         <includes asis="true" name="System.Data.dll"/>
         <includes asis="true" name="System.Xml.dll"/>
       </references>
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.UnitTests.Resources">
+        <includes name="Resources/*.*" />
+      </resources>
     </csc>
     <copy todir="${tests.builddir}">
       <fileset>
