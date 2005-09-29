@@ -43,15 +43,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Web.Test", "http://localhost/RpaTest/Rubicon.Data.DomainObjects.Web.Test.csproj", "{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prereq", "..\prereq\prereq.csproj", "{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Web", "DomainObjects.Web\Rubicon.Data.DomainObjects.Web.csproj", "{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Web.Test", "http://localhost/RpaTest/Rubicon.Data.DomainObjects.Web.Test.csproj", "{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -105,19 +105,19 @@ Global
 		SccLocalPath11 = .
 		CanCheckoutShared = false
 		SccProjectFilePathRelativizedFromConnection11 = DomainObjects.PerformanceTests\\
-		SccProjectUniqueName12 = http://localhost/RpaTest/Rubicon.Data.DomainObjects.Web.Test.csproj
-		SccProjectName12 = \u0022$/libraries/Commons/Data/DomainObjects.Web.Test\u0022,\u0020ESZAAAAA
-		SccLocalPath12 = DomainObjects.Web.Test
+		SccProjectUniqueName12 = ..\\prereq\\prereq.csproj
+		SccProjectName12 = \u0022$/libraries/Commons/prereq\u0022,\u0020DTTAAAAA
+		SccLocalPath12 = ..\\prereq
 		CanCheckoutShared = false
-		SccProjectEnlistmentChoice12 = 2
-		SccProjectUniqueName13 = ..\\prereq\\prereq.csproj
-		SccProjectName13 = \u0022$/libraries/Commons/prereq\u0022,\u0020DTTAAAAA
-		SccLocalPath13 = ..\\prereq
+		SccProjectUniqueName13 = DomainObjects.Web\\Rubicon.Data.DomainObjects.Web.csproj
+		SccLocalPath13 = .
 		CanCheckoutShared = false
-		SccProjectUniqueName14 = DomainObjects.Web\\Rubicon.Data.DomainObjects.Web.csproj
-		SccLocalPath14 = .
+		SccProjectFilePathRelativizedFromConnection13 = DomainObjects.Web\\
+		SccProjectUniqueName14 = http://localhost/RpaTest/Rubicon.Data.DomainObjects.Web.Test.csproj
+		SccProjectName14 = \u0022$/libraries/Commons/Data/DomainObjects.Web.Test\u0022,\u0020ESZAAAAA
+		SccLocalPath14 = DomainObjects.Web.Test
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection14 = DomainObjects.Web\\
+		SccProjectEnlistmentChoice14 = 2
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -168,16 +168,16 @@ Global
 		{717B711E-97AB-4751-97C5-C0491D1919FA}.Debug.Build.0 = Debug|.NET
 		{717B711E-97AB-4751-97C5-C0491D1919FA}.Release.ActiveCfg = Release|.NET
 		{717B711E-97AB-4751-97C5-C0491D1919FA}.Release.Build.0 = Release|.NET
-		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.ActiveCfg = Debug|.NET
-		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.Build.0 = Debug|.NET
-		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.ActiveCfg = Release|.NET
-		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.Build.0 = Release|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug.ActiveCfg = Debug|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release.ActiveCfg = Release|.NET
 		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Debug.ActiveCfg = Debug|.NET
 		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Debug.Build.0 = Debug|.NET
 		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Release.ActiveCfg = Release|.NET
 		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Release.Build.0 = Release|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.ActiveCfg = Debug|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.Build.0 = Debug|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.ActiveCfg = Release|.NET
+		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
