@@ -9,9 +9,9 @@ using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Utilities;
-using Rubicon.Web.Test.AspNetFramework;
+using Rubicon.Web.UntTests.AspNetFramework;
 
-namespace Rubicon.Web.Test.ExecutionEngine
+namespace Rubicon.Web.UntTests.ExecutionEngine
 {
 
 [TestFixture]
@@ -81,7 +81,7 @@ public class WxeHandlerTest: WxeTest
 
     _functionType = typeof (TestFunction);
     _functionTypeName = _functionType.AssemblyQualifiedName;
-    _invalidFunctionTypeName = "Rubicon.Web.Test::ExecutionEngine.InvalidFunction";
+    _invalidFunctionTypeName = "Rubicon.Web.UntTests::ExecutionEngine.InvalidFunction";
 
     Thread.Sleep (20);
   }
