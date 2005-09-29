@@ -13,6 +13,7 @@ public class DataManager
 
   // member fields
 
+  private ClientTransaction _clientTransaction;
   private DataContainerMap _dataContainerMap;
   private RelationEndPointMap _relationEndPointMap;
 
@@ -22,6 +23,7 @@ public class DataManager
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
+    _clientTransaction = clientTransaction;
     _dataContainerMap = new DataContainerMap (clientTransaction);
     _relationEndPointMap = new RelationEndPointMap (clientTransaction);
   }
@@ -113,6 +115,7 @@ public class DataManager
   public void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    CheckClientTransactionForDeletion (domainObject);
 
     if (domainObject.State == StateType.Deleted)
       return;
@@ -146,6 +149,21 @@ public class DataManager
   {
     domainObject.EndDelete ();
     allOppositeRelationEndPoints.EndDelete ();
+  }
+
+  private void CheckClientTransactionForDeletion (DomainObject domainObject)
+  {
+    if (domainObject.DataContainer.ClientTransaction != _clientTransaction)
+    {
+      throw CreateClientTransactionsDifferException (
+          "Cannot delete DomainObject '{0}', because it belongs to a different ClientTransaction.",
+          domainObject.ID);
+    }
+  }
+
+  private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object[] args)
+  {
+    return new ClientTransactionsDifferException (string.Format (message, args));
   }
 }
 }
