@@ -65,6 +65,7 @@ public class DataContainerMap : IEnumerable
   public void PerformDelete (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    CheckClientTransactionForDeletion (dataContainer);
 
     if (dataContainer.State == StateType.New)
       _dataContainers.Remove (dataContainer);    
@@ -121,6 +122,21 @@ public class DataContainerMap : IEnumerable
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
 
     return dataContainers.GetDifference (_dataContainers);
+  }
+
+  private void CheckClientTransactionForDeletion (DataContainer dataContainer)
+  {
+    if (dataContainer.ClientTransaction != _clientTransaction)
+    {
+      throw CreateClientTransactionsDifferException (
+          "Cannot remove DataContainer '{0}' from DataContainerMap, because it belongs to a different ClientTransaction.",
+          dataContainer.ID);
+    }
+  }
+
+  private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object[] args)
+  {
+    return new ClientTransactionsDifferException (string.Format (message, args));
   }
 
   #region IEnumerable Members
