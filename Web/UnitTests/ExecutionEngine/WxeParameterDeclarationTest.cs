@@ -3,7 +3,7 @@ using System.Globalization;
 using Rubicon.Web.ExecutionEngine;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-namespace Rubicon.Web.Test.ExecutionEngine
+namespace Rubicon.Web.UntTests.ExecutionEngine
 {
 
 [TestFixture]
