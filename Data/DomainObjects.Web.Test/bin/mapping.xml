@@ -63,6 +63,10 @@
 					<column>String</column>
 					<maxLength>100</maxLength>
 				</property>
+				<property name="BinaryProperty">
+					<type>binary</type>
+					<column>Binary</column>
+				</property>
 				<property name="NaBooleanProperty">
 					<type>boolean</type>
 					<column>NaBoolean</column>
@@ -179,6 +183,12 @@
           <column>NaSingleWithNullValue</column>
           <nullable>true</nullable>
         </property>        
+				<property name="NullableBinaryProperty">
+					<type>binary</type>
+					<column>NullableBinary</column>
+					<nullable>true</nullable>
+					<maxLength>1000000</maxLength>
+				</property>
 				<relationProperty name="ClassForRelationTestMandatory" relationID="ClassWithAllDataTypesToClassForRelationTestMandatory" cardinality="one" isMandatory="true">
 					<column>TableForRelationTestMandatory</column>
 				</relationProperty>
