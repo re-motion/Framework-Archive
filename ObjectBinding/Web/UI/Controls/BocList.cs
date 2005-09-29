@@ -1362,12 +1362,12 @@ public class BocList:
     writer.RenderEndTag();  //  Table
   }
 
-  private bool HasMenuBlock
+  protected bool HasMenuBlock
   {
     get { return HasAvailableViewsList || HasOptionsMenu || HasListMenu; }
   }
 
-  private bool HasAvailableViewsList
+  protected bool HasAvailableViewsList
   {
     get
     {
@@ -1385,7 +1385,7 @@ public class BocList:
     }
   }
 
-  private bool HasOptionsMenu
+  protected bool HasOptionsMenu
   {
     get
     {
@@ -1403,7 +1403,7 @@ public class BocList:
     }
   }
 
-  private bool HasListMenu
+  protected bool HasListMenu
   {
     get
     {
@@ -1421,12 +1421,12 @@ public class BocList:
     }
   }
 
-  private bool IsEmptyList
+  protected bool IsEmptyList
   {
     get { return Value == null || Value.Count == 0; }
   }
 
-  private bool IsColumnVisible (BocColumnDefinition column)
+  protected bool IsColumnVisible (BocColumnDefinition column)
   {
     bool isReadOnly = IsReadOnly;
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
