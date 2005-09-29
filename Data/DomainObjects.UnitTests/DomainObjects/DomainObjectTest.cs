@@ -30,7 +30,6 @@ public class DomainObjectTest : ClientTransactionBaseTest
 
   // methods and properties
 
-  // TODO Review:
   [Test]
   public void LoadingOfSimpleObject ()
   {
@@ -78,8 +77,8 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Assert.AreEqual (NaInt32.Null, classWithAllDataTypes.NaInt32WithNullValueProperty, "NaInt32WithNullValueProperty");
     Assert.AreEqual (NaInt64.Null, classWithAllDataTypes.NaInt64WithNullValueProperty, "NaInt64WithNullValueProperty");
     Assert.AreEqual (NaSingle.Null, classWithAllDataTypes.NaSingleWithNullValueProperty, "NaSingleWithNullValueProperty");
-    Assert.AreEqual (null, classWithAllDataTypes.StringWithNullValueProperty, "StringWithNullValueProperty");
-    Assert.AreEqual (null, classWithAllDataTypes.NullableBinaryProperty, "NullableBinaryProperty");
+    Assert.IsNull (classWithAllDataTypes.StringWithNullValueProperty, "StringWithNullValueProperty");
+    Assert.IsNull (classWithAllDataTypes.NullableBinaryProperty, "NullableBinaryProperty");
   }
 
   [Test]

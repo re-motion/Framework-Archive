@@ -296,7 +296,6 @@ public class PropertyValueTest
     propertyValue.Value = null;
   }
 
-  // TODO Review:
   [Test]
   public void SetNullableBinary ()
   {
@@ -305,20 +304,18 @@ public class PropertyValueTest
     Assert.IsNull (propertyValue.Value);
   }
 
-  // TODO Review:
   [Test]
   public void SetNotNullableBinary ()
   {
     PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", false);
     
     PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
-    ResourceManager.AreEqual (new byte[0], (byte[]) propertyValue.Value);
+    ResourceManager.IsEmptyImage ((byte[]) propertyValue.Value);
 
     propertyValue.Value = ResourceManager.GetImage1 ();
     ResourceManager.IsEqualToImage1 ((byte[]) propertyValue.Value);
   }
 
-  // TODO Review:
   [Test]
   [ExpectedException (typeof (InvalidTypeException))]
   public void SetBinaryWithInvalidType ()
@@ -327,7 +324,6 @@ public class PropertyValueTest
     PropertyValue propertyValue = new PropertyValue (definition, new int[0]);
   }
 
-  // TODO Review:
   [Test]
   [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
   public void SetNotNullableBinaryToNullViaConstructor ()
@@ -336,7 +332,6 @@ public class PropertyValueTest
     PropertyValue propertyValue = new PropertyValue (definition, null);
   }
 
-  // TODO Review:
   [Test]
   [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
   public void SetNotNullableBinaryToNullViaProperty ()
@@ -346,9 +341,8 @@ public class PropertyValueTest
     propertyValue.Value = null;
   }
 
-  // TODO Review:
   [Test]
-  [ExpectedException (typeof (ValueTooLongException), "Value for property 'test' is too large. Maximum number of elements: 1000000.")]
+  [ExpectedException (typeof (ValueTooLongException), "Value for property 'test' is too large. Maximum size: 1000000.")]
   public void SetBinaryLargerThanMaxLength ()
   {
     PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", true, 1000000);

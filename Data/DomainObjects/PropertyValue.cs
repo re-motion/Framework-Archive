@@ -289,7 +289,6 @@ public class PropertyValue
     _isDiscarded = true;
   }
 
-  // TODO Review:
   private void CheckValue (object value, PropertyDefinition definition)
   {
     if (value != null)
@@ -333,7 +332,7 @@ public class PropertyValue
     if (!definition.MaxLength.IsNull && value.Length > definition.MaxLength.Value)
     {
       string message = string.Format (
-          "Value for property '{0}' is too large. Maximum number of elements: {1}.", 
+          "Value for property '{0}' is too large. Maximum size: {1}.", 
           definition.PropertyName, definition.MaxLength.Value);
 
       throw new ValueTooLongException (message, definition.PropertyName, definition.MaxLength.Value);

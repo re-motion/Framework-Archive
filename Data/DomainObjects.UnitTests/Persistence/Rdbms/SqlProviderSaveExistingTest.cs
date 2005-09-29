@@ -56,7 +56,6 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
     }
   }
 
-  // TODO Review:
   [Test]
   public void SaveAllSimpleDataTypes ()
   {
@@ -121,7 +120,6 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
     }
   }
 
-  // TODO Review:
   [Test]
   public void SaveAllNullableTypes ()
   {
@@ -180,11 +178,10 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
     }
   }
 
-  // TODO Review:
   [Test]
   public void SaveAllNullableTypesWithNull ()
   {
-    // Note for NullableProperty: Because the value in the database is already null, the property has
+    // Note for NullableBinaryProperty: Because the value in the database is already null, the property has
     //  to be changed first to something different to ensure the null value is written back.
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {

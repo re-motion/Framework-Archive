@@ -22,7 +22,6 @@ public class PropertyValueChecker
 
   // methods and properties
 
-  // TODO Review:
   public void Check (PropertyValue expectedValue, PropertyValue actualValue)
   {
     Assert.IsNotNull (actualValue, expectedValue.Name);

@@ -33,20 +33,29 @@ public abstract class CommandBuilder
 
   // methods and properties
 
-  public void AddCommandParameter (IDbCommand command, string parameterName, PropertyValue propertyValue)
+  public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, PropertyValue propertyValue)
   {
     ArgumentUtility.CheckNotNull ("command", command);
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
 
-    // TODO Review:
     IDataParameter commandParameter = AddCommandParameter (command, parameterName, propertyValue.Value);
+
     if (propertyValue.PropertyType == typeof (byte[]))
       commandParameter.DbType = DbType.Binary;
+
+    return commandParameter;
   }
 
+  /// <remarks>
+  /// This method cannot be used for binary (BLOB) <i>parameterValues</i>. Use the overload with a <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> instead.
+  /// </remarks>
   public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, object parameterValue)
   {
+    // Note: UpdateCommandBuilder implicitly uses this method through WhereClauseBuilder.Add for Timestamp values.
+    // Although Timestamp values are represented as byte arrays in ADO.NET with SQL Server they are no BLOB data type.
+    // Therefore this usage is still valid.
+
     ArgumentUtility.CheckNotNull ("command", command);
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
 
@@ -116,7 +125,7 @@ public abstract class CommandBuilder
       string classIDColumnName = propertyValue.Definition.ColumnName + "ClassID";
       AppendColumn (classIDColumnName, classIDColumnName);
 
-      object classID = null;
+      string classID = null;
       if (propertyValue.Value != null)
         classID = relatedClassDefinition.ID;
 

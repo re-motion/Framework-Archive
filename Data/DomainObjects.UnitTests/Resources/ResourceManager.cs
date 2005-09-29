@@ -5,7 +5,6 @@ using NUnit.Framework;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Resources
 {
-// TODO Review: Entire class
 public sealed class ResourceManager
 {
   // types
@@ -36,31 +35,6 @@ public sealed class ResourceManager
   public static byte[] GetImageLarger1MB ()
   {
     return GetResource ("Rubicon.Data.DomainObjects.UnitTests.Resources.ImageLarger1MB.bmp");
-  }
-
-  public static void AreEqual (byte[] expected, byte[] actual)
-  {
-    AreEqual (expected, actual, null);
-  }
-
-  public static void AreEqual (byte[] expected, byte[] actual, string message)
-  {
-    if (expected == actual)
-      return;
-
-    if (expected == null)
-      Assert.Fail ("Expected array is null, but actual array is not null.");
-
-    if (actual == null)
-      Assert.Fail ("Actual array is null, but expected array is not null.");
-
-    Assert.AreEqual (expected.Length, actual.Length, "Array lengths differ.");
-
-    for (int i = 0; i < expected.Length; i++)
-    { 
-      string assertionMessage = string.Format ("Array's differ at position {0}. Additional information: {1}", i.ToString (), message);
-      Assert.AreEqual (expected[i], actual[i], assertionMessage);
-    }
   }
 
   public static void IsEqualToImage1 (byte[] actual)
@@ -101,6 +75,31 @@ public sealed class ResourceManager
   public static void IsEmptyImage (byte[] actual, string message)
   {
     AreEqual (new byte[0], actual, message);
+  }
+
+  public static void AreEqual (byte[] expected, byte[] actual)
+  {
+    AreEqual (expected, actual, null);
+  }
+
+  public static void AreEqual (byte[] expected, byte[] actual, string message)
+  {
+    if (expected == actual)
+      return;
+
+    if (expected == null)
+      Assert.Fail ("Expected array is null, but actual array is not null.");
+
+    if (actual == null)
+      Assert.Fail ("Actual array is null, but expected array is not null.");
+
+    Assert.AreEqual (expected.Length, actual.Length, "Array lengths differ.");
+
+    for (int i = 0; i < expected.Length; i++)
+    { 
+      string assertionMessage = string.Format ("Array's differ at position {0}. Additional information: {1}", i.ToString (), message);
+      Assert.AreEqual (expected[i], actual[i], assertionMessage);
+    }
   }
 
   // member fields

@@ -220,7 +220,6 @@ public class DataContainerTest : ClientTransactionBaseTest
     Assert.AreEqual ("Zaphod Beeblebrox", _existingDataContainer.GetString ("Name"));
   }
 
-  // TODO Review:
   [Test]
   public void IsNull ()
   {
@@ -235,7 +234,6 @@ public class DataContainerTest : ClientTransactionBaseTest
     Assert.IsFalse (dataContainer.IsNull ("BinaryProperty"));
   }
 
-  // TODO Review:
   [Test]
   public void IsNullOrEmpty ()
   {
@@ -258,24 +256,22 @@ public class DataContainerTest : ClientTransactionBaseTest
     Assert.IsTrue (dataContainer.IsNullOrEmpty ("BinaryProperty"));    
   }
 
-  // TODO Review:
   [Test]
   public void GetBytes ()
   {
     DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
     
-    ResourceManager.AreEqual (ResourceManager.GetImage1 (), dataContainer.GetBytes ("BinaryProperty"));
+    ResourceManager.IsEqualToImage1 (dataContainer.GetBytes ("BinaryProperty"));
     Assert.IsNull (dataContainer.GetBytes ("NullableBinaryProperty"));
   }
 
-  // TODO Review:
   [Test]
   public void SetBytes ()
   {
     DataContainer dataContainer = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
     
     dataContainer["BinaryProperty"] = new byte[0];
-    ResourceManager.AreEqual (new byte[0], dataContainer.GetBytes ("BinaryProperty"));
+    ResourceManager.IsEmptyImage (dataContainer.GetBytes ("BinaryProperty"));
 
     dataContainer["NullableBinaryProperty"] = null;
     Assert.IsNull (dataContainer.GetBytes ("NullableBinaryProperty"));

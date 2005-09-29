@@ -52,7 +52,6 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     Assert.AreEqual (newDataContainer.ID, loadedDataContainer.ID);
   }
 
-  // TODO Review:
   [Test]
   public void AllDataTypes ()
   {
@@ -207,7 +206,6 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     Assert.AreEqual (newCustomerContainer.ID, newOrderContainer.GetObjectID ("Customer"));
   }
 
-  // TODO Review:
   [Test]
   public void SaveNullBinary ()
   {
@@ -233,7 +231,6 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     }    
   }
 
-  // TODO Review:
   [Test]
   public void SaveEmptyBinary ()
   {
@@ -259,7 +256,6 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     }    
   }
 
-  // TODO Review:
   [Test]
   public void SaveLargeBinary ()
   {
@@ -291,7 +287,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     classWithAllDataTypesContainer["DateProperty"] = DateTime.Now;
     classWithAllDataTypesContainer["DateTimeProperty"] = DateTime.Now;
 
-    // Note: SqlDecimal has problems with Decimal.MinValue => Set this propert too.
+    // Note: SqlDecimal has problems with Decimal.MinValue => Set this property too.
     classWithAllDataTypesContainer["DecimalProperty"] = 10m;
   }
 }
