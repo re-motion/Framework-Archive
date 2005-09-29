@@ -369,6 +369,10 @@ public abstract class WxeFunction: WxeStepList
             arguments.Add (new WxeVariableReference (item.Value));
         }
       }
+      catch (ArgumentException e)
+      {
+        throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
+      }
       catch (ParseException e)
       {
         throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
