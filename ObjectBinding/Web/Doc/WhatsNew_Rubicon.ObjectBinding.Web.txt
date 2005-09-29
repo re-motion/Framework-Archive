@@ -102,6 +102,8 @@
 - BocList
   * Die Sortiericons (Up/Down) werden jetzt auch angezeigt, wenn interaktives Sortieren (EnableSorting) disabled ist, 
     aber programmitisch eine Sortierreihenfolge vorgegeben wird.
+  * Bisher: GetSortedRows lieferte null zrück, wenn EnableSorting deaktiviert war, unabhängig davon ob sortiert wurde.
+    Neues Verhalten: GetSortedRows liefert null zurück wenn die Liste nicht sortiert ist.
   
 - BOCs allgemein:
   * Werten die Rubicon.Web.Configuration.WebConfiguration.WaiConfiguration Werte aus und deaktivieren 
