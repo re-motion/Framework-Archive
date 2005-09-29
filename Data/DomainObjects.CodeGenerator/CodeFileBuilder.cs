@@ -30,6 +30,7 @@ public abstract class CodeFileBuilder : FileBuilder
     s_TypeToCSharpType.Add (typeof(long), "long");
     s_TypeToCSharpType.Add (typeof(short), "short");
     s_TypeToCSharpType.Add (typeof(string), "string");
+    s_TypeToCSharpType.Add (typeof(byte[]), "byte[]");
   }
 
   #endregion
