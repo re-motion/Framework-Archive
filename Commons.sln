@@ -64,9 +64,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.UnitTests", "Web\UnitTe
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests", "ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj", "{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 16
+		SccNumberOfProjects = 17
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -133,6 +137,10 @@ Global
 		SccProjectName15 = \u0022$/libraries/Commons/Web/UnitTests\u0022,\u0020RSWAAAAA
 		SccLocalPath15 = Web\\UnitTests
 		CanCheckoutShared = false
+		SccProjectUniqueName16 = ObjectBinding\\Web.UnitTests\\ObjectBinding.Web.UnitTests.csproj
+		SccLocalPath16 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection16 = ObjectBinding\\Web.UnitTests\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -197,6 +205,10 @@ Global
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Debug.Build.0 = Debug|.NET
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release.ActiveCfg = Release|.NET
 		{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}.Release.Build.0 = Release|.NET
+		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Debug.ActiveCfg = Debug|.NET
+		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Debug.Build.0 = Debug|.NET
+		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release.ActiveCfg = Release|.NET
+		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
