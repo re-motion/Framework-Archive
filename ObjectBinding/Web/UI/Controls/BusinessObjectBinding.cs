@@ -212,7 +212,7 @@ public class BusinessObjectBinding
             && ! StringUtility.IsNullOrEmpty (_propertyIdentifier))
         {
           IBusinessObjectProperty property = DataSource.BusinessObjectClass.GetPropertyDefinition (_propertyIdentifier); 
-          if (! Control.SupportsProperty (property))
+          if (property == null || ! Control.SupportsProperty (property))
             throw new ArgumentException ("The " + this.GetType().Name + " '" + _control.ID + "' does not support the IBusinessObjectProperty '" + _propertyIdentifier + "'.");
           _property = property;
         }
