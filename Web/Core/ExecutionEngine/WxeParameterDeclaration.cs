@@ -129,6 +129,8 @@ public class WxeVariableReference
   public WxeVariableReference (string variableName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("variableName", variableName);
+    if (! System.Text.RegularExpressions.Regex.IsMatch (variableName, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
+      throw new ArgumentException ("Invalid variable name", "variableName");
     _name = variableName;
   }
 
