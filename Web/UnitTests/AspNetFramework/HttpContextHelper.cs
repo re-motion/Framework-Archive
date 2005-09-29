@@ -11,6 +11,10 @@ using Rubicon.Development.UnitTesting;
 namespace Rubicon.Web.UnitTests.AspNetFramework
 {
 
+/// <summary> 
+///   Provides helper methods for initalizing an <see cref="HttpContext"/> object when simulating ASP.NET request
+///   cycles. 
+/// </summary>
 public class HttpContextHelper
 {
   public static void SetCurrent (HttpContext context)
