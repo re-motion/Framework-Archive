@@ -13,7 +13,7 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.Web.Test"
+                AssemblyName = "Rubicon.Web.UntTests"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -22,7 +22,7 @@
                 OutputType = "Library"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = "Rubicon.Web.Test"
+                RootNamespace = "Rubicon.Web.UntTests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
