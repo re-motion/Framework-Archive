@@ -20,6 +20,7 @@
       </references>
       <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.UnitTests.Resources">
         <includes name="Resources/*.*" />
+        <excludes name="*.cs" />
       </resources>
     </csc>
     <copy todir="${tests.builddir}">
