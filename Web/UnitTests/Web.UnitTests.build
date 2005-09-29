@@ -13,6 +13,7 @@
       <sources failonempty="true">
         <includes name="*.cs" />
         <includes name="AspNetFramework/**/*.cs" />
+        <includes name="Configuration/**/*.cs" />
         <includes name="ExecutionEngine/**/*.cs" />
         <includes name="UI/**/*.cs" />
         <excludes name="AssemblyInfoTemplate.cs" />

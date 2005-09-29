@@ -31,6 +31,23 @@ public class BocListMock: BocList
   {
     get { return base.IsSelectionEnabled; }
   }
+
+  public new bool IsPagingEnabled
+  {
+    get { return base.IsPagingEnabled; }
+  }
+
+  public new bool IsColumnVisible (BocColumnDefinition column)
+  {
+    return base.IsColumnVisible (column);
+  }
+
+
+  public new bool IsClientSideSortingEnabled
+  {
+    get { return base.IsClientSideSortingEnabled; }
+  }
+  
 }
 
 }

@@ -31,7 +31,7 @@
       <h4 class="dtH4">Usage Notes</h4>
       <note type="caution">
         If <see cref="UseLegacyButton"/> is <see cref="NaBooleanEnum.False"/> or <see cref="NaBooleanEnum.Undefined"/>, 
-        and the <see cref="Rubicon.Web.Configuration.WcagConfiguration.Level">WebConfiguration.Wcag.Level</see> 
+        and the <see cref="Rubicon.Web.Configuration.WcagConfiguration.ConformanceLevel">WebConfiguration.Wcag.ConformanceLevel</see> 
         is set to <see cref="WaiConformanceLevel.Undefined"/>, and the browser's client-side scripting is disabled, 
         then the <b>WebButton</b> will not fire click events. 
       </note>

@@ -19,6 +19,7 @@
         <includes name="${tests.builddir}/Rubicon.Core.dll" />
         <includes name="${tests.builddir}/Rubicon.Development.dll" />
         <includes name="${tests.builddir}/Rubicon.Web.dll" />
+        <includes name="${tests.builddir}/Rubicon.Web.UnitTests.dll" />
         <includes name="${tests.builddir}/Rubicon.ObjectBinding.dll" />
         <includes name="${tests.builddir}/Rubicon.ObjectBinding.Web.dll" />
         <includes name="${tests.builddir}/nunit.framework.dll" />

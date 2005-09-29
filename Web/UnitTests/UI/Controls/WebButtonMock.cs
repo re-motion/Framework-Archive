@@ -11,6 +11,11 @@ public class WebButtonMock: WebButton
   {
     base.EvaluateWaiConformity ();
   }
+
+  public new bool IsLegacyButtonEnabled
+  {
+    get { return base.IsLegacyButtonEnabled; }
+  }
 }
 
 }

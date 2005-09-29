@@ -998,7 +998,7 @@ public class BocList:
       for (int i = 0; i < columns.Length; i++)
       {
         if (columns[i] is BocEditDetailsColumnDefinition)
-          throw new WcagException (1, this, String.Format ("Columns[{0}]", i));
+          throw new WcagException (1, this, string.Format ("Columns[{0}]", i));
 
         BocCommandEnabledColumnDefinition commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
         if (commandColumn != null)
@@ -1007,11 +1007,11 @@ public class BocList:
                                           && (   commandColumn.Command.Type == CommandType.Event 
                                               || commandColumn.Command.Type == CommandType.WxeFunction);
           if (hasPostBackColumnCommand)
-            throw new WcagException (1, this, String.Format ("Columns[{0}]", i));
+            throw new WcagException (1, this, string.Format ("Columns[{0}]", i));
         }
 
         if (columns[i] is BocDropDownMenuColumnDefinition)
-          throw new WcagException (1, this, String.Format ("Columns[{0}]", i));
+          throw new WcagException (1, this, string.Format ("Columns[{0}]", i));
       }
     }
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)

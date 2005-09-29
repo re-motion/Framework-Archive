@@ -363,7 +363,7 @@
     </nunit2>
   </target>
 
-  <target name="ObjectBinding.Web.UnitTests" depends="Core,DevelopmentCore, Web, ObjectBinding, ObjectBinding.Web">
+  <target name="ObjectBinding.Web.UnitTests" depends="Core,DevelopmentCore, Web, Web.UnitTests, ObjectBinding, ObjectBinding.Web">
     <property name="project.name" value="ObjectBinding.Web.UnitTests" />
     <property name="project.dir" value="ObjectBinding/Web.UnitTests" />
     <property name="project.output" value="Rubicon.ObjectBinding.Web.UnitTests" />
