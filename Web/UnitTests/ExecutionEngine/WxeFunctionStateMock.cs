@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
 using Rubicon.Development.UnitTesting;
 
-namespace Rubicon.Web.ExecutionEngine
+namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
 
 [Serializable]
