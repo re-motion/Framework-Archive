@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<ResourceConfiguration>
+  <Class>
+    <remarks> 
+      See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+    </remarks>
+    <seealso cref="WebConfiguration"/>
+    <seealso cref="Rubicon.Web.ResourceUrlResolver"/>
+    <example>
+      Setting the <c>resources</c> entry's values in the <c>rubicon.web</c> configuration section.
+      <code>
+<![CDATA[
+<rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+  <resources 
+      root="res" 
+      rootPath="AbsoluteWithApplicationRoot" 
+  />
+  <!-- Other configuration section entries. -->
+</rubicon.web>
+]]>
+      </code>
+    </example>
+  </Class>
+  <Root>
+    <value> 
+      A string specifying an absolute path or a path relative to the application root. Defaults to <c>res</c>.
+    </value>
+    <remarks> 
+      Leading and trailing slashes are removed. 
+    </remarks>
+    <seealso cref="Rubicon.Web.ResourceUrlResolver"/>
+  </Root>
+  <RootMode>
+    <value> 
+      A value of the <see cref="ResourceRootMode"/> enumeration. Defaults to <see cref="ResourceRootMode.Relative"/>.
+    </value>
+  </RootMode>
+</ResourceConfiguration>

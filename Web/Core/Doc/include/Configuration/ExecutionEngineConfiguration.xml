@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<ExecutionEngineConfiguration>
+  <Class>
+    <remarks> 
+      See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+    </remarks>
+    <seealso cref="WebConfiguration"/>
+    <example>
+      Setting the <c>executionEngine</c> entry's values in the <c>rubicon.web</c> configuration section.
+    <code>
+<![CDATA[
+<rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+  <executionEngine 
+      functionTimeout="20" 
+      enableSessionManagement="true" 
+      refreshInterval="10" 
+      viewStateInSession="true"
+  />
+  <!-- Other configuration section entries. -->
+</rubicon.web>
+]]>
+    </code>
+    </example>
+  </Class>
+  <EnableSessionManagement>
+    <value>
+      <see langword="true"/> to enable session management. Defaults to <see langword="true"/>.
+    </value>
+    <remarks> 
+      Session management relies on javascript and is fully supported by browsers other than 
+      <list type="bullet">
+        <item> Internet Explorer 5.01+</item>
+        <item> Firefox 0.9+</item>
+        <item> Mozila 1.7+</item>
+      </list>
+      Other browsers present no confirmation dialog upon leaving the page.
+    </remarks>
+  </EnableSessionManagement>
+  <RefreshIntervall>
+    <value> 
+      The timeout in mintues. Use zero to disable refreshing. Defaults to 10 minutes. 
+    </value>
+    <remarks> 
+      The value must be less than both the <see cref="FunctionTimeout"/> and the 
+      <see cref="System.Web.SessionState.HttpSessionState.Timeout"/>.
+    </remarks>
+  </RefreshIntervall>
+</ExecutionEngineConfiguration>

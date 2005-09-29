@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<WcagConfiguration>
+  <Class>
+    <remarks> 
+      See the <see cref="WebConfiguration"/> for details on registering the <c>rubicon.web</c> configuration section.
+    </remarks>
+    <seealso cref="WebConfiguration"/>
+    <example>
+      Setting the <c>wcag</c> entry's values in the <c>rubicon.web</c> configuration section.
+      <code>
+<![CDATA[
+<rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+  <wcag 
+      conformanceLevel="Undefined" 
+      debug="false" 
+  />
+  <!-- Other configuration section entries. -->
+</rubicon.web>
+]]>
+      </code>
+    </example>
+  </Class>
+  <Debug>
+    <value> 
+      <see langword="true"/> to enable debug mode. Defaults to <see langword="false"/>. 
+    </value>
+    <remarks> 
+      Controls in violation of the required WAI level throw a <see cref="Rubicon.Web.UI.WcagException"/>
+      in debug mode.
+    </remarks>
+  </Debug>
+</WcagConfiguration>

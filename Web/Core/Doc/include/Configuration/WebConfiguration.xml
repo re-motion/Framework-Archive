@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<WebConfiguration>
+  <Class>
+    <remarks> 
+      <para>
+        Use this class's <see cref="Current"/> property to read the configuration settings from your code. 
+      </para><para>
+        Place a copy of the <c>WebConfiguration.xsd</c> schema file into Visual Studio's xml schema directory
+        (<c>C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Packages\schemas\xml</c>) to provide
+        IntelliSense for the <c>web.config</c>.
+      </para>
+    </remarks>
+    <seealso cref="IConfigurationSectionHandler"/>
+    <seealso cref="ExecutionEngineConfiguration"/>
+    <seealso cref="ResourceConfiguration"/>
+    <seealso cref="SmartNavigationConfiguration"/>
+    <seealso cref="WcagConfiguration"/>
+    <example>
+      Register the configuration section in the configuration file within the <c>configSections</c> element.
+      The <c>configSections</c> element must precede all configuration sections.
+      <code>
+<![CDATA[
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <configSections>
+    <section name="rubicon.web" type="Rubicon.Web.Configuration.WebConfiguration, Rubicon.Web" />
+    <!-- Other configuration section registrations. -->
+  </configSections>
+  <!-- The configuration sections. -->
+</configuration>
+]]>
+      </code>
+      Create the configuration section for <c>rubicon.web</c>.
+      <code>
+<![CDATA[
+<rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
+  <!-- The configuration section entries. -->
+  <executionEngine 
+      functionTimeout="20" 
+      enableSessionManagement="true" 
+      refreshInterval="10" 
+      viewStateInSession="true"
+  />
+  <resources 
+      root="res" 
+      rootPath="AbsoluteWithApplicationRoot" 
+  />
+  <smartNavigation 
+      enableScrolling="true" 
+      enableFocusing="true" 
+  />
+  <wcag 
+      conformanceLevel="Undefined" 
+      debug="false" 
+  />
+</rubicon.web>
+]]>
+      </code>
+    </example>
+  </Class>
+</WebConfiguration>
