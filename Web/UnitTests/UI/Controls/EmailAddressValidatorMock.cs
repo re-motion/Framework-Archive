@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.Web.Test.UI.Controls
+namespace Rubicon.Web.UntTests.UI.Controls
 {
 
 public class EmailAddressValidatorMock: EmailAddressValidator
