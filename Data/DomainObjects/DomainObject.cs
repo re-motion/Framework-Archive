@@ -231,11 +231,11 @@ public class DomainObject
     }
   }
 
-  // TODO Doc: Write a remark that instead of overriding Delete the programmer should override OnDeleting or OnDeleted instead.
   /// <summary>
   /// Deletes the <b>DomainObject</b>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <remarks>To perform custom actions when a <see cref="DomainObject"/> is deleted <see cref="OnDeleting"/> and <see cref="OnDeleted"/> should be overridden.</remarks>
   public void Delete ()
   {
     CheckDiscarded ();
