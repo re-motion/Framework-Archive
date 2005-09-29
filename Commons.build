@@ -328,7 +328,7 @@
 
   <!--======================= UNIT TESTS =======================-->
 
-  <target name="alltests" depends="CoreTest, DevelopmentCoreTest, Data.DomainObjects.UnitTests" />
+  <target name="alltests" depends="CoreTest, DevelopmentCoreTest, Web.UnitTests, Data.DomainObjects.UnitTests" />
 
   <target name="CoreTest" depends="Core,DevelopmentCore">
     <property name="project.name" value="Core.Test" />
@@ -349,6 +349,17 @@
     <call target="buildtest" />
     <nunit2>
       <test assemblyname="${tests.builddir}/Rubicon.Development.UnitTests.dll" />
+    </nunit2>
+  </target>
+
+  <target name="Web.UnitTests" depends="Core,DevelopmentCore, Web">
+    <property name="project.name" value="Web.UnitTests" />
+    <property name="project.dir" value="Web/UnitTests" />
+    <property name="project.output" value="Rubicon.Web.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+    <nunit2>
+      <test assemblyname="${tests.builddir}/Rubicon.Web.UnitTests.dll" />
     </nunit2>
   </target>
 
