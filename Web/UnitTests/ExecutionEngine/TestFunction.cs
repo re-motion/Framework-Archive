@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Web.ExecutionEngine;
 
-namespace Rubicon.Web.Test.ExecutionEngine
+namespace Rubicon.Web.UntTests.ExecutionEngine
 {
 
 public class TestFunction: WxeFunction
