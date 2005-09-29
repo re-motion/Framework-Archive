@@ -13,6 +13,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
 
+/// <summary> Provides a <see cref="WxeContext"/> for simualating ASP.NET request life cycles. </summary>
 public class WxeContextMock: WxeContext
 {
   public WxeContextMock (HttpContext context)

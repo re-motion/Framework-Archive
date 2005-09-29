@@ -4,6 +4,7 @@ using Rubicon.Web.UI.Controls;
 namespace Rubicon.Web.UnitTests.UI.Controls
 {
 
+/// <summary> Exposes non-public members of the <see cref="EmailAddressValidator"/> type. </summary>
 public class EmailAddressValidatorMock: EmailAddressValidator
 {
 	public new bool IsMatchComplete (string text)

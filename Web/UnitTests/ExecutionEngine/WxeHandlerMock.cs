@@ -13,6 +13,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
 
+/// <summary> Exposes non-public members of the <see cref="WxeHandler"/> type. </summary>
 public class WxeHandlerMock: WxeHandler
 {
   public new void CheckTimeoutConfiguration (HttpContext context)
