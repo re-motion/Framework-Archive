@@ -69,6 +69,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   public void PerformDelete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+    CheckClientTransactionForDeletion (domainObject);
 
     foreach (RelationEndPointID endPointID in domainObject.DataContainer.RelationEndPointIDs)
     {
@@ -149,6 +150,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     ArgumentUtility.CheckNotNull ("endPointID", endPointID);
     CheckCardinality (endPointID, CardinalityType.One, "SetRelatedObject", "endPointID");
     CheckDeleted (newRelatedObject);
+    CheckClientTransactionForObjectEndPoint (endPointID, newRelatedObject);
  
     RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
     CheckDeleted (endPoint);
@@ -429,9 +431,69 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     }
   }
 
+  private void CheckClientTransactionForInsertionIntoCollectionEndPoint (RelationEndPointID endPointID, DomainObject newRelatedObject, int index)
+  {
+    if (newRelatedObject != null && newRelatedObject.DataContainer.ClientTransaction != _clientTransaction)
+    {
+      throw CreateClientTransactionsDifferException (
+          "Cannot insert DomainObject '{0}' at position {1} into collection of property '{2}' of DomainObject '{3}',"
+              + " because the objects do not belong to the same ClientTransaction.",
+          newRelatedObject.ID, index, endPointID.PropertyName, endPointID.ObjectID);
+    }
+  }
+
+  private void CheckClientTransactionForRemovalFromCollectionEndPoint (RelationEndPointID endPointID, DomainObject relatedObject)
+  {
+    if (relatedObject != null && relatedObject.DataContainer.ClientTransaction != _clientTransaction)
+    {
+      throw CreateClientTransactionsDifferException (
+          "Cannot remove DomainObject '{0}' from collection of property '{1}' of DomainObject '{2}',"
+              + " because the objects do not belong to the same ClientTransaction.",
+          relatedObject.ID, endPointID.PropertyName, endPointID.ObjectID);
+    }
+  }
+
+  private void CheckClientTransactionForObjectEndPoint (RelationEndPointID endPointID, DomainObject newRelatedObject)
+  {
+    if (newRelatedObject != null && newRelatedObject.DataContainer.ClientTransaction != _clientTransaction)
+    {
+      throw CreateClientTransactionsDifferException (
+          "Property '{0}' of DomainObject '{1}' cannot be set to DomainObject '{2}',"
+              + " because the objects do not belong to the same ClientTransaction.",
+          endPointID.PropertyName, endPointID.ObjectID, newRelatedObject.ID);
+    }
+  }
+
+  private void CheckClientTransactionForReplacementInCollectionEndPoint (RelationEndPointID endPointID, DomainObject newRelatedObject, int index)
+  {
+    if (newRelatedObject != null && newRelatedObject.DataContainer.ClientTransaction != _clientTransaction)
+    {
+      throw CreateClientTransactionsDifferException (
+            "Cannot replace DomainObject at position {0} with DomainObject '{1}'"
+          + " in collection of property '{2}' of DomainObject '{3}',"
+          + " because the objects do not belong to the same ClientTransaction.",
+          index, newRelatedObject.ID, endPointID.PropertyName, endPointID.ObjectID);
+    }
+  }
+
+  private void CheckClientTransactionForDeletion (DomainObject domainObject)
+  {
+    if (domainObject.DataContainer.ClientTransaction != _clientTransaction)
+    {
+      throw CreateClientTransactionsDifferException (
+          "Cannot remove DomainObject '{0}' from RelationEndPointMap, because it belongs to a different ClientTransaction.",
+          domainObject.ID);
+    }
+  }
+
   private ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
   {
     return new ArgumentException (string.Format (message, args), argumentName);
+  }
+
+  private ClientTransactionsDifferException CreateClientTransactionsDifferException (string message, params object[] args)
+  {
+    return new ClientTransactionsDifferException (string.Format (message, args));
   }
 
   #region ICollectionEndPointChangeDelegate Members
@@ -443,6 +505,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   {
     CheckDeleted (endPoint);
     CheckDeleted (domainObject);
+    CheckClientTransactionForInsertionIntoCollectionEndPoint (endPoint.ID, domainObject, index);
 
     ObjectEndPoint addingEndPoint = (ObjectEndPoint) GetRelationEndPoint (
         domainObject, endPoint.OppositeEndPointDefinition);
@@ -470,6 +533,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
   {
     CheckDeleted (endPoint);
     CheckDeleted (domainObject);
+    CheckClientTransactionForReplacementInCollectionEndPoint (endPoint.ID, domainObject, index);
 
     ObjectEndPoint newEndPoint = (ObjectEndPoint) GetRelationEndPoint (
         domainObject, endPoint.OppositeEndPointDefinition);
@@ -498,6 +562,10 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
   void ICollectionEndPointChangeDelegate.PerformRemove (CollectionEndPoint endPoint, DomainObject domainObject)
   {
+    CheckDeleted (endPoint);
+    CheckDeleted (domainObject);
+    CheckClientTransactionForRemovalFromCollectionEndPoint (endPoint.ID, domainObject);
+
     ObjectEndPoint removingEndPoint = (ObjectEndPoint) GetRelationEndPoint (domainObject, endPoint.OppositeEndPointDefinition);
 
     removingEndPoint.BeginRelationChange (endPoint);
