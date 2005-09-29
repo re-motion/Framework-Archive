@@ -125,5 +125,105 @@ public class RelationEndPointMapTest : ClientTransactionBaseTest
     Order order = Order.GetObject (DomainObjectIDs.Order1);
     _map.GetOriginalRelatedObjects (new RelationEndPointID (order.ID, "OrderTicket"));
   }
+
+  [Test]
+  [ExpectedException (typeof (ClientTransactionsDifferException), 
+      "Property 'OrderTicket' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid'"
+      + " cannot be set to DomainObject 'OrderTicket|0005bdf4-4ccc-4a41-b9b5-baab3eb95237|System.Guid',"
+      + " because the objects do not belong to the same ClientTransaction.")]
+  public void SetRelatedObjectWithOtherClientTransaction ()
+  {
+    Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
+
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    OrderTicket orderTicket2 = (OrderTicket) clientTransaction.GetObject (DomainObjectIDs.OrderTicket2);
+
+    _map.SetRelatedObject (new RelationEndPointID (order1.ID, "OrderTicket"), orderTicket2);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ClientTransactionsDifferException), 
+      "Cannot insert DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid'"
+      + " at position 2 into collection of property 'OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid',"
+      + " because the objects do not belong to the same ClientTransaction.")]
+  public void PerformCollectionAddWithOtherClientTransaction ()
+  {
+    Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
+
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    OrderItem orderItem3 = (OrderItem) clientTransaction.GetObject (DomainObjectIDs.OrderItem3);
+
+    order1.OrderItems.Add (orderItem3);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ClientTransactionsDifferException), 
+      "Cannot insert DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid'"
+      + " at position 0 into collection of property 'OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid',"
+      + " because the objects do not belong to the same ClientTransaction.")]
+  public void PerformCollectionInsertWithOtherClientTransaction ()
+  {
+    Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
+
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    OrderItem orderItem3 = (OrderItem) clientTransaction.GetObject (DomainObjectIDs.OrderItem3);
+
+    order1.OrderItems.Insert (0, orderItem3);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ClientTransactionsDifferException), 
+      "Cannot remove DomainObject 'OrderItem|2f4d42c7-7ffa-490d-bfcd-a9101bbf4e1a|System.Guid'"
+      + " from collection of property 'OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid',"
+      + " because the objects do not belong to the same ClientTransaction.")]
+  public void PerformCollectionRemoveWithOtherClientTransaction ()
+  {
+    Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
+
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    OrderItem orderItem1 = (OrderItem) clientTransaction.GetObject (DomainObjectIDs.OrderItem1);
+
+    order1.OrderItems.Remove (orderItem1);
+  }
+
+  [Test]
+  public void PerformCollectionReplaceWithOtherClientTransaction ()
+  {
+    Order order1 = (Order) ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
+
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    OrderItem orderItem3 = (OrderItem) clientTransaction.GetObject (DomainObjectIDs.OrderItem3);
+
+    int index = order1.OrderItems.IndexOf (DomainObjectIDs.OrderItem1);
+
+    try
+    {
+      order1.OrderItems[index] = orderItem3;
+    }
+    catch (ClientTransactionsDifferException ex)
+    {
+      string actualMessage = string.Format (
+          "Cannot replace DomainObject at position {0} with DomainObject 'OrderItem|0d7196a5-8161-4048-820d-b1bbdabe3293|System.Guid'"
+          + " in collection of property 'OrderItems' of DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid',"
+          + " because the objects do not belong to the same ClientTransaction.",
+          index);
+
+      Assert.AreEqual (actualMessage, ex.Message);
+      return;
+    }
+
+    Assert.Fail ("This test expects a ClientTransactionsDifferException.");
+  }
+
+  [Test]
+  [ExpectedException (typeof (ClientTransactionsDifferException), 
+      "Cannot remove DomainObject 'Order|5682f032-2f0b-494b-a31c-c97f02b89c36|System.Guid' from RelationEndPointMap, because it belongs to a different ClientTransaction.")]
+  public void PerformDeletionWithOtherClientTransaction ()
+  {
+    ClientTransaction clientTransaction = new ClientTransaction ();
+    Order order1 = (Order) clientTransaction.GetObject (DomainObjectIDs.Order1);
+
+    _map.PerformDelete (order1);
+  }
 }
 }
