@@ -120,6 +120,14 @@ public class BocTreeView: BusinessObjectBoundWebControl
     }
   }
 
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
+  protected virtual void EvaluateWaiConformity ()
+  {
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
+      WcagUtility.HandleError (1, this);
+  }
+
   protected override void OnPreRender(EventArgs e)
   {
     EnsureChildControls();
@@ -130,8 +138,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   protected override void Render(HtmlTextWriter writer)
   {
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
-      throw new Rubicon.Web.UI.WcagException (1, this);
+    EvaluateWaiConformity();
 
     base.Render (writer);
   }
