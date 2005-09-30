@@ -130,7 +130,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   protected override void Render(HtmlTextWriter writer)
   {
-    if (IsWaiConformanceLevelARequired && IsWcagDebuggingEnabled)
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
       throw new Rubicon.Web.UI.WcagException (1, this);
 
     base.Render (writer);
