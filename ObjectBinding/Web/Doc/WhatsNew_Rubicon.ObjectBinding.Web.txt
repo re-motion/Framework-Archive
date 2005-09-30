@@ -8,7 +8,8 @@
     dazugerechnet.
   * Zusätzliche Css-Klasse .readOnly welche additiv zur Css-Class des Controls gerendert wird, wenn dieses Read-Only 
     ist. Selector: .bocList.readOnly. Siehe auch Boclist.css für Beispiele.
-
+  * Client side sorting ist wird nicht mehr als Verletzung von WCAG Level A gewertet.
+  
 1.3.7
 =====
 - BocList
