@@ -264,10 +264,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "OBWTest.dll.log4net"
-                    BuildAction = "None"
-                />
-                <File
                     RelPath = "PersonDetailsForm.aspx"
                     BuildAction = "Content"
                 />
