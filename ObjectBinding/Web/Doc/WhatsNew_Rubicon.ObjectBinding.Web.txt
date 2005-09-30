@@ -4,6 +4,8 @@
   * Bugfix: Command auf null setzen warf eine NullReferenceException.
   
 - BocList
+  * Bugfix: Wurde eine Breite angegeben via Width, so wurde die Breite des Menubereiches (sofern vorhanden) 
+    dazugerechnet.
   * Zusätzliche Css-Klasse .readOnly welche additiv zur Css-Class des Controls gerendert wird, wenn dieses Read-Only 
     ist. Selector: .bocList.readOnly. Siehe auch Boclist.css für Beispiele.
 
