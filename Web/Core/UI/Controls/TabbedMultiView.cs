@@ -321,7 +321,7 @@ public class TabbedMultiView: WebControl, IControl
     EnsureChildControls();
    
     if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
-      throw new WcagException (1, this);
+      WcagUtility.HandleError (1, this);
 
     RenderTopControls (writer);
     RenderTabStrip (writer);
