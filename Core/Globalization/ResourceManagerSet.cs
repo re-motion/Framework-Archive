@@ -106,7 +106,7 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
         return s;
     }
 
-    s_log.Debug ("Could not find resource with ID '" + id + "' in any of the following reosurce containers " + _name + ".");
+    s_log.Debug ("Could not find resource with ID '" + id + "' in any of the following resource containers " + _name + ".");
     return id;
   }
 
