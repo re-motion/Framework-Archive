@@ -37,11 +37,12 @@
             <para> Priority 1 checkpoint 6.3 is not met by the following advacned features:</para>
             <list type="bullet">
               <item> An event or a WXE command defined for a column. </item>
-              <item> Paging </item>
-              <item> Views </item>
-              <item> Interactive Sorting </item>
-              <item> The edit details column </item>
-              <item> The drop down menu and the list menu </item>
+              <item> Paging. </item>
+              <item> Views. </item>
+              <item> Interactive Sorting. </item>
+              <item> The edit details column. </item>
+              <item> The drop down menu and the list menu. </item>
+              <item> The drop down menu column. </item>
             </list>
             <para> Priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
             <para>

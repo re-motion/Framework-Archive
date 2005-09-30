@@ -254,6 +254,32 @@ public class BocListWcagTest
     // Assert.Succeed();
   }
 
+	[Test]
+  [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
+  public void EvaluateWaiConformityDebugLevelDoubleAWithDropDownMenuColumn()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
+    BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
+    _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {dropDownMenuColumn});
+    Assert.Fail();
+  }
+
+  [Test]
+  public void IsDropDownMenuColumnVisibleWithWcagOverride()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
+    BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
+    Assert.IsFalse (_bocList.IsColumnVisible (dropDownMenuColumn));
+  }
+
+  [Test]
+  public void IsDropDownMenuColumnVisibleWithoutWcagOverride()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
+    BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
+    Assert.IsTrue (_bocList.IsColumnVisible (dropDownMenuColumn));
+  }
+
 
 	[Test]
   [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
@@ -360,16 +386,6 @@ public class BocListWcagTest
     commandColumn.Command = null;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
     // Assert.Succeed();
-  }
-
-	[Test]
-  [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
-  public void EvaluateWaiConformityDebugLevelDoubleAWithDropDownMenuColumn()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
-    BocDropDownMenuColumnDefinition dropdownMenuColumn = new BocDropDownMenuColumnDefinition();
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {dropdownMenuColumn});
-    Assert.Fail();
   }
 
 
