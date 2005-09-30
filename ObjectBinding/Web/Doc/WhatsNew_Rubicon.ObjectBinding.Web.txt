@@ -1,3 +1,12 @@
+1.3.10
+======
+- BocReferenceValue
+  * Bugfix: Command auf null setzen warf eine NullReferenceException.
+  
+- BocList
+  * Zusätzliche Css-Klasse .readOnly welche additiv zur Css-Class des Controls gerendert wird, wenn dieses Read-Only 
+    ist. Selector: .bocList.readOnly. Siehe auch Boclist.css für Beispiele.
+
 1.3.7
 =====
 - BocList
@@ -144,8 +153,8 @@
   * Neues Control. "Normale" object-bound Checkbox.
   
 - BocTextBox, BoxReferenceValue
-  * Zusätzliche Css-Klasse bocTextValueReadOnly bzw bocReferenceValueReadOnly welche additiv zur Css-Class des Controls
-    gerendert wird, wenn dieses Read-Only ist.
+  * Zusätzliche Css-Klasse bocTextValueReadOnly bzw bocReferenceValueReadOnly welche additiv zur Css-Class des 
+    Controls gerendert wird, wenn dieses Read-Only ist.
 
 - BocList
   * BocList verwendet nun TH statt TD in der Titelzeile. Auswirkung auf Stylesheets:
