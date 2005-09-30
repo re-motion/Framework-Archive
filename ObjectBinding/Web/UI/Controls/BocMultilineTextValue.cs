@@ -145,6 +145,20 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       eventHandler (this, EventArgs.Empty);
   }
 
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
+  protected virtual void EvaluateWaiConformity ()
+  {
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
+    {
+      if (TextBoxStyle.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "TextBoxStyle.AutoPostBack");
+
+      if (TextBox.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "TextBox.AutoPostBack");
+    }
+  }
+
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
@@ -258,6 +272,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
+    EvaluateWaiConformity();
+
     if (IsReadOnly)
     {
       bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
