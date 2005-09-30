@@ -123,6 +123,11 @@
                     Project = "{B719A305-0493-4C72-88FE-9A2FC6964578}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "..\..\prereq\Assemblies\log4net.dll"
+                />
             </References>
         </Build>
         <Files>
