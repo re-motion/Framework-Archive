@@ -264,7 +264,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
   protected override void RenderContents (HtmlTextWriter writer)
   {
     if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
-      throw new WcagException (1, this);
+      WcagUtility.HandleError (1, this);
 
     //  Menu-Div filling the control's div is required to apply internal css attributes
     //  for position, width and height. This allows the Head and th popup-div to align themselves
