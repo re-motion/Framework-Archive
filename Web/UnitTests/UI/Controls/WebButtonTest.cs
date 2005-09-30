@@ -40,9 +40,8 @@ public class WebButtonTest
     // Assert.Succeed();
   }
 
-
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property UseLegacyButton of Control WebButton does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'UseLegacyButton' for WebButtonMock 'WebButton' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsFalse()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -52,7 +51,7 @@ public class WebButtonTest
   }
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property UseLegacyButton of Control WebButton does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'UseLegacyButton' for WebButtonMock 'WebButton' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsUndefined()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
