@@ -14,17 +14,9 @@ function OpenClientWindow (url)
 {
   var clientWindow = window.open (url, 'ClientWindow', 'menubar=yes,toolbar=yes,location=yes,status=yes');
 }
-function OnUnloadWindow()
-{
-  //debugger;
-}
-function OnBeforeUnloadWindow()
-{
-  //debugger;
-}
 </script>
 </head>
-<body onbeforeunload=OnBeforeUnloadWindow(); onunload=OnUnloadWindow(); MS_POSITIONING="FlowLayout">
+<body MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
 <p>Wxe-Enabled Tests for individual Business Object 
 Controls<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest</A></p>
