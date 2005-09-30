@@ -21,6 +21,7 @@ public class WebButtonTest
     _webButton.ID = "WebButton";
   }
 
+
 	[Test]
   public void EvaluateWaiConformityDebugLevelUndefined()
   {
@@ -38,6 +39,7 @@ public class WebButtonTest
     _webButton.EvaluateWaiConformity();
     // Assert.Succeed();
   }
+
 
 	[Test]
   [ExpectedException (typeof (WcagException), "Property UseLegacyButton of Control WebButton does comply with a priority 1 checkpoint.")]
@@ -59,14 +61,6 @@ public class WebButtonTest
     Assert.Fail();
   }
 
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsTrue()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
-    _webButton.UseLegacyButton = NaBooleanEnum.True;
-    _webButton.EvaluateWaiConformity();
-    // Assert.Succeed();
-  }
 
   [Test]
   public void IsLegacyButtonEnabledWithWcagOverride()
