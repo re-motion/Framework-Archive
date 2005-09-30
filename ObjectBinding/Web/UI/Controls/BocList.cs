@@ -982,23 +982,23 @@ public class BocList:
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (ShowOptionsMenu)
-        throw new WcagException (1, this, "ShowOptionsMenu");
+        WcagUtility.HandleError (1, this, "ShowOptionsMenu");
       if (ShowListMenu)
-        throw new WcagException (1, this, "ShowListMenu");
+        WcagUtility.HandleError (1, this, "ShowListMenu");
       if (ShowAvailableViewsList)
-        throw new WcagException (1, this, "ShowAvailableViewsList");
+        WcagUtility.HandleError (1, this, "ShowAvailableViewsList");
       bool isPagingEnabled = !_pageSize.IsNull && _pageSize.Value != 0;
       if (isPagingEnabled)
-        throw new WcagException (1, this, "PageSize");
+        WcagUtility.HandleError (1, this, "PageSize");
       if (EnableSorting)
-        throw new WcagException (1, this, "EnableSorting");
+        WcagUtility.HandleWarning (1, this, "EnableSorting");
       if (RowMenuDisplay == RowMenuDisplay.Automatic)
-        throw new WcagException (1, this, "RowMenuDisplay");
+        WcagUtility.HandleError (1, this, "RowMenuDisplay");
 
       for (int i = 0; i < columns.Length; i++)
       {
         if (columns[i] is BocEditDetailsColumnDefinition)
-          throw new WcagException (1, this, string.Format ("Columns[{0}]", i));
+          WcagUtility.HandleError (1, this, string.Format ("Columns[{0}]", i));
 
         BocCommandEnabledColumnDefinition commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
         if (commandColumn != null)
@@ -1007,17 +1007,17 @@ public class BocList:
                                           && (   commandColumn.Command.Type == CommandType.Event 
                                               || commandColumn.Command.Type == CommandType.WxeFunction);
           if (hasPostBackColumnCommand)
-            throw new WcagException (1, this, string.Format ("Columns[{0}]", i));
+            WcagUtility.HandleError (1, this, string.Format ("Columns[{0}]", i));
         }
 
         if (columns[i] is BocDropDownMenuColumnDefinition)
-          throw new WcagException (1, this, string.Format ("Columns[{0}]", i));
+          WcagUtility.HandleError (1, this, string.Format ("Columns[{0}]", i));
       }
     }
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
     {
       if (IsSelectionEnabled && ! IsIndexEnabled)
-        throw new WcagException (2, this, "Selection");
+        WcagUtility.HandleError (2, this, "Selection");
     }
   }
 
@@ -1216,8 +1216,7 @@ public class BocList:
       Page.VerifyRenderingInServerForm(this);
 
     BocColumnDefinition[] renderColumns = EnsureColumnsGot (IsDesignMode);
-    if (IsWaiConformanceLevelARequired)
-      EvaluateWaiConformity (renderColumns);
+    EvaluateWaiConformity (renderColumns);
 
     if (IsDesignMode)
     {
@@ -5028,8 +5027,7 @@ public class BocList:
   public virtual bool EnableIcon
   {
     get { return _enableIcon; }
-    set
-    { _enableIcon = value; }
+    set { _enableIcon = value; }
   }
 
   /// <summary>
@@ -5047,7 +5045,7 @@ public class BocList:
 
   protected bool IsClientSideSortingEnabled
   {
-    get { return ! IsWaiConformanceLevelARequired && EnableSorting; }
+    get { return EnableSorting; }
   }
 
   /// <summary>
