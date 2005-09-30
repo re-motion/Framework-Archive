@@ -30,6 +30,7 @@ public class BocListWcagTest
     _bocList.Selection = RowSelection.Disabled;
   }
 
+
 	[Test]
   public void EvaluateWaiConformityDebugLevelUndefined()
   {
@@ -59,17 +60,8 @@ public class BocListWcagTest
     Assert.Fail();
   }
 
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAShowOptionsMenuFalse()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
-    _bocList.ShowOptionsMenu = false;
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
-  }
-
   [Test]
-  public void HasOptionsMenuWithWcagOverride()
+  public void IsOptionsMenuInvisibleWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocList.ShowOptionsMenu = true;
@@ -78,7 +70,7 @@ public class BocListWcagTest
   }
 
   [Test]
-  public void HasOptionsMenuWithoutWcagOverride()
+  public void IsOptionsMenuVisibleWithoutWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
     _bocList.ShowOptionsMenu = true;
@@ -97,17 +89,8 @@ public class BocListWcagTest
     Assert.Fail();
   }
 
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAShowListMenuFalse()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
-    _bocList.ShowListMenu = false;
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
-  }
-
   [Test]
-  public void HasListMenuWithWcagOverride()
+  public void IsListMenuInvisibleWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocList.ShowListMenu = true;
@@ -116,7 +99,7 @@ public class BocListWcagTest
   }
 
   [Test]
-  public void HasListMenuWithoutWcagOverride()
+  public void IsListMenuVisibleWithoutWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
     _bocList.ShowListMenu = true;
@@ -135,17 +118,8 @@ public class BocListWcagTest
     Assert.Fail();
   }
 
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAShowAvailableViewsListFalse()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
-    _bocList.ShowAvailableViewsList = false;
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
-  }
-
   [Test]
-  public void HasAvailableViewsListWithWcagOverride()
+  public void IsAvailableViewsListInvisibleWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocList.ShowAvailableViewsList = true;
@@ -154,7 +128,7 @@ public class BocListWcagTest
   }
 
   [Test]
-  public void HasAvailableViewsListWithoutWcagOverride()
+  public void IsAvailableViewsListVisibleWithoutWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
     _bocList.ShowAvailableViewsList = true;
@@ -173,17 +147,8 @@ public class BocListWcagTest
     Assert.Fail();
   }
 
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithPageSizeNull()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
-    _bocList.PageSize = NaInt32.Null;
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
-  }
-
   [Test]
-  public void IsPagingEnabledWithWcagOverride()
+  public void IsPagingDisabledWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocList.PageSize = 1;
@@ -209,17 +174,8 @@ public class BocListWcagTest
     Assert.Fail();
   }
 
-	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithEnableSortingFalse()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
-    _bocList.EnableSorting = false;
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
-  }
-
   [Test]
-  public void IsClientSideSortingEnabledWithWcagOverride()
+  public void IsClientSideSortingDisabledWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocList.EnableSorting = true;
@@ -246,26 +202,17 @@ public class BocListWcagTest
   }
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithRowMenuDisplayDisabled()
+  [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
+  public void EvaluateWaiConformityDebugLevelAWithDropDownMenuColumn()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
-    _bocList.RowMenuDisplay = RowMenuDisplay.Disabled;
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
-  }
-
-	[Test]
-  [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
-  public void EvaluateWaiConformityDebugLevelDoubleAWithDropDownMenuColumn()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
     BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {dropDownMenuColumn});
     Assert.Fail();
   }
 
   [Test]
-  public void IsDropDownMenuColumnVisibleWithWcagOverride()
+  public void IsDropDownMenuColumnInvisibleWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
@@ -283,16 +230,16 @@ public class BocListWcagTest
 
 	[Test]
   [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
-  public void EvaluateWaiConformityDebugLevelDoubleAWithEditDetailsColumn()
+  public void EvaluateWaiConformityDebugLevelAWithEditDetailsColumn()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
     BocEditDetailsColumnDefinition editDetailsColumn = new BocEditDetailsColumnDefinition();
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {editDetailsColumn});
     Assert.Fail();
   }
 
   [Test]
-  public void IsEditDetailsColumnVisibleWithWcagOverride()
+  public void IsEditDetailsColumnInvisibleWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     BocEditDetailsColumnDefinition editDetailsColumn = new BocEditDetailsColumnDefinition();
@@ -310,9 +257,9 @@ public class BocListWcagTest
 
 	[Test]
   [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
-  public void EvaluateWaiConformityDebugLevelDoubleAWithCommandColumnSetToEvent()
+  public void EvaluateWaiConformityDebugLevelAWithCommandColumnSetToEvent()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
     commandColumn.Command.Type = CommandType.Event;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
@@ -320,7 +267,7 @@ public class BocListWcagTest
   }
 
   [Test]
-  public void IsCommandColumnSetToEventVisibleWithWcagOverride()
+  public void IsCommandColumnSetToEventInvisibleWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
@@ -340,9 +287,9 @@ public class BocListWcagTest
 
 	[Test]
   [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
-  public void EvaluateWaiConformityDebugLevelDoubleAWithCommandColumnSetToWxeFunction()
+  public void EvaluateWaiConformityDebugLevelAWithCommandColumnSetToWxeFunction()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
     commandColumn.Command.Type = CommandType.WxeFunction;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
@@ -350,7 +297,7 @@ public class BocListWcagTest
   }
 
   [Test]
-  public void IsCommandColumnSetToWxeFunctionVisibleWithWcagOverride()
+  public void IsCommandColumnSetToWxeFunctionInvisibleWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
@@ -369,9 +316,9 @@ public class BocListWcagTest
 
 	
   [Test]
-  public void EvaluateWaiConformityDebugLevelDoubleAWithCommandColumnSetToHref()
+  public void EvaluateWaiConformityDebugLevelAWithCommandColumnSetToHref()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
     commandColumn.Command.Type = CommandType.Href;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
@@ -379,9 +326,9 @@ public class BocListWcagTest
   }
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelDoubleAWithCommandColumnWithoutCommand()
+  public void EvaluateWaiConformityDebugLevelAWithCommandColumnWithoutCommand()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
     commandColumn.Command = null;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
