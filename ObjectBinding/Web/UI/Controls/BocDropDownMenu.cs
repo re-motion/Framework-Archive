@@ -8,6 +8,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -56,6 +57,14 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     _dropDownMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (DropDownMenu_WxeFunctionCommandClick);
   }
  
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
+  protected virtual void EvaluateWaiConformity ()
+  {
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
+      WcagUtility.HandleError (1, this);
+  }
+
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
@@ -155,8 +164,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
 
   protected override void Render (HtmlTextWriter writer)
   {
-    if (IsWaiConformanceLevelARequired && IsWcagDebuggingEnabled)
-      throw new Rubicon.Web.UI.WcagException (1, this);
+    EvaluateWaiConformity();
     _dropDownMenu.RenderControl (writer);
   }
 
