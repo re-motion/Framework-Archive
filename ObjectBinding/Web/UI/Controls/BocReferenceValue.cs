@@ -800,7 +800,7 @@ public class BocReferenceValue:
   {
   }
 
-  private bool IsCommandEnabled (bool isReadOnly)
+  protected bool IsCommandEnabled (bool isReadOnly)
   {
     if (IsWaiConformanceLevelARequired)
       return false;
@@ -1164,7 +1164,7 @@ public class BocReferenceValue:
   }
 
   /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
-  private bool HasOptionsMenu
+  protected bool HasOptionsMenu
   {
     get { return ! IsWaiConformanceLevelARequired && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
   }
@@ -1543,7 +1543,8 @@ public class BocReferenceValue:
     set 
     { 
       _command.Item = value; 
-      _command.Item.OwnerControl = this;
+      if (value != null)
+        _command.Item.OwnerControl = this;
     }
   }
 
