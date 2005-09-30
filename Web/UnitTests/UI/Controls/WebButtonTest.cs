@@ -25,7 +25,7 @@ public class WebButtonTest
 	[Test]
   public void EvaluateWaiConformityDebugLevelUndefined()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelUndefined();
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _webButton.UseLegacyButton = NaBooleanEnum.False;
     _webButton.EvaluateWaiConformity();
     // Assert.Succeed();
@@ -44,7 +44,7 @@ public class WebButtonTest
   [ExpectedException (typeof (WcagException), "The value of property 'UseLegacyButton' for WebButtonMock 'WebButton' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsFalse()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _webButton.UseLegacyButton = NaBooleanEnum.False;
     _webButton.EvaluateWaiConformity();
     Assert.Fail();
@@ -54,7 +54,7 @@ public class WebButtonTest
   [ExpectedException (typeof (WcagException), "The value of property 'UseLegacyButton' for WebButtonMock 'WebButton' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsUndefined()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _webButton.UseLegacyButton = NaBooleanEnum.Undefined;
     _webButton.EvaluateWaiConformity();
     Assert.Fail();

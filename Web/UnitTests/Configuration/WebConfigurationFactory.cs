@@ -18,7 +18,7 @@ public class WebConfigurationFactory
   {
   }
 
-  public static WebConfiguration GetDebugLevelA()
+  public static WebConfiguration GetDebugExceptionLevelA()
   {
     WebConfigurationMock config = new WebConfigurationMock();
     config.Wcag.Debugging = WcagDebugMode.Exception;
@@ -26,7 +26,15 @@ public class WebConfigurationFactory
     return config;
   }
 
-  public static WebConfiguration GetDebugLevelDoubleA()
+  public static WebConfiguration GetDebugLoggingLevelA()
+  {
+    WebConfigurationMock config = new WebConfigurationMock();
+    config.Wcag.Debugging = WcagDebugMode.Logging;
+    config.Wcag.ConformanceLevel = WaiConformanceLevel.A;
+    return config;
+  }
+
+  public static WebConfiguration GetDebugExceptionLevelDoubleA()
   {
     WebConfigurationMock config = new WebConfigurationMock();
     config.Wcag.Debugging = WcagDebugMode.Exception;
@@ -34,7 +42,7 @@ public class WebConfigurationFactory
     return config;
   }
 
-  public static WebConfiguration GetDebugLevelUndefined()
+  public static WebConfiguration GetDebugExceptionLevelUndefined()
   {
     WebConfigurationMock config = new WebConfigurationMock();
     config.Wcag.Debugging = WcagDebugMode.Exception;
