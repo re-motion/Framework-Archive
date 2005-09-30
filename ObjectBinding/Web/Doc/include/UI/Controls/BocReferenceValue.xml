@@ -36,6 +36,10 @@
               <item> An event or a WXE command is defined. </item>
               <item> The drop down menu. </item>
             </list>
+            <para>
+              Enabling auto post back can break compliance with priority 1 checkpoint 6.3 if the post back is 
+              required for using the page.
+            </para>
             <para> Priority 2 checkpoints 6.5 and 10.1 are not met if the advanced features are enabled. </para>
             <para> 
               Priority 2 checkpoint 13.1 is not met by the command. The value is used to decribe the link's target.
