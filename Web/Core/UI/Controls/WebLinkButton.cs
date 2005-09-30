@@ -30,7 +30,7 @@ public class WebLinkButton : LinkButton
   protected override void RenderContents(HtmlTextWriter writer)
   {
     if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
-      throw new WcagException (1, this);
+      WcagUtility.HandleError (1, this);
 
     if (HasControls())
       base.RenderContents (writer);
