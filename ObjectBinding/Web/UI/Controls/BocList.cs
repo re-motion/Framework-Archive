@@ -1846,8 +1846,7 @@ public class BocList:
     bool isFirstPage = _currentPage == 0;
     bool isLastPage = _currentPage + 1 >= _pageCount;
 
-    if (! Width.IsEmpty)
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNavigator);
     writer.AddStyleAttribute ("position", "relative");
     writer.RenderBeginTag (HtmlTextWriterTag.Div);

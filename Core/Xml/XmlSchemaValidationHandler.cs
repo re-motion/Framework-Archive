@@ -62,7 +62,7 @@ public class XmlSchemaValidationHandler
     if (_errors > 0)
     {
       throw new XmlSchemaException (
-          string.Format ("Schema verification failed with {0} errors and {1} warnings in \"{2}\". First error: {3}", 
+          string.Format ("Schema verification failed with {0} errors and {1} warnings in '{2}'. First error: {3}", 
               _errors, _warnings, _context, _firstError),
           null);
     }
