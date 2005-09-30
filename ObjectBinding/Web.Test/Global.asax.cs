@@ -30,6 +30,8 @@ public class Global : System.Web.HttpApplication // , IResourceUrlResolver
 
 	protected void Application_Start(Object sender, EventArgs e)
 	{
+    log4net.Config.DOMConfigurator.Configure();
+
     string objectPath = Server.MapPath ("objects");
     if (! Directory.Exists (objectPath))
       Directory.CreateDirectory (objectPath);
