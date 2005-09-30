@@ -21,7 +21,7 @@ public class WebConfigurationFactory
   public static WebConfiguration GetDebugLevelA()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.Wcag.Debug = true;
+    config.Wcag.Debugging = WcagDebugMode.Exception;
     config.Wcag.ConformanceLevel = WaiConformanceLevel.A;
     return config;
   }
@@ -29,7 +29,7 @@ public class WebConfigurationFactory
   public static WebConfiguration GetDebugLevelDoubleA()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.Wcag.Debug = true;
+    config.Wcag.Debugging = WcagDebugMode.Exception;
     config.Wcag.ConformanceLevel = WaiConformanceLevel.DoubleA;
     return config;
   }
@@ -37,7 +37,7 @@ public class WebConfigurationFactory
   public static WebConfiguration GetDebugLevelUndefined()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.Wcag.Debug = true;
+    config.Wcag.Debugging = WcagDebugMode.Exception;
     config.Wcag.ConformanceLevel = WaiConformanceLevel.Undefined;
     return config;
   }
@@ -45,7 +45,7 @@ public class WebConfigurationFactory
   public static WebConfiguration GetLevelA()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.Wcag.Debug = false;
+    config.Wcag.Debugging = WcagDebugMode.Disabled;
     config.Wcag.ConformanceLevel = WaiConformanceLevel.A;
     return config;
   }
@@ -53,7 +53,7 @@ public class WebConfigurationFactory
   public static WebConfiguration GetLevelDoubleA()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.Wcag.Debug = false;
+    config.Wcag.Debugging = WcagDebugMode.Disabled;
     config.Wcag.ConformanceLevel = WaiConformanceLevel.DoubleA;
     return config;
   }
@@ -61,7 +61,7 @@ public class WebConfigurationFactory
   public static WebConfiguration GetLevelUndefined()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.Wcag.Debug = false;
+    config.Wcag.Debugging = WcagDebugMode.Disabled;
     config.Wcag.ConformanceLevel = WaiConformanceLevel.Undefined;
     return config;
   }
