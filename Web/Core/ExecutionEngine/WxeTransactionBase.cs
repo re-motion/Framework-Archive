@@ -383,6 +383,15 @@ public abstract class WxeTransactionBase: WxeStepList
     add { Events.AddHandler (s_transactionRolledBackEvent, value); }
     remove { Events.RemoveHandler (s_transactionRolledBackEvent, value); }
   }
+//        add
+//      {
+//            this._ValidationEventHandler = (ValidationEventHandler) Delegate.Combine(this._ValidationEventHandler, value);
+//      }
+//      remove
+//      {
+//            this._ValidationEventHandler = (ValidationEventHandler) Delegate.Remove(this._ValidationEventHandler, value);
+//      }
+
 }
 
 }
