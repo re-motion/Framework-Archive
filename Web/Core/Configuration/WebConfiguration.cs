@@ -45,7 +45,7 @@ public class WebConfiguration: IConfigurationSectionHandler
             {
               s_current = (WebConfiguration) XmlSerializationUtility.DeserializeUsingSchema (
                   new XmlNodeReader (section),
-                  ElementName,
+                  "web.config/configuration/" + ElementName,
                   typeof (WebConfiguration),
                   SchemaUri, 
                   GetSchemaReader());

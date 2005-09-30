@@ -1100,9 +1100,42 @@ public class BocList:
   /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
+    bool isReadOnly = IsReadOnly;
+    bool isDisabled = ! Enabled;
+
+    string backUpCssClass = CssClass; // base.CssClass and base.ControlStyle.CssClass
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (CssClass))
+    {
+      if (isReadOnly)
+        CssClass += " " + CssClassReadOnly;
+      else if (isDisabled)
+        CssClass += " " + CssClassDisabled;
+    }
+    string backUpAttributeCssClass = Attributes["class"];
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+    {
+      if (isReadOnly)
+        Attributes["class"] += " " + CssClassReadOnly;
+      else if (isDisabled)
+        Attributes["class"] += " " + CssClassDisabled;
+    }
+    
     base.AddAttributesToRender (writer);
+
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (CssClass))
+      CssClass = backUpCssClass;
+    if ((isReadOnly || isDisabled) && ! StringUtility.IsNullOrEmpty (Attributes["class"]))
+      Attributes["class"] = backUpAttributeCssClass;
+    
     if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+    {
+      string cssClass = CssClassBase;
+      if (isReadOnly)
+        cssClass += " " + CssClassReadOnly;
+      else if (isDisabled)
+        cssClass += " " + CssClassDisabled;
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
+    }
   }
 
   protected override HtmlTextWriterTag TagKey
@@ -1429,7 +1462,6 @@ public class BocList:
   protected bool IsColumnVisible (BocColumnDefinition column)
   {
     bool isReadOnly = IsReadOnly;
-    BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
     BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
     if (commandColumn != null && commandColumn.Command != null)
     {
@@ -1441,6 +1473,7 @@ public class BocList:
       }
     }
 
+    BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
     if (editDetailsColumn != null)
     {
       if (IsWaiConformanceLevelARequired)
@@ -1451,6 +1484,11 @@ public class BocList:
         return false;
       }
     }
+    
+    BocDropDownMenuColumnDefinition dropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
+    if (dropDownMenuColumn != null && IsWaiConformanceLevelARequired)
+        return false;
+    
     return true;
   }
 
@@ -5411,6 +5449,22 @@ public class BocList:
   /// </remarks>
   protected virtual string CssClassBase
   { get { return "bocList"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/> when it is displayed in read-only mode. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>readOnly</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <c>.bocList.readOnly</c> as a selector. </para>
+  /// </remarks>
+  protected virtual string CssClassReadOnly
+  { get { return "readOnly"; } }
+
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocEnumValue"/> when it is displayed disabled. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>disabled</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <c>.bocEnumValue.disabled</c> as a selector. </para>
+  /// </remarks>
+  protected virtual string CssClassDisabled
+  { get { return "disabled"; } }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s <c>table</c> tag. </summary>
   /// <remarks> Class: <c>bocListTable</c> </remarks>
