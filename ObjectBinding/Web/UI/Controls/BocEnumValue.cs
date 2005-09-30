@@ -180,6 +180,20 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       eventHandler (this, EventArgs.Empty);
   }
 
+  /// <summary> Checks whether the control conforms to the required WAI level. </summary>
+  /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
+  protected virtual void EvaluateWaiConformity ()
+  {
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
+    {
+      if (ListControlStyle.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "ListControlStyle.AutoPostBack");
+
+      if (ListControl.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "ListControl.AutoPostBack");
+    }
+  }
+
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
@@ -279,6 +293,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
+    EvaluateWaiConformity();
+
     if (IsReadOnly)
     {
       bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
