@@ -14,7 +14,7 @@
                 <xs:element name="wcag" minOccurs="0" maxOccurs="1">
                     <xs:complexType>
                         <xs:attribute name="conformanceLevel" type="tns:WcagLevel" default="Undefined" />
-                        <xs:attribute name="debug" type="xs:boolean" default="false" />
+                        <xs:attribute name="debugging" type="tns:WcagDebugMode" default="Disabled" />
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="resources" minOccurs="0" maxOccurs="1">
@@ -38,6 +38,13 @@
             <xs:enumeration value="A" />
             <xs:enumeration value="DoubleA" />
             <xs:enumeration value="TripleA" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="WcagDebugMode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Disabled" />
+            <xs:enumeration value="Logging" />
+            <xs:enumeration value="Exception" />
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="ResourceRootMode">
