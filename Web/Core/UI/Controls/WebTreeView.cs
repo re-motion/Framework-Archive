@@ -412,7 +412,9 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   protected override void RenderContents (HtmlTextWriter writer)
   {
     if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
-      throw new WcagException (1, this);
+    {
+      WcagUtility.HandleError (1, this);
+    }
 
     ResolveNodeIcons();
     RenderNodes (writer, _nodes, true);
