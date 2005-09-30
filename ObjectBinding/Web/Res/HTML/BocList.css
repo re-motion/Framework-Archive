@@ -1,5 +1,21 @@
+/* Style applied to the BocList. */
+.bocList
+{
+}
+
+/* Style applied to the BocList in read-only mode. */
+.bocList.readOnly
+{
+}
+
+
 /* Style applied to the div surrounding the BocList's table. */
 div.bocListTable
+{
+}
+
+/* Style applied to the div surrounding the BocList's table when the list is read-only. */
+.bocList.readOnly div.bocListTable
 {
 }
 
