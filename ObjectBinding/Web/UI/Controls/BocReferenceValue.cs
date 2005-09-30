@@ -443,12 +443,18 @@ public class BocReferenceValue:
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (_showOptionsMenu)
-        throw new WcagException (1, this, "ShowOptionsMenu");
+        WcagUtility.HandleError (1, this, "ShowOptionsMenu");
       bool hasPostBackCommand =     Command != null
                                 && (   Command.Type == CommandType.Event 
                                     || Command.Type == CommandType.WxeFunction);
       if (hasPostBackCommand)
-        throw new WcagException (1, this, "Command");
+        WcagUtility.HandleError (1, this, "Command");
+
+      if (DropDownListStyle.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");
+
+      if (DropDownList.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "DropDownList.AutoPostBack");
     }
   }
 
@@ -550,8 +556,7 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (IsWaiConformanceLevelARequired)
-      EvaluateWaiConformity();
+    EvaluateWaiConformity();
 
     if (   _hasValueEmbeddedInsideOptionsMenu.IsTrue && HasOptionsMenu
         || _hasValueEmbeddedInsideOptionsMenu.IsNull && IsReadOnly && HasOptionsMenu)
