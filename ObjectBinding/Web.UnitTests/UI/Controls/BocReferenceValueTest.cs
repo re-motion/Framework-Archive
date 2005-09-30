@@ -46,7 +46,7 @@ public class BocReferenceValueTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property ShowOptionsMenu of Control BocReferenceValue does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'ShowOptionsMenu' for BocReferenceValueMock 'BocReferenceValue' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithShowOptionsMenuTrue()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -75,7 +75,7 @@ public class BocReferenceValueTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property Command of Control BocReferenceValue does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'Command' for BocReferenceValueMock 'BocReferenceValue' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithEventCommand()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -102,7 +102,7 @@ public class BocReferenceValueTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property Command of Control BocReferenceValue does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'Command' for BocReferenceValueMock 'BocReferenceValue' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithWxeFunctionCommand()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -145,8 +145,6 @@ public class BocReferenceValueTest
     _bocReferenceValue.EvaluateWaiConformity ();
     // Assert.Succeed();
   }
-
-
 }
 
 }

@@ -51,7 +51,7 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property ShowOptionsMenu of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'ShowOptionsMenu' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithShowOptionsMenuTrue()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -80,7 +80,7 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property ShowListMenu of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'ShowListMenu' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithShowListMenuTrue()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -109,7 +109,7 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property ShowAvailableViewsList of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'ShowAvailableViewsList' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithShowAvailableViewsListTrue()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -138,7 +138,7 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property PageSize of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'PageSize' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithPageSizeNotNull()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -164,35 +164,18 @@ public class BocListWcagTest
   }
 
 
-	[Test]
-  [ExpectedException (typeof (WcagException), "Property EnableSorting of Control BocList does comply with a priority 1 checkpoint.")]
-  public void EvaluateWaiConformityDebugLevelAWithEnableSortingTrue()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
-    _bocList.EnableSorting = true;
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    Assert.Fail();
-  }
-
   [Test]
-  public void IsClientSideSortingDisabledWithWcagOverride()
+  public void IsClientSideSortingEnabledWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocList.EnableSorting = true;
-    Assert.IsFalse (_bocList.IsClientSideSortingEnabled);
-  }
-
-  [Test]
-  public void IsClientSideSortingEnabledWithoutWcagOverride()
-  {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-    _bocList.EnableSorting = true;
     Assert.IsTrue (_bocList.IsClientSideSortingEnabled);
+    // Assert.Success()
   }
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property RowMenuDisplay of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'RowMenuDisplay' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithRowMenuDisplayAutomatic()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -202,7 +185,7 @@ public class BocListWcagTest
   }
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'Columns[0]' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithDropDownMenuColumn()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -229,7 +212,7 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'Columns[0]' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithEditDetailsColumn()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -256,7 +239,7 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'Columns[0]' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithCommandColumnSetToEvent()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -286,7 +269,7 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property Columns[0] of Control BocList does comply with a priority 1 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'Columns[0]' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithCommandColumnSetToWxeFunction()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelA();
@@ -337,7 +320,7 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "Property Selection of Control BocList does comply with a priority 2 checkpoint.")]
+  [ExpectedException (typeof (WcagException), "The value of property 'Selection' for BocListMock 'BocList' does not comply with a priority 2 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelDoubleAWithSelectionEnabled()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugLevelDoubleA();
