@@ -12,7 +12,7 @@
 <rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
   <wcag 
       conformanceLevel="Undefined" 
-      debug="false" 
+      debugging="Disabled" 
   />
   <!-- Other configuration section entries. -->
 </rubicon.web>
@@ -20,13 +20,13 @@
       </code>
     </example>
   </Class>
-  <Debug>
-    <value> 
-      <see langword="true"/> to enable debug mode. Defaults to <see langword="false"/>. 
+  <Debugging>
+    <value>
+      A value of the <see cref="WcagDebugMode"/> enumeration. Defaults to <see cref="WcagDebugMode.Disabled"/>
     </value>
     <remarks> 
-      Controls in violation of the required WAI level throw a <see cref="Rubicon.Web.UI.WcagException"/>
-      in debug mode.
+      If the <see cref="WcagDebugMode"/> of <see cref="WcagDebugMode.Exception"/> is used,
+      controls in violation of the required WAI level will throw a <see cref="Rubicon.Web.UI.WcagException"/>.
     </remarks>
-  </Debug>
+  </Debugging>
 </WcagConfiguration>

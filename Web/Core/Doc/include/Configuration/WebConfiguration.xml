@@ -47,7 +47,7 @@
     />
     <wcag 
         conformanceLevel="Undefined" 
-        debug="false" 
+        debugging="Disabled" 
     />
   </rubicon.web>
 
