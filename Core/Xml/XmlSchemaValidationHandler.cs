@@ -12,6 +12,7 @@ public class XmlSchemaValidationHandler
   private string _context;
   private int _warnings = 0;
   private int _errors = 0;
+  private string _firstError;
 
   public XmlSchemaValidationHandler (string context)
   {
@@ -45,6 +46,8 @@ public class XmlSchemaValidationHandler
     if (args.Severity == XmlSeverityType.Error)
     {
       s_log.Error (string.Format ("Schema validation error in {0}: {1}", _context, args.Message));
+      if (_firstError == null)
+        _firstError = args.Message;
       ++ _errors;
     }
     else
@@ -57,7 +60,12 @@ public class XmlSchemaValidationHandler
   public void EnsureNoErrors ()
   {
     if (_errors > 0)
-      throw new XmlSchemaException (string.Format ("Schema verification failed with {0} errors and {1} warnings in \"{2}\".", _errors, _warnings, _context), null);
+    {
+      throw new XmlSchemaException (
+          string.Format ("Schema verification failed with {0} errors and {1} warnings in \"{2}\". First error: {3}", 
+              _errors, _warnings, _context, _firstError),
+          null);
+    }
   }
 }
 

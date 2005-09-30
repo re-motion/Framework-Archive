@@ -14,10 +14,11 @@ public class XmlSerializationUtility
 
   public static object DeserializeUsingSchema (XmlTextReader reader, string context, Type type, string schemaUri, XmlReader schemaReader)
   {
+    XmlValidatingReader validatingReader;
     try
     {
       XmlSerializer serializer = new XmlSerializer (type, schemaUri);
-      XmlValidatingReader validatingReader = new XmlValidatingReader (reader);
+      validatingReader = new XmlValidatingReader (reader);
       validatingReader.Schemas.Add (schemaUri, schemaReader);
       XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler (context);
       validatingReader.ValidationEventHandler += validationHandler.Handler;
@@ -27,8 +28,11 @@ public class XmlSerializationUtility
     }
     catch (Exception e)
     {
-      s_log.Error (string.Format ("Error reading {0}: {1}", context, e.Message), e);
-      throw;
+      while (e.InnerException != null)
+        e = e.InnerException;
+      string errorMessage = string.Format ("Error reading {0}: {1}", context, e.Message);
+      s_log.Error (errorMessage, e);
+      throw new XmlException (errorMessage);
     }
   }
 
@@ -41,7 +45,7 @@ public class XmlSerializationUtility
     document.Save (new StreamWriter (memoryStream, Encoding.Unicode));
     memoryStream.Seek (0, SeekOrigin.Begin);
 
-    XmlTextReader textReader = new XmlTextReader (memoryStream);
+    XmlTextReader textReader = new XmlTextReader (context, memoryStream, new NameTable());
     return DeserializeUsingSchema (textReader, context, type, schemaUri, schemaReader);
   }
 }
