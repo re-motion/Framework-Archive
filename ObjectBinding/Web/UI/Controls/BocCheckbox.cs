@@ -168,7 +168,10 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (_showDescription == NaBooleanEnum.True)
-        throw new WcagException (1, this, "ShowDescription");
+        WcagUtility.HandleError (1, this, "ShowDescription");
+
+      if (IsAutoPostBackEnabled)
+        WcagUtility.HandleWarning (1, this, "AutoPostBack");
     }
   }
 
@@ -361,8 +364,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (IsWaiConformanceLevelARequired)
-      EvaluateWaiConformity ();
+    EvaluateWaiConformity ();
 
     if (IsReadOnly)
     {

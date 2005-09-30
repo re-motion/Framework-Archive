@@ -238,7 +238,22 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
     {
       if (ActualValueType == BocDateTimeValueType.DateTime)
-        throw new WcagException (2, this, "ActualValueType");
+        WcagUtility.HandleError (2, this, "ActualValueType");
+
+      if (DateTextBoxStyle.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "DateTextBoxStyle.AutoPostBack");
+
+      if (TimeTextBoxStyle.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "TimeTextBoxStyle.AutoPostBack");
+
+      if (DateTimeTextBoxStyle.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "DateTimeTextBoxStyle.AutoPostBack");
+
+      if (DateTextBox.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "DateTextBox.AutoPostBack");
+
+      if (TimeTextBox.AutoPostBack)
+        WcagUtility.HandleWarning (1, this, "TimeTextBox.AutoPostBack");
     }
   }
 
@@ -339,8 +354,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (IsWaiConformanceLevelARequired)
-      EvaluateWaiConformity ();
+    EvaluateWaiConformity ();
 
     if (IsReadOnly)
     {
