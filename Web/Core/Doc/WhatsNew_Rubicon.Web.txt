@@ -3,7 +3,10 @@
 - Rubicon.Web.Configuration.WcagConfiguration
   * Property Debug abgeändert zu Debugging vom Typ WcagDebugMode.
 
-- Rubicon.Web.Utilities.WcagUtility zu Rubicon.Web.UI.WcagHelper umgebaut.  
+- Rubicon.Web.Utilities.WcagUtility zu Rubicon.Web.UI.WcagHelper umgebaut.
+
+- Rubicon.Web.ExecutionEngine.WxePage
+  * Bugfix: AbortConfirmationMessage konnte nicht im Projekt überschrieben werden.
   
 1.3.8
 =====
