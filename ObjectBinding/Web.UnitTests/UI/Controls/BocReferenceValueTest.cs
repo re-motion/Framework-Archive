@@ -48,10 +48,25 @@ public class BocReferenceValueTest
   public void EvaluateWaiConformityLevelA()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
+    _bocReferenceValue.ShowOptionsMenu = true;
     _bocReferenceValue.EvaluateWaiConformity ();
     
     Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasWarning);
     Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasError);
+  }
+
+
+	[Test]
+  public void EvaluateWaiConformityDebugLevelAWithAutoPostBackTrue()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
+    _bocReferenceValue.DropDownListStyle.AutoPostBack = true;
+    _bocReferenceValue.EvaluateWaiConformity ();
+
+    Assert.IsTrue (_bocReferenceValue.WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, _bocReferenceValue.WcagHelperMock.Priority);
+    Assert.AreSame (_bocReferenceValue, _bocReferenceValue.WcagHelperMock.Control);
+    Assert.AreEqual ("DropDownListStyle.AutoPostBack", _bocReferenceValue.WcagHelperMock.Property);
   }
 
 
