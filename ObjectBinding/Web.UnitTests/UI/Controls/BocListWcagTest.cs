@@ -37,7 +37,9 @@ public class BocListWcagTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocList.PageSize = 1;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
+    
+    Assert.IsFalse (_bocList.WcagHelperMock.HasWarning);
+    Assert.IsFalse (_bocList.WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -46,18 +48,23 @@ public class BocListWcagTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocList.PageSize = 1;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
+    
+    Assert.IsFalse (_bocList.WcagHelperMock.HasWarning);
+    Assert.IsFalse (_bocList.WcagHelperMock.HasError);
   }
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'ShowOptionsMenu' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithShowOptionsMenuTrue()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _bocList.ShowOptionsMenu = true;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("ShowOptionsMenu", _bocList.WcagHelperMock.Property);
   }
 
   [Test]
@@ -80,13 +87,16 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'ShowListMenu' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithShowListMenuTrue()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _bocList.ShowListMenu = true;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("ShowListMenu", _bocList.WcagHelperMock.Property);
   }
 
   [Test]
@@ -109,13 +119,16 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'ShowAvailableViewsList' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithShowAvailableViewsListTrue()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _bocList.ShowAvailableViewsList = true;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("ShowAvailableViewsList", _bocList.WcagHelperMock.Property);
   }
 
   [Test]
@@ -138,13 +151,16 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'PageSize' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithPageSizeNotNull()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _bocList.PageSize = 1;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("PageSize", _bocList.WcagHelperMock.Property);
   }
 
   [Test]
@@ -164,34 +180,52 @@ public class BocListWcagTest
   }
 
 
+	[Test]
+  public void EvaluateWaiConformityDebugLevelAWithClientSideSortingEnabled()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
+    _bocList.EnableSorting = true;
+    _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("EnableSorting", _bocList.WcagHelperMock.Property);
+  }
+
   [Test]
   public void IsClientSideSortingEnabledWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocList.EnableSorting = true;
     Assert.IsTrue (_bocList.IsClientSideSortingEnabled);
-    // Assert.Success()
   }
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'RowMenuDisplay' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithRowMenuDisplayAutomatic()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _bocList.RowMenuDisplay = RowMenuDisplay.Automatic;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("RowMenuDisplay", _bocList.WcagHelperMock.Property);
   }
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'Columns[0]' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithDropDownMenuColumn()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     BocDropDownMenuColumnDefinition dropDownMenuColumn = new BocDropDownMenuColumnDefinition();
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {dropDownMenuColumn});
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("Columns[0]", _bocList.WcagHelperMock.Property);
   }
 
   [Test]
@@ -212,13 +246,16 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'Columns[0]' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithEditDetailsColumn()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     BocEditDetailsColumnDefinition editDetailsColumn = new BocEditDetailsColumnDefinition();
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {editDetailsColumn});
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("Columns[0]", _bocList.WcagHelperMock.Property);
   }
 
   [Test]
@@ -239,14 +276,17 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'Columns[0]' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithCommandColumnSetToEvent()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
     commandColumn.Command.Type = CommandType.Event;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("Columns[0]", _bocList.WcagHelperMock.Property);
   }
 
   [Test]
@@ -269,14 +309,17 @@ public class BocListWcagTest
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'Columns[0]' for BocListMock 'BocList' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithCommandColumnSetToWxeFunction()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
     commandColumn.Command.Type = CommandType.WxeFunction;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("Columns[0]", _bocList.WcagHelperMock.Property);
   }
 
   [Test]
@@ -305,7 +348,9 @@ public class BocListWcagTest
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
     commandColumn.Command.Type = CommandType.Href;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
-    // Assert.Succeed();
+    
+    Assert.IsFalse (_bocList.WcagHelperMock.HasWarning);
+    Assert.IsFalse (_bocList.WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -315,19 +360,24 @@ public class BocListWcagTest
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
     commandColumn.Command = null;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {commandColumn});
-    // Assert.Succeed();
+    
+    Assert.IsFalse (_bocList.WcagHelperMock.HasWarning);
+    Assert.IsFalse (_bocList.WcagHelperMock.HasError);
   }
 
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'Selection' for BocListMock 'BocList' does not comply with a priority 2 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelDoubleAWithSelectionEnabled()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelDoubleA();
     _bocList.Selection = RowSelection.SingleRadioButton;
     _bocList.Index = RowIndex.Disabled;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    Assert.Fail();
+
+    Assert.IsTrue (_bocList.WcagHelperMock.HasError);
+    Assert.AreEqual (2, _bocList.WcagHelperMock.Priority);
+    Assert.AreSame (_bocList, _bocList.WcagHelperMock.Control);
+    Assert.AreEqual ("Selection", _bocList.WcagHelperMock.Property);
   }
 
 	[Test]
@@ -337,7 +387,9 @@ public class BocListWcagTest
     _bocList.Selection = RowSelection.Disabled;
     _bocList.Index = RowIndex.Disabled;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
+    
+    Assert.IsFalse (_bocList.WcagHelperMock.HasWarning);
+    Assert.IsFalse (_bocList.WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -347,7 +399,9 @@ public class BocListWcagTest
     _bocList.Selection = RowSelection.SingleRadioButton;
     _bocList.Index = RowIndex.InitialOrder;
     _bocList.EvaluateWaiConformity (new BocColumnDefinition[0]);
-    // Assert.Succeed();
+    
+    Assert.IsFalse (_bocList.WcagHelperMock.HasWarning);
+    Assert.IsFalse (_bocList.WcagHelperMock.HasError);
   }
 
 }
