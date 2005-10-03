@@ -5,72 +5,76 @@ using Rubicon.Utilities;
 using Rubicon.Web.UI;
 using Rubicon.Web.Configuration;
 
-namespace Rubicon.Web.Utilities
+namespace Rubicon.Web.UI
 {
 
-public class WcagUtility
+public class WcagHelper
 {
-  private static ILog s_log = LogManager.GetLogger (typeof (WcagUtility));
+  private static ILog s_log = LogManager.GetLogger (typeof (WcagHelper));
 
-  public static bool IsWaiConformanceLevelARequired (WaiConformanceLevel conformanceLevel)
+	public WcagHelper()
+	{
+	}
+
+  public virtual bool IsWaiConformanceLevelARequired (WaiConformanceLevel conformanceLevel)
   {
     return (conformanceLevel & WaiConformanceLevel.A) == WaiConformanceLevel.A;
   }
 
-  public static bool IsWaiConformanceLevelARequired ()
+  public virtual bool IsWaiConformanceLevelARequired ()
   {
     return IsWaiConformanceLevelARequired (GetWaiConformanceLevel());
   }
 
-  public static bool IsWaiConformanceLevelDoubleARequired (WaiConformanceLevel conformanceLevel)
+  public virtual bool IsWaiConformanceLevelDoubleARequired (WaiConformanceLevel conformanceLevel)
   {
     return (conformanceLevel & WaiConformanceLevel.DoubleA) == WaiConformanceLevel.DoubleA;
   }
 
-  public static bool IsWaiConformanceLevelDoubleARequired ()
+  public virtual bool IsWaiConformanceLevelDoubleARequired ()
   {
     return IsWaiConformanceLevelDoubleARequired (GetWaiConformanceLevel());
   }
 
-  public static bool IsWaiConformanceLevelTripleARequired (WaiConformanceLevel conformanceLevel)
+  public virtual bool IsWaiConformanceLevelTripleARequired (WaiConformanceLevel conformanceLevel)
   {
     return (conformanceLevel & WaiConformanceLevel.TripleA) == WaiConformanceLevel.TripleA;
   }
 
-  public static bool IsWaiConformanceLevelTripleARequired ()
+  public virtual bool IsWaiConformanceLevelTripleARequired ()
   {
     return IsWaiConformanceLevelTripleARequired (GetWaiConformanceLevel());
   }
 
-  public static bool IsWcagDebuggingEnabled()
+  public virtual bool IsWcagDebuggingEnabled()
   {
     return WebConfiguration.Current.Wcag.Debugging != WcagDebugMode.Disabled;
   }
 
-  public static bool IsWcagDebugLogEnabled()
+  public virtual bool IsWcagDebugLogEnabled()
   {
     return WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Logging
         || WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Exception;
   }
 
-  public static bool IsWcagDebugExceptionEnabled()
+  public virtual bool IsWcagDebugExceptionEnabled()
   {
     return WebConfiguration.Current.Wcag.Debugging == WcagDebugMode.Exception;
   }
 
-  public static WaiConformanceLevel GetWaiConformanceLevel()
+  public virtual WaiConformanceLevel GetWaiConformanceLevel()
   {
     return WebConfiguration.Current.Wcag.ConformanceLevel;
   }
 
-  public static void HandleWarning (int priority)
+  public virtual void HandleWarning (int priority)
   {
     string message = string.Format (
         "An element on the page might not comply with a priority {0} checkpoint.", priority);
     HandleWarning (message);
   }
 
-  public static void HandleWarning (int priority, Control control)
+  public virtual void HandleWarning (int priority, Control control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
 
@@ -80,7 +84,7 @@ public class WcagUtility
     HandleWarning (message);
   }
 
-  public static void HandleWarning (int priority, Control control, string property)
+  public virtual void HandleWarning (int priority, Control control, string property)
   {
     ArgumentUtility.CheckNotNull ("control", control);
 
@@ -90,20 +94,20 @@ public class WcagUtility
     HandleWarning (message);
   }
 
-  public static void HandleWarning (string message)
+  public virtual void HandleWarning (string message)
   {
     if (IsWcagDebugLogEnabled())
       s_log.Warn (message);
   }
 
-  public static void HandleError (int priority)
+  public virtual void HandleError (int priority)
   {
     string message = string.Format (
         "An element on the page does comply with a priority {0} checkpoint.", priority);
     HandleError (message);
   }
 
-  public static void HandleError (int priority, Control control)
+  public virtual void HandleError (int priority, Control control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
 
@@ -113,7 +117,7 @@ public class WcagUtility
     HandleError (message);
   }
 
-  public static void HandleError (int priority, Control control, string property)
+  public virtual void HandleError (int priority, Control control, string property)
   {
     ArgumentUtility.CheckNotNull ("control", control);
 
@@ -123,18 +127,13 @@ public class WcagUtility
     HandleError (message);
   }
 
-  public static void HandleError (string message)
+  public virtual void HandleError (string message)
   {
     if (IsWcagDebugLogEnabled())
       s_log.Error (message);
     if (IsWcagDebugExceptionEnabled())
       throw new WcagException (message, null);
   }
-
-  /// <exclude />
-	private WcagUtility()
-	{
-	}
 }
 
 }
