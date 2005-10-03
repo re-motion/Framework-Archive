@@ -655,7 +655,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\WcagUtility.cs"
+                    RelPath = "UI\WcagHelper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

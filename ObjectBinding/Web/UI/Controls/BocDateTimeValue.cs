@@ -235,11 +235,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
-      if (ActualValueType == BocDateTimeValueType.DateTime)
-        WcagHelper.HandleError (2, this, "ActualValueType");
-
       if (DateTextBoxStyle.AutoPostBack)
         WcagHelper.HandleWarning (1, this, "DateTextBoxStyle.AutoPostBack");
 
@@ -254,6 +251,12 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
       if (TimeTextBox.AutoPostBack)
         WcagHelper.HandleWarning (1, this, "TimeTextBox.AutoPostBack");
+    }
+
+    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
+    {
+      if (ActualValueType == BocDateTimeValueType.DateTime)
+        WcagHelper.HandleError (2, this, "ActualValueType");
     }
   }
 

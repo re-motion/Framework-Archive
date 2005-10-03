@@ -1,7 +1,9 @@
 1.3.11
 ======
 - Rubicon.Web.Configuration.WcagConfiguration
-  * Property Debug abgeandert zu Debugging vom Typ WcagDebugMode.
+  * Property Debug abgeändert zu Debugging vom Typ WcagDebugMode.
+
+- Rubicon.Web.Utilities.WcagUtility zu Rubicon.Web.UI.WcagHelper umgebaut.  
   
 1.3.8
 =====
