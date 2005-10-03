@@ -159,6 +159,7 @@ public class TabbedMultiView: WebControl, IControl
   private Style _bottomControlsStyle;
 
   private EmptyTabView _placeHolderTabView;
+  private WcagHelper _wcagHelper;
 
   // construction and destruction
   public TabbedMultiView()
@@ -320,8 +321,8 @@ public class TabbedMultiView: WebControl, IControl
   {
     EnsureChildControls();
    
-    if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
-      WcagUtility.HandleError (1, this);
+    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
+      WcagHelper.HandleError (1, this);
 
     RenderTopControls (writer);
     RenderTabStrip (writer);
@@ -606,6 +607,17 @@ public class TabbedMultiView: WebControl, IControl
 //        _tabStrip.TabsPaneSize = value; 
 //    }
 //  }
+
+  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
+  protected virtual WcagHelper WcagHelper
+  {
+    get 
+    {
+      if (_wcagHelper == null)
+        _wcagHelper = new WcagHelper();
+      return _wcagHelper; 
+    }
+  }
 
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>'s tab strip. </summary>

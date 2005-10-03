@@ -31,6 +31,7 @@ public class WebButton :
 #endif
 
   private NaBooleanEnum _useLegacyButton = NaBooleanEnum.Undefined;
+  private WcagHelper _wcagHelper;
 
   public WebButton()
   {
@@ -204,17 +205,16 @@ public class WebButton :
   /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
+    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
     {
       if (_useLegacyButton != NaBooleanEnum.True)
-        WcagUtility.HandleError (1, this, "UseLegacyButton");
+        WcagHelper.HandleError (1, this, "UseLegacyButton");
     }
   }
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (WcagUtility.IsWaiConformanceLevelARequired())
-      EvaluateWaiConformity ();
+    EvaluateWaiConformity ();
 
     if (IsLegacyButtonEnabled)
       return;
@@ -320,7 +320,7 @@ public class WebButton :
 
   protected bool IsLegacyButtonEnabled
   {
-    get { return WcagUtility.IsWaiConformanceLevelARequired() || _useLegacyButton == NaBooleanEnum.True;}
+    get { return WcagHelper.IsWaiConformanceLevelARequired() || _useLegacyButton == NaBooleanEnum.True;}
   }
 
   private string EnsureEndWithSemiColon (string value)
@@ -345,6 +345,16 @@ public class WebButton :
     return ("javascript:" + secondScript);
   }
 
+  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
+  protected virtual WcagHelper WcagHelper
+  {
+    get 
+    {
+      if (_wcagHelper == null)
+        _wcagHelper = new WcagHelper();
+      return _wcagHelper; 
+    }
+  }
 
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="WebButton"/> itself. </summary>

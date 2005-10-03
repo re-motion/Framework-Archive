@@ -88,6 +88,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   private bool _enableTreeNodeViewState = true;
   private bool _hasTreeNodesCreated = false;
   private WebTreeNode _selectedNode = null;
+  private WcagHelper _wcagHelper;
 
   /// <summary>
   ///   The delegate called before a node with <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/>
@@ -411,9 +412,9 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   /// <summary> Overrides the parent control's <c>RenderContents</c> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
-    if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
+    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
     {
-      WcagUtility.HandleError (1, this);
+      WcagHelper.HandleError (1, this);
     }
 
     ResolveNodeIcons();
@@ -865,6 +866,17 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
     }
   }
  
+  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
+  protected virtual WcagHelper WcagHelper
+  {
+    get 
+    {
+      if (_wcagHelper == null)
+        _wcagHelper = new WcagHelper();
+      return _wcagHelper; 
+    }
+  }
+
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTreeView"/> node. </summary>
   /// <remarks> Class: <c>treeViewNode</c> </remarks>

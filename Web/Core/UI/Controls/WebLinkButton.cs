@@ -14,6 +14,7 @@ namespace Rubicon.Web.UI.Controls
 public class WebLinkButton : LinkButton
 {
   private string _text;
+  private WcagHelper _wcagHelper;
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
@@ -29,13 +30,24 @@ public class WebLinkButton : LinkButton
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
-      WcagUtility.HandleError (1, this);
+    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
+      WcagHelper.HandleError (1, this);
 
     if (HasControls())
       base.RenderContents (writer);
     else
       writer.Write (_text);
+  }
+
+  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
+  protected virtual WcagHelper WcagHelper
+  {
+    get 
+    {
+      if (_wcagHelper == null)
+        _wcagHelper = new WcagHelper();
+      return _wcagHelper; 
+    }
   }
 }
 

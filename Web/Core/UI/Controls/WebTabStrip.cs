@@ -44,6 +44,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   private Style _tabSelectedStyle;
   private NaInt32 _tabsPaneSize = NaInt32.Null;
   private Control _ownerControl;
+  private WcagHelper _wcagHelper;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTabStrip (Control ownerControl)
@@ -212,8 +213,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (WcagUtility.IsWcagDebuggingEnabled() && WcagUtility.IsWaiConformanceLevelARequired())
-      WcagUtility.HandleError (1, this);
+    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
+      WcagHelper.HandleError (1, this);
 
     int tabsOnPane = 0;
     bool isTabsPaneOpen = false;
@@ -588,6 +589,17 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 //        _tabsPaneSize = value; 
 //    }
 //  }
+
+  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
+  protected virtual WcagHelper WcagHelper
+  {
+    get 
+    {
+      if (_wcagHelper == null)
+        _wcagHelper = new WcagHelper();
+      return _wcagHelper; 
+    }
+  }
 
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTabStrip"/> itself. </summary>
