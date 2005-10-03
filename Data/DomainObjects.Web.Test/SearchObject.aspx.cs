@@ -9,12 +9,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
-using Rubicon.Data.DomainObjects.Web.Test.Classes;
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.Test
 {
-public class SearchObjectPage : BasePage
+public class SearchObjectPage : WxePage
 {
   protected Rubicon.Web.UI.Controls.FormGridManager SearchFormGridManager;
   protected Rubicon.ObjectBinding.Web.Controls.BocTextValue StringPropertyValue;
