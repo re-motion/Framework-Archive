@@ -179,6 +179,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
   private ResourceManagerSet _cachedResourceManager;
   private bool _controlExistedInPreviousRequest = false; 
+  private WcagHelper _wcagHelper;
 
   /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
   public BusinessObjectBoundWebControl ()
@@ -527,27 +528,38 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   protected bool IsWcagDebuggingEnabled
   {
-    get { return WcagUtility.IsWcagDebuggingEnabled(); }
+    get { return WcagHelper.IsWcagDebuggingEnabled(); }
   }
 
   protected virtual Rubicon.Web.Configuration.WaiConformanceLevel GetWaiConformanceLevel()
   {
-    return WcagUtility.GetWaiConformanceLevel();
+    return WcagHelper.GetWaiConformanceLevel();
   }
 
   protected bool IsWaiConformanceLevelARequired
   {
-    get { return WcagUtility.IsWaiConformanceLevelARequired (GetWaiConformanceLevel()); }
+    get { return WcagHelper.IsWaiConformanceLevelARequired (GetWaiConformanceLevel()); }
   }
 
   protected bool IsWaiConformanceLevelDoubleARequired
   {
-    get { return WcagUtility.IsWaiConformanceLevelDoubleARequired (GetWaiConformanceLevel()); }
+    get { return WcagHelper.IsWaiConformanceLevelDoubleARequired (GetWaiConformanceLevel()); }
   }
 
   protected bool IsWaiConformanceLevelTripleARequired
   {
-    get { return WcagUtility.IsWaiConformanceLevelTripleARequired (GetWaiConformanceLevel()); }
+    get { return WcagHelper.IsWaiConformanceLevelTripleARequired (GetWaiConformanceLevel()); }
+  }
+
+  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
+  protected virtual WcagHelper WcagHelper
+  {
+    get 
+    {
+      if (_wcagHelper == null)
+        _wcagHelper = new WcagHelper();
+      return _wcagHelper; 
+    }
   }
 
 //  /// <summary>
