@@ -48,12 +48,10 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 
     protected virtual void Application_PreRequestHandlerExecute(Object sender, EventArgs e)
     {
-      ClientTransaction.SetCurrent ((ClientTransaction) Session["ClientTransaction"]);
     }
 
     protected void Application_PostRequestHandlerExecute(Object sender, EventArgs e)
     {
-      Session["ClientTransaction"] = ClientTransaction.Current;
     }
 
 		protected void Application_Error(Object sender, EventArgs e)

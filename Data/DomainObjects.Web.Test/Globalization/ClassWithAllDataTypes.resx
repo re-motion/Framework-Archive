@@ -41,10 +41,10 @@
 	</resheader>
 
   <data name="property:StringProperty">
-    <value>resx:Zeichenketten-Eigenschaft (Mussfeld)</value>
+    <value>Ressourcentext für Zeichenketten-Eigenschaft</value>
   </data>
   <data name="property:Int32Property">
-    <value>resx:Zahlen-Eigenschaft (Mussfeld)</value>
+    <value>Ressourcentext für Zahlen-Eigenschaft</value>
   </data>
   <data name="Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes+EnumType.Value0">
     <value>Wert 0</value>

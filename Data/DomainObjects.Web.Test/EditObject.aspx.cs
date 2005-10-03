@@ -10,40 +10,29 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
 using Rubicon.Data.DomainObjects;
-using Rubicon.Data.DomainObjects.Web.Test.Classes;
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.Test
 {
-	public class EditObjectPage : BasePage
+	public class EditObjectPage : WxePage
 	{
     protected Rubicon.Web.UI.Controls.HtmlHeadContents Htmlheadcontents1;
 
     protected ControlWithAllDataTypes ControlWithAllDataTypesControl;
 
+    private EditObjectFunction MyFunction 
+    {
+      get { return (EditObjectFunction) CurrentFunction; }
+    }
+
 		private void Page_Load(object sender, System.EventArgs e)
 		{
-      if (!IsPostBack)
-      {
-        Session["CurrentObjectID"] = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-      }
-      else
-      {
-        ClientTransaction.SetCurrent ((ClientTransaction) Session["ClientTransaction"]);
-      }
-
-      ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject ((ObjectID) Session["CurrentObjectID"]);
-
-      ControlWithAllDataTypesControl.ObjectWithAllDataTypes = objectWithAllDataTypes;
+      ControlWithAllDataTypesControl.ObjectWithAllDataTypes = MyFunction.ObjectWithAllDataTypes;
 		}
-
-    protected override void OnUnload(EventArgs e)
-    {
-      Session["ClientTransaction"] = ClientTransaction.Current;
-      base.OnUnload (e);
-    }
 
 		#region Web Form Designer generated code
 		override protected void OnInit(EventArgs e)

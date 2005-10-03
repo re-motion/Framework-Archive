@@ -6,8 +6,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
 using Rubicon.ObjectBinding;
-
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.Test
 {
@@ -131,6 +131,7 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
       Save ();
       
       ClientTransaction.Current.Commit ();
+      ((WxePage) this.Page).ExecuteNextStep ();
     }
   }
 
