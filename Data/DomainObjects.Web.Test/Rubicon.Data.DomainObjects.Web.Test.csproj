@@ -296,11 +296,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Classes\BasePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Database\CreateDB.sql"
                     BuildAction = "Content"
                 />
@@ -357,6 +352,16 @@
                 />
                 <File
                     RelPath = "WxeFunctions\CreateRootTestTransactedFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WxeFunctions\EditObjectFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WxeFunctions\NewObjectFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
