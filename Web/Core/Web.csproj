@@ -655,6 +655,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\WcagUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\Command.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1024,11 +1029,6 @@
                 />
                 <File
                     RelPath = "Utilities\UrlUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\WcagUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
