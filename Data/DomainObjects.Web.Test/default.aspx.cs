@@ -16,6 +16,7 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 	/// </summary>
 	public class DefaultPage : System.Web.UI.Page
 	{
+    protected System.Web.UI.WebControls.LinkButton LinkButton1;
   
 		private void Page_Load(object sender, System.EventArgs e)
 		{
