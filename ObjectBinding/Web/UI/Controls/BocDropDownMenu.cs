@@ -62,7 +62,7 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   protected virtual void EvaluateWaiConformity ()
   {
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
-      WcagUtility.HandleError (1, this);
+      WcagHelper.HandleError (1, this);
   }
 
   protected override void OnPreRender(EventArgs e)

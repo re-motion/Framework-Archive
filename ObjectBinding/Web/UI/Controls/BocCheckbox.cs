@@ -168,10 +168,10 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (_showDescription == NaBooleanEnum.True)
-        WcagUtility.HandleError (1, this, "ShowDescription");
+        WcagHelper.HandleError (1, this, "ShowDescription");
 
       if (IsAutoPostBackEnabled)
-        WcagUtility.HandleWarning (1, this, "AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "AutoPostBack");
     }
   }
 

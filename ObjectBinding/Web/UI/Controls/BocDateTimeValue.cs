@@ -238,22 +238,22 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
     {
       if (ActualValueType == BocDateTimeValueType.DateTime)
-        WcagUtility.HandleError (2, this, "ActualValueType");
+        WcagHelper.HandleError (2, this, "ActualValueType");
 
       if (DateTextBoxStyle.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "DateTextBoxStyle.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "DateTextBoxStyle.AutoPostBack");
 
       if (TimeTextBoxStyle.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "TimeTextBoxStyle.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "TimeTextBoxStyle.AutoPostBack");
 
       if (DateTimeTextBoxStyle.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "DateTimeTextBoxStyle.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "DateTimeTextBoxStyle.AutoPostBack");
 
       if (DateTextBox.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "DateTextBox.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "DateTextBox.AutoPostBack");
 
       if (TimeTextBox.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "TimeTextBox.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "TimeTextBox.AutoPostBack");
     }
   }
 

@@ -982,23 +982,23 @@ public class BocList:
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (ShowOptionsMenu)
-        WcagUtility.HandleError (1, this, "ShowOptionsMenu");
+        WcagHelper.HandleError (1, this, "ShowOptionsMenu");
       if (ShowListMenu)
-        WcagUtility.HandleError (1, this, "ShowListMenu");
+        WcagHelper.HandleError (1, this, "ShowListMenu");
       if (ShowAvailableViewsList)
-        WcagUtility.HandleError (1, this, "ShowAvailableViewsList");
+        WcagHelper.HandleError (1, this, "ShowAvailableViewsList");
       bool isPagingEnabled = !_pageSize.IsNull && _pageSize.Value != 0;
       if (isPagingEnabled)
-        WcagUtility.HandleError (1, this, "PageSize");
+        WcagHelper.HandleError (1, this, "PageSize");
       if (EnableSorting)
-        WcagUtility.HandleWarning (1, this, "EnableSorting");
+        WcagHelper.HandleWarning (1, this, "EnableSorting");
       if (RowMenuDisplay == RowMenuDisplay.Automatic)
-        WcagUtility.HandleError (1, this, "RowMenuDisplay");
+        WcagHelper.HandleError (1, this, "RowMenuDisplay");
 
       for (int i = 0; i < columns.Length; i++)
       {
         if (columns[i] is BocEditDetailsColumnDefinition)
-          WcagUtility.HandleError (1, this, string.Format ("Columns[{0}]", i));
+          WcagHelper.HandleError (1, this, string.Format ("Columns[{0}]", i));
 
         BocCommandEnabledColumnDefinition commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
         if (commandColumn != null)
@@ -1007,17 +1007,17 @@ public class BocList:
                                           && (   commandColumn.Command.Type == CommandType.Event 
                                               || commandColumn.Command.Type == CommandType.WxeFunction);
           if (hasPostBackColumnCommand)
-            WcagUtility.HandleError (1, this, string.Format ("Columns[{0}]", i));
+            WcagHelper.HandleError (1, this, string.Format ("Columns[{0}]", i));
         }
 
         if (columns[i] is BocDropDownMenuColumnDefinition)
-          WcagUtility.HandleError (1, this, string.Format ("Columns[{0}]", i));
+          WcagHelper.HandleError (1, this, string.Format ("Columns[{0}]", i));
       }
     }
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
     {
       if (IsSelectionEnabled && ! IsIndexEnabled)
-        WcagUtility.HandleError (2, this, "Selection");
+        WcagHelper.HandleError (2, this, "Selection");
     }
   }
 

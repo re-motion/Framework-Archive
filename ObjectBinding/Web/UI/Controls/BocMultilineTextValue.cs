@@ -152,10 +152,10 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (TextBoxStyle.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "TextBoxStyle.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "TextBoxStyle.AutoPostBack");
 
       if (TextBox.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "TextBox.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "TextBox.AutoPostBack");
     }
   }
 

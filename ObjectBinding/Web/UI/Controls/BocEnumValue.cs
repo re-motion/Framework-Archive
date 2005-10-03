@@ -187,10 +187,10 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (ListControlStyle.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "ListControlStyle.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "ListControlStyle.AutoPostBack");
 
       if (ListControl.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "ListControl.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "ListControl.AutoPostBack");
     }
   }
 

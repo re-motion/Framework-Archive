@@ -443,18 +443,18 @@ public class BocReferenceValue:
     if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
     {
       if (_showOptionsMenu)
-        WcagUtility.HandleError (1, this, "ShowOptionsMenu");
+        WcagHelper.HandleError (1, this, "ShowOptionsMenu");
       bool hasPostBackCommand =     Command != null
                                 && (   Command.Type == CommandType.Event 
                                     || Command.Type == CommandType.WxeFunction);
       if (hasPostBackCommand)
-        WcagUtility.HandleError (1, this, "Command");
+        WcagHelper.HandleError (1, this, "Command");
 
       if (DropDownListStyle.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");
 
       if (DropDownList.AutoPostBack)
-        WcagUtility.HandleWarning (1, this, "DropDownList.AutoPostBack");
+        WcagHelper.HandleWarning (1, this, "DropDownList.AutoPostBack");
     }
   }
 
