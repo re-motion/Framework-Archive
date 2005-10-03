@@ -28,7 +28,9 @@ public class WebButtonTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _webButton.UseLegacyButton = NaBooleanEnum.False;
     _webButton.EvaluateWaiConformity();
-    // Assert.Succeed();
+    
+    Assert.IsFalse (_webButton.WcagHelperMock.HasWarning);
+    Assert.IsFalse (_webButton.WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -37,27 +39,35 @@ public class WebButtonTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _webButton.UseLegacyButton = NaBooleanEnum.False;
     _webButton.EvaluateWaiConformity();
-    // Assert.Succeed();
+    
+    Assert.IsFalse (_webButton.WcagHelperMock.HasWarning);
+    Assert.IsFalse (_webButton.WcagHelperMock.HasError);
   }
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'UseLegacyButton' for WebButtonMock 'WebButton' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsFalse()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _webButton.UseLegacyButton = NaBooleanEnum.False;
     _webButton.EvaluateWaiConformity();
-    Assert.Fail();
+    
+    Assert.IsTrue (_webButton.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _webButton.WcagHelperMock.Priority);
+    Assert.AreSame (_webButton, _webButton.WcagHelperMock.Control);
+    Assert.AreEqual ("UseLegacyButton", _webButton.WcagHelperMock.Property);
   }
 
 	[Test]
-  [ExpectedException (typeof (WcagException), "The value of property 'UseLegacyButton' for WebButtonMock 'WebButton' does not comply with a priority 1 checkpoint.")]
   public void EvaluateWaiConformityDebugLevelAWithUseLegacyButtonIsUndefined()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _webButton.UseLegacyButton = NaBooleanEnum.Undefined;
     _webButton.EvaluateWaiConformity();
-    Assert.Fail();
+
+    Assert.IsTrue (_webButton.WcagHelperMock.HasError);
+    Assert.AreEqual (1, _webButton.WcagHelperMock.Priority);
+    Assert.AreSame (_webButton, _webButton.WcagHelperMock.Control);
+    Assert.AreEqual ("UseLegacyButton", _webButton.WcagHelperMock.Property);
   }
 
 
