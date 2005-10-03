@@ -8,12 +8,13 @@
     <meta name=vs_defaultClientScript content="JavaScript">
     <meta name=vs_targetSchema content="http://schemas.microsoft.com/intellisense/ie5">
   </HEAD>
-  <body MS_POSITIONING="GridLayout">
+  <body >
     <form id="Form1" method="post" runat="server">
-      <a href="EditObject.aspx" target="_blank">Bestehendes Objekt editieren</a><br>
-      <a href="NewObject.aspx" target="_blank">Neues Objekt editieren</a><br>
+      
+      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.EditObjectFunction, Rubicon.Data.DomainObjects.Web.Test">Bestehendes Objekt editieren</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.NewObjectFunction, Rubicon.Data.DomainObjects.Web.Test">Neues Objekt editieren</a><br>
       <a href="SearchObject.aspx" target="_blank">Objekt suchen</a><br>
-      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.WxeTestPageFunction,Rubicon.Data.DomainObjects.Web.Test&ClassWithAllDataTypesID=ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid" target="_blank">WxeFunctionTest</a>
+      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.WxeTestPageFunction,Rubicon.Data.DomainObjects.Web.Test&amp;ClassWithAllDataTypesID=ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid" target="_blank">WxeFunctionTest</a> 
     </form>
   </body>
 </HTML>
