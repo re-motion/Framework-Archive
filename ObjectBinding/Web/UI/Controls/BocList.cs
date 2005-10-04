@@ -542,7 +542,8 @@ public class BocList:
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>'.");
+      throw new ArgumentException (
+          "First part of argument 'eventArgument' must be an integer. Expected format: '<column-index>,<list-index>'.");
     }
 
     //  Second part: list index
@@ -556,18 +557,30 @@ public class BocList:
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>'.");
+      throw new ArgumentException (
+          "Second part of argument 'eventArgument' must be an integer. Expected format: <column-index>,<list-index>'.");
     }
 
     BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
 
     if (columnIndex >= columns.Length)
-      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
+      throw new ArgumentOutOfRangeException (
+            "Column index of argument 'eventargument' was out of the range of valid values."
+          + "Index must be less than the number of displayed columns.'");
 
     BocCommandEnabledColumnDefinition column = (BocCommandEnabledColumnDefinition) columns[columnIndex];
     if (column.Command == null)
-      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a command inside column " + columnIndex + ".");
+    {
+      throw new ArgumentOutOfRangeException (string.Format (
+          "The BocList '{0}' does not have a command inside column {1}.", ID, columnIndex));
+    }
     BocListItemCommand command = column.Command;
+
+    if (Value == null)
+    {
+      throw new InvalidOperationException (string.Format (
+          "The BocList '{0}' does not have a Value when attempting to handle the list item click event.", ID));
+    }
 
     switch (command.Type)
     {
@@ -793,7 +806,8 @@ public class BocList:
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("First part of argument 'eventArgument' must be an integer. Expected format: '<list-index>,<command>'.");
+      throw new ArgumentException (
+          "First part of argument 'eventArgument' must be an integer. Expected format: '<list-index>,<command>'.");
     }
 
     //  Second part: command
@@ -807,7 +821,14 @@ public class BocList:
     }
     catch (FormatException)
     {
-      throw new ArgumentException ("Second part of argument 'eventArgument' must be an integer. Expected format: <list-index>,<command>'.");
+      throw new ArgumentException (
+          "Second part of argument 'eventArgument' must be an integer. Expected format: <list-index>,<command>'.");
+    }
+
+    if (Value == null)
+    {
+      throw new InvalidOperationException (string.Format (
+          "The BocList '{0}' does not have a Value when attempting to handle the list item click event.", ID));
     }
 
     switch (command)
@@ -815,7 +836,10 @@ public class BocList:
       case EditDetailsCommand.Edit:
       {
         if (listIndex >= Value.Count)
-          throw new ArgumentOutOfRangeException ("list-index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of business objects in the list.'");
+        {
+          throw new ArgumentOutOfRangeException (
+              "list-index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of business objects in the list.'");
+        }
         SwitchRowIntoEditMode (listIndex);
         break;
       }
@@ -2573,7 +2597,7 @@ public class BocList:
       int count = 0;
       if (IsPagingEnabled)
         count = _pageSize.Value;
-      else if (Value != null)
+      else if (! IsEmptyList)
         count = Value.Count;
 
       if (_hasClientScript)
@@ -3602,8 +3626,9 @@ public class BocList:
   /// <returns> Pair &lt;original index, IBusinessObject&gt; </returns>
   protected Pair[] GetIndexedRows (bool sorted)
   {
-    ArrayList rows = new ArrayList (Value.Count);
-    for (int idxRows = 0; idxRows < Value.Count; idxRows++)
+    int rowCount = IsEmptyList ? 0 : Value.Count;
+    ArrayList rows = new ArrayList (rowCount);
+    for (int idxRows = 0; idxRows < rowCount; idxRows++)
       rows.Add (new Pair (idxRows, Value[idxRows]));
 
     if (sorted)
@@ -4141,6 +4166,9 @@ public class BocList:
     if (IsReadOnly || IsEditDetailsModeActive)
       return;
 
+    if (Value == null)
+      throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
+
     if (Value.Count > index)
       _modifiableRowIndex = index;
     else
@@ -4317,6 +4345,12 @@ public class BocList:
 
     if (! IsEditDetailsModeActive)
       return;
+
+    if (Value == null)
+    {
+      throw new InvalidOperationException (string.Format (
+          "Row edit mode cannot be restored: The BocList '{0}' does not have a Value.", ID));
+    }
 
     if (_modifiableRowIndex.Value >= Value.Count)
     {
@@ -4856,7 +4890,10 @@ public class BocList:
 
   /// <summary> Sets the <see cref="IBusinessObject"/> objects selected in the <see cref="BocList"/>. </summary>
   /// <param name="selectedObjects"> An <see cref="IList"/> of <see cref="IBusinessObject"/> objects. </param>>
-  /// <exception cref="InvalidOperationException"> Thrown if the number of rows do not match the <see cref="Selection"/> mode.</exception>
+  /// <exception cref="InvalidOperationException"> 
+  ///   Thrown if the number of rows do not match the <see cref="Selection"/> mode 
+  ///   or the <see cref="Value"/> is <see langword="null"/>.
+  /// </exception>
   public void SetSelectedBusinessObjects (IList selectedObjects)
   {
     ArgumentUtility.CheckNotNull ("selectedObjects", selectedObjects);
@@ -4864,6 +4901,9 @@ public class BocList:
     
     if (Value == null)
       return;
+
+    if (Value == null)
+      throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
 
     try
     {
