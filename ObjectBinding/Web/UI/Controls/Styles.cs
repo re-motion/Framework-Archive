@@ -26,6 +26,7 @@ public class ListControlStyle: Style
   private RepeatDirection _radioButtonListRepeatDirection = RepeatDirection.Vertical;
   private RepeatLayout _radionButtonListRepeatLayout = RepeatLayout.Table;
   private TextAlign _radioButtonListTextAlign = TextAlign.Right;
+  private bool _radioButtonListNullValueVisible = true;
 
   [Description("The type of control that is used in edit mode.")]
   [Category("Behavior")]
@@ -115,6 +116,16 @@ public class ListControlStyle: Style
   {
     get { return _radioButtonListTextAlign; }
     set { _radioButtonListTextAlign = value; }
+  }
+
+  [Description("A flag that determines whether to show the null value in the radio button list.")]
+  [Category("Behavior")]
+  [DefaultValue (true)]
+  [NotifyParentProperty (true)]
+  public bool RadioButtonListNullValueVisible
+  {
+    get { return _radioButtonListNullValueVisible; }
+    set { _radioButtonListNullValueVisible = value; }
   }
 
   public ListControl Create (bool applyStyle)
