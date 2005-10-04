@@ -653,6 +653,121 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Design\DesignTestBooleanValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\DesignTestBooleanValueForm.aspx.cs"
+                    DependentUpon = "DesignTestBooleanValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestBooleanValueForm.aspx.resx"
+                    DependentUpon = "DesignTestBooleanValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Design\DesignTestCheckBoxForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\DesignTestCheckBoxForm.aspx.cs"
+                    DependentUpon = "DesignTestCheckBoxForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestCheckBoxForm.aspx.resx"
+                    DependentUpon = "DesignTestCheckBoxForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Design\DesignTestDateTimeValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\DesignTestDateTimeValueForm.aspx.cs"
+                    DependentUpon = "DesignTestDateTimeValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestDateTimeValueForm.aspx.resx"
+                    DependentUpon = "DesignTestDateTimeValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Design\DesignTestDateValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\DesignTestDateValueForm.aspx.cs"
+                    DependentUpon = "DesignTestDateValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestDateValueForm.aspx.resx"
+                    DependentUpon = "DesignTestDateValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Design\DesignTestEnumValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\DesignTestEnumValueForm.aspx.cs"
+                    DependentUpon = "DesignTestEnumValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestEnumValueForm.aspx.resx"
+                    DependentUpon = "DesignTestEnumValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Design\DesignTestFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestMultilineTextValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\DesignTestMultilineTextValueForm.aspx.cs"
+                    DependentUpon = "DesignTestMultilineTextValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestMultilineTextValueForm.aspx.resx"
+                    DependentUpon = "DesignTestMultilineTextValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Design\DesignTestTextValueForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\DesignTestTextValueForm.aspx.cs"
+                    DependentUpon = "DesignTestTextValueForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestTextValueForm.aspx.resx"
+                    DependentUpon = "DesignTestTextValueForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Design\DesignTestWxeBasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Doc\Detecting Browser unload events, SmartNavigation.txt"
                     BuildAction = "Content"
                 />
