@@ -331,7 +331,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
             writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["width"]);
         }
       }
-
       _textBox.RenderControl (writer);
     }
   }
@@ -778,6 +777,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public string FocusID
   { 
     get { return IsReadOnly ? null : _textBox.ClientID; }

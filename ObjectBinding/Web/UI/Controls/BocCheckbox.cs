@@ -615,6 +615,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   }
 
   /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public string FocusID
   { 
     get { return IsReadOnly ? null : _checkBox.ClientID; }

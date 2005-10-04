@@ -317,12 +317,14 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     else
     {
       bool isControlHeightEmpty = Height.IsEmpty && StringUtility.IsNullOrEmpty (Style["height"]);
-      bool isListControlHeightEmpty = StringUtility.IsNullOrEmpty (_listControl.Style["height"]);
+      bool isListControlHeightEmpty = _listControl.Height.IsEmpty 
+          && StringUtility.IsNullOrEmpty (_listControl.Style["height"]);
       if (! isControlHeightEmpty && isListControlHeightEmpty)
         writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
 
       bool isControlWidthEmpty = Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]);
-      bool isListControlWidthEmpty = StringUtility.IsNullOrEmpty (_listControl.Style["width"]);
+      bool isListControlWidthEmpty = _listControl.Width.IsEmpty 
+          && StringUtility.IsNullOrEmpty (_listControl.Style["width"]);
       if (isListControlWidthEmpty)
       {
         if (isControlWidthEmpty)
@@ -759,6 +761,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public string FocusID
   { 
     get { return IsReadOnly ? null : _listControl.ClientID; }

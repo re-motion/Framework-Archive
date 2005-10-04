@@ -5,6 +5,9 @@
     Required: Undefined (null) wird nicht als Button angezeigt, sondern als nicht getätigte Auswahl.
     Not Required: Via ListControlStyle.RadioButtonListNullValueVisible lässt sich das Verhalten identisch zu
       Required konfigurieren. Per Default wird der Undefined Button angezeigt.
+- BocEnumValue, BocReferenceValue
+  * Bugfix: wurden Border, Color, CssClass, Width, Height, Font im ListStyle angegeben, 
+    wurden diese nicht übernommen.
     
 1.3.10
 ======

@@ -565,10 +565,13 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
   public string FocusID
   { 
     get { return IsReadOnly ? null : _hyperLink.ClientID; }
   }
+
   /// <summary> Gets the string representation of this control's <see cref="Value"/>. </summary>
   /// <remarks> 
   ///   <para>
