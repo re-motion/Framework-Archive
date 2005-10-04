@@ -33,18 +33,19 @@ Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte:
     - Rubicon.Data.DomainObjects.UnitTests.Factories.TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer
     - Rubicon.Data.DomainObjects.UnitTests.DomainObjects.DomainObjectTest.LoadingOfSimpleObject
     - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderCreateNewDataContainerTest.CreateClassWithAllDataTypes
-    - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderExecuteCollectionQueryTest.ExecuteCollectionQueryWithAllDataTypes
+    - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderExecuteCollectionQueryTest.AllDataTypes
     - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveExistingTest.SaveAllSimpleDataTypes
     - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveExistingTest.SaveAllNullableTypes
     - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveExistingTest.SaveAllNullableTypesWithNull
     - Rubicon.Data.DomainObjects.UnitTests.Persistence.SqlProviderSaveNewTest.AllDataTypes
-
+    
 12. Alle UnitTests laufen lassen. Diese müssen an der erwarteten Stelle scheitern, wenn Änderungen in einer der folgenden Klassen/Methoden notwendig sind:
-    - Rubicon.Data.DomainObjects.Persistence.ValueConverter (Alle Methoden)
+    - Rubicon.Data.DomainObjects.Persistence.Rdbms.ValueConverter (Alle Methoden)
     - Rubicon.Data.DomainObjects.DataContainer (Methoden IsNull und IsNullOrEmpty)
-
-13. Neue Datentypen in Rubicon.Data.DomainObjects.Persistence.ValueConverter.GetValue ergänzen.
-    Evtl. muss auch Methode Rubicon.Data.DomainObjects.Persistence.ValueConverter.GetDBValue ergänzt werden.
+      => Möglicherweise neue Tests für IsNull oder IsNullOrEmpty ergänzen
+    
+13. Neue Datentypen in Rubicon.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetValue ergänzen.
+    Evtl. muss auch Methode Rubicon.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetDBValue ergänzt werden.
 
 
 
