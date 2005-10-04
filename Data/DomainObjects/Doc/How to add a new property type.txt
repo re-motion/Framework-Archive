@@ -61,7 +61,7 @@ Neue Datentypen in RPA ergänzen:
 16. Neue Datentypen in Rubicon.Data.DomainObjects.ObjectBinding.DomainObjectProperty.Create ergänzen.
 
 17. Rubicon.Data.DomainObjects.ObjectBinding.Web.Test ergänzen:
-    - mapping.xsd von Rubicon.Data.DomainObjects nach "C:\development\libraries\Commons\Data\DomainObjects\ObjectBinding\Web\Test\bin" kopieren
+    - mapping.xsd von Rubicon.Data.DomainObjects nach "C:\development\libraries\Commons\Data\DomainObjects.Web.Test\bin" kopieren
     - SetupDB.sql erweitern und ausführen
     - CreateTestData.sql erweitern und ausführen
     - mapping.xml erweitern
