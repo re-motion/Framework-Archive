@@ -55,9 +55,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.UnitTests", "DomainObjects.ObjectBinding.UnitTests\Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.csproj", "{21EC480E-91C6-4558-963B-796698DBB668}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 15
+		SccNumberOfProjects = 16
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {15D953AA-128D-410E-90E9-33617BB62CB3}
@@ -101,14 +105,14 @@ Global
 		SccProjectName10 = \u0022$/libraries/Commons/Data/DomainObjects.ObjectBinding.Web\u0022,\u0020OQZAAAAA
 		SccLocalPath10 = DomainObjects.ObjectBinding.Web
 		CanCheckoutShared = false
-		SccProjectUniqueName11 = DomainObjects.PerformanceTests\\Rubicon.Data.DomainObjects.PerformanceTests.csproj
-		SccLocalPath11 = .
+		SccProjectUniqueName11 = ..\\prereq\\prereq.csproj
+		SccProjectName11 = \u0022$/libraries/Commons/prereq\u0022,\u0020DTTAAAAA
+		SccLocalPath11 = ..\\prereq
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection11 = DomainObjects.PerformanceTests\\
-		SccProjectUniqueName12 = ..\\prereq\\prereq.csproj
-		SccProjectName12 = \u0022$/libraries/Commons/prereq\u0022,\u0020DTTAAAAA
-		SccLocalPath12 = ..\\prereq
+		SccProjectUniqueName12 = DomainObjects.PerformanceTests\\Rubicon.Data.DomainObjects.PerformanceTests.csproj
+		SccLocalPath12 = .
 		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection12 = DomainObjects.PerformanceTests\\
 		SccProjectUniqueName13 = DomainObjects.Web\\Rubicon.Data.DomainObjects.Web.csproj
 		SccLocalPath13 = .
 		CanCheckoutShared = false
@@ -118,6 +122,10 @@ Global
 		SccLocalPath14 = DomainObjects.Web.Test
 		CanCheckoutShared = false
 		SccProjectEnlistmentChoice14 = 2
+		SccProjectUniqueName15 = DomainObjects.ObjectBinding.UnitTests\\Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.csproj
+		SccLocalPath15 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection15 = DomainObjects.ObjectBinding.UnitTests\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -178,6 +186,10 @@ Global
 		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug.Build.0 = Debug|.NET
 		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.ActiveCfg = Release|.NET
 		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release.Build.0 = Release|.NET
+		{21EC480E-91C6-4558-963B-796698DBB668}.Debug.ActiveCfg = Debug|.NET
+		{21EC480E-91C6-4558-963B-796698DBB668}.Debug.Build.0 = Debug|.NET
+		{21EC480E-91C6-4558-963B-796698DBB668}.Release.ActiveCfg = Release|.NET
+		{21EC480E-91C6-4558-963B-796698DBB668}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
