@@ -32,7 +32,7 @@ public class QueryDefinitionTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException))]
+  [ExpectedException (typeof (ArgumentException), "The scalar query 'QueryID' must not specify a collectionType.\r\nParameter name: collectionType")]
   public void InitializeScalarQueryWithCollectionType ()
   {
     QueryDefinition definition = new QueryDefinition (
@@ -40,7 +40,7 @@ public class QueryDefinitionTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), "The collectionType of query 'QueryID' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.")]
+  [ExpectedException (typeof (ArgumentException), "The collectionType of query 'QueryID' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.\r\nParameter name: collectionType")]
   public void InitializeInvalidCollectionType ()
   {
     QueryDefinition definition = new QueryDefinition (

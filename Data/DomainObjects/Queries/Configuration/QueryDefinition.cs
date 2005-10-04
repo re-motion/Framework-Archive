@@ -78,7 +78,7 @@ public class QueryDefinition
     ArgumentUtility.CheckValidEnumValue (queryType, "queryType");
 
     if (queryType == QueryType.Scalar && collectionType != null)
-      throw new ArgumentException ("A scalar query must not specify a collectionType.", "collectionType");
+      throw new ArgumentException (string.Format ("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");
 
     if (queryType == QueryType.Collection && collectionType == null)
       collectionType = typeof (DomainObjectCollection);
@@ -88,7 +88,7 @@ public class QueryDefinition
         && !collectionType.IsSubclassOf (typeof (DomainObjectCollection)))
     {
       throw new ArgumentException (string.Format (
-          "The collectionType of query '{0}' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID));
+          "The collectionType of query '{0}' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
     }
 
     _queryID = queryID;
