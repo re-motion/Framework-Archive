@@ -40,7 +40,7 @@ public class QueryDefinitionTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException))]
+  [ExpectedException (typeof (ArgumentException), "The collectionType of query 'QueryID' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.")]
   public void InitializeInvalidCollectionType ()
   {
     QueryDefinition definition = new QueryDefinition (
