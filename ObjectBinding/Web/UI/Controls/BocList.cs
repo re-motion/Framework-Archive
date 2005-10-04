@@ -4158,6 +4158,8 @@ public class BocList:
   public void SwitchRowIntoEditMode (int index)
   {
     if (index < 0) throw new ArgumentOutOfRangeException ("index");
+    if (IsEmptyList) throw new ArgumentOutOfRangeException ("index");
+    if (index >= Value.Count) throw new ArgumentOutOfRangeException ("index");
 
     EnsureRowEditModeRestored();
 
@@ -4166,14 +4168,7 @@ public class BocList:
     if (IsReadOnly || IsEditDetailsModeActive)
       return;
 
-    if (Value == null)
-      throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
-
-    if (Value.Count > index)
-      _modifiableRowIndex = index;
-    else
-      throw new ArgumentOutOfRangeException ("index");
-
+    _modifiableRowIndex = index;
     CreateRowEditModeControls (EnsureColumnsGot());
     _rowEditModeDataSource.LoadValues (false);
   }
