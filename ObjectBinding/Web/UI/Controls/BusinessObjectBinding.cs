@@ -220,15 +220,15 @@ public class BusinessObjectBinding
                 string.Format ("The business object class '{0}' bound to {1} '{2}' via the DataSource " + 
                         "does not support the business object property '{3}'.",
                     DataSource.BusinessObjectClass.Identifier, 
-                    this.GetType().Name, 
+                    _control.GetType().Name, 
                     _control.ID, 
                     _propertyIdentifier));
           }
-          if (! Control.SupportsProperty (property))
+          if (! _control.SupportsProperty (property))
           {
             throw new InvalidOperationException (
                 string.Format ("{0} '{1}' does not support the business object property '{2}'.", 
-                    this.GetType().Name, _control.ID, _propertyIdentifier));
+                    _control.GetType().Name, _control.ID, _propertyIdentifier));
           }
           _property = property;
         }
