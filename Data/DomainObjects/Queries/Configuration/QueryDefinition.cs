@@ -87,8 +87,8 @@ public class QueryDefinition
         && !collectionType.Equals (typeof (DomainObjectCollection)) 
         && !collectionType.IsSubclassOf (typeof (DomainObjectCollection)))
     {
-      throw new ArgumentException (
-          "CollectionType must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.");
+      throw new ArgumentException (string.Format (
+          "The collectionType of query '{0}' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID));
     }
 
     _queryID = queryID;
