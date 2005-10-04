@@ -152,6 +152,7 @@ public class ListControlStyle: Style
 
   public void ApplyCommonStyle (ListControl listControl)
   {
+    listControl.ApplyStyle (this);
     if (! _autoPostBack.IsNull)
       listControl.AutoPostBack = _autoPostBack.Value;
   }
@@ -216,6 +217,7 @@ public class DropDownListStyle: Style
 
   public void ApplyStyle (DropDownList dropDownList)
   {
+    dropDownList.ApplyStyle (this);
     if (! _autoPostBack.IsNull)
       dropDownList.AutoPostBack = _autoPostBack.Value;
   }
