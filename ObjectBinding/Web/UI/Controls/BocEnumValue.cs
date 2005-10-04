@@ -419,21 +419,40 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
     BaseValidator[] validators = new BaseValidator[1];
     
-    CompareValidator notNullItemValidator = new CompareValidator();
-    notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
-    notNullItemValidator.ControlToValidate = TargetControl.ID;
-    notNullItemValidator.ValueToCompare = c_nullIdentifier;
-    notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
-    if (StringUtility.IsNullOrEmpty (_errorMessage))
+    if (IsNullItemVisible)
     {
-      notNullItemValidator.ErrorMessage = 
-          GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
+      CompareValidator notNullItemValidator = new CompareValidator();
+      notNullItemValidator.ID = ID + "_ValidatorNotNullItem";
+      notNullItemValidator.ControlToValidate = TargetControl.ID;
+      notNullItemValidator.ValueToCompare = c_nullIdentifier;
+      notNullItemValidator.Operator = ValidationCompareOperator.NotEqual;
+      if (StringUtility.IsNullOrEmpty (_errorMessage))
+      {
+        notNullItemValidator.ErrorMessage = 
+            GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
+      }
+      else
+      {
+        notNullItemValidator.ErrorMessage = _errorMessage;
+      }      
+      validators[0] = notNullItemValidator;
     }
     else
     {
-      notNullItemValidator.ErrorMessage = _errorMessage;
-    }      
-    validators[0] = notNullItemValidator;
+      RequiredFieldValidator requiredValidator = new RequiredFieldValidator();
+      requiredValidator.ID = ID + "_ValidatorRequried";
+      requiredValidator.ControlToValidate = TargetControl.ID;
+      if (StringUtility.IsNullOrEmpty (_errorMessage))
+      {
+        requiredValidator.ErrorMessage = 
+            GetResourceManager().GetString (ResourceIdentifier.NullItemValidationMessage);
+      }
+      else
+      {
+        requiredValidator.ErrorMessage = _errorMessage;
+      }      
+      validators[0] = requiredValidator;
+    }
 
     //  No validation that only enabled enum values get selected and saved.
     //  This behaviour mimics the Fabasoft enum behaviour
@@ -518,11 +537,19 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       //  Check if null item is to be selected
       if (isNullItem)
       {
-        //  No null item in the list
-        if (_listControl.Items.FindByValue (c_nullIdentifier) == null)
-          _listControl.Items.Insert (0, CreateNullItem());
+        bool isNullItemVisible = IsNullItemVisible;
 
-        _listControl.SelectedValue = c_nullIdentifier;
+        ListItem nullItem = _listControl.Items.FindByValue (c_nullIdentifier);
+        //  No null item in the list
+        if (nullItem == null && isNullItemVisible)
+          _listControl.Items.Insert (0, CreateNullItem());
+        else if (nullItem != null && ! isNullItemVisible)
+          _listControl.Items.Remove (nullItem);
+
+        if (isNullItemVisible)
+          _listControl.SelectedValue = c_nullIdentifier;
+        else
+          _listControl.SelectedValue = null;
       }
       else
       {
@@ -535,6 +562,20 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
         _listControl.SelectedValue = InternalValue;
       }
+    }
+  }
+
+  /// <summary> Evaluates whether to show the null item as an option in the list. </summary>
+  private bool IsNullItemVisible
+  {
+    get
+    {
+      bool isRadioButtonList = _listControlStyle.ControlType == ListControlType.RadioButtonList;
+      if (! isRadioButtonList)
+        return true;
+      if (IsRequired)
+        return false;
+      return _listControlStyle.RadioButtonListNullValueVisible;
     }
   }
 

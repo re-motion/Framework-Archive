@@ -1,3 +1,11 @@
+1.3.11
+======
+- BocEnumValue
+  * Neues Verhalten für ListType = RadioButton
+    Required: Undefined (null) wird nicht als Button angezeigt, sondern als nicht getätigte Auswahl.
+    Not Required: Via ListControlStyle.RadioButtonListNullValueVisible lässt sich das Verhalten identisch zu
+      Required konfigurieren. Per Default wird der Undefined Button angezeigt.
+    
 1.3.10
 ======
 - BocReferenceValue
