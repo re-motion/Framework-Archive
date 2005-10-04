@@ -800,6 +800,14 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Html\design.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Html\global.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Images\CopyItem.gif"
                     BuildAction = "Content"
                 />
