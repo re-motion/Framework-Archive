@@ -21,6 +21,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   private string _customCellType;
   private string _customCellArgument;
   private bool _isSortable = false;
+  private BocCustomColumnDefinitionMode _mode;
 
   /// <summary> Initializes a new instance of the <see cref="BocCustomColumnDefinition"/> class. </summary>
   public BocCustomColumnDefinition()
@@ -68,11 +69,12 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   }
 
   /// <summary> 
-  ///   Gets or sets the The name/value pairs to set the <see cref="BocCustomColumnDefinitionCell"/>'s properties. 
+  ///   Gets or sets the comma seperated name/value pairs to set the <see cref="BocCustomColumnDefinitionCell"/>'s 
+  ///   properties. 
   /// </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Format")]
-  [Description ("The name/value pairs to set the BocCustomColumnDefinitionCell's properties (property=value).")]
+  [Description ("The comma seperated name/value pairs to set the BocCustomColumnDefinitionCell's properties (property=value).")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string CustomCellArgument
@@ -116,11 +118,22 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   [Category ("Behavior")]
   [Description ("A flag determining whether to enable sorting for this columns.")]
   [DefaultValue (true)]
-  [NotifyParentProperty (false)]
+  [NotifyParentProperty (true)]
   public bool IsSortable
   {
     get { return _isSortable; }
     set { _isSortable = value; }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("Determines how the cells are rendered.")]
+  [DefaultValue (BocCustomColumnDefinitionMode.NoControls)]
+  [NotifyParentProperty (true)]
+  public BocCustomColumnDefinitionMode Mode
+  {
+    get { return _mode; }
+    set { _mode = value; }
   }
 
   /// <summary> Gets the displayed value of the column title. </summary>
@@ -156,6 +169,18 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   } 
 }
 
+public enum BocCustomColumnDefinitionMode
+{
+  /// <summary> Rendering will be done using the <see cref="BocCustomColumnDefinitionCell.DoRender"/> method. </summary>
+  NoControls,
+  /// <summary> 
+  ///   Only the modifiable row will contain a control. The other rows will be rendered using the 
+  ///   <see cref="BocCustomColumnDefinitionCell.DoRender"/> method. 
+  /// </summary>
+  ControlInEditedRow,
+  /// <summary> All rows will contain controls. </summary>
+  ControlsInAllRows
+}
 
 /// <summary> Represents the method that handles the <see cref="BocList.CustomCellClick"/> event. </summary>
 public delegate void BocCustomCellClickEventHandler (object sender, BocCustomCellClickEventArgs e);
@@ -200,7 +225,6 @@ public class BocCustomCellClickEventArgs: EventArgs
   }
 }
 
-
 /// <summary>
 ///   Derive custom cell renderers from this class. 
 /// </summary>
@@ -220,25 +244,56 @@ public abstract class BocCustomColumnDefinitionCell
     return renderArguments.List.GetCustomCellPostBackClientEvent (
         renderArguments.ColumnIndex, renderArguments.ListIndex, eventArgument) + renderArguments.OnClick;
   }
-
-  public void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
+  
+  internal Control CreateControlInternal (BocCustomCellArguments arguments)
   {
     InitArguments (arguments);
-    DoRender (writer, arguments);
+    return CreateControl (arguments);
   }
 
-  /// <summary> 
-  ///   Override this method to render a custom cell. 
-  /// </summary>
+  /// <summary> Override this method to create the control a custom cell. </summary>
   /// <remarks> 
-  ///   Use <see cref="GetPostBackClientEvent"/> to render the code that invokes <see cref="OnClick"/>. 
+  ///   <note type="inheritinfos"> Do not call the base implementation when overriding this method. </note>
   /// </remarks>
-  protected abstract void DoRender (HtmlTextWriter writer, BocCustomCellRenderArguments arguments);
+  protected virtual Control CreateControl (BocCustomCellArguments arguments)
+  {
+    throw new NotImplementedException (string.Format (
+        "{0}: An implementation of 'CreateControl' is required if the 'BocCustomColumnDefinition.Mode' property "
+          + "is set to '{1}' or '{2}'.",
+        GetType().Name,
+        BocCustomColumnDefinitionMode.ControlInEditedRow.ToString(),
+        BocCustomColumnDefinitionMode.ControlsInAllRows.ToString()));
+  }
 
-  public void OnClick (BocCustomCellArguments arguments, string eventArgument)
+  internal void Init (BocCustomCellArguments arguments)
   {
     InitArguments (arguments);
-    DoOnClick (arguments, eventArgument);
+    OnInit (arguments);
+  }
+
+  /// <summary> Override this method to initialize a custom column. </summary>
+  protected virtual void OnInit (BocCustomCellArguments arguments)
+  {
+  }
+
+  internal void Load (BocCustomCellLoadArguments arguments)
+  {
+    InitArguments (arguments);
+    OnLoad (arguments);
+  }
+
+  /// <summary>
+  ///   Override this method to process an <c>OnClick</c> event generated by <see cref="GetPostBackClientEvent"/>.
+  /// </summary>
+  /// <param name="arguments"> The event arguments. </param>
+  protected virtual void OnLoad (BocCustomCellLoadArguments arguments)
+  {
+  }
+
+  internal void Click (BocCustomCellClickArguments arguments, string eventArgument)
+  {
+    InitArguments (arguments);
+    OnClick (arguments, eventArgument);
   }
 
   /// <summary>
@@ -246,18 +301,62 @@ public abstract class BocCustomColumnDefinitionCell
   /// </summary>
   /// <param name="arguments"> The event arguments. </param>
   /// <param name="eventArgument"> The parameter passed to <see cref="GetPostBackClientEvent"/>. </param>
-  protected virtual void DoOnClick (BocCustomCellArguments arguments, string eventArgument)
+  /// <remarks> 
+  ///   <note type="inheritinfos"> Do not call the base implementation when overriding this method. </note>
+  /// </remarks>
+  protected virtual void OnClick (BocCustomCellClickArguments arguments, string eventArgument)
   {
+    throw new NotImplementedException (string.Format (
+        "{0}: An implementation of 'OnClick' is required if a post back client event is rendered.",
+        GetType().Name));
+  }
+
+  internal void PreRender (BocCustomCellArguments arguments)
+  {
+    InitArguments (arguments);
+    OnPreRender (arguments);
+  }
+
+  /// <summary> Override this method to prerender a custom column. </summary>
+  /// <remarks> 
+  ///   This method is called only once during the <b>PreRender</b> phase of the <see cref="BocList"/>.
+  /// </remarks>
+  protected virtual void OnPreRender (BocCustomCellArguments arguments)
+  {
+  }
+  
+  internal void RenderInternal (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
+  {
+    InitArguments (arguments);
+    Render (writer, arguments);
+  }
+
+  /// <summary> 
+  ///   Override this method to render a custom cell. 
+  /// </summary>
+  /// <remarks> 
+  ///   Use <see cref="GetPostBackClientEvent"/> to render the code that invokes <see cref="OnClick"/>. 
+  ///   <note type="inheritinfos"> Do not call the base implementation when overriding this method. </note>
+  /// </remarks>
+  protected virtual void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
+  {
+    throw new NotImplementedException (string.Format (
+        "{0}: An implementation of 'Render' is required if the 'BocCustomColumnDefinition.Mode' property "
+          + "is set to '{1}' or '{2}'.",
+        GetType().Name,
+        BocCustomColumnDefinitionMode.NoControls.ToString(),
+        BocCustomColumnDefinitionMode.ControlInEditedRow.ToString()));
   }
 
   private void InitArguments (BocCustomCellArguments arguments)
   {
     _arguments = arguments;
-    string customArg = arguments.ColumnDefinition.CustomCellArgument;
-    if (! StringUtility.IsNullOrEmpty (customArg))
+
+    string propertyValuePairs = arguments.ColumnDefinition.CustomCellArgument;
+    if (! StringUtility.IsNullOrEmpty (propertyValuePairs))
     {
       NameValueCollection values = new NameValueCollection();
-      StringUtility.ParsedItem[] items = StringUtility.ParseSeparatedList (customArg, ',');
+      StringUtility.ParsedItem[] items = StringUtility.ParseSeparatedList (propertyValuePairs, ',');
       for (int i = 0; i < items.Length; i++)
       {
         string[] pair = items[i].Value.Split (new char[] {'='}, 2);
@@ -295,16 +394,13 @@ public abstract class BocCustomColumnDefinitionCell
 public class BocCustomCellArguments
 {
   private BocList _list;
-  private IBusinessObject _businessObject;
   private BocCustomColumnDefinition _columnDefinition;
 
   public BocCustomCellArguments (
       BocList list,
-      IBusinessObject businessObject, 
       BocCustomColumnDefinition columnDefiniton)
   {
     _list = list;
-    _businessObject = businessObject;
     _columnDefinition = columnDefiniton;
   }
 
@@ -314,12 +410,6 @@ public class BocCustomCellArguments
     get { return _list; }
   }
 
-  /// <summary> The <see cref="IBusinessObject"/> that should be rendered or that was clicked. </summary>
-  public IBusinessObject BusinessObject
-  {
-    get { return _businessObject; }
-  }
-
   /// <summary> The column definition of the column that should be rendered or that was clicked. </summary>
   public BocCustomColumnDefinition ColumnDefinition
   {
@@ -327,9 +417,68 @@ public class BocCustomCellArguments
   }
 }
 
+public class BocCustomCellLoadArguments: BocCustomCellArguments
+{
+  private IBusinessObject _businessObject;
+  private int _listIndex;
+  private Control _control;
+
+  public BocCustomCellLoadArguments (
+      BocList list,
+      IBusinessObject businessObject, 
+      BocCustomColumnDefinition columnDefiniton,
+      int listIndex,
+      Control control)
+    : base (list, columnDefiniton)
+  {
+    _businessObject = businessObject;
+    _listIndex = listIndex;
+    _control = control;
+  }
+
+  /// <summary> The <see cref="IBusinessObject"/> of the row being loaded. </summary>
+  public IBusinessObject BusinessObject
+  {
+    get { return _businessObject; }
+  }
+
+  /// <summary> The list index of the current business object. </summary>
+  public int ListIndex
+  {
+    get { return _listIndex; }
+  }
+  
+  /// <summary> The <see cref="T:Control"/> of this row. </summary>
+  public Control Control
+  {
+    get { return _control; }
+  }
+}
+
+public class BocCustomCellClickArguments: BocCustomCellArguments
+{
+  private IBusinessObject _businessObject;
+
+  public BocCustomCellClickArguments (
+      BocList list,
+      IBusinessObject businessObject, 
+      BocCustomColumnDefinition columnDefiniton)
+    : base (list, columnDefiniton)
+  {
+    _businessObject = businessObject;
+  }
+
+  /// <summary> The <see cref="IBusinessObject"/> that was clicked. </summary>
+  public IBusinessObject BusinessObject
+  {
+    get { return _businessObject; }
+  }
+}
+
 public class BocCustomCellRenderArguments: BocCustomCellArguments
 {
   private int _columnIndex;
+  private IBusinessObject _businessObject;
   private int _listIndex;
   private string _onClick;
 
@@ -340,9 +489,10 @@ public class BocCustomCellRenderArguments: BocCustomCellArguments
       int columnIndex,
       int listIndex,
       string onClick)
-    : base (list, businessObject, columnDefiniton)
+    : base (list, columnDefiniton)
   {
     _columnIndex = columnIndex;
+    _businessObject = businessObject;
     _listIndex = listIndex;
     _onClick = onClick;
   }
@@ -353,19 +503,27 @@ public class BocCustomCellRenderArguments: BocCustomCellArguments
     get { return _columnIndex; }
   }
 
+  /// <summary> The <see cref="IBusinessObject"/> that should be rendered. </summary>
+  public IBusinessObject BusinessObject
+  {
+    get { return _businessObject; }
+  }
+
   /// <summary> The list index of the current business object. </summary>
   public int ListIndex
   {
     get { return _listIndex; }
   }
 
-  /// <summary> Client script code that prevents row selection. For internal use. </summary>
+  /// <summary> Client script code that prevents row selection. For use with hyperlinks. </summary>
   /// <remarks>
-  ///   A function to be appended to the client side <c>OnClick</c> event handler. The function tasked with
-  ///   preventing the row from being selected/highlighted when clicking on the link itself instead of the row.
-  ///   This string is inserted after the return value of <see cref="BocList.GetCustomCellPostBackClientEvent"/>.
+  ///   The function tasked with preventing the row from being selected/highlighted when clicking on the link 
+  ///   itself instead of the row.
+  ///   <note>
+  ///     This string should be rendered in the <b>OnClick</b> client-side event of hyperlinks not used for 
+  ///     post-backs javascript calls.
+  ///   </note>
   /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Advanced)]
   public string OnClick
   {
     get { return _onClick; }
