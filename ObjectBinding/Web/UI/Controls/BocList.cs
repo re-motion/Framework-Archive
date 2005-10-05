@@ -281,9 +281,17 @@ public class BocList:
   private DropDownMenu _optionsMenu;
   private WebMenuItemCollection _listMenuItems;
   /// <summary> Triplet &lt; IBusinessObject, listIndex, DropDownMenu &gt;</summary>
-  private Triplet[] _rowMenus = null;
+  private Triplet[] _rowMenus;
   private PlaceHolder _rowMenusPlaceHolder;
  
+  /// <summary> 
+  ///   HashTable &lt; 
+  ///       Key = CustomColumn, 
+  ///       Value = Triplet[] &lt; IBusinessObject, listIndex, Control &gt; &gt;
+  /// </summary>
+  private Hashtable _customColumns;
+  private PlaceHolder _customColumnsPlaceHolder;
+
   /// <summary> Determines wheter an empty list will still render its headers and the additional column sets list. </summary>
   private bool _showEmptyListEditMode = true;
   private bool _showMenuForEmptyListEditMode = true;
@@ -375,6 +383,7 @@ public class BocList:
     _optionsMenu = new DropDownMenu (this);
     _listMenuItems = new WebMenuItemCollection (this);
     _rowMenusPlaceHolder = new PlaceHolder();
+    _customColumnsPlaceHolder = new PlaceHolder();
     _fixedColumns = new BocColumnDefinitionCollection (this);
     _availableViews = new BocListViewCollection (this);
     _validators = new ArrayList();
@@ -397,6 +406,7 @@ public class BocList:
     _rowEditModeControlCollection = _rowEditModeControlsPlaceHolder.Controls;
 
     Controls.Add (_rowMenusPlaceHolder);
+    Controls.Add (_customColumnsPlaceHolder);
   }
 
   /// <summary> Calls the parent's <c>OnInit</c> method and initializes this control's sub-controls. </summary>
@@ -424,6 +434,9 @@ public class BocList:
     
     EnsureRowEditModeRestored();
     EnsureRowMenusInitialized();
+    EnsureCustomColumnControlsRestored();
+    InitCustomColumns();
+    LoadCustomColumns();
   }
 
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
@@ -953,8 +966,8 @@ public class BocList:
       IBusinessObject businessObject,
       string argument)
   {
-    BocCustomCellArguments args = new BocCustomCellArguments (this, businessObject, column);
-    column.CustomCell.OnClick (args, argument);
+    BocCustomCellClickArguments args = new BocCustomCellClickArguments (this, businessObject, column);
+    column.CustomCell.Click (args, argument);
     BocCustomCellClickEventHandler clickHandler = 
         (BocCustomCellClickEventHandler) Events[s_customCellClickEvent];
     if (clickHandler != null)
@@ -1093,7 +1106,7 @@ public class BocList:
 
     CalculateCurrentPage (true);
 
-    BocColumnDefinition[] renderColumns = EnsureColumnsGot (true);
+    BocColumnDefinition[] columns = EnsureColumnsGot (true);
 
     EnsureRowEditModeValidatorsRestored();
     
@@ -1102,8 +1115,14 @@ public class BocList:
     if (!IsDesignMode)
     {
       PreRenderMenuItems();
+      
       EnsureRowMenusInitialized();
       PreRenderRowMenusItems();
+      
+      CreateCustomColumnControls (columns);
+      InitCustomColumns();
+      LoadCustomColumns();
+      PreRenderCustomColumns();
     }
 
     if (IsEditDetailsModeActive)
@@ -2519,15 +2538,12 @@ public class BocList:
     }
     else if (customColumn != null)
     {
-      string onClick = c_onCommandClickScript;
-      BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments (
-          this, businessObject, customColumn, columnIndex, originalRowIndex, onClick);
-      customColumn.CustomCell.Render (writer, arguments);
+      RenderCustomColumnCell (
+          writer, columnIndex, customColumn, rowIndex, originalRowIndex, businessObject, isEditedRow);
     }
 
     writer.RenderEndTag();
   }
-
 
   /// <summary> Renders the row index (Optionally as a label for the selector control). </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
@@ -3210,6 +3226,7 @@ public class BocList:
     if (IsEmptyList)
       return;
 
+    EnsureChildControls();
     CalculateCurrentPage (false);
 
     if (IsPagingEnabled)
@@ -3398,6 +3415,201 @@ public class BocList:
         return false;
       }
       return true;
+    }
+  }
+
+
+  private void EnsureCustomColumnControlsRestored()
+  {
+    if (_customColumns != null)
+      return;
+    CreateCustomColumnControls (EnsureColumnsForPreviousLifeCycleGot());
+  }
+
+  private void CreateCustomColumnControls (BocColumnDefinition[] columns)
+  {
+    if (IsDesignMode)
+      return;
+    if (IsEmptyList)
+      return;
+
+    EnsureChildControls();
+
+    CalculateCurrentPage (false);
+
+    _customColumns = new Hashtable ();
+    _customColumnsPlaceHolder.Controls.Clear();
+
+    int firstRow = 0;
+    int totalRowCount = Value.Count;
+    int rowCountWithOffset = totalRowCount;
+
+    if (IsPagingEnabled)
+    {      
+      firstRow = _currentPage * _pageSize.Value;
+      rowCountWithOffset = firstRow + _pageSize.Value;
+      //  Check row count on last page
+      rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
+    }
+
+    Pair[] rows = EnsureGotIndexedRowsSorted();
+
+    for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+    {
+      BocCustomColumnDefinition customColumn = columns[idxColumns] as BocCustomColumnDefinition;
+      if (   customColumn != null
+          && (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
+              || customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow))
+      {
+        PlaceHolder placeHolder = new PlaceHolder();
+        _customColumnsPlaceHolder.Controls.Add (placeHolder);
+
+        Triplet[] customColumnTriplets;
+        if (IsPagingEnabled)
+          customColumnTriplets = new Triplet[PageSize.Value];
+        else
+          customColumnTriplets = new Triplet[Value.Count];
+        _customColumns[customColumn] = customColumnTriplets;
+       
+        for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
+            idxAbsoluteRows < rowCountWithOffset; 
+            idxAbsoluteRows++, idxRelativeRows++)
+        {
+          Pair rowPair = rows[idxAbsoluteRows];
+          if (rowPair.Second == null)
+            throw new NullReferenceException (string.Format ("Null item found in IList 'Value' of BocList '{0}'.", ID));
+          int originalRowIndex = (int) rowPair.First;
+
+          if (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
+              && (   ModifiableRowIndex.IsNull 
+                  || ModifiableRowIndex.Value != originalRowIndex))
+          {
+            continue;
+          }
+
+          IBusinessObject businessObject = rowPair.Second as IBusinessObject;
+          if (businessObject == null)
+          {
+            throw new InvalidCastException (string.Format (
+                "List item {0} in IList 'Value' of BocList '{1}' is not of type IBusinessObject.",
+                originalRowIndex, ID));
+          }
+
+          BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
+          Control control = customColumn.CustomCell.CreateControlInternal (args);
+          control.ID = ID + "_CustomColumnControl_" + idxColumns.ToString() + "_" + originalRowIndex.ToString();
+
+          placeHolder.Controls.Add (control);
+          customColumnTriplets[idxRelativeRows] = new Triplet (businessObject, originalRowIndex, control);
+        }
+      }
+    }
+  }
+
+  private void InitCustomColumns()
+  {
+    BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot ();
+    for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+    {
+      BocCustomColumnDefinition customColumn = columns[idxColumns] as BocCustomColumnDefinition;
+      if (customColumn != null)
+      {
+        BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
+        customColumn.CustomCell.Init (args);
+      }
+    }
+  }
+
+  private void LoadCustomColumns()
+  {
+    BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot ();
+    for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+    {
+      BocCustomColumnDefinition customColumn = columns[idxColumns] as BocCustomColumnDefinition;
+      if (customColumn != null)
+      {
+        Triplet[] customColumnTriplets = (Triplet[]) _customColumns[customColumn];
+        for (int idxRows = 0; idxRows < customColumnTriplets.Length; idxRows++)
+        {
+          Triplet customColumnTriplet = customColumnTriplets[idxRows];
+          if (customColumnTriplet != null)
+          {
+            IBusinessObject businessObject = (IBusinessObject) customColumnTriplet.First;
+            int originalRowIndex = (int) customColumnTriplet.Second;
+            Control control = (Control) customColumnTriplet.Third;
+
+            BocCustomCellLoadArguments args = 
+                new BocCustomCellLoadArguments (this, businessObject, customColumn, originalRowIndex, control);
+            customColumn.CustomCell.Load (args);
+          }
+        }
+      }
+    }
+  }
+
+  private void PreRenderCustomColumns()
+  {
+    BocColumnDefinition[] columns = EnsureColumnsGot (true);
+    for (int i = 0; i < columns.Length; i++)
+    {
+      BocCustomColumnDefinition customColumn = columns[i] as BocCustomColumnDefinition;
+      if (customColumn != null)
+      {
+        BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
+        customColumn.CustomCell.PreRender (args);
+      }
+    }
+  }
+
+  private void RenderCustomColumnCell (
+      HtmlTextWriter writer, 
+      int columnIndex, 
+      BocCustomColumnDefinition column,
+      int rowIndex,
+      int originalRowIndex, 
+      IBusinessObject businessObject,
+      bool isEditedRow)
+  {
+    if (   column.Mode == BocCustomColumnDefinitionMode.NoControls
+        || (   column.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
+            && ! isEditedRow))
+    {
+      string onClick = c_onCommandClickScript;
+      BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments (
+          this, businessObject, column, columnIndex, originalRowIndex, onClick);
+      column.CustomCell.RenderInternal (writer, arguments);
+    }
+    else
+    {
+      Triplet[] customColumnTriplets = (Triplet[]) _customColumns[column];
+      Triplet customColumnTriplet = customColumnTriplets[rowIndex];
+
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
+   
+      Control control = (Control) customColumnTriplet.Third;
+    
+      CssStyleCollection controlStyle = null;
+      bool isControlWidthEmpty = true;
+      if (control is WebControl)
+      {
+        controlStyle = ((WebControl) control).Style;
+        isControlWidthEmpty = ((WebControl) control).Width.IsEmpty;
+      }
+      else if (control is System.Web.UI.HtmlControls.HtmlControl)
+      {
+        controlStyle = ((System.Web.UI.HtmlControls.HtmlControl) control).Style;
+      }
+      if (controlStyle != null)
+      {
+        if (StringUtility.IsNullOrEmpty (controlStyle["width"]) && isControlWidthEmpty)
+          controlStyle["width"] = "100%";
+        if (StringUtility.IsNullOrEmpty (controlStyle["vertical-align"]))
+          controlStyle["vertical-align"] = "middle";
+      }
+      control.RenderControl (writer);
+    
+      writer.RenderEndTag(); // End span
     }
   }
 
