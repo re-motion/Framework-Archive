@@ -20,10 +20,6 @@
         <includes asis="true" name="System.Data.dll"/>
         <includes asis="true" name="System.Xml.dll"/>
       </references>
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Data.DomainObjects.UnitTests">
-        <includes name="Resources/*.*" />
-        <excludes name="Resources/*.cs" />
-      </resources>
     </csc>
     <copy todir="${tests.builddir}">
       <fileset>

@@ -387,17 +387,17 @@
           commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\setupDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
-    <copy todir="${tests.builddir}" >
+    <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/Database/">
         <includes name="*.sql" />
       </fileset>
     </copy>
-    <copy todir="${tests.builddir}" >
+    <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/">
         <includes name="*.xml" />
       </fileset>
     </copy>
-    <copy todir="${tests.builddir}" >
+    <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/../">
         <includes name="*.xsd" />
       </fileset>
@@ -421,17 +421,17 @@
           commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\setupDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
-    <copy todir="${tests.builddir}" >
+    <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/Database/">
         <includes name="*.sql" />
       </fileset>
     </copy>
-    <copy todir="${tests.builddir}" >
+    <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/">
         <includes name="*.xml" />
       </fileset>
     </copy>
-    <copy todir="${tests.builddir}" >
+    <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/../">
         <includes name="*.xsd" />
       </fileset>

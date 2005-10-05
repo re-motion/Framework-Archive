@@ -136,6 +136,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.build"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "storageProviders.xml"
                     BuildAction = "Content"
                 />
