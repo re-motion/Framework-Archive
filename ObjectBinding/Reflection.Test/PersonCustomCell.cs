@@ -1,13 +1,36 @@
 using System;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.Web.UI;
 
 namespace OBRTest
 {
 public class PersonCustomCell: BocCustomColumnDefinitionCell
 {
-  protected override void DoRender (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
+  protected override Control CreateControl(BocCustomCellArguments arguments)
+  {
+    HtmlInputFile inputFile = new HtmlInputFile();
+    return inputFile;
+  }
+
+  protected override void OnLoad(BocCustomCellLoadArguments arguments)
+  {
+    if (arguments.List.Page.IsPostBack)
+    {
+      HtmlInputFile inputFile = (HtmlInputFile) arguments.Control;
+      if (inputFile != null && inputFile.PostedFile != null)
+      {
+      }
+    }
+  }
+
+  protected override void OnClick(BocCustomCellClickArguments arguments, string eventArgument)
+  {
+  }
+
+  protected override void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
     string onClickEvent = GetPostBackClientEvent ("1");
