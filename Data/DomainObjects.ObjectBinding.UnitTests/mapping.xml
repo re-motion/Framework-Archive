@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
+	<classes>
+		<class id="Order">
+			<type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.ObjectBinding.UnitTests</type>
+			<entity name="Order"/>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="OrderNumber">
+					<type>int32</type>
+					<column>OrderNo</column>
+				</property>
+				<property name="DeliveryDate">
+					<type>dateTime</type>
+					<column>DeliveryDate</column>
+				</property>
+				<relationProperty name="OrderTicket" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true"/>
+				<relationProperty name="OrderItems" relationID="OrderToOrderItem" cardinality="many" isMandatory="true"/>
+			</properties>
+		</class>
+		<class id="OrderItem">
+			<type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.ObjectBinding.UnitTests</type>
+			<entity name="OrderItem"/>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="Position">
+					<type>int32</type>
+					<column>Position</column>
+				</property>
+				<property name="Product">
+					<type>string</type>
+					<column>Product</column>
+					<maxLength>100</maxLength>
+				</property>
+				<relationProperty name="Order" relationID="OrderToOrderItem" cardinality="one" isMandatory="true">
+					<column>OrderID</column>
+				</relationProperty>
+			</properties>
+		</class>
+		<class id="OrderTicket">
+			<type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.OrderTicket, Rubicon.Data.DomainObjects.ObjectBinding.UnitTests</type>
+			<entity name="OrderTicket"/>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="FileName">
+					<type>string</type>
+					<column>FileName</column>
+					<maxLength>255</maxLength>
+				</property>
+				<relationProperty name="Order" relationID="OrderToOrderTicket" cardinality="one" isMandatory="true">
+					<column>OrderID</column>
+				</relationProperty>
+			</properties>
+		</class>
+	</classes>
+</mapping>

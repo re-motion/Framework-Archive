@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<queries 
+    application="UnitTests" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\DomainObjects\queries.xsd">
+
+  <query id="AllOrders" type="collection">
+    <storageProviderID>TestDomain</storageProviderID>
+    <statement>select [Order].* from [Order] order by OrderNo asc;</statement>
+  </query>
+  
+</queries>
