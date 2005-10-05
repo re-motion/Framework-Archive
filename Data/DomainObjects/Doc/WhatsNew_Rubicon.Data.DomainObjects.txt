@@ -1,7 +1,17 @@
 1.3.11.0
 ========
 
-- Der Konstruktor von QueryDefinition gibt bei fehlerhaften Konstruktorparametern im Exception-Text als Zusatzinformation die queryID mit aus.
+- Rubicon.Data.DomainObjects:
+  * Der Konstruktor von QueryDefinition gibt bei fehlerhaften Konstruktorparametern im Exception-Text als Zusatzinformation 
+    die queryID mit aus.
+  * Neue public Property 'DomainObject.ClientTransaction'.
+  * Beim Erzeugen eines neuen DomainObjects, das nicht im Mapping eingetragen ist, wird statt einer ArgumentNullException 
+    eine MappingException geworfen.
+  
+- Rubicon.Data.DomainObjects.ObjectBinding:
+  * ReferenceProperty.SearchAvailableObjects verwendet jetzt die ClientTransaction des übergebenen DomainObjects. Wenn das 
+    übergebene Objekt kein DomainObject ist, wird ClientTransaction.Current verwendet.
+  * Neue Assembly 'Rubicon.Data.DomainObjects.ObjectBinding.UnitTests'
 
 
 1.3.9.0
