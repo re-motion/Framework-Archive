@@ -434,9 +434,7 @@ public class BocList:
     
     EnsureRowEditModeRestored();
     EnsureRowMenusInitialized();
-    EnsureCustomColumnControlsRestored();
-    InitCustomColumns();
-    LoadCustomColumns();
+    RestoreCustomColumns();
   }
 
   /// <summary> Implements interface <see cref="IPostBackEventHandler"/>. </summary>
@@ -3418,12 +3416,13 @@ public class BocList:
     }
   }
 
-
-  private void EnsureCustomColumnControlsRestored()
+  private void RestoreCustomColumns()
   {
-    if (_customColumns != null)
+    if (! Page.IsPostBack)
       return;
     CreateCustomColumnControls (EnsureColumnsForPreviousLifeCycleGot());
+    InitCustomColumns();
+    LoadCustomColumns();
   }
 
   private void CreateCustomColumnControls (BocColumnDefinition[] columns)
@@ -3512,7 +3511,11 @@ public class BocList:
     for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
     {
       BocCustomColumnDefinition customColumn = columns[idxColumns] as BocCustomColumnDefinition;
-      if (customColumn != null)
+      if (   customColumn != null
+          && (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
+              || (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
+                  && IsEditDetailsModeActive)))
+
       {
         BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
         customColumn.CustomCell.Init (args);
@@ -3522,11 +3525,16 @@ public class BocList:
 
   private void LoadCustomColumns()
   {
+    if (_customColumns == null)
+      return;
+
     BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot ();
     for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
     {
       BocCustomColumnDefinition customColumn = columns[idxColumns] as BocCustomColumnDefinition;
-      if (customColumn != null)
+      if (   customColumn != null
+          && (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
+              || customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow))
       {
         Triplet[] customColumnTriplets = (Triplet[]) _customColumns[customColumn];
         for (int idxRows = 0; idxRows < customColumnTriplets.Length; idxRows++)
@@ -3534,8 +3542,14 @@ public class BocList:
           Triplet customColumnTriplet = customColumnTriplets[idxRows];
           if (customColumnTriplet != null)
           {
-            IBusinessObject businessObject = (IBusinessObject) customColumnTriplet.First;
             int originalRowIndex = (int) customColumnTriplet.Second;
+            if (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
+                && (   ModifiableRowIndex.IsNull 
+                    || ModifiableRowIndex.Value != originalRowIndex))
+            {
+              continue;
+            }
+            IBusinessObject businessObject = (IBusinessObject) customColumnTriplet.First;
             Control control = (Control) customColumnTriplet.Third;
 
             BocCustomCellLoadArguments args = 
@@ -3570,6 +3584,9 @@ public class BocList:
       IBusinessObject businessObject,
       bool isEditedRow)
   {
+    if (_customColumns == null)
+      return;
+
     if (   column.Mode == BocCustomColumnDefinitionMode.NoControls
         || (   column.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
             && ! isEditedRow))

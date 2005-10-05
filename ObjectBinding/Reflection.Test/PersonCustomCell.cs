@@ -34,7 +34,7 @@ public class PersonCustomCell: BocCustomColumnDefinitionCell
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
     string onClickEvent = GetPostBackClientEvent ("1");
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent + arguments.OnClick);
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     writer.Write ("1");
     writer.RenderEndTag();
@@ -42,7 +42,7 @@ public class PersonCustomCell: BocCustomColumnDefinitionCell
 
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
     onClickEvent = GetPostBackClientEvent ("2");
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent + arguments.OnClick);
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     writer.Write ("2");
     writer.RenderEndTag();

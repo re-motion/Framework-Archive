@@ -151,14 +151,30 @@
           <term> <see cref="BocCustomColumnDefinition"/> </term>
           <description>
             <para>
-              Used to provide a custom rendering and event handling method for the cell. This column can be used
-              to display a number of commands, a command that depends on the state of the <see cref="IBusinessObject"/>
-              rendered in this row or to format the value in a way not supported by the simple or compound columns.
+              Used to provide a custom rendering and event handling method for the cell or to render a control in the
+              cell.
+            </para><para>
+              If the column is used to render custom <b>HTML</b> code, it can be used to display a list of commands, 
+              a command that depends on the state of the <see cref="IBusinessObject"/> rendered in this row 
+              or to format the value in a way not supported by the simple or compound columns.
+            </para><para>
+              If the column is used to render a control, it can display any control. The only limitation is the
+              usability of the rendered page.
             </para><para>
               You can register an event handler for the command click event with the <see cref="CustomCellClick"/> 
               event source.
             </para>
           </description>
+        </item>
+        <item>
+          <term> <see cref="BocDropDownMenuColumnDefinition"/> </term>
+          <description>
+            <para>
+              Used to display a <see cref="DropDownMenu"/> in each row.
+            </para><para>
+              See the <see href="#RowMenus">Row Menus</see> section for details.
+            </para>
+            </description>
         </item>
       </list>
       <para>
@@ -237,7 +253,7 @@
         properties may be modified.
       </note>
       
-      <h4 class="dtH4">Row Menus</h4>
+      <h4 class="dtH4"><a name="RowMenus">Row Menus</a></h4><!-- HTML Help requires separate anchor tag for target -->   
       <para>
         The <b>BocList</b> provides an infrastructure for displaying a <see cref="DropDownMenu"/> in each row. This
         allows for the creation of row spefic and therefor object specific menu items. Because of the extensive
