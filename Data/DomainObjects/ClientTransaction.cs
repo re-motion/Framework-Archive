@@ -184,7 +184,7 @@ public class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("type", type);
 
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[type];
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
     
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
