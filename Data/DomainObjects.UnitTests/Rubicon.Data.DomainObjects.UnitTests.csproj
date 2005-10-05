@@ -833,6 +833,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TestDomain\ClassNotInMapping.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\ClassWithAllDataTypes.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
