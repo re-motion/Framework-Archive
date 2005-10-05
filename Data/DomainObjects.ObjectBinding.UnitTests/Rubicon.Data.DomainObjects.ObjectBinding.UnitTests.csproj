@@ -21,7 +21,7 @@
                 DelaySign = "false"
                 OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = ""
+                PostBuildEvent = 'copy "$(ProjectDir)..\DomainObjects\*.xsd" "$(TargetDir)*.xsd"&#xd;&#xa;copy "$(ProjectDir)*.xml" "$(TargetDir)*.xml"'
                 RootNamespace = "Rubicon.Data.DomainObjects.ObjectBinding.UnitTests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
@@ -88,6 +88,26 @@
                     AssemblyName = "nunit.framework"
                     HintPath = "..\..\prereq\Assemblies\nunit.framework.dll"
                 />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects.ObjectBinding"
+                    Project = "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Core"
+                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects"
+                    Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "ObjectBinding"
+                    Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -103,7 +123,66 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "DatabaseTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "mapping.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "queries.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "storageProviders.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\CreateDB.sql"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\CreateTestData.sql"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\SetupDB.sql"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Database\TestDataLoader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PropertyTypes\BusinessObjectWithIdentity.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "PropertyTypes\ReferencePropertyTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDomain\Order.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDomain\OrderItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDomain\OrderTicket.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDomain\TestDomainBase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
