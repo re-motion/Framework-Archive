@@ -345,6 +345,12 @@ public class DomainObject
     get { return _dataContainer.IsDiscarded; }
   }
 
+  // TODO Doc:
+  public ClientTransaction ClientTransaction
+  {
+    get { return _dataContainer.ClientTransaction; }
+  }
+
   /// <summary>
   /// Method is invoked after the loading process of the object is completed.
   /// </summary>
@@ -498,11 +504,6 @@ public class DomainObject
   {
     if (IsDiscarded)
       throw new ObjectDiscardedException (_dataContainer.GetID ());
-  }
-
-  private ClientTransaction ClientTransaction
-  {
-    get { return _dataContainer.ClientTransaction; }
   }
 }
 }
