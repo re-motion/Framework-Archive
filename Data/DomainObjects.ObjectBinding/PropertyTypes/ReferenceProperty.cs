@@ -26,7 +26,7 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
     get { return new DomainObjectClass ((IsList) ? ItemType : PropertyType); }
   }
 
-  public IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject obj, string queryID)
+  public IBusinessObjectWithIdentity[] SearchAvailableObjects (IBusinessObject businessObject, string queryID)
   {
     if (queryID == null || queryID == string.Empty)
       return new BindableDomainObject[] {};
@@ -35,7 +35,9 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
     if (definition.QueryType != QueryType.Collection)
       throw new ArgumentException (string.Format ("The query '{0}' is not a collection query.", queryID), "queryID");
 
-    DomainObjectCollection result = ClientTransaction.Current.QueryManager.GetCollection (new Query (definition));
+    ClientTransaction clientTransaction = GetClientTransaction (businessObject);
+
+    DomainObjectCollection result = clientTransaction.QueryManager.GetCollection (new Query (definition));
     IBusinessObjectWithIdentity[] availableObjects = new IBusinessObjectWithIdentity[result.Count];
   
     if (availableObjects.Length > 0)
@@ -57,6 +59,15 @@ public class ReferenceProperty : NullableProperty, IBusinessObjectReferencePrope
   public IBusinessObject Create (IBusinessObject referencingObject)
   {
     throw new NotSupportedException ("Create method is not supported by Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes.ReferenceProperty.");
+  }
+
+  private ClientTransaction GetClientTransaction (IBusinessObject businessObject)
+  {
+    DomainObject domainObject = businessObject as DomainObject;
+    if (domainObject != null)
+      return domainObject.ClientTransaction;
+    else 
+      return ClientTransaction.Current;
   }
 }
 }
