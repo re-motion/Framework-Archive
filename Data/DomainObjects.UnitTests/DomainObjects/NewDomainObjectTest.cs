@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 using Rubicon.NullableValueTypes;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
@@ -35,6 +36,13 @@ public class NewDomainObjectTest : ClientTransactionBaseTest
     Assert.IsNotNull (order.ID);
     Assert.AreEqual (StateType.New, order.State);
     Assert.AreSame (order, order.DataContainer.DomainObject);
+  }
+
+  [Test]
+  [ExpectedException (typeof(MappingException))]
+  public void CreationOfObjectNotInMapping ()
+  {
+    ClassNotInMapping objectNotInMapping = new ClassNotInMapping ();
   }
 
   [Test]
