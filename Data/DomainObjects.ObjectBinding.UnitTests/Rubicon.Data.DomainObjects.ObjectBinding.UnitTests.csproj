@@ -84,11 +84,6 @@
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\prereq\Assemblies\nunit.framework.dll"
-                />
-                <Reference
                     Name = "Rubicon.Data.DomainObjects.ObjectBinding"
                     Project = "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -107,6 +102,11 @@
                     Name = "ObjectBinding"
                     Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "nunit.framework"
+                    AssemblyName = "nunit.framework"
+                    HintPath = "..\..\prereq\Assemblies\nunit.framework.dll"
                 />
             </References>
         </Build>

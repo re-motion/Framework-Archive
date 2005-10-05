@@ -10,7 +10,7 @@ using Rubicon.ObjectBinding;
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
 {
 [TestFixture]
-public class ReferencePropertyTest
+public class ReferencePropertyTest : DatabaseTest
 {
 	public ReferencePropertyTest ()
 	{
@@ -21,8 +21,10 @@ public class ReferencePropertyTest
   private OrderTicket _orderTicket;
 
   [SetUp]
-  public void SetUp ()
+  public override void SetUp ()
   {
+    base.SetUp ();
+
     _clientTransaction = new ClientTransaction ();
     _order = new Order (_clientTransaction);
     _orderTicket = new OrderTicket (_order, _clientTransaction);
