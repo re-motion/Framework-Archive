@@ -823,6 +823,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Serialization\QueriesTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Serialization\SerializationBaseTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\Ceo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
