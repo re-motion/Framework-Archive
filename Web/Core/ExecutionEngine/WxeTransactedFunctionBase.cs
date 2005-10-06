@@ -169,6 +169,9 @@ public abstract class WxeTransactedFunctionBase: WxeFunction, IDeserializationCa
     remove { Events.RemoveHandler (s_committingEvent, value); }
   }
   
+//  [field:NonSerialized]
+//  public event EventHandler Committing;
+
   /// <summary> Is raised after the <see cref="WxeTransactionBase"/> has been committed. </summary>
   /// <remarks> 
   ///   <note type="caution">
