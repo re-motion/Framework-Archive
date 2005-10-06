@@ -8,6 +8,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Base class for all collections of Rubicon.Data.DomainObjects.
 /// </summary>
+[Serializable]
 public class CommonCollection : ICollection
 {
   // types
