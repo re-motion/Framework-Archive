@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 
 using Rubicon.Utilities;
 
@@ -7,7 +8,9 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 /// <summary>
 /// Represents the definition of a query.
 /// </summary>
-public class QueryDefinition
+// TODO Doc: If an object is contained in the QueryConfiguration.Current during the serialization process the deserialized object will be the reference from QueryConfiguration.Current with the same QueryID again.
+[Serializable]
+public class QueryDefinition : ISerializable, IObjectReference
 {
   // types
 
@@ -20,6 +23,10 @@ public class QueryDefinition
   private string _statement;
   private QueryType _queryType;
   private Type _collectionType;
+  
+  // Note: _isInQueryConfiguration is used only during the deserialization process. 
+  // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
+  private bool _isInQueryConfiguration;
 
   // construction and disposing
 
@@ -98,6 +105,21 @@ public class QueryDefinition
     _collectionType = collectionType;
   }
 
+  // TODO Doc:
+  protected QueryDefinition (SerializationInfo info, StreamingContext context)
+  {
+    _queryID = info.GetString ("QueryID");
+    _isInQueryConfiguration = info.GetBoolean ("IsInQueryConfiguration");
+
+    if (!_isInQueryConfiguration)
+    {
+      _storageProviderID = info.GetString ("StorageProviderID");
+      _statement = info.GetString ("Statement");
+      _queryType = (QueryType) info.GetValue ("QueryType", typeof (QueryType));
+      _collectionType = (Type) info.GetValue ("CollectionType", typeof (Type));
+    }
+  }
+
   // methods and properties
 
   /// <summary>
@@ -139,5 +161,39 @@ public class QueryDefinition
   {
     get { return _collectionType; }
   }
+
+  #region IObjectReference Members
+
+  // TODO Doc:
+  object IObjectReference.GetRealObject (StreamingContext context)
+  {
+    if (!_isInQueryConfiguration)
+      return this;
+    else
+      return QueryConfiguration.Current.QueryDefinitions.GetMandatory (_queryID);
+  }
+
+  #endregion
+
+  #region ISerializable Members
+
+  // TODO Doc:
+  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    info.AddValue ("QueryID", _queryID);
+
+    bool isInQueryConfiguration = QueryConfiguration.Current[_queryID] != null;
+    info.AddValue ("IsInQueryConfiguration", isInQueryConfiguration);
+
+    if (!isInQueryConfiguration)
+    {
+      info.AddValue ("StorageProviderID", _storageProviderID);
+      info.AddValue ("Statement", _statement);
+      info.AddValue ("QueryType", _queryType);
+      info.AddValue ("CollectionType", _collectionType);
+    }
+  }
+
+  #endregion
 }
 }
