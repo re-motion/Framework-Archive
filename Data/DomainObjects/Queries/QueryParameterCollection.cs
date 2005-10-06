@@ -7,6 +7,7 @@ namespace Rubicon.Data.DomainObjects.Queries
 /// <summary>
 /// Represents a collection of <see cref="QueryParameter"/> objects.
 /// </summary>
+[Serializable]
 public class QueryParameterCollection : CommonCollection
 {
   // types
