@@ -257,11 +257,18 @@ public abstract class BocCustomColumnDefinitionCell
   internal Control CreateControlInternal (BocCustomCellArguments arguments)
   {
     InitArguments (arguments);
-    return CreateControl (arguments);
+    Control control = CreateControl (arguments);
+    if (control == null)
+    {
+      throw new NullReferenceException (string.Format (
+          "{0}.CreateControl(BocCustomCellArguments) evaluated null, but a Control was expected.", GetType()));
+    }
+    return control;
   }
 
   /// <summary> Override this method to create the <see cref="T:Control"/> of a custom cell. </summary>
   /// <param name="arguments"> The <see cref="BocCustomCellArguments"/>. </param>
+  /// <returns> A <see cref="T:Control"/>. Must not return <see langword="null"/>. </returns>
   /// <remarks> 
   ///   This method is called for each cell containing a <see cref="T:Control"/>.
   ///   <note type="inheritinfos"> Do not call the base implementation when overriding this method. </note>

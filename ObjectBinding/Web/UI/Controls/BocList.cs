@@ -3416,6 +3416,7 @@ public class BocList:
     }
   }
 
+  /// <summary> Restores the custom columns from the previous life cycle. </summary>
   private void RestoreCustomColumns()
   {
     if (! Page.IsPostBack)
@@ -3425,6 +3426,7 @@ public class BocList:
     LoadCustomColumns();
   }
 
+  /// <summary> Creates the controls for the custom columns in the <paramref name="columns"/> array. </summary>
   private void CreateCustomColumnControls (BocColumnDefinition[] columns)
   {
     if (IsDesignMode)
@@ -3497,7 +3499,6 @@ public class BocList:
           BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
           Control control = customColumn.CustomCell.CreateControlInternal (args);
           control.ID = ID + "_CustomColumnControl_" + idxColumns.ToString() + "_" + originalRowIndex.ToString();
-
           placeHolder.Controls.Add (control);
           customColumnTriplets[idxRelativeRows] = new Triplet (businessObject, originalRowIndex, control);
         }
@@ -3505,6 +3506,7 @@ public class BocList:
     }
   }
 
+  /// <summary> Invokes the <see cref="BocCustomColumnDefinition.Init"/> method for each custom column. </summary>
   private void InitCustomColumns()
   {
     BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot ();
@@ -3523,6 +3525,10 @@ public class BocList:
     }
   }
 
+  /// <summary>
+  ///   Invokes the <see cref="BocCustomColumnDefinition.Load"/> method for each cell with a control in the 
+  ///   custom columns. 
+  /// </summary>
   private void LoadCustomColumns()
   {
     if (_customColumns == null)
@@ -3561,6 +3567,7 @@ public class BocList:
     }
   }
 
+  /// <summary> Invokes the <see cref="BocCustomColumnDefinition.PreRender"/> method for each custom column.  </summary>
   private void PreRenderCustomColumns()
   {
     BocColumnDefinition[] columns = EnsureColumnsGot (true);
@@ -3575,6 +3582,7 @@ public class BocList:
     }
   }
 
+  /// <summary> Renders the cells of the custom columns. </summary>
   private void RenderCustomColumnCell (
       HtmlTextWriter writer, 
       int columnIndex, 
@@ -3600,33 +3608,40 @@ public class BocList:
     {
       Triplet[] customColumnTriplets = (Triplet[]) _customColumns[column];
       Triplet customColumnTriplet = customColumnTriplets[rowIndex];
+      if (customColumnTriplet == null)
+      {
+        writer.Write (c_whiteSpace);
+      }
+      else
+      {
 
-      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
-      writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
-   
-      Control control = (Control) customColumnTriplet.Third;
-    
-      CssStyleCollection controlStyle = null;
-      bool isControlWidthEmpty = true;
-      if (control is WebControl)
-      {
-        controlStyle = ((WebControl) control).Style;
-        isControlWidthEmpty = ((WebControl) control).Width.IsEmpty;
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+        writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
+     
+        Control control = (Control) customColumnTriplet.Third;
+      
+        CssStyleCollection controlStyle = null;
+        bool isControlWidthEmpty = true;
+        if (control is WebControl)
+        {
+          controlStyle = ((WebControl) control).Style;
+          isControlWidthEmpty = ((WebControl) control).Width.IsEmpty;
+        }
+        else if (control is System.Web.UI.HtmlControls.HtmlControl)
+        {
+          controlStyle = ((System.Web.UI.HtmlControls.HtmlControl) control).Style;
+        }
+        if (controlStyle != null)
+        {
+          if (StringUtility.IsNullOrEmpty (controlStyle["width"]) && isControlWidthEmpty)
+            controlStyle["width"] = "100%";
+          if (StringUtility.IsNullOrEmpty (controlStyle["vertical-align"]))
+            controlStyle["vertical-align"] = "middle";
+        }
+        control.RenderControl (writer);
+      
+        writer.RenderEndTag(); // End span
       }
-      else if (control is System.Web.UI.HtmlControls.HtmlControl)
-      {
-        controlStyle = ((System.Web.UI.HtmlControls.HtmlControl) control).Style;
-      }
-      if (controlStyle != null)
-      {
-        if (StringUtility.IsNullOrEmpty (controlStyle["width"]) && isControlWidthEmpty)
-          controlStyle["width"] = "100%";
-        if (StringUtility.IsNullOrEmpty (controlStyle["vertical-align"]))
-          controlStyle["vertical-align"] = "middle";
-      }
-      control.RenderControl (writer);
-    
-      writer.RenderEndTag(); // End span
     }
   }
 
