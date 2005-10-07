@@ -178,7 +178,7 @@ public class BocList:
 
     protected override bool EvaluateIsValid()
     {
-      return _owner.ValiadateModifiableRow();
+      return _owner.ValidateModifiableRow();
     }
 
     protected override bool ControlPropertiesValid()
@@ -4434,7 +4434,7 @@ public class BocList:
             _rowEditModeDataSource,
             _rowEditModeControls);
         
-        bool isValid = ValiadateModifiableRow();
+        bool isValid = ValidateModifiableRow();
         if (! isValid)
           return;
 
@@ -4650,7 +4650,13 @@ public class BocList:
     }
   }
 
+  [Obsolete ("Use ValidateModifiableRow instead.")]
   public bool ValiadateModifiableRow()
+  {
+    return ValidateModifiableRow();
+  }
+
+  public bool ValidateModifiableRow()
   {
     EnsureRowEditModeValidatorsRestored();
 
