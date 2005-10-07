@@ -47,8 +47,8 @@ public class PropertyValue
   /// <summary>
   /// Initializes a new <b>PropertyValue</b> with a given <see cref="PropertyDefinition"/>.
   /// </summary>
-  /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>definition</i> is a null reference.</exception>
+  /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>definition</i> is <see langword="null"/>.</exception>
   /// <exception cref="InvalidEnumDefinitionException"><i>definition</i> is a reference to an invalid enum.</exception>
   public PropertyValue (PropertyDefinition definition) : this (definition, definition.DefaultValue)
   {
@@ -57,9 +57,9 @@ public class PropertyValue
   /// <summary>
   /// Initializes a new <b>PropertyValue</b> with a given <see cref="PropertyDefinition"/> and an initial <see cref="Value"/>.
   /// </summary>
-  /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>.</param>
+  /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>. Must not be <see langword="null"/>.</param>
   /// <param name="value">The initial <see cref="Value"/> for the <b>PropertyValue</b>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>definition</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>definition</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><i>value</i> does not match the required type specified in <i>definition</i>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><i>value</i> is longer than the maximum length specified in <i>definition</i>.</exception>
   public PropertyValue (PropertyDefinition definition, object value)
@@ -158,7 +158,7 @@ public class PropertyValue
   }
 
   /// <summary>
-  /// Indicates whether the <see cref="PropertyValue"/> may contain null as a value.
+  /// Indicates whether the <see cref="PropertyValue"/> may contain <see langword="null"/> as a value.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool IsNullable
