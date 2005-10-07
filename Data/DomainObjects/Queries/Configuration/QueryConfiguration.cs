@@ -84,8 +84,8 @@ public class QueryConfiguration : ConfigurationBase
   /// <summary>
   /// Initializes a new instance of the <b>QueryConfiguration</b> class from the specified <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/>.
   /// </summary>
-  /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/> to be used for reading the <b>QueryConfiguration</b>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>loader</i> is a null reference.</exception>
+  /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/> to be used for reading the <b>QueryConfiguration</b>. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>loader</i> is <see langword="null"/>.</exception>
   /// <exception cref="QueryConfigurationException">The query configuration could not be read from the configuration file.</exception>
   public QueryConfiguration (QueryConfigurationLoader loader) : base (loader)
   {
@@ -99,7 +99,8 @@ public class QueryConfiguration : ConfigurationBase
   /// <summary>
   /// Gets the <see cref="QueryDefinition"/> through its unique ID.
   /// </summary>
-  /// <exception cref="System.ArgumentNullException"><i>queryID</i> is a null reference.</exception>
+  /// <param name="queryID">The name of the query. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>queryID</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>queryID</i> is an empty string.</exception>
   public QueryDefinition this [string queryID]
   {
