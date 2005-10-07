@@ -28,8 +28,8 @@ public class QueryManager
   /// <remarks>
   /// All <see cref="DomainObject"/>s that are loaded by the <b>QueryManager</b> will exist within the given <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
   /// </remarks>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> to be used in the <b>QueryManager</b>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>clientTransaction</i> is a null reference.</exception>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> to be used in the <b>QueryManager</b>. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>clientTransaction</i> is <see langword="null"/>.</exception>
   public QueryManager (ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -50,9 +50,9 @@ public class QueryManager
   /// <summary>
   /// Executes a given <see cref="IQuery"/> and returns the scalar value.
   /// </summary>
-  /// <param name="query">The query to execute.</param>
+  /// <param name="query">The query to execute. Must not be <see langword="null"/>.</param>
   /// <returns>The scalar value that is returned by the query.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>query</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>query</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><i>query</i> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Scalar"/>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
   ///   The <see cref="IQuery.StorageProviderID"/> of <i>query</i> could not be found.
@@ -80,9 +80,9 @@ public class QueryManager
   /// <summary>
   /// Executes a given <see cref="IQuery"/> and returns a collection of the <see cref="DomainObject"/>s returned by the query.
   /// </summary>
-  /// <param name="query">The query to execute.</param>
+  /// <param name="query">The query to execute. Must not be <see langword="null"/>.</param>
   /// <returns>The scalar value that is returned by the query.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>query</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>query</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><i>query</i> does not have a <see cref="Configuration.QueryType"/> of <see cref="Configuration.QueryType.Collection"/>.</exception>
   /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderConfigurationException">
   ///   The <see cref="IQuery.StorageProviderID"/> of <i>query</i> could not be found.
