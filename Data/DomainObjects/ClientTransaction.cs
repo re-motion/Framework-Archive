@@ -8,11 +8,6 @@ using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
 
 
-// TODO Doc: Document where ClientTransactionsDifferException could be thrown:
-// DomainObject.SetRelatedObject
-// All modifier methods (Remove, RemoveAt, Add, Insert, ...) of DomainObjectCollection
-// ClientTransaction.Delete
-
 namespace Rubicon.Data.DomainObjects
 {
 /// <summary>
@@ -272,6 +267,9 @@ public class ClientTransaction : ITransaction
   ///   <i>relationEndPointID</i> belongs to a <see cref="DomainObject"/> that has been deleted.<br /> -or- <br />
   ///   <i>newRelatedObject</i> has been deleted.
   /// </exception>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>newRelatedObject</i> does belongs to a different <b>ClientTransaction</b>.
+  /// </exception>
   internal protected virtual void SetRelatedObject (RelationEndPointID relationEndPointID, DomainObject newRelatedObject)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
@@ -283,6 +281,9 @@ public class ClientTransaction : ITransaction
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to delete.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>domainObject</i> belongs to a different <see cref="ClientTransaction"/>. 
+  /// </exception>
   public virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
