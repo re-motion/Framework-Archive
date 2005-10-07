@@ -25,8 +25,8 @@ public class DomainObjectCollectionChangingEventArgs : EventArgs
   /// <summary>
   /// Initializes a new instance of the <b>DomainObjectCollectionChangingEventArgs</b> class.
   /// </summary>
-  /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection.</param>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that is being added or removed to the collection. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/>.</exception>
   public DomainObjectCollectionChangingEventArgs (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -52,8 +52,8 @@ public class DomainObjectCollectionChangedEventArgs : EventArgs
   /// <summary>
   /// Initializes a new instance of the <b>DomainObjectCollectionChangedEventArgs</b> class.
   /// </summary>
-  /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that has been added or removed to the collection.</param>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <param name="domainObject">The <see cref="Rubicon.Data.DomainObjects.DomainObject"/> that has been added or removed to the collection. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/>.</exception>
   public DomainObjectCollectionChangedEventArgs (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
