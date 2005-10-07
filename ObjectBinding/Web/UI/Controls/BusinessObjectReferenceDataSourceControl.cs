@@ -279,8 +279,20 @@ public class BusinessObjectReferenceDataSourceControl:
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public virtual DataSourceMode Mode
   {
-    get { return IsReadOnly ? DataSourceMode.Read : DataSourceMode.Edit; }
-    set { ReadOnly = (NaBoolean) (value == DataSourceMode.Read); } // "search" needs edit mode
+    get
+    {
+      // return IsReadOnly ? DataSourceMode.Read : DataSourceMode.Edit; 
+      if (IsReadOnly)
+        return DataSourceMode.Read;
+      if (DataSource != null && DataSource.Mode == DataSourceMode.Search)
+        return DataSourceMode.Search;
+      return DataSourceMode.Edit; 
+    }
+    set 
+    {
+      // "search" needs edit mode
+      ReadOnly = (NaBoolean) (value == DataSourceMode.Read); 
+    }
   }
 
   /// <summary>
