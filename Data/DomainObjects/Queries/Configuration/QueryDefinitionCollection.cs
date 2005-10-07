@@ -32,9 +32,9 @@ public class QueryDefinitionCollection : CommonCollection
   /// Initializes a new <b>QueryDefinitionCollection</b> as a shallow copy of a given <see cref="QueryDefinitionCollection"/>.
   /// </summary>
   /// <remarks>The new <b>QueryDefinitionCollection</b> has the same items as the given <i>collection</i>.</remarks>
-  /// <param name="collection">The <see cref="QueryDefinitionCollection"/> to copy.</param>
+  /// <param name="collection">The <see cref="QueryDefinitionCollection"/> to copy. Must not be <see langword="null"/>.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
-  /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>collection</i> is <see langword="null"/>.</exception>
   public QueryDefinitionCollection (
       QueryDefinitionCollection collection,
       bool makeCollectionReadOnly)
@@ -82,9 +82,9 @@ public class QueryDefinitionCollection : CommonCollection
   /// <summary>
   /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
   /// </summary>
-  /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>.</param>
+  /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if <i>queryDefinition</i> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
-  /// <exception cref="System.ArgumentNullException"><i>queryDefinition</i> is a null reference</exception>
+  /// <exception cref="System.ArgumentNullException"><i>queryDefinition</i> is <see langword="null"/></exception>
   public bool Contains (QueryDefinition queryDefinition)
   {
     ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
@@ -95,9 +95,9 @@ public class QueryDefinitionCollection : CommonCollection
   /// <summary>
   /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
   /// </summary>
-  /// <param name="queryID">The <see cref="QueryDefinition.QueryID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>.</param>
+  /// <param name="queryID">The <see cref="QueryDefinition.QueryID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if the <see cref="QueryDefinition"/> with the <i>queryID</i> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
-  /// <exception cref="System.ArgumentNullException"><i>queryID</i> is a null reference</exception>
+  /// <exception cref="System.ArgumentNullException"><i>queryID</i> is <see langword="null"/></exception>
   public bool Contains (string queryID)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
@@ -119,7 +119,7 @@ public class QueryDefinitionCollection : CommonCollection
   /// <summary>
   /// Gets the <see cref="QueryDefinition"/> with a given <see cref="QueryDefinition.QueryID"/> from the <see cref="QueryDefinitionCollection"/>.
   /// </summary>
-  /// <remarks>The indexer returns null if the given <i>queryID</i> was not found.</remarks>
+  /// <remarks>The indexer returns <see langword="null"/> if the given <i>queryID</i> was not found.</remarks>
   public QueryDefinition this [string queryID]  
   {
     get 
@@ -132,10 +132,10 @@ public class QueryDefinitionCollection : CommonCollection
   /// <summary>
   /// Adds a <see cref="QueryDefinition"/> to the collection.
   /// </summary>
-  /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to add.</param>
+  /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to add. Must not be <see langword="null"/>.</param>
   /// <returns>The zero-based index where the <i>queryDefinition</i> has been added.</returns>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-  /// <exception cref="System.ArgumentNullException"><i>queryDefinition</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>queryDefinition</i> is <see langword="null"/>.</exception>
   public int Add (QueryDefinition queryDefinition)  
   {
     ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
