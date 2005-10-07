@@ -46,7 +46,7 @@ public class WxeTransactedFunction: WxeTransactedFunctionBase
   /// <summary>
   /// Creates a new <see cref="WxeTransaction"/> depending on the value of <see cref="TransactionMode"/>.
   /// </summary>
-  /// <returns>A new WxeTransaction, if <see cref="TransactionMode"/> has a value of <b>CreateRoot</b>; otherwise null.</returns>
+  /// <returns>A new WxeTransaction, if <see cref="TransactionMode"/> has a value of <b>CreateRoot</b>; otherwise <see langword="null"/>.</returns>
   protected override WxeTransactionBase CreateWxeTransaction ()
   {
     if (_transactionMode == TransactionMode.CreateRoot)
