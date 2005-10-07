@@ -173,19 +173,19 @@
         <tr>
           <td><see cref="N:Rubicon.Data.DomainObjects.ObjectBinding"/></td>
           <td>
-            An implementation of <see href="Rubicon.ObjectBinding"/> interfaces for the DomainObjects framework.
+            An implementation of <see href="Rubicon.ObjectBinding.html"/> interfaces for the DomainObjects framework.
           </td>
         </tr>
         <tr>
           <td><see cref="N:Rubicon.Data.DomainObjects.ObjectBinding.Web"/></td>
           <td>
-            An implementation of <see href="Rubicon.ObjectBinding.Web"/> classes for the DomainObjects framework.
+            An implementation of <see href="Rubicon.ObjectBinding.Web.html"/> classes for the DomainObjects framework.
           </td>
         </tr>
         <tr>
           <td><see cref="N:Rubicon.Data.DomainObjects.Web.ExecutionEngine"/></td>
           <td>
-            Classes supporting the use of <see href="Rubicon.Web.ExecutionEngine"/> with the DomainObjects framework.
+            Classes supporting the use of <see href="Rubicon.Web.ExecutionEngine.html"/> with the DomainObjects framework.
           </td>
         </tr>
       </tbody>
