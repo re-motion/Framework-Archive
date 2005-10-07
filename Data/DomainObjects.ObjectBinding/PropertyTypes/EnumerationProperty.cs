@@ -53,7 +53,7 @@ public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationPrope
   }
 
   /// <param name="value">
-  ///   An enum value that belongs to the enum identified by <see cref="DomainObjectProperty.PropertyType"/>.
+  ///   An enum value that belongs to the enum identified by <see cref="BaseProperty.PropertyType"/>.
   /// </param>
   public IEnumerationValueInfo GetValueInfoByValue (object value)
   {
