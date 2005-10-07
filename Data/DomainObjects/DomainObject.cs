@@ -173,7 +173,7 @@ public class DomainObject
   /// All derived classes have to implement an (empty) constructor with this signature.
   /// Do not implement any initialization logic in this constructor, but use <see cref="DomainObject.OnLoaded"/> instead.
   /// </remarks>
-  /// <param name="dataContainer"></param>
+  /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
   protected DomainObject (DataContainer dataContainer)
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
