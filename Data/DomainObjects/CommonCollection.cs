@@ -129,9 +129,9 @@ public class CommonCollection : ICollection
   /// <summary>
   /// Copies the items of the <see cref="CommonCollection"/> to an Array, starting at a particular Array index.
   /// </summary>
-  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="CommonCollection"/>. The array must have zero-based indexing.</param>
+  /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="CommonCollection"/>. The array must have zero-based indexing. Must not be <see langword="null"/>.</param>
   /// <param name="index">The zero-based index in array at which copying begins.</param>
-  /// <exception cref="System.ArgumentNullException"><i>array</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>array</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
   /// <exception cref="System.ArgumentException">
   ///   <i>array</i> is not a one-dimensional array.<br /> -or- <br />
@@ -178,9 +178,9 @@ public class CommonCollection : ICollection
   /// <summary>
   /// Returns the object with a given key from the collection.
   /// </summary>
-  /// <param name="key">The key of the object to return.</param>
-  /// <returns>The object with the given key, if the object is found; otherwise, null.</returns>
-  /// <exception cref="ArgumentNullException"><i>key</i> is a null reference.</exception>
+  /// <param name="key">The key of the object to return. Must not be <see langword="null"/>.</param>
+  /// <returns>The object with the given key, if the object is found; otherwise, <see langword="null"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><i>key</i> is <see langword="null"/>.</exception>
   protected object BaseGetObject (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
@@ -191,9 +191,9 @@ public class CommonCollection : ICollection
   /// <summary>
   /// Determines whether the <see cref="CommonCollection"/> contains a specific key.
   /// </summary>
-  /// <param name="key">The key to locate in the <see cref="CommonCollection"/>.</param>
+  /// <param name="key">The key to locate in the <see cref="CommonCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if the <see cref="CommonCollection"/> contains the key; otherwise <b>false</b>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>key</i> is <see langword="null"/>.</exception>
   protected bool BaseContainsKey (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
@@ -204,13 +204,13 @@ public class CommonCollection : ICollection
   /// <summary>
   /// Adds an item with the specified key and value.
   /// </summary>
-  /// <param name="key">A key of the item to add. The key must not be a null reference.</param>
-  /// <param name="value">The value of the item to add. The value must not be a null reference.</param>
+  /// <param name="key">A key of the item to add. The key must not be <see langword="null"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The value of the item to add. The value must not be <see langword="null"/>. Must not be <see langword="null"/>.</param>
   /// <returns>The position into which the new item was inserted.</returns>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>key</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>key</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   protected int BaseAdd (object key, object value)
   {
@@ -228,8 +228,8 @@ public class CommonCollection : ICollection
   /// <summary>
   /// Removes the item with the specified key.
   /// </summary>
-  /// <param name="key">The key of the item to remove.</param>
-  /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
+  /// <param name="key">The key of the item to remove. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>key</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void BaseRemove (object key)
   {
@@ -268,14 +268,14 @@ public class CommonCollection : ICollection
   /// Inserts an item into the collection at the specified index.
   /// </summary>
   /// <param name="index">The zero-based <i>index</i> at which the item should be inserted.</param>
-  /// <param name="key">The key of the item to insert.</param>
-  /// <param name="value">The <i>value</i> of the item to add. The <i>value</i> can be a null reference.</param>
+  /// <param name="key">The key of the item to insert. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The <i>value</i> of the item to add. The <i>value</i> can be <see langword="null"/>.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
   ///   <i>index</i> is less than zero.<br /> -or- <br />
   ///   <i>index</i> is greater than <see cref="Count"/>.
   /// </exception>
-  /// <exception cref="System.ArgumentNullException"><i>key</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>key</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException">An item with the same <i>key</i> already exists in the collection.</exception>
   protected void BaseInsert (int index, object key, object value)
   {
