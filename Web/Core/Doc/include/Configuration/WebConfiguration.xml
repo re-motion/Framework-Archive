@@ -20,40 +20,38 @@
       and create the configuration section for <c>rubicon.web</c>. The <c>configSections</c> element must 
       precede all configuration sections.
       <code>
-<![CDATA[
-<?xml version="1.0" encoding="utf-8" ?>
-<configuration>
+&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;configuration&gt;
 
-  <configSections>
-    <section name="rubicon.web" type="Rubicon.Web.Configuration.WebConfiguration, Rubicon.Web" />
-    <!-- Other configuration section registrations. -->
-  </configSections>
+  &lt;configSections&gt;
+    &lt;section name="rubicon.web" type="Rubicon.Web.Configuration.WebConfiguration, Rubicon.Web" /&gt;
+    &lt;!-- Other configuration section registrations. --&gt;
+  &lt;/configSections&gt;
   
-  <rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
-    <!-- The configuration section entries. -->
-    <executionEngine 
+  &lt;rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
+    &lt;!-- The configuration section entries. --&gt;
+    &lt;<see cref="ExecutionEngineConfiguration">executionEngine</see> 
         functionTimeout="20" 
         enableSessionManagement="true" 
         refreshInterval="10" 
         viewStateInSession="true"
-    />
-    <resources 
+    /&gt;
+    &lt;<see cref="ResourceConfiguration">resources</see> 
         root="res" 
-        rootPath="AbsoluteWithApplicationRoot" 
-    />
-    <smartNavigation 
+        <see cref="ResourceRootMode">rootPath</see>="AbsoluteWithApplicationRoot" 
+    /&gt;
+    &lt;<see cref="SmartNavigationConfiguration">smartNavigation</see> 
         enableScrolling="true" 
         enableFocusing="true" 
-    />
-    <wcag 
-        conformanceLevel="Undefined" 
-        debugging="Disabled" 
-    />
-  </rubicon.web>
+    /&gt;
+    &lt;<see cref="WcagConfiguration">wcag</see> 
+        <see cref="WaiConformanceLevel">conformanceLevel</see>="Undefined" 
+        <see cref="WcagDebugMode">debugging</see>="Disabled" 
+    /&gt;
+  &lt;/rubicon.web&gt;
 
-  <!-- Other configuration sections. -->
-</configuration>
-]]>
+  &lt;!-- Other configuration sections. --&gt;
+&lt;/configuration&gt;
       </code>
     </example>
   </Class>

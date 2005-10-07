@@ -8,15 +8,13 @@
     <example>
       Setting the <c>wcag</c> entry's values in the <c>rubicon.web</c> configuration section.
       <code>
-<![CDATA[
-<rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"> 
-  <wcag 
-      conformanceLevel="Undefined" 
-      debugging="Disabled" 
-  />
-  <!-- Other configuration section entries. -->
-</rubicon.web>
-]]>
+&lt;rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration"&gt; 
+  &lt;wcag
+      <see cref="WaiConformanceLevel">conformanceLevel</see>="Undefined" 
+      <see cref="WcagDebugMode">debugging</see>="Disabled" 
+  /&gt;
+  &lt;!-- Other configuration section entries. --&gt;
+&lt;/rubicon.web&gt;
       </code>
     </example>
   </Class>
