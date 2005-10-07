@@ -9,7 +9,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 /// Creates a scope for a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
 /// </summary>
 [Serializable]
-public class WxeTransaction: WxeTransactionBase
+public class WxeTransaction : WxeTransactionBase
 {
   /// <summary>Creates a new instance with an empty step list and autoCommit enabled that uses the existing transaction, if one exists.</summary>
   public WxeTransaction () : this (null, true, true)
@@ -38,10 +38,10 @@ public class WxeTransaction: WxeTransactionBase
   }
 
   /// <summary>
-  /// Gets the current <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> or null if none is set.
+  /// Gets the current <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> or <see langword="null"/> if none is set.
   /// </summary>
   /// <remarks>
-  /// As opposed to <see cref="Rubicon.Data.DomainObjects.ClientTransaction.Current"/> this property returns null, 
+  /// As opposed to <see cref="Rubicon.Data.DomainObjects.ClientTransaction.Current"/> this property returns <see langword="null"/>, 
   /// if <see cref="Rubicon.Data.DomainObjects.ClientTransaction.HasCurrent"/> is false.
   /// </remarks>
   protected override ITransaction CurrentTransaction
@@ -72,6 +72,6 @@ public class WxeTransaction: WxeTransactionBase
   protected override ITransaction CreateRootTransaction ()
   {
     return new ClientTransaction ();
-  }    
+  }
 }
 }
