@@ -1,12 +1,4 @@
 <namespaces>
-  <namespace name="Rubicon.Data">
-    <para>
-      The <B>Rubicon.Data</B> namespace contains an interface for transaction handling in rubicon libraries.
-    </para>
-    <para>
-      Types or interfaces in this namespace are not intended to be used directly from an application.
-    </para>
-  </namespace>  
   <namespace name="Rubicon.Data.DomainObjects.CodeGenerator">
     <para>
       The <B>Rubicon.Data.DomainObjects.CodeGenerator</B> namespace contains classes for generating code and sql scripts for the DomainObjects framework.
