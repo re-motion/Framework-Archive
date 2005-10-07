@@ -30,10 +30,10 @@ public sealed class ReflectionUtility
   /// <summary>
   /// Creates an object of a given type.
   /// </summary>
-  /// <param name="type">The <see cref="System.Type"/> of the object to instantiate.</param>
+  /// <param name="type">The <see cref="System.Type"/> of the object to instantiate. Must not be <see langword="null"/>.</param>
   /// <param name="constructorParameters">The parameters for the constructor of the object.</param>
   /// <returns>The object that has been created.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>type</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>type</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException">Type <i>type</i> has no suitable constructor for the given <i>constructorParameters</i>.</exception>
   public static object CreateObject (Type type, params object[] constructorParameters)
   {
