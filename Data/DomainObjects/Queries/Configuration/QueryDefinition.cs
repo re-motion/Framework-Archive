@@ -8,7 +8,11 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 /// <summary>
 /// Represents the definition of a query.
 /// </summary>
-// TODO Doc: If an object is contained in the QueryConfiguration.Current during the serialization process the deserialized object will be the reference from QueryConfiguration.Current with the same QueryID again.
+/// <remarks>
+/// During the serialization process the object determines if it is part of <see cref="QueryConfiguration.Current"/> 
+/// and serializes this information. If it was then the deserialized object will be the reference from 
+/// <see cref="QueryConfiguration.Current"/> with the same <see cref="QueryID"/> again. Otherwise, a new object will be instantiated.
+/// </remarks>
 [Serializable]
 public class QueryDefinition : ISerializable, IObjectReference
 {
@@ -105,7 +109,11 @@ public class QueryDefinition : ISerializable, IObjectReference
     _collectionType = collectionType;
   }
 
-  // TODO Doc:
+  /// <summary>
+  /// This constructor is used for deserializing the object and is not intended to be used directly from code.
+  /// </summary>
+  /// <param name="info">The data needed to serialize or deserialize an object. </param>
+  /// <param name="context">The source and destination of a given serialized stream.</param>
   protected QueryDefinition (SerializationInfo info, StreamingContext context)
   {
     _queryID = info.GetString ("QueryID");
@@ -164,7 +172,12 @@ public class QueryDefinition : ISerializable, IObjectReference
 
   #region IObjectReference Members
 
-  // TODO Doc:
+  /// <summary>
+  /// Returns a reference to the real object that should be deserialized. See remarks 
+  /// on <see cref="QueryDefinition"/> for further details.
+  /// </summary>
+  /// <param name="context">The source and destination of a given serialized stream.</param>
+  /// <returns></returns>
   object IObjectReference.GetRealObject (StreamingContext context)
   {
     if (!_isInQueryConfiguration)
@@ -177,7 +190,13 @@ public class QueryDefinition : ISerializable, IObjectReference
 
   #region ISerializable Members
 
-  // TODO Doc:
+  /// <summary>
+  /// Populates a specified <see cref="System.Runtime.Serialization.SerializationInfo"/> with the 
+  /// data needed to serialize the current <see cref="QueryDefinition"/> instance. See remarks 
+  /// on <see cref="QueryDefinition"/> for further details.
+  /// </summary>
+  /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+  /// <param name="context">The contextual information about the source or destination of the serialization.</param>
   void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
   {
     info.AddValue ("QueryID", _queryID);
