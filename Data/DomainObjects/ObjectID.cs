@@ -61,9 +61,9 @@ public class ObjectID : ISerializable
   /// </summary>
   /// <param name="objectIDString">A string containing the object ID to convert.</param>
   /// <returns>
-  ///   An <see cref="ObjectID"/> instance equivalent to the object ID contained in <i>objectIDString</i>.
+  ///   An <see cref="ObjectID"/> instance equivalent to the object ID contained in <i>objectIDString</i>. Must not be <see langword="null"/>.
   /// </returns>
-  /// <exception cref="System.ArgumentNullException"><i>objectIDString</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>objectIDString</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>objectIDString</i> is an empty string.</exception>
   /// <exception cref="System.FormatException">
   ///   <i>objectIDString</i> does not contain the string representation of an object ID.
@@ -127,11 +127,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
   /// </summary>
-  /// <param name="classID">The ID of the class of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classID</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classID</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>classID</i> is an empty string.<br /> -or- <br />
@@ -149,11 +149,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
   /// </summary>
-  /// <param name="classID">The ID of the class of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classID</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classID</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>classID</i> is an empty string.<br /> -or- <br />
@@ -171,11 +171,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
   /// </summary>
-  /// <param name="classID">The ID of the class of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classID</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classID</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>classID</i> is an empty string.<br /> -or- <br />
@@ -193,11 +193,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
   /// </summary>
-  /// <param name="classType">The <see cref="System.Type"/> of the class of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classType</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classType</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>value</i> is an empty string.<br /> -or- <br />
@@ -214,11 +214,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
   /// </summary>
-  /// <param name="classType">The <see cref="System.Type"/> of the class of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classType</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classType</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>value</i> is an empty string.<br /> -or- <br />
@@ -235,11 +235,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
   /// </summary>
-  /// <param name="classType">The <see cref="System.Type"/> of the class of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classType</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classType</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>value</i> is an empty string.<br /> -or- <br />
@@ -256,11 +256,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
   /// </summary>
-  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classDefinition</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classDefinition</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>value</i> is an empty string.<br /> -or- <br />
@@ -277,11 +277,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
   /// </summary>
-  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classDefinition</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classDefinition</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>value</i> is an empty string.<br /> -or- <br />
@@ -298,11 +298,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
   /// </summary>
-  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classDefinition</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classDefinition</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>value</i> is an empty string.<br /> -or- <br />
@@ -319,11 +319,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
   /// </summary>
-  /// <param name="classID">The ID of the class of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classID</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classID</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>classID</i> is an empty string.<br /> -or- <br />
@@ -342,11 +342,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
   /// </summary>
-  /// <param name="classType">The <see cref="System.Type"/> of the class of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classType</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classType</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>value</i> is an empty string.<br /> -or- <br />
@@ -367,11 +367,11 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
   /// </summary>
-  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider.</param>
+  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>classDefinition</i> is a null reference.<br /> -or- <br />
-  ///   <i>value</i> is a null reference.
+  ///   <i>classDefinition</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>value</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
   ///   <i>value</i> is an empty string.<br /> -or- <br />
