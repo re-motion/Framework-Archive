@@ -32,9 +32,9 @@ public class QueryParameterCollection : CommonCollection
   /// <remarks>
   /// The new <b>QueryParameterCollection</b> has the same items as the given <i>collection</i>.
   /// </remarks>
-  /// <param name="collection">The <see cref="QueryParameterCollection"/> to copy.</param>
+  /// <param name="collection">The <see cref="QueryParameterCollection"/> to copy. Must not be <see langword="null"/>.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
-  /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>collection</i> is <see langword="null"/>.</exception>
   public QueryParameterCollection (QueryParameterCollection collection, bool makeCollectionReadOnly)  
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
@@ -52,9 +52,9 @@ public class QueryParameterCollection : CommonCollection
   /// <summary>
   /// Adds a new <see cref="QueryParameter"/> to the collection with <see cref="QueryParameter.ParameterType"/> of Value.
   /// </summary>
-  /// <param name="parameterName">The <see cref="QueryParameter.Name"/> of the new parameter.</param>
+  /// <param name="parameterName">The <see cref="QueryParameter.Name"/> of the new parameter. Must not be <see langword="null"/>.</param>
   /// <param name="parameterValue">The <see cref="QueryParameter.Value"/> of the new parameter.</param>
-  /// <exception cref="System.ArgumentNullException"><i>parameterName</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>parameterName</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>parameterName</i> is an empty string.</exception>
   public void Add (string parameterName, object parameterValue)
   {
@@ -66,11 +66,11 @@ public class QueryParameterCollection : CommonCollection
   /// <summary>
   /// Adds a new <see cref="QueryParameter"/> to the collection.
   /// </summary>
-  /// <param name="parameterName">The <see cref="QueryParameter.Name"/> of the new parameter.</param>
+  /// <param name="parameterName">The <see cref="QueryParameter.Name"/> of the new parameter. Must not be <see langword="null"/>.</param>
   /// <param name="parameterValue">The <see cref="QueryParameter.Value"/> of the new parameter.</param>
   /// <param name="parameterType">The <see cref="QueryParameterType"/> of the new parameter.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>parameterName</i> is a null reference.
+  ///   <i>parameterName</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>parameterName</i> is an empty string.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><i>parameterType</i> is not a valid enum value.</exception>
@@ -87,9 +87,9 @@ public class QueryParameterCollection : CommonCollection
   /// <summary>
   /// Determines whether an item is in the <see cref="QueryParameterCollection"/>.
   /// </summary>
-  /// <param name="queryParameter">The <see cref="QueryParameter"/> to locate in the collection.</param>
+  /// <param name="queryParameter">The <see cref="QueryParameter"/> to locate in the collection. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if <i>queryParameter</i> is found in the <see cref="QueryParameterCollection"/>; otherwise, false;</returns>
-  /// <exception cref="System.ArgumentNullException"><i>queryParameter</i> is a null reference</exception>
+  /// <exception cref="System.ArgumentNullException"><i>queryParameter</i> is <see langword="null"/></exception>
   public bool Contains (QueryParameter queryParameter)
   {
     ArgumentUtility.CheckNotNull ("queryParameter", queryParameter);
@@ -100,9 +100,9 @@ public class QueryParameterCollection : CommonCollection
   /// <summary>
   /// Determines whether an item is in the <see cref="QueryParameterCollection"/>.
   /// </summary>
-  /// <param name="name">The <see cref="QueryParameter.Name"/> of the <see cref="QueryParameter"/> to locate in the collection.</param>
+  /// <param name="name">The <see cref="QueryParameter.Name"/> of the <see cref="QueryParameter"/> to locate in the collection. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if a <see cref="QueryParameter"/> with a <see cref="QueryParameter.Name"/> of <i>name</i> is found in the <see cref="QueryParameterCollection"/>; otherwise, false;</returns>
-  /// <exception cref="System.ArgumentNullException"><i>name</i> is a null reference</exception>
+  /// <exception cref="System.ArgumentNullException"><i>name</i> is <see langword="null"/></exception>
   public bool Contains (string name)
   {
     return BaseContainsKey (name);
@@ -119,7 +119,7 @@ public class QueryParameterCollection : CommonCollection
   /// <summary>
   /// Gets the <see cref="QueryParameter"/> with a given <i>name</i> in the <see cref="QueryParameterCollection"/>.
   /// </summary>
-  /// <remarks>The indexer returns null if the given <i>name</i> was not found.</remarks>
+  /// <remarks>The indexer returns <see langword="null"/> if the given <i>name</i> was not found.</remarks>
   public QueryParameter this [string name]  
   {
     get { return (QueryParameter) BaseGetObject (name); }

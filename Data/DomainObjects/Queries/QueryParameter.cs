@@ -34,10 +34,10 @@ public class QueryParameter
   /// <summary>
   /// Initializes a new instance of the <see cref="QueryParameter"/> class.
   /// </summary>
-  /// <param name="name">The name of the parameter.</param>
+  /// <param name="name">The name of the parameter. Must not be <see langword="null"/>.</param>
   /// <param name="value">The value of the parameter.</param>
   /// <param name="parameterType">The <see cref="QueryParameterType"/> of the parameter.</param>
-  /// <exception cref="System.ArgumentNullException"><i>name</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>name</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>name</i> is an empty string.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException"><i>parameterType</i> is not a valid enum value.</exception>
   public QueryParameter (string name, object value, QueryParameterType parameterType)
