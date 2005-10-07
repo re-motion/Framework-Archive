@@ -345,7 +345,9 @@ public class DomainObject
     get { return _dataContainer.IsDiscarded; }
   }
 
-  // TODO Doc:
+  /// <summary>
+  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> to which the <b>DomainObject</b> belongs.
+  /// </summary>
   public ClientTransaction ClientTransaction
   {
     get { return _dataContainer.ClientTransaction; }
