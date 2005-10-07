@@ -301,6 +301,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <remarks>The method does not modify the given <see cref="DomainObjectCollection"/>.</remarks>
   /// <param name="domainObjects">The <see cref="DomainObjectCollection"/> to add items from.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>domainObjects</i> contains a <see cref="DomainObject"/> that belongs to a <see cref="ClientTransaction"/> that is different from 
+  ///   the <see cref="ClientTransaction"/> managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
+  /// </exception>
   public void Combine (DomainObjectCollection domainObjects)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
@@ -454,6 +459,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   /// <exception cref="System.ArgumentException"><i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>domainObject</i> belongs to a <see cref="ClientTransaction"/> that is different from the <see cref="ClientTransaction"/> 
+  ///   managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
+  /// </exception>
   public int Add (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -519,6 +529,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <param name="domainObject">The <see cref="DomainObject"/> to remove.</param>
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>domainObject</i> belongs to a <see cref="ClientTransaction"/> that is different from the <see cref="ClientTransaction"/> 
+  ///   managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
+  /// </exception>
   public void Remove (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -592,6 +607,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   ///   The <i>domainObject</i> already exists in the collection.<br /> -or- <br />
   ///   <i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.
   /// </exception>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>domainObject</i> belongs to a <see cref="ClientTransaction"/> that is different from the <see cref="ClientTransaction"/> 
+  ///   managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
+  /// </exception>
   public void Insert (int index, DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -650,6 +670,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// </summary>
   /// <param name="index">The zero-based index at which <i>value</i> should be inserted.</param>
   /// <param name="value">The <see cref="Object"/> to insert into the <see cref="IList"/>.</param>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>value</i> is a <see cref="DomainObject"/> that belongs to a <see cref="ClientTransaction"/> that is different 
+  ///   from the <see cref="ClientTransaction"/> managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
+  /// </exception>
   void IList.Insert (int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
@@ -707,6 +732,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// </summary>
   /// <param name="value">The <see cref="Object"/> to add to the <see cref="IList"/>.</param>
   /// <returns>The position into which the new element was inserted.</returns>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>value</i> is a <see cref="DomainObject"/> that belongs to a <see cref="ClientTransaction"/> that is different 
+  ///   from the <see cref="ClientTransaction"/> managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
+  /// </exception>
   int IList.Add (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
@@ -717,7 +747,6 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   #endregion
 
   #region ICloneable Members
-
 
   /// <summary>
   /// Creates a shallow copy of this collection.
@@ -804,6 +833,11 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   ///   This method actually performs the replace operation for <see cref="Commit"/> and <see cref="Rollback"/>.
   ///   Note: The replacement raises no events.
   /// </remarks>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>domainObjects</i> contains a <see cref="DomainObject"/> that belongs to a <see cref="ClientTransaction"/> that is different from 
+  ///   the <see cref="ClientTransaction"/> managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
+  /// </exception>
   protected virtual void ReplaceItems (DomainObjectCollection domainObjects)
   {
     bool isReadOnly = IsReadOnly;
@@ -825,6 +859,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentException"><i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>domainObject</i> belongs to a <see cref="ClientTransaction"/> that is different from the <see cref="ClientTransaction"/> managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
+  /// </exception>
   internal protected int PerformAdd (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -848,6 +886,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <exception cref="System.ArgumentException">
   ///   The <i>domainObject</i> already exists in the collection.<br /> -or- <br />
   ///   <i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.
+  /// </exception>
+  /// <exception cref="DataManagement.ClientTransactionsDifferException">
+  ///   <i>domainObject</i> belongs to a <see cref="ClientTransaction"/> that is different from the <see cref="ClientTransaction"/> managing this collection. 
+  ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
   /// </exception>
   internal protected void PerformInsert (int index, DomainObject domainObject)
   {
