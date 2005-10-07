@@ -3,6 +3,9 @@
 - BocList
   * ValiadateModifiableRow obsolete -> ValidateModifiableRow verwenden. (Tippfehler im Methodennamen)
 
+- BusinessObjectReferenceDataSource
+  * Bugfix: Der SearchMode der ParentDataSource wurde nicht korrekt durchgereicht.
+  
 1.3.12
 ======
 - BocList
