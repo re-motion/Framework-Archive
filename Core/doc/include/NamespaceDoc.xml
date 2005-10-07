@@ -1,4 +1,7 @@
 <namespaces>
+  <namespace name="Rubicon.Data">
+    The <B>Rubicon.Data</B> namespace contains an interface for transaction handling in rubicon libraries.
+  </namespace>  
 <!--
   <namespace name="Rubicon.NullableValueTypes">
 summary
