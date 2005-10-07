@@ -25,8 +25,8 @@ public class ConfigurationBase
   /// <summary>
   /// Initializes a new instance of the <b>ConfigurationBase</b> class from the specified <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.BaseLoader"/>.
   /// </summary>
-  /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.BaseLoader"/> to be used for reading the configuration.</param>
-  /// <exception cref="System.ArgumentNullException"><i>loader</i> is a null reference.</exception>
+  /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.BaseLoader"/> to be used for reading the configuration. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>loader</i> is <see langword="null"/>.</exception>
   protected ConfigurationBase (BaseLoader loader)
   {
     ArgumentUtility.CheckNotNull ("loader", loader);
