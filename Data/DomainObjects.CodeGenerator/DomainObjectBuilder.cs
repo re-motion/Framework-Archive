@@ -210,6 +210,8 @@ public class DomainObjectBuilder : CodeFileBuilder
   protected void WriteConstructorWithDataContainer (string className)
   {
     BeginConstructor (s_accessibilityProtected, className, "DataContainer dataContainer", "dataContainer");
+    WriteComment ("This infrastructure constructor is necessary for the DomainObjects framework.");
+    WriteComment ("Do not remove the constructor or place any code here.");
     EndConstructor ();
   }
 
