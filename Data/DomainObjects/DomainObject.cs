@@ -18,9 +18,9 @@ public class DomainObject
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that should be loaded.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that should be loaded. Must not be <see langword="null"/>.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
@@ -34,10 +34,10 @@ public class DomainObject
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that should be loaded.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that should be loaded. Must not be <see langword="null"/>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <b>DomainObject</b>s that are already deleted.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
@@ -51,10 +51,10 @@ public class DomainObject
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that is loaded.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that is loaded. Must not be <see langword="null"/>.</param>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <b>DomainObject</b>.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
@@ -68,11 +68,11 @@ public class DomainObject
   /// <summary>
   /// Gets a <b>DomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that is loaded.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the <b>DomainObject</b> that is loaded. Must not be <see langword="null"/>.</param>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that us used to load the <b>DomainObject</b>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <b>DomainObject</b>s that are already deleted.</param>
   /// <returns>The <b>DomainObject</b> with the specified <i>id</i>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
   ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
@@ -155,8 +155,8 @@ public class DomainObject
   /// <summary>
   /// Initializes a new <b>DomainObject</b>.
   /// </summary>
-  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <b>DomainObject</b> should be part of.</param>
-  /// <exception cref="System.ArgumentNullException"><i>clientTransaction</i> is a null reference.</exception>
+  /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <b>DomainObject</b> should be part of. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>clientTransaction</i> is <see langword="null"/>.</exception>
   protected DomainObject (ClientTransaction clientTransaction)
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
@@ -251,9 +251,9 @@ public class DomainObject
   /// <summary>
   /// Gets the related object of a given <i>propertyName</i>.
   /// </summary>
-  /// <param name="propertyName">The name of the property referring to the relation. <i>propertyName</i> must refer to a one-to-one or many-to-one relation.</param>
+  /// <param name="propertyName">The name of the property referring to the relation. <i>propertyName</i> must refer to a one-to-one or many-to-one relation. Must not be <see langword="null"/>.</param>
   /// <returns>The <b>DomainObject</b> that is the current related object.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an one-to-one or many-to-one relation.</exception>
@@ -268,9 +268,9 @@ public class DomainObject
   /// <summary>
   /// Gets the original related object of a given <i>propertyName</i> at the point of instantiation, loading, commit or rollback.
   /// </summary>
-  /// <param name="propertyName">The name of the property referring to the relation. <i>propertyName</i> must refer to a one-to-many relation.</param>
+  /// <param name="propertyName">The name of the property referring to the relation. <i>propertyName</i> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
   /// <returns>The <b>DomainObject</b> that is the current related object.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
@@ -286,9 +286,9 @@ public class DomainObject
   /// <summary>
   /// Gets the related objects of a given <i>propertyName</i>.
   /// </summary>
-  /// <param name="propertyName">The name of the property referring to the relation. <i>propertyName</i> must refer to a one-to-many relation.</param>
+  /// <param name="propertyName">The name of the property referring to the relation. <i>propertyName</i> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> containing the current related objects.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException"><i>propertyName</i> does not refer to an <see cref="DataManagement.ObjectEndPoint"/>.</exception>
@@ -304,9 +304,9 @@ public class DomainObject
   /// <summary>
   /// Gets the original related objects of a given <i>propertyName</i> at the point of instantiation, loading, commit or rollback.
   /// </summary>
-  /// <param name="propertyName">The name of the property referring to the relation. <i>propertyName</i> must refer to a one-to-many relation.</param>
+  /// <param name="propertyName">The name of the property referring to the relation. <i>propertyName</i> must refer to a one-to-many relation. Must not be <see langword="null"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> containing the original related objects.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.ArgumentException"><i>propertyName</i> does not refer to an one-to-many relation.</exception>
@@ -321,9 +321,9 @@ public class DomainObject
   /// <summary>
   /// Sets a relation to another object.
   /// </summary>
-  /// <param name="propertyName">The name of the property referring to the relation, that should relate to <i>newRelatedObject</i>.</param>
-  /// <param name="newRelatedObject">The new <b>DomainObject</b> that should be related; null indicates that no object should be referenced.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is a null reference.</exception>
+  /// <param name="propertyName">The name of the property referring to the relation, that should relate to <i>newRelatedObject</i>. Must not be <see langword="null"/>.</param>
+  /// <param name="newRelatedObject">The new <b>DomainObject</b> that should be related; <see langword="null"/> indicates that no object should be referenced.</param>
+  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   protected void SetRelatedObject (string propertyName, DomainObject newRelatedObject)

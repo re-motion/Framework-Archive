@@ -72,9 +72,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Creates an empty <see cref="DomainObjectCollection"/> of a given <see cref="Type"/>.
   /// </summary>
-  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated. Must not be <see langword="null"/>.</param>
   /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>collectionType</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>collectionType</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType)
   {
@@ -84,10 +84,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Creates a <see cref="DomainObjectCollection"/> of a given <see cref="System.Type"/> and sets the <see cref="RequiredItemType"/>.
   /// </summary>
-  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated. Must not be <see langword="null"/>.</param>
   /// <param name="requiredItemType">The permitted <see cref="Type"/> of an item in the <see cref="DomainObjectCollection"/>. If specified only this type or derived types can be added to the <b>DomainObjectCollection</b>.</param>
   /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>collectionType</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>collectionType</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType, Type requiredItemType)
   {
@@ -97,12 +97,12 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Creates a <see cref="DomainObjectCollection"/> of a given <see cref="System.Type"/> and adds the <see cref="DomainObject"/>s of the given <see cref="DataContainerCollection"/>.
   /// </summary>
-  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
-  /// <param name="dataContainers">The <see cref="DataContainer"/>s of the <see cref="DomainObject"/>s that are added to the collection.</param>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated. Must not be <see langword="null"/>.</param>
+  /// <param name="dataContainers">The <see cref="DataContainer"/>s of the <see cref="DomainObject"/>s that are added to the collection. Must not be <see langword="null"/>.</param>
   /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>collectionType</i> is a null reference.<br /> -or- <br />
-  ///   <i>dataContainers</i> is a null reference.
+  ///   <i>collectionType</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>dataContainers</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (Type collectionType, DataContainerCollection dataContainers)
@@ -113,13 +113,13 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Creates a <see cref="DomainObjectCollection"/> of a given <see cref="System.Type"/> and adds the <see cref="DomainObject"/>s of the given <see cref="DataContainerCollection"/>.
   /// </summary>
-  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated.</param>
-  /// <param name="dataContainers">The <see cref="DataContainer"/>s of the <see cref="DomainObject"/>s that are added to the collection.</param>
+  /// <param name="collectionType">The <see cref="Type"/> of the new collection that should be instantiated. Must not be <see langword="null"/>.</param>
+  /// <param name="dataContainers">The <see cref="DataContainer"/>s of the <see cref="DomainObject"/>s that are added to the collection. Must not be <see langword="null"/>.</param>
   /// <param name="requiredItemType">The permitted <see cref="Type"/> of an item in the <see cref="DomainObjectCollection"/>. If specified only this type or derived types can be added to the <b>DomainObjectCollection</b>.</param>
   /// <returns>The new <see cref="DomainObjectCollection"/>.</returns>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>collectionType</i> is a null reference.<br /> -or- <br />
-  ///   <i>dataContainers</i> is a null reference.
+  ///   <i>collectionType</i> is <see langword="null"/>.<br /> -or- <br />
+  ///   <i>dataContainers</i> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="System.InvalidCastException"><i>collectionType</i> cannot be casted to <see cref="DomainObjectCollection"/>.</exception>
   public static DomainObjectCollection Create (
@@ -247,9 +247,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// The new <b>DomainObjectCollection</b> has the same <see cref="RequiredItemType"/> and the same items as the 
   /// given <i>collection</i>.
   /// </remarks>
-  /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy.</param>
+  /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy. Must not be <see langword="null"/>.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
-  /// <exception cref="System.ArgumentNullException"><i>collection</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>collection</i> is <see langword="null"/>.</exception>
   public DomainObjectCollection (DomainObjectCollection collection, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
@@ -264,9 +264,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a given array of <see cref="DomainObject"/>s.
   /// </summary>
-  /// <param name="domainObjects">The array of <see cref="DomainObject"/>s to copy.</param>
+  /// <param name="domainObjects">The array of <see cref="DomainObject"/>s to copy. Must not be <see langword="null"/>.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
-  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is <see langword="null"/>.</exception>
   public DomainObjectCollection (DomainObject[] domainObjects, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
@@ -280,9 +280,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Initializes a new <b>DomainObjectCollection</b> as a shallow copy of a <see cref="DataManagement.DataContainerCollection"/>s.
   /// </summary>
-  /// <param name="dataContainers">The <see cref="DataManagement.DataContainerCollection"/> to copy.</param>
+  /// <param name="dataContainers">The <see cref="DataManagement.DataContainerCollection"/> to copy. Must not be <see langword="null"/>.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
-  /// <exception cref="System.ArgumentNullException"><i>dataContainers</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>dataContainers</i> is <see langword="null"/>.</exception>
   public DomainObjectCollection (DataContainerCollection dataContainers, bool makeCollectionReadOnly)
   {
     ArgumentUtility.CheckNotNull ("dataContainers", dataContainers);
@@ -299,8 +299,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Adds all items of the given <see cref="DomainObjectCollection"/> to the <b>DomainObjectCollection</b>, that are not already part of it.
   /// </summary>
   /// <remarks>The method does not modify the given <see cref="DomainObjectCollection"/>.</remarks>
-  /// <param name="domainObjects">The <see cref="DomainObjectCollection"/> to add items from.</param>
-  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
+  /// <param name="domainObjects">The <see cref="DomainObjectCollection"/> to add items from. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is <see langword="null"/>.</exception>
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <i>domainObjects</i> contains a <see cref="DomainObject"/> that belongs to a <see cref="ClientTransaction"/> that is different from 
   ///   the <see cref="ClientTransaction"/> managing this collection. 
@@ -322,9 +322,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Returns all items of a given <see cref="DomainObjectCollection"/> that are not part of the <b>DomainObjectCollection</b>.
   /// </summary>
   /// <remarks>The method does not return any items that are in the collection, but not in <i>domainObjects</i>.</remarks>
-  /// <param name="domainObjects">The collection to evaluate.</param>
+  /// <param name="domainObjects">The collection to evaluate. Must not be <see langword="null"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> with all items of <i>domainObjects</i> that are not part of the collection.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is <see langword="null"/>.</exception>
   public DomainObjectCollection GetItemsNotInCollection (DomainObjectCollection domainObjects)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
@@ -356,9 +356,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
-  /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>.</param>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if <i>domainObject</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference</exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/></exception>
   public bool Contains (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -369,9 +369,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>.</param>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if the <see cref="DomainObject"/> with the <i>id</i> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference</exception>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> is <see langword="null"/></exception>
   public bool Contains (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -445,7 +445,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Gets the <see cref="DomainObject"/> with a given <see cref="ObjectID"/> from the <see cref="DomainObjectCollection"/>.
   /// </summary>
-  /// <remarks>The indexer returns null if the given <i>id</i> was not found.</remarks>
+  /// <remarks>The indexer returns <see langword="null"/> if the given <i>id</i> was not found.</remarks>
   public DomainObject this[ObjectID id]  
   {
     get { return (DomainObject) BaseGetObject (id); }
@@ -454,10 +454,10 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Adds a <see cref="DomainObject"/> to the collection.
   /// </summary>
-  /// <param name="domainObject">The <see cref="DomainObject"/> to add.</param>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to add. Must not be <see langword="null"/>.</param>
   /// <returns>The zero-based index where the <i>domainObject</i> has been added.</returns>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException"><i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <i>domainObject</i> belongs to a <see cref="ClientTransaction"/> that is different from the <see cref="ClientTransaction"/> 
@@ -507,8 +507,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Removes a <see cref="DomainObject"/> from the collection.
   /// </summary>
-  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to remove.</param>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> is a null reference.</exception>
+  /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to remove. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>id</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   public void Remove (ObjectID id)
   {
@@ -526,8 +526,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <remarks>
   ///   If <b>Remove</b> is called with an object that is not in the collection, no exception is thrown, and no events are raised. 
   /// </remarks>
-  /// <param name="domainObject">The <see cref="DomainObject"/> to remove.</param>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to remove. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <i>domainObject</i> belongs to a <see cref="ClientTransaction"/> that is different from the <see cref="ClientTransaction"/> 
@@ -596,13 +596,13 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Inserts a <see cref="DomainObject"/> into the collection at the specified index.
   /// </summary>
   /// <param name="index">The zero-based <i>index</i> at which the item should be inserted.</param>
-  /// <param name="domainObject">The <i>domainObject</i> to add.</param>
+  /// <param name="domainObject">The <i>domainObject</i> to add. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
   ///   <i>index</i> is less than zero.<br /> -or- <br />
   ///   <i>index</i> is greater than the number of items in the collection.
   /// </exception>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException">
   ///   The <i>domainObject</i> already exists in the collection.<br /> -or- <br />
   ///   <i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.
@@ -854,9 +854,9 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Adds a <see cref="DomainObject"/> to the collection without raising the <see cref="Adding"/> and <see cref="Added"/> events.
   /// </summary>
-  /// <param name="domainObject">The <see cref="DomainObject"/> to add to the collection.</param>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to add to the collection. Must not be <see langword="null"/>.</param>
   /// <returns>The position into which the new <see cref="DomainObject"/> was inserted.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentException"><i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.</exception>
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
@@ -876,13 +876,13 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Inserts a <see cref="DomainObject"/> at a given index to the collection without raising the <see cref="Adding"/> and <see cref="Added"/> events.
   /// </summary>
   /// <param name="index">The zero-based <i>index</i> at which the item should be inserted.</param>
-  /// <param name="domainObject">The <i>domainObject</i> to add.</param>
+  /// <param name="domainObject">The <i>domainObject</i> to add. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
   ///   <i>index</i> is less than zero.<br /> -or- <br />
   ///   <i>index</i> is greater than the number of items in the collection.
   /// </exception>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.ArgumentException">
   ///   The <i>domainObject</i> already exists in the collection.<br /> -or- <br />
   ///   <i>domainObject</i> is not of type <see cref="RequiredItemType"/> or one of its derived types.
@@ -913,8 +913,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Removes a <see cref="DomainObject"/> from the collection without raising the <see cref="Removing"/> and <see cref="Removed"/> events.
   /// </summary>
-  /// <param name="domainObject">The <see cref="DomainObject"/> to remove from the collection.</param>
-  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is a null reference.</exception>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to remove from the collection. Must not be <see langword="null"/>.</param>
+  /// <exception cref="System.ArgumentNullException"><i>domainObject</i> is <see langword="null"/>.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   internal protected void PerformRemove (DomainObject domainObject)
   {
