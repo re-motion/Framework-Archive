@@ -11,6 +11,8 @@ namespace Rubicon.Web.ExecutionEngine
 [Serializable]
 public abstract class WxeTransactionBase: WxeStepList
 {
+  private static readonly ILog s_log = LogManager.GetLogger (typeof (WxeTransactionBase));
+
   /// <summary> Finds out wheter the specified step is part of a <b>WxeTransactionBase</b>. </summary>
   /// <returns> True, if one of the parents of the specified Step is a WxeTransactionBase, false otherwise. </returns>
   public static bool HasWxeTransaction (WxeStep step)
@@ -18,20 +20,11 @@ public abstract class WxeTransactionBase: WxeStepList
     return WxeStep.GetStepByType (step, typeof (WxeTransactionBase)) != null;
   }
 
-  private static readonly ILog s_log = LogManager.GetLogger (typeof (WxeTransactionBase));
-
-  private static readonly object s_transactionCommittingEvent = new object();
-  private static readonly object s_transactionCommittedEvent = new object();
-  private static readonly object s_transactionRollingBackEvent = new object();
-  private static readonly object s_transactionRolledBackEvent = new object();
-
   private ITransaction _transaction = null;
-  private ITransaction _previousTransaction = null;
+  private ITransaction _previousCurrentTransaction = null;
   private bool _autoCommit;
   private bool _forceRoot;
-  private bool _isPreviousTransactionRestored = false;
-  [NonSerialized]
-  private EventHandlerList _events;
+  private bool _isPreviousCurrentTransactionRestored = false;
 
   /// <summary> Creates a new instance. </summary>
   /// <param name="steps"> Initial step list. Can be <see langword="null"/>. </param>
@@ -145,7 +138,7 @@ public abstract class WxeTransactionBase: WxeStepList
     
     if (! ExecutionStarted)
     {
-      _previousTransaction = CurrentTransaction;
+      _previousCurrentTransaction = CurrentTransaction;
       if (_transaction == null)
         _transaction = CreateTransaction();
     }
@@ -162,7 +155,7 @@ public abstract class WxeTransactionBase: WxeStepList
         throw;
 
       RollbackAndReleaseTransaction();
-      RestorePreviousTransaction();
+      RestorePreviousCurrentTransaction();
       s_log.Debug ("Aborted Execute of " + this.GetType().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType().FullName + ").");
   
       throw;
@@ -172,7 +165,7 @@ public abstract class WxeTransactionBase: WxeStepList
       CommitAndReleaseTransaction();
     else
       RollbackAndReleaseTransaction();
-    RestorePreviousTransaction();
+    RestorePreviousCurrentTransaction();
    
     s_log.Debug ("Leaving Execute of " + this.GetType().Name);
   }
@@ -182,7 +175,7 @@ public abstract class WxeTransactionBase: WxeStepList
     s_log.Debug ("Aborting " + this.GetType().Name);
     base.AbortRecursive();
     RollbackAndReleaseTransaction();
-    RestorePreviousTransaction();
+    RestorePreviousCurrentTransaction();
   }
 
   /// <summary> Commits encasulated <see cref="ITransaction"/> and releases it afterwards. </summary>
@@ -227,18 +220,16 @@ public abstract class WxeTransactionBase: WxeStepList
   /// <remarks> Raises the <see cref="TransactionCommitting"/> event. </remarks>
   protected virtual void OnTransactionCommitting()
   {
-    EventHandler handler = (EventHandler) Events[s_transactionCommittingEvent];
-    if (handler != null)
-      handler (this, EventArgs.Empty);
+    if (TransactionCommitting != null)
+      TransactionCommitting (this, EventArgs.Empty);
   }
 
   /// <summary> Called after the transaction has been committed. </summary>
   /// <remarks> Raises the <see cref="TransactionCommitted"/> event. </remarks>
   protected virtual void OnTransactionCommitted()
   {
-    EventHandler handler = (EventHandler) Events[s_transactionCommittedEvent];
-    if (handler != null)
-      handler (this, EventArgs.Empty);
+    if (TransactionCommitted != null)
+      TransactionCommitted (this, EventArgs.Empty);
   }
 
   /// <summary> Rolls the encasulated <see cref="ITransaction"/> back and relases it afterwards. </summary>
@@ -283,28 +274,26 @@ public abstract class WxeTransactionBase: WxeStepList
   /// <remarks> Raises the <see cref="TransactionRollingBack"/> event. </remarks>
   protected virtual void OnTransactionRollingBack()
   {
-    EventHandler handler = (EventHandler) Events[s_transactionRollingBackEvent];
-    if (handler != null)
-      handler (this, EventArgs.Empty);
+    if (TransactionRollingBack != null)
+      TransactionRollingBack (this, EventArgs.Empty);
   }
 
   /// <summary> Called after the transaction has been rolled back. </summary>
   /// <remarks> Raises the <see cref="TransactionRolledBack"/> event. </remarks>
   protected virtual void OnTransactionRolledBack()
   {
-    EventHandler handler = (EventHandler) Events[s_transactionRolledBackEvent];
-    if (handler != null)
-      handler (this, EventArgs.Empty);
+    if (TransactionRolledBack != null)
+      TransactionRolledBack (this, EventArgs.Empty);
   }
 
   /// <summary> Sets the backed up transaction as the old and new current transaction. </summary>
-  protected void RestorePreviousTransaction()
+  protected void RestorePreviousCurrentTransaction()
   {
-    if (ExecutionStarted && ! _isPreviousTransactionRestored)
+    if (ExecutionStarted && ! _isPreviousCurrentTransactionRestored)
     {
-      SetCurrentTransaction (_previousTransaction);
-      _previousTransaction = null;
-      _isPreviousTransactionRestored = true;
+      SetCurrentTransaction (_previousCurrentTransaction);
+      _previousCurrentTransaction = null;
+      _isPreviousCurrentTransactionRestored = true;
     }
   }
 
@@ -318,35 +307,14 @@ public abstract class WxeTransactionBase: WxeStepList
     get { return _forceRoot; }
   }
 
-  /// <summary> Gets the list of event handlers for this <see cref="WxeTransactionBase"/>. </summary>
-  /// <remarks>
-  ///   <note type="caution">
-  ///     The event handlers must be reattached after the <see cref="WxeTransactionBase"/> has been deserialized.
-  ///   </note>
-  /// </remarks>
-  protected EventHandlerList Events
-  {
-    get
-    {
-      if (_events == null)
-      {
-        _events = new EventHandlerList();
-      }
-      return _events;
-    }
-  }
-
   /// <summary> Is raises before the transaction is committed. </summary>
   /// <remarks>
   ///   <note type="caution">
   ///     The event handler must be reattached after the <see cref="WxeTransactionBase"/> has been deserialized.
   ///   </note>
   /// </remarks>
-  public event EventHandler TransactionCommitting
-  {
-    add { Events.AddHandler (s_transactionCommittingEvent, value); }
-    remove { Events.RemoveHandler (s_transactionCommittingEvent, value); }
-  }
+  [field:NonSerialized]
+  public event EventHandler TransactionCommitting;
   
   /// <summary> Is raised after the transaction has been committed. </summary>
   /// <remarks>
@@ -354,11 +322,8 @@ public abstract class WxeTransactionBase: WxeStepList
   ///     The event handler must be reattached after the <see cref="WxeTransactionBase"/> has been deserialized.
   ///   </note>
   /// </remarks>
-  public event EventHandler TransactionCommitted
-  {
-    add { Events.AddHandler (s_transactionCommittedEvent, value); }
-    remove { Events.RemoveHandler (s_transactionCommittedEvent, value); }
-  }
+  [field:NonSerialized]
+  public event EventHandler TransactionCommitted;
   
   /// <summary> Is raised before the transaction is rolled back. </summary>
   /// <remarks>
@@ -366,11 +331,8 @@ public abstract class WxeTransactionBase: WxeStepList
   ///     The event handler must be reattached after the <see cref="WxeTransactionBase"/> has been deserialized.
   ///   </note>
   /// </remarks>
-  public event EventHandler TransactionRollingBack
-  {
-    add { Events.AddHandler (s_transactionRollingBackEvent, value); }
-    remove { Events.RemoveHandler (s_transactionRollingBackEvent, value); }
-  }
+  [field:NonSerialized]
+  public event EventHandler TransactionRollingBack;
 
   /// <summary> Is raised after the transaction has been rolled back. </summary>
   /// <remarks>
@@ -378,20 +340,8 @@ public abstract class WxeTransactionBase: WxeStepList
   ///     The event handler must be reattached after the <see cref="WxeTransactionBase"/> has been deserialized.
   ///   </note>
   /// </remarks>
-  public event EventHandler TransactionRolledBack
-  {
-    add { Events.AddHandler (s_transactionRolledBackEvent, value); }
-    remove { Events.RemoveHandler (s_transactionRolledBackEvent, value); }
-  }
-//        add
-//      {
-//            this._ValidationEventHandler = (ValidationEventHandler) Delegate.Combine(this._ValidationEventHandler, value);
-//      }
-//      remove
-//      {
-//            this._ValidationEventHandler = (ValidationEventHandler) Delegate.Remove(this._ValidationEventHandler, value);
-//      }
-
+  [field:NonSerialized]
+  public event EventHandler TransactionRolledBack;
 }
 
 }
