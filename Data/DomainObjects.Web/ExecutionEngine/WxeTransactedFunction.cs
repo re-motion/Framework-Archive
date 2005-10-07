@@ -6,8 +6,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 {
-//TODO Doc: Provide information on all undocumented Rubicon.Data.DomainObjects namespaces that they are not intended to be used directly from applications.
- 
 /// <summary>
 /// A <see cref="WxeFunction"/> that will always have a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
 /// </summary>
