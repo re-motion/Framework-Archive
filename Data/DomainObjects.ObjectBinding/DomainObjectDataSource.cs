@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding.Design;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-
+// TODO Doc: 
 public class DomainObjectDataSource: BusinessObjectDataSource
 {
   private string _typeName;
