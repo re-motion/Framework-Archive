@@ -12,7 +12,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
-/// The default implementation of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for <see cref="BindableDomainObject"/>s.
+/// The default implementation of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for the DomainObjects framework.
 /// </summary>
 /// <remarks>See the documentation of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for additional documentation for each member.</remarks>
 public class BaseProperty : IBusinessObjectProperty

@@ -134,6 +134,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
   protected BindableDomainObject (DataContainer dataContainer) : base (dataContainer)
   {
+    //TODO: Move this code to OnLoaded?
     _objectReflector = new BusinessObjectReflector (this);
   }
 

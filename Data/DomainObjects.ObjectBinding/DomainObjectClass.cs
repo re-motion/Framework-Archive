@@ -11,12 +11,19 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
 {
   private BusinessObjectClassReflector _classReflector;
 
-  // TODO Doc: I do not understand this code
   public DomainObjectClass (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
 
     ReflectionPropertyFactory propertyFactory = null;
+    // TODO: Was ist wenn der Type typeof(string) ist? 
+    // BindableDomainObject hat nur protected konstruktoren und kann daher nicht instanziert werden.
+    // Vorschlag:
+    //    if (type.IsSubclassOf (typeof (BindableDomainObject)))
+    //      propertyFactory = new DomainObjectPropertyFactory (MappingConfiguration.Current.ClassDefinitions.GetMandatory (type));
+    //    else
+    //      propertyFactory = new ReflectionPropertyFactory ();
+
     if (type == typeof (BindableDomainObject))
       propertyFactory = new ReflectionPropertyFactory ();
     else
