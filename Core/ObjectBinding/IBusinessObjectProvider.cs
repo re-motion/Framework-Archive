@@ -54,8 +54,6 @@ public abstract class BusinessObjectProvider: IBusinessObjectProvider
   /// <remarks>
   ///   <note type="inheritinfo">
   ///    If your object model does not support services, this property may always return <see langword="null"/>.
-  ///    Do not forget to override the <see cref="GetService"/> method, having it return <see langword="null"/> as well, 
-  ///    instead of querying the <b>ServiceDictionary</b>.
   ///   </note>
   /// </remarks>
   protected abstract IDictionary ServiceDictionary { get; }
@@ -63,7 +61,10 @@ public abstract class BusinessObjectProvider: IBusinessObjectProvider
   /// <summary> Retrieves the requested <see cref="IBusinessObjectService"/>. </summary>
   public IBusinessObjectService GetService (Type serviceType)
   {
-    return (IBusinessObjectService) ServiceDictionary[serviceType];
+    IDictionary serviceDictionary = ServiceDictionary;
+    if (serviceDictionary != null)
+      return (IBusinessObjectService) serviceDictionary[serviceType];
+    return null;
   }
 
   /// <summary> Registers a new <see cref="IBusinessObjectService"/> with this <see cref="BusinessObjectProvider"/>. </summary>
@@ -71,7 +72,9 @@ public abstract class BusinessObjectProvider: IBusinessObjectProvider
   /// <param name="service"> The <see cref="IBusinessObjectService"/> to register. </param>
   public void AddService (Type serviceType, IBusinessObjectService service)
   {
-    ServiceDictionary[serviceType] = service;
+    IDictionary serviceDictionary = ServiceDictionary;
+    if (serviceDictionary != null)
+      serviceDictionary[serviceType] = service;
   }
 
   /// <summary> 
