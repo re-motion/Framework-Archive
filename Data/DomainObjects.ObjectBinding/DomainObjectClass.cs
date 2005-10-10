@@ -11,6 +11,7 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
 {
   private BusinessObjectClassReflector _classReflector;
 
+  // TODO Doc: I do not understand this code
   public DomainObjectClass (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);

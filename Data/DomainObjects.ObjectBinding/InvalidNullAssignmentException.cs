@@ -3,7 +3,10 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-// TODO Doc: 
+/// <summary>
+/// The exception that is thrown when attempting to assign <see langword="null"/> to a property that does not support it.
+/// </summary>
+[Serializable]
 public class InvalidNullAssignmentException : Exception
 {
   public InvalidNullAssignmentException () : this ("An invalid null assignment exception occured") {}
