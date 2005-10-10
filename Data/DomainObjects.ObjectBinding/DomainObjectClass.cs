@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
+// TODO Doc: 
 public class DomainObjectClass: IBusinessObjectClassWithIdentity
 {
   private BusinessObjectClassReflector _classReflector;
