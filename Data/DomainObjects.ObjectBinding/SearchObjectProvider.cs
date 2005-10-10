@@ -5,6 +5,7 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
+// TODO Doc: 
 public class SearchObjectProvider : BusinessObjectProvider
 {
   private static SearchObjectProvider s_instance = new SearchObjectProvider ();

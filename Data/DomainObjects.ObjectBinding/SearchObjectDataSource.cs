@@ -6,6 +6,7 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
+// TODO Doc: 
 public class SearchObjectDataSource : BusinessObjectDataSource
 {
   private string _typeName;
