@@ -48,7 +48,7 @@ public abstract class CommandBuilder
   }
 
   /// <remarks>
-  /// This method cannot be used for binary (BLOB) <i>parameterValues</i>. Use the overload with a <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> instead.
+  /// This method cannot be used for binary (BLOB) <paramref name="parameterValues"/>. Use the overload with a <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> instead.
   /// </remarks>
   public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, object parameterValue)
   {
