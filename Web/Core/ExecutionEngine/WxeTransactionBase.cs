@@ -70,10 +70,13 @@ public abstract class WxeTransactionBase: WxeStepList
 
   /// <summary> Creates a new transaction. </summary>
   /// <returns> A new instance of a type implementing <see cref="ITransaction"/>. </returns>
+  /// <exception cref="InvalidOperationException"> 
+  ///   Thrown if <see langword="null"/> where to be returned as the child transaction.
+  /// </exception>
   protected ITransaction CreateTransaction()
   {
     WxeTransactionBase parentTransaction = ParentTransaction;
-    ITransaction transaction = null;
+    ITransaction transaction;
 
     bool isParentTransactionNull = parentTransaction == null || parentTransaction.Transaction == null;
     bool useParentTransaction = ! _forceRoot && ! isParentTransactionNull;
@@ -89,6 +92,11 @@ public abstract class WxeTransactionBase: WxeStepList
     else
     {
       transaction = CreateRootTransaction();
+      if (transaction == null)
+      {
+        throw new InvalidOperationException (string.Format (
+            "{0}.CreateRootTransaction() evaluated and returned null.", GetType().Name));
+      }
       s_log.Debug ("Created root " + this.GetType().Name + ".");
     }
 
@@ -106,14 +114,33 @@ public abstract class WxeTransactionBase: WxeStepList
   ///   The created transaction will be created as a root transaction if the <see cref="ITransaction"/> 
   ///   implementation of the <paramref name="parentTransaction"/> does not support child transactions.
   /// </remarks>
+  /// <exception cref="InvalidOperationException"> 
+  ///   Thrown if <see langword="null"/> where to be returned as the child transaction.
+  /// </exception>
   protected ITransaction CreateChildTransaction (ITransaction parentTransaction)
   {
     ArgumentUtility.CheckNotNull ("parentTransaction", parentTransaction);
 
+    ITransaction transaction;
     if (parentTransaction.CanCreateChild)
-      return parentTransaction.CreateChild();
+    {
+      transaction = parentTransaction.CreateChild();
+      if (transaction == null)
+      {
+        throw new InvalidOperationException (string.Format (
+            "{0}.CreateChild() evaluated and returned null.", parentTransaction.GetType().Name));
+      }
+    }
     else
-      return CreateRootTransaction();
+    {
+      transaction = CreateRootTransaction();
+      if (transaction == null)
+      {
+        throw new InvalidOperationException (string.Format (
+            "{0}.CreateRootTransaction() evaluated and returned null.", GetType().Name));
+      }
+    }
+    return transaction;
   }
 
   /// <summary> Gets the first parent of type <see cref="WxeTransactionBase"/>. </summary>
@@ -316,7 +343,7 @@ public abstract class WxeTransactionBase: WxeStepList
   [field:NonSerialized]
   public event EventHandler TransactionCommitting;
   
-  /// <summary> Is raised after the transaction has been committed. </summary>
+  /// <summary> Is fired after the transaction has been committed. </summary>
   /// <remarks>
   ///   <note type="caution">
   ///     The event handler must be reattached after the <see cref="WxeTransactionBase"/> has been deserialized.
@@ -325,7 +352,7 @@ public abstract class WxeTransactionBase: WxeStepList
   [field:NonSerialized]
   public event EventHandler TransactionCommitted;
   
-  /// <summary> Is raised before the transaction is rolled back. </summary>
+  /// <summary> Is fired before the transaction is rolled back. </summary>
   /// <remarks>
   ///   <note type="caution">
   ///     The event handler must be reattached after the <see cref="WxeTransactionBase"/> has been deserialized.
@@ -334,7 +361,7 @@ public abstract class WxeTransactionBase: WxeStepList
   [field:NonSerialized]
   public event EventHandler TransactionRollingBack;
 
-  /// <summary> Is raised after the transaction has been rolled back. </summary>
+  /// <summary> Is fired after the transaction has been rolled back. </summary>
   /// <remarks>
   ///   <note type="caution">
   ///     The event handler must be reattached after the <see cref="WxeTransactionBase"/> has been deserialized.
