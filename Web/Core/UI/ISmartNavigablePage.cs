@@ -18,12 +18,16 @@ public interface ISmartNavigablePage: IPage
   void DiscardSmartNavigationData ();
 
   /// <summary> Sets the focus to the passed control. </summary>
-  /// <param name="control"> The <see cref="IFocusableControl"/> to assign the focus to. </param>
+  /// <param name="control"> 
+  ///   The <see cref="IFocusableControl"/> to assign the focus to. Must no be <see langword="null"/>.
+  /// </param>
   /// <remarks> In dotNet 2.0, the focus can be set even if smart focusing is disabled. </remarks>
   void SetFocus (IFocusableControl control);
 
   /// <summary> Sets the focus to the passed control ID. </summary>
-  /// <param name="id"> The client side ID of the control to assign the focus to. </param>
+  /// <param name="id">
+  ///   The client side ID of the control to assign the focus to.  Must no be <see langword="null"/> or empty. 
+  /// </param>
   /// <remarks> Must be called before PreRendering of the page it self (the last control in the PreRender Phase). </remarks>
   void SetFocus (string id);
 }
