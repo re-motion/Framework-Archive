@@ -39,6 +39,7 @@ public class NullableProperty : BaseProperty
     return base.FromInternalType (internalValue);
   }
 
+  // TODO Doc: verstehe den code nicht
   protected internal override object ToInternalType (object publicValue)
   {
     if (!IsNullableType && publicValue == null)
