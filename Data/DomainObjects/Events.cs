@@ -83,7 +83,7 @@ public class PropertyChangingEventArgs : ValueChangingEventArgs
   /// <param name="propertyValue">The <see cref="PropertyValue"/> that is being changed. Must not be <see langword="null"/>.</param>
   /// <param name="oldValue">The old value.</param>
   /// <param name="newValue">The new value.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyValue</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyValue"/> is <see langword="null"/>.</exception>
   public PropertyChangingEventArgs (PropertyValue propertyValue, object oldValue, object newValue) 
       : base (oldValue, newValue)
   {
@@ -111,7 +111,7 @@ public class PropertyChangedEventArgs : EventArgs
   /// Initializes a new instance of the <b>ValueChangingEventArgs</b> class.
   /// </summary>
   /// <param name="propertyValue">The <see cref="PropertyValue"/> that has been changed. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyValue</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyValue"/> is <see langword="null"/>.</exception>
   public PropertyChangedEventArgs (PropertyValue propertyValue)
   {
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
@@ -143,7 +143,7 @@ public class RelationChangingEventArgs : EventArgs
   /// <param name="propertyName">The name of the property that is being changed due to the relation change. Must not be <see langword="null"/>.</param>
   /// <param name="oldRelatedObject">The old object that was related.</param>
   /// <param name="newRelatedObject">The new object that is related.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   public RelationChangingEventArgs (
       string propertyName, 
       DomainObject oldRelatedObject, 
@@ -192,7 +192,7 @@ public class RelationChangedEventArgs : EventArgs
   /// Initializes a new instance of the <b>RelationChangingEventArgs</b> class.
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/> that is being changed due to the relation change. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   public RelationChangedEventArgs (string propertyName) 
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
@@ -220,7 +220,7 @@ public class ClientTransactionEventArgs : EventArgs
   /// Initializes a new instance of the <b>ClientTransactionEventArgs</b> class.
   /// </summary>
   /// <param name="domainObjects">The <see cref="DomainObject"/>s affected by the <see cref="ClientTransaction"/> operation. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
   public ClientTransactionEventArgs (DomainObjectCollection domainObjects)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);
