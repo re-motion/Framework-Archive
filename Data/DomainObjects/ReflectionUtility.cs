@@ -33,8 +33,8 @@ public sealed class ReflectionUtility
   /// <param name="type">The <see cref="System.Type"/> of the object to instantiate. Must not be <see langword="null"/>.</param>
   /// <param name="constructorParameters">The parameters for the constructor of the object.</param>
   /// <returns>The object that has been created.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>type</i> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentException">Type <i>type</i> has no suitable constructor for the given <i>constructorParameters</i>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="type"/> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentException">Type <paramref name="type"/> has no suitable constructor for the given <paramref name="constructorParameters"/>.</exception>
   public static object CreateObject (Type type, params object[] constructorParameters)
   {
     ArgumentUtility.CheckNotNull ("type", type);

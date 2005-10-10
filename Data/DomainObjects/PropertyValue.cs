@@ -48,8 +48,8 @@ public class PropertyValue
   /// Initializes a new <b>PropertyValue</b> with a given <see cref="PropertyDefinition"/>.
   /// </summary>
   /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>definition</i> is <see langword="null"/>.</exception>
-  /// <exception cref="InvalidEnumDefinitionException"><i>definition</i> is a reference to an invalid enum.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="definition"/> is <see langword="null"/>.</exception>
+  /// <exception cref="InvalidEnumDefinitionException"><paramref name="definition"/> is a reference to an invalid enum.</exception>
   public PropertyValue (PropertyDefinition definition) : this (definition, definition.DefaultValue)
   {
   }
@@ -59,9 +59,9 @@ public class PropertyValue
   /// </summary>
   /// <param name="definition">The <see cref="PropertyDefinition"/> to use for initializing the <b>PropertyValue</b>. Must not be <see langword="null"/>.</param>
   /// <param name="value">The initial <see cref="Value"/> for the <b>PropertyValue</b>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>definition</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><i>value</i> does not match the required type specified in <i>definition</i>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><i>value</i> is longer than the maximum length specified in <i>definition</i>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="definition"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><paramref name="value"/> is longer than the maximum length specified in <paramref name="definition"/>.</exception>
   public PropertyValue (PropertyDefinition definition, object value)
   {
     ArgumentUtility.CheckNotNull ("definition", definition);
@@ -117,8 +117,8 @@ public class PropertyValue
   /// Gets or sets the value of the <see cref="PropertyValue"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><i>value</i> does not match the required type specified in <i>definition</i>.</exception>
-  /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><i>value</i> is longer than the maximum length specified in <i>definition</i>.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.InvalidTypeException"><paramref name="value"/> does not match the required type specified in <paramref name="definition"/>.</exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.ValueTooLongException"><paramref name="value"/> is longer than the maximum length specified in <paramref name="definition"/>.</exception>
   public object Value
   {
     get

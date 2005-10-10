@@ -192,7 +192,7 @@ public class CommonCollection : ICollection
   /// Determines whether the <see cref="CommonCollection"/> contains a specific key.
   /// </summary>
   /// <param name="key">The key to locate in the <see cref="CommonCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the <see cref="CommonCollection"/> contains the key; otherwise <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the <see cref="CommonCollection"/> contains the key; otherwise <see langword="false"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
   protected bool BaseContainsKey (object key)
   {

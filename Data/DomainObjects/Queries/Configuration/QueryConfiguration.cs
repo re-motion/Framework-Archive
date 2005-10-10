@@ -74,8 +74,8 @@ public class QueryConfiguration : ConfigurationBase
   /// Initializes a new instance of the <b>QueryConfiguration</b> class from an XML configuration file and an XML schema file.
   /// </summary>
   /// <param name="configurationFile">Configuration information is read from this file.</param>
-  /// <param name="schemaFile">The <i>schemaFile</i> is used to verify the correctness of the specified <i>configurationFile</i>.</param>
-  /// <exception cref="QueryConfigurationException">The query configuration could not be read from the specified <i>configurationFile</i>.</exception>
+  /// <param name="schemaFile">The <paramref name="schemaFile"/> is used to verify the correctness of the specified <paramref name="configurationFile"/>.</param>
+  /// <exception cref="QueryConfigurationException">The query configuration could not be read from the specified <paramref name="configurationFile"/>.</exception>
   public QueryConfiguration (string configurationFile, string schemaFile) 
       : this (new QueryConfigurationLoader (configurationFile, schemaFile))
   {
@@ -85,7 +85,7 @@ public class QueryConfiguration : ConfigurationBase
   /// Initializes a new instance of the <b>QueryConfiguration</b> class from the specified <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/>.
   /// </summary>
   /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.QueryConfigurationLoader"/> to be used for reading the <b>QueryConfiguration</b>. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>loader</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="loader"/> is <see langword="null"/>.</exception>
   /// <exception cref="QueryConfigurationException">The query configuration could not be read from the configuration file.</exception>
   public QueryConfiguration (QueryConfigurationLoader loader) : base (loader)
   {
@@ -100,8 +100,8 @@ public class QueryConfiguration : ConfigurationBase
   /// Gets the <see cref="QueryDefinition"/> through its unique ID.
   /// </summary>
   /// <param name="queryID">The name of the query. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>queryID</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>queryID</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="queryID"/> is an empty string.</exception>
   public QueryDefinition this [string queryID]
   {
     get 

@@ -144,7 +144,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// </summary>
   /// <param name="collection1">The first <see cref="DomainObjectCollection"/>.</param>
   /// <param name="collection2">The second <see cref="DomainObjectCollection"/>.</param>
-  /// <returns><b>true</b> if the collections are equal; otherwise, <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the collections are equal; otherwise, <see langword="false"/>.</returns>
   public static bool Compare (DomainObjectCollection collection1, DomainObjectCollection collection2)
   {
     if (collection1 == null && collection2 == null) return true;
@@ -167,7 +167,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <param name="collection1">The first <see cref="DomainObjectCollection"/>.</param>
   /// <param name="collection2">The second <see cref="DomainObjectCollection"/>.</param>
   /// <param name="ignoreItemOrder">Indicates whether the compare should ignore the order of the items in the collections for the compare operation.</param>
-  /// <returns><b>true</b> if the collections are equal; otherwise, <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the collections are equal; otherwise, <see langword="false"/>.</returns>
   public static bool Compare (DomainObjectCollection collection1, DomainObjectCollection collection2, bool ignoreItemOrder)
   {
     if (!ignoreItemOrder)
@@ -357,7 +357,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if <paramref name="domainObject"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
+  /// <returns><see langword="true"/> if <paramref name="domainObject"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/></exception>
   public bool Contains (DomainObject domainObject)
   {
@@ -370,7 +370,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the <see cref="DomainObject"/> with the <paramref name="id"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
+  /// <returns><see langword="true"/> if the <see cref="DomainObject"/> with the <paramref name="id"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/></exception>
   public bool Contains (ObjectID id)
   {
@@ -702,7 +702,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Determines whether the <see cref="IList"/> contains a specific <paramref name="value"/>.
   /// </summary>
   /// <param name="value">The <see cref="Object"/> to locate in the <see cref="IList"/>.</param>
-  /// <returns><b>true</b> if the <see cref="Object"/> is found in the <see cref="IList"/>; otherwise, <b>false</b></returns>
+  /// <returns><see langword="true"/> if the <see cref="Object"/> is found in the <see cref="IList"/>; otherwise, <see langword="false"/></returns>
   bool IList.Contains (object value)
   {
     if (value is DomainObject)

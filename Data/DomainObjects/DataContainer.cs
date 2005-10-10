@@ -112,7 +112,7 @@ public class DataContainer
   /// Returns whether the property specified by <paramref name="propertyName"/> is <see langword="null"/>.
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> is <see langword="null"/>; otherwise, <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> is <see langword="null"/>; otherwise, <see langword="false"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
@@ -136,9 +136,9 @@ public class DataContainer
   /// <summary>
   /// Returns whether the property specified by <paramref name="propertyName"/> is <see langword="null"/> or empty.
   /// </summary>
-  /// <remarks>If a <see cref="System.String"/> or a <see cref="System.Guid"/> are equal to empty this method returns true.</remarks>
+  /// <remarks>If a <see cref="System.String"/> or a <see cref="System.Guid"/> are equal to empty this method returns <see langword="true"/>.</remarks>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> is <see langword="null"/> or empty; otherwise, <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> is <see langword="null"/> or empty; otherwise, <see langword="false"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>

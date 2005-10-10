@@ -37,9 +37,9 @@ public class QueryParameter
   /// <param name="name">The name of the parameter. Must not be <see langword="null"/>.</param>
   /// <param name="value">The value of the parameter.</param>
   /// <param name="parameterType">The <see cref="QueryParameterType"/> of the parameter.</param>
-  /// <exception cref="System.ArgumentNullException"><i>name</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>name</i> is an empty string.</exception>
-  /// <exception cref="System.ArgumentOutOfRangeException"><i>parameterType</i> is not a valid enum value.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="name"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="name"/> is an empty string.</exception>
+  /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="parameterType"/> is not a valid enum value.</exception>
   public QueryParameter (string name, object value, QueryParameterType parameterType)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("name", name);

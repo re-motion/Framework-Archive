@@ -24,8 +24,8 @@ public class Query : IQuery
   /// <summary>
   /// Initializes a new instance of the <see cref="Query"/> class using a pre-defined query.
   /// </summary>
-  /// <param name="queryID">The <i>queryID</i> of the query definition from queries.xml to use.</param>
-  /// <exception cref="Configuration.QueryConfigurationException"><i>queryID</i> could not be found in the <see cref="Configuration.QueryConfiguration"/>.</exception>
+  /// <param name="queryID">The <paramref name="queryID"/> of the query definition from queries.xml to use.</param>
+  /// <exception cref="Configuration.QueryConfigurationException"><paramref name="queryID"/> could not be found in the <see cref="Configuration.QueryConfiguration"/>.</exception>
   public Query (string queryID) : this (queryID, new QueryParameterCollection ()) 
   {
   }
@@ -33,11 +33,11 @@ public class Query : IQuery
   /// <summary>
   /// Initializes a new instance of the <see cref="Query"/> class using a pre-defined query and a given collection of <see cref="QueryParameter"/>s.
   /// </summary>
-  /// <param name="queryID">The <i>queryID</i> of the query definition from queries.xml to use.</param>
+  /// <param name="queryID">The <paramref name="queryID"/> of the query definition from queries.xml to use.</param>
   /// <param name="parameters">The <see cref="QueryParameter"/>s to use to execute the query. Must not be <see langword="null"/>.</param>
-  /// <exception cref="Configuration.QueryConfigurationException"><i>queryID</i> could not be found in the <see cref="Configuration.QueryConfiguration"/>.</exception>
+  /// <exception cref="Configuration.QueryConfigurationException"><paramref name="queryID"/> could not be found in the <see cref="Configuration.QueryConfiguration"/>.</exception>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>parameters</i> is <see langword="null"/>.
+  ///   <paramref name="parameters"/> is <see langword="null"/>.
   /// </exception>
   public Query (string queryID, QueryParameterCollection parameters) 
       : this (QueryConfiguration.Current.QueryDefinitions.GetMandatory (queryID), parameters)
@@ -49,7 +49,7 @@ public class Query : IQuery
   /// </summary>
   /// <param name="definition">The <see cref="Configuration.QueryDefinition"/> to use for the query. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>definition</i> is <see langword="null"/>.
+  ///   <paramref name="definition"/> is <see langword="null"/>.
   /// </exception>
   public Query (QueryDefinition definition) : this (definition, new QueryParameterCollection ())
   {
@@ -61,8 +61,8 @@ public class Query : IQuery
   /// <param name="definition">The <see cref="Configuration.QueryDefinition"/> to use for the query.</param>
   /// <param name="parameters">The <see cref="QueryParameter"/>s to use for executing the query.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>definition</i> is <see langword="null"/>.<br /> -or- <br />
-  ///   <i>parameters</i> is <see langword="null"/>.
+  ///   <paramref name="definition"/> is <see langword="null"/>.<br /> -or- <br />
+  ///   <paramref name="parameters"/> is <see langword="null"/>.
   /// </exception>
   public Query (QueryDefinition definition, QueryParameterCollection parameters)
   {

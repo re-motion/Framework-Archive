@@ -42,11 +42,11 @@ public class PropertyValueCollection : CommonCollection
   /// Initializes a new <b>PropertyValueCollection</b> as a shallow copy of a given <see cref="PropertyValueCollection"/>.
   /// </summary>
   /// <remarks>
-  /// The new <b>PropertyValueCollection</b> has the same items as the given <i>collection</i>.
+  /// The new <b>PropertyValueCollection</b> has the same items as the given <paramref name="collection"/>.
   /// </remarks>
   /// <param name="collection">The <see cref="DomainObjectCollection"/> to copy. Must not be <see langword="null"/>.</param>
   /// <param name="makeCollectionReadOnly">Indicates whether the new collection should be read-only.</param>
-  /// <exception cref="System.ArgumentNullException"><i>collection</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
   // standard constructor for collections
   public PropertyValueCollection (PropertyValueCollection collection, bool makeCollectionReadOnly)  
   {
@@ -69,7 +69,7 @@ public class PropertyValueCollection : CommonCollection
   /// </summary>
   /// <param name="propertyValue">The object to locate in the <see cref="PropertyValueCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <b>false</b>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyValue</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyValue"/> is <see langword="null"/>.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool Contains (PropertyValue propertyValue)
   {
@@ -84,7 +84,7 @@ public class PropertyValueCollection : CommonCollection
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/> to locate in the <see cref="PropertyValueCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <b>false</b>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool Contains (string propertyName)
   {
@@ -95,7 +95,7 @@ public class PropertyValueCollection : CommonCollection
   }
 
   /// <summary>
-  /// Gets the <see cref="PropertyValue"/> with a given <i>index</i> in the <see cref="PropertyValueCollection"/>.
+  /// Gets the <see cref="PropertyValue"/> with a given <paramref name="index"/> in the <see cref="PropertyValueCollection"/>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public PropertyValue this [int index]  
@@ -108,12 +108,12 @@ public class PropertyValueCollection : CommonCollection
   }
 
   /// <summary>
-  /// Gets the <see cref="PropertyValue"/> with a given <i>propertyName</i> in the <see cref="PropertyValueCollection"/>.
+  /// Gets the <see cref="PropertyValue"/> with a given <paramref name="propertyName"/> in the <see cref="PropertyValueCollection"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
-  /// <exception cref="System.ArgumentException">The given <i>propertyName</i> does not exist in the collection.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
+  /// <exception cref="System.ArgumentException">The given <paramref name="propertyName"/> does not exist in the collection.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public PropertyValue this [string propertyName]  
   {
@@ -136,8 +136,8 @@ public class PropertyValueCollection : CommonCollection
   /// </summary>
   /// <param name="value">The <see cref="PropertyValue"/> to add. Must not be <see langword="null"/>.</param>
   /// <returns>The position into which the <see cref="PropertyValue"/> was inserted.</returns>
-  /// <exception cref="ArgumentNullException"><i>value</i> is <see langword="null"/>.</exception>
-  /// <exception cref="ArgumentException"><i>value</i> is already part of the collection.</exception>
+  /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is already part of the collection.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public int Add (PropertyValue value)  
   {
@@ -159,12 +159,12 @@ public class PropertyValueCollection : CommonCollection
   /// </summary>
   /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="PropertyValueCollection"/>. The array must have zero-based indexing. Must not be <see langword="null"/>.</param>
   /// <param name="index">The zero-based index in array at which copying begins.</param>
-  /// <exception cref="System.ArgumentNullException"><i>array</i> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="index"/> is smaller than 0.</exception>
   /// <exception cref="System.ArgumentException">
-  ///   <i>array</i> is not a one-dimensional array.<br /> -or- <br />
-  ///   <i>index</i> is greater than the current length of the array.<br /> -or- <br />
-  ///   The number of items is greater than the available space from <i>index</i> to the end of <i>array</i>.
+  ///   <paramref name="array"/> is not a one-dimensional array.<br /> -or- <br />
+  ///   <paramref name="index"/> is greater than the current length of the array.<br /> -or- <br />
+  ///   The number of items is greater than the available space from <paramref name="index"/> to the end of <paramref name="array"/>.
   /// </exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override void CopyTo (Array array, int index)

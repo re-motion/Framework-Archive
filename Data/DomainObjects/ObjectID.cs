@@ -47,7 +47,7 @@ public class ObjectID : ISerializable
   /// </summary>
   /// <param name="id1">The first <see cref="ObjectID"/> to compare.</param>
   /// <param name="id2">The second <see cref="ObjectID"/> to compare.</param>
-  /// <returns><b>true</b> if the both <see cref="ObjectID"/>s are equal; otherwise, <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the both <see cref="ObjectID"/>s are equal; otherwise, <see langword="false"/>.</returns>
   public static bool Equals (ObjectID id1, ObjectID id2)
   {
     if (object.ReferenceEquals (id1, id2)) return true;
@@ -494,7 +494,7 @@ public class ObjectID : ISerializable
   /// Determines whether the specified <see cref="ObjectID"/> is equal to the current <b>ObjectID</b>.
   /// </summary>
   /// <param name="obj">The <see cref="ObjectID"/> to compare with the current <b>ObjectID</b>. </param>
-  /// <returns><b>true</b> if the specified <see cref="ObjectID"/> is equal to the current <b>ObjectID</b>; otherwise, <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the specified <see cref="ObjectID"/> is equal to the current <b>ObjectID</b>; otherwise, <see langword="false"/>.</returns>
   public override bool Equals (object obj)
   {
     if (obj == null) return false;

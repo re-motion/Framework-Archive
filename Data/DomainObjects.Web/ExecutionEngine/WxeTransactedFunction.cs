@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 /// Therefore you should not pass <see cref="DomainObject"/>s to a <b>WxeTransactedFunction</b> as parameters since it is not allowed to use a 
 /// <see cref="DomainObject"/> from one <see cref="ClientTransaction"/> in another <see cref="ClientTransaction"/>.<br />
 /// Pass the corresponding <see cref="ObjectID"/>s instead and use the <see cref="DomainObject.GetObject"/> or <see cref="ClientTransaction.GetObject"/> method.</para>
-/// <para>A <b>WxeTransactedFunction</b> has <see cref="AutoCommit"/> set to <b>true</b> by default. <br />
+/// <para>A <b>WxeTransactedFunction</b> has <see cref="AutoCommit"/> set to <see langword="true"/> by default. <br />
 /// To change this behavior for a function you can overwrite this property.</para>
 /// </remarks>
 [Serializable]

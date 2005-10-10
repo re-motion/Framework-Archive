@@ -195,7 +195,7 @@ public class ClientTransaction : ITransaction
   /// Evaluates if any relations of the given <see cref="DomainObject"/> have changed since instantiation, loading, commit or rollback.
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to evaluate. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if any relations have changed; otherwise, <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if any relations have changed; otherwise, <see langword="false"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/>.</exception>
   internal protected virtual bool HasRelationChanged (DomainObject domainObject)
   {
