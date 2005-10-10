@@ -4,7 +4,7 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-
+// TODO Doc: 
 public class DomainObjectProvider: BusinessObjectProvider
 {
   public static DomainObjectProvider s_instance = new DomainObjectProvider();
