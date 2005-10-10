@@ -9,6 +9,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
+// TODO Doc: 
 public class ReflectionPropertyFactory
 {
 	public ReflectionPropertyFactory()
