@@ -8,6 +8,7 @@ using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
+// TODO Doc: 
 public class BusinessObjectClassReflector
 {
   private Type _businessObjectClassType;
