@@ -88,7 +88,7 @@ public class QueryParameterCollection : CommonCollection
   /// Determines whether an item is in the <see cref="QueryParameterCollection"/>.
   /// </summary>
   /// <param name="queryParameter">The <see cref="QueryParameter"/> to locate in the collection. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if <paramref name="queryParameter"/> is found in the <see cref="QueryParameterCollection"/>; otherwise, false;</returns>
+  /// <returns><see langword="true"/> if <paramref name="queryParameter"/> is found in the <see cref="QueryParameterCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="queryParameter"/> is <see langword="null"/></exception>
   public bool Contains (QueryParameter queryParameter)
   {
@@ -101,7 +101,7 @@ public class QueryParameterCollection : CommonCollection
   /// Determines whether an item is in the <see cref="QueryParameterCollection"/>.
   /// </summary>
   /// <param name="name">The <see cref="QueryParameter.Name"/> of the <see cref="QueryParameter"/> to locate in the collection. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if a <see cref="QueryParameter"/> with a <see cref="QueryParameter.Name"/> of <paramref name="name"/> is found in the <see cref="QueryParameterCollection"/>; otherwise, false;</returns>
+  /// <returns><see langword="true"/> if a <see cref="QueryParameter"/> with a <see cref="QueryParameter.Name"/> of <paramref name="name"/> is found in the <see cref="QueryParameterCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="name"/> is <see langword="null"/></exception>
   public bool Contains (string name)
   {

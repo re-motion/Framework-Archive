@@ -83,7 +83,7 @@ public class QueryDefinitionCollection : CommonCollection
   /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
   /// </summary>
   /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if <paramref name="queryDefinition"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
+  /// <returns><see langword="true"/> if <paramref name="queryDefinition"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/></exception>
   public bool Contains (QueryDefinition queryDefinition)
   {
@@ -96,7 +96,7 @@ public class QueryDefinitionCollection : CommonCollection
   /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
   /// </summary>
   /// <param name="queryID">The <see cref="QueryDefinition.QueryID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
+  /// <returns><see langword="true"/> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/></exception>
   public bool Contains (string queryID)
   {

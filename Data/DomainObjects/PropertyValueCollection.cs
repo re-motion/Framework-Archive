@@ -68,7 +68,7 @@ public class PropertyValueCollection : CommonCollection
   /// Determines whether the <see cref="PropertyValueCollection"/> contains a specific <see cref="PropertyValue"/>.
   /// </summary>
   /// <param name="propertyValue">The object to locate in the <see cref="PropertyValueCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <see langword="false"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyValue"/> is <see langword="null"/>.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool Contains (PropertyValue propertyValue)
@@ -83,7 +83,7 @@ public class PropertyValueCollection : CommonCollection
   /// Determines whether the <see cref="PropertyValueCollection"/> contains a specific property name.
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/> to locate in the <see cref="PropertyValueCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <see langword="false"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool Contains (string propertyName)

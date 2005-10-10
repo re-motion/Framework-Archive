@@ -201,7 +201,7 @@ public class PropertyValue
   /// Determines whether the specified <see cref="PropertyValue"/> is equal to the current <b>PropertyValue</b>.
   /// </summary>
   /// <param name="obj">The <see cref="PropertyValue"/> to compare with the current <b>PropertyValue</b>. </param>
-  /// <returns><b>true</b> if the specified <see cref="PropertyValue"/> is equal to the current <b>PropertyValue</b>; otherwise, <b>false</b>.</returns>
+  /// <returns><see langword="true"/> if the specified <see cref="PropertyValue"/> is equal to the current <b>PropertyValue</b>; otherwise, <see langword="false"/>.</returns>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public override bool Equals (object obj)
   {
