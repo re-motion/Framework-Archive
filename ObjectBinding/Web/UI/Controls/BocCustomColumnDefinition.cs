@@ -321,6 +321,18 @@ public abstract class BocCustomColumnDefinitionCell
   {
   }
 
+  internal void Validate (BocCustomCellValidationArguments arguments)
+  {
+    InitArguments (arguments);
+    OnValidate (arguments);
+  }
+
+  /// <summary> Override this method to process the validation of the editable custom cell during details editing mode. </summary>
+  /// <param name="arguments"> The <see cref="BocCustomCellValidationArguments"/>. </param>
+  protected virtual void OnValidate (BocCustomCellValidationArguments arguments)
+  {
+  }
+
   internal void PreRender (BocCustomCellArguments arguments)
   {
     InitArguments (arguments);
@@ -488,6 +500,45 @@ public class BocCustomCellClickArguments: BocCustomCellArguments
   }
 }
 
+/// <summary> Contains the arguments provided to the <see cref="BocCustomColumnDefinitionCell.OnClick"/> method. </summary>
+public class BocCustomCellValidationArguments: BocCustomCellArguments
+{
+  private IBusinessObject _businessObject;
+  private Control _control;
+  private bool _isValid;
+
+  public BocCustomCellValidationArguments (
+      BocList list,
+      IBusinessObject businessObject, 
+      BocCustomColumnDefinition columnDefiniton,
+      Control control)
+    : base (list, columnDefiniton)
+  {
+    _businessObject = businessObject;
+    _control = control;
+    _isValid = true;
+  }
+
+  /// <summary> Gets the <see cref="IBusinessObject"/> that was clicked. </summary>
+  public IBusinessObject BusinessObject
+  {
+    get { return _businessObject; }
+  }
+  
+  /// <summary> Gets the <see cref="T:Control"/> of this row. </summary>
+  public Control Control
+  {
+    get { return _control; }
+  }
+
+  /// <summary> Gets or sets a flag that specifies whether the cell's control contains a valid value. </summary>
+  public bool IsValid
+  {
+    get { return _isValid; }
+    set { _isValid = value; }
+  }
+}
+  
 /// <summary> Contains the arguments provided to the <see cref="BocCustomColumnDefinitionCell.Render"/> method. </summary>
 public class BocCustomCellRenderArguments: BocCustomCellArguments
 {
