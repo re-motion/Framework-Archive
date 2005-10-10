@@ -3567,6 +3567,45 @@ public class BocList:
     }
   }
 
+  private bool ValidateCustomColumns()
+  {
+    if (_customColumns == null)
+      return true;
+
+    if (! IsEditDetailsModeActive)
+      return true;
+
+    bool isValid = true;
+    BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot ();
+    for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
+    {
+      BocCustomColumnDefinition customColumn = columns[idxColumns] as BocCustomColumnDefinition;
+      if (   customColumn != null
+          && customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow)
+      {
+        Triplet[] customColumnTriplets = (Triplet[]) _customColumns[customColumn];
+        for (int idxRows = 0; idxRows < customColumnTriplets.Length; idxRows++)
+        {
+          Triplet customColumnTriplet = customColumnTriplets[idxRows];
+          if (customColumnTriplet != null)
+          {
+            int originalRowIndex = (int) customColumnTriplet.Second;
+            if (ModifiableRowIndex.Value == originalRowIndex)
+            {
+              IBusinessObject businessObject = (IBusinessObject) customColumnTriplet.First;
+              Control control = (Control) customColumnTriplet.Third;
+              BocCustomCellValidationArguments args = 
+                  new BocCustomCellValidationArguments (this, businessObject, customColumn, control);
+              customColumn.CustomCell.Validate (args);    
+              isValid &= args.IsValid;
+            }
+          }
+        }
+      }
+    }
+    return isValid;
+  }
+
   /// <summary> Invokes the <see cref="BocCustomColumnDefinition.PreRender"/> method for each custom column.  </summary>
   private void PreRenderCustomColumns()
   {
@@ -4675,6 +4714,8 @@ public class BocList:
         isValid &= validator.IsValid;
       }
     }
+    if (isValid)
+      isValid &= ValidateCustomColumns();
     return isValid;
   }
 
