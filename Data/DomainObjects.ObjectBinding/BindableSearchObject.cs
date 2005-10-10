@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
+// TODO Doc: 
 public abstract class BindableSearchObject : IBusinessObject
 {
   private BusinessObjectReflector _objectReflector;
