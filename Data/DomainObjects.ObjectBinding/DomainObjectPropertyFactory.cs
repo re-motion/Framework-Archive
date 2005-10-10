@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
+// TODO Doc: 
 public class DomainObjectPropertyFactory : ReflectionPropertyFactory
 {
   private ClassDefinition _classDefinition;
