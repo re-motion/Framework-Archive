@@ -651,6 +651,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Gets or sets the element at the specified index. 
   /// </summary>
+  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><i>value</i> is not of type <see cref="DomainObject"/> or a derived type.</exception>
   object IList.this[int index]
   {
     get 
@@ -669,12 +670,14 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Inserts an item to the IList at the specified position
   /// </summary>
   /// <param name="index">The zero-based index at which <i>value</i> should be inserted.</param>
-  /// <param name="value">The <see cref="Object"/> to insert into the <see cref="IList"/>.</param>
+  /// <param name="value">The <see cref="DomainObject"/> to insert into the <see cref="IList"/>. Must not be <see langword="null"/>.</param>
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <i>value</i> is a <see cref="DomainObject"/> that belongs to a <see cref="ClientTransaction"/> that is different 
   ///   from the <see cref="ClientTransaction"/> managing this collection. 
   ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
   /// </exception>
+  /// <exception cref="System.ArgumentNullException"><i>value</i> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><i>value</i> is not of type <see cref="DomainObject"/> or a derived type.</exception>
   void IList.Insert (int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
@@ -730,13 +733,15 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Adds an item to the <see cref="IList"/>.
   /// </summary>
-  /// <param name="value">The <see cref="Object"/> to add to the <see cref="IList"/>.</param>
+  /// <param name="value">The <see cref="DomainObject"/> to add to the <see cref="IList"/>. Must not be <see langword="null"/>.</param>
   /// <returns>The position into which the new element was inserted.</returns>
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <i>value</i> is a <see cref="DomainObject"/> that belongs to a <see cref="ClientTransaction"/> that is different 
   ///   from the <see cref="ClientTransaction"/> managing this collection. 
   ///   This applies only to <see cref="DomainObjectCollection"/>s that represent a relation.
   /// </exception>
+  /// <exception cref="System.ArgumentNullException"><i>value</i> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><i>value</i> is not of type <see cref="DomainObject"/> or a derived type.</exception>
   int IList.Add (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
@@ -796,12 +801,13 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Performs a rollback of the collection by replacing the items in the collection with the items of a given <see cref="DomainObjectCollection"/>.
   /// </summary>
-  /// <param name="originalDomainObjects">A <see cref="DomainObjectCollection"/> containing the original items of the collection.</param>
+  /// <param name="originalDomainObjects">A <see cref="DomainObjectCollection"/> containing the original items of the collection. Must not be <see langword="null"/>.</param>
   /// <remarks>
   ///   This method is only called on <see cref="DomainObjectCollection"/>s representing the current values 
   ///   of a one-to-many relation during the rollback operation of the associated <see cref="ClientTransaction"/>. 
   ///   A derived collection should replace its internal state with the state of <i>originalDomainObjects</i>.
   /// </remarks>
+  /// <exception cref="System.ArgumentNullException"><i>originalDomainObjects</i> is <see langword="null"/>.</exception>
   internal protected virtual void Rollback (DomainObjectCollection originalDomainObjects)
   {
     ArgumentUtility.CheckNotNull ("originalDomainObjects", originalDomainObjects);
@@ -812,12 +818,13 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Performs a commit of the collection by replacing the items in the collection with the items of a given <see cref="DomainObjectCollection"/>.
   /// </summary>
-  /// <param name="domainObjects">A <see cref="DomainObjectCollection"/> containing the new items for the collection.</param>
+  /// <param name="domainObjects">A <see cref="DomainObjectCollection"/> containing the new items for the collection. Must not be <see langword="null"/>.</param>
   /// <remarks>
   ///   This method is only called on <see cref="DomainObjectCollection"/>s representing the original values 
   ///   of a one-to-many relation during the commit operation of the associated <see cref="ClientTransaction"/>. 
   ///   A derived collection should replace its internal state with the state of <i>domainObjects</i>.
   /// </remarks>
+  /// <exception cref="System.ArgumentNullException"><i>domainObjects</i> is <see langword="null"/>.</exception>
   internal protected virtual void Commit (DomainObjectCollection domainObjects)
   {
     ArgumentUtility.CheckNotNull ("domainObjects", domainObjects);

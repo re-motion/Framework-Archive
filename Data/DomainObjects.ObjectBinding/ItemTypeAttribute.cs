@@ -17,7 +17,7 @@ public class ItemTypeAttribute : Attribute
   /// Instantiates a new object.
   /// </summary>
   /// <param name="itemType">The type of items returned by the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>itemType</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="itemType"/> is <see langword="null"/>.</exception>
 	public ItemTypeAttribute (Type itemType)
 	{
     ArgumentUtility.CheckNotNull ("itemType", itemType);

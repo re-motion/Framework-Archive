@@ -21,15 +21,15 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// Gets a <b>BindableDomainObject</b> that is already loaded or attempts to load it from the datasource.
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <b>BindableDomainObject</b> that should be loaded.</param>
-  /// <returns>The <b>BindableDomainObject</b> with the specified <i>id</i>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> is <see langword="null"/>.</exception>
+  /// <returns>The <b>BindableDomainObject</b> with the specified <paramref name="id"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
+  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="System.InvalidCastException">
-  ///   The loaded object with the given <i>id</i> cannot be casted to <b>BindableDomainObject</b>
+  ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
   internal protected static new BindableDomainObject GetObject (ObjectID id)
   {
@@ -41,15 +41,15 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <b>BindableDomainObject</b> that should be loaded.</param>
   /// <param name="includeDeleted">Indicates if the method should return <b>BindableDomainObject</b>s that are already deleted.</param>
-  /// <returns>The <b>BindableDomainObject</b> with the specified <i>id</i>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> is <see langword="null"/>.</exception>
+  /// <returns>The <b>BindableDomainObject</b> with the specified <paramref name="id"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
+  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="System.InvalidCastException">
-  ///   The loaded object with the given <i>id</i> cannot be casted to <b>BindableDomainObject</b>
+  ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
   internal protected static new BindableDomainObject GetObject (ObjectID id, bool includeDeleted)
   {
@@ -61,15 +61,15 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// </summary>
   /// <param name="id">The <see cref="ObjectID"/> of the <b>BindableDomainObject</b> that is loaded.</param>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that is used to load the <b>BindableDomainObject</b>.</param>
-  /// <returns>The <b>BindableDomainObject</b> with the specified <i>id</i>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is <see langword="null"/>.</exception>
+  /// <returns>The <b>BindableDomainObject</b> with the specified <paramref name="id"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
+  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="System.InvalidCastException">
-  ///   The loaded object with the given <i>id</i> cannot be casted to <b>BindableDomainObject</b>
+  ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
   internal protected static new BindableDomainObject GetObject (ObjectID id, ClientTransaction clientTransaction)
   {
@@ -82,15 +82,15 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// <param name="id">The <see cref="ObjectID"/> of the <b>BindableDomainObject</b> that is loaded.</param>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> that us used to load the <b>BindableDomainObject</b>.</param>
   /// <param name="includeDeleted">Indicates if the method should return <b>BindableDomainObject</b>s that are already deleted.</param>
-  /// <returns>The <b>BindableDomainObject</b> with the specified <i>id</i>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> or <i>clientTransaction</i>is <see langword="null"/>.</exception>
+  /// <returns>The <b>BindableDomainObject</b> with the specified <paramref name="id"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> or <paramref name="clientTransaction"/>is <see langword="null"/>.</exception>
   /// <exception cref="Persistence.StorageProviderException">
-  ///   The Mapping does not contain a class definition for the given <i>id</i>.<br /> -or- <br />
+  ///   The Mapping does not contain a class definition for the given <paramref name="id"/>.<br /> -or- <br />
   ///   An error occurred while reading a <see cref="PropertyValue"/>.<br /> -or- <br />
   ///   An error occurred while accessing the datasource.
   /// </exception>
   /// <exception cref="System.InvalidCastException">
-  ///   The loaded object with the given <i>id</i> cannot be casted to <b>BindableDomainObject</b>
+  ///   The loaded object with the given <paramref name="id"/> cannot be casted to <b>BindableDomainObject</b>
   /// </exception>
   internal protected static new BindableDomainObject GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
   {
@@ -118,7 +118,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// Initializes a new <b>BindableDomainObject</b>.
   /// </summary>
   /// <param name="clientTransaction">The <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> the <b>BindableDomainObject</b> should be part of.</param>
-  /// <exception cref="System.ArgumentNullException"><i>clientTransaction</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
   protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
   {
     _objectReflector = new BusinessObjectReflector (this);
@@ -140,7 +140,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   // methods and properties
 
   /// <summary>
-  /// Returns the <see cref="IBusinessObjectProperty"/> for a given <i>propertyIdentifier</i>.
+  /// Returns the <see cref="IBusinessObjectProperty"/> for a given <paramref name="propertyIdentifier"/>.
   /// </summary>
   /// <param name="propertyIdentifier">The name of the property to return, as specified in the mapping file.</param>
   /// <returns>An instance of <see cref="BaseProperty"/> or a derived class, depending on the <see cref="System.Type"/> of the propery.</returns>
@@ -164,10 +164,10 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// <summary>
   /// Gets or sets the value of a given <see cref="IBusinessObjectProperty"/>.
   /// </summary>
-  /// <exception cref="System.ArgumentNullException"><i>property</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><i>property</i> is not derived from <see cref="BaseProperty"/>.</exception>
-  /// <exception cref="InvalidNullAssignmentException"><i>value</i> is <see langword="null"/>, which is not valid for the property.</exception>
-  /// <exception cref="ArgumentException"><i>value</i> has an invalid type for the property.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
+  /// <exception cref="InvalidNullAssignmentException"><paramref name="value"/> is <see langword="null"/>, which is not valid for the property.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> has an invalid type for the property.</exception>
   // TODO Doc: returns null if it is equal to the MinValue of the type
   public object this [IBusinessObjectProperty property]
   {
@@ -180,9 +180,9 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// </summary>
   /// <value>The value of the property. Must not be <see langword="null"/>.</value>
   /// <param name="property">The property identifier of the property to return.</param>
-  /// <exception cref="System.ArgumentNullException"><i>property</i> is <see langword="null"/>.</exception>
-  /// <exception cref="InvalidNullAssignmentException"><i>value</i> is <see langword="null"/>, which is not valid for the property.</exception>
-  /// <exception cref="ArgumentException"><i>value</i> is of a type that is incompatible for the <i>property</i>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
+  /// <exception cref="InvalidNullAssignmentException"><paramref name="value"/> is <see langword="null"/>, which is not valid for the property.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
   // TODO Doc: exceptions
   // all exceptions from GetBusinessObjectProperty
   public object this [string property]
@@ -210,11 +210,11 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   }
 
   /// <summary>
-  /// Returns the value of a given <i>property</i>.
+  /// Returns the value of a given <paramref name="property"/>.
   /// </summary>
   /// <param name="property">The property identifier of the property to return. Must not be <see langword="null"/>.</param>
   /// <returns>The value of the property.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>property</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
   // TODO: throws an ArgumentNullException if the property with the given name does not exist. Throw better exception
   // TODO Doc: exceptions
   // all exceptions from GetBusinessObjectProperty
@@ -224,24 +224,24 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   }
 
   /// <summary>
-  /// Returns the value of a given <i>property</i>.
+  /// Returns the value of a given <paramref name="property"/>.
   /// </summary>
   /// <param name="property">The property to return. Must not be <see langword="null"/>.</param>
   /// <returns>The value of the property.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>property</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><i>property</i> is not derived from <see cref="BaseProperty"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
   public object GetProperty (IBusinessObjectProperty property)
   {
     return _objectReflector.GetProperty (property);
   }
 
   /// <summary>
-  /// Sets the value of a given <i>property</i>.
+  /// Sets the value of a given <paramref name="property"/>.
   /// </summary>
   /// <param name="property">The property to return. Must not be <see langword="null"/>.</param>
   /// <param name="value">The new value for the property.</param>
-  /// <exception cref="System.ArgumentNullException"><i>property</i> is <see langword="null"/>.</exception>
-  /// <exception cref="ArgumentException"><i>value</i> is of a type that is incompatible for the <i>property</i>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
   // TODO: throws an ArgumentNullException if the property with the given name does not exist. Throw better exception
   // TODO Doc: exceptions
   // all exceptions from GetBusinessObjectProperty
@@ -251,13 +251,13 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   }
 
   /// <summary>
-  /// Sets the value of a given <i>property</i>.
+  /// Sets the value of a given <paramref name="property"/>.
   /// </summary>
   /// <param name="property">The property to return. Must not be <see langword="null"/>.</param>
   /// <param name="value">The new value for the property.</param>
-  /// <exception cref="System.ArgumentNullException"><i>property</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><i>property</i> is not derived from <see cref="BaseProperty"/>.</exception>
-  /// <exception cref="ArgumentException"><i>value</i> is of a type that is incompatible for the <i>property</i>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
   public void SetProperty (IBusinessObjectProperty property, object value)
   {
     _objectReflector.SetProperty (property, value);

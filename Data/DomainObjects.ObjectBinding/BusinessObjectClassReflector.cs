@@ -22,8 +22,8 @@ public class BusinessObjectClassReflector
   /// <param name="businessObjectClassType">The type to reflect. Must not be <see langword="null"/>.</param>
   /// <param name="propertyFactory">The factory to use for creating the properties.</param>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>businessObjectClassType</i> is <see langword="null"/>. <br /> - or - <br />
-  ///   <i>propertyFactory</i> is <see langword="null"/>.
+  ///   <paramref name="businessObjectClassType"/> is <see langword="null"/>. <br /> - or - <br />
+  ///   <paramref name="propertyFactory"/> is <see langword="null"/>.
   /// </exception>
 	public BusinessObjectClassReflector (Type businessObjectClassType, ReflectionPropertyFactory propertyFactory)
 	{
@@ -53,7 +53,7 @@ public class BusinessObjectClassReflector
   }
 
   /// <summary>
-  /// Returns a Property for the given <i>propertyIdentifier</i>.
+  /// Returns a Property for the given <paramref name="propertyIdentifier"/>.
   /// </summary>
   /// <param name="propertyIdentifier">The name of the property to return.</param>
   /// <returns>An IBusinessObjectProperty representing the given propertyIdentifier, or <see langword="null"/> if not found</returns>

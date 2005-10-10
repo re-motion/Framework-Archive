@@ -131,12 +131,12 @@ public class CommonCollection : ICollection
   /// </summary>
   /// <param name="array">The one-dimensional array that is the destination of the items copied from <see cref="CommonCollection"/>. The array must have zero-based indexing. Must not be <see langword="null"/>.</param>
   /// <param name="index">The zero-based index in array at which copying begins.</param>
-  /// <exception cref="System.ArgumentNullException"><i>array</i> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentOutOfRangeException"><i>index</i> is smaller than 0.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="array"/> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentOutOfRangeException"><paramref name="index"/> is smaller than 0.</exception>
   /// <exception cref="System.ArgumentException">
-  ///   <i>array</i> is not a one-dimensional array.<br /> -or- <br />
-  ///   <i>index</i> is greater than the current length of the array.<br /> -or- <br />
-  ///   The number of items is greater than the available space from <i>index</i> to the end of <i>array</i>.
+  ///   <paramref name="array"/> is not a one-dimensional array.<br /> -or- <br />
+  ///   <paramref name="index"/> is greater than the current length of the array.<br /> -or- <br />
+  ///   The number of items is greater than the available space from <paramref name="index"/> to the end of <paramref name="array"/>.
   /// </exception>
   public virtual void CopyTo (Array array, int index)
   {
@@ -167,8 +167,8 @@ public class CommonCollection : ICollection
   /// <param name="index">The index of the object to return.</param>
   /// <returns>The object with the given index.</returns>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <i>index</i> is less than zero.<br /> -or- <br />
-  ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
+  ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
+  ///   <paramref name="index"/> is equal to or greater than <see cref="Count"/>.
   /// </exception>
   protected object BaseGetObject (int index)
   {
@@ -180,7 +180,7 @@ public class CommonCollection : ICollection
   /// </summary>
   /// <param name="key">The key of the object to return. Must not be <see langword="null"/>.</param>
   /// <returns>The object with the given key, if the object is found; otherwise, <see langword="null"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>key</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
   protected object BaseGetObject (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
@@ -193,7 +193,7 @@ public class CommonCollection : ICollection
   /// </summary>
   /// <param name="key">The key to locate in the <see cref="CommonCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><b>true</b> if the <see cref="CommonCollection"/> contains the key; otherwise <b>false</b>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>key</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
   protected bool BaseContainsKey (object key)
   {
     ArgumentUtility.CheckNotNull ("key", key);
@@ -209,8 +209,8 @@ public class CommonCollection : ICollection
   /// <returns>The position into which the new item was inserted.</returns>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentNullException">
-  ///   <i>key</i> is <see langword="null"/>.<br /> -or- <br />
-  ///   <i>value</i> is <see langword="null"/>.
+  ///   <paramref name="key"/> is <see langword="null"/>.<br /> -or- <br />
+  ///   <paramref name="value"/> is <see langword="null"/>.
   /// </exception>
   protected int BaseAdd (object key, object value)
   {
@@ -229,7 +229,7 @@ public class CommonCollection : ICollection
   /// Removes the item with the specified key.
   /// </summary>
   /// <param name="key">The key of the item to remove. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>key</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   protected void BaseRemove (object key)
   {
@@ -257,8 +257,8 @@ public class CommonCollection : ICollection
   /// <summary>
   /// Returns the zero-based index of the item with a given key in the collection.
   /// </summary>
-  /// <param name="key">The <i>key</i> to locate in the collection.</param>
-  /// <returns>The zero-based index of the item with the given <i>key</i>, if found; otherwise, -1.</returns>
+  /// <param name="key">The <paramref name="key"/> to locate in the collection.</param>
+  /// <returns>The zero-based index of the item with the given <paramref name="key"/>, if found; otherwise, -1.</returns>
   protected int BaseIndexOfKey (object key)
   {
     return _collectionKeys.IndexOf (key);
@@ -267,16 +267,16 @@ public class CommonCollection : ICollection
   /// <summary>
   /// Inserts an item into the collection at the specified index.
   /// </summary>
-  /// <param name="index">The zero-based <i>index</i> at which the item should be inserted.</param>
+  /// <param name="index">The zero-based <paramref name="index"/> at which the item should be inserted.</param>
   /// <param name="key">The key of the item to insert. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The <i>value</i> of the item to add. The <i>value</i> can be <see langword="null"/>.</param>
+  /// <param name="value">The <paramref name="value"/> of the item to add. The <paramref name="value"/> can be <see langword="null"/>.</param>
   /// <exception cref="System.NotSupportedException">The collection is read-only.</exception>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <i>index</i> is less than zero.<br /> -or- <br />
-  ///   <i>index</i> is greater than <see cref="Count"/>.
+  ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
+  ///   <paramref name="index"/> is greater than <see cref="Count"/>.
   /// </exception>
-  /// <exception cref="System.ArgumentNullException"><i>key</i> is <see langword="null"/>.</exception>
-  /// <exception cref="System.ArgumentException">An item with the same <i>key</i> already exists in the collection.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="key"/> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentException">An item with the same <paramref name="key"/> already exists in the collection.</exception>
   protected void BaseInsert (int index, object key, object value)
   {
     if (_isReadOnly) throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
@@ -288,13 +288,13 @@ public class CommonCollection : ICollection
   }
 
   /// <summary>
-  /// Checks the <i>index</i> for an insert operation and throws an exception if it is invalid.
+  /// Checks the <paramref name="index"/> for an insert operation and throws an exception if it is invalid.
   /// </summary>
-  /// <param name="argumentName">The <i>argumentName</i> for throwing the exception.</param>
-  /// <param name="index">The <i>index</i> to check.</param>
+  /// <param name="argumentName">The <paramref name="argumentName"/> for throwing the exception.</param>
+  /// <param name="index">The <paramref name="index"/> to check.</param>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <i>index</i> is less than zero.<br /> -or- <br />
-  ///   <i>index</i> is greater than <see cref="Count"/>.
+  ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
+  ///   <paramref name="index"/> is greater than <see cref="Count"/>.
   /// </exception>
   protected void CheckIndexForInsert (string argumentName, int index)
   {
@@ -308,13 +308,13 @@ public class CommonCollection : ICollection
   }
 
   /// <summary>
-  /// Checks the <i>index</i> for access via the indexer and throws an exception if it is invalid.
+  /// Checks the <paramref name="index"/> for access via the indexer and throws an exception if it is invalid.
   /// </summary>
-  /// <param name="argumentName">The <i>argumentName</i> for throwing the exception.</param>
-  /// <param name="index">The <i>index</i> to check.</param>
+  /// <param name="argumentName">The <paramref name="argumentName"/> for throwing the exception.</param>
+  /// <param name="index">The <paramref name="index"/> to check.</param>
   /// <exception cref="System.ArgumentOutOfRangeException">
-  ///   <i>index</i> is less than zero.<br /> -or- <br />
-  ///   <i>index</i> is equal to or greater than <see cref="Count"/>.
+  ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
+  ///   <paramref name="index"/> is equal to or greater than <see cref="Count"/>.
   /// </exception>
   protected void CheckIndexForIndexer (string argumentName, int index)
   {

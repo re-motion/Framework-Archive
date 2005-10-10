@@ -31,7 +31,7 @@ public class DataContainer
   /// </remarks>
   /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
   /// <returns>The new <see cref="DataContainer"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
   public static DataContainer CreateNew (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -54,8 +54,8 @@ public class DataContainer
   /// <param name="id">The <see cref="ObjectID"/> of the new <see cref="DataContainer"/> to create. Must not be <see langword="null"/>.</param>
   /// <param name="timestamp">The timestamp value of the existing object in the datasource.</param>
   /// <returns>The new <see cref="DataContainer"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>id</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Mapping.MappingException">ClassDefinition of <i>id</i> does not exist in mapping.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="id"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Mapping.MappingException">ClassDefinition of <paramref name="id"/> does not exist in mapping.</exception>
   public static DataContainer CreateForExisting (ObjectID id, object timestamp)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -109,12 +109,12 @@ public class DataContainer
   // methods and properties
 
   /// <summary>
-  /// Returns whether the property specified by <i>propertyName</i> is <see langword="null"/>.
+  /// Returns whether the property specified by <paramref name="propertyName"/> is <see langword="null"/>.
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> is <see langword="null"/>; otherwise, <b>false</b>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> is <see langword="null"/>; otherwise, <b>false</b>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool IsNull (string propertyName)
   {
@@ -134,13 +134,13 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Returns whether the property specified by <i>propertyName</i> is <see langword="null"/> or empty.
+  /// Returns whether the property specified by <paramref name="propertyName"/> is <see langword="null"/> or empty.
   /// </summary>
   /// <remarks>If a <see cref="System.String"/> or a <see cref="System.Guid"/> are equal to empty this method returns true.</remarks>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> is <see langword="null"/> or empty; otherwise, <b>false</b>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <returns><b>true</b> if the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> is <see langword="null"/> or empty; otherwise, <b>false</b>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public bool IsNullOrEmpty (string propertyName)
   {
@@ -165,11 +165,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public object this[string propertyName]
   {
@@ -190,12 +190,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/>.
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
   /// <returns>The value of the <see cref="PropertyValue"/>.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public object GetValue (string propertyName)
   {
@@ -206,12 +206,12 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Sets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i>.
+  /// Sets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/>.
   /// </summary>
   /// <param name="propertyName">The name of the <see cref="PropertyValue"/>. Must not be <see langword="null"/>.</param>
   /// <param name="value">The value the <see cref="PropertyValue"/> is set to.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   public void SetValue (string propertyName, object value)
   {
@@ -493,11 +493,11 @@ public class DataContainer
   #region Typed property accessors
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="ObjectID"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as an <see cref="ObjectID"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to an <see cref="ObjectID"/>.</exception>
   public ObjectID GetObjectID (string propertyName)
@@ -522,11 +522,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Boolean"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Boolean"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Boolean"/>.</exception>
   public bool GetBoolean (string propertyName)
@@ -538,11 +538,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Byte"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Byte"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Byte"/>.</exception>
   public byte GetByte (string propertyName)
@@ -554,11 +554,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as an <see cref="System.DateTime"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as an <see cref="System.DateTime"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.DateTime"/>.</exception>
   public DateTime GetDateTime (string propertyName)
@@ -570,11 +570,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Decimal"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Decimal"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Decimal"/>.</exception>
   public decimal GetDecimal (string propertyName)
@@ -586,11 +586,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Double"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Double"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Double"/>.</exception>
   public double GetDouble (string propertyName)
@@ -602,11 +602,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Guid"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Guid"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Guid"/>.</exception>
   public Guid GetGuid (string propertyName)
@@ -618,11 +618,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Int16"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Int16"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Int16"/>.</exception>
   public short GetInt16 (string propertyName)
@@ -634,11 +634,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Int32"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Int32"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Int32"/>.</exception>
   public int GetInt32 (string propertyName)
@@ -650,11 +650,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Int64"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Int64"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Int64"/>.</exception>
   public long GetInt64 (string propertyName)
@@ -666,11 +666,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.Single"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.Single"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.Single"/>.</exception>
   public float GetSingle (string propertyName)
@@ -682,11 +682,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="System.String"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="System.String"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="System.String"/>.</exception>
   public string GetString (string propertyName)
@@ -698,11 +698,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaBoolean"/>.</exception>
   public NaBoolean GetNaBoolean (string propertyName)
@@ -714,11 +714,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaDateTime"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaDateTime"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaDateTime"/>.</exception>
   public NaDateTime GetNaDateTime (string propertyName)
@@ -730,11 +730,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaDouble"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaDouble"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaDouble"/>.</exception>
   public NaDouble GetNaDouble (string propertyName)
@@ -746,11 +746,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaInt32"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaInt32"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaInt32"/>.</exception>
   public NaInt32 GetNaInt32 (string propertyName)
@@ -762,11 +762,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaByte"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaByte"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaByte"/>.</exception>
   public NaByte GetNaByte (string propertyName)
@@ -778,11 +778,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaDecimal"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaDecimal"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaDecimal"/>.</exception>
   public NaDecimal GetNaDecimal (string propertyName)
@@ -794,11 +794,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaGuid"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaGuid"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaGuid"/>.</exception>
   public NaGuid GetNaGuid (string propertyName)
@@ -810,11 +810,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaInt16"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaInt16"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaInt16"/>.</exception>
   public NaInt16 GetNaInt16 (string propertyName)
@@ -826,11 +826,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaInt64"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaInt64"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaInt64"/>.</exception>
   public NaInt64 GetNaInt64 (string propertyName)
@@ -842,11 +842,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a <see cref="Rubicon.NullableValueTypes.NaSingle"/>.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a <see cref="Rubicon.NullableValueTypes.NaSingle"/>.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a <see cref="Rubicon.NullableValueTypes.NaSingle"/>.</exception>
   public NaSingle GetNaSingle (string propertyName)
@@ -858,11 +858,11 @@ public class DataContainer
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="PropertyValue"/> specified by <i>propertyName</i> as a byte array.
+  /// Gets the value of the <see cref="PropertyValue"/> specified by <paramref name="propertyName"/> as a byte array.
   /// </summary>
   /// <param name="propertyName">The name of the property. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><i>propertyName</i> is <see langword="null"/>.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><i>propertyName</i> is an empty string.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="propertyName"/> is <see langword="null"/>.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException"><paramref name="propertyName"/> is an empty string.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
   /// <exception cref="System.InvalidCastException">The value cannot be casted to a byte array.</exception>
   public byte[] GetBytes (string propertyName)

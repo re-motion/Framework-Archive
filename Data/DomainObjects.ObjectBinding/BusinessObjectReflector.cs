@@ -19,7 +19,7 @@ public class BusinessObjectReflector
   /// Instantiates a new object.
   /// </summary>
   /// <param name="bindableObject">The object to create the properties for. Must not be <see langword="null"/></param>
-  /// <exception cref="System.ArgumentNullException"><i>bindableObject</i> is <see langword="null"/>.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="bindableObject"/> is <see langword="null"/>.</exception>
   public BusinessObjectReflector (IBusinessObject bindableObject)
 	{
     ArgumentUtility.CheckNotNull ("bindableObject", bindableObject);
@@ -99,8 +99,8 @@ public class BusinessObjectReflector
   /// </summary>
   /// <param name="property">The property to return. Must be of type <see cref="BaseProperty"/> or derived from it and must not be <see langword="null"/>.</param>
   /// <returns>The value of the property.</returns>
-  /// <exception cref="System.ArgumentNullException"><i>property</i> is a null reference.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><i>property</i> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
   public object GetProperty (IBusinessObjectProperty property)
   {
     ArgumentUtility.CheckNotNullAndType ("property", property, typeof (BaseProperty));
@@ -116,8 +116,8 @@ public class BusinessObjectReflector
   /// </summary>
   /// <param name="property">The property to set.  Must be of type <see cref="BaseProperty"/> or derived from it and must not be <see langword="null"/>.</param>
   /// <param name="value">The value that should be assigned to the property.</param>
-  /// <exception cref="System.ArgumentNullException"><i>property</i> is a null reference.</exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><i>property</i> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
+  /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is a null reference.</exception>
+  /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
   public void SetProperty (IBusinessObjectProperty property, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("property", property, typeof (BaseProperty));

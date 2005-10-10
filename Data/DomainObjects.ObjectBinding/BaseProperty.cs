@@ -153,7 +153,7 @@ public class BaseProperty : IBusinessObjectProperty
   /// Converts the value from internal representation (business layer) to external representation (representation layer).
   /// </summary>
   /// <param name="internalValue">The internal value.</param>
-  /// <returns>The external value. If the data type of the property has a field named "MinValue" and <i>internalValue</i> is equal to it, then the return value is null.</returns>
+  /// <returns>The external value. If the data type of the property has a field named "MinValue" and <paramref name="internalValue"/> is equal to it, then the return value is null.</returns>
   /// <note type="inheritinfo">
   ///   Override this method to convert data types, take care of default values or other changes.
   /// </note>
@@ -178,7 +178,7 @@ public class BaseProperty : IBusinessObjectProperty
   /// </summary>
   /// <param name="publicValue">The external value.</param>
   /// <returns>The internal value.</returns>
-  /// <exception cref="InvalidNullAssignmentException"><i>publicValue</i> is <see langword="null"/> and this value is not supported by this property.</exception>
+  /// <exception cref="InvalidNullAssignmentException"><paramref name="publicValue"/> is <see langword="null"/> and this value is not supported by this property.</exception>
   internal protected virtual object ToInternalType (object publicValue)
   {
     if (_itemType.IsValueType && publicValue == null)

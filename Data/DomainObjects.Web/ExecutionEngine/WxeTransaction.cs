@@ -59,7 +59,7 @@ public class WxeTransaction : WxeTransactionBase
   /// Sets a new current transaction.
   /// </summary>
   /// <param name="transaction">The new transaction. This must be a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> or derived type.</param>
-  /// <exception cref="System.InvalidCastException"><i>transaction</i> cannot be casted to <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.</exception>
+  /// <exception cref="System.InvalidCastException"><paramref name="transaction"/> cannot be casted to <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.</exception>
   protected override void SetCurrentTransaction (ITransaction transaction)
   {
     ClientTransaction.SetCurrent ((ClientTransaction) transaction);
