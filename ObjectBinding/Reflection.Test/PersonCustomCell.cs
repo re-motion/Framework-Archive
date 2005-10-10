@@ -30,6 +30,11 @@ public class PersonCustomCell: BocCustomColumnDefinitionCell
   {
   }
 
+  protected override void OnValidate(BocCustomCellValidationArguments arguments)
+  {
+    arguments.IsValid = false;
+  }
+
   protected override void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
   {
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
