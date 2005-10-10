@@ -502,14 +502,18 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   }
 
   /// <summary> Sets the focus to the passed control. </summary>
-  /// <param name="control"> The <see cref="IFocusableControl"/> to assign the focus to. </param>
+  /// <param name="control"> 
+  ///   The <see cref="IFocusableControl"/> to assign the focus to. Must no be <see langword="null"/>.
+  /// </param>
   public void SetFocus (IFocusableControl control)
   {
     _wxeInfo.SetFocus (control);
   }
 
   /// <summary> Sets the focus to the passed control ID. </summary>
-  /// <param name="id"> The client side ID of the control to assign the focus to. </param>
+  /// <param name="id"> 
+  ///   The client side ID of the control to assign the focus to. Must no be <see langword="null"/> or empty. 
+  /// </param>
   public void SetFocus (string id)
   {
     _wxeInfo.SetFocus (id);
