@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
+// TODO Doc: 
 public class InvalidNullAssignmentException : Exception
 {
   public InvalidNullAssignmentException () : this ("An invalid null assignment exception occured") {}
