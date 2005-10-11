@@ -37,9 +37,11 @@ public class DataContainerTest : ClientTransactionBaseTest
   {
     base.SetUp ();
 
-    _newDataContainer = DataContainer.CreateNew (new ObjectID ("Order", 5));
+    Guid idValue = Guid.NewGuid ();
 
-    _existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", 5), null);
+    _newDataContainer = DataContainer.CreateNew (new ObjectID ("Order", idValue));
+
+    _existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", idValue), null);
 
     _nameDefinition = new PropertyDefinition ("Name", "Name", "string", new NaInt32 (100));
     _nameProperty = new PropertyValue (_nameDefinition, "Arthur Dent");
