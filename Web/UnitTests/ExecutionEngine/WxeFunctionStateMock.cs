@@ -14,30 +14,33 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 [Serializable]
 public class WxeFunctionStateMock: WxeFunctionState
 {
-  public WxeFunctionStateMock (WxeFunction function, int lifetime, string queryString, bool enableCleanUp)
-    : base (function, lifetime, queryString, enableCleanUp)
-  {
-  }
-
-  public WxeFunctionStateMock (WxeFunction function, string functionToken, string queryString, bool enableCleanUp)
-    : base (function, functionToken, queryString, enableCleanUp)
-  {
-  }
-  
   public WxeFunctionStateMock (WxeFunction function, string queryString, bool enableCleanUp)
     : base (function, queryString, enableCleanUp)
   {
   }
-
-  public WxeFunctionStateMock (WxeFunction function, string functionToken, int lifetime, string queryString, bool enableCleanUp)
-    : base (function, functionToken, lifetime, queryString, enableCleanUp)
+  
+  public WxeFunctionStateMock (WxeFunction function, int lifetime, string queryString, bool enableCleanUp)
+    : base (function, lifetime, queryString, enableCleanUp)
   {
+  }
+  
+  public WxeFunctionStateMock (
+      WxeFunction function, int lifetime, string queryString, bool enableCleanUp, string functionToken)
+    : base (function, lifetime, queryString, enableCleanUp)
+  {
+    FunctionToken = functionToken;
   }
 
   public new WxeFunction Function
   {
     get { return base.Function; }
     set {PrivateInvoke.SetNonPublicField (this, "_function", value); }
+  }
+
+  public new string FunctionToken
+  {
+    get { return base.FunctionToken; }
+    set {PrivateInvoke.SetNonPublicField (this, "_functionToken", value); }
   }
 
   public new void Abort()

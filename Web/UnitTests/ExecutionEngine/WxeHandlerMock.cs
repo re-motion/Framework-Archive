@@ -31,10 +31,9 @@ public class WxeHandlerMock: WxeHandler
     return base.GetType (typeName);
   }
 
-  public new WxeFunctionState CreateNewFunctionState (
-      HttpContext context, Type type, string functionToken, bool isMappedUrl)
+  public new WxeFunctionState CreateNewFunctionState (HttpContext context, Type type, bool isMappedUrl)
   {
-    return base.CreateNewFunctionState (context, type, functionToken, isMappedUrl);
+    return base.CreateNewFunctionState (context, type, isMappedUrl);
   }
 
   public new WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)

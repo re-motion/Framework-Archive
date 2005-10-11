@@ -51,32 +51,32 @@ public class WxeHandlerTest: WxeTest
     WxeFunctionStateCollection.Instance = new WxeFunctionStateCollection();
 
     _functionStateWithEnabledCleanUp = new WxeFunctionStateMock (
-        new TestFunction(), c_functionTokenForFunctionStateWithEnabledCleanUp, 10, null, true);
+        new TestFunction(), 10, null, true, c_functionTokenForFunctionStateWithEnabledCleanUp);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithEnabledCleanUp);
 
     _functionStateWithDisabledCleanUp = new WxeFunctionStateMock (
-        new TestFunction(), c_functionTokenForFunctionStateWithDisabledCleanUp, 10, null, false);
+        new TestFunction(), 10, null, false, c_functionTokenForFunctionStateWithDisabledCleanUp);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithDisabledCleanUp);
 
     _functionStateWithMissingFunction = new WxeFunctionStateMock (
-        new TestFunction(), c_functionTokenForFunctionStateWithMissingFunction, 10, null, false);
+        new TestFunction(), 10, null, false, c_functionTokenForFunctionStateWithMissingFunction);
     _functionStateWithMissingFunction.Function = null;
     WxeFunctionStateCollection.Instance.Add (_functionStateWithMissingFunction);
 
     _functionStateAborted = new WxeFunctionStateMock (
-        new TestFunction(), c_functionTokenForAbortedFunctionState, 10, null, true);
+        new TestFunction(), 10, null, true, c_functionTokenForAbortedFunctionState);
     WxeFunctionStateCollection.Instance.Add (_functionStateAborted);
     _functionStateAborted.Abort();
 
     _functionStateExpired = new WxeFunctionStateMock (
-        new TestFunction(), c_functionTokenForExpiredFunctionState, 0, null, true);
+        new TestFunction(), 0, null, true, c_functionTokenForExpiredFunctionState);
     WxeFunctionStateCollection.Instance.Add (_functionStateExpired);
 
     TestFunction rootFunction = new TestFunction();
     TestFunction childFunction = new TestFunction();
     rootFunction.Add (childFunction);
     _functionStateWithChildFunction = new WxeFunctionStateMock (
-        childFunction, c_functionTokenForFunctionStateWithChildFunction, 10, null, true);
+        childFunction, 10, null, true, c_functionTokenForFunctionStateWithChildFunction);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithChildFunction);
 
     _functionType = typeof (TestFunction);
@@ -103,10 +103,10 @@ public class WxeHandlerTest: WxeTest
   public void CreateNewFunctionStateStateWithFunctionToken()
   {
     WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (
-        CurrentHttpContext, _functionType, c_functionTokenForNewFunctionState, false);
+        CurrentHttpContext, _functionType, false);
 
     Assert.IsNotNull (functionState);
-    Assert.AreEqual (c_functionTokenForNewFunctionState, functionState.FunctionToken);
+    Assert.IsNotNull (functionState.FunctionToken);
     Assert.IsNotNull (functionState.Function);
     Assert.AreEqual (_functionType, functionState.Function.GetType());
     Assert.AreEqual (TestFunction.ReturnUrlValue, functionState.Function.ReturnUrl);
@@ -120,7 +120,7 @@ public class WxeHandlerTest: WxeTest
   public void CreateNewFunctionStateStateWithoutFunctionToken()
   {
     WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType, null, false);
+        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType, false);
 
     Assert.IsNotNull (functionState);
     Assert.IsNotNull (functionState.FunctionToken);
@@ -149,8 +149,7 @@ public class WxeHandlerTest: WxeTest
     parameters.Set (WxeHandler.Parameters.WxeReturnUrl, _returnUrl);
     HttpContextHelper.SetParams (CurrentHttpContext, parameters);
 
-    WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType, null, false);
+    WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType, false);
 
     Assert.IsNotNull (functionState);
     Assert.IsNotNull (functionState.FunctionToken);
@@ -171,8 +170,7 @@ public class WxeHandlerTest: WxeTest
     parameters.Set (TestFunction.Parameter1Name, agrumentValue);
     HttpContextHelper.SetParams (CurrentHttpContext, parameters);
 
-    WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType, null, false);
+    WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType, false);
 
     Assert.IsNotNull (functionState);
     Assert.IsNotNull (functionState.FunctionToken);
