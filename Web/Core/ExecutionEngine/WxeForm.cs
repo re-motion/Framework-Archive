@@ -95,7 +95,7 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
     WxeContext wxeContext = WxeContext.Current;
     if (wxeContext != null)
     {
-      string action = wxeContext.GetPath (false);
+      string action = wxeContext.GetPath();
       writer.WriteAttribute ("action", action);
       Attributes.Remove ("action");
     }
