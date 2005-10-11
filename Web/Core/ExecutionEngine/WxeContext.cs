@@ -4,6 +4,7 @@ using System.Web;
 using System.Collections;
 using System.Collections.Specialized;
 using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -42,14 +43,46 @@ public class WxeContext
     System.Runtime.Remoting.Messaging.CallContext.SetData ("WxeContext", value);
   }
 
+  /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
+  /// <param name="functionToken"> The token of function to resume. </param>
+  public static string GetResumePath (HttpRequest request, HttpResponse response, string functionToken)
+  {
+    return WxeContext.GetResumePath (request, response, functionToken, null);
+  }
+
+  public static string GetResumePath (
+      HttpRequest request, HttpResponse response, string functionToken, string queryString)
+  {
+    string path = response.ApplyAppPathModifier (request.Url.AbsolutePath);
+    if (StringUtility.IsNullOrEmpty (queryString))
+    {
+      path += "?" + WxeHandler.Parameters.WxeFunctionToken + "=" + functionToken;
+    }
+    else
+    {
+      path += "?" + queryString;
+      if (! StringUtility.IsNullOrEmpty (functionToken))
+      {
+        string urlFunctionToken = PageUtility.GetUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
+        if (urlFunctionToken != functionToken)
+        {
+          path = PageUtility.DeleteUrlParameter (path, WxeHandler.Parameters.WxeFunctionToken);
+          path = PageUtility.AddUrlParameter (path, WxeHandler.Parameters.WxeFunctionToken, functionToken);
+        }
+      }
+    }
+    return path;
+  }
+
   private HttpContext _httpContext;
   private bool _isPostBack;
   private bool _isReturningPostBack;
   private NameValueCollection _postBackCollection;
   private string _functionToken;
   private WxeFunction _returningFunction = null;
+  private string _queryString;
 
-  public WxeContext (HttpContext context, string functionToken)
+  public WxeContext (HttpContext context, string functionToken, string queryString)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
@@ -59,6 +92,7 @@ public class WxeContext
     _isPostBack = false;
     _isReturningPostBack = false;
     _postBackCollection = null;
+    _queryString = queryString;
   }
 
   public HttpContext HttpContext
@@ -120,9 +154,7 @@ public class WxeContext
     set { _returningFunction = value; }
   }
 
-  /// <summary>
-  ///   Gets the absolute URL that resumes the current function.
-  /// </summary>
+  /// <summary> Gets the absolute URL that resumes the current function. </summary>
   /// <remarks>
   ///   If a WXE application branches to an external web site, the external site can
   ///   link back to this URL to resume the current function at the point where 
@@ -132,61 +164,25 @@ public class WxeContext
   /// </remarks>
   public string GetResumeUrl ()
   {
-    string pathPart = GetResumePath (true);
+    string pathPart = GetResumePath ();
     pathPart = HttpContext.Response.ApplyAppPathModifier (pathPart);
     string serverPart = HttpContext.Request.Url.GetLeftPart (System.UriPartial.Authority);
     return serverPart + pathPart;
   }
 
-  /// <summary>
-  ///   Gets the path that resumes the current function.
-  /// </summary>
-  /// <param name="absolute"> 
-  ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
-  ///   are returned.
-  /// </param>
-  public string GetResumePath (bool absolute)
+  /// <summary> Gets the absolute path that resumes the current function. </summary>
+  public string GetResumePath ()
   {
-    return WxeContext.GetResumePath (HttpContext.Request, HttpContext.Response, FunctionToken, absolute);
+    return WxeContext.GetResumePath (_httpContext.Request, _httpContext.Response, _functionToken, _queryString);
   }
 
-  /// <summary> Gets the path that resumes the function with specified token. </summary>
-  /// <param name="functionToken"> The token of function to resume. </param>
-  /// <param name="absolute"> 
-  ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
-  ///   are returned.
-  /// </param>
-  public static string GetResumePath (HttpRequest request, HttpResponse response, string functionToken, bool absolute)
+  /// <summary> Gets the absolute path for to the <b>WxeHandler</b> used in the request. </summary>
+  public string GetPath ()
   {
-    string path;
-    if (absolute)
-      path = response.ApplyAppPathModifier (request.Url.AbsolutePath);
-    else
-      path = System.IO.Path.GetFileName (request.Url.AbsolutePath);
-    return path + "?" + WxeHandler.Parameters.WxeFunctionToken + "=" + functionToken;
-  }
-
-  /// <summary> Gets the path for to the <b>WxeHandler</b> used in the request. </summary>
-  /// <param name="absolute"> 
-  ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
-  ///   are returned.
-  /// </param>
-  public string GetPath (bool absolute)
-  {
-    return WxeContext.GetPath (HttpContext.Request, HttpContext.Response, absolute);
-  }
-
-  /// <summary> Gets the path for to the <b>WxeHandler</b> used in the <paramref name="request"/>. </summary>
-  /// <param name="absolute"> 
-  ///   <see langword="true"/> to get the absolute path, otherwise only the <b>WxeHandler</b>'s filename and query 
-  ///   are returned.
-  /// </param>
-  public static string GetPath (HttpRequest request, HttpResponse response, bool absolute)
-  {
-    if (absolute)
-      return response.ApplyAppPathModifier (request.Url.AbsolutePath);
-    else
-      return System.IO.Path.GetFileName (request.Url.AbsolutePath);
+    string path = _httpContext.Response.ApplyAppPathModifier (_httpContext.Request.Url.AbsolutePath);
+    if (! StringUtility.IsNullOrEmpty (_queryString))
+      path += "?" + _queryString;
+    return path;
   }
 }
 
