@@ -171,6 +171,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "UrlMapping.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "UserControl1.ascx"
                     SubType = "UserControl"
                     BuildAction = "Content"
