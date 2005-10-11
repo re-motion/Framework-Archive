@@ -360,6 +360,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxePostBackOutOfSequenceException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeResourcePageStep.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
