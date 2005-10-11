@@ -34,7 +34,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     /// </remarks>
     public const string WxeFunctionType = "WxeFunctionType";
 
-    /// <summary> Denotes the <b>ID</b> of the <see cref="WxeFunction"/> to resume or assigned during initialization. </summary>
+    /// <summary> Denotes the <b>ID</b> of the <see cref="WxeFunction"/> to be resumed. </summary>
     public const string WxeFunctionToken = "WxeFunctionToken";
     
     /// <summary> Denotes the <b>URL</b> to return to after the function has completed. </summary>
@@ -118,18 +118,14 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     Type type = null;
     if (hasTypeName)
-    {
       type = GetType (typeName);
-    }
     else if (! hasFunctionToken)
-    {
       type = ParseUrl (context.Request);
-    }
 
     if (type != null)
     {
       bool isMappedUrl = ! hasTypeName;
-      _currentFunctionState = CreateNewFunctionState (context, type, functionToken, isMappedUrl);
+      _currentFunctionState = CreateNewFunctionState (context, type, isMappedUrl);
       ProcessFunctionState (context, _currentFunctionState, true);
     }
     else if (hasFunctionToken)
@@ -174,16 +170,18 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
   protected virtual Type ParseUrl (HttpRequest request)
   {
-    return null;
-//    ArgumentUtility.CheckNotNull ("request", request);
-//
+    ArgumentUtility.CheckNotNull ("request", request);
+
 //    string root = "/";
 //    if (HttpRuntime.AppDomainAppVirtualPath != "/")
 //      root = HttpRuntime.AppDomainAppVirtualPath + "/";
-//    if (request.Url.AbsolutePath == root + "session.wxe")
+//    if (String.Compare (request.Url.AbsolutePath, root + "session.wxe", true) == 0)
 //      return GetType ("Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition");
-//
-//    return null;
+//    if (String.Compare (request.Url.AbsolutePath, root + "wxehandler.ashx", true) == 0)
+//      return GetType ("OBWTest.SingleBocTestMainWxeFunction,OBWTest");
+
+
+    return null;
   }
 
   /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="typeName"/>. </summary>
@@ -208,8 +206,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
   /// <summary> Initializes a new <see cref="WxeFunction"/>, encapsulated in a <see cref="WxeFunctionState"/> object. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CreateNewFunctionState/*' />
-  protected WxeFunctionState CreateNewFunctionState (
-      HttpContext context, Type type, string functionToken, bool isMappedUrl)
+  protected WxeFunctionState CreateNewFunctionState (HttpContext context, Type type, bool isMappedUrl)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNull ("type", type);
@@ -231,14 +228,12 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (isMappedUrl)
     {
       queryString = context.Request.QueryString.ToString();
+      if (! queryString.StartsWith ("?"))
+        queryString = "?" + queryString;
       queryString = PageUtility.DeleteUrlParameter (queryString, Parameters.WxeFunctionToken);
     }
 
-    WxeFunctionState functionState;
-    if (StringUtility.IsNullOrEmpty (functionToken))
-      functionState = new WxeFunctionState (function, queryString, true);
-    else
-      functionState = new WxeFunctionState (function, functionToken, queryString, true);
+    WxeFunctionState functionState = new WxeFunctionState (function, queryString, true);
     functionStates.Add (functionState);
 
     function.InitializeParameters (context.Request.Params);
@@ -269,7 +264,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       {
         Type type = ParseUrl (context.Request);
         if (type != null)
-          return CreateNewFunctionState (context, type, functionToken, true);
+          return CreateNewFunctionState (context, type, true);
       }
       throw new ApplicationException ("Session timeout."); // TODO: display error message
     }
@@ -281,7 +276,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       {
         Type type = ParseUrl (context.Request);
         if (type != null)
-          return CreateNewFunctionState (context, type, functionToken, true);
+          return CreateNewFunctionState (context, type, true);
       }
       throw new ApplicationException ("Page timeout."); // TODO: display error message
     }
@@ -337,9 +332,11 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionState.IsAborted)
       throw new InvalidOperationException ("The function state " + functionState.FunctionToken + " is aborted.");
 
-    WxeContext wxeContext = new WxeContext (context, functionState.FunctionToken, functionState.QueryString); 
+    WxeContext wxeContext = new WxeContext (
+        context, functionState.FunctionToken, functionState.QueryString, functionState.PostBackID); 
     WxeContext.SetCurrent (wxeContext);
 
+    functionState.PostBackID++;
     ExecuteFunction (functionState.Function, wxeContext, isNewFunction);
   }
 

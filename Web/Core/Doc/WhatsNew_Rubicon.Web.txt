@@ -6,6 +6,9 @@
 - Rubicon.Web.ExecutionEngine.WxeContext
   * GetPath und GetResumePath haben keinen "absolute" Parameter mehr. Der Pfad ist immer absolut.
   
+- Rubicon.Web.ExecutionEngine.WxeHandler
+  * Die WXE lässt sich nicht mehr mit extern definierten einem FunctionToken initialisieren.
+  
 1.3.11
 ======
 - Rubicon.Web.Configuration.WcagConfiguration

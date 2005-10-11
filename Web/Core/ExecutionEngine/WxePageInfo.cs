@@ -38,6 +38,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   public static readonly string ReturningTokenID = "wxeReturningToken";
   public static readonly string PageTokenID = "wxePageToken";
+  public static readonly string PostBackSequenceNumberID = "wxePostBackSequenceNumber";
   private const string c_smartScrollingID = "smartScrolling";
   private const string c_smartFocusID = "smartFocus";
   private const string c_script = "ExecutionEngine.js";
@@ -107,9 +108,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     HandleLoadPostData (postBackCollection);
   }
 
+  /// <exception cref="WxePostBackOutOfSequenceException"> 
+  ///   Thrown if a postback with an incorrect sequence number is handled. 
+  /// </exception>
   protected virtual void HandleLoadPostData (NameValueCollection postBackCollection)
   {
     ArgumentUtility.CheckNotNull ("postBackCollection", postBackCollection);
+
+    int postBackID = int.Parse (postBackCollection[WxePageInfo.PostBackSequenceNumberID]);
+    if (postBackID != WxeContext.Current.PostBackID)
+      throw new WxePostBackOutOfSequenceException();
 
     string returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
     if (! StringUtility.IsNullOrEmpty (returningToken))
@@ -126,10 +134,24 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
+
+  protected void SetCaching()
+  {
+    HttpContext context = WxeContext.Current.HttpContext;
+    //context.Response.AddHeader ("Pragma", "no-cache");
+    //context.Response.Expires = -1;
+    //context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+    context.Response.Cache.SetExpires (DateTime.Now);
+    context.Response.Cache.SetCacheability (HttpCacheability.Private);
+    context.Response.Cache.SetAllowResponseInBrowserHistory (false);
+  }
+
   /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
   private void Page_PreRender (object sender, EventArgs e)
   {
     _isPreRendering = true;
+    
+    SetCaching();
     PreRenderWxe();
     PreRenderSmartNavigation();
   }
@@ -141,6 +163,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     
     page.RegisterHiddenField (WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
     page.RegisterHiddenField (WxePageInfo.ReturningTokenID, null);
+    int nextPostBackID = wxeContext.PostBackID + 1;
+    page.RegisterHiddenField (WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString());
 
     string key = "wxeDoSubmit";
     PageUtility.RegisterClientScriptBlock (page, key,
@@ -351,7 +375,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 
-    string href = WxeContext.GetResumePath (_page.Request, _page.Response, functionState.FunctionToken);
+    string href = WxeContext.GetResumePath (_page.Request, _page.Response, functionState.FunctionToken, null);
     string openScript;
     if (features != null)
       openScript = string.Format ("window.open('{0}', '{1}', '{2}');", href, target, features);

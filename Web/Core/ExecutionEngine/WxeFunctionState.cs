@@ -103,11 +103,11 @@ public class WxeFunctionState
   private string _queryString;
   private bool _isAborted;
   private bool _isCleanUpEnabled;
+  private int _postBackID;
 
   public WxeFunctionState (WxeFunction function, string queryString, bool enableCleanUp)
     : this (
         function, 
-        Guid.NewGuid().ToString(), 
         WebConfiguration.Current.ExecutionEngine.FunctionTimeout, 
         queryString, 
         enableCleanUp)
@@ -115,31 +115,15 @@ public class WxeFunctionState
   }
 
   public WxeFunctionState (WxeFunction function, int lifetime, string queryString, bool enableCleanUp)
-    : this (function, Guid.NewGuid().ToString(), lifetime, queryString, enableCleanUp)
-  {
-  }
-
-  public WxeFunctionState (WxeFunction function, string functionToken, string queryString, bool enableCleanUp)
-    : this (
-        function, 
-        functionToken, 
-        WebConfiguration.Current.ExecutionEngine.FunctionTimeout, 
-        queryString, 
-        enableCleanUp)
-  {
-  }
-  
-  public WxeFunctionState (
-      WxeFunction function, string functionToken, int lifetime, string queryString, bool enableCleanUp)
   {
     ArgumentUtility.CheckNotNull ("function", function);
-    ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
     _function = function;
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
-    _functionToken = functionToken;
+    _functionToken = Guid.NewGuid().ToString();
     _queryString = queryString;
     _isCleanUpEnabled = enableCleanUp;
+    _postBackID = 0;
   }
 
   public WxeFunction Function
@@ -174,6 +158,12 @@ public class WxeFunctionState
   public bool IsCleanUpEnabled
   {
     get { return _isCleanUpEnabled; }
+  }
+
+  protected internal int PostBackID
+  {
+    get { return _postBackID; }
+    set { _postBackID = value; }
   }
 
   public void Touch()

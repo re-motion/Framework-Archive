@@ -45,33 +45,24 @@ public class WxeContext
 
   /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
   /// <param name="functionToken"> The token of function to resume. </param>
-  public static string GetResumePath (HttpRequest request, HttpResponse response, string functionToken)
-  {
-    return WxeContext.GetResumePath (request, response, functionToken, null);
-  }
-
   public static string GetResumePath (
       HttpRequest request, HttpResponse response, string functionToken, string queryString)
   {
-    string path = response.ApplyAppPathModifier (request.Url.AbsolutePath);
     if (StringUtility.IsNullOrEmpty (queryString))
+      queryString = "?";
+    else if (! queryString.StartsWith ("?"))
+      queryString = "?" + queryString;
+    
+    if (! StringUtility.IsNullOrEmpty (functionToken))
     {
-      path += "?" + WxeHandler.Parameters.WxeFunctionToken + "=" + functionToken;
+      string urlFunctionToken = PageUtility.GetUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
+      if (! StringUtility.IsNullOrEmpty (urlFunctionToken) && urlFunctionToken != functionToken)
+        queryString = PageUtility.DeleteUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
     }
-    else
-    {
-      path += "?" + queryString;
-      if (! StringUtility.IsNullOrEmpty (functionToken))
-      {
-        string urlFunctionToken = PageUtility.GetUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
-        if (urlFunctionToken != functionToken)
-        {
-          path = PageUtility.DeleteUrlParameter (path, WxeHandler.Parameters.WxeFunctionToken);
-          path = PageUtility.AddUrlParameter (path, WxeHandler.Parameters.WxeFunctionToken, functionToken);
-        }
-      }
-    }
-    return path;
+    queryString = PageUtility.AddUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken, functionToken);
+    
+    string path = response.ApplyAppPathModifier (request.Url.AbsolutePath);
+    return path + queryString;
   }
 
   private HttpContext _httpContext;
@@ -81,8 +72,9 @@ public class WxeContext
   private string _functionToken;
   private WxeFunction _returningFunction = null;
   private string _queryString;
+  private int _postBackID;
 
-  public WxeContext (HttpContext context, string functionToken, string queryString)
+  public WxeContext (HttpContext context, string functionToken, string queryString, int postBackID)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
@@ -93,6 +85,9 @@ public class WxeContext
     _isReturningPostBack = false;
     _postBackCollection = null;
     _queryString = queryString;
+    if (! StringUtility.IsNullOrEmpty (_queryString) && ! _queryString.StartsWith ("?"))
+      _queryString = "?" + _queryString;
+    _postBackID = postBackID;
   }
 
   public HttpContext HttpContext
@@ -148,6 +143,11 @@ public class WxeContext
     get { return _functionToken; }
   }
 
+  public int PostBackID
+  {
+    get { return _postBackID; }
+  }
+
   public WxeFunction ReturningFunction 
   {
     get { return _returningFunction; }
@@ -181,7 +181,7 @@ public class WxeContext
   {
     string path = _httpContext.Response.ApplyAppPathModifier (_httpContext.Request.Url.AbsolutePath);
     if (! StringUtility.IsNullOrEmpty (_queryString))
-      path += "?" + _queryString;
+        path += _queryString;
     return path;
   }
 }
