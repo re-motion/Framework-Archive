@@ -30,7 +30,6 @@ public enum ResourceRootMode
 public class ResourceConfiguration
 {
   private string _root = "res";
-  private ResourceRootMode _rootMode = ResourceRootMode.AbsoluteWithApplicationRoot;
 
   /// <summary> Gets or sets the root folder for all resources. </summary>
   /// <include file='doc\include\Configuration\ResourceConfiguration.xml' path='ResourceConfiguration/Root/*' />
@@ -46,11 +45,9 @@ public class ResourceConfiguration
   ///   absolute and prepended with the the application root. 
   /// </summary>
   /// <include file='doc\include\Configuration\ResourceConfiguration.xml' path='ResourceConfiguration/RootMode/*' />
-  [XmlAttribute ("rootPath")]
   public ResourceRootMode RootMode
   {
-    get { return _rootMode; }
-    set { _rootMode = value; }
+    get { return ResourceRootMode.AbsoluteWithApplicationRoot; }
   }
 }
 
