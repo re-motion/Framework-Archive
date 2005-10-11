@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:m="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
+    elementFormDefault="qualified" 
+    attributeFormDefault="unqualified" 
+    targetNamespace="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
+    xml:lang="en">
+
+  <!--<xs:import namespace="http://www.rubicon-it.com/Types" schemaLocation="Types.xsd" />-->
+
+  <xs:element name="mapping">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="rules" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="rule" type="m:ruleType" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="ruleType">
+    <xs:attribute name="functionType" type="m:dotNetType" use="required" />
+    <xs:attribute name="path" type="m:requiredStringType" use="required" />
+  </xs:complexType>
+  
+	<xs:simpleType name="requiredStringType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+			<xs:whiteSpace value="collapse" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="dotNetType">
+		<xs:restriction base="m:requiredStringType">
+			<xs:pattern value=".+,.+" />
+		</xs:restriction>				
+	</xs:simpleType>
+
+</xs:schema>
