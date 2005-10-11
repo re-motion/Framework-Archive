@@ -61,5 +61,12 @@ public class RdbmsProviderDefinition : StorageProviderDefinition
   {
     get { return _connectionString; }
   }
+
+  public override bool IsIdentityTypeSupported (Type identityType)
+  {
+    ArgumentUtility.CheckNotNull ("identityType", identityType);
+
+    return (identityType == typeof (Guid));
+  }
 }
 }
