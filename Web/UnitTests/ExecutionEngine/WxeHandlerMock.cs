@@ -21,9 +21,20 @@ public class WxeHandlerMock: WxeHandler
     base.CheckTimeoutConfiguration (context);
   }
 
-  public new WxeFunctionState CreateNewFunctionState (HttpContext context, string typeName, string functionToken)
+  public new Type ParseUrl (HttpRequest request)
   {
-    return base.CreateNewFunctionState (context, typeName, functionToken);
+    return base.ParseUrl (request);
+  }
+
+  public new Type GetType (string typeName)
+  {
+    return base.GetType (typeName);
+  }
+
+  public new WxeFunctionState CreateNewFunctionState (
+      HttpContext context, Type type, string functionToken, bool isMappedUrl)
+  {
+    return base.CreateNewFunctionState (context, type, functionToken, isMappedUrl);
   }
 
   public new WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)
