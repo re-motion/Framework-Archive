@@ -721,7 +721,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\ValueConverterBaseMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\ValueConverterBaseTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\Rdbms\DeleteCommandBuilderTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Rdbms\RdbmsProviderDefinitionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
