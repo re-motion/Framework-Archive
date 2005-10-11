@@ -4,6 +4,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Reflection;
 using Rubicon.Xml;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.Configuration
 {
@@ -17,6 +18,7 @@ public class ExecutionEngineConfiguration
   private bool _enableSessionManagement = true;
   private int _refreshInterval = 10;
   private bool _viewStateInSession = true;
+  private string _mappingFile = string.Empty;
 
   /// <summary> Gets or sets the default timeout for individual functions within one session. </summary>
   /// <value> The timeout in mintues. Defaults to 20 minutes. </value>
@@ -52,6 +54,15 @@ public class ExecutionEngineConfiguration
   {
     get { return _viewStateInSession; }
     set { _viewStateInSession = value; }
+  }
+
+  /// <summary> Gets or sets the path to the file holding the URL mapping configuration. </summary>
+  /// <value> A string. Defaults to an empty string. </value>
+  [XmlAttribute ("mappingFile")]
+  public string MappingFile
+  {
+    get { return _mappingFile; }
+    set { _mappingFile = StringUtility.NullToEmpty (value); }
   }
 }
 
