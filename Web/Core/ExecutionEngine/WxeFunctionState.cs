@@ -100,25 +100,37 @@ public class WxeFunctionState
   private DateTime _lastAccess;
   private int _lifetime;
   private string _functionToken;
+  private string _queryString;
   private bool _isAborted;
   private bool _isCleanUpEnabled;
 
-  public WxeFunctionState (WxeFunction function, int lifetime, bool enableCleanUp)
-    : this (function, Guid.NewGuid().ToString(), lifetime, enableCleanUp)
+  public WxeFunctionState (WxeFunction function, string queryString, bool enableCleanUp)
+    : this (
+        function, 
+        Guid.NewGuid().ToString(), 
+        WebConfiguration.Current.ExecutionEngine.FunctionTimeout, 
+        queryString, 
+        enableCleanUp)
   {
   }
 
-  public WxeFunctionState (WxeFunction function, string functionToken, bool enableCleanUp)
-    : this (function, functionToken, WebConfiguration.Current.ExecutionEngine.FunctionTimeout, enableCleanUp)
+  public WxeFunctionState (WxeFunction function, int lifetime, string queryString, bool enableCleanUp)
+    : this (function, Guid.NewGuid().ToString(), lifetime, queryString, enableCleanUp)
+  {
+  }
+
+  public WxeFunctionState (WxeFunction function, string functionToken, string queryString, bool enableCleanUp)
+    : this (
+        function, 
+        functionToken, 
+        WebConfiguration.Current.ExecutionEngine.FunctionTimeout, 
+        queryString, 
+        enableCleanUp)
   {
   }
   
-  public WxeFunctionState (WxeFunction function, bool enableCleanUp)
-    : this (function, Guid.NewGuid().ToString(), WebConfiguration.Current.ExecutionEngine.FunctionTimeout, enableCleanUp)
-  {
-  }
-
-  public WxeFunctionState (WxeFunction function, string functionToken, int lifetime, bool enableCleanUp)
+  public WxeFunctionState (
+      WxeFunction function, string functionToken, int lifetime, string queryString, bool enableCleanUp)
   {
     ArgumentUtility.CheckNotNull ("function", function);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
@@ -126,6 +138,7 @@ public class WxeFunctionState
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
     _functionToken = functionToken;
+    _queryString = queryString;
     _isCleanUpEnabled = enableCleanUp;
   }
 
@@ -147,6 +160,11 @@ public class WxeFunctionState
   public string FunctionToken
   {
     get { return _functionToken; }
+  }
+
+  public string QueryString
+  {
+    get { return _queryString; }
   }
 
   /// <summary> 
