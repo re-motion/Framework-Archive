@@ -330,6 +330,20 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeMapping.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeMapping.xsd"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeMapping.xsx"
+                    DependentUpon = "WxeMapping.xsd"
+                    BuildAction = "None"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeMethodStep.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

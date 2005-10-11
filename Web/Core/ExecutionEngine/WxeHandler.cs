@@ -172,13 +172,13 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   {
     ArgumentUtility.CheckNotNull ("request", request);
 
-//    string root = "/";
-//    if (HttpRuntime.AppDomainAppVirtualPath != "/")
-//      root = HttpRuntime.AppDomainAppVirtualPath + "/";
-//    if (String.Compare (request.Url.AbsolutePath, root + "session.wxe", true) == 0)
-//      return GetType ("Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition");
-//    if (String.Compare (request.Url.AbsolutePath, root + "wxehandler.ashx", true) == 0)
-//      return GetType ("OBWTest.SingleBocTestMainWxeFunction,OBWTest");
+    string root = "/";
+    if (HttpRuntime.AppDomainAppVirtualPath != "/")
+      root = HttpRuntime.AppDomainAppVirtualPath + "/";
+    if (String.Compare (request.Url.AbsolutePath, root + "session.wxe", true) == 0)
+      return GetType ("Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition");
+    if (String.Compare (request.Url.AbsolutePath, root + "wxehandler.ashx", true) == 0)
+      return GetType ("OBWTest.SingleBocTestMainWxeFunction,OBWTest");
 
 
     return null;

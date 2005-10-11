@@ -139,11 +139,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     HttpContext context = WxeContext.Current.HttpContext;
     //context.Response.AddHeader ("Pragma", "no-cache");
-    //context.Response.Expires = -1;
     //context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-    context.Response.Cache.SetExpires (DateTime.Now);
+    context.Response.Expires = -1;
     context.Response.Cache.SetCacheability (HttpCacheability.Private);
-    context.Response.Cache.SetAllowResponseInBrowserHistory (false);
   }
 
   /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
