@@ -120,7 +120,7 @@ public class RelationEndPointIDTest
   {
     string[] expectedPropertyNames = new string[] {"Customer", "OrderTicket", "OrderItems", "Official"};
 
-    DataContainer existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", 5), null);
+    DataContainer existingDataContainer = DataContainer.CreateForExisting (new ObjectID ("Order", Guid.NewGuid ()), null);
     
     RelationEndPointID[] endPointIDs = RelationEndPointID.GetAllRelationEndPointIDs (existingDataContainer);
 

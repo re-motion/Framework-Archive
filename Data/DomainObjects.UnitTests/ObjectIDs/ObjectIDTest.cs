@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Utilities;
@@ -34,15 +35,15 @@ public class ObjectIDTest
   [Test]
   public void SerializeStringValue ()
   {
-    ObjectID id = new ObjectID ("Order", "Arthur Dent");
-    Assert.AreEqual ("Order|Arthur Dent|System.String", id.ToString ());
+    ObjectID id = new ObjectID ("Official", "Arthur Dent");
+    Assert.AreEqual ("Official|Arthur Dent|System.String", id.ToString ());
   }
 
   [Test]
   public void SerializeInt32Value ()
   {
-    ObjectID id = new ObjectID ("Order", 42);
-    Assert.AreEqual ("Order|42|System.Int32", id.ToString ());
+    ObjectID id = new ObjectID ("Official", 42);
+    Assert.AreEqual ("Official|42|System.Int32", id.ToString ());
   }
 
   [Test]
@@ -56,17 +57,17 @@ public class ObjectIDTest
   [ExpectedException (typeof (ArgumentException), "Value cannot contain '&amp;pipe;'.\r\nParameter name: value")]
   public void EscapedDelimiterPlaceholderInValue ()
   {
-    ObjectID id = new ObjectID ("Order", "Arthur|Dent &pipe; &amp;pipe; Zaphod Beeblebrox");
+    ObjectID id = new ObjectID ("Official", "Arthur|Dent &pipe; &amp;pipe; Zaphod Beeblebrox");
   }
 
   [Test]
   public void DeserializeStringValue ()
   {
-    string idString = "Order|Arthur Dent|System.String";
+    string idString = "Official|Arthur Dent|System.String";
     ObjectID id = ObjectID.Parse (idString);
 
-    Assert.AreEqual ("TestDomain", id.StorageProviderID);
-    Assert.AreEqual ("Order", id.ClassID);
+    Assert.AreEqual ("UnitTestStorageProviderStub", id.StorageProviderID);
+    Assert.AreEqual ("Official", id.ClassID);
     Assert.AreEqual (typeof (string), id.Value.GetType());
     Assert.AreEqual ("Arthur Dent", id.Value);
   }
@@ -74,11 +75,11 @@ public class ObjectIDTest
   [Test]
   public void DeserializeInt32Value ()
   {
-    string idString = "Order|42|System.Int32";
+    string idString = "Official|42|System.Int32";
     ObjectID id = ObjectID.Parse (idString);
 
-    Assert.AreEqual ("TestDomain", id.StorageProviderID);
-    Assert.AreEqual ("Order", id.ClassID);
+    Assert.AreEqual ("UnitTestStorageProviderStub", id.StorageProviderID);
+    Assert.AreEqual ("Official", id.ClassID);
     Assert.AreEqual (typeof (int), id.Value.GetType());
     Assert.AreEqual (42, id.Value);
   }
@@ -116,9 +117,9 @@ public class ObjectIDTest
   [Test]
   public void HashCode ()
   {
-    ObjectID id1 = new ObjectID ("Order", 42);
-    ObjectID id2 = new ObjectID ("Order", 42);
-    ObjectID id3 = new ObjectID ("Order", 41);
+    ObjectID id1 = new ObjectID ("Official", 42);
+    ObjectID id2 = new ObjectID ("Official", 42);
+    ObjectID id3 = new ObjectID ("Official", 41);
 
     Assert.IsTrue (id1.GetHashCode() == id2.GetHashCode());
     Assert.IsFalse (id1.GetHashCode() == id3.GetHashCode());
@@ -128,9 +129,9 @@ public class ObjectIDTest
   [Test]
   public void TestEqualsForClassID ()
   {
-    ObjectID id1 = new ObjectID ("Order", 42);
-    ObjectID id2 = new ObjectID ("Order", 42);
-    ObjectID id3 = new ObjectID ("Customer", 42);
+    ObjectID id1 = new ObjectID ("Official", 42);
+    ObjectID id2 = new ObjectID ("Official", 42);
+    ObjectID id3 = new ObjectID ("SpecialOfficial", 42);
 
     Assert.IsTrue (id1.Equals (id2));
     Assert.IsFalse (id1.Equals (id3));
@@ -143,9 +144,9 @@ public class ObjectIDTest
   [Test]
   public void TestEqualsForValue ()
   {
-    ObjectID id1 = new ObjectID ("Order", 42);
-    ObjectID id2 = new ObjectID ("Order", 42);
-    ObjectID id3 = new ObjectID ("Order", 41);
+    ObjectID id1 = new ObjectID ("Official", 42);
+    ObjectID id2 = new ObjectID ("Official", 42);
+    ObjectID id3 = new ObjectID ("Official", 41);
 
     Assert.IsTrue (id1.Equals (id2));
     Assert.IsFalse (id1.Equals (id3));
@@ -158,7 +159,7 @@ public class ObjectIDTest
   [Test]
   public void EqualsWithOtherType ()
   {
-    ObjectID id = new ObjectID ("Order", 42);
+    ObjectID id = new ObjectID ("Official", 42);
     Assert.IsFalse (id.Equals (new ObjectIDTest ()));
     Assert.IsFalse (id.Equals (42));
   }
@@ -166,15 +167,15 @@ public class ObjectIDTest
   [Test]
   public void EqualsWithNull ()
   {
-    ObjectID id = new ObjectID ("Order", 42);
+    ObjectID id = new ObjectID ("Official", 42);
     Assert.IsFalse (id.Equals (null));
   }
 
   [Test]
   public void EqualityOperatorTrue ()
   {
-    ObjectID id1 = new ObjectID ("Order", 42);
-    ObjectID id2 = new ObjectID ("Order", 42);
+    ObjectID id1 = new ObjectID ("Official", 42);
+    ObjectID id2 = new ObjectID ("Official", 42);
 
     Assert.IsTrue (id1 == id2);
     Assert.IsFalse (id1 != id2);
@@ -183,8 +184,8 @@ public class ObjectIDTest
   [Test]
   public void EqualityOperatorFalse ()
   {
-    ObjectID id1 = new ObjectID ("Order", 42);
-    ObjectID id2 = new ObjectID ("Customer", 1);
+    ObjectID id1 = new ObjectID ("Official", 42);
+    ObjectID id2 = new ObjectID ("SpecialOfficial", 1);
 
     Assert.IsFalse (id1 == id2);
     Assert.IsTrue (id1 != id2);
@@ -193,7 +194,7 @@ public class ObjectIDTest
   [Test]
   public void EqualityOperatorForSameObject ()
   {
-    ObjectID id = new ObjectID ("Order", 42);
+    ObjectID id = new ObjectID ("Official", 42);
 
     Assert.IsTrue (id == id);
     Assert.IsFalse (id != id);
@@ -210,7 +211,7 @@ public class ObjectIDTest
   [Test]
   public void EqualityOperatorID1Null ()
   {
-    ObjectID id2 = new ObjectID ("Order", 42);
+    ObjectID id2 = new ObjectID ("Official", 42);
 
     Assert.IsFalse (null == id2);
     Assert.IsTrue (null != id2);
@@ -219,7 +220,7 @@ public class ObjectIDTest
   [Test]
   public void EqualityOperatorID2Null ()
   {
-    ObjectID id1 = new ObjectID ("Order", 42);
+    ObjectID id1 = new ObjectID ("Official", 42);
 
     Assert.IsFalse (id1 == null);
     Assert.IsTrue (id1 != null);
@@ -228,8 +229,8 @@ public class ObjectIDTest
   [Test]
   public void StaticEquals ()
   {
-    ObjectID id1 = new ObjectID ("Order", 42);
-    ObjectID id2 = new ObjectID ("Order", 42);
+    ObjectID id1 = new ObjectID ("Official", 42);
+    ObjectID id2 = new ObjectID ("Official", 42);
 
     Assert.IsTrue (ObjectID.Equals (id1, id2));
   }
@@ -237,8 +238,8 @@ public class ObjectIDTest
   [Test]
   public void StaticNotEquals ()
   {
-    ObjectID id1 = new ObjectID ("Order", 42);
-    ObjectID id2 = new ObjectID ("Customer", 1);
+    ObjectID id1 = new ObjectID ("Official", 42);
+    ObjectID id2 = new ObjectID ("SpecialOfficial", 1);
 
     Assert.IsFalse (ObjectID.Equals (id1, id2));
   }
@@ -346,6 +347,49 @@ public class ObjectIDTest
   {
     ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
     ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
+  }
+
+  [Test]
+  [ExpectedException (typeof (IdentityTypeNotSupportedException))]
+  public void InitializeWithInvalidIdentityType ()
+  {
+    ObjectID id = new ObjectID ("Order", 1);
+  }
+
+  [Test]
+  public void InitializeWithGuid ()
+  {
+    Guid idValue = Guid.NewGuid ();
+    ObjectID id = new ObjectID ("Official", idValue);
+
+    Assert.AreEqual ("Official", id.ClassID);
+    Assert.AreEqual (idValue, id.Value);
+  }
+
+  [Test]
+  public void InitializeWithInt32 ()
+  {
+    ObjectID id = new ObjectID ("Official", 1);
+
+    Assert.AreEqual ("Official", id.ClassID);
+    Assert.AreEqual (1, id.Value);
+  }
+
+  [Test]
+  public void InitializeWithString ()
+  {
+    ObjectID id = new ObjectID ("Official", "StringValue");
+
+    Assert.AreEqual ("Official", id.ClassID);
+    Assert.AreEqual ("StringValue", id.Value);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), 
+      "Rubicon.Data.DomainObjects.ObjectID does not support values of type 'System.Byte'.\r\nParameter name: value")]
+  public void InitializeWithInvalidType ()
+  {
+    ObjectID id = new ObjectID ("Official", (byte) 1);
   }
 }
 }
