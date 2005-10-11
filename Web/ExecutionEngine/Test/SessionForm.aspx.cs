@@ -30,6 +30,8 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton Button2Button;
   protected Rubicon.Web.UI.Controls.WebButton ExecuteButton;
   protected Rubicon.Web.UI.Controls.WebButton ExecuteNoRepostButton;
+  protected System.Web.UI.WebControls.Label FunctionTokenLabel;
+  protected System.Web.UI.WebControls.Label PostBackIDLabel;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -37,6 +39,8 @@ public class SessionForm : WxePage
 	{
     RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "Page_PostBack", "Page_PostBack");
     RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "Page_Abort", "Page_Abort");
+    FunctionTokenLabel.Text = "Token = " + WxeContext.Current.FunctionToken;
+    PostBackIDLabel.Text = "PostBackID = " + WxeContext.Current.PostBackID.ToString();
   }
 
   override protected void OnInit(EventArgs e)

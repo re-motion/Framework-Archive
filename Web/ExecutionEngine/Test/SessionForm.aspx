@@ -15,6 +15,8 @@
 </head>
 <body MS_POSITIONING="FlowLayout">
     <form id=Form method=post runat="server">
+    <p><asp:label id="FunctionTokenLabel" runat="server">Token</asp:label>, 
+    <asp:label id="PostBackIDLabel" runat="server">PostBackID</asp:label></p>
     <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton>
     <rubicon:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></rubicon:WebButton>
     <rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
