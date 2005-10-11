@@ -69,15 +69,13 @@ public class SqlProviderLoadDataContainersByRelatedID : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException), 
-      "The value of the provided ObjectID is of type 'System.String', but only 'System.Guid' is supported.\r\nParameter name: relatedID")]
-  public void LoadDataContainersByRelatedIDWithObjectIDWithValueOfInvalidType ()
+  public void LoadDataContainersByRelatedIDOfDifferentStorageProvider ()
   {
-    ObjectID invalidCustomerID = new ObjectID (DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
-
     ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
-    Provider.LoadDataContainersByRelatedID (orderDefinition, "Customer", invalidCustomerID);
+    DataContainerCollection orderContainers = Provider.LoadDataContainersByRelatedID (orderDefinition, "Official", DomainObjectIDs.Official1);
+    Assert.IsNotNull (orderContainers);
+    Assert.AreEqual (5, orderContainers.Count);
   }
 }
 }
