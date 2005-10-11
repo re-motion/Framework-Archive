@@ -1,3 +1,24 @@
+1.3.16.0
+========
+
+- Rubicon.Data.DomainObjects.ObjectID:
+  * Klasse wurde auf sealed gesetzt.
+  * Konstruktor-Overloads für Guid-, int- und sting-values entfernt.
+  * Konstruktur-Overload für object-values von protected auf public geändert => CheckValue überprüft jetzt korrekten Typ.
+  * Konstrukor verwendet StorageProvderDefinition, um zu prüfen, ob der StorageProvider der zugeordneten ClassDefinition
+    den übergebenen value als object identifier unterstützt.
+
+- Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderDefinition:
+  * Neue abstrakte Methode IsIdentityTypeSupported
+  * Neue Methode CheckIdentityType, die eine IdentityTypeNotSupportedException wirft, 
+    wenn übergebener Typ nicht als object identifier unterstützt wird.    
+
+- Rubicon.Data.DomainObjects.Persistence:
+  * Neue Exception ConverterException eingeführt.
+  * ValueConverter gesplittet -> ValueConverterBase, RdbmsValueConverter -> Werfen statt RdbmsProviderExceptions ConverterExceptions.
+  * RdbmsProvider überprüft nicht mehr übergebene ObjectIDs, da für die Prüfung die ObjectID selbst verantwortlich ist.
+  * RdbmsProviderDefinition implementiert IsIdentityTypeSupported.
+  
 1.3.11.0
 ========
 
