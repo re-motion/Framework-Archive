@@ -8,7 +8,10 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-
+using Rubicon.Web.ExecutionEngine;
+using System.Xml.Serialization;
+using System.IO;
+using System.Text;
 namespace Rubicon.PageTransition
 {
 	/// <summary>
@@ -21,6 +24,7 @@ namespace Rubicon.PageTransition
   
 		private void Page_Load(object sender, System.EventArgs e)
 		{
+      WxeMapping mapping = WxeMapping.Current;
 		}
 
 		#region Web Form Designer generated code
