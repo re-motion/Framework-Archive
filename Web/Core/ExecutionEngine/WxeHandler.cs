@@ -8,6 +8,7 @@ using System.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -62,23 +63,6 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     public const string Cancel = "Cancel";
   }
 
-  /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and its context. </summary>
-  WxeFunctionState _currentFunctionState;
-
-  //TODO: Remove
-  [Obsolete ("Use RootFunction instead.")]
-  public WxeFunction CurrentFunction
-  {
-    get { return RootFunction; }
-  }
-
-  /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>
-  /// <value> The <see cref="WxeFunction"/> invoked by the <see cref="Parameters.WxeFunctionType"/> parameter. </value>
-  public WxeFunction RootFunction
-  {
-    get { return _currentFunctionState.Function; }
-  }
-
   /// <summary> Gets a flag indication whether session management is enabled for the application. </summary>
   /// <value> <see langword="true"/> if session management is enabled. </value>
   /// <remarks> Without session management both session refreshing and session aborting are disabled. </remarks>
@@ -101,6 +85,23 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     get { return WebConfiguration.Current.ExecutionEngine.RefreshInterval; }
   }
 
+  /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and its context. </summary>
+  WxeFunctionState _currentFunctionState;
+
+  //TODO: Remove
+  [Obsolete ("Use RootFunction instead.")]
+  public WxeFunction CurrentFunction
+  {
+    get { return RootFunction; }
+  }
+
+  /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>
+  /// <value> The <see cref="WxeFunction"/> invoked by the <see cref="Parameters.WxeFunctionType"/> parameter. </value>
+  public WxeFunction RootFunction
+  {
+    get { return _currentFunctionState.Function; }
+  }
+
   /// <summary> Processes the requests associated with the <see cref="WxeHandler"/>. </summary>
   /// <param name="context"> The <see cref="HttpContext"/> or the request. Must not be <see langword="null"/>. </param>
   public virtual void ProcessRequest (HttpContext context)
@@ -115,9 +116,20 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     string functionToken = context.Request.Params[Parameters.WxeFunctionToken];
     bool hasFunctionToken = ! StringUtility.IsNullOrEmpty (functionToken);
 
+    Type type = null;
     if (hasTypeName)
     {
-      _currentFunctionState = CreateNewFunctionState (context, typeName, functionToken);
+      type = GetType (typeName);
+    }
+    else if (! hasFunctionToken)
+    {
+      type = ParseUrl (context.Request);
+    }
+
+    if (type != null)
+    {
+      bool isMappedUrl = ! hasTypeName;
+      _currentFunctionState = CreateNewFunctionState (context, type, functionToken, isMappedUrl);
       ProcessFunctionState (context, _currentFunctionState, true);
     }
     else if (hasFunctionToken)
@@ -135,7 +147,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     }
     else
     {
-      throw new HttpException ("Missing URL parameter '" + Parameters.WxeFunctionType + "'");
+      throw new HttpException (string.Format ("Missing URL parameter '{0}'", Parameters.WxeFunctionType));
     }
   }
 
@@ -159,12 +171,48 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     }
   }
 
+
+  protected virtual Type ParseUrl (HttpRequest request)
+  {
+    return null;
+//    ArgumentUtility.CheckNotNull ("request", request);
+//
+//    string root = "/";
+//    if (HttpRuntime.AppDomainAppVirtualPath != "/")
+//      root = HttpRuntime.AppDomainAppVirtualPath + "/";
+//    if (request.Url.AbsolutePath == root + "session.wxe")
+//      return GetType ("Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition");
+//
+//    return null;
+  }
+
+  /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="typeName"/>. </summary>
+  /// <param name="typeName"> The name of the type to get. </param>
+  /// <returns> The <see cref="Type"/> specified by <paramref name="typeName"/>. </returns>
+  protected Type GetType (string typeName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+    try
+    {
+      return TypeUtility.GetType (typeName, true, false);
+    }
+    catch (TypeLoadException e)
+    {
+      throw new ArgumentException (string.Format ("The function type '{0}' is invalid.", typeName), typeName, e);
+    }
+    catch (System.IO.FileNotFoundException e)
+    {
+      throw new ArgumentException (string.Format ("The function type '{0}' is invalid.", typeName), typeName, e);
+    } 
+  }
+
   /// <summary> Initializes a new <see cref="WxeFunction"/>, encapsulated in a <see cref="WxeFunctionState"/> object. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CreateNewFunctionState/*' />
-  protected WxeFunctionState CreateNewFunctionState (HttpContext context, string typeName, string functionToken)
+  protected WxeFunctionState CreateNewFunctionState (
+      HttpContext context, Type type, string functionToken, bool isMappedUrl)
   {
     ArgumentUtility.CheckNotNull ("context", context);
-    ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+    ArgumentUtility.CheckNotNull ("type", type);
 
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     if (functionStates == null)
@@ -177,26 +225,20 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       functionStates.CleanUpExpired();
     }
 
-    Type type = null;
-    try
-    {
-      type = TypeUtility.GetType (typeName, true, false);
-    }
-    catch (TypeLoadException e)
-    {
-      throw new ArgumentException ("The function type '" + typeName + "' is invalid.", typeName, e);
-    }
-    catch (System.IO.FileNotFoundException e)
-    {
-      throw new ArgumentException ("The function type '" + typeName + "' is invalid.", typeName, e);
-    }
     WxeFunction function = (WxeFunction) Activator.CreateInstance (type);
+
+    string queryString = null;
+    if (isMappedUrl)
+    {
+      queryString = context.Request.QueryString.ToString();
+      queryString = PageUtility.DeleteUrlParameter (queryString, Parameters.WxeFunctionToken);
+    }
 
     WxeFunctionState functionState;
     if (StringUtility.IsNullOrEmpty (functionToken))
-      functionState = new WxeFunctionState (function, true);
+      functionState = new WxeFunctionState (function, queryString, true);
     else
-      functionState = new WxeFunctionState (function, functionToken, true);
+      functionState = new WxeFunctionState (function, functionToken, queryString, true);
     functionStates.Add (functionState);
 
     function.InitializeParameters (context.Request.Params);
@@ -214,21 +256,39 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
 
-    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
-    if (functionStates == null)
-      throw new ApplicationException ("Session timeout."); // TODO: display error message
-
-    WxeFunctionState functionState = functionStates.GetItem (functionToken);
-    if (functionState == null || functionState.IsExpired)
-      throw new ApplicationException ("Page timeout."); // TODO: display error message
-    if (functionState.IsAborted)
-      throw new InvalidOperationException ("WxeFunctionState {0} is aborted." + functionState.FunctionToken); // TODO: display error message
-  
     string action = context.Request.Params[Parameters.WxeAction];
     bool isRefresh = StringUtility.AreEqual (action, Actions.Refresh, true);
     bool isAbort =   StringUtility.AreEqual (action, Actions.Abort, true) 
                   || StringUtility.AreEqual (action, Actions.Cancel, true);
+    bool isPostBackAction = isRefresh || isAbort;
 
+    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+    if (functionStates == null)
+    {
+      if (! isPostBackAction)
+      {
+        Type type = ParseUrl (context.Request);
+        if (type != null)
+          return CreateNewFunctionState (context, type, functionToken, true);
+      }
+      throw new ApplicationException ("Session timeout."); // TODO: display error message
+    }
+
+    WxeFunctionState functionState = functionStates.GetItem (functionToken);
+    if (functionState == null || functionState.IsExpired)
+    {
+      if (! isPostBackAction)
+      {
+        Type type = ParseUrl (context.Request);
+        if (type != null)
+          return CreateNewFunctionState (context, type, functionToken, true);
+      }
+      throw new ApplicationException ("Page timeout."); // TODO: display error message
+    }
+
+    if (functionState.IsAborted)
+      throw new InvalidOperationException ("WxeFunctionState {0} is aborted." + functionState.FunctionToken); // TODO: display error message
+ 
     if (isRefresh)
     {
       functionState.Touch();
@@ -277,7 +337,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionState.IsAborted)
       throw new InvalidOperationException ("The function state " + functionState.FunctionToken + " is aborted.");
 
-    WxeContext wxeContext = new WxeContext (context, functionState.FunctionToken); 
+    WxeContext wxeContext = new WxeContext (context, functionState.FunctionToken, functionState.QueryString); 
     WxeContext.SetCurrent (wxeContext);
 
     ExecuteFunction (functionState.Function, wxeContext, isNewFunction);

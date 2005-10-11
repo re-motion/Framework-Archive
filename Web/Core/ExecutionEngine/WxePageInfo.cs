@@ -216,7 +216,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       bool isAbortEnabled = _page.IsAbortEnabled;
 
       WxeContext wxeContext = WxeContext.Current;
-      string resumePath = wxeContext.GetResumePath (false);
+      string resumePath = wxeContext.GetResumePath ();
 
       refreshIntervall = WxeHandler.RefreshInterval * 60000;
       refreshPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Refresh + "'";
@@ -347,11 +347,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       bool returningPostback)
   {
     bool enableCleanUp = !returningPostback;
-    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
+    WxeFunctionState functionState = new WxeFunctionState (function, null, enableCleanUp);
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 
-    string href = WxeContext.GetResumePath (_page.Request, _page.Response, functionState.FunctionToken, true);
+    string href = WxeContext.GetResumePath (_page.Request, _page.Response, functionState.FunctionToken);
     string openScript;
     if (features != null)
       openScript = string.Format ("window.open('{0}', '{1}', '{2}');", href, target, features);
