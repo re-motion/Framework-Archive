@@ -217,7 +217,6 @@ public abstract class RdbmsProvider : StorageProvider
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNull ("relatedID", relatedID);
     CheckClassDefinition (classDefinition, "classDefinition");
-    CheckObjectIDValue (relatedID, "relatedID");
 
     Connect ();
 
@@ -249,7 +248,6 @@ public abstract class RdbmsProvider : StorageProvider
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("id", id);
     CheckStorageProviderID (id, "id");
-    CheckObjectIDValue (id, "id");
 
     Connect();
 
@@ -397,7 +395,6 @@ public abstract class RdbmsProvider : StorageProvider
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("id", id);
     CheckStorageProviderID (id, "id");
-    CheckObjectIDValue (id, "id");
 
     if (command == null)
       return;
@@ -417,16 +414,6 @@ public abstract class RdbmsProvider : StorageProvider
       throw CreateConcurrencyViolationException (
           "Concurrency violation encountered. Object '{0}' has already been changed by someone else.", id);
     }
-  }
-
-  protected virtual bool ValidateObjectID (ObjectID id)
-  {
-    ArgumentUtility.CheckNotNull ("id", id);
-
-    if (id.StorageProviderID == ID && id.Value != null && id.Value.GetType () != typeof (System.Guid))
-      return false;
-
-    return true;
   }
 
   protected new RdbmsProviderDefinition StorageProviderDefinition
@@ -501,24 +488,6 @@ public abstract class RdbmsProvider : StorageProvider
           query.QueryID,
           ID);
     }
-
-    foreach (QueryParameter parameter in query.Parameters)
-    {
-      if (parameter.Value != null && parameter.Value.GetType () == typeof (ObjectID))
-      {
-        ObjectID id = (ObjectID) parameter.Value;
-        if (!ValidateObjectID (id))
-        {
-          throw CreateArgumentException (
-              argumentName,
-              "The query parameter '{0}' is of type 'Rubicon.Data.DomainObjects.ObjectID'."
-                  + " The value of this parameter is of type '{1}', but only 'System.Guid' is supported.",
-              parameter.Name,
-              id.Value.GetType ());
-              
-        }
-      }
-    }
   }
 
   private void CheckStorageProviderID (ObjectID id, string argumentName)
@@ -531,19 +500,6 @@ public abstract class RdbmsProvider : StorageProvider
           id.StorageProviderID,
           ID);
     }
-
-    CheckObjectIDValue (id, argumentName);
-  }
-
-  private void CheckObjectIDValue (ObjectID id, string argumentName)
-  {
-    if (!ValidateObjectID (id))
-    {
-      throw CreateArgumentException (
-          argumentName,
-          "The value of the provided ObjectID is of type '{0}', but only 'System.Guid' is supported.",
-          id.Value.GetType ());
-    }  
   }
 
   private void CheckClassDefinition (ClassDefinition classDefinition, string argumentName)
