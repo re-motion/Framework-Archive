@@ -474,6 +474,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\ConverterException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\ObjectNotFoundException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -505,6 +510,16 @@
                 />
                 <File
                     RelPath = "Persistence\StorageProviderManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\ValueConverterBase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\Configuration\IdentityTypeNotSupportedException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -569,6 +584,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\Rdbms\RdbmsValueConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\Rdbms\SelectCommandBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -580,11 +600,6 @@
                 />
                 <File
                     RelPath = "Persistence\Rdbms\UpdateCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\ValueConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
