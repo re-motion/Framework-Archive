@@ -26,7 +26,17 @@ public abstract class StorageProviderDefinition
     _storageProviderType = storageProviderType;
   }
 
+  // abstract methods and properties
+
+  public abstract bool IsIdentityTypeSupported (Type identityType);
+
   // methods and properties
+
+  public void CheckIdentityType (Type identityType)
+  {
+    if (!IsIdentityTypeSupported (identityType))
+      throw new IdentityTypeNotSupportedException (_storageProviderType, identityType);
+  }
 
   public string StorageProviderID
   {
