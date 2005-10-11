@@ -149,19 +149,5 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
     Assert.IsTrue (orderContainers.Contains (DomainObjectIDs.OrderWithoutOrderItem));    
 
   }
-
-  [Test]
-  [ExpectedException (typeof (ArgumentException), 
-      "The query parameter '@customerID' is of type 'Rubicon.Data.DomainObjects.ObjectID'."
-      + " The value of this parameter is of type 'System.String', but only 'System.Guid' is supported.\r\nParameter name: query")]
-  public void InvalidObjectIDValue ()
-  {
-    ObjectID invalidCustomerID = new ObjectID (DomainObjectIDs.Customer1.ClassID, DomainObjectIDs.Customer1.Value.ToString ());
-
-    Query query = new Query ("OrderQuery");
-    query.Parameters.Add ("@customerID", invalidCustomerID);
-
-    Provider.ExecuteCollectionQuery (query);
-  }
 }
 }
