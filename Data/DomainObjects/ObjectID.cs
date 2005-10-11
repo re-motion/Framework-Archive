@@ -2,6 +2,7 @@ using System;
 using System.Runtime.Serialization;
 
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects
@@ -9,8 +10,11 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Uniquely identifies a domain object.
 /// </summary>
+/// <remarks>
+/// <b>ObjectID</b> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+/// </remarks>
 [Serializable]
-public class ObjectID : ISerializable
+public sealed class ObjectID : ISerializable
 {
   // types
 
@@ -123,7 +127,6 @@ public class ObjectID : ISerializable
 
   // construction and disposing
 
-
   /// <summary>
   /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
   /// </summary>
@@ -134,207 +137,18 @@ public class ObjectID : ISerializable
   ///   <paramref name="value"/> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="classID"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
+  ///   <paramref name="classID"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+  ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+  ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
   /// </exception>
   /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
+  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+  /// </exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+  ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/>.
   /// </exception>
   /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
-  public ObjectID (string classID, int value) : this (classID, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
-  /// </summary>
-  /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classID"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="classID"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
-  public ObjectID (string classID, string value) : this (classID, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
-  /// </summary>
-  /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classID"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="classID"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
-  public ObjectID (string classID, Guid value) : this (classID, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
-  /// </summary>
-  /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classType"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
-  public ObjectID (Type classType, int value) : this (classType, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
-  /// </summary>
-  /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classType"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
-  public ObjectID (Type classType, string value) : this (classType, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class type and ID value.
-  /// </summary>
-  /// <param name="classType">The <see cref="System.Type"/> of the class of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classType"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
-  public ObjectID (Type classType, Guid value) : this (classType, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
-  /// </summary>
-  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classDefinition"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
-  public ObjectID (ClassDefinition classDefinition, int value) : this (classDefinition, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
-  /// </summary>
-  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classDefinition"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
-  public ObjectID (ClassDefinition classDefinition, string value) : this (classDefinition, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified <see cref="Mapping.ClassDefinition"/> and ID value.
-  /// </summary>
-  /// <param name="classDefinition">The <see cref="Mapping.ClassDefinition"/> of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classDefinition"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
-  public ObjectID (ClassDefinition classDefinition, Guid value) : this (classDefinition, (object) value)
-  {
-  }
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ObjectID</b> class with the specified class ID and ID value.
-  /// </summary>
-  /// <param name="classID">The ID of the class of the object. Must not be <see langword="null"/>.</param>
-  /// <param name="value">The ID value used to identify the object in the storage provider. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException">
-  ///   <paramref name="classID"/> is <see langword="null"/>.<br /> -or- <br />
-  ///   <paramref name="value"/> is <see langword="null"/>.
-  /// </exception>
-  /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="classID"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
-  /// </exception>
-  /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
-  /// </exception>
-  /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
-  protected ObjectID (string classID, object value)
+  public ObjectID (string classID, object value)
   {
     Initialize (classID, value);
   }
@@ -349,14 +163,17 @@ public class ObjectID : ISerializable
   ///   <paramref name="value"/> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
+  ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+  ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
   /// </exception>
   /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
+  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+  /// </exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+  ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/>.
   /// </exception>
   /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classType"/> could not be found in the mapping configuration.
-  protected ObjectID (Type classType, object value)
+  public ObjectID (Type classType, object value)
   {
     ArgumentUtility.CheckNotNull ("classType", classType);
 
@@ -374,14 +191,17 @@ public class ObjectID : ISerializable
   ///   <paramref name="value"/> is <see langword="null"/>.
   /// </exception>
   /// <exception cref="Rubicon.Utilities.ArgumentEmptyException">
-  ///   <paramref name="value"/> is an empty string.<br /> -or- <br />
-  ///   <paramref name="value"/> is an empty Guid.
+  ///   <paramref name="value"/> is an empty <see cref="System.String"/>.<br /> -or- <br />
+  ///   <paramref name="value"/> is an empty <see cref="System.Guid"/>.
   /// </exception>
   /// <exception cref="System.ArgumentException">
-  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters.
+  ///   <paramref name="value"/> has an unsupported type or is a string and contains invalid characters. Supported types are <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
+  /// </exception>
+  /// <exception cref="Rubicon.Data.DomainObjects.Persistence.Configuration.IdentityTypeNotSupportedException">
+  ///   The type of <paramref name="value"/> is not supported by the underlying <see cref="Rubicon.Data.DomainObjects.Persistence.StorageProvider"/>.
   /// </exception>
   /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classDefinition"/> could not be found in the mapping configuration.
-  protected ObjectID (ClassDefinition classDefinition, object value)
+  public ObjectID (ClassDefinition classDefinition, object value)
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
@@ -413,7 +233,7 @@ public class ObjectID : ISerializable
   /// </summary>
   /// <param name="info">An instance of the <see cref="System.Runtime.Serialization.SerializationInfo"/> class containing the information required to deserialize the new <see cref="ObjectID"/> instance.</param>
   /// <param name="context">An instance of the <see cref="System.Runtime.Serialization.StreamingContext"/> class containing the source of the serialized stream associated with the new <see cref="ObjectID"/> instance.</param>
-  protected ObjectID (SerializationInfo info, StreamingContext context)
+  private ObjectID (SerializationInfo info, StreamingContext context)
   {
     string classID = info.GetString ("ClassID");
     Type valueType = (Type) info.GetValue ("ValueType", typeof (Type));
@@ -429,6 +249,11 @@ public class ObjectID : ISerializable
     CheckValue ("value", value);
 
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID);
+
+    StorageProviderDefinition storageProviderDefinition = 
+        StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);
+
+    storageProviderDefinition.CheckIdentityType (value.GetType ());
 
     _classDefinition = classDefinition;
     _value = value;
@@ -447,6 +272,9 @@ public class ObjectID : ISerializable
   /// <summary>
   /// Gets the ID value used to identify the object in the storage provider.
   /// </summary>
+  /// <remarks>
+  /// <b>Value</b> can be of type <see cref="System.Guid"/>, <see cref="System.Int32"/> or <see cref="System.String"/>.
+  /// </remarks>
   public object Value
   {
     get { return _value; }
@@ -485,7 +313,7 @@ public class ObjectID : ISerializable
   /// Returns the hash code for this instance.
   /// </summary>
   /// <returns>A 32-bit signed integer hash code.</returns>
-  public override int GetHashCode()
+  public override int GetHashCode ()
   {
     return ClassID.GetHashCode () ^ Value.GetHashCode ();
   }
@@ -510,6 +338,9 @@ public class ObjectID : ISerializable
   private void CheckValue (string argumentName, object value)
   {
     Type valueType = value.GetType ();
+
+    if (valueType != typeof (Guid) && valueType != typeof (int) && valueType != typeof (string))
+      throw CreateArgumentException (argumentName, "Rubicon.Data.DomainObjects.ObjectID does not support values of type '{0}'.", valueType);
 
     if (valueType == typeof (string) && ((string) value).IndexOf (c_escapedDelimiterPlaceholder) >= 0)
     {
