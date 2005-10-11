@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
-public class ValueConverter
+public class RdbmsValueConverter : ValueConverterBase
 {
   // types
 
@@ -35,37 +35,6 @@ public class ValueConverter
     return value;
   }
 
-  public ObjectID GetObjectID (
-      ClassDefinition classDefinition, 
-      object value)
-  {
-    if (value == null)
-      return null;
-
-    if (value.GetType () == typeof (string))
-    {
-      ObjectID id = null;
-      try
-      {
-        id = ObjectID.Parse ((string) value);
-      }
-      catch (ArgumentException)
-      {
-      }
-      catch (FormatException)
-      {
-      }
-
-      if (id != null)
-        return id;
-    }
-
-    if (value.GetType () != typeof (Guid))
-      throw CreateArgumentException ("value", "ValueConverter does not support ObjectID values of type '{0}'.", value.GetType ());
-
-    return new ObjectID (classDefinition.ID, (Guid) value);
-  }
-
   public object GetDBValue (ObjectID id, string storageProviderID)
   {
     ArgumentUtility.CheckNotNull ("id", id);
@@ -88,71 +57,44 @@ public class ValueConverter
 
     int columnOrdinal = dataReader.GetOrdinal (propertyDefinition.ColumnName);
 
-    if (dataReader.IsDBNull (columnOrdinal))
-      return propertyDefinition.DefaultValue;
+    if (propertyDefinition.PropertyType != typeof (ObjectID) || dataReader.IsDBNull (columnOrdinal))
+      return GetValue (classDefinition, propertyDefinition, dataReader.GetValue (columnOrdinal));
 
-    if (propertyDefinition.PropertyType == typeof (ObjectID))
-    {
-      ClassDefinition relatedClassDefinition = GetOppositeClassDefinitionFromClassIDColumn (classDefinition, propertyDefinition, dataReader);
-      if (relatedClassDefinition == null)
-      {
-        relatedClassDefinition = GetOppositeClassDefinition (classDefinition, propertyDefinition);
-
-        if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
-        {
-          if (relatedClassDefinition.IsPartOfInheritanceHierarchy)
-          {
-            throw CreateRdbmsProviderException (
-                "Incorrect database format encountered."
-                + " Entity must have column '{0}' defined, because opposite class '{1}' is part of an inheritance hierarchy.",
-                GetClassIDColumnName (propertyDefinition.ColumnName), 
-                relatedClassDefinition.ID);    
-          }
-        }
-      }
-
-      return GetObjectID (relatedClassDefinition, dataReader.GetValue (columnOrdinal));
-    }
-
-    if (propertyDefinition.PropertyType.IsEnum)
-      return GetEnumValue (propertyDefinition, dataReader.GetValue (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaBoolean))
-      return new NaBoolean (dataReader.GetBoolean (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaByte))
-      return new NaByte (dataReader.GetByte (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaDateTime))
-      return new NaDateTime (dataReader.GetDateTime (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaDouble))
-      return new NaDouble (dataReader.GetDouble (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaDecimal))
-      return new NaDecimal (dataReader.GetDecimal (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaGuid))
-      return new NaGuid (dataReader.GetGuid (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaInt16))
-      return new NaInt16 (dataReader.GetInt16 (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaInt32))
-      return new NaInt32 (dataReader.GetInt32 (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaInt64))
-      return new NaInt64 (dataReader.GetInt64 (columnOrdinal));
-
-    if (propertyDefinition.PropertyType == typeof (NaSingle))
-      return new NaSingle (dataReader.GetFloat (columnOrdinal));
-
-    return dataReader.GetValue (columnOrdinal);
+    return GetObjectID (classDefinition, propertyDefinition, dataReader, columnOrdinal);
   }
 
-  protected ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
+  public override object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, object dataValue)
   {
-    return new ArgumentException (string.Format (message, args), argumentName);
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+    if (dataValue == DBNull.Value)
+      dataValue = null;
+    
+    return base.GetValue (classDefinition, propertyDefinition, dataValue);
+  }
+
+  private ObjectID GetObjectID (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int columnOrdinal)
+  {
+    ClassDefinition relatedClassDefinition = GetOppositeClassDefinitionFromClassIDColumn (classDefinition, propertyDefinition, dataReader);
+    if (relatedClassDefinition == null)
+    {
+      relatedClassDefinition = GetOppositeClassDefinition (classDefinition, propertyDefinition);
+
+      if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
+      {
+        if (relatedClassDefinition.IsPartOfInheritanceHierarchy)
+        {
+          throw CreateRdbmsProviderException (
+              "Incorrect database format encountered."
+              + " Entity must have column '{0}' defined, because opposite class '{1}' is part of an inheritance hierarchy.",
+              GetClassIDColumnName (propertyDefinition.ColumnName), 
+              relatedClassDefinition.ID);    
+        }
+      }
+    }
+
+    return GetObjectID (relatedClassDefinition, dataReader.GetValue (columnOrdinal));
   }
 
   private ClassDefinition GetOppositeClassDefinitionFromClassIDColumn (
@@ -210,32 +152,6 @@ public class ValueConverter
     }
   }
 
-  private ClassDefinition GetOppositeClassDefinition (
-      ClassDefinition classDefinition,
-      PropertyDefinition propertyDefinition)
-  {
-    ClassDefinition relatedClassDefinition = classDefinition.GetOppositeClassDefinition (
-        propertyDefinition.PropertyName);
-
-    if (relatedClassDefinition == null)
-    {
-      throw CreateRdbmsProviderException (
-          "Property '{0}' of class '{1}' has no relations assigned.", propertyDefinition.PropertyName, classDefinition.ID);  
-    }
-
-    return relatedClassDefinition;
-  }
-
-  private object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)
-  {
-    if (Enum.IsDefined (propertyDefinition.PropertyType, dataValue))
-      return Enum.ToObject (propertyDefinition.PropertyType, dataValue);
-
-    throw CreateRdbmsProviderException (
-        "Enumeration '{0}' does not define the value '{1}', property '{2}'.",
-        propertyDefinition.PropertyType.FullName, dataValue, propertyDefinition.PropertyName);
-  }
-
   private string GetClassIDColumnName (string columnName)
   {
     return columnName + "ClassID";
@@ -260,7 +176,7 @@ public class ValueConverter
 
   // construction and disposing
 
-  public ValueConverter ()
+  public RdbmsValueConverter ()
   {
   }
 
