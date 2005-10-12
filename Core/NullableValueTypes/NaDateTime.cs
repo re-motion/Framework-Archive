@@ -144,7 +144,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDateTime equivalent.
+  /// Converts the <c>String</c> representation to its NaDateTime equivalent.
   /// </summary>
   /// <param name="s">The <c>String</c> to be parsed.</param>
   /// <param name="styles">The combination of one or more <c>DateTimeStyles</c> constants that indicates the permitted format of <c>s</c>.</param>

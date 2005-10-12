@@ -29,6 +29,14 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   #region construction and disposal
 
   /// <summary>
+  /// Initializes a new instance of the <see cref="NaGuid"/> structure using the value represented by the specified string.
+  /// </summary>
+  /// <param name="value">A <see cref="System.String"/> that contains a GUID. See <see cref="Sytem.Guid"/> for valid formats.</param>
+  public NaGuid (string value) : this (new Guid (value))
+  {
+  }
+
+  /// <summary>
   /// Initializes a new instance of the <see cref="NaGuid"/> structure using the supplied Guid value.
   /// </summary>
   /// <param name="value">The Guid to be converted.</param>
@@ -143,6 +151,27 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
         return NullString;
     }
     return _value.ToString (format, provider);
+  }
+
+  /// <summary>
+  /// Converts the <c>String</c> representation of a GUID to its NaGuid equivalent.
+  /// </summary>
+  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <returns>
+  /// An <c>NaGuid</c> equivalent to the value contained in the specified string. 
+  /// If the string is a null reference <see cref="NaGuid.Null"/> is returned. 
+  /// If the string is a zero-length string an NaGuid with a <see cref="Value"/> equal to <see cref="System.Guid.Empty"/> is returned.
+  /// Otherwise, <see cref="Value"/> contains the <see cref="System.Guid"/> equivalent of the provided <c>String</c>.
+  /// </returns>
+  public static NaGuid Parse (string s)
+  {
+    if (s == null || 0 == string.Compare (s, NullString, false, CultureInfo.InvariantCulture)) 
+      return NaGuid.Null;
+
+    if (s == string.Empty)
+      return new NaGuid (Guid.Empty);
+
+    return new NaGuid (s);
   }
 
   /// <summary>
