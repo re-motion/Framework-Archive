@@ -27,7 +27,7 @@
 
 1.2.63
 ======
-- NullableValuteTypes
+- NullableValueTypes
   * Serialisierung nun via Attribut. Serialisierung via ISerializable brachte keinen messbaren Performancegewinn.
   * NaDouble:
     Bugfix: Wurde als Int32 deserialisiert.

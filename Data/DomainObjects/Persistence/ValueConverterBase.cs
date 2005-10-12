@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
@@ -24,6 +25,8 @@ public class ValueConverterBase
 
   public virtual ObjectID GetObjectID (ClassDefinition classDefinition, object value)
   {
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
     if (value == null)
       return null;
 
@@ -71,6 +74,31 @@ public class ValueConverterBase
     if (propertyDefinition.PropertyType.IsEnum)
       return GetEnumValue (propertyDefinition, dataValue);
 
+    if (propertyDefinition.PropertyType == typeof (string))
+      return (string) dataValue;
+
+    if (propertyDefinition.IsNullable)
+    {
+      if (dataValue.GetType () != typeof (string))
+        return GetNullableObjectFromObject (propertyDefinition, dataValue);
+      else
+        return GetNullableObjectFromString (propertyDefinition, (string) dataValue);
+    }
+    else
+    {
+      if (dataValue.GetType () != typeof (string))
+        return dataValue;
+      else 
+        return GetNativeObjectFromString (propertyDefinition, (string) dataValue);
+    }
+  }
+
+  // TODO: Remove this method after Rubicon.Core exposes TypeConverterFactory.
+  protected virtual object GetNullableObjectFromObject (PropertyDefinition propertyDefinition, object dataValue)
+  {
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+    ArgumentUtility.CheckNotNull ("dataValue", dataValue);
+
     if (propertyDefinition.PropertyType == typeof (NaBoolean))
       return new NaBoolean ((bool) dataValue);
 
@@ -104,8 +132,88 @@ public class ValueConverterBase
     return dataValue;
   }
 
-  protected object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)
+  // TODO: Remove this method after Rubicon.Core exposes TypeConverterFactory.
+  protected virtual object GetNullableObjectFromString (PropertyDefinition propertyDefinition, string dataValue)
   {
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+    if (propertyDefinition.PropertyType == typeof (NaBoolean))
+      return NaBoolean.Parse (dataValue);
+
+    if (propertyDefinition.PropertyType == typeof (NaByte))
+      return NaByte.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (NaDateTime))
+      return NaDateTime.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (NaDouble))
+      return NaDouble.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (NaDecimal))
+      return NaDecimal.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (NaGuid))
+      return NaGuid.Parse (dataValue);
+
+    if (propertyDefinition.PropertyType == typeof (NaInt16))
+      return NaInt16.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (NaInt32))
+      return NaInt32.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (NaInt64))
+      return NaInt64.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (NaSingle))
+      return NaSingle.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    return dataValue;
+  }
+
+  // TODO: Remove this method after Rubicon.Core exposes TypeConverterFactory.
+  protected virtual object GetNativeObjectFromString (PropertyDefinition propertyDefinition, string dataValue)
+  {
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+    ArgumentUtility.CheckNotNullOrEmpty ("dataValue", dataValue);
+
+    if (propertyDefinition.PropertyType == typeof (bool))
+      return bool.Parse (dataValue);
+
+    if (propertyDefinition.PropertyType == typeof (byte))
+      return byte.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (DateTime))
+      return DateTime.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (double))
+      return double.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (decimal))
+      return decimal.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (Guid))
+      return new Guid (dataValue);
+
+    if (propertyDefinition.PropertyType == typeof (short))
+      return short.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (int))
+      return int.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (long))
+      return long.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    if (propertyDefinition.PropertyType == typeof (float))
+      return float.Parse (dataValue, CultureInfo.InvariantCulture);
+
+    return dataValue;
+  }
+
+  protected virtual object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)
+  {
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+    ArgumentUtility.CheckNotNull ("dataValue", dataValue);
+
     if (Enum.IsDefined (propertyDefinition.PropertyType, dataValue))
       return Enum.ToObject (propertyDefinition.PropertyType, dataValue);
 
@@ -116,6 +224,9 @@ public class ValueConverterBase
 
   protected ClassDefinition GetOppositeClassDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
   {
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
     ClassDefinition relatedClassDefinition = classDefinition.GetOppositeClassDefinition (propertyDefinition.PropertyName);
 
     if (relatedClassDefinition == null)
