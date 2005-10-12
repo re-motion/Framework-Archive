@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping 
+    application="Rubicon.Web.UnitTests"
+    xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0 MappingConfiguration.xsd">
+	<rules>
+		<rule 
+		    path="First.wxe" />
+	</rules>
+</mapping>
