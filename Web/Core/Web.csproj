@@ -330,20 +330,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\WxeMapping.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeMapping.xsd"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeMapping.xsx"
-                    DependentUpon = "WxeMapping.xsd"
-                    BuildAction = "None"
-                />
-                <File
                     RelPath = "ExecutionEngine\WxeMethodStep.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -428,7 +414,25 @@
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
-                <Folder RelPath = "ExecutionEngine\Mapping\" />
+                <File
+                    RelPath = "ExecutionEngine\Mapping\ConfigurationBase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\Mapping\WxeMapping.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\Mapping\WxeMapping.xsd"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ExecutionEngine\Mapping\WxeMapping.xsx"
+                    DependentUpon = "WxeMapping.xsd"
+                    BuildAction = "None"
+                />
                 <File
                     RelPath = "Globalization\WxePageInfo.de.resx"
                     BuildAction = "EmbeddedResource"
