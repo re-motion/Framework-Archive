@@ -428,6 +428,7 @@
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
+                <Folder RelPath = "ExecutionEngine\Mapping\" />
                 <File
                     RelPath = "Globalization\WxePageInfo.de.resx"
                     BuildAction = "EmbeddedResource"

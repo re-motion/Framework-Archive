@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Reflection;
+using Rubicon.Utilities;
 using Rubicon.Xml;
 using Rubicon.Web.Configuration;
 
@@ -12,18 +14,19 @@ namespace Rubicon.Web.ExecutionEngine
 [XmlType (WxeMapping.ElementName, Namespace = WxeMapping.SchemaUri)]
 public class WxeMapping
 {
-  /// <summary> The name of the configuration section in the configuration file. </summary>
-  /// <remarks> <c>rubicon.web</c> </remarks>
+  /// <summary> The name of the root element. </summary>
+  /// <remarks> <c>mapping</c> </remarks>
   public const string ElementName = "mapping";
 
-  /// <summary> The namespace of the configuration section schema. </summary>
+  /// <summary> The namespace of the mapping's schema. </summary>
   /// <remarks> <c>http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0</c> </remarks>
   public const string SchemaUri = "http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0";
 
   /// <summary> Gets an <see cref="XmlReader"/> reader for the schema embedded in the assembly. </summary>
   public static XmlReader GetSchemaReader ()
   {
-    return new XmlTextReader (Assembly.GetExecutingAssembly().GetManifestResourceStream (typeof(WxeMapping), "WxeMapping.xsd"));
+    Stream schema = Assembly.GetExecutingAssembly().GetManifestResourceStream (typeof(WxeMapping), "WxeMapping.xsd");
+    return new XmlTextReader (schema);
   }
 
   private static WxeMapping s_current = null;
@@ -46,12 +49,13 @@ public class WxeMapping
             XmlTextReader textReader = new XmlTextReader (mappingFile);
             if (textReader != null)
             {
+              XmlSchemaCollection schemas = new XmlSchemaCollection();
+              schemas.Add (SchemaUri, GetSchemaReader());
               s_current = (WxeMapping) XmlSerializationUtility.DeserializeUsingSchema (
                   textReader,
                   mappingFile,
                   typeof (WxeMapping),
-                  SchemaUri, 
-                  GetSchemaReader());
+                  schemas);
             }
             else
             {
@@ -64,6 +68,28 @@ public class WxeMapping
     }
   }
 
+  public static WxeMapping LoadMappingFromFile (string file)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("file", file);
+    string fullPath = Path.GetFullPath (file);
+
+    XmlTextReader textReader = new XmlTextReader (fullPath);
+    if (textReader != null)
+    {
+      XmlSchemaCollection schemas = new XmlSchemaCollection();
+      schemas.Add (SchemaUri, GetSchemaReader());
+      s_current = (WxeMapping) XmlSerializationUtility.DeserializeUsingSchema (
+          textReader,
+          mappingFile,
+          typeof (WxeMapping),
+          schemas);
+    }
+    else
+    {
+      s_current = new WxeMapping();
+    }
+  }
+  
   private WxeMappingRule[] _rules;
   private WxeMappingRule _singleRule;
 

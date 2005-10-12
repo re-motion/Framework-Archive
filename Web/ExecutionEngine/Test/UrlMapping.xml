@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping 
-    xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <rules>
-    <rule 
-        functionType="Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition"
-        path="session.wxe" />
-    <rule 
-        functionType="Rubicon.PageTransition.TestWxeFunction,Rubicon.PageTransition"
-        path="test.wxe" />
-  </rules>
+<mapping xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0 WxeMapping.xsd">
+	<rules>
+		<rule functionType="Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition" path="session.wxe"/>
+		<rule functionType="Rubicon.PageTransition.TestWxeFunction,Rubicon.PageTransition" path="test.wxe"/>
+	</rules>
 </mapping>
