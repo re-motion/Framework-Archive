@@ -420,7 +420,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\Mapping\WxeMapping.cs"
+                    RelPath = "ExecutionEngine\Mapping\MappingConfiguration.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -21,7 +21,7 @@
                 DelaySign = "false"
                 OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = ""
+                PostBuildEvent = 'copy "$(ProjectDir)Res\*.xml" "$(TargetDir)*.xml"'
                 RootNamespace = "Rubicon.Web.UnitTests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
@@ -186,11 +186,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\WxeMappingTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ExecutionEngine\WxeMethodStepTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -221,7 +216,42 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\Mapping\MappedFunctions.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\Mapping\WxeMappingSchemaTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\Mapping\WxeMappingTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Res\UrlMapping.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\UrlMappingWithEmptyFunctionType.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\UrlMappingWithEmptyPath.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\UrlMappingWithMissingFunctionType.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\UrlMappingWithMissingPath.xml"
                     BuildAction = "Content"
                 />
                 <File
