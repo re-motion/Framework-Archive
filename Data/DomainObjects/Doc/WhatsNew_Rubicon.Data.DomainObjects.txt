@@ -17,7 +17,7 @@
   * Neue Exception ConverterException eingeführt.
   * ValueConverter gesplittet -> ValueConverterBase, ValueConverter -> Werfen statt RdbmsProviderExceptions ConverterExceptions.
   * Weiters kann ValueConverterBase nun auch beliebige string-Values in ihren korrekten Datentyp umwandeln.
-  * Neues Interface IDataContainerFactory abstrahiert wie ein RdbmsProvider DataContainers erzeugt.
+  * Neues Interface IDataContainerFactory abstrahiert wie ein StorageProvider DataContainers erzeugt.
   * RdbmsProvider überprüft nicht mehr übergebene ObjectIDs, da für die Prüfung die ObjectID selbst verantwortlich ist.
   * RdbmsProvider definiert neue Factory-Methode CreateDataContainerFactory.
   * RdbmsProviderDefinition implementiert IsIdentityTypeSupported.

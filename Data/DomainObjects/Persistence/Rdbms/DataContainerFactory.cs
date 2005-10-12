@@ -75,6 +75,11 @@ public class DataContainerFactory : IDataContainerFactory
         throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
             propertyDefinition.PropertyName, classDefinition.ID, e.Message);
       }
+      catch (ConverterException e)
+      {
+        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
+            propertyDefinition.PropertyName, classDefinition.ID, e.Message);
+      }
       catch (InvalidCastException e)
       {
         throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",

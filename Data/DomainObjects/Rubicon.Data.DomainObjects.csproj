@@ -479,6 +479,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Persistence\IDataContainerFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Persistence\ObjectNotFoundException.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -555,11 +560,6 @@
                 />
                 <File
                     RelPath = "Persistence\Rdbms\DeleteCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\IDataContainerFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -2,7 +2,7 @@ using System;
 
 using Rubicon.Data.DomainObjects.DataManagement;
 
-namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
+namespace Rubicon.Data.DomainObjects.Persistence
 {
 public interface IDataContainerFactory
 {

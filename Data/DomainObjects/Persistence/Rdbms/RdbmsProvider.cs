@@ -170,7 +170,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
       {
-        IDataContainerFactory dataContainerFactory = CreateDataContainerFactory (reader);
+        IDataContainerFactory dataContainerFactory = CreateDataContainerFactory (reader, query);
         return dataContainerFactory.CreateCollection ();
       }
     }    
@@ -335,6 +335,13 @@ public abstract class RdbmsProvider : StorageProvider
   {
     ArgumentUtility.CheckNotNull ("reader", reader);
 
+    return CreateDataContainerFactory (reader, null);
+  }
+
+  protected virtual IDataContainerFactory CreateDataContainerFactory (IDataReader reader, IQuery query)
+  {
+    ArgumentUtility.CheckNotNull ("reader", reader);
+    
     return new DataContainerFactory (reader);
   }
 
