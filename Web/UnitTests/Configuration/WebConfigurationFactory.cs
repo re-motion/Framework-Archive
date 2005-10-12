@@ -14,8 +14,18 @@ namespace Rubicon.Web.UnitTests.Configuration
 
 public class WebConfigurationFactory
 {
-  private WebConfigurationFactory()
+  public static WebConfiguration GetExecutionEngineMapping()
   {
+    WebConfigurationMock config = new WebConfigurationMock();
+    config.ExecutionEngine.MappingFile = "UrlMapping.xml";
+    return config;
+  }
+
+  public static WebConfiguration GetExecutionEngineMappingWithNoFilename()
+  {
+    WebConfigurationMock config = new WebConfigurationMock();
+    config.ExecutionEngine.MappingFile = null;
+    return config;
   }
 
   public static WebConfiguration GetDebugExceptionLevelA()
@@ -72,6 +82,10 @@ public class WebConfigurationFactory
     config.Wcag.Debugging = WcagDebugMode.Disabled;
     config.Wcag.ConformanceLevel = WaiConformanceLevel.Undefined;
     return config;
+  }
+
+  private WebConfigurationFactory()
+  {
   }
 }
 
