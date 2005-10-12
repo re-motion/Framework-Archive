@@ -28,6 +28,11 @@
         <includes asis="true" name="System.Web.dll"/>
       </references>
     </csc>
+    <copy todir="${tests.builddir}">
+      <fileset>
+        <includes name="Res/*.xml" />
+      </fileset>
+    </copy>
         
   </target>
 
