@@ -24,9 +24,9 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   #region construction and disposal
 
   /// <summary>
-  /// Initializes a new instance of the <see cref="NaDouble"/> structure using the supplied integer value.
+  /// Initializes a new instance of the <see cref="NaDouble"/> structure using the supplied double value.
   /// </summary>
-  /// <param name="value">The integer to be converted.</param>
+  /// <param name="value">The double to be converted.</param>
   public NaDouble (Double value)
   {
     _value = value;
@@ -138,7 +138,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// </returns>
   public static NaDouble Parse (string s, IFormatProvider provider)
   {
-    return Parse (s, NumberStyles.Integer, provider);
+    return Parse (s, NumberStyles.Float, provider);
   }
 
   /// <summary>
@@ -167,7 +167,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// </returns>
   public static NaDouble Parse (string s)
   {
-    return Parse (s, NumberStyles.Integer, null);
+    return Parse (s, NumberStyles.Float, null);
   }
 
   /// <summary>
@@ -184,7 +184,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Converts the supplied <see cref="NaDouble"/> structure to an <c>Double</c>.
   /// </summary>
   /// <param name="value">A <see cref="NaDouble"/> structure.</param>
-  /// <returns>The converted integer value.</returns>
+  /// <returns>The converted double value.</returns>
   /// <exception cref="NaNullValueException">
   /// The passed value is null.
   /// </exception>
@@ -236,7 +236,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Converts a <see cref="NaDouble"/> value to a boxed <c>Double</c> value or a null reference.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>Double</c> if it is not null, a null reference otherwise.</returns>
+  /// <returns>The double value of <c>value</c> as an <c>Double</c> if it is not null, a null reference otherwise.</returns>
   /// <remarks>
   /// Use this method to easily pass <c>NaDouble</c> values to methods that expect an untyped parameter which is either an <c>Double</c>
   /// value or a null reference.
@@ -252,7 +252,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Converts a boxed <c>Double</c> value or a null reference to a <see cref="NaDouble"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaDouble"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Double</c>, 
+  /// <returns>A <see cref="NaDouble"/> with its <see cref="Value"/> set to the double value of <c>value</c> if it is an <c>Double</c>, 
   /// <c>NaDouble.Null</c> if it is a null reference.</returns>
   /// <remarks>
   /// Use this method to easily create an <c>NaDouble</c> value from an untyped value which is either an <c>Double</c> value or a null reference.
@@ -272,7 +272,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Converts a <see cref="NaDouble"/> value to a boxed <c>Double</c> value or to DBNull.Value.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>Double</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <returns>The double value of <c>value</c> as an <c>Double</c> if it is not null, DBNull.Value otherwise.</returns>
   /// <remarks>
   /// Use this method to easily pass <c>NaDouble</c> values to methods that expect an untyped parameter which is either an <c>Double</c>
   /// value or DBNull.Value.
@@ -288,7 +288,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Converts a boxed <c>Double</c> value or DBNull.Value to a <see cref="NaDouble"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaDouble"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Double</c>, 
+  /// <returns>A <see cref="NaDouble"/> with its <see cref="Value"/> set to the double value of <c>value</c> if it is an <c>Double</c>, 
   /// <c>NaDouble.Null</c> if it is DBNull.Value.</returns>
   /// <remarks>
   /// Use this method to easily create an <c>NaDouble</c> value from an untyped value which is either an <c>Double</c> value or DBNull.Value.
