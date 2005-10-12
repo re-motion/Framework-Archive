@@ -29,7 +29,7 @@ public class WebConfiguration: IConfigurationSectionHandler
 
   private static WebConfiguration s_current = null;
 
-  /// <summary> Gets the <see cref="WebConfiguration"/> for the current thread. </summary>
+  /// <summary> Gets the <see cref="WebConfiguration"/>. </summary>
   public static WebConfiguration Current
   {
     get
