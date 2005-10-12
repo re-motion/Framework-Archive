@@ -7,11 +7,21 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
-public class RdbmsValueConverter : ValueConverterBase
+public class ValueConverter : ValueConverterBase
 {
   // types
 
   // static members and constants
+
+  // member fields
+
+  // construction and disposing
+
+  public ValueConverter ()
+  {
+  }
+
+  // methods and properties
 
   public object GetDBValue (object value)
   {
@@ -171,15 +181,5 @@ public class RdbmsValueConverter : ValueConverterBase
   {
     return new RdbmsProviderException (string.Format (formatString, args), innerException);
   }
-
-  // member fields
-
-  // construction and disposing
-
-  public RdbmsValueConverter ()
-  {
-  }
-
-  // methods and properties
 }
 }

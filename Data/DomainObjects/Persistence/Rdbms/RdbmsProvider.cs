@@ -161,12 +161,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override DataContainerCollection ExecuteCollectionQuery (IQuery query)
   {
-    CheckDisposed ();
-    ArgumentUtility.CheckNotNull ("query", query);
-    CheckQuery (query, "query");
-
-    if (query.QueryType == QueryType.Scalar)
-      throw CreateArgumentException ("query", "A scalar query cannot be used with ExecuteCollectionQuery.");
+    CheckQuery (query, QueryType.Collection, "query");
 
     Connect ();
 
@@ -175,7 +170,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
+        IDataContainerFactory dataContainerFactory = CreateDataContainerFactory (reader);
         return dataContainerFactory.CreateCollection ();
       }
     }    
@@ -183,12 +178,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override object ExecuteScalarQuery (IQuery query)
   {
-    CheckDisposed ();
-    ArgumentUtility.CheckNotNull ("query", query);
-    CheckQuery (query, "query");
-
-    if (query.QueryType == QueryType.Collection)
-      throw CreateArgumentException ("query", "A collection query cannot be used with ExecuteScalarQuery.");
+    CheckQuery (query, QueryType.Scalar, "query");
 
     Connect ();
 
@@ -237,7 +227,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
+        IDataContainerFactory dataContainerFactory = CreateDataContainerFactory (reader);
         return dataContainerFactory.CreateCollection ();
       }
     }
@@ -256,7 +246,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))
       {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
+        IDataContainerFactory dataContainerFactory = CreateDataContainerFactory (reader);
         return dataContainerFactory.CreateDataContainer ();
       }
     }
@@ -339,6 +329,13 @@ public abstract class RdbmsProvider : StorageProvider
       CheckDisposed ();
       return _transaction; 
     }
+  }
+
+  protected virtual IDataContainerFactory CreateDataContainerFactory (IDataReader reader)
+  {
+    ArgumentUtility.CheckNotNull ("reader", reader);
+
+    return new DataContainerFactory (reader);
   }
 
   protected virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
@@ -456,11 +453,6 @@ public abstract class RdbmsProvider : StorageProvider
     return new ConcurrencyViolationException (string.Format (formatString, args), innerException);
   }
 
-  protected ArgumentException CreateArgumentException (string argumentName, string formatString, params object[] args)
-  {
-    return new ArgumentException (string.Format (formatString, args), argumentName);
-  }
-
   private void DisposeTransaction ()
   {
     if (_transaction != null)
@@ -475,19 +467,6 @@ public abstract class RdbmsProvider : StorageProvider
       _connection.Close ();
     
     _connection = null;
-  }
-
-  protected void CheckQuery (IQuery query, string argumentName)
-  {
-    if (query.StorageProviderID != ID)
-    {
-      throw CreateArgumentException (
-          "query", 
-          "The StorageProviderID '{0}' of the provided query '{1}' does not match with this StorageProvider's ID '{2}'.",
-          query.StorageProviderID, 
-          query.QueryID,
-          ID);
-    }
   }
 
   private void CheckStorageProviderID (ObjectID id, string argumentName)

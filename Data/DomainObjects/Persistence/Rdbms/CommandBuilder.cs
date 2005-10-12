@@ -62,7 +62,7 @@ public abstract class CommandBuilder
     IDataParameter commandParameter = command.CreateParameter ();
     commandParameter.ParameterName = Provider.GetParameterName (parameterName);
 
-    RdbmsValueConverter valueConverter = new RdbmsValueConverter ();
+    ValueConverter valueConverter = new ValueConverter ();
     if (parameterValue != null && parameterValue.GetType () == typeof (ObjectID))
       commandParameter.Value = valueConverter.GetDBValue ((ObjectID) parameterValue, Provider.ID);
     else

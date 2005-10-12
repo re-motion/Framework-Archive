@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
-public class DataContainerFactory
+public class DataContainerFactory : IDataContainerFactory
 {
   // types
 
@@ -56,7 +56,7 @@ public class DataContainerFactory
     if (classDefinition == null)
       throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, _dataReader["ID"]);
 
-    RdbmsValueConverter valueConverter = new RdbmsValueConverter ();
+    ValueConverter valueConverter = new ValueConverter ();
     ObjectID id = valueConverter.GetObjectID (classDefinition, _dataReader["ID"]);
     DataContainer dataContainer = DataContainer.CreateForExisting (id, _dataReader["Timestamp"]);
 
