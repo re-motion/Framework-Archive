@@ -21,7 +21,7 @@
                 DelaySign = "false"
                 OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = 'copy "$(ProjectDir)Res\*.xml" "$(TargetDir)*.xml"'
+                PostBuildEvent = 'del Res /q/s&#xd;&#xa;mkdir Res&#xd;&#xa;copy "$(ProjectDir)Res\*.xml" "$(TargetDir)Res\*.xml"'
                 RootNamespace = "Rubicon.Web.UnitTests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""

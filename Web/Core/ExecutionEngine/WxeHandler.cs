@@ -178,10 +178,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     
     string path = request.Url.AbsolutePath.Substring (root.Length);
 
-    Type type = Mapping.MappingConfiguration.Current.Rules.FindType (path);
-    if (type == null)
-      throw new HttpException (404, string.Format ("The path '{0}' does not correspond to a valid mapping.", request.Url));
-    return type;
+    return Mapping.MappingConfiguration.Current.Rules.FindType (path);
   }
 
   /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="typeName"/>. </summary>
@@ -233,7 +230,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       queryString = PageUtility.DeleteUrlParameter (queryString, Parameters.WxeFunctionToken);
     }
 
-    WxeFunctionState functionState = new WxeFunctionState (function, queryString, true);
+    WxeFunctionState functionState = new WxeFunctionState (function, queryString, isMappedUrl, true);
     functionStates.Add (functionState);
 
     function.InitializeParameters (context.Request.Params);
@@ -333,7 +330,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       throw new InvalidOperationException ("The function state " + functionState.FunctionToken + " is aborted.");
 
     WxeContext wxeContext = new WxeContext (
-        context, functionState.FunctionToken, functionState.QueryString, functionState.PostBackID); 
+        context, functionState.FunctionToken, functionState.QueryString, functionState.HasMappedUrl, functionState.PostBackID); 
     WxeContext.SetCurrent (wxeContext);
 
     functionState.PostBackID++;

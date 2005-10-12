@@ -72,15 +72,17 @@ public class WxeContext
   private string _functionToken;
   private WxeFunction _returningFunction = null;
   private string _queryString;
+  private bool _hasMappedUrl;
   private int _postBackID;
 
-  public WxeContext (HttpContext context, string functionToken, string queryString, int postBackID)
+  public WxeContext (HttpContext context, string functionToken, string queryString, bool hasMappedUrl, int postBackID)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
 
     _httpContext = context;
     _functionToken = functionToken;
+    _hasMappedUrl = hasMappedUrl;
     _isPostBack = false;
     _isReturningPostBack = false;
     _postBackCollection = null;
@@ -146,6 +148,16 @@ public class WxeContext
   public int PostBackID
   {
     get { return _postBackID; }
+  }
+
+  public string QueryString
+  {
+    get { return _queryString; }
+  }
+
+  public bool HasMappedUrl
+  {
+    get { return _hasMappedUrl; }
   }
 
   public WxeFunction ReturningFunction 

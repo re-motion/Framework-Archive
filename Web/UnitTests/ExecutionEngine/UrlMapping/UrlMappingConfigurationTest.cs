@@ -35,7 +35,7 @@ public class WxeMappingTest
   [Test]
   public void LoadMappingFromFile()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("UrlMapping.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\UrlMapping.xml");
 
     Assert.IsNotNull (mapping, "Mapping is null.");
     
@@ -55,7 +55,7 @@ public class WxeMappingTest
   [ExpectedException (typeof (FileNotFoundException))]
   public void LoadMappingFromFileWithInvalidFilename()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("InvalidFilename.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\InvalidFilename.xml");
     Assert.Fail();
   }
 

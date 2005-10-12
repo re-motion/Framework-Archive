@@ -369,11 +369,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       bool returningPostback)
   {
     bool enableCleanUp = !returningPostback;
-    WxeFunctionState functionState = new WxeFunctionState (function, null, enableCleanUp);
+    WxeContext wxeContext = WxeContext.Current;
+    string queryString = null;
+    if (wxeContext.HasMappedUrl)
+      queryString = wxeContext.QueryString;
+    WxeFunctionState functionState = new WxeFunctionState (function, queryString, wxeContext.HasMappedUrl, enableCleanUp);
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 
-    string href = WxeContext.GetResumePath (_page.Request, _page.Response, functionState.FunctionToken, null);
+    string href = WxeContext.GetResumePath (_page.Request, _page.Response, functionState.FunctionToken, queryString);
     string openScript;
     if (features != null)
       openScript = string.Format ("window.open('{0}', '{1}', '{2}');", href, target, features);

@@ -51,32 +51,32 @@ public class WxeHandlerTest: WxeTest
     WxeFunctionStateCollection.Instance = new WxeFunctionStateCollection();
 
     _functionStateWithEnabledCleanUp = new WxeFunctionStateMock (
-        new TestFunction(), 10, null, true, c_functionTokenForFunctionStateWithEnabledCleanUp);
+        new TestFunction(), 10, null, true, false, c_functionTokenForFunctionStateWithEnabledCleanUp);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithEnabledCleanUp);
 
     _functionStateWithDisabledCleanUp = new WxeFunctionStateMock (
-        new TestFunction(), 10, null, false, c_functionTokenForFunctionStateWithDisabledCleanUp);
+        new TestFunction(), 10, null, false, false,c_functionTokenForFunctionStateWithDisabledCleanUp);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithDisabledCleanUp);
 
     _functionStateWithMissingFunction = new WxeFunctionStateMock (
-        new TestFunction(), 10, null, false, c_functionTokenForFunctionStateWithMissingFunction);
+        new TestFunction(), 10, null, false, false,c_functionTokenForFunctionStateWithMissingFunction);
     _functionStateWithMissingFunction.Function = null;
     WxeFunctionStateCollection.Instance.Add (_functionStateWithMissingFunction);
 
     _functionStateAborted = new WxeFunctionStateMock (
-        new TestFunction(), 10, null, true, c_functionTokenForAbortedFunctionState);
+        new TestFunction(), 10, null, true, false,c_functionTokenForAbortedFunctionState);
     WxeFunctionStateCollection.Instance.Add (_functionStateAborted);
     _functionStateAborted.Abort();
 
     _functionStateExpired = new WxeFunctionStateMock (
-        new TestFunction(), 0, null, true, c_functionTokenForExpiredFunctionState);
+        new TestFunction(), 0, null, true, false,c_functionTokenForExpiredFunctionState);
     WxeFunctionStateCollection.Instance.Add (_functionStateExpired);
 
     TestFunction rootFunction = new TestFunction();
     TestFunction childFunction = new TestFunction();
     rootFunction.Add (childFunction);
     _functionStateWithChildFunction = new WxeFunctionStateMock (
-        childFunction, 10, null, true, c_functionTokenForFunctionStateWithChildFunction);
+        childFunction, 10, null, true, false,c_functionTokenForFunctionStateWithChildFunction);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithChildFunction);
 
     _functionType = typeof (TestFunction);

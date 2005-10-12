@@ -104,17 +104,20 @@ public class WxeFunctionState
   private bool _isAborted;
   private bool _isCleanUpEnabled;
   private int _postBackID;
+  private bool _hasMappedUrl;
 
-  public WxeFunctionState (WxeFunction function, string queryString, bool enableCleanUp)
+  public WxeFunctionState (WxeFunction function, string queryString, bool hasMappedUrl, bool enableCleanUp)
     : this (
         function, 
         WebConfiguration.Current.ExecutionEngine.FunctionTimeout, 
         queryString, 
+        hasMappedUrl,
         enableCleanUp)
   {
   }
 
-  public WxeFunctionState (WxeFunction function, int lifetime, string queryString, bool enableCleanUp)
+  public WxeFunctionState (
+      WxeFunction function, int lifetime, string queryString, bool hasMappedUrl, bool enableCleanUp)
   {
     ArgumentUtility.CheckNotNull ("function", function);
     _function = function;
@@ -124,6 +127,7 @@ public class WxeFunctionState
     _queryString = queryString;
     _isCleanUpEnabled = enableCleanUp;
     _postBackID = 0;
+    _hasMappedUrl = hasMappedUrl;
   }
 
   public WxeFunction Function
@@ -149,6 +153,11 @@ public class WxeFunctionState
   public string QueryString
   {
     get { return _queryString; }
+  }
+
+  public bool HasMappedUrl
+  {
+    get { return _hasMappedUrl; }
   }
 
   /// <summary> 

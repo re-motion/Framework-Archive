@@ -14,19 +14,19 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 [Serializable]
 public class WxeFunctionStateMock: WxeFunctionState
 {
-  public WxeFunctionStateMock (WxeFunction function, string queryString, bool enableCleanUp)
-    : base (function, queryString, enableCleanUp)
+  public WxeFunctionStateMock (WxeFunction function, string queryString, bool hasMappedUrl, bool enableCleanUp)
+    : base (function, queryString, hasMappedUrl, enableCleanUp)
   {
   }
   
-  public WxeFunctionStateMock (WxeFunction function, int lifetime, string queryString, bool enableCleanUp)
-    : base (function, lifetime, queryString, enableCleanUp)
+  public WxeFunctionStateMock (WxeFunction function, int lifetime, string queryString, bool hasMappedUrl, bool enableCleanUp)
+    : base (function, lifetime, queryString, hasMappedUrl, enableCleanUp)
   {
   }
   
   public WxeFunctionStateMock (
-      WxeFunction function, int lifetime, string queryString, bool enableCleanUp, string functionToken)
-    : base (function, lifetime, queryString, enableCleanUp)
+      WxeFunction function, int lifetime, string queryString, bool enableCleanUp, bool hasMappedUrl, string functionToken)
+    : base (function, lifetime, queryString, hasMappedUrl, enableCleanUp)
   {
     FunctionToken = functionToken;
   }

@@ -17,7 +17,7 @@ public class WebConfigurationFactory
   public static WebConfiguration GetExecutionEngineMapping()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.ExecutionEngine.MappingFile = "UrlMapping.xml";
+    config.ExecutionEngine.MappingFile = @"Res\UrlMapping.xml";
     return config;
   }
 
