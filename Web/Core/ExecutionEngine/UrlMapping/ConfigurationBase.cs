@@ -14,21 +14,20 @@ public class ConfigurationBase
   // member fields
 
   private string _applicationName;
-  private string _configurationFile;
 
   // construction and disposing
-  protected ConfigurationBase (): this ("app", "file")
-  {
-  }
 
   /// <summary> Initializes a new instance of the <b>ConfigurationBase</b> type. </summary>
-  protected ConfigurationBase (string applicationName, string configurationFile)
+  protected ConfigurationBase (string applicationName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("applicationName", applicationName);
-    ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
-
     _applicationName = applicationName;
-    _configurationFile = configurationFile;
+  }
+
+  /// <summary> XML Deserialization contructor. </summary>
+  /// <exclude />
+  protected ConfigurationBase()
+  {
   }
 
   // methods and properties
@@ -38,13 +37,6 @@ public class ConfigurationBase
   public string ApplicationName
   {
     get { return _applicationName; }
-  }
-
-  /// <summary> Gets the XML configuration file. </summary>
-  [XmlIgnore]
-  public string ConfigurationFile
-  {
-    get { return _configurationFile; }
   }
 }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Collections;
 using System.IO;
 using System.Xml;
@@ -23,14 +24,13 @@ public class MappingConfiguration: ConfigurationBase
   /// <remarks> <c>http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0</c> </remarks>
   public const string SchemaUri = "http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0";
 
-  /// <summary> Gets an <see cref="XmlReader"/> reader for the schema embedded in the assembly. </summary>
-  public static XmlReader GetSchemaReader ()
-  {
-    Stream schema = Assembly.GetExecutingAssembly().GetManifestResourceStream (typeof(MappingConfiguration), "WxeMapping.xsd");
-    return new XmlTextReader (schema);
-  }
-
   private static MappingConfiguration s_current = null;
+
+  public static MappingConfiguration CreateMappingConfiguration (string configurationFile)
+  {
+    MappingLoader loader = new MappingLoader (configurationFile, typeof (MappingConfiguration));
+    return loader.CreateMappingConfiguration();
+  }
 
   /// <summary> Gets the current <see cref="MappingConfiguration"/>. </summary>
   public static MappingConfiguration Current
@@ -45,9 +45,14 @@ public class MappingConfiguration: ConfigurationBase
           {
             string mappingFile = WebConfiguration.Current.ExecutionEngine.MappingFile;
             if (StringUtility.IsNullOrEmpty (mappingFile))
+            {
               s_current = new MappingConfiguration();
+            }
             else
-              s_current = LoadMappingFromFile (mappingFile);
+            {
+              s_current = MappingConfiguration.CreateMappingConfiguration (
+                  WebConfiguration.Current.ExecutionEngine.MappingFile);
+            }
           }
         }
       }
@@ -64,22 +69,11 @@ public class MappingConfiguration: ConfigurationBase
     }
   }
 
-  public static MappingConfiguration LoadMappingFromFile (string file)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("file", file);
-    if (! File.Exists (file))
-      throw new FileNotFoundException (string.Format ("Execution Engine mapping file '{0}' could not be found.", file), file);
-    string fullPath = Path.GetFullPath (file);
-
-    XmlTextReader reader = new XmlTextReader (fullPath);
-    XmlSchemaCollection schemas = new XmlSchemaCollection();
-    schemas.Add (SchemaUri, MappingConfiguration.GetSchemaReader());
-
-    return (MappingConfiguration) XmlSerializationUtility.DeserializeUsingSchema (
-        reader, file, typeof (MappingConfiguration), schemas);
-  }
-  
   private MappingRuleCollection _rules = new MappingRuleCollection();
+
+  public MappingConfiguration()
+  {
+  }
 
   [XmlArray ("rules")]
   public MappingRuleCollection Rules
@@ -91,34 +85,71 @@ public class MappingConfiguration: ConfigurationBase
 [XmlType ("rule", Namespace = MappingConfiguration.SchemaUri)]
 public class MappingRule
 {
-  private string _functionType = null;
+  private string _functionTypeName = null;
+  private Type _functionType = null;
   private string _path = null;
 
   public MappingRule()
   {
   }
 
-  public MappingRule (string functionType, string path)
+  public MappingRule (Type functionType, string path)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("functionType", functionType);
+    ArgumentUtility.CheckNotNull ("functionType", functionType);
     ArgumentUtility.CheckNotNullOrEmpty ("path", path);
 
     _functionType = functionType;
+    _functionTypeName = _functionType.AssemblyQualifiedName;
+    _path = path;
+  }
+
+  public MappingRule (string functionTypeName, string path)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("functionTypeName", functionTypeName);
+    ArgumentUtility.CheckNotNullOrEmpty ("path", path);
+
+    _functionTypeName = functionTypeName;
     _path = path;
   }
 
   [XmlAttribute ("functionType")]
-  public string FunctionType
+  public string FunctionTypeName
   {
-    get { return _functionType; }
-    set { _functionType = value; }
+    get 
+    {
+      return _functionTypeName; 
+    }
+    set
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      _functionTypeName = value; 
+      _functionType = null;
+    }
+  }
+
+  [XmlIgnore]
+  public Type FunctionType
+  {
+    get
+    {
+      if (_functionType == null)
+        _functionType = TypeUtility.GetType (_functionTypeName, true, true);
+      return _functionType; 
+    }
   }
 
   [XmlAttribute ("path")]
   public string Path
   {
-    get { return _path; }
-    set { _path = value; }
+    get 
+    { 
+      return _path; 
+    }
+    set 
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      _path = value; 
+    }
   }
 }
 
@@ -132,6 +163,16 @@ public class MappingRuleCollection: CollectionBase
   {
     get { return (MappingRule) List[index]; }
     set { List[index] = value; }
+  }
+
+  public MappingRule this[string path]
+  {
+    get { return Find (path); }
+  }
+
+  public MappingRule this[Type functionType]
+  {
+    get { return Find (functionType); }
   }
 
   public int Add (MappingRule rule)
@@ -148,16 +189,58 @@ public class MappingRuleCollection: CollectionBase
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (MappingRule));
     base.OnValidate (value);
+    MappingRule rule = (MappingRule) value;
+    if (Find (rule.Path) != null)
+      throw new ArgumentException (string.Format ("The mapping already contains a rule with a Path of '{0}'.", rule.Path), "value");
+    if (Find (rule.FunctionType) != null)
+      throw new ArgumentException (string.Format ("The mapping already contains a rule with a FunctionType of '{0}'.", rule.FunctionType), "value");
+  }
 
+  public Type FindType (string path)
+  {
+    MappingRule rule = Find (path);
+    if (rule == null)
+      return null;
+    return rule.FunctionType;
+  }
+
+  public string FindPath (Type type)
+  {
+    MappingRule rule = Find (type);
+    if (rule == null)
+      return null;
+    return rule.Path;
+  }
+
+  public string FindPath (string typeName)
+  {
+    if (StringUtility.IsNullOrEmpty (typeName))
+      return null;
+    Type type = TypeUtility.GetType (typeName, true, true);
+    return FindPath (type);
   }
 
   public MappingRule Find (string path)
   {
+    if (StringUtility.IsNullOrEmpty (path))
+      return null;
+    for (int i = 0; i < Count; i++)
+    {
+      if (string.Compare (this[i].Path, path, true) == 0)
+        return this[i];
+    }
     return null;
   }
 
   public MappingRule Find (Type functionType)
   {
+    if (functionType == null)
+      return null;
+    for (int i = 0; i < Count; i++)
+    {
+      if (this[i].FunctionType == functionType)
+        return this[i];
+    }
     return null;
   }
 }
