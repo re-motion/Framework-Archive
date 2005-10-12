@@ -33,15 +33,15 @@ public class WxeMappingSchemaTest
   [ExpectedException (typeof (XmlSchemaException))]
   public void LoadMappingWithMissingPath()
   {
-    MappingConfiguration mapping = MappingConfiguration.LoadMappingFromFile ("UrlMappingWithMissingPath.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("UrlMappingWithMissingPath.xml");
     Assert.Fail();
   }
 
   [Test]
-  [ExpectedException (typeof (XmlSchemaException))]
+  [ExpectedException (typeof (Exception))]
   public void LoadMappingWithEmptyPath()
   {
-    MappingConfiguration mapping = MappingConfiguration.LoadMappingFromFile ("UrlMappingWithEmptyPath.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("UrlMappingWithEmptyPath.xml");
     Assert.Fail();
   }
 
@@ -49,15 +49,15 @@ public class WxeMappingSchemaTest
   [ExpectedException (typeof (XmlSchemaException))]
   public void LoadMappingWithMissingFunctionType()
   {
-    MappingConfiguration mapping = MappingConfiguration.LoadMappingFromFile ("UrlMappingWithMissingFunctionType.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("UrlMappingWithMissingFunctionType.xml");
     Assert.Fail();
   }
 
   [Test]
-  [ExpectedException (typeof (XmlSchemaException))]
+  [ExpectedException (typeof (Exception))]
   public void LoadMappingWithEmptyFunctionType()
   {
-    MappingConfiguration mapping = MappingConfiguration.LoadMappingFromFile ("UrlMappingWithEmptyFunctionType.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("UrlMappingWithEmptyFunctionType.xml");
     Assert.Fail();
   }
 
@@ -65,7 +65,7 @@ public class WxeMappingSchemaTest
   [ExpectedException (typeof (XmlSchemaException))]
   public void LoadMappingWithFunctionTypeHavingNoAssembly()
   {
-    MappingConfiguration mapping = MappingConfiguration.LoadMappingFromFile ("UrlMappingWithFunctionTypeHavingNoAssembly.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("UrlMappingWithFunctionTypeHavingNoAssembly.xml");
     Assert.Fail();
   }
 }

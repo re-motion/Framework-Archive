@@ -171,17 +171,17 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   protected virtual Type ParseUrl (HttpRequest request)
   {
     ArgumentUtility.CheckNotNull ("request", request);
-
+    
     string root = "/";
     if (HttpRuntime.AppDomainAppVirtualPath != "/")
       root = HttpRuntime.AppDomainAppVirtualPath + "/";
-    if (String.Compare (request.Url.AbsolutePath, root + "session.wxe", true) == 0)
-      return GetType ("Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition");
-    if (String.Compare (request.Url.AbsolutePath, root + "wxehandler.ashx", true) == 0)
-      return GetType ("OBWTest.SingleBocTestMainWxeFunction,OBWTest");
+    
+    string path = request.Url.AbsolutePath.Substring (root.Length);
 
-
-    return null;
+    Type type = Mapping.MappingConfiguration.Current.Rules.FindType (path);
+    if (type == null)
+      throw new HttpException (404, string.Format ("The path '{0}' does not correspond to a valid mapping.", request.Url));
+    return type;
   }
 
   /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="typeName"/>. </summary>
@@ -192,7 +192,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
     try
     {
-      return TypeUtility.GetType (typeName, true, false);
+      return TypeUtility.GetType (typeName, true, true);
     }
     catch (TypeLoadException e)
     {

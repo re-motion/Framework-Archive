@@ -35,7 +35,7 @@ public class WxeMappingTest
   [Test]
   public void LoadMappingFromFile()
   {
-    MappingConfiguration mapping = MappingConfiguration.LoadMappingFromFile ("UrlMapping.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("UrlMapping.xml");
 
     Assert.IsNotNull (mapping, "Mapping is null.");
     
@@ -45,9 +45,9 @@ public class WxeMappingTest
     Assert.IsNotNull (mapping.Rules[0], "First rule is null.");
     Assert.IsNotNull (mapping.Rules[1], "Second rule is null.");
     
-    Assert.AreEqual ("Rubicon.Web.UnitTests.ExecutionEngine.Mapping.FirstMappedFunction, Rubicon.Web.UnitTests", mapping.Rules[0].FunctionType);
+    Assert.AreEqual (typeof (FirstMappedFunction), mapping.Rules[0].FunctionType);
     Assert.AreEqual ("First.wxe", mapping.Rules[0].Path);
-    Assert.AreEqual ("Rubicon.Web.UnitTests.ExecutionEngine.Mapping.SecondMappedFunction, Rubicon.Web.UnitTests", mapping.Rules[1].FunctionType);
+    Assert.AreEqual (typeof (SecondMappedFunction), mapping.Rules[1].FunctionType);
     Assert.AreEqual ("Second.wxe", mapping.Rules[1].Path);
   }
 
@@ -55,7 +55,7 @@ public class WxeMappingTest
   [ExpectedException (typeof (FileNotFoundException))]
   public void LoadMappingFromFileWithInvalidFilename()
   {
-    MappingConfiguration mapping = MappingConfiguration.LoadMappingFromFile ("InvalidFilename.xml");
+    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration ("InvalidFilename.xml");
     Assert.Fail();
   }
 
@@ -81,9 +81,9 @@ public class WxeMappingTest
     Assert.IsNotNull (mapping.Rules[0], "First rule is null.");
     Assert.IsNotNull (mapping.Rules[1], "Second rule is null.");
     
-    Assert.AreEqual ("Rubicon.Web.UnitTests.ExecutionEngine.Mapping.FirstMappedFunction, Rubicon.Web.UnitTests", mapping.Rules[0].FunctionType);
+    Assert.AreEqual (typeof (FirstMappedFunction), mapping.Rules[0].FunctionType);
     Assert.AreEqual ("First.wxe", mapping.Rules[0].Path);
-    Assert.AreEqual ("Rubicon.Web.UnitTests.ExecutionEngine.Mapping.SecondMappedFunction, Rubicon.Web.UnitTests", mapping.Rules[1].FunctionType);
+    Assert.AreEqual (typeof (SecondMappedFunction), mapping.Rules[1].FunctionType);
     Assert.AreEqual ("Second.wxe", mapping.Rules[1].Path);
   }
 

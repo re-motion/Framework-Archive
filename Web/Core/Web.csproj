@@ -425,6 +425,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\Mapping\MappingLoader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\Mapping\MappingSchema.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\Mapping\WxeMapping.xsd"
                     BuildAction = "EmbeddedResource"
                 />
