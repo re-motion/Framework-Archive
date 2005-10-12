@@ -14,6 +14,7 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.Test
 {
+// TODO: Encapsulate this Page within a WxeTransactedFunction!
 public class SearchObjectPage : WxePage
 {
   protected Rubicon.Web.UI.Controls.FormGridManager SearchFormGridManager;
