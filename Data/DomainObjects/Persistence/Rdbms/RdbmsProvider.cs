@@ -477,7 +477,7 @@ public abstract class RdbmsProvider : StorageProvider
     _connection = null;
   }
 
-  private void CheckQuery (IQuery query, string argumentName)
+  protected void CheckQuery (IQuery query, string argumentName)
   {
     if (query.StorageProviderID != ID)
     {
