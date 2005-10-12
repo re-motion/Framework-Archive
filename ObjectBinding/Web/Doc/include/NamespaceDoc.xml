@@ -381,10 +381,11 @@
     </table>
     </div>
     <para>
-      Apply the following modification to the <c>browserCaps</c> section in the <c>machine.config</c>, 
-      or its copy in the <c>web.config</c>: Add <c>tagwriter=System.Web.UI.HtmlTextWriter</c> to the Opera and
-      Mozilla <c>filter</c> sections. Otherwise, those broswers would be detected as HTML 3.2 browsers
-      and the more advanced tags, such as <c>div</c>, would get changed to HTML 3.2 compatible tags.
+      Add the following setting to the <c>browserCaps</c> section in the <c>machine.config</c>, 
+      or its copy in the <c>web.config</c>: <c>tagwriter=System.Web.UI.HtmlTextWriter</c>. This will cause ASP.NET to
+      always render HTML 4.0 valid code, instead of falling back to HTML 3.2 compatible tags for browsers other than
+      Microsoft Internet Explorer 5.01. Otherwise, the Business Object Controls might cause an exception during 
+      rendering due the use of non-numeric CSS values (i.e. <c>auto</c> for <c>width</c>).
     </para>
     <para>
       Firefox 1.0, Mozilla 1.0, Mozilla 1.7.5 all use Mozilla 5.0 as base and differ only in the build number of the 
