@@ -15,9 +15,13 @@
 
 - Rubicon.Data.DomainObjects.Persistence:
   * Neue Exception ConverterException eingeführt.
-  * ValueConverter gesplittet -> ValueConverterBase, RdbmsValueConverter -> Werfen statt RdbmsProviderExceptions ConverterExceptions.
+  * ValueConverter gesplittet -> ValueConverterBase, ValueConverter -> Werfen statt RdbmsProviderExceptions ConverterExceptions.
+  * Weiters kann ValueConverterBase nun auch beliebige string-Values in ihren korrekten Datentyp umwandeln.
+  * Neues Interface IDataContainerFactory abstrahiert wie ein RdbmsProvider DataContainers erzeugt.
   * RdbmsProvider überprüft nicht mehr übergebene ObjectIDs, da für die Prüfung die ObjectID selbst verantwortlich ist.
+  * RdbmsProvider definiert neue Factory-Methode CreateDataContainerFactory.
   * RdbmsProviderDefinition implementiert IsIdentityTypeSupported.
+  * StorageProvider definiert neue protected Methode CheckQuery.
   
 1.3.11.0
 ========

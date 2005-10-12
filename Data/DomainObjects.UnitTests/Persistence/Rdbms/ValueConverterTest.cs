@@ -27,7 +27,7 @@ public class ValueConverterTest
   [Test]
   public void GetObjectIDWithGuidValue ()
   {
-    RdbmsValueConverter converter = new RdbmsValueConverter ();
+    ValueConverter converter = new ValueConverter ();
 
     Guid value = Guid.NewGuid ();
     ObjectID expectedID = new ObjectID ("Order", value);
@@ -43,7 +43,7 @@ public class ValueConverterTest
     ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
     PropertyDefinition enumProperty = customerDefinition["CustomerType"];
 
-    RdbmsValueConverter valueConverter = new RdbmsValueConverter ();
+    ValueConverter valueConverter = new ValueConverter ();
     valueConverter.GetValue (customerDefinition, enumProperty, DBNull.Value);
   }
 }

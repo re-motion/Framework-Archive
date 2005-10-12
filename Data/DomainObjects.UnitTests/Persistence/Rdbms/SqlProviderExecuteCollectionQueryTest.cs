@@ -100,7 +100,7 @@ public class SqlProviderExecuteCollectionQueryTest : SqlProviderBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException))]
+  [ExpectedException (typeof (ArgumentException), "Expected query type is 'Collection', but was 'Scalar'.\r\nParameter name: query")]
   public void ScalarQuery ()
   {
     Provider.ExecuteCollectionQuery (new Query ("OrderNoSumByCustomerNameQuery"));

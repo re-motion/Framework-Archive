@@ -7,7 +7,12 @@
 
 - Rubicon.NullableValuteTypes.NaDouble:
     Bugfix: Parsing hat NumberStyle.Integer verwendet.
-    
+
+- Rubicon.NullableValuteTypes.NaGuid:    
+  * Neue Konstruktor Overload mit string-Parameter.
+  * Neue statische Methode Parse.
+  
+
 ======
 - Rubicon.Xml.XmlSerializationUtility
   * Errormessages überarbeitet.
