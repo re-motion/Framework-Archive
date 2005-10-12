@@ -186,6 +186,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeMappingTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeMethodStepTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -214,6 +219,10 @@
                     RelPath = "ExecutionEngine\WxeTransactionMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Res\UrlMapping.xml"
+                    BuildAction = "Content"
                 />
                 <File
                     RelPath = "UI\WcagHelperMock.cs"
