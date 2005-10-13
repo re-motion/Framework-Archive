@@ -24,6 +24,8 @@ public class WxePageStep: WxeStep
   private WxeFunction _function;
   private NameValueCollection _postBackCollection;
   private string _viewState;
+  private string _url;
+  private bool _isRedirectingRequired = false;
 
   /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
@@ -88,6 +90,9 @@ public class WxePageStep: WxeStep
     }
   }
 
+  private bool _isRedirected = false;
+  private bool _hasReturnedFromRedirect = false;
+
   /// <summary> 
   ///   Displays the <see cref="WxePageStep"/>'s page or the sub-function that has been invoked by the 
   ///   <see cref="ExecuteFunction"/> method.
@@ -107,8 +112,38 @@ public class WxePageStep: WxeStep
     {
       //  This is the PageStep currently executing a sub-function
       
+      if (_isRedirectingRequired && ! _isRedirected)
+      {
+        Mapping.MappingRule rule = Mapping.MappingConfiguration.Current.Rules[_function.GetType()];
+        if (rule != null)
+        {
+          string remappedPath = "~/" + rule.Path;
+
+          NameValueCollection serializedParameters = _function.SerializeParametersForQueryString ();
+          string queryString = string.Empty;
+          foreach (string key in serializedParameters)
+            queryString = PageUtility.AddUrlParameter (queryString, key, serializedParameters[key]);
+
+          string destinationUrl = WxeContext.GetResumePath (
+              remappedPath, context.HttpContext.Response, context.FunctionToken, queryString);
+          _isRedirected = true;
+          PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
+        }
+      }
+
       _function.Execute (context);
       
+      if (_isRedirectingRequired && _isRedirected && ! _hasReturnedFromRedirect)
+      {
+        _hasReturnedFromRedirect = true;
+        string[] urlParts = _url.Split (new char[] {'?'}, 2);
+        string path = urlParts[0];
+        string queryString = (urlParts.Length == 2) ? urlParts[1] : null;
+        string destinationUrl = WxeContext.GetResumePath (
+            path, context.HttpContext.Response, context.FunctionToken, queryString);
+        PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
+      }
+
       //  This is the PageStep after the sub-function has completed execution
       
       //  Provide the executed sub-function to the executing page
@@ -119,6 +154,13 @@ public class WxePageStep: WxeStep
       context.PostBackCollection = _postBackCollection;
       _postBackCollection = null;
       context.IsReturningPostBack = true;
+
+      if (_isRedirectingRequired)
+      {
+        _isRedirectingRequired = false;
+        _isRedirected = false;
+        _hasReturnedFromRedirect = false;
+      }
     }
 
     try 
@@ -150,12 +192,12 @@ public class WxePageStep: WxeStep
 
   /// <summary> Executes the specified <see cref="WxeFunction"/>, then returns to this page. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecuteFunction/*' />
-  public void ExecuteFunction (IWxePage page, WxeFunction function)
+  public void ExecuteFunction (IWxePage page, WxeFunction function, bool remapPath)
   {
     //  Back-up postback data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
     
-    InternalExecuteFunction (page, function);
+    InternalExecuteFunction (page, function, remapPath);
   }
 
   /// <summary>
@@ -163,7 +205,8 @@ public class WxePageStep: WxeStep
   ///   postback event after the user returns.
   /// </summary>
   /// <remarks> Invoke this method by calling <see cref="WxePageInfo.ExecuteFunctionNoRepost"/>. </remarks>
-  internal void ExecuteFunctionNoRepost (IWxePage page, WxeFunction function, Control sender, bool usesEventTarget)
+  internal void ExecuteFunctionNoRepost (
+      IWxePage page, WxeFunction function, Control sender, bool usesEventTarget, bool remapPath)
   {
     //  Back-up post back data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
@@ -182,12 +225,12 @@ public class WxePageStep: WxeStep
       _postBackCollection.Remove (sender.UniqueID);
     }
 
-    InternalExecuteFunction (page, function);
+    InternalExecuteFunction (page, function, remapPath);
   }
 
   /// <summary> Executes the specified <see cref="WxeFunction"/>, then returns to this page. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/InternalExecuteFunction/*' />
-  private void InternalExecuteFunction (IWxePage page, WxeFunction function)
+  private void InternalExecuteFunction (IWxePage page, WxeFunction function, bool remapPath)
   {
     if (_function != null)
       throw new InvalidOperationException ("Cannot execute function while another function executes.");
@@ -199,6 +242,11 @@ public class WxePageStep: WxeStep
     MethodInfo saveViewStateMethod = typeof (Page).GetMethod ("SavePageViewState", BindingFlags.Instance | BindingFlags.NonPublic);
     saveViewStateMethod.Invoke (page, new object[0]); 
 
+    if (remapPath)
+      _url = page.Request.Url.PathAndQuery;
+    else
+      _url = null;
+    _isRedirectingRequired = remapPath;
     Execute();
   }
 
