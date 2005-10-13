@@ -30,6 +30,8 @@ public class WxeParameterDeclaration
   private bool _required;
   private WxeParameterDirection _direction;
   private Type _type;
+  [NonSerialized]
+  private WxeParameterConverter _converter;
 
   public WxeParameterDeclaration (string name, bool required, WxeParameterDirection direction, Type type)
   {
@@ -99,6 +101,15 @@ public class WxeParameterDeclaration
     variables[parameterName] = value;
   }
 
+  public WxeParameterConverter Converter
+  {
+    get
+    {
+      if (_converter == null)
+        _converter = new WxeParameterConverter (this);
+      return _converter;
+    }
+  }
 }
 
 [Serializable]

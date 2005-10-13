@@ -17,13 +17,11 @@
     <form id=Form method=post runat="server">
     <p><asp:label id="FunctionTokenLabel" runat="server">Token</asp:label>, 
     <asp:label id="PostBackIDLabel" runat="server">PostBackID</asp:label></p>
-    <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton>
-    <rubicon:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></rubicon:WebButton>
-    <rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
+    <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton><rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
     <asp:linkbutton id="LinkButton1" runat="server">LinkButton</asp:linkbutton>
     <a id="LinkButton2" href="#" onclick="__doPostBack('LinkButton1',''); return false;">LinkButton 2</a>
     <div id="WaitMessage" 
-    style="BORDER-RIGHT: thin solid; PADDING-RIGHT: 10pt; BORDER-TOP: thin solid; PADDING-LEFT: 10pt; Z-INDEX: 10; LEFT: 20%; VISIBILITY: hidden; PADDING-BOTTOM: 10pt; MARGIN: 10pt; BORDER-LEFT: thin solid; COLOR: white; PADDING-TOP: 10pt; BORDER-BOTTOM: thin solid; FONT-FAMILY: Arial; POSITION: absolute; TOP: 20pt; BACKGROUND-COLOR: blue; TEXT-ALIGN: center">
+    style="BORDER-RIGHT: thin solid; PADDING-RIGHT: 10pt; BORDER-TOP: thin solid; PADDING-LEFT: 10pt; Z-INDEX: 10; LEFT: 20%; VISIBILITY: hidden; PADDING-BOTTOM: 10pt; MARGIN: 10pt; BORDER-LEFT: thin solid; COLOR: white; PADDING-TOP: 10pt; BORDER-BOTTOM: thin solid; FONT-FAMILY: Arial; POSITION: absolute; TOP: 50pt; BACKGROUND-COLOR: blue; TEXT-ALIGN: center">
     Eine Interaktion mit dem Server läuft gerade.<br>
 
     Bitte warten Sie, bis die Antwort vom Server kommt. 
@@ -40,7 +38,8 @@
 <rubicon:webbutton id="ExecuteNoRepostButton" runat="server" Text="Execute, No Repost"></rubicon:webbutton>
 </p><p>
 <rubicon:webbutton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></rubicon:webbutton>
-</p>  
+</p>
+<p><rubicon:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionWithMappedPathButton" runat="server" Text="Open Sample Function With Mapped Path"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionInNewWindowButton" runat="server" Text="Open Sample Function in New Window"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionWithMappedPathInNewWindowButton" runat="server" Text="Open Sample Function With Mapped Path in New Window"></rubicon:WebButton></p>  
 </form>
     <script language="javascript">
     function Page_PostBack (eventTarget, eventArgs)
