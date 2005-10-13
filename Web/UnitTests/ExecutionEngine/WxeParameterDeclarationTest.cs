@@ -56,6 +56,14 @@ public class WxeParameterDeclarationTest
     CallParseActualParameters (s_parameters, "a, \"xyz\"", CultureInfo.InvariantCulture);
   }
 
+  public void g()
+  {
+    WxeParameterDeclaration parameter = 
+        new WxeParameterDeclaration ("param", true, WxeParameterDirection.In, typeof (string));
+
+
+  }
+
   private object[] CallParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string parameterString, IFormatProvider formatProvider)
   {
     return (object[]) PrivateInvoke.InvokeNonPublicStaticMethod (
