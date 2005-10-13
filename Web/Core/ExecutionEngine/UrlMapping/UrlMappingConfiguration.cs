@@ -96,11 +96,10 @@ public class MappingRule
   public MappingRule (Type functionType, string path)
   {
     ArgumentUtility.CheckNotNull ("functionType", functionType);
-    ArgumentUtility.CheckNotNullOrEmpty ("path", path);
 
     _functionType = functionType;
     _functionTypeName = _functionType.AssemblyQualifiedName;
-    _path = path;
+    Path = path;
   }
 
   public MappingRule (string functionTypeName, string path)
@@ -109,7 +108,7 @@ public class MappingRule
     ArgumentUtility.CheckNotNullOrEmpty ("path", path);
 
     _functionTypeName = functionTypeName;
-    _path = path;
+    Path = path;
   }
 
   [XmlAttribute ("functionType")]
@@ -138,6 +137,7 @@ public class MappingRule
     }
   }
 
+  /// <summary> A path relative to the application root. </summary>
   [XmlAttribute ("path")]
   public string Path
   {
@@ -147,7 +147,11 @@ public class MappingRule
     }
     set 
     {
+      ArgumentUtility.CheckNotNull ("value", value);
+      value = value.Trim();
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      value.TrimStart (new char[]{'~'});
+      value.TrimStart (new char[]{'/'});
       _path = value; 
     }
   }

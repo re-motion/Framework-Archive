@@ -44,24 +44,47 @@ public class WxeContext
   }
 
   /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
-  /// <param name="functionToken"> The token of function to resume. </param>
+  /// <param name="request"> The <see cref="HttpRequest"/>. Must not be <see langword="null"/>. </param>
+  /// <param name="response"> The <see cref="HttpResponse"/>. Must not be <see langword="null"/>. </param>
+  /// <param name="functionToken"> 
+  ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
+  /// </param>
+  /// <param name="queryString"> An optional query string. </param>
   public static string GetResumePath (
       HttpRequest request, HttpResponse response, string functionToken, string queryString)
   {
-    if (StringUtility.IsNullOrEmpty (queryString))
-      queryString = "?";
-    else if (! queryString.StartsWith ("?"))
+    ArgumentUtility.CheckNotNull ("request", request);
+    return WxeContext.GetResumePath (request.Url.AbsolutePath, response, functionToken, queryString);
+  }
+
+  /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
+  /// <param name="virtualPath"> The path to the <see cref="WxeHandler"/>. Must not be <see langword="null"/> or emtpy. </param>
+  /// <param name="response"> The <see cref="HttpResponse"/>. Must not be <see langword="null"/>. </param>
+  /// <param name="functionToken"> 
+  ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
+  /// </param>
+  /// <param name="queryString"> An optional query string. </param>
+  public static string GetResumePath (
+      string virtualPath, HttpResponse response, string functionToken, string queryString)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("virtualPath", virtualPath);
+    ArgumentUtility.CheckNotNull ("response", response);
+    ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
+    
+    if (! StringUtility.IsNullOrEmpty (queryString) && ! queryString.StartsWith ("?"))
       queryString = "?" + queryString;
     
-    if (! StringUtility.IsNullOrEmpty (functionToken))
+    if (! StringUtility.IsNullOrEmpty (queryString))
     {
       string urlFunctionToken = PageUtility.GetUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
       if (! StringUtility.IsNullOrEmpty (urlFunctionToken) && urlFunctionToken != functionToken)
         queryString = PageUtility.DeleteUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
     }
+    if (StringUtility.IsNullOrEmpty (queryString) || queryString == "?")
+      queryString = string.Empty;
     queryString = PageUtility.AddUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken, functionToken);
     
-    string path = response.ApplyAppPathModifier (request.Url.AbsolutePath);
+    string path = response.ApplyAppPathModifier (virtualPath);
     return path + queryString;
   }
 
