@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Web;
@@ -24,7 +25,7 @@ public abstract class WxeFunction: WxeStepList
     ArgumentUtility.CheckNotNull ("type", type);
     if (! typeof (WxeFunction).IsAssignableFrom (type)) throw new ArgumentException ("Type " + type.FullName + " is not derived from WxeFunction.", "type");
 
-    return GetParamaterDeclarationsUnchecked (type);
+    return WxeFunction.GetParamaterDeclarationsUnchecked (type);
   }
 
   private static WxeParameterDeclaration[] GetParamaterDeclarationsUnchecked (Type type)
@@ -207,7 +208,7 @@ public abstract class WxeFunction: WxeStepList
 
   public virtual WxeParameterDeclaration[] ParameterDeclarations
   {
-    get { return GetParamaterDeclarations (this.GetType()); }
+    get { return WxeFunction.GetParamaterDeclarations (this.GetType()); }
   }
 
   public override string ToString()
@@ -421,7 +422,7 @@ public abstract class WxeFunction: WxeStepList
 
     for (int i = 0; i < parameterDeclarations.Length; ++i)
     {
-      if (i < _actualParameters.Length)
+      if ( i < _actualParameters.Length)
       {
         WxeVariableReference varRef = _actualParameters[i] as WxeVariableReference;
         if (varRef != null)
@@ -436,6 +437,40 @@ public abstract class WxeFunction: WxeStepList
       throw new InvalidOperationException ("Parameters are already initialized.");
   }
 
+  public NameValueCollection SerializeParametersForQueryString()
+  {
+    NameValueCollection serializedParameters = new NameValueCollection();
+    WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
+    NameObjectCollection callerVariables = null;
+    if (ParentStep != null)
+      callerVariables = ParentStep.Variables;
+
+    for (int i = 0; i < parameterDeclarations.Length && i < _actualParameters.Length; i++)
+    {
+      WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
+      object parameterValue = _actualParameters[i];
+      string serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, callerVariables);
+      if (serializedValue != string.Empty)
+        serializedParameters.Add (parameterDeclaration.Name, serializedValue);
+    }
+    return serializedParameters;
+  }
+
+  protected TypeConverter GetStringTypeConverter (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    TypeConverterAttribute[] typeConverters = 
+        (TypeConverterAttribute[]) type.GetCustomAttributes (typeof (TypeConverterAttribute), true);
+    if (typeConverters.Length == 1) 
+    {
+      Type typeConverterType = Type.GetType (typeConverters[0].ConverterTypeName, true, false);
+      TypeConverter typeConverter = (TypeConverter) Activator.CreateInstance (typeConverterType);
+      if (typeConverter.CanConvertTo (typeof (string)) && typeConverter.CanConvertFrom (typeof (string)))
+        return typeConverter;
+    }
+    return null;
+  }
 }
 
 [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
