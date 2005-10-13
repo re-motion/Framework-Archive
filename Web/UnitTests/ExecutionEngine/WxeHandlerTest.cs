@@ -145,9 +145,9 @@ public class WxeHandlerTest: WxeTest
   [Test]
   public void CreateNewFunctionStateStateWithReturnUrl()
   {
-    NameValueCollection parameters = new NameValueCollection();
-    parameters.Set (WxeHandler.Parameters.WxeReturnUrl, _returnUrl);
-    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Set (WxeHandler.Parameters.WxeReturnUrl, _returnUrl);
+    HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType, false);
 
@@ -166,9 +166,9 @@ public class WxeHandlerTest: WxeTest
   public void CreateNewFunctionStateStateWithArgument()
   {
     string agrumentValue = "True";
-    NameValueCollection parameters = new NameValueCollection();
-    parameters.Set (TestFunction.Parameter1Name, agrumentValue);
-    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Set (TestFunction.Parameter1Name, agrumentValue);
+    HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType, false);
 
@@ -242,9 +242,9 @@ public class WxeHandlerTest: WxeTest
 	[Test]
   public void RefreshExistingFunctionState()
   {
-    NameValueCollection parameters = new NameValueCollection();
-    parameters.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
-    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
+    HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     DateTime timeBeforeRefresh = DateTime.Now;
     Thread.Sleep (20);
@@ -261,9 +261,9 @@ public class WxeHandlerTest: WxeTest
 	[Test]
   public void RefreshExistingFunctionStateWithMissingFunction()
   {
-    NameValueCollection parameters = new NameValueCollection();
-    parameters.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
-    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
+    HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     DateTime timeBeforeRefresh = DateTime.Now;
     Thread.Sleep (20);
@@ -280,9 +280,9 @@ public class WxeHandlerTest: WxeTest
 	[Test]
   public void AbortExistingFunctionState()
   {
-    NameValueCollection parameters = new NameValueCollection();
-    parameters.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
-    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
+    HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     WxeFunctionState functionState = 
         _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithEnabledCleanUp);
@@ -298,9 +298,9 @@ public class WxeHandlerTest: WxeTest
 	[Test]
   public void AbortExistingFunctionStateMissingFunction()
   {
-    NameValueCollection parameters = new NameValueCollection();
-    parameters.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
-    HttpContextHelper.SetParams (CurrentHttpContext, parameters);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Set (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Abort);
+    HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     WxeFunctionState functionState = 
         _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
