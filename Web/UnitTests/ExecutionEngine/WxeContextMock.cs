@@ -17,7 +17,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 public class WxeContextMock: WxeContext
 {
   public WxeContextMock (HttpContext context)
-    : base (context, "Undefined", null, false, -1)
+    : base (context, new WxeFunctionState (new TestFunction (), null,false, false))
   {
   }
 }

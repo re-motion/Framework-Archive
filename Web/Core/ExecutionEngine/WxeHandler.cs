@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.SessionState;
@@ -143,7 +144,10 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     }
     else
     {
-      throw new HttpException (string.Format ("Missing URL parameter '{0}'", Parameters.WxeFunctionType));
+      if (File.Exists (context.Request.PhysicalPath))
+        throw new HttpException (string.Format ("Missing URL parameter '{0}'", Parameters.WxeFunctionType));
+      else
+        throw new HttpException (404, string.Format ("Could not map the path '{0}' to a Function Type.", context.Request.Path));
     }
   }
 
@@ -329,8 +333,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionState.IsAborted)
       throw new InvalidOperationException ("The function state " + functionState.FunctionToken + " is aborted.");
 
-    WxeContext wxeContext = new WxeContext (
-        context, functionState.FunctionToken, functionState.QueryString, functionState.HasMappedUrl, functionState.PostBackID); 
+    WxeContext wxeContext = new WxeContext (context, functionState); 
     WxeContext.SetCurrent (wxeContext);
 
     functionState.PostBackID++;

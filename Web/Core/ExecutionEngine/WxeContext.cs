@@ -66,30 +66,19 @@ public class WxeContext
   }
 
   private HttpContext _httpContext;
-  private bool _isPostBack;
-  private bool _isReturningPostBack;
-  private NameValueCollection _postBackCollection;
-  private string _functionToken;
+  private bool _isPostBack = false;
+  private bool _isReturningPostBack = false;
+  private NameValueCollection _postBackCollection = null;
   private WxeFunction _returningFunction = null;
-  private string _queryString;
-  private bool _hasMappedUrl;
-  private int _postBackID;
+  private WxeFunctionState _functionState;
 
-  public WxeContext (HttpContext context, string functionToken, string queryString, bool hasMappedUrl, int postBackID)
+  public WxeContext (HttpContext context, WxeFunctionState functionState)
   {
     ArgumentUtility.CheckNotNull ("context", context);
-    ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
+    ArgumentUtility.CheckNotNull ("functionState", functionState);
 
     _httpContext = context;
-    _functionToken = functionToken;
-    _hasMappedUrl = hasMappedUrl;
-    _isPostBack = false;
-    _isReturningPostBack = false;
-    _postBackCollection = null;
-    _queryString = queryString;
-    if (! StringUtility.IsNullOrEmpty (_queryString) && ! _queryString.StartsWith ("?"))
-      _queryString = "?" + _queryString;
-    _postBackID = postBackID;
+    _functionState = functionState;
   }
 
   public HttpContext HttpContext
@@ -140,24 +129,29 @@ public class WxeContext
     set { _postBackCollection = value; }
   }
 
+  protected WxeFunctionState FunctionState
+  {
+    get { return _functionState; }
+  }
+
   public string FunctionToken
   {
-    get { return _functionToken; }
+    get { return _functionState.FunctionToken; }
   }
 
   public int PostBackID
   {
-    get { return _postBackID; }
+    get { return _functionState.PostBackID; }
   }
 
   public string QueryString
   {
-    get { return _queryString; }
+    get { return _functionState.QueryString; }
   }
 
   public bool HasMappedUrl
   {
-    get { return _hasMappedUrl; }
+    get { return _functionState.HasMappedUrl; }
   }
 
   public WxeFunction ReturningFunction 
@@ -185,15 +179,15 @@ public class WxeContext
   /// <summary> Gets the absolute path that resumes the current function. </summary>
   public string GetResumePath ()
   {
-    return WxeContext.GetResumePath (_httpContext.Request, _httpContext.Response, _functionToken, _queryString);
+    return WxeContext.GetResumePath (_httpContext.Request, _httpContext.Response, FunctionToken, QueryString);
   }
 
   /// <summary> Gets the absolute path for to the <b>WxeHandler</b> used in the request. </summary>
   public string GetPath ()
   {
     string path = _httpContext.Response.ApplyAppPathModifier (_httpContext.Request.Url.AbsolutePath);
-    if (! StringUtility.IsNullOrEmpty (_queryString))
-        path += _queryString;
+    if (! StringUtility.IsNullOrEmpty (QueryString))
+        path += QueryString;
     return path;
   }
 }
