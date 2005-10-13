@@ -314,28 +314,15 @@ public sealed class StringUtility
 
     try
     {
-      MethodInfo parseMethod = null;
-      MethodInfo parseFormatMethod  = type.GetMethod (
-          "Parse", 
-          BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
-          null, 
-          new Type[] {typeof (string), typeof (IFormatProvider)}, 
-          null);
-
-      if (parseFormatMethod != null && type.IsAssignableFrom (parseFormatMethod.ReturnType))
+      MethodInfo parseFormatMethod  = GetParseMethodWithFormatProvider (type);
+      if (parseFormatMethod != null)
       {
         return parseFormatMethod.Invoke (null, new object[] { value, format } );
       }
       else
       {
-        parseMethod  = type.GetMethod (
-            "Parse", 
-            BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
-            null, 
-            new Type[] {typeof (string)}, 
-            null);
-
-        if (parseMethod == null || ! type.IsAssignableFrom (parseMethod.ReturnType))
+        MethodInfo parseMethod = GetParseMethod (type);
+        if (parseMethod == null)
           throw new ParseException ("Type does not have method 'public static " + type.Name + " Parse (string s)'.");
 
         return parseMethod.Invoke (null, new object[] { value } );
@@ -347,6 +334,37 @@ public sealed class StringUtility
     }
   }
 
+  public static MethodInfo GetParseMethodWithFormatProvider (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    MethodInfo parseMethod = type.GetMethod (
+        "Parse", 
+        BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
+        null, 
+        new Type[] {typeof (string), typeof (IFormatProvider)}, 
+        null);
+
+    if (parseMethod != null && type.IsAssignableFrom (parseMethod.ReturnType))
+      return parseMethod;
+    else
+      return null;
+  }
+
+  public static MethodInfo GetParseMethod  (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    MethodInfo parseMethod = type.GetMethod (
+        "Parse", 
+        BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy, 
+        null, 
+        new Type[] {typeof (string)}, 
+        null);
+
+    if (parseMethod != null && type.IsAssignableFrom (parseMethod.ReturnType))
+      return parseMethod;
+    else
+      return null;
+  }
 }
 
 [Serializable]
