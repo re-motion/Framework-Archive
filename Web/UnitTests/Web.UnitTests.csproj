@@ -156,6 +156,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\TestFunctionWithNonSerializableParameters.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\TestFunctionWithSerializableParameters.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\TestStep.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -176,6 +186,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeFunctionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeHandlerMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -187,6 +202,16 @@
                 />
                 <File
                     RelPath = "ExecutionEngine\WxeMethodStepTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeParameterConverterMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeParameterConverterTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
