@@ -40,17 +40,32 @@ public class HttpContextHelper
     return Init (request, response);
   }
 
-  public static void SetParams (HttpContext context, NameValueCollection parameters)
+  public static void SetQueryString (HttpContext context, NameValueCollection queryString)
   {
     ArgumentUtility.CheckNotNull ("context", context);
-    ArgumentUtility.CheckNotNull ("parameters", parameters);
+    ArgumentUtility.CheckNotNull ("queryString", queryString);
 
-    PrivateInvoke.InvokeNonPublicMethod (context.Request.Params, "MakeReadWrite", new object[0]);
-    context.Request.Params.Clear();
-    string[] keys = parameters.AllKeys;
-    foreach (string key in keys)
-      context.Request.Params.Set (key, parameters[key]);
-    PrivateInvoke.InvokeNonPublicMethod (context.Request.Params, "MakeReadOnly", new object[0]);
+    PrivateInvoke.InvokeNonPublicMethod (context.Request.QueryString, "MakeReadWrite", new object[0]);
+    context.Request.QueryString.Clear();
+    foreach (string key in queryString)
+      context.Request.QueryString.Set (key, queryString[key]);
+    PrivateInvoke.InvokeNonPublicMethod (context.Request.QueryString, "MakeReadOnly", new object[0]);
+
+    PrivateInvoke.SetNonPublicField (context.Request, "_params", null);
+  }
+
+  public static void SetForm (HttpContext context, NameValueCollection form)
+  {
+    ArgumentUtility.CheckNotNull ("context", context);
+    ArgumentUtility.CheckNotNull ("form", form);
+
+    PrivateInvoke.InvokeNonPublicMethod (context.Request.Form, "MakeReadWrite", new object[0]);
+    context.Request.Form.Clear();
+    foreach (string key in form)
+      context.Request.Form.Set (key, form[key]);
+    PrivateInvoke.InvokeNonPublicMethod (context.Request.Form, "MakeReadOnly", new object[0]);
+
+    PrivateInvoke.SetNonPublicField (context.Request, "_params", null);
   }
 
   protected static HttpContext Init (HttpRequest request, HttpResponse response)
