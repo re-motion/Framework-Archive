@@ -122,7 +122,7 @@ public class XmlSerializationUtility
   {
     ArgumentUtility.CheckNotNull ("type", type);
 
-    XmlTypeAttribute[] xmlTypes = (XmlTypeAttribute[]) type.GetCustomAttributes (typeof (XmlTypeAttribute), false);
+    XmlTypeAttribute[] xmlTypes = (XmlTypeAttribute[]) type.GetCustomAttributes (typeof (XmlTypeAttribute), true);
     if (xmlTypes.Length == 0) 
     {
       throw new ArgumentException (string.Format (
