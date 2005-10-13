@@ -237,8 +237,8 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     WxeFunctionState functionState = new WxeFunctionState (function, queryString, isMappedUrl, true);
     functionStates.Add (functionState);
 
-    function.InitializeParameters (context.Request.Params);
-    string returnUrlArg = context.Request.Params[Parameters.WxeReturnUrl];
+    function.InitializeParameters (context.Request.QueryString);
+    string returnUrlArg = context.Request.QueryString[Parameters.WxeReturnUrl];
     if (! StringUtility.IsNullOrEmpty (returnUrlArg))
       function.ReturnUrl = returnUrlArg;
 

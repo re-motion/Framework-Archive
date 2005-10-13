@@ -124,10 +124,15 @@ public class WxeFunctionState
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
     _functionToken = Guid.NewGuid().ToString();
-    if (StringUtility.IsNullOrEmpty (queryString) || queryString.StartsWith ("?"))
+
+    queryString = StringUtility.NullToEmpty (queryString);
+    if (queryString.StartsWith ("?"))
       _queryString = queryString;
     else      
       _queryString = "?" + queryString;
+    if (_queryString == "?")
+      _queryString = string.Empty;
+    
     _hasMappedUrl = hasMappedUrl;
     _isCleanUpEnabled = enableCleanUp;
     _postBackID = 0;
