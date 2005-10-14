@@ -46,7 +46,7 @@ public class WxeMappingSchemaTest
   }
 
   [Test]
-  [ExpectedException (typeof (Exception))]
+  [ExpectedException (typeof (XmlSchemaException))]
   public void LoadMappingWithMissingFunctionType()
   {
     MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml");
