@@ -123,7 +123,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     else if (! hasFunctionToken)
       type = ParseUrl (context.Request);
 
-    if (type != null)
+    if (! hasFunctionToken && type != null)
     {
       bool hasMappedUrl = ! hasTypeName;
       _currentFunctionState = CreateNewFunctionState (context, type);

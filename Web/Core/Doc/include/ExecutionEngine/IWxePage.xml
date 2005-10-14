@@ -121,8 +121,16 @@ public override void LoadPageStateFromPersistenceMedium()
     </param>
     <param name="returningPostback"> <see langword="true"/> if the call should be returned to the current window. </param>
     <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
+    <param name="createPermalink"> 
+      <see langword="true"/> to redirect the client to a URL that can be used as a perma-link. 
+      Defaults to <see langword="false"/>.
+    </param>
+    <param name="useParentPermalink">
+      <see langword="true"/> to add the parent function's perma-link. 
+      Defaults to <see langword="false"/>.
+    </param>
   </ExecuteFunction>
-  <ExecuteFunctionWithMappedPath>
+  <ExecuteFunctionExternal>
     <param name="function"> The WXE new function to be executed. </param>  
     <param name="target"> The HTML frame/window name that will be used to execute the function. </param>
     <param name="features"> The features argument that is passed to the javascript function <b>window.open()</b>. </param>
@@ -133,7 +141,15 @@ public override void LoadPageStateFromPersistenceMedium()
     </param>
     <param name="returningPostback"> <see langword="true"/> if the call should be returned to the current window. </param>
     <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
-  </ExecuteFunctionWithMappedPath>
+    <param name="createPermalink"> 
+      <see langword="true"/> to redirect the client to a URL that can be used as a perma-link. 
+      Defaults to <see langword="false"/>.
+    </param>
+    <param name="useParentPermalink">
+      <see langword="true"/> to add the parent function's perma-link. 
+      Defaults to <see langword="false"/>.
+    </param>
+  </ExecuteFunctionExternal>
   <ExecuteFunctionNoRepost>
     <param name="function"> The WXE new function to be executed. </param>  
     <param name="sender"> 
@@ -142,16 +158,15 @@ public override void LoadPageStateFromPersistenceMedium()
       Valid senders implement either IPostBackEventHandler or IPostBackDataHandler.
     </param>
     <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
-  </ExecuteFunctionNoRepost>
-  <ExecuteFunctionNoRepostWithMappedPath>
-    <param name="function"> The WXE new function to be executed. </param>  
-    <param name="sender"> 
-      For calls from event handlers, the control that caused the event (i.e. the <b>sender</b> argument of the 
-      event handler). Otherwise, the sender may be <see landword="null"/>.
-      Valid senders implement either IPostBackEventHandler or IPostBackDataHandler.
+    <param name="createPermalink"> 
+      <see langword="true"/> to redirect the client to a URL that can be used as a perma-link. 
+      Defaults to <see langword="false"/>.
     </param>
-    <param name="usesEventTarget"> <see langword="true"/> to  use the <b>__EVENTTARGET</b> field. </param>
-  </ExecuteFunctionNoRepostWithMappedPath>
+    <param name="useParentPermalink">
+      <see langword="true"/> to add the parent function's perma-link. 
+      Defaults to <see langword="false"/>.
+    </param>
+  </ExecuteFunctionNoRepost>
   <RegisterClientSidePageEventHandler>
     <param name="pageEvent"> The type of event to register for. </param>
     <param name="key"> 

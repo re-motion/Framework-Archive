@@ -20,7 +20,6 @@ public class ConfigurationBase
   /// <summary> Initializes a new instance of the <b>ConfigurationBase</b> type. </summary>
   protected ConfigurationBase (string applicationName)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("applicationName", applicationName);
     _applicationName = applicationName;
   }
 

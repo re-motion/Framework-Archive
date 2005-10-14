@@ -10,7 +10,6 @@
   2. UrlMapping-File:
     <?xml version="1.0" encoding="UTF-8"?>
     <urlMapping
-        application="MyApplication"
         xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">

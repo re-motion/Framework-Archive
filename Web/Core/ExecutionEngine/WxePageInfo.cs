@@ -353,67 +353,75 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,Control,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
+  public void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    ExecuteFunction (function, target, null, sender, returningPostback);
+    ExecuteFunctionExternal (function, target, null, sender, returningPostback, false, false);
   }
 
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,String,Control,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunction (
+  public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
-    WxeContext wxeContext = WxeContext.Current;
-    ExecuteFunction (function, target, features, sender, returningPostback, wxeContext.QueryString, null);
+    ExecuteFunctionExternal (function, target, features, sender, returningPostback, false, false);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionWithMappedPath(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionWithMappedPath (
-      WxeFunction function, string target, Control sender, bool returningPostback)
+  public void ExecuteFunctionExternal (
+      WxeFunction function, string target, Control sender, bool returningPostback, 
+      bool createPermalink, bool useParentPermalink)
   {
-    ExecuteFunctionWithMappedPath (function, target, null, sender, returningPostback);
+    ExecuteFunctionExternal (function, target, null, sender, returningPostback, createPermalink, useParentPermalink);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionWithMappedPath(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionWithMappedPath (
-      WxeFunction function, string target, string features, Control sender, bool returningPostback)
+  public void ExecuteFunctionExternal (
+      WxeFunction function, string target, string features, Control sender, bool returningPostback, 
+      bool createPermalink, bool useParentPermalink)
   {
     ArgumentUtility.CheckNotNull ("function", function);
 
+    WxeContext wxeContext = WxeContext.Current;
+    HttpContext httpContext = wxeContext.HttpContext;
+
+
     UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[function.GetType()];
-    if (mapping == null)
+    string path = null;
+    if (mapping != null)
+      path = mapping.Resource;
+    
+    string queryString = string.Empty;
+    if (createPermalink)
     {
-      ExecuteFunction (function, target, features, sender, returningPostback);
+      if (mapping == null)
+      {
+        string functionTypeName = function.GetType().AssemblyQualifiedName;
+        int separator = functionTypeName.IndexOf (',', 0);
+        separator = functionTypeName.IndexOf (',', separator + 1);
+        functionTypeName = functionTypeName.Substring (0, separator);
+        functionTypeName = functionTypeName.Replace (" ", "");
+        queryString = PageUtility.AddUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionType, functionTypeName);
+      }
+
+      NameValueCollection serializedParameters = function.SerializeParametersForQueryString ();
+      foreach (string key in serializedParameters)
+        queryString = PageUtility.AddUrlParameter (queryString, key, serializedParameters[key]);
     }
     else
     {
-      string path = mapping.Resource;
-      NameValueCollection serializedParameters = function.SerializeParametersForQueryString ();
-      string queryString = string.Empty;
-      foreach (string key in serializedParameters)
-        queryString = PageUtility.AddUrlParameter (queryString, key, serializedParameters[key]);
-
-      ExecuteFunction (function, target, features, sender, returningPostback, queryString, path);
+      queryString = wxeContext.QueryString;
     }
-  }
-  
-  protected void ExecuteFunction (
-      WxeFunction function, string target, string features, Control sender, bool returningPostback,
-      string queryString, string remappedPath)
-  {
-    WxeContext wxeContext = WxeContext.Current;
-    HttpContext httpContext = wxeContext.HttpContext;
+
     bool enableCleanUp = !returningPostback;
     WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 
-    string path = remappedPath;
     if (StringUtility.IsNullOrEmpty (path))
       path = httpContext.Request.Url.AbsolutePath;
     string href = WxeContext.GetResumePath (path, httpContext.Response, functionState.FunctionToken, queryString);
@@ -480,15 +488,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunction (WxeFunction function)
   {
-    CurrentStep.ExecuteFunction (_page, function, false);
+    ExecuteFunction (function, false, false);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction)">IWxePage.ExecuteFunction(WxeFunction)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionWithMappedPath (WxeFunction function)
+  public void ExecuteFunction (WxeFunction function, bool createPermalink, bool useParentPermalink)
   {
-    CurrentStep.ExecuteFunction (_page, function, true);
+    CurrentStep.ExecuteFunction (_page, function, createPermalink);
   }
 
   /// <summary>
@@ -496,7 +504,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
   {
-    ExecuteFunctionNoRepost (function, sender, UsesEventTarget);
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, false, false);
   }
 
   /// <summary>
@@ -504,23 +512,25 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
   {
-    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, false);
+    ExecuteFunctionNoRepost (function, sender, usesEventTarget, false, false);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepostWithMappedPath(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepostWithMappedPath(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionNoRepostWithMappedPath (WxeFunction function, Control sender)
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool createPermalink, bool useParentPermalink)
   {
-    ExecuteFunctionNoRepostWithMappedPath (function, sender, UsesEventTarget);
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermalink, useParentPermalink);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepostWithMappedPath(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepostWithMappedPath(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionNoRepostWithMappedPath (WxeFunction function, Control sender, bool usesEventTarget)
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool usesEventTarget, bool createPermalink, bool useParentPermalink)
   {
-    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, true);
+    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, createPermalink);
   }
 
   /// <summary> 
