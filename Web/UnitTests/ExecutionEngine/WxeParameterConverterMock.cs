@@ -36,6 +36,21 @@ public class WxeParameterConverterMock: WxeParameterConverter
   {
     base.CheckForRequiredOutParameter();
   }
+
+  public new object TryConvertStringToString (object value)
+  {
+    return base.TryConvertStringToString (value);
+  }
+
+  public new object TryConvertObjectToStringForParseMethod (object value)
+  {
+    return base.TryConvertObjectToStringForParseMethod (value);
+  }
+
+  public new object TryConvertNullToString (object value)
+  {
+    return base.TryConvertNullToString (value);
+  }
 }
 
 }

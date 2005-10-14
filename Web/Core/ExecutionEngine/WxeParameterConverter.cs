@@ -94,6 +94,60 @@ public class WxeParameterConverter
     if (value != null && ! _parameter.Type.IsAssignableFrom (value.GetType()))
       throw new ArgumentTypeException ("value", _parameter.Type, value.GetType());
  
+    value = TryConvertNullToString (value);
+    if (value is string)
+      return (string) value;
+
+    value = TryConvertStringToString (value);
+    if (value is string)
+      return (string) value;
+
+    //TypeConverter typeConverter = GetStringTypeConverter (_parameter.Type);
+    //if (typeConverter != null)
+    //  return typeConverter.ConvertToString (value);
+    
+    value = TryConvertObjectToStringForParseMethod (value);
+    if (value is string)
+      return (string) value;
+
+    if (_parameter.Required)
+    {
+      throw new WxeException (string.Format (
+          "Only parameters that can be restored from their string representation may be converted to a string. Parameter: '{0}'.",
+          _parameter.Name));
+    }
+    return string.Empty;
+  }
+
+  protected object TryConvertStringToString (object value)
+  {
+    if (_parameter.Type != typeof (string))
+      return value;
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (string));
+
+    if (_parameter.Required && ((string) value) == string.Empty)
+    {
+      throw new WxeException (string.Format (
+          "Requried IN parameters of type String may not be empty. Parameter: '{0}'", _parameter.Name));
+    }
+    return (string) value;
+  }
+
+  protected object TryConvertObjectToStringForParseMethod (object value)
+  {
+    if (value == null)
+      return value;
+
+    if (   StringUtility.GetParseMethodWithFormatProvider (_parameter.Type) != null
+        || StringUtility.GetParseMethod (_parameter.Type) != null)
+    {
+      return value.ToString();
+    }
+    return value;
+  }
+
+  protected object TryConvertNullToString (object value)
+  {
     if (value == null)
     {
       if (_parameter.Required)
@@ -103,28 +157,7 @@ public class WxeParameterConverter
       }
       return string.Empty;
     }
-
-    if (_parameter.Type == typeof (string))
-      return (string) value;
-
-    //TypeConverter typeConverter = GetStringTypeConverter (_parameter.Type);
-    //if (typeConverter != null)
-    //  return typeConverter.ConvertToString (value);
-    
-    if (   StringUtility.GetParseMethodWithFormatProvider (_parameter.Type) != null
-        || StringUtility.GetParseMethod (_parameter.Type) != null)
-    {
-      return value.ToString();
-    }
-
-    if (_parameter.Required)
-    {
-      throw new WxeException (string.Format (
-          "Only parameters that can be restored from their string representation may be converted to a string. Parameter: '{0}'.",
-          _parameter.Name));
-    }
-
-    return string.Empty;
+    return value;
   }
 
   protected void CheckForRequiredOutParameter ()
