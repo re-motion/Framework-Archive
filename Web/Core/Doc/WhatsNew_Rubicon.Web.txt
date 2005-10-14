@@ -10,6 +10,45 @@
   * Die WXE lässt sich nicht mehr mit extern definierten einem FunctionToken initialisieren.
   
 - Rubicon.Web.ExecutionEngine.Mapping.MappingConfiguration
+  Wxe Function können nun auch via Pfad-Mapping (Friendly URL) identifiziert werden, statt wie bisher nur über den 
+  QueryParameter "WxeFunctionType".
+  
+  1. Angabe des Mapping-Files in der Web.Confg:
+    <rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration">
+      <executionEngine mappingFile="<PhysicalApplicationDir>\UrlMapping.xml"/>
+    </rubicon.web>
+  
+  2. Mapping-File:
+    <?xml version="1.0" encoding="UTF-8"?>
+    <mapping
+        application="MyApplication"
+        xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0 WxeMapping.xsd">
+	    <rules>
+		    <rule functionType="MyNamespace.MyFirstFunction,MyAssembly" path="first.wxe"/>
+		    <rule functionType="MyNamespace.MySecondFunction,MyAssembly" path="second.wxe"/>
+		    ...
+	    </rules>
+    </mapping>
+    Sowohl der Type als auch der Pfad müssen für sich eindeutig im gesamten Rule-Set sein.
+  
+  3. Falls nicht ashx als Extension verwendet wird:
+    Application Extension im IIS registrieren
+      aspnet_isapi.dll
+      All Verbs oder zumindest GET,HEAD,POST,DEBUG
+      Don't verify that file exists
+    HTTP Handler für die verwendete Extension in der Web.Config eintragen  
+      <httpHandlers>
+        <add verb="*" path="*.wxe" type="Rubicon.Web.ExecutionEngine.WxeHandler, Rubicon.Web" />
+      </httpHandlers>
+
+- Rubicon.Web.ExecutionEngine.WxePage
+  Wird Mapping verwendet so kann mittels ExecuteFunctionWithMappedPath bzw ExecuteFunctionNoRepostWithMappedPath
+  die URL für die WxeFunction ausgetauscht werden. Damit wird erreicht, dass der Benutzer immer die zur aktuellen 
+  Function passende Firendly URL sieht und bookmarken kann. Ist die Session abgelaufen, so kann er die zur 
+  Friendly URL passende Function neu starten.
+  Die bei der initialisierung verwendeten Parameter müssen sich dafür von und nach Strings konvertieren lassen.
   
 1.3.11
 ======

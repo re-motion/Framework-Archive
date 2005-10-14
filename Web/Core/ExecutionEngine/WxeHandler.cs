@@ -299,7 +299,8 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
   /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnUrl"/>. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessFunctionState/*' />
-  protected void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
+  protected void ProcessFunctionState (
+      HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNull ("functionState", functionState);
@@ -317,7 +318,8 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   ///   <paramref name="functionState"/>'s <see cref="WxeFunctionState.Function"/>.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ExecuteFunctionState/*' />
-  protected void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
+  protected void ExecuteFunctionState (
+      HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNull ("functionState", functionState);

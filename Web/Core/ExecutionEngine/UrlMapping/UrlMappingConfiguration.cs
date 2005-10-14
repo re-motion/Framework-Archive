@@ -9,6 +9,7 @@ using System.Reflection;
 using Rubicon.Utilities;
 using Rubicon.Xml;
 using Rubicon.Web.Configuration;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.ExecutionEngine.Mapping
 {
@@ -95,22 +96,24 @@ public class MappingRule
 
   public MappingRule (Type functionType, string path)
   {
-    ArgumentUtility.CheckNotNull ("functionType", functionType);
-
-    _functionType = functionType;
-    _functionTypeName = _functionType.AssemblyQualifiedName;
+    FunctionType = functionType;
     Path = path;
   }
 
   public MappingRule (string functionTypeName, string path)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("functionTypeName", functionTypeName);
-    ArgumentUtility.CheckNotNullOrEmpty ("path", path);
-
-    _functionTypeName = functionTypeName;
+    FunctionTypeName = functionTypeName;
     Path = path;
   }
 
+  /// <summary>
+  ///   The <see cref="Type"/> name of the <see cref="WxeFunction"/> identified by the <see cref="Path"/>. 
+  ///   Must not be <see langword="null"/> or empty. 
+  /// </summary>
+  /// <value> 
+  ///   A valid type name as defined by the 
+  ///   <see cref="TypeUtility.ParseAbbreviatedTypeName">TypeUtility.ParseAbbreviatedTypeName</see> method.
+  /// </value>
   [XmlAttribute ("functionType")]
   public string FunctionTypeName
   {
@@ -121,23 +124,35 @@ public class MappingRule
     set
     {
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      _functionTypeName = value; 
-      _functionType = null;
+      FunctionType = TypeUtility.GetType (value, true, true);
     }
   }
 
+  /// <summary> 
+  ///   The <see cref="Type"/> of the <see cref="WxeFunction"/> identified by the <see cref="Path"/>. 
+  ///   Must not be <see langword="null"/>. 
+  /// </summary>
+  /// <value> A <see cref="Type"/> derived from the <see cref="WxeFunction"/> type. </value>
   [XmlIgnore]
   public Type FunctionType
   {
     get
     {
-      if (_functionType == null)
-        _functionType = TypeUtility.GetType (_functionTypeName, true, true);
       return _functionType; 
+    }
+    set
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      if (! typeof (WxeFunction).IsAssignableFrom (value))
+        throw new ArgumentException (string.Format ("The FunctionType '{0}' must be derived from WxeFunction.", value), "value");
+      _functionType = value;
+      _functionTypeName = _functionType.AssemblyQualifiedName;
     }
   }
 
-  /// <summary> A path relative to the application root. Must not be <see langword-"null"/> or empty. </summary>
+  /// <summary> 
+  ///   The path associated with the <see cref="FunctionType"/>. Must not be <see langword="null"/> or empty. 
+  /// </summary>
   /// <value> A virtual path, relative to the application root. Will always start with <c>~/</c>. </value>
   [XmlAttribute ("path")]
   public string Path
@@ -189,7 +204,8 @@ public class MappingRuleCollection: CollectionBase
 
   public void Remove (MappingRule rule)
   {
-    List.Remove (rule);
+    if (rule != null)
+      List.Remove (rule);
   }
 
   protected override void OnValidate (object value)
