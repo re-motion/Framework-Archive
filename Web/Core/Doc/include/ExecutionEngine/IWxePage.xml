@@ -45,9 +45,12 @@
         <item>
           <para>
             The execution engine also offers the option of navigating to a sub-function, e.g. a details form, by 
-            calling the <see cref="ExecuteFunction"/> or <see cref="ExecuteFunctionNoRepost"/> methods. The new page
-            can be displayed in the same page or inside a new window. For details, please refer to the documentation 
-            of the afore mentioned execute methods.
+            calling the <see cref="ExecuteFunction"/> or <see cref="ExecuteFunctionNoRepost"/> methods. In case you
+            have a mapping definied, you can invoke the sub-function by calling <see cref="ExecuteFunctionWithMappedPath"/> 
+            or <see cref="ExecuteFunctionNoRepostWithMappedPath"/> methods. This changes the URL of the window hosting
+            the sub-function to the friendly URL defined in the mapping. The new page can be displayed in the current 
+            window or inside a new window. For details, please refer to the documentation of the afore mentioned 
+            execute methods.
           </para><para>
             After the sub-function has completed its execution, the execution engine returns control 
             to the calling page, optionally even to the same event handler. Evaluate the 
