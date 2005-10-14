@@ -9,15 +9,15 @@ using System.Xml.Schema;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.ExecutionEngine.Mapping;
+using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Utilities;
 using Rubicon.Web.UnitTests.AspNetFramework;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine.Mapping
+namespace Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping
 {
 
 [TestFixture]
-public class WxeMappingSchemaTest
+public class UrlMappingSchemaTest
 {
   [SetUp]
   public virtual void SetUp()
@@ -33,7 +33,7 @@ public class WxeMappingSchemaTest
   [ExpectedException (typeof (XmlSchemaException))]
   public void LoadMappingWithMissingPath()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\UrlMappingWithMissingPath.xml");
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingPath.xml");
     Assert.Fail();
   }
 
@@ -41,7 +41,7 @@ public class WxeMappingSchemaTest
   [ExpectedException (typeof (Exception))]
   public void LoadMappingWithEmptyPath()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml");
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml");
     Assert.Fail();
   }
 
@@ -49,7 +49,7 @@ public class WxeMappingSchemaTest
   [ExpectedException (typeof (XmlSchemaException))]
   public void LoadMappingWithMissingFunctionType()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml");
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml");
     Assert.Fail();
   }
 
@@ -57,7 +57,7 @@ public class WxeMappingSchemaTest
   [ExpectedException (typeof (Exception))]
   public void LoadMappingWithEmptyFunctionType()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml");
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml");
     Assert.Fail();
   }
 
@@ -65,7 +65,7 @@ public class WxeMappingSchemaTest
   [ExpectedException (typeof (Exception))]
   public void LoadMappingWithFunctionTypeHavingNoAssembly()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml");
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml");
     Assert.Fail();
   }
 }

@@ -10,21 +10,21 @@ using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.ExecutionEngine.Mapping;
+using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Utilities;
 using Rubicon.Web.UnitTests.AspNetFramework;
 using Rubicon.Web.UnitTests.Configuration;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine.Mapping
+namespace Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping
 {
 
 [TestFixture]
-public class WxeMappingTest
+public class UrlMappingTest
 {
   [SetUp]
   public virtual void SetUp()
   {
-    MappingConfiguration.SetCurrent (null);
+    UrlMappingConfiguration.SetCurrent (null);
   }
 
   [TearDown]
@@ -35,68 +35,68 @@ public class WxeMappingTest
   [Test]
   public void LoadMappingFromFile()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\UrlMapping.xml");
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMapping.xml");
 
     Assert.IsNotNull (mapping, "Mapping is null.");
     
-    Assert.IsNotNull (mapping.Rules, "Rules are null.");
-    Assert.AreEqual (2, mapping.Rules.Count);
+    Assert.IsNotNull (mapping.Mappings, "Rules are null.");
+    Assert.AreEqual (2, mapping.Mappings.Count);
 
-    Assert.IsNotNull (mapping.Rules[0], "First rule is null.");
-    Assert.IsNotNull (mapping.Rules[1], "Second rule is null.");
+    Assert.IsNotNull (mapping.Mappings[0], "First rule is null.");
+    Assert.IsNotNull (mapping.Mappings[1], "Second rule is null.");
     
-    Assert.AreEqual (typeof (FirstMappedFunction), mapping.Rules[0].FunctionType);
-    Assert.AreEqual ("~/First.wxe", mapping.Rules[0].Path);
-    Assert.AreEqual (typeof (SecondMappedFunction), mapping.Rules[1].FunctionType);
-    Assert.AreEqual ("~/Second.wxe", mapping.Rules[1].Path);
+    Assert.AreEqual (typeof (FirstMappedFunction), mapping.Mappings[0].FunctionType);
+    Assert.AreEqual ("~/First.wxe", mapping.Mappings[0].Resource);
+    Assert.AreEqual (typeof (SecondMappedFunction), mapping.Mappings[1].FunctionType);
+    Assert.AreEqual ("~/Second.wxe", mapping.Mappings[1].Resource);
   }
 
   [Test]
   [ExpectedException (typeof (FileNotFoundException))]
   public void LoadMappingFromFileWithInvalidFilename()
   {
-    MappingConfiguration mapping = MappingConfiguration.CreateMappingConfiguration (@"Res\InvalidFilename.xml");
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\InvalidFilename.xml");
     Assert.Fail();
   }
 
   [Test]
   public void GetCurrentMapping()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineMapping();
-    MappingConfiguration mapping = MappingConfiguration.Current;
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineUrlMapping();
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.Current;
     Assert.IsNotNull (mapping);
   }
 
   [Test]
   public void GetCurrentMappingFromConfiguration()
   {
-    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineMapping();
-    MappingConfiguration mapping = MappingConfiguration.Current;
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineUrlMapping();
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.Current;
 
     Assert.IsNotNull (mapping, "Mapping is null.");
     
-    Assert.IsNotNull (mapping.Rules, "Rules are null.");
-    Assert.AreEqual (2, mapping.Rules.Count);
+    Assert.IsNotNull (mapping.Mappings, "Rules are null.");
+    Assert.AreEqual (2, mapping.Mappings.Count);
 
-    Assert.IsNotNull (mapping.Rules[0], "First rule is null.");
-    Assert.IsNotNull (mapping.Rules[1], "Second rule is null.");
+    Assert.IsNotNull (mapping.Mappings[0], "First rule is null.");
+    Assert.IsNotNull (mapping.Mappings[1], "Second rule is null.");
     
-    Assert.AreEqual (typeof (FirstMappedFunction), mapping.Rules[0].FunctionType);
-    Assert.AreEqual ("~/First.wxe", mapping.Rules[0].Path);
-    Assert.AreEqual (typeof (SecondMappedFunction), mapping.Rules[1].FunctionType);
-    Assert.AreEqual ("~/Second.wxe", mapping.Rules[1].Path);
+    Assert.AreEqual (typeof (FirstMappedFunction), mapping.Mappings[0].FunctionType);
+    Assert.AreEqual ("~/First.wxe", mapping.Mappings[0].Resource);
+    Assert.AreEqual (typeof (SecondMappedFunction), mapping.Mappings[1].FunctionType);
+    Assert.AreEqual ("~/Second.wxe", mapping.Mappings[1].Resource);
   }
 
   [Test]
   public void GetCurrentMappingFromConfigurationWithNoFilemane()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineMappingWithNoFilename();
-    MappingConfiguration mapping = MappingConfiguration.Current;
+    UrlMappingConfiguration mapping = UrlMappingConfiguration.Current;
 
     Assert.IsNotNull (mapping, "Mapping is null.");
     
-    Assert.IsNotNull (mapping.Rules, "Rules are null.");
-    Assert.AreEqual (0, mapping.Rules.Count);
+    Assert.IsNotNull (mapping.Mappings, "Rules are null.");
+    Assert.AreEqual (0, mapping.Mappings.Count);
   }
 }
 
