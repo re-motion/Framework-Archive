@@ -1,43 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xs:schema 
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    xmlns:m="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
+    xmlns:m="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
     elementFormDefault="qualified" 
     attributeFormDefault="unqualified" 
-    targetNamespace="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
+    targetNamespace="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
     xml:lang="en">
 
   <!--<xs:import namespace="http://www.rubicon-it.com/Commons/Types" schemaLocation="Types.xsd" />-->
 
-  <xs:element name="mapping">
+  <xs:element name="urlMapping">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="rules" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="rule" type="m:ruleType" maxOccurs="unbounded" />
-            </xs:sequence>
-          </xs:complexType>
-
-          <xs:key name="functionTypeKey">
-            <xs:selector xpath="m:rule" />
-            <xs:field xpath="@functionType" />
-          </xs:key>
-
-          <xs:key name="pathKey">
-            <xs:selector xpath="m:rule" />
-            <xs:field xpath="@path" />
-          </xs:key>
-          
-        </xs:element>
+        <xs:element name="add" type="m:mappingEntry" maxOccurs="unbounded" />
       </xs:sequence>
 	    <xs:attribute name="application" type="m:requiredStringType" use="required" />
     </xs:complexType>
+    
+    <xs:key name="resourceKey">
+      <xs:selector xpath="m:add" />
+      <xs:field xpath="@resource" />
+    </xs:key>
+    
   </xs:element>
 
-  <xs:complexType name="ruleType">
-    <xs:attribute name="functionType" type="m:dotNetType" use="required" />
-    <xs:attribute name="path" type="m:requiredStringType" use="required" />
+  <xs:complexType name="mappingEntry">
+    <xs:attribute name="type" type="m:dotNetType" use="required" />
+    <xs:attribute name="resource" type="m:requiredStringType" use="required" />
   </xs:complexType>
   
 	<xs:simpleType name="requiredStringType">
