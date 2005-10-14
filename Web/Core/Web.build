@@ -35,7 +35,7 @@
         <includes name="Globalization/*.resx" />
         <includes name="UI/Globalization/*.resx" />
         <includes name="Configuration/WebConfiguration.xsd" />
-        <includes name="ExecutionEngine/Mapping/WxeMapping.xsd" />
+        <includes name="ExecutionEngine/UrlMapping/UrlMapping.xsd" />
       </resources>
     </csc>
         

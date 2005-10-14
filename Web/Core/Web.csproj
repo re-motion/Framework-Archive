@@ -420,33 +420,33 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\Mapping\ConfigurationBase.cs"
+                    RelPath = "ExecutionEngine\UrlMapping\ConfigurationBase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\Mapping\MappingConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\Mapping\MappingLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\Mapping\MappingSchema.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\Mapping\WxeMapping.xsd"
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMapping.xsd"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "ExecutionEngine\Mapping\WxeMapping.xsx"
-                    DependentUpon = "WxeMapping.xsd"
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMapping.xsx"
+                    DependentUpon = "UrlMapping.xsd"
                     BuildAction = "None"
+                />
+                <File
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingConfiguration.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingLoader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingSchema.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Globalization\WxePageInfo.de.resx"

@@ -14,17 +14,17 @@ namespace Rubicon.Web.UnitTests.Configuration
 
 public class WebConfigurationFactory
 {
-  public static WebConfiguration GetExecutionEngineMapping()
+  public static WebConfiguration GetExecutionEngineUrlMapping()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.ExecutionEngine.MappingFile = @"Res\UrlMapping.xml";
+    config.ExecutionEngine.UrlMappingFile = @"Res\UrlMapping.xml";
     return config;
   }
 
   public static WebConfiguration GetExecutionEngineMappingWithNoFilename()
   {
     WebConfigurationMock config = new WebConfigurationMock();
-    config.ExecutionEngine.MappingFile = null;
+    config.ExecutionEngine.UrlMappingFile = null;
     return config;
   }
 
