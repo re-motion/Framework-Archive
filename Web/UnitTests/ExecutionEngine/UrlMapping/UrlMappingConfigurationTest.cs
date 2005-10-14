@@ -46,9 +46,9 @@ public class WxeMappingTest
     Assert.IsNotNull (mapping.Rules[1], "Second rule is null.");
     
     Assert.AreEqual (typeof (FirstMappedFunction), mapping.Rules[0].FunctionType);
-    Assert.AreEqual ("First.wxe", mapping.Rules[0].Path);
+    Assert.AreEqual ("~/First.wxe", mapping.Rules[0].Path);
     Assert.AreEqual (typeof (SecondMappedFunction), mapping.Rules[1].FunctionType);
-    Assert.AreEqual ("Second.wxe", mapping.Rules[1].Path);
+    Assert.AreEqual ("~/Second.wxe", mapping.Rules[1].Path);
   }
 
   [Test]
@@ -82,9 +82,9 @@ public class WxeMappingTest
     Assert.IsNotNull (mapping.Rules[1], "Second rule is null.");
     
     Assert.AreEqual (typeof (FirstMappedFunction), mapping.Rules[0].FunctionType);
-    Assert.AreEqual ("First.wxe", mapping.Rules[0].Path);
+    Assert.AreEqual ("~/First.wxe", mapping.Rules[0].Path);
     Assert.AreEqual (typeof (SecondMappedFunction), mapping.Rules[1].FunctionType);
-    Assert.AreEqual ("Second.wxe", mapping.Rules[1].Path);
+    Assert.AreEqual ("~/Second.wxe", mapping.Rules[1].Path);
   }
 
   [Test]

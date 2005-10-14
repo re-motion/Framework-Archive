@@ -26,6 +26,8 @@ public class WxePageStep: WxeStep
   private string _viewState;
   private string _url;
   private bool _isRedirectingRequired = false;
+  private bool _isRedirected = false;
+  private bool _hasReturnedFromRedirect = false;
 
   /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
@@ -90,9 +92,6 @@ public class WxePageStep: WxeStep
     }
   }
 
-  private bool _isRedirected = false;
-  private bool _hasReturnedFromRedirect = false;
-
   /// <summary> 
   ///   Displays the <see cref="WxePageStep"/>'s page or the sub-function that has been invoked by the 
   ///   <see cref="ExecuteFunction"/> method.
@@ -117,7 +116,8 @@ public class WxePageStep: WxeStep
         Mapping.MappingRule rule = Mapping.MappingConfiguration.Current.Rules[_function.GetType()];
         if (rule != null)
         {
-          string remappedPath = "~/" + rule.Path;
+          _url = context.GetResumePath();
+          string remappedPath = rule.Path;
 
           NameValueCollection serializedParameters = _function.SerializeParametersForQueryString ();
           string queryString = string.Empty;
@@ -136,11 +136,14 @@ public class WxePageStep: WxeStep
       if (_isRedirectingRequired && _isRedirected && ! _hasReturnedFromRedirect)
       {
         _hasReturnedFromRedirect = true;
+        
+        //  Ensure FunctionToken
         string[] urlParts = _url.Split (new char[] {'?'}, 2);
         string path = urlParts[0];
         string queryString = (urlParts.Length == 2) ? urlParts[1] : null;
         string destinationUrl = WxeContext.GetResumePath (
             path, context.HttpContext.Response, context.FunctionToken, queryString);
+        
         PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
       }
 
@@ -242,10 +245,6 @@ public class WxePageStep: WxeStep
     MethodInfo saveViewStateMethod = typeof (Page).GetMethod ("SavePageViewState", BindingFlags.Instance | BindingFlags.NonPublic);
     saveViewStateMethod.Invoke (page, new object[0]); 
 
-    if (remapPath)
-      _url = page.Request.Url.PathAndQuery;
-    else
-      _url = null;
     _isRedirectingRequired = remapPath;
     Execute();
   }

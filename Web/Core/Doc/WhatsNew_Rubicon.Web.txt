@@ -9,6 +9,8 @@
 - Rubicon.Web.ExecutionEngine.WxeHandler
   * Die WXE lässt sich nicht mehr mit extern definierten einem FunctionToken initialisieren.
   
+- Rubicon.Web.ExecutionEngine.Mapping.MappingConfiguration
+  
 1.3.11
 ======
 - Rubicon.Web.Configuration.WcagConfiguration

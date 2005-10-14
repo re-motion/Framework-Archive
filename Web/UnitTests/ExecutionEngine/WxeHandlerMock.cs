@@ -31,9 +31,9 @@ public class WxeHandlerMock: WxeHandler
     return base.GetType (typeName);
   }
 
-  public new WxeFunctionState CreateNewFunctionState (HttpContext context, Type type, bool isMappedUrl)
+  public new WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
   {
-    return base.CreateNewFunctionState (context, type, isMappedUrl);
+    return base.CreateNewFunctionState (context, type);
   }
 
   public new WxeFunctionState ResumeExistingFunctionState (HttpContext context, string functionToken)
@@ -41,14 +41,14 @@ public class WxeHandlerMock: WxeHandler
     return base.ResumeExistingFunctionState (context, functionToken);
   }
 
-  public new void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
+  public new void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
   {
-    base.ProcessFunctionState (context, functionState, isNewFunction);
+    base.ProcessFunctionState (context, functionState, isNewFunction, hasMappedUrl);
   }
 
-  public new void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
+  public new void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
   {
-    base.ExecuteFunctionState (context, functionState, isNewFunction);
+    base.ExecuteFunctionState (context, functionState, isNewFunction, hasMappedUrl);
   }
 
   public new virtual void ExecuteFunction (WxeFunction function, WxeContext context, bool isNew)

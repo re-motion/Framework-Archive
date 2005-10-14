@@ -137,7 +137,8 @@ public class MappingRule
     }
   }
 
-  /// <summary> A path relative to the application root. </summary>
+  /// <summary> A path relative to the application root. Must not be <see langword-"null"/> or empty. </summary>
+  /// <value> A virtual path, relative to the application root. Will always start with <c>~/</c>. </value>
   [XmlAttribute ("path")]
   public string Path
   {
@@ -150,8 +151,10 @@ public class MappingRule
       ArgumentUtility.CheckNotNull ("value", value);
       value = value.Trim();
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      value.TrimStart (new char[]{'~'});
-      value.TrimStart (new char[]{'/'});
+      if (value.StartsWith ("/") || value.IndexOf (":") != -1)
+        throw new ArgumentException (string.Format ("No absolute paths are allowed. Path: '{0}'", value), "value");
+      if (! value.StartsWith ("~/"))
+        value = "~/" + value;
       _path = value; 
     }
   }

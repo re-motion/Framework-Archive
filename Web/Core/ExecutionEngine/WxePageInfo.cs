@@ -365,11 +365,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
     WxeContext wxeContext = WxeContext.Current;
-    string queryString = null;
-    if (wxeContext.HasMappedUrl)
-      queryString = wxeContext.QueryString;
-
-    ExecuteFunction (function, target, features, sender, returningPostback, queryString, null);
+    ExecuteFunction (function, target, features, sender, returningPostback, wxeContext.QueryString, null);
   }
 
   /// <summary>
@@ -396,7 +392,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     else
     {
-      string path = "~/" + rule.Path;
+      string path = rule.Path;
       NameValueCollection serializedParameters = function.SerializeParametersForQueryString ();
       string queryString = string.Empty;
       foreach (string key in serializedParameters)
@@ -413,8 +409,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     WxeContext wxeContext = WxeContext.Current;
     HttpContext httpContext = wxeContext.HttpContext;
     bool enableCleanUp = !returningPostback;
-    WxeFunctionState functionState = 
-        new WxeFunctionState (function, queryString, wxeContext.HasMappedUrl, enableCleanUp);
+    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
 

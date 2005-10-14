@@ -123,21 +123,35 @@ public class XmlSerializationUtility
     ArgumentUtility.CheckNotNull ("type", type);
 
     XmlTypeAttribute[] xmlTypes = (XmlTypeAttribute[]) type.GetCustomAttributes (typeof (XmlTypeAttribute), true);
-    if (xmlTypes.Length == 0) 
+    XmlRootAttribute[] xmlRoots = (XmlRootAttribute[]) type.GetCustomAttributes (typeof (XmlRootAttribute), true);
+    
+    bool hasXmlType = xmlTypes.Length == 1;
+    bool hasXmlRoot = xmlRoots.Length == 1;
+    if (! hasXmlType && ! hasXmlRoot) 
     {
       throw new ArgumentException (string.Format (
-          "Cannot determine the xml namespace of type '{0}' because no XmlTypeAttribute has been provided.", type),
+              "Cannot determine the xml namespace of type '{0}' because no neither an XmlTypeAttribute nor an "
+              + "XmlRootAttribute has been provided.", type),
           "type");
     }
 
-    XmlTypeAttribute xmlType = xmlTypes[0];
-    if (StringUtility.IsNullOrEmpty (xmlType.Namespace))
+    XmlTypeAttribute xmlType = hasXmlType ? xmlTypes[0] : null;
+    XmlRootAttribute xmlRoot = hasXmlRoot ? xmlRoots[0] : null;
+
+    bool hasXmlTypeNamespace = hasXmlType ? (! StringUtility.IsNullOrEmpty (xmlType.Namespace)) : false;
+    bool hasXmlRootNamespace = hasXmlRoot ? (! StringUtility.IsNullOrEmpty (xmlRoot.Namespace)) : false;
+    if (! hasXmlTypeNamespace && ! hasXmlRootNamespace)
     {
       throw new ArgumentException (string.Format (
-          "Cannot determine the xml namespace of type '{0}' because XmlTypeAttribute does not define a 'Namespace'.", type),
+              "Cannot determine the xml namespace of type '{0}' because neither an XmlTypeAttribute nor an "
+              + "XmlRootAttribute is used to define a namespace for the type.", type),
           "type");
     }
-    return xmlType.Namespace;
+
+    if (hasXmlRootNamespace)
+      return xmlRoot.Namespace;
+    else
+      return xmlType.Namespace;
   }
 
   /// <exclude />

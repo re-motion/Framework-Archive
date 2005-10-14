@@ -3,7 +3,8 @@
 - Rubicon.Xml.XmlSerializationUtility
   * DeserializeUsingSchema (XmlTextReader, string, Type, string schemaUri, XmlReader schemaReader) und
     DeserializeUsingSchema (XmlReader, string, Type, string schemaUri, XmlReader schemaReader) 
-    erwarten den Namespace für Type nun im XmlTypeAttribute anstatt dass schemaUri verwendet wird.
+    erwarten den Namespace für Type nun im XmlRootAttribute oder im XmlTypeAttribute anstatt dass der Parameter 
+    schemaUri verwendet wird.
 
 - Rubicon.NullableValuteTypes.NaDouble:
     Bugfix: Parsing hat NumberStyle.Integer verwendet.

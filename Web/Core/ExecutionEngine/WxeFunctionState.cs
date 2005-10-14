@@ -100,40 +100,26 @@ public class WxeFunctionState
   private DateTime _lastAccess;
   private int _lifetime;
   private string _functionToken;
-  private string _queryString;
   private bool _isAborted;
   private bool _isCleanUpEnabled;
   private int _postBackID;
-  private bool _hasMappedUrl;
 
-  public WxeFunctionState (WxeFunction function, string queryString, bool hasMappedUrl, bool enableCleanUp)
+  public WxeFunctionState (WxeFunction function, bool enableCleanUp)
     : this (
         function, 
         WebConfiguration.Current.ExecutionEngine.FunctionTimeout, 
-        queryString, 
-        hasMappedUrl,
         enableCleanUp)
   {
   }
 
   public WxeFunctionState (
-      WxeFunction function, int lifetime, string queryString, bool hasMappedUrl, bool enableCleanUp)
+      WxeFunction function, int lifetime, bool enableCleanUp)
   {
     ArgumentUtility.CheckNotNull ("function", function);
     _function = function;
     _lastAccess = DateTime.Now;
     _lifetime = lifetime;
     _functionToken = Guid.NewGuid().ToString();
-
-    queryString = StringUtility.NullToEmpty (queryString);
-    if (queryString.StartsWith ("?"))
-      _queryString = queryString;
-    else      
-      _queryString = "?" + queryString;
-    if (_queryString == "?")
-      _queryString = string.Empty;
-    
-    _hasMappedUrl = hasMappedUrl;
     _isCleanUpEnabled = enableCleanUp;
     _postBackID = 0;
   }
@@ -156,16 +142,6 @@ public class WxeFunctionState
   public string FunctionToken
   {
     get { return _functionToken; }
-  }
-
-  public string QueryString
-  {
-    get { return _queryString; }
-  }
-
-  public bool HasMappedUrl
-  {
-    get { return _hasMappedUrl; }
   }
 
   /// <summary> 
