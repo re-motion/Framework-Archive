@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping 
+<urlMapping 
     application="Rubicon.Web.UnitTests"
-    xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0" 
+    xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0 WxeMapping.xsd">
-	<rules>
-		<rule 
-		    functionType=""
-		    path="First.wxe"/>
-	</rules>
-</mapping>
+    xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
+		<add 
+		    type=""
+		    resource="First.wxe"/>
+</urlMapping>

@@ -241,17 +241,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\Mapping\MappedFunctions.cs"
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMappedFunctions.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\Mapping\WxeMappingSchemaTest.cs"
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingSchemaTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\Mapping\WxeMappingTest.cs"
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
