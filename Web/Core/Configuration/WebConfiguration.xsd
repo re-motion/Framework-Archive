@@ -14,7 +14,7 @@
             <xs:attribute name="enableSessionManagement" type="xs:boolean" default="true" />
             <xs:attribute name="refreshInterval" type="xs:int" default="10" />
             <xs:attribute name="viewStateInSession" type="xs:boolean" default="true" />
-            <xs:attribute name="mappingFile" type="xs:string" default="" />
+            <xs:attribute name="urlMappingFile" type="xs:string" default="" />
           </xs:complexType>
         </xs:element>
         <xs:element name="wcag" minOccurs="0" maxOccurs="1">

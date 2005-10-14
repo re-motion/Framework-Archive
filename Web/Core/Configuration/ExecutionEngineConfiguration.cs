@@ -18,7 +18,7 @@ public class ExecutionEngineConfiguration
   private bool _enableSessionManagement = true;
   private int _refreshInterval = 10;
   private bool _viewStateInSession = true;
-  private string _mappingFile = string.Empty;
+  private string _urlMappingFile = string.Empty;
 
   /// <summary> Gets or sets the default timeout for individual functions within one session. </summary>
   /// <value> The timeout in mintues. Defaults to 20 minutes. </value>
@@ -58,11 +58,11 @@ public class ExecutionEngineConfiguration
 
   /// <summary> Gets or sets the path to the file holding the URL mapping configuration. </summary>
   /// <value> A string. Defaults to an empty string. </value>
-  [XmlAttribute ("mappingFile")]
-  public string MappingFile
+  [XmlAttribute ("urlMappingFile")]
+  public string UrlMappingFile
   {
-    get { return _mappingFile; }
-    set { _mappingFile = StringUtility.NullToEmpty (value); }
+    get { return _urlMappingFile; }
+    set { _urlMappingFile = StringUtility.NullToEmpty (value); }
   }
 }
 
