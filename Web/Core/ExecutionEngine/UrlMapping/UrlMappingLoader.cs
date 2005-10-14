@@ -8,9 +8,9 @@ using Rubicon.Utilities;
 using Rubicon.Xml;
 using Rubicon.Web.Configuration;
 
-namespace Rubicon.Web.ExecutionEngine.Mapping
+namespace Rubicon.Web.ExecutionEngine.UrlMapping
 {
-public class MappingLoader
+public class UrlMappingLoader
 {
   // types
 
@@ -24,16 +24,16 @@ public class MappingLoader
 
   // construction and disposing
 
-  public MappingLoader (string configurationFile, Type type)
+  public UrlMappingLoader (string configurationFile, Type type)
   {
-    Initialize (configurationFile, type, new MappingSchema());
+    Initialize (configurationFile, type, new UrlMappingSchema());
   }
 
   // methods and properties
 
-  public MappingConfiguration CreateMappingConfiguration()
+  public UrlMappingConfiguration CreateUrlMappingConfiguration()
   {
-    return (MappingConfiguration) LoadConfiguration (_configurationFile, _type, _schemas);
+    return (UrlMappingConfiguration) LoadConfiguration (_configurationFile, _type, _schemas);
   }
 
   protected void Initialize (string configurationFile, Type type, params SchemaBase[] schemas)

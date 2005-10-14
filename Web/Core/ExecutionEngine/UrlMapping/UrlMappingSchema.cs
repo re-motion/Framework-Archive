@@ -9,12 +9,12 @@ using Rubicon.Utilities;
 using Rubicon.Xml;
 using Rubicon.Web.Configuration;
 
-namespace Rubicon.Web.ExecutionEngine.Mapping
+namespace Rubicon.Web.ExecutionEngine.UrlMapping
 {
 
 public abstract class SchemaBase
 {
-  protected abstract string Schema { get; }
+  protected abstract string SchemaFile { get; }
   public abstract string SchemaUri { get; }
 
   /// <summary> Gets an <see cref="XmlReader"/> reader for the schema embedded in the assembly. </summary>
@@ -22,30 +22,30 @@ public abstract class SchemaBase
   public XmlReader GetSchemaReader ()
   {
     Assembly assembly = Assembly.GetExecutingAssembly();
-    Stream schema = assembly.GetManifestResourceStream (GetType(), Schema);
-    if (schema == null)
+    Stream schemaStream = assembly.GetManifestResourceStream (GetType(), SchemaFile);
+    if (schemaStream == null)
     {
       throw new ApplicationException (string.Format (
-          "Error loading schema resource '{0}' from assembly '{1}'.", Schema, assembly.FullName));
+          "Error loading schema resource '{0}' from assembly '{1}'.", SchemaFile, assembly.FullName));
     }
-    return new XmlTextReader (schema);
+    return new XmlTextReader (schemaStream);
   }
 }
 
-public class MappingSchema: SchemaBase
+public class UrlMappingSchema: SchemaBase
 {
-  public MappingSchema()
+  public UrlMappingSchema()
   {
   }
 
-  protected override string Schema
+  protected override string SchemaFile
   {
-    get { return "WxeMapping.xsd"; }
+    get { return "UrlMapping.xsd"; }
   }
 
   public override string SchemaUri
   {
-    get { return MappingConfiguration.SchemaUri; }
+    get { return UrlMappingConfiguration.SchemaUri; }
   }
 }
 
