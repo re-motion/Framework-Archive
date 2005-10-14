@@ -377,7 +377,7 @@ public class Command: IControlItem
       function.InitializeParameters (WxeFunctionCommand.Parameters, parameters);
 
       if (hasTarget)
-        wxePage.ExecuteFunction (function, target, null, false);
+        wxePage.ExecuteFunctionExternal (function, target, null, false);
       else
         wxePage.ExecuteFunction (function);
     }
