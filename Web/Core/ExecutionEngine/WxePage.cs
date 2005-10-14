@@ -53,14 +53,14 @@ public interface IWxePage: IPage, IWxeTemplateControl
 
   /// <summary> 
   ///   Executes a WXE function in another window or frame using the path specified in the 
-  ///   <see cref="Mapping.MappingConfiguration"/>.
+  ///   <see cref="Mapping.UrlMappingConfiguration"/>.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionWithMappedPath/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
   void ExecuteFunctionWithMappedPath (WxeFunction function, string target, Control sender, bool returningPostback);
 
   /// <summary> 
   ///   Executes a WXE function in another window or frame using the path specified in the 
-  ///   <see cref="Mapping.MappingConfiguration"/>.
+  ///   <see cref="Mapping.UrlMappingConfiguration"/>.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionWithMappedPath/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
   void ExecuteFunctionWithMappedPath (
@@ -68,7 +68,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
 
   /// <summary> 
   ///   Executes a WXE function in the current window and redirects the browser to the path specified in the 
-  ///   <see cref="Mapping.MappingConfiguration"/> while the function executes.
+  ///   <see cref="Mapping.UrlMappingConfiguration"/> while the function executes.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function"]' />
   void ExecuteFunction (WxeFunction function);
@@ -87,7 +87,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
 
   /// <summary>
   ///   Executes a WXE function in the current window without triggering the current post back event on returning.
-  ///   The browser will be redirected to the path specified in the <see cref="Mapping.MappingConfiguration"/> 
+  ///   The browser will be redirected to the path specified in the <see cref="Mapping.UrlMappingConfiguration"/> 
   ///   while the function executes.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender"]' />
@@ -95,7 +95,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
   
   /// <summary>
   ///   Executes a WXE function in the current window without triggering the current post back event on returning.
-  ///   The browser will be redirected to the path specified in the <see cref="Mapping.MappingConfiguration"/> 
+  ///   The browser will be redirected to the path specified in the <see cref="Mapping.UrlMappingConfiguration"/> 
   ///   while the function executes.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
@@ -161,7 +161,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   /// <summary> 
   ///   Executes a WXE function in another window or frame using the path specified in the 
-  ///   <see cref="Mapping.MappingConfiguration"/>.
+  ///   <see cref="Mapping.UrlMappingConfiguration"/>.
   /// </summary>
   /// <remarks> Falls back to the current execution path no mapping can be found for the <paramref name="function"/>. </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionWithMappedPath/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
@@ -176,7 +176,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   /// <summary> 
   ///   Executes a WXE function in another window or frame using the path specified in the 
-  ///   <see cref="Mapping.MappingConfiguration"/>.
+  ///   <see cref="Mapping.UrlMappingConfiguration"/>.
   /// </summary>
   /// <remarks> Falls back to the current execution path no mapping can be found for the <paramref name="function"/>. </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionWithMappedPath/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
@@ -199,7 +199,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   /// <summary> 
   ///   Executes a WXE function in the current window and redirects the browser to the path specified in the 
-  ///   <see cref="Mapping.MappingConfiguration"/> while the function executes.
+  ///   <see cref="Mapping.UrlMappingConfiguration"/> while the function executes.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionWithMappedPath/param[@name="function"]' />
   public void ExecuteFunctionWithMappedPath (WxeFunction function)
@@ -234,7 +234,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   /// <summary>
   ///   Executes the specified WXE function, then returns to this page without causing the current event again.
-  ///   The browser will be redirected to the path specified in the <see cref="Mapping.MappingConfiguration"/> 
+  ///   The browser will be redirected to the path specified in the <see cref="Mapping.UrlMappingConfiguration"/> 
   ///   while the function executes.
   /// </summary>
   /// <remarks>
@@ -248,7 +248,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   /// <summary>
   ///   Executes the specified WXE function, then returns to this page without causing the current event again.
-  ///   The browser will be redirected to the path specified in the <see cref="Mapping.MappingConfiguration"/> 
+  ///   The browser will be redirected to the path specified in the <see cref="Mapping.UrlMappingConfiguration"/> 
   ///   while the function executes.
   /// </summary>
   /// <remarks>
