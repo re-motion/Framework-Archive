@@ -24,10 +24,10 @@ public class WxePageStep: WxeStep
   private WxeFunction _function;
   private NameValueCollection _postBackCollection;
   private string _viewState;
-  private string _url;
   private bool _isRedirectingRequired = false;
   private bool _isRedirected = false;
   private bool _hasReturnedFromRedirect = false;
+  private string _resumeUrl;
 
   /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
@@ -116,7 +116,7 @@ public class WxePageStep: WxeStep
         Mapping.MappingRule rule = Mapping.MappingConfiguration.Current.Rules[_function.GetType()];
         if (rule != null)
         {
-          _url = context.GetResumePath();
+          _resumeUrl = context.GetResumePath();
           string remappedPath = rule.Path;
 
           NameValueCollection serializedParameters = _function.SerializeParametersForQueryString ();
@@ -135,16 +135,8 @@ public class WxePageStep: WxeStep
       
       if (_isRedirectingRequired && _isRedirected && ! _hasReturnedFromRedirect)
       {
-        _hasReturnedFromRedirect = true;
-        
-        //  Ensure FunctionToken
-        string[] urlParts = _url.Split (new char[] {'?'}, 2);
-        string path = urlParts[0];
-        string queryString = (urlParts.Length == 2) ? urlParts[1] : null;
-        string destinationUrl = WxeContext.GetResumePath (
-            path, context.HttpContext.Response, context.FunctionToken, queryString);
-        
-        PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
+        _hasReturnedFromRedirect = true;        
+        PageUtility.Redirect (context.HttpContext.Response, _resumeUrl);
       }
 
       //  This is the PageStep after the sub-function has completed execution
