@@ -113,11 +113,11 @@ public class WxePageStep: WxeStep
       
       if (_isRedirectingRequired && ! _isRedirected)
       {
-        Mapping.MappingRule rule = Mapping.MappingConfiguration.Current.Rules[_function.GetType()];
-        if (rule != null)
+        UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[_function.GetType()];
+        if (mapping != null)
         {
           _resumeUrl = context.GetResumePath();
-          string remappedPath = rule.Path;
+          string remappedPath = mapping.Resource;
 
           NameValueCollection serializedParameters = _function.SerializeParametersForQueryString ();
           string queryString = string.Empty;

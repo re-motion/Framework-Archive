@@ -385,14 +385,14 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     ArgumentUtility.CheckNotNull ("function", function);
 
-    Mapping.MappingRule rule = Mapping.MappingConfiguration.Current.Rules[function.GetType()];
-    if (rule == null)
+    UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[function.GetType()];
+    if (mapping == null)
     {
       ExecuteFunction (function, target, features, sender, returningPostback);
     }
     else
     {
-      string path = rule.Path;
+      string path = mapping.Resource;
       NameValueCollection serializedParameters = function.SerializeParametersForQueryString ();
       string queryString = string.Empty;
       foreach (string key in serializedParameters)
