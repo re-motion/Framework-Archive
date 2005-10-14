@@ -126,19 +126,19 @@ public class SessionForm : WxePage
   private void OpenSampleFunctionWithMappedPathButton_Click(object sender, System.EventArgs e)
   {
     if (! IsReturningPostBack)
-      ExecuteFunctionWithMappedPath (new SampleWxeFunction());
+      ExecuteFunction (new SampleWxeFunction(), true, true);
   }
 
   private void OpenSampleFunctionInNewWindowButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunction (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true);
+      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true);
   }
 
   private void OpenSampleFunctionWithMappedPathInNewWindowButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunctionWithMappedPath (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true);
+      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true, true, true);
   }
 
 }
