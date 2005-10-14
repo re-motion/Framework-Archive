@@ -11,48 +11,48 @@ using Rubicon.Xml;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.ExecutionEngine;
 
-namespace Rubicon.Web.ExecutionEngine.Mapping
+namespace Rubicon.Web.ExecutionEngine.UrlMapping
 {
 
-[XmlType (MappingConfiguration.ElementName, Namespace = MappingConfiguration.SchemaUri)]
-public class MappingConfiguration: ConfigurationBase
+[XmlType (UrlMappingConfiguration.ElementName, Namespace = UrlMappingConfiguration.SchemaUri)]
+public class UrlMappingConfiguration: ConfigurationBase
 {
   /// <summary> The name of the root element. </summary>
   /// <remarks> <c>mapping</c> </remarks>
-  public const string ElementName = "mapping";
+  public const string ElementName = "urlMapping";
 
   /// <summary> The namespace of the mapping's schema. </summary>
-  /// <remarks> <c>http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0</c> </remarks>
-  public const string SchemaUri = "http://www.rubicon-it.com/Commons/Web/ExecutionEngine/Mapping/1.0";
+  /// <remarks> <c>http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0</c> </remarks>
+  public const string SchemaUri = "http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0";
 
-  private static MappingConfiguration s_current = null;
+  private static UrlMappingConfiguration s_current = null;
 
-  public static MappingConfiguration CreateMappingConfiguration (string configurationFile)
+  public static UrlMappingConfiguration CreateUrlMappingConfiguration (string configurationFile)
   {
-    MappingLoader loader = new MappingLoader (configurationFile, typeof (MappingConfiguration));
-    return loader.CreateMappingConfiguration();
+    UrlMappingLoader loader = new UrlMappingLoader (configurationFile, typeof (UrlMappingConfiguration));
+    return loader.CreateUrlMappingConfiguration();
   }
 
-  /// <summary> Gets the current <see cref="MappingConfiguration"/>. </summary>
-  public static MappingConfiguration Current
+  /// <summary> Gets the current <see cref="UrlMappingConfiguration"/>. </summary>
+  public static UrlMappingConfiguration Current
   {
     get
     {
       if (s_current == null)
       {
-        lock (typeof (MappingConfiguration))
+        lock (typeof (UrlMappingConfiguration))
         {
           if (s_current == null)
           {
-            string mappingFile = WebConfiguration.Current.ExecutionEngine.MappingFile;
+            string mappingFile = WebConfiguration.Current.ExecutionEngine.UrlMappingFile;
             if (StringUtility.IsNullOrEmpty (mappingFile))
             {
-              s_current = new MappingConfiguration();
+              s_current = new UrlMappingConfiguration();
             }
             else
             {
-              s_current = MappingConfiguration.CreateMappingConfiguration (
-                  WebConfiguration.Current.ExecutionEngine.MappingFile);
+              s_current = UrlMappingConfiguration.CreateUrlMappingConfiguration (
+                  WebConfiguration.Current.ExecutionEngine.UrlMappingFile);
             }
           }
         }
@@ -61,60 +61,60 @@ public class MappingConfiguration: ConfigurationBase
     }
   }
 
-  /// <summary> Sets the current <see cref="MappingConfiguration"/>. </summary>
-  public static void SetCurrent (MappingConfiguration mapping)
+  /// <summary> Sets the current <see cref="UrlMappingConfiguration"/>. </summary>
+  public static void SetCurrent (UrlMappingConfiguration mappingConfiguration)
   {
-    lock (typeof (MappingConfiguration))
+    lock (typeof (UrlMappingConfiguration))
     {
-      s_current = mapping;
+      s_current = mappingConfiguration;
     }
   }
 
-  private MappingRuleCollection _rules = new MappingRuleCollection();
+  private UrlMappingCollection _mappings = new UrlMappingCollection();
 
-  public MappingConfiguration()
+  public UrlMappingConfiguration()
   {
   }
 
-  [XmlArray ("rules")]
-  public MappingRuleCollection Rules
+  [XmlElement ("add")]
+  public UrlMappingCollection Mappings
   {
-    get { return _rules; }
+    get { return _mappings; }
   }
 }
 
-[XmlType ("rule", Namespace = MappingConfiguration.SchemaUri)]
-public class MappingRule
+[XmlType ("add", Namespace = UrlMappingConfiguration.SchemaUri)]
+public class UrlMapping
 {
   private string _functionTypeName = null;
   private Type _functionType = null;
-  private string _path = null;
+  private string _resource = null;
 
-  public MappingRule()
+  public UrlMapping()
   {
   }
 
-  public MappingRule (Type functionType, string path)
+  public UrlMapping (Type functionType, string resource)
   {
     FunctionType = functionType;
-    Path = path;
+    Resource = resource;
   }
 
-  public MappingRule (string functionTypeName, string path)
+  public UrlMapping (string functionTypeName, string resource)
   {
     FunctionTypeName = functionTypeName;
-    Path = path;
+    Resource = resource;
   }
 
   /// <summary>
-  ///   The <see cref="Type"/> name of the <see cref="WxeFunction"/> identified by the <see cref="Path"/>. 
+  ///   The <see cref="Type"/> name of the <see cref="WxeFunction"/> identified by the <see cref="Resource"/>. 
   ///   Must not be <see langword="null"/> or empty. 
   /// </summary>
   /// <value> 
   ///   A valid type name as defined by the 
   ///   <see cref="TypeUtility.ParseAbbreviatedTypeName">TypeUtility.ParseAbbreviatedTypeName</see> method.
   /// </value>
-  [XmlAttribute ("functionType")]
+  [XmlAttribute ("type")]
   public string FunctionTypeName
   {
     get 
@@ -129,7 +129,7 @@ public class MappingRule
   }
 
   /// <summary> 
-  ///   The <see cref="Type"/> of the <see cref="WxeFunction"/> identified by the <see cref="Path"/>. 
+  ///   The <see cref="Type"/> of the <see cref="WxeFunction"/> identified by the <see cref="Resource"/>. 
   ///   Must not be <see langword="null"/>. 
   /// </summary>
   /// <value> A <see cref="Type"/> derived from the <see cref="WxeFunction"/> type. </value>
@@ -154,12 +154,12 @@ public class MappingRule
   ///   The path associated with the <see cref="FunctionType"/>. Must not be <see langword="null"/> or empty. 
   /// </summary>
   /// <value> A virtual path, relative to the application root. Will always start with <c>~/</c>. </value>
-  [XmlAttribute ("path")]
-  public string Path
+  [XmlAttribute ("resource")]
+  public string Resource
   {
     get 
     { 
-      return _path; 
+      return _resource; 
     }
     set 
     {
@@ -167,95 +167,93 @@ public class MappingRule
       value = value.Trim();
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
       if (value.StartsWith ("/") || value.IndexOf (":") != -1)
-        throw new ArgumentException (string.Format ("No absolute paths are allowed. Path: '{0}'", value), "value");
+        throw new ArgumentException (string.Format ("No absolute paths are allowed. Resource: '{0}'", value), "value");
       if (! value.StartsWith ("~/"))
         value = "~/" + value;
-      _path = value; 
+      _resource = value; 
     }
   }
 }
 
-public class MappingRuleCollection: CollectionBase
+public class UrlMappingCollection: CollectionBase
 {
-  public MappingRuleCollection()
+  public UrlMappingCollection()
   {
   }
 
-  public MappingRule this[int index]
+  public UrlMapping this[int index]
   {
-    get { return (MappingRule) List[index]; }
+    get { return (UrlMapping) List[index]; }
     set { List[index] = value; }
   }
 
-  public MappingRule this[string path]
+  public UrlMapping this[string path]
   {
     get { return Find (path); }
   }
 
-  public MappingRule this[Type functionType]
+  public UrlMapping this[Type functionType]
   {
     get { return Find (functionType); }
   }
 
-  public int Add (MappingRule rule)
+  public int Add (UrlMapping mapping)
   {
-    return List.Add (rule);
+    return List.Add (mapping);
   }
 
-  public void Remove (MappingRule rule)
+  public void Remove (UrlMapping mapping)
   {
-    if (rule != null)
-      List.Remove (rule);
+    if (mapping != null)
+      List.Remove (mapping);
   }
 
   protected override void OnValidate (object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (MappingRule));
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (UrlMapping));
     base.OnValidate (value);
-    MappingRule rule = (MappingRule) value;
-    if (Find (rule.Path) != null)
-      throw new ArgumentException (string.Format ("The mapping already contains a rule with a Path of '{0}'.", rule.Path), "value");
-    if (Find (rule.FunctionType) != null)
-      throw new ArgumentException (string.Format ("The mapping already contains a rule with a FunctionType of '{0}'.", rule.FunctionType), "value");
+    UrlMapping mapping = (UrlMapping) value;
+    if (Find (mapping.Resource) != null)
+      throw new ArgumentException (string.Format ("The mapping already contains an entry for the following resource: '{0}'.", mapping.Resource), "value");
   }
 
   public Type FindType (string path)
   {
-    MappingRule rule = Find (path);
-    if (rule == null)
+    UrlMapping mapping = Find (path);
+    if (mapping == null)
       return null;
-    return rule.FunctionType;
+    return mapping.FunctionType;
   }
 
-  public string FindPath (Type type)
+  public string FindResource (Type type)
   {
-    MappingRule rule = Find (type);
-    if (rule == null)
+    UrlMapping mapping = Find (type);
+    if (mapping == null)
       return null;
-    return rule.Path;
+    return mapping.Resource;
   }
 
-  public string FindPath (string typeName)
+  public string FindResource (string typeName)
   {
     if (StringUtility.IsNullOrEmpty (typeName))
       return null;
     Type type = TypeUtility.GetType (typeName, true, true);
-    return FindPath (type);
+    return FindResource (type);
   }
 
-  public MappingRule Find (string path)
+  public UrlMapping Find (string path)
   {
     if (StringUtility.IsNullOrEmpty (path))
       return null;
     for (int i = 0; i < Count; i++)
     {
-      if (string.Compare (this[i].Path, path, true) == 0)
+      if (string.Compare (this[i].Resource, path, true) == 0)
         return this[i];
     }
     return null;
   }
 
-  public MappingRule Find (Type functionType)
+  public UrlMapping Find (Type functionType)
   {
     if (functionType == null)
       return null;
