@@ -182,7 +182,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     
     string path = request.Url.AbsolutePath.Substring (root.Length);
 
-    return Mapping.MappingConfiguration.Current.Rules.FindType ("~/" + path);
+    return UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType ("~/" + path);
   }
 
   /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="typeName"/>. </summary>
