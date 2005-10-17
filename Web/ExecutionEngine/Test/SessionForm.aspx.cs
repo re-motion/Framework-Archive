@@ -83,7 +83,7 @@ public class SessionForm : WxePage
   private void OpenSelfButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunction (new SessionWxeFunction (true), "_blank", OpenSelfButton, true);
+      ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", OpenSelfButton, true);
   }
 
   private void Button1_Click(object sender, System.EventArgs e)

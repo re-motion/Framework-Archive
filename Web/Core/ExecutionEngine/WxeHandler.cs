@@ -64,6 +64,9 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     public const string Cancel = "Cancel";
   }
 
+  private int c_httpRequestTimeout = 408;
+  private int c_httpResourceNotFound = 404;
+
   /// <summary> Gets a flag indication whether session management is enabled for the application. </summary>
   /// <value> <see langword="true"/> if session management is enabled. </value>
   /// <remarks> Without session management both session refreshing and session aborting are disabled. </remarks>
@@ -147,7 +150,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       if (File.Exists (context.Request.PhysicalPath))
         throw new HttpException (string.Format ("Missing URL parameter '{0}'", Parameters.WxeFunctionType));
       else
-        throw new HttpException (string.Format ("Could not map the path '{0}' to a Function Type.", context.Request.Path));
+        throw new HttpException (c_httpResourceNotFound, string.Format ("Could not map the path '{0}' to a Function Type.", context.Request.Path));
     }
   }
 
@@ -248,29 +251,31 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     bool isAbort =   StringUtility.AreEqual (action, Actions.Abort, true) 
                   || StringUtility.AreEqual (action, Actions.Cancel, true);
     bool isPostBackAction = isRefresh || isAbort;
+    
+    bool isGetRequest = ! StringUtility.IsNullOrEmpty (context.Request.QueryString[Parameters.WxeFunctionToken]);
 
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     if (functionStates == null)
     {
-      if (! isPostBackAction)
+      if (isGetRequest && ! isPostBackAction)
       {
         Type type = ParseUrl (context.Request);
         if (type != null)
           return CreateNewFunctionState (context, type);
       }
-      throw new ApplicationException ("Session timeout."); // TODO: display error message
+      throw new HttpException (c_httpRequestTimeout, "Session timeout."); // TODO: display error message
     }
 
     WxeFunctionState functionState = functionStates.GetItem (functionToken);
     if (functionState == null || functionState.IsExpired)
     {
-      if (! isPostBackAction)
+      if (isGetRequest && ! isPostBackAction)
       {
         Type type = ParseUrl (context.Request);
         if (type != null)
           return CreateNewFunctionState (context, type);
       }
-      throw new ApplicationException ("Page timeout."); // TODO: display error message
+      throw new HttpException (c_httpRequestTimeout, "Function Timeout."); // TODO: display error message
     }
 
     if (functionState.IsAborted)

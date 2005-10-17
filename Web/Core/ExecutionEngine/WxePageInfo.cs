@@ -134,22 +134,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
-
-  protected void SetCaching()
-  {
-    HttpContext context = WxeContext.Current.HttpContext;
-    //context.Response.AddHeader ("Pragma", "no-cache");
-    //context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-    context.Response.Expires = -1;
-    context.Response.Cache.SetCacheability (HttpCacheability.Private);
-  }
-
   /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
   private void Page_PreRender (object sender, EventArgs e)
   {
     _isPreRendering = true;
     
-    SetCaching();
     PreRenderWxe();
     PreRenderSmartNavigation();
   }

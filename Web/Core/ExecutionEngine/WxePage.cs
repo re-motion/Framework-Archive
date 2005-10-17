@@ -386,6 +386,18 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
     return _wxeInfo.EnsurePostBackModeDetermined (Context);
   }
 
+  protected override void OnPreRender(EventArgs e)
+  {
+    base.OnPreRender (e);
+    SetCacheSettings();
+  }
+
+  protected virtual void SetCacheSettings()
+  {
+    HttpContext context = WxeContext.Current.HttpContext;
+    context.Response.Cache.SetCacheability(HttpCacheability.Private);
+  }
+
   /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>
   [Browsable (false)]
   public WxePageStep CurrentStep
