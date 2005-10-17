@@ -13,7 +13,7 @@
       
       <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.EditObjectFunction, Rubicon.Data.DomainObjects.Web.Test">Bestehendes Objekt editieren</a><br>
       <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.NewObjectFunction, Rubicon.Data.DomainObjects.Web.Test">Neues Objekt editieren</a><br>
-      <a href="SearchObject.aspx" target="_blank">Objekt suchen</a><br>
+      <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.SearchFunction, Rubicon.Data.DomainObjects.Web.Test" target="_blank">Objekt suchen</a><br>
       <a href="WxeHandler.ashx?WxeFunctionType=Rubicon.Data.DomainObjects.Web.Test.WxeFunctions.WxeTestPageFunction,Rubicon.Data.DomainObjects.Web.Test&amp;ClassWithAllDataTypesID=ClassWithAllDataTypes|3f647d79-0caf-4a53-baa7-a56831f8ce2d|System.Guid" target="_blank">WxeFunctionTest</a> 
     </form>
   </body>
