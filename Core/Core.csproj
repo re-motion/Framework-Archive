@@ -280,6 +280,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NullableValueTypes\NaInt32Converter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NullableValueTypes\NaInt64.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
