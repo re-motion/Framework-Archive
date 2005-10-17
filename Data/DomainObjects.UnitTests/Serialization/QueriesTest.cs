@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 {
@@ -53,6 +54,7 @@ public class QueriesTest : SerializationBaseTest
 
     QueryDefinition deserializedQueryDefinition = (QueryDefinition) SerializeAndDeserialize (queryDefinition);
 
+    Assert.IsFalse (object.ReferenceEquals (queryDefinition, deserializedQueryDefinition));
     AreEqual (queryDefinition, deserializedQueryDefinition);
   }
 
@@ -81,6 +83,50 @@ public class QueriesTest : SerializationBaseTest
     }
   }
 
+  [Test]
+  public void QueryDefinitionCollectionTest ()
+  {
+    QueryDefinitionCollection queryDefinitions = new QueryDefinitionCollection ();
+    queryDefinitions.Add (QueryConfiguration.Current.QueryDefinitions[0]);
+    queryDefinitions.Add (QueryConfiguration.Current.QueryDefinitions[1]);
+
+    QueryDefinitionCollection deserializedQueryDefinitions = (QueryDefinitionCollection) SerializeAndDeserialize (queryDefinitions);
+    AreEqual (queryDefinitions, deserializedQueryDefinitions);
+    Assert.AreSame (deserializedQueryDefinitions[0], QueryConfiguration.Current.QueryDefinitions[0]);
+    Assert.AreSame (deserializedQueryDefinitions[1], QueryConfiguration.Current.QueryDefinitions[1]);
+  }
+
+  [Test]
+  public void QueryTest ()
+  {
+    Query query = new Query ("OrderQuery");
+    query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
+
+    Query deserializedQuery = (Query) SerializeAndDeserialize (query);
+    AreEqual (query, deserializedQuery);
+    Assert.AreSame (QueryConfiguration.Current["OrderQuery"], deserializedQuery.Definition);
+  }
+
+  private void AreEqual (Query expected, Query actual)
+  {
+    Assert.IsFalse (object.ReferenceEquals (expected, actual));
+    Assert.IsNotNull (actual);
+
+    Assert.AreEqual (expected.QueryID, actual.QueryID);
+    Assert.AreSame (expected.Definition, actual.Definition);
+    AreEqual (expected.Parameters, actual.Parameters);
+  }
+
+  private void AreEqual (QueryDefinitionCollection expected, QueryDefinitionCollection actual)
+  {
+    Assert.IsFalse (object.ReferenceEquals (expected, actual));
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (expected.Count, actual.Count);
+
+    for (int i = 0; i < expected.Count; i++)
+      AreEqual (expected[i], actual[i]);
+  }
+
   private void AreEqual (QueryParameter expected, QueryParameter actual)
   {
     Assert.IsFalse (object.ReferenceEquals (expected, actual));
@@ -107,7 +153,6 @@ public class QueriesTest : SerializationBaseTest
 
   private void AreEqual (QueryDefinition expected, QueryDefinition actual)
   {
-    Assert.IsFalse (object.ReferenceEquals (expected, actual));
     Assert.AreEqual (expected.QueryID, actual.QueryID);
     Assert.AreEqual (expected.QueryType, actual.QueryType);
     Assert.AreEqual (expected.Statement, actual.Statement);
