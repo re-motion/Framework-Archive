@@ -23,6 +23,9 @@
         <includes asis="true" name="System.dll"/>
         <includes asis="true" name="System.Data.dll"/>
       </references>
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Core.UnitTests">
+        <includes name="Resources/*.resx" />
+      </resources>
     </csc>
         
   </target>
