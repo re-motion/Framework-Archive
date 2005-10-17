@@ -455,22 +455,6 @@ public abstract class WxeFunction: WxeStepList
     }
     return serializedParameters;
   }
-
-  protected TypeConverter GetStringTypeConverter (Type type)
-  {
-    ArgumentUtility.CheckNotNull ("type", type);
-
-    TypeConverterAttribute[] typeConverters = 
-        (TypeConverterAttribute[]) type.GetCustomAttributes (typeof (TypeConverterAttribute), true);
-    if (typeConverters.Length == 1) 
-    {
-      Type typeConverterType = Type.GetType (typeConverters[0].ConverterTypeName, true, false);
-      TypeConverter typeConverter = (TypeConverter) Activator.CreateInstance (typeConverterType);
-      if (typeConverter.CanConvertTo (typeof (string)) && typeConverter.CanConvertFrom (typeof (string)))
-        return typeConverter;
-    }
-    return null;
-  }
 }
 
 [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
