@@ -28,9 +28,9 @@ public class QueryDefinition : ISerializable, IObjectReference
   private QueryType _queryType;
   private Type _collectionType;
   
-  // Note: _isInQueryConfiguration is used only during the deserialization process. 
+  // Note: _ispartOfQueryConfiguration is used only during the deserialization process. 
   // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
-  private bool _isInQueryConfiguration;
+  private bool _ispartOfQueryConfiguration;
 
   // construction and disposing
 
@@ -117,9 +117,9 @@ public class QueryDefinition : ISerializable, IObjectReference
   protected QueryDefinition (SerializationInfo info, StreamingContext context)
   {
     _queryID = info.GetString ("QueryID");
-    _isInQueryConfiguration = info.GetBoolean ("IsInQueryConfiguration");
+    _ispartOfQueryConfiguration = info.GetBoolean ("IsPartOfQueryConfiguration");
 
-    if (!_isInQueryConfiguration)
+    if (!_ispartOfQueryConfiguration)
     {
       _storageProviderID = info.GetString ("StorageProviderID");
       _statement = info.GetString ("Statement");
@@ -177,10 +177,10 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// on <see cref="QueryDefinition"/> for further details.
   /// </summary>
   /// <param name="context">The source and destination of a given serialized stream.</param>
-  /// <returns></returns>
+  /// <returns>Returns the actual <see cref="QueryDefinition"/>.</returns>
   object IObjectReference.GetRealObject (StreamingContext context)
   {
-    if (!_isInQueryConfiguration)
+    if (!_ispartOfQueryConfiguration)
       return this;
     else
       return QueryConfiguration.Current.QueryDefinitions.GetMandatory (_queryID);
@@ -199,12 +199,18 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <param name="context">The contextual information about the source or destination of the serialization.</param>
   void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
   {
+    GetObjectData (info, context);
+  }
+
+  // TODO Doc:
+  protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+  {
     info.AddValue ("QueryID", _queryID);
 
-    bool isInQueryConfiguration = QueryConfiguration.Current[_queryID] != null;
-    info.AddValue ("IsInQueryConfiguration", isInQueryConfiguration);
+    bool isPartOfQueryConfiguration = QueryConfiguration.Current[_queryID] != null;
+    info.AddValue ("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
 
-    if (!isInQueryConfiguration)
+    if (!isPartOfQueryConfiguration)
     {
       info.AddValue ("StorageProviderID", _storageProviderID);
       info.AddValue ("Statement", _statement);
