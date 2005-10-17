@@ -12,7 +12,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 //TODO Doc: The disabled prefix feature is not documented anywhere. Should it be? => See comment on c_disabledPrefix.
 public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationProperty
 {
-  // TODO: Remove this feature or provide something that is useful in reality!
+  // TODO: Remove this feature or provide an attribute for disabled enum values!
   private const string c_disabledPrefix = "Disabled_";
 
   public EnumerationProperty (
