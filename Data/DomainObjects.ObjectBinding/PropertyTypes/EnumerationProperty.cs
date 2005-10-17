@@ -9,9 +9,10 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes
 {
-//TODO Doc: The disabled prefix feature is not documented anywhere. Should it be?
+//TODO Doc: The disabled prefix feature is not documented anywhere. Should it be? => See comment on c_disabledPrefix.
 public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationProperty
 {
+  // TODO: Remove this feature or provide something that is useful in reality!
   private const string c_disabledPrefix = "Disabled_";
 
   public EnumerationProperty (
@@ -23,12 +24,12 @@ public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationPrope
   {
   }
 
-  public IEnumerationValueInfo[] GetEnabledValues()
+  public virtual IEnumerationValueInfo[] GetEnabledValues()
   {
     return GetValues (false);
   }
 
-  public IEnumerationValueInfo[] GetAllValues()
+  public virtual IEnumerationValueInfo[] GetAllValues()
   {
     return GetValues (true);
   }
