@@ -21,6 +21,7 @@ public class TypeConverterFactory
 
   public TypeConverter GetTypeConverter (Type type)
   {
+    return null;
   }
 
   protected TypeConverter GetTypeConverterByAttribute (Type type)
