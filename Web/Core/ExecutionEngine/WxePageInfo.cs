@@ -350,8 +350,68 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     _page.Visible = false; // suppress prerender and render events
   }
 
+
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction)">IWxePage.ExecuteFunction(WxeFunction)</see>.
+  /// </summary>
+  public void ExecuteFunction (WxeFunction function)
+  {
+    ExecuteFunction (function, false, false);
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean)</see>.
+  /// </summary>
+  public void ExecuteFunction (WxeFunction function, bool createPermalink, bool useParentPermalink)
+  {
+    CurrentStep.ExecuteFunction (_page, function, createPermalink);
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control)</see>.
+  /// </summary>
+  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
+  {
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, false, false);
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean)</see>.
+  /// </summary>
+  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
+  {
+    ExecuteFunctionNoRepost (function, sender, usesEventTarget, false, false);
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean)</see>.
+  /// </summary>
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool createPermalink, bool useParentPermalink)
+  {
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermalink, useParentPermalink);
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean)</see>.
+  /// </summary>
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool usesEventTarget, bool createPermalink, bool useParentPermalink)
+  {
+    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, createPermalink);
+  }
+
+  /// <summary> 
+  ///   Gets a flag describing whether the post back was most likely caused by the ASP.NET post back mechanism.
+  /// </summary>
+  /// <value> <see langword="true"/> if the post back collection contains the <b>__EVENTTARGET</b> field. </value>
+  protected bool UsesEventTarget
+  {
+    get { return ! StringUtility.IsNullOrEmpty (_page.GetPostBackCollection()[ControlHelper.PostEventSourceID]); }
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback)
   {
@@ -359,7 +419,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
@@ -368,7 +428,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
@@ -378,7 +438,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
@@ -482,66 +542,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     function.ReturnUrl = "javascript:" + returnScript;
   }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction)">IWxePage.ExecuteFunction(WxeFunction)</see>.
-  /// </summary>
-  public void ExecuteFunction (WxeFunction function)
-  {
-    ExecuteFunction (function, false, false);
-  }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean)</see>.
-  /// </summary>
-  public void ExecuteFunction (WxeFunction function, bool createPermalink, bool useParentPermalink)
-  {
-    CurrentStep.ExecuteFunction (_page, function, createPermalink);
-  }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control)</see>.
-  /// </summary>
-  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
-  {
-    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, false, false);
-  }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean)</see>.
-  /// </summary>
-  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
-  {
-    ExecuteFunctionNoRepost (function, sender, usesEventTarget, false, false);
-  }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepostWithMappedPath(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean)</see>.
-  /// </summary>
-  public void ExecuteFunctionNoRepost (
-      WxeFunction function, Control sender, bool createPermalink, bool useParentPermalink)
-  {
-    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermalink, useParentPermalink);
-  }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepostWithMappedPath(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean)</see>.
-  /// </summary>
-  public void ExecuteFunctionNoRepost (
-      WxeFunction function, Control sender, bool usesEventTarget, bool createPermalink, bool useParentPermalink)
-  {
-    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, createPermalink);
-  }
-
-  /// <summary> 
-  ///   Gets a flag describing whether the post back was most likely caused by the ASP.NET post back mechanism.
-  /// </summary>
-  /// <value> <see langword="true"/> if the post back collection contains the <b>__EVENTTARGET</b> field. </value>
-  protected bool UsesEventTarget
-  {
-    get { return ! StringUtility.IsNullOrEmpty (_page.GetPostBackCollection()[ControlHelper.PostEventSourceID]); }
-  }
-
   /// <summary> Implements <see cref="IWxePage.IsReturningPostBack">IWxePage.IsReturningPostBack</see>. </summary>
   public bool IsReturningPostBack
   {

@@ -20,7 +20,9 @@
     Nur das "resource" Attribut muss im Mapping eindeutig sein.
 
 - Rubicon.Web.ExecutionEngine.WxePage
-  ExecuteFunctionXXX
+  * ExecuteFunctionExternal: erstetzt ExecuteFunction (WxeFunction, String, Control)
+    Gibt es ein Mapping für die übergebene WxeFunction, so wird grundsätzlich die Friendly URL angezeigt.
+  * Die Funktionalität von ExecuteFunctionWithMappedPath witd nun durch Overloads bereit gestellt.
   
 1.3.16
 ======
