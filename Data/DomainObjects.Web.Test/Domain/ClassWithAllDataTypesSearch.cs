@@ -74,62 +74,18 @@ public class ClassWithAllDataTypesSearch : BindableSearchObject
 
   public override IQuery CreateQuery()
   {
-    StringBuilder whereClauseBuilder = new StringBuilder ();
-    QueryParameterCollection parameters = new QueryParameterCollection ();
+    Query query = new Query ("QueryWithAllDataTypes");
 
-    AddParameters (whereClauseBuilder, parameters);
+    query.Parameters.Add ("@stringProperty", _stringProperty);
+    query.Parameters.Add ("@bytePropertyFrom", _bytePropertyFrom);
+    query.Parameters.Add ("@bytePropertyTo", _bytePropertyTo);
+    query.Parameters.Add ("@enumProperty", _enumProperty);
+    query.Parameters.Add ("@datePropertyFrom", _datePropertyFrom);
+    query.Parameters.Add ("@datePropertyTo", _datePropertyTo);
+    query.Parameters.Add ("@dateTimePropertyFrom", _dateTimePropertyFrom);
+    query.Parameters.Add ("@dateTimePropertyTo", _dateTimePropertyTo);
 
-    if (whereClauseBuilder.Length > 0)
-      whereClauseBuilder.Insert (0, " WHERE ");
-
-    return CreateQuery (string.Format ("SELECT [TableWithAllDataTypes].* FROM TableWithAllDataTypes{0};", whereClauseBuilder.ToString ()), parameters);
-  }
-
-  private Query CreateQuery (string sqlStatement, QueryParameterCollection parameters)
-  {
-    QueryDefinition definition = new QueryDefinition ("ClassWithAllDataTypesQuery", "RpaTest", sqlStatement, QueryType.Collection, typeof (DomainObjectCollection));
-    return new Query (definition, parameters);
-  }
-
-  private void AddParameters (StringBuilder whereClauseBuilder, QueryParameterCollection parameters)
-  {
-    if (_stringProperty != null)
-      AddParameter (whereClauseBuilder, parameters, "StringProperty =", "StringProperty", _stringProperty);
-
-    if (!_bytePropertyFrom.IsNull)
-      AddParameter (whereClauseBuilder, parameters, "Byte >=", "BytePropertyFrom", _bytePropertyFrom);
-
-    if (!_bytePropertyTo.IsNull)
-      AddParameter (whereClauseBuilder, parameters, "Byte <=", "BytePropertyTo", _bytePropertyTo);
-
-    AddParameter (whereClauseBuilder, parameters, "Enum =", "EnumProperty", _enumProperty);
-
-    if (!_datePropertyFrom.IsNull)
-      AddParameter (whereClauseBuilder, parameters, "Date >=", "DatePropertyFrom", _datePropertyFrom);
-
-    if (!_datePropertyTo.IsNull)
-      AddParameter (whereClauseBuilder, parameters, "Date <=", "DatePropertyTo", _datePropertyTo);
-
-    if (!_dateTimePropertyFrom.IsNull)
-      AddParameter (whereClauseBuilder, parameters, "DateTime >=", "DateTimePropertyFrom", _dateTimePropertyFrom);
-
-    if (!_dateTimePropertyTo.IsNull)
-      AddParameter (whereClauseBuilder, parameters, "DateTime <=", "DateTimePropertyTo", _dateTimePropertyTo);
-  }
-
-  private void AddParameter (
-      StringBuilder whereClauseBuilder,
-      QueryParameterCollection parameters,
-      string whereClauseExpression,
-      string parameterName,
-      object parameterValue)
-  {
-    if (whereClauseBuilder.Length > 0)
-      whereClauseBuilder.Append (" AND ");
-
-    whereClauseBuilder.Append (string.Format ("{0} @{1}", whereClauseExpression, parameterName));
-
-    parameters.Add (new QueryParameter (parameterName, parameterValue));
+    return query;
   }
 }
 }
