@@ -11,10 +11,10 @@ using System.Web.UI.HtmlControls;
 
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
 
 namespace Rubicon.Data.DomainObjects.Web.Test
 {
-// TODO: Encapsulate this Page within a WxeTransactedFunction!
 public class SearchObjectPage : WxePage
 {
   protected Rubicon.Web.UI.Controls.FormGridManager SearchFormGridManager;
@@ -33,14 +33,16 @@ public class SearchObjectPage : WxePage
   protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BocDateTimeValue2;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
-	private void Page_Load(object sender, System.EventArgs e)
-	{
-    if (!IsPostBack)
-      Session["SearchObject"] = new ClassWithAllDataTypesSearch ();
-    else
-      ResultList.Value = (IList) Session["Result"];
+  private SearchFunction MyFunction 
+  {
+    get { return (SearchFunction) CurrentFunction; }
+  }
 
-    CurrentSearchObject.BusinessObject = (ClassWithAllDataTypesSearch) Session["SearchObject"];;
+  private void Page_Load(object sender, System.EventArgs e)
+	{
+    ResultList.Value = MyFunction.Result;
+
+    CurrentSearchObject.BusinessObject = MyFunction.SearchObject;
     CurrentSearchObject.LoadValues (IsPostBack);
 	}
 
@@ -72,11 +74,9 @@ public class SearchObjectPage : WxePage
     if (SearchFormGridManager.Validate ())
     {
       CurrentSearchObject.SaveValues (false);
-      ClassWithAllDataTypesSearch searchObject = (ClassWithAllDataTypesSearch) CurrentSearchObject.BusinessObject;
       
-      Session["Result"] = ClientTransaction.Current.QueryManager.GetCollection (searchObject.CreateQuery ());
-      ResultList.Value = (IList) Session["Result"];
-
+      MyFunction.Requery ();
+      ResultList.Value = MyFunction.Result;
       ResultList.LoadValue (false);
     }
   }
