@@ -430,7 +430,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Utilities\TypeConverterProvider.cs"
+                    RelPath = "Utilities\TypeConverterFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
