@@ -8,7 +8,8 @@ namespace Rubicon.NullableValueTypes
 ///   Specialization of <see cref="TypeConverter"/> for values of the type <see cref="NaInt32"/>.
 /// </summary>
 /// <remarks> 
-///   Conversion is supported for values of types <see cref="string"/> int <see cref="Int32"/>.
+///   Conversion is supported for values of types <see cref="string"/> or <see cref="Int32"/> into 
+///   <see cref="NaInt32"/>.
 /// </remarks>
 public class NaInt32Converter: TypeConverter
 {
@@ -21,6 +22,23 @@ public class NaInt32Converter: TypeConverter
   public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
   {
     if (sourceType == typeof (string))
+      return true;
+    if (sourceType == typeof (int))
+      return true;
+    return false;  
+  }
+
+  /// <summary> Test: Can convert from <see cref="NaInt32"/> to <paramref name="destinationType"/>? </summary>
+  /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
+  /// <param name="destinationType"> 
+  ///   The <see cref="Type"/>  to convert an <see cref="NaInt32"/> value to.
+  /// </param>
+  /// <returns> <see langword="true"/> if the conversion is supported. </returns>
+  public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+  {
+    if (destinationType == typeof (string))
+      return true;
+    if (destinationType == typeof (int))
       return true;
     return false;  
   }
@@ -36,6 +54,8 @@ public class NaInt32Converter: TypeConverter
   {
     if (value is string)
       return NaInt32.Parse ((string) value);
+    if (value is int)
+      return new NaInt32 ((int) value);
     return NaInt32.Null;
   }
 
@@ -47,10 +67,16 @@ public class NaInt32Converter: TypeConverter
   /// <param name="value"> The <see cref="NaInt32"/> to be converted. </param>
   /// <param name="destinationType"> The destination <see cref="Type"/>. </param>
   /// <returns> An <see cref="Object"/> that represents the converted value. </returns>
+  /// <exception cref="NaNullValueException"> The passed value is <see langword="null"/>. </exception>
   public override object ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
   {
     if (value is NaInt32)
-      return ((NaInt32) value).ToString ("~");
+    {
+      if (destinationType == typeof (string))
+        return ((NaInt32) value).ToString ("~");
+      if (destinationType == typeof (int))
+        return ((NaInt32) value).Value;
+    }
     return base.ConvertTo (context, culture, value, destinationType);
   }
 
