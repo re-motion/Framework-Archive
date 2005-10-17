@@ -10,4 +10,22 @@
     <statement>SELECT * FROM [TableForRelationTest];</statement>
   </query>
 
+  <query id="QueryWithAllDataTypes" type="collection">
+    <storageProviderID>RpaTest</storageProviderID>
+    <statement>
+      <![CDATA[
+        SELECT * FROM TableWithAllDataTypes WHERE
+            ([String] = @stringProperty OR @stringProperty IS NULL) AND
+            ([Byte] >= @bytePropertyFrom OR @bytePropertyFrom IS NULL) AND
+            ([Byte] <= @bytePropertyTo OR @bytePropertyTo IS NULL) AND
+            [Enum] = @enumProperty AND
+            ([Date] >= @datePropertyFrom OR @datePropertyFrom IS NULL) AND
+            ([Date] <= @datePropertyTo OR @datePropertyTo IS NULL) AND
+            ([DateTime] >= @dateTimePropertyFrom OR @dateTimePropertyFrom IS NULL) AND
+            ([DateTime] <= @dateTimePropertyTo OR @dateTimePropertyTo IS NULL);
+      ]]>
+    </statement>
+  </query>
+
+
 </queries>
