@@ -65,7 +65,6 @@ public class EnumDescriptionTest
   }
 
   [Test]
-  [NUnit.Framework.Ignore ("resource linking not implemented in build scripts.")]
   public void TestGetDescriptionForEnumFromResource()
   {
     Assertion.AssertEquals ("Wert Eins", EnumDescription.GetDescription (EnumFromResource.Value1));
@@ -79,7 +78,6 @@ public class EnumDescriptionTest
   }
 
   [Test]
-  [NUnit.Framework.Ignore ("resource linking not implemented in build scripts.")]
   public void TestGetAvailableValuesForEnumFromResource ()
   {
     // try twice to test caching
