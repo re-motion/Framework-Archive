@@ -9,6 +9,7 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 /// <summary>
 /// Represents a collection of <see cref="QueryDefinition"/>s.
 /// </summary>
+[Serializable]
 public class QueryDefinitionCollection : CommonCollection
 {
   // types

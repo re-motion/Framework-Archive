@@ -8,6 +8,7 @@ namespace Rubicon.Data.DomainObjects.Queries
 /// <summary>
 /// Represents a default implementation of <see cref="IQuery"/>.
 /// </summary>
+[Serializable] 
 public class Query : IQuery
 {
   // types

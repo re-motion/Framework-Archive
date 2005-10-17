@@ -111,6 +111,12 @@ public class QueryConfiguration : ConfigurationBase
     }
   }
 
+  // TODO Doc:
+  public QueryDefinition this [int index]
+  {
+    get { return _queryDefinitions[index]; }
+  }
+
   /// <summary>
   /// Gets all configured <see cref="QueryDefinition"/>s.
   /// </summary>
