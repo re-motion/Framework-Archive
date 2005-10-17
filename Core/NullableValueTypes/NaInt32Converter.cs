@@ -8,7 +8,7 @@ namespace Rubicon.NullableValueTypes
 ///   Specialization of <see cref="TypeConverter"/> for values of the type <see cref="NaInt32"/>.
 /// </summary>
 /// <remarks> 
-///   Conversion is supported for values of types <see cref="string"/>.
+///   Conversion is supported for values of types <see cref="string"/> int <see cref="Int32"/>.
 /// </remarks>
 public class NaInt32Converter: TypeConverter
 {
