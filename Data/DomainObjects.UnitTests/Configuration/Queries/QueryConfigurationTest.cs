@@ -73,6 +73,12 @@ public class QueryConfigurationTest
     Assert.AreEqual ("UnitTests", QueryConfiguration.Current.ApplicationName);
   }
   
+  [Test]
+  public void NumericIndexer ()
+  {
+    Assert.IsNotNull (QueryConfiguration.Current[0]);
+  }
+
   private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
   {
     QueryDefinitionCollection queries = new QueryDefinitionCollection ();
