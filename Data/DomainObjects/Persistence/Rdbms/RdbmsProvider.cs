@@ -331,13 +331,6 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  protected virtual IDataContainerFactory CreateDataContainerFactory (IDataReader reader)
-  {
-    ArgumentUtility.CheckNotNull ("reader", reader);
-
-    return CreateDataContainerFactory (reader, null);
-  }
-
   protected virtual IDataContainerFactory CreateDataContainerFactory (IDataReader reader, IQuery query)
   {
     ArgumentUtility.CheckNotNull ("reader", reader);
@@ -458,6 +451,13 @@ public abstract class RdbmsProvider : StorageProvider
       params object[] args)
   {
     return new ConcurrencyViolationException (string.Format (formatString, args), innerException);
+  }
+
+  private IDataContainerFactory CreateDataContainerFactory (IDataReader reader)
+  {
+    ArgumentUtility.CheckNotNull ("reader", reader);
+
+    return CreateDataContainerFactory (reader, null);
   }
 
   private void DisposeTransaction ()
