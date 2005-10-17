@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
@@ -168,6 +169,22 @@ public class WxeParameterConverter
       throw new WxeException (string.Format (
           "Requried OUT parameters cannot be converted to a string. Parameter: '{0}'", _parameter.Name));
     }
+  }
+
+  protected TypeConverter GetStringTypeConverter (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    TypeConverterAttribute[] typeConverters = 
+        (TypeConverterAttribute[]) type.GetCustomAttributes (typeof (TypeConverterAttribute), true);
+    if (typeConverters.Length == 1) 
+    {
+      Type typeConverterType = Type.GetType (typeConverters[0].ConverterTypeName, true, false);
+      TypeConverter typeConverter = (TypeConverter) Activator.CreateInstance (typeConverterType);
+      if (typeConverter.CanConvertTo (typeof (string)) && typeConverter.CanConvertFrom (typeof (string)))
+        return typeConverter;
+    }
+    return null;
   }
 }
 
