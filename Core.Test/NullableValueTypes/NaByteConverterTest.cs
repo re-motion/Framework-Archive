@@ -44,7 +44,7 @@ public class NaByteConverterTest
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaByte.Null, _converter.ConvertFrom (NaByte.Null.ToString()));
+    Assert.AreEqual (NaByte.Null, _converter.ConvertFrom (""));
     Assert.AreEqual (new NaByte (32), _converter.ConvertFrom (new NaByte (32).ToString()));
     Assert.AreEqual (NaByte.Zero, _converter.ConvertFrom (NaByte.Zero.ToString()));
     Assert.AreEqual (NaByte.MinValue, _converter.ConvertFrom (NaByte.MinValue.ToString()));
