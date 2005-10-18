@@ -11,9 +11,9 @@ namespace Rubicon.NullableValueTypes
 {
 
 /// <summary>
-/// Represents a decimal number that can be <c>Null</c>. The corresponding system type is System.Decimal.
+/// Represents a decimal number that can be <see langword="null"/>. The corresponding system type is System.Decimal.
 /// </summary>
-/// <include file='doc\include\include.xml' path='Comments/NaDecimal/remarks' />
+/// <include file='doc\include\NullableValueTypes\include.xml' path='Comments/NaDecimal/remarks' />
 [Serializable]
 [NaBasicType (typeof (Decimal))]
 [TypeConverter (typeof (NaDecimalConverter))]
@@ -81,11 +81,11 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   #region type conversion
 
   /// <summary>
-  /// Converts a <see cref="NaDecimal"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDecimal"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDecimal</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDecimal"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public override string ToString()
   {
@@ -93,12 +93,12 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDecimal"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDecimal"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDecimal</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDecimal"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format)
@@ -107,12 +107,12 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDecimal"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDecimal"/> structure to a <see cref="String"/>.
   /// </summary>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDecimal</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDecimal"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public string ToString (IFormatProvider provider)
   {
@@ -120,13 +120,13 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDecimal"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDecimal"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDecimal</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDecimal"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format, IFormatProvider provider)
@@ -146,15 +146,15 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDecimal equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDecimal equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="NumberStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDecimal</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDecimal.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Decimal.Parse</c> would return.
+  /// An <see cref="NaDecimal"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDecimal.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Decimal.Parse"/> would return.
   /// </returns>
   public static NaDecimal Parse (string s, NumberStyles styles, IFormatProvider provider)
   {
@@ -164,14 +164,14 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDecimal equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDecimal equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDecimal</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDecimal.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Decimal.Parse</c> would return.
+  /// An <see cref="NaDecimal"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDecimal.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Decimal.Parse"/> would return.
   /// </returns>
   public static NaDecimal Parse (string s, IFormatProvider provider)
   {
@@ -179,14 +179,14 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDecimal equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDecimal equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="NumberStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDecimal</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDecimal.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Decimal.Parse</c> would return.
+  /// An <see cref="NaDecimal"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDecimal.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Decimal.Parse"/> would return.
   /// </returns>
   public static NaDecimal Parse (string s, NumberStyles styles)
   {
@@ -194,13 +194,13 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDecimal equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDecimal equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
   /// <returns>
-  /// An <c>NaDecimal</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDecimal.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Decimal.Parse</c> would return.
+  /// An <see cref="NaDecimal"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDecimal.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Decimal.Parse"/> would return.
   /// </returns>
   public static NaDecimal Parse (string s)
   {
@@ -208,9 +208,9 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the supplied <c>Decimal</c> to a <see cref="NaDecimal"/> structure.
+  /// Converts the supplied <see cref="Decimal"/> to an <see cref="NaDecimal"/> structure.
   /// </summary>
-  /// <param name="value">A <c>Decimal</c> value.</param>
+  /// <param name="value">A <see cref="Decimal"/> value.</param>
   /// <returns>The converted <see cref="NaDecimal"/> value.</returns>
   public static implicit operator NaDecimal (Decimal value)
   {
@@ -218,9 +218,9 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDecimal"/> structure to a <c>Decimal</c>.
+  /// Converts the supplied <see cref="NaDecimal"/> structure to a <see cref="Decimal"/>.
   /// </summary>
-  /// <param name="value">A <see cref="NaDecimal"/> structure.</param>
+  /// <param name="value">An <see cref="NaDecimal"/> structure.</param>
   /// <returns>The converted decimal value.</returns>
   /// <exception cref="NaNullValueException">
   /// The passed value is null.
@@ -233,7 +233,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlDecimal</c> structure to a <see cref="NaDecimal"/> structure.
+  /// Converts the supplied <see cref="SqlDecimal"/> structure to an <see cref="NaDecimal"/> structure.
   /// </summary>
   public static NaDecimal FromSqlDecimal (SqlDecimal value)
   {
@@ -241,7 +241,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlDecimal</c> structure to a <see cref="NaDecimal"/> structure.
+  /// Converts the supplied <see cref="SqlDecimal"/> structure to an <see cref="NaDecimal"/> structure.
   /// </summary>
   public static implicit operator NaDecimal (SqlDecimal value)
   {
@@ -252,7 +252,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDecimal"/> structure to a <c>SqlDecimal</c>structure.
+  /// Converts the supplied <see cref="NaDecimal"/> structure to a <see cref="SqlDecimal"/>structure.
   /// </summary>
   public static SqlDecimal ToSqlDecimal (NaDecimal value)
   {
@@ -260,7 +260,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDecimal"/> structure to a <c>SqlDecimal</c>structure.
+  /// Converts the supplied <see cref="NaDecimal"/> structure to a <see cref="SqlDecimal"/>structure.
   /// </summary>
   public static implicit operator SqlDecimal (NaDecimal value)
   {
@@ -271,11 +271,11 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDecimal"/> value to a boxed <c>Decimal</c> value or a null reference.
+  /// Converts an <see cref="NaDecimal"/> value to a boxed <see cref="Decimal"/> value or a null reference.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>Decimal</c> if it is not null, a null reference otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as an <see cref="Decimal"/> if it is not null, a null reference otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaDecimal</c> values to methods that expect an untyped parameter which is either a <c>Decimal</c>
+  /// Use this method to easily pass <see cref="NaDecimal"/> values to methods that expect an untyped parameter which is either a <see cref="Decimal"/>
   /// value or a null reference.
   /// </remarks>
   public static object ToBoxedDecimal (NaDecimal value)
@@ -287,14 +287,14 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts a boxed <c>NaDecimal</c> value or a null reference to a <see cref="NaDecimal"/> value.
+  /// Converts a boxed <see cref="NaDecimal"/> value or a null reference to an <see cref="NaDecimal"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaDecimal"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Decimal</c>, 
-  /// <c>NaDecimal.Null</c> if it is a null reference.</returns>
+  /// <returns>An <see cref="NaDecimal"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is an <see cref="Decimal"/>, 
+  /// <see cref="NaDecimal.Null"/> if it is a null reference.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaDecimal</c> value from an untyped value which is either an <c>Decimal</c> value or a null reference.
+  /// Use this method to easily create an <see cref="NaDecimal"/> value from an untyped value which is either an <see cref="Decimal"/> value or a null reference.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither a null reference nor an <c>Decimal</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither a null reference nor an <see cref="Decimal"/> value.</exception>
   public static NaDecimal FromBoxedDecimal (object value)
   {
     if (value == null)
@@ -307,11 +307,11 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDecimal"/> value to a boxed <c>Decimal</c> value or to DBNull.Value.
+  /// Converts an <see cref="NaDecimal"/> value to a boxed <see cref="Decimal"/> value or to DBNull.Value.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as a <c>Decimal</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as a <see cref="Decimal"/> if it is not null, DBNull.Value otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaDecimal</c> values to methods that expect an untyped parameter which is either a <c>Decimal</c>
+  /// Use this method to easily pass <see cref="NaDecimal"/> values to methods that expect an untyped parameter which is either a <see cref="Decimal"/>
   /// value or DBNull.Value.
   /// </remarks>
   public static object ToBoxedDecimalDBNull (NaDecimal value)
@@ -323,14 +323,14 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   }
 
   /// <summary>
-  /// Converts a boxed <c>Decimal</c> value or DBNull.Value to a <see cref="NaDecimal"/> value.
+  /// Converts a boxed <see cref="Decimal"/> value or DBNull.Value to an <see cref="NaDecimal"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaDecimal"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is a <c>Decimal</c>, 
-  /// <c>NaDecimal.Null</c> if it is DBNull.Value.</returns>
+  /// <returns>An <see cref="NaDecimal"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is a <see cref="Decimal"/>, 
+  /// <see cref="NaDecimal.Null"/> if it is DBNull.Value.</returns>
   /// <remarks>
-  /// Use this method to easily create a <c>NaDecimal</c> value from an untyped value which is either a <c>Decimal</c> value or DBNull.Value.
+  /// Use this method to easily create an <see cref="NaDecimal"/> value from an untyped value which is either a <see cref="Decimal"/> value or DBNull.Value.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither DBNull.Value nor an <c>Int32</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither DBNull.Value nor an <see cref="Int32"/> value.</exception>
   public static NaDecimal FromBoxedDecimalDBNull (object value)
   {
     if (value == DBNull.Value)
@@ -410,7 +410,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Indicates whether or not <see cref="Value"/> is null.
   /// </summary>
   /// <value>
-  /// This property is <c>true</c> if <see cref="Value"/> is null, otherwise <c>false</c>.
+  /// This property is <see langword="true"/> if <see cref="Value"/> is null, otherwise <see langword="false"/>.
   /// </value>
   public bool IsNull 
   {
@@ -422,13 +422,13 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   #region public fields
 
   /// <summary>
-  /// This value is used to convert a <c>Null</c> value to and from strings.
+  /// This value is used to convert a <see langword="null"/> value to and from strings.
   /// </summary>
   /// <value>
-  /// The value of <c>NullString</c> is "null".
+  /// The value of <see cref="NullString"/> is "null".
   /// </value>
   /// <remarks>
-  /// Note that parsing <c>NullString</c> is case-sensitive.
+  /// Note that parsing <see cref="NullString"/> is case-sensitive.
   /// </remarks>
   public static readonly string NullString = "null";
 
@@ -460,13 +460,13 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// </summary>
   /// <param name="obj">The object to be compared. </param>
   /// <returns>
-  /// <c>true</c> if object is an instance of <see cref="NaDecimal"/> and the two are equal; otherwise <c>false</c>.
-  /// If object is a null reference, <c>false</c> is returned.
+  /// <see langword="true"/> if object is an instance of <see cref="NaDecimal"/> and the two are equal; otherwise <see langword="false"/>.
+  /// If object is a null reference, <see langword="false"/> is returned.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
   /// equality logic.
-  /// Note that <c>false</c> is returned if object is a Decimal (types are not equal).
+  /// Note that <see langword="false"/> is returned if object is a Decimal (types are not equal).
   /// </remarks>
   public override bool Equals (object obj)
   {
@@ -481,7 +481,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// </summary>
   /// <param name="value">The <see cref="NaDecimal"/> instance to be compared. </param>
   /// <returns>
-  /// <c>true</c> if the two are equal; otherwise <c>false</c>.
+  /// <see langword="true"/> if the two are equal; otherwise <see langword="false"/>.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -496,7 +496,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Performs a logical comparison of the two NaDecimal parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -511,7 +511,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Performs a logical comparison of the two NaDecimal parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -530,7 +530,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Performs a logical comparison of the two NaDecimal parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -545,7 +545,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Performs a logical comparison of the two NaDecimal parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -560,7 +560,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Performs a SQL-style comparison of the two NaDecimal parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are equal, or <see cref="NaBoolean.False"/> if they are not equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean EqualsSql (NaDecimal x, NaDecimal y)
   {
@@ -574,7 +574,7 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Performs a SQL-style comparison of the two NaDecimal parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are not equal, or <c>False</c> if they are equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are not equal, or <see cref="NaBoolean.False"/> if they are equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean NotEqualsSql (NaDecimal x, NaDecimal y)
   {
@@ -683,8 +683,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Computes the sum of the two specified <see cref="NaDecimal"/> structures.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaDecimal</c> 
-  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the sum of the specified <see cref="NaDecimal"/> 
+  /// structures, or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDecimal Add (NaDecimal x, NaDecimal y)
@@ -696,8 +696,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Computes the sum of the two specified <see cref="NaDecimal"/> structures.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaDecimal</c> 
-  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the sum of the specified <see cref="NaDecimal"/> 
+  /// structures, or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDecimal operator + (NaDecimal x, NaDecimal y)
@@ -715,8 +715,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Subtracts the second <see cref="NaDecimal"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDecimal Subtract (NaDecimal x, NaDecimal y)
@@ -728,8 +728,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Subtracts the second <see cref="NaDecimal"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDecimal operator - (NaDecimal x, NaDecimal y)
@@ -747,8 +747,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Divides the first <see cref="NaDecimal"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the result of the division,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaDecimal Divide (NaDecimal x, NaDecimal y)
@@ -760,8 +760,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Divides the first <see cref="NaDecimal"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the result of the division,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaDecimal operator / (NaDecimal x, NaDecimal y)
@@ -779,8 +779,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Computes the product of the two <see cref="NaDecimal"/> parameters.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDecimal Multiply (NaDecimal x, NaDecimal y)
@@ -792,8 +792,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Computes the product of the two <see cref="NaDecimal"/> parameters.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDecimal operator * (NaDecimal x, NaDecimal y)
@@ -811,8 +811,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Computes the remainder after dividing the first <see cref="NaDecimal"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the remainder,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaDecimal Mod (NaDecimal x, NaDecimal y)
@@ -824,8 +824,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Computes the remainder after dividing the first <see cref="NaDecimal"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the remainder,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaDecimal operator % (NaDecimal x, NaDecimal y)
@@ -843,10 +843,10 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Increments the value by one. 
   /// </summary>
   /// <remarks>
-  /// The <c>Value</c> property is incremented by one. If <c>x</c> is <c>Null</c>, the value is not modified.
+  /// The <see cref="Value"/> property is incremented by one. If <paramref name="x"/> is <see langword="null"/>, the value is not modified.
   /// </remarks>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the incremented value when used as a prefix operator,
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the incremented value when used as a prefix operator,
   /// or the original value when used as a postfix operator. 
   /// </returns>
   public static NaDecimal operator ++ (NaDecimal x)
@@ -862,10 +862,10 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Decrements the value by one. 
   /// </summary>
   /// <remarks>
-  /// The <c>Value</c> property is decremented by one. If <c>x</c> is <c>Null</c>, the value is not modified.
+  /// The <see cref="Value"/> property is decremented by one. If <paramref name="x"/> is <see langword="null"/>, the value is not modified.
   /// </remarks>
   /// <returns>
-  /// A <c>NaDecimal</c> structure whose <see cref="Value"/> property contains the decremented value when used as a prefix operator,
+  /// An <see cref="NaDecimal"/> structure whose <see cref="Value"/> property contains the decremented value when used as a prefix operator,
   /// or the original value when used as a postfix operator. 
   /// </returns>
   public static NaDecimal operator -- (NaDecimal x)
@@ -885,8 +885,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Compares the two <see cref="NaDecimal "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThan (NaDecimal x, NaDecimal y)
   {
@@ -897,8 +897,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Compares the two <see cref="NaDecimal "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator < (NaDecimal x, NaDecimal y)
   {
@@ -912,8 +912,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Compares the two <see cref="NaDecimal "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThanOrEqual (NaDecimal x, NaDecimal y)
   {
@@ -924,8 +924,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Compares the two <see cref="NaDecimal "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator <= (NaDecimal x, NaDecimal y)
   {
@@ -939,8 +939,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Compares the two <see cref="NaDecimal "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThan (NaDecimal x, NaDecimal y)
   {
@@ -951,8 +951,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Compares the two <see cref="NaDecimal "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator > (NaDecimal x, NaDecimal y)
   {
@@ -966,8 +966,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Compares the two <see cref="NaDecimal "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThanOrEqual (NaDecimal x, NaDecimal y)
   {
@@ -978,8 +978,8 @@ public struct NaDecimal: INaNullable, IComparable, IFormattable, IXmlSerializabl
   /// Compares the two <see cref="NaDecimal "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator >= (NaDecimal x, NaDecimal y)
   {
