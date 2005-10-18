@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
-/// The default implementation of <see cref="Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/> for the <see cref="BindableDomainObject"/>.
+/// The implementation of <see cref="Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/> for the <see cref="BindableDomainObject"/>.
 /// </summary>
 /// <remarks>
 ///   <para>
@@ -78,14 +78,14 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
   /// </summary>
   /// <param name="identifier">The identifier of the object to return.</param>
   /// <returns>The <see cref="BindableDomainObject"/> with the given <see cref="identifier"/>.</returns>
-  /// <remarks>See <see cref="BindableObject.GetObject"/> for a list of exceptions that can occur.</remarks>
+  /// <remarks>See <see cref="BindableDomainObject.GetObject"/> for a list of exceptions that can occur.</remarks>
   public IBusinessObjectWithIdentity GetObject (string identifier)
   {
     return BindableDomainObject.GetObject (ObjectID.Parse (identifier));
   }
 
   /// <summary>
-  /// Returns false.
+  /// Gets <see langword="false"/>.
   /// </summary>
   public bool RequiresWriteBack
   { 
