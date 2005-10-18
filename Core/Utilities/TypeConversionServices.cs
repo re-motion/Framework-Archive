@@ -11,6 +11,8 @@ public class TypeConversionServices
 {
   private static Hashtable s_typeConverters = new Hashtable();
 
+  private Hashtable _additionalTypeConverters = new Hashtable();
+
   public TypeConversionServices()
 	{
 	}
@@ -56,9 +58,27 @@ public class TypeConversionServices
   /// </returns>
   public virtual TypeConverter GetTypeConverter (Type type)
   {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    TypeConverter converter = GetAdditionalTypeConverter (type);
+    if (converter != null)
+      return converter;
     return GetCachedTypeConverterByAttribute (type);
   }
-  
+
+  public void AddTypeConverter (Type type, TypeConverter converter)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    ArgumentUtility.CheckNotNull ("converter", converter);
+    _additionalTypeConverters[type] = converter;
+  }
+
+  public void RemoveTypeConverter (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    _additionalTypeConverters.Remove (type);
+  }
+
   /// <summary> 
   ///   Test whether the <see cref="TypeConversionServices"/> object can convert an object of <see cref="Type"/> 
   ///   <paramref name="sourceType"/> into an object of <see cref="Type"/> <paramref name="destinationType"/>
@@ -178,6 +198,12 @@ public class TypeConversionServices
   {
     ArgumentUtility.CheckNotNull ("type", type);
     return s_typeConverters.ContainsKey (type);
+  }
+
+  protected TypeConverter GetAdditionalTypeConverter (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    return (TypeConverter) _additionalTypeConverters[type];
   }
 }
 

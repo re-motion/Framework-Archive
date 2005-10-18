@@ -12,17 +12,23 @@ namespace Rubicon.Core.UnitTests.Utilities
 public class TypeConversionServicesTest
 {
   private TypeConversionServicesMock _services;
+  private TypeConversionServicesMock _servicesWithGuidConverter;
   private Type _naInt32 = typeof (NaInt32);
   private Type _int32 = typeof (int);
   private Type _string = typeof (string);
   private Type _naDouble = typeof (NaDouble);
   private Type _object = typeof (object);
+  private Type _guid = typeof (Guid);
 
   [SetUp]
   public void SetUp()
   {
     _services = new TypeConversionServicesMock();
     _services.ClearCache();
+
+    _servicesWithGuidConverter = new TypeConversionServicesMock();
+    _servicesWithGuidConverter.ClearCache();
+    _servicesWithGuidConverter.AddTypeConverter (_guid, new NaGuidConverter());
   }
 
   [Test]
@@ -79,6 +85,18 @@ public class TypeConversionServicesTest
     Assert.IsFalse (_services.CanConvert (_object, _naInt32));
   }
 
+
+  [Test]
+  public void CanConvertFromGuidToString()
+  {
+    Assert.IsTrue (_servicesWithGuidConverter.CanConvert (_guid, _string));
+  }
+
+  [Test]
+  public void CanConvertFromStringToGuid()
+  {
+    Assert.IsTrue (_servicesWithGuidConverter.CanConvert (_string, _guid));
+  }
 
   [Test]
   public void ConvertFromInt32ToInt32()
@@ -196,6 +214,22 @@ public class TypeConversionServicesTest
   {
     _services.Convert (_string, _int32, "");
     Assert.Fail();
+  }
+
+
+    [Test]
+  public void ConvertFromGuidToString()
+  {
+    Guid guid = Guid.NewGuid();
+    Assert.AreEqual (guid.ToString(), _servicesWithGuidConverter.Convert (_guid, _string, guid));
+  }
+
+  [Test]
+  public void ConvertFromStringToGuid()
+  {
+    Guid guid = Guid.NewGuid();
+    NaGuid naGuid = new NaGuid (guid);
+    Assert.AreEqual (naGuid, _servicesWithGuidConverter.Convert (_string, _guid, guid.ToString()));
   }
 
 
@@ -322,6 +356,25 @@ public class TypeConversionServicesTest
     NaInt32Converter converter = new NaInt32Converter();
     _services.AddTypeConverterToCache (_naInt32, converter);
     Assert.IsTrue (_services.HasCachedTypeConverter (_naInt32));
+  }
+
+  [Test]
+  public void AddTypeConverter()
+  {
+    NaGuidConverter converter = new NaGuidConverter();
+    Assert.IsNull (_services.GetTypeConverter (_guid));
+    _services.AddTypeConverter (_guid, converter);
+    Assert.AreSame (converter, _services.GetTypeConverter (_guid));
+  }
+
+  [Test]
+  public void RemoveTypeConverter()
+  {
+    NaGuidConverter converter = new NaGuidConverter();
+    _services.AddTypeConverter (_guid, converter);
+    Assert.AreSame (converter, _services.GetTypeConverter (_guid));
+    _services.RemoveTypeConverter (_guid);
+    Assert.IsNull (_services.GetTypeConverter (_guid));
   }
 }
 
