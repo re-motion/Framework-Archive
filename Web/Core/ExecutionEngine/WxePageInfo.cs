@@ -400,36 +400,36 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteRootFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteRootFunction(WxeFunction,String,Control,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback)
+  public void ExecuteRootFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    ExecuteFunctionExternal (function, target, null, sender, returningPostback, false, false);
+    ExecuteRootFunction (function, target, null, sender, returningPostback, false, false);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteRootFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteRootFunction(WxeFunction,String,String,Control,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionExternal (
+  public void ExecuteRootFunction (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
-    ExecuteFunctionExternal (function, target, features, sender, returningPostback, false, false);
+    ExecuteRootFunction (function, target, features, sender, returningPostback, false, false);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteRootFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteRootFunction(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionExternal (
+  public void ExecuteRootFunction (
       WxeFunction function, string target, Control sender, bool returningPostback, 
       bool createPermalink, bool useParentPermalink)
   {
-    ExecuteFunctionExternal (function, target, null, sender, returningPostback, createPermalink, useParentPermalink);
+    ExecuteRootFunction (function, target, null, sender, returningPostback, createPermalink, useParentPermalink);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteRootFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteRootFunction(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunctionExternal (
+  public void ExecuteRootFunction (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
       bool createPermalink, bool useParentPermalink)
   {
