@@ -7,8 +7,8 @@ using Rubicon.Utilities;
 namespace Rubicon.Core.UnitTests.Utilities
 {
 
-/// <summary> Exposes non-public members of the <see cref="TypeConverterFactory"/> type. </summary>
-public class TypeConverterFactoryMock: TypeConverterFactory
+/// <summary> Exposes non-public members of the <see cref="TypeConversionServices"/> type. </summary>
+public class TypeConversionServicesMock: TypeConversionServices
 {
   public new TypeConverter GetTypeConverterByAttribute (Type type)
   {

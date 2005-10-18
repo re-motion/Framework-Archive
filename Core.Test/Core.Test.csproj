@@ -253,12 +253,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Utilities\TypeConverterFactoryMock.cs"
+                    RelPath = "Utilities\TypeConversionServicesMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Utilities\TypeConverterFactoryTest.cs"
+                    RelPath = "Utilities\TypeConversionServicesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

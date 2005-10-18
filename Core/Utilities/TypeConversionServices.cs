@@ -6,41 +6,11 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Utilities
 {
 
-public class TypeConverterFactory
+public class TypeConversionServices
 {
   private static Hashtable s_typeConverters = new Hashtable();
-  private static TypeConverterFactory s_current = new TypeConverterFactory();
 
-  /// <summary> Gets the current <see cref="TypeConverterFactory"/>. </summary>
-  /// <value> An instance of the <see cref="TypeConverterFactory"/> type. </value>
-  public static TypeConverterFactory Current
-  {
-    get
-    {
-      if (s_current == null)
-      {
-        lock (typeof (TypeConverterFactory))
-        {
-          if (s_current == null)
-            s_current = new TypeConverterFactory();
-        }
-      }
-      return s_current;
-    }
-  }
-
-  /// <summary> Sets the current <see cref="TypeConverterFactory"/>. </summary>
-  /// <param name="factory"> A <see cref="TypeConverterFacotry"/>. Must not be <see langword="null"/>. </param>
-  public static void SetCurrent (TypeConverterFactory factory)
-  {
-    ArgumentUtility.CheckNotNull ("factory", factory);
-    lock (typeof (TypeConverterFactory))
-    {
-      s_current = factory;
-    }
-  }
-
-	public TypeConverterFactory()
+  public TypeConversionServices()
 	{
 	}
 
