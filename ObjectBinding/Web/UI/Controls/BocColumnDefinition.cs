@@ -136,7 +136,7 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
   }
 }
 
-/// <summary> A column defintion with the possibility of rendering a command in the cell. </summary>
+/// <summary> A column definition with the possibility of rendering a command in the cell. </summary>
 public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
 {
   /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
@@ -592,7 +592,7 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   private IconInfo _saveIcon;
   private string _cancelText;
   private IconInfo _cancelIcon;
-  private BocEditDetailsColumnDefintionShow _show = BocEditDetailsColumnDefintionShow.EditMode;
+  private BocEditDetailsColumnDefinitionShow _show = BocEditDetailsColumnDefinitionShow.EditMode;
 
   /// <summary> Initializes a new instance of the <see cref="BocCommandColumnDefinition"/> class. </summary>
   public BocEditDetailsColumnDefinition()
@@ -606,15 +606,15 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   ///   Determines when the column is shown to the user in regard of the <see cref="BocList"/>'s read-only setting.
   /// </summary>
   /// <value> 
-  ///   One of the <see cref="BocEditDetailsColumnDefintionShow"/> enumeration values. 
-  ///   The default is <see cref="BocEditDetailsColumnDefintionShow.EditMode"/>.
+  ///   One of the <see cref="BocEditDetailsColumnDefinitionShow"/> enumeration values. 
+  ///   The default is <see cref="BocEditDetailsColumnDefinitionShow.EditMode"/>.
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("Determines when to show the column to the user in regard to the BocList's read-only setting.")]
-  [DefaultValue (BocEditDetailsColumnDefintionShow.EditMode)]
+  [DefaultValue (BocEditDetailsColumnDefinitionShow.EditMode)]
   [NotifyParentProperty (true)]
-  public BocEditDetailsColumnDefintionShow Show
+  public BocEditDetailsColumnDefinitionShow Show
   {
     get { return _show; }
     set { _show = value; }
@@ -766,7 +766,7 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
 }
 
 /// <summary> Defines when the <see cref="BocEditDetailsColumnDefinition"/> will be shown in the <see cref="BocList"/>. </summary>
-public enum BocEditDetailsColumnDefintionShow
+public enum BocEditDetailsColumnDefinitionShow
 {
   /// <summary> The column is always shown, but inactive if the <see cref="BocList"/> is read-only. </summary>
   Always,
@@ -774,7 +774,7 @@ public enum BocEditDetailsColumnDefintionShow
   EditMode
 }
 
-/// <summary> A column defintion that renders a <see cref="DropDownMenu"/> in the cell. </summary>
+/// <summary> A column definition that renders a <see cref="DropDownMenu"/> in the cell. </summary>
 public class BocDropDownMenuColumnDefinition: BocColumnDefinition
 {
   private string _menuTitleText;
