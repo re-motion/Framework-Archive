@@ -113,7 +113,7 @@ public sealed class NaTypeUtility
   /// <summary>
   /// Registers a nullable type for use by <see cref="GetNullableType"/>.
   /// </summary>
-  /// <exception cref="ArgumentException"><c>nullableType</c> does not implement <see cref="INaNullable"/>.</exception>
+  /// <exception cref="ArgumentException"><paramref name="nullableType"/> does not implement <see cref="INaNullable"/>.</exception>
   public static void AddMapping (Type nullableType)
   {
     if (! IsNaNullableType (nullableType))
@@ -131,7 +131,7 @@ public sealed class NaTypeUtility
   /// </summary>
   /// <param name="nullableType"></param>
   /// <returns>
-  ///   Returns the basic type of the specified nullable type. If <c>nullableType</c> is not a nullable type, the specified type 
+  ///   Returns the basic type of the specified nullable type. If <paramref name="nullableType"/> is not a nullable type, the specified type 
   ///   itself is returned.
   ///   <para>
   ///   Some examples:
@@ -192,7 +192,7 @@ public sealed class NaTypeUtility
   ///   that implement <see cref="INaNullable"/> too. There is no need to call <see cref="AddMapping"/> in order for this method to work.
   /// </remarks>
   /// <exception cref="NotSupportedException">
-  ///   <c>nullableType</c> implements <see cref="INaNullable"/>, but does not specify the <see cref="NaBasicTypeAttribute"/> attribute.
+  ///   <paramref name="nullableType"/> implements <see cref="INaNullable"/>, but does not specify the <see cref="NaBasicTypeAttribute"/> attribute.
   /// </exception>
   public static Type GetBasicType (Type nullableType)
   {
