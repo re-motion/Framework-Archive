@@ -52,7 +52,7 @@ public interface ISmartControl: IControl
 //  /// <remarks>
 //  ///   This flag should be true for controls rendering &lt;input&gt; or &lt;textarea&gt; elements.
 //  ///   The reason for this is in excentric application of CSS-classes to these elements via
-//  ///   the defintion of global styles (input {...} and textarea {...}). The most predictable result
+//  ///   the definition of global styles (input {...} and textarea {...}). The most predictable result
 //  ///   is acchivied by directly assigning the class instead of using the global definitions.
 //  /// </remarks>
 //  bool UseInputControlCSS { get; }
