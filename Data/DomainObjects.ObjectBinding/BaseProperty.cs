@@ -155,7 +155,7 @@ public class BaseProperty : IBusinessObjectProperty
   /// <param name="internalValue">The internal value.</param>
   /// <returns>The external value. If the data type of the property has a field named "MinValue" and <paramref name="internalValue"/> is equal to it, then the return value is null.</returns>
   /// <note type="inheritinfo">
-  ///   Override this method to convert data types, take care of default values or other changes.
+  ///   Override this method to perform conversions of data types or other logic.
   /// </note>
   internal protected virtual object FromInternalType (object internalValue)
   {
