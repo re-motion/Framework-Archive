@@ -146,7 +146,6 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// <param name="propertyIdentifier">The name of the property to return, as specified in the mapping file.</param>
   /// <returns>An instance of <see cref="BaseProperty"/> or a derived class, depending on the <see cref="System.Type"/> of the propery.</returns>
   // TODO Doc: exceptions
-  // all exceptions from GetBusinessObjectProperty
   public IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
   {
     return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
@@ -192,19 +191,35 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
     set { SetProperty (property, value); }
   }
 
-  // TODO Doc: 
+  /// <summary>
+  /// Gets the string representation of the value of the specified <paramref name="property"/>.
+  /// </summary>
+  /// <param name="property">The name of the requested property.</param>
+  /// <returns>A string representing the value of the given <paramref name="property"/></returns>
+  // TODO Doc: Exceptions
   public string GetPropertyString (string property)
   {
     return GetPropertyString (GetBusinessObjectProperty (property));
   }
 
-  // TODO Doc: 
+  /// <summary>
+  /// Gets the string representation of the value of the specified <paramref name="property"/>.
+  /// </summary>
+  /// <param name="property">The requested property.</param>
+  /// <returns>A string representing the value of the given <paramref name="property"/></returns>
+  // TODO Doc: Exceptions
   public string GetPropertyString (IBusinessObjectProperty property)
   {
     return GetPropertyString (property, null);
   }
 
-  // TODO Doc: 
+  /// <summary>
+  /// Gets the string representation of the value of the specified <paramref name="property"/>.
+  /// </summary>
+  /// <param name="property">The requested property.</param>
+  /// <param name="format"> The format string applied by the <b>ToString</b> method. </param>
+  /// <returns>A string representing the value of the given <paramref name="property"/></returns>
+  // TODO Doc: Exceptions
   public virtual string GetPropertyString (IBusinessObjectProperty property, string format)
   {
     return _objectReflector.GetPropertyString (property, format);
