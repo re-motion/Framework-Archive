@@ -58,12 +58,12 @@ public class NaSingleConverterTest
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaSingle.Null, _converter.ConvertFrom (NaSingle.Null.ToString()));
-    Assert.AreEqual (new NaSingle (32), _converter.ConvertFrom (new NaSingle (32).ToString()));
-    Assert.AreEqual (new NaSingle (-32), _converter.ConvertFrom (new NaSingle (-32).ToString()));
-    Assert.AreEqual (new NaSingle (321.1234F), _converter.ConvertFrom (new NaSingle (321.1234F).ToString()));
-    Assert.AreEqual (new NaSingle (-321.1234F), _converter.ConvertFrom (new NaSingle (-321.1234F).ToString()));
-    Assert.AreEqual (NaSingle.Zero, _converter.ConvertFrom (NaSingle.Zero.ToString()));
+    Assert.AreEqual (NaSingle.Null, _converter.ConvertFrom (""));
+    Assert.AreEqual (new NaSingle (32), _converter.ConvertFrom ("32"));
+    Assert.AreEqual (new NaSingle (-32), _converter.ConvertFrom ("-32"));
+    Assert.AreEqual (new NaSingle (321.1234F), _converter.ConvertFrom ("321.1234"));
+    Assert.AreEqual (new NaSingle (-321.1234F), _converter.ConvertFrom ("-321.1234"));
+    Assert.AreEqual (NaSingle.Zero, _converter.ConvertFrom ("0"));
    }
 
   [Test]
@@ -91,11 +91,11 @@ public class NaSingleConverterTest
   {
     Type destinationType = typeof (float);
 
-    Assert.AreEqual ((float) 32, _converter.ConvertTo (new NaSingle (32), destinationType));
-    Assert.AreEqual ((float) -32, _converter.ConvertTo (new NaSingle (-32), destinationType));
-    Assert.AreEqual ((float) 321.1234F, _converter.ConvertTo (new NaSingle (321.1234F), destinationType));
-    Assert.AreEqual ((float) -321.1234F, _converter.ConvertTo (new NaSingle (-321.1234F), destinationType));
-    Assert.AreEqual ((float) 0, _converter.ConvertTo (NaSingle.Zero, destinationType));
+    Assert.AreEqual (32F, _converter.ConvertTo (new NaSingle (32), destinationType));
+    Assert.AreEqual (-32F, _converter.ConvertTo (new NaSingle (-32), destinationType));
+    Assert.AreEqual (321.1234F, _converter.ConvertTo (new NaSingle (321.1234F), destinationType));
+    Assert.AreEqual (-321.1234F, _converter.ConvertTo (new NaSingle (-321.1234F), destinationType));
+    Assert.AreEqual (0F, _converter.ConvertTo (NaSingle.Zero, destinationType));
     Assert.AreEqual (float.MinValue, _converter.ConvertTo (NaSingle.MinValue, destinationType));
     Assert.AreEqual (float.MaxValue, _converter.ConvertTo (NaSingle.MaxValue, destinationType));
   }
@@ -113,11 +113,11 @@ public class NaSingleConverterTest
   [Test]
   public void ConvertFromSingle()
   {
-    Assert.AreEqual (new NaSingle (32), _converter.ConvertFrom ((float) 32));
-    Assert.AreEqual (new NaSingle (-32), _converter.ConvertFrom ((float) -32));
-    Assert.AreEqual (new NaSingle (321.1234F), _converter.ConvertFrom ((float) 321.1234F));
-    Assert.AreEqual (new NaSingle (-321.1234F), _converter.ConvertFrom ((float) -321.1234F));
-    Assert.AreEqual (NaSingle.Zero, _converter.ConvertFrom ((float) 0));
+    Assert.AreEqual (new NaSingle (32), _converter.ConvertFrom (32F));
+    Assert.AreEqual (new NaSingle (-32), _converter.ConvertFrom (-32F));
+    Assert.AreEqual (new NaSingle (321.1234F), _converter.ConvertFrom (321.1234F));
+    Assert.AreEqual (new NaSingle (-321.1234F), _converter.ConvertFrom (-321.1234F));
+    Assert.AreEqual (NaSingle.Zero, _converter.ConvertFrom (0F));
     Assert.AreEqual (NaSingle.MinValue, _converter.ConvertFrom (float.MinValue));
     Assert.AreEqual (NaSingle.MaxValue, _converter.ConvertFrom (float.MaxValue));
   }

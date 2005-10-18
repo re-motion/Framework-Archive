@@ -45,10 +45,10 @@ public class NaInt16ConverterTest
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaInt16.Null, _converter.ConvertFrom (NaInt16.Null.ToString()));
-    Assert.AreEqual (new NaInt16 (32), _converter.ConvertFrom (new NaInt16 (32).ToString()));
-    Assert.AreEqual (new NaInt16 (-32), _converter.ConvertFrom (new NaInt16 (-32).ToString()));
-    Assert.AreEqual (NaInt16.Zero, _converter.ConvertFrom (NaInt16.Zero.ToString()));
+    Assert.AreEqual (NaInt16.Null, _converter.ConvertFrom (""));
+    Assert.AreEqual (new NaInt16 (32), _converter.ConvertFrom ("32"));
+    Assert.AreEqual (new NaInt16 (-32), _converter.ConvertFrom ("-32"));
+    Assert.AreEqual (NaInt16.Zero, _converter.ConvertFrom ("0"));
     Assert.AreEqual (NaInt16.MinValue, _converter.ConvertFrom (NaInt16.MinValue.ToString()));
     Assert.AreEqual (NaInt16.MaxValue, _converter.ConvertFrom (NaInt16.MaxValue.ToString()));
   }

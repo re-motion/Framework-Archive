@@ -45,10 +45,10 @@ public class NaInt64ConverterTest
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaInt64.Null, _converter.ConvertFrom (NaInt64.Null.ToString()));
-    Assert.AreEqual (new NaInt64 (32), _converter.ConvertFrom (new NaInt64 (32).ToString()));
-    Assert.AreEqual (new NaInt64 (-32), _converter.ConvertFrom (new NaInt64 (-32).ToString()));
-    Assert.AreEqual (NaInt64.Zero, _converter.ConvertFrom (NaInt64.Zero.ToString()));
+    Assert.AreEqual (NaInt64.Null, _converter.ConvertFrom (""));
+    Assert.AreEqual (new NaInt64 (32), _converter.ConvertFrom ("32"));
+    Assert.AreEqual (new NaInt64 (-32), _converter.ConvertFrom ("-32"));
+    Assert.AreEqual (NaInt64.Zero, _converter.ConvertFrom ("0"));
     Assert.AreEqual (NaInt64.MinValue, _converter.ConvertFrom (NaInt64.MinValue.ToString()));
     Assert.AreEqual (NaInt64.MaxValue, _converter.ConvertFrom (NaInt64.MaxValue.ToString()));
   }
@@ -70,9 +70,9 @@ public class NaInt64ConverterTest
   {
     Type destinationType = typeof (long);
 
-    Assert.AreEqual ((long) 32, _converter.ConvertTo (new NaInt64 (32), destinationType));
-    Assert.AreEqual ((long) -32, _converter.ConvertTo (new NaInt64 (-32), destinationType));
-    Assert.AreEqual ((long) 0, _converter.ConvertTo (NaInt64.Zero, destinationType));
+    Assert.AreEqual (32L, _converter.ConvertTo (new NaInt64 (32), destinationType));
+    Assert.AreEqual (-32L, _converter.ConvertTo (new NaInt64 (-32), destinationType));
+    Assert.AreEqual (0L, _converter.ConvertTo (NaInt64.Zero, destinationType));
     Assert.AreEqual (long.MinValue, _converter.ConvertTo (NaInt64.MinValue, destinationType));
     Assert.AreEqual (long.MaxValue, _converter.ConvertTo (NaInt64.MaxValue, destinationType));
   }
@@ -90,9 +90,9 @@ public class NaInt64ConverterTest
   [Test]
   public void ConvertFromInt64()
   {
-    Assert.AreEqual (new NaInt64 (32), _converter.ConvertFrom ((long) 32));
-    Assert.AreEqual (new NaInt64 (-32), _converter.ConvertFrom ((long) -32));
-    Assert.AreEqual (NaInt64.Zero, _converter.ConvertFrom ((long) 0));
+    Assert.AreEqual (new NaInt64 (32), _converter.ConvertFrom (32L));
+    Assert.AreEqual (new NaInt64 (-32), _converter.ConvertFrom (-32L));
+    Assert.AreEqual (NaInt64.Zero, _converter.ConvertFrom (0L));
     Assert.AreEqual (NaInt64.MinValue, _converter.ConvertFrom (long.MinValue));
     Assert.AreEqual (NaInt64.MaxValue, _converter.ConvertFrom (long.MaxValue));
   }

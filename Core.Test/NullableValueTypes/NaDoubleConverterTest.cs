@@ -58,12 +58,12 @@ public class NaDoubleConverterTest
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (NaDouble.Null.ToString()));
-    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom (new NaDouble (32).ToString()));
-    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom (new NaDouble (-32).ToString()));
-    Assert.AreEqual (new NaDouble (654321.123456789), _converter.ConvertFrom (new NaDouble (654321.123456789).ToString()));
-    Assert.AreEqual (new NaDouble (-654321.123456789), _converter.ConvertFrom (new NaDouble (-654321.123456789).ToString()));
-    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom (NaDouble.Zero.ToString()));
+    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (""));
+    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom ("32"));
+    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom ("-32"));
+    Assert.AreEqual (new NaDouble (654321.123456789), _converter.ConvertFrom ("654321.123456789"));
+    Assert.AreEqual (new NaDouble (-654321.123456789), _converter.ConvertFrom ("-654321.123456789"));
+    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom ("0"));
   }
 
   [Test]
@@ -91,11 +91,11 @@ public class NaDoubleConverterTest
   {
     Type destinationType = typeof (double);
 
-    Assert.AreEqual ((double) 32, _converter.ConvertTo (new NaDouble (32), destinationType));
-    Assert.AreEqual ((double) -32, _converter.ConvertTo (new NaDouble (-32), destinationType));
-    Assert.AreEqual ((double) 654321.123456789, _converter.ConvertTo (new NaDouble (654321.123456789), destinationType));
-    Assert.AreEqual ((double) -654321.123456789, _converter.ConvertTo (new NaDouble (-654321.123456789), destinationType));
-    Assert.AreEqual ((double) 0, _converter.ConvertTo (NaDouble.Zero, destinationType));
+    Assert.AreEqual (32d, _converter.ConvertTo (new NaDouble (32), destinationType));
+    Assert.AreEqual (-32d, _converter.ConvertTo (new NaDouble (-32), destinationType));
+    Assert.AreEqual (654321.123456789, _converter.ConvertTo (new NaDouble (654321.123456789), destinationType));
+    Assert.AreEqual (-654321.123456789, _converter.ConvertTo (new NaDouble (-654321.123456789), destinationType));
+    Assert.AreEqual (0d, _converter.ConvertTo (NaDouble.Zero, destinationType));
     Assert.AreEqual (double.MinValue, _converter.ConvertTo (NaDouble.MinValue, destinationType));
     Assert.AreEqual (double.MaxValue, _converter.ConvertTo (NaDouble.MaxValue, destinationType));
   }
@@ -113,11 +113,11 @@ public class NaDoubleConverterTest
   [Test]
   public void ConvertFromDouble()
   {
-    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom ((double) 32));
-    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom ((double) -32));
-    Assert.AreEqual (new NaDouble (654321.123456789), _converter.ConvertFrom ((double) 654321.123456789));
-    Assert.AreEqual (new NaDouble (-654321.123456789), _converter.ConvertFrom ((double) -654321.123456789));
-    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom ((double) 0));
+    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom (32d));
+    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom (-32d));
+    Assert.AreEqual (new NaDouble (654321.123456789), _converter.ConvertFrom (654321.123456789));
+    Assert.AreEqual (new NaDouble (-654321.123456789), _converter.ConvertFrom (-654321.123456789));
+    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom (0d));
     Assert.AreEqual (NaDouble.MinValue, _converter.ConvertFrom (double.MinValue));
     Assert.AreEqual (NaDouble.MaxValue, _converter.ConvertFrom (double.MaxValue));
   }
