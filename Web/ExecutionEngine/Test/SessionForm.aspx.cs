@@ -31,9 +31,9 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton ExecuteNoRepostButton;
   protected System.Web.UI.WebControls.Label FunctionTokenLabel;
   protected System.Web.UI.WebControls.Label PostBackIDLabel;
-  protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithMappedPathInNewWindowButton;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionAsRootInNewWindowButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionInNewWindowButton;
-  protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithMappedPathButton;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionAsRootButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionButton;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
@@ -63,7 +63,7 @@ public class SessionForm : WxePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.OpenSampleFunctionWithMappedPathInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionWithMappedPathInNewWindowButton_Click);
+    this.OpenSampleFunctionAsRootInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionAsRootInNewWindowButton_Click);
     this.OpenSelfButton.Click += new System.EventHandler(this.OpenSelfButton_Click);
     this.Button1.Click += new System.EventHandler(this.Button1_Click);
     this.Button1Button.Click += new System.EventHandler(this.Button1Button_Click);
@@ -71,7 +71,7 @@ public class SessionForm : WxePage
     this.ExecuteButton.Click += new System.EventHandler(this.ExecuteButton_Click);
     this.ExecuteNoRepostButton.Click += new System.EventHandler(this.ExecuteNoRepostButton_Click);
     this.Button2Button.Click += new System.EventHandler(this.Button2Button_Click);
-    this.OpenSampleFunctionWithMappedPathButton.Click += new System.EventHandler(this.OpenSampleFunctionWithMappedPathButton_Click);
+    this.OpenSampleFunctionAsRootButton.Click += new System.EventHandler(this.OpenSampleFunctionAsRootButton_Click);
     this.OpenSampleFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionInNewWindowButton_Click);
     this.OpenSampleFunctionButton.Click += new System.EventHandler(this.OpenSampleFunctionButton_Click);
     this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
@@ -83,7 +83,7 @@ public class SessionForm : WxePage
   private void OpenSelfButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", OpenSelfButton, true);
+      ExecuteRootFunction (new SessionWxeFunction (true), "_blank", OpenSelfButton, true);
   }
 
   private void Button1_Click(object sender, System.EventArgs e)
@@ -123,7 +123,7 @@ public class SessionForm : WxePage
       ExecuteFunction (new SampleWxeFunction());
   }
 
-  private void OpenSampleFunctionWithMappedPathButton_Click(object sender, System.EventArgs e)
+  private void OpenSampleFunctionAsRootButton_Click(object sender, System.EventArgs e)
   {
     if (! IsReturningPostBack)
       ExecuteFunction (new SampleWxeFunction(), true, true);
@@ -132,13 +132,13 @@ public class SessionForm : WxePage
   private void OpenSampleFunctionInNewWindowButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true);
+      ExecuteRootFunction (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true);
   }
 
-  private void OpenSampleFunctionWithMappedPathInNewWindowButton_Click(object sender, System.EventArgs e)
+  private void OpenSampleFunctionAsRootInNewWindowButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true, true, true);
+      ExecuteRootFunction (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true, true, true);
   }
 
 }
