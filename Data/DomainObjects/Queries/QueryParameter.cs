@@ -61,19 +61,21 @@ public class QueryParameter
   }
 
   /// <summary>
-  /// Gets the value of the <see cref="QueryParameter"/>.
+  /// Gets or sets the value of the <see cref="QueryParameter"/>.
   /// </summary>
   public object Value
   {
     get { return _value; }
+    set { _value = value; }
   }
 
   /// <summary>
-  /// Gets the <see cref="QueryParameterType"/> of the <see cref="QueryParameter"/>.
+  /// Gets or sets the <see cref="QueryParameterType"/> of the <see cref="QueryParameter"/>.
   /// </summary>
   public QueryParameterType ParameterType
   {
     get { return _parameterType; }
+    set { _parameterType = value; }
   }
 }
 }
