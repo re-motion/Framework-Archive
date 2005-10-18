@@ -265,6 +265,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NullableValueTypes\NaDateTimeConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NullableValueTypes\NaDecimal.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -336,11 +341,6 @@
                 />
                 <File
                     RelPath = "NullableValueTypes\NaTypeUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\TypeConverters.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
