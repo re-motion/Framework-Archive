@@ -11,9 +11,9 @@ namespace Rubicon.NullableValueTypes
 {
 
 /// <summary>
-/// Represents a single-precision floating point number that can be <c>Null</c>. The corresponding system type is System.Single.
+/// Represents a single-precision floating point number that can be <see langword="null"/>. The corresponding system type is System.Single.
 /// </summary>
-/// <include file='doc\include\include.xml' path='Comments/NaSingle/remarks' />
+/// <include file='doc\include\NullableValueTypes\include.xml' path='Comments/NaSingle/remarks' />
 [Serializable]
 [NaBasicType (typeof (Single))]
 [TypeConverter (typeof (NaSingleConverter))]
@@ -81,11 +81,11 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   #region type conversion
 
   /// <summary>
-  /// Converts a <see cref="NaSingle"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaSingle"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaSingle</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaSingle"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public override string ToString()
   {
@@ -93,12 +93,12 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaSingle"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaSingle"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaSingle</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaSingle"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format)
@@ -107,12 +107,12 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaSingle"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaSingle"/> structure to a <see cref="String"/>.
   /// </summary>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaSingle</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaSingle"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public string ToString (IFormatProvider provider)
   {
@@ -120,13 +120,13 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaSingle"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaSingle"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaSingle</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaSingle"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format, IFormatProvider provider)
@@ -146,15 +146,15 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaSingle equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaSingle equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="NumberStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaSingle</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaSingle.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Single.Parse</c> would return.
+  /// An <see cref="NaSingle"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaSingle.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Single.Parse"/> would return.
   /// </returns>
   public static NaSingle Parse (string s, NumberStyles styles, IFormatProvider provider)
   {
@@ -164,14 +164,14 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaSingle equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaSingle equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaSingle</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaSingle.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Single.Parse</c> would return.
+  /// An <see cref="NaSingle"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaSingle.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Single.Parse"/> would return.
   /// </returns>
   public static NaSingle Parse (string s, IFormatProvider provider)
   {
@@ -179,14 +179,14 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaSingle equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaSingle equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="NumberStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaSingle</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaSingle.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Single.Parse</c> would return.
+  /// An <see cref="NaSingle"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaSingle.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Single.Parse"/> would return.
   /// </returns>
   public static NaSingle Parse (string s, NumberStyles styles)
   {
@@ -194,13 +194,13 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaSingle equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaSingle equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
   /// <returns>
-  /// An <c>NaSingle</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaSingle.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Single.Parse</c> would return.
+  /// An <see cref="NaSingle"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaSingle.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Single.Parse"/> would return.
   /// </returns>
   public static NaSingle Parse (string s)
   {
@@ -208,9 +208,9 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>Single</c> to a <see cref="NaSingle"/> structure.
+  /// Converts the supplied <see cref="Single"/> to an <see cref="NaSingle"/> structure.
   /// </summary>
-  /// <param name="value">A <c>Single</c> value.</param>
+  /// <param name="value">A <see cref="Single"/> value.</param>
   /// <returns>The converted <see cref="NaSingle"/> value.</returns>
   public static implicit operator NaSingle (Single value)
   {
@@ -218,9 +218,9 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaSingle"/> structure to a <c>Single</c>.
+  /// Converts the supplied <see cref="NaSingle"/> structure to a <see cref="Single"/>.
   /// </summary>
-  /// <param name="value">A <see cref="NaSingle"/> structure.</param>
+  /// <param name="value">An <see cref="NaSingle"/> structure.</param>
   /// <returns>The converted single value.</returns>
   /// <exception cref="NaNullValueException">
   /// The passed value is null.
@@ -233,7 +233,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlSingle</c> structure to a <see cref="NaSingle"/> structure.
+  /// Converts the supplied <see cref="SqlSingle"/> structure to an <see cref="NaSingle"/> structure.
   /// </summary>
   public static NaSingle FromSqlSingle (SqlSingle value)
   {
@@ -241,7 +241,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlSingle</c> structure to a <see cref="NaSingle"/> structure.
+  /// Converts the supplied <see cref="SqlSingle"/> structure to an <see cref="NaSingle"/> structure.
   /// </summary>
   public static implicit operator NaSingle (SqlSingle value)
   {
@@ -252,7 +252,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaSingle"/> structure to a <c>SqlSingle</c>structure.
+  /// Converts the supplied <see cref="NaSingle"/> structure to a <see cref="SqlSingle"/>structure.
   /// </summary>
   public static SqlSingle ToSqlSingle (NaSingle value)
   {
@@ -260,7 +260,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaSingle"/> structure to a <c>SqlSingle</c>structure.
+  /// Converts the supplied <see cref="NaSingle"/> structure to a <see cref="SqlSingle"/>structure.
   /// </summary>
   public static implicit operator SqlSingle (NaSingle value)
   {
@@ -271,11 +271,11 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaSingle"/> value to a boxed <c>Single</c> value or a null reference.
+  /// Converts an <see cref="NaSingle"/> value to a boxed <see cref="Single"/> value or a null reference.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>Single</c> if it is not null, a null reference otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as an <see cref="Single"/> if it is not null, a null reference otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaSingle</c> values to methods that expect an untyped parameter which is either a <c>Single</c>
+  /// Use this method to easily pass <see cref="NaSingle"/> values to methods that expect an untyped parameter which is either a <see cref="Single"/>
   /// value or a null reference.
   /// </remarks>
   public static object ToBoxedSingle (NaSingle value)
@@ -287,14 +287,14 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a boxed <c>NaSingle</c> value or a null reference to a <see cref="NaSingle"/> value.
+  /// Converts a boxed <see cref="NaSingle"/> value or a null reference to an <see cref="NaSingle"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaSingle"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Single</c>, 
-  /// <c>NaSingle.Null</c> if it is a null reference.</returns>
+  /// <returns>An <see cref="NaSingle"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is an <see cref="Single"/>, 
+  /// <see cref="NaSingle.Null"/> if it is a null reference.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaSingle</c> value from an untyped value which is either an <c>Single</c> value or a null reference.
+  /// Use this method to easily create an <see cref="NaSingle"/> value from an untyped value which is either an <see cref="Single"/> value or a null reference.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither a null reference nor an <c>Single</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither a null reference nor an <see cref="Single"/> value.</exception>
   public static NaSingle FromBoxedSingle (object value)
   {
     if (value == null)
@@ -307,11 +307,11 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaSingle"/> value to a boxed <c>Single</c> value or to DBNull.Value.
+  /// Converts an <see cref="NaSingle"/> value to a boxed <see cref="Single"/> value or to DBNull.Value.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as a <c>Single</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as a <see cref="Single"/> if it is not null, DBNull.Value otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaSingle</c> values to methods that expect an untyped parameter which is either a <c>Single</c>
+  /// Use this method to easily pass <see cref="NaSingle"/> values to methods that expect an untyped parameter which is either a <see cref="Single"/>
   /// value or DBNull.Value.
   /// </remarks>
   public static object ToBoxedSingleDBNull (NaSingle value)
@@ -323,14 +323,14 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a boxed <c>Single</c> value or DBNull.Value to a <see cref="NaSingle"/> value.
+  /// Converts a boxed <see cref="Single"/> value or DBNull.Value to an <see cref="NaSingle"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaSingle"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is a <c>Single</c>, 
-  /// <c>NaSingle.Null</c> if it is DBNull.Value.</returns>
+  /// <returns>An <see cref="NaSingle"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is a <see cref="Single"/>, 
+  /// <see cref="NaSingle.Null"/> if it is DBNull.Value.</returns>
   /// <remarks>
-  /// Use this method to easily create a <c>NaSingle</c> value from an untyped value which is either a <c>Single</c> value or DBNull.Value.
+  /// Use this method to easily create an <see cref="NaSingle"/> value from an untyped value which is either a <see cref="Single"/> value or DBNull.Value.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither DBNull.Value nor an <c>Int32</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither DBNull.Value nor an <see cref="Int32"/> value.</exception>
   public static NaSingle FromBoxedSingleDBNull (object value)
   {
     if (value == DBNull.Value)
@@ -410,7 +410,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Indicates whether or not <see cref="Value"/> is null.
   /// </summary>
   /// <value>
-  /// This property is <c>true</c> if <see cref="Value"/> is null, otherwise <c>false</c>.
+  /// This property is <see langword="true"/> if <see cref="Value"/> is null, otherwise <see langword="false"/>.
   /// </value>
   public bool IsNull 
   {
@@ -422,13 +422,13 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   #region public fields
 
   /// <summary>
-  /// This value is used to convert a <c>Null</c> value to and from strings.
+  /// This value is used to convert a <see langword="null"/> value to and from strings.
   /// </summary>
   /// <value>
-  /// The value of <c>NullString</c> is "null".
+  /// The value of <see cref="NullString"/> is "null".
   /// </value>
   /// <remarks>
-  /// Note that parsing <c>NullString</c> is case-sensitive.
+  /// Note that parsing <see cref="NullString"/> is case-sensitive.
   /// </remarks>
   public static readonly string NullString = "null";
 
@@ -460,13 +460,13 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// </summary>
   /// <param name="obj">The object to be compared. </param>
   /// <returns>
-  /// <c>true</c> if object is an instance of <see cref="NaSingle"/> and the two are equal; otherwise <c>false</c>.
-  /// If object is a null reference, <c>false</c> is returned.
+  /// <see langword="true"/> if object is an instance of <see cref="NaSingle"/> and the two are equal; otherwise <see langword="false"/>.
+  /// If object is a null reference, <see langword="false"/> is returned.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
   /// equality logic.
-  /// Note that <c>false</c> is returned if object is a Single (types are not equal).
+  /// Note that <see langword="false"/> is returned if object is a Single (types are not equal).
   /// </remarks>
   public override bool Equals (object obj)
   {
@@ -481,7 +481,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// </summary>
   /// <param name="value">The <see cref="NaSingle"/> instance to be compared. </param>
   /// <returns>
-  /// <c>true</c> if the two are equal; otherwise <c>false</c>.
+  /// <see langword="true"/> if the two are equal; otherwise <see langword="false"/>.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -496,7 +496,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaSingle parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -511,7 +511,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaSingle parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -530,7 +530,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaSingle parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -545,7 +545,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaSingle parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -560,7 +560,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a SQL-style comparison of the two NaSingle parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are equal, or <see cref="NaBoolean.False"/> if they are not equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean EqualsSql (NaSingle x, NaSingle y)
   {
@@ -574,7 +574,7 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a SQL-style comparison of the two NaSingle parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are not equal, or <c>False</c> if they are equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are not equal, or <see cref="NaBoolean.False"/> if they are equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean NotEqualsSql (NaSingle x, NaSingle y)
   {
@@ -683,8 +683,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the sum of the two specified <see cref="NaSingle"/> structures.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaSingle</c> 
-  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the sum of the specified <see cref="NaSingle"/> 
+  /// structures, or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaSingle Add (NaSingle x, NaSingle y)
@@ -696,8 +696,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the sum of the two specified <see cref="NaSingle"/> structures.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaSingle</c> 
-  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the sum of the specified <see cref="NaSingle"/> 
+  /// structures, or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaSingle operator + (NaSingle x, NaSingle y)
@@ -715,8 +715,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Subtracts the second <see cref="NaSingle"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaSingle Subtract (NaSingle x, NaSingle y)
@@ -728,8 +728,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Subtracts the second <see cref="NaSingle"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaSingle operator - (NaSingle x, NaSingle y)
@@ -747,8 +747,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Divides the first <see cref="NaSingle"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the result of the division,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaSingle Divide (NaSingle x, NaSingle y)
@@ -760,8 +760,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Divides the first <see cref="NaSingle"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the result of the division,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaSingle operator / (NaSingle x, NaSingle y)
@@ -779,8 +779,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the product of the two <see cref="NaSingle"/> parameters.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaSingle Multiply (NaSingle x, NaSingle y)
@@ -792,8 +792,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the product of the two <see cref="NaSingle"/> parameters.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaSingle operator * (NaSingle x, NaSingle y)
@@ -811,8 +811,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the remainder after dividing the first <see cref="NaSingle"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the remainder,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaSingle Mod (NaSingle x, NaSingle y)
@@ -824,8 +824,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the remainder after dividing the first <see cref="NaSingle"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the remainder,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaSingle operator % (NaSingle x, NaSingle y)
@@ -843,10 +843,10 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Increments the value by one. 
   /// </summary>
   /// <remarks>
-  /// The <c>Value</c> property is incremented by one. If <c>x</c> is <c>Null</c>, the value is not modified.
+  /// The <see cref="Value"/> property is incremented by one. If <paramref name="x"/> is <see langword="null"/>, the value is not modified.
   /// </remarks>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the incremented value when used as a prefix operator,
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the incremented value when used as a prefix operator,
   /// or the original value when used as a postfix operator. 
   /// </returns>
   public static NaSingle operator ++ (NaSingle x)
@@ -862,10 +862,10 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Decrements the value by one. 
   /// </summary>
   /// <remarks>
-  /// The <c>Value</c> property is decremented by one. If <c>x</c> is <c>Null</c>, the value is not modified.
+  /// The <see cref="Value"/> property is decremented by one. If <paramref name="x"/> is <see langword="null"/>, the value is not modified.
   /// </remarks>
   /// <returns>
-  /// A <c>NaSingle</c> structure whose <see cref="Value"/> property contains the decremented value when used as a prefix operator,
+  /// An <see cref="NaSingle"/> structure whose <see cref="Value"/> property contains the decremented value when used as a prefix operator,
   /// or the original value when used as a postfix operator. 
   /// </returns>
   public static NaSingle operator -- (NaSingle x)
@@ -885,8 +885,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaSingle "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThan (NaSingle x, NaSingle y)
   {
@@ -897,8 +897,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaSingle "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator < (NaSingle x, NaSingle y)
   {
@@ -912,8 +912,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaSingle "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThanOrEqual (NaSingle x, NaSingle y)
   {
@@ -924,8 +924,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaSingle "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator <= (NaSingle x, NaSingle y)
   {
@@ -939,8 +939,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaSingle "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThan (NaSingle x, NaSingle y)
   {
@@ -951,8 +951,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaSingle "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator > (NaSingle x, NaSingle y)
   {
@@ -966,8 +966,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaSingle "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThanOrEqual (NaSingle x, NaSingle y)
   {
@@ -978,8 +978,8 @@ public struct NaSingle: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaSingle "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator >= (NaSingle x, NaSingle y)
   {
