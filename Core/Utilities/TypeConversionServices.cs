@@ -15,7 +15,7 @@ public class TypeConversionServices
 	}
 
   /// <summary> 
-  ///   Gets the <see cref="TypeConverter"/> that is able to convert a value of the <paramref name"from"/> 
+  ///   Gets the <see cref="TypeConverter"/> that is able to convert a value of the <paramref name="from"/> 
   ///   <see cref="Type"/> into an instance of the <paramref name="to"/> <see cref="Type"/>.
   /// </summary>
   /// <param name="from"> The source <see cref="Type"/> of the value. Must not be <see langword="null"/>. </param>
@@ -40,7 +40,7 @@ public class TypeConversionServices
   }
 
   /// <summary> 
-  ///   Gets the <see cref="TypeConverter"/> that is associated with the specified <paramref name"type"/>.
+  ///   Gets the <see cref="TypeConverter"/> that is associated with the specified <paramref name="type"/>.
   ///   <see cref="Type"/> into an instance of the <paramref name="to"/> <see cref="Type"/>.
   /// </summary>
   /// <param name="type"> 
@@ -52,6 +52,15 @@ public class TypeConversionServices
   public TypeConverter GetTypeConverter (Type type)
   {
     return GetCachedTypeConverterByAttribute (type);
+  }
+  
+  public bool CanConvert (Type from, Type to)
+  {
+    ArgumentUtility.CheckNotNull ("from", from);
+    ArgumentUtility.CheckNotNull ("to", to);
+
+    TypeConverter converter = GetTypeConverter (from, to);
+    return converter != null;
   }
 
   protected TypeConverter GetTypeConverterByAttribute (Type type)
@@ -73,7 +82,7 @@ public class TypeConversionServices
     ArgumentUtility.CheckNotNull ("type", type);
 
     TypeConverter converter = GetCachedTypeConverter (type);
-    if (converter == null)
+    if (converter == null && ! HasCachedTypeConverter (type))
     {
       converter = GetTypeConverterByAttribute (type);
       if (converter != null)
@@ -99,6 +108,11 @@ public class TypeConversionServices
     return (TypeConverter) s_typeConverters[type];
   }
 
+  protected bool HasCachedTypeConverter (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    return s_typeConverters.ContainsKey (type);
+  }
 }
 
 }
