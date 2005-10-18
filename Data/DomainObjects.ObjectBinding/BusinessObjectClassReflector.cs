@@ -53,10 +53,10 @@ public class BusinessObjectClassReflector
   }
 
   /// <summary>
-  /// Returns a Property for the given <paramref name="propertyIdentifier"/>.
+  /// Returns an <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> representing the given <paramref name="propertyIdentifier"/>.
   /// </summary>
-  /// <param name="propertyIdentifier">The name of the property to return.</param>
-  /// <returns>An IBusinessObjectProperty representing the given propertyIdentifier, or <see langword="null"/> if not found</returns>
+  /// <param name="propertyIdentifier">The name of the property.</param>
+  /// <returns>An instance of <see cref="BaseProperty"/> or derived type representing the given <paramref name="propertyIdentifier"/>, or <see langword="null"/> if not found.</returns>
   // TODO: is a ArgumentUtility.CheckNotNull missing?
   public IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier)
   {
@@ -65,9 +65,9 @@ public class BusinessObjectClassReflector
   }
 
   /// <summary>
-  /// Returns an array of all properties of <see cref="BusinessObjectClassType"/>.
+  /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type <see cref="BusinessObjectClassType"/>.
   /// </summary>
-  /// <returns>All properties of the <see cref="BusinessObjectClassType"/>. If no properties can be found, an empty array is returned.</returns>
+  /// <returns>An array of instances of <see cref="BaseProperty"/> or a derived type for each property. If no properties can be found, an empty array is returned.</returns>
   public IBusinessObjectProperty[] GetPropertyDefinitions ()
   {
     PropertyInfo[] propertyInfos = _businessObjectClassType.GetProperties ();
