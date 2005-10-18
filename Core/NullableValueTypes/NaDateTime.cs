@@ -10,7 +10,7 @@ namespace Rubicon.NullableValueTypes
 /// <summary>
 /// Represents date and time data that can be null. The corresponding system type is System.DateTime. 
 /// </summary>
-/// <include file='doc\include\include.xml' path='Comments/NaDateTime/remarks' />
+/// <include file='doc\include\NullableValueTypes\include.xml' path='Comments/NaDateTime/remarks' />
 [Serializable]
 [NaBasicType (typeof(DateTime))]
 [TypeConverter (typeof (NaDateTimeConverter))]
@@ -81,11 +81,11 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   #region type conversion
 
   /// <summary>
-  /// Converts a <see cref="NaDateTime"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDateTime"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDateTime</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDateTime"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public override string ToString()
   {
@@ -93,12 +93,12 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDateTime"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDateTime"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDateTime</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDateTime"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format)
@@ -107,12 +107,12 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDateTime"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDateTime"/> structure to a <see cref="String"/>.
   /// </summary>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDateTime</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDateTime"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public string ToString (IFormatProvider provider)
   {
@@ -120,13 +120,13 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDateTime"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDateTime"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDateTime</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDateTime"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format, IFormatProvider provider)
@@ -146,15 +146,15 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation to its NaDateTime equivalent.
+  /// Converts the <see cref="String"/> representation to its NaDateTime equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>DateTimeStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="DateTimeStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDateTime</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDateTime.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>DateTime.Parse</c> would return.
+  /// An <see cref="NaDateTime"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDateTime.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="DateTime.Parse"/> would return.
   /// </returns>
   public static NaDateTime Parse (string s, DateTimeStyles styles, IFormatProvider provider)
   {
@@ -164,14 +164,14 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDateTime equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDateTime equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDateTime</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDateTime.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>DateTime.Parse</c> would return.
+  /// An <see cref="NaDateTime"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDateTime.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="DateTime.Parse"/> would return.
   /// </returns>
   public static NaDateTime Parse (string s, IFormatProvider provider)
   {
@@ -179,14 +179,14 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDateTime equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDateTime equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>DateTimeStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="DateTimeStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDateTime</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDateTime.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>DateTime.Parse</c> would return.
+  /// An <see cref="NaDateTime"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDateTime.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="DateTime.Parse"/> would return.
   /// </returns>
   public static NaDateTime Parse (string s, DateTimeStyles styles)
   {
@@ -194,13 +194,13 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDateTime equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDateTime equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
   /// <returns>
-  /// An <c>NaDateTime</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDateTime.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>DateTime.Parse</c> would return.
+  /// An <see cref="NaDateTime"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDateTime.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="DateTime.Parse"/> would return.
   /// </returns>
   public static NaDateTime Parse (string s)
   {
@@ -208,9 +208,9 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <c>DateTime</c> to a <see cref="NaDateTime"/> structure.
+  /// Converts the supplied <see cref="DateTime"/> to an <see cref="NaDateTime"/> structure.
   /// </summary>
-  /// <param name="value">An <c>DateTime</c> value.</param>
+  /// <param name="value">An <see cref="DateTime"/> value.</param>
   /// <returns>The converted <see cref="NaDateTime"/> value.</returns>
   public static implicit operator NaDateTime (DateTime value)
   {
@@ -218,9 +218,9 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDateTime"/> structure to an <c>DateTime</c>.
+  /// Converts the supplied <see cref="NaDateTime"/> structure to an <see cref="DateTime"/>.
   /// </summary>
-  /// <param name="value">A <see cref="NaDateTime"/> structure.</param>
+  /// <param name="value">An <see cref="NaDateTime"/> structure.</param>
   /// <returns>The converted integer value.</returns>
   /// <exception cref="NaNullValueException">
   /// The passed value is null.
@@ -233,7 +233,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlDateTime</c> structure to a <see cref="NaDateTime"/> structure.
+  /// Converts the supplied <see cref="SqlDateTime"/> structure to an <see cref="NaDateTime"/> structure.
   /// </summary>
   public static NaDateTime FromSqlInt32 (SqlDateTime value)
   {
@@ -241,7 +241,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlDateTime</c> structure to a <see cref="NaDateTime"/> structure.
+  /// Converts the supplied <see cref="SqlDateTime"/> structure to an <see cref="NaDateTime"/> structure.
   /// </summary>
   public static implicit operator NaDateTime (SqlDateTime value)
   {
@@ -252,7 +252,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDateTime"/> structure to a <c>SqlDateTime</c>structure.
+  /// Converts the supplied <see cref="NaDateTime"/> structure to a <see cref="SqlDateTime"/>structure.
   /// </summary>
   public static SqlDateTime ToSqlInt32 (NaDateTime value)
   {
@@ -260,7 +260,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDateTime"/> structure to a <c>SqlDateTime</c>structure.
+  /// Converts the supplied <see cref="NaDateTime"/> structure to a <see cref="SqlDateTime"/>structure.
   /// </summary>
   public static implicit operator SqlDateTime (NaDateTime value)
   {
@@ -271,11 +271,11 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDateTime"/> value to a boxed <c>DateTime</c> value or a null reference.
+  /// Converts an <see cref="NaDateTime"/> value to a boxed <see cref="DateTime"/> value or a null reference.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>DateTime</c> if it is not null, a null reference otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as an <see cref="DateTime"/> if it is not null, a null reference otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaDateTime</c> values to methods that expect an untyped parameter which is either an <c>DateTime</c>
+  /// Use this method to easily pass <see cref="NaDateTime"/> values to methods that expect an untyped parameter which is either an <see cref="DateTime"/>
   /// value or a null reference.
   /// </remarks>
   public static object ToBoxedDateTime (NaDateTime value)
@@ -287,14 +287,14 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a boxed <c>DateTime</c> value or a null reference to a <see cref="NaDateTime"/> value.
+  /// Converts a boxed <see cref="DateTime"/> value or a null reference to an <see cref="NaDateTime"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaDateTime"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>DateTime</c>, 
-  /// <c>NaDateTime.Null</c> if it is a null reference.</returns>
+  /// <returns>An <see cref="NaDateTime"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is an <see cref="DateTime"/>, 
+  /// <see cref="NaDateTime.Null"/> if it is a null reference.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaDateTime</c> value from an untyped value which is either an <c>DateTime</c> value or a null reference.
+  /// Use this method to easily create an <see cref="NaDateTime"/> value from an untyped value which is either an <see cref="DateTime"/> value or a null reference.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither a null reference nor an <c>DateTime</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither a null reference nor an <see cref="DateTime"/> value.</exception>
   public static NaDateTime FromBoxedDateTime (object value)
   {
     if (value == null)
@@ -307,11 +307,11 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDateTime"/> value to a boxed <c>DateTime</c> value or to DBNull.Value.
+  /// Converts an <see cref="NaDateTime"/> value to a boxed <see cref="DateTime"/> value or to DBNull.Value.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>DateTime</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as an <see cref="DateTime"/> if it is not null, DBNull.Value otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaDateTime</c> values to methods that expect an untyped parameter which is either an <c>DateTime</c>
+  /// Use this method to easily pass <see cref="NaDateTime"/> values to methods that expect an untyped parameter which is either an <see cref="DateTime"/>
   /// value or DBNull.Value.
   /// </remarks>
   public static object ToBoxedDateTimeDBNull (NaDateTime value)
@@ -323,14 +323,14 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a boxed <c>DateTime</c> value or DBNull.Value to a <see cref="NaDateTime"/> value.
+  /// Converts a boxed <see cref="DateTime"/> value or DBNull.Value to an <see cref="NaDateTime"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaDateTime"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>DateTime</c>, 
-  /// <c>NaDateTime.Null</c> if it is DBNull.Value.</returns>
+  /// <returns>An <see cref="NaDateTime"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is an <see cref="DateTime"/>, 
+  /// <see cref="NaDateTime.Null"/> if it is DBNull.Value.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaDateTime</c> value from an untyped value which is either an <c>DateTime</c> value or DBNull.Value.
+  /// Use this method to easily create an <see cref="NaDateTime"/> value from an untyped value which is either an <see cref="DateTime"/> value or DBNull.Value.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither DBNull.Value nor an <c>DateTime</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither DBNull.Value nor an <see cref="DateTime"/> value.</exception>
   public static NaDateTime FromBoxedDateTimeDBNull (object value)
   {
     if (value == DBNull.Value)
@@ -379,7 +379,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Gets the date component of this instance.
   /// </summary>
   /// <value>
-  /// A new <c>DateTime</c> with the same date as this instance, and the time value set to 12 A.M. (00:00:00).
+  /// A new <see cref="DateTime"/> with the same date as this instance, and the time value set to 12 A.M. (00:00:00).
   /// </value>
   /// <exception cref="NaNullValueException"> The property contains <see cref="Null"/>. </exception>
   public NaDateTime Date
@@ -391,7 +391,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Gets the time of day for this instance.
   /// </summary>
   /// <value>
-  /// A <c>TimeSpan </c>that represents the fraction of the day elapsed since midnight.
+  /// A <see cref="TimeSpan "/>that represents the fraction of the day elapsed since midnight.
   /// </value>
   /// <exception cref="NaNullValueException"> The property contains <see cref="Null"/>. </exception>
   public TimeSpan Time
@@ -493,7 +493,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Indicates whether or not <see cref="Value"/> is null.
   /// </summary>
   /// <value>
-  /// This property is <c>true</c> if <see cref="Value"/> is null, otherwise <c>false</c>.
+  /// This property is <see langword="true"/> if <see cref="Value"/> is null, otherwise <see langword="false"/>.
   /// </value>
   public bool IsNull 
   {
@@ -505,13 +505,13 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   #region public fields
 
   /// <summary>
-  /// This value is used to convert a <c>Null</c> value to and from strings.
+  /// This value is used to convert a <see langword="null"/> value to and from strings.
   /// </summary>
   /// <value>
-  /// The value of <c>NullString</c> is "null".
+  /// The value of <see cref="NullString"/> is "null".
   /// </value>
   /// <remarks>
-  /// Note that parsing <c>NullString</c> is case-sensitive.
+  /// Note that parsing <see cref="NullString"/> is case-sensitive.
   /// </remarks>
   public static readonly string NullString = "null";
 
@@ -534,13 +534,13 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// </summary>
   /// <param name="obj">The object to be compared. </param>
   /// <returns>
-  /// <c>true</c> if object is an instance of <see cref="NaDateTime"/> and the two are equal; otherwise <c>false</c>.
-  /// If object is a null reference, <c>false</c> is returned.
+  /// <see langword="true"/> if object is an instance of <see cref="NaDateTime"/> and the two are equal; otherwise <see langword="false"/>.
+  /// If object is a null reference, <see langword="false"/> is returned.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
   /// equality logic.
-  /// Note that <c>false</c> is returned if object is an DateTime (types are not equal).
+  /// Note that <see langword="false"/> is returned if object is an DateTime (types are not equal).
   /// </remarks>
   public override bool Equals (object obj)
   {
@@ -555,7 +555,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// </summary>
   /// <param name="value">The <see cref="NaDateTime"/> instance to be compared. </param>
   /// <returns>
-  /// <c>true</c> if the two are equal; otherwise <c>false</c>.
+  /// <see langword="true"/> if the two are equal; otherwise <see langword="false"/>.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -570,7 +570,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaDateTime parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -585,7 +585,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaDateTime parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -604,7 +604,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaDateTime parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -619,7 +619,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaDateTime parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -634,7 +634,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Performs a SQL-style comparison of the two NaDateTime parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are equal, or <see cref="NaBoolean.False"/> if they are not equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean EqualsSql (NaDateTime x, NaDateTime y)
   {
@@ -647,7 +647,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Performs a SQL-style comparison of the two NaDateTime parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are not equal, or <c>False</c> if they are equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are not equal, or <see cref="NaBoolean.False"/> if they are equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean NotEqualsSql (NaDateTime x, NaDateTime y)
   {
@@ -755,8 +755,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Computes the sum of the the current value and a <see cref="TimeSpan"/>.
   /// </summary>
   /// <returns>
-  /// A <c>NaDateTime</c> structure whose <see cref="Value"/> property contains the sum,
-  /// or <see cref="Null"/> if the current value is <c>Null</c>.
+  /// An <see cref="NaDateTime"/> structure whose <see cref="Value"/> property contains the sum,
+  /// or <see cref="Null"/> if the current value is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public NaDateTime Add (TimeSpan timespan)
@@ -768,8 +768,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Computes the sum of the the specified <see cref="NaDateTime"/> and a <see cref="TimeSpan"/>.
   /// </summary>
   /// <returns>
-  /// A <c>NaDateTime</c> structure whose <see cref="Value"/> property contains the sum of the specified parameters,
-  /// or <see cref="Null"/> if <c>datetime</c> is <c>Null</c>.
+  /// An <see cref="NaDateTime"/> structure whose <see cref="Value"/> property contains the sum of the specified parameters,
+  /// or <see cref="Null"/> if <paramref name="datetime"/> is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDateTime operator + (NaDateTime datetime, TimeSpan timespan)
@@ -788,11 +788,11 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Subtracts <c>timespan</c> from the current value.
+  /// Subtracts <paramref name="timespan"/> from the current value.
   /// </summary>
   /// <returns>
-  /// A <c>NaDateTime</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if the current value is <c>Null</c>.
+  /// An <see cref="NaDateTime"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if the current value is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public NaDateTime Subtract (TimeSpan timespan)
@@ -804,8 +804,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Subtracts the second <see cref="NaDateTime"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaDateTime</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDateTime"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDateTime operator - (NaDateTime datetime, TimeSpan timespan)
@@ -826,7 +826,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Adds the specified number of years to the current value.
   /// </summary>
-  /// <returns>The result of the addition, or <c>Null</c> if the current value is <c>Null</c>.</returns>
+  /// <returns>The result of the addition, or <see langword="null"/> if the current value is <see langword="null"/>.</returns>
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddYears (int years)
   {
@@ -836,7 +836,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Adds the specified number of months to the current value.
   /// </summary>
-  /// <returns>The result of the addition, or <c>Null</c> if the current value is <c>Null</c>.</returns>
+  /// <returns>The result of the addition, or <see langword="null"/> if the current value is <see langword="null"/>.</returns>
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddMonths (int months)
   {
@@ -856,7 +856,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Adds the specified number of days to the current value.
   /// </summary>
-  /// <returns>The result of the addition, or <c>Null</c> if the current value is <c>Null</c>.</returns>
+  /// <returns>The result of the addition, or <see langword="null"/> if the current value is <see langword="null"/>.</returns>
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddDays (double days)
   {
@@ -876,7 +876,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Adds the specified number of hours to the current value.
   /// </summary>
-  /// <returns>The result of the addition, or <c>Null</c> if the current value is <c>Null</c>.</returns>
+  /// <returns>The result of the addition, or <see langword="null"/> if the current value is <see langword="null"/>.</returns>
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddHours (double hours)
   {
@@ -896,7 +896,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Adds the specified number of minutes to the current value.
   /// </summary>
-  /// <returns>The result of the addition, or <c>Null</c> if the current value is <c>Null</c>.</returns>
+  /// <returns>The result of the addition, or <see langword="null"/> if the current value is <see langword="null"/>.</returns>
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddMinutes (double minutes)
   {
@@ -916,7 +916,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Adds the specified number of seconds to the current value.
   /// </summary>
-  /// <returns>The result of the addition, or <c>Null</c> if the current value is <c>Null</c>.</returns>
+  /// <returns>The result of the addition, or <see langword="null"/> if the current value is <see langword="null"/>.</returns>
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddSeconds (double seconds)
   {
@@ -936,7 +936,7 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// <summary>
   /// Adds the specified number of milliseconds to the current value.
   /// </summary>
-  /// <returns>The result of the addition, or <c>Null</c> if the current value is <c>Null</c>.</returns>
+  /// <returns>The result of the addition, or <see langword="null"/> if the current value is <see langword="null"/>.</returns>
   /// <exception cref="OverflowException">The result is greater then <see cref="MaxValue"/>.</exception>
   public NaDateTime AddMilliseconds  (double milliseconds )
   {
@@ -961,8 +961,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDateTime "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThan (NaDateTime x, NaDateTime y)
   {
@@ -973,8 +973,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDateTime "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator < (NaDateTime x, NaDateTime y)
   {
@@ -988,8 +988,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDateTime "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThanOrEqual (NaDateTime x, NaDateTime y)
   {
@@ -1000,8 +1000,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDateTime "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator <= (NaDateTime x, NaDateTime y)
   {
@@ -1015,8 +1015,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDateTime "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThan (NaDateTime x, NaDateTime y)
   {
@@ -1027,8 +1027,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDateTime "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator > (NaDateTime x, NaDateTime y)
   {
@@ -1042,8 +1042,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDateTime "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThanOrEqual (NaDateTime x, NaDateTime y)
   {
@@ -1054,8 +1054,8 @@ public struct NaDateTime: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDateTime "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator >= (NaDateTime x, NaDateTime y)
   {
