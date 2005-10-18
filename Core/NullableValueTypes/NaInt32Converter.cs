@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using Rubicon.Utilities;
 
 namespace Rubicon.NullableValueTypes
@@ -46,8 +47,7 @@ public class NaInt32Converter: TypeConverter
   /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
   /// <param name="value">  The source value. </param>
   /// <returns> An <see cref="NaInt32"/> or <see cref="NaInt32.Null"/> if the conversion failed.  </returns>
-  public override object ConvertFrom (
-      ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+  public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
       return NaInt32.Parse ((string) value);
@@ -71,7 +71,7 @@ public class NaInt32Converter: TypeConverter
   ///   The passed <paramref name="value"/> is of an unsupported <see cref="Type"/>. 
   /// </exception>
   public override object ConvertTo (
-      ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+      ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
   {
     ArgumentUtility.CheckNotNull ("value", value);
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
