@@ -8,9 +8,9 @@ namespace Rubicon.NullableValueTypes
 {
 
 /// <summary>
-/// Represents a double-precision floating point number that can be <c>Null</c>. The corresponding system type is System.Double.
+/// Represents a double-precision floating point number that can be <see langword="null"/>. The corresponding system type is System.Double.
 /// </summary>
-/// <include file='doc\include\include.xml' path='Comments/NaDouble/remarks' />
+/// <include file='doc\include\NullableValueTypes\include.xml' path='Comments/NaDouble/remarks' />
 [Serializable]
 [NaBasicType (typeof(Double))]
 [TypeConverter (typeof (NaDoubleConverter))]
@@ -46,11 +46,11 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   #region type conversion
 
   /// <summary>
-  /// Converts a <see cref="NaDouble"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDouble"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDouble</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDouble"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public override string ToString()
   {
@@ -58,12 +58,12 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDouble"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDouble"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDouble</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDouble"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format)
@@ -72,12 +72,12 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDouble"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDouble"/> structure to a <see cref="String"/>.
   /// </summary>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDouble</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDouble"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public string ToString (IFormatProvider provider)
   {
@@ -85,13 +85,13 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDouble"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaDouble"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaDouble</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaDouble"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format, IFormatProvider provider)
@@ -111,15 +111,15 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDouble equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDouble equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="NumberStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDouble</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDouble.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Double.Parse</c> would return.
+  /// An <see cref="NaDouble"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDouble.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Double.Parse"/> would return.
   /// </returns>
   public static NaDouble Parse (string s, NumberStyles styles, IFormatProvider provider)
   {
@@ -129,14 +129,14 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDouble equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDouble equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDouble</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDouble.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Double.Parse</c> would return.
+  /// An <see cref="NaDouble"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDouble.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Double.Parse"/> would return.
   /// </returns>
   public static NaDouble Parse (string s, IFormatProvider provider)
   {
@@ -144,14 +144,14 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDouble equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDouble equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="NumberStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaDouble</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDouble.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Double.Parse</c> would return.
+  /// An <see cref="NaDouble"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDouble.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Double.Parse"/> would return.
   /// </returns>
   public static NaDouble Parse (string s, NumberStyles styles)
   {
@@ -159,13 +159,13 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaDouble equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaDouble equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
   /// <returns>
-  /// An <c>NaDouble</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaDouble.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Double.Parse</c> would return.
+  /// An <see cref="NaDouble"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaDouble.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Double.Parse"/> would return.
   /// </returns>
   public static NaDouble Parse (string s)
   {
@@ -173,9 +173,9 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <c>Double</c> to a <see cref="NaDouble"/> structure.
+  /// Converts the supplied <see cref="Double"/> to an <see cref="NaDouble"/> structure.
   /// </summary>
-  /// <param name="value">An <c>Double</c> value.</param>
+  /// <param name="value">An <see cref="Double"/> value.</param>
   /// <returns>The converted <see cref="NaDouble"/> value.</returns>
   public static implicit operator NaDouble (Double value)
   {
@@ -183,9 +183,9 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDouble"/> structure to an <c>Double</c>.
+  /// Converts the supplied <see cref="NaDouble"/> structure to an <see cref="Double"/>.
   /// </summary>
-  /// <param name="value">A <see cref="NaDouble"/> structure.</param>
+  /// <param name="value">An <see cref="NaDouble"/> structure.</param>
   /// <returns>The converted double value.</returns>
   /// <exception cref="NaNullValueException">
   /// The passed value is null.
@@ -198,7 +198,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlDouble</c> structure to a <see cref="NaDouble"/> structure.
+  /// Converts the supplied <see cref="SqlDouble"/> structure to an <see cref="NaDouble"/> structure.
   /// </summary>
   public static NaDouble FromSqlInt32 (SqlDouble value)
   {
@@ -206,7 +206,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlDouble</c> structure to a <see cref="NaDouble"/> structure.
+  /// Converts the supplied <see cref="SqlDouble"/> structure to an <see cref="NaDouble"/> structure.
   /// </summary>
   public static implicit operator NaDouble (SqlDouble value)
   {
@@ -217,7 +217,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDouble"/> structure to a <c>SqlDouble</c>structure.
+  /// Converts the supplied <see cref="NaDouble"/> structure to a <see cref="SqlDouble"/>structure.
   /// </summary>
   public static SqlDouble ToSqlInt32 (NaDouble value)
   {
@@ -225,7 +225,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaDouble"/> structure to a <c>SqlDouble</c>structure.
+  /// Converts the supplied <see cref="NaDouble"/> structure to a <see cref="SqlDouble"/>structure.
   /// </summary>
   public static implicit operator SqlDouble (NaDouble value)
   {
@@ -236,11 +236,11 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDouble"/> value to a boxed <c>Double</c> value or a null reference.
+  /// Converts an <see cref="NaDouble"/> value to a boxed <see cref="Double"/> value or a null reference.
   /// </summary>
-  /// <returns>The double value of <c>value</c> as an <c>Double</c> if it is not null, a null reference otherwise.</returns>
+  /// <returns>The double value of <paramref name="value"/> as an <see cref="Double"/> if it is not null, a null reference otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaDouble</c> values to methods that expect an untyped parameter which is either an <c>Double</c>
+  /// Use this method to easily pass <see cref="NaDouble"/> values to methods that expect an untyped parameter which is either an <see cref="Double"/>
   /// value or a null reference.
   /// </remarks>
   public static object ToBoxedDouble (NaDouble value)
@@ -252,14 +252,14 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a boxed <c>Double</c> value or a null reference to a <see cref="NaDouble"/> value.
+  /// Converts a boxed <see cref="Double"/> value or a null reference to an <see cref="NaDouble"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaDouble"/> with its <see cref="Value"/> set to the double value of <c>value</c> if it is an <c>Double</c>, 
-  /// <c>NaDouble.Null</c> if it is a null reference.</returns>
+  /// <returns>An <see cref="NaDouble"/> with its <see cref="Value"/> set to the double value of <paramref name="value"/> if it is an <see cref="Double"/>, 
+  /// <see cref="NaDouble.Null"/> if it is a null reference.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaDouble</c> value from an untyped value which is either an <c>Double</c> value or a null reference.
+  /// Use this method to easily create an <see cref="NaDouble"/> value from an untyped value which is either an <see cref="Double"/> value or a null reference.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither a null reference nor an <c>Double</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither a null reference nor an <see cref="Double"/> value.</exception>
   public static NaDouble FromBoxedDouble (object value)
   {
     if (value == null)
@@ -272,11 +272,11 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaDouble"/> value to a boxed <c>Double</c> value or to DBNull.Value.
+  /// Converts an <see cref="NaDouble"/> value to a boxed <see cref="Double"/> value or to DBNull.Value.
   /// </summary>
-  /// <returns>The double value of <c>value</c> as an <c>Double</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <returns>The double value of <paramref name="value"/> as an <see cref="Double"/> if it is not null, DBNull.Value otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaDouble</c> values to methods that expect an untyped parameter which is either an <c>Double</c>
+  /// Use this method to easily pass <see cref="NaDouble"/> values to methods that expect an untyped parameter which is either an <see cref="Double"/>
   /// value or DBNull.Value.
   /// </remarks>
   public static object ToBoxedDoubleDBNull (NaDouble value)
@@ -288,14 +288,14 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a boxed <c>Double</c> value or DBNull.Value to a <see cref="NaDouble"/> value.
+  /// Converts a boxed <see cref="Double"/> value or DBNull.Value to an <see cref="NaDouble"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaDouble"/> with its <see cref="Value"/> set to the double value of <c>value</c> if it is an <c>Double</c>, 
-  /// <c>NaDouble.Null</c> if it is DBNull.Value.</returns>
+  /// <returns>An <see cref="NaDouble"/> with its <see cref="Value"/> set to the double value of <paramref name="value"/> if it is an <see cref="Double"/>, 
+  /// <see cref="NaDouble.Null"/> if it is DBNull.Value.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaDouble</c> value from an untyped value which is either an <c>Double</c> value or DBNull.Value.
+  /// Use this method to easily create an <see cref="NaDouble"/> value from an untyped value which is either an <see cref="Double"/> value or DBNull.Value.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither DBNull.Value nor an <c>Double</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither DBNull.Value nor an <see cref="Double"/> value.</exception>
   public static NaDouble FromBoxedDoubleDBNull (object value)
   {
     if (value == DBNull.Value)
@@ -374,7 +374,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Indicates whether or not <see cref="Value"/> is null.
   /// </summary>
   /// <value>
-  /// This property is <c>true</c> if <see cref="Value"/> is null, otherwise <c>false</c>.
+  /// This property is <see langword="true"/> if <see cref="Value"/> is null, otherwise <see langword="false"/>.
   /// </value>
   public bool IsNull 
   {
@@ -386,13 +386,13 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   #region public fields
 
   /// <summary>
-  /// This value is used to convert a <c>Null</c> value to and from strings.
+  /// This value is used to convert a <see langword="null"/> value to and from strings.
   /// </summary>
   /// <value>
-  /// The value of <c>NullString</c> is "null".
+  /// The value of <see cref="NullString"/> is "null".
   /// </value>
   /// <remarks>
-  /// Note that parsing <c>NullString</c> is case-sensitive.
+  /// Note that parsing <see cref="NullString"/> is case-sensitive.
   /// </remarks>
   public static readonly string NullString = "null";
 
@@ -424,13 +424,13 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// </summary>
   /// <param name="obj">The object to be compared. </param>
   /// <returns>
-  /// <c>true</c> if object is an instance of <see cref="NaDouble"/> and the two are equal; otherwise <c>false</c>.
-  /// If object is a null reference, <c>false</c> is returned.
+  /// <see langword="true"/> if object is an instance of <see cref="NaDouble"/> and the two are equal; otherwise <see langword="false"/>.
+  /// If object is a null reference, <see langword="false"/> is returned.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
   /// equality logic.
-  /// Note that <c>false</c> is returned if object is an Double (types are not equal).
+  /// Note that <see langword="false"/> is returned if object is an Double (types are not equal).
   /// </remarks>
   public override bool Equals (object obj)
   {
@@ -445,7 +445,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// </summary>
   /// <param name="value">The <see cref="NaDouble"/> instance to be compared. </param>
   /// <returns>
-  /// <c>true</c> if the two are equal; otherwise <c>false</c>.
+  /// <see langword="true"/> if the two are equal; otherwise <see langword="false"/>.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -460,7 +460,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaDouble parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -475,7 +475,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaDouble parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -494,7 +494,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaDouble parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -509,7 +509,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaDouble parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -524,7 +524,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Performs a SQL-style comparison of the two NaDouble parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are equal, or <see cref="NaBoolean.False"/> if they are not equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean EqualsSql (NaDouble x, NaDouble y)
   {
@@ -537,7 +537,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Performs a SQL-style comparison of the two NaDouble parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are not equal, or <c>False</c> if they are equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are not equal, or <see cref="NaBoolean.False"/> if they are equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean NotEqualsSql (NaDouble x, NaDouble y)
   {
@@ -645,8 +645,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Computes the sum of the two specified <see cref="NaDouble"/> structures.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaDouble</c> 
-  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the sum of the specified <see cref="NaDouble"/> 
+  /// structures, or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDouble Add (NaDouble x, NaDouble y)
@@ -658,8 +658,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Computes the sum of the two specified <see cref="NaDouble"/> structures.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaDouble</c> 
-  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the sum of the specified <see cref="NaDouble"/> 
+  /// structures, or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDouble operator + (NaDouble x, NaDouble y)
@@ -677,8 +677,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Subtracts the second <see cref="NaDouble"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDouble Subtract (NaDouble x, NaDouble y)
@@ -690,8 +690,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Subtracts the second <see cref="NaDouble"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDouble operator - (NaDouble x, NaDouble y)
@@ -709,8 +709,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Divides the first <see cref="NaDouble"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the result of the division,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaDouble Divide (NaDouble x, NaDouble y)
@@ -722,8 +722,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Divides the first <see cref="NaDouble"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the result of the division,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaDouble operator / (NaDouble x, NaDouble y)
@@ -741,8 +741,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Computes the product of the two <see cref="NaDouble"/> parameters.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDouble Multiply (NaDouble x, NaDouble y)
@@ -754,8 +754,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Computes the product of the two <see cref="NaDouble"/> parameters.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaDouble operator * (NaDouble x, NaDouble y)
@@ -773,8 +773,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Computes the remainder after dividing the first <see cref="NaDouble"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the remainder,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaDouble Mod (NaDouble x, NaDouble y)
@@ -786,8 +786,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Computes the remainder after dividing the first <see cref="NaDouble"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaDouble</c> structure whose <see cref="Value"/> property contains the remainder,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaDouble"/> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaDouble operator % (NaDouble x, NaDouble y)
@@ -809,8 +809,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDouble "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThan (NaDouble x, NaDouble y)
   {
@@ -821,8 +821,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDouble "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator < (NaDouble x, NaDouble y)
   {
@@ -836,8 +836,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDouble "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThanOrEqual (NaDouble x, NaDouble y)
   {
@@ -848,8 +848,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDouble "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator <= (NaDouble x, NaDouble y)
   {
@@ -863,8 +863,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDouble "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThan (NaDouble x, NaDouble y)
   {
@@ -875,8 +875,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDouble "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator > (NaDouble x, NaDouble y)
   {
@@ -890,8 +890,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDouble "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThanOrEqual (NaDouble x, NaDouble y)
   {
@@ -902,8 +902,8 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// Compares the two <see cref="NaDouble "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator >= (NaDouble x, NaDouble y)
   {

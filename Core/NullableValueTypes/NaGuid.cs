@@ -11,9 +11,9 @@ namespace Rubicon.NullableValueTypes
 {
 
 /// <summary>
-/// Represents a globally unique identifier (GUID) that can be <c>Null</c>. The corresponding system type is System.Guid.
+/// Represents a globally unique identifier (GUID) that can be <see langword="null"/>. The corresponding system type is System.Guid.
 /// </summary>
-/// <include file='doc\include\include.xml' path='Comments/NaGuid/remarks' />
+/// <include file='doc\include\NullableValueTypes\include.xml' path='Comments/NaGuid/remarks' />
 [Serializable]
 [NaBasicType (typeof (Guid))]
 [TypeConverter (typeof (NaGuidConverter))]
@@ -31,7 +31,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// <summary>
   /// Initializes a new instance of the <see cref="NaGuid"/> structure using the value represented by the specified string.
   /// </summary>
-  /// <param name="value">A <see cref="System.String"/> that contains a GUID. See <see cref="Sytem.Guid"/> for valid formats.</param>
+  /// <param name="value">A <see cref="System.String"/> that contains a GUID. See <see cref="System.Guid"/> for valid formats.</param>
   public NaGuid (string value) : this (new Guid (value))
   {
   }
@@ -89,11 +89,11 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   #region type conversion
 
   /// <summary>
-  /// Converts a <see cref="NaGuid"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaGuid"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaGuid</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaGuid"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public override string ToString()
   {
@@ -101,12 +101,12 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaGuid"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaGuid"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaGuid</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaGuid"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format)
@@ -115,12 +115,12 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaGuid"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaGuid"/> structure to a <see cref="String"/>.
   /// </summary>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaGuid</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaGuid"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public string ToString (IFormatProvider provider)
   {
@@ -128,13 +128,13 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaGuid"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaGuid"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaGuid</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaGuid"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format, IFormatProvider provider)
@@ -154,14 +154,14 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a GUID to its NaGuid equivalent.
+  /// Converts the <see cref="String"/> representation of a GUID to its NaGuid equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
   /// <returns>
-  /// An <c>NaGuid</c> equivalent to the value contained in the specified string. 
+  /// An <see cref="NaGuid"/> equivalent to the value contained in the specified string. 
   /// If the string is a null reference <see cref="NaGuid.Null"/> is returned. 
   /// If the string is a zero-length string an NaGuid with a <see cref="Value"/> equal to <see cref="System.Guid.Empty"/> is returned.
-  /// Otherwise, <see cref="Value"/> contains the <see cref="System.Guid"/> equivalent of the provided <c>String</c>.
+  /// Otherwise, <see cref="Value"/> contains the <see cref="System.Guid"/> equivalent of the provided <see cref="String"/>.
   /// </returns>
   public static NaGuid Parse (string s)
   {
@@ -171,9 +171,9 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>Guid</c> to a <see cref="NaGuid"/> structure.
+  /// Converts the supplied <see cref="Guid"/> to an <see cref="NaGuid"/> structure.
   /// </summary>
-  /// <param name="value">A <c>Guid</c> value.</param>
+  /// <param name="value">A <see cref="Guid"/> value.</param>
   /// <returns>The converted <see cref="NaGuid"/> value.</returns>
   public static implicit operator NaGuid (Guid value)
   {
@@ -181,9 +181,9 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaGuid"/> structure to a <c>Guid</c>.
+  /// Converts the supplied <see cref="NaGuid"/> structure to a <see cref="Guid"/>.
   /// </summary>
-  /// <param name="value">A <see cref="NaGuid"/> structure.</param>
+  /// <param name="value">An <see cref="NaGuid"/> structure.</param>
   /// <returns>The converted Guid value.</returns>
   /// <exception cref="NaNullValueException">
   /// The passed value is null.
@@ -196,7 +196,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlGuid</c> structure to a <see cref="NaGuid"/> structure.
+  /// Converts the supplied <see cref="SqlGuid"/> structure to an <see cref="NaGuid"/> structure.
   /// </summary>
   public static NaGuid FromSqlGuid (SqlGuid value)
   {
@@ -204,7 +204,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlGuid</c> structure to a <see cref="NaGuid"/> structure.
+  /// Converts the supplied <see cref="SqlGuid"/> structure to an <see cref="NaGuid"/> structure.
   /// </summary>
   public static implicit operator NaGuid (SqlGuid value)
   {
@@ -215,7 +215,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaGuid"/> structure to a <c>SqlGuid</c>structure.
+  /// Converts the supplied <see cref="NaGuid"/> structure to a <see cref="SqlGuid"/>structure.
   /// </summary>
   public static SqlGuid ToSqlGuid (NaGuid value)
   {
@@ -223,7 +223,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaGuid"/> structure to a <c>SqlGuid</c>structure.
+  /// Converts the supplied <see cref="NaGuid"/> structure to a <see cref="SqlGuid"/>structure.
   /// </summary>
   public static implicit operator SqlGuid (NaGuid value)
   {
@@ -234,11 +234,11 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaGuid"/> value to a boxed <c>Guid</c> value or a null reference.
+  /// Converts an <see cref="NaGuid"/> value to a boxed <see cref="Guid"/> value or a null reference.
   /// </summary>
-  /// <returns>The Guid value of <c>value</c> as an <c>Guid</c> if it is not null, a null reference otherwise.</returns>
+  /// <returns>The Guid value of <paramref name="value"/> as an <see cref="Guid"/> if it is not null, a null reference otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaGuid</c> values to methods that expect an untyped parameter which is either a <c>Guid</c>
+  /// Use this method to easily pass <see cref="NaGuid"/> values to methods that expect an untyped parameter which is either a <see cref="Guid"/>
   /// value or a null reference.
   /// </remarks>
   public static object ToBoxedGuid (NaGuid value)
@@ -250,14 +250,14 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a boxed <c>NaGuid</c> value or a null reference to a <see cref="NaGuid"/> value.
+  /// Converts a boxed <see cref="NaGuid"/> value or a null reference to an <see cref="NaGuid"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaGuid"/> with its <see cref="Value"/> set to the Guid value of <c>value</c> if it is an <c>Guid</c>, 
-  /// <c>NaGuid.Null</c> if it is a null reference.</returns>
+  /// <returns>An <see cref="NaGuid"/> with its <see cref="Value"/> set to the Guid value of <paramref name="value"/> if it is an <see cref="Guid"/>, 
+  /// <see cref="NaGuid.Null"/> if it is a null reference.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaGuid</c> value from an untyped value which is either an <c>Guid</c> value or a null reference.
+  /// Use this method to easily create an <see cref="NaGuid"/> value from an untyped value which is either an <see cref="Guid"/> value or a null reference.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither a null reference nor an <c>Guid</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither a null reference nor an <see cref="Guid"/> value.</exception>
   public static NaGuid FromBoxedGuid (object value)
   {
     if (value == null)
@@ -270,11 +270,11 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaGuid"/> value to a boxed <c>Guid</c> value or to DBNull.Value.
+  /// Converts an <see cref="NaGuid"/> value to a boxed <see cref="Guid"/> value or to DBNull.Value.
   /// </summary>
-  /// <returns>The Guid value of <c>value</c> as a <c>Guid</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <returns>The Guid value of <paramref name="value"/> as a <see cref="Guid"/> if it is not null, DBNull.Value otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaGuid</c> values to methods that expect an untyped parameter which is either a <c>Guid</c>
+  /// Use this method to easily pass <see cref="NaGuid"/> values to methods that expect an untyped parameter which is either a <see cref="Guid"/>
   /// value or DBNull.Value.
   /// </remarks>
   public static object ToBoxedGuidDBNull (NaGuid value)
@@ -286,14 +286,14 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a boxed <c>Guid</c> value or DBNull.Value to a <see cref="NaGuid"/> value.
+  /// Converts a boxed <see cref="Guid"/> value or DBNull.Value to an <see cref="NaGuid"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaGuid"/> with its <see cref="Value"/> set to the Guid value of <c>value</c> if it is a <c>Guid</c>, 
-  /// <c>NaGuid.Null</c> if it is DBNull.Value.</returns>
+  /// <returns>An <see cref="NaGuid"/> with its <see cref="Value"/> set to the Guid value of <paramref name="value"/> if it is a <see cref="Guid"/>, 
+  /// <see cref="NaGuid.Null"/> if it is DBNull.Value.</returns>
   /// <remarks>
-  /// Use this method to easily create a <c>NaGuid</c> value from an untyped value which is either a <c>Guid</c> value or DBNull.Value.
+  /// Use this method to easily create an <see cref="NaGuid"/> value from an untyped value which is either a <see cref="Guid"/> value or DBNull.Value.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither DBNull.Value nor an <c>Int32</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither DBNull.Value nor an <see cref="Int32"/> value.</exception>
   public static NaGuid FromBoxedGuidDBNull (object value)
   {
     if (value == DBNull.Value)
@@ -373,7 +373,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// Indicates whether or not <see cref="Value"/> is null.
   /// </summary>
   /// <value>
-  /// This property is <c>true</c> if <see cref="Value"/> is null, otherwise <c>false</c>.
+  /// This property is <see langword="true"/> if <see cref="Value"/> is null, otherwise <see langword="false"/>.
   /// </value>
   public bool IsNull 
   {
@@ -385,13 +385,13 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   #region public fields
 
   /// <summary>
-  /// This value is used to convert a <c>Null</c> value to and from strings.
+  /// This value is used to convert a <see langword="null"/> value to and from strings.
   /// </summary>
   /// <value>
-  /// The value of <c>NullString</c> is "null".
+  /// The value of <see cref="NullString"/> is "null".
   /// </value>
   /// <remarks>
-  /// Note that parsing <c>NullString</c> is case-sensitive.
+  /// Note that parsing <see cref="NullString"/> is case-sensitive.
   /// </remarks>
   public static readonly string NullString = "null";
 
@@ -413,13 +413,13 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// </summary>
   /// <param name="obj">The object to be compared. </param>
   /// <returns>
-  /// <c>true</c> if object is an instance of <see cref="NaGuid"/> and the two are equal; otherwise <c>false</c>.
-  /// If object is a null reference, <c>false</c> is returned.
+  /// <see langword="true"/> if object is an instance of <see cref="NaGuid"/> and the two are equal; otherwise <see langword="false"/>.
+  /// If object is a null reference, <see langword="false"/> is returned.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
   /// equality logic.
-  /// Note that <c>false</c> is returned if object is a Guid (types are not equal).
+  /// Note that <see langword="false"/> is returned if object is a Guid (types are not equal).
   /// </remarks>
   public override bool Equals (object obj)
   {
@@ -434,7 +434,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// </summary>
   /// <param name="value">The <see cref="NaGuid"/> instance to be compared. </param>
   /// <returns>
-  /// <c>true</c> if the two are equal; otherwise <c>false</c>.
+  /// <see langword="true"/> if the two are equal; otherwise <see langword="false"/>.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -449,7 +449,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaGuid parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -464,7 +464,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaGuid parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -483,7 +483,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaGuid parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -498,7 +498,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaGuid parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -513,7 +513,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// Performs a SQL-style comparison of the two NaGuid parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are equal, or <see cref="NaBoolean.False"/> if they are not equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean EqualsSql (NaGuid x, NaGuid y)
   {
@@ -527,7 +527,7 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// Performs a SQL-style comparison of the two NaGuid parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are not equal, or <c>False</c> if they are equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are not equal, or <see cref="NaBoolean.False"/> if they are equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean NotEqualsSql (NaGuid x, NaGuid y)
   {
