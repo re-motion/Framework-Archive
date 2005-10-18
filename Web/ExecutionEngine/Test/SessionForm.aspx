@@ -39,7 +39,7 @@
 </p><p>
 <rubicon:webbutton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></rubicon:webbutton>
 </p>
-<p><rubicon:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionWithMappedPathButton" runat="server" Text="Open Sample Function With Mapped Path"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionInNewWindowButton" runat="server" Text="Open Sample Function in New Window"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionWithMappedPathInNewWindowButton" runat="server" Text="Open Sample Function With Mapped Path in New Window"></rubicon:WebButton></p>  
+<p><rubicon:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionAsRootButton" runat="server" Text="Open Sample Function With Mapped Path"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionInNewWindowButton" runat="server" Text="Open Sample Function in New Window"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionAsRootInNewWindowButton" runat="server" Text="Open Sample Function With Mapped Path in New Window"></rubicon:WebButton></p>  
 </form>
     <script language="javascript">
     function Page_PostBack (eventTarget, eventArgs)
