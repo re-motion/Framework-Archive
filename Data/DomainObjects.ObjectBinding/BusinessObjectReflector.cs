@@ -34,7 +34,7 @@ public class BusinessObjectReflector
   /// <param name="format">A formatter for the string.</param>
   /// <returns>A string representing the property value.</returns>
   // TODO: missing ArgumentUtility?
-  // TODO Doc: verstehe den Code nicht
+  // TODO Doc: Code koennte intentionen besser ausdrücken.
   public string GetPropertyString (IBusinessObjectProperty property, string format)
   {
     object value;
