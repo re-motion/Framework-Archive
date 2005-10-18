@@ -235,7 +235,7 @@ public class BocList:
   private string _availableViewsListTitle;
   /// <summary> The width applied to the <see cref="_availableViewsList"/>. </summary>
   private Unit _availableViewsListWidth = Unit.Empty;
-  /// <summary> The predefined column defintion sets that the user can choose from at run-time. </summary>
+  /// <summary> The predefined column definition sets that the user can choose from at run-time. </summary>
   private BocListViewCollection _availableViews;
   /// <summary> Determines whether to show the drop down list for selecting a view. </summary>
   private bool _showAvailableViewsList = true;
@@ -254,7 +254,7 @@ public class BocList:
 
   private NaInt32 _modifiableRowIndex = NaInt32.Null;
 
-  /// <summary> The user independent column defintions. </summary>
+  /// <summary> The user independent column definitions. </summary>
   private BocColumnDefinitionCollection _fixedColumns;
   /// <summary> 
   ///   Contains a <see cref="BocColumnDefinition"/> for each property of the bound 
@@ -1518,7 +1518,7 @@ public class BocList:
     {
       if (IsWaiConformanceLevelARequired)
         return false;
-      if (   editDetailsColumn.Show == BocEditDetailsColumnDefintionShow.EditMode 
+      if (   editDetailsColumn.Show == BocEditDetailsColumnDefinitionShow.EditMode 
           && isReadOnly)
       {
         return false;
@@ -4996,12 +4996,12 @@ public class BocList:
     return isList;
   }
 
-  /// <summary> Gets the user independent column defintions. </summary>
+  /// <summary> Gets the user independent column definitions. </summary>
   /// <remarks> Behavior undefined if set after initialization phase or changed between postbacks. </remarks>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   //  Default category
-  [Description ("The user independent column defintions.")]
+  [Description ("The user independent column definitions.")]
   [DefaultValue ((string) null)]
   public BocColumnDefinitionCollection FixedColumns
   {
@@ -5009,11 +5009,11 @@ public class BocList:
   }
 
   //  No designer support intended
-  /// <summary> Gets the predefined column defintion sets that the user can choose from at run-time. </summary>
+  /// <summary> Gets the predefined column definition sets that the user can choose from at run-time. </summary>
   //  [PersistenceMode(PersistenceMode.InnerProperty)]
   //  [ListBindable (false)]
   //  //  Default category
-  //  [Description ("The predefined column defintion sets that the user can choose from at run-time.")]
+  //  [Description ("The predefined column definition sets that the user can choose from at run-time.")]
   //  [DefaultValue ((string) null)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
@@ -5096,7 +5096,7 @@ public class BocList:
           && _isSelectedViewIndexSet
           && _selectedViewIndex != value)
       {
-        throw new InvalidOperationException ("The selected column defintion set cannot be changed while the BocList is in row edit mode.");
+        throw new InvalidOperationException ("The selected column definition set cannot be changed while the BocList is in row edit mode.");
       }
 
       bool hasIndexChanged = _selectedViewIndex != value; 
