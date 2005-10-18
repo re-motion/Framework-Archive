@@ -8,9 +8,9 @@ namespace Rubicon.NullableValueTypes
 {
 
 /// <summary>
-/// Represents a boolean value that can be <c>Null</c>. The corresponding system type is System.Boolean.
+/// Represents a boolean value that can be <see langword="null"/>. The corresponding system type is System.Boolean.
 /// </summary>
-/// <include file='doc\include\include.xml' path='Comments/NaBoolean/remarks' />
+/// <include file='doc\include\NullableValueTypes\include.xml' path='Comments/NaBoolean/remarks' />
 [Serializable]
 [NaBasicType (typeof (Boolean))]
 [TypeConverter (typeof (NaBooleanConverter))]
@@ -51,11 +51,11 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   #region type conversion
 
   /// <summary>
-  /// Converts a <see cref="NaBoolean"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaBoolean"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaBoolean</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaBoolean"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public override string ToString()
   {
@@ -63,12 +63,12 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaBoolean"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaBoolean"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaBoolean</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaBoolean"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format)
@@ -77,12 +77,12 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaBoolean"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaBoolean"/> structure to a <see cref="String"/>.
   /// </summary>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaBoolean</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaBoolean"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public string ToString (IFormatProvider provider)
   {
@@ -90,13 +90,13 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaBoolean"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaBoolean"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaBoolean</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaBoolean"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format, IFormatProvider provider)
@@ -115,13 +115,13 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its boolean equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its boolean equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
   /// <returns>
-  /// An <c>NaBoolean</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaBoolean.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Boolean.Parse</c> would return.
+  /// An <see cref="NaBoolean"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Boolean.Parse"/> would return.
   /// </returns>
   public static NaBoolean Parse (string s)
   {
@@ -131,9 +131,9 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <c>Boolean</c> to a <see cref="NaBoolean"/> structure.
+  /// Converts the supplied <see cref="Boolean"/> to an <see cref="NaBoolean"/> structure.
   /// </summary>
-  /// <param name="value">A <c>Boolean</c> value.</param>
+  /// <param name="value">A <see cref="Boolean"/> value.</param>
   /// <returns>The converted <see cref="NaBoolean"/> value.</returns>
   public static implicit operator NaBoolean (Boolean value)
   {
@@ -141,9 +141,9 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaBoolean"/> structure to an <c>Boolean</c>.
+  /// Converts the supplied <see cref="NaBoolean"/> structure to an <see cref="Boolean"/>.
   /// </summary>
-  /// <param name="value">A <see cref="NaBoolean"/> structure.</param>
+  /// <param name="value">An <see cref="NaBoolean"/> structure.</param>
   /// <returns>The converted boolean value.</returns>
   /// <exception cref="NaNullValueException">The passed value is null.</exception>
   public static explicit operator Boolean (NaBoolean value)
@@ -154,14 +154,14 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlBoolean</c> structure to a <see cref="NaBoolean"/> structure.
+  /// Converts the supplied <see cref="SqlBoolean"/> structure to an <see cref="NaBoolean"/> structure.
   /// </summary>
   public static NaBoolean FromSqlBoolean (SqlBoolean value)
   {
     return (NaBoolean) value;
   }
   /// <summary>
-  /// Converts the supplied <c>SqlBoolean</c> structure to a <see cref="NaBoolean"/> structure.
+  /// Converts the supplied <see cref="SqlBoolean"/> structure to an <see cref="NaBoolean"/> structure.
   /// </summary>
   public static implicit operator NaBoolean (SqlBoolean value)
   {
@@ -172,7 +172,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaBoolean"/> structure to a <c>SqlBoolean</c>structure.
+  /// Converts the supplied <see cref="NaBoolean"/> structure to a <see cref="SqlBoolean"/>structure.
   /// </summary>
   public static SqlBoolean ToSqlBoolean (NaBoolean value)
   {
@@ -180,7 +180,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaBoolean"/> structure to a <c>SqlBoolean</c>structure.
+  /// Converts the supplied <see cref="NaBoolean"/> structure to a <see cref="SqlBoolean"/>structure.
   /// </summary>
   public static implicit operator SqlBoolean (NaBoolean value)
   {
@@ -201,29 +201,29 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// The true operator can be used to test the <see cref="Value"/> of the <c>SqlBoolean</c> to determine whether it is true.
+  /// The true operator can be used to test the <see cref="Value"/> of the <see cref="SqlBoolean"/> to determine whether it is true.
   /// </summary>
-  /// <returns><c>true</c> if the supplied parameter is true, <c>false</c> otherwise.</returns>
+  /// <returns><see langword="true"/> if the supplied parameter is true, <see langword="false"/> otherwise.</returns>
   public static bool operator true (NaBoolean x)
   {
     return x._byteValue == c_true;
   }
 
   /// <summary>
-  /// The false operator can be used to test the <see cref="Value"/> of the <c>SqlBoolean</c> to determine whether it is false.
+  /// The false operator can be used to test the <see cref="Value"/> of the <see cref="SqlBoolean"/> to determine whether it is false.
   /// </summary>
-  /// <returns><c>true</c> if the supplied parameter is false, <c>false</c> otherwise.</returns>
+  /// <returns><see langword="true"/> if the supplied parameter is false, <see langword="false"/> otherwise.</returns>
   public static bool operator false (NaBoolean x)
   {
     return x._byteValue == c_false;
   }
 
   /// <summary>
-  /// Converts a <see cref="NaBoolean"/> value to a boxed <c>Boolean</c> value or a null reference.
+  /// Converts an <see cref="NaBoolean"/> value to a boxed <see cref="Boolean"/> value or a null reference.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>Boolean</c> if it is not null, a null reference otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as an <see cref="Boolean"/> if it is not null, a null reference otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaBoolean</c> values to methods that expect an untyped parameter which is either an <c>Boolean</c>
+  /// Use this method to easily pass <see cref="NaBoolean"/> values to methods that expect an untyped parameter which is either an <see cref="Boolean"/>
   /// value or a null reference.
   /// </remarks>
   public static object ToBoxedBoolean (NaBoolean value)
@@ -235,14 +235,14 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a boxed <c>Boolean</c> value or a null reference to a <see cref="NaBoolean"/> value.
+  /// Converts a boxed <see cref="Boolean"/> value or a null reference to an <see cref="NaBoolean"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaBoolean"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Boolean</c>, 
-  /// <c>NaBoolean.Null</c> if it is a null reference.</returns>
+  /// <returns>An <see cref="NaBoolean"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is an <see cref="Boolean"/>, 
+  /// <see cref="Null"/> if it is a null reference.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaBoolean</c> value from an untyped value which is either an <c>Boolean</c> value or a null reference.
+  /// Use this method to easily create an <see cref="NaBoolean"/> value from an untyped value which is either an <see cref="Boolean"/> value or a null reference.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither a null reference nor an <c>Boolean</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither a null reference nor an <see cref="Boolean"/> value.</exception>
   public static NaBoolean FromBoxedBoolean (object value)
   {
     if (value == null)
@@ -255,11 +255,11 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaBoolean"/> value to a boxed <c>Boolean</c> value or to DBNull.Value.
+  /// Converts an <see cref="NaBoolean"/> value to a boxed <see cref="Boolean"/> value or to DBNull.Value.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>Boolean</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as an <see cref="Boolean"/> if it is not null, DBNull.Value otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaBoolean</c> values to methods that expect an untyped parameter which is either an <c>Boolean</c>
+  /// Use this method to easily pass <see cref="NaBoolean"/> values to methods that expect an untyped parameter which is either an <see cref="Boolean"/>
   /// value or DBNull.Value.
   /// </remarks>
   public static object ToBoxedBooleanDBNull (NaBoolean value)
@@ -271,14 +271,14 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Converts a boxed <c>Boolean</c> value or DBNull.Value to a <see cref="NaBoolean"/> value.
+  /// Converts a boxed <see cref="Boolean"/> value or DBNull.Value to an <see cref="NaBoolean"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaBoolean"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Boolean</c>, 
-  /// <c>NaBoolean.Null</c> if it is DBNull.Value.</returns>
+  /// <returns>An <see cref="NaBoolean"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is an <see cref="Boolean"/>, 
+  /// <see cref="Null"/> if it is DBNull.Value.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaBoolean</c> value from an untyped value which is either an <c>Boolean</c> value or DBNull.Value.
+  /// Use this method to easily create an <see cref="NaBoolean"/> value from an untyped value which is either an <see cref="Boolean"/> value or DBNull.Value.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither DBNull.Value nor an <c>Boolean</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither DBNull.Value nor an <see cref="Boolean"/> value.</exception>
   public static NaBoolean FromBoxedBooleanDBNull (object value)
   {
     if (value == DBNull.Value)
@@ -374,7 +374,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Indicates whether or not <see cref="Value"/> is null.
   /// </summary>
   /// <value>
-  /// This property is <c>true</c> if <see cref="Value"/> is null, otherwise <c>false</c>.
+  /// This property is <see langword="true"/> if <see cref="Value"/> is null, otherwise <see langword="false"/>.
   /// </value>
   public bool IsNull 
   {
@@ -386,23 +386,23 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   #region public fields
 
   /// <summary>
-  /// This value is used to convert a <c>Null</c> value to and from strings.
+  /// This value is used to convert a <see langword="null"/> value to and from strings.
   /// </summary>
   /// <value>
-  /// The value of <c>NullString</c> is "null".
+  /// The value of <see cref="NullString"/> is "null".
   /// </value>
   /// <remarks>
-  /// Note that parsing <c>NullString</c> is case-sensitive.
+  /// Note that parsing <see cref="NullString"/> is case-sensitive.
   /// </remarks>
   public static readonly string NullString = "null";
 
   /// <summary>
-  /// A constant representing the value <c>true</c>.
+  /// A constant representing the value <see langword="true"/>.
   /// </summary>
   public static readonly NaBoolean True = new NaBoolean (true);
 
   /// <summary>
-  /// A constant representing the value <c>false</c>.
+  /// A constant representing the value <see langword="false"/>.
   /// </summary>
   public static readonly NaBoolean False = new NaBoolean (false);
 
@@ -415,13 +415,13 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// </summary>
   /// <param name="obj">The object to be compared. </param>
   /// <returns>
-  /// <c>true</c> if object is an instance of <see cref="NaBoolean"/> and the two are equal; otherwise <c>false</c>.
-  /// If object is a null reference, <c>false</c> is returned.
+  /// <see langword="true"/> if object is an instance of <see cref="NaBoolean"/> and the two are equal; otherwise <see langword="false"/>.
+  /// If object is a null reference, <see langword="false"/> is returned.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
   /// equality logic.
-  /// Note that <c>false</c> is returned if object is a Boolean (types are not equal).
+  /// Note that <see langword="false"/> is returned if object is a Boolean (types are not equal).
   /// </remarks>
   public override bool Equals (object obj)
   {
@@ -436,7 +436,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// </summary>
   /// <param name="value">The <see cref="NaBoolean"/> instance to be compared. </param>
   /// <returns>
-  /// <c>true</c> if the two are equal; otherwise <c>false</c>.
+  /// <see langword="true"/> if the two are equal; otherwise <see langword="false"/>.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -451,7 +451,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaBoolean parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -466,7 +466,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaBoolean parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -481,7 +481,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaBoolean parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -496,7 +496,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Performs a logical comparison of the two NaBoolean parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -511,7 +511,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Performs a SQL-style comparison of the two NaBoolean parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="True"/> if the two instances are equal, or <see cref="False"/> if they are not equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean EqualsSql (NaBoolean x, NaBoolean y)
   {
@@ -524,7 +524,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Performs a SQL-style comparison of the two NaBoolean parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are not equal, or <c>False</c> if they are equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="True"/> if the two instances are not equal, or <see cref="False"/> if they are equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean NotEqualsSql (NaBoolean x, NaBoolean y)
   {
@@ -565,21 +565,21 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   ///       <description>This instance is greater than the object.</description>
   ///     </item>
   ///   </list>
-  ///   The CompareTo methods of <c>NaBoolean</c> consider <see cref="Null"/> and null references to be less than any other value.
+  ///   The CompareTo methods of <see cref="NaBoolean"/> consider <see cref="Null"/> and null references to be less than any other value.
   ///   Note that 
   ///   <list type="bullets">
   ///     <item>
-  ///       <c>false</c> is considerd greater than <c>true</c>,
+  ///       <see langword="false"/> is considerd greater than <see langword="true"/>,
   ///     </item>
   ///     <item>
-  ///       two <c>Null</c> values are considered equal,
+  ///       two <see langword="null"/> values are considered equal,
   ///     </item>
   ///     <item>
-  ///       and <c>Null</c> and a null reference are considered equal.
+  ///       and <see langword="null"/> and a null reference are considered equal.
   ///     </item>
   ///   </list>
   ///   <para>
-  ///   <c>Null</c> &lt; <c>true</c> &lt; <c>false</c>
+  ///   <see langword="null"/> &lt; <see langword="true"/> &lt; <see langword="false"/>
   ///   </para>
   /// </returns>
   public int CompareTo (object obj)
@@ -617,18 +617,18 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   ///       <description>This instance is greater than the object.</description>
   ///     </item>
   ///   </list>
-  ///   The CompareTo methods of <c>NaBoolean</c> consider <see cref="Null"/> and null references to be less than any other value.
+  ///   The CompareTo methods of <see cref="NaBoolean"/> consider <see cref="Null"/> and null references to be less than any other value.
   ///   Note that 
   ///   <list type="bullets">
   ///     <item>
-  ///       <c>false</c> is considerd greater than <c>true</c>,
+  ///       <see langword="false"/> is considerd greater than <see langword="true"/>,
   ///     </item>
   ///     <item>
-  ///       and two <c>Null</c> values are considered equal,
+  ///       and two <see langword="null"/> values are considered equal,
   ///     </item>
   ///   </list>
   ///   <para>
-  ///   <c>Null</c> &lt; <c>true</c> &lt; <c>false</c>
+  ///   <see langword="null"/> &lt; <see langword="true"/> &lt; <see langword="false"/>
   ///   </para>
   /// </returns>
   public int CompareTo (NaBoolean value)
@@ -650,7 +650,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
 //  /// Computes the bitwise AND of two specified <see cref="NaBoolean"/> structures.
 //  /// </summary>
 //  /// <returns>
-//  /// The result of the bitwise AND operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
+//  /// The result of the bitwise AND operation. If either parameter is <see langword="null"/>, <see langword="null"/> is returned.
 //  /// </returns>
 //  public static NaBoolean And (NaBoolean x, NaBoolean y)
 //  {
@@ -679,7 +679,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
 //  /// Computes the bitwise OR of two specified <see cref="NaBoolean"/> structures.
 //  /// </summary>
 //  /// <returns>
-//  /// The result of the bitwise OR operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
+//  /// The result of the bitwise OR operation. If either parameter is <see langword="null"/>, <see langword="null"/> is returned.
 //  /// </returns>
 //  public static NaBoolean Or (NaBoolean x, NaBoolean y)
 //  {
@@ -707,7 +707,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Computes the bitwise exclusive-OR of two specified <see cref="NaBoolean"/> structures.
   /// </summary>
   /// <returns>
-  /// The result of the bitwise exclusive-OR operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
+  /// The result of the bitwise exclusive-OR operation. If either parameter is <see langword="null"/>, <see langword="null"/> is returned.
   /// </returns>
   public static NaBoolean Xor (NaBoolean x, NaBoolean y)
   {
@@ -718,7 +718,7 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   /// Computes the bitwise exclusive-OR of two specified <see cref="NaBoolean"/> structures.
   /// </summary>
   /// <returns>
-  /// The result of the bitwise exclusive-OR operation. If either parameter is <c>Null</c>, <c>Null</c> is returned.
+  /// The result of the bitwise exclusive-OR operation. If either parameter is <see langword="null"/>, <see langword="null"/> is returned.
   /// </returns>
   public static NaBoolean operator ^ (NaBoolean x, NaBoolean y)
   {
@@ -729,11 +729,11 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Performs a NOT operation on a <see cref="NaBoolean"/>.
+  /// Performs a NOT operation on an <see cref="NaBoolean"/>.
   /// </summary>
   /// <returns>
-  /// A <c>SqlBoolean</c> with the <see cref="Value"/> <c>True</c> if argument was <c>False</c>, <c>Null</c> if argument was <c>Null</c>, 
-  /// and <c>False</c> otherwise.
+  /// A <see cref="SqlBoolean"/> with the <see cref="Value"/> <see cref="True"/> if argument was <see cref="False"/>, <see langword="null"/> if argument was <see langword="null"/>, 
+  /// and <see cref="False"/> otherwise.
   /// </returns>
   public static NaBoolean Not (NaBoolean x)
   {
@@ -741,11 +741,11 @@ public struct NaBoolean: INaNullable, IComparable, IFormattable
   }
 
   /// <summary>
-  /// Performs a NOT operation on a <see cref="NaBoolean"/>.
+  /// Performs a NOT operation on an <see cref="NaBoolean"/>.
   /// </summary>
   /// <returns>
-  /// A <c>SqlBoolean</c> with the <see cref="Value"/> <c>True</c> if argument was <c>False</c>, <c>Null</c> if argument was <c>Null</c>, 
-  /// and <c>False</c> otherwise.
+  /// A <see cref="SqlBoolean"/> with the <see cref="Value"/> <see cref="True"/> if argument was <see cref="False"/>, <see langword="null"/> if argument was <see langword="null"/>, 
+  /// and <see cref="False"/> otherwise.
   /// </returns>
   public static NaBoolean operator ! (NaBoolean x)
   {
