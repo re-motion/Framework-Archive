@@ -185,6 +185,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "doc\include\NullableValueTypes\include.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Globalization\IObjectWithResources.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 
 using Rubicon.Utilities;
+using Rubicon.Development.UnitTesting;
 
 namespace Rubicon.Core.UnitTests.Utilities
 {
@@ -30,6 +31,16 @@ public class TypeConversionServicesMock: TypeConversionServices
     return base.GetCachedTypeConverter (key);
   }
 
+  public new bool HasCachedTypeConverter (Type type)
+  {
+    return base.HasCachedTypeConverter (type);
+  }
+
+  public void ClearCache()
+  {
+    Hashtable cache = (Hashtable) PrivateInvoke.GetNonPublicStaticField (typeof (TypeConversionServices), "s_typeConverters");
+    cache.Clear();
+  }
 }
 
 }

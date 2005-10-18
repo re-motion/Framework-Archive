@@ -22,10 +22,48 @@ public class TypeConversionServicesTest
   public void SetUp()
   {
     _services = new TypeConversionServicesMock();
+    _services.ClearCache();
+  }
+
+  [Test]
+  public void CanConvertFromInt32ToNaInt32()
+  {
+    Assert.IsTrue (_services.CanConvert (_int32, _naInt32));
+  }
+
+  [Test]
+  public void CanConvertFromNaInt32ToInt32()
+  {
+    Assert.IsTrue (_services.CanConvert (_naInt32, _int32));
+  }
+
+  [Test]
+  public void CanConvertFromNaInt32ToString()
+  {
+    Assert.IsTrue (_services.CanConvert (_naInt32, _string));
+  }
+
+  [Test]
+  public void CanConvertFromStringToNaInt32()
+  {
+    Assert.IsTrue (_services.CanConvert (_string, _naInt32));
   }
 
   [Test]
   [Ignore ("BasicType not implemented.")]
+  public void CanConvertFromInt32ToString()
+  {
+    Assert.IsTrue (_services.CanConvert (_string, _int32));
+  }
+
+  [Test]
+  [Ignore ("BasicType not implemented.")]
+  public void CanConvertFromStringToInt32()
+  {
+    Assert.IsTrue (_services.CanConvert (_int32, _string));
+  }
+
+  [Test]
   public void GetTypeConverterFromInt32ToNaInt32 ()
   {
     TypeConverter converter = _services.GetTypeConverter (_int32, _naInt32);
@@ -34,7 +72,6 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  [Ignore ("BasicType not implemented.")]
   public void GetTypeConverterFromNaInt32ToInt32 ()
   {
     TypeConverter converter = _services.GetTypeConverter (_naInt32, _int32);
@@ -158,11 +195,19 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  public void CacheTypeConverter()
+  public void GetCachedTypeConverter()
   {
     NaInt32Converter converter = new NaInt32Converter();
     _services.AddTypeConverterToCache (_naInt32, converter);
     Assert.AreSame (converter, _services.GetCachedTypeConverter (_naInt32));
+  }
+
+  [Test]
+  public void HasCachedTypeConverter()
+  {
+    NaInt32Converter converter = new NaInt32Converter();
+    _services.AddTypeConverterToCache (_naInt32, converter);
+    Assert.IsTrue (_services.HasCachedTypeConverter (_naInt32));
   }
 }
 
