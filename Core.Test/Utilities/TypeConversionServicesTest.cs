@@ -16,13 +16,25 @@ public class TypeConversionServicesTest
   private Type _int32 = typeof (int);
   private Type _string = typeof (string);
   private Type _naDouble = typeof (NaDouble);
-  private Type _double = typeof (double);
+  private Type _object = typeof (object);
 
   [SetUp]
   public void SetUp()
   {
     _services = new TypeConversionServicesMock();
     _services.ClearCache();
+  }
+
+  [Test]
+  public void CanConvertFromInt32ToInt32()
+  {
+    Assert.IsTrue (_services.CanConvert (_int32, _int32));
+  }
+
+  [Test]
+  public void CanConvertFromNaInt32ToNaInt32()
+  {
+    Assert.IsTrue (_services.CanConvert (_naInt32, _naInt32));
   }
 
   [Test]
@@ -50,18 +62,142 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  [Ignore ("BasicType not implemented.")]
   public void CanConvertFromInt32ToString()
   {
     Assert.IsTrue (_services.CanConvert (_string, _int32));
   }
 
   [Test]
-  [Ignore ("BasicType not implemented.")]
   public void CanConvertFromStringToInt32()
   {
     Assert.IsTrue (_services.CanConvert (_int32, _string));
   }
+
+  [Test]
+  public void CanConvertFromObjectToNaInt32()
+  {
+    Assert.IsFalse (_services.CanConvert (_object, _naInt32));
+  }
+
+
+  [Test]
+  public void ConvertFromInt32ToInt32()
+  {
+    Assert.AreEqual (1, _services.Convert (_int32, _int32, 1));
+  }
+
+  [Test]
+  public void ConvertFromNaInt32ToNaInt32()
+  {
+    Assert.AreEqual (new NaInt32 (1), _services.Convert (_naInt32, _naInt32, new NaInt32 (1)));
+  }
+
+  [Test]
+  public void ConvertFromNaInt32ToInt32()
+  {
+    Assert.AreEqual (1, _services.Convert (_naInt32, _int32, new NaInt32 (1)));
+  }
+
+  [Test]
+  public void ConvertFromInt32ToNaInt32()
+  {
+    Assert.AreEqual (new NaInt32 (1), _services.Convert (_int32, _naInt32, 1));
+  }
+
+  [Test]
+  [ExpectedException (typeof (NotSupportedException))]
+  public void ConvertFromObjectToNaInt32()
+  {
+    _services.Convert (_object, _naInt32, new object());
+    Assert.Fail();
+  }
+
+  [Test]
+  [ExpectedException (typeof (NotSupportedException))]
+  public void ConvertFromNaInt32ToObject()
+  {
+    _services.Convert (_naInt32, _object, new NaInt32 (1));
+    Assert.Fail();
+  }
+
+  [Test]
+  [ExpectedException (typeof (NotSupportedException))]
+  public void ConvertFromInt32ToObject()
+  {
+    _services.Convert (_int32, _object, 1);
+    Assert.Fail();
+  }
+
+  [Test]
+  [ExpectedException (typeof (NotSupportedException))]
+  public void ConvertFromObjectToInt32()
+  {
+    _services.Convert (_object, _naInt32, new object());
+    Assert.Fail();
+  }
+
+  [Test]
+  public void ConvertFromNaInt32ToString()
+  {
+    Assert.AreEqual ("1", _services.Convert (_naInt32, _string, new NaInt32 (1)));
+  }
+
+  [Test]
+  public void ConvertFromStringToNaInt32()
+  {
+    Assert.AreEqual (new NaInt32 (1), _services.Convert (_string, _naInt32, "1"));
+  }
+
+  [Test]
+  public void ConvertFromInt32ToNaInt32WithNull()
+  {
+    Assert.AreEqual (NaInt32.Null, _services.Convert (_int32, _naInt32, null));
+  }
+
+  [Test]
+  public void ConvertFromInt32ToNaInt32WithDBNull()
+  {
+    Assert.AreEqual (NaInt32.Null, _services.Convert (_int32, _naInt32, DBNull.Value));
+  }
+
+  [Test]
+  public void ConvertFromStringToNaInt32WithEmpty()
+  {
+    Assert.AreEqual (NaInt32.Null, _services.Convert (_string, _naInt32, ""));
+  }
+
+  [Test]
+  public void ConvertFromInt32ToString()
+  {
+    Assert.AreEqual ("1", _services.Convert (_int32, _string, 1));
+  }
+
+  [Test]
+  public void ConvertFromStringToInt32()
+  {
+    Assert.AreEqual (1, _services.Convert (_string, _int32, "1"));
+  }
+
+  [Test]
+  public void ConvertFromInt32ToStringWithNull()
+  {
+    Assert.AreEqual ("", _services.Convert (_int32, _string, null));
+  }
+
+  [Test]
+  public void ConvertFromInt32ToStringWithDBNull()
+  {
+    Assert.AreEqual ("", _services.Convert (_int32, _string, DBNull.Value));
+  }
+
+  [Test]
+  [ExpectedException (typeof (FormatException))]
+  public void ConvertFromStringToInt32WithEmpty()
+  {
+    _services.Convert (_string, _int32, "");
+    Assert.Fail();
+  }
+
 
   [Test]
   public void GetTypeConverterFromInt32ToNaInt32 ()
@@ -96,24 +232,6 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  [Ignore ("BasicType not implemented.")]
-  public void GetTypeConverterFromInt32ToString ()
-  {
-    TypeConverter converter = _services.GetTypeConverter (_int32, _string);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaInt32Converter), converter.GetType());
-  }
-
-  [Test]
-  [Ignore ("BasicType not implemented.")]
-  public void GetTypeConverterFromStringToInt32 ()
-  {
-    TypeConverter converter = _services.GetTypeConverter (_string, _int32);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaInt32Converter), converter.GetType());
-  }
-
-  [Test]
   public void GetTypeConverterFromNaDoubleToString ()
   {
     TypeConverter converter = _services.GetTypeConverter (_naDouble, _string);
@@ -130,21 +248,17 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  [Ignore ("BasicType not implemented.")]
-  public void GetTypeConverterFromDoubleToString ()
+  public void GetTypeConverterFromObjectToString ()
   {
-    TypeConverter converter = _services.GetTypeConverter (_double, _string);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaDoubleConverter), converter.GetType());
+    TypeConverter converter = _services.GetTypeConverter (_object, _string);
+    Assert.IsNull (converter, "TypeConverter is not null.");
   }
 
   [Test]
-  [Ignore ("BasicType not implemented.")]
-  public void GetTypeConverterFromStringToDouble ()
+  public void GetTypeConverterFromStringToObject ()
   {
-    TypeConverter converter = _services.GetTypeConverter (_string, _double);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaDoubleConverter), converter.GetType());
+    TypeConverter converter = _services.GetTypeConverter (_string, _object);
+    Assert.IsNull (converter, "TypeConverter is not null.");
   }
 
   [Test]

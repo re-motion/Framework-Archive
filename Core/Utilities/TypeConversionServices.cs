@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+using System.Globalization;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Utilities
@@ -15,52 +16,117 @@ public class TypeConversionServices
 	}
 
   /// <summary> 
-  ///   Gets the <see cref="TypeConverter"/> that is able to convert a value of the <paramref name="from"/> 
-  ///   <see cref="Type"/> into an instance of the <paramref name="to"/> <see cref="Type"/>.
+  ///   Gets the <see cref="TypeConverter"/> that is able destinationType convert a value of the <paramref name="sourceType"/> 
+  ///   <see cref="Type"/> into an instance of the <paramref name="destinationType"/> <see cref="Type"/>.
   /// </summary>
-  /// <param name="from"> The source <see cref="Type"/> of the value. Must not be <see langword="null"/>. </param>
-  /// <param name="to"> The destination <see cref="Type"/> of the value. Must not be <see langword="null"/>. </param>
+  /// <param name="sourceType"> 
+  ///   The source <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="destinationType"> 
+  ///   The destination <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
+  /// </param>
   /// <returns> 
   ///   A <see cref="TypeConverter"/> or <see langword="null"/> of no matching <see cref="TypeConverter"/> can be found.
   /// </returns>
-  public TypeConverter GetTypeConverter (Type from, Type to)
+  public virtual TypeConverter GetTypeConverter (Type sourceType, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull ("from", from);
-    ArgumentUtility.CheckNotNull ("to", to);
+    ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+    ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
-    TypeConverter fromConverter = GetTypeConverter (from);
-    if (fromConverter != null && fromConverter.CanConvertTo (to))
-      return fromConverter;
+    TypeConverter sourceTypeConverter = GetTypeConverter (sourceType);
+    if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
+      return sourceTypeConverter;
 
-    TypeConverter toConverter = GetTypeConverter (to);
-    if (toConverter != null && toConverter.CanConvertFrom (from))
-      return toConverter;
+    TypeConverter destinationTypeConverter = GetTypeConverter (destinationType);
+    if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
+      return destinationTypeConverter;
     
     return null;
   }
 
   /// <summary> 
   ///   Gets the <see cref="TypeConverter"/> that is associated with the specified <paramref name="type"/>.
-  ///   <see cref="Type"/> into an instance of the <paramref name="to"/> <see cref="Type"/>.
+  ///   <see cref="Type"/> into an instance of the <paramref name="destinationType"/> <see cref="Type"/>.
   /// </summary>
   /// <param name="type"> 
-  ///   The <see cref="Type"/> to get the <see cref="TypeConverter"/> for. Must not be <see langword="null"/>.
+  ///   The <see cref="Type"/> destinationType get the <see cref="TypeConverter"/> for. Must not be <see langword="null"/>.
   /// </param>
   /// <returns>
   ///   A <see cref="TypeConverter"/> or <see langword="null"/> of no <see cref="TypeConverter"/> can be found.
   /// </returns>
-  public TypeConverter GetTypeConverter (Type type)
+  public virtual TypeConverter GetTypeConverter (Type type)
   {
     return GetCachedTypeConverterByAttribute (type);
   }
   
-  public bool CanConvert (Type from, Type to)
+  /// <summary> 
+  ///   Test whether the <see cref="TypeConversionServices"/> object can convert an object of <see cref="Type"/> 
+  ///   <paramref name="sourceType"/> into an object of <see cref="Type"/> <paramref name="destinationType"/>
+  ///   by using the <see cref="Convert"/> method.
+  /// </summary>
+  /// <param name="sourceType"> 
+  ///   The source <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="destinationType"> 
+  ///   The destination <see cref="Type"/> of the value. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <returns> <see langword="true"/> if a conversion is possible. </returns>
+  public virtual bool CanConvert (Type sourceType, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull ("from", from);
-    ArgumentUtility.CheckNotNull ("to", to);
+    ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+    ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
-    TypeConverter converter = GetTypeConverter (from, to);
-    return converter != null;
+    if (sourceType == destinationType)
+      return true;
+
+    TypeConverter converter = GetTypeConverter (sourceType, destinationType);
+    if (converter != null)
+      return true;
+
+    if (   typeof (IConvertible).IsAssignableFrom (sourceType) && destinationType == typeof (string)
+        || sourceType == typeof (string) && typeof (IConvertible).IsAssignableFrom (destinationType))
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  public object Convert (Type sourceType, Type destinationType, object value)
+  {
+    return Convert (null, null, sourceType, destinationType, value);
+  }
+
+  public virtual object Convert (
+      ITypeDescriptorContext context, CultureInfo culture, Type sourceType, Type destinationType, object value)
+  {
+    ArgumentUtility.CheckNotNull ("sourceType", sourceType);
+    ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+
+    if (sourceType == destinationType)
+      return value;
+    
+    TypeConverter sourceTypeConverter = GetTypeConverter (sourceType);
+    if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))
+      return sourceTypeConverter.ConvertTo (context, culture, value, destinationType);
+
+    TypeConverter destinationTypeConverter = GetTypeConverter (destinationType);
+    if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
+      return destinationTypeConverter.ConvertFrom (context, culture, value);
+   
+    if (typeof (IConvertible).IsAssignableFrom (sourceType) && destinationType == typeof (string))
+    {
+      if (value == null)
+        value = DBNull.Value;
+      return System.Convert.ChangeType (value, destinationType, culture);
+    }
+    else if (sourceType == typeof (string) && typeof (IConvertible).IsAssignableFrom (destinationType))
+    {
+      return System.Convert.ChangeType (value, destinationType, culture);
+    }
+
+    throw new NotSupportedException (string.Format (
+        "Cannot convert value '{0}' to type '{1}'.", value, destinationType));
   }
 
   protected TypeConverter GetTypeConverterByAttribute (Type type)
