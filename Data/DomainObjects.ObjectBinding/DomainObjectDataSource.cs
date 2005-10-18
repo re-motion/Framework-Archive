@@ -7,12 +7,17 @@ using Rubicon.Data.DomainObjects.ObjectBinding.Design;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-// TODO Doc: 
-public class DomainObjectDataSource: BusinessObjectDataSource
+/// <summary>
+/// A DataSource for <see cref="BindableDomainObject"/>s.
+/// </summary>
+public class DomainObjectDataSource : BusinessObjectDataSource
 {
   private string _typeName;
   private IBusinessObject _object;
 
+  /// <summary>
+  /// Gets or sets the name of the type of the data source.
+  /// </summary>
   [Editor (typeof (ClassPickerEditor), typeof (UITypeEditor))]
   public string TypeName
   {
@@ -20,6 +25,9 @@ public class DomainObjectDataSource: BusinessObjectDataSource
     set { _typeName = value; }
   }
 
+  /// <summary>
+  /// Gets the type specified by <see cref="TypeName"/>.
+  /// </summary>
   public Type Type
   {
     get 
@@ -30,12 +38,18 @@ public class DomainObjectDataSource: BusinessObjectDataSource
     }
   }
 
+  /// <summary>
+  /// Gets or sets the business object of the data source.
+  /// </summary>
   public override IBusinessObject BusinessObject
   {
     get { return _object; }
     set { _object = value; }
   }
 
+  /// <summary>
+  /// Gets an instance of <see cref="DomainObjectClass"/> representing the type specified by <see cref="TypeName"/> or <see langword="null"/> if none is specified.
+  /// </summary>
   public override IBusinessObjectClass BusinessObjectClass
   {
     get 
