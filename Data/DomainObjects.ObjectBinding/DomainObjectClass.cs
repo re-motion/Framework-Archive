@@ -6,11 +6,25 @@ using Rubicon.Data.DomainObjects.Mapping;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
-// TODO Doc: 
+/// <summary>
+/// The default implementation of <see cref="Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/> for the <see cref="BindableDomainObject"/>.
+/// </summary>
+/// <remarks>
+///   <para>
+///     See the documentation of <see cref="Rubicon.ObjectBinding.IBusinessObjectClassWithIdentity"/> for further information.
+///   </para>
+///   <para>
+///     This class is used with <see cref="BindableDomainObject"/> and <see cref="DomainObjectDataSource"/>.
+///   </para>
+/// </remarks>
 public class DomainObjectClass: IBusinessObjectClassWithIdentity
 {
   private BusinessObjectClassReflector _classReflector;
 
+  /// <summary>
+  /// Instantiates a new object.
+  /// </summary>
+  /// <param name="type">The type that the object should represent.</param>
   public DomainObjectClass (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -32,31 +46,56 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
     _classReflector = new BusinessObjectClassReflector (type, propertyFactory);
   }
 
+  /// <summary>
+  /// Returns an <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> representing the given <paramref name="propertyIdentifier"/>.
+  /// </summary>
+  /// <param name="propertyIdentifier">The name of the property.</param>
+  /// <returns>An instance of <see cref="BaseProperty"/> or derived type representing the given <paramref name="propertyIdentifier"/>, or <see langword="null"/> if not found.</returns>
   public IBusinessObjectProperty GetPropertyDefinition (string propertyIdentifier)
   {
     return _classReflector.GetPropertyDefinition (propertyIdentifier);
   }
 
+  /// <summary>
+  /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type <see cref="BusinessObjectClassType"/>.
+  /// </summary>
+  /// <returns>An array of instances of <see cref="BaseProperty"/> or a derived type for each property. If no properties can be found, an empty array is returned.</returns>
   public IBusinessObjectProperty[] GetPropertyDefinitions()
   {
     return _classReflector.GetPropertyDefinitions ();
   }
 
+  /// <summary>
+  /// Returns an instance of <see cref="DomainObjectProvider"/>.
+  /// </summary>
   public IBusinessObjectProvider BusinessObjectProvider 
   {
     get { return DomainObjectProvider.Instance; }
   }
 
+  /// <summary>
+  /// Returns the object with the given <paramref name="identifier"/>.
+  /// </summary>
+  /// <param name="identifier">The identifier of the object to return.</param>
+  /// <returns>The <see cref="BindableDomainObject"/> with the given <see cref="identifier"/>.</returns>
+  /// <remarks>See <see cref="BindableObject.GetObject"/> for a list of exceptions that can occur.</remarks>
   public IBusinessObjectWithIdentity GetObject (string identifier)
   {
     return BindableDomainObject.GetObject (ObjectID.Parse (identifier));
   }
 
+  /// <summary>
+  /// Returns false.
+  /// </summary>
   public bool RequiresWriteBack
   { 
     get { return false; }
   }
 
+  /// <summary>
+  /// Gets the full name of the class that is represented by the object.
+  /// </summary>
+  /// <value>The full name of the class that is represented by the object.</value>
   public string Identifier
   {
     get { return _classReflector.Identifier; }
