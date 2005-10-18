@@ -14,6 +14,8 @@ public class QueryParameterTest
 
   // member fields
 
+  private QueryParameter _parameter;
+
   // construction and disposing
 
   public QueryParameterTest ()
@@ -22,14 +24,32 @@ public class QueryParameterTest
 
   // methods and properties
 
+  [SetUp]
+  public void SetUp ()
+  {
+    _parameter = new QueryParameter ("name", "value", QueryParameterType.Value);
+  }
+
   [Test]
   public void Initialize ()
   {
-    QueryParameter parameter = new QueryParameter ("name", "value", QueryParameterType.Value);
+    Assert.AreEqual ("name", _parameter.Name);
+    Assert.AreEqual ("value", _parameter.Value);
+    Assert.AreEqual (QueryParameterType.Value, _parameter.ParameterType);
+  }
 
-    Assert.AreEqual ("name", parameter.Name);
-    Assert.AreEqual ("value", parameter.Value);
-    Assert.AreEqual (QueryParameterType.Value, parameter.ParameterType);
+  [Test]
+  public void SetValue ()
+  {
+    _parameter.Value = "NewValue";
+    Assert.AreEqual ("NewValue", _parameter.Value);
+  }
+
+  [Test]
+  public void SetParameterType ()
+  { 
+    _parameter.ParameterType = QueryParameterType.Text;
+    Assert.AreEqual (QueryParameterType.Text, _parameter.ParameterType);
   }
 }
 }
