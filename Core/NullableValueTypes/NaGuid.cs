@@ -165,12 +165,8 @@ public struct NaGuid: INaNullable, IFormattable, IXmlSerializable
   /// </returns>
   public static NaGuid Parse (string s)
   {
-    if (s == null || 0 == string.Compare (s, NullString, false, CultureInfo.InvariantCulture)) 
+    if (s == null || s.Length == 0 || 0 == string.Compare (s, NullString, false, CultureInfo.InvariantCulture)) 
       return NaGuid.Null;
-
-    if (s == string.Empty)
-      return new NaGuid (Guid.Empty);
-
     return new NaGuid (s);
   }
 
