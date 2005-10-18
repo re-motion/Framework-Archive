@@ -250,6 +250,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NullableValueTypes\NaByteConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NullableValueTypes\NaDateTime.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -265,12 +270,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NullableValueTypes\NaDoubleConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NullableValueTypes\NaGuid.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "NullableValueTypes\NaInt16.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NullableValueTypes\NaInt16Converter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -290,7 +305,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NullableValueTypes\NaInt64Converter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NullableValueTypes\NaSingle.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NullableValueTypes\NaSingleConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
