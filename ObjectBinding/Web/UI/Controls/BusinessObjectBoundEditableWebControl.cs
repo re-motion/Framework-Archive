@@ -196,7 +196,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   ///       the value of <see cref="Required"/> is returned.
   ///     </item>
   ///     <item>
-  ///       If the <see cref="BusinessObjectBoundWebControl.Property"/> contains a property defintion with the
+  ///       If the <see cref="BusinessObjectBoundWebControl.Property"/> contains a property definition with the
   ///       <see cref="IBusinessObjectProperty.IsRequired"/> flag set, <see langword="true"/> is returned. 
   ///     </item>
   ///     <item>Otherwise, <see langword="false"/> is returned.</item>
