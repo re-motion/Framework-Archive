@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Data.SqlTypes;
 using System.Globalization;
@@ -12,6 +13,7 @@ namespace Rubicon.NullableValueTypes
 /// <include file='doc\include\include.xml' path='Comments/NaDateTime/remarks' />
 [Serializable]
 [NaBasicType (typeof(DateTime))]
+[TypeConverter (typeof (NaDateTimeConverter))]
 public struct NaDateTime: INaNullable, IComparable, IFormattable
 {
   #region member fields
