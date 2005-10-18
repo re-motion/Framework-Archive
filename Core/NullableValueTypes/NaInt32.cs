@@ -11,9 +11,9 @@ namespace Rubicon.NullableValueTypes
 {
 
 /// <summary>
-/// Represents a 32-bit signed integer that can be <c>Null</c>. The corresponding system type is System.Int32.
+/// Represents a 32-bit signed integer that can be <see langword="null"/>. The corresponding system type is System.Int32.
 /// </summary>
-/// <include file='doc\include\include.xml' path='Comments/NaInt32/remarks' />
+/// <include file='doc\include\NullableValueTypes\include.xml' path='Comments/NaInt32/remarks' />
 [Serializable]
 [NaBasicType (typeof (Int32))]
 [TypeConverter (typeof (NaInt32Converter))]
@@ -81,11 +81,11 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   #region type conversion
 
   /// <summary>
-  /// Converts a <see cref="NaInt32"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaInt32"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaInt32</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaInt32"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public override string ToString()
   {
@@ -93,12 +93,12 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaInt32"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaInt32"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaInt32</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaInt32"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format)
@@ -107,12 +107,12 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaInt32"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaInt32"/> structure to a <see cref="String"/>.
   /// </summary>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaInt32</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned.
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaInt32"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned.
   /// </returns>
   public string ToString (IFormatProvider provider)
   {
@@ -120,13 +120,13 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaInt32"/> structure to a <c>String</c>.
+  /// Converts an <see cref="NaInt32"/> structure to a <see cref="String"/>.
   /// </summary>
   /// <param name="format">A format specification.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information. </param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information. </param>
   /// <returns>
-  /// A <c>String</c> object representing the <see cref="Value"/> of this instance of <c>NaInt32</c>. If this
-  /// instance is <c>Null</c>, <see cref="NullString"/> ("null") is returned. If <c>format</c> is prefixed with a tilde symbol
+  /// A <see cref="String"/> object representing the <see cref="Value"/> of this instance of <see cref="NaInt32"/>. If this
+  /// instance is <see langword="null"/>, <see cref="NullString"/> ("null") is returned. If <paramref name="format"/> is prefixed with a tilde symbol
   /// ("~"), a zero-length string is returned instead.
   /// </returns>
   public string ToString (string format, IFormatProvider provider)
@@ -146,15 +146,15 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaInt32 equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaInt32 equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="NumberStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaInt32</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaInt32.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
+  /// An <see cref="NaInt32"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaInt32.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Int32.Parse"/> would return.
   /// </returns>
   public static NaInt32 Parse (string s, NumberStyles styles, IFormatProvider provider)
   {
@@ -164,14 +164,14 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaInt32 equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaInt32 equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="provider">An <c>IFormatProvider</c> that supplies culture-specific formatting information about <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information about <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaInt32</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaInt32.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
+  /// An <see cref="NaInt32"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaInt32.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Int32.Parse"/> would return.
   /// </returns>
   public static NaInt32 Parse (string s, IFormatProvider provider)
   {
@@ -179,14 +179,14 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaInt32 equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaInt32 equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
-  /// <param name="styles">The combination of one or more <c>NumberStyles</c> constants that indicates the permitted format of <c>s</c>.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
+  /// <param name="styles">The combination of one or more <see cref="NumberStyles"/> constants that indicates the permitted format of <paramref name="s"/>.</param>
   /// <returns>
-  /// An <c>NaInt32</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaInt32.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
+  /// An <see cref="NaInt32"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaInt32.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Int32.Parse"/> would return.
   /// </returns>
   public static NaInt32 Parse (string s, NumberStyles styles)
   {
@@ -194,13 +194,13 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the <c>String</c> representation of a number to its NaInt32 equivalent.
+  /// Converts the <see cref="String"/> representation of a number to its NaInt32 equivalent.
   /// </summary>
-  /// <param name="s">The <c>String</c> to be parsed.</param>
+  /// <param name="s">The <see cref="String"/> to be parsed.</param>
   /// <returns>
-  /// An <c>NaInt32</c> equivalent to the value contained in the specified string. If the string is a null reference, 
-  /// a zero-length string or <see cref="NullString"/> ("null"), <c>NaInt32.Null</c> is returned. Otherwise, 
-  /// <see cref="Value"/> contains the same value that <c>Int32.Parse</c> would return.
+  /// An <see cref="NaInt32"/> equivalent to the value contained in the specified string. If the string is a null reference, 
+  /// a zero-length string or <see cref="NullString"/> ("null"), <see cref="NaInt32.Null"/> is returned. Otherwise, 
+  /// <see cref="Value"/> contains the same value that <see cref="Int32.Parse"/> would return.
   /// </returns>
   public static NaInt32 Parse (string s)
   {
@@ -208,9 +208,9 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>Int32</c> to a <see cref="NaInt32"/> structure.
+  /// Converts the supplied <see cref="Int32"/> to an <see cref="NaInt32"/> structure.
   /// </summary>
-  /// <param name="value">An <c>Int32</c> value.</param>
+  /// <param name="value">An <see cref="Int32"/> value.</param>
   /// <returns>The converted <see cref="NaInt32"/> value.</returns>
   public static implicit operator NaInt32 (Int32 value)
   {
@@ -218,9 +218,9 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaInt32"/> structure to an <c>Int32</c>.
+  /// Converts the supplied <see cref="NaInt32"/> structure to an <see cref="Int32"/>.
   /// </summary>
-  /// <param name="value">A <see cref="NaInt32"/> structure.</param>
+  /// <param name="value">An <see cref="NaInt32"/> structure.</param>
   /// <returns>The converted integer value.</returns>
   /// <exception cref="NaNullValueException">
   /// The passed value is null.
@@ -233,7 +233,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlInt32</c> structure to a <see cref="NaInt32"/> structure.
+  /// Converts the supplied <see cref="SqlInt32"/> structure to an <see cref="NaInt32"/> structure.
   /// </summary>
   public static NaInt32 FromSqlInt32 (SqlInt32 value)
   {
@@ -241,7 +241,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <c>SqlInt32</c> structure to a <see cref="NaInt32"/> structure.
+  /// Converts the supplied <see cref="SqlInt32"/> structure to an <see cref="NaInt32"/> structure.
   /// </summary>
   public static implicit operator NaInt32 (SqlInt32 value)
   {
@@ -252,7 +252,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaInt32"/> structure to a <c>SqlInt32</c>structure.
+  /// Converts the supplied <see cref="NaInt32"/> structure to a <see cref="SqlInt32"/>structure.
   /// </summary>
   public static SqlInt32 ToSqlInt32 (NaInt32 value)
   {
@@ -260,7 +260,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts the supplied <see cref="NaInt32"/> structure to a <c>SqlInt32</c>structure.
+  /// Converts the supplied <see cref="NaInt32"/> structure to a <see cref="SqlInt32"/>structure.
   /// </summary>
   public static implicit operator SqlInt32 (NaInt32 value)
   {
@@ -271,11 +271,11 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaInt32"/> value to a boxed <c>Int32</c> value or a null reference.
+  /// Converts an <see cref="NaInt32"/> value to a boxed <see cref="Int32"/> value or a null reference.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>Int32</c> if it is not null, a null reference otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as an <see cref="Int32"/> if it is not null, a null reference otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaInt32</c> values to methods that expect an untyped parameter which is either an <c>Int32</c>
+  /// Use this method to easily pass <see cref="NaInt32"/> values to methods that expect an untyped parameter which is either an <see cref="Int32"/>
   /// value or a null reference.
   /// </remarks>
   public static object ToBoxedInt32 (NaInt32 value)
@@ -287,14 +287,14 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a boxed <c>Int32</c> value or a null reference to a <see cref="NaInt32"/> value.
+  /// Converts a boxed <see cref="Int32"/> value or a null reference to an <see cref="NaInt32"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaInt32"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Int32</c>, 
-  /// <c>NaInt32.Null</c> if it is a null reference.</returns>
+  /// <returns>An <see cref="NaInt32"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is an <see cref="Int32"/>, 
+  /// <see cref="NaInt32.Null"/> if it is a null reference.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaInt32</c> value from an untyped value which is either an <c>Int32</c> value or a null reference.
+  /// Use this method to easily create an <see cref="NaInt32"/> value from an untyped value which is either an <see cref="Int32"/> value or a null reference.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither a null reference nor an <c>Int32</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither a null reference nor an <see cref="Int32"/> value.</exception>
   public static NaInt32 FromBoxedInt32 (object value)
   {
     if (value == null)
@@ -307,11 +307,11 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a <see cref="NaInt32"/> value to a boxed <c>Int32</c> value or to DBNull.Value.
+  /// Converts an <see cref="NaInt32"/> value to a boxed <see cref="Int32"/> value or to DBNull.Value.
   /// </summary>
-  /// <returns>The integer value of <c>value</c> as an <c>Int32</c> if it is not null, DBNull.Value otherwise.</returns>
+  /// <returns>The integer value of <paramref name="value"/> as an <see cref="Int32"/> if it is not null, DBNull.Value otherwise.</returns>
   /// <remarks>
-  /// Use this method to easily pass <c>NaInt32</c> values to methods that expect an untyped parameter which is either an <c>Int32</c>
+  /// Use this method to easily pass <see cref="NaInt32"/> values to methods that expect an untyped parameter which is either an <see cref="Int32"/>
   /// value or DBNull.Value.
   /// </remarks>
   public static object ToBoxedInt32DBNull (NaInt32 value)
@@ -323,14 +323,14 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   }
 
   /// <summary>
-  /// Converts a boxed <c>Int32</c> value or DBNull.Value to a <see cref="NaInt32"/> value.
+  /// Converts a boxed <see cref="Int32"/> value or DBNull.Value to an <see cref="NaInt32"/> value.
   /// </summary>
-  /// <returns>A <see cref="NaInt32"/> with its <see cref="Value"/> set to the integer value of <c>value</c> if it is an <c>Int32</c>, 
-  /// <c>NaInt32.Null</c> if it is DBNull.Value.</returns>
+  /// <returns>An <see cref="NaInt32"/> with its <see cref="Value"/> set to the integer value of <paramref name="value"/> if it is an <see cref="Int32"/>, 
+  /// <see cref="NaInt32.Null"/> if it is DBNull.Value.</returns>
   /// <remarks>
-  /// Use this method to easily create an <c>NaInt32</c> value from an untyped value which is either an <c>Int32</c> value or DBNull.Value.
+  /// Use this method to easily create an <see cref="NaInt32"/> value from an untyped value which is either an <see cref="Int32"/> value or DBNull.Value.
   /// </remarks>
-  /// <exception cref="ArgumentException"><c>value</c> is neither DBNull.Value nor an <c>Int32</c> value.</exception>
+  /// <exception cref="ArgumentException"><paramref name="value"/> is neither DBNull.Value nor an <see cref="Int32"/> value.</exception>
   public static NaInt32 FromBoxedInt32DBNull (object value)
   {
     if (value == DBNull.Value)
@@ -410,7 +410,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Indicates whether or not <see cref="Value"/> is null.
   /// </summary>
   /// <value>
-  /// This property is <c>true</c> if <see cref="Value"/> is null, otherwise <c>false</c>.
+  /// This property is <see langword="true"/> if <see cref="Value"/> is null, otherwise <see langword="false"/>.
   /// </value>
   public bool IsNull 
   {
@@ -422,13 +422,13 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   #region public fields
 
   /// <summary>
-  /// This value is used to convert a <c>Null</c> value to and from strings.
+  /// This value is used to convert a <see langword="null"/> value to and from strings.
   /// </summary>
   /// <value>
-  /// The value of <c>NullString</c> is "null".
+  /// The value of <see cref="NullString"/> is "null".
   /// </value>
   /// <remarks>
-  /// Note that parsing <c>NullString</c> is case-sensitive.
+  /// Note that parsing <see cref="NullString"/> is case-sensitive.
   /// </remarks>
   public static readonly string NullString = "null";
 
@@ -460,13 +460,13 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// </summary>
   /// <param name="obj">The object to be compared. </param>
   /// <returns>
-  /// <c>true</c> if object is an instance of <see cref="NaInt32"/> and the two are equal; otherwise <c>false</c>.
-  /// If object is a null reference, <c>false</c> is returned.
+  /// <see langword="true"/> if object is an instance of <see cref="NaInt32"/> and the two are equal; otherwise <see langword="false"/>.
+  /// If object is a null reference, <see langword="false"/> is returned.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
   /// equality logic.
-  /// Note that <c>false</c> is returned if object is an Int32 (types are not equal).
+  /// Note that <see langword="false"/> is returned if object is an Int32 (types are not equal).
   /// </remarks>
   public override bool Equals (object obj)
   {
@@ -481,7 +481,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// </summary>
   /// <param name="value">The <see cref="NaInt32"/> instance to be compared. </param>
   /// <returns>
-  /// <c>true</c> if the two are equal; otherwise <c>false</c>.
+  /// <see langword="true"/> if the two are equal; otherwise <see langword="false"/>.
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -496,7 +496,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaInt32 parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -511,7 +511,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaInt32 parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>true</c> if the two instances are equal or <c>false</c> if they are not equal. 
+  /// <see langword="true"/> if the two instances are equal or <see langword="false"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="EqualsSql"/> if you require SQL-style 
@@ -530,7 +530,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaInt32 parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -545,7 +545,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a logical comparison of the two NaInt32 parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>false</c> if the two instances are equal or <c>true</c> if they are not equal. 
+  /// <see langword="false"/> if the two instances are equal or <see langword="true"/> if they are not equal. 
   /// </returns>
   /// <remarks>
   /// If both parameters are <see cref="Null"/>, they are considered equal. Use <see cref="NotEqualsSql"/> if you require SQL-style 
@@ -560,7 +560,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a SQL-style comparison of the two NaInt32 parameters to determine if they are equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are equal, or <c>False</c> if they are not equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are equal, or <see cref="NaBoolean.False"/> if they are not equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean EqualsSql (NaInt32 x, NaInt32 y)
   {
@@ -573,7 +573,7 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Performs a SQL-style comparison of the two NaInt32 parameters to determine if they are not equal.
   /// </summary>
   /// <returns>
-  /// <c>True</c> if the two instances are not equal, or <c>False</c> if they are equal, or <c>Null</c> if either of them is <c>Null</c>.
+  /// <see cref="NaBoolean.True"/> if the two instances are not equal, or <see cref="NaBoolean.False"/> if they are equal, or <see langword="null"/> if either of them is <see langword="null"/>.
   /// </returns>
   public static NaBoolean NotEqualsSql (NaInt32 x, NaInt32 y)
   {
@@ -681,8 +681,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the sum of the two specified <see cref="NaInt32"/> structures.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaInt32</c> 
-  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the sum of the specified <see cref="NaInt32"/> 
+  /// structures, or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 Add (NaInt32 x, NaInt32 y)
@@ -694,8 +694,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the sum of the two specified <see cref="NaInt32"/> structures.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the sum of the specified <c>NaInt32</c> 
-  /// structures, or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the sum of the specified <see cref="NaInt32"/> 
+  /// structures, or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 operator + (NaInt32 x, NaInt32 y)
@@ -713,8 +713,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Subtracts the second <see cref="NaInt32"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 Subtract (NaInt32 x, NaInt32 y)
@@ -726,8 +726,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Subtracts the second <see cref="NaInt32"/> parameter from the first.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the result of the subtraction,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the result of the subtraction,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 operator - (NaInt32 x, NaInt32 y)
@@ -745,8 +745,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Divides the first <see cref="NaInt32"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the result of the division,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaInt32 Divide (NaInt32 x, NaInt32 y)
@@ -758,8 +758,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Divides the first <see cref="NaInt32"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the result of the division,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the result of the division,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaInt32 operator / (NaInt32 x, NaInt32 y)
@@ -777,8 +777,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the product of the two <see cref="NaInt32"/> parameters.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 Multiply (NaInt32 x, NaInt32 y)
@@ -790,8 +790,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the product of the two <see cref="NaInt32"/> parameters.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the product of the two parameters,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the product of the two parameters,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="OverflowException">An arithmetic overflow occurs.</exception>
   public static NaInt32 operator * (NaInt32 x, NaInt32 y)
@@ -809,8 +809,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the remainder after dividing the first <see cref="NaInt32"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the remainder,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaInt32 Mod (NaInt32 x, NaInt32 y)
@@ -822,8 +822,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Computes the remainder after dividing the first <see cref="NaInt32"/> parameter by the second.
   /// </summary>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the remainder,
-  /// or <see cref="Null"/> if either parameter is <c>Null</c>.
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the remainder,
+  /// or <see cref="Null"/> if either parameter is <see langword="null"/>.
   /// </returns>
   /// <exception cref="DivideByZeroException">A division by zero is attempted.</exception>
   public static NaInt32 operator % (NaInt32 x, NaInt32 y)
@@ -841,10 +841,10 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Increments the value by one. 
   /// </summary>
   /// <remarks>
-  /// The <c>Value</c> property is incremented by one. If <c>x</c> is <c>Null</c>, the value is not modified.
+  /// The <see cref="Value"/> property is incremented by one. If <paramref name="x"/> is <see langword="null"/>, the value is not modified.
   /// </remarks>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the incremented value when used as a prefix operator,
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the incremented value when used as a prefix operator,
   /// or the original value when used as a postfix operator. 
   /// </returns>
   public static NaInt32 operator ++ (NaInt32 x)
@@ -860,10 +860,10 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Decrements the value by one. 
   /// </summary>
   /// <remarks>
-  /// The <c>Value</c> property is decremented by one. If <c>x</c> is <c>Null</c>, the value is not modified.
+  /// The <see cref="Value"/> property is decremented by one. If <paramref name="x"/> is <see langword="null"/>, the value is not modified.
   /// </remarks>
   /// <returns>
-  /// A <c>NaInt32</c> structure whose <see cref="Value"/> property contains the decremented value when used as a prefix operator,
+  /// An <see cref="NaInt32"/> structure whose <see cref="Value"/> property contains the decremented value when used as a prefix operator,
   /// or the original value when used as a postfix operator. 
   /// </returns>
   public static NaInt32 operator -- (NaInt32 x)
@@ -883,8 +883,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThan (NaInt32 x, NaInt32 y)
   {
@@ -895,8 +895,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is less than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator < (NaInt32 x, NaInt32 y)
   {
@@ -910,8 +910,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean LessThanOrEqual (NaInt32 x, NaInt32 y)
   {
@@ -922,8 +922,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is less than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is less than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is less than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator <= (NaInt32 x, NaInt32 y)
   {
@@ -937,8 +937,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThan (NaInt32 x, NaInt32 y)
   {
@@ -949,8 +949,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is greater than the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator > (NaInt32 x, NaInt32 y)
   {
@@ -964,8 +964,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean GreaterThanOrEqual (NaInt32 x, NaInt32 y)
   {
@@ -976,8 +976,8 @@ public struct NaInt32: INaNullable, IComparable, IFormattable, IXmlSerializable
   /// Compares the two <see cref="NaInt32 "/> parameters to determine if the first is greater than or equal to the second.
   /// </summary>
   /// <returns>
-  /// A <see cref="NaBoolean"/> that is <c>True</c> if the first parameter is greater than or equal to the second, otherwise <c>False</c>. If 
-  /// either parameter is <c>Null</c>, <see cref="NaBoolean.Null"/> is returned.
+  /// An <see cref="NaBoolean"/> that is <see cref="NaBoolean.True"/> if the first parameter is greater than or equal to the second, otherwise <see cref="NaBoolean.False"/>. If 
+  /// either parameter is <see langword="null"/>, <see cref="NaBoolean.Null"/> is returned.
   /// </returns>
   public static NaBoolean operator >= (NaInt32 x, NaInt32 y)
   {
