@@ -151,6 +151,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NullableValueTypes\NaGuidConverterTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "NullableValueTypes\NaInt16ConverterTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
