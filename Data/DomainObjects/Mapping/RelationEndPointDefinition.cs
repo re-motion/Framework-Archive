@@ -1,10 +1,12 @@
 using System;
+using System.Runtime.Serialization;
 
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-public class RelationEndPointDefinition : IRelationEndPointDefinition
+[Serializable]
+public class RelationEndPointDefinition : IRelationEndPointDefinition, ISerializable, IObjectReference
 {
   // types
 
@@ -12,9 +14,15 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition
 
   // member fields
 
+  private RelationDefinition _relationDefinition;
   private ClassDefinition _classDefinition;
   private PropertyDefinition _propertyDefinition;
   private bool _isMandatory;
+
+  // Note: _mappingClassID and _mappingPropertyName are used only during the deserialization process. 
+  // They are set only in the deserialization constructor and are used in IObjectReference.GetRealObject.
+  private string _mappingClassID;
+  private string _mappingPropertyName;
 
   // construction and disposing
 
@@ -44,6 +52,27 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition
     _propertyDefinition = propertyDefinition;
   }
 
+  protected RelationEndPointDefinition (SerializationInfo info, StreamingContext context)
+  {
+    bool ispartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
+
+    if (ispartOfMappingConfiguration)
+    {
+      // Note: If this object was part of MappingConfiguration.Current during the serialization process,
+      // it is assumed that the deserialized object should be the instance from MappingConfiguration.Current again.
+      // Therefore only the information needed in IObjectReference.GetRealObject is deserialized here.
+      _mappingClassID = info.GetString ("MappingClassID");
+      _mappingPropertyName = info.GetString ("MappingPropertyName");
+    }
+    else
+    {
+      _relationDefinition = (RelationDefinition) info.GetValue ("RelationDefinition", typeof (RelationDefinition));
+      _classDefinition = (ClassDefinition) info.GetValue ("ClassDefinition", typeof (ClassDefinition));
+      _propertyDefinition = (PropertyDefinition) info.GetValue ("PropertyDefinition", typeof (PropertyDefinition));
+      _isMandatory = info.GetBoolean ("IsMandatory");
+    }
+  }
+
   // methods and properties
 
   #region INullableObject Members
@@ -62,6 +91,16 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
 
     return (_classDefinition.ID == classID && PropertyName == propertyName);
+  }
+  
+  public void SetRelationDefinition (RelationDefinition relationDefinition)
+  {
+    _relationDefinition = relationDefinition;
+  }
+
+  public RelationDefinition RelationDefinition
+  {
+    get { return _relationDefinition; }
   }
 
   public ClassDefinition ClassDefinition
@@ -105,5 +144,52 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition
   {
     return new MappingException (string.Format (message, args));
   }
+
+  #region ISerializable Members
+
+  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    GetObjectData (info, context);
+  }
+
+  protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
+    info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
+
+    if (isPartOfMappingConfiguration)
+    {
+      // Note: If this object is part of MappingConfiguration.Current during the serialization process,
+      // it is assumed that the deserialized object should be the instance from MappingConfiguration.Current again.
+      // Therefore only the information needed in IObjectReference.GetRealObject is serialized here.
+      info.AddValue ("MappingClassID", _classDefinition.ID);
+      info.AddValue ("MappingPropertyName", _propertyDefinition.PropertyName);
+    }
+    else
+    {
+      info.AddValue ("RelationDefinition", _relationDefinition);
+      info.AddValue ("ClassDefinition", _classDefinition);
+      info.AddValue ("PropertyDefinition", _propertyDefinition);
+      info.AddValue ("IsMandatory", _isMandatory);
+    }
+  }
+
+  #endregion
+
+  #region IObjectReference Members
+
+  object IObjectReference.GetRealObject (StreamingContext context)
+  {
+    // Note: A EndPointDefinition knows its ClassDefinition and a ClassDefinition implicitly knows 
+    // its RelationEndPointDefinitions via its RelationDefinitions. For bi-directional relationships 
+    // with two classes implementing IObjectReference.GetRealObject the order of calling this method is unpredictable.
+    // Therefore the members _classDefinition and _propertyDefinition cannot be used here, because they could point to the wrong instances. 
+    if (_mappingClassID != null && _mappingPropertyName != null)
+      return MappingConfiguration.Current.ClassDefinitions.GetMandatory (_mappingClassID).GetMandatoryRelationEndPointDefinition (_mappingPropertyName);
+    else
+      return this;
+  }
+
+  #endregion
 }
 }
