@@ -93,7 +93,6 @@ public class ValueConverterBase
     }
   }
 
-  // TODO: Remove this method after Rubicon.Core exposes TypeConverterFactory.
   protected virtual object GetNullableObjectFromObject (PropertyDefinition propertyDefinition, object dataValue)
   {
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
@@ -132,7 +131,6 @@ public class ValueConverterBase
     return dataValue;
   }
 
-  // TODO: Remove this method after Rubicon.Core exposes TypeConverterFactory.
   protected virtual object GetNullableObjectFromString (PropertyDefinition propertyDefinition, string dataValue)
   {
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
@@ -170,7 +168,6 @@ public class ValueConverterBase
     return dataValue;
   }
 
-  // TODO: Remove this method after Rubicon.Core exposes TypeConverterFactory.
   protected virtual object GetNativeObjectFromString (PropertyDefinition propertyDefinition, string dataValue)
   {
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);

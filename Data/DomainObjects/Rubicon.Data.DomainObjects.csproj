@@ -389,6 +389,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Mapping\CardinalityType.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Mapping\ClassDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

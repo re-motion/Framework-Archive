@@ -47,7 +47,7 @@ Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte:
     
 13. Neue Datentypen in 
     Rubicon.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetValue bzw.
-    Rubicon.Data.DomainObjects.Persistence.ValueConverterBase ergänzen.
+    Rubicon.Data.DomainObjects.Persistence.ValueConverterBase.GetValue ergänzen.
     Evtl. muss auch Methode Rubicon.Data.DomainObjects.Persistence.Rdbms.ValueConverter.GetDBValue ergänzt werden.
 
 
