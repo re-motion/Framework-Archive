@@ -45,7 +45,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
   /// <param name="value">  The source value. </param>
-  /// <returns> A <see cref="String"/> or <see cref="NaSingle.Null"/> if the conversion failed.  </returns>
+  /// <returns> A <see cref="String"/>.  </returns>
   /// <exception cref="NotSupportedException">
   ///   The passed <paramref name="value"/> is of an unsupported <see cref="Type"/>. 
   /// </exception>
