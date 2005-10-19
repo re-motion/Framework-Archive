@@ -701,7 +701,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "IntegrationTests\IntegrationTest.cs"
+                    RelPath = "IntegrationTests\SerializationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
