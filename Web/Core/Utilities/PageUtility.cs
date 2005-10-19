@@ -285,7 +285,7 @@ public class PageUtility
   public static string AddUrlParameter (string url, string name, string value)
   {
     string parameterSeperator = (url.IndexOf ("?") == -1) ? "?" : "&";
-    Encoding encoding = (HttpContext.Current != null) ? HttpContext.Current.Response.ContentEncoding : Encoding.UTF8;
+    Encoding encoding = HttpContext.Current.Response.ContentEncoding;
     return url + parameterSeperator + name + "=" + HttpUtility.UrlEncode (value, encoding);
   }
 

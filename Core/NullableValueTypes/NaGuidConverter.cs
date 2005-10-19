@@ -86,7 +86,7 @@ public class NaGuidConverter: TypeConverter
     if (value is NaGuid)
     {
       if (destinationType == typeof (string))
-        return ((NaGuid) value).ToString ("~", culture);
+        return ((NaGuid) value).ToString ("~");
       if (destinationType == typeof (Guid))
         return ((NaGuid) value).Value;
     }

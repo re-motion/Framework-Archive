@@ -52,7 +52,7 @@ public class NaDecimalConverter: TypeConverter
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
-      return NaDecimal.Parse ((string) value);
+      return NaDecimal.Parse ((string) value, culture);
     if (value is decimal)
       return new NaDecimal ((decimal) value);
     if (value == DBNull.Value)

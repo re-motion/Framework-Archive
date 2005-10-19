@@ -56,7 +56,7 @@ public class NaDoubleConverter: TypeConverter
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
-      return NaDouble.Parse ((string) value);
+      return NaDouble.Parse ((string) value, culture);
     if (value is double)
       return new NaDouble ((double) value);
     if (value == DBNull.Value)

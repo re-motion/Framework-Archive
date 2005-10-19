@@ -56,7 +56,7 @@ public class NaInt64Converter: TypeConverter
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
-      return NaInt64.Parse ((string) value);
+      return NaInt64.Parse ((string) value, culture);
     if (value is long)
       return new NaInt64 ((long) value);
     if (value == DBNull.Value)

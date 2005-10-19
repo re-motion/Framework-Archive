@@ -56,7 +56,7 @@ public class NaDateTimeConverter: TypeConverter
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
-      return NaDateTime.Parse ((string) value);
+      return NaDateTime.Parse ((string) value, culture);
     if (value is DateTime)
       return new NaDateTime ((DateTime) value);
     if (value == DBNull.Value)
