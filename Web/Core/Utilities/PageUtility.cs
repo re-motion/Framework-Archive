@@ -285,8 +285,8 @@ public class PageUtility
   public static string AddUrlParameter (string url, string name, string value)
   {
     string parameterSeperator = (url.IndexOf ("?") == -1) ? "?" : "&";
-    return url + parameterSeperator + name + "=" 
-        + HttpUtility.UrlEncode(value, HttpContext.Current.Response.ContentEncoding);
+    Encoding encoding = (HttpContext.Current != null) ? HttpContext.Current.Response.ContentEncoding : Encoding.UTF8;
+    return url + parameterSeperator + name + "=" + HttpUtility.UrlEncode (value, encoding);
   }
 
   public static string DeleteUrlParameter (string url, string name)
