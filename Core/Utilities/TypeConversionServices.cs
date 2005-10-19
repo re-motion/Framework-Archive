@@ -8,15 +8,14 @@ namespace Rubicon.Utilities
 {
 
 /// <summary> 
-///   Provides functionality for providing a <see cref="TypeConverter"/> for a <see cref="Type"/> or a conversion
-///   from a source <see cref="Type"/> into a destination <see cref="Type"/> as well as a <see cref="CanConvert"/>
-///   and a <see cref="Convert"/> method.
+///   Provides functionality to get the <see cref="TypeConverter"/> for a <see cref="Type"/> and to convert a value
+///   from a source <see cref="Type"/> into a destination <see cref="Type"/>.
 /// </summary>
 /// <remarks>
-///   Conversion is possible for types having a <see cref="TypeConverter"/> applied through the 
-///   <see cref="TypeConverterAttribute"/> taht supports the conversion. For types without a 
+///   Conversion is possible for types which have a <see cref="TypeConverter"/> applied through the 
+///   <see cref="TypeConverterAttribute"/> that supports the conversion. For types without a 
 ///   <see cref="TypeConverter"/>, the <b>TypeConversionServices</b> try use the 
-///   <see cref="BidirectionalStringConverter"/> which supports the conversion to <see cref="String"/> for all scalar 
+///   <see cref="BidirectionalStringConverter"/>, which supports the conversion to <see cref="String"/> for all scalar 
 ///   types and the conversion from a <see cref="String"/> for types implementing either a public static 
 ///   &lt;DestinationType&gt; Parse (string) or a public static &lt;DestinationType&gt; Parse (string, IFormatProvider)
 ///   method.
@@ -33,7 +32,7 @@ public class TypeConversionServices
 	}
 
   /// <summary> 
-  ///   Gets the <see cref="TypeConverter"/> that is able destinationType convert a value of the <paramref name="sourceType"/> 
+  ///   Gets the <see cref="TypeConverter"/> that is able to convert an instance of the <paramref name="sourceType"/> 
   ///   <see cref="Type"/> into an instance of the <paramref name="destinationType"/> <see cref="Type"/>.
   /// </summary>
   /// <param name="sourceType"> 
@@ -45,6 +44,11 @@ public class TypeConversionServices
   /// <returns> 
   ///   A <see cref="TypeConverter"/> or <see langword="null"/> of no matching <see cref="TypeConverter"/> can be found.
   /// </returns>
+  /// <remarks> 
+  ///   You can identify whether you must use the <see cref="TypeConverter.ConvertTo"/> or the 
+  ///   <see cref="TypeConverter.ConvertFrom"/> method by testing the returned <see cref="TypeConverter"/>'s
+  ///   <see cref="TypeConverter.CanConvertTo"/> and <see cref="TypeConverter.CanConvertFrom"/> methods.
+  /// </remarks>
   public virtual TypeConverter GetTypeConverter (Type sourceType, Type destinationType)
   {
     ArgumentUtility.CheckNotNull ("sourceType", sourceType);
@@ -63,11 +67,9 @@ public class TypeConversionServices
 
   /// <summary> 
   ///   Gets the <see cref="TypeConverter"/> that is associated with the specified <paramref name="type"/>.
-  ///   <see cref="Type"/> into an instance of the <paramref name="destinationType"/> <see cref="Type"/>.
   /// </summary>
   /// <param name="type"> 
-  ///   The <see cref="Type"/> destinationType get the <see cref="TypeConverter"/> for. 
-  ///   Must not be <see langword="null"/>.
+  ///   The <see cref="Type"/> to get the <see cref="TypeConverter"/> for. Must not be <see langword="null"/>.
   /// </param>
   /// <returns>
   ///   A <see cref="TypeConverter"/> or <see langword="null"/> of no <see cref="TypeConverter"/> can be found.

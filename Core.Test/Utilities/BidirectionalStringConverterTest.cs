@@ -125,6 +125,18 @@ public class BidirectionalStringConverterTest
   }
 
   [Test]
+  public void CanConvertToDecimal()
+  {
+    Assert.IsTrue (_converter.CanConvertTo (typeof (decimal)));
+  }
+
+  [Test]
+  public void CanConvertFromDecimal()
+  {
+    Assert.IsTrue (_converter.CanConvertFrom (typeof (decimal)));
+  }
+
+  [Test]
   public void CanConvertToInt32Array()
   {
     Assert.IsFalse (_converter.CanConvertTo (typeof (int[])));
@@ -218,15 +230,19 @@ public class BidirectionalStringConverterTest
   {
     Type destinationType = typeof (float);
 
-    Assert.AreEqual (0.5F, _converter.ConvertTo ("0.5", destinationType));
+    Assert.AreEqual (0F, _converter.ConvertTo ("0", destinationType));
     Assert.AreEqual (1.5F, _converter.ConvertTo ("1.5", destinationType));
+    Assert.AreEqual (float.MinValue, _converter.ConvertTo (float.MinValue.ToString("R"), destinationType));
+    Assert.AreEqual (float.MaxValue, _converter.ConvertTo (float.MaxValue.ToString("R"), destinationType));
   }
 
   [Test]
   public void ConvertFromSingle()
   {
-    Assert.AreEqual ("0.5", _converter.ConvertFrom (0.5F));
+    Assert.AreEqual ("0", _converter.ConvertFrom (0F));
     Assert.AreEqual ("1.5", _converter.ConvertFrom (1.5F));
+    Assert.AreEqual (float.MinValue.ToString("R"), _converter.ConvertFrom (float.MinValue));
+    Assert.AreEqual (float.MaxValue.ToString("R"), _converter.ConvertFrom (float.MaxValue));
   }
 
   [Test]
@@ -234,15 +250,19 @@ public class BidirectionalStringConverterTest
   {
     Type destinationType = typeof (double);
 
-    Assert.AreEqual (0.5, _converter.ConvertTo ("0.5", destinationType));
+    Assert.AreEqual (0, _converter.ConvertTo ("0", destinationType));
     Assert.AreEqual (1.5, _converter.ConvertTo ("1.5", destinationType));
+    Assert.AreEqual (double.MinValue, _converter.ConvertTo (double.MinValue.ToString("R"), destinationType));
+    Assert.AreEqual (double.MaxValue, _converter.ConvertTo (double.MaxValue.ToString("R"), destinationType));
   }
 
   [Test]
   public void ConvertFromDouble()
   {
-    Assert.AreEqual ("0.5", _converter.ConvertFrom (0.5));
+    Assert.AreEqual ("0", _converter.ConvertFrom (0));
     Assert.AreEqual ("1.5", _converter.ConvertFrom (1.5));
+    Assert.AreEqual (double.MinValue.ToString("R"), _converter.ConvertFrom (double.MinValue));
+    Assert.AreEqual (double.MaxValue.ToString("R"), _converter.ConvertFrom (double.MaxValue));
   }
 
   [Test]
@@ -278,6 +298,22 @@ public class BidirectionalStringConverterTest
   {
     Assert.AreEqual ("True", _converter.ConvertFrom (true));
     Assert.AreEqual ("False", _converter.ConvertFrom (false));
+  }
+
+  [Test]
+  public void ConvertToDecimal()
+  {
+    Type destinationType = typeof (double);
+
+    Assert.AreEqual (0m, _converter.ConvertTo ("0", destinationType));
+    Assert.AreEqual (1.5m, _converter.ConvertTo ("1.5", destinationType));
+  }
+
+  [Test]
+  public void ConvertFromDecimal()
+  {
+    Assert.AreEqual ("0", _converter.ConvertFrom (0m));
+    Assert.AreEqual ("1.5", _converter.ConvertFrom (1.5m));
   }
 
   [Test]

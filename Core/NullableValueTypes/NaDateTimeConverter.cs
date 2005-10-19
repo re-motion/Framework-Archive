@@ -8,9 +8,13 @@ namespace Rubicon.NullableValueTypes
 
 /// <summary> Specialization of <see cref="TypeConverter"/> for values of the type <see cref="NaDateTime"/>. </summary>
 /// <remarks> 
-///   Conversion from and to <see cref="NaDateTime"/> values is supported for the values of the following types:
-///   <see cref="string"/> and <see cref="DateTime"/>. It is also possible to convert from <see cref="DBNull"/> and
-///   <see langword="null"/>.
+///   <para>
+///     Conversion from and to <see cref="NaDateTime"/> values is supported for the values of the following types:
+///     <see cref="string"/> and <see cref="DateTime"/>. It is also possible to convert from <see cref="DBNull"/> and
+///     <see langword="null"/>.
+///   </para><para> 
+///     Conversions to <see cref="String"/> are done using "~" as format string. 
+///   </para>
 /// </remarks>
 public class NaDateTimeConverter: TypeConverter
 {
@@ -72,6 +76,7 @@ public class NaDateTimeConverter: TypeConverter
   /// <exception cref="NotSupportedException"> 
   ///   The passed <paramref name="value"/> is of an unsupported <see cref="Type"/>. 
   /// </exception>
+  /// <remarks> Conversions to <see cref="String"/> are done using "~" as format string. </remarks>
   public override object ConvertTo (
       ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
   {

@@ -51,8 +51,8 @@ public class NaDoubleConverterTest
     Assert.AreEqual ("654321.123456789", _converter.ConvertTo (new NaDouble (654321.123456789), destinationType));
     Assert.AreEqual ("-654321.123456789", _converter.ConvertTo (new NaDouble (-654321.123456789), destinationType));
     Assert.AreEqual ("0", _converter.ConvertTo (NaDouble.Zero, destinationType));
-    Assert.AreEqual (NaDouble.MinValue.ToString(), _converter.ConvertTo (NaDouble.MinValue, destinationType));
-    Assert.AreEqual (NaDouble.MaxValue.ToString(), _converter.ConvertTo (NaDouble.MaxValue, destinationType));
+    Assert.AreEqual (NaDouble.MinValue.ToString("R"), _converter.ConvertTo (NaDouble.MinValue, destinationType));
+    Assert.AreEqual (NaDouble.MaxValue.ToString("R"), _converter.ConvertTo (NaDouble.MaxValue, destinationType));
   }
 
   [Test]
@@ -64,14 +64,8 @@ public class NaDoubleConverterTest
     Assert.AreEqual (new NaDouble (654321.123456789), _converter.ConvertFrom ("654321.123456789"));
     Assert.AreEqual (new NaDouble (-654321.123456789), _converter.ConvertFrom ("-654321.123456789"));
     Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom ("0"));
-  }
-
-  [Test]
-  [Ignore ("Min and Max value string representation to large for converting back to Double.")]
-  public void ConvertFromStringMaxAndMinValues()
-  {
-    Assert.AreEqual (NaDouble.MinValue, _converter.ConvertFrom (NaDouble.MinValue.ToString()));
-    Assert.AreEqual (NaDouble.MaxValue, _converter.ConvertFrom (NaDouble.MaxValue.ToString()));
+    Assert.AreEqual (NaDouble.MinValue, _converter.ConvertFrom (NaDouble.MinValue.ToString("R")));
+    Assert.AreEqual (NaDouble.MaxValue, _converter.ConvertFrom (NaDouble.MaxValue.ToString("R")));
   }
 
   [Test]

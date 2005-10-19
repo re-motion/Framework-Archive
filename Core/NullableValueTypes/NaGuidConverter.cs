@@ -8,9 +8,13 @@ namespace Rubicon.NullableValueTypes
 
 /// <summary> Specialization of <see cref="TypeConverter"/> for values of the type <see cref="NaGuid"/>. </summary>
 /// <remarks> 
-///   Conversion from and to <see cref="NaGuid"/> values is supported for the values of the following types:
-///   <see cref="string"/> and <see cref="Guid"/>. It is also possible to convert from <see cref="DBNull"/> and
-///   <see langword="null"/>.
+///   <para>
+///     Conversion from and to <see cref="NaGuid"/> values is supported for the values of the following types:
+///     <see cref="string"/> and <see cref="Guid"/>. It is also possible to convert from <see cref="DBNull"/> and
+///     <see langword="null"/>.
+///   </para><para> 
+///     Conversions to <see cref="String"/> are done using "~" as format string. 
+///   </para>
 /// </remarks>
 public class NaGuidConverter: TypeConverter
 {
@@ -72,6 +76,7 @@ public class NaGuidConverter: TypeConverter
   /// <exception cref="NotSupportedException"> 
   ///   The passed <paramref name="value"/> is of an unsupported <see cref="Type"/>. 
   /// </exception>
+  /// <remarks> Conversions to <see cref="String"/> are done using "~" as format string. </remarks>
   public override object ConvertTo (
       ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
   {

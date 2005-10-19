@@ -308,6 +308,36 @@ public class TypeConversionServicesTest
   }
 
   [Test]
+  public void GetTypeConverterForNaByte ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaByte));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaByteConverter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForByte ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (byte));
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
+  public void GetTypeConverterForNaInt16 ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaInt16));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaInt16Converter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForInt16 ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (short));
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
   public void GetTypeConverterForNaInt32 ()
   {
     TypeConverter converter = _services.GetTypeConverter (_naInt32);
@@ -319,6 +349,96 @@ public class TypeConversionServicesTest
   public void GetTypeConverterForInt32 ()
   {
     TypeConverter converter = _services.GetTypeConverter (_int32);
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
+  public void GetTypeConverterForNaInt64 ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaInt64));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaInt64Converter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForInt64 ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (long));
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
+  public void GetTypeConverterForNaSingle ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaSingle));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaSingleConverter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForSingle ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (float));
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
+  public void GetTypeConverterForNaDouble ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaDouble));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaDoubleConverter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForDouble ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (double));
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
+  public void GetTypeConverterForNaDateTime ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaDateTime));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaDateTimeConverter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForDateTime ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (DateTime));
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
+  public void GetTypeConverterForNaBoolean ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaBoolean));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaBooleanConverter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForBoolean ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (bool));
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
+  public void GetTypeConverterForNaGuid ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaGuid));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaGuidConverter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForGuid ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (Guid));
     Assert.IsNull (converter, "TypeConverter is not null.");
   }
 

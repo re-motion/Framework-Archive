@@ -51,8 +51,8 @@ public class NaSingleConverterTest
     Assert.AreEqual ("321.1234", _converter.ConvertTo (new NaSingle (321.1234F), destinationType));
     Assert.AreEqual ("-321.1234", _converter.ConvertTo (new NaSingle (-321.1234F), destinationType));
     Assert.AreEqual ("0", _converter.ConvertTo (NaSingle.Zero, destinationType));
-    Assert.AreEqual (NaSingle.MinValue.ToString(), _converter.ConvertTo (NaSingle.MinValue, destinationType));
-    Assert.AreEqual (NaSingle.MaxValue.ToString(), _converter.ConvertTo (NaSingle.MaxValue, destinationType));
+    Assert.AreEqual (NaSingle.MinValue.ToString("R"), _converter.ConvertTo (NaSingle.MinValue, destinationType));
+    Assert.AreEqual (NaSingle.MaxValue.ToString("R"), _converter.ConvertTo (NaSingle.MaxValue, destinationType));
   }
 
   [Test]
@@ -64,14 +64,8 @@ public class NaSingleConverterTest
     Assert.AreEqual (new NaSingle (321.1234F), _converter.ConvertFrom ("321.1234"));
     Assert.AreEqual (new NaSingle (-321.1234F), _converter.ConvertFrom ("-321.1234"));
     Assert.AreEqual (NaSingle.Zero, _converter.ConvertFrom ("0"));
-   }
-
-  [Test]
-  [Ignore ("Precision Problem in Single.ToString().")]
-  public void ConvertFromStringMaxAndMinValues()
-  {
-    Assert.AreEqual (NaSingle.MinValue, _converter.ConvertFrom (NaSingle.MinValue.ToString()));
-    Assert.AreEqual (NaSingle.MaxValue, _converter.ConvertFrom (NaSingle.MaxValue.ToString()));
+    Assert.AreEqual (NaSingle.MinValue, _converter.ConvertFrom (NaSingle.MinValue.ToString("R")));
+    Assert.AreEqual (NaSingle.MaxValue, _converter.ConvertFrom (NaSingle.MaxValue.ToString("R")));
   }
 
   [Test]
