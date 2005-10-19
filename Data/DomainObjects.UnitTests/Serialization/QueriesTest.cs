@@ -26,7 +26,7 @@ public class QueriesTest : SerializationBaseTest
   // methods and properties
 
   [Test]
-  public void QueryParameterTest ()
+  public void QueryParameter ()
   {
     QueryParameter queryParameter = new QueryParameter ("name", "value", QueryParameterType.Text);
 
@@ -36,7 +36,7 @@ public class QueriesTest : SerializationBaseTest
   }
 
   [Test]
-  public void QueryParameterCollectionTest ()
+  public void QueryParameterCollection ()
   {
     QueryParameterCollection queryParameters = new QueryParameterCollection ();
     queryParameters.Add ("Text Parameter", "Value 1", QueryParameterType.Text);
@@ -48,7 +48,7 @@ public class QueriesTest : SerializationBaseTest
   }
 
   [Test]
-  public void QueryDefinitionTest ()
+  public void QueryDefinition ()
   {
     QueryDefinition queryDefinition = new QueryDefinition ("queryID", "TestDomain", "statement", QueryType.Collection, typeof (DomainObjectCollection));
 
@@ -59,7 +59,7 @@ public class QueriesTest : SerializationBaseTest
   }
 
   [Test]
-  public void QueryDefinitionInQueryConfigurationTest ()
+  public void QueryDefinitionInQueryConfiguration ()
   {
     QueryDefinition queryDefinition = QueryConfiguration.Current["OrderQuery"];
 
@@ -70,7 +70,7 @@ public class QueriesTest : SerializationBaseTest
 
   [Test]
   [ExpectedException (typeof (QueryConfigurationException), "QueryDefinition 'UnknownQuery' does not exist.")]
-  public void UnknownQueryDefinitionInQueryConfigurationTest ()
+  public void UnknownQueryDefinitionInQueryConfiguration ()
   {
     QueryDefinition unknownQueryDefinition = new QueryDefinition ("UnknownQuery", "TestDomain", "select 42", QueryType.Scalar);
     QueryConfiguration.Current.QueryDefinitions.Add (unknownQueryDefinition);
@@ -84,7 +84,7 @@ public class QueriesTest : SerializationBaseTest
   }
 
   [Test]
-  public void QueryDefinitionCollectionTest ()
+  public void QueryDefinitionCollection ()
   {
     QueryDefinitionCollection queryDefinitions = new QueryDefinitionCollection ();
     queryDefinitions.Add (QueryConfiguration.Current.QueryDefinitions[0]);
@@ -97,7 +97,7 @@ public class QueriesTest : SerializationBaseTest
   }
 
   [Test]
-  public void QueryTest ()
+  public void Query ()
   {
     Query query = new Query ("OrderQuery");
     query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
