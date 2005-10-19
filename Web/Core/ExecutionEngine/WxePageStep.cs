@@ -126,8 +126,7 @@ public class WxePageStep: WxeStep
           foreach (string key in serializedParameters)
             queryString = PageUtility.AddUrlParameter (queryString, key, serializedParameters[key]);
 
-          string destinationUrl = WxeContext.GetResumePath (
-              remappedPath, context.HttpContext.Response, context.FunctionToken, queryString);
+          string destinationUrl = context.GetResumePath (remappedPath, context.FunctionToken, queryString);
           _isRedirected = true;
           PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
         }

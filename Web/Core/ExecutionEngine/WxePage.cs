@@ -306,6 +306,21 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   #endregion
 
+  public string GetPermanentUrl ()
+  {
+    return _wxeInfo.GetPermanentUrl ();
+  }
+  
+  public string GetPermanentUrl (NameValueCollection queryString)
+  {
+    return _wxeInfo.GetPermanentUrl (queryString);
+  }
+  
+  public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
+  {
+    return _wxeInfo.GetPermanentUrl (functionType, queryString);
+  }
+  
   private WxePageInfo _wxeInfo;
   private ValidatableControlInitializer _validatableControlInitializer;
   private PostLoadInvoker _postLoadInvoker;
@@ -486,6 +501,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   protected virtual void Dispose (bool disposing)
   {
   }
+
 
   /// <summary> 
   ///   Gets or sets the flag that determines whether to display a confirmation dialog before aborting the session. 

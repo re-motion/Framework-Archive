@@ -445,10 +445,20 @@ public abstract class WxeFunction: WxeStepList
     if (ParentStep != null)
       callerVariables = ParentStep.Variables;
 
-    for (int i = 0; i < parameterDeclarations.Length && i < _actualParameters.Length; i++)
+    bool hasActualParameters = _actualParameters.Length > 0;
+    for (int i = 0; i < parameterDeclarations.Length; i++)
     {
       WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
-      object parameterValue = _actualParameters[i];
+      object parameterValue = null;
+      if (hasActualParameters)
+      {
+        if (i < _actualParameters.Length)
+          parameterValue = _actualParameters[i];
+      }
+      else
+      {
+        parameterValue = _variables[parameterDeclaration.Name];
+      }
       string serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, callerVariables);
       if (serializedValue != string.Empty)
         serializedParameters.Add (parameterDeclaration.Name, serializedValue);

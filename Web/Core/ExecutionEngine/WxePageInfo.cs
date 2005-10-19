@@ -117,7 +117,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     int postBackID = int.Parse (postBackCollection[WxePageInfo.PostBackSequenceNumberID]);
     if (postBackID != WxeContext.Current.PostBackID)
-      throw new WxePostBackOutOfSequenceException();
+      throw new WxePostbackOutOfSequenceException();
 
     string returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
     if (! StringUtility.IsNullOrEmpty (returningToken))
@@ -356,6 +356,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     CurrentStep.ExecuteFunction (_page, function, createPermaUrl);
   }
 
+
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control)</see>.
   /// </summary>
@@ -398,6 +399,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     get { return ! StringUtility.IsNullOrEmpty (_page.GetPostBackCollection()[ControlHelper.PostEventSourceID]); }
   }
+
 
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean)</see>.
@@ -450,11 +452,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       if (mapping == null)
       {
-        string functionTypeName = function.GetType().AssemblyQualifiedName;
-        int separator = functionTypeName.IndexOf (',', 0);
-        separator = functionTypeName.IndexOf (',', separator + 1);
-        functionTypeName = functionTypeName.Substring (0, separator);
-        functionTypeName = functionTypeName.Replace (" ", "");
+        Type functionType = function.GetType();
+        string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
         queryString = PageUtility.AddUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionType, functionTypeName);
       }
 
@@ -474,7 +473,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     if (StringUtility.IsNullOrEmpty (path))
       path = httpContext.Request.Url.AbsolutePath;
-    string href = WxeContext.GetResumePath (path, httpContext.Response, functionState.FunctionToken, queryString);
+    string href = wxeContext.GetResumePath (path, functionState.FunctionToken, queryString);
 
     string openScript;
     if (features != null)
@@ -533,6 +532,42 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     function.ReturnUrl = "javascript:" + returnScript;
   }
+
+
+
+  public string GetPermanentUrl ()
+  {
+    return GetPermanentUrl (CurrentFunction.GetType(), CurrentFunction.SerializeParametersForQueryString());
+  }
+  
+  public string GetPermanentUrl (NameValueCollection queryString)
+  {
+    return GetPermanentUrl (CurrentFunction.GetType(), queryString);
+  }
+  
+  public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
+  {
+    ArgumentUtility.CheckNotNull ("functionType", functionType);
+    if (! typeof (WxeFunction).IsAssignableFrom (functionType))
+      throw new ArgumentException (string.Format ("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
+    ArgumentUtility.CheckNotNull ("queryString", queryString);
+
+    UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
+    if (mapping == null)
+    {
+      string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
+      queryString.Add (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
+    }
+
+    string url;
+    if (mapping == null)
+      url = UrlUtility.GetAbsolutePageUrl ((Page)_page);
+    else
+      url = UrlUtility.GetAbsoluteUrl ((Page)_page, mapping.Resource);
+
+    return url + UrlUtility.FormatQueryString (queryString);
+  }
+
   /// <summary> Implements <see cref="IWxePage.IsReturningPostBack">IWxePage.IsReturningPostBack</see>. </summary>
   public bool IsReturningPostBack
   {
