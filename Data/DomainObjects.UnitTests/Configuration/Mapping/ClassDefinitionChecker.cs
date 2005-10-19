@@ -131,6 +131,10 @@ public class ClassDefinitionChecker
         classDefinition, 
         expectedDefinition.PropertyName, actualDefinition.PropertyName));
 
+    Assert.AreEqual (expectedDefinition.ClassDefinition.ID, actualDefinition.ClassDefinition.ID, 
+        string.Format ("ClassDefinitionID of property definition '{0}' does not match. Expected: {1}, actual: {2}", 
+        expectedDefinition.PropertyName, expectedDefinition.ColumnName, actualDefinition.ColumnName));
+
     Assert.AreEqual (expectedDefinition.ColumnName, actualDefinition.ColumnName, 
         string.Format ("ColumnName of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
         expectedDefinition.PropertyName, classDefinition, 
