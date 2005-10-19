@@ -204,7 +204,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (ApplicationException))]
+  [ExpectedException (typeof (HttpException))]
   public void RetrieveMissingFunctionState()
   {
     WxeFunctionState functionState = 
@@ -222,7 +222,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (ApplicationException))]
+  [ExpectedException (typeof (HttpException))]
   public void RetrieveExpiredFunctionState()
   {
     WxeFunctionState functionState = 
