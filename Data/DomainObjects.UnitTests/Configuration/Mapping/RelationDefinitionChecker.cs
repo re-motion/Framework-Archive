@@ -80,6 +80,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         expectedEndPointDefinition.PropertyName,
         expectedEndPointDefinition.ClassDefinition.ID, 
         actualEndPointDefinition.ClassDefinition.ID));
+
+      Assert.AreEqual (expectedEndPointDefinition.RelationDefinition.ID, actualEndPointDefinition.RelationDefinition.ID, 
+        string.Format ("RelationDefinition of end point definitions (property name: '{0}')"
+        + " does not match. Expected: {1}, actual: {2}", 
+        expectedEndPointDefinition.PropertyName,
+        expectedEndPointDefinition.RelationDefinition.ID, 
+        actualEndPointDefinition.RelationDefinition.ID));
     
       Assert.AreEqual (expectedEndPointDefinition.PropertyName, actualEndPointDefinition.PropertyName, 
         string.Format ("PropertyName of end point definitions (relation definition: '{0}', property name: '{1}')"
