@@ -24,7 +24,6 @@ public class IntegrationTest : SerializationBaseTest
 
   // methods and properties
 
-  // TODO: Review with ML
   [Test]
   public void ObjectsFromPartnerClassDefinition ()
   {
