@@ -1,11 +1,13 @@
 using System;
+using System.Runtime.Serialization;
 
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
 // Note: No properties and methods of this class are inheritance-aware!
-public class RelationDefinition
+[Serializable]
+public class RelationDefinition : ISerializable, IObjectReference
 {
   // types
 
@@ -16,6 +18,10 @@ public class RelationDefinition
   private string _id;
   private IRelationEndPointDefinition[] _endPointDefinitions = new IRelationEndPointDefinition [2];
 
+  // Note: _isPartOfMappingConfiguration is used only during the deserialization process. 
+  // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
+  private bool _isPartOfMappingConfiguration;
+  
   // construction and disposing
 
   public RelationDefinition (
@@ -28,10 +34,31 @@ public class RelationDefinition
     ArgumentUtility.CheckNotNull ("endPointDefinition2", endPointDefinition2);
 
     CheckEndPointDefinitions (id, endPointDefinition1, endPointDefinition2);
-    
+
+    try
+    {
+      endPointDefinition1.SetRelationDefinition (this);
+      endPointDefinition2.SetRelationDefinition (this);
+    }
+    catch (Exception)
+    {
+      endPointDefinition1.SetRelationDefinition (null);
+      endPointDefinition2.SetRelationDefinition (null);
+      throw;
+    }
+
     _id = id;
     _endPointDefinitions[0] = endPointDefinition1;
     _endPointDefinitions[1] = endPointDefinition2;
+  }
+
+  protected RelationDefinition (SerializationInfo info, StreamingContext context)
+  {
+    _id = info.GetString ("ID");
+    _isPartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
+
+    if (!_isPartOfMappingConfiguration)
+      _endPointDefinitions = (IRelationEndPointDefinition[]) info.GetValue ("EndPointDefinitions", typeof (IRelationEndPointDefinition[]));
   }
 
   private void CheckEndPointDefinitions (
@@ -144,9 +171,51 @@ public class RelationDefinition
     return false;
   }
 
+  public bool Contains (IRelationEndPointDefinition endPointDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("endPointDefinition", endPointDefinition);
+
+    if (object.ReferenceEquals (endPointDefinition, _endPointDefinitions[0]))
+      return true;
+
+    return object.ReferenceEquals (endPointDefinition, _endPointDefinitions[1]);
+  }
+
   private MappingException CreateMappingException (string message, params object[] args)
   {
     return new MappingException (string.Format (message, args));
   }
+
+  #region ISerializable Members
+
+  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    GetObjectData (info, context);
+  }
+
+  protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    info.AddValue ("ID", _id);
+
+    bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
+    info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
+
+    if (!isPartOfMappingConfiguration)
+      info.AddValue ("EndPointDefinitions", _endPointDefinitions);
+  }
+
+  #endregion
+
+  #region IObjectReference Members
+
+  object IObjectReference.GetRealObject (StreamingContext context)
+  {
+    if (_isPartOfMappingConfiguration)
+      return MappingConfiguration.Current.RelationDefinitions.GetMandatory (_id);
+    else
+      return this;
+  }
+
+  #endregion
 }
 }
