@@ -1,6 +1,7 @@
 using System;
 
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Configuration
@@ -69,6 +70,15 @@ public class StorageProviderConfiguration : ConfigurationBase
   public StorageProviderDefinitionCollection StorageProviderDefinitions
   {
     get { return _storageProviderDefinitions; }
+  }
+
+  public bool Contains (StorageProviderDefinition storageProviderDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+
+    // TODO: Use _storageProviderDefinitions.Contains, after it implements object.Equals.
+    StorageProviderDefinition foundStorageProviderDefinition = _storageProviderDefinitions[storageProviderDefinition.StorageProviderID];
+    return object.ReferenceEquals (storageProviderDefinition, foundStorageProviderDefinition);
   }
 }
 }
