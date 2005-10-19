@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Web;
 using NUnit.Framework;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.UnitTests.AspNetFramework;
 
 namespace Rubicon.Web.UnitTests.Utilities
 {
@@ -10,6 +11,21 @@ namespace Rubicon.Web.UnitTests.Utilities
 [TestFixture]
 public class UrlUtilityTest
 {
+  private HttpContext _currentHttpContext;
+
+  public HttpContext CurrentHttpContext
+  {
+    get { return _currentHttpContext; }
+  }
+
+  [SetUp]
+  public virtual void SetUp()
+  {
+    _currentHttpContext = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/default.html", null);
+    _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
+    HttpContextHelper.SetCurrent (_currentHttpContext);
+  }
+
   [Test]
   public void FormatQueryString()
   {
