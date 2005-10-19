@@ -33,7 +33,7 @@ public class WxeParameterConverter
   ///   The optional list of caller variables. Used to dereference a <see cref="WxeVariableReference"/>.
   /// </param>
   /// <returns> A string.</returns>
-  /// <exception cref="WxeException"> Thrown if the <paramref="value"/> could not be converted. </exception>
+  /// <exception cref="WxeException"> Thrown if the <paramref name="value"/> could not be converted. </exception>
   public string ConvertToString (object value, NameObjectCollection callerVariables)
   {
     CheckForRequiredOutParameter();
@@ -46,15 +46,15 @@ public class WxeParameterConverter
   }
 
   /// <summary> Converts a <see cref="WxeVariableReference"/>'s value to it's string representation. </summary>
-  /// <param name="value"> 
+  /// <param name="varRef"> 
   ///   The <see cref="WxeVariableReference"/> to be converted. The referenced value must be of assignable to the 
-  ///   <see cref="ParameterDeclaration"/>'s <see cref="Type"/>. Must not be <see langword="null"/>.
+  ///   <see cref="WxeParameterDeclaration"/>'s <see cref="Type"/>. Must not be <see langword="null"/>.
   /// </param>
   /// <param name="callerVariables">
   ///   The optional list of caller variables. Used to dereference a <see cref="WxeVariableReference"/>.
   /// </param>
   /// <returns> A string.</returns>
-  /// <exception cref="WxeException"> Thrown if the <paramref="value"/> could not be converted. </exception>
+  /// <exception cref="WxeException"> Thrown if the <paramref name="value"/> could not be converted. </exception>
   protected string ConvertVarRefToString (WxeVariableReference varRef, NameObjectCollection callerVariables)
   {
     ArgumentUtility.CheckNotNull ("varRef", varRef);
@@ -89,7 +89,7 @@ public class WxeParameterConverter
   /// <summary> Converts a parameter's value to it's string representation. </summary>
   /// <param name="value"> The value to be converted. Must be of assignable to the <see cref="Type"/>. </param>
   /// <returns> A string.</returns>
-  /// <exception cref="WxeException"> Thrown if the <paramref="value"/> could not be converted. </exception>
+  /// <exception cref="WxeException"> Thrown if the <paramref name="value"/> could not be converted. </exception>
   protected virtual string ConvertObjectToString (object value)
   {
     if (value != null && ! _parameter.Type.IsAssignableFrom (value.GetType()))

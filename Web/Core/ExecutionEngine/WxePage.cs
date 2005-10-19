@@ -187,7 +187,8 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload tries to determine automatically whether the current event was caused by the __EVENTTARGET field.
+  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET<c> 
+  ///   field.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender"]' />
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
@@ -200,7 +201,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload allows you to specify whether the current event was caused by the __EVENTTARGET field.
+  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET<c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">ExecuteFunctionNoRepost(WxeFunction,Control)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
@@ -214,7 +215,8 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload tries to determine automatically whether the current event was caused by the __EVENTTARGET field.
+  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET<c> 
+  ///   field.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl)
@@ -227,7 +229,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload allows you to specify whether the current event was caused by the __EVENTTARGET field.
+  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET<c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
