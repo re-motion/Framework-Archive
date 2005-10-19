@@ -60,5 +60,20 @@ public class StorageProviderConfigurationTest
   {
     Assert.AreEqual ("UnitTests", StorageProviderConfiguration.Current.ApplicationName);
   }
+
+  [Test]
+  public void Contains ()
+  {
+    StorageProviderDefinitionCollection storageProviders = StorageProviderDefinitionFactory.Create ();
+    Assert.IsFalse (StorageProviderConfiguration.Current.Contains (storageProviders[0]));
+    Assert.IsTrue (StorageProviderConfiguration.Current.Contains (StorageProviderConfiguration.Current["TestDomain"]));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void ContainsNull ()
+  {
+    StorageProviderConfiguration.Current.Contains (null);
+  }
 }
 }
