@@ -111,7 +111,14 @@ public class QueryConfiguration : ConfigurationBase
     }
   }
 
-  // TODO Doc:
+  /// <summary>
+  /// Gets the <see cref="QueryDefinition"/> through its index.
+  /// </summary>
+  /// <param name="index">The index of the requested object.</param>
+  /// <exception cref="System.ArgumentOutOfRangeException">
+  ///   <paramref name="index"/> is less than zero.<br /> -or- <br />
+  ///   <paramref name="index"/> is equal to or greater than the number of items in the configuration.
+  /// </exception>
   public QueryDefinition this [int index]
   {
     get { return _queryDefinitions[index]; }
@@ -123,6 +130,15 @@ public class QueryConfiguration : ConfigurationBase
   public QueryDefinitionCollection QueryDefinitions
   {
     get { return _queryDefinitions; }
+  }
+
+  public bool Contains (QueryDefinition queryDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
+
+    // TODO: Use _queryDefinitions.Contains, after it implements object.Equals.
+    QueryDefinition foundQueryDefinition = _queryDefinitions[queryDefinition.QueryID];
+    return object.ReferenceEquals (queryDefinition, foundQueryDefinition);
   }
 }
 }

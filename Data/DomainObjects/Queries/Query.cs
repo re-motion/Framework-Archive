@@ -84,6 +84,7 @@ public class Query : IQuery
     get { return _definition; }
   }
 
+  //TODO: Rename this to ID, if possible
   /// <summary>
   /// Gets the <see cref="Configuration.QueryDefinition.QueryID"/> of the associated <see cref="Configuration.QueryDefinition"/>.
   /// </summary>

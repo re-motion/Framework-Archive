@@ -130,6 +130,7 @@ public class QueryDefinition : ISerializable, IObjectReference
 
   // methods and properties
 
+  //TODO: Rename this to ID
   /// <summary>
   /// Gets the unique ID for this <b>QueryDefinition</b>.
   /// </summary>
@@ -184,7 +185,14 @@ public class QueryDefinition : ISerializable, IObjectReference
     GetObjectData (info, context);
   }
 
-  // TODO Doc:
+  /// <summary>
+  /// Populates a specified <see cref="System.Runtime.Serialization.SerializationInfo"/> with the 
+  /// data needed to serialize the current <see cref="QueryDefinition"/> instance. See remarks 
+  /// on <see cref="QueryDefinition"/> for further details.
+  /// </summary>
+  /// <param name="info">The <see cref="System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+  /// <param name="context">The contextual information about the source or destination of the serialization.</param>
+  /// <note type="inheritinfo">Overwrite this method to support serialization of derived classes.</note>
   protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
   {
     info.AddValue ("QueryID", _queryID);
