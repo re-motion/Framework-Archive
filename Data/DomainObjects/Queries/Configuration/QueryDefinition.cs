@@ -170,24 +170,6 @@ public class QueryDefinition : ISerializable, IObjectReference
     get { return _collectionType; }
   }
 
-  #region IObjectReference Members
-
-  /// <summary>
-  /// Returns a reference to the real object that should be deserialized. See remarks 
-  /// on <see cref="QueryDefinition"/> for further details.
-  /// </summary>
-  /// <param name="context">The source and destination of a given serialized stream.</param>
-  /// <returns>Returns the actual <see cref="QueryDefinition"/>.</returns>
-  object IObjectReference.GetRealObject (StreamingContext context)
-  {
-    if (!_ispartOfQueryConfiguration)
-      return this;
-    else
-      return QueryConfiguration.Current.QueryDefinitions.GetMandatory (_queryID);
-  }
-
-  #endregion
-
   #region ISerializable Members
 
   /// <summary>
@@ -207,6 +189,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   {
     info.AddValue ("QueryID", _queryID);
 
+    // TODO: Replace this with QueryConfiguration.Current.Contains
     bool isPartOfQueryConfiguration = QueryConfiguration.Current[_queryID] != null;
     info.AddValue ("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
 
@@ -217,6 +200,24 @@ public class QueryDefinition : ISerializable, IObjectReference
       info.AddValue ("QueryType", _queryType);
       info.AddValue ("CollectionType", _collectionType);
     }
+  }
+
+  #endregion
+
+  #region IObjectReference Members
+
+  /// <summary>
+  /// Returns a reference to the real object that should be deserialized. See remarks 
+  /// on <see cref="QueryDefinition"/> for further details.
+  /// </summary>
+  /// <param name="context">The source and destination of a given serialized stream.</param>
+  /// <returns>Returns the actual <see cref="QueryDefinition"/>.</returns>
+  object IObjectReference.GetRealObject (StreamingContext context)
+  {
+    if (_ispartOfQueryConfiguration)
+      return QueryConfiguration.Current.QueryDefinitions.GetMandatory (_queryID);
+    else
+      return this;
   }
 
   #endregion
