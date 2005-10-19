@@ -434,6 +434,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       bool createPermaUrl, bool useParentPermaUrl)
   {
     ArgumentUtility.CheckNotNull ("function", function);
+    ArgumentUtility.CheckNotNullOrEmpty ("target", target);
 
     WxeContext wxeContext = WxeContext.Current;
     HttpContext httpContext = wxeContext.HttpContext;
@@ -510,6 +511,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     else
     {
+      ArgumentUtility.CheckNotNull ("sender", sender);
       if (! (sender is IPostBackEventHandler || sender is IPostBackDataHandler))
         throw new ArgumentException ("The sender must implement either IPostBackEventHandler or IPostBackDataHandler. Provide the control that raised the post back event.");
 
