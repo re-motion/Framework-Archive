@@ -4,15 +4,9 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-
-public enum CardinalityType
-{
-  One = 0,
-  Many = 1
-}
-
 public interface IRelationEndPointDefinition : INullableObject
 {
+  RelationDefinition RelationDefinition { get; }
   ClassDefinition ClassDefinition { get; }
   string PropertyName { get; }
   Type PropertyType { get; }
@@ -21,5 +15,6 @@ public interface IRelationEndPointDefinition : INullableObject
   bool IsVirtual { get; }
 
   bool CorrespondsTo (string classID, string propertyName);
+  void SetRelationDefinition (RelationDefinition relationDefinition);
 }
 }
