@@ -1,11 +1,13 @@
 using System;
-using Rubicon.NullableValueTypes;
+using System.Runtime.Serialization;
 
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-public class PropertyDefinition
+[Serializable]
+public class PropertyDefinition : ISerializable, IObjectReference
 {
   // types
 
@@ -13,10 +15,15 @@ public class PropertyDefinition
 
   // member fields
 
+  private ClassDefinition _classDefinition;
   private string _propertyName;
   private string _columnName;
   private TypeInfo _typeInfo;
   private NaInt32 _maxLength;
+  
+  // Note: _mappingClassID is used only during the deserialization process. 
+  // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
+  private string _mappingClassID;
   
   // construction and disposing
 
@@ -77,6 +84,30 @@ public class PropertyDefinition
     _maxLength = maxLength;
   }
 
+  protected PropertyDefinition (SerializationInfo info, StreamingContext context)
+  {
+    _propertyName = info.GetString ("PropertyName");
+    bool ispartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
+
+    if (ispartOfMappingConfiguration)
+    {
+      // Note: If this object was part of MappingConfiguration.Current during the serialization process,
+      // it is assumed that the deserialized object should be the instance from MappingConfiguration.Current again.
+      // Therefore only the information needed in IObjectReference.GetRealObject is deserialized here.
+      _mappingClassID = info.GetString ("MappingClassID");
+    }
+    else
+    {
+      _classDefinition = (ClassDefinition) info.GetValue ("ClassDefinition", typeof (ClassDefinition));
+      _columnName = info.GetString ("ColumnName");
+
+      // GetTypeInfo must be used, to ensure enums are registered even object is deserialized into another process.
+      _typeInfo = GetTypeInfo (info.GetString ("MappingType"), info.GetBoolean ("IsNullable"));
+      
+      _maxLength = (NaInt32) info.GetValue ("MaxLength", typeof (NaInt32));
+    }
+  }
+
   private TypeInfo GetTypeInfo (string mappingType, bool isNullable)
   {
     TypeInfo typeInfo = TypeInfo.GetInstance (mappingType, isNullable);
@@ -103,14 +134,9 @@ public class PropertyDefinition
 
   // methods and properties
 
-  private MappingException CreateMappingException (string message, params object[] args)
+  public ClassDefinition ClassDefinition 
   {
-    return new MappingException (string.Format (message, args));
-  }
-
-  private MappingException CreateMappingException (Exception innerException, string message, params object[] args)
-  {
-    return new MappingException (string.Format (message, args), innerException);
+    get { return _classDefinition; }
   }
 
   public string PropertyName
@@ -147,5 +173,69 @@ public class PropertyDefinition
   {
     get { return _typeInfo.DefaultValue; }
   }
+
+  public void SetClassDefinition (ClassDefinition classDefinition)
+  {
+    _classDefinition = classDefinition;
+  }
+
+  private MappingException CreateMappingException (string message, params object[] args)
+  {
+    return new MappingException (string.Format (message, args));
+  }
+
+  private MappingException CreateMappingException (Exception innerException, string message, params object[] args)
+  {
+    return new MappingException (string.Format (message, args), innerException);
+  }
+
+  #region ISerializable Members
+
+  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    GetObjectData (info, context);
+  }
+
+  protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    info.AddValue ("PropertyName", _propertyName);
+
+    bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
+    info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
+
+    if (isPartOfMappingConfiguration)
+    {
+      // Note: If this object is part of MappingConfiguration.Current during the serialization process,
+      // it is assumed that the deserialized object should be the instance from MappingConfiguration.Current again.
+      // Therefore only the information needed in IObjectReference.GetRealObject is serialized here.
+      info.AddValue ("MappingClassID", _classDefinition.ID);
+    }
+    else
+    {
+      info.AddValue ("ClassDefinition", _classDefinition);
+      info.AddValue ("ColumnName", _columnName);
+      info.AddValue ("MappingType", _typeInfo.MappingType);
+      info.AddValue ("IsNullable", _typeInfo.IsNullable);
+      info.AddValue ("MaxLength", _maxLength);
+    }
+  }
+
+  #endregion
+
+  #region IObjectReference Members
+
+  object IObjectReference.GetRealObject (StreamingContext context)
+  {
+    // Note: A PropertyDefinition must know its ClassDefinition to correctly deserialize itself and a 
+    // ClassDefinition knows its PropertyDefintions. For bi-directional relationships
+    // with two classes implementing IObjectReference.GetRealObject the order of calling this method is unpredictable.
+    // Therefore the member _classDefinition cannot be used here, because it could point to the wrong instance. 
+    if (_mappingClassID != null)
+      return MappingConfiguration.Current.ClassDefinitions.GetMandatory (_mappingClassID)[_propertyName];
+    else
+      return this;
+  }
+
+  #endregion
 }
 }
