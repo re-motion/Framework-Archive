@@ -117,5 +117,17 @@ public class RelationDefinitionTest
     NullRelationEndPointDefinition nullEndPointDefinition = new NullRelationEndPointDefinition (_customerClass);
     RelationDefinition definition = new RelationDefinition ("InvalidRelation", nullEndPointDefinition, nullEndPointDefinition);
   }
+
+  [Test]
+  public void Contains ()
+  {
+    RelationDefinition relationDefinition = MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"];
+
+    Assert.IsFalse (relationDefinition.Contains (TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[0]));
+    Assert.IsFalse (relationDefinition.Contains (TestMappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[1]));
+
+    Assert.IsTrue (relationDefinition.Contains (MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[0]));
+    Assert.IsTrue (relationDefinition.Contains (MappingConfiguration.Current.RelationDefinitions["OrderToOrderItem"].EndPointDefinitions[1]));
+  }
 }
 }

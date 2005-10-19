@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -43,6 +44,21 @@ public class VirtualRelationEndPointDefinitionTest
   {
     Assert.IsNotNull (_customerEndPoint as INullableObject);
     Assert.IsFalse (_customerEndPoint.IsNull);
+  }
+
+  [Test]
+  public void RelationDefinitionNull ()
+  {
+    VirtualRelationEndPointDefinition definition = new VirtualRelationEndPointDefinition (
+        TestMappingConfiguration.Current.ClassDefinitions["Order"], "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
+
+    Assert.IsNull (definition.RelationDefinition);
+  }
+
+  [Test]
+  public void RelationDefinitionNotNull ()
+  {
+    Assert.IsNotNull (_customerEndPoint.RelationDefinition);
   }
 }
 }

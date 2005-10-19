@@ -61,5 +61,20 @@ public class RelationEndPointDefinitionTest
     Assert.IsFalse (_orderEndPoint.CorrespondsTo ("Order", "NonExistingProperty"));
     Assert.IsFalse (_orderEndPoint.CorrespondsTo ("Partner", "Customer"));
   }
+
+  [Test]
+  public void RelationDefinitionNull ()
+  {
+    RelationEndPointDefinition definition = new RelationEndPointDefinition (
+        TestMappingConfiguration.Current.ClassDefinitions["OrderTicket"], "Order", true);
+
+    Assert.IsNull (definition.RelationDefinition);
+  }
+
+  [Test]
+  public void RelationDefinitionNotNull ()
+  {
+    Assert.IsNotNull (_orderEndPoint.RelationDefinition);
+  }
 }
 }
