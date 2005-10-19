@@ -6,7 +6,7 @@ using System.Reflection;
 namespace Rubicon.Utilities
 {
 
-/// <summary> Specialization of <see cref="TypeConverter"/> for . </summary>
+/// <summary> Specialization of <see cref="TypeConverter"/> for conversions from and to <see cref="String"/>. </summary>
 public class BidirectionalStringConverter: TypeConverter
 {
   /// <summary> Test: Can convert from <paramref name="sourceType"/> to <see cref="String"/>? </summary>
@@ -17,6 +17,10 @@ public class BidirectionalStringConverter: TypeConverter
   /// <returns> <see langword="true"/> if the conversion is supported. </returns>
   public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
   {
+    if (sourceType == null)
+      return false;
+    if (sourceType.IsArray)
+      return false;
     return true;  
   }
 
@@ -26,6 +30,10 @@ public class BidirectionalStringConverter: TypeConverter
   /// <returns> <see langword="true"/> if the conversion is supported. </returns>
   public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
   {
+    if (destinationType == null)
+      return false;
+    if (destinationType.IsArray)
+      return false;
     return    StringUtility.GetParseMethodWithFormatProvider (destinationType) != null
            || StringUtility.GetParseMethod (destinationType) != null;
   }
@@ -35,14 +43,21 @@ public class BidirectionalStringConverter: TypeConverter
   /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
   /// <param name="value">  The source value. </param>
   /// <returns> A <see cref="String"/> or <see cref="NaSingle.Null"/> if the conversion failed.  </returns>
+  /// <exception cref="NotSupportedException">
+  ///   The passed <paramref name="value"/> is of an unsupported <see cref="Type"/>. 
+  /// </exception>
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value == null)
       return string.Empty;
-    IFormattable formattable = value as IFormattable;
-    if (formattable != null)
-      return formattable.ToString (null, culture);
-    return value.ToString();
+    if (! value.GetType().IsArray)
+    {
+      IFormattable formattable = value as IFormattable;
+      if (formattable != null)
+        return formattable.ToString (null, culture);
+      return value.ToString();
+    }
+    throw new NotSupportedException (string.Format ("Cannot convert from '{0}' to String.", value.GetType()));
   }
 
   /// <summary> Convertes a <see cref="String"/> into the <paramref name="destinationType"/>. </summary>

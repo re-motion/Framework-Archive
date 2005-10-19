@@ -7,11 +7,26 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Utilities
 {
 
+/// <summary> 
+///   Provides functionality for providing a <see cref="TypeConverter"/> for a <see cref="Type"/> or a conversion
+///   from a source <see cref="Type"/> into a destination <see cref="Type"/> as well as a <see cref="CanConvert"/>
+///   and a <see cref="Convert"/> method.
+/// </summary>
+/// <remarks>
+///   Conversion is possible for types having a <see cref="TypeConverter"/> applied through the 
+///   <see cref="TypeConverterAttribute"/> taht supports the conversion. For types without a 
+///   <see cref="TypeConverter"/>, the <b>TypeConversionServices</b> try use the 
+///   <see cref="BidirectionalStringConverter"/> which supports the conversion to <see cref="String"/> for all types
+///   and the conversion from a <see cref="String"/> for types implementing either a public static 
+///   &lt;DestinationType&gt; Parse (string) or a public static &lt;DestinationType&gt; Parse (string, IFormatProvider)
+///   method.
+/// </remarks>
 public class TypeConversionServices
 {
   private static Hashtable s_typeConverters = new Hashtable();
 
   private Hashtable _additionalTypeConverters = new Hashtable();
+  private BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();
 
   public TypeConversionServices()
 	{
@@ -51,7 +66,8 @@ public class TypeConversionServices
   ///   <see cref="Type"/> into an instance of the <paramref name="destinationType"/> <see cref="Type"/>.
   /// </summary>
   /// <param name="type"> 
-  ///   The <see cref="Type"/> destinationType get the <see cref="TypeConverter"/> for. Must not be <see langword="null"/>.
+  ///   The <see cref="Type"/> destinationType get the <see cref="TypeConverter"/> for. 
+  ///   Must not be <see langword="null"/>.
   /// </param>
   /// <returns>
   ///   A <see cref="TypeConverter"/> or <see langword="null"/> of no <see cref="TypeConverter"/> can be found.
@@ -63,9 +79,25 @@ public class TypeConversionServices
     TypeConverter converter = GetAdditionalTypeConverter (type);
     if (converter != null)
       return converter;
-    return GetCachedTypeConverterByAttribute (type);
+
+    converter = GetCachedTypeConverterByAttribute (type);
+    if (converter != null)
+      return converter;
+
+    if (type == typeof (string))
+      return _stringConverter;
+
+    return null;
   }
 
+  /// <summary> 
+  ///   Registers the <paramref name="converter"/> for the <paramref name="type"/>, overriding the default settings. 
+  /// </summary>
+  /// <param name="type"> 
+  ///   The <see cref="Type"/> for which the <paramref name="converter"/> should be used. 
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="converter"> The <see cref="TypeConverter"/> to register. Must not be <see langword="null"/>. </param>
   public void AddTypeConverter (Type type, TypeConverter converter)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -73,6 +105,14 @@ public class TypeConversionServices
     _additionalTypeConverters[type] = converter;
   }
 
+  /// <summary>
+  ///   Unregisters a special <see cref="TypeConverter"/> previously registered by using <see cref="AddTypeConverter"/>.
+  /// </summary>
+  /// <param name="type">
+  ///   The <see cref="Type"/> whose special <see cref="TypeConverter"/> should be removed. 
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <remarks> If no <see cref="TypeConverter"/> has been registered, the method has no effect. </remarks>
   public void RemoveTypeConverter (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -103,20 +143,34 @@ public class TypeConversionServices
     if (converter != null)
       return true;
 
-    if (   typeof (IConvertible).IsAssignableFrom (sourceType) && destinationType == typeof (string)
-        || sourceType == typeof (string) && typeof (IConvertible).IsAssignableFrom (destinationType))
-    {
-      return true;
-    }
-
     return false;
   }
 
+  /// <summary> Convertes the <paramref name="value"/> into the <paramref name="destinationType"/>. </summary>
+  /// <param name="sourceType"> 
+  ///   The source <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="destinationType"> 
+  ///   The destination <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="value"> The <see cref="NaInt16"/> to be converted. Must not be <see langword="null"/>. </param>
+  /// <returns> An <see cref="Object"/> that represents the converted <paramref name="value"/>. </returns>
   public object Convert (Type sourceType, Type destinationType, object value)
   {
     return Convert (null, null, sourceType, destinationType, value);
   }
 
+  /// <summary> Convertes the <paramref name="value"/> into the <paramref name="destinationType"/>. </summary>
+  /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
+  /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
+  /// <param name="sourceType"> 
+  ///   The source <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="destinationType"> 
+  ///   The destination <see cref="Type"/> of the <paramref name="value"/>. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="value"> The <see cref="NaInt16"/> to be converted. Must not be <see langword="null"/>. </param>
+  /// <returns> An <see cref="Object"/> that represents the converted <paramref name="value"/>. </returns>
   public virtual object Convert (
       ITypeDescriptorContext context, CultureInfo culture, Type sourceType, Type destinationType, object value)
   {
@@ -133,17 +187,6 @@ public class TypeConversionServices
     TypeConverter destinationTypeConverter = GetTypeConverter (destinationType);
     if (destinationTypeConverter != null && destinationTypeConverter.CanConvertFrom (sourceType))
       return destinationTypeConverter.ConvertFrom (context, culture, value);
-   
-    if (typeof (IConvertible).IsAssignableFrom (sourceType) && destinationType == typeof (string))
-    {
-      if (value == null)
-        value = DBNull.Value;
-      return System.Convert.ChangeType (value, destinationType, culture);
-    }
-    else if (sourceType == typeof (string) && typeof (IConvertible).IsAssignableFrom (destinationType))
-    {
-      return System.Convert.ChangeType (value, destinationType, culture);
-    }
 
     throw new NotSupportedException (string.Format (
         "Cannot convert value '{0}' to type '{1}'.", value, destinationType));

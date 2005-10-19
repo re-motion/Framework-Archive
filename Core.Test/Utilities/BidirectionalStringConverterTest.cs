@@ -24,19 +24,31 @@ public class BidirectionalStringConverterTest
   }
 
   [Test]
-  public void CanConvertToObject()
-  {
-    Assert.IsFalse (_converter.CanConvertTo (typeof (object)));
-  }
-
-  [Test]
   public void CanConvertFromInt32()
   {
     Assert.IsTrue (_converter.CanConvertFrom (typeof (int)));
   }
 
   [Test]
-  public void CanConvertFromObject2()
+  public void CanConvertToInt32Array()
+  {
+    Assert.IsFalse (_converter.CanConvertTo (typeof (int[])));
+  }
+
+  [Test]
+  public void CanConvertFromInt32Array()
+  {
+    Assert.IsFalse (_converter.CanConvertFrom (typeof (int[])));
+  }
+
+  [Test]
+  public void CanConvertToObject()
+  {
+    Assert.IsFalse (_converter.CanConvertTo (typeof (object)));
+  }
+
+  [Test]
+  public void CanConvertFromObject()
   {
     Assert.IsTrue (_converter.CanConvertFrom (typeof (object)));
   }
@@ -55,6 +67,23 @@ public class BidirectionalStringConverterTest
   {
     Assert.AreEqual ("0", _converter.ConvertFrom (0));
     Assert.AreEqual ("1", _converter.ConvertFrom (1));
+  }
+
+  [Test]
+  [ExpectedException (typeof (NotSupportedException))]
+  public void ConvertToInt32Array()
+  {
+    Type destinationType = typeof (int[]);
+    _converter.ConvertTo ("0, 1", destinationType);
+    Assert.Fail();
+  }
+
+  [Test]
+  [ExpectedException (typeof (NotSupportedException))]
+  public void ConvertFromInt32Array()
+  {
+    _converter.ConvertFrom (new int[] {0, 1});
+    Assert.Fail();
   }
 
   [Test]
