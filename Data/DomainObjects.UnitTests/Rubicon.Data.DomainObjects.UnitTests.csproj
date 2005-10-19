@@ -228,6 +228,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "SerializationBaseTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "storageProviders.xml"
                     BuildAction = "Content"
                 />
@@ -696,6 +701,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "IntegrationTests\IntegrationTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ObjectIDs\ObjectIDTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -838,22 +848,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Serialization\IntegrationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Serialization\MappingTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Serialization\QueriesTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Serialization\SerializationBaseTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

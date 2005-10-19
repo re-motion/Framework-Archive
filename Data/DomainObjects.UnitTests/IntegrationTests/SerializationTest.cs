@@ -5,10 +5,10 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
-namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
+namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 {
 [TestFixture]
-public class IntegrationTest : SerializationBaseTest
+public class SerializationTest : SerializationBaseTest
 {
   // types
 
@@ -18,7 +18,7 @@ public class IntegrationTest : SerializationBaseTest
 
   // construction and disposing
 
-  public IntegrationTest ()
+  public SerializationTest ()
   {
   }
 
