@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -35,6 +36,8 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionInNewWindowButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionAsRootButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionButton;
+  protected System.Web.UI.WebControls.HyperLink CurrentFunctionPermaLink;
+  protected System.Web.UI.WebControls.HyperLink SampleFunctionPermaLink;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -44,6 +47,13 @@ public class SessionForm : WxePage
     RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "Page_Abort", "Page_Abort");
     FunctionTokenLabel.Text = "Token = " + WxeContext.Current.FunctionToken;
     PostBackIDLabel.Text = "PostBackID = " + WxeContext.Current.PostBackID.ToString();
+
+    CurrentFunctionPermaLink.NavigateUrl = GetPermanentUrl ();
+    CurrentFunctionPermaLink.Text = CurrentFunctionPermaLink.NavigateUrl;
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add ("Parameter", "Hello World!");
+    SampleFunctionPermaLink.NavigateUrl = GetPermanentUrl (typeof (SampleWxeFunction), queryString);
+    SampleFunctionPermaLink.Text = SampleFunctionPermaLink.NavigateUrl;
   }
 
   override protected void OnInit(EventArgs e)
@@ -63,7 +73,6 @@ public class SessionForm : WxePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.OpenSampleFunctionAsRootInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionAsRootInNewWindowButton_Click);
     this.OpenSelfButton.Click += new System.EventHandler(this.OpenSelfButton_Click);
     this.Button1.Click += new System.EventHandler(this.Button1_Click);
     this.Button1Button.Click += new System.EventHandler(this.Button1Button_Click);
@@ -71,9 +80,10 @@ public class SessionForm : WxePage
     this.ExecuteButton.Click += new System.EventHandler(this.ExecuteButton_Click);
     this.ExecuteNoRepostButton.Click += new System.EventHandler(this.ExecuteNoRepostButton_Click);
     this.Button2Button.Click += new System.EventHandler(this.Button2Button_Click);
+    this.OpenSampleFunctionButton.Click += new System.EventHandler(this.OpenSampleFunctionButton_Click);
     this.OpenSampleFunctionAsRootButton.Click += new System.EventHandler(this.OpenSampleFunctionAsRootButton_Click);
     this.OpenSampleFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionInNewWindowButton_Click);
-    this.OpenSampleFunctionButton.Click += new System.EventHandler(this.OpenSampleFunctionButton_Click);
+    this.OpenSampleFunctionAsRootInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionAsRootInNewWindowButton_Click);
     this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
     this.Load += new System.EventHandler(this.Page_Load);
 

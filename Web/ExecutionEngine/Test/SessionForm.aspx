@@ -1,5 +1,5 @@
-<%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.SessionForm" %>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.SessionForm" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -39,7 +39,9 @@
 </p><p>
 <rubicon:webbutton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></rubicon:webbutton>
 </p>
-<p><rubicon:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionAsRootButton" runat="server" Text="Open Sample Function With Mapped Path"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionInNewWindowButton" runat="server" Text="Open Sample Function in New Window"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionAsRootInNewWindowButton" runat="server" Text="Open Sample Function With Mapped Path in New Window"></rubicon:WebButton></p>  
+<p><rubicon:WebButton id="OpenSampleFunctionButton" runat="server" Text="Open Sample Function"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionAsRootButton" runat="server" Text="Open Sample Function With Mapped Path"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionInNewWindowButton" runat="server" Text="Open Sample Function in New Window"></rubicon:WebButton><br><rubicon:WebButton id="OpenSampleFunctionAsRootInNewWindowButton" runat="server" Text="Open Sample Function With Mapped Path in New Window"></rubicon:WebButton></p>
+<p>Permalink this: <asp:HyperLink id="CurrentFunctionPermaLink" runat="server"></asp:HyperLink><br>Permalink 
+Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>  
 </form>
     <script language="javascript">
     function Page_PostBack (eventTarget, eventArgs)
