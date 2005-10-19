@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
+using System.Runtime.Serialization;
 
 using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
 // Note: All methods of this class are inheritance-aware. Property accessors are not.
-public class ClassDefinition
+[Serializable]
+public class ClassDefinition : ISerializable, IObjectReference
 {
   // types
 
@@ -22,6 +24,10 @@ public class ClassDefinition
   private ClassDefinitionCollection _derivedClasses;
   private PropertyDefinitionCollection _propertyDefinitions;
   private RelationDefinitionCollection _relationDefinitions;
+  
+  // Note: _isPartOfMappingConfiguration is used only during the deserialization process. 
+  // It is set only in the deserialization constructor and is used in IObjectReference.GetRealObject.
+  private bool _isPartOfMappingConfiguration;
   
   // construction and disposing
 
@@ -53,10 +59,25 @@ public class ClassDefinition
     PerformSetBaseClass (baseClass);
 
     _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (), true);
-    _propertyDefinitions = new PropertyDefinitionCollection ();
+    _propertyDefinitions = new PropertyDefinitionCollection (this);
     _relationDefinitions = new RelationDefinitionCollection ();
+  }
 
-    _propertyDefinitions.Adding += new PropertyDefinitionAddingEventHandler(PropertyDefinitions_Adding);
+  protected ClassDefinition (SerializationInfo info, StreamingContext context)
+  {
+    _id = info.GetString ("ID");
+    _isPartOfMappingConfiguration = info.GetBoolean ("IsPartOfMappingConfiguration");
+
+    if (!_isPartOfMappingConfiguration)
+    {
+      _entityName = info.GetString ("EntityName");
+      _classType = (Type) info.GetValue ("ClassType", typeof (Type));
+      _storageProviderID = info.GetString ("StorageProviderID");
+      _baseClass = (ClassDefinition) info.GetValue ("BaseClass", typeof (ClassDefinition));
+      _derivedClasses = (ClassDefinitionCollection) info.GetValue ("DerivedClasses", typeof (ClassDefinitionCollection));
+      _propertyDefinitions = (PropertyDefinitionCollection) info.GetValue ("PropertyDefinitions", typeof (PropertyDefinitionCollection));
+      _relationDefinitions = (RelationDefinitionCollection) info.GetValue ("RelationDefinitions", typeof (RelationDefinitionCollection));
+    }
   }
 
   private void CheckClassType (string classID, Type classType)
@@ -69,6 +90,14 @@ public class ClassDefinition
   }
 
   // methods and properties
+
+  public bool Contains (PropertyDefinition propertyDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+    PropertyDefinition foundPropertyDefinition = _propertyDefinitions[propertyDefinition.PropertyName];
+    return object.ReferenceEquals (propertyDefinition, foundPropertyDefinition);
+  }
 
   public IRelationEndPointDefinition GetOppositeEndPointDefinition (string propertyName)
   {
@@ -404,14 +433,56 @@ public class ClassDefinition
     return new MappingException (string.Format (message, args));
   }
 
-  private void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)
+  internal void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)
   {
     PropertyDefinitionCollection allPropertyDefinitions = GetPropertyDefinitions ();
     if (allPropertyDefinitions.Contains (args.PropertyDefinition.PropertyName))
     {
       throw CreateMappingException ("Class '{0}' already contains the property '{1}'.",
           _id, args.PropertyDefinition.PropertyName);
-    }    
+    }
+    
+    args.PropertyDefinition.SetClassDefinition (this);
   }
+
+  #region ISerializable Members
+
+  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    GetObjectData (info, context);
+  }
+
+  protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
+  {
+    info.AddValue ("ID", _id);
+
+    bool isPartOfMappingConfiguration = MappingConfiguration.Current.Contains (this);
+    info.AddValue ("IsPartOfMappingConfiguration", isPartOfMappingConfiguration);
+
+    if (!isPartOfMappingConfiguration)
+    {
+      info.AddValue ("EntityName", _entityName);
+      info.AddValue ("ClassType", _classType);
+      info.AddValue ("StorageProviderID", _storageProviderID);
+      info.AddValue ("BaseClass", _baseClass);
+      info.AddValue ("DerivedClasses", _derivedClasses);
+      info.AddValue ("PropertyDefinitions", _propertyDefinitions);
+      info.AddValue ("RelationDefinitions", _relationDefinitions);
+    }
+  }
+
+  #endregion
+
+  #region IObjectReference Members
+
+  object IObjectReference.GetRealObject (StreamingContext context)
+  {
+    if (_isPartOfMappingConfiguration)
+      return MappingConfiguration.Current.ClassDefinitions.GetMandatory (_id);
+    else
+      return this;
+  }
+
+  #endregion
 }
 }
