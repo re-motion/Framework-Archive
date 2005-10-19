@@ -24,11 +24,11 @@ public class TypeConversionServicesTest
   public void SetUp()
   {
     _services = new TypeConversionServicesMock();
-    _services.ClearCache();
 
     _servicesWithGuidConverter = new TypeConversionServicesMock();
-    _servicesWithGuidConverter.ClearCache();
     _servicesWithGuidConverter.AddTypeConverter (_guid, new NaGuidConverter());
+
+    TypeConversionServicesMock.ClearCache();
   }
 
   [Test]

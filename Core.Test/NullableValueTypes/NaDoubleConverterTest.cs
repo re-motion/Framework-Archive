@@ -67,7 +67,7 @@ public class NaDoubleConverterTest
   }
 
   [Test]
-  [Ignore ("Precision Problem in Double.ToString().")]
+  [Ignore ("Min and Max value string representation to large for converting back to Double.")]
   public void ConvertFromStringMaxAndMinValues()
   {
     Assert.AreEqual (NaDouble.MinValue, _converter.ConvertFrom (NaDouble.MinValue.ToString()));

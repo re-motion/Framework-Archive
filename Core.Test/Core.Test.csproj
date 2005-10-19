@@ -238,17 +238,17 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Utilities\BidirectionalStringConverterTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Utilities\EnumDescriptionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Utilities\EnumUtilityTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\StringConverterTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

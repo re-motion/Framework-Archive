@@ -36,7 +36,7 @@ public class TypeConversionServicesMock: TypeConversionServices
     return base.HasCachedTypeConverter (type);
   }
 
-  public void ClearCache()
+  public static void ClearCache()
   {
     Hashtable cache = (Hashtable) PrivateInvoke.GetNonPublicStaticField (typeof (TypeConversionServices), "s_typeConverters");
     cache.Clear();

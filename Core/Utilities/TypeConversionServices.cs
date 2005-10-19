@@ -16,8 +16,8 @@ namespace Rubicon.Utilities
 ///   Conversion is possible for types having a <see cref="TypeConverter"/> applied through the 
 ///   <see cref="TypeConverterAttribute"/> taht supports the conversion. For types without a 
 ///   <see cref="TypeConverter"/>, the <b>TypeConversionServices</b> try use the 
-///   <see cref="BidirectionalStringConverter"/> which supports the conversion to <see cref="String"/> for all types
-///   and the conversion from a <see cref="String"/> for types implementing either a public static 
+///   <see cref="BidirectionalStringConverter"/> which supports the conversion to <see cref="String"/> for all scalar 
+///   types and the conversion from a <see cref="String"/> for types implementing either a public static 
 ///   &lt;DestinationType&gt; Parse (string) or a public static &lt;DestinationType&gt; Parse (string, IFormatProvider)
 ///   method.
 /// </remarks>
