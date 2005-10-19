@@ -81,7 +81,7 @@ public class NaBooleanConverter: TypeConverter
     if (value is NaBoolean)
     {
       if (destinationType == typeof (string))
-        return ((NaBoolean) value).ToString ("~");
+        return ((NaBoolean) value).ToString ("~", culture);
       if (destinationType == typeof (bool))
         return ((NaBoolean) value).Value;
     }

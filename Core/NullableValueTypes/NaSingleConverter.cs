@@ -81,7 +81,7 @@ public class NaSingleConverter: TypeConverter
     if (value is NaSingle)
     {
       if (destinationType == typeof (string))
-        return ((NaSingle) value).ToString ("~");
+        return ((NaSingle) value).ToString ("~", culture);
       if (destinationType == typeof (float))
         return ((NaSingle) value).Value;
     }

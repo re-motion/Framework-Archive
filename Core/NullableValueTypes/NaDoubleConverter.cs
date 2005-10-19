@@ -81,7 +81,7 @@ public class NaDoubleConverter: TypeConverter
     if (value is NaDouble)
     {
       if (destinationType == typeof (string))
-        return ((NaDouble) value).ToString ("~");
+        return ((NaDouble) value).ToString ("~", culture);
       if (destinationType == typeof (double))
         return ((NaDouble) value).Value;
     }

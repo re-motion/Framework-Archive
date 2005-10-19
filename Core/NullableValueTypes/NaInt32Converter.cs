@@ -79,7 +79,7 @@ public class NaInt32Converter: TypeConverter
     if (value is NaInt32)
     {
       if (destinationType == typeof (string))
-        return ((NaInt32) value).ToString ("~");
+        return ((NaInt32) value).ToString ("~", culture);
       if (destinationType == typeof (int))
         return ((NaInt32) value).Value;
     }

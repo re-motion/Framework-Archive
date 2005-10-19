@@ -81,7 +81,7 @@ public class NaByteConverter: TypeConverter
     if (value is NaByte)
     {
       if (destinationType == typeof (string))
-        return ((NaByte) value).ToString ("~");
+        return ((NaByte) value).ToString ("~", culture);
       if (destinationType == typeof (byte))
         return ((NaByte) value).Value;
     }

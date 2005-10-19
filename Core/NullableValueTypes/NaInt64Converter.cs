@@ -81,7 +81,7 @@ public class NaInt64Converter: TypeConverter
     if (value is NaInt64)
     {
       if (destinationType == typeof (string))
-        return ((NaInt64) value).ToString ("~");
+        return ((NaInt64) value).ToString ("~", culture);
       if (destinationType == typeof (long))
         return ((NaInt64) value).Value;
     }

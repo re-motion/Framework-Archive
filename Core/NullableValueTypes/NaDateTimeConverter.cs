@@ -81,7 +81,7 @@ public class NaDateTimeConverter: TypeConverter
     if (value is NaDateTime)
     {
       if (destinationType == typeof (string))
-        return ((NaDateTime) value).ToString ("~");
+        return ((NaDateTime) value).ToString ("~", culture);
       if (destinationType == typeof (DateTime))
         return ((NaDateTime) value).Value;
     }

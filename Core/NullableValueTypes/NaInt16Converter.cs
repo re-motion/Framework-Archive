@@ -81,7 +81,7 @@ public class NaInt16Converter: TypeConverter
     if (value is NaInt16)
     {
       if (destinationType == typeof (string))
-        return ((NaInt16) value).ToString ("~");
+        return ((NaInt16) value).ToString ("~", culture);
       if (destinationType == typeof (short))
         return ((NaInt16) value).Value;
     }

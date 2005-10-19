@@ -81,7 +81,7 @@ public class NaDecimalConverter: TypeConverter
     if (value is NaDecimal)
     {
       if (destinationType == typeof (string))
-        return ((NaDecimal) value).ToString ("~");
+        return ((NaDecimal) value).ToString ("~", culture);
       if (destinationType == typeof (decimal))
         return ((NaDecimal) value).Value;
     }

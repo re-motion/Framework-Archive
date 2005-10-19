@@ -85,15 +85,26 @@ public class TypeConversionServicesTest
     Assert.IsFalse (_services.CanConvert (_object, _naInt32));
   }
 
-
   [Test]
   public void CanConvertFromGuidToString()
+  {
+    Assert.IsTrue (_services.CanConvert (_guid, _string));
+  }
+
+  [Test]
+  public void CanConvertFromStringToGuid()
+  {
+    Assert.IsFalse (_services.CanConvert (_string, _guid));
+  }
+
+  [Test]
+  public void CanConvertFromGuidToStringWithAdditionalConverter()
   {
     Assert.IsTrue (_servicesWithGuidConverter.CanConvert (_guid, _string));
   }
 
   [Test]
-  public void CanConvertFromStringToGuid()
+  public void CanConvertFromStringToGuidWithAdditionalConverter()
   {
     Assert.IsTrue (_servicesWithGuidConverter.CanConvert (_string, _guid));
   }
@@ -209,7 +220,7 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  [ExpectedException (typeof (FormatException))]
+  [ExpectedException (typeof (ParseException))]
   public void ConvertFromStringToInt32WithEmpty()
   {
     _services.Convert (_string, _int32, "");
@@ -217,7 +228,7 @@ public class TypeConversionServicesTest
   }
 
 
-    [Test]
+  [Test]
   public void ConvertFromGuidToString()
   {
     Guid guid = Guid.NewGuid();
@@ -262,7 +273,7 @@ public class TypeConversionServicesTest
   {
     TypeConverter converter = _services.GetTypeConverter (_string, _naInt32);
     Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaInt32Converter), converter.GetType());
+    Assert.AreEqual (typeof (BidirectionalStringConverter), converter.GetType());
   }
 
   [Test]
@@ -278,14 +289,15 @@ public class TypeConversionServicesTest
   {
     TypeConverter converter = _services.GetTypeConverter (_string, _naDouble);
     Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (NaDoubleConverter), converter.GetType());
+    Assert.AreEqual (typeof (BidirectionalStringConverter), converter.GetType());
   }
 
   [Test]
   public void GetTypeConverterFromObjectToString ()
   {
     TypeConverter converter = _services.GetTypeConverter (_object, _string);
-    Assert.IsNull (converter, "TypeConverter is not null.");
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (BidirectionalStringConverter), converter.GetType());
   }
 
   [Test]
