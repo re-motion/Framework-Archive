@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
+[Serializable]
 public class PropertyDefinitionCollection : CommonCollection
 {
   // types
@@ -17,10 +18,18 @@ public class PropertyDefinitionCollection : CommonCollection
   public event PropertyDefinitionAddingEventHandler Adding;
   public event PropertyDefinitionAddedEventHandler Added;
 
+  private ClassDefinition _classDefinition;
+
   // construction and disposing
 
   public PropertyDefinitionCollection ()
   {
+  }
+
+  public PropertyDefinitionCollection (ClassDefinition classDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    _classDefinition = classDefinition;
   }
 
   // standard constructor for collections
@@ -51,8 +60,18 @@ public class PropertyDefinitionCollection : CommonCollection
     return false;
   }
 
+  public ClassDefinition ClassDefinition 
+  {
+    get { return _classDefinition; }
+  }
+
   protected virtual void OnAdding (PropertyDefinitionAddingEventArgs args)
   {
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of ClassDefinition when adding property definitions is not organized through events.
+    if (_classDefinition != null)
+      _classDefinition.PropertyDefinitions_Adding (this, args);
+
     if (Adding != null)
       Adding (this, args);
   }
