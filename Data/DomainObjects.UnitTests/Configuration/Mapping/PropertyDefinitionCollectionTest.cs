@@ -132,5 +132,13 @@ public class PropertyDefinitionCollectionTest
 
     Assert.IsTrue (_collection.ContainsColumnName ("ColumnName"));
   }
+
+  [Test]
+  public void InitializeWithClassDefinition ()
+  {
+    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+    PropertyDefinitionCollection collection = new PropertyDefinitionCollection (orderDefinition);
+    Assert.AreSame (orderDefinition, collection.ClassDefinition);
+  }
 }
 }
