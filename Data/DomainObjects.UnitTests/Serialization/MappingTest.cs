@@ -298,11 +298,6 @@ public class MappingTest : SerializationBaseTest
     AreEqual (enumPropertyDefinition, deserializedEnumPropertyDefinition);
   }
 
-  // TODO: 
-  // 1. Write integration test with Partner ClassDef => Check the entire object graph (ProperyDefs, RelationDefs, EndPointDefs)
-  //    for same references! => Use MappingConfiguration!
-  // 2. Write same test for Client => Contains 2 NullRelationEndPointDefinitions.
-
   private void AreEqual (ClassDefinition expected, ClassDefinition actual)
   {
     Assert.AreEqual (expected.ID, actual.ID);
