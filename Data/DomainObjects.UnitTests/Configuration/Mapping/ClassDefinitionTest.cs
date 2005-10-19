@@ -593,6 +593,33 @@ public class ClassDefinitionTest
     _orderClass.GetMandatoryPropertyDefinition ("InvalidProperty");
   }
 
+  [Test]
+  public void SetClassDefinitionOfPropertyDefinition ()
+  {
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("Test", "Test", "int32");
+    Assert.IsNull (propertyDefinition.ClassDefinition);
+
+    // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
+    // this test does not affect other tests through modifying the singleton instances.
+    ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
+    
+    classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+    Assert.AreSame (classDefinition, propertyDefinition.ClassDefinition);
+  }
+
+  [Test]
+  public void Contains ()
+  {
+    Assert.IsFalse (_orderClass.Contains (new PropertyDefinition ("PropertyName", "ColumnName", "int32")));
+    Assert.IsTrue (_orderClass.Contains (_orderClass["OrderNumber"]));
+  }
+
+  [Test]
+  public void PropertyDefinitionCollectionBackLink ()
+  {
+    Assert.AreSame (_orderClass, _orderClass.MyPropertyDefinitions.ClassDefinition);
+  }
+
   private bool Contains (IRelationEndPointDefinition[] endPointDefinitions, string propertyName)
   {
     foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
