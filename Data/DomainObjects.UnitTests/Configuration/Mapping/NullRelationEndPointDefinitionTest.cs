@@ -58,5 +58,25 @@ public class NullRelationEndPointDefinitionTest
   {
     Assert.IsFalse (_definition.CorrespondsTo (_clientDefinition.ID, "PropertyName"));
   }
+
+  [Test]
+  public void RelationDefinitionNull ()
+  {
+    NullRelationEndPointDefinition definition = new NullRelationEndPointDefinition (
+        MappingConfiguration.Current.ClassDefinitions["Client"]);
+
+    Assert.IsNull (definition.RelationDefinition);
+  }
+
+  [Test]
+  public void RelationDefinitionNotNull ()
+  {
+    RelationEndPointDefinition oppositeEndPoint = new RelationEndPointDefinition (
+        MappingConfiguration.Current.ClassDefinitions["Location"], "Client", true);
+
+    RelationDefinition relationDefinition = new RelationDefinition ("ClientToLocation", _definition, oppositeEndPoint);
+
+    Assert.IsNotNull (_definition.RelationDefinition);
+  }
 }
 }
