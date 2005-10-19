@@ -38,6 +38,7 @@ public abstract class StorageProviderDefinition
       throw new IdentityTypeNotSupportedException (_storageProviderType, identityType);
   }
 
+  //TODO: Rename this to ID
   public string StorageProviderID
   {
     get { return _storageProviderID; }
