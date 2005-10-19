@@ -142,7 +142,7 @@ namespace Rubicon.PageTransition
       if (! IsReturningPostBack)
       {
         SubFunction subFunction = new SubFunction ("subext var 1", "vall var2");
-        ExecuteRootFunction (subFunction, "_blank", (Control) sender, true);
+        ExecuteFunctionExternal (subFunction, "_blank", (Control) sender, true);
       }
       else
       {
@@ -165,7 +165,7 @@ namespace Rubicon.PageTransition
     {
       if (! IsReturningPostBack)
       {
-        ExecuteRootFunction (new SubFunction ("v1", "calendar"), "_blank", (Control) sender, true);
+        ExecuteFunctionExternal (new SubFunction ("v1", "calendar"), "_blank", (Control) sender, true);
       }
       else
       {

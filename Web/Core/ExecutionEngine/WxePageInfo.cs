@@ -351,9 +351,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteFunction (WxeFunction function, bool createPermalink, bool useParentPermalink)
+  public void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
   {
-    CurrentStep.ExecuteFunction (_page, function, createPermalink);
+    CurrentStep.ExecuteFunction (_page, function, createPermaUrl);
   }
 
   /// <summary>
@@ -376,18 +376,18 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (
-      WxeFunction function, Control sender, bool createPermalink, bool useParentPermalink)
+      WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl)
   {
-    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermalink, useParentPermalink);
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (
-      WxeFunction function, Control sender, bool usesEventTarget, bool createPermalink, bool useParentPermalink)
+      WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
   {
-    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, createPermalink);
+    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, createPermaUrl);
   }
 
   /// <summary> 
@@ -400,38 +400,38 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteRootFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteRootFunction(WxeFunction,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean)</see>.
   /// </summary>
-  public void ExecuteRootFunction (WxeFunction function, string target, Control sender, bool returningPostback)
+  public void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    ExecuteRootFunction (function, target, null, sender, returningPostback, false, false);
+    ExecuteFunctionExternal (function, target, null, sender, returningPostback, false, false);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteRootFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteRootFunction(WxeFunction,String,String,Control,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean)</see>.
   /// </summary>
-  public void ExecuteRootFunction (
+  public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
-    ExecuteRootFunction (function, target, features, sender, returningPostback, false, false);
+    ExecuteFunctionExternal (function, target, features, sender, returningPostback, false, false);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteRootFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteRootFunction(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteRootFunction (
+  public void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
-      bool createPermalink, bool useParentPermalink)
+      bool createPermaUrl, bool useParentPermaUrl)
   {
-    ExecuteRootFunction (function, target, null, sender, returningPostback, createPermalink, useParentPermalink);
+    ExecuteFunctionExternal (function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteRootFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteRootFunction(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
-  public void ExecuteRootFunction (
+  public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
-      bool createPermalink, bool useParentPermalink)
+      bool createPermaUrl, bool useParentPermaUrl)
   {
     ArgumentUtility.CheckNotNull ("function", function);
 
@@ -445,7 +445,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       path = mapping.Resource;
     
     string queryString = string.Empty;
-    if (createPermalink)
+    if (createPermaUrl)
     {
       if (mapping == null)
       {

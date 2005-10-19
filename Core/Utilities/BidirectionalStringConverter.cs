@@ -7,6 +7,9 @@ namespace Rubicon.Utilities
 {
 
 /// <summary> Specialization of <see cref="TypeConverter"/> for conversions from and to <see cref="String"/>. </summary>
+/// <remarks>
+///   Conversions from <see cref="Single"/> and <see cref="Double"/> are done using "R" as format string. 
+/// </remarks>
 public class BidirectionalStringConverter: TypeConverter
 {
   /// <summary> Test: Can convert from <paramref name="sourceType"/> to <see cref="String"/>? </summary>
@@ -46,6 +49,9 @@ public class BidirectionalStringConverter: TypeConverter
   /// <exception cref="NotSupportedException">
   ///   The passed <paramref name="value"/> is of an unsupported <see cref="Type"/>. 
   /// </exception>
+  /// <remarks>
+  ///   Conversions from <see cref="Single"/> and <see cref="Double"/> are done using "R" as format string. 
+  /// </remarks>
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value == null)
@@ -54,7 +60,12 @@ public class BidirectionalStringConverter: TypeConverter
     {
       IFormattable formattable = value as IFormattable;
       if (formattable != null)
-        return formattable.ToString (null, culture);
+      {
+        string format = null;
+        if (value is float || value is double)
+          format = "R";
+        return formattable.ToString (format, culture);
+      }
       return value.ToString();
     }
     throw new NotSupportedException (string.Format ("Cannot convert from '{0}' to String.", value.GetType()));

@@ -51,8 +51,8 @@ public interface IWxePage: IPage, IWxeTemplateControl
   ///   Executes a WXE function in the current window and redirects the browser to the path specified in the 
   ///   <see cref="UrlMapping.UrlMappingConfiguration"/> while the function executes.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermalink" or @name="useParentPermalink"]' />
-  void ExecuteFunction (WxeFunction function, bool createPermalink, bool useParentPermalink);
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl);
 
   /// <summary>
   ///   Executes a WXE function in the current window without triggering the current post back event on returning.
@@ -71,38 +71,38 @@ public interface IWxePage: IPage, IWxeTemplateControl
   ///   The browser will be redirected to the path specified in the <see cref="UrlMapping.UrlMappingConfiguration"/> 
   ///   while the function executes.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="createPermalink" or @name="useParentPermalink"]' />
-  void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermalink, bool useParentPermalink);
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl);
   
   /// <summary>
   ///   Executes a WXE function in the current window without triggering the current post back event on returning.
   ///   The browser will be redirected to the path specified in the <see cref="UrlMapping.UrlMappingConfiguration"/> 
   ///   while the function executes.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermalink" or @name="useParentPermalink"]' />
-  void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget, bool createPermalink, bool useParentPermalink);
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl);
 
   /// <summary> Executes a WXE function in the specified window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteRootFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
-  void ExecuteRootFunction (WxeFunction function, string target, Control sender, bool returningPostback);
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
+  void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback);
   
   /// <summary> Executes a WXE function in the specified window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteRootFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
-  void ExecuteRootFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback);
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
+  void ExecuteFunctionExternal (WxeFunction function, string target, string features, Control sender, bool returningPostback);
 
   /// <summary> 
   ///   Executes a WXE function in the specified window or frame using the path specified in the 
   ///   <see cref="UrlMapping.UrlMappingConfiguration"/>.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteRootFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermalink" or @name="useParentPermalink"]' />
-  void ExecuteRootFunction (WxeFunction function, string target, Control sender, bool returningPostback, bool createPermalink, bool useParentPermalink);
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback, bool createPermaUrl, bool useParentPermaUrl);
   
   /// <summary> 
   ///   Executes a WXE function in the specified window or frame using the path specified in the 
   ///   <see cref="UrlMapping.UrlMappingConfiguration"/>.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteRootFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermalink" or @name="useParentPermalink"]' />
-  void ExecuteRootFunction (WxeFunction function, string target, string features, Control sender, bool returningPostback, bool createPermalink, bool useParentPermalink);
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  void ExecuteFunctionExternal (WxeFunction function, string target, string features, Control sender, bool returningPostback, bool createPermaUrl, bool useParentPermaUrl);
 
   /// <summary> Gets a flag describing whether this post back has been triggered by returning from a WXE function. </summary>
   bool IsReturningPostBack { get; }
@@ -142,19 +142,19 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 {
   /// <summary> Executes a WXE function in another window or frame. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
-  [Obsolete ("Use ExecuteRootFunction (WxeFunction, string, Control, bool) instead.")]
+  [Obsolete ("Use ExecuteFunctionExternal (WxeFunction, string, Control, bool) instead.")]
   public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    ExecuteRootFunction (function, target, sender, returningPostback);
+    ExecuteFunctionExternal (function, target, sender, returningPostback);
   }
 
   /// <summary> Executes a WXE function in another window or frame. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
-  [Obsolete ("Use ExecuteRootFunction (WxeFunction, string, string Control, bool) instead.")]
+  [Obsolete ("Use ExecuteFunctionExternal (WxeFunction, string, string Control, bool) instead.")]
   public void ExecuteFunction (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
-    ExecuteRootFunction (function, target, features, sender, returningPostback);
+    ExecuteFunctionExternal (function, target, features, sender, returningPostback);
   }
 
   #region IWxePage Impleplementation
@@ -176,10 +176,10 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   Executes a WXE function in the current window and redirects the browser to the path specified in the 
   ///   <see cref="UrlMapping.UrlMappingConfiguration"/> while the function executes.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="createPermalink" or @name="useParentPermalink"]' />
-  public void ExecuteFunction (WxeFunction function, bool createPermalink, bool useParentPermalink)
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  public void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteFunction (function, createPermalink, useParentPermalink);
+    _wxeInfo.ExecuteFunction (function, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary>
@@ -215,10 +215,10 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   /// <remarks>
   ///   This overload tries to determine automatically whether the current event was caused by the __EVENTTARGET field.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermalink" or @name="useParentPermalink"]' />
-  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermalink, bool useParentPermalink)
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteFunctionNoRepost (function, sender, createPermalink, useParentPermalink);
+    _wxeInfo.ExecuteFunctionNoRepost (function, sender, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary>
@@ -230,25 +230,25 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   This overload allows you to specify whether the current event was caused by the __EVENTTARGET field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean)</see>.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermalink" or @name="useParentPermalink"]' />
-  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget, bool createPermalink, bool useParentPermalink)
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteFunctionNoRepost (function, sender, usesEventTarget, createPermalink, useParentPermalink);
+    _wxeInfo.ExecuteFunctionNoRepost (function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary> Executes a WXE function in the specified window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteRootFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
-  public void ExecuteRootFunction (WxeFunction function, string target, Control sender, bool returningPostback)
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
+  public void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    _wxeInfo.ExecuteRootFunction (function, target, sender, returningPostback);
+    _wxeInfo.ExecuteFunctionExternal (function, target, sender, returningPostback);
   }
 
   /// <summary> Executes a WXE function in the specified window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteRootFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
-  public void ExecuteRootFunction (
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
+  public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
-    _wxeInfo.ExecuteRootFunction (function, target, features, sender, returningPostback);
+    _wxeInfo.ExecuteFunctionExternal (function, target, features, sender, returningPostback);
   }
 
   /// <summary> 
@@ -256,12 +256,12 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   <see cref="UrlMapping.UrlMappingConfiguration"/>.
   /// </summary>
   /// <remarks> Falls back to the current execution path if no mapping can be found for the <paramref name="function"/>. </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteRootFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermalink" or @name="useParentPermalink"]' />
-  public void ExecuteRootFunction (
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  public void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
-      bool createPermalink, bool useParentPermalink)
+      bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteRootFunction (function, target, sender, returningPostback, createPermalink, useParentPermalink);
+    _wxeInfo.ExecuteFunctionExternal (function, target, sender, returningPostback, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary> 
@@ -269,12 +269,12 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   <see cref="UrlMapping.UrlMappingConfiguration"/>.
   /// </summary>
   /// <remarks> Falls back to the current execution path if no mapping can be found for the <paramref name="function"/>. </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteRootFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermalink" or @name="useParentPermalink"]' />
-  public void ExecuteRootFunction (
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
-      bool createPermalink, bool useParentPermalink)
+      bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteRootFunction (function, target, features, sender, returningPostback,  createPermalink, useParentPermalink);
+    _wxeInfo.ExecuteFunctionExternal (function, target, features, sender, returningPostback,  createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary> Gets a flag describing whether this post back has been triggered by returning from a WXE function. </summary>

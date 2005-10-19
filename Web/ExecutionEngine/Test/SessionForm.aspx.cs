@@ -83,7 +83,7 @@ public class SessionForm : WxePage
   private void OpenSelfButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteRootFunction (new SessionWxeFunction (true), "_blank", OpenSelfButton, true);
+      ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", OpenSelfButton, true);
   }
 
   private void Button1_Click(object sender, System.EventArgs e)
@@ -132,13 +132,13 @@ public class SessionForm : WxePage
   private void OpenSampleFunctionInNewWindowButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteRootFunction (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true);
+      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true);
   }
 
   private void OpenSampleFunctionAsRootInNewWindowButton_Click(object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteRootFunction (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true, true, true);
+      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true, true, true);
   }
 
 }

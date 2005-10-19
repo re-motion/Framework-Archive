@@ -436,6 +436,21 @@ public class TypeConversionServicesTest
   }
 
   [Test]
+  public void GetTypeConverterForNaDecimal ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (NaDecimal));
+    Assert.IsNotNull (converter, "TypeConverter is null.");
+    Assert.AreEqual (typeof (NaDecimalConverter), converter.GetType());
+  }
+
+  [Test]
+  public void GetTypeConverterForDecimal ()
+  {
+    TypeConverter converter = _services.GetTypeConverter (typeof (decimal));
+    Assert.IsNull (converter, "TypeConverter is not null.");
+  }
+
+  [Test]
   public void GetTypeConverterForGuid ()
   {
     TypeConverter converter = _services.GetTypeConverter (typeof (Guid));
