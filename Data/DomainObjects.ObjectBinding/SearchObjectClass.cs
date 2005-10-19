@@ -70,7 +70,7 @@ public class SearchObjectClass : IBusinessObjectClass
   }
 
   /// <summary>
-  /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type <see cref="BusinessObjectClassType"/>.
+  /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type that was passed in the constructor.
   /// </summary>
   /// <returns>An array of instances of <see cref="BaseProperty"/> or a derived type for each property. If no properties can be found, an empty array is returned.</returns>
   public IBusinessObjectProperty[] GetPropertyDefinitions ()

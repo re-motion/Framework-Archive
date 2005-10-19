@@ -79,6 +79,20 @@ public class QueryConfigurationTest
     Assert.IsNotNull (QueryConfiguration.Current[0]);
   }
 
+  [Test]
+  public void Contains ()
+  {
+    Assert.IsFalse (QueryConfiguration.Current.Contains (QueryFactory.CreateCustomerTypeQueryDefinition ()));
+    Assert.IsTrue (QueryConfiguration.Current.Contains (QueryConfiguration.Current["OrderNoSumByCustomerNameQuery"]));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void ContainsNull ()
+  {
+    QueryConfiguration.Current.Contains (null);
+  }
+
   private QueryDefinitionCollection CreateExpectedQueryDefinitions ()
   {
     QueryDefinitionCollection queries = new QueryDefinitionCollection ();

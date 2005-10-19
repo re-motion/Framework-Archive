@@ -57,7 +57,7 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
   }
 
   /// <summary>
-  /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type <see cref="BusinessObjectClassType"/>.
+  /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type that was passed in the constructor.
   /// </summary>
   /// <returns>An array of instances of <see cref="BaseProperty"/> or a derived type for each property. If no properties can be found, an empty array is returned.</returns>
   public IBusinessObjectProperty[] GetPropertyDefinitions()
@@ -77,7 +77,7 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
   /// Returns the object with the given <paramref name="identifier"/>.
   /// </summary>
   /// <param name="identifier">The identifier of the object to return.</param>
-  /// <returns>The <see cref="BindableDomainObject"/> with the given <see cref="identifier"/>.</returns>
+  /// <returns>The <see cref="BindableDomainObject"/> with the given <paramref name="identifier"/>.</returns>
   /// <remarks>See <see cref="BindableDomainObject.GetObject"/> for a list of exceptions that can occur.</remarks>
   public IBusinessObjectWithIdentity GetObject (string identifier)
   {
