@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Utilities;
@@ -67,6 +68,53 @@ public class MappingConfiguration : ConfigurationBase
   public RelationDefinitionCollection RelationDefinitions
   {
     get { return _relationDefinitions; }
+  }
+
+  public bool Contains (ClassDefinition classDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
+    // TODO: Use _classDefinitions.Contains, after it implements object.Equals.
+    ClassDefinition foundClassDefinition = _classDefinitions[classDefinition.ID];
+    return object.ReferenceEquals (classDefinition, foundClassDefinition);
+  }
+
+  public bool Contains (PropertyDefinition propertyDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+
+    if (propertyDefinition.ClassDefinition == null)
+      return false;
+
+    ClassDefinition foundClassDefinition = _classDefinitions[propertyDefinition.ClassDefinition.ID];
+    if (foundClassDefinition == null)
+      return false;
+
+    // TODO: Use PropertyDefinitionCollection.Contains, after it implements object.Equals.
+    return object.ReferenceEquals (propertyDefinition, foundClassDefinition[propertyDefinition.PropertyName]);
+  }
+
+  public bool Contains (RelationDefinition relationDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
+
+    // TODO: Use _relationDefinitions.Contains, after it implements object.Equals.
+    RelationDefinition foundRelationDefinition = _relationDefinitions[relationDefinition.ID];
+    return object.ReferenceEquals (relationDefinition, foundRelationDefinition);
+  }
+
+  public bool Contains (IRelationEndPointDefinition relationEndPointDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("relationEndPointDefinition", relationEndPointDefinition);
+
+    if (relationEndPointDefinition.RelationDefinition == null)
+      return false;
+
+    RelationDefinition foundRelationDefinition = _relationDefinitions[relationEndPointDefinition.RelationDefinition.ID];
+    if (foundRelationDefinition == null)
+      return false;
+
+    return ((IList) foundRelationDefinition.EndPointDefinitions).Contains (relationEndPointDefinition);
   }
 }
 }
