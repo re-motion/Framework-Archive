@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.UI;
+using System.Collections.Specialized;
+using Rubicon.Utilities;
 
 namespace Rubicon.Web.Utilities
 {
@@ -78,6 +80,18 @@ public class UrlUtility
       encodedArgs[i] = HttpUtility.UrlDecode (args.ToString(), encoding);
   
     return string.Format (format, encodedArgs);
+  }
+
+  public static string FormatQueryString (NameValueCollection queryStringCollection)
+  {
+    ArgumentUtility.CheckNotNull ("queryStringCollection", queryStringCollection);
+    string queryString = string.Empty;
+    for (int i = 0; i < queryStringCollection.Count; i++)
+    {
+      queryString = PageUtility.AddUrlParameter (
+          queryString, queryStringCollection.GetKey(i), queryStringCollection.Get(i));
+    }
+    return queryString;
   }
 
 	private UrlUtility()
