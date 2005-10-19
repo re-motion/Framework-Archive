@@ -99,6 +99,8 @@ public class WxePageStep: WxeStep
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Execute/*' />
   public override void Execute (WxeContext context)
   {
+    ArgumentUtility.CheckNotNull ("context", context);
+
     if (_function == null)
     {
       //  This is the PageStep if it isn't executing a sub-function
@@ -189,6 +191,8 @@ public class WxePageStep: WxeStep
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecuteFunction/*' />
   public void ExecuteFunction (IWxePage page, WxeFunction function, bool remapPath)
   {
+    ArgumentUtility.CheckNotNull ("page", page);
+
     //  Back-up postback data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
     
@@ -203,6 +207,8 @@ public class WxePageStep: WxeStep
   internal void ExecuteFunctionNoRepost (
       IWxePage page, WxeFunction function, Control sender, bool usesEventTarget, bool remapPath)
   {
+    ArgumentUtility.CheckNotNull ("page", page);
+
     //  Back-up post back data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
 
@@ -227,6 +233,9 @@ public class WxePageStep: WxeStep
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/InternalExecuteFunction/*' />
   private void InternalExecuteFunction (IWxePage page, WxeFunction function, bool remapPath)
   {
+    ArgumentUtility.CheckNotNull ("page", page);
+    ArgumentUtility.CheckNotNull ("function", function);
+
     if (_function != null)
       throw new InvalidOperationException ("Cannot execute function while another function executes.");
 
