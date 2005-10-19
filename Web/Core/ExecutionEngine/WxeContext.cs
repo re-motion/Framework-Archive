@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Collections.Specialized;
 using System.Web;
 using System.Collections;
 using System.Collections.Specialized;
@@ -43,46 +44,6 @@ public class WxeContext
     System.Runtime.Remoting.Messaging.CallContext.SetData ("WxeContext", value);
   }
 
-  /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
-  /// <param name="request"> The <see cref="HttpRequest"/>. Must not be <see langword="null"/>. </param>
-  /// <param name="response"> The <see cref="HttpResponse"/>. Must not be <see langword="null"/>. </param>
-  /// <param name="functionToken"> 
-  ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
-  /// </param>
-  /// <param name="queryString"> An optional query string. </param>
-  public static string GetResumePath (
-      HttpRequest request, HttpResponse response, string functionToken, string queryString)
-  {
-    ArgumentUtility.CheckNotNull ("request", request);
-    return WxeContext.GetResumePath (request.Url.AbsolutePath, response, functionToken, queryString);
-  }
-
-  /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
-  /// <param name="path"> The path to the <see cref="WxeHandler"/>. Must not be <see langword="null"/> or emtpy. </param>
-  /// <param name="response"> The <see cref="HttpResponse"/>. Must not be <see langword="null"/>. </param>
-  /// <param name="functionToken"> 
-  ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
-  /// </param>
-  /// <param name="queryString"> An optional query string. </param>
-  public static string GetResumePath (
-      string path, HttpResponse response, string functionToken, string queryString)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("path", path);
-    ArgumentUtility.CheckNotNull ("response", response);
-    ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
-    
-    if (! StringUtility.IsNullOrEmpty (queryString) && ! queryString.StartsWith ("?"))
-      queryString = "?" + queryString;
-    
-    if (! StringUtility.IsNullOrEmpty (queryString))
-      queryString = PageUtility.DeleteUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
-    if (StringUtility.IsNullOrEmpty (queryString) || queryString == "?")
-      queryString = string.Empty;
-    queryString = PageUtility.AddUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken, functionToken);
-    
-    path = response.ApplyAppPathModifier (path);
-    return path + queryString;
-  }
 
   private HttpContext _httpContext;
   private bool _isPostBack = false;
@@ -204,7 +165,43 @@ public class WxeContext
   /// <summary> Gets the absolute path that resumes the current function. </summary>
   public string GetResumePath ()
   {
-    return WxeContext.GetResumePath (_httpContext.Request, _httpContext.Response, FunctionToken, QueryString);
+    return GetResumePath (FunctionToken, QueryString);
+  }
+
+  /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
+  /// <param name="functionToken"> 
+  ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
+  /// </param>
+  /// <param name="queryString"> An optional query string. </param>
+  public string GetResumePath (string functionToken, string queryString)
+  {
+    return GetResumePath (_httpContext.Request.Url.AbsolutePath, functionToken, queryString);
+  }
+
+  /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
+  /// <param name="path"> The path to the <see cref="WxeHandler"/>. Must not be <see langword="null"/> or emtpy. </param>
+  /// <param name="functionToken"> 
+  ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
+  /// </param>
+  /// <param name="queryString"> An optional query string. </param>
+  public string GetResumePath (string path, string functionToken, string queryString)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("path", path);
+    ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
+
+    HttpResponse response = WxeContext.Current.HttpContext.Response;
+
+    if (! StringUtility.IsNullOrEmpty (queryString) && ! queryString.StartsWith ("?"))
+      queryString = "?" + queryString;
+    
+    if (! StringUtility.IsNullOrEmpty (queryString))
+      queryString = PageUtility.DeleteUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
+    if (StringUtility.IsNullOrEmpty (queryString) || queryString == "?")
+      queryString = string.Empty;
+    queryString = PageUtility.AddUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken, functionToken);
+    
+    path = response.ApplyAppPathModifier (path);
+    return path + queryString;
   }
 
   /// <summary> Gets the absolute path for to the <b>WxeHandler</b> used in the request. </summary>
@@ -212,6 +209,31 @@ public class WxeContext
   {
     string path = _httpContext.Response.ApplyAppPathModifier (_httpContext.Request.Url.AbsolutePath);
     return path + QueryString;
+  }
+
+  public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
+  {
+    ArgumentUtility.CheckNotNull ("functionType", functionType);
+    if (! typeof (WxeFunction).IsAssignableFrom (functionType))
+      throw new ArgumentException (string.Format ("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
+    ArgumentUtility.CheckNotNull ("queryString", queryString);
+
+    UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
+    if (mapping == null)
+    {
+      string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
+      queryString.Add (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
+    }
+
+    string path;
+    if (mapping == null)
+      path = _httpContext.Request.Url.AbsolutePath;
+    else
+      path = HttpContext.Response.ApplyAppPathModifier (mapping.Resource);
+
+    string serverPart = _httpContext.Request.Url.GetLeftPart (System.UriPartial.Authority);
+
+    return serverPart + path + UrlUtility.FormatQueryString (queryString);
   }
 }
 
