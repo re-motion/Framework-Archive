@@ -84,6 +84,7 @@ public class WxeHandlerTest: WxeTest
     _invalidFunctionTypeName = "Rubicon.Web.UnitTests::ExecutionEngine.InvalidFunction";
 
     Thread.Sleep (20);
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
   }
 
   [TearDown]
@@ -96,6 +97,7 @@ public class WxeHandlerTest: WxeTest
     WxeFunctionStateCollection.Instance.Abort (_functionStateExpired);
     WxeFunctionStateCollection.Instance.Abort (_functionStateWithChildFunction);
  
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
     base.TearDown();
   }
 
@@ -205,10 +207,116 @@ public class WxeHandlerTest: WxeTest
 
 	[Test]
   [ExpectedException (typeof (HttpException))]
-  public void RetrieveMissingFunctionState()
+  public void RetrieveMissingFunctionStateWithNoType()
   {
+    _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForMissingFunctionState);
+    Assert.Fail();
+  }
+
+	[Test]
+  public void RetrieveMissingFunctionStateWithTypeFromMapping()
+  {
+    HttpContext context = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/Test.wxe", null);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
+    HttpContextHelper.SetQueryString (context, queryString);
+
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
+        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (typeof (TestFunction), "~/Test.wxe"));
+
     WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForMissingFunctionState);
+        _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+
+    Assert.IsNotNull (functionState);
+    Assert.AreEqual (typeof (TestFunction), functionState.Function.GetType());
+  }
+
+	[Test]
+  [ExpectedException (typeof (HttpException))]
+  public void RetrieveMissingFunctionStateWithTypeFromMappingAndPostBackAction()
+  {
+    HttpContext context = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/Test.wxe", null);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
+    queryString.Add (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
+    HttpContextHelper.SetQueryString (context, queryString);
+
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
+        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (typeof (TestFunction), "~/Test.wxe"));
+
+    WxeFunctionState functionState = 
+        _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+    Assert.Fail();
+  }
+
+	[Test]
+  [ExpectedException (typeof (HttpException))]
+  public void RetrieveMissingFunctionStateWithTypeFromMappingAndTokenInPostData()
+  {
+    HttpContext context = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/Test.wxe", null);
+    NameValueCollection form = new NameValueCollection();
+    form.Add (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
+    HttpContextHelper.SetForm (context, form);
+
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
+        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (typeof (TestFunction), "~/Test.wxe"));
+
+    WxeFunctionState functionState = 
+        _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+    Assert.Fail();
+  }
+
+	[Test]
+  public void RetrieveMissingFunctionStateWithTypeFromQueryString()
+  {
+    HttpContext context = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/Test.wxe", null);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
+    queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
+    HttpContextHelper.SetQueryString (context, queryString);
+
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+
+    WxeFunctionState functionState = 
+        _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+    Assert.IsNotNull (functionState);
+    Assert.AreEqual (typeof (TestFunction), functionState.Function.GetType());
+  }
+
+	[Test]
+  [ExpectedException (typeof (HttpException))]
+  public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndPostBackAction()
+  {
+    HttpContext context = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/Test.wxe", null);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
+    queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
+    queryString.Add (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
+    HttpContextHelper.SetQueryString (context, queryString);
+
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+
+    WxeFunctionState functionState = 
+        _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
+    Assert.Fail();
+  }
+
+	[Test]
+  [ExpectedException (typeof (HttpException))]
+  public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndTokenInPostData()
+  {
+    HttpContext context = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/Test.wxe", null);
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
+    HttpContextHelper.SetQueryString (context, queryString);
+    NameValueCollection form = new NameValueCollection();
+    form.Add (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
+    HttpContextHelper.SetForm (context, form);
+
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+
+    WxeFunctionState functionState = 
+        _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
     Assert.Fail();
   }
 
@@ -216,8 +324,7 @@ public class WxeHandlerTest: WxeTest
   [ExpectedException (typeof (ApplicationException))]
   public void RetrieveFunctionStateWithMissingFunction()
   {
-    WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
+    _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
     Assert.Fail();
   }
 
@@ -225,8 +332,7 @@ public class WxeHandlerTest: WxeTest
   [ExpectedException (typeof (HttpException))]
   public void RetrieveExpiredFunctionState()
   {
-    WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
+     _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
     Assert.Fail();
   }
 
@@ -234,8 +340,7 @@ public class WxeHandlerTest: WxeTest
   [ExpectedException (typeof (InvalidOperationException))]
   public void RetrieveAbortedFunctionState()
   {
-    WxeFunctionState functionState = 
-        _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForAbortedFunctionState);
+    _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForAbortedFunctionState);
     Assert.Fail();
   }
 
@@ -333,7 +438,7 @@ public class WxeHandlerTest: WxeTest
   [Test]
   public void ExecuteFunctionState()
   {
-    _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateWithEnabledCleanUp, true, false);
+    _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateWithEnabledCleanUp, true);
     TestFunction function = (TestFunction) _functionStateWithEnabledCleanUp.Function;
 
     WxeContext wxeContext = function.TestStep.WxeContext;
@@ -348,7 +453,7 @@ public class WxeHandlerTest: WxeTest
   [ExpectedException (typeof (InvalidOperationException))]
   public void ExecuteAbortedFunctionState()
   {
-    _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateAborted, true, false);
+    _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateAborted, true);
     Assert.Fail();
   }
 
