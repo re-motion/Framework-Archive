@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Web;
 using System.Collections;
-using System.Collections.Specialized;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 
@@ -51,7 +50,7 @@ public class WxeContext
   private NameValueCollection _postBackCollection = null;
   private WxeFunction _returningFunction = null;
   private WxeFunctionState _functionState;
-  private string _queryString = string.Empty;
+  private string _queryString;
 
   public WxeContext (HttpContext context, WxeFunctionState functionState, string queryString)
   {
@@ -61,12 +60,15 @@ public class WxeContext
     _httpContext = context;
     _functionState = functionState;
 
-    if (! StringUtility.IsNullOrEmpty (queryString))
+    if (StringUtility.IsNullOrEmpty (queryString))
+    {
+      _queryString = string.Empty;
+    }
+    else
     {
       if (! queryString.StartsWith ("?"))
         queryString = "?" + queryString;
       queryString = PageUtility.DeleteUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
-      queryString = PageUtility.DeleteUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionType);
       if (queryString != "?")
         _queryString = queryString;
     }
@@ -146,7 +148,7 @@ public class WxeContext
     set { _returningFunction = value; }
   }
 
-  /// <summary> Gets the absolute URL that resumes the current function. </summary>
+  /// <summary> Gets the URL that resumes the current function. </summary>
   /// <remarks>
   ///   If a WXE application branches to an external web site, the external site can
   ///   link back to this URL to resume the current function at the point where 
@@ -156,26 +158,40 @@ public class WxeContext
   /// </remarks>
   public string GetResumeUrl ()
   {
-    string pathPart = GetResumePath ();
+    string pathPart = GetResumePath();
     pathPart = HttpContext.Response.ApplyAppPathModifier (pathPart);
     string serverPart = HttpContext.Request.Url.GetLeftPart (System.UriPartial.Authority);
     return serverPart + pathPart;
   }
 
   /// <summary> Gets the absolute path that resumes the current function. </summary>
-  public string GetResumePath ()
+  protected internal string GetResumePath ()
   {
-    return GetResumePath (_httpContext.Request.Url.AbsolutePath, FunctionToken, QueryString);
+    return GetPath (_httpContext.Request.Url.AbsolutePath, FunctionToken, QueryString);
+  }
+
+  /// <summary> Gets the absolute path to the WXE handler. </summary>
+  /// <param name="queryString"> An optional query string to be appended to the path. </param>
+  protected internal string GetPath (string queryString)
+  {
+    if (! StringUtility.IsNullOrEmpty (queryString) && ! queryString.StartsWith ("?"))
+      queryString = "?" + queryString;
+    
+    if (StringUtility.IsNullOrEmpty (queryString) || queryString == "?")
+      queryString = string.Empty;
+    
+    string path = WxeContext.Current.HttpContext.Response.ApplyAppPathModifier (_httpContext.Request.Url.AbsolutePath);
+    return path + queryString;
   }
 
   /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
   /// <param name="functionToken"> 
   ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
   /// </param>
-  /// <param name="queryString"> An optional query string. </param>
-  internal string GetResumePath (string functionToken, string queryString)
+  /// <param name="queryString"> An optional query string to be appended to the path. </param>
+  protected internal string GetPath (string functionToken, string queryString)
   {
-    return GetResumePath (_httpContext.Request.Url.AbsolutePath, functionToken, queryString);
+    return GetPath (_httpContext.Request.Url.AbsolutePath, functionToken, queryString);
   }
 
   /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
@@ -183,8 +199,8 @@ public class WxeContext
   /// <param name="functionToken"> 
   ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
   /// </param>
-  /// <param name="queryString"> An optional query string. </param>
-  internal string GetResumePath (string path, string functionToken, string queryString)
+  /// <param name="queryString"> An optional query string to be appended to the <paramref name="path"/>. </param>
+  protected internal string GetPath (string path, string functionToken, string queryString)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("path", path);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
@@ -207,13 +223,17 @@ public class WxeContext
     return path + queryString;
   }
 
-  /// <summary> Gets the absolute path for to the <b>WxeHandler</b> used in the request. </summary>
-  public string GetPath ()
-  {
-    string path = _httpContext.Response.ApplyAppPathModifier (_httpContext.Request.Url.AbsolutePath);
-    return path + QueryString;
-  }
-
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <see cref="functionType"/> 
+  ///   and using the <paramref name="queryString"/>.
+  /// </summary>
+  /// <param name="functionType"> 
+  ///   The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 
+  ///   Must be derived from <see cref="WxeFunction"/>. 
+  /// </param>
+  /// <param name="queryString">
+  ///   The <see cref="NameValueCollection"/> containing the query string arguments. Must not be <see langword="null"/>. 
+  /// </param>
   public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
   {
     ArgumentUtility.CheckNotNull ("functionType", functionType);
