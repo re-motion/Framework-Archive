@@ -227,7 +227,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       bool isAbortEnabled = _page.IsAbortEnabled;
 
       WxeContext wxeContext = WxeContext.Current;
-      string resumePath = wxeContext.GetResumePath ();
+      string resumePath = wxeContext.GetPath (wxeContext.FunctionToken);
 
       refreshIntervall = WxeHandler.RefreshInterval * 60000;
       refreshPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Refresh + "'";
@@ -353,7 +353,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
   {
-    CurrentStep.ExecuteFunction (_page, function, createPermaUrl);
+    CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl);
   }
 
 
@@ -388,7 +388,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
   {
-    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, createPermaUrl);
+    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary> 
@@ -440,25 +440,21 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     WxeContext wxeContext = WxeContext.Current;
 
-    string path;
-    string queryString;
+    string functionToken = GetFunctionTokenForExternalFunction (function, returningPostback);
+
+    string href;
     if (createPermaUrl)
     {
-      string permanentUrl = 
-          wxeContext.GetPermanentUrl (function.GetType(), function.SerializeParametersForQueryString());
-      string[] urlParts = permanentUrl.Split (new char[]{'?'}, 2);
-      path = urlParts[0];
-      queryString = (urlParts.Length == 2) ? urlParts[1] : string.Empty;
+      NameValueCollection queryString = function.SerializeParametersForQueryString();
+      queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+      href = wxeContext.GetPermanentUrl (function.GetType(), queryString);
     }
     else
     {
       UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[function.GetType()];
-      path = (mapping != null) ? mapping.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
-      queryString = wxeContext.QueryString;
+      string path = (mapping != null) ? mapping.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
+      href = wxeContext.GetPath (path, functionToken, null);
     }
-
-    string functionToken = GetFunctionTokenForExternalFunction (function, returningPostback);
-    string href = wxeContext.GetResumePath (path, functionToken, queryString);
 
     string openScript;
     if (features != null)
@@ -471,6 +467,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         "javascript:" + GetClosingScriptForExternalFunction (functionToken, sender, returningPostback);
   }
 
+  /// <summary> 
+  ///   Initalizes a new <see cref="WxeFunctionState"/> with the passed <paramref name="function"/> and returns
+  ///   the associated function token.
+  /// </summary>
   private string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
   {
     bool enableCleanUp = !returningPostback;
@@ -480,6 +480,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     return functionState.FunctionToken;
   }
 
+  /// <summary> Gets the client script to be used as the return URL for the window of the external function. </summary>
   private string GetClosingScriptForExternalFunction (string functionToken, Control sender, bool returningPostback)
   {
     if (! returningPostback)
@@ -502,6 +503,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
+  /// <summary> 
+  ///   Gets the client script used to execute <c>__dopostback</c> in the parent form before closing the window of the 
+  ///   external function.
+  /// </summary>
   private string FormatDoPostBackClientScript (
       string functionToken, string pageToken, string senderID, string eventTarget, string eventArgument)
   {
@@ -519,6 +524,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         WxePageInfo.PageTokenID, pageToken, eventTarget, eventArgument, functionToken);
   }
 
+  /// <summary> 
+  ///   Gets the client script used to submit the parent form before closing the window of the external function. 
+  /// </summary>
   private string FormatDoSubmitClientScript (string functionToken, string pageToken, string senderID)
   {
     return string.Format (
@@ -535,16 +543,25 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         WxePageInfo.PageTokenID, pageToken, senderID, functionToken);
   }
 
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl()">IWxePage.GetPermanentUrl()</see>.
+  /// </summary>
   public string GetPermanentUrl ()
   {
     return GetPermanentUrl (CurrentFunction.GetType(), CurrentFunction.SerializeParametersForQueryString());
   }
   
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl(System.Collections.Specialized.NameValueCollection)">IWxePage.GetPermanentUrl(NameValueCollection)</see>.
+  /// </summary>
   public string GetPermanentUrl (NameValueCollection queryString)
   {
     return GetPermanentUrl (CurrentFunction.GetType(), queryString);
   }
   
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl(System.Type,System.Collections.Specialized.NameValueCollection)">IWxePage.GetPermanentUrl(Type,NameValueCollection)</see>.
+  /// </summary>
   public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
   {
     return WxeContext.Current.GetPermanentUrl (functionType, queryString);
