@@ -124,10 +124,6 @@ public class MyFunction: WxeFunction
     <param name="function"> 
       The <see cref="WxeFunction"/> to be executed. Must not be <see langword="null"/>. 
     </param>
-    <param name="remapPath">
-      <see langword="true"/> to try to find the friendly URL for the <paramref name="function"/> in 
-      <see cref="UrlMapping.UrlMappingConfiguration"/> and then redirect the browser to this URL.
-    </param>
     <remarks>
       Note that if you call this method from a postback event handler, the postback event will be raised again 
       when the user returns to this page. You can either manually check whether the event was re-posted using 

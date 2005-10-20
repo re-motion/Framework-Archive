@@ -32,12 +32,15 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton ExecuteNoRepostButton;
   protected System.Web.UI.WebControls.Label FunctionTokenLabel;
   protected System.Web.UI.WebControls.Label PostBackIDLabel;
-  protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionAsRootInNewWindowButton;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlInNewWindowButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionInNewWindowButton;
-  protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionAsRootButton;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionButton;
   protected System.Web.UI.WebControls.HyperLink CurrentFunctionPermaLink;
   protected System.Web.UI.WebControls.HyperLink SampleFunctionPermaLink;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlButton;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlInNewWindowButton;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionInNewWindowButton;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -81,9 +84,9 @@ public class SessionForm : WxePage
     this.ExecuteNoRepostButton.Click += new System.EventHandler(this.ExecuteNoRepostButton_Click);
     this.Button2Button.Click += new System.EventHandler(this.Button2Button_Click);
     this.OpenSampleFunctionButton.Click += new System.EventHandler(this.OpenSampleFunctionButton_Click);
-    this.OpenSampleFunctionAsRootButton.Click += new System.EventHandler(this.OpenSampleFunctionAsRootButton_Click);
     this.OpenSampleFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionInNewWindowButton_Click);
-    this.OpenSampleFunctionAsRootInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionAsRootInNewWindowButton_Click);
+    this.OpenSessionFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionInNewWindowButton_Click);
+    this.OpenSessionFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlInNewWindowButton_Click);
     this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
     this.Load += new System.EventHandler(this.Page_Load);
 
@@ -122,33 +125,45 @@ public class SessionForm : WxePage
       ExecuteFunction (new SampleWxeFunction ());
   }
 
-  private void ExecuteNoRepostButton_Click(object sender, System.EventArgs e)
+  private void ExecuteNoRepostButton_Click (object sender, System.EventArgs e)
   {
     ExecuteFunctionNoRepost (new SampleWxeFunction (), (Control) sender);
   }
 
-  private void OpenSampleFunctionButton_Click(object sender, System.EventArgs e)
+  private void OpenSampleFunctionButton_Click (object sender, System.EventArgs e)
   {
     if (! IsReturningPostBack)
-      ExecuteFunction (new SampleWxeFunction());
+      ExecuteFunction (new SampleWxeFunction(), false, false);
   }
 
-  private void OpenSampleFunctionAsRootButton_Click(object sender, System.EventArgs e)
+  private void OpenSampleFunctionWithPermanentUrlButton_Click (object sender, System.EventArgs e)
   {
     if (! IsReturningPostBack)
       ExecuteFunction (new SampleWxeFunction(), true, true);
   }
 
-  private void OpenSampleFunctionInNewWindowButton_Click(object sender, System.EventArgs e)
+  private void OpenSampleFunctionInNewWindowButton_Click (object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true);
+      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", (Control) sender, true, false, false);
   }
 
-  private void OpenSampleFunctionAsRootInNewWindowButton_Click(object sender, System.EventArgs e)
+  private void OpenSampleFunctionWithPermanentUrlInNewWindowButton_Click (object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", OpenSampleFunctionButton, true, true, true);
+      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", (Control) sender, true, true, true);
+  }
+
+  private void OpenSessionFunctionInNewWindowButton_Click (object sender, System.EventArgs e)
+  {
+    if (!IsReturningPostBack)
+      ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", (Control) sender, true, false, false);
+  }
+
+  private void OpenSessionFunctionWithPermanentUrlInNewWindowButton_Click (object sender, System.EventArgs e)
+  {
+    if (!IsReturningPostBack)
+      ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", (Control) sender, true, true, true);
   }
 
 }

@@ -176,4 +176,13 @@ public override void LoadPageStateFromPersistenceMedium()
       Thrown if the method is called after the <b>OnPreRender</b> method of the base page has been invoked invoked.
     </exception>
   </RegisterClientSidePageEventHandler>
+  <GetPermanentUrl>
+    <param name="functionType"> 
+      The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 
+      Must be derived from <see cref="WxeFunction"/>. 
+    </param>
+    <param name="queryString">
+      The <see cref="NameValueCollection"/> containing the query string arguments. Must not be <see langword="null"/>. 
+    </param>
+  </GetPermanentUrl>
 </IWxePage>

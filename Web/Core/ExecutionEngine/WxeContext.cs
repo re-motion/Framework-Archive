@@ -165,7 +165,7 @@ public class WxeContext
   /// <summary> Gets the absolute path that resumes the current function. </summary>
   public string GetResumePath ()
   {
-    return GetResumePath (FunctionToken, QueryString);
+    return GetResumePath (_httpContext.Request.Url.AbsolutePath, FunctionToken, QueryString);
   }
 
   /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
@@ -173,7 +173,7 @@ public class WxeContext
   ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
   /// </param>
   /// <param name="queryString"> An optional query string. </param>
-  public string GetResumePath (string functionToken, string queryString)
+  internal string GetResumePath (string functionToken, string queryString)
   {
     return GetResumePath (_httpContext.Request.Url.AbsolutePath, functionToken, queryString);
   }
@@ -184,12 +184,15 @@ public class WxeContext
   ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
   /// </param>
   /// <param name="queryString"> An optional query string. </param>
-  public string GetResumePath (string path, string functionToken, string queryString)
+  internal string GetResumePath (string path, string functionToken, string queryString)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("path", path);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
 
     HttpResponse response = WxeContext.Current.HttpContext.Response;
+
+    if (path.IndexOf ("?") != -1)
+      throw new ArgumentException ("The path must be provided without a query string. Use the query string parameter instead.", "path");
 
     if (! StringUtility.IsNullOrEmpty (queryString) && ! queryString.StartsWith ("?"))
       queryString = "?" + queryString;

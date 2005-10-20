@@ -439,41 +439,26 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     ArgumentUtility.CheckNotNullOrEmpty ("target", target);
 
     WxeContext wxeContext = WxeContext.Current;
-    HttpContext httpContext = wxeContext.HttpContext;
 
-
-    UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[function.GetType()];
-    string path = null;
-    if (mapping != null)
-      path = mapping.Resource;
-    
-    string queryString = string.Empty;
+    string path;
+    string queryString;
     if (createPermaUrl)
     {
-      if (mapping == null)
-      {
-        Type functionType = function.GetType();
-        string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
-        queryString = PageUtility.AddUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionType, functionTypeName);
-      }
-
-      NameValueCollection serializedParameters = function.SerializeParametersForQueryString ();
-      foreach (string key in serializedParameters)
-        queryString = PageUtility.AddUrlParameter (queryString, key, serializedParameters[key]);
+      string permanentUrl = 
+          wxeContext.GetPermanentUrl (function.GetType(), function.SerializeParametersForQueryString());
+      string[] urlParts = permanentUrl.Split (new char[]{'?'}, 2);
+      path = urlParts[0];
+      queryString = (urlParts.Length == 2) ? urlParts[1] : string.Empty;
     }
     else
     {
+      UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[function.GetType()];
+      path = (mapping != null) ? mapping.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
       queryString = wxeContext.QueryString;
     }
 
-    bool enableCleanUp = !returningPostback;
-    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
-    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
-    functionStates.Add (functionState);
-
-    if (StringUtility.IsNullOrEmpty (path))
-      path = httpContext.Request.Url.AbsolutePath;
-    string href = wxeContext.GetResumePath (path, functionState.FunctionToken, queryString);
+    string functionToken = GetFunctionTokenForExternalFunction (function, returningPostback);
+    string href = wxeContext.GetResumePath (path, functionToken, queryString);
 
     string openScript;
     if (features != null)
@@ -482,58 +467,73 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       openScript = string.Format ("window.open('{0}', '{1}');", href, target);
     PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", openScript);
 
-    string returnScript;
+    function.ReturnUrl = 
+        "javascript:" + GetClosingScriptForExternalFunction (functionToken, sender, returningPostback);
+  }
+
+  private string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
+  {
+    bool enableCleanUp = !returningPostback;
+    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
+    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+    functionStates.Add (functionState);
+    return functionState.FunctionToken;
+  }
+
+  private string GetClosingScriptForExternalFunction (string functionToken, Control sender, bool returningPostback)
+  {
     if (! returningPostback)
     {
-      returnScript = "window.close();";
+      return "window.close();";
     }
     else if (UsesEventTarget)
     {
-      string eventtarget = _page.GetPostBackCollection()[ControlHelper.PostEventSourceID];
-      string eventargument = _page.GetPostBackCollection()[ControlHelper.PostEventArgumentID ];
-      returnScript = string.Format (
-            "\r\n"
-          + "if (   window.opener != null \r\n"
-          + "    && ! window.opener.closed \r\n"
-          + "    && window.opener.wxeDoPostBack != null \r\n"
-          + "    && window.opener.document.getElementById('{0}') != null \r\n"
-          + "    && window.opener.document.getElementById('{0}').value == '{1}') \r\n"
-          + "{{ \r\n"
-          + "  window.opener.wxeDoPostBack('{2}', '{3}', '{4}'); \r\n"
-          + "}} \r\n"
-          + "window.close(); \r\n",
-          WxePageInfo.PageTokenID,
-          _page.CurrentStep.PageToken,
-          eventtarget, 
-          eventargument, 
-          functionState.FunctionToken);
+      string eventTarget = _page.GetPostBackCollection()[ControlHelper.PostEventSourceID];
+      string eventArgument = _page.GetPostBackCollection()[ControlHelper.PostEventArgumentID ];
+      return FormatDoPostBackClientScript (
+          functionToken, _page.CurrentStep.PageToken, sender.ClientID, eventTarget, eventArgument);
     }
     else
     {
       ArgumentUtility.CheckNotNull ("sender", sender);
       if (! (sender is IPostBackEventHandler || sender is IPostBackDataHandler))
         throw new ArgumentException ("The sender must implement either IPostBackEventHandler or IPostBackDataHandler. Provide the control that raised the post back event.");
-
-      returnScript = string.Format (
-            "\r\n"
-          + "if (   window.opener != null \r\n"
-          + "    && ! window.opener.closed \r\n"
-          + "    && window.opener.wxeDoSubmit != null \r\n"
-          + "    && window.opener.document.getElementById('{0}') != null \r\n"
-          + "    && window.opener.document.getElementById('{0}').value == '{1}') \r\n"
-          + "{{ \r\n"
-          + "  window.opener.wxeDoSubmit('{2}', '{3}'); \r\n"
-          + "}} \r\n"
-          + "window.close(); \r\n",
-          WxePageInfo.PageTokenID,
-          _page.CurrentStep.PageToken,
-          sender.ClientID, 
-          functionState.FunctionToken);
+      return FormatDoSubmitClientScript (functionToken, _page.CurrentStep.PageToken, sender.ClientID);
     }
-    function.ReturnUrl = "javascript:" + returnScript;
   }
 
+  private string FormatDoPostBackClientScript (
+      string functionToken, string pageToken, string senderID, string eventTarget, string eventArgument)
+  {
+    return string.Format (
+          "\r\n"
+        + "if (   window.opener != null \r\n"
+        + "    && ! window.opener.closed \r\n"
+        + "    && window.opener.wxeDoPostBack != null \r\n"
+        + "    && window.opener.document.getElementById('{0}') != null \r\n"
+        + "    && window.opener.document.getElementById('{0}').value == '{1}') \r\n"
+        + "{{ \r\n"
+        + "  window.opener.wxeDoPostBack('{2}', '{3}', '{4}'); \r\n"
+        + "}} \r\n"
+        + "window.close(); \r\n",
+        WxePageInfo.PageTokenID, pageToken, eventTarget, eventArgument, functionToken);
+  }
 
+  private string FormatDoSubmitClientScript (string functionToken, string pageToken, string senderID)
+  {
+    return string.Format (
+          "\r\n"
+        + "if (   window.opener != null \r\n"
+        + "    && ! window.opener.closed \r\n"
+        + "    && window.opener.wxeDoSubmit != null \r\n"
+        + "    && window.opener.document.getElementById('{0}') != null \r\n"
+        + "    && window.opener.document.getElementById('{0}').value == '{1}') \r\n"
+        + "{{ \r\n"
+        + "  window.opener.wxeDoSubmit('{2}', '{3}'); \r\n"
+        + "}} \r\n"
+        + "window.close(); \r\n",
+        WxePageInfo.PageTokenID, pageToken, senderID, functionToken);
+  }
 
   public string GetPermanentUrl ()
   {
@@ -547,25 +547,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   
   public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
   {
-    ArgumentUtility.CheckNotNull ("functionType", functionType);
-    if (! typeof (WxeFunction).IsAssignableFrom (functionType))
-      throw new ArgumentException (string.Format ("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
-    ArgumentUtility.CheckNotNull ("queryString", queryString);
-
-    UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
-    if (mapping == null)
-    {
-      string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
-      queryString.Add (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
-    }
-
-    string url;
-    if (mapping == null)
-      url = UrlUtility.GetAbsolutePageUrl ((Page)_page);
-    else
-      url = UrlUtility.GetAbsoluteUrl ((Page)_page, mapping.Resource);
-
-    return url + UrlUtility.FormatQueryString (queryString);
+    return WxeContext.Current.GetPermanentUrl (functionType, queryString);
   }
 
   /// <summary> Implements <see cref="IWxePage.IsReturningPostBack">IWxePage.IsReturningPostBack</see>. </summary>
