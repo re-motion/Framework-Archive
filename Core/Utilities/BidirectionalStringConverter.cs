@@ -8,7 +8,23 @@ namespace Rubicon.Utilities
 
 /// <summary> Specialization of <see cref="TypeConverter"/> for conversions from and to <see cref="String"/>. </summary>
 /// <remarks>
-///   Conversions from <see cref="Single"/> and <see cref="Double"/> are done using "R" as format string. 
+///   <para>
+///     Conversions from <see cref="Single"/> and <see cref="Double"/> are done using "R" as format string. 
+///   </para><para>
+///     Conversion is possible under the following conditions:
+///   </para>
+///   <list type="bullet">
+///     <item>
+///       A <see cref="Type"/> is not an array.
+///     </item>
+///     <item>
+///       The <see cref="Type"/> is <see cref="Guid"/> or <see cref="DBNull"/>
+///     </item>
+///     <item>
+///       A <see cref="Type"/> implements either a public static &lt;DestinationType&gt; Parse (string) or a 
+///       public static &lt;DestinationType&gt; Parse (string, IFormatProvider) method.
+///     </item>
+///   </list>
 /// </remarks>
 public class BidirectionalStringConverter: TypeConverter
 {
@@ -38,14 +54,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <returns> <see langword="true"/> if the conversion is supported. </returns>
   public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
   {
-    if (destinationType == null)
-      return false;
-    if (destinationType.IsArray)
-      return false;
-    if (destinationType == typeof (Guid))
-      return true;
-    return    StringUtility.GetParseMethodWithFormatProvider (destinationType) != null
-           || StringUtility.GetParseMethod (destinationType) != null;
+    return CanConvertFrom (context, destinationType);
   }
 
   /// <summary> Converts <paramref name="value"/> into a <see cref="String"/>. </summary>
@@ -94,6 +103,8 @@ public class BidirectionalStringConverter: TypeConverter
       string stringValue = (string) value;
       if (destinationType == typeof (Guid))
         return new Guid (stringValue);
+      if (destinationType == typeof (DBNull))
+        return DBNull.Value;
       return StringUtility.Parse (destinationType, stringValue, culture);
     }
     return base.ConvertTo (context, culture, value, destinationType);

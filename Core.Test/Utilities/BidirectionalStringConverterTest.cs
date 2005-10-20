@@ -178,6 +178,18 @@ public class BidirectionalStringConverterTest
     Assert.IsFalse (_converter.CanConvertFrom (typeof (object)));
   }
 
+  [Test]
+  public void CanConvertToDBNull()
+  {
+    Assert.IsTrue (_converter.CanConvertTo (typeof (DBNull)));
+  }
+
+  [Test]
+  public void CanConvertFromDBNull()
+  {
+    Assert.IsTrue (_converter.CanConvertFrom (typeof (DBNull)));
+  }
+
 
   [Test]
   public void ConvertToByte()
@@ -386,23 +398,9 @@ public class BidirectionalStringConverterTest
   }
 
   [Test]
-  public void CanConvertToDBNull()
-  {
-    Assert.IsFalse (_converter.CanConvertTo (typeof (DBNull)));
-  }
-
-  [Test]
-  public void CanConvertFromDBNull()
-  {
-    Assert.IsTrue (_converter.CanConvertFrom (typeof (DBNull)));
-  }
-
-  [Test]
-  [ExpectedException (typeof (NotSupportedException))]
   public void ConvertToDBNull()
   {
-    _converter.ConvertTo ("", typeof (DBNull));
-    Assert.Fail();
+    Assert.AreEqual (DBNull.Value, _converter.ConvertTo ("", typeof (DBNull)));
   }
 
   [Test]
