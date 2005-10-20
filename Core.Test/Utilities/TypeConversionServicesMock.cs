@@ -16,9 +16,9 @@ public class TypeConversionServicesMock: TypeConversionServices
     return base.GetTypeConverterByAttribute (type);
   }
 
-  public new TypeConverter GetCachedTypeConverterByAttribute (Type type)
+  public new TypeConverter GetBasicTypeConverter (Type type)
   {
-    return base.GetCachedTypeConverterByAttribute (type);
+    return base.GetBasicTypeConverter (type);
   }
 
   public new void AddTypeConverterToCache (Type key, TypeConverter converter)
@@ -26,14 +26,14 @@ public class TypeConversionServicesMock: TypeConversionServices
     base.AddTypeConverterToCache (key, converter);
   }
 
-  public new TypeConverter GetCachedTypeConverter (Type key)
+  public new TypeConverter GetTypeConverterFromCache (Type key)
   {
-    return base.GetCachedTypeConverter (key);
+    return base.GetTypeConverterFromCache (key);
   }
 
-  public new bool HasCachedTypeConverter (Type type)
+  public new bool HasTypeConverterInCache (Type type)
   {
-    return base.HasCachedTypeConverter (type);
+    return base.HasTypeConverterInCache (type);
   }
 
   public static void ClearCache()

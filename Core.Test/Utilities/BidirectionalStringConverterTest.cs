@@ -13,6 +13,12 @@ public class BidirectionalStringConverterTest
 {
   private BidirectionalStringConverter _converter;
   private CultureInfo _culture;
+
+  public enum ConversionTestEnum
+  {
+    ValueA,
+    ValueB
+  }
   
   [SetUp]
   public void SetUp()
@@ -157,7 +163,7 @@ public class BidirectionalStringConverterTest
   [Test]
   public void CanConvertFromObject()
   {
-    Assert.IsTrue (_converter.CanConvertFrom (typeof (object)));
+    Assert.IsFalse (_converter.CanConvertFrom (typeof (object)));
   }
 
 

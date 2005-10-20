@@ -444,6 +444,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Utilities\AdvancedEnumConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Utilities\ArgumentUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

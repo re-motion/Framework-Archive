@@ -11,6 +11,12 @@ namespace Rubicon.Core.UnitTests.Utilities
 [TestFixture]
 public class TypeConversionServicesTest
 {
+  public enum Int32Enum: int
+  {
+    ValueA = 0,
+    ValueB = 1
+  }
+
   private TypeConversionServicesMock _services;
   private TypeConversionServicesMock _servicesWithGuidConverter;
   private Type _naInt32 = typeof (NaInt32);
@@ -19,6 +25,7 @@ public class TypeConversionServicesTest
   private Type _naDouble = typeof (NaDouble);
   private Type _object = typeof (object);
   private Type _guid = typeof (Guid);
+  private Type _int32Enum = typeof (Int32Enum);
 
   [SetUp]
   public void SetUp()
@@ -88,7 +95,7 @@ public class TypeConversionServicesTest
   [Test]
   public void CanConvertFromGuidToString()
   {
-    Assert.IsTrue (_services.CanConvert (_guid, _string));
+    Assert.IsFalse (_services.CanConvert (_guid, _string));
   }
 
   [Test]
@@ -108,6 +115,37 @@ public class TypeConversionServicesTest
   {
     Assert.IsTrue (_servicesWithGuidConverter.CanConvert (_string, _guid));
   }
+
+  [Test]
+  public void CanConvertFromInt32EnumToInt32Enum()
+  {
+    Assert.IsTrue (_services.CanConvert (_int32Enum, _int32Enum));
+  }
+
+  [Test]
+  public void CanConvertFromInt32EnumToInt32()
+  {
+    Assert.IsTrue (_services.CanConvert (_int32Enum, _int32));
+  }
+
+  [Test]
+  public void CanConvertFromInt32ToInt32Enum()
+  {
+    Assert.IsTrue (_services.CanConvert (_int32, _int32Enum));
+  }
+
+  [Test]
+  public void CanConvertFromInt32EnumToString()
+  {
+    Assert.IsTrue (_services.CanConvert (_int32Enum, _string));
+  }
+
+  [Test]
+  public void CanConvertFromStringToInt32Enum()
+  {
+    Assert.IsTrue (_services.CanConvert (_string, _int32Enum));
+  }
+
 
   [Test]
   public void ConvertFromInt32ToInt32()
@@ -229,6 +267,70 @@ public class TypeConversionServicesTest
 
 
   [Test]
+  public void ConvertFromInt32EnumToInt32Enum()
+  {
+    Assert.AreEqual (Int32Enum.ValueA, _services.Convert (_int32Enum, _int32Enum, Int32Enum.ValueA));
+  }
+
+  [Test]
+  public void ConvertFromInt32EnumToInt32()
+  {
+    Assert.AreEqual (0, _services.Convert (_int32Enum, _int32, Int32Enum.ValueA));
+    Assert.AreEqual (1, _services.Convert (_int32Enum, _int32, Int32Enum.ValueB));
+  }
+
+  [Test]
+  public void ConvertFromInt32ToInt32Enum()
+  {
+    Assert.AreEqual (Int32Enum.ValueA, _services.Convert (_int32, _int32Enum, 0));
+    Assert.AreEqual (Int32Enum.ValueB, _services.Convert (_int32, _int32Enum, 1));
+  }
+
+  [Test]
+  public void ConvertFromInt32EnumToString()
+  {
+    Assert.AreEqual ("ValueA", _services.Convert (_int32Enum, _string, Int32Enum.ValueA));
+    Assert.AreEqual ("ValueB", _services.Convert (_int32Enum, _string, Int32Enum.ValueB));
+  }
+
+  [Test]
+  public void ConvertFromStringToInt32Enum()
+  {
+    Assert.AreEqual (Int32Enum.ValueA, _services.Convert (_string, _int32Enum, "ValueA"));
+    Assert.AreEqual (Int32Enum.ValueB, _services.Convert (_string, _int32Enum, "ValueB"));
+  }
+  [Test]
+  public void ConvertFromInt32EnumToStringWithNull()
+  {
+    Assert.AreEqual ("", _services.Convert (_int32Enum, _string, null));
+  }
+
+  [Test]
+  [ExpectedException (typeof (InvalidCastException))]
+  public void ConvertFromInt32EnumToStringWithDBNull()
+  {
+    _services.Convert (_int32Enum, _string, DBNull.Value);
+    Assert.Fail();
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void ConvertFromStringToInt32EnumWithEmpty()
+  {
+    _services.Convert (_string, _int32Enum, "");
+    Assert.Fail();
+  }
+
+  [Test]
+  [ExpectedException (typeof (NotSupportedException))]
+  public void ConvertFromInt32ToInt32EnumWithNull()
+  {
+    _services.Convert (_int32, _int32Enum, null);
+    Assert.Fail();
+  }
+
+
+  [Test]
   public void ConvertFromGuidToString()
   {
     Guid guid = Guid.NewGuid();
@@ -296,8 +398,7 @@ public class TypeConversionServicesTest
   public void GetTypeConverterFromObjectToString ()
   {
     TypeConverter converter = _services.GetTypeConverter (_object, _string);
-    Assert.IsNotNull (converter, "TypeConverter is null.");
-    Assert.AreEqual (typeof (BidirectionalStringConverter), converter.GetType());
+    Assert.IsNull (converter, "TypeConverter is not null.");
   }
 
   [Test]
@@ -473,36 +574,47 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  public void GetCachedTypeConverterByAttributeForNaInt32()
+  public void GetBasicTypeConverterForNaInt32()
   {
-    TypeConverter converterFirstRun = _services.GetCachedTypeConverterByAttribute (_naInt32);
-    TypeConverter converterSecondRun = _services.GetCachedTypeConverterByAttribute (_naInt32);
+    TypeConverter converterFirstRun = _services.GetBasicTypeConverter (_naInt32);
+    TypeConverter converterSecondRun = _services.GetBasicTypeConverter (_naInt32);
     Assert.IsNotNull (converterFirstRun, "TypeConverter from first run is null.");
     Assert.IsNotNull (converterSecondRun, "TypeConverter from second run is null.");
     Assert.AreSame (converterFirstRun, converterSecondRun);
   }
 
   [Test]
-  public void GetCachedTypeConverterByAttributeForInt32()
+  public void GetBasicTypeConverterForInt32()
   {
-    TypeConverter converter = _services.GetCachedTypeConverterByAttribute (_int32);
+    TypeConverter converter = _services.GetBasicTypeConverter (_int32);
     Assert.IsNull (converter, "TypeConverter is not null.");
   }
 
   [Test]
-  public void GetCachedTypeConverter()
+  public void GetBasicTypeConverterForInt32Enum()
   {
-    NaInt32Converter converter = new NaInt32Converter();
-    _services.AddTypeConverterToCache (_naInt32, converter);
-    Assert.AreSame (converter, _services.GetCachedTypeConverter (_naInt32));
+    TypeConverter converterFirstRun = _services.GetBasicTypeConverter (_int32Enum);
+    TypeConverter converterSecondRun = _services.GetBasicTypeConverter (_int32Enum);
+    Assert.IsNotNull (converterFirstRun, "TypeConverter from first run is null.");
+    Assert.IsNotNull (converterSecondRun, "TypeConverter from second run is null.");
+    Assert.AreSame (converterFirstRun, converterSecondRun);
+    Assert.AreEqual (typeof (AdvancedEnumConverter), converterFirstRun.GetType());
   }
 
   [Test]
-  public void HasCachedTypeConverter()
+  public void GetTypeConverterFromCache()
   {
     NaInt32Converter converter = new NaInt32Converter();
     _services.AddTypeConverterToCache (_naInt32, converter);
-    Assert.IsTrue (_services.HasCachedTypeConverter (_naInt32));
+    Assert.AreSame (converter, _services.GetTypeConverterFromCache (_naInt32));
+  }
+
+  [Test]
+  public void HasTypeConverterInCache()
+  {
+    NaInt32Converter converter = new NaInt32Converter();
+    _services.AddTypeConverterToCache (_naInt32, converter);
+    Assert.IsTrue (_services.HasTypeConverterInCache (_naInt32));
   }
 
   [Test]
