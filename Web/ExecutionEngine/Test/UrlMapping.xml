@@ -5,6 +5,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 		<add type="Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition" resource="session.wxe"/>
+<!--
 		<add type="Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition" resource="sample.wxe"/>
 		<add type="Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition" resource="sample_old.wxe"/>
+-->
 </urlMapping>

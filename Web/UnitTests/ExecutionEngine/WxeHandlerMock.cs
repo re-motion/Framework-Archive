@@ -41,14 +41,14 @@ public class WxeHandlerMock: WxeHandler
     return base.ResumeExistingFunctionState (context, functionToken);
   }
 
-  public new void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
+  public new void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
   {
-    base.ProcessFunctionState (context, functionState, isNewFunction, hasMappedUrl);
+    base.ProcessFunctionState (context, functionState, isNewFunction);
   }
 
-  public new void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
+  public new void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
   {
-    base.ExecuteFunctionState (context, functionState, isNewFunction, hasMappedUrl);
+    base.ExecuteFunctionState (context, functionState, isNewFunction);
   }
 
   public new virtual void ExecuteFunction (WxeFunction function, WxeContext context, bool isNew)
