@@ -114,43 +114,36 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     CheckTimeoutConfiguration (context);
 
-    string typeName = context.Request.Params[Parameters.WxeFunctionType];
-    bool hasTypeName = ! StringUtility.IsNullOrEmpty (typeName);
 
     string functionToken = context.Request.Params[Parameters.WxeFunctionToken];
     bool hasFunctionToken = ! StringUtility.IsNullOrEmpty (functionToken);
 
-    Type type = null;
-    if (hasTypeName)
-      type = GetType (typeName);
-    else if (! hasFunctionToken)
-      type = ParseUrl (context.Request);
-
-    if (! hasFunctionToken && type != null)
+    if (! hasFunctionToken)
     {
-      bool hasMappedUrl = ! hasTypeName;
+      Type type = GetType (context);
+      if (type == null)
+      {
+        if (File.Exists (context.Request.PhysicalPath))
+          throw new HttpException (string.Format ("Missing URL parameter '{0}'", Parameters.WxeFunctionType));
+        else
+          throw new HttpException (c_httpResourceNotFound, string.Format ("Could not map the path '{0}' to a Function Type.", context.Request.Path));
+      }
+
       _currentFunctionState = CreateNewFunctionState (context, type);
-      ProcessFunctionState (context, _currentFunctionState, true, hasMappedUrl);
+      ProcessFunctionState (context, _currentFunctionState, true);
     }
-    else if (hasFunctionToken)
+    else
     {
       _currentFunctionState = ResumeExistingFunctionState (context, functionToken);
       if (_currentFunctionState != null)
       {
-        ProcessFunctionState (context, _currentFunctionState, false, false);
+        ProcessFunctionState (context, _currentFunctionState, false);
       }
       else
       {
         context.Response.Clear();
         context.Response.End();
       }
-    }
-    else
-    {
-      if (File.Exists (context.Request.PhysicalPath))
-        throw new HttpException (string.Format ("Missing URL parameter '{0}'", Parameters.WxeFunctionType));
-      else
-        throw new HttpException (c_httpResourceNotFound, string.Format ("Could not map the path '{0}' to a Function Type.", context.Request.Path));
     }
   }
 
@@ -186,6 +179,17 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     string path = request.Url.AbsolutePath.Substring (root.Length);
 
     return UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType ("~/" + path);
+  }
+
+
+  protected Type GetType (HttpContext context)
+  {
+    string typeName = context.Request.Params[Parameters.WxeFunctionType];
+    bool hasTypeName = ! StringUtility.IsNullOrEmpty (typeName);
+    if (hasTypeName)
+      return GetType (typeName);
+    else
+      return ParseUrl (context.Request);
   }
 
   /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="typeName"/>. </summary>
@@ -259,7 +263,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     {
       if (isGetRequest && ! isPostBackAction)
       {
-        Type type = ParseUrl (context.Request);
+        Type type = GetType (context);
         if (type != null)
           return CreateNewFunctionState (context, type);
       }
@@ -271,7 +275,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     {
       if (isGetRequest && ! isPostBackAction)
       {
-        Type type = ParseUrl (context.Request);
+        Type type = GetType (context);
         if (type != null)
           return CreateNewFunctionState (context, type);
       }
@@ -304,13 +308,12 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
   /// <summary> Redirects the <see cref="HttpContext.Response"/> to an optional <see cref="WxeFunction.ReturnUrl"/>. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ProcessFunctionState/*' />
-  protected void ProcessFunctionState (
-      HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
+  protected void ProcessFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNull ("functionState", functionState);
         
-    ExecuteFunctionState (context, functionState, isNewFunction, hasMappedUrl);
+    ExecuteFunctionState (context, functionState, isNewFunction);
     //  This point is only reached, once the WxeFunction has completed execution.
     string returnUrl = functionState.Function.ReturnUrl;
     CleanUpFunctionState (functionState);
@@ -323,17 +326,14 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   ///   <paramref name="functionState"/>'s <see cref="WxeFunctionState.Function"/>.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/ExecuteFunctionState/*' />
-  protected void ExecuteFunctionState (
-      HttpContext context, WxeFunctionState functionState, bool isNewFunction, bool hasMappedUrl)
+  protected void ExecuteFunctionState (HttpContext context, WxeFunctionState functionState, bool isNewFunction)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNull ("functionState", functionState);
     if (functionState.IsAborted)
       throw new InvalidOperationException ("The function state " + functionState.FunctionToken + " is aborted.");
 
-    string queryString = null;
-    if (! isNewFunction || hasMappedUrl)
-      queryString = context.Request.QueryString.ToString();
+    string queryString = context.Request.QueryString.ToString();
 
     WxeContext wxeContext = new WxeContext (context, functionState, queryString); 
     WxeContext.SetCurrent (wxeContext);

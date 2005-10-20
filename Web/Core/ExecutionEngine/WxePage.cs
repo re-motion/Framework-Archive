@@ -129,6 +129,20 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePageEventHandler/*' />
   void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function);
 
+  /// <summary> Gets the permanent URL for the current page. </summary>
+  string GetPermanentUrl();
+  
+  /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/GetPermanentUrl/param[@name="queryString"]' />
+  string GetPermanentUrl (NameValueCollection queryString);
+  
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <see cref="functionType"/> 
+  ///   and using the <paramref name="queryString"/>.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
+  string GetPermanentUrl (Type functionType, NameValueCollection queryString);
+
   /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
@@ -304,22 +318,30 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
     _wxeInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
   }
 
-  #endregion
-
+  /// <summary> Gets the permanent URL for the current page. </summary>
   public string GetPermanentUrl ()
   {
     return _wxeInfo.GetPermanentUrl ();
   }
   
+  /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
   public string GetPermanentUrl (NameValueCollection queryString)
   {
     return _wxeInfo.GetPermanentUrl (queryString);
   }
   
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <see cref="functionType"/> 
+  ///   and using the <paramref name="queryString"/>.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
   public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
   {
     return _wxeInfo.GetPermanentUrl (functionType, queryString);
   }
+
+  #endregion
   
   private WxePageInfo _wxeInfo;
   private ValidatableControlInitializer _validatableControlInitializer;
