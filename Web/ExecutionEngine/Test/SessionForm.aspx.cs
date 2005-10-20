@@ -38,9 +38,10 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionButton;
   protected System.Web.UI.WebControls.HyperLink CurrentFunctionPermaLink;
   protected System.Web.UI.WebControls.HyperLink SampleFunctionPermaLink;
-  protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlInNewWindowButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionInNewWindowButton;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionButton;
+  protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlButton;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -84,7 +85,11 @@ public class SessionForm : WxePage
     this.ExecuteNoRepostButton.Click += new System.EventHandler(this.ExecuteNoRepostButton_Click);
     this.Button2Button.Click += new System.EventHandler(this.Button2Button_Click);
     this.OpenSampleFunctionButton.Click += new System.EventHandler(this.OpenSampleFunctionButton_Click);
+    this.OpenSampleFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.OpenSampleFunctionWithPermanentUrlButton_Click);
     this.OpenSampleFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionInNewWindowButton_Click);
+    this.OpenSampleFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.OpenSampleFunctionWithPermanentUrlInNewWindowButton_Click);
+    this.OpenSessionFunctionButton.Click += new System.EventHandler(this.OpenSessionFunctionButton_Click);
+    this.OpenSessionFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlButton_Click);
     this.OpenSessionFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionInNewWindowButton_Click);
     this.OpenSessionFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlInNewWindowButton_Click);
     this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
@@ -152,6 +157,18 @@ public class SessionForm : WxePage
   {
     if (!IsReturningPostBack)
       ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", (Control) sender, true, true, true);
+  }
+
+  private void OpenSessionFunctionButton_Click(object sender, System.EventArgs e)
+  {
+    if (! IsReturningPostBack)
+      ExecuteFunction (new SessionWxeFunction (true), false, false);
+  }
+
+  private void OpenSessionFunctionWithPermanentUrlButton_Click(object sender, System.EventArgs e)
+  {
+    if (! IsReturningPostBack)
+      ExecuteFunction (new SessionWxeFunction (true), true, true);
   }
 
   private void OpenSessionFunctionInNewWindowButton_Click (object sender, System.EventArgs e)
