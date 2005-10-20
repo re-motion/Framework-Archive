@@ -143,6 +143,18 @@ public class BidirectionalStringConverterTest
   }
 
   [Test]
+  public void CanConvertToGuid()
+  {
+    Assert.IsTrue (_converter.CanConvertTo (typeof (Guid)));
+  }
+
+  [Test]
+  public void CanConvertFromGuid()
+  {
+    Assert.IsTrue (_converter.CanConvertFrom (typeof (Guid)));
+  }
+
+  [Test]
   public void CanConvertToInt32Array()
   {
     Assert.IsFalse (_converter.CanConvertTo (typeof (int[])));
@@ -320,6 +332,24 @@ public class BidirectionalStringConverterTest
   {
     Assert.AreEqual ("0", _converter.ConvertFrom (0m));
     Assert.AreEqual ("1.5", _converter.ConvertFrom (1.5m));
+  }
+
+  [Test]
+  public void ConvertToGuid()
+  {
+    Type destinationType = typeof (Guid);
+
+    Guid guid = Guid.NewGuid();
+    Assert.AreEqual (guid, _converter.ConvertTo (guid.ToString(), destinationType));
+    Assert.AreEqual (Guid.Empty, _converter.ConvertTo (Guid.Empty.ToString(), destinationType));
+  }
+
+  [Test]
+  public void ConvertFromGuid()
+  {
+    Guid guid = Guid.NewGuid();
+    Assert.AreEqual (guid.ToString(), _converter.ConvertFrom (guid));
+    Assert.AreEqual (Guid.Empty.ToString(), _converter.ConvertFrom (Guid.Empty));
   }
 
   [Test]

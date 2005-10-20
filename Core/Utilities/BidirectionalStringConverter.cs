@@ -26,6 +26,8 @@ public class BidirectionalStringConverter: TypeConverter
       return false;
     if (sourceType == typeof (DBNull))
       return true;
+    if (sourceType == typeof (Guid))
+      return true;
     return    StringUtility.GetParseMethodWithFormatProvider (sourceType) != null
            || StringUtility.GetParseMethod (sourceType) != null;
   }
@@ -40,6 +42,8 @@ public class BidirectionalStringConverter: TypeConverter
       return false;
     if (destinationType.IsArray)
       return false;
+    if (destinationType == typeof (Guid))
+      return true;
     return    StringUtility.GetParseMethodWithFormatProvider (destinationType) != null
            || StringUtility.GetParseMethod (destinationType) != null;
   }
@@ -57,7 +61,7 @@ public class BidirectionalStringConverter: TypeConverter
   {
     if (value == null)
       return string.Empty;
-    if (! value.GetType().IsArray)
+    if (CanConvertFrom (context, value.GetType()))
     {
       IFormattable formattable = value as IFormattable;
       if (formattable != null)
@@ -86,7 +90,12 @@ public class BidirectionalStringConverter: TypeConverter
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
     if (value is string && CanConvertTo (context, destinationType))
-      return StringUtility.Parse (destinationType, (string) value, culture);
+    {
+      string stringValue = (string) value;
+      if (destinationType == typeof (Guid))
+        return new Guid (stringValue);
+      return StringUtility.Parse (destinationType, stringValue, culture);
+    }
     return base.ConvertTo (context, culture, value, destinationType);
   }
 

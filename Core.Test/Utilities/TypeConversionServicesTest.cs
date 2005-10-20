@@ -18,7 +18,6 @@ public class TypeConversionServicesTest
   }
 
   private TypeConversionServicesMock _services;
-  private TypeConversionServicesMock _servicesWithGuidConverter;
   private Type _naInt32 = typeof (NaInt32);
   private Type _int32 = typeof (int);
   private Type _string = typeof (string);
@@ -31,9 +30,6 @@ public class TypeConversionServicesTest
   public void SetUp()
   {
     _services = new TypeConversionServicesMock();
-
-    _servicesWithGuidConverter = new TypeConversionServicesMock();
-    _servicesWithGuidConverter.AddTypeConverter (_guid, new NaGuidConverter());
 
     TypeConversionServicesMock.ClearCache();
   }
@@ -95,25 +91,13 @@ public class TypeConversionServicesTest
   [Test]
   public void CanConvertFromGuidToString()
   {
-    Assert.IsFalse (_services.CanConvert (_guid, _string));
+    Assert.IsTrue (_services.CanConvert (_guid, _string));
   }
 
   [Test]
   public void CanConvertFromStringToGuid()
   {
-    Assert.IsFalse (_services.CanConvert (_string, _guid));
-  }
-
-  [Test]
-  public void CanConvertFromGuidToStringWithAdditionalConverter()
-  {
-    Assert.IsTrue (_servicesWithGuidConverter.CanConvert (_guid, _string));
-  }
-
-  [Test]
-  public void CanConvertFromStringToGuidWithAdditionalConverter()
-  {
-    Assert.IsTrue (_servicesWithGuidConverter.CanConvert (_string, _guid));
+    Assert.IsTrue (_services.CanConvert (_string, _guid));
   }
 
   [Test]
@@ -334,15 +318,14 @@ public class TypeConversionServicesTest
   public void ConvertFromGuidToString()
   {
     Guid guid = Guid.NewGuid();
-    Assert.AreEqual (guid.ToString(), _servicesWithGuidConverter.Convert (_guid, _string, guid));
+    Assert.AreEqual (guid.ToString(), _services.Convert (_guid, _string, guid));
   }
 
   [Test]
   public void ConvertFromStringToGuid()
   {
     Guid guid = Guid.NewGuid();
-    NaGuid naGuid = new NaGuid (guid);
-    Assert.AreEqual (naGuid, _servicesWithGuidConverter.Convert (_string, _guid, guid.ToString()));
+    Assert.AreEqual (guid, _services.Convert (_string, _guid, guid.ToString()));
   }
 
 
