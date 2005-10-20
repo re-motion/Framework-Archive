@@ -12,13 +12,23 @@ namespace Rubicon.Utilities
 ///   from a source <see cref="Type"/> into a destination <see cref="Type"/>.
 /// </summary>
 /// <remarks>
-///   Conversion is possible for types which have a <see cref="TypeConverter"/> applied through the 
-///   <see cref="TypeConverterAttribute"/> that supports the conversion. For types without a 
-///   <see cref="TypeConverter"/>, the <b>TypeConversionServices</b> try use the 
-///   <see cref="BidirectionalStringConverter"/>, which supports the conversion to <see cref="String"/> for all scalar 
-///   types and the conversion from a <see cref="String"/> for types implementing either a public static 
-///   &lt;DestinationType&gt; Parse (string) or a public static &lt;DestinationType&gt; Parse (string, IFormatProvider)
-///   method.
+///   Conversion is possible under the following conditions:
+///   <list type="bullet">
+///     <item>
+///       A type has a <see cref="TypeConverter"/> applied through the <see cref="TypeConverterAttribute"/> that
+///       supports the conversion. 
+///     </item>
+///     <item>
+///       For <see cref="Enum"/> types into the <see cref="String"/> value or the underlying numeric 
+///       <see cref="Type"/>.
+///     </item>
+///     <item>
+///       For types without a <see cref="TypeConverter"/>, the <b>TypeConversionServices</b> try use the 
+///       <see cref="BidirectionalStringConverter"/>, which supports the conversion from and to a <see cref="String"/>
+///       for types implementing either a public static &lt;DestinationType&gt; Parse (string) or a public static 
+///       &lt;DestinationType&gt; Parse (string, IFormatProvider) method.
+///     </item>
+///   </list>
 /// </remarks>
 public class TypeConversionServices
 {
@@ -82,10 +92,10 @@ public class TypeConversionServices
     if (converter != null)
       return converter;
 
-    converter = GetCachedTypeConverterByAttribute (type);
+    converter = GetBasicTypeConverter (type);
     if (converter != null)
       return converter;
-
+      
     if (type == typeof (string))
       return _stringConverter;
 
@@ -194,6 +204,21 @@ public class TypeConversionServices
         "Cannot convert value '{0}' to type '{1}'.", value, destinationType));
   }
 
+  protected TypeConverter GetBasicTypeConverter (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    TypeConverter converter = GetTypeConverterFromCache (type);
+    if (converter == null && ! HasTypeConverterInCache (type))
+    {
+      converter = GetTypeConverterByAttribute (type);
+      if (converter == null && type.IsEnum)
+        converter = new AdvancedEnumConverter (type);
+      AddTypeConverterToCache (type, converter);
+    }
+    return converter;
+  }
+
   protected TypeConverter GetTypeConverterByAttribute (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
@@ -208,24 +233,9 @@ public class TypeConversionServices
     return null;
   }
 
-  protected TypeConverter GetCachedTypeConverterByAttribute (Type type)
-  {
-    ArgumentUtility.CheckNotNull ("type", type);
-
-    TypeConverter converter = GetCachedTypeConverter (type);
-    if (converter == null && ! HasCachedTypeConverter (type))
-    {
-      converter = GetTypeConverterByAttribute (type);
-      if (converter != null)
-        AddTypeConverterToCache (type, converter);
-    }
-    return converter;
-  }
-
   protected void AddTypeConverterToCache (Type type, TypeConverter converter)
   {
     ArgumentUtility.CheckNotNull ("type", type);
-    ArgumentUtility.CheckNotNull ("converter", converter);
 
     lock (s_typeConverters.SyncRoot)
     {
@@ -233,13 +243,13 @@ public class TypeConversionServices
     }
   }
 
-  protected TypeConverter GetCachedTypeConverter (Type type)
+  protected TypeConverter GetTypeConverterFromCache (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
     return (TypeConverter) s_typeConverters[type];
   }
 
-  protected bool HasCachedTypeConverter (Type type)
+  protected bool HasTypeConverterInCache (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
     return s_typeConverters.ContainsKey (type);

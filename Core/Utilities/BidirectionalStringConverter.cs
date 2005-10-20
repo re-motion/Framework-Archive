@@ -24,7 +24,10 @@ public class BidirectionalStringConverter: TypeConverter
       return false;
     if (sourceType.IsArray)
       return false;
-    return true;  
+    if (sourceType == typeof (DBNull))
+      return true;
+    return    StringUtility.GetParseMethodWithFormatProvider (sourceType) != null
+           || StringUtility.GetParseMethod (sourceType) != null;
   }
 
   /// <summary> Test: Can convert from <see cref="String"/> to <paramref name="destinationType"/>? </summary>
@@ -46,9 +49,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
   /// <param name="value">  The source value. </param>
   /// <returns> A <see cref="String"/>.  </returns>
-  /// <exception cref="NotSupportedException">
-  ///   The passed <paramref name="value"/> is of an unsupported <see cref="Type"/>. 
-  /// </exception>
+  /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
   /// <remarks>
   ///   Conversions from <see cref="Single"/> and <see cref="Double"/> are done using "R" as format string. 
   /// </remarks>
@@ -77,9 +78,7 @@ public class BidirectionalStringConverter: TypeConverter
   /// <param name="value"> The <see cref="String"/> to be converted. Must not be <see langword="null"/>. </param>
   /// <param name="destinationType"> The destination <see cref="Type"/>. Must not be <see langword="null"/>. </param>
   /// <returns> An <see cref="Object"/> that represents the converted value. </returns>
-  /// <exception cref="NotSupportedException"> 
-  ///   The passed <paramref name="value"/> is of an unsupported <see cref="Type"/>. 
-  /// </exception>
+  /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
   public override object ConvertTo (
       ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
   {
