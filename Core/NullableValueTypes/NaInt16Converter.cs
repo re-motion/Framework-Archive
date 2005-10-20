@@ -56,7 +56,7 @@ public class NaInt16Converter: TypeConverter
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
-      return NaInt16.Parse ((string) value, culture);
+      return NaInt16.Parse ((string) value);
     if (value is short)
       return new NaInt16 ((short) value);
     if (value == DBNull.Value)
@@ -86,7 +86,7 @@ public class NaInt16Converter: TypeConverter
     if (value is NaInt16)
     {
       if (destinationType == typeof (string))
-        return ((NaInt16) value).ToString ("~", culture);
+        return ((NaInt16) value).ToString ("~");
       if (destinationType == typeof (short))
         return ((NaInt16) value).Value;
     }

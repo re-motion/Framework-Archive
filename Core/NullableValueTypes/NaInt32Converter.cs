@@ -54,7 +54,7 @@ public class NaInt32Converter: TypeConverter
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
-      return NaInt32.Parse ((string) value, culture);
+      return NaInt32.Parse ((string) value);
     if (value is int)
       return new NaInt32 ((int) value);
     if (value == DBNull.Value)
@@ -84,7 +84,7 @@ public class NaInt32Converter: TypeConverter
     if (value is NaInt32)
     {
       if (destinationType == typeof (string))
-        return ((NaInt32) value).ToString ("~", culture);
+        return ((NaInt32) value).ToString ("~");
       if (destinationType == typeof (int))
         return ((NaInt32) value).Value;
     }

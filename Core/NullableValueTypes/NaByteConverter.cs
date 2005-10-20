@@ -56,7 +56,7 @@ public class NaByteConverter: TypeConverter
   public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
   {
     if (value is string)
-      return NaByte.Parse ((string) value, culture);
+      return NaByte.Parse ((string) value);
     if (value is byte)
       return new NaByte ((byte) value);
     if (value == DBNull.Value)
@@ -86,7 +86,7 @@ public class NaByteConverter: TypeConverter
     if (value is NaByte)
     {
       if (destinationType == typeof (string))
-        return ((NaByte) value).ToString ("~", culture);
+        return ((NaByte) value).ToString ("~");
       if (destinationType == typeof (byte))
         return ((NaByte) value).Value;
     }

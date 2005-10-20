@@ -12,20 +12,25 @@ namespace Rubicon.Core.UnitTests.NullableValueTypes
 public class NaDoubleConverterTest
 {
   private NaDoubleConverter _converter;
-  private CultureInfo _culture;
+  private CultureInfo _cultureBackup;
+  private CultureInfo _cultureEnUs;
+  private CultureInfo _cultureDeAt;
   
   [SetUp]
   public void SetUp()
   {
     _converter = new NaDoubleConverter();
-    _culture = Thread.CurrentThread.CurrentCulture;
-    Thread.CurrentThread.CurrentCulture = new CultureInfo ("en-US");
+    _cultureEnUs = new CultureInfo ("en-US");
+    _cultureDeAt = new CultureInfo ("de-AT");
+    
+    _cultureBackup = Thread.CurrentThread.CurrentCulture;
+    Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
   }
 
   [TearDown]
   public void TearDown()
   {
-    Thread.CurrentThread.CurrentCulture = _culture;
+    Thread.CurrentThread.CurrentCulture = _cultureBackup;
   }
 
   [Test]
@@ -41,31 +46,97 @@ public class NaDoubleConverterTest
   }
 
   [Test]
-  public void ConvertToString()
+  public void ConvertToStringWithCultureEnUs()
   {
     Type destinationType = typeof (string);
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
 
-    Assert.AreEqual ("", _converter.ConvertTo (NaDouble.Null, destinationType));
-    Assert.AreEqual ("32", _converter.ConvertTo (new NaDouble (32), destinationType));
-    Assert.AreEqual ("-32", _converter.ConvertTo (new NaDouble (-32), destinationType));
-    Assert.AreEqual ("654321.123456789", _converter.ConvertTo (new NaDouble (654321.123456789), destinationType));
-    Assert.AreEqual ("-654321.123456789", _converter.ConvertTo (new NaDouble (-654321.123456789), destinationType));
-    Assert.AreEqual ("0", _converter.ConvertTo (NaDouble.Zero, destinationType));
-    Assert.AreEqual (NaDouble.MinValue.ToString("R"), _converter.ConvertTo (NaDouble.MinValue, destinationType));
-    Assert.AreEqual (NaDouble.MaxValue.ToString("R"), _converter.ConvertTo (NaDouble.MaxValue, destinationType));
+    Assert.AreEqual ("", _converter.ConvertTo (null, _cultureEnUs, NaDouble.Null, destinationType));
+    Assert.AreEqual ("32", _converter.ConvertTo (null, _cultureEnUs, new NaDouble (32), destinationType));
+    Assert.AreEqual ("-32", _converter.ConvertTo (null, _cultureEnUs, new NaDouble (-32), destinationType));
+    Assert.AreEqual ("654321.123456789", 
+        _converter.ConvertTo (null, _cultureEnUs, new NaDouble (654321.123456789), destinationType));
+    Assert.AreEqual ("-654321.123456789", 
+        _converter.ConvertTo (null, _cultureEnUs, new NaDouble (-654321.123456789), destinationType));
+    Assert.AreEqual ("0", _converter.ConvertTo (null, _cultureEnUs, NaDouble.Zero, destinationType));
+    Assert.AreEqual (NaDouble.MinValue.ToString ("R", _cultureEnUs), 
+        _converter.ConvertTo (null, _cultureEnUs, NaDouble.MinValue, destinationType));
+    Assert.AreEqual (NaDouble.MaxValue.ToString ("R", _cultureEnUs), 
+        _converter.ConvertTo (null, _cultureEnUs, NaDouble.MaxValue, destinationType));
   }
 
   [Test]
-  public void ConvertFromString()
+  public void ConvertToStringWithCultureDeAt()
   {
-    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (""));
-    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom ("32"));
-    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom ("-32"));
-    Assert.AreEqual (new NaDouble (654321.123456789), _converter.ConvertFrom ("654321.123456789"));
-    Assert.AreEqual (new NaDouble (-654321.123456789), _converter.ConvertFrom ("-654321.123456789"));
-    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom ("0"));
-    Assert.AreEqual (NaDouble.MinValue, _converter.ConvertFrom (NaDouble.MinValue.ToString("R")));
-    Assert.AreEqual (NaDouble.MaxValue, _converter.ConvertFrom (NaDouble.MaxValue.ToString("R")));
+    Type destinationType = typeof (string);
+    Thread.CurrentThread.CurrentCulture = _cultureEnUs;
+
+    Assert.AreEqual ("", _converter.ConvertTo (null, _cultureDeAt, NaDouble.Null, destinationType));
+    Assert.AreEqual ("32", _converter.ConvertTo (null, _cultureDeAt, new NaDouble (32), destinationType));
+    Assert.AreEqual ("-32", _converter.ConvertTo (null, _cultureDeAt, new NaDouble (-32), destinationType));
+    Assert.AreEqual ("654321,123456789", 
+        _converter.ConvertTo (null, _cultureDeAt, new NaDouble (654321.123456789), destinationType));
+    Assert.AreEqual ("-654321,123456789", 
+        _converter.ConvertTo (null, _cultureDeAt, new NaDouble (-654321.123456789), destinationType));
+    Assert.AreEqual ("0", _converter.ConvertTo (null, _cultureDeAt, NaDouble.Zero, destinationType));
+    Assert.AreEqual (NaDouble.MinValue.ToString ("R", _cultureDeAt), 
+        _converter.ConvertTo (null, _cultureDeAt, NaDouble.MinValue, destinationType));
+    Assert.AreEqual (NaDouble.MaxValue.ToString ("R", _cultureDeAt), 
+        _converter.ConvertTo (null, _cultureDeAt, NaDouble.MaxValue, destinationType));
+  }
+
+  [Test]
+  public void ConvertFromStringWithCultureEnUs()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+
+    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (null, _cultureEnUs, ""));
+    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom (null, _cultureEnUs, "32"));
+    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom (null, _cultureEnUs, "-32"));
+    Assert.AreEqual (new NaDouble (654321.123456789), 
+        _converter.ConvertFrom (null, _cultureEnUs, "654321.123456789"));
+    Assert.AreEqual (new NaDouble (-654321.123456789), 
+        _converter.ConvertFrom (null, _cultureEnUs, "-654321.123456789"));
+    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom (null, _cultureEnUs, "0"));
+    Assert.AreEqual (NaDouble.MinValue, 
+        _converter.ConvertFrom (null, _cultureEnUs, NaDouble.MinValue.ToString ("R", _cultureEnUs)));
+    Assert.AreEqual (NaDouble.MaxValue, 
+        _converter.ConvertFrom (null, _cultureEnUs, NaDouble.MaxValue.ToString ("R", _cultureEnUs)));
+  }
+
+  [Test]
+  public void ConvertFromStringWithCultureDeAt()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureEnUs;
+
+    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (null, _cultureDeAt, ""));
+    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom (null, _cultureDeAt, "32"));
+    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom (null, _cultureDeAt, "-32"));
+    Assert.AreEqual (new NaDouble (654321.123456789), 
+        _converter.ConvertFrom (null, _cultureDeAt, "654321,123456789"));
+    Assert.AreEqual (new NaDouble (-654321.123456789), 
+        _converter.ConvertFrom (null, _cultureDeAt, "-654321,123456789"));
+    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom (null, _cultureDeAt, "0"));
+    Assert.AreEqual (NaDouble.MinValue, 
+        _converter.ConvertFrom (null, _cultureDeAt, NaDouble.MinValue.ToString ("R", _cultureDeAt)));
+    Assert.AreEqual (NaDouble.MaxValue, 
+        _converter.ConvertFrom (null, _cultureDeAt, NaDouble.MaxValue.ToString ("R", _cultureDeAt)));
+  }
+
+  [Test]
+  [ExpectedException (typeof (FormatException))]
+  public void ConvertFromStringEnUsWithCultureDeAt()
+  {
+    object value = _converter.ConvertFrom (null, _cultureDeAt, "100001.1");
+    Assert.Fail();
+  }
+
+  [Test]
+  [ExpectedException (typeof (FormatException))]
+  public void ConvertFromStringDeAtWithCultureEnUs()
+  {
+    object value = _converter.ConvertFrom (null, _cultureEnUs, "100001,1");
+    Assert.Fail();
   }
 
   [Test]
@@ -85,13 +156,13 @@ public class NaDoubleConverterTest
   {
     Type destinationType = typeof (double);
 
-    Assert.AreEqual (32d, _converter.ConvertTo (new NaDouble (32), destinationType));
-    Assert.AreEqual (-32d, _converter.ConvertTo (new NaDouble (-32), destinationType));
-    Assert.AreEqual (654321.123456789, _converter.ConvertTo (new NaDouble (654321.123456789), destinationType));
-    Assert.AreEqual (-654321.123456789, _converter.ConvertTo (new NaDouble (-654321.123456789), destinationType));
-    Assert.AreEqual (0d, _converter.ConvertTo (NaDouble.Zero, destinationType));
-    Assert.AreEqual (double.MinValue, _converter.ConvertTo (NaDouble.MinValue, destinationType));
-    Assert.AreEqual (double.MaxValue, _converter.ConvertTo (NaDouble.MaxValue, destinationType));
+    Assert.AreEqual (32d, _converter.ConvertTo (null, null, new NaDouble (32), destinationType));
+    Assert.AreEqual (-32d, _converter.ConvertTo (null, null, new NaDouble (-32), destinationType));
+    Assert.AreEqual (654321.123456789, _converter.ConvertTo (null, null, new NaDouble (654321.123456789), destinationType));
+    Assert.AreEqual (-654321.123456789, _converter.ConvertTo (null, null, new NaDouble (-654321.123456789), destinationType));
+    Assert.AreEqual (0d, _converter.ConvertTo (null, null, NaDouble.Zero, destinationType));
+    Assert.AreEqual (double.MinValue, _converter.ConvertTo (null, null, NaDouble.MinValue, destinationType));
+    Assert.AreEqual (double.MaxValue, _converter.ConvertTo (null, null, NaDouble.MaxValue, destinationType));
   }
 
   [Test]
@@ -100,26 +171,26 @@ public class NaDoubleConverterTest
   {
     Type destinationType = typeof (double);
 
-    _converter.ConvertTo (NaDouble.Null, destinationType);
+    _converter.ConvertTo (null, null, NaDouble.Null, destinationType);
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromDouble()
   {
-    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom (32d));
-    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom (-32d));
-    Assert.AreEqual (new NaDouble (654321.123456789), _converter.ConvertFrom (654321.123456789));
-    Assert.AreEqual (new NaDouble (-654321.123456789), _converter.ConvertFrom (-654321.123456789));
-    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom (0d));
-    Assert.AreEqual (NaDouble.MinValue, _converter.ConvertFrom (double.MinValue));
-    Assert.AreEqual (NaDouble.MaxValue, _converter.ConvertFrom (double.MaxValue));
+    Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom (null, null, 32d));
+    Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom (null, null, -32d));
+    Assert.AreEqual (new NaDouble (654321.123456789), _converter.ConvertFrom (null, null, 654321.123456789));
+    Assert.AreEqual (new NaDouble (-654321.123456789), _converter.ConvertFrom (null, null, -654321.123456789));
+    Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom (null, null, 0d));
+    Assert.AreEqual (NaDouble.MinValue, _converter.ConvertFrom (null, null, double.MinValue));
+    Assert.AreEqual (NaDouble.MaxValue, _converter.ConvertFrom (null, null, double.MaxValue));
   }
 
   [Test]
   public void ConvertFromNull()
   {
-    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (null));
+    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (null, null, null));
   }
 
   [Test]
@@ -138,14 +209,14 @@ public class NaDoubleConverterTest
   [ExpectedException (typeof (NotSupportedException))]
   public void ConvertToDBNull()
   {
-    _converter.ConvertTo (NaDouble.Null, typeof (DBNull));
+    _converter.ConvertTo (null, null, NaDouble.Null, typeof (DBNull));
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromDBNull()
   {
-    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (DBNull.Value));
+    Assert.AreEqual (NaDouble.Null, _converter.ConvertFrom (null, null, DBNull.Value));
   }
 }            
 

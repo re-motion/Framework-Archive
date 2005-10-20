@@ -40,17 +40,17 @@ public class NaGuidConverterTest
   {
     Type destinationType = typeof (string);
 
-    Assert.AreEqual ("", _converter.ConvertTo (NaGuid.Null, destinationType));
-    Assert.AreEqual (Guid.Empty.ToString(), _converter.ConvertTo (NaGuid.Empty, destinationType));
-    Assert.AreEqual (_guidString, _converter.ConvertTo (_naGuid, destinationType));
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, NaGuid.Null, destinationType));
+    Assert.AreEqual (Guid.Empty.ToString(), _converter.ConvertTo (null, null, NaGuid.Empty, destinationType));
+    Assert.AreEqual (_guidString, _converter.ConvertTo (null, null, _naGuid, destinationType));
   }
 
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaGuid.Null, _converter.ConvertFrom (""));
-    Assert.AreEqual (NaGuid.Empty, _converter.ConvertFrom (Guid.Empty.ToString()));
-    Assert.AreEqual (_naGuid, _converter.ConvertFrom (_guidString));
+    Assert.AreEqual (NaGuid.Null, _converter.ConvertFrom (null, null, ""));
+    Assert.AreEqual (NaGuid.Empty, _converter.ConvertFrom (null, null, Guid.Empty.ToString()));
+    Assert.AreEqual (_naGuid, _converter.ConvertFrom (null, null, _guidString));
   }
 
   [Test]
@@ -70,8 +70,8 @@ public class NaGuidConverterTest
   {
     Type destinationType = typeof (Guid);
 
-    Assert.AreEqual (Guid.Empty, _converter.ConvertTo (NaGuid.Empty, destinationType));
-    Assert.AreEqual (_guid, _converter.ConvertTo (_naGuid, destinationType));
+    Assert.AreEqual (Guid.Empty, _converter.ConvertTo (null, null, NaGuid.Empty, destinationType));
+    Assert.AreEqual (_guid, _converter.ConvertTo (null, null, _naGuid, destinationType));
   }
 
   [Test]
@@ -80,21 +80,21 @@ public class NaGuidConverterTest
   {
     Type destinationType = typeof (Guid);
 
-    _converter.ConvertTo (NaGuid.Null, destinationType);
+    _converter.ConvertTo (null, null, NaGuid.Null, destinationType);
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromGuid()
   {
-    Assert.AreEqual (NaGuid.Empty, _converter.ConvertFrom (Guid.Empty));
-    Assert.AreEqual (_naGuid, _converter.ConvertFrom (_guid));
+    Assert.AreEqual (NaGuid.Empty, _converter.ConvertFrom (null, null, Guid.Empty));
+    Assert.AreEqual (_naGuid, _converter.ConvertFrom (null, null, _guid));
   }
 
   [Test]
   public void ConvertFromNull()
   {
-    Assert.AreEqual (NaGuid.Null, _converter.ConvertFrom (null));
+    Assert.AreEqual (NaGuid.Null, _converter.ConvertFrom (null, null, null));
   }
 
   [Test]
@@ -113,14 +113,14 @@ public class NaGuidConverterTest
   [ExpectedException (typeof (NotSupportedException))]
   public void ConvertToDBNull()
   {
-    _converter.ConvertTo (NaGuid.Null, typeof (DBNull));
+    _converter.ConvertTo (null, null, NaGuid.Null, typeof (DBNull));
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromDBNull()
   {
-    Assert.AreEqual (NaGuid.Null, _converter.ConvertFrom (DBNull.Value));
+    Assert.AreEqual (NaGuid.Null, _converter.ConvertFrom (null, null, DBNull.Value));
   }
 }            
 

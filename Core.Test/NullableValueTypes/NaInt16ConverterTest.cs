@@ -34,23 +34,23 @@ public class NaInt16ConverterTest
   {
     Type destinationType = typeof (string);
 
-    Assert.AreEqual ("", _converter.ConvertTo (NaInt16.Null, destinationType));
-    Assert.AreEqual ("32", _converter.ConvertTo (new NaInt16 (32), destinationType));
-    Assert.AreEqual ("-32", _converter.ConvertTo (new NaInt16 (-32), destinationType));
-    Assert.AreEqual ("0", _converter.ConvertTo (NaInt16.Zero, destinationType));
-    Assert.AreEqual (NaInt16.MinValue.ToString(), _converter.ConvertTo (NaInt16.MinValue, destinationType));
-    Assert.AreEqual (NaInt16.MaxValue.ToString(), _converter.ConvertTo (NaInt16.MaxValue, destinationType));
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, NaInt16.Null, destinationType));
+    Assert.AreEqual ("32", _converter.ConvertTo (null, null, new NaInt16 (32), destinationType));
+    Assert.AreEqual ("-32", _converter.ConvertTo (null, null, new NaInt16 (-32), destinationType));
+    Assert.AreEqual ("0", _converter.ConvertTo (null, null, NaInt16.Zero, destinationType));
+    Assert.AreEqual (NaInt16.MinValue.ToString(), _converter.ConvertTo (null, null, NaInt16.MinValue, destinationType));
+    Assert.AreEqual (NaInt16.MaxValue.ToString(), _converter.ConvertTo (null, null, NaInt16.MaxValue, destinationType));
   }
 
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaInt16.Null, _converter.ConvertFrom (""));
-    Assert.AreEqual (new NaInt16 (32), _converter.ConvertFrom ("32"));
-    Assert.AreEqual (new NaInt16 (-32), _converter.ConvertFrom ("-32"));
-    Assert.AreEqual (NaInt16.Zero, _converter.ConvertFrom ("0"));
-    Assert.AreEqual (NaInt16.MinValue, _converter.ConvertFrom (NaInt16.MinValue.ToString()));
-    Assert.AreEqual (NaInt16.MaxValue, _converter.ConvertFrom (NaInt16.MaxValue.ToString()));
+    Assert.AreEqual (NaInt16.Null, _converter.ConvertFrom (null, null, ""));
+    Assert.AreEqual (new NaInt16 (32), _converter.ConvertFrom (null, null, "32"));
+    Assert.AreEqual (new NaInt16 (-32), _converter.ConvertFrom (null, null, "-32"));
+    Assert.AreEqual (NaInt16.Zero, _converter.ConvertFrom (null, null, "0"));
+    Assert.AreEqual (NaInt16.MinValue, _converter.ConvertFrom (null, null, NaInt16.MinValue.ToString()));
+    Assert.AreEqual (NaInt16.MaxValue, _converter.ConvertFrom (null, null, NaInt16.MaxValue.ToString()));
   }
 
   [Test]
@@ -70,11 +70,11 @@ public class NaInt16ConverterTest
   {
     Type destinationType = typeof (short);
 
-    Assert.AreEqual ((short) 32, _converter.ConvertTo (new NaInt16 (32), destinationType));
-    Assert.AreEqual ((short) -32, _converter.ConvertTo (new NaInt16 (-32), destinationType));
-    Assert.AreEqual ((short) 0, _converter.ConvertTo (NaInt16.Zero, destinationType));
-    Assert.AreEqual (short.MinValue, _converter.ConvertTo (NaInt16.MinValue, destinationType));
-    Assert.AreEqual (short.MaxValue, _converter.ConvertTo (NaInt16.MaxValue, destinationType));
+    Assert.AreEqual ((short) 32, _converter.ConvertTo (null, null, new NaInt16 (32), destinationType));
+    Assert.AreEqual ((short) -32, _converter.ConvertTo (null, null, new NaInt16 (-32), destinationType));
+    Assert.AreEqual ((short) 0, _converter.ConvertTo (null, null, NaInt16.Zero, destinationType));
+    Assert.AreEqual (short.MinValue, _converter.ConvertTo (null, null, NaInt16.MinValue, destinationType));
+    Assert.AreEqual (short.MaxValue, _converter.ConvertTo (null, null, NaInt16.MaxValue, destinationType));
   }
 
   [Test]
@@ -83,24 +83,24 @@ public class NaInt16ConverterTest
   {
     Type destinationType = typeof (short);
 
-    _converter.ConvertTo (NaInt16.Null, destinationType);
+    _converter.ConvertTo (null, null, NaInt16.Null, destinationType);
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromInt16()
   {
-    Assert.AreEqual (new NaInt16 (32), _converter.ConvertFrom ((short) 32));
-    Assert.AreEqual (new NaInt16 (-32), _converter.ConvertFrom ((short) -32));
-    Assert.AreEqual (NaInt16.Zero, _converter.ConvertFrom ((short) 0));
-    Assert.AreEqual (NaInt16.MinValue, _converter.ConvertFrom (short.MinValue));
-    Assert.AreEqual (NaInt16.MaxValue, _converter.ConvertFrom (short.MaxValue));
+    Assert.AreEqual (new NaInt16 (32), _converter.ConvertFrom (null, null, (short) 32));
+    Assert.AreEqual (new NaInt16 (-32), _converter.ConvertFrom (null, null, (short) -32));
+    Assert.AreEqual (NaInt16.Zero, _converter.ConvertFrom (null, null, (short) 0));
+    Assert.AreEqual (NaInt16.MinValue, _converter.ConvertFrom (null, null, short.MinValue));
+    Assert.AreEqual (NaInt16.MaxValue, _converter.ConvertFrom (null, null, short.MaxValue));
   }
 
   [Test]
   public void ConvertFromNull()
   {
-    Assert.AreEqual (NaInt16.Null, _converter.ConvertFrom (null));
+    Assert.AreEqual (NaInt16.Null, _converter.ConvertFrom (null, null, null));
   }
 
   [Test]
@@ -119,14 +119,14 @@ public class NaInt16ConverterTest
   [ExpectedException (typeof (NotSupportedException))]
   public void ConvertToDBNull()
   {
-    _converter.ConvertTo (NaInt16.Null, typeof (DBNull));
+    _converter.ConvertTo (null, null, NaInt16.Null, typeof (DBNull));
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromDBNull()
   {
-    Assert.AreEqual (NaInt16.Null, _converter.ConvertFrom (DBNull.Value));
+    Assert.AreEqual (NaInt16.Null, _converter.ConvertFrom (null, null, DBNull.Value));
   }
 }            
 

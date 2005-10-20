@@ -34,17 +34,17 @@ public class NaBooleanConverterTest
   {
     Type destinationType = typeof (string);
 
-    Assert.AreEqual ("", _converter.ConvertTo (NaBoolean.Null, destinationType));
-    Assert.AreEqual ("True", _converter.ConvertTo (NaBoolean.True, destinationType));
-    Assert.AreEqual ("False", _converter.ConvertTo (NaBoolean.False, destinationType));
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, NaBoolean.Null, destinationType));
+    Assert.AreEqual ("True", _converter.ConvertTo (null, null, NaBoolean.True, destinationType));
+    Assert.AreEqual ("False", _converter.ConvertTo (null, null, NaBoolean.False, destinationType));
   }
 
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaBoolean.Null, _converter.ConvertFrom (""));
-    Assert.AreEqual (NaBoolean.True, _converter.ConvertFrom ("True"));
-    Assert.AreEqual (NaBoolean.False, _converter.ConvertFrom ("False"));
+    Assert.AreEqual (NaBoolean.Null, _converter.ConvertFrom (null, null, ""));
+    Assert.AreEqual (NaBoolean.True, _converter.ConvertFrom (null, null, "True"));
+    Assert.AreEqual (NaBoolean.False, _converter.ConvertFrom (null, null, "False"));
   }
 
   [Test]
@@ -64,8 +64,8 @@ public class NaBooleanConverterTest
   {
     Type destinationType = typeof (bool);
 
-    Assert.AreEqual (true, _converter.ConvertTo (NaBoolean.True, destinationType));
-    Assert.AreEqual (false, _converter.ConvertTo (NaBoolean.False, destinationType));
+    Assert.AreEqual (true, _converter.ConvertTo (null, null, NaBoolean.True, destinationType));
+    Assert.AreEqual (false, _converter.ConvertTo (null, null, NaBoolean.False, destinationType));
   }
 
   [Test]
@@ -74,21 +74,21 @@ public class NaBooleanConverterTest
   {
     Type destinationType = typeof (bool);
 
-    _converter.ConvertTo (NaBoolean.Null, destinationType);
+    _converter.ConvertTo (null, null, NaBoolean.Null, destinationType);
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromBoolean()
   {
-    Assert.AreEqual (NaBoolean.True, _converter.ConvertFrom (true));
-    Assert.AreEqual (NaBoolean.False, _converter.ConvertFrom (false));
+    Assert.AreEqual (NaBoolean.True, _converter.ConvertFrom (null, null, true));
+    Assert.AreEqual (NaBoolean.False, _converter.ConvertFrom (null, null, false));
   }
 
   [Test]
   public void ConvertFromNull()
   {
-    Assert.AreEqual (NaBoolean.Null, _converter.ConvertFrom (null));
+    Assert.AreEqual (NaBoolean.Null, _converter.ConvertFrom (null, null, null));
   }
 
   [Test]
@@ -107,14 +107,14 @@ public class NaBooleanConverterTest
   [ExpectedException (typeof (NotSupportedException))]
   public void ConvertToDBNull()
   {
-    _converter.ConvertTo (NaBoolean.Null, typeof (DBNull));
+    _converter.ConvertTo (null, null, NaBoolean.Null, typeof (DBNull));
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromDBNull()
   {
-    Assert.AreEqual (NaBoolean.Null, _converter.ConvertFrom (DBNull.Value));
+    Assert.AreEqual (NaBoolean.Null, _converter.ConvertFrom (null, null, DBNull.Value));
   }
 }            
 

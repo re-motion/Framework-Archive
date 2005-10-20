@@ -12,23 +12,46 @@ namespace Rubicon.Core.UnitTests.NullableValueTypes
 public class NaDateTimeConverterTest
 {
   private NaDateTimeConverter _converter;
+  private CultureInfo _cultureBackup;
+  private CultureInfo _cultureEnUs;
+  private CultureInfo _cultureDeAt;
+
   private DateTime _dateTime;
   private NaDateTime _naDateTime;
-  private string _dateTimeString;
+  private string _dateTimeStringEnUs;
+  private string _dateTimeStringDeAt;
+
   private DateTime _date;
   private NaDateTime _naDate;
-  private string _dateString;
+  private string _dateStringEnUs;
+  private string _dateStringDeAt;
   
   [SetUp]
   public void SetUp()
   {
     _converter = new NaDateTimeConverter();
+    
+    _cultureEnUs = new CultureInfo ("en-US");
+    _cultureDeAt = new CultureInfo ("de-AT");
+    
+    _cultureBackup = Thread.CurrentThread.CurrentCulture;
+    Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
     _dateTime = new DateTime (2005, 12, 24, 13, 30, 30, 0);
-    _naDateTime = new NaDateTime (_dateTime);
-    _dateTimeString = _dateTime.ToString();
-    _date = DateTime.Now.Date;
-    _naDate = new NaDateTime (_date);
-    _dateString = _date.ToString();
+    _naDateTime = new DateTime (2005, 12, 24, 13, 30, 30, 0);
+    _dateTimeStringEnUs = "12/24/2005 1:30:30 PM";
+    _dateTimeStringDeAt = "24.12.2005 13:30:30";
+    
+    _date = new DateTime (2005, 12, 24, 0, 0, 0, 0);
+    _naDate = new DateTime (2005, 12, 24, 0, 0, 0, 0);
+    _dateStringEnUs = "12/24/2005 12:00:00 AM";
+    _dateStringDeAt = "24.12.2005 00:00:00";
+  }
+
+  [TearDown]
+  public void TearDown()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureBackup;
   }
 
   [Test]
@@ -44,21 +67,61 @@ public class NaDateTimeConverterTest
   }
 
   [Test]
-  public void ConvertToString()
+  public void ConvertToStringWithCultureEnUs()
   {
     Type destinationType = typeof (string);
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
 
-    Assert.AreEqual ("", _converter.ConvertTo (NaDateTime.Null, destinationType));
-    Assert.AreEqual (_dateTimeString, _converter.ConvertTo (_naDateTime, destinationType));
-    Assert.AreEqual (_dateString, _converter.ConvertTo (_naDate, destinationType));
+    Assert.AreEqual ("", _converter.ConvertTo (null, _cultureEnUs, NaDateTime.Null, destinationType));
+    Assert.AreEqual (_dateTimeStringEnUs, _converter.ConvertTo (null, _cultureEnUs, _naDateTime, destinationType));
+    Assert.AreEqual (_dateStringEnUs, _converter.ConvertTo (null, _cultureEnUs, _naDate, destinationType));
   }
 
   [Test]
-  public void ConvertFromString()
+  public void ConvertToStringWithCultureDeAt()
   {
-    Assert.AreEqual (NaDateTime.Null, _converter.ConvertFrom (""));
-    Assert.AreEqual (_naDateTime, _converter.ConvertFrom (_dateTimeString));
-    Assert.AreEqual (_naDate, _converter.ConvertFrom (_dateString));
+    Type destinationType = typeof (string);
+    Thread.CurrentThread.CurrentCulture = _cultureEnUs;
+
+    Assert.AreEqual ("", _converter.ConvertTo (null, _cultureDeAt, NaDateTime.Null, destinationType));
+    Assert.AreEqual (_dateTimeStringDeAt, _converter.ConvertTo (null, _cultureDeAt, _naDateTime, destinationType));
+    Assert.AreEqual (_dateStringDeAt, _converter.ConvertTo (null, _cultureDeAt, _naDate, destinationType));
+  }
+
+  [Test]
+  public void ConvertFromStringWithCultureEnUs()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+
+    Assert.AreEqual (NaDateTime.Null, _converter.ConvertFrom (null, _cultureEnUs, ""));
+    Assert.AreEqual (_naDateTime, _converter.ConvertFrom (null, _cultureEnUs, _dateTimeStringEnUs));
+    Assert.AreEqual (_naDate, _converter.ConvertFrom (null, _cultureEnUs, _dateStringEnUs));
+  }
+
+  [Test]
+  public void ConvertFromStringWithCultureDeAt()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureEnUs;
+
+    Assert.AreEqual (NaDateTime.Null, _converter.ConvertFrom (null, _cultureDeAt, ""));
+    Assert.AreEqual (_naDateTime, _converter.ConvertFrom (null, _cultureDeAt, _dateTimeStringDeAt));
+    Assert.AreEqual (_naDate, _converter.ConvertFrom (null, _cultureDeAt, _dateStringDeAt));
+  }
+
+  [Test]
+  [ExpectedException (typeof (FormatException))]
+  public void ConvertFromStringEnUsWithCultureDeAt()
+  {
+    _converter.ConvertFrom (null, _cultureDeAt, _dateTimeStringEnUs);
+    Assert.Fail();
+  }
+
+  [Test]
+  [ExpectedException (typeof (FormatException))]
+  public void ConvertFromStringDeAtWithCultureEnUs()
+  {
+    _converter.ConvertFrom (null, _cultureEnUs, _dateTimeStringDeAt);
+    Assert.Fail();
   }
 
   [Test]
@@ -78,8 +141,8 @@ public class NaDateTimeConverterTest
   {
     Type destinationType = typeof (DateTime);
 
-    Assert.AreEqual (_dateTime, _converter.ConvertTo (_naDateTime, destinationType));
-    Assert.AreEqual (_date, _converter.ConvertTo (_naDate, destinationType));
+    Assert.AreEqual (_dateTime, _converter.ConvertTo (null, null, _naDateTime, destinationType));
+    Assert.AreEqual (_date, _converter.ConvertTo (null, null, _naDate, destinationType));
   }
 
   [Test]
@@ -95,8 +158,8 @@ public class NaDateTimeConverterTest
   [Test]
   public void ConvertFromDateTime()
   {
-    Assert.AreEqual (_naDateTime, _converter.ConvertFrom (_dateTime));
-    Assert.AreEqual (_naDate, _converter.ConvertFrom (_date));
+    Assert.AreEqual (_naDateTime, _converter.ConvertFrom (null, null, _dateTime));
+    Assert.AreEqual (_naDate, _converter.ConvertFrom (null, null, _date));
   }
 
   [Test]

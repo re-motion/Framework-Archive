@@ -34,21 +34,21 @@ public class NaByteConverterTest
   {
     Type destinationType = typeof (string);
 
-    Assert.AreEqual ("", _converter.ConvertTo (NaByte.Null, destinationType));
-    Assert.AreEqual ("32", _converter.ConvertTo (new NaByte (32), destinationType));
-    Assert.AreEqual ("0", _converter.ConvertTo (NaByte.Zero, destinationType));
-    Assert.AreEqual (NaByte.MinValue.ToString(), _converter.ConvertTo (NaByte.MinValue, destinationType));
-    Assert.AreEqual (NaByte.MaxValue.ToString(), _converter.ConvertTo (NaByte.MaxValue, destinationType));
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, NaByte.Null, destinationType));
+    Assert.AreEqual ("32", _converter.ConvertTo (null, null, new NaByte (32), destinationType));
+    Assert.AreEqual ("0", _converter.ConvertTo (null, null, NaByte.Zero, destinationType));
+    Assert.AreEqual (NaByte.MinValue.ToString(), _converter.ConvertTo (null, null, NaByte.MinValue, destinationType));
+    Assert.AreEqual (NaByte.MaxValue.ToString(), _converter.ConvertTo (null, null, NaByte.MaxValue, destinationType));
   }
 
   [Test]
   public void ConvertFromString()
   {
-    Assert.AreEqual (NaByte.Null, _converter.ConvertFrom (""));
-    Assert.AreEqual (new NaByte (32), _converter.ConvertFrom (new NaByte (32).ToString()));
-    Assert.AreEqual (NaByte.Zero, _converter.ConvertFrom (NaByte.Zero.ToString()));
-    Assert.AreEqual (NaByte.MinValue, _converter.ConvertFrom (NaByte.MinValue.ToString()));
-    Assert.AreEqual (NaByte.MaxValue, _converter.ConvertFrom (NaByte.MaxValue.ToString()));
+    Assert.AreEqual (NaByte.Null, _converter.ConvertFrom (null, null, ""));
+    Assert.AreEqual (new NaByte (32), _converter.ConvertFrom (null, null, new NaByte (32).ToString()));
+    Assert.AreEqual (NaByte.Zero, _converter.ConvertFrom (null, null, NaByte.Zero.ToString()));
+    Assert.AreEqual (NaByte.MinValue, _converter.ConvertFrom (null, null, NaByte.MinValue.ToString()));
+    Assert.AreEqual (NaByte.MaxValue, _converter.ConvertFrom (null, null, NaByte.MaxValue.ToString()));
   }
 
   [Test]
@@ -68,10 +68,10 @@ public class NaByteConverterTest
   {
     Type destinationType = typeof (byte);
 
-    Assert.AreEqual ((byte) 32, _converter.ConvertTo (new NaByte (32), destinationType));
-    Assert.AreEqual ((byte) 0, _converter.ConvertTo (NaByte.Zero, destinationType));
-    Assert.AreEqual (byte.MinValue, _converter.ConvertTo (NaByte.MinValue, destinationType));
-    Assert.AreEqual (byte.MaxValue, _converter.ConvertTo (NaByte.MaxValue, destinationType));
+    Assert.AreEqual ((byte) 32, _converter.ConvertTo (null, null, new NaByte (32), destinationType));
+    Assert.AreEqual ((byte) 0, _converter.ConvertTo (null, null, NaByte.Zero, destinationType));
+    Assert.AreEqual (byte.MinValue, _converter.ConvertTo (null, null, NaByte.MinValue, destinationType));
+    Assert.AreEqual (byte.MaxValue, _converter.ConvertTo (null, null, NaByte.MaxValue, destinationType));
   }
 
   [Test]
@@ -80,23 +80,23 @@ public class NaByteConverterTest
   {
     Type destinationType = typeof (byte);
 
-    _converter.ConvertTo (NaByte.Null, destinationType);
+    _converter.ConvertTo (null, null, NaByte.Null, destinationType);
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromByte()
   {
-    Assert.AreEqual (new NaByte (32), _converter.ConvertFrom ((byte) 32));
-    Assert.AreEqual (NaByte.Zero, _converter.ConvertFrom ((byte) 0));
-    Assert.AreEqual (NaByte.MinValue, _converter.ConvertFrom (byte.MinValue));
-    Assert.AreEqual (NaByte.MaxValue, _converter.ConvertFrom (byte.MaxValue));
+    Assert.AreEqual (new NaByte (32), _converter.ConvertFrom (null, null, (byte) 32));
+    Assert.AreEqual (NaByte.Zero, _converter.ConvertFrom (null, null, (byte) 0));
+    Assert.AreEqual (NaByte.MinValue, _converter.ConvertFrom (null, null, byte.MinValue));
+    Assert.AreEqual (NaByte.MaxValue, _converter.ConvertFrom (null, null, byte.MaxValue));
   }
 
   [Test]
   public void ConvertFromNull()
   {
-    Assert.AreEqual (NaByte.Null, _converter.ConvertFrom (null));
+    Assert.AreEqual (NaByte.Null, _converter.ConvertFrom (null, null, null));
   }
 
   [Test]
@@ -115,14 +115,14 @@ public class NaByteConverterTest
   [ExpectedException (typeof (NotSupportedException))]
   public void ConvertToDBNull()
   {
-    _converter.ConvertTo (NaByte.Null, typeof (DBNull));
+    _converter.ConvertTo (null, null, NaByte.Null, typeof (DBNull));
     Assert.Fail();
   }
 
   [Test]
   public void ConvertFromDBNull()
   {
-    Assert.AreEqual (NaByte.Null, _converter.ConvertFrom (DBNull.Value));
+    Assert.AreEqual (NaByte.Null, _converter.ConvertFrom (null, null, DBNull.Value));
   }
 }            
 
