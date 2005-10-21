@@ -23,21 +23,22 @@ public class HttpContextHelper
     System.Runtime.Remoting.Messaging.CallContext.SetData("HtCt", context);
   }
 
-	public static HttpContext CreateHttpContext (string requestFilename, string requestUrl, string requestQueryString)
+	public static HttpContext CreateHttpContext (
+      string httpMethod, string requestFilename, string requestUrl, string requestQueryString)
 	{
     ArgumentUtility.CheckNotNullOrEmpty ("requestFilename", requestFilename);
     ArgumentUtility.CheckNotNullOrEmpty ("requestUrl", requestUrl);
 
     HttpRequest request = new HttpRequest (requestFilename, requestUrl, StringUtility.NullToEmpty (requestQueryString));
     HttpResponse response = new HttpResponse (new StringWriter());
-    return Init (request, response);     
+    return Init (httpMethod, request, response);     
 	}
 
-	public static HttpContext CreateHttpContext (HttpRequest request, HttpResponse response)
+	public static HttpContext CreateHttpContext (string httpMethod, HttpRequest request, HttpResponse response)
   {
     ArgumentUtility.CheckNotNull ("request", request);
     ArgumentUtility.CheckNotNull ("response", response);
-    return Init (request, response);
+    return Init (httpMethod, request, response);
   }
 
   public static void SetQueryString (HttpContext context, NameValueCollection queryString)
@@ -68,12 +69,15 @@ public class HttpContextHelper
     PrivateInvoke.SetNonPublicField (context.Request, "_params", null);
   }
 
-  protected static HttpContext Init (HttpRequest request, HttpResponse response)
+  protected static HttpContext Init (string httpMethod, HttpRequest request, HttpResponse response)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("httpMethod", httpMethod);
     ArgumentUtility.CheckNotNull ("request", request);
     ArgumentUtility.CheckNotNull ("response", response);
 
     HttpContext context = new HttpContext (request, response);
+    PrivateInvoke.SetNonPublicField (context.Request, "_httpMethod", httpMethod);
+
     HttpSessionState sessionState = CreateSession();
     SetSession (context, sessionState);
     
