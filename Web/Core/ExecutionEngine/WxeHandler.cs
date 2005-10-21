@@ -107,29 +107,18 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   }
 
   /// <summary> Processes the requests associated with the <see cref="WxeHandler"/>. </summary>
-  /// <param name="context"> The <see cref="HttpContext"/> or the request. Must not be <see langword="null"/>. </param>
+  /// <param name="context"> The <see cref="HttpContext"/> of the request. Must not be <see langword="null"/>. </param>
   public virtual void ProcessRequest (HttpContext context)
   {
     ArgumentUtility.CheckNotNull ("context", context);
-
     CheckTimeoutConfiguration (context);
-
 
     string functionToken = context.Request.Params[Parameters.WxeFunctionToken];
     bool hasFunctionToken = ! StringUtility.IsNullOrEmpty (functionToken);
 
     if (! hasFunctionToken)
     {
-      Type type = GetType (context);
-      if (type == null)
-      {
-        if (File.Exists (context.Request.PhysicalPath))
-          throw new HttpException (string.Format ("Missing URL parameter '{0}'", Parameters.WxeFunctionType));
-        else
-          throw new HttpException (c_httpResourceNotFound, string.Format ("Could not map the path '{0}' to a Function Type.", context.Request.Path));
-      }
-
-      _currentFunctionState = CreateNewFunctionState (context, type);
+      _currentFunctionState = CreateNewFunctionState (context, GetType (context));
       ProcessFunctionState (context, _currentFunctionState, true);
     }
     else
@@ -168,34 +157,44 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   }
 
 
-  protected virtual Type ParseUrl (HttpRequest request)
+  /// <summary> Gets the <see cref="Type"/> from the information provided by the <paramref name="context"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetType/*' />
+  protected Type GetType (HttpContext context)
   {
-    ArgumentUtility.CheckNotNull ("request", request);
-    
+    ArgumentUtility.CheckNotNull ("context", context);
+
+    string typeName = context.Request.Params[Parameters.WxeFunctionType];
+    bool hasTypeName = ! StringUtility.IsNullOrEmpty (typeName);
+    if (hasTypeName)
+      return GetTypeByTypeName (typeName);
+    else
+      return GetTypeByPath (context.Request.Url.AbsolutePath);
+  }
+
+  /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="absolutePath"/>. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetTypeByPath/*' />
+  protected virtual Type GetTypeByPath (string absolutePath)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("absolutePath", absolutePath);
+    if (! absolutePath.StartsWith ("/"))
+      throw new ArgumentException ("An absolute path must start with a '/'.", "absolutePath");
+
     string root = "/";
     if (HttpRuntime.AppDomainAppVirtualPath != "/")
       root = HttpRuntime.AppDomainAppVirtualPath + "/";
     
-    string path = request.Url.AbsolutePath.Substring (root.Length);
+    string relativePath = absolutePath.Substring (root.Length);
 
-    return UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType ("~/" + path);
-  }
+    Type type = UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType ("~/" + relativePath);
+    if (type == null)
+      throw new HttpException (c_httpResourceNotFound, string.Format ("Could not map the path '{0}' to a WXE function.", "absolutePath"));
 
-
-  protected Type GetType (HttpContext context)
-  {
-    string typeName = context.Request.Params[Parameters.WxeFunctionType];
-    bool hasTypeName = ! StringUtility.IsNullOrEmpty (typeName);
-    if (hasTypeName)
-      return GetType (typeName);
-    else
-      return ParseUrl (context.Request);
+    return type;
   }
 
   /// <summary> Gets the <see cref="Type"/> for the specified <paramref name="typeName"/>. </summary>
-  /// <param name="typeName"> The name of the type to get. </param>
-  /// <returns> The <see cref="Type"/> specified by <paramref name="typeName"/>. </returns>
-  protected Type GetType (string typeName)
+  /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/GetTypeByTypeName/*' />
+  protected Type GetTypeByTypeName (string typeName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
     try
@@ -204,13 +203,14 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     }
     catch (TypeLoadException e)
     {
-      throw new ArgumentException (string.Format ("The function type '{0}' is invalid.", typeName), typeName, e);
+      throw new HttpException (string.Format ("The function type '{0}' is invalid.", typeName), e);
     }
     catch (System.IO.FileNotFoundException e)
     {
-      throw new ArgumentException (string.Format ("The function type '{0}' is invalid.", typeName), typeName, e);
+      throw new HttpException (string.Format ("The function type '{0}' is invalid.", typeName), e);
     } 
   }
+
 
   /// <summary> Initializes a new <see cref="WxeFunction"/>, encapsulated in a <see cref="WxeFunctionState"/> object. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeHandler.xml' path='WxeHandler/CreateNewFunctionState/*' />
@@ -256,34 +256,26 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
                   || StringUtility.AreEqual (action, Actions.Cancel, true);
     bool isPostBackAction = isRefresh || isAbort;
     
-    bool isGetRequest = ! StringUtility.IsNullOrEmpty (context.Request.QueryString[Parameters.WxeFunctionToken]);
+    bool isPostRequest = string.Compare (context.Request.HttpMethod, "POST", true) == 0;
 
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     if (functionStates == null)
     {
-      if (isGetRequest && ! isPostBackAction)
-      {
-        Type type = GetType (context);
-        if (type != null)
-          return CreateNewFunctionState (context, type);
-      }
-      throw new HttpException (c_httpRequestTimeout, "Session timeout."); // TODO: display error message
+      if (isPostRequest || isPostBackAction)
+        throw new HttpException (c_httpRequestTimeout, "Session timeout."); // TODO: display error message
+      return CreateNewFunctionState (context, GetType (context));
     }
 
     WxeFunctionState functionState = functionStates.GetItem (functionToken);
     if (functionState == null || functionState.IsExpired)
     {
-      if (isGetRequest && ! isPostBackAction)
-      {
-        Type type = GetType (context);
-        if (type != null)
-          return CreateNewFunctionState (context, type);
-      }
-      throw new HttpException (c_httpRequestTimeout, "Function Timeout."); // TODO: display error message
+      if (isPostRequest || isPostBackAction)
+        throw new HttpException (c_httpRequestTimeout, "Function Timeout."); // TODO: display error message
+      return CreateNewFunctionState (context, GetType (context));
     }
 
     if (functionState.IsAborted)
-      throw new InvalidOperationException ("WxeFunctionState {0} is aborted." + functionState.FunctionToken); // TODO: display error message
+      throw new InvalidOperationException (string.Format ("WxeFunctionState {0} is aborted.", functionState.FunctionToken)); // TODO: display error message
  
     if (isRefresh)
     {
@@ -301,7 +293,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       functionState.Touch();
       functionStates.CleanUpExpired();
       if (functionState.Function == null)
-        throw new ApplicationException ("Function missing in WxeFunctionState {0}." + functionState.FunctionToken);
+        throw new ApplicationException (string.Format ("Function missing in WxeFunctionState {0}.", functionState.FunctionToken));
       return functionState;
     }
   }
@@ -331,7 +323,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNull ("functionState", functionState);
     if (functionState.IsAborted)
-      throw new InvalidOperationException ("The function state " + functionState.FunctionToken + " is aborted.");
+      throw new ArgumentException ("The function state " + functionState.FunctionToken + " is aborted.");
 
     string queryString = context.Request.QueryString.ToString();
 
@@ -349,7 +341,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNull ("function", function);
     ArgumentUtility.CheckNotNull ("context", context);
     if (function.IsAborted)
-      throw new InvalidOperationException ("The function " + function.GetType().FullName + " is aborted.");
+      throw new ArgumentException ("The function " + function.GetType().FullName + " is aborted.");
 
     function.AppendCatchExceptionTypes (typeof(WxeUserCancelException));
     function.Execute (context);
