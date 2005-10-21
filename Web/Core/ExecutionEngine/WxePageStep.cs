@@ -114,7 +114,8 @@ public class WxePageStep: WxeStep
       
       EnsureHasRedirectedToPermaUrl (context);
       _function.Execute (context);
-      
+      //  This point is only reached after the sub-function has completed execution.
+
       //  This is the PageStep after the sub-function has completed execution
       
       EnsureHasReturnedFromRedirectToPermaUrl (context);

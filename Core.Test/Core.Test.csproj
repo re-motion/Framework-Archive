@@ -258,6 +258,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Utilities\StringUtilityMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Utilities\StringUtilityTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

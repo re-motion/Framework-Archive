@@ -306,7 +306,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNull ("functionState", functionState);
         
     ExecuteFunctionState (context, functionState, isNewFunction);
-    //  This point is only reached, once the WxeFunction has completed execution.
+    //  This point is only reached after the WxeFunction has completed execution.
     string returnUrl = functionState.Function.ReturnUrl;
     CleanUpFunctionState (functionState);
     if (! StringUtility.IsNullOrEmpty (returnUrl))
