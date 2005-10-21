@@ -32,7 +32,8 @@ public class WxeTest
   [SetUp]
   public virtual void SetUp()
   {
-    _currentHttpContext = HttpContextHelper.CreateHttpContext (@"C:\default.html", @"http://localhost/default.html", null);
+    _currentHttpContext = HttpContextHelper.CreateHttpContext (
+        "GET", @"C:\default.html", @"http://localhost/default.html", null);
     HttpContextHelper.SetCurrent (_currentHttpContext);
 
     _currentWxeContext = new WxeContextMock (_currentHttpContext);
