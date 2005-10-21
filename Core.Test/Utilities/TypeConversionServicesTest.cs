@@ -593,11 +593,11 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  public void HasTypeConverterInCache()
+  public void HasTypeInCache()
   {
     NaInt32Converter converter = new NaInt32Converter();
     _services.AddTypeConverterToCache (_naInt32, converter);
-    Assert.IsTrue (_services.HasTypeConverterInCache (_naInt32));
+    Assert.IsTrue (_services.HasTypeInCache (_naInt32));
   }
 
   [Test]

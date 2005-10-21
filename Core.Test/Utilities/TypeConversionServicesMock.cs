@@ -31,9 +31,9 @@ public class TypeConversionServicesMock: TypeConversionServices
     return base.GetTypeConverterFromCache (key);
   }
 
-  public new bool HasTypeConverterInCache (Type type)
+  public new bool HasTypeInCache (Type type)
   {
-    return base.HasTypeConverterInCache (type);
+    return base.HasTypeInCache (type);
   }
 
   public static void ClearCache()
