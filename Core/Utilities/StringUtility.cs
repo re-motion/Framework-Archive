@@ -314,16 +314,7 @@ public sealed class StringUtility
 
   private static object ParseScalarValue (Type type, string value, IFormatProvider format)
   {
-    MethodInfo parseMethod = GetParseMethodFromCache (type);
-    if (parseMethod == null)
-    {
-      parseMethod = GetParseMethodWithFormatProvider (type);
-      if (parseMethod == null)
-        parseMethod = GetParseMethod (type);
-      AddParseMethodToCache (type, parseMethod);
-    }
-    if (! HasTypeInCache (type))
-      throw new ParseException (string.Format ("Type does not have method 'public static {0} Parse (string s)'.", type.Name));
+    MethodInfo parseMethod = GetParseMethod (type, true);
 
     object[] args;
     if (parseMethod.GetParameters().Length == 2)
@@ -341,7 +332,29 @@ public sealed class StringUtility
     }
   }
 
-  public static MethodInfo GetParseMethodWithFormatProvider (Type type)
+  public static bool HasParseMethod (Type type)
+  {
+    MethodInfo parseMethod = GetParseMethod (type, false);
+    return parseMethod != null;
+  }
+
+  private static MethodInfo GetParseMethod  (Type type, bool throwIfNotFound)
+  {
+    MethodInfo parseMethod = GetParseMethodFromCache (type);
+    if (parseMethod == null && ! HasTypeInCache (type))
+    {
+      parseMethod = GetParseMethodWithFormatProviderFromType (type);
+      if (parseMethod == null)
+        parseMethod = GetParseMethodFromType (type);
+      AddParseMethodToCache (type, parseMethod);
+    }
+    if (throwIfNotFound && parseMethod == null)
+      throw new ParseException (string.Format ("Type does not have method 'public static {0} Parse (string s)'.", type.Name));
+
+    return parseMethod;
+  }
+
+  private static MethodInfo GetParseMethodWithFormatProviderFromType (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
     MethodInfo parseMethod = type.GetMethod (
@@ -357,7 +370,7 @@ public sealed class StringUtility
       return null;
   }
 
-  public static MethodInfo GetParseMethod  (Type type)
+  private static MethodInfo GetParseMethodFromType  (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
     MethodInfo parseMethod = type.GetMethod (

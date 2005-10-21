@@ -209,7 +209,7 @@ public class TypeConversionServices
     ArgumentUtility.CheckNotNull ("type", type);
 
     TypeConverter converter = GetTypeConverterFromCache (type);
-    if (converter == null && ! HasTypeConverterInCache (type))
+    if (converter == null && ! HasTypeInCache (type))
     {
       converter = GetTypeConverterByAttribute (type);
       if (converter == null && type.IsEnum)
@@ -249,7 +249,7 @@ public class TypeConversionServices
     return (TypeConverter) s_typeConverters[type];
   }
 
-  protected bool HasTypeConverterInCache (Type type)
+  protected bool HasTypeInCache (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
     return s_typeConverters.ContainsKey (type);

@@ -67,7 +67,7 @@ public class StringUtilityTest
   [Test]
   public void GetParseMethodFromCache()
   {
-    MethodInfo parseMethod = StringUtility.GetParseMethod (_int32);
+    MethodInfo parseMethod = StringUtilityMock.GetParseMethodFromType (_int32);
     StringUtilityMock.AddParseMethodToCache (_int32, parseMethod);
     Assert.AreSame (parseMethod, StringUtilityMock.GetParseMethodFromCache (_int32));
   }
@@ -75,28 +75,21 @@ public class StringUtilityTest
   [Test]
   public void HasTypeInCache()
   {
-    MethodInfo parseMethod = StringUtility.GetParseMethod (_int32);
+    MethodInfo parseMethod = StringUtilityMock.GetParseMethodFromType (_int32);
     StringUtilityMock.AddParseMethodToCache (_int32, parseMethod);
     Assert.IsTrue (StringUtilityMock.HasTypeInCache (_int32));
   }
 
   [Test]
-  public void GetParseMethodForInt32()
+  public void HasParseMethodForInt32()
   {
-    MethodInfo parseMethod = StringUtility.GetParseMethod (_int32);
-    Assert.IsNotNull (parseMethod);
-    Assert.AreEqual ("Parse", parseMethod.Name);
-    Assert.AreEqual (1, parseMethod.GetParameters().Length);
-    Assert.AreEqual (typeof (string), parseMethod.GetParameters()[0].ParameterType);
-    Assert.AreEqual (typeof (int), parseMethod.ReturnType);
-    Assert.IsTrue (parseMethod.IsPublic);
-    Assert.IsTrue (parseMethod.IsStatic);
+    Assert.IsTrue (StringUtility.HasParseMethod (_int32));
   }
 
   [Test]
-  public void GetParseMethodWithFormatProviderForInt32()
+  public void GetParseMethodForInt32()
   {
-    MethodInfo parseMethod = StringUtility.GetParseMethodWithFormatProvider (_int32);
+    MethodInfo parseMethod = StringUtilityMock.GetParseMethod (_int32, true);
     Assert.IsNotNull (parseMethod);
     Assert.AreEqual ("Parse", parseMethod.Name);
     Assert.AreEqual (2, parseMethod.GetParameters().Length);
@@ -108,15 +101,62 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void GetParseMethodForObject()
+  public void GetParseMethodFromTypeForInt32()
   {
-    Assert.IsNull (StringUtility.GetParseMethod (_object));
+    MethodInfo parseMethod = StringUtilityMock.GetParseMethodFromType (_int32);
+    Assert.IsNotNull (parseMethod);
+    Assert.AreEqual ("Parse", parseMethod.Name);
+    Assert.AreEqual (1, parseMethod.GetParameters().Length);
+    Assert.AreEqual (typeof (string), parseMethod.GetParameters()[0].ParameterType);
+    Assert.AreEqual (typeof (int), parseMethod.ReturnType);
+    Assert.IsTrue (parseMethod.IsPublic);
+    Assert.IsTrue (parseMethod.IsStatic);
   }
 
   [Test]
-  public void GetParseMethodWithFormatProviderForObjec()
+  public void GetParseMethodWithFormatProviderFromTypeForInt32()
   {
-    Assert.IsNull (StringUtility.GetParseMethodWithFormatProvider (_object));
+    MethodInfo parseMethod = StringUtilityMock.GetParseMethodWithFormatProviderFromType (_int32);
+    Assert.IsNotNull (parseMethod);
+    Assert.AreEqual ("Parse", parseMethod.Name);
+    Assert.AreEqual (2, parseMethod.GetParameters().Length);
+    Assert.AreEqual (typeof (string), parseMethod.GetParameters()[0].ParameterType);
+    Assert.AreEqual (typeof (IFormatProvider), parseMethod.GetParameters()[1].ParameterType);
+    Assert.AreEqual (typeof (int), parseMethod.ReturnType);
+    Assert.IsTrue (parseMethod.IsPublic);
+    Assert.IsTrue (parseMethod.IsStatic);
+  }
+
+  [Test]
+  public void HasParseMethodForObject()
+  {
+    Assert.IsFalse (StringUtility.HasParseMethod (_object));
+  }
+  
+  [Test]
+  [ExpectedException (typeof (ParseException))]
+  public void GetParseMethodForObjectWithException()
+  {
+    StringUtilityMock.GetParseMethod (_object, true);
+    Assert.Fail();
+  }
+
+  [Test]
+  public void GetParseMethodForObjectWithoutException()
+  {
+    Assert.IsNull (StringUtilityMock.GetParseMethod (_object, false));
+  }
+
+  [Test]
+  public void GetParseMethodFromTypeForObject()
+  {
+    Assert.IsNull (StringUtilityMock.GetParseMethodFromType (_object));
+  }
+
+  [Test]
+  public void GetParseMethodWithFormatProviderFromTypeForObject()
+  {
+    Assert.IsNull (StringUtilityMock.GetParseMethodWithFormatProviderFromType (_object));
   }
 
   [Test]

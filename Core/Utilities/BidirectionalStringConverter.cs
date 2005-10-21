@@ -44,8 +44,7 @@ public class BidirectionalStringConverter: TypeConverter
       return true;
     if (sourceType == typeof (Guid))
       return true;
-    return    StringUtility.GetParseMethodWithFormatProvider (sourceType) != null
-           || StringUtility.GetParseMethod (sourceType) != null;
+    return StringUtility.HasParseMethod (sourceType);
   }
 
   /// <summary> Test: Can convert from <see cref="String"/> to <paramref name="destinationType"/>? </summary>
