@@ -23,10 +23,9 @@ namespace Rubicon.Utilities
 ///       <see cref="Type"/>.
 ///     </item>
 ///     <item>
-///       For types without a <see cref="TypeConverter"/>, the <b>TypeConversionServices</b> try use the 
-///       <see cref="BidirectionalStringConverter"/>, which supports the conversion from and to a <see cref="String"/>
-///       for types implementing either a public static &lt;DestinationType&gt; Parse (string) or a public static 
-///       &lt;DestinationType&gt; Parse (string, IFormatProvider) method.
+///       For types without a <see cref="TypeConverter"/>, the <b>TypeConversionServices</b> try to use the 
+///       <see cref="BidirectionalStringConverter"/>. See the documentation of the string converter for details on the
+///       supported types.
 ///     </item>
 ///   </list>
 /// </remarks>

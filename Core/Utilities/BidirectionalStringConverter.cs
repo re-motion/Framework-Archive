@@ -15,10 +15,10 @@ namespace Rubicon.Utilities
 ///   </para>
 ///   <list type="bullet">
 ///     <item>
-///       A <see cref="Type"/> is not an array.
+///       The <see cref="Type"/> is <see cref="Guid"/> or <see cref="DBNull"/>
 ///     </item>
 ///     <item>
-///       The <see cref="Type"/> is <see cref="Guid"/> or <see cref="DBNull"/>
+///       The <see cref="Type"/> is an array of scalar values.
 ///     </item>
 ///     <item>
 ///       A <see cref="Type"/> implements either a public static &lt;DestinationType&gt; Parse (string) or a 
@@ -38,8 +38,6 @@ public class BidirectionalStringConverter: TypeConverter
   {
     if (sourceType == null)
       return false;
-    if (sourceType.IsArray)
-      return false;
     return StringUtility.CanParse (sourceType);
   }
 
@@ -49,7 +47,9 @@ public class BidirectionalStringConverter: TypeConverter
   /// <returns> <see langword="true"/> if the conversion is supported. </returns>
   public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
   {
-    return CanConvertFrom (context, destinationType);
+    if (destinationType == null)
+      return false;
+    return StringUtility.CanParse (destinationType);
   }
 
   /// <summary> Converts <paramref name="value"/> into a <see cref="String"/>. </summary>
@@ -66,17 +66,7 @@ public class BidirectionalStringConverter: TypeConverter
     if (value == null)
       return string.Empty;
     if (CanConvertFrom (context, value.GetType()))
-    {
-      IFormattable formattable = value as IFormattable;
-      if (formattable != null)
-      {
-        string format = null;
-        if (value is float || value is double)
-          format = "R";
-        return formattable.ToString (format, culture);
-      }
-      return value.ToString();
-    }
+      return StringUtility.Format (value, culture);
     throw new NotSupportedException (string.Format ("Cannot convert from '{0}' to String.", value.GetType()));
   }
 

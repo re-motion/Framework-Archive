@@ -157,13 +157,13 @@ public class BidirectionalStringConverterTest
   [Test]
   public void CanConvertToInt32Array()
   {
-    Assert.IsFalse (_converter.CanConvertTo (typeof (int[])));
+    Assert.IsTrue (_converter.CanConvertTo (typeof (int[])));
   }
 
   [Test]
   public void CanConvertFromInt32Array()
   {
-    Assert.IsFalse (_converter.CanConvertFrom (typeof (int[])));
+    Assert.IsTrue (_converter.CanConvertFrom (typeof (int[])));
   }
 
   [Test]
@@ -365,20 +365,22 @@ public class BidirectionalStringConverterTest
   }
 
   [Test]
-  [ExpectedException (typeof (NotSupportedException))]
   public void ConvertToInt32Array()
   {
     Type destinationType = typeof (int[]);
-    _converter.ConvertTo ("0, 1", destinationType);
-    Assert.Fail();
+    object value = _converter.ConvertTo ("0, 1", destinationType);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (typeof (int[]), value.GetType());
+    int[] values = (int[])value;
+    Assert.AreEqual (2, values.Length);
+    Assert.AreEqual (0, values[0]);
+    Assert.AreEqual (1, values[1]);
   }
 
   [Test]
-  [ExpectedException (typeof (NotSupportedException))]
   public void ConvertFromInt32Array()
   {
-    _converter.ConvertFrom (new int[] {0, 1});
-    Assert.Fail();
+    Assert.AreEqual ("0,1", _converter.ConvertFrom (new int[] {0, 1}));
   }
 
   [Test]

@@ -17,18 +17,6 @@ public class StringUtilityMock
         typeof (StringUtility), "AddParseMethodToCache", new object[]{key, parseMethod});
   }
 
-  public static object ParseScalarValue (Type type, string value, IFormatProvider format)
-  {
-    return PrivateInvoke.InvokeNonPublicStaticMethod (
-        typeof (StringUtility), "ParseScalarValue", new object[]{type, value, format});
-  }
-
-  public static object ParseArrayValue (Type type, string value, IFormatProvider format)
-  {
-    return PrivateInvoke.InvokeNonPublicStaticMethod (
-        typeof (StringUtility), "ParseArrayValue", new object[]{type, value, format});
-  }
-
   public static MethodInfo GetParseMethodFromCache (Type key)
   {
     return (MethodInfo) PrivateInvoke.InvokeNonPublicStaticMethod (

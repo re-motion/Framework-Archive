@@ -21,6 +21,8 @@ public class StringUtilityTest
   private Type _object = typeof (object);
   private Type _guid = typeof (Guid);
   private Type _dbNull = typeof (DBNull);
+  private Type _doubleArray = typeof (double[]);
+  private Type _stringArray = typeof (string[]);
 
   [SetUp]
   public void SetUp()
@@ -161,10 +163,10 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void ParseScalarValueDoubleWithCultureEnUs()
+  public void ParseDoubleWithCultureEnUs()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
-    object value = StringUtilityMock.ParseScalarValue (_double, "4,321.123", _cultureEnUs);
+    object value = StringUtility.Parse (_double, "4,321.123", _cultureEnUs);
     Assert.IsNotNull (value);
     Assert.AreEqual (_double, value.GetType());
     Assert.AreEqual (4321.123, value);
@@ -172,18 +174,18 @@ public class StringUtilityTest
 
   [Test]
   [ExpectedException (typeof (ParseException))]
-  public void ParseScalarValueDoubleEnUsWithCultureDeAt()
+  public void ParseDoubleEnUsWithCultureDeAt()
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;
-    StringUtilityMock.ParseScalarValue (_double, "4,321.123", _cultureDeAt);
+    StringUtility.Parse (_double, "4,321.123", _cultureDeAt);
     Assert.Fail();
   }
 
   [Test]
-  public void ParseScalarValueDoubleWithCultureDeAt()
+  public void ParseDoubleWithCultureDeAt()
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;
-    object value = StringUtilityMock.ParseScalarValue (_double, "4.321,123", _cultureDeAt);
+    object value = StringUtility.Parse (_double, "4.321,123", _cultureDeAt);
     Assert.IsNotNull (value);
     Assert.AreEqual (_double, value.GetType());
     Assert.AreEqual (4321.123, value);
@@ -191,12 +193,83 @@ public class StringUtilityTest
 
   [Test]
   [ExpectedException (typeof (ParseException))]
-  public void ParseScalarValueDoubleDeAtWithCultureEnUs()
+  public void ParseDoubleDeAtWithCultureEnUs()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
-    StringUtilityMock.ParseScalarValue (_double, "4.321,123", _cultureEnUs);
+    StringUtility.Parse (_double, "4.321,123", _cultureEnUs);
     Assert.Fail();
   }
+
+  [Test]
+  [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
+  public void ParseDoubleArrayWithCultureEnUs()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    object value = StringUtility.Parse (_doubleArray, @"6\,543.123,5\,432.123,4\,321.123", _cultureEnUs);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_doubleArray, value.GetType());
+    double[] values = (double[]) value;
+    Assert.AreEqual (3, values.Length);
+    Assert.AreEqual (6543.123, values[0]);
+    Assert.AreEqual (5432.123, values[1]);
+    Assert.AreEqual (4321.123, values[2]);
+  }
+
+  [Test]
+  public void ParseDoubleArrayWithCultureEnUsNoThousands()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    object value = StringUtility.Parse (_doubleArray, @"6543.123,5432.123,4321.123", _cultureEnUs);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_doubleArray, value.GetType());
+    double[] values = (double[]) value;
+    Assert.AreEqual (3, values.Length);
+    Assert.AreEqual (6543.123, values[0]);
+    Assert.AreEqual (5432.123, values[1]);
+    Assert.AreEqual (4321.123, values[2]);
+  }
+
+  [Test]
+  [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
+  public void ParseDoubleArrayWithCultureDeAt()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureEnUs;
+    object value = StringUtility.Parse (_doubleArray, @"6.543\,123,5.432\,123,4.321\,123", _cultureDeAt);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_doubleArray, value.GetType());
+    double[] values = (double[]) value;
+    Assert.AreEqual (3, values.Length);
+    Assert.AreEqual (6543.123, values[0]);
+    Assert.AreEqual (5432.123, values[1]);
+    Assert.AreEqual (4321.123, values[2]);
+  }
+
+  [Test]
+  public void ParseStringArray()
+  {
+    object value = StringUtility.Parse (_stringArray, "\"a\",\"b\",\"c\",\"d\"", null);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_stringArray, value.GetType());
+    string[] values = (string[]) value;
+    Assert.AreEqual (4, values.Length);
+    Assert.AreEqual ("a", values[0]);
+    Assert.AreEqual ("b", values[1]);
+    Assert.AreEqual ("c", values[2]);
+    Assert.AreEqual ("d", values[3]);
+  }
+
+  [Test]
+  public void CanParseDoubleArray()
+  {
+    Assert.IsTrue (StringUtility.CanParse (_doubleArray));
+  }
+
+  [Test]
+  public void CanParseArayDoubleArray()
+  {
+    Assert.IsFalse (StringUtility.CanParse (typeof (double[][])));
+  }
+
   [Test]
   public void CanParseString()
   {
@@ -242,6 +315,48 @@ public class StringUtilityTest
     Assert.IsNotNull (value);
     Assert.AreEqual (_guid, value.GetType());
     Assert.AreEqual (guid, value);
+  }
+
+  [Test]
+  public void FormatNull()
+  {
+    Assert.AreEqual ("", StringUtility.Format (null, null));
+  }
+
+  [Test]
+  public void FormatString()
+  {
+    string value = "Hello World!";
+    Assert.AreEqual (value, StringUtility.Format (value, null));
+  }
+
+  [Test]
+  public void FormatDoubleWithCultureEnUs()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    Assert.AreEqual ("4321.123", StringUtility.Format (4321.123, _cultureEnUs));
+  }
+
+  [Test]
+  public void FormatDoubleWithCultureDeAt()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureEnUs;
+    Assert.AreEqual ("4321,123", StringUtility.Format (4321.123, _cultureDeAt));
+  }
+
+  [Test]
+  public void FormatGuid()
+  {
+    Guid guid = Guid.Empty;
+    Assert.AreEqual (guid.ToString(), StringUtility.Format (guid, null));
+  }
+
+  [Test]
+  public void FormatDoubleArrayWithCultureEnUsNoThousands()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    double[] values = new double[] {6543.123, 5432.123, 4321.123};
+    Assert.AreEqual (@"6543.123,5432.123,4321.123", StringUtility.Format (values, _cultureEnUs));
   }
 }
 

@@ -232,13 +232,7 @@ public sealed class StringUtility
 		{
 			if (i > 0)
 				sb.Append (separator);
-
-			object obj = list[i];
-			IFormattable formatable = obj as IFormattable;
-			if (formatable != null)
-				sb.Append (formatable.ToString (format, formatProvider));
-			else
-				sb.Append (obj.ToString());
+  		sb.Append (StringUtility.FormatScalarValue (list[i], formatProvider));
 		}
 		return sb.ToString();
 	}
@@ -268,6 +262,46 @@ public sealed class StringUtility
 		return sb.ToString();
 	}
 
+
+  public static string Format (object value, IFormatProvider formatProvider)
+  {
+    if (value == null)
+      return string.Empty;
+    else if (value.GetType().IsArray)
+      return StringUtility.FormatArrayValue (value, formatProvider);
+    else
+      return StringUtility.FormatScalarValue (value, formatProvider);
+  }
+
+  public static string Format (object value)
+  {
+    return Format (value, null);
+  }
+
+  private static string FormatArrayValue (object value, IFormatProvider formatProvider)
+  {
+    Type elementType = value.GetType().GetElementType();
+    string format = null;
+    if (elementType == typeof (float) || elementType == typeof (double))
+      format = "R";
+    return StringUtility.ConcatWithSeparator ((IList) value, ",", format, formatProvider);
+  }
+
+  private static string FormatScalarValue (object value, IFormatProvider formatProvider)
+  {
+    if (value is string)
+      return (string) value;
+    IFormattable formattable = value as IFormattable;
+    if (formattable != null)
+    {
+      string format = null;
+      if (value is float || value is double)
+        format = "R";
+      return formattable.ToString (format, formatProvider);
+    }
+    return value.ToString();
+  }
+
   /// <summary>
   ///   Parses the specified type from a string.
   /// </summary>
@@ -277,15 +311,15 @@ public sealed class StringUtility
   ///   If <paramref name="type"/> is an array type, the values must be comma-separated. (Escaping is 
   ///   handled as for <see cref="ParseSeparatedList"/>.) </param>
   /// <param name="value"> The string value to be parsed. </param>
-  /// <param name="format"> The format provider to be passed to the type's <b>Parse</b> method (if present). </param>
+  /// <param name="formatProvider"> The format provider to be passed to the type's <b>Parse</b> method (if present). </param>
   /// <returns> An instance of the specified type. </returns>
   /// <exception cref="ParseException"> The <b>Parse</b> method was not found, or failed. </exception>
-  public static object Parse (Type type, string value, IFormatProvider format)
+  public static object Parse (Type type, string value, IFormatProvider formatProvider)
   {
     if (type == typeof (string))
       return value;
     else if (type.IsArray)
-      return StringUtility.ParseArrayValue (type, value, format);
+      return StringUtility.ParseArrayValue (type, value, formatProvider);
     else if (type.IsEnum)
       return Enum.Parse (type, value, false);
     else if (type == typeof (Guid))
@@ -293,10 +327,10 @@ public sealed class StringUtility
     else if (type == typeof (DBNull))
       return DBNull.Value;
     else
-      return StringUtility.ParseScalarValue (type, value, format);
+      return StringUtility.ParseScalarValue (type, value, formatProvider);
   }
 
-  private static object ParseArrayValue (Type type, string value, IFormatProvider format)
+  private static object ParseArrayValue (Type type, string value, IFormatProvider formatProvider)
   {
     Type elementType = type.GetElementType();
     ParsedItem[] items = StringUtility.ParseSeparatedList (value, ',');
@@ -305,7 +339,7 @@ public sealed class StringUtility
     {
       try
       {
-        results.SetValue (StringUtility.Parse (elementType, items[i].Value, format), i);
+        results.SetValue (StringUtility.Parse (elementType, items[i].Value, formatProvider), i);
       }
       catch (ParseException e)
       {
@@ -315,13 +349,13 @@ public sealed class StringUtility
     return results;
   }
 
-  private static object ParseScalarValue (Type type, string value, IFormatProvider format)
+  private static object ParseScalarValue (Type type, string value, IFormatProvider formatProvider)
   {
     MethodInfo parseMethod = StringUtility.GetParseMethod (type, true);
 
     object[] args;
     if (parseMethod.GetParameters().Length == 2)
-      args = new object[] { value, format };
+      args = new object[] { value, formatProvider };
     else
       args = new object[] { value };
 
@@ -337,12 +371,21 @@ public sealed class StringUtility
 
   public static bool CanParse (Type type)
   {
+    ArgumentUtility.CheckNotNull ("type", type);
+
     if (type == typeof (string))
       return true;
     if (type == typeof (Guid))
       return true;
     if (type == typeof (DBNull))
       return true;
+    if (type.IsArray)
+    {
+      Type elementType = type.GetElementType();
+      if (elementType.IsArray)
+        return false;
+      return StringUtility.CanParse (elementType);
+    }
     MethodInfo parseMethod = StringUtility.GetParseMethod (type, false);
     return parseMethod != null;
   }
