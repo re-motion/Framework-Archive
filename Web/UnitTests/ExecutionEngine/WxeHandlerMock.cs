@@ -21,14 +21,19 @@ public class WxeHandlerMock: WxeHandler
     base.CheckTimeoutConfiguration (context);
   }
 
-  public new Type ParseUrl (HttpRequest request)
+  public new Type GetTypeByPath (string path)
   {
-    return base.ParseUrl (request);
+    return base.GetTypeByPath (path);
   }
 
-  public new Type GetType (string typeName)
+  public new Type GetType (HttpContext context)
   {
-    return base.GetType (typeName);
+    return base.GetType (context);
+  }
+
+  public new Type GetTypeByTypeName (string typeName)
+  {
+    return base.GetTypeByTypeName (typeName);
   }
 
   public new WxeFunctionState CreateNewFunctionState (HttpContext context, Type type)
