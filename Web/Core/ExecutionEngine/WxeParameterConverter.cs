@@ -140,11 +140,8 @@ public class WxeParameterConverter
     if (value == null)
       return value;
 
-    if (   StringUtility.GetParseMethodWithFormatProvider (_parameter.Type) != null
-        || StringUtility.GetParseMethod (_parameter.Type) != null)
-    {
+    if (StringUtility.HasParseMethod (_parameter.Type))
       return value.ToString();
-    }
     return value;
   }
 
