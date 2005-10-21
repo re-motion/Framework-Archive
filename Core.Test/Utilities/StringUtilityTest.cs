@@ -1,4 +1,7 @@
 using System;
+using System.Reflection;
+using System.Globalization;
+using System.Threading;
 using NUnit.Framework;
 using Rubicon.Utilities;
 
@@ -8,6 +11,34 @@ namespace Rubicon.Core.UnitTests.Utilities
 [TestFixture]
 public class StringUtilityTest
 {
+  private CultureInfo _cultureBackup;
+  private CultureInfo _cultureEnUs;
+  private CultureInfo _cultureDeAt;
+
+  private Type _int32 = typeof (int);
+  private Type _double = typeof (double);
+  private Type _string = typeof (string);
+  private Type _object = typeof (object);
+  private Type _guid = typeof (Guid);
+
+  [SetUp]
+  public void SetUp()
+  {
+    _cultureEnUs = new CultureInfo ("en-US");
+    _cultureDeAt = new CultureInfo ("de-AT");
+    
+    _cultureBackup = Thread.CurrentThread.CurrentCulture;
+    Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
+    StringUtilityMock.ClearCache();
+  }
+
+  [TearDown]
+  public void TearDown()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureBackup;
+  }
+
   [Test]
 	public void NullToEmpty()
 	{
@@ -32,6 +63,98 @@ public class StringUtilityTest
     Assertion.AssertEquals (true, StringUtility.AreEqual ("test1", "TEST1", true));
     Assertion.AssertEquals (false, StringUtility.AreEqual ("täst1", "TÄST1", false));
     Assertion.AssertEquals (true, StringUtility.AreEqual ("täst1", "TÄST1", true));
+  }
+  [Test]
+  public void GetParseMethodFromCache()
+  {
+    MethodInfo parseMethod = StringUtility.GetParseMethod (_int32);
+    StringUtilityMock.AddParseMethodToCache (_int32, parseMethod);
+    Assert.AreSame (parseMethod, StringUtilityMock.GetParseMethodFromCache (_int32));
+  }
+
+  [Test]
+  public void HasTypeInCache()
+  {
+    MethodInfo parseMethod = StringUtility.GetParseMethod (_int32);
+    StringUtilityMock.AddParseMethodToCache (_int32, parseMethod);
+    Assert.IsTrue (StringUtilityMock.HasTypeInCache (_int32));
+  }
+
+  [Test]
+  public void GetParseMethodForInt32()
+  {
+    MethodInfo parseMethod = StringUtility.GetParseMethod (_int32);
+    Assert.IsNotNull (parseMethod);
+    Assert.AreEqual ("Parse", parseMethod.Name);
+    Assert.AreEqual (1, parseMethod.GetParameters().Length);
+    Assert.AreEqual (typeof (string), parseMethod.GetParameters()[0].ParameterType);
+    Assert.AreEqual (typeof (int), parseMethod.ReturnType);
+    Assert.IsTrue (parseMethod.IsPublic);
+    Assert.IsTrue (parseMethod.IsStatic);
+  }
+
+  [Test]
+  public void GetParseMethodWithFormatProviderForInt32()
+  {
+    MethodInfo parseMethod = StringUtility.GetParseMethodWithFormatProvider (_int32);
+    Assert.IsNotNull (parseMethod);
+    Assert.AreEqual ("Parse", parseMethod.Name);
+    Assert.AreEqual (2, parseMethod.GetParameters().Length);
+    Assert.AreEqual (typeof (string), parseMethod.GetParameters()[0].ParameterType);
+    Assert.AreEqual (typeof (IFormatProvider), parseMethod.GetParameters()[1].ParameterType);
+    Assert.AreEqual (typeof (int), parseMethod.ReturnType);
+    Assert.IsTrue (parseMethod.IsPublic);
+    Assert.IsTrue (parseMethod.IsStatic);
+  }
+
+  [Test]
+  public void GetParseMethodForObject()
+  {
+    Assert.IsNull (StringUtility.GetParseMethod (_object));
+  }
+
+  [Test]
+  public void GetParseMethodWithFormatProviderForObjec()
+  {
+    Assert.IsNull (StringUtility.GetParseMethodWithFormatProvider (_object));
+  }
+
+  [Test]
+  public void ParseScalarValueDoubleWithCultureEnUs()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    object value = StringUtilityMock.ParseScalarValue (_double, "4,321.123", _cultureEnUs);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_double, value.GetType());
+    Assert.AreEqual (4321.123, value);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ParseException))]
+  public void ParseScalarValueDoubleEnUsWithCultureDeAt()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureEnUs;
+    StringUtilityMock.ParseScalarValue (_double, "4,321.123", _cultureDeAt);
+    Assert.Fail();
+  }
+
+  [Test]
+  public void ParseScalarValueDoubleWithCultureDeAt()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureEnUs;
+    object value = StringUtilityMock.ParseScalarValue (_double, "4.321,123", _cultureDeAt);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_double, value.GetType());
+    Assert.AreEqual (4321.123, value);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ParseException))]
+  public void ParseScalarValueDoubleDeAtWithCultureEnUs()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    StringUtilityMock.ParseScalarValue (_double, "4.321,123", _cultureEnUs);
+    Assert.Fail();
   }
 }
 
