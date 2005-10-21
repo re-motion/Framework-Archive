@@ -20,6 +20,7 @@ public class StringUtilityTest
   private Type _string = typeof (string);
   private Type _object = typeof (object);
   private Type _guid = typeof (Guid);
+  private Type _dbNull = typeof (DBNull);
 
   [SetUp]
   public void SetUp()
@@ -81,9 +82,9 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void HasParseMethodForInt32()
+  public void CanParseInt32()
   {
-    Assert.IsTrue (StringUtility.HasParseMethod (_int32));
+    Assert.IsTrue (StringUtility.CanParse (_int32));
   }
 
   [Test]
@@ -128,9 +129,9 @@ public class StringUtilityTest
   }
 
   [Test]
-  public void HasParseMethodForObject()
+  public void CanParseObject()
   {
-    Assert.IsFalse (StringUtility.HasParseMethod (_object));
+    Assert.IsFalse (StringUtility.CanParse (_object));
   }
   
   [Test]
@@ -195,6 +196,52 @@ public class StringUtilityTest
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
     StringUtilityMock.ParseScalarValue (_double, "4.321,123", _cultureEnUs);
     Assert.Fail();
+  }
+  [Test]
+  public void CanParseString()
+  {
+    Assert.IsTrue (StringUtility.CanParse (_string));
+  }
+
+  [Test]
+  public void CanParseDBNull()
+  {
+    Assert.IsTrue (StringUtility.CanParse (_dbNull));
+  }
+
+  [Test]
+  public void ParseDBNull()
+  {
+    object value = StringUtility.Parse (_dbNull, DBNull.Value.ToString(), null);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_dbNull, value.GetType());
+    Assert.AreEqual (DBNull.Value, value);
+  }
+
+  [Test]
+  public void CanParseGuid()
+  {
+    Assert.IsTrue (StringUtility.CanParse (_guid));
+  }
+
+  [Test]
+  public void ParseGuid()
+  {
+    Guid guid = Guid.NewGuid();
+    object value = StringUtility.Parse (_guid, guid.ToString(), null);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_guid, value.GetType());
+    Assert.AreEqual (guid, value);
+  }
+
+  [Test]
+  public void ParseEmptyGuid()
+  {
+    Guid guid = Guid.Empty;
+    object value = StringUtility.Parse (_guid, guid.ToString(), null);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_guid, value.GetType());
+    Assert.AreEqual (guid, value);
   }
 }
 

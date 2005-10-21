@@ -40,11 +40,7 @@ public class BidirectionalStringConverter: TypeConverter
       return false;
     if (sourceType.IsArray)
       return false;
-    if (sourceType == typeof (DBNull))
-      return true;
-    if (sourceType == typeof (Guid))
-      return true;
-    return StringUtility.HasParseMethod (sourceType);
+    return StringUtility.CanParse (sourceType);
   }
 
   /// <summary> Test: Can convert from <see cref="String"/> to <paramref name="destinationType"/>? </summary>
@@ -98,14 +94,7 @@ public class BidirectionalStringConverter: TypeConverter
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
     if (value is string && CanConvertTo (context, destinationType))
-    {
-      string stringValue = (string) value;
-      if (destinationType == typeof (Guid))
-        return new Guid (stringValue);
-      if (destinationType == typeof (DBNull))
-        return DBNull.Value;
-      return StringUtility.Parse (destinationType, stringValue, culture);
-    }
+      return StringUtility.Parse (destinationType, (string) value, culture);
     return base.ConvertTo (context, culture, value, destinationType);
   }
 

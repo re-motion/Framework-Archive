@@ -140,7 +140,7 @@ public class WxeParameterConverter
     if (value == null)
       return value;
 
-    if (StringUtility.HasParseMethod (_parameter.Type))
+    if (StringUtility.CanParse (_parameter.Type))
       return value.ToString();
     return value;
   }

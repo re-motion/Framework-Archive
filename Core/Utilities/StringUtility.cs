@@ -284,25 +284,28 @@ public sealed class StringUtility
   {
     if (type == typeof (string))
       return value;
-
-    if (type.IsArray)
-      return ParseArrayValue (type, value, format);
+    else if (type.IsArray)
+      return StringUtility.ParseArrayValue (type, value, format);
     else if (type.IsEnum)
       return Enum.Parse (type, value, false);
+    else if (type == typeof (Guid))
+      return new Guid (value);
+    else if (type == typeof (DBNull))
+      return DBNull.Value;
     else
-      return ParseScalarValue (type, value, format);
+      return StringUtility.ParseScalarValue (type, value, format);
   }
 
   private static object ParseArrayValue (Type type, string value, IFormatProvider format)
   {
     Type elementType = type.GetElementType();
-    ParsedItem[] items = ParseSeparatedList (value, ',');
+    ParsedItem[] items = StringUtility.ParseSeparatedList (value, ',');
     Array results = Array.CreateInstance (elementType, items.Length);
     for (int i = 0; i < items.Length; ++i)
     {
       try
       {
-        results.SetValue (Parse (elementType, items[i].Value, format), i);
+        results.SetValue (StringUtility.Parse (elementType, items[i].Value, format), i);
       }
       catch (ParseException e)
       {
@@ -314,7 +317,7 @@ public sealed class StringUtility
 
   private static object ParseScalarValue (Type type, string value, IFormatProvider format)
   {
-    MethodInfo parseMethod = GetParseMethod (type, true);
+    MethodInfo parseMethod = StringUtility.GetParseMethod (type, true);
 
     object[] args;
     if (parseMethod.GetParameters().Length == 2)
@@ -332,21 +335,27 @@ public sealed class StringUtility
     }
   }
 
-  public static bool HasParseMethod (Type type)
+  public static bool CanParse (Type type)
   {
-    MethodInfo parseMethod = GetParseMethod (type, false);
+    if (type == typeof (string))
+      return true;
+    if (type == typeof (Guid))
+      return true;
+    if (type == typeof (DBNull))
+      return true;
+    MethodInfo parseMethod = StringUtility.GetParseMethod (type, false);
     return parseMethod != null;
   }
 
   private static MethodInfo GetParseMethod  (Type type, bool throwIfNotFound)
   {
-    MethodInfo parseMethod = GetParseMethodFromCache (type);
-    if (parseMethod == null && ! HasTypeInCache (type))
+    MethodInfo parseMethod = StringUtility.GetParseMethodFromCache (type);
+    if (parseMethod == null && ! StringUtility.HasTypeInCache (type))
     {
-      parseMethod = GetParseMethodWithFormatProviderFromType (type);
+      parseMethod = StringUtility.GetParseMethodWithFormatProviderFromType (type);
       if (parseMethod == null)
-        parseMethod = GetParseMethodFromType (type);
-      AddParseMethodToCache (type, parseMethod);
+        parseMethod = StringUtility.GetParseMethodFromType (type);
+      StringUtility.AddParseMethodToCache (type, parseMethod);
     }
     if (throwIfNotFound && parseMethod == null)
       throw new ParseException (string.Format ("Type does not have method 'public static {0} Parse (string s)'.", type.Name));
