@@ -32,6 +32,8 @@ public sealed class StringUtility
     public bool IsQuoted;
   }
 
+  private static Hashtable s_parseMethods = new Hashtable();
+
   public static ParsedItem[] ParseSeparatedList (string value, char delimiter)
   {
     return ParseSeparatedList (value, delimiter, '\"', '\"', '\\', " ", true);
@@ -212,11 +214,6 @@ public sealed class StringUtility
     return strings;
   }
 
-  // construction and disposal
-	private StringUtility()
-	{
-	}
-
   public static string ConcatWithSeparator (IList list, string separator)
 	{
 		return ConcatWithSeparator (list, separator, null, null);
@@ -275,62 +272,72 @@ public sealed class StringUtility
   ///   Parses the specified type from a string.
   /// </summary>
   /// <param name="type"> The type that should be created from the string. This type must have 
-  ///   a public static <c>Parse</c> method with either no arguments or a single 
-  ///   <c>IFormatProvider</c> argument. 
-  ///   If <c>type</c> is an array type, the values must be comma-separated. (Escaping is 
+  ///   a public static <b>Parse</b> method with either no arguments or a single 
+  ///   <see cref="IFormatProvider"/>argument. 
+  ///   If <paramref name="type"/> is an array type, the values must be comma-separated. (Escaping is 
   ///   handled as for <see cref="ParseSeparatedList"/>.) </param>
   /// <param name="value"> The string value to be parsed. </param>
-  /// <param name="format"> The format provider to be passed to the type's <c>Parse</c> method
-  ///   (if present). </param>
+  /// <param name="format"> The format provider to be passed to the type's <b>Parse</b> method (if present). </param>
   /// <returns> An instance of the specified type. </returns>
-  /// <exception cref="ParseException"> The <c>Parse</c> method was not found, or failed. </exception>
+  /// <exception cref="ParseException"> The <b>Parse</b> method was not found, or failed. </exception>
   public static object Parse (Type type, string value, IFormatProvider format)
   {
     if (type == typeof (string))
       return value;
 
     if (type.IsArray)
-    {
-      Type elementType = type.GetElementType();
-      ParsedItem[] items = ParseSeparatedList (value, ',');
-      Array results = Array.CreateInstance (elementType, items.Length);
-      for (int i = 0; i < items.Length; ++i)
-      {
-        try
-        {
-          results.SetValue (Parse (elementType, items[i].Value, format), i);
-        }
-        catch (ParseException e)
-        {
-          throw new ParseException (e.Message + " (Error accured at array index " + i.ToString() + ").", e);
-        }
-      }
-      return results;
-    }
+      return ParseArrayValue (type, value, format);
     else if (type.IsEnum)
-    {
       return Enum.Parse (type, value, false);
+    else
+      return ParseScalarValue (type, value, format);
+  }
+
+  private static object ParseArrayValue (Type type, string value, IFormatProvider format)
+  {
+    Type elementType = type.GetElementType();
+    ParsedItem[] items = ParseSeparatedList (value, ',');
+    Array results = Array.CreateInstance (elementType, items.Length);
+    for (int i = 0; i < items.Length; ++i)
+    {
+      try
+      {
+        results.SetValue (Parse (elementType, items[i].Value, format), i);
+      }
+      catch (ParseException e)
+      {
+        throw new ParseException (e.Message + " (Error accured at array index " + i.ToString() + ").", e);
+      }
     }
+    return results;
+  }
+
+  private static object ParseScalarValue (Type type, string value, IFormatProvider format)
+  {
+    MethodInfo parseMethod = GetParseMethodFromCache (type);
+    if (parseMethod == null)
+    {
+      parseMethod = GetParseMethodWithFormatProvider (type);
+      if (parseMethod == null)
+        parseMethod = GetParseMethod (type);
+      AddParseMethodToCache (type, parseMethod);
+    }
+    if (! HasTypeInCache (type))
+      throw new ParseException (string.Format ("Type does not have method 'public static {0} Parse (string s)'.", type.Name));
+
+    object[] args;
+    if (parseMethod.GetParameters().Length == 2)
+      args = new object[] { value, format };
+    else
+      args = new object[] { value };
 
     try
     {
-      MethodInfo parseFormatMethod  = GetParseMethodWithFormatProvider (type);
-      if (parseFormatMethod != null)
-      {
-        return parseFormatMethod.Invoke (null, new object[] { value, format } );
-      }
-      else
-      {
-        MethodInfo parseMethod = GetParseMethod (type);
-        if (parseMethod == null)
-          throw new ParseException ("Type does not have method 'public static " + type.Name + " Parse (string s)'.");
-
-        return parseMethod.Invoke (null, new object[] { value } );
-      }
+      return parseMethod.Invoke (null, args);
     }
     catch (TargetInvocationException e)
     {
-      throw new ParseException ("Method '" + type.Name + ".Parse' failed.", e);
+      throw new ParseException (string.Format ("Method '{0}.Parse' failed.", type.Name), e);
     }
   }
 
@@ -365,6 +372,33 @@ public sealed class StringUtility
     else
       return null;
   }
+
+  private static void AddParseMethodToCache (Type type, MethodInfo parseMethod)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    lock (s_parseMethods.SyncRoot)
+    {
+      s_parseMethods[type] = parseMethod;
+    }
+  }
+
+  private static MethodInfo GetParseMethodFromCache (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    return (MethodInfo) s_parseMethods[type];
+  }
+
+  private static bool HasTypeInCache (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    return s_parseMethods.ContainsKey (type);
+  }
+
+  // construction and disposal
+	private StringUtility()
+	{
+	}
 }
 
 [Serializable]
