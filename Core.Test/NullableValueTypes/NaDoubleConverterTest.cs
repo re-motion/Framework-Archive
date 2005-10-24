@@ -94,9 +94,9 @@ public class NaDoubleConverterTest
     Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom (null, _cultureEnUs, "32"));
     Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom (null, _cultureEnUs, "-32"));
     Assert.AreEqual (new NaDouble (654321.123456789), 
-        _converter.ConvertFrom (null, _cultureEnUs, "654321.123456789"));
+        _converter.ConvertFrom (null, _cultureEnUs, "654,321.123456789"));
     Assert.AreEqual (new NaDouble (-654321.123456789), 
-        _converter.ConvertFrom (null, _cultureEnUs, "-654321.123456789"));
+        _converter.ConvertFrom (null, _cultureEnUs, "-654,321.123456789"));
     Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom (null, _cultureEnUs, "0"));
     Assert.AreEqual (NaDouble.MinValue, 
         _converter.ConvertFrom (null, _cultureEnUs, NaDouble.MinValue.ToString ("R", _cultureEnUs)));
@@ -113,9 +113,9 @@ public class NaDoubleConverterTest
     Assert.AreEqual (new NaDouble (32), _converter.ConvertFrom (null, _cultureDeAt, "32"));
     Assert.AreEqual (new NaDouble (-32), _converter.ConvertFrom (null, _cultureDeAt, "-32"));
     Assert.AreEqual (new NaDouble (654321.123456789), 
-        _converter.ConvertFrom (null, _cultureDeAt, "654321,123456789"));
+        _converter.ConvertFrom (null, _cultureDeAt, "654.321,123456789"));
     Assert.AreEqual (new NaDouble (-654321.123456789), 
-        _converter.ConvertFrom (null, _cultureDeAt, "-654321,123456789"));
+        _converter.ConvertFrom (null, _cultureDeAt, "-654.321,123456789"));
     Assert.AreEqual (NaDouble.Zero, _converter.ConvertFrom (null, _cultureDeAt, "0"));
     Assert.AreEqual (NaDouble.MinValue, 
         _converter.ConvertFrom (null, _cultureDeAt, NaDouble.MinValue.ToString ("R", _cultureDeAt)));
@@ -127,7 +127,7 @@ public class NaDoubleConverterTest
   [ExpectedException (typeof (FormatException))]
   public void ConvertFromStringEnUsWithCultureDeAt()
   {
-    object value = _converter.ConvertFrom (null, _cultureDeAt, "100001.1");
+    object value = _converter.ConvertFrom (null, _cultureDeAt, "100,001.1");
     Assert.Fail();
   }
 
@@ -135,7 +135,7 @@ public class NaDoubleConverterTest
   [ExpectedException (typeof (FormatException))]
   public void ConvertFromStringDeAtWithCultureEnUs()
   {
-    object value = _converter.ConvertFrom (null, _cultureEnUs, "100001,1");
+    object value = _converter.ConvertFrom (null, _cultureEnUs, "100.001,1");
     Assert.Fail();
   }
 
