@@ -12,7 +12,12 @@ namespace Rubicon.Utilities
 ///   from a source <see cref="Type"/> into a destination <see cref="Type"/>.
 /// </summary>
 /// <remarks>
-///   Conversion is possible under the following conditions:
+///   <para>
+///     Use the <see cref="Create"/> method if you need to create a new instance of the
+///     <see cref="TypeConversionServices"/> type.
+///   </para><para>
+///     Conversion is possible under the following conditions:
+///   </para>
 ///   <list type="bullet">
 ///     <item>
 ///       A type has a <see cref="TypeConverter"/> applied through the <see cref="TypeConverterAttribute"/> that
@@ -32,11 +37,48 @@ namespace Rubicon.Utilities
 public class TypeConversionServices
 {
   private static Hashtable s_typeConverters = new Hashtable();
+  private static TypeConversionServices s_current;
+
+  /// <summary> Creates a new instace of the <see cref="TypeConversionServices"/> type. </summary>
+  /// <returns> An instance of the <see cref="TypeConversionServices"/> type. </returns>
+  public static TypeConversionServices Create()
+  {
+    return new TypeConversionServices();
+  }
+
+  /// <summary> Gets the current <see cref="TypeConversionServices"/>. </summary>
+  /// <value> An instance of the <see cref="TypeConversionServices"/> type. </value>
+  public static TypeConversionServices Current
+  {
+    get
+    {
+      if (s_current == null)
+      {
+        lock (typeof (TypeConversionServices))
+        {
+          if (s_current == null)
+            s_current = TypeConversionServices.Create();
+        }
+      }
+      return s_current;
+    }
+  }
+
+  /// <summary> Sets the current <see cref="TypeConversionServices"/>. </summary>
+  /// <param name="services"> A <see cref="TypeConversionServices"/>. Must not be <see langword="null"/>. </param>
+  public static void SetCurrent (TypeConversionServices services)
+  {
+    ArgumentUtility.CheckNotNull ("services", services);
+    lock (typeof (TypeConversionServices))
+    {
+      s_current = services;
+    }
+  }
 
   private Hashtable _additionalTypeConverters = new Hashtable();
   private BidirectionalStringConverter _stringConverter = new BidirectionalStringConverter();
 
-  public TypeConversionServices()
+  protected TypeConversionServices()
 	{
 	}
 
@@ -189,7 +231,11 @@ public class TypeConversionServices
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
 
     if (sourceType == destinationType)
+    {
+      if (destinationType == typeof (string) && value == null)
+        return string.Empty;
       return value;
+    }
     
     TypeConverter sourceTypeConverter = GetTypeConverter (sourceType);
     if (sourceTypeConverter != null && sourceTypeConverter.CanConvertTo (destinationType))

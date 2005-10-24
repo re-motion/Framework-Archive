@@ -73,15 +73,17 @@ public class BidirectionalStringConverter: TypeConverter
   /// <summary> Convertes a <see cref="String"/> into the <paramref name="destinationType"/>. </summary>
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
-  /// <param name="value"> The <see cref="String"/> to be converted. Must not be <see langword="null"/>. </param>
+  /// <param name="value"> The <see cref="String"/> to be converted. </param>
   /// <param name="destinationType"> The destination <see cref="Type"/>. Must not be <see langword="null"/>. </param>
   /// <returns> An <see cref="Object"/> that represents the converted value. </returns>
   /// <exception cref="NotSupportedException"> The conversion could not be performed. </exception>
   public override object ConvertTo (
       ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull ("value", value);
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+
+    if (value == null)
+      value = string.Empty;
 
     if (value is string && CanConvertTo (context, destinationType))
       return StringUtility.Parse (destinationType, (string) value, culture);

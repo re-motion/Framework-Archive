@@ -333,6 +333,8 @@ public sealed class StringUtility
   private static object ParseArrayValue (Type type, string value, IFormatProvider formatProvider)
   {
     Type elementType = type.GetElementType();
+    if (elementType.IsArray)
+      throw new ParseException ("Cannot parse an array of arrays.");
     ParsedItem[] items = StringUtility.ParseSeparatedList (value, ',');
     Array results = Array.CreateInstance (elementType, items.Length);
     for (int i = 0; i < items.Length; ++i)

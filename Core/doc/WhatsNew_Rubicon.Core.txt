@@ -3,6 +3,17 @@
 - Rubicon.NullableValuteTypes.NaDouble:    
   * Parse akzeptiert nun 1000der-Trennzeichen, analog zu NaSingle.Parse und NaDecimal.Parse.
   
+- Rubicon.Utilities.TypeConversionServices
+  * Bietet eine CanConevert und eine Convert Methode um beliebige Typen zu konvertieren. 
+  * Es können TypeConverter explizit für einen TYp registriert werden (AddTypeConverter), zB um einen Typ nachträglich
+    mit einem TypeConverter auszustatten oder den vorhanden TypeConverter für die TypeConversionServices zu ersetzen.
+  * Unterstützte Typeconversions:
+    Von und zu Strings mittels passendem TypeConverter bzw einer statischen Parse Methode für den Typ.
+    Alle weiteren TypeConversions welche der TypeConverter ermöglicht.
+  * Current Property um eine allgemein verwendbare TypeConvsersionServices zu erhalten.
+  * Create Methode um TypeConvsersionServices für einen speziellen Anwendungsfall zu erhalten. ZB um spezielle,
+    nur für einen eingeschränkten Anwendungsbereich taugliche TypeConverter registrieren.
+  
 1.3.18
 ======
 - Rubicon.NullableValuteTypes.NaGuid:    
