@@ -69,7 +69,7 @@ public class NaGuidConverter: TypeConverter
   /// <summary> Convertes an <see cref="NaGuid"/> into the <paramref name="destinationType"/>. </summary>
   /// <param name="context"> An <see cref="ITypeDescriptorContext"/> that provides a format context. </param>
   /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
-  /// <param name="value"> The <see cref="NaGuid"/> to be converted. Must not be <see langword="null"/>. </param>
+  /// <param name="value"> The <see cref="NaGuid"/> to be converted. </param>
   /// <param name="destinationType"> The destination <see cref="Type"/>. Must not be <see langword="null"/>. </param>
   /// <returns> An <see cref="Object"/> that represents the converted value. </returns>
   /// <exception cref="NaNullValueException"> The passed <paramref name="value"/> is <see langword="null"/>. </exception>
@@ -80,8 +80,10 @@ public class NaGuidConverter: TypeConverter
   public override object ConvertTo (
       ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull ("value", value);
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+
+    if (value == null)
+    value = NaGuid.Null;
 
     if (value is NaGuid)
     {
