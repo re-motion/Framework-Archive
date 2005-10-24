@@ -144,7 +144,11 @@ public class SessionForm : WxePage
   private void OpenSampleFunctionWithPermanentUrlButton_Click (object sender, System.EventArgs e)
   {
     if (! IsReturningPostBack)
-      ExecuteFunction (new SampleWxeFunction(), true, true);
+    {
+      NameValueCollection queryString = new NameValueCollection();
+      queryString.Add ("Parameter", "Hello World!");
+      ExecuteFunction (new SampleWxeFunction(), true, true, queryString);
+    }
   }
 
   private void OpenSampleFunctionInNewWindowButton_Click (object sender, System.EventArgs e)
@@ -156,7 +160,11 @@ public class SessionForm : WxePage
   private void OpenSampleFunctionWithPermanentUrlInNewWindowButton_Click (object sender, System.EventArgs e)
   {
     if (!IsReturningPostBack)
-      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", (Control) sender, true, true, true);
+    {
+      NameValueCollection queryString = new NameValueCollection();
+      queryString.Add ("Parameter", "Hello World!");
+      ExecuteFunctionExternal (new SampleWxeFunction (), "_blank", (Control) sender, true, true, true, queryString);
+    }
   }
 
   private void OpenSessionFunctionButton_Click(object sender, System.EventArgs e)

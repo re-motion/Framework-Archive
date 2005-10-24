@@ -19,7 +19,7 @@
   Schema neu:  
   1. Angabe des UrlMapping-Files in der Web.Confg:
     <rubicon.web xmlns="http://www.rubicon-it.com/commons/web/configuration">
-      <executionEngine mappingFile="<PhysicalApplicationDir>\UrlMapping.xml"/>
+      <executionEngine urlMappingFile="<PhysicalApplicationDir>\UrlMapping.xml"/>
     </rubicon.web>
   
   2. UrlMapping-File:
@@ -80,10 +80,12 @@
       All Verbs oder zumindest GET,HEAD,POST,DEBUG
       Don't verify that file exists
     HTTP Handler für die verwendete Extension in der Web.Config eintragen  
-      <httpHandlers>
-        <add verb="*" path="*.wxe" type="Rubicon.Web.ExecutionEngine.WxeHandler, Rubicon.Web" />
-      </httpHandlers>
-
+      <system.web>
+        <httpHandlers>
+          <add verb="*" path="*.wxe" type="Rubicon.Web.ExecutionEngine.WxeHandler, Rubicon.Web" />
+        </httpHandlers>
+      </system.web>
+    
 - Rubicon.Web.ExecutionEngine.WxePage
   Wird UrlMapping verwendet so kann mittels ExecuteFunctionWithMappedPath bzw ExecuteFunctionNoRepostWithMappedPath
   die URL für die WxeFunction ausgetauscht werden. Damit wird erreicht, dass der Benutzer immer die zur aktuellen 

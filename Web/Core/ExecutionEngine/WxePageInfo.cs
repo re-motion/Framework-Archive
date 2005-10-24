@@ -392,6 +392,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionNoRepost (WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
+  /// </summary>
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+  }
+
+  /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionNoRepost (
@@ -449,6 +459,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
+  /// </summary>
+  public void ExecuteFunctionExternal (
+      WxeFunction function, string target, Control sender, bool returningPostback, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    ExecuteFunctionExternal (function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+  }
+
+  /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean)</see>.
   /// </summary>
   public void ExecuteFunctionExternal (
@@ -475,10 +495,20 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     string href;
     if (createPermaUrl)
     {
+      NameValueCollection queryString;
       if (permaUrlQueryString == null)
-        permaUrlQueryString = function.SerializeParametersForQueryString();
-      permaUrlQueryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-      href = wxeContext.GetPermanentUrl (function.GetType(), permaUrlQueryString);
+        queryString = function.SerializeParametersForQueryString();
+      else
+        queryString = permaUrlQueryString;
+
+      if (useParentPermaUrl)
+      {
+        string parentPermaUrl = string.Empty;
+        
+        queryString.Add (WxeHandler.Parameters.WxeReturnUrl, parentPermaUrl);
+      }
+      queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+      href = wxeContext.GetPermanentUrl (function.GetType(), queryString);
     }
     else
     {

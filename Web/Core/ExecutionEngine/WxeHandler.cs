@@ -187,7 +187,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     Type type = UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType ("~/" + relativePath);
     if (type == null)
-      throw new HttpException (c_httpResourceNotFound, string.Format ("Could not map the path '{0}' to a WXE function.", "absolutePath"));
+      throw new HttpException (string.Format ("Could not map the path '{0}' to a WXE function.", "absolutePath"));
 
     return type;
   }

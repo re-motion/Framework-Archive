@@ -224,7 +224,7 @@ public class WxeContext
   }
 
   /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <see cref="functionType"/> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
   /// <param name="functionType"> 

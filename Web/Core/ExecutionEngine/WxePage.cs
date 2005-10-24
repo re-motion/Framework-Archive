@@ -51,6 +51,11 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl);
 
+  /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  void ExecuteFunction (
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString);
+
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
@@ -71,13 +76,32 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl);
+
+  /// <summary>
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   on returning.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString);
   
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
-  void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl);
+  void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl);
+  
+  /// <summary>
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   on returning.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool usesEventTarget, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString);
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
@@ -91,21 +115,44 @@ public interface IWxePage: IPage, IWxeTemplateControl
   ///   specified window or frame.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
-  void ExecuteFunctionExternal (WxeFunction function, string target, string features, Control sender, bool returningPostback);
+  void ExecuteFunctionExternal (
+      WxeFunction function, string target, string features, Control sender, bool returningPostback);
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
-  void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback, bool createPermaUrl, bool useParentPermaUrl);
+  void ExecuteFunctionExternal (
+      WxeFunction function, string target, Control sender, bool returningPostback, 
+      bool createPermaUrl, bool useParentPermaUrl);
+
+  /// <summary> 
+  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+  ///   specified window or frame.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  void ExecuteFunctionExternal (
+      WxeFunction function, string target, Control sender, bool returningPostback, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString);
   
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
-  void ExecuteFunctionExternal (WxeFunction function, string target, string features, Control sender, bool returningPostback, bool createPermaUrl, bool useParentPermaUrl);
+  void ExecuteFunctionExternal (
+      WxeFunction function, string target, string features, Control sender, bool returningPostback, 
+      bool createPermaUrl, bool useParentPermaUrl);
+  
+  /// <summary> 
+  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+  ///   specified window or frame.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  void ExecuteFunctionExternal (
+      WxeFunction function, string target, string features, Control sender, bool returningPostback, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString);
 
   /// <summary> Gets a flag describing whether this post back has been triggered by returning from a WXE function. </summary>
   bool IsReturningPostBack { get; }
@@ -196,6 +243,14 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
     _wxeInfo.ExecuteFunction (function, createPermaUrl, useParentPermaUrl);
   }
 
+  /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  public void ExecuteFunction (
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    _wxeInfo.ExecuteFunction (function, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+  }
+
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
@@ -243,13 +298,47 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
+  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET<c> 
+  ///   field.
+  /// </remarks>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    _wxeInfo.ExecuteFunctionNoRepost (function, sender, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+  }
+
+  /// <summary>
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   on returning.
+  /// </summary>
+  /// <remarks>
   ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET<c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
-  public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
   {
     _wxeInfo.ExecuteFunctionNoRepost (function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl);
+  }
+
+  /// <summary>
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   on returning.
+  /// </summary>
+  /// <remarks>
+  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET<c> field.
+  ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
+  /// </remarks>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool usesEventTarget, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    _wxeInfo.ExecuteFunctionNoRepost (
+        function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
   }
 
   /// <summary> 
@@ -289,12 +378,38 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  public void ExecuteFunctionExternal (
+      WxeFunction function, string target, Control sender, bool returningPostback, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    _wxeInfo.ExecuteFunctionExternal (
+        function, target, sender, returningPostback, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+  }
+
+  /// <summary> 
+  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+  ///   specified window or frame.
+  /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl)
   {
     _wxeInfo.ExecuteFunctionExternal (function, target, features, sender, returningPostback,  createPermaUrl, useParentPermaUrl);
+  }
+
+  /// <summary> 
+  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+  ///   specified window or frame.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  public void ExecuteFunctionExternal (
+      WxeFunction function, string target, string features, Control sender, bool returningPostback, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    _wxeInfo.ExecuteFunctionExternal (
+        function, target, features, sender, returningPostback,  createPermaUrl, useParentPermaUrl, permaUrlQueryString);
   }
 
   /// <summary> Gets a flag describing whether this post back has been triggered by returning from a WXE function. </summary>
