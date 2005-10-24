@@ -34,6 +34,7 @@ public class NaByteConverterTest
   {
     Type destinationType = typeof (string);
 
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
     Assert.AreEqual ("", _converter.ConvertTo (null, null, NaByte.Null, destinationType));
     Assert.AreEqual ("32", _converter.ConvertTo (null, null, new NaByte (32), destinationType));
     Assert.AreEqual ("0", _converter.ConvertTo (null, null, NaByte.Zero, destinationType));

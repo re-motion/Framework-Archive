@@ -72,6 +72,7 @@ public class NaDateTimeConverterTest
     Type destinationType = typeof (string);
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
 
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
     Assert.AreEqual ("", _converter.ConvertTo (null, _cultureEnUs, NaDateTime.Null, destinationType));
     Assert.AreEqual (_dateTimeStringEnUs, _converter.ConvertTo (null, _cultureEnUs, _naDateTime, destinationType));
     Assert.AreEqual (_dateStringEnUs, _converter.ConvertTo (null, _cultureEnUs, _naDate, destinationType));

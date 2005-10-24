@@ -51,6 +51,7 @@ public class NaSingleConverterTest
     Type destinationType = typeof (string);
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
 
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
     Assert.AreEqual ("", _converter.ConvertTo (null, _cultureEnUs, NaSingle.Null, destinationType));
     Assert.AreEqual ("32", _converter.ConvertTo (null, _cultureEnUs, new NaSingle (32), destinationType));
     Assert.AreEqual ("-32", _converter.ConvertTo (null, _cultureEnUs, new NaSingle (-32), destinationType));

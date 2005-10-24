@@ -51,6 +51,7 @@ public class NaDecimalConverterTest
     Type destinationType = typeof (string);
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
 
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
     Assert.AreEqual ("", _converter.ConvertTo (null, _cultureEnUs, NaDecimal.Null, destinationType));
     Assert.AreEqual ("32", _converter.ConvertTo (null, _cultureEnUs, new NaDecimal (32), destinationType));
     Assert.AreEqual ("-32", _converter.ConvertTo (null, _cultureEnUs, new NaDecimal (-32), destinationType));

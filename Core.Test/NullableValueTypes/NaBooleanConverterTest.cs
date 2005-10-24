@@ -34,6 +34,7 @@ public class NaBooleanConverterTest
   {
     Type destinationType = typeof (string);
 
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
     Assert.AreEqual ("", _converter.ConvertTo (null, null, NaBoolean.Null, destinationType));
     Assert.AreEqual ("True", _converter.ConvertTo (null, null, NaBoolean.True, destinationType));
     Assert.AreEqual ("False", _converter.ConvertTo (null, null, NaBoolean.False, destinationType));

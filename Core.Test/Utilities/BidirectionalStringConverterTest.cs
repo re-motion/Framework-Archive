@@ -384,7 +384,7 @@ public class BidirectionalStringConverterTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentNullException))]
+  [ExpectedException (typeof (ParseException))]
   public void ConvertToInt32WithNull()
   {
     Type destinationType = typeof (int);

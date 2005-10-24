@@ -163,6 +163,16 @@ public class StringUtilityTest
   }
 
   [Test]
+  public void ParseDoubleWithCultureInvariant()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    object value = StringUtility.Parse (_double, "4,321.123", CultureInfo.InvariantCulture);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_double, value.GetType());
+    Assert.AreEqual (4321.123, value);
+  }
+
+  [Test]
   public void ParseDoubleWithCultureEnUs()
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
@@ -198,6 +208,35 @@ public class StringUtilityTest
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
     StringUtility.Parse (_double, "4.321,123", _cultureEnUs);
     Assert.Fail();
+  }
+
+  [Test]
+  [Ignore (@"Bug in ParseArrayItem: Escape Sequence '\,' does not work.")]
+  public void ParseDoubleArrayWithCultureInvariant()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    object value = StringUtility.Parse (_doubleArray, @"6\,543.123,5\,432.123,4\,321.123", CultureInfo.InvariantCulture);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_doubleArray, value.GetType());
+    double[] values = (double[]) value;
+    Assert.AreEqual (3, values.Length);
+    Assert.AreEqual (6543.123, values[0]);
+    Assert.AreEqual (5432.123, values[1]);
+    Assert.AreEqual (4321.123, values[2]);
+  }
+
+  [Test]
+  public void ParseDoubleArrayWithCultureInvariantNoThousands()
+  {
+    Thread.CurrentThread.CurrentCulture = _cultureDeAt;
+    object value = StringUtility.Parse (_doubleArray, @"6543.123,5432.123,4321.123", CultureInfo.InvariantCulture);
+    Assert.IsNotNull (value);
+    Assert.AreEqual (_doubleArray, value.GetType());
+    double[] values = (double[]) value;
+    Assert.AreEqual (3, values.Length);
+    Assert.AreEqual (6543.123, values[0]);
+    Assert.AreEqual (5432.123, values[1]);
+    Assert.AreEqual (4321.123, values[2]);
   }
 
   [Test]
@@ -259,13 +298,21 @@ public class StringUtilityTest
   }
 
   [Test]
+  [ExpectedException (typeof (ParseException))]
+  public void ParseArrayOfDoubleArrays()
+  {
+    StringUtility.Parse (typeof (double[][]), "1,2,3", null);
+    Assert.Fail();
+  }
+
+  [Test]
   public void CanParseDoubleArray()
   {
     Assert.IsTrue (StringUtility.CanParse (_doubleArray));
   }
 
   [Test]
-  public void CanParseArayDoubleArray()
+  public void CanParseArrayDoubleArray()
   {
     Assert.IsFalse (StringUtility.CanParse (typeof (double[][])));
   }

@@ -34,6 +34,7 @@ public class NaInt16ConverterTest
   {
     Type destinationType = typeof (string);
 
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
     Assert.AreEqual ("", _converter.ConvertTo (null, null, NaInt16.Null, destinationType));
     Assert.AreEqual ("32", _converter.ConvertTo (null, null, new NaInt16 (32), destinationType));
     Assert.AreEqual ("-32", _converter.ConvertTo (null, null, new NaInt16 (-32), destinationType));

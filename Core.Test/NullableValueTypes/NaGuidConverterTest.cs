@@ -40,6 +40,7 @@ public class NaGuidConverterTest
   {
     Type destinationType = typeof (string);
 
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
     Assert.AreEqual ("", _converter.ConvertTo (null, null, NaGuid.Null, destinationType));
     Assert.AreEqual (Guid.Empty.ToString(), _converter.ConvertTo (null, null, NaGuid.Empty, destinationType));
     Assert.AreEqual (_guidString, _converter.ConvertTo (null, null, _naGuid, destinationType));

@@ -35,6 +35,22 @@ public class TypeConversionServicesTest
   }
 
   [Test]
+  public void Create()
+  { 
+    Assert.IsNotNull (TypeConversionServices.Create());
+  }
+
+  [Test]
+  public void TestCurrent()
+  { 
+    Assert.IsNotNull (TypeConversionServices.Current);
+    TypeConversionServices services = TypeConversionServices.Create();
+    TypeConversionServices.SetCurrent (services);
+    Assert.IsNotNull (TypeConversionServices.Current);
+    Assert.AreSame (services, TypeConversionServices.Current);
+  }
+
+  [Test]
   public void CanConvertFromInt32ToInt32()
   {
     Assert.IsTrue (_services.CanConvert (_int32, _int32));
@@ -315,19 +331,17 @@ public class TypeConversionServicesTest
 
 
   [Test]
-  public void ConvertFromGuidToString()
+  public void ConvertFromStringToString()
   {
-    Guid guid = Guid.NewGuid();
-    Assert.AreEqual (guid.ToString(), _services.Convert (_guid, _string, guid));
+    string value = "Hello World!";
+    Assert.AreEqual (value, _services.Convert (_string, _string, value));
   }
 
   [Test]
-  public void ConvertFromStringToGuid()
+  public void ConvertFromStringToStringWithNull()
   {
-    Guid guid = Guid.NewGuid();
-    Assert.AreEqual (guid, _services.Convert (_string, _guid, guid.ToString()));
+    Assert.AreEqual ("", _services.Convert (_string, _string, null));
   }
-
 
   [Test]
   public void GetTypeConverterFromInt32ToNaInt32 ()

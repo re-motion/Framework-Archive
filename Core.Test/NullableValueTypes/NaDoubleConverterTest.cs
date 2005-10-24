@@ -51,6 +51,7 @@ public class NaDoubleConverterTest
     Type destinationType = typeof (string);
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
 
+    Assert.AreEqual ("", _converter.ConvertTo (null, null, null, destinationType));
     Assert.AreEqual ("", _converter.ConvertTo (null, _cultureEnUs, NaDouble.Null, destinationType));
     Assert.AreEqual ("32", _converter.ConvertTo (null, _cultureEnUs, new NaDouble (32), destinationType));
     Assert.AreEqual ("-32", _converter.ConvertTo (null, _cultureEnUs, new NaDouble (-32), destinationType));
