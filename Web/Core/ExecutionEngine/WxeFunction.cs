@@ -273,9 +273,10 @@ public abstract class WxeFunction: WxeStepList
       {
         try 
         {
-          _variables[paramDeclaration.Name] = StringUtility.Parse (paramDeclaration.Type, strval, CultureInfo.InvariantCulture);
+          _variables[paramDeclaration.Name] = TypeConversionServices.Current.Convert (
+              null, CultureInfo.InvariantCulture, typeof (string), paramDeclaration.Type, strval);
         }
-        catch (ParseException e)
+        catch (Exception e)
         {
           throw new ApplicationException ("Parameter " + paramDeclaration.Name + ": " + e.Message, e);
         }
@@ -326,7 +327,8 @@ public abstract class WxeFunction: WxeStepList
   /// <example>
   ///   "the first \"string\" argument, containing quotes and a comma", "true", "12/30/04 12:00", variableName
   /// </example>
-  private void InitializeParameters (string parameterString, NameObjectCollection additionalParameters, bool delayInitialization)
+  private void InitializeParameters (
+      string parameterString, NameObjectCollection additionalParameters, bool delayInitialization)
   {
     CheckParametersNotInitialized();
 
@@ -336,7 +338,8 @@ public abstract class WxeFunction: WxeStepList
       EnsureParametersInitialized (additionalParameters);
   }
 
-  private static object[] ParseActualParameters (WxeParameterDeclaration[] parameterDeclarations, string actualParameters, IFormatProvider format)
+  private static object[] ParseActualParameters (
+      WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
   {
     StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList (actualParameters, ',');
 
@@ -354,20 +357,34 @@ public abstract class WxeFunction: WxeStepList
         if (item.IsQuoted)
         {
           if (paramDecl.Type == typeof (string))                              // string constant
+          {
             arguments.Add (item.Value);
+          }
           else                                                                // parse constant
-            arguments.Add (StringUtility.Parse (paramDecl.Type, item.Value, format));
+          {
+            arguments.Add (TypeConversionServices.Current.Convert (
+                null, culture, typeof (string), paramDecl.Type, item.Value));
+          }
         }
         else
         {
           if (string.CompareOrdinal (item.Value, "true") == 0)                // true
+          {
             arguments.Add (true);
+          }
           else if (string.CompareOrdinal (item.Value, "false") == 0)          // false
+          {
             arguments.Add (false);
+          }
           else if (item.Value.Length > 0 && char.IsDigit (item.Value[0]))     // starts with digit -> parse constant
-            arguments.Add (StringUtility.Parse (paramDecl.Type, item.Value, format));
+          {
+            arguments.Add (TypeConversionServices.Current.Convert (
+                null, culture, typeof (string), paramDecl.Type, item.Value));
+          }
           else                                                                // variable name
+          {
             arguments.Add (new WxeVariableReference (item.Value));
+          }
         }
       }
       catch (ArgumentException e)
@@ -460,7 +477,7 @@ public abstract class WxeFunction: WxeStepList
         parameterValue = _variables[parameterDeclaration.Name];
       }
       string serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, callerVariables);
-      if (serializedValue != string.Empty)
+      if (serializedValue != null)
         serializedParameters.Add (parameterDeclaration.Name, serializedValue);
     }
     return serializedParameters;
