@@ -26,6 +26,7 @@ public class WxePageStep: WxeStep
   private string _viewState;
   private bool _isRedirectingToPermaUrlRequired = false;
   private bool _useParentPermaUrl = false;
+  private NameValueCollection _permaUrlQueryString;
   private bool _isRedirected = false;
   private bool _hasReturnedFromRedirect = false;
   private string _resumeUrl;
@@ -164,7 +165,11 @@ public class WxePageStep: WxeStep
     {
       _resumeUrl = context.GetResumePath();
 
-      NameValueCollection queryString = _function.SerializeParametersForQueryString();
+      NameValueCollection queryString;
+      if (_permaUrlQueryString == null)
+        queryString = _function.SerializeParametersForQueryString();
+      else
+        queryString = _permaUrlQueryString;
       queryString.Add (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
       string destinationUrl = context.GetPermanentUrl (_function.GetType(), queryString);
       
@@ -207,14 +212,16 @@ public class WxePageStep: WxeStep
 
   /// <summary> Executes the specified <see cref="WxeFunction"/>, then returns to this page. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/ExecuteFunction/*' />
-  public void ExecuteFunction (IWxePage page, WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
+  public void ExecuteFunction (
+      IWxePage page, WxeFunction function, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
   {
     ArgumentUtility.CheckNotNull ("page", page);
 
     //  Back-up postback data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
     
-    InternalExecuteFunction (page, function, createPermaUrl, useParentPermaUrl);
+    InternalExecuteFunction (page, function, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
   }
 
   /// <summary>
@@ -224,7 +231,7 @@ public class WxePageStep: WxeStep
   /// <remarks> Invoke this method by calling <see cref="WxePageInfo.ExecuteFunctionNoRepost"/>. </remarks>
   internal void ExecuteFunctionNoRepost (
       IWxePage page, WxeFunction function, Control sender, bool usesEventTarget,
-      bool createPermaUrl, bool useParentPermaUrl)
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
   {
     ArgumentUtility.CheckNotNull ("page", page);
 
@@ -245,13 +252,14 @@ public class WxePageStep: WxeStep
       _postBackCollection.Remove (sender.UniqueID);
     }
 
-    InternalExecuteFunction (page, function, createPermaUrl, useParentPermaUrl);
+    InternalExecuteFunction (page, function, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
   }
 
   /// <summary> Executes the specified <see cref="WxeFunction"/>, then returns to this page. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/InternalExecuteFunction/*' />
   private void InternalExecuteFunction (
-      IWxePage page, WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
+      IWxePage page, WxeFunction function, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
   {
     ArgumentUtility.CheckNotNull ("page", page);
     ArgumentUtility.CheckNotNull ("function", function);
@@ -268,6 +276,7 @@ public class WxePageStep: WxeStep
 
     _isRedirectingToPermaUrlRequired = createPermaUrl;
     _useParentPermaUrl = useParentPermaUrl;
+    _permaUrlQueryString = permaUrlQueryString;
     Execute();
   }
 

@@ -345,7 +345,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunction (WxeFunction function)
   {
-    ExecuteFunction (function, false, false);
+    ExecuteFunction (function, false, false, null);
   }
 
   /// <summary>
@@ -353,7 +353,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
   {
-    CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl);
+    ExecuteFunction (function, createPermaUrl, useParentPermaUrl, null);
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean,NameValueCollection)</see>.
+  /// </summary>
+  public void ExecuteFunction (
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
   }
 
 
@@ -362,7 +371,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
   {
-    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, false, false);
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, false, false, null);
   }
 
   /// <summary>
@@ -370,7 +379,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
   {
-    ExecuteFunctionNoRepost (function, sender, usesEventTarget, false, false);
+    ExecuteFunctionNoRepost (function, sender, usesEventTarget, false, false, null);
   }
 
   /// <summary>
@@ -379,7 +388,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl)
   {
-    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl);
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl, null);
   }
 
   /// <summary>
@@ -388,7 +397,18 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
   {
-    CurrentStep.ExecuteFunctionNoRepost (_page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl);
+    ExecuteFunctionNoRepost (function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, null);
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
+  /// </summary>
+  public void ExecuteFunctionNoRepost (
+      WxeFunction function, Control sender, bool usesEventTarget, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+  {
+    CurrentStep.ExecuteFunctionNoRepost (
+        _page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
   }
 
   /// <summary> 
@@ -406,7 +426,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    ExecuteFunctionExternal (function, target, null, sender, returningPostback, false, false);
+    ExecuteFunctionExternal (function, target, null, sender, returningPostback, false, false, null);
   }
 
   /// <summary>
@@ -415,7 +435,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
-    ExecuteFunctionExternal (function, target, features, sender, returningPostback, false, false);
+    ExecuteFunctionExternal (function, target, features, sender, returningPostback, false, false, null);
   }
 
   /// <summary>
@@ -425,7 +445,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       WxeFunction function, string target, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl)
   {
-    ExecuteFunctionExternal (function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl);
+    ExecuteFunctionExternal (function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl, null);
   }
 
   /// <summary>
@@ -434,6 +454,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl)
+  {
+    ExecuteFunctionExternal (function, target, features, sender, returningPostback, createPermaUrl, useParentPermaUrl, null);
+  }
+
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.String,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,String,Control,Boolean,Boolean,Boolean,NameValueCollection)</see>.
+  /// </summary>
+  public void ExecuteFunctionExternal (
+      WxeFunction function, string target, string features, Control sender, bool returningPostback, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
   {
     ArgumentUtility.CheckNotNull ("function", function);
     ArgumentUtility.CheckNotNullOrEmpty ("target", target);
@@ -445,9 +475,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     string href;
     if (createPermaUrl)
     {
-      NameValueCollection queryString = function.SerializeParametersForQueryString();
-      queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-      href = wxeContext.GetPermanentUrl (function.GetType(), queryString);
+      if (permaUrlQueryString == null)
+        permaUrlQueryString = function.SerializeParametersForQueryString();
+      permaUrlQueryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+      href = wxeContext.GetPermanentUrl (function.GetType(), permaUrlQueryString);
     }
     else
     {
