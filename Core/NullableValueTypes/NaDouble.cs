@@ -140,7 +140,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// </returns>
   public static NaDouble Parse (string s, IFormatProvider provider)
   {
-    return Parse (s, NumberStyles.Float, provider);
+    return Parse (s, NumberStyles.Float | NumberStyles.AllowThousands, provider);
   }
 
   /// <summary>
@@ -169,7 +169,7 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   /// </returns>
   public static NaDouble Parse (string s)
   {
-    return Parse (s, NumberStyles.Float, null);
+    return Parse (s, NumberStyles.Float | NumberStyles.AllowThousands, null);
   }
 
   /// <summary>
