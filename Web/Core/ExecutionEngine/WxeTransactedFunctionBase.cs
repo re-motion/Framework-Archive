@@ -24,7 +24,7 @@ public abstract class WxeTransactedFunctionBase: WxeFunction, IDeserializationCa
   /// <returns>
   ///   The <see cref="WxeTransactionBase"/> instance to be encapsulated in this 
   ///   <see cref="WxeTransactedFunctionBase"/> or <see langword="null"/> if the 
-  ///   <see cref="WxeTransactedFunctionBase"/> does not have it's own transaction.
+  ///   <see cref="WxeTransactedFunctionBase"/> does not have its own transaction.
   /// </returns>
   /// <remarks>
   ///   Called during the first invokation of <see cref="Execute"/>
