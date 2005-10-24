@@ -78,8 +78,10 @@ public class NaInt32Converter: TypeConverter
   public override object ConvertTo (
       ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNull ("value", value);
     ArgumentUtility.CheckNotNull ("destinationType", destinationType);
+
+    if (value == null)
+      value = NaInt32.Null;
 
     if (value is NaInt32)
     {
