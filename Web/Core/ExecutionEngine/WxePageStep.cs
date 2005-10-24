@@ -170,9 +170,20 @@ public class WxePageStep: WxeStep
         queryString = _function.SerializeParametersForQueryString();
       else
         queryString = _permaUrlQueryString;
+      
       queryString.Add (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
+            
+      if (_useParentPermaUrl)
+      {
+        NameValueCollection currentQueryString = ParentFunction.SerializeParametersForQueryString();
+        string parentPermaUrl = context.HttpContext.Request.RawUrl;
+        queryString.Add (WxeHandler.Parameters.WxeReturnUrl, parentPermaUrl);
+      }
+
       string destinationUrl = context.GetPermanentUrl (_function.GetType(), queryString);
       
+      int maxLength = 1024;
+
       _isRedirected = true;
       PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
     }

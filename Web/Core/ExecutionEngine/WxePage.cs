@@ -74,14 +74,14 @@ public interface IWxePage: IPage, IWxeTemplateControl
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl);
 
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
   void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString);
@@ -90,7 +90,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl);
   
@@ -98,7 +98,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepostWithMappedPath/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
   void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString);
@@ -184,7 +184,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
   string GetPermanentUrl (NameValueCollection queryString);
   
   /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <see cref="functionType"/> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
@@ -204,7 +204,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
 /// <seealso cref="ISmartNavigablePage"/>
 public class WxePage: Page, IWxePage, ISmartNavigablePage
 {
-  /// <summary> Executes the <paramref name="function"/> in another window or frame. </summary>
+  /// <summary> Obsolete. Executes the <paramref name="function"/> in another window or frame. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
   [Obsolete ("Use ExecuteFunctionExternal (WxeFunction, string, Control, bool) instead.")]
   public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
@@ -212,7 +212,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
     ExecuteFunctionExternal (function, target, sender, returningPostback);
   }
 
-  /// <summary> Executes the <paramref name="function"/> in another window or frame. </summary>
+  /// <summary> Obsolete. Executes the <paramref name="function"/> in another window or frame. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
   [Obsolete ("Use ExecuteFunctionExternal (WxeFunction, string, string Control, bool) instead.")]
   public void ExecuteFunction (
@@ -256,7 +256,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET<c> 
+  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET</c> 
   ///   field.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender"]' />
@@ -270,7 +270,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET<c> field.
+  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">ExecuteFunctionNoRepost(WxeFunction,Control)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
@@ -284,7 +284,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET<c> 
+  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET</c> 
   ///   field.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
@@ -298,7 +298,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET<c> 
+  ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET</c> 
   ///   field.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
@@ -314,7 +314,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET<c> field.
+  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
@@ -329,7 +329,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   ///   on returning.
   /// </summary>
   /// <remarks>
-  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET<c> field.
+  ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
   /// </remarks>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlQueryString"]' />
@@ -447,7 +447,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   }
   
   /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <see cref="functionType"/> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />

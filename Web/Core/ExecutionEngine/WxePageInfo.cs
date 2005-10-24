@@ -108,7 +108,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     HandleLoadPostData (postBackCollection);
   }
 
-  /// <exception cref="WxePostBackOutOfSequenceException"> 
+  /// <exception cref="WxePostbackOutOfSequenceException"> 
   ///   Thrown if a postback with an incorrect sequence number is handled. 
   /// </exception>
   protected virtual void HandleLoadPostData (NameValueCollection postBackCollection)
@@ -501,13 +501,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       else
         queryString = permaUrlQueryString;
 
+      queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+
       if (useParentPermaUrl)
       {
-        string parentPermaUrl = string.Empty;
-        
+        NameValueCollection currentQueryString = CurrentFunction.SerializeParametersForQueryString();
+        string parentPermaUrl = wxeContext.HttpContext.Request.RawUrl;
         queryString.Add (WxeHandler.Parameters.WxeReturnUrl, parentPermaUrl);
       }
-      queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+
       href = wxeContext.GetPermanentUrl (function.GetType(), queryString);
     }
     else
