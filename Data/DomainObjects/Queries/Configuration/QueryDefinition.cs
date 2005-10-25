@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 /// <remarks>
 /// During the serialization process the object determines if it is part of <see cref="QueryConfiguration.Current"/> 
 /// and serializes this information. If it was then the deserialized object will be the reference from 
-/// <see cref="QueryConfiguration.Current"/> with the same <see cref="QueryID"/> again. Otherwise, a new object will be instantiated.
+/// <see cref="QueryConfiguration.Current"/> with the same <see cref="ID"/> again. Otherwise, a new object will be instantiated.
 /// </remarks>
 [Serializable]
 public class QueryDefinition : ISerializable, IObjectReference
@@ -22,7 +22,7 @@ public class QueryDefinition : ISerializable, IObjectReference
 
   // member fields
 
-  private string _queryID;
+  private string _id;
   private string _storageProviderID;
   private string _statement;
   private QueryType _queryType;
@@ -102,7 +102,7 @@ public class QueryDefinition : ISerializable, IObjectReference
           "The collectionType of query '{0}' must be 'Rubicon.Data.DomainObjects.DomainObjectCollection' or derived from it.", queryID), "collectionType");
     }
 
-    _queryID = queryID;
+    _id = queryID;
     _storageProviderID = storageProviderID;
     _statement = statement;
     _queryType = queryType;
@@ -116,7 +116,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <param name="context">The source and destination of a given serialized stream.</param>
   protected QueryDefinition (SerializationInfo info, StreamingContext context)
   {
-    _queryID = info.GetString ("QueryID");
+    _id = info.GetString ("ID");
     _ispartOfQueryConfiguration = info.GetBoolean ("IsPartOfQueryConfiguration");
 
     if (!_ispartOfQueryConfiguration)
@@ -130,13 +130,22 @@ public class QueryDefinition : ISerializable, IObjectReference
 
   // methods and properties
 
-  //TODO: Rename this to ID
+  // TODO: Remove this property after 1.1.2006.
   /// <summary>
   /// Gets the unique ID for this <b>QueryDefinition</b>.
   /// </summary>
+  [Obsolete ("Use property ID instead.")]
   public string QueryID
   {
-    get { return _queryID; }
+    get { return _id; }
+  }
+
+  /// <summary>
+  /// Gets the unique ID for this <b>QueryDefinition</b>.
+  /// </summary>
+  public string ID
+  {
+    get { return _id; }
   }
 
   /// <summary>
@@ -195,10 +204,9 @@ public class QueryDefinition : ISerializable, IObjectReference
   /// <note type="inheritinfo">Overwrite this method to support serialization of derived classes.</note>
   protected virtual void GetObjectData (SerializationInfo info, StreamingContext context)
   {
-    info.AddValue ("QueryID", _queryID);
+    info.AddValue ("ID", _id);
 
-    // TODO: Replace this with QueryConfiguration.Current.Contains
-    bool isPartOfQueryConfiguration = QueryConfiguration.Current[_queryID] != null;
+    bool isPartOfQueryConfiguration = QueryConfiguration.Current.Contains (this);
     info.AddValue ("IsPartOfQueryConfiguration", isPartOfQueryConfiguration);
 
     if (!isPartOfQueryConfiguration)
@@ -223,7 +231,7 @@ public class QueryDefinition : ISerializable, IObjectReference
   object IObjectReference.GetRealObject (StreamingContext context)
   {
     if (_ispartOfQueryConfiguration)
-      return QueryConfiguration.Current.QueryDefinitions.GetMandatory (_queryID);
+      return QueryConfiguration.Current.QueryDefinitions.GetMandatory (_id);
     else
       return this;
   }

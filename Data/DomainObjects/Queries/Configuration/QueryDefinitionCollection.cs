@@ -55,7 +55,7 @@ public class QueryDefinitionCollection : CommonCollection
   /// <summary>
   /// Returns the <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>. If no <see cref="QueryDefinition"/> can be found an exception is thrown.
   /// </summary>
-  /// <param name="queryID">The <see cref="QueryDefinition.QueryID"/> of the <see cref="QueryDefinition"/> to be found.</param>
+  /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to be found.</param>
   /// <returns>The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/>.</returns>
   /// <exception cref="QueryConfigurationException">The <see cref="QueryDefinition"/> identified through <paramref name="queryID"/> could not be found.</exception>
   public QueryDefinition GetMandatory (string queryID)
@@ -86,17 +86,18 @@ public class QueryDefinitionCollection : CommonCollection
   /// <param name="queryDefinition">The <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><see langword="true"/> if <paramref name="queryDefinition"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/></exception>
+  /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
   public bool Contains (QueryDefinition queryDefinition)
   {
     ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
 
-    return Contains (queryDefinition.QueryID);
+    return BaseContains (queryDefinition.ID, queryDefinition);
   }
 
   /// <summary>
   /// Determines whether an item is in the <see cref="QueryDefinitionCollection"/>.
   /// </summary>
-  /// <param name="queryID">The <see cref="QueryDefinition.QueryID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="queryID">The <see cref="QueryDefinition.ID"/> of the <see cref="QueryDefinition"/> to locate in the <see cref="QueryDefinitionCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><see langword="true"/> if the <see cref="QueryDefinition"/> with the <paramref name="queryID"/> is found in the <see cref="QueryDefinitionCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="queryID"/> is <see langword="null"/></exception>
   public bool Contains (string queryID)
@@ -118,7 +119,7 @@ public class QueryDefinitionCollection : CommonCollection
   }
 
   /// <summary>
-  /// Gets the <see cref="QueryDefinition"/> with a given <see cref="QueryDefinition.QueryID"/> from the <see cref="QueryDefinitionCollection"/>.
+  /// Gets the <see cref="QueryDefinition"/> with a given <see cref="QueryDefinition.ID"/> from the <see cref="QueryDefinitionCollection"/>.
   /// </summary>
   /// <remarks>The indexer returns <see langword="null"/> if the given <paramref name="queryID"/> was not found.</remarks>
   public QueryDefinition this [string queryID]  
@@ -141,13 +142,13 @@ public class QueryDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
 
-    if (Contains (queryDefinition.QueryID))
+    if (Contains (queryDefinition.ID))
     {
       throw CreateArgumentException (
-          "QueryDefinition '{0}' already exists in collection.", "queryDefinition", queryDefinition.QueryID);
+          "QueryDefinition '{0}' already exists in collection.", "queryDefinition", queryDefinition.ID);
     }
 
-    return BaseAdd (queryDefinition.QueryID, queryDefinition);
+    return BaseAdd (queryDefinition.ID, queryDefinition);
   }
 
   #endregion

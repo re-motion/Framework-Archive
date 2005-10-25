@@ -132,13 +132,12 @@ public class QueryConfiguration : ConfigurationBase
     get { return _queryDefinitions; }
   }
 
+  // TODO Doc:
   public bool Contains (QueryDefinition queryDefinition)
   {
     ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);
 
-    // TODO: Use _queryDefinitions.Contains, after it implements object.Equals.
-    QueryDefinition foundQueryDefinition = _queryDefinitions[queryDefinition.QueryID];
-    return object.ReferenceEquals (queryDefinition, foundQueryDefinition);
+    return _queryDefinitions.Contains (queryDefinition);
   }
 }
 }
