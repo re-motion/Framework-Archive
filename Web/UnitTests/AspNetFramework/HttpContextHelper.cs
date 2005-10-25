@@ -1,9 +1,11 @@
 using System;
+using System.Web.Hosting;
 using System.IO;
 using System.Web;
 using System.Web.SessionState;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.Threading;
 using NUnit.Framework;
 using Rubicon.Utilities;
 using Rubicon.Development.UnitTesting;
@@ -17,29 +19,36 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
 /// </summary>
 public class HttpContextHelper
 {
+  public const string c_appVirtualDir = "/";
+  public const string c_appPhysicalDir = @"C:\";
+  public const string c_serverPath = "http://127.0.0.1";
+
   public static void SetCurrent (HttpContext context)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     System.Runtime.Remoting.Messaging.CallContext.SetData("HtCt", context);
   }
 
-	public static HttpContext CreateHttpContext (
-      string httpMethod, string requestFilename, string requestUrl, string requestQueryString)
+	public static HttpContext CreateHttpContext (string httpMethod, string page, string query)
 	{
-    ArgumentUtility.CheckNotNullOrEmpty ("requestFilename", requestFilename);
-    ArgumentUtility.CheckNotNullOrEmpty ("requestUrl", requestUrl);
+    ArgumentUtility.CheckNotNullOrEmpty ("httpMethod", httpMethod);
+    ArgumentUtility.CheckNotNullOrEmpty ("page", page);
 
-    HttpRequest request = new HttpRequest (requestFilename, requestUrl, StringUtility.NullToEmpty (requestQueryString));
-    HttpResponse response = new HttpResponse (new StringWriter());
-    return Init (httpMethod, request, response);     
+
+    SimpleWorkerRequest workerRequest = 
+        new SimpleWorkerRequest (c_appVirtualDir, c_appPhysicalDir, page, query, new System.IO.StringWriter());
+
+    object httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
+    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppPath", c_appPhysicalDir);
+    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", c_appVirtualDir);
+
+    HttpContext context = new HttpContext (workerRequest);
+    PrivateInvoke.SetNonPublicField (context.Request, "_httpMethod", httpMethod);
+
+    HttpSessionState sessionState = CreateSession();
+    SetSession (context, sessionState);
+    return context;
 	}
-
-	public static HttpContext CreateHttpContext (string httpMethod, HttpRequest request, HttpResponse response)
-  {
-    ArgumentUtility.CheckNotNull ("request", request);
-    ArgumentUtility.CheckNotNull ("response", response);
-    return Init (httpMethod, request, response);
-  }
 
   public static void SetQueryString (HttpContext context, NameValueCollection queryString)
   {
@@ -67,21 +76,6 @@ public class HttpContextHelper
     PrivateInvoke.InvokeNonPublicMethod (context.Request.Form, "MakeReadOnly", new object[0]);
 
     PrivateInvoke.SetNonPublicField (context.Request, "_params", null);
-  }
-
-  protected static HttpContext Init (string httpMethod, HttpRequest request, HttpResponse response)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("httpMethod", httpMethod);
-    ArgumentUtility.CheckNotNull ("request", request);
-    ArgumentUtility.CheckNotNull ("response", response);
-
-    HttpContext context = new HttpContext (request, response);
-    PrivateInvoke.SetNonPublicField (context.Request, "_httpMethod", httpMethod);
-
-    HttpSessionState sessionState = CreateSession();
-    SetSession (context, sessionState);
-    
-    return context;
   }
  
   protected static HttpSessionState CreateSession ()
