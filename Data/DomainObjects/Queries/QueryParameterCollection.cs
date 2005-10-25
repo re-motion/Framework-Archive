@@ -90,11 +90,12 @@ public class QueryParameterCollection : CommonCollection
   /// <param name="queryParameter">The <see cref="QueryParameter"/> to locate in the collection. Must not be <see langword="null"/>.</param>
   /// <returns><see langword="true"/> if <paramref name="queryParameter"/> is found in the <see cref="QueryParameterCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="queryParameter"/> is <see langword="null"/></exception>
+  /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
   public bool Contains (QueryParameter queryParameter)
   {
     ArgumentUtility.CheckNotNull ("queryParameter", queryParameter);
 
-    return Contains (queryParameter.Name);
+    return BaseContains (queryParameter.Name, queryParameter);
   }
 
   /// <summary>
