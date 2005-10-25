@@ -53,7 +53,7 @@ public class StorageProviderCollection : CommonCollection, IDisposable
   {
     ArgumentUtility.CheckNotNull ("provider", provider);
 
-    return Contains (provider.ID);
+    return BaseContains (provider.ID, provider);
   }
 
   public bool Contains (string storageProviderID)
