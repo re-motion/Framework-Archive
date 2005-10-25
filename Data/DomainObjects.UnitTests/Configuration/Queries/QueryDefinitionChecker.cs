@@ -29,7 +29,7 @@ public class QueryDefinitionChecker
 
     foreach (QueryDefinition expectedQuery in expectedQueries)
     {
-      QueryDefinition actualQuery = actualQueries[expectedQuery.QueryID];
+      QueryDefinition actualQuery = actualQueries[expectedQuery.ID];
       CheckQuery (expectedQuery, actualQuery);
     }
   }
@@ -38,25 +38,25 @@ public class QueryDefinitionChecker
   {
     Assert.AreEqual (expectedQuery.StorageProviderID, actualQuery.StorageProviderID, 
         string.Format ("ProviderID of query definitions does not match. Expected: {0}, actual: {1}", 
-        expectedQuery.QueryID,  
+        expectedQuery.ID,  
         expectedQuery.StorageProviderID, 
         actualQuery.StorageProviderID));
 
     Assert.AreEqual (expectedQuery.Statement, actualQuery.Statement, 
         string.Format ("Statement of query definitions does not match. Expected: {0}, actual: {1}", 
-        expectedQuery.QueryID,  
+        expectedQuery.ID,  
         expectedQuery.Statement, 
         actualQuery.Statement));
     
     Assert.AreEqual (expectedQuery.QueryType, actualQuery.QueryType, 
         string.Format ("QueryType of query definitions does not match. Expected: {0}, actual: {1}", 
-        expectedQuery.QueryID,  
+        expectedQuery.ID,  
         expectedQuery.QueryType, 
         actualQuery.QueryType));
     
     Assert.AreEqual (expectedQuery.CollectionType, actualQuery.CollectionType, 
         string.Format ("CollectionType of query definitions does not match. Expected: {0}, actual: {1}", 
-        expectedQuery.QueryID,  
+        expectedQuery.ID,  
         expectedQuery.CollectionType, 
         actualQuery.CollectionType));
   }
