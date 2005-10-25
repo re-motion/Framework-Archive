@@ -17,15 +17,15 @@ public abstract class StorageProvider : IDisposable
 
   // member fields
 
-  private StorageProviderDefinition _storageProviderDefinition;
+  private StorageProviderDefinition _definition;
   private bool _disposed = false;
 
   // construction and disposing
 
-  public StorageProvider (StorageProviderDefinition storageProviderDefinition)
+  public StorageProvider (StorageProviderDefinition definition)
   {
-    ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
-    _storageProviderDefinition = storageProviderDefinition;
+    ArgumentUtility.CheckNotNull ("definition", definition);
+    _definition = definition;
   }
 
   ~StorageProvider ()
@@ -42,7 +42,7 @@ public abstract class StorageProvider : IDisposable
   protected virtual void Dispose (bool disposing)
   {
     if (disposing)
-      _storageProviderDefinition = null;
+      _definition = null;
 
     _disposed = true;
   }
@@ -72,7 +72,7 @@ public abstract class StorageProvider : IDisposable
     get 
     {
       CheckDisposed ();
-      return _storageProviderDefinition.StorageProviderID; 
+      return _definition.ID; 
     }
   }
 
@@ -87,7 +87,7 @@ public abstract class StorageProvider : IDisposable
           "query", 
           "The StorageProviderID '{0}' of the provided query '{1}' does not match with this StorageProvider's ID '{2}'.",
           query.StorageProviderID, 
-          query.QueryID,
+          query.ID,
           ID);
     }
 
@@ -95,12 +95,12 @@ public abstract class StorageProvider : IDisposable
       throw CreateArgumentException (argumentName, "Expected query type is '{0}', but was '{1}'.", expectedQueryType, query.QueryType);
   }
 
-  protected StorageProviderDefinition StorageProviderDefinition
+  public StorageProviderDefinition Definition
   {
     get 
     {
       CheckDisposed ();
-      return _storageProviderDefinition; 
+      return _definition; 
     }
   }
 
