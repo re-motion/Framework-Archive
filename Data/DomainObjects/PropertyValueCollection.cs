@@ -27,6 +27,7 @@ public class PropertyValueCollection : CommonCollection
   /// </summary>
   public event PropertyChangedEventHandler PropertyChanged;
 
+  private DataContainer _dataContainer;
   private bool _isDiscarded = false;
 
   // construction and disposing
@@ -148,9 +149,10 @@ public class PropertyValueCollection : CommonCollection
     if (Contains (value.Name))
       throw CreateArgumentException ("Property '{0}' already exists in collection.", "value", value.Name);
 
-    value.Changing += new ValueChangingEventHandler (PropertyValue_Changing);
-    value.Changed += new EventHandler (PropertyValue_Changed);
-    return BaseAdd (value.Name, value);
+    int position = BaseAdd (value.Name, value);
+    value.RegisterForChangeNotification (this);
+
+    return position;
   }
 
   #endregion
@@ -254,6 +256,11 @@ public class PropertyValueCollection : CommonCollection
   /// <param name="args">A <see cref="PropertyChangingEventArgs"/> object that contains the event data.</param>
   protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
   {
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DataContainer when changing property values is not organized through events.
+    if (_dataContainer != null)
+      _dataContainer.PropertyValues_PropertyChanging (this, args);
+
     if (PropertyChanging != null)
       PropertyChanging (this, args);
   }
@@ -264,6 +271,11 @@ public class PropertyValueCollection : CommonCollection
   /// <param name="args">A <see cref="PropertyChangedEventArgs"/> object that contains the event data.</param>
   protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
   {
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DataContainer when changing property values is not organized through events.
+    if (_dataContainer != null)
+      _dataContainer.PropertyValues_PropertyChanged (this, args);
+
     if (PropertyChanged != null)
       PropertyChanged (this, args);
   }
@@ -271,25 +283,26 @@ public class PropertyValueCollection : CommonCollection
   internal void Discard ()
   {
     foreach (PropertyValue propertyValue in this)
-    {
-      propertyValue.Changing -= new ValueChangingEventHandler (PropertyValue_Changing);
-      propertyValue.Changed -= new EventHandler (PropertyValue_Changed);
-
       propertyValue.Discard ();
-    }
 
     _isDiscarded = true;
   }
 
-  private void PropertyValue_Changing (object sender, ValueChangingEventArgs e)
+  internal void RegisterForChangeNotification (DataContainer dataContainer)
   {
-    PropertyChangingEventArgs eventArgs = new PropertyChangingEventArgs (
-        (PropertyValue) sender, e.OldValue, e.NewValue);
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    if (_dataContainer != null) throw new InvalidOperationException ("PropertyValueCollection already has a DataContainer set.");
 
+    _dataContainer = dataContainer;
+  }
+
+  internal void PropertyValue_Changing (object sender, ValueChangingEventArgs e)
+  {
+    PropertyChangingEventArgs eventArgs = new PropertyChangingEventArgs ((PropertyValue) sender, e.OldValue, e.NewValue);
     OnPropertyChanging (eventArgs);
   }
 
-  private void PropertyValue_Changed (object sender, EventArgs e)
+  internal void PropertyValue_Changed (object sender, EventArgs e)
   {
     OnPropertyChanged (new PropertyChangedEventArgs ((PropertyValue) sender));
   }
