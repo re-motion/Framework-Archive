@@ -247,7 +247,7 @@ public class DataContainerCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void ContainsDataContainer ()
+  public void ContainsDataContainerTrue ()
   {
     _collection.Add (_dataContainer);
 
@@ -255,8 +255,18 @@ public class DataContainerCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void ContainsDataContainerFalse ()
+  {
+    _collection.Add (_dataContainer);
+
+    DataContainer copy = DataContainer.CreateNew (_dataContainer.ID);
+
+    Assert.IsFalse (_collection.Contains (copy));
+  }
+
+  [Test]
   [ExpectedException (typeof (ArgumentNullException))]
-  public void ContainsNullDataContainer ()
+  public void ContainsDataContainerNull ()
   {
     _collection.Contains ((DataContainer) null);
   }
