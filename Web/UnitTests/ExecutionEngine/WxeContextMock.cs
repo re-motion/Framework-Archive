@@ -20,6 +20,11 @@ public class WxeContextMock: WxeContext
     : base (context, new WxeFunctionState (new TestFunction (), false), null)
   {
   }
+
+  public WxeContextMock (HttpContext context, string queryString)
+    : base (context, new WxeFunctionState (new TestFunction (), false), queryString)
+  {
+  }
 }
 
 }
