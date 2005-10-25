@@ -54,6 +54,28 @@ public class UrlUtility
     return GetAbsoluteUrl (page, Path.GetFileName (page.Request.Url.AbsolutePath));
   }
 
+  /// <summary> Makes a relative URL absolute. </summary>
+  /// <param name="context"> The <see cref="HttpContext"/> to be used. Must not be <see langword="null"/>. </param>
+  /// <param name="relativeUrl"> The relative URL. Must not be <see langword="null"/> or empty. </param>
+  /// <returns> The absolute URL. </returns>
+  public static string GetAbsoluteUrl (HttpContext context, string relativeUrl)
+  {
+    ArgumentUtility.CheckNotNull ("context", context);
+    ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
+
+    if (relativeUrl.StartsWith ("http"))
+    {
+      return relativeUrl;
+    }
+    else
+    {
+      string serverPart = context.Request.Url.GetLeftPart (System.UriPartial.Authority);  
+      string pathPart = context.Response.ApplyAppPathModifier (relativeUrl);
+
+      return serverPart + pathPart;
+    }
+  }
+
   /// <summary>
   /// Combines 2 web URLs. 
   /// </summary>
