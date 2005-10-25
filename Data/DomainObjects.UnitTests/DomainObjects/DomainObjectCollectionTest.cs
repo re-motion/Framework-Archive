@@ -131,7 +131,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void Contains ()
+  public void ContainsObjectIDTrue ()
   {
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
     DomainObjectCollection customers = new DomainObjectCollection ();
@@ -143,7 +143,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
 
   [Test]
   [ExpectedException (typeof (ArgumentNullException))]
-  public void ContainsWithNull ()
+  public void ContainsObjectIDNull ()
   {
     DomainObjectCollection customers = new DomainObjectCollection ();
     
@@ -151,7 +151,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void ContainsWithDomainObject ()
+  public void ContainsDomainObjectTrue ()
   {
     Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
     DomainObjectCollection customers = new DomainObjectCollection ();
@@ -162,8 +162,21 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void ContainsDomainObjectFalse ()
+  {
+    Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);
+    DomainObjectCollection customers = new DomainObjectCollection ();
+
+    customers.Add (customer);
+
+    Customer copy = Customer.GetObject (customer.ID, new ClientTransaction ());
+
+    Assert.IsFalse (customers.Contains (copy));
+  }
+
+  [Test]
   [ExpectedException (typeof (ArgumentNullException))]
-  public void ContainsWithNullDomainObject ()
+  public void ContainsDomainObjectNull ()
   {
     DomainObjectCollection customers = new DomainObjectCollection ();
     
@@ -729,7 +742,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
-  public void ContainsForObjectOfInvalidType ()
+  public void ContainsObjectOfInvalidType ()
   {
     IList list = (IList) _collection;
     Assert.IsFalse (list.Contains (new object ()));
