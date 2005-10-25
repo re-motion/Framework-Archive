@@ -87,16 +87,35 @@ public class PropertyDefinitionCollectionTest
   }
 
   [Test]
-  public void ContainsTrue ()
+  public void ContainsPropertyNameTrue ()
   {
     _collection.Add (_propertyDefinition);
     Assert.IsTrue (_collection.Contains ("Name"));
   }
 
   [Test]
-  public void ContainsFalse ()
+  public void ContainsPropertyNameFalse ()
   {
     Assert.IsFalse (_collection.Contains ("UndefinedPropertyName"));
+  }
+
+  [Test]
+  public void ContainsPropertyDefinitionTrue ()
+  {
+    _collection.Add (_propertyDefinition);
+    Assert.IsTrue (_collection.Contains (_propertyDefinition));
+  }
+
+  [Test]
+  public void ContainsPropertyDefinitionFalse ()
+  {
+    _collection.Add (_propertyDefinition);
+
+    PropertyDefinition copy = new PropertyDefinition (
+        _propertyDefinition.PropertyName, _propertyDefinition.ColumnName, _propertyDefinition.MappingType, 
+        _propertyDefinition.IsNullable, _propertyDefinition.MaxLength);
+
+    Assert.IsFalse (_collection.Contains (copy));
   }
 
   [Test]
