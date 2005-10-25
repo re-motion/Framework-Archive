@@ -163,7 +163,6 @@ public class DomainObject
 
     _dataContainer = clientTransaction.CreateNewDataContainer (this.GetType ());
     _dataContainer.SetDomainObject (this);
-    RegisterDataContainerEvents ();
   }
 
   /// <summary>
@@ -179,7 +178,6 @@ public class DomainObject
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
     _dataContainer = dataContainer;
-    RegisterDataContainerEvents ();
   }
 
   // methods and properties
@@ -240,12 +238,6 @@ public class DomainObject
   {
     CheckDiscarded ();
     ClientTransaction.Delete (this);
-
-    if (IsDiscarded)
-    {
-      _dataContainer.PropertyChanging -= new PropertyChangingEventHandler (DataContainer_PropertyChanging);
-      _dataContainer.PropertyChanged -= new PropertyChangedEventHandler (DataContainer_PropertyChanged);
-    }
   }
 
   /// <summary>
@@ -486,20 +478,14 @@ public class DomainObject
     OnCommitted (new EventArgs ());
   }
 
-  private void DataContainer_PropertyChanging (object sender, PropertyChangingEventArgs args)
+  internal void DataContainer_PropertyChanging (object sender, PropertyChangingEventArgs args)
   {
     OnPropertyChanging (args);
   }
 
-  private void DataContainer_PropertyChanged (object sender, PropertyChangedEventArgs args)
+  internal void DataContainer_PropertyChanged (object sender, PropertyChangedEventArgs args)
   {
     OnPropertyChanged (args);
-  }
-
-  private void RegisterDataContainerEvents ()
-  {
-    _dataContainer.PropertyChanging += new PropertyChangingEventHandler (DataContainer_PropertyChanging);
-    _dataContainer.PropertyChanged += new PropertyChangedEventHandler (DataContainer_PropertyChanged);
   }
 
   private void CheckDiscarded ()
