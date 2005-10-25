@@ -84,13 +84,22 @@ public class Query : IQuery
     get { return _definition; }
   }
 
-  //TODO: Rename this to ID, if possible
   /// <summary>
-  /// Gets the <see cref="Configuration.QueryDefinition.QueryID"/> of the associated <see cref="Configuration.QueryDefinition"/>.
+  /// Gets the <see cref="Configuration.QueryDefinition.ID"/> of the associated <see cref="Configuration.QueryDefinition"/>.
   /// </summary>
+  // TODO: Remove this property after 1.1.2006.
+  [Obsolete ("Use property ID instead.")]
   public string QueryID
   {
-    get { return _definition.QueryID; }
+    get { return _definition.ID; }
+  }
+
+  /// <summary>
+  /// Gets the <see cref="Configuration.QueryDefinition.ID"/> of the associated <see cref="Configuration.QueryDefinition"/>.
+  /// </summary>
+  public string ID
+  {
+    get { return _definition.ID; }
   }
 
   /// <summary>
