@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Utilities;
@@ -605,6 +606,28 @@ public class ClassDefinitionTest
     
     classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
     Assert.AreSame (classDefinition, propertyDefinition.ClassDefinition);
+  }
+
+  [Test]
+  public void CancelAddingOfPropertyDefinition ()
+  {
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("Test", "Test", "int32");
+    Assert.IsNull (propertyDefinition.ClassDefinition);
+
+    // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
+    // this test does not affect other tests through modifying the singleton instances.
+    ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
+
+    PropertyDefinitionCollectionEventReceiver receiver = new PropertyDefinitionCollectionEventReceiver (classDefinition.MyPropertyDefinitions, true);
+    try
+    {
+      classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+      Assert.Fail ("Expected an EventReceiverCancelException.");
+    }
+    catch (EventReceiverCancelException)
+    {
+      Assert.IsNull (propertyDefinition.ClassDefinition);
+    }
   }
 
   [Test]
