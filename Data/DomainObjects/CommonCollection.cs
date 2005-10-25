@@ -202,6 +202,26 @@ public class CommonCollection : ICollection
   }
 
   /// <summary>
+  /// Determines whether the <see cref="CommonCollection"/> contains a specified value for a key.
+  /// </summary>
+  /// <param name="key">The key to located in the <see cref="CommonCollection"/>. Must not be <see langword="null"/>.</param>
+  /// <param name="value">The object that is expected as value for the specified key.</param>
+  /// <returns><see langword="true"/> if the <see cref="CommonCollection"/> contains the key and the object found for the key is equal to <paramref name="value"/>; 
+  /// otherwise <see langword="false"/>.</returns>
+  /// <remarks>This method locates the object with the given <paramref name="key"/> in the collection and compares it with the given <paramref name="value"/>. 
+  /// <see cref="System.Object.Equals"/> is used for the comparison.</remarks>
+  protected bool BaseContains (object key, object value)
+  {
+    ArgumentUtility.CheckNotNull ("key", key);
+
+    if (!BaseContainsKey (key))
+      return false;
+
+    object objectInCollection = BaseGetObject (key);
+    return object.Equals (objectInCollection, value);    
+  }
+
+  /// <summary>
   /// Adds an item with the specified key and value.
   /// </summary>
   /// <param name="key">A key of the item to add. The key must not be <see langword="null"/>. Must not be <see langword="null"/>.</param>
