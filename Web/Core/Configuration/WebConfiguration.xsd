@@ -15,6 +15,7 @@
             <xs:attribute name="refreshInterval" type="xs:int" default="10" />
             <xs:attribute name="viewStateInSession" type="xs:boolean" default="true" />
             <xs:attribute name="urlMappingFile" type="xs:string" default="" />
+            <xs:attribute name="maximumUrlLength" type="xs:int" default="1024" />
           </xs:complexType>
         </xs:element>
         <xs:element name="wcag" minOccurs="0" maxOccurs="1">
