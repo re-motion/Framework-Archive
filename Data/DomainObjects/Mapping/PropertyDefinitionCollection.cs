@@ -78,6 +78,11 @@ public class PropertyDefinitionCollection : CommonCollection
 
   protected virtual void OnAdded (PropertyDefinitionAddedEventArgs args)
   {
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of ClassDefinition when adding property definitions is not organized through events.
+    if (_classDefinition != null)
+      _classDefinition.PropertyDefinitions_Added (this, args);
+
     if (Added != null)
       Added (this, args);
   }

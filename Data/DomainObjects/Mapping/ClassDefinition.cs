@@ -440,7 +440,10 @@ public class ClassDefinition : ISerializable, IObjectReference
       throw CreateMappingException ("Class '{0}' already contains the property '{1}'.",
           _id, args.PropertyDefinition.PropertyName);
     }
-    
+  }
+
+  internal void PropertyDefinitions_Added (object sender, PropertyDefinitionAddedEventArgs args)
+  {
     args.PropertyDefinition.SetClassDefinition (this);
   }
 
