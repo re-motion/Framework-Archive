@@ -88,7 +88,7 @@ public class PropertyDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
 
-    return Contains (propertyDefinition.PropertyName);
+    return BaseContains (propertyDefinition.PropertyName, propertyDefinition);
   }
 
   public bool Contains (string propertyName)

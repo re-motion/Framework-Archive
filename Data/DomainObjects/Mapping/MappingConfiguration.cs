@@ -74,9 +74,7 @@ public class MappingConfiguration : ConfigurationBase
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-    // TODO: Use _classDefinitions.Contains, after it implements object.Equals.
-    ClassDefinition foundClassDefinition = _classDefinitions[classDefinition.ID];
-    return object.ReferenceEquals (classDefinition, foundClassDefinition);
+    return _classDefinitions.Contains (classDefinition);
   }
 
   public bool Contains (PropertyDefinition propertyDefinition)
@@ -90,17 +88,14 @@ public class MappingConfiguration : ConfigurationBase
     if (foundClassDefinition == null)
       return false;
 
-    // TODO: Use PropertyDefinitionCollection.Contains, after it implements object.Equals.
-    return object.ReferenceEquals (propertyDefinition, foundClassDefinition[propertyDefinition.PropertyName]);
+    return foundClassDefinition.Contains (propertyDefinition);
   }
 
   public bool Contains (RelationDefinition relationDefinition)
   {
     ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
 
-    // TODO: Use _relationDefinitions.Contains, after it implements object.Equals.
-    RelationDefinition foundRelationDefinition = _relationDefinitions[relationDefinition.ID];
-    return object.ReferenceEquals (relationDefinition, foundRelationDefinition);
+    return _relationDefinitions.Contains (relationDefinition);
   }
 
   public bool Contains (IRelationEndPointDefinition relationEndPointDefinition)

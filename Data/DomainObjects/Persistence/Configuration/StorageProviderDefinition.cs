@@ -12,7 +12,7 @@ public abstract class StorageProviderDefinition
 
   // member fields
 
-  private string _storageProviderID;
+  private string _id;
   private Type _storageProviderType;
 
   // construction and disposing
@@ -22,7 +22,7 @@ public abstract class StorageProviderDefinition
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
     ArgumentUtility.CheckNotNull ("storageProviderType", storageProviderType);
 
-    _storageProviderID = storageProviderID;
+    _id = storageProviderID;
     _storageProviderType = storageProviderType;
   }
 
@@ -38,10 +38,16 @@ public abstract class StorageProviderDefinition
       throw new IdentityTypeNotSupportedException (_storageProviderType, identityType);
   }
 
-  //TODO: Rename this to ID
+  public string ID
+  {
+    get { return _id; }
+  }
+
+  // TODO: Remove this property after 1.1.2006.
+  [Obsolete ("Use property ID instead.")]
   public string StorageProviderID
   {
-    get { return _storageProviderID; }
+    get { return _id; }
   }
 
   public Type StorageProviderType

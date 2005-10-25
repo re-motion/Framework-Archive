@@ -76,9 +76,7 @@ public class StorageProviderConfiguration : ConfigurationBase
   {
     ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
 
-    // TODO: Use _storageProviderDefinitions.Contains, after it implements object.Equals.
-    StorageProviderDefinition foundStorageProviderDefinition = _storageProviderDefinitions[storageProviderDefinition.StorageProviderID];
-    return object.ReferenceEquals (storageProviderDefinition, foundStorageProviderDefinition);
+    return _storageProviderDefinitions.Contains (storageProviderDefinition);
   }
 }
 }

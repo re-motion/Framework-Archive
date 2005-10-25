@@ -53,7 +53,7 @@ public class RelationDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("relationDefinition", relationDefinition);
 
-    return Contains (relationDefinition.ID);
+    return BaseContains (relationDefinition.ID, relationDefinition);
   }
 
   public bool Contains (string relationDefinitionID)

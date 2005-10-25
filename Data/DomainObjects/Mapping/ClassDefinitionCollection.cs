@@ -66,7 +66,7 @@ public class ClassDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-    return Contains (classDefinition.ClassType);
+    return BaseContains (classDefinition.ClassType, classDefinition);
   }
 
   public bool Contains (Type classType)

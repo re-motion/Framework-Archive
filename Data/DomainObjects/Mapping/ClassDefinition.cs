@@ -95,8 +95,7 @@ public class ClassDefinition : ISerializable, IObjectReference
   {
     ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
 
-    PropertyDefinition foundPropertyDefinition = _propertyDefinitions[propertyDefinition.PropertyName];
-    return object.ReferenceEquals (propertyDefinition, foundPropertyDefinition);
+    return _propertyDefinitions.Contains (propertyDefinition);
   }
 
   public IRelationEndPointDefinition GetOppositeEndPointDefinition (string propertyName)
