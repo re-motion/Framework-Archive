@@ -12,7 +12,7 @@ public interface IQuery
   /// <summary>
   /// Gets a unique identifier for the query.
   /// </summary>
-  string QueryID { get; }
+  string ID { get; }
 
   /// <summary>
   /// Gets the statement of the query.
