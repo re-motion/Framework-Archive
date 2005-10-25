@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Mapping;
@@ -41,6 +42,7 @@ public class PropertyValue
   private object _value;
   private object _originalValue;
   private bool _isDiscarded = false;
+  private ArrayList _changeNotificationReceivers;
 
   // construction and disposing
 
@@ -70,6 +72,7 @@ public class PropertyValue
     _definition = definition;
     _value = value;
     _originalValue = value;
+    _changeNotificationReceivers = new ArrayList ();
   }
 
   // methods and properties
@@ -249,6 +252,11 @@ public class PropertyValue
   /// <param name="args">A <see cref="ValueChangingEventArgs"/> object that contains the event data.</param>
   protected virtual void OnChanging (ValueChangingEventArgs args)
   {
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
+    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
+      changeNotificationReceiver.PropertyValue_Changing (this, args);
+
     if (Changing != null)
       Changing (this, args);
   }
@@ -259,8 +267,19 @@ public class PropertyValue
   /// <param name="args">A <see cref="EventArgs"/> object that contains the event data.</param>
   protected virtual void OnChanged (EventArgs args)
   {
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
+    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
+      changeNotificationReceiver.PropertyValue_Changed (this, args);
+
     if (Changed != null)
       Changed (this, args);
+  }
+
+  internal void RegisterForChangeNotification (PropertyValueCollection propertyValueCollection)
+  {
+    ArgumentUtility.CheckNotNull ("propertyValueCollection", propertyValueCollection);
+    _changeNotificationReceivers.Add (propertyValueCollection);
   }
 
   internal void Commit ()
