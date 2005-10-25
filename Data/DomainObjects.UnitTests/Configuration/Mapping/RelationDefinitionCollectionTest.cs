@@ -56,16 +56,35 @@ public class RelationDefinitionCollectionTest
   }
 
   [Test]
-  public void ContainsTrue ()
+  public void ContainsRelationDefinitionIDTrue ()
   {
     _collection.Add (_relationDefinition);
     Assert.IsTrue (_collection.Contains ("OrderToOrderTicket"));
   }
 
   [Test]
-  public void ContainsFalse ()
+  public void ContainsRelationDefinitionIDFalse ()
   {
     Assert.IsFalse (_collection.Contains ("OrderToOrderTicket"));
+  }
+
+  [Test]
+  public void ContainsRelationDefinitionTrue ()
+  {
+    _collection.Add (_relationDefinition);
+
+    Assert.IsTrue (_collection.Contains (_relationDefinition));
+  }
+
+  [Test]
+  public void ContainsRelationDefinitionFalse ()
+  {
+    _collection.Add (_relationDefinition);
+
+    RelationDefinition copy = new RelationDefinition (
+        _relationDefinition.ID, _relationDefinition.EndPointDefinitions[0], _relationDefinition.EndPointDefinitions[1]);
+
+    Assert.IsFalse (_collection.Contains (copy));
   }
 
   [Test]
