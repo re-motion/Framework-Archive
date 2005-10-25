@@ -87,7 +87,7 @@ public class DataContainerCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
 
-    return Contains (dataContainer.ID);
+    return BaseContains (dataContainer.ID, dataContainer);
   }
 
   public bool Contains (ObjectID id)
