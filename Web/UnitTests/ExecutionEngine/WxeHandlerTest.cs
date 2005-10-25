@@ -248,8 +248,7 @@ public class WxeHandlerTest: WxeTest
 	[Test]
   public void RetrieveMissingFunctionStateWithTypeFromMapping()
   {
-    HttpContext context = HttpContextHelper.CreateHttpContext (
-        "GET", @"C:\default.html", @"http://localhost/Test.wxe", null);
+    HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
 
     Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
         new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (_functionType, "~/Test.wxe"));
@@ -265,8 +264,7 @@ public class WxeHandlerTest: WxeTest
   [ExpectedException (typeof (HttpException))]
   public void RetrieveMissingFunctionStateWithTypeFromMappingAndGetRequestWithPostBackAction()
   {
-    HttpContext context = HttpContextHelper.CreateHttpContext (
-        "GET", @"C:\default.html", @"http://localhost/Test.wxe", null);
+    HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
     HttpContextHelper.SetQueryString (context, queryString);
@@ -282,8 +280,7 @@ public class WxeHandlerTest: WxeTest
   [ExpectedException (typeof (HttpException))]
   public void RetrieveMissingFunctionStateWithTypeFromMappingAndPostRequest()
   {
-    HttpContext context = HttpContextHelper.CreateHttpContext (
-        "POST", @"C:\default.html", @"http://localhost/Test.wxe", null);
+    HttpContext context = HttpContextHelper.CreateHttpContext ("POST", "Test.wxe", null);
     NameValueCollection form = new NameValueCollection();
     form.Add (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
     HttpContextHelper.SetForm (context, form);
@@ -298,8 +295,7 @@ public class WxeHandlerTest: WxeTest
 	[Test]
   public void RetrieveMissingFunctionStateWithTypeFromQueryString()
   {
-    HttpContext context = HttpContextHelper.CreateHttpContext (
-        "GET", @"C:\default.html", @"http://localhost/Test.wxe", null);
+    HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
     HttpContextHelper.SetQueryString (context, queryString);
@@ -316,8 +312,7 @@ public class WxeHandlerTest: WxeTest
   [ExpectedException (typeof (HttpException))]
   public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndGetRequestWithPostBackAction()
   {
-    HttpContext context = HttpContextHelper.CreateHttpContext (
-        "GET", @"C:\default.html", @"http://localhost/Test.wxe", null);
+    HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
     queryString.Add (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
@@ -334,7 +329,7 @@ public class WxeHandlerTest: WxeTest
   public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndPostRequest()
   {
     HttpContext context = HttpContextHelper.CreateHttpContext (
-        "POST", @"C:\default.html", @"http://localhost/Test.wxe", null);
+        "POST", "Test.wxe", null);
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
     HttpContextHelper.SetQueryString (context, queryString);

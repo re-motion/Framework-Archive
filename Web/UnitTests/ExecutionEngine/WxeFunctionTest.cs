@@ -56,7 +56,7 @@ public class WxeFunctionTest: WxeTest
   public void InitializeParametersThroughQueryStringWithEmptyString()
   {
     HttpContext context = HttpContextHelper.CreateHttpContext (
-        "GET", @"C:\index.html", "http://localhost/index.hmtl", "StringValue=&NaInt32Value=2&IntValue=1");
+        "GET", "default.html", "StringValue=&NaInt32Value=2&IntValue=1");
 
     TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters ();
     function.InitializeParameters (context.Request.Params);
@@ -70,7 +70,7 @@ public class WxeFunctionTest: WxeTest
   public void InitializeParametersThroughQueryStringWithNaInt32BeingEmpty()
   {
     HttpContext context = HttpContextHelper.CreateHttpContext (
-        "GET", @"C:\index.html", "http://localhost/index.hmtl", "StringValue=Hello+World&NaInt32Value=&IntValue=1");
+        "GET", "default.html", "StringValue=Hello+World&NaInt32Value=&IntValue=1");
 
     TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters ();
     function.InitializeParameters (context.Request.Params);
@@ -85,7 +85,7 @@ public class WxeFunctionTest: WxeTest
   public void InitializeParametersThroughQueryStringWitInt32BeingEmpty()
   {
     HttpContext context = HttpContextHelper.CreateHttpContext (
-        "GET", @"C:\index.html", "http://localhost/index.hmtl", "StringValue=Hello+World&NaInt32Value=1&IntValue=");
+        "GET", "default.html", "StringValue=Hello+World&NaInt32Value=1&IntValue=");
 
     TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters ();
     function.InitializeParameters (context.Request.Params);
