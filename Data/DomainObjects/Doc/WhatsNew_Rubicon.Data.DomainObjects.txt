@@ -1,3 +1,38 @@
+1.3.19.0
+========
+
+- Rubicon.Data.DomainObjects.CommonCollection hat neue Methode BaseContains, die zusätzlich zum Key object.Equals verwendet, um
+  bei reference types zu prüfen, ob die übergebene Referenz Teil der Collection ist. 
+  Für folgende Collections hat sich somit die Semantik der Contains-Overloads mit dem 
+  Collection-Element (z.B. Contains (DataContainer), Contains (DomainObject)) geändert:
+  * DataContainerCollection
+  * RelationEndPointCollection
+  * DomainObjectCollection
+  * ClassDefinitionCollection
+  * PropertyDefinitionCollection
+  * RelationDefinitionCollection
+  * StorageProviderDefinitionCollection
+  * StorageProviderCollection
+  * PropertyValueCollection
+  * QueryDefinitionCollection
+  * QueryParameterCollection
+  
+- Rubicon.Data.DomainObjects.Persistence.Configuration.StorageProviderDefinition:
+  Property StorageProviderDefinitionID ist jetzt obsolet. In Zukunft sollte neue Property ID verwendet werden.
+
+- Rubicon.Data.DomainObjects.Persistence.StorageProvider:
+  Property StorageProviderDefinition in Definition umbenannt und visibility von protected auf public geändert.  
+
+- Rubicon.Data.DomainObjects.Queries.Configuration.QueryDefinition:
+  Property QueryID ist jetzt obsolet. In Zukunft sollte neue Property ID verwendet werden.
+
+- Rubicon.Data.DomainObjects.Queries.IQuery:
+  Property QueryID in ID umbenannt.
+    
+- Rubicon.Data.DomainObjects.Queries.Query:
+  Property QueryID ist jetzt obsolet. In Zukunft sollte neue Property ID verwendet werden.
+  
+  
 1.3.18.0
 ========
 
