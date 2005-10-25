@@ -123,6 +123,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "CommonCollectionMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CommonCollectionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "DatabaseTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -722,6 +732,11 @@
                 />
                 <File
                     RelPath = "Persistence\PropertyValueChecker.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Persistence\StorageProviderCollectionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -112,7 +112,7 @@ public class QueriesTest : SerializationBaseTest
     Assert.IsFalse (object.ReferenceEquals (expected, actual));
     Assert.IsNotNull (actual);
 
-    Assert.AreEqual (expected.QueryID, actual.QueryID);
+    Assert.AreEqual (expected.ID, actual.ID);
     Assert.AreSame (expected.Definition, actual.Definition);
     AreEqual (expected.Parameters, actual.Parameters);
   }
@@ -153,7 +153,7 @@ public class QueriesTest : SerializationBaseTest
 
   private void AreEqual (QueryDefinition expected, QueryDefinition actual)
   {
-    Assert.AreEqual (expected.QueryID, actual.QueryID);
+    Assert.AreEqual (expected.ID, actual.ID);
     Assert.AreEqual (expected.QueryType, actual.QueryType);
     Assert.AreEqual (expected.Statement, actual.Statement);
     Assert.AreEqual (expected.StorageProviderID, actual.StorageProviderID);
