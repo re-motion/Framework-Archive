@@ -113,15 +113,15 @@ public class WxePageStep: WxeStep
     {
       //  This is the PageStep currently executing a sub-function
       
-      EnsureHasRedirectedToPermaUrl (context);
+      EnsureHasRedirectedToPermanentUrl (context);
       _function.Execute (context);
       //  This point is only reached after the sub-function has completed execution.
 
       //  This is the PageStep after the sub-function has completed execution
       
-      EnsureHasReturnedFromRedirectToPermaUrl (context);
+      EnsureHasReturnedFromRedirectToPermanentUrl (context);
       ProcessExecutedFunction (context);
-      CleanupAfterHavingReturnedFromRedirectToPermaUrl();
+      CleanupAfterHavingReturnedFromRedirectToPermanentUrl();
     }
 
     try 
@@ -159,12 +159,10 @@ public class WxePageStep: WxeStep
     context.IsReturningPostBack = true;
   }
 
-  private void EnsureHasRedirectedToPermaUrl (WxeContext context)
+  private void EnsureHasRedirectedToPermanentUrl (WxeContext context)
   {
     if (_isRedirectingToPermaUrlRequired && ! _isRedirected)
     {
-      _resumeUrl = context.GetResumePath();
-
       NameValueCollection queryString;
       if (_permaUrlQueryString == null)
         queryString = _function.SerializeParametersForQueryString();
@@ -172,24 +170,16 @@ public class WxePageStep: WxeStep
         queryString = _permaUrlQueryString;
       
       queryString.Add (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
-            
-      if (_useParentPermaUrl)
-      {
-        NameValueCollection currentQueryString = ParentFunction.SerializeParametersForQueryString();
-        string parentPermaUrl = context.HttpContext.Request.RawUrl;
-        queryString.Add (WxeHandler.Parameters.WxeReturnUrl, parentPermaUrl);
-      }
 
-      string destinationUrl = context.GetPermanentUrl (_function.GetType(), queryString);
-      
-      int maxLength = 1024;
+      string destinationUrl = context.GetPermanentUrl (_function.GetType(), queryString, _useParentPermaUrl);
 
+      _resumeUrl = context.GetResumePath();
       _isRedirected = true;
       PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
     }
   }
 
-  private void EnsureHasReturnedFromRedirectToPermaUrl (WxeContext context)
+  private void EnsureHasReturnedFromRedirectToPermanentUrl (WxeContext context)
   {
     if (_isRedirectingToPermaUrlRequired && _isRedirected && ! _hasReturnedFromRedirect)
     {
@@ -198,7 +188,7 @@ public class WxePageStep: WxeStep
     }
   }
 
-  private void CleanupAfterHavingReturnedFromRedirectToPermaUrl()
+  private void CleanupAfterHavingReturnedFromRedirectToPermanentUrl()
   {
     if (_isRedirectingToPermaUrlRequired && _hasReturnedFromRedirect)
     {

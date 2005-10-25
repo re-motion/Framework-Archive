@@ -252,11 +252,41 @@ public class WxeContext
     if (mapping == null)
       path = _httpContext.Request.Url.AbsolutePath;
     else
-      path = HttpContext.Response.ApplyAppPathModifier (mapping.Resource);
+      path = _httpContext.Response.ApplyAppPathModifier (mapping.Resource);
 
-    string serverPart = _httpContext.Request.Url.GetLeftPart (System.UriPartial.Authority);
+    string permanentUrl = UrlUtility.GetAbsoluteUrl (_httpContext, path) + UrlUtility.FormatQueryString (queryString);
+    
+    int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
+    if (permanentUrl.Length > maxLength)
+    {
+      throw new WxeException (string.Format (
+          "Error while creating the permanent URL for WXE function '{0}'. "
+          + "The URL exceeds the maximum length of {1} bytes. Generated URL: {2}",
+          functionType.Name, maxLength, permanentUrl));
+    }
 
-    return serverPart + path + UrlUtility.FormatQueryString (queryString);
+    return permanentUrl;
+  }
+
+  public string GetPermanentUrl (Type functionType, NameValueCollection queryString, bool useParentPermanentUrl)
+  {
+    ArgumentUtility.CheckNotNull ("queryString", queryString);
+
+    string permanentUrl = GetPermanentUrl (functionType, queryString);
+    
+    int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
+
+    if (useParentPermanentUrl)
+    {
+      string parentPermanentUrl = _httpContext.Request.Url.AbsolutePath + _queryString;
+      if (permanentUrl.Length + parentPermanentUrl.Length > maxLength)
+        return permanentUrl;
+
+      permanentUrl = 
+          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+    }
+
+    return permanentUrl;
   }
 }
 

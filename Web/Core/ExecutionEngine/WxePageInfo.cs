@@ -502,15 +502,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         queryString = permaUrlQueryString;
 
       queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-
-      if (useParentPermaUrl)
-      {
-        NameValueCollection currentQueryString = CurrentFunction.SerializeParametersForQueryString();
-        string parentPermaUrl = wxeContext.HttpContext.Request.RawUrl;
-        queryString.Add (WxeHandler.Parameters.WxeReturnUrl, parentPermaUrl);
-      }
-
-      href = wxeContext.GetPermanentUrl (function.GetType(), queryString);
+      href = wxeContext.GetPermanentUrl (function.GetType(), queryString, useParentPermaUrl);
     }
     else
     {
