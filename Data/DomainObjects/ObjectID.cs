@@ -14,7 +14,7 @@ namespace Rubicon.Data.DomainObjects
 /// <b>ObjectID</b> supports values of type <see cref="System.Guid"/>, <see cref="System.Int32"/> and <see cref="System.String"/>.
 /// </remarks>
 [Serializable]
-public sealed class ObjectID : ISerializable
+public sealed class ObjectID
 {
   // types
 
@@ -228,20 +228,6 @@ public sealed class ObjectID : ISerializable
     Initialize (classDefinition.ID, value);
   }
 
-  /// <summary>
-  /// Initializes a new instance of the <see cref="ObjectID"/> class from the specified instances of the <see cref="System.Runtime.Serialization.SerializationInfo"/> and <see cref="System.Runtime.Serialization.StreamingContext"/> classes.
-  /// </summary>
-  /// <param name="info">An instance of the <see cref="System.Runtime.Serialization.SerializationInfo"/> class containing the information required to deserialize the new <see cref="ObjectID"/> instance.</param>
-  /// <param name="context">An instance of the <see cref="System.Runtime.Serialization.StreamingContext"/> class containing the source of the serialized stream associated with the new <see cref="ObjectID"/> instance.</param>
-  private ObjectID (SerializationInfo info, StreamingContext context)
-  {
-    string classID = info.GetString ("ClassID");
-    Type valueType = (Type) info.GetValue ("ValueType", typeof (Type));
-    object value = info.GetValue ("Value", valueType);
-
-    Initialize (classID, value);
-  }
-
   private void Initialize (string classID, object value)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
@@ -374,21 +360,5 @@ public sealed class ObjectID : ISerializable
   {
     return new ArgumentException (string.Format (message, args), argumentName);
   }
-
-  #region ISerializable Members
-
-  /// <summary>
-  /// Gets serialization information with all of the data needed to reinstantiate this <b>ObjectID</b>.
-  /// </summary>
-  /// <param name="info">The object to be populated with serialization information.</param>
-  /// <param name="context">The destination context of the serialization.</param>
-  void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-  {
-    info.AddValue ("ClassID", ClassID);
-    info.AddValue ("Value", Value);
-    info.AddValue ("ValueType", Value.GetType ());
-  }
-
-  #endregion
 }
 }
