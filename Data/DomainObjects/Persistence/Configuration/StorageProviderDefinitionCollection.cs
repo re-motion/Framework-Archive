@@ -63,7 +63,7 @@ public class StorageProviderDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
 
-    return Contains (storageProviderDefinition.StorageProviderID);
+    return BaseContains (storageProviderDefinition.ID, storageProviderDefinition);
   }
 
   public bool Contains (string storageProviderID)
@@ -90,13 +90,13 @@ public class StorageProviderDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("value", value);
 
-    if (Contains (value.StorageProviderID))
+    if (Contains (value.ID))
     {
       throw CreateArgumentException (
-          "StorageProviderDefinition '{0}' already exists in collection.", "value", value.StorageProviderID);
+          "StorageProviderDefinition '{0}' already exists in collection.", "value", value.ID);
     }
 
-    return BaseAdd (value.StorageProviderID, value);
+    return BaseAdd (value.ID, value);
   }
 
   #endregion
