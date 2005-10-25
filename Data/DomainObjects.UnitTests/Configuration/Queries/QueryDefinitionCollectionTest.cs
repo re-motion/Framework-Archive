@@ -51,11 +51,22 @@ public class QueryDefinitionCollectionTest
   }
 
   [Test]
-  public void ContainsQueryDefinition ()
+  public void ContainsQueryDefinitionTrue ()
   {
     _collection.Add (_definition);
-    
+   
     Assert.IsTrue (_collection.Contains (_definition));    
+  }
+
+  [Test]
+  public void ContainsQueryDefinitionFalse ()
+  {
+    _collection.Add (_definition);
+
+    QueryDefinition copy = new QueryDefinition (
+        _definition.ID, _definition.StorageProviderID, _definition.Statement, _definition.QueryType, _definition.CollectionType);
+
+    Assert.IsFalse (_collection.Contains (copy));
   }
 
   [Test]
@@ -70,7 +81,7 @@ public class QueryDefinitionCollectionTest
   {
     _collection.Add (_definition);
 
-    Assert.AreSame (_definition, _collection.GetMandatory (_definition.QueryID));
+    Assert.AreSame (_definition, _collection.GetMandatory (_definition.ID));
   }
 
   [Test]
