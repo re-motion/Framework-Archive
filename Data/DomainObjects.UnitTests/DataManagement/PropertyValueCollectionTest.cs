@@ -107,8 +107,6 @@ public class PropertyValueCollectionTest
 
     _collection.Add (value);
 
-    PropertyValueContainerEventReceiver collectionEventReceiver = new PropertyValueContainerEventReceiver (_collection, false);
-
     try
     {
       value.Value = 45;
@@ -119,6 +117,28 @@ public class PropertyValueCollectionTest
       Assert.AreEqual (42, value.Value, "Value");
       Assert.AreEqual (false, valueEventReceiver.HasChangedEventBeenCalled, "HasChangedEventBeenCalled");
     }
+  }
+
+  [Test]
+  public void PropertyValueInTwoCollections ()
+  {
+    PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
+    PropertyValueCollection collection1 = new PropertyValueCollection ();
+    PropertyValueCollection collection2 = new PropertyValueCollection ();
+
+    collection1.Add (value);
+    collection2.Add (value);
+
+    PropertyValueContainerEventReceiver receiver1 = new PropertyValueContainerEventReceiver (collection1, false);
+    PropertyValueContainerEventReceiver receiver2 = new PropertyValueContainerEventReceiver (collection2, false);
+
+    value.Value = 43;
+
+    Assert.IsNotNull (receiver1.ChangingPropertyValue);
+    Assert.IsNotNull (receiver1.ChangedPropertyValue);
+
+    Assert.IsNotNull (receiver2.ChangingPropertyValue);
+    Assert.IsNotNull (receiver2.ChangedPropertyValue);
   }
 
   [Test]
