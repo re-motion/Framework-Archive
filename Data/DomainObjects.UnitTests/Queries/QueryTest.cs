@@ -33,7 +33,7 @@ public class QueryTest
 
     QueryDefinition definition = QueryConfiguration.Current["OrderQuery"];
     Assert.AreSame (definition, query.Definition);
-    Assert.AreEqual (definition.QueryID, query.QueryID);
+    Assert.AreEqual (definition.ID, query.ID);
     Assert.AreEqual (definition.CollectionType, query.CollectionType);
     Assert.AreEqual (definition.QueryType, query.QueryType);
     Assert.AreEqual (definition.Statement, query.Statement);
@@ -50,7 +50,7 @@ public class QueryTest
     Query query = new Query (definition, parameters);
 
     Assert.AreSame (definition, query.Definition);
-    Assert.AreEqual (definition.QueryID, query.QueryID);
+    Assert.AreEqual (definition.ID, query.ID);
     Assert.AreSame (parameters, query.Parameters);
   }
 }

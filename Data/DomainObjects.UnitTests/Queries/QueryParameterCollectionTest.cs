@@ -54,14 +54,14 @@ public class QueryParameterCollectionTest
   }
 
   [Test]
-  public void ContainsTrue ()
+  public void ContainsParameterNameTrue ()
   {
     _collection.Add (_parameter);
     Assert.IsTrue (_collection.Contains (_parameter.Name));
   }
 
   [Test]
-  public void ContainsFalse ()
+  public void ContainsParameterNameFalse ()
   {
     Assert.IsFalse (_collection.Contains (_parameter.Name));
   }
@@ -78,11 +78,18 @@ public class QueryParameterCollectionTest
   }
 
   [Test]
-  public void ContainsQueryParameter ()
+  public void ContainsParameterTrue ()
   {
     _collection.Add (_parameter);
-    
     Assert.IsTrue (_collection.Contains (_parameter));    
+  }
+
+  [Test]
+  public void ContainsParameterFalse ()
+  {
+    _collection.Add (_parameter);
+    QueryParameter copy = new QueryParameter (_parameter.Name, _parameter.Value, _parameter.ParameterType);
+    Assert.IsFalse (_collection.Contains (copy));    
   }
 
   [Test]
@@ -90,14 +97,6 @@ public class QueryParameterCollectionTest
   public void ContainsNullQueryParameter ()
   {
     _collection.Contains ((QueryParameter) null);
-  }
-
-  [Test]
-  public void ContainsQueryParameterName ()
-  {
-    _collection.Add (_parameter);
-    
-    Assert.IsTrue (_collection.Contains (_parameter.Name));    
   }
 
   [Test]
