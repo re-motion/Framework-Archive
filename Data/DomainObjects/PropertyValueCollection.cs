@@ -68,15 +68,16 @@ public class PropertyValueCollection : CommonCollection
   /// Determines whether the <see cref="PropertyValueCollection"/> contains a specific <see cref="PropertyValue"/>.
   /// </summary>
   /// <param name="propertyValue">The object to locate in the <see cref="PropertyValueCollection"/>. Must not be <see langword="null"/>.</param>
-  /// <returns><see langword="true"/> if the <see cref="PropertyValueCollection"/> contains the key; otherwise <see langword="false"/>.</returns>
+  /// <returns><see langword="true"/> if the <see cref="PropertyValueCollection"/> contains the <paramref name="propertyValue"/>; otherwise <see langword="false"/>.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyValue"/> is <see langword="null"/>.</exception>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
+  /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
   public bool Contains (PropertyValue propertyValue)
   {
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
     CheckDiscarded ();
 
-    return Contains (propertyValue.Name);
+    return BaseContains (propertyValue.Name, propertyValue);
   }
 
   /// <summary>
