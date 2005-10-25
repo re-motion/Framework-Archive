@@ -101,9 +101,7 @@ public class DataContainer
     _timestamp = timestamp;
 
     _propertyValues = new PropertyValueCollection ();
-
-    _propertyValues.PropertyChanging += new PropertyChangingEventHandler(PropertyValues_PropertyChanging);
-    _propertyValues.PropertyChanged += new PropertyChangedEventHandler(PropertyValues_PropertyChanged);
+    _propertyValues.RegisterForChangeNotification (this);
   }
 
   // methods and properties
@@ -378,6 +376,10 @@ public class DataContainer
   /// <param name="args">A <see cref="PropertyChangingEventArgs"/> object that contains the event data.</param>
   protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
   {
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DomainObject when changing property values is not organized through events.
+    DomainObject.DataContainer_PropertyChanging (this, args);
+
     if (PropertyChanging != null)
       PropertyChanging (this, args);
   }
@@ -388,6 +390,10 @@ public class DataContainer
   /// <param name="args">A <see cref="PropertyChangedEventArgs"/> object that contains the event data.</param>
   protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
   {
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DomainObject when changing property values is not organized through events.
+    DomainObject.DataContainer_PropertyChanged (this, args);
+
     if (PropertyChanged != null)
       PropertyChanged (this, args);
   }
@@ -461,7 +467,7 @@ public class DataContainer
     return StateType.Unchanged;
   }
 
-  private void PropertyValues_PropertyChanging (object sender, PropertyChangingEventArgs args)
+  internal void PropertyValues_PropertyChanging (object sender, PropertyChangingEventArgs args)
   {
     if (_state == DataContainerStateType.Deleted)
       throw new ObjectDeletedException (_id);
@@ -469,15 +475,13 @@ public class DataContainer
     OnPropertyChanging (args);
   }
 
-  private void PropertyValues_PropertyChanged (object sender, PropertyChangedEventArgs args)
+  internal void PropertyValues_PropertyChanged (object sender, PropertyChangedEventArgs args)
   {
     OnPropertyChanged (args);
   }
 
   private void Discard ()
   {
-    _propertyValues.PropertyChanging -= new PropertyChangingEventHandler(PropertyValues_PropertyChanging);
-    _propertyValues.PropertyChanged -= new PropertyChangedEventHandler(PropertyValues_PropertyChanged);
     _propertyValues.Discard ();
     _clientTransaction = null;
 
