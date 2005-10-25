@@ -114,7 +114,7 @@ public class RelationEndPointCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("endPoint", endPoint);
 
-    return Contains (endPoint.ID);
+    return BaseContains (endPoint.ID, endPoint);
   }
 
   public bool Contains (RelationEndPointID id)
