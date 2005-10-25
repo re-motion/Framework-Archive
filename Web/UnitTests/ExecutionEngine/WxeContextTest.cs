@@ -145,6 +145,7 @@ public class WxeContextTest
   }
 
   [Test]
+  [Ignore ("Not implemented.")]
   public void GetPermanentUrlWithParentPermanentUrlAndRemoveInnermostReturnUrl()
   {
     string parameterName = "Param";
