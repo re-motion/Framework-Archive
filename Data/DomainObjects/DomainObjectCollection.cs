@@ -359,11 +359,12 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><see langword="true"/> if <paramref name="domainObject"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/></exception>
+  /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
   public bool Contains (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    return Contains (domainObject.ID);
+    return BaseContains (domainObject.ID, domainObject);
   }
 
   /// <summary>
