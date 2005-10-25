@@ -58,20 +58,20 @@ public class RelationEndPointCollectionTest : RelationEndPointBaseTest
   }
 
   [Test]
-  public void ContainsTrue ()
+  public void ContainsRelationEndPointIDTrue ()
   {
     _endPoints.Add (_orderTicketEndPoint);
     Assert.IsTrue (_endPoints.Contains (_orderTicketEndPoint.ID));
   }
 
   [Test]
-  public void ContainsFalse ()
+  public void ContainsRelationEndPointIDFalse ()
   {
     Assert.IsFalse (_endPoints.Contains (_orderTicketEndPoint.ID));
   }
 
   [Test]
-  public void ContainsEndPoint ()
+  public void ContainsRelationEndPointTrue ()
   {
     _endPoints.Add (_orderTicketEndPoint);
 
@@ -79,8 +79,17 @@ public class RelationEndPointCollectionTest : RelationEndPointBaseTest
   }
 
   [Test]
+  public void ContainsRelationEndPointFalse ()
+  {
+    _endPoints.Add (_orderTicketEndPoint);
+    ObjectEndPoint copy = CreateObjectEndPoint (_orderTicketEndPoint.ID, ((ObjectEndPoint) _orderTicketEndPoint).OppositeObjectID);
+
+    Assert.IsFalse (_endPoints.Contains (copy));
+  }
+
+  [Test]
   [ExpectedException (typeof (ArgumentNullException))]
-  public void ContainsNullEndPoint ()
+  public void ContainsRelationEndPointNull ()
   {
     _endPoints.Contains ((RelationEndPoint) null);
   }
