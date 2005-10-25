@@ -25,7 +25,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   // construction and disposing
 
-  protected RdbmsProvider (RdbmsProviderDefinition rdbmsProviderDefinition) : base (rdbmsProviderDefinition)
+  protected RdbmsProvider (RdbmsProviderDefinition definition) : base (definition)
   {
   }
 
@@ -65,7 +65,7 @@ public abstract class RdbmsProvider : StorageProvider
       {
         _connection = CreateConnection ();
         if (_connection.ConnectionString == null || _connection.ConnectionString == string.Empty)
-          _connection.ConnectionString = this.StorageProviderDefinition.ConnectionString;
+          _connection.ConnectionString = this.Definition.ConnectionString;
 
         _connection.Open ();
       }
@@ -192,7 +192,7 @@ public abstract class RdbmsProvider : StorageProvider
       catch (Exception e)
       {
         throw CreateRdbmsProviderException (
-            e, "Error while executing SQL command for query '{0}'.", query.QueryID);
+            e, "Error while executing SQL command for query '{0}'.", query.ID);
       }
     }
   }
@@ -413,12 +413,12 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  protected new RdbmsProviderDefinition StorageProviderDefinition
+  public new RdbmsProviderDefinition Definition
   {
     get 
-    { 
-      CheckDisposed ();
-      return (RdbmsProviderDefinition) base.StorageProviderDefinition; 
+    {
+      // CheckDisposed is not necessary here, because StorageProvider.Definition already checks this.
+      return (RdbmsProviderDefinition) base.Definition; 
     }
   }
 
