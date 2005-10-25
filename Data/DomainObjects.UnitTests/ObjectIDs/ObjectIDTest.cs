@@ -314,23 +314,6 @@ public class ObjectIDTest
   }
 
   [Test]
-  public void Serialization ()
-  {
-    using (MemoryStream memoryStream = new MemoryStream ())
-    {
-      BinaryFormatter formatter = new BinaryFormatter();
-      formatter.Serialize (memoryStream, DomainObjectIDs.Order1);
-      memoryStream.Seek (0, SeekOrigin.Begin);
-
-      formatter = new BinaryFormatter();
-
-      ObjectID id = (ObjectID) formatter.Deserialize (memoryStream);
-      
-      Assert.AreEqual (DomainObjectIDs.Order1, id);
-    }    
-  }
-
-  [Test]
   [ExpectedException (typeof (ArgumentException), 
       "The ClassID 'Order' and the ClassType 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer'"
       + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
