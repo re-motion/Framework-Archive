@@ -32,7 +32,7 @@ public class StorageProviderDefinitionChecker
 
     foreach (StorageProviderDefinition expectedProvider in expectedProviders)
     {
-      StorageProviderDefinition actualProvider = actualProviders[expectedProvider.StorageProviderID];
+      StorageProviderDefinition actualProvider = actualProviders[expectedProvider.ID];
       CheckProvider (expectedProvider, actualProvider);
     }
   }
@@ -41,21 +41,21 @@ public class StorageProviderDefinitionChecker
       StorageProviderDefinition expectedProvider,
       StorageProviderDefinition actualProvider)
   {
-    Assert.AreEqual (expectedProvider.StorageProviderID, actualProvider.StorageProviderID, 
-        string.Format ("ProviderID of provider definitions does not match. Expected: {0}, actual: {1}", 
-        expectedProvider.StorageProviderID,  
-        expectedProvider.StorageProviderID, 
-        actualProvider.StorageProviderID));
+    Assert.AreEqual (expectedProvider.ID, actualProvider.ID, 
+        string.Format ("ID of provider definitions does not match. Expected: {0}, actual: {1}", 
+        expectedProvider.ID,  
+        expectedProvider.ID, 
+        actualProvider.ID));
 
     Assert.AreEqual (expectedProvider.GetType (), actualProvider.GetType (), 
         string.Format ("Providers (ID: '{0}') are not of same type. Expected: {1}, actual: {2}", 
-        expectedProvider.StorageProviderID,  
+        expectedProvider.ID,  
         expectedProvider.GetType (), 
         actualProvider.GetType ()));
 
     Assert.AreEqual (expectedProvider.StorageProviderType, actualProvider.StorageProviderType, 
         string.Format ("ProviderType of provider definitions (ID: '{0}') does not match. Expected: {1}, actual: {2}", 
-        expectedProvider.StorageProviderID,  
+        expectedProvider.ID,  
         expectedProvider.StorageProviderType, 
         actualProvider.StorageProviderType));
 
@@ -71,7 +71,7 @@ public class StorageProviderDefinitionChecker
   {
     Assert.AreEqual (expectedProvider.ConnectionString, actualProvider.ConnectionString, 
         string.Format ("ConnectionString of provider definitions (ID: '{0}') does not match. Expected: {1}, actual: {2}", 
-        expectedProvider.StorageProviderID,  
+        expectedProvider.ID,  
         expectedProvider.ConnectionString, 
         actualProvider.ConnectionString));
   }
