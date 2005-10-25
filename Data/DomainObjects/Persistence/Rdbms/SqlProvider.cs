@@ -16,7 +16,7 @@ public class SqlProvider : RdbmsProvider
 
   // construction and disposing
 
-  public SqlProvider (RdbmsProviderDefinition rdbmsProviderDefinition) : base (rdbmsProviderDefinition)
+  public SqlProvider (RdbmsProviderDefinition definition) : base (definition)
   {
   }
 
