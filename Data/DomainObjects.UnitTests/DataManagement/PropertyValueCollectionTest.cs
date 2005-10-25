@@ -17,6 +17,8 @@ public class PropertyValueCollectionTest
 
   // member fields
 
+  private PropertyValueCollection _collection;
+
   // construction and disposing
 
   public PropertyValueCollectionTest ()
@@ -25,22 +27,26 @@ public class PropertyValueCollectionTest
 
   // methods and properties
 
+  [SetUp]
+  public void SetUp ()
+  {
+    _collection = new PropertyValueCollection ();
+  }
+
   [Test]
   public void Events ()
   {
     PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", "int32", 42);
     PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", "string", "Arthur Dent");
     PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", "string", true, null);
-    PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
 
-    propertyValueCollection.Add (propertyValue1);
-    propertyValueCollection.Add (propertyValue2);
-    propertyValueCollection.Add (propertyValue3);
+    _collection.Add (propertyValue1);
+    _collection.Add (propertyValue2);
+    _collection.Add (propertyValue3);
 
-    PropertyValueContainerEventReceiver eventReceiver = new PropertyValueContainerEventReceiver
-        (propertyValueCollection, false);
+    PropertyValueContainerEventReceiver eventReceiver = new PropertyValueContainerEventReceiver (_collection, false);
 
-    propertyValueCollection["Property 2"].Value = "Zaphod Beeblebrox";
+    _collection["Property 2"].Value = "Zaphod Beeblebrox";
 
     Assert.AreSame (propertyValue2, eventReceiver.ChangingPropertyValue);
     Assert.AreSame (propertyValue2, eventReceiver.ChangedPropertyValue);
@@ -54,18 +60,16 @@ public class PropertyValueCollectionTest
     PropertyValue propertyValue1 = CreatePropertyValue ("Property 1", "int32", 42);
     PropertyValue propertyValue2 = CreatePropertyValue ("Property 2", "string", "Arthur Dent");
     PropertyValue propertyValue3 = CreatePropertyValue ("Property 3", "string", true, null);
-    PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
 
-    propertyValueCollection.Add (propertyValue1);
-    propertyValueCollection.Add (propertyValue2);
-    propertyValueCollection.Add (propertyValue3);
+    _collection.Add (propertyValue1);
+    _collection.Add (propertyValue2);
+    _collection.Add (propertyValue3);
 
-    PropertyValueContainerEventReceiver eventReceiver = new PropertyValueContainerEventReceiver
-      (propertyValueCollection, true);
+    PropertyValueContainerEventReceiver eventReceiver = new PropertyValueContainerEventReceiver (_collection, true);
 
     try
     {
-      propertyValueCollection["Property 2"].Value = "Zaphod Beeblebrox";
+      _collection["Property 2"].Value = "Zaphod Beeblebrox";
       Assert.Fail ("EventReceiverCancelException should be raised.");
     }
     catch (EventReceiverCancelException)
@@ -81,20 +85,18 @@ public class PropertyValueCollectionTest
   [ExpectedException (typeof (ArgumentException), "Property 'DoesNotExist' does not exist.\r\nParameter name: propertyName")]
   public void NonExistingPropertyName ()
   {
-    PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
-    propertyValueCollection.Add (CreatePropertyValue ("PropertyName 1", "int32", 42));
-    propertyValueCollection.Add (CreatePropertyValue ("PropertyName 2", "int32", 43));
+    _collection.Add (CreatePropertyValue ("PropertyName 1", "int32", 42));
+    _collection.Add (CreatePropertyValue ("PropertyName 2", "int32", 43));
 
-    PropertyValue propertyValue = propertyValueCollection["DoesNotExist"];
+    PropertyValue propertyValue = _collection["DoesNotExist"];
   }
 
   [Test]
   [ExpectedException (typeof (ArgumentException), "Property 'PropertyName' already exists in collection.\r\nParameter name: value")]
   public void DuplicatePropertyNames ()
   {
-    PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
-    propertyValueCollection.Add (CreatePropertyValue ("PropertyName", "int32", 42));
-    propertyValueCollection.Add (CreatePropertyValue ("PropertyName", "int32", 43));
+    _collection.Add (CreatePropertyValue ("PropertyName", "int32", 42));
+    _collection.Add (CreatePropertyValue ("PropertyName", "int32", 43));
   }
 
   [Test]
@@ -103,11 +105,9 @@ public class PropertyValueCollectionTest
     PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
     PropertyValueEventReceiver valueEventReceiver = new PropertyValueEventReceiver (value, true);
 
-    PropertyValueCollection collection = new PropertyValueCollection ();
-    collection.Add (value);
+    _collection.Add (value);
 
-    PropertyValueContainerEventReceiver collectionEventReceiver =
-        new PropertyValueContainerEventReceiver (collection, false);
+    PropertyValueContainerEventReceiver collectionEventReceiver = new PropertyValueContainerEventReceiver (_collection, false);
 
     try
     {
@@ -119,6 +119,35 @@ public class PropertyValueCollectionTest
       Assert.AreEqual (42, value.Value, "Value");
       Assert.AreEqual (false, valueEventReceiver.HasChangedEventBeenCalled, "HasChangedEventBeenCalled");
     }
+  }
+
+  [Test]
+  public void ContainsPropertyValueTrue ()
+  {
+    PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
+
+    _collection.Add (value);
+    
+    Assert.IsTrue (_collection.Contains (value));    
+  }
+
+  [Test]
+  public void ContainsPropertyValueFalse ()     
+  {
+    PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
+    _collection.Add (value);
+
+    PropertyValue copy = CreatePropertyValue ("PropertyName", "int32", 42);
+    
+    Assert.IsFalse (_collection.Contains (copy));    
+
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void ContainsNullPropertyValue ()
+  {
+    _collection.Contains ((PropertyValue) null);
   }
 
   private PropertyValue CreatePropertyValue (string name, string mappingType, object value)
@@ -134,25 +163,6 @@ public class PropertyValueCollectionTest
 
     PropertyDefinition definition = new PropertyDefinition (name, name, mappingType, isNullable, maxLength);
     return new PropertyValue (definition, value);
-  }
-
-  [Test]
-  public void ContainsPropertyValue ()
-  {
-    PropertyValueCollection collection = new PropertyValueCollection ();
-    PropertyValue value = CreatePropertyValue ("PropertyName", "int32", 42);
-
-    collection.Add (value);
-    
-    Assert.IsTrue (collection.Contains (value));    
-  }
-
-  [Test]
-  [ExpectedException (typeof (ArgumentNullException))]
-  public void ContainsNullPropertyValue ()
-  {
-    PropertyValueCollection collection = new PropertyValueCollection ();
-    collection.Contains ((PropertyValue) null);
   }
 }
 }
