@@ -56,16 +56,35 @@ public class ClassDefinitionCollectionTest
   }
 
   [Test]
-  public void ContainsTrue ()
+  public void ContainsClassTypeTrue ()
   {
     _collection.Add (_classDefinition);
     Assert.IsTrue (_collection.Contains (typeof (Order)));
   }
 
   [Test]
-  public void ContainsFalse ()
+  public void ContainsClassTypeFalse ()
   {
     Assert.IsFalse (_collection.Contains (typeof (Order)));
+  }
+
+  [Test]
+  public void ContainsClassDefinitionTrue ()
+  {
+    _collection.Add (_classDefinition);
+    Assert.IsTrue (_collection.Contains (_classDefinition));
+  }
+
+  [Test]
+  public void ContainsClassDefinitionFalse ()
+  {
+    _collection.Add (_classDefinition);
+
+    ClassDefinition copy = new ClassDefinition (
+        _classDefinition.ID, _classDefinition.EntityName, _classDefinition.ClassType, 
+        _classDefinition.ID, _classDefinition.BaseClass);
+
+    Assert.IsFalse (_collection.Contains (copy));
   }
 
   [Test]
