@@ -17,6 +17,7 @@ public class StorageProviderDefinitionCollectionTest
 
   private StorageProviderDefinitionCollection _collection;
   private StorageProviderDefinition _definition;
+
   // construction and disposing
 
   public StorageProviderDefinitionCollectionTest ()
@@ -46,11 +47,22 @@ public class StorageProviderDefinitionCollectionTest
   }
 
   [Test]
-  public void ContainsStorageProviderDefinition ()
+  public void ContainsStorageProviderDefinitionTrue ()
   {
     _collection.Add (_definition);
     
     Assert.IsTrue (_collection.Contains (_definition));    
+  }
+
+  [Test]
+  public void ContainsStorageProviderDefinitionFalse ()
+  {
+    _collection.Add (_definition);
+    
+    StorageProviderDefinition copy = new UnitTestStorageProviderStubDefinition (
+        "UnitTestStorageProviderStub", typeof (UnitTestStorageProviderStub));
+
+    Assert.IsFalse (_collection.Contains (copy));    
   }
 
   [Test]
@@ -65,7 +77,7 @@ public class StorageProviderDefinitionCollectionTest
   {
     _collection.Add (_definition);
 
-    Assert.AreSame (_definition, _collection.GetMandatory (_definition.StorageProviderID));
+    Assert.AreSame (_definition, _collection.GetMandatory (_definition.ID));
   }
 
   [Test]
