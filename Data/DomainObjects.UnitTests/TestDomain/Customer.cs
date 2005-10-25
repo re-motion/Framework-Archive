@@ -22,6 +22,11 @@ public class Customer : Company
     return (Customer) DomainObject.GetObject (id);
   }
 
+  public static new Customer GetObject (ObjectID id, ClientTransaction clientTransaction)
+  {
+    return (Customer) DomainObject.GetObject (id, clientTransaction);
+  }
+
   // member fields
 
   // construction and disposing
