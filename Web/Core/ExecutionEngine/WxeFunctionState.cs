@@ -183,7 +183,7 @@ public class WxeFunctionState
   {
     if (! _isAborted)
     {
-      s_log.Debug ("Aborting Function State " + _functionToken + ".");
+      s_log.Debug ("Aborting WxeFunctionState " + _functionToken + ".");
       AbortRecursive();
       _isAborted = true;
     }
