@@ -23,7 +23,7 @@ namespace PageTransition
 		
 		protected void Application_Start(Object sender, EventArgs e)
 		{
-
+      log4net.Config.DOMConfigurator.Configure();
 		}
  
 		protected void Session_Start(Object sender, EventArgs e)
