@@ -227,7 +227,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       bool isAbortEnabled = _page.IsAbortEnabled;
 
       WxeContext wxeContext = WxeContext.Current;
-      string resumePath = wxeContext.GetPath (wxeContext.FunctionToken);
+      string resumePath = wxeContext.GetPath (wxeContext.FunctionToken, null);
 
       refreshIntervall = WxeHandler.RefreshInterval * 60000;
       refreshPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Refresh + "'";

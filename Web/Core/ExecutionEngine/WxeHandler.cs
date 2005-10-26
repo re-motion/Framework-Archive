@@ -278,7 +278,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     {
       if (isPostRequest || isPostBackAction)
       {
-        s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out.", functionToken));
+        s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
         throw new HttpException (c_httpRequestTimeout, "Function Timeout."); // TODO: display error message
       }
       return CreateNewFunctionState (context, GetType (context));
