@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.SessionState;
 using System.Reflection;
 using System.Globalization;
+using log4net;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
@@ -64,8 +65,11 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     public const string Cancel = "Cancel";
   }
 
-  private int c_httpRequestTimeout = 408;
-  private int c_httpResourceNotFound = 404;
+
+  private const int c_httpRequestTimeout = 408;
+  private const int c_httpResourceNotFound = 404;
+
+  private static ILog s_log = LogManager.GetLogger (typeof (WxeHandler));
 
   /// <summary> Gets a flag indication whether session management is enabled for the application. </summary>
   /// <value> <see langword="true"/> if session management is enabled. </value>
@@ -262,7 +266,10 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionStates == null)
     {
       if (isPostRequest || isPostBackAction)
+      {
+        s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
         throw new HttpException (c_httpRequestTimeout, "Session timeout."); // TODO: display error message
+      }
       return CreateNewFunctionState (context, GetType (context));
     }
 
@@ -270,13 +277,19 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionState == null || functionState.IsExpired)
     {
       if (isPostRequest || isPostBackAction)
+      {
+        s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out.", functionToken));
         throw new HttpException (c_httpRequestTimeout, "Function Timeout."); // TODO: display error message
+      }
       return CreateNewFunctionState (context, GetType (context));
     }
 
     if (functionState.IsAborted)
+    {
+      s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has been aborted.", functionState.FunctionToken));
       throw new InvalidOperationException (string.Format ("WxeFunctionState {0} is aborted.", functionState.FunctionToken)); // TODO: display error message
- 
+    }
+
     if (isRefresh)
     {
       functionState.Touch();

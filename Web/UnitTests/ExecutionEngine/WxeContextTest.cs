@@ -99,7 +99,8 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithQueryStringAndRemoveBothLevels()
+  [Ignore ("Not implemented.")]
+  public void GetPermanentUrlWithQueryStringAndParentPermanentUrl()
   {
     string parameterName = "Param";
     string parameterValue = "Hello World!";
@@ -124,7 +125,8 @@ public class WxeContextTest
   }
 
   [Test]
-  public void GetPermanentUrlWithParentPermanentUrlAndRemoveReturnUrl()
+  [Ignore ("Not implemented.")]
+  public void GetPermanentUrlWithParentPermanentUrlAndRemoveBothReturnUrls()
   {
     string parameterName = "Param";
     string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 ";

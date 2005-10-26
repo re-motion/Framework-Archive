@@ -274,20 +274,85 @@ public class WxeContext
 
     string permanentUrl = GetPermanentUrl (functionType, queryString);
     
-    int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
+    //TODO: Continue coding
+    return permanentUrl;
 
     if (useParentPermanentUrl)
     {
-      string parentPermanentUrl = _httpContext.Request.Url.AbsolutePath + _queryString;
-      if (permanentUrl.Length + parentPermanentUrl.Length > maxLength)
-        return permanentUrl;
+      int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
+//      string parentPermanentUrl = _httpContext.Request.Url.AbsolutePath;
+//      if (permanentUrl.Length + parentPermanentUrl.Length > maxLength)
+//        return permanentUrl;
+//      parentPermanentUrl += _queryString;
 
-      permanentUrl = 
-          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+      StringCollection parentPermanentUrls = new StringCollection();
+      string parentPermanentUrl = _httpContext.Request.Url.AbsolutePath + _queryString;
+      while (true)
+      {
+        parentPermanentUrls.Add (parentPermanentUrl);
+        if (PageUtility.GetUrlParameter (parentPermanentUrl, WxeHandler.Parameters.WxeReturnUrl) == string.Empty)
+          break;
+        parentPermanentUrl = PageUtility.GetUrlParameter (parentPermanentUrl, WxeHandler.Parameters.WxeReturnUrl);
+      }
+      parentPermanentUrl = null;
+
+      int successfullyMergedParentPermanentUrl = 0;
+      for (int i = 0; i < parentPermanentUrls.Count; i++)
+      {
+        string temp = permanentUrl;
+        for (int j = i; j >= 0; j--)
+        {
+          parentPermanentUrl = parentPermanentUrls[j];
+          temp = PageUtility.AddUrlParameter (temp, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+        }
+        if (temp.Length >= maxLength)
+          break;
+        successfullyMergedParentPermanentUrl = i;
+      }
+
+      for (int i = 0; i <= successfullyMergedParentPermanentUrl; i++)
+      {
+      }
+
+//      if (permanentUrl.Length + parentPermanentUrl.Length > maxLength)
+//        return permanentUrl;
+//
+//      parentPermanentUrl += _queryString;
+//
+//      string temp = 
+//          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+//      if (temp.Length < maxLength)
+//        return temp;
+//
+//      string parentReturnUrl = PageUtility.DeleteUrlParameter (parentPermanentUrl, WxeHandler.Parameters.WxeReturnUrl);
+//      if (permanentUrl.Length + parentPermanentUrl.Length > maxLength)
+//        return permanentUrl;
+//
+//      parentPermanentUrl += parentQueryString;
+//      permanentUrl = 
+//          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
     }
 
     return permanentUrl;
   }
+
+//  private string XXX (string permanentUrl, string parentPermanentUrl)
+//  {
+//    int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
+//
+//    string temp = 
+//        PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+//    if (temp.Length < maxLength)
+//      return temp;
+//
+//    string parentReturnUrl = PageUtility.DeleteUrlParameter (parentPermanentUrl, WxeHandler.Parameters.WxeReturnUrl);
+//    if (permanentUrl.Length + parentPermanentUrl.Length > maxLength)
+//      return permanentUrl;
+//
+//    parentPermanentUrl += parentQueryString;
+//    permanentUrl = 
+//        PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+//  }
 }
 
 }
