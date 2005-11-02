@@ -58,6 +58,9 @@ public class SessionForm : WxePage
     queryString.Add ("Parameter", "Hello World!");
     SampleFunctionPermaLink.NavigateUrl = GetPermanentUrl (typeof (SampleWxeFunction), queryString);
     SampleFunctionPermaLink.Text = SampleFunctionPermaLink.NavigateUrl;
+
+    if (IsPostBack)
+      System.Threading.Thread.Sleep (10000);
   }
 
   override protected void OnInit(EventArgs e)
