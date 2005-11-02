@@ -20,6 +20,10 @@
           WxeHandler.ashx?WxeFunctionType=Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition&ReadOnly=True
         </a>
       </p>
+      <p>
+        <a href="session.wxe?ReadOnly=True">session.wxe?ReadOnly=True
+        </a>
+      </p>
       <asp:Button id="ResetSessionButton" runat="server" Text="Reset Session"></asp:Button>
     </form>
   </body>
