@@ -4,6 +4,7 @@ function Wxe_Initialize (
     theFormID, 
     refreshInterval, refreshUrl, 
     abortUrl, abortMessage, 
+    isSubmittingMessage, isAbortingMessage,
     smartScrollingFieldID, smartFocusFieldID,
     eventHandlers)
 {
@@ -11,6 +12,7 @@ function Wxe_Initialize (
       theFormID, 
       refreshInterval, refreshUrl, 
       abortUrl, abortMessage, 
+      isSubmittingMessage, isAbortingMessage,
       smartScrollingFieldID, smartFocusFieldID,
       eventHandlers);
   
@@ -22,6 +24,7 @@ function Wxe_Context (
     theFormID, 
     refreshInterval, refreshUrl, 
     abortUrl, abortMessage, 
+    isSubmittingMessage, isAbortingMessage,
     smartScrollingFieldID, smartFocusFieldID,
     eventHandlers)
 {
@@ -35,7 +38,17 @@ function Wxe_Context (
   this.IsAbortEnabled = abortUrl != null;
   this.AbortMessage = abortMessage;
   this.IsAbortConfirmationEnabled = this.IsAbortEnabled && abortMessage != null;
-  this.IsSubmit = false;
+
+  this.IsSubmitting = false;
+  // Special flag to support the OnBeforeUnload part
+  this.IsSubmittingBeforeUnload = false;
+  this.IsSubmittingMessage = isSubmittingMessage;
+
+  this.IsAborting = false;
+  // Special flag to support the OnBeforeUnload part
+  this.IsAbortingBeforeUnload = false;
+  this.IsAbortingMessage = isAbortingMessage;
+
   this.AspnetDoPostBack = null;
   if (smartScrollingFieldID != null)
     this.SmartScrollingField = this.TheForm.elements[smartScrollingFieldID];
@@ -138,31 +151,67 @@ function Wxe_OnLoad()
 
 function Wxe_DoPostBack (eventTarget, eventArgument)
 {
-  if (!_wxe_context.IsSubmit == true)
+  if (_wxe_context.IsAborting)
   {
-	  _wxe_context.IsSubmit = true;
+    Wxe_ShowIsAbortingMessage();
+  }
+  else if (_wxe_context.IsSubmitting)
+  {
+    Wxe_ShowIsSubmittingMessage();
+  }
+  else
+  {
+    _wxe_context.IsSubmitting = true;
+    _wxe_context.IsSubmittingBeforeUnload = true;
+    
     _wxe_context.Backup();
     Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onpostback'), eventTarget, eventArgument);
-  }
+
 	_wxe_context.AspnetDoPostBack (eventTarget, eventArgument);
+  }
 }
 
 function Wxe_FormSubmit ()
 {
-  if (!_wxe_context.IsSubmit == true)
+  if (_wxe_context.IsAborting)
   {
-    _wxe_context.IsSubmit = true; 
+    Wxe_ShowIsAbortingMessage();
+    return false;
+  }
+  else if (_wxe_context.IsSubmitting)
+  {
+    Wxe_ShowIsSubmittingMessage();
+    return false;
+  }
+  else
+  {
+    _wxe_context.IsSubmitting = true; 
+    _wxe_context.IsSubmittingBeforeUnload = true;
+    
     _wxe_context.Backup();
     var eventTarget = null;
     if (_wxe_context.GetActiveElement() != null)
       eventTarget = _wxe_context.GetActiveElement().id;
     Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onpostback'), eventTarget, '');
+    return true;
   }
 }
 
+// __doPostBack
+// {
+//   Form.submit()
+//   {
+//     OnBeforeUnload()
+//   } 
+// }
+// Wait For Response
+// OnUnload()
 function Wxe_OnBeforeUnload ()
 {
-  if (_wxe_context.IsAbortConfirmationEnabled && ! _wxe_context.IsSubmit)
+  _wxe_context.IsAbortingBeforeUnload = false;
+  
+  if (   ! _wxe_context.IsSubmittingBeforeUnload
+      && ! _wxe_context.IsAborting && _wxe_context.IsAbortConfirmationEnabled)
   {
     var activeElement = _wxe_context.GetActiveElement();
     var isJavaScriptAnchor = false;
@@ -175,19 +224,28 @@ function Wxe_OnBeforeUnload ()
     }
     if (! isJavaScriptAnchor)
     {
+	  _wxe_context.IsAbortingBeforeUnload = true;
       // IE alternate/official version: window.event.returnValue = _wxe_context.AbortMessage
       return _wxe_context.AbortMessage;
     }
+  }
+  else if (_wxe_context.IsSubmittingBeforeUnload)
+  {
+    _wxe_context.IsSubmittingBeforeUnload = false;
   }
 }
 
 function Wxe_OnUnload()
 {
-  if (_wxe_context.IsAbortEnabled && ! _wxe_context.IsSubmit)
+  if (   (! _wxe_context.IsSubmitting || _wxe_context.IsAbortingBeforeUnload)
+      && ! _wxe_context.IsAborting && _wxe_context.IsAbortEnabled)
   {
+    _wxe_context.IsAborting = true;
     Wxe_ExecuteEventHandlers (_wxe_context.GetEventHandlers('onabort'));
     
     Wxe_SendSessionRequest (_wxe_context.AbortUrl);
+    
+    _wxe_context.IsAbortingBeforeUnload = false;
   }
 }
 
@@ -275,5 +333,49 @@ function Wxe_GetFunctionPointer (functionName)
   catch (e)
   {
     return null;
+  }
+}
+
+function Wxe_ShowIsAbortingMessage()
+{
+  if (document.getElementById ('Wxe_IsAbortingMessage') == null)
+  {
+    var div = document.createElement('DIV');
+    div.id = 'Wxe_IsAbortingMessage';
+    div.style.border = 'solid 3px red';
+    div.style.backgroundColor = 'lightgrey';
+    div.style.width = '50%';
+    div.style.height = '50%';
+    div.style.position = 'absolute';
+    div.style.left = '25%';
+    div.style.top = '25%';
+    div.innerHTML = '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">'
+        + '<b style="color:red; font-size:150%">'
+        + _wxe_context.IsAbortingMessage
+        + '</b></td></tr></table>';
+	
+    document.body.appendChild(div);
+  }
+}
+
+function Wxe_ShowIsSubmittingMessage()
+{
+  if (document.getElementById ('Wxe_IsSubmittingMessage') == null)
+  {
+    var div = document.createElement('DIV');
+    div.id = 'Wxe_IsSubmittingMessage';
+    div.style.border = 'solid 3px red';
+    div.style.backgroundColor = 'lightgrey';
+    div.style.width = '50%';
+    div.style.height = '50%';
+    div.style.position = 'absolute';
+    div.style.left = '25%';
+    div.style.top = '25%';
+    div.innerHTML = '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">'
+        + '<b style="color:red; font-size:150%">'
+        + _wxe_context.IsSubmittingMessage
+        + '</b></td></tr></table>';
+	
+    document.body.appendChild(div);
   }
 }
