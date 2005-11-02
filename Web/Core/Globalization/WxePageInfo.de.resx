@@ -42,4 +42,10 @@
     <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.AbortMessage">
         <value>Wenn sie fortfahren gehen nicht gespeicherte Daten verloren.</value>
     </data>
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.IsAbortingMessage">
+        <value>&lt;p&gt;Sie sind dabei diese Seite zu verlassen.&lt;/p&gt;&lt;p&gt;Daher k&amp;ouml;nnen Sie keine weiteren Eingaben zum Server senden.&lt;/p&gt;</value>
+    </data>
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.IsSubmittingMessage">
+        <value>&lt;p&gt;Die Seite wird gerade new geladen.&lt;/p&gt;&lt;p&gt;Bitte warten Sie mit weiteren Eingaben bis die &amp;Uuml;bertragung abgeschlossen ist.&lt;/p&gt;</value>
+    </data>
 </root>

@@ -42,4 +42,10 @@
     <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.AbortMessage">
         <value>Unsafed data will be lost if you continue.</value>
     </data>
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.IsAbortingMessage">
+        <value>&lt;p&gt;You are about to leave this page.&lt;/p&gt;&lt;p&gt;Therefore it is not possible to submit new input.&lt;/p&gt;</value>
+    </data>
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.IsSubmittingMessage">
+       <value>&lt;p&gt;This page is being reloaded.&lt;/p&gt;&lt;p&gt;Please wait until the transmission has completed.&lt;/p&gt;</value>
+    </data>
 </root>
