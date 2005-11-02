@@ -33,7 +33,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   [MultiLingualResources ("Rubicon.Web.Globalization.WxePageInfo")]
   protected enum ResourceIdentifier
   {
-    AbortMessage
+    AbortMessage,
+    IsSubmittingMessage,
+    IsAbortingMessage
   }
 
   public static readonly string ReturningTokenID = "wxeReturningToken";
@@ -214,6 +216,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
   protected void RegisterWxeInitializationScript()
   {
+    IResourceManager resourceManager = GetResourceManager();
+
     int refreshIntervall = 0;
     string refreshPath = "null";
     string abortPath = "null";
@@ -236,9 +240,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         abortPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Abort + "'";
       
       if (isAbortEnabled && isAbortConfirmationEnabled)
-        abortMessage = "'" + GetResourceManager().GetString (ResourceIdentifier.AbortMessage) + "'";        
+        abortMessage = "'" + resourceManager.GetString (ResourceIdentifier.AbortMessage) + "'";        
 
     }
+
+    string isSubmittingMessage = "'" + resourceManager.GetString (ResourceIdentifier.IsSubmittingMessage) + "'";
+    string isAbortingMessage = "'" + resourceManager.GetString (ResourceIdentifier.IsAbortingMessage) + "'";        
+
 
     string smartScrollingFieldID = "null";
     string smartFocusFieldID = "null";
@@ -277,15 +285,17 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       initScript.Append ("\r\n");
     }
 
-    initScript.Append ("Wxe_Initialize ('");
-    initScript.Append (_wxeForm.ClientID).Append ("', ");
-    initScript.Append (refreshIntervall).Append (", ");
-    initScript.Append (refreshPath).Append (", ");
-    initScript.Append (abortPath).Append (", ");
-    initScript.Append (abortMessage).Append (", ");
-    initScript.Append (smartScrollingFieldID).Append (", ");
-    initScript.Append (smartFocusFieldID).Append (", ");
-    initScript.Append ("_wxe_eventHandlers); \r\n");
+    initScript.Append ("Wxe_Initialize (\r\n");
+    initScript.Append ("    '").Append (_wxeForm.ClientID).Append ("',\r\n");
+    initScript.Append ("    ").Append (refreshIntervall).Append (",\r\n");
+    initScript.Append ("    ").Append (refreshPath).Append (",\r\n");
+    initScript.Append ("    ").Append (abortPath).Append (",\r\n");
+    initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (isSubmittingMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (isAbortingMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (smartScrollingFieldID).Append (",\r\n");
+    initScript.Append ("    ").Append (smartFocusFieldID).Append (",\r\n");
+    initScript.Append ("    _wxe_eventHandlers); \r\n");
 
     initScript.Append ("\r\n");
     initScript.Append ("_wxe_eventHandlers = null; \r\n");
