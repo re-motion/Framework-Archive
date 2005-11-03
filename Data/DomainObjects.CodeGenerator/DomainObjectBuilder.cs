@@ -50,18 +50,19 @@ public class DomainObjectBuilder : CodeFileBuilder
 
   private ClassDefinition _classDefinition;
   private string _baseClass;
+  private bool _serializableAttribute;
 
   // construction and disposing
 
-	public DomainObjectBuilder (string filename, ClassDefinition classDefinition, string baseClass)
+	public DomainObjectBuilder (string filename, ClassDefinition classDefinition, string baseClass, bool serializableAttribute)
       : base (filename)
 	{
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
     _classDefinition = classDefinition;
-
     _baseClass = baseClass;
+    _serializableAttribute = serializableAttribute;
 	}
 
   // methods and properties
@@ -73,6 +74,9 @@ public class DomainObjectBuilder : CodeFileBuilder
     OpenFile ();
 
     BeginNamespace (type.Namespace);
+
+    if (_serializableAttribute)
+      WriteSerializableAttribute ();
 
     if (_classDefinition.BaseClass == null)
       BeginClass (type.Name, _baseClass);
