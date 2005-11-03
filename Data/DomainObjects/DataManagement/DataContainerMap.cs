@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
+[Serializable]
 public class DataContainerMap : IEnumerable
 {
   // types
