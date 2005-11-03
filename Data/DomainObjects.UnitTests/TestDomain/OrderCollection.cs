@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+[Serializable]
 public class OrderCollection : DomainObjectCollection
 {
   // types
