@@ -10,6 +10,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
 [MultiLingualResources ("Rubicon.Data.DomainObjects.Web.Test.Globalization.ClassWithAllDataTypes")]
+[Serializable]
 public class ClassWithAllDataTypes : BindableDomainObject
 {
   // types
