@@ -29,7 +29,8 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
       string xmlSchemaFilePath,
       string assemblyPath,
       string domainObjectBaseClass, 
-      string domainObjectCollectionBaseClass)
+      string domainObjectCollectionBaseClass,
+      bool serializableAttribute)
     : base (xmlFilePath, xmlSchemaFilePath, assemblyPath)
 	{
     ArgumentUtility.CheckNotNull ("outputFolder", outputFolder);
@@ -42,7 +43,7 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
     {
       domainObjectBuilders.Add (new DomainObjectBuilder (
           GetFileName (outputFolder, classDefinition.ClassType), 
-          classDefinition, domainObjectBaseClass));
+          classDefinition, domainObjectBaseClass, serializableAttribute));
 
       foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions ())
       {
@@ -58,7 +59,7 @@ public class DomainModelBuilder : ConfigurationBasedBuilder
             GetFileName (outputFolder, endPointDefinition.PropertyType), 
             endPointDefinition.PropertyType, 
             requiredItemType.Name,
-            domainObjectCollectionBaseClass));
+            domainObjectCollectionBaseClass, serializableAttribute));
       }
 
       foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
