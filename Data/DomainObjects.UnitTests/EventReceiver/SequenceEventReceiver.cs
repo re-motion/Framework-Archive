@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
+[Serializable]
 public class SequenceEventReceiver : EventReceiverBase
 {
   // types
@@ -128,12 +129,12 @@ public class SequenceEventReceiver : EventReceiverBase
     }
   }
 
-  private void DomainObject_PropertyChanged (object sender, PropertyChangedEventArgs args)
+  public void DomainObject_PropertyChanged (object sender, PropertyChangedEventArgs args)
   {
     _states.Add (new PropertyChangeState (sender, args.PropertyValue, null, null));
   }
 
-  private void DomainObject_PropertyChanging(object sender, PropertyChangingEventArgs args)
+  public void DomainObject_PropertyChanging(object sender, PropertyChangingEventArgs args)
   {
     _states.Add (new PropertyChangeState (sender, args.PropertyValue, args.OldValue, args.NewValue));
 
@@ -141,7 +142,7 @@ public class SequenceEventReceiver : EventReceiverBase
       CancelOperation ();
   }
 
-  private void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
+  public void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)
   {
     _states.Add (new RelationChangeState (sender, args.PropertyName, args.OldRelatedObject, args.NewRelatedObject));
 
@@ -149,12 +150,12 @@ public class SequenceEventReceiver : EventReceiverBase
       CancelOperation ();
   }
 
-  private void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
+  public void DomainObject_RelationChanged (object sender, RelationChangedEventArgs args)
   {
     _states.Add (new RelationChangeState (sender, args.PropertyName, null, null));
   }
 
-  private void DomainObject_Deleting (object sender, EventArgs args)
+  public void DomainObject_Deleting (object sender, EventArgs args)
   {
     _states.Add (new ObjectDeletionState (sender));
 
@@ -162,12 +163,12 @@ public class SequenceEventReceiver : EventReceiverBase
       CancelOperation ();
   }
 
-  private void DomainObject_Deleted (object sender, EventArgs args)
+  public void DomainObject_Deleted (object sender, EventArgs args)
   {
     _states.Add (new ObjectDeletionState (sender));
   }
 
-  private void Collection_Changing (object sender, DomainObjectCollectionChangingEventArgs args)
+  public void Collection_Changing (object sender, DomainObjectCollectionChangingEventArgs args)
   {
     _states.Add (new CollectionChangeState (sender, args.DomainObject));
 
@@ -175,7 +176,7 @@ public class SequenceEventReceiver : EventReceiverBase
       CancelOperation ();
   }
 
-  private void Collection_Changed (object sender, DomainObjectCollectionChangedEventArgs args)
+  public void Collection_Changed (object sender, DomainObjectCollectionChangedEventArgs args)
   {
     _states.Add (new CollectionChangeState (sender, args.DomainObject));
   }
