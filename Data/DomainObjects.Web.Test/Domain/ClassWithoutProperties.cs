@@ -8,6 +8,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
+[Serializable]
 public class ClassWithoutProperties : BindableDomainObject
 {
   // types
