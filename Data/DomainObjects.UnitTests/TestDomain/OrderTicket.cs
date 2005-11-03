@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+[Serializable]
 public class OrderTicket : TestDomainBase
 {
   // types
