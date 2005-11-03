@@ -63,6 +63,7 @@ namespace Rubicon.Data.DomainObjects
 ///   </item>
 /// </list>
 /// </remarks>
+[Serializable]
 public class DomainObjectCollection : CommonCollection, ICloneable, IList
 {
   // types
@@ -192,10 +193,12 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Occurs before an object is added to the collection.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event DomainObjectCollectionChangingEventHandler Adding;
   /// <summary>
   /// Occurs after an object is added to the collection.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event DomainObjectCollectionChangedEventHandler Added;
 
   /// <summary>
@@ -206,6 +209,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Either subscribe to the <see cref="DomainObject.Deleting"/> event or override the <see cref="OnDeleting"/> method to implement 
   /// business logic handling this situation.
   /// </remarks>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event DomainObjectCollectionChangingEventHandler Removing;
   /// <summary>
   /// Occurs after an object is removed to the collection.
@@ -215,6 +219,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// Either subscribe to the <see cref="DomainObject.Deleted"/> event or override the <see cref="OnDeleted"/> method to implement 
   /// business logic handling this situation.
   /// </remarks>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event DomainObjectCollectionChangedEventHandler Removed;
 
   private Type _requiredItemType;

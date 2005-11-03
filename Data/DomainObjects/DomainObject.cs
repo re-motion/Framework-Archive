@@ -9,6 +9,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Base class for all objects that are persisted by the framework.
 /// </summary>
+[Serializable]
 public class DomainObject
 {
   // types
@@ -101,6 +102,7 @@ public class DomainObject
   /// <remarks>
   /// This event does not fire when a <see cref="PropertyValue"/> has been changed due to a relation change.
   /// </remarks>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event PropertyChangingEventHandler PropertyChanging;
 
   /// <summary>
@@ -109,36 +111,43 @@ public class DomainObject
   /// <remarks>
   /// This event does not fire when a <see cref="PropertyValue"/> has been changed due to a relation change.
   /// </remarks>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event PropertyChangedEventHandler PropertyChanged;
 
   /// <summary>
   /// Occurs before a Relation of the <b>DomainObject</b> is changed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event RelationChangingEventHandler RelationChanging;
 
   /// <summary>
   /// Occurs after a Relation of the <b>DomainObject</b> has been changed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event RelationChangedEventHandler RelationChanged;
 
   /// <summary>
   /// Occurs before the <b>DomainObject</b> is deleted.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event EventHandler Deleting;
 
   /// <summary>
   /// Occurs before the changes of a <b>DomainObject</b> are committed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event EventHandler Committing;
 
   /// <summary>
   /// Occurs after the changes of a <b>DomainObject</b> are successfully committed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event EventHandler Committed;
 
   /// <summary>
   /// Occurs after the <b>DomainObject</b> has been deleted.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event EventHandler Deleted;
 
   private DataContainer _dataContainer;
