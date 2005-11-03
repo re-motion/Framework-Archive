@@ -46,7 +46,7 @@
 <rubicon:WebButton id="OpenSessionFunctionInNewWindowButton" runat="server" Text="Open Session Function in New Window"></rubicon:WebButton><br>
 <rubicon:WebButton id="OpenSessionFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Session Function with Permanent URL in New Window"></rubicon:WebButton><br>
 Permalink this: <asp:HyperLink id="CurrentFunctionPermaLink" runat="server"></asp:HyperLink><br>Permalink 
-Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>  
+Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>
 </form>
     <script language="javascript">
     function Page_PostBack (eventTarget, eventArgs)
