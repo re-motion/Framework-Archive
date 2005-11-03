@@ -469,7 +469,15 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\ExecutionEngine.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\ExecutionEngine.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\ExecutionEngineIE.css"
                     BuildAction = "Content"
                 />
                 <File
