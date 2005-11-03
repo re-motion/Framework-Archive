@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
+[Serializable]
 public class EventReceiverBase
 {
   // types

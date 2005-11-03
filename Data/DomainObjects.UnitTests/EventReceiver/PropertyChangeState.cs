@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
+[Serializable]
 public class PropertyChangeState : ChangeState
 {
   // types

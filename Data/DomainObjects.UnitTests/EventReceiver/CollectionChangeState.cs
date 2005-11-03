@@ -4,6 +4,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
+[Serializable]
 public class CollectionChangeState : ChangeState
 {
   // types
