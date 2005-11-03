@@ -6,6 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
+[Serializable]
 public class RelationEndPointCollection : CommonCollection
 {
   // types
