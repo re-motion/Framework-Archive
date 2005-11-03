@@ -4,6 +4,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+[Serializable]
 public class TestDomainBase : DomainObject
 {
   // types
