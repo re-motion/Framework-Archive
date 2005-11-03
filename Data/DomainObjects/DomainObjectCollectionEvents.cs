@@ -18,6 +18,7 @@ public delegate void DomainObjectCollectionChangedEventHandler (object sender, D
 /// <summary>
 /// Provides data for the <see cref="DomainObjectCollection.Adding"/> and <see cref="DomainObjectCollection.Removing"/> event of a <see cref="DomainObjectCollection"/>.
 /// </summary>
+[Serializable]
 public class DomainObjectCollectionChangingEventArgs : EventArgs
 {
   private DomainObject _domainObject;
@@ -45,6 +46,7 @@ public class DomainObjectCollectionChangingEventArgs : EventArgs
 /// <summary>
 /// Provides data for the <see cref="DomainObjectCollection.Added"/> and <see cref="DomainObjectCollection.Removed"/> event of a <see cref="DomainObjectCollection"/>.
 /// </summary>
+[Serializable]
 public class DomainObjectCollectionChangedEventArgs : EventArgs
 {
   private DomainObject _domainObject;

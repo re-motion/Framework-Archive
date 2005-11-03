@@ -37,6 +37,7 @@ public delegate void ClientTransactionEventHandler (object sender, ClientTransac
 /// <summary>
 /// Provides data for a <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
 /// </summary>
+[Serializable]
 public class ValueChangingEventArgs : EventArgs
 {
   private object _oldValue;
@@ -73,6 +74,7 @@ public class ValueChangingEventArgs : EventArgs
 /// <summary>
 /// Provides data for a <b>PropertyChanging</b> event.
 /// </summary>
+[Serializable]
 public class PropertyChangingEventArgs : ValueChangingEventArgs
 {
   private PropertyValue _propertyValue;
@@ -103,6 +105,7 @@ public class PropertyChangingEventArgs : ValueChangingEventArgs
 /// <summary>
 /// Provides data for a <b>PropertyChanged</b> event.
 /// </summary>
+[Serializable]
 public class PropertyChangedEventArgs : EventArgs
 {
   private PropertyValue _propertyValue;
@@ -131,6 +134,7 @@ public class PropertyChangedEventArgs : EventArgs
 /// <summary>
 /// Provides data for a <b>RelationChanging</b> event.
 /// </summary>
+[Serializable]
 public class RelationChangingEventArgs : EventArgs
 {
   private string _propertyName;
@@ -184,6 +188,7 @@ public class RelationChangingEventArgs : EventArgs
 /// <summary>
 /// Provides data for a <b>RelationChanged</b> event.
 /// </summary>
+[Serializable]
 public class RelationChangedEventArgs : EventArgs
 {
   private string _propertyName;
@@ -212,6 +217,7 @@ public class RelationChangedEventArgs : EventArgs
 /// <summary>
 /// Provides data for <see cref="ClientTransaction"/> events.
 /// </summary>
+[Serializable]
 public class ClientTransactionEventArgs : EventArgs
 {
   private DomainObjectCollection _domainObjects;
