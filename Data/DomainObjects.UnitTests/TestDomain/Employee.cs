@@ -2,6 +2,7 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+[Serializable]
 public class Employee : TestDomainBase
 {
   // types
