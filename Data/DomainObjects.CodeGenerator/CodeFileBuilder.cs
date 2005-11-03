@@ -63,6 +63,8 @@ public abstract class CodeFileBuilder : FileBuilder
       + "using Rubicon.Data.DomainObjects.ObjectBinding;" + Environment.NewLine 
       + "using Rubicon.NullableValueTypes;" + Environment.NewLine 
       + Environment.NewLine;
+  private static readonly string s_serializableAttribute = 
+      "[Serializable]" + Environment.NewLine;
 
   private static readonly string s_namespaceHeader = 
       "namespace %namespace%" + Environment.NewLine
@@ -194,6 +196,11 @@ public abstract class CodeFileBuilder : FileBuilder
   {
     Write (s_namespaceFooter);
     _lastNamespaceWritten = string.Empty;
+  }
+
+  protected void WriteSerializableAttribute ()
+  {
+    Write (s_serializableAttribute);
   }
 
   protected void BeginClass (string className, string baseClassName)
