@@ -9,6 +9,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.Web.Test.Domain
 {
+[Serializable]
 public class ClassWithAllDataTypesSearch : BindableSearchObject
 {
   private string _stringProperty;
