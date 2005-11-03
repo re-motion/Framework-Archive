@@ -39,10 +39,11 @@ public class DomainObjectCollectionBuilder : CodeFileBuilder
   private string _classname;
   private string _requiredItemTypeName;
   private string _baseClass;
+  private bool _serializableAttribute;
 
   // construction and disposing
 
-	public DomainObjectCollectionBuilder (string filename, Type type, string requiredItemTypeName, string baseClass)
+	public DomainObjectCollectionBuilder (string filename, Type type, string requiredItemTypeName, string baseClass, bool serializableAttribute)
       : base (filename)
 	{
     ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
@@ -56,6 +57,7 @@ public class DomainObjectCollectionBuilder : CodeFileBuilder
     _requiredItemTypeName = requiredItemTypeName;
 
     _baseClass = baseClass;
+    _serializableAttribute = serializableAttribute;
 	}
 
   // methods and properties
@@ -65,6 +67,9 @@ public class DomainObjectCollectionBuilder : CodeFileBuilder
     OpenFile ();
 
     BeginNamespace (_namespacename);
+
+    if (_serializableAttribute)
+      WriteSerializableAttribute ();
 
     BeginClass (_classname, _baseClass);
 
