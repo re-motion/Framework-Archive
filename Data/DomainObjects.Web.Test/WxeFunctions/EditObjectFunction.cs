@@ -7,6 +7,7 @@ using Rubicon.Web.ExecutionEngine;
  
 namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
 {
+[Serializable]
 public class EditObjectFunction : WxeTransactedFunction
 {
   // types
@@ -32,8 +33,7 @@ public class EditObjectFunction : WxeTransactedFunction
 
   private void Step1 ()
   {
-    ObjectID id = new ObjectID ("ClassWithAllDataTypes", new Guid ("{3F647D79-0CAF-4a53-BAA7-A56831F8CE2D}"));
-    ObjectWithAllDataTypes = ClassWithAllDataTypes.GetObject (id);
+    ObjectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1);
   }
 
   private WxePageStep Step2 = new WxePageStep ("EditObject.aspx");

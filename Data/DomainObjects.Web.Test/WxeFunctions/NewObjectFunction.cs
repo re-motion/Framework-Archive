@@ -7,6 +7,7 @@ using Rubicon.Web.ExecutionEngine;
  
 namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
 {
+[Serializable]
 public class NewObjectFunction : WxeTransactedFunction
 {
   // types
