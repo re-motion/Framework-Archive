@@ -338,12 +338,14 @@ function Wxe_GetFunctionPointer (functionName)
 
 function Wxe_ShowIsAbortingMessage()
 {
-  Wxe_ShowMessage ('WxeIsAbortingMessage', _wxe_context.IsAbortingMessage);
+  if (_wxe_context.IsAbortingMessage != null)
+    Wxe_ShowMessage ('WxeIsAbortingMessage', _wxe_context.IsAbortingMessage);
 }
 
 function Wxe_ShowIsSubmittingMessage()
 {
-  Wxe_ShowMessage ('WxeIsSubmittingMessage', _wxe_context.IsSubmittingMessage);
+  if (_wxe_context.IsSubmittingMessage != null)
+    Wxe_ShowMessage ('WxeIsSubmittingMessage', _wxe_context.IsSubmittingMessage);
 }
 
 function Wxe_ShowMessage (id, message)

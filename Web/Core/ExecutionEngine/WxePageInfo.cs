@@ -33,8 +33,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   [MultiLingualResources ("Rubicon.Web.Globalization.WxePageInfo")]
   protected enum ResourceIdentifier
   {
+    /// <summary> Displayed when the user attempts to abort the WXE Function. </summary>
     AbortMessage,
+    /// <summary> Displayed when the user attempts to submit while the page is already submitting. 
+    /// </summary>
     IsSubmittingMessage,
+    /// <summary> Displayed when the user attempts to submit while the page is already aborting. </summary>
     IsAbortingMessage
   }
 
@@ -259,9 +263,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     }
 
-    string isSubmittingMessage = "'" + resourceManager.GetString (ResourceIdentifier.IsSubmittingMessage) + "'";
-    string isAbortingMessage = "'" + resourceManager.GetString (ResourceIdentifier.IsAbortingMessage) + "'";        
-
+    string isSubmittingMessage = "null";
+    string isAbortingMessage = "null";        
+    if (_page.AreStatusMessagesEnabled)
+    {
+      isSubmittingMessage = "'" + resourceManager.GetString (ResourceIdentifier.IsSubmittingMessage) + "'";
+      isAbortingMessage = "'" + resourceManager.GetString (ResourceIdentifier.IsAbortingMessage) + "'";        
+    }
 
     string smartScrollingFieldID = "null";
     string smartFocusFieldID = "null";

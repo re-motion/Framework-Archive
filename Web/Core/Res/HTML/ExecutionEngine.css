@@ -1,12 +1,12 @@
-#WxeIsAbortingMessage,
-#WxeIsSubmittingMessage
+div#WxeIsAbortingMessage,
+div#WxeIsSubmittingMessage
 {
   background-color: White;
   border: solid 3pt Gray;
 }
 
-#WxeIsAbortingMessage td,
-#WxeIsSubmittingMessage td
+div#WxeIsAbortingMessage td,
+div#WxeIsSubmittingMessage td
 {
   font-weight: bold;
   font-family: 'Arial', 'Helvetica', sans-serif;
