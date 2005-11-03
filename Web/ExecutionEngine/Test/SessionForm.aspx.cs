@@ -42,6 +42,7 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionInNewWindowButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlButton;
+  protected Rubicon.Web.UI.Controls.TabControl NavigationTabControl;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -193,7 +194,6 @@ public class SessionForm : WxePage
     if (!IsReturningPostBack)
       ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", (Control) sender, true, true, true);
   }
-
 }
 
 }
