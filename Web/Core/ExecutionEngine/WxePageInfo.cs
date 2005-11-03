@@ -43,8 +43,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public static readonly string PostBackSequenceNumberID = "wxePostBackSequenceNumber";
   private const string c_smartScrollingID = "smartScrolling";
   private const string c_smartFocusID = "smartFocus";
-  private const string c_script = "ExecutionEngine.js";
-  private const string c_smartNavigationScript = "SmartNavigation.js";
+  private const string c_scriptFileUrl = "ExecutionEngine.js";
+  private const string c_styleFileUrl = "ExecutionEngine.css";
+  private const string c_styleFileUrlForIE = "ExecutionEngineIE.css";
+  private const string c_smartNavigationScriptFileUrl = "SmartNavigation.js";
+
+  private static readonly string s_scriptFileKey = typeof (WxePageInfo).FullName + "_Script";
+  private static readonly string s_styleFileKey = typeof (WxePageInfo).FullName + "_Style";
+  private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).FullName + "_StyleIE";
+  private static readonly string s_smartNavigationScriptKey = typeof (WxePageInfo).FullName+ "_SmartNavigation";
 
   private IWxePage _page;
   private WxeForm _wxeForm;
@@ -171,10 +178,19 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         + "  __doPostBack (control, argument); \r\n"
         + "}");
 
-    key = "wxeScript";
-    string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_script);
-    HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
+    string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
+    HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
 
+    if (! ControlHelper.IsDesignMode (page))
+    {
+      url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+
+//      url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_styleFileUrlForIE);
+//      HtmlHeadAppender.Current.RegisterStylesheetLingForInternetExplorerOnly
+//          (s_styleFileKeyForIE, url, HtmlHeadAppender.Priority.Library);
+    }
+  
     RegisterWxeInitializationScript(); 
   }
 
@@ -189,10 +205,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     if (smartNavigablePage.IsSmartScrollingEnabled || smartNavigablePage.IsSmartFocusingEnabled)
     {
-      string key = "smartNavigationScript";
       string url = ResourceUrlResolver.GetResourceUrl (
-          page, typeof (WxePageInfo), ResourceType.Html, c_smartNavigationScript);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, url);
+          page, typeof (WxePageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
+      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartNavigationScriptKey, url);
     }
 
     if (smartNavigablePage.IsSmartScrollingEnabled)
