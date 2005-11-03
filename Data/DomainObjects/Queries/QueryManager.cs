@@ -10,6 +10,7 @@ namespace Rubicon.Data.DomainObjects.Queries
 /// <summary>
 /// <see cref="QueryManager"/> provides methods to execute queries within a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
 /// </summary>
+[Serializable]
 public class QueryManager
 {
   // types
