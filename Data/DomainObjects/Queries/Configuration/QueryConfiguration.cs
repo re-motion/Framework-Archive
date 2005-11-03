@@ -132,7 +132,13 @@ public class QueryConfiguration : ConfigurationBase
     get { return _queryDefinitions; }
   }
 
-  // TODO Doc:
+  /// <summary>
+  /// Determines whether the <see cref="QueryConfiguration"/> contains a specific <see cref="QueryDefinition"/>.
+  /// </summary>
+  /// <param name="queryDefinition">The object to locate in the <see cref="QueryConfiguration"/>. Must not be <see langword="null"/>.</param>
+  /// <returns><see langword="true"/> if the <see cref="QueryConfiguration"/> contains the <paramref name="queryDefinition"/>; otherwise <see langword="false"/>.</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="queryDefinition"/> is <see langword="null"/>.</exception>
+  /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
   public bool Contains (QueryDefinition queryDefinition)
   {
     ArgumentUtility.CheckNotNull ("queryDefinition", queryDefinition);

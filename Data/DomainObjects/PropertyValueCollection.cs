@@ -10,6 +10,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// A typed collection for <see cref="PropertyValue"/> objects.
 /// </summary>
+[Serializable]
 public class PropertyValueCollection : CommonCollection
 {
   // types
@@ -21,10 +22,12 @@ public class PropertyValueCollection : CommonCollection
   /// <summary>
   /// Occurs before the <see cref="PropertyValue.Value"/> of a <see cref="PropertyValue"/> in the <see cref="PropertyValueCollection"/> is changed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event PropertyChangingEventHandler PropertyChanging;
   /// <summary>
   /// Occurs after the <see cref="PropertyValue.Value"/> of a <see cref="PropertyValue"/> in the <see cref="PropertyValueCollection"/> is changed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event PropertyChangedEventHandler PropertyChanged;
 
   private DataContainer _dataContainer;

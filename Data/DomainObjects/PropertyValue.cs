@@ -11,6 +11,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Represents a property of a domain object that is persisted by the framework.
 /// </summary>
+[Serializable]
 public class PropertyValue
 {
   // types
@@ -32,10 +33,12 @@ public class PropertyValue
   /// <summary>
   /// Occurs before the <see cref="Value"/> of the <see cref="PropertyValue"/> is changed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event ValueChangingEventHandler Changing;
   /// <summary>
   /// Occurs after the <see cref="Value"/> of the <see cref="PropertyValue"/> is changed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event EventHandler Changed;
 
   private PropertyDefinition _definition;
