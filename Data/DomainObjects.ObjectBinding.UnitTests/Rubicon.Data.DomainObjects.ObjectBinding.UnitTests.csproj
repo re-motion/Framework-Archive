@@ -128,6 +128,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DomainObjectIDs.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "mapping.xml"
                     BuildAction = "Content"
                 />
@@ -171,6 +176,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Serialization\SerializationTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TestDomain\Order.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -187,6 +197,11 @@
                 />
                 <File
                     RelPath = "TestDomain\TestDomainBase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TestDomain\TestSearchObject.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
