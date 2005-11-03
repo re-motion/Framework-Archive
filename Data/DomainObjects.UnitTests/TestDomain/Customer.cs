@@ -4,6 +4,7 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+[Serializable]
 public class Customer : Company
 {
   // types
