@@ -338,43 +338,29 @@ function Wxe_GetFunctionPointer (functionName)
 
 function Wxe_ShowIsAbortingMessage()
 {
-  if (document.getElementById ('Wxe_IsAbortingMessage') == null)
-  {
-    var div = document.createElement('DIV');
-    div.id = 'Wxe_IsAbortingMessage';
-    div.style.border = 'solid 3px red';
-    div.style.backgroundColor = 'lightgrey';
-    div.style.width = '50%';
-    div.style.height = '50%';
-    div.style.position = 'absolute';
-    div.style.left = '25%';
-    div.style.top = '25%';
-    div.innerHTML = '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">'
-        + '<b style="color:red; font-size:150%">'
-        + _wxe_context.IsAbortingMessage
-        + '</b></td></tr></table>';
-	
-    document.body.appendChild(div);
-  }
+  Wxe_ShowMessage ('WxeIsAbortingMessage', _wxe_context.IsAbortingMessage);
 }
 
 function Wxe_ShowIsSubmittingMessage()
 {
-  if (document.getElementById ('Wxe_IsSubmittingMessage') == null)
+  Wxe_ShowMessage ('WxeIsSubmittingMessage', _wxe_context.IsSubmittingMessage);
+}
+
+function Wxe_ShowMessage (id, message)
+{
+  if (document.getElementById (id) == null)
   {
     var div = document.createElement('DIV');
-    div.id = 'Wxe_IsSubmittingMessage';
-    div.style.border = 'solid 3px red';
-    div.style.backgroundColor = 'lightgrey';
+    div.id = id;
     div.style.width = '50%';
     div.style.height = '50%';
     div.style.position = 'absolute';
     div.style.left = '25%';
     div.style.top = '25%';
-    div.innerHTML = '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">'
-        + '<b style="color:red; font-size:150%">'
-        + _wxe_context.IsSubmittingMessage
-        + '</b></td></tr></table>';
+    div.innerHTML = 
+          '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">'
+        + message
+        + '</td></tr></table>';
 	
     document.body.appendChild(div);
   }
