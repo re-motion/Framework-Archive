@@ -6,6 +6,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// BaseClass for exceptions that are related to the configuraton of the persistence framework.
 /// </summary>
+[Serializable]
 public class ConfigurationException : DomainObjectException
 {
   // types
