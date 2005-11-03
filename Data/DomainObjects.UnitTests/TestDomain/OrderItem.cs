@@ -3,6 +3,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
+[Serializable]
 public class OrderItem : TestDomainBase
 {
   // types
