@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
+[Serializable]
 public class TestDomainBase : BindableDomainObject
 {
   // types
