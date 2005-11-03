@@ -5,6 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
+[Serializable]
 public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 {
   // types
@@ -18,6 +19,7 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   private DomainObjectCollection _originalOppositeDomainObjects;
   private DomainObjectCollection _oppositeDomainObjects;
 
+  [NonSerialized]
   private CollectionEndPointChangeAgent _changeAgent;
 
   // construction and disposing
