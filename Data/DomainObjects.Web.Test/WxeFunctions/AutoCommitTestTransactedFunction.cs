@@ -9,6 +9,7 @@ using Rubicon.Data.DomainObjects.Web.Test.Domain;
 
 namespace Rubicon.Data.DomainObjects.Web.Test.WxeFunctions
 {
+[Serializable]
 public class AutoCommitTestTransactedFunction : WxeTransactedFunction
 {
   // types
