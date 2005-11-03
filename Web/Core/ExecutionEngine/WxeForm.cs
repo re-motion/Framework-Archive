@@ -142,6 +142,17 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
     }
     base.Render (writer);
   }
+
+//  protected override void RenderChildren(HtmlTextWriter writer)
+//  {
+//    writer.AddAttribute (HtmlTextWriterAttribute.Id, "wxeContentArea");
+//    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+//
+//    base.RenderChildren (writer);
+//
+//    writer.RenderEndTag();
+//  }
+
 }
 
 }
