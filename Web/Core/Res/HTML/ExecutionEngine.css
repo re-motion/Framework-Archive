@@ -1,0 +1,21 @@
+#WxeIsAbortingMessage,
+#WxeIsSubmittingMessage
+{
+  background-color: White;
+  border: solid 3pt Gray;
+}
+
+#WxeIsAbortingMessage td,
+#WxeIsSubmittingMessage td
+{
+  font-weight: bold;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  color: Gray;
+}
+
+/* Ignore
+html>body #WxeIsSubmittingMessage
+{   
+  position: fixed;
+}
+*/
