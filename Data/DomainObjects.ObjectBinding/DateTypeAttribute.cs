@@ -15,6 +15,7 @@ public enum DateTypeEnum
 /// Specifies the default date format of a property or field.
 /// </summary>
 [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
+[Serializable]
 public class DateTypeAttribute : Attribute
 {
   private DateTypeEnum _dateType;

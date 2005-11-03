@@ -9,6 +9,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// </summary>
 /// <remarks>Use this attribute to specify the item type on computed properties or other properties, where the type cannot be detected in the mapping.</remarks>
 [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
+[Serializable]
 public class ItemTypeAttribute : Attribute
 {
   private Type _itemType;

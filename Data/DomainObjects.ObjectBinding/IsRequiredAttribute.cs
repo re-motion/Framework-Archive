@@ -6,6 +6,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// Specifies if a property of fiels is required.
 /// </summary>
 [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
+[Serializable]
 public class IsRequiredAttribute : Attribute
 {
   private bool _isRequired;
