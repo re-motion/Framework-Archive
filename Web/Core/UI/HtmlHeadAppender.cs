@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Runtime.Remoting.Messaging;
+using System.Text;
 using System.Web;
 using System.Web.UI;
-using System.Runtime.Remoting.Messaging;
 using System.Web.UI.HtmlControls;
+using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
 using Rubicon.Web.UI.Controls;
 
@@ -94,9 +96,12 @@ public class HtmlHeadAppender
   /// </remarks>
   /// <param name="htmlHeadContents">
   ///   <see cref="HtmlHeadContents"/> to whose <b>Controls</b> collection the headers will be appended.
+  ///   Must not be <see langword="null"/>.
   /// </param>
   public void EnsureAppended (HtmlHeadContents htmlHeadContents)
   {
+    ArgumentUtility.CheckNotNull ("htmlHeadContents", htmlHeadContents);
+
     if (_hasAppendExecuted)
       return;
 
@@ -161,8 +166,10 @@ public class HtmlHeadAppender
   ///   All calls to <see cref="RegisterStylesheetLink"/> must be completed before
   ///   <see cref="EnsureAppended"/> is called. (Typically during the <c>Render</c> phase.)
   /// </remarks>
-  /// <param name="key"> The unique key identifying the stylesheet file in the headers collection. </param>
-  /// <param name="href"> The url of the stylesheet file. </param>
+  /// <param name="key"> 
+  ///   The unique key identifying the stylesheet file in the headers collection. Must not be <see langword="null"/> or empty.
+  /// </param>
+  /// <param name="href"> The url of the stylesheet file. Must not be <see langword="null"/> or empty. </param>
   /// <param name="priority"> 
   ///   The priority level of the head element. Elements are rendered in the following order:
   ///   Library, UserControl, Page.
@@ -172,6 +179,9 @@ public class HtmlHeadAppender
   /// </exception>
   public void RegisterStylesheetLink (string key, string href, Priority priority)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+    ArgumentUtility.CheckNotNullOrEmpty ("href", href);
+
     HtmlGenericControl headElement = new HtmlGenericControl ("link");
     headElement.EnableViewState = false;
     headElement.Attributes.Add ("type", "text/css");
@@ -179,6 +189,20 @@ public class HtmlHeadAppender
     headElement.Attributes.Add ("href", href);
     RegisterHeadElement (key, headElement, priority);
   }
+
+//  public void RegisterStylesheetLingForInternetExplorerOnly (string key, string href, Priority priority)
+//  {
+//    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+//    ArgumentUtility.CheckNotNullOrEmpty ("href", href);
+//
+//    LiteralControl headElement = new LiteralControl();
+//    headElement.EnableViewState = false;
+//    StringBuilder innerHtml = new StringBuilder();
+//    innerHtml.AppendFormat (
+//        "<!--[if IE]><style type=\"text/css\" rel=\"stylesheet\">@import url({0});</style><![endif]-->", href);
+//    headElement.Text = innerHtml.ToString();
+//    RegisterHeadElement (key, headElement, priority);
+//  }
 
   /// <summary> Registers a stylesheet file. </summary>
   /// <remarks>
@@ -189,8 +213,12 @@ public class HtmlHeadAppender
   ///     Registeres the javascript file with a default priority of Page.
   ///   </para>
   /// </remarks>
-  /// <param name="key"> The unique key identifying the stylesheet file in the headers collection. </param>
-  /// <param name="href"> The url of the stylesheet file. </param>
+  /// <param name="key"> 
+  ///   The unique key identifying the stylesheet file in the headers collection. Must not be <see langword="null"/> or empty.
+  /// </param>
+  /// <param name="href"> 
+  ///   The url of the stylesheet file. Must not be <see langword="null"/> or empty. 
+  /// </param>
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
   /// </exception>
@@ -215,13 +243,20 @@ public class HtmlHeadAppender
   ///     Registeres the javascript file with a default priority of Page.
   ///   </para>
   /// </remarks>
-  /// <param name="key"> The unique key identifying the javascript file in the headers collection. </param>
-  /// <param name="src"> The url of the javascript file. </param>
+  /// <param name="key">
+  ///   The unique key identifying the javascript file in the headers collection. Must not be <see langword="null"/> or empty.
+  /// </param>
+  /// <param name="src"> 
+  ///   The url of the javascript file. Must not be <see langword="null"/> or empty. 
+  /// </param>
   /// <exception cref="HttpException"> 
   ///   Thrown if method is called after <see cref="EnsureAppended"/> has executed.
   /// </exception>
   public void RegisterJavaScriptInclude (string key, string src)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+    ArgumentUtility.CheckNotNullOrEmpty ("src", src);
+
     HtmlGenericControl headElement = new HtmlGenericControl ("script");
     headElement.EnableViewState = false;
     headElement.Attributes.Add ("type", "text/javascript");
@@ -234,8 +269,12 @@ public class HtmlHeadAppender
   ///   All calls to <see cref="RegisterHeadElement"/> must be completed before
   ///   <see cref="EnsureAppended"/> is called. (Typically during the <c>Render</c> phase.)
   /// </remarks>
-  /// <param name="key"> The unique key identifying the header element in the collection. </param>
-  /// <param name="headElement"> The <see cref="Control"/> representing the head element. </param>
+  /// <param name="key"> 
+  ///   The unique key identifying the header element in the collection. Must not be <see langword="null"/> or empty.
+  /// </param>
+  /// <param name="headElement"> 
+  ///   The <see cref="Control"/> representing the head element. Must not be <see langword="null"/>. 
+  /// </param>
   /// <param name="priority"> 
   ///   The priority level of the head element. Elements are rendered in the following order:
   ///   Library, UserControl, Page.
@@ -245,6 +284,9 @@ public class HtmlHeadAppender
   /// </exception>
   public void RegisterHeadElement (string key, Control headElement, Priority priority)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+    ArgumentUtility.CheckNotNull ("headElement", headElement);
+
     if (_hasAppendExecuted)
       throw new HttpException ("RegisterHeadElement must not be called after EnsureAppended has executed.");
     if (! IsRegistered (key))
@@ -257,13 +299,15 @@ public class HtmlHeadAppender
   /// <summary>
   ///   Test's whether an element with this <paramref name="key"/> has already been registered.
   /// </summary>
-  /// <param name="key"> The string to test. </param>
+  /// <param name="key"> The string to test. Must not be <see langword="null"/> or empty. </param>
   /// <returns>
   ///   <see langword="true"/> if an element with this <paramref name="key"/> has already been 
   ///   registered.
   /// </returns>
   public bool IsRegistered (string key)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+
     return _registeredHeadElements.Contains (key);
   }
 
