@@ -10,6 +10,7 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Represents a container for the persisted properties of a DomainObject.
 /// </summary>
+[Serializable]
 public class DataContainer
 {
   // types
@@ -70,10 +71,12 @@ public class DataContainer
   /// <summary>
   /// Occurs before a <see cref="PropertyValue"/> is changed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event PropertyChangingEventHandler PropertyChanging;
   /// <summary>
   /// Occurs after a <see cref="PropertyValue"/> is changed.
   /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event PropertyChangedEventHandler PropertyChanged;
 
   private ClientTransaction _clientTransaction;
