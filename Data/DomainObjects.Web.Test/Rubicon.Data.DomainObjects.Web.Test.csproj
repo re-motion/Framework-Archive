@@ -16,7 +16,7 @@
                 AssemblyName = "Rubicon.Data.DomainObjects.Web.Test"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
+                DefaultHTMLPageLayout = "Flow"
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
                 OutputType = "Library"
@@ -328,6 +328,11 @@
                 />
                 <File
                     RelPath = "Domain\ClassWithoutProperties.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\DomainObjectIDs.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
