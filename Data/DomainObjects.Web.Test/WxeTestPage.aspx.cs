@@ -19,8 +19,6 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 {
 public class WxeTestPage : WxePage
 {
-  private static ObjectID s_objectWithAllDataTypesID = new ObjectID ("ClassWithAllDataTypes", new Guid ("3F647D79-0CAF-4a53-BAA7-A56831F8CE2D"));
-
   protected System.Web.UI.WebControls.Button WxeTransactedFunctionCreateNewButton;
   protected System.Web.UI.WebControls.Label ResultLabel;
   protected System.Web.UI.WebControls.Button WxeTransactedFunctionNoneButton;
@@ -108,7 +106,7 @@ public class WxeTestPage : WxePage
       SetInt32Property (5, new ClientTransaction ());
 
       ExecuteFunction (new AutoCommitTestTransactedFunction (
-          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.CreateRoot, s_objectWithAllDataTypesID));
+          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
     else
     {
@@ -129,7 +127,7 @@ public class WxeTestPage : WxePage
       SetInt32Property (5, new ClientTransaction ());
 
       ExecuteFunction (new NoAutoCommitTestTransactedFunction (
-          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.CreateRoot, s_objectWithAllDataTypesID));
+          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
     else
     {
@@ -152,7 +150,7 @@ public class WxeTestPage : WxePage
       RememberCurrentClientTransaction ();
 
       ExecuteFunction (new AutoCommitTestTransactedFunction (
-          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.None, s_objectWithAllDataTypesID));
+          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
     else
     {
@@ -178,7 +176,7 @@ public class WxeTestPage : WxePage
       RememberCurrentClientTransaction ();
 
       ExecuteFunction (new NoAutoCommitTestTransactedFunction (
-          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.None, s_objectWithAllDataTypesID));
+          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
     else
     {
@@ -196,7 +194,7 @@ public class WxeTestPage : WxePage
 
   private void SetInt32Property (int value, ClientTransaction clientTransaction)
   {
-    ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (s_objectWithAllDataTypesID, clientTransaction);
+    ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1, clientTransaction);
 
     objectWithAllDataTypes.Int32Property = value;
 
@@ -205,7 +203,7 @@ public class WxeTestPage : WxePage
 
   private int GetInt32Property (ClientTransaction clientTransaction)
   {
-    ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (s_objectWithAllDataTypesID, clientTransaction);
+    ClassWithAllDataTypes objectWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ObjectWithAllDataTypes1, clientTransaction);
 
     return objectWithAllDataTypes.Int32Property;
   }
