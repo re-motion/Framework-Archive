@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.Queries;
@@ -10,8 +11,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// <summary>
 /// A class that can be used to store search paramers and supports 2-way data binding of user controls.
 /// </summary>
-public abstract class BindableSearchObject : IBusinessObject
+[Serializable]
+public abstract class BindableSearchObject : IBusinessObject, IDeserializationCallback
 {
+  [NonSerialized]
   private BusinessObjectReflector _objectReflector;
 
   /// <summary>
@@ -165,7 +168,23 @@ public abstract class BindableSearchObject : IBusinessObject
   [EditorBrowsable (EditorBrowsableState.Never)]
   public IBusinessObjectClass BusinessObjectClass
   {
-    get { return new DomainObjectClass (this.GetType()); }
+    get { return new SearchObjectClass (this.GetType()); }
+  }
+
+  #endregion
+
+  #region IDeserializationCallback Members
+
+  // TODO Doc:
+  void IDeserializationCallback.OnDeserialization (object sender)
+  {
+    OnDeserialization (sender);
+  }
+
+  // TODO Doc:
+  protected virtual void OnDeserialization (object sender)
+  {
+    _objectReflector = new BusinessObjectReflector (this);
   }
 
   #endregion

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
@@ -11,7 +12,8 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// <summary>
 /// A <see cref="DomainObject"/> that supports 2-way data binding of user controls.
 /// </summary>
-public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
+[Serializable]
+public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, IDeserializationCallback
 {
   // types
 
@@ -102,6 +104,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
 
   // member fields
 
+  [NonSerialized]
   private BusinessObjectReflector _objectReflector;
 
   // construction and disposing
@@ -111,7 +114,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// </summary>
   protected BindableDomainObject ()
   {
-    _objectReflector = new BusinessObjectReflector (this);
+    Initialize ();
   }
 
   /// <summary>
@@ -121,7 +124,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// <exception cref="System.ArgumentNullException"><paramref name="clientTransaction"/> is <see langword="null"/>.</exception>
   protected BindableDomainObject (ClientTransaction clientTransaction) : base (clientTransaction)
   {
-    _objectReflector = new BusinessObjectReflector (this);
+    Initialize ();
   }
 
   /// <summary>
@@ -134,7 +137,11 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   /// <param name="dataContainer">The newly loaded <b>DataContainer</b></param>
   protected BindableDomainObject (DataContainer dataContainer) : base (dataContainer)
   {
-    //TODO: Move this code to OnLoaded?
+    Initialize ();
+  }
+
+  private void Initialize ()
+  {
     _objectReflector = new BusinessObjectReflector (this);
   }
 
@@ -296,5 +303,21 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity
   {
     get { return ID.ToString (); }
   }
+
+  #region IDeserializationCallback Members
+
+  // TODO Doc:
+  void IDeserializationCallback.OnDeserialization (object sender)
+  {
+    OnDeserialization (sender);
+  }
+
+  // TODO Doc:
+  protected virtual void OnDeserialization (object sender)
+  {
+    _objectReflector = new BusinessObjectReflector (this);
+  }
+
+  #endregion
 }
 }
