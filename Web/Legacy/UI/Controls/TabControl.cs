@@ -384,13 +384,13 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     return url;
   }
 
-  private string GetHref (int tabIndex, Tab tab)
+  private string GetHref (int tabIndex, Tab tab, out string onClick)
   {
-    return GetHref ("TabSelected", tabIndex, tabIndex, 0, tab);
+    return GetHref ("TabSelected", tabIndex, tabIndex, 0, tab, out onClick);
   }
-  private string GetHref (int tabIndex, int menuIndex, TabMenu tabMenu)
+  private string GetHref (int tabIndex, int menuIndex, TabMenu tabMenu, out string onClick)
   {
-    return GetHref ("MenuSelected", menuIndex, tabIndex, menuIndex, tabMenu);
+    return GetHref ("MenuSelected", menuIndex, tabIndex, menuIndex, tabMenu, out onClick);
   }
 
   private string AddCleanupTokenForINavigablePage (string url)
@@ -402,7 +402,8 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
       return url;
   }
 
-  private string GetHref (string eventName, int itemIndex, int tabIndex, int menuIndex, ITabItem tabItem)
+  private string GetHref (
+      string eventName, int itemIndex, int tabIndex, int menuIndex, ITabItem tabItem, out string onClick)
   {
 		string resultHref = null;
     string eventArgument = eventName + ":" + itemIndex.ToString();
@@ -446,9 +447,37 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 		  }
     }
 		if (resultHref == null)
-			resultHref = "href=\"javascript:" + script + "\"";
+    {
+      if (IsWxeCompatibilityEnabled)
+      {
+        resultHref = "href=\"#\"";
+        onClick = "onclick=\"" + script + "\"";
+      }
+      else
+      {
+  			resultHref = "href=\"javascript:" + script + "\"";
+        onClick = string.Empty;
+      }
+    }
+    else
+    {
+      onClick = string.Empty;
+    }
 
     return resultHref;
+  }
+
+  /// <summary> 
+  ///   Gets a flag that determines whether scripted links will be rendered in the href or the onclick attribute
+  ///   of the anchor tag.
+  /// </summary>
+  /// <value> <see langword="true"/> if the Page is a <see cref="Rubicon.Web.ExecutionEngine.IWxePage"/>. </value>
+  protected virtual bool IsWxeCompatibilityEnabled
+  {
+    get 
+    {
+      return Page is ExecutionEngine.IWxePage;
+    }
   }
 
   public void SelectItem (string tabID, string menuID)
@@ -618,8 +647,9 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 		    output.WriteLine ("</td>");
 
 		    // write cell with tab text
-        string href = GetHref (i, tab);
-		    output.WriteLine ("<td {0}> <a {0} {1}>{2}</a></td>", classAttrib, href, tab.Label);
+        string onClick;
+        string href = GetHref (i, tab, out onClick);
+		    output.WriteLine ("<td {0}> <a {0} {1} {2}>{3}</a></td>", classAttrib, href, onClick, tab.Label);
 
 		    // write cell with second image
 		    output.WriteLine ("<td {0} {1} align=\"right\" valign=\"top\">", classAttrib, heightAttrib);
@@ -725,10 +755,12 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
             if (! isFirstMenu)
               output.WriteLine (" | ");
 
-            string menuHref = GetHref (_activeTab, i, menu);
-            output.WriteLine ("<a class=\"{0}\" {1}>{2}</a> ", 
+            string onClick;
+            string menuHref = GetHref (_activeTab, i, menu, out onClick);
+            output.WriteLine ("<a class=\"{0}\" {1} {2}>{3}</a> ", 
                 (i==_activeMenu) ? "tabActiveSubLink" : "tabSubLink",
                 menuHref, 
+                onClick,
                 menu.Label);
             isFirstMenu = false;
           }
