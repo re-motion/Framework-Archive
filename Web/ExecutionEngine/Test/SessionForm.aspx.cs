@@ -59,9 +59,6 @@ public class SessionForm : WxePage
     queryString.Add ("Parameter", "Hello World!");
     SampleFunctionPermaLink.NavigateUrl = GetPermanentUrl (typeof (SampleWxeFunction), queryString);
     SampleFunctionPermaLink.Text = SampleFunctionPermaLink.NavigateUrl;
-
-    if (IsPostBack)
-      System.Threading.Thread.Sleep (10000);
   }
 
   override protected void OnInit(EventArgs e)
@@ -81,6 +78,7 @@ public class SessionForm : WxePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.PostBackButton.Click += new System.EventHandler(this.PostBackButton_Click);
     this.OpenSelfButton.Click += new System.EventHandler(this.OpenSelfButton_Click);
     this.Button1.Click += new System.EventHandler(this.Button1_Click);
     this.Button1Button.Click += new System.EventHandler(this.Button1Button_Click);
@@ -193,6 +191,11 @@ public class SessionForm : WxePage
   {
     if (!IsReturningPostBack)
       ExecuteFunctionExternal (new SessionWxeFunction (true), "_blank", (Control) sender, true, true, true);
+  }
+
+  private void PostBackButton_Click(object sender, System.EventArgs e)
+  {
+      System.Threading.Thread.Sleep (10000);  
   }
 }
 
