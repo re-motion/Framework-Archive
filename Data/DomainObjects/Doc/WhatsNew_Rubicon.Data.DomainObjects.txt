@@ -1,3 +1,10 @@
+1.3.20.0
+========
+
+- RPF und RPA sind vollständig serialisierbar.
+- Rubicon.Data.DomainObjects.ObjectBinding.BindableSearchObject: Property BusinessObjectClass gibt jetzt korrekterweise eine SearchObjectClass zurück.
+
+
 1.3.19.0
 ========
 
