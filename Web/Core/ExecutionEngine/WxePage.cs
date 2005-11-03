@@ -193,6 +193,12 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
+
+  /// <summary> 
+  ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
+  ///   tries to e.g. postback while a request is being processed.
+  /// </summary>
+  bool AreStatusMessagesEnabled { get; }
 }
 
 /// <summary>
@@ -464,6 +470,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   private bool disposed;
   private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
+  private NaBooleanEnum _enableStatusMessages = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
 
@@ -704,6 +711,42 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   bool IWxePage.IsAbortEnabled
   {
     get { return IsAbortEnabled; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the flag that determines whether to display a message when the user tries to start a second
+  ///   request.
+  /// </summary>
+  /// <value> 
+  ///   <see cref="NaBooleanEnum.True"/> to enable the status messages. 
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
+  /// </value>
+  /// <remarks>
+  ///   Use <see cref="AreStatusMessagesEnabled"/> to evaluate this property.
+  /// </remarks>
+  [Description("The flag that determines whether to display a status message when the user attempts to start a second request. Undefined is interpreted as true.")]
+  [Category ("Behavior")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public virtual NaBooleanEnum EnableStatusMessages
+  {
+    get { return _enableStatusMessages; }
+    set { _enableStatusMessages = value; }
+  }
+
+  /// <summary> 
+  ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
+  ///   tries to e.g. postback while a request is being processed.
+  /// </summary>
+  protected virtual bool AreStatusMessagesEnabled
+  {
+    get { return _enableStatusMessages != NaBooleanEnum.False; }
+  }
+
+  /// <summary> Implementation of <see cref="IWxePage.AreStatusMessagesEnabled"/>. </summary>
+  /// <value> The value returned by <see cref="AreStatusMessagesEnabled"/>. </value>
+  bool IWxePage.AreStatusMessagesEnabled
+  {
+    get { return AreStatusMessagesEnabled; }
   }
 
   /// <summary> Gets or sets the flag that determines whether to use smart scrolling. </summary>
