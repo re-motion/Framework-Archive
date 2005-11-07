@@ -175,11 +175,11 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
 
 public enum BocCustomColumnDefinitionMode
 {
-  /// <summary> Rendering will be done using the <see cref="BocCustomColumnDefinitionCell.DoRender"/> method. </summary>
+  /// <summary> Rendering will be done using the <see cref="BocCustomColumnDefinitionCell.Render"/> method. </summary>
   NoControls,
   /// <summary> 
   ///   Only the modifiable row will contain a control. The other rows will be rendered using the 
-  ///   <see cref="BocCustomColumnDefinitionCell.DoRender"/> method. 
+  ///   <see cref="BocCustomColumnDefinitionCell.Render"/> method. 
   /// </summary>
   ControlInEditedRow,
   /// <summary> All rows will contain controls. </summary>
