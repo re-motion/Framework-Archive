@@ -3506,7 +3506,7 @@ public class BocList:
     }
   }
 
-  /// <summary> Invokes the <see cref="BocCustomColumnDefinition.Init"/> method for each custom column. </summary>
+  /// <summary> Invokes the <see cref="BocCustomColumnDefinitionCell.Init"/> method for each custom column. </summary>
   private void InitCustomColumns()
   {
     BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot ();
@@ -3526,7 +3526,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Invokes the <see cref="BocCustomColumnDefinition.Load"/> method for each cell with a control in the 
+  ///   Invokes the <see cref="BocCustomColumnDefinitionCell.Load"/> method for each cell with a control in the 
   ///   custom columns. 
   /// </summary>
   private void LoadCustomColumns()
@@ -3606,7 +3606,7 @@ public class BocList:
     return isValid;
   }
 
-  /// <summary> Invokes the <see cref="BocCustomColumnDefinition.PreRender"/> method for each custom column.  </summary>
+  /// <summary> Invokes the <see cref="BocCustomColumnDefinitionCell.PreRender"/> method for each custom column.  </summary>
   private void PreRenderCustomColumns()
   {
     BocColumnDefinition[] columns = EnsureColumnsGot (true);
