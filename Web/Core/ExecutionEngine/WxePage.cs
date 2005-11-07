@@ -199,6 +199,12 @@ public interface IWxePage: IPage, IWxeTemplateControl
   ///   tries to e.g. postback while a request is being processed.
   /// </summary>
   bool AreStatusMessagesEnabled { get; }
+
+  /// <summary> Gets the message displayed when the user returnes to a cached page that has already been submitted. </summary>
+  string HasSubmittedMessage { get; }
+
+  /// <summary> Gets the message displayed when the user returnes to a cached page that has already been aborted. </summary>
+  string HasAbortedMessage { get; }
 }
 
 /// <summary>
@@ -471,6 +477,8 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableStatusMessages = NaBooleanEnum.Undefined;
+  private string _hasAbortedMessage = string.Empty;
+  private string _hasSubmittedMessage = string.Empty;
   private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
 
@@ -747,6 +755,30 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   bool IWxePage.AreStatusMessagesEnabled
   {
     get { return AreStatusMessagesEnabled; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the message displayed when the user returnes to a cached page that has already been aborted. 
+  /// </summary>
+  [Description("The message displayed when the user returnes to a cached page that has already been aborted.")]
+  [Category ("Appearance")]
+  [DefaultValue ("")]
+  public virtual string HasAbortedMessage
+  {
+    get { return _hasAbortedMessage; }
+    set { _hasAbortedMessage = StringUtility.NullToEmpty (value); }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the message displayed when the user returnes to a cached page that has already been submitted. 
+  /// </summary>
+  [Description("The message displayed when the user returnes to a cached page that has already been submitted.")]
+  [Category ("Appearance")]
+  [DefaultValue ("")]
+  public virtual string HasSubmittedMessage
+  {
+    get { return _hasSubmittedMessage; }
+    set { _hasSubmittedMessage = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets or sets the flag that determines whether to use smart scrolling. </summary>

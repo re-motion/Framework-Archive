@@ -48,4 +48,10 @@
     <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.IsSubmittingMessage">
         <value>&lt;p&gt;Die Seite wird gerade new geladen.&lt;/p&gt;&lt;p&gt;Bitte warten Sie mit weiteren Eingaben bis die &amp;Uuml;bertragung abgeschlossen ist.&lt;/p&gt;</value>
     </data>
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.HasAbortedMessage">
+        <value>Die Navigation über die Vorwärts und Zurück Schaltflächen wird nicht unterstützt.</value>
+    </data>
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.HasSubmittedMessage">
+        <value>Die Navigation über die Vorwärts und Zurück Schaltflächen wird nicht unterstützt.</value>
+    </data>
 </root>

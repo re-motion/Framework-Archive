@@ -35,16 +35,20 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     /// <summary> Displayed when the user attempts to abort the WXE Function. </summary>
     AbortMessage,
-    /// <summary> Displayed when the user attempts to submit while the page is already submitting. 
-    /// </summary>
+    /// <summary> Displayed when the user attempts to submit while the page is already submitting. </summary>
     IsSubmittingMessage,
     /// <summary> Displayed when the user attempts to submit while the page is already aborting. </summary>
-    IsAbortingMessage
+    IsAbortingMessage,
+    /// <summary> Displayed when the user returnes to a cached page that has already been submitted. </summary>
+    HasSubmittedMessage,
+    /// <summary> Displayed when the user returnes to a cached page that has already been aborted. </summary>
+    HasAbortedMessage
   }
 
-  public static readonly string ReturningTokenID = "wxeReturningToken";
-  public static readonly string PageTokenID = "wxePageToken";
-  public static readonly string PostBackSequenceNumberID = "wxePostBackSequenceNumber";
+  public static readonly string ReturningTokenID = "wxeReturningTokenField";
+  public static readonly string PageTokenID = "wxePageTokenField";
+  public static readonly string PostBackSequenceNumberID = "wxePostBackSequenceNumberField";
+  public static readonly string CacheDetectionID = "wxeCacheDetectionField";
   private const string c_smartScrollingID = "smartScrolling";
   private const string c_smartFocusID = "smartFocus";
   private const string c_scriptFileUrl = "ExecutionEngine.js";
@@ -165,6 +169,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     page.RegisterHiddenField (WxePageInfo.ReturningTokenID, null);
     int nextPostBackID = wxeContext.PostBackID + 1;
     page.RegisterHiddenField (WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString());
+    page.RegisterHiddenField (WxePageInfo.CacheDetectionID, null);
 
     string key = "wxeDoSubmit";
     PageUtility.RegisterClientScriptBlock (page, key,
@@ -236,7 +241,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   protected void RegisterWxeInitializationScript()
   {
     IResourceManager resourceManager = GetResourceManager();
-
+    
+    string temp;
+    WxeContext wxeContext = WxeContext.Current;
+    
     int refreshIntervall = 0;
     string refreshPath = "null";
     string abortPath = "null";
@@ -244,12 +252,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     if (WxeHandler.IsSessionManagementEnabled)
     {
       //  Ensure the registration of "__doPostBack" on the page.
-      string temp = _page.GetPostBackEventReference ((Page)_page);
+      temp = _page.GetPostBackEventReference ((Page)_page);
 
       bool isAbortConfirmationEnabled = _page.IsAbortConfirmationEnabled;
       bool isAbortEnabled = _page.IsAbortEnabled;
 
-      WxeContext wxeContext = WxeContext.Current;
       string resumePath = wxeContext.GetPath (wxeContext.FunctionToken, null);
 
       refreshIntervall = WxeHandler.RefreshInterval * 60000;
@@ -260,15 +267,31 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       
       if (isAbortEnabled && isAbortConfirmationEnabled)
         abortMessage = "'" + resourceManager.GetString (ResourceIdentifier.AbortMessage) + "'";        
-
     }
 
     string isSubmittingMessage = "null";
     string isAbortingMessage = "null";        
+    string hasSubmittedMessage = "null";
+    string hasAbortedMessage = "null";  
     if (_page.AreStatusMessagesEnabled)
     {
-      isSubmittingMessage = "'" + resourceManager.GetString (ResourceIdentifier.IsSubmittingMessage) + "'";
-      isAbortingMessage = "'" + resourceManager.GetString (ResourceIdentifier.IsAbortingMessage) + "'";        
+      temp = resourceManager.GetString (ResourceIdentifier.IsSubmittingMessage);
+      isSubmittingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
+
+      temp = resourceManager.GetString (ResourceIdentifier.IsAbortingMessage);
+      isAbortingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
+
+      if (StringUtility.IsNullOrEmpty (_page.HasSubmittedMessage))
+        temp = resourceManager.GetString (ResourceIdentifier.HasSubmittedMessage);
+      else
+        temp = _page.HasSubmittedMessage;
+      hasSubmittedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
+
+      if (StringUtility.IsNullOrEmpty (_page.HasAbortedMessage))
+        temp = resourceManager.GetString (ResourceIdentifier.HasAbortedMessage);
+      else
+        temp = _page.HasAbortedMessage;
+      hasAbortedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
     }
 
     string smartScrollingFieldID = "null";
@@ -316,6 +339,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
     initScript.Append ("    ").Append (isSubmittingMessage).Append (",\r\n");
     initScript.Append ("    ").Append (isAbortingMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (hasSubmittedMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (hasAbortedMessage).Append (",\r\n");
     initScript.Append ("    ").Append (smartScrollingFieldID).Append (",\r\n");
     initScript.Append ("    ").Append (smartFocusFieldID).Append (",\r\n");
     initScript.Append ("    _wxe_eventHandlers); \r\n");

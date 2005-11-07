@@ -61,6 +61,14 @@ public class SessionForm : WxePage
     SampleFunctionPermaLink.Text = SampleFunctionPermaLink.NavigateUrl;
   }
 
+  protected override void OnPreRender (EventArgs e)
+  {
+    base.OnPreRender (e);
+    Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterStylesheetLink (
+        "style", 
+        Rubicon.Web.ResourceUrlResolver.GetResourceUrl (this, typeof (WxePage), Rubicon.Web.ResourceType.Html, "Style.css"));
+  }
+
   override protected void OnInit(EventArgs e)
 	{
 		//
