@@ -219,22 +219,6 @@ public class ValueConverterBase
         propertyDefinition.PropertyType.FullName, dataValue, propertyDefinition.PropertyName);
   }
 
-  protected ClassDefinition GetOppositeClassDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
-  {
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-
-    ClassDefinition relatedClassDefinition = classDefinition.GetOppositeClassDefinition (propertyDefinition.PropertyName);
-
-    if (relatedClassDefinition == null)
-    {
-      throw CreateConverterException (
-          "Property '{0}' of class '{1}' has no relations assigned.", propertyDefinition.PropertyName, classDefinition.ID);  
-    }
-
-    return relatedClassDefinition;
-  }
-
   protected ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)
   {
     return new ArgumentException (string.Format (message, args), argumentName);
