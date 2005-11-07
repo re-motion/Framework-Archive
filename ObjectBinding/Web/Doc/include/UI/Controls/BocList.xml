@@ -474,13 +474,6 @@
             <para> e.g. auto:MyBocList:PageInfo </para>
           </description>
         </item>
-        <item>
-          <term> <see cref="RowMenuTitle"/> </term>
-          <description>
-            <para> &lt;BocList Resource ID&gt;:RowMenuTitle </para>
-            <para> e.g. auto:MyBocList:RowMenuTitle </para>
-          </description>
-        </item>
       </list>
       
     </remarks>
