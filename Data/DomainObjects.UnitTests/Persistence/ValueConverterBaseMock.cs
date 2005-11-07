@@ -21,11 +21,6 @@ public class ValueConverterBaseMock : ValueConverterBase
 
   // methods and properties
 
-  public new ClassDefinition GetOppositeClassDefinition (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
-  {
-    return base.GetOppositeClassDefinition (classDefinition, propertyDefinition);
-  }
-
   public new object GetEnumValue (PropertyDefinition propertyDefinition, object dataValue)
   {
     return base.GetEnumValue (propertyDefinition, dataValue);

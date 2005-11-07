@@ -89,7 +89,7 @@ public class ValueConverter : ValueConverterBase
     ClassDefinition relatedClassDefinition = GetOppositeClassDefinitionFromClassIDColumn (classDefinition, propertyDefinition, dataReader);
     if (relatedClassDefinition == null)
     {
-      relatedClassDefinition = GetOppositeClassDefinition (classDefinition, propertyDefinition);
+      relatedClassDefinition = classDefinition.GetMandatoryOppositeClassDefinition (propertyDefinition.PropertyName);
 
       if (classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
       {

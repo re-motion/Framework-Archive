@@ -33,16 +33,6 @@ public class ValueConverterBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (ConverterException), "Property 'OrderNumber' of class 'Order' has no relations assigned.")]
-  public void GetOppositeClassDefinitionOverNonRelationalProperty ()
-  {
-    ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Order");
-    PropertyDefinition nonRelationalProperty = orderDefinition["OrderNumber"];
-
-    _converterMock.GetOppositeClassDefinition (orderDefinition, nonRelationalProperty);
-  }
-
-  [Test]
   [ExpectedException (typeof (ConverterException), 
       "Enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType'"
       + " does not define the value 'InvalidEnumValue', property 'CustomerType'.")]
