@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.PerformanceTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.PerformanceTests
 {
+// TODO ES: Inherit from DatabaseTest class which initializes test data correctly.
 [TestFixture]
 public class LoadObjectsTest
 {
@@ -13,7 +14,7 @@ public class LoadObjectsTest
   // static members and constants
 
   private static ObjectID s_clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
-  private static ObjectID s_fileID = new ObjectID ("File", new Guid ());
+  private static ObjectID s_fileID = new ObjectID ("File", Guid.NewGuid ());
 
   // member fields
 
@@ -27,24 +28,30 @@ public class LoadObjectsTest
 
   // methods and properties
 
-  [SetUp]
-  public void SetUp ()
-  {
-    ClientTransaction.SetCurrent (null);
-    _client = Client.GetObject (s_clientID);
-  }
-
   [Test]
   public void LoadObjectsOverRelationTest ()
   {
-    DateTime startTime = DateTime.Now;
+    const int numberOfTests = 10;
 
-    DomainObjectCollection files = _client.Files;
+    Console.WriteLine ("Expected average duration of LoadObjectsOverRelationTest: ~900ms");
+ 
+    TimeSpan elapsedTime = new TimeSpan (0);
+    for (int i = 0; i < numberOfTests; i++)
+    {
+      ClientTransaction.SetCurrent (null);
+      _client = Client.GetObject (s_clientID);
 
-    DateTime endTime = DateTime.Now;
-    TimeSpan elapsedTime = endTime - startTime;
+      DateTime startTime = DateTime.Now;
 
-    Console.WriteLine ("LoadObjectsOverRelationTest: Elapsed time: {0} ms", elapsedTime.TotalMilliseconds.ToString ("n"));
+      DomainObjectCollection files = _client.Files;
+
+      DateTime endTime = DateTime.Now;
+
+      elapsedTime += (endTime - startTime);
+    }
+
+    double averageMilliSeconds = elapsedTime.TotalMilliseconds / numberOfTests;
+    Console.WriteLine ("LoadObjectsOverRelationTest (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString ("n"));
   }
 }
 }
