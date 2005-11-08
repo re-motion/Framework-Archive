@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Web.UI.Design;
 using System.Web.UI;
+using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using System.Runtime.Serialization;
 using Rubicon.Utilities;
@@ -20,34 +20,36 @@ public sealed class IconInfo: ISerializable
 {
   private string _url;
   private string _alternateText;
+  private string _toolTip;
   private Unit _width;
   private Unit _height;
 
-  public IconInfo (string url, string alternateText, Unit width, Unit height)
+  public IconInfo (string url, string alternateText, string toolTip, Unit width, Unit height)
   {
-    _url = url;
-    _alternateText = alternateText;
+    Url = url;
+    AlternateText = alternateText;
+    ToolTip = toolTip;
     _width = width;
     _height = height;
   }
 
   public IconInfo (string url, Unit width, Unit height)
-    : this (url, null, width, height)
+    : this (url, null, null, width, height)
   {
   }
 
-  public IconInfo (string url, string alternateText, string width, string height)
-    : this (url, null, new Unit (width), new Unit (height))
+  public IconInfo (string url, string alternateText, string toolTip, string width, string height)
+    : this (url, null, toolTip, new Unit (width), new Unit (height))
   {
   }
 
   public IconInfo (string url, string width, string height)
-    : this (url, null, width, height)
+    : this (url, null, null, width, height)
   {
   }
 
   public IconInfo (string url)
-    : this (url, null, Unit.Empty, Unit.Empty)
+    : this (url, null, null, Unit.Empty, Unit.Empty)
   {
   }
 
@@ -62,8 +64,8 @@ public sealed class IconInfo: ISerializable
   [NotifyParentProperty (true)]
   public string Url
   {
-    get { return StringUtility.NullToEmpty (_url); }
-    set { _url = value; }
+    get { return _url; }
+    set { _url = StringUtility.NullToEmpty (value); }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -71,8 +73,17 @@ public sealed class IconInfo: ISerializable
   [NotifyParentProperty (true)]
   public string AlternateText
   {
-    get { return  StringUtility.NullToEmpty (_alternateText); }
-    set { _alternateText = value; }
+    get { return _alternateText; }
+    set { _alternateText = StringUtility.NullToEmpty (value); }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DefaultValue ("")]
+  [NotifyParentProperty (true)]
+  public string ToolTip
+  {
+    get { return  _toolTip; }
+    set { _toolTip = StringUtility.NullToEmpty (value); }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -96,6 +107,28 @@ public sealed class IconInfo: ISerializable
   public override string ToString()
   {
     return _url;
+  }
+
+  public void Render (HtmlTextWriter writer)
+  {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Src, _url);
+    if (! _width.IsEmpty && ! _height.IsEmpty)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Width, _width.ToString());
+      writer.AddAttribute (HtmlTextWriterAttribute.Height, _height.ToString());
+    }
+    writer.AddStyleAttribute ("vertical-align", "middle");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+    if (StringUtility.IsNullOrEmpty (_alternateText))
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
+    else 
+      writer.AddAttribute (HtmlTextWriterAttribute.Alt, _alternateText);
+    if (! StringUtility.IsNullOrEmpty (_toolTip))
+      writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+    writer.RenderBeginTag (HtmlTextWriterTag.Img);
+    writer.RenderEndTag();
   }
 
   private IconInfo (SerializationInfo info, StreamingContext context)

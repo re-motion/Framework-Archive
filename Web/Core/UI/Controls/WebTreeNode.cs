@@ -17,8 +17,9 @@ public class WebTreeNode: IControlItem
 {
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
-  private string _itemID = "";
-  private string _text = "";
+  private string _itemID = string.Empty;
+  private string _text = string.Empty;
+  private string _toolTip = string.Empty;
   private IconInfo _icon;
   private WebTreeNodeCollection _children;
   private WebTreeView _treeView;
@@ -29,15 +30,24 @@ public class WebTreeNode: IControlItem
   int _selectDesired = 0;
 
   /// <summary> Initalizes a new instance. </summary>
-  public WebTreeNode (string itemID, string text, IconInfo icon)
+  public WebTreeNode (string itemID, string text, string toolTip, IconInfo icon)
   {
+    // Null-Check not allowed
+
     ItemID = itemID;
     _text = text;
+    _toolTip = StringUtility.NullToEmpty (toolTip);
     _icon = icon;
     _children = new WebTreeNodeCollection (null);
     _children.SetParent (null, this);
   }
 
+  /// <summary> Initalizes a new instance. </summary>
+  public WebTreeNode (string itemID, string text, IconInfo icon)
+    : this (itemID, text, string.Empty, icon)
+  {
+  }
+  
   /// <summary> Initalizes a new instance. </summary>
   public WebTreeNode (string itemID, string text, string iconUrl)
     : this (itemID, text, new IconInfo (iconUrl, Unit.Empty, Unit.Empty))
@@ -194,6 +204,17 @@ public class WebTreeNode: IControlItem
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
       _text = value; 
     }
+  }
+
+  /// <summary> Gets or sets the tool-tip displayed in this node. </summary>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Appearance")]
+  [Description ("The tool-tip displayed in this node.")]
+  [NotifyParentProperty (true)]
+  public string ToolTip
+  {
+    get { return _toolTip; }
+    set { _toolTip = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets or sets the icon displayed in this tree node. </summary>
