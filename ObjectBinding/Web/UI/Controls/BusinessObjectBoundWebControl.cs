@@ -174,6 +174,21 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     return iconInfo;
   }
 
+  public static string GetToolTip (IBusinessObject businessObject, IBusinessObjectProvider businessObjectProvider)
+  {
+    ArgumentUtility.CheckNotNull ("businessObjectProvider", businessObjectProvider);
+
+    string toolTip = null;
+
+    IBusinessObjectWebUIService webUIService = 
+        (IBusinessObjectWebUIService) businessObjectProvider.GetService (typeof (IBusinessObjectWebUIService));
+
+    if (webUIService != null)
+      toolTip = webUIService.GetToolTip (businessObject);
+
+    return toolTip;
+  }
+
   private BusinessObjectBinding _binding;
   /// <summary> Set or cleared depending on <see cref="HasValidBinding"/> during <see cref="OnLoad"/>. </summary>
   bool _hasVisibleBinding = true;

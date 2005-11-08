@@ -324,6 +324,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
       BusinessObjectPropertyTreeNode propertyNode = new BusinessObjectPropertyTreeNode (
           propertyNodeInfo.Property.Identifier, 
           propertyNodeInfo.Text, 
+          propertyNodeInfo.ToolTip,
           propertyNodeInfo.Icon, 
           propertyNodeInfo.Property);
       propertyNode.IsEvaluated = false;
@@ -337,10 +338,13 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     string id = businessObject.UniqueIdentifier;
     string text = businessObject.DisplayName;
+    string toolTip = BusinessObjectBoundWebControl.GetToolTip (
+        businessObject, 
+        businessObject.BusinessObjectClass.BusinessObjectProvider);
     IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
         businessObject, 
         businessObject.BusinessObjectClass.BusinessObjectProvider);
-    BusinessObjectTreeNode node = new BusinessObjectTreeNode (id, text, icon, property, businessObject);
+    BusinessObjectTreeNode node = new BusinessObjectTreeNode (id, text, toolTip, icon, property, businessObject);
     node.IsEvaluated = false;
     return node;
   }
@@ -428,19 +432,20 @@ public class BocTreeView: BusinessObjectBoundWebControl
       bool isEvaluated = (bool) values[2];
       bool isSelected = (bool) values[3];
       string text = (string) values[4];
-      IconInfo icon = (IconInfo) values[5];
-      bool isBusinessObjectTreeNode = (bool) values[7];
+      string toolTip = (string) values[5];
+      IconInfo icon = (IconInfo) values[6];
+      bool isBusinessObjectTreeNode = (bool) values[8];
       
       WebTreeNode node;
       if (isBusinessObjectTreeNode)
       {
-        node = new BusinessObjectTreeNode (itemID, text, icon, null, null);
-        string propertyIdentifier = (string) values[6];
+        node = new BusinessObjectTreeNode (itemID, text, toolTip, icon, null, null);
+        string propertyIdentifier = (string) values[7];
         ((BusinessObjectTreeNode) node).PropertyIdentifier = propertyIdentifier;
       }
       else
       {
-        node = new BusinessObjectPropertyTreeNode (itemID, text, icon, null);
+        node = new BusinessObjectPropertyTreeNode (itemID, text, toolTip, icon, null);
       }
       node.IsExpanded = isExpanded;
       node.IsEvaluated = isEvaluated;
@@ -460,21 +465,22 @@ public class BocTreeView: BusinessObjectBoundWebControl
     {
       WebTreeNode node = (WebTreeNode) nodes[i];    
       Pair nodeViewState = new Pair();
-      object[] values = new object[8];
+      object[] values = new object[9];
       values[0] = node.ItemID;
       values[1] = node.IsExpanded;
       values[2] = node.IsEvaluated;
       values[3] = node.IsSelected;
       values[4] = node.Text;
-      values[5] = node.Icon;
+      values[5] = node.ToolTip;
+      values[6] = node.Icon;
       if (node is BusinessObjectTreeNode)
       { 
-        values[6] = ((BusinessObjectTreeNode) node).PropertyIdentifier;
-        values[7] = true;
+        values[7] = ((BusinessObjectTreeNode) node).PropertyIdentifier;
+        values[8] = true;
       }
       else
       {
-        values[7] = false;
+        values[8] = false;
       }
       nodeViewState.First = values;
       nodeViewState.Second = SaveNodesViewStateRecursive (node.Children);
@@ -697,19 +703,24 @@ public class BocTreeView: BusinessObjectBoundWebControl
 public class BusinessObjectPropertyTreeNodeInfo
 {
   private string _text;
+  private string _toolTip;
   private IconInfo _icon;
   private IBusinessObjectReferenceProperty _property;
 
   public BusinessObjectPropertyTreeNodeInfo (IBusinessObjectReferenceProperty property)
   {
+    ArgumentUtility.CheckNotNull ("property", property);
     _text = property.DisplayName;
+    _toolTip = string.Empty;
     _icon = null;
     _property = property;
   }
 
-  public BusinessObjectPropertyTreeNodeInfo (string text, IconInfo icon, IBusinessObjectReferenceProperty property)
+  public BusinessObjectPropertyTreeNodeInfo (string text, string toolTip, IconInfo icon, IBusinessObjectReferenceProperty property)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("text", text);
     _text = text;
+    _toolTip = toolTip;
     _icon = icon;
     _property = property;
   }
@@ -717,7 +728,17 @@ public class BusinessObjectPropertyTreeNodeInfo
   public string Text
   {
     get { return _text; }
-    set { _text = value; }
+    set
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      _text = value; 
+    }
+  }
+
+  public string ToolTip
+  {
+    get { return _toolTip; }
+    set { _toolTip = value; }
   }
 
   public IconInfo Icon
