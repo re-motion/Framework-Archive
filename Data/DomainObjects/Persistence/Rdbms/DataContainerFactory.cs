@@ -48,27 +48,29 @@ public class DataContainerFactory : IDataContainerFactory
 
   protected virtual DataContainer CreateDataContainerFromReader ()
   {
-    CheckForMandatoryColumns ();
+    ValueConverter valueConverter = new ValueConverter ();
 
-    string classID = _dataReader.GetString (_dataReader.GetOrdinal ("ClassID"));
+    string classID = _dataReader.GetString (valueConverter.GetMandatoryOrdinal (_dataReader, "ClassID"));
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
 
-    if (classDefinition == null)
-      throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, _dataReader["ID"]);
+    object idValue = _dataReader.GetValue (valueConverter.GetMandatoryOrdinal (_dataReader, "ID"));
+    object timestamp = _dataReader.GetValue (valueConverter.GetMandatoryOrdinal (_dataReader, "Timestamp"));
 
-    ValueConverter valueConverter = new ValueConverter ();
-    ObjectID id = valueConverter.GetObjectID (classDefinition, _dataReader["ID"]);
-    DataContainer dataContainer = DataContainer.CreateForExisting (id, _dataReader["Timestamp"]);
+    if (classDefinition == null)
+      throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
+
+    ObjectID id = valueConverter.GetObjectID (classDefinition, idValue);
+    DataContainer dataContainer = DataContainer.CreateForExisting (id, timestamp);
 
     foreach (PropertyDefinition propertyDefinition in classDefinition.GetPropertyDefinitions ())
     {
-      CheckColumn (propertyDefinition.ColumnName);
+      int columnOrdinal = valueConverter.GetMandatoryOrdinal (_dataReader, propertyDefinition.ColumnName);
 
       object dataValue;
 
       try
       {
-        dataValue = valueConverter.GetValue (classDefinition, propertyDefinition, _dataReader);
+        dataValue = valueConverter.GetValue (classDefinition, propertyDefinition, _dataReader, columnOrdinal);
       }
       catch (RdbmsProviderException e)
       {
@@ -90,27 +92,6 @@ public class DataContainerFactory : IDataContainerFactory
     }
 
     return dataContainer;
-  }
-
-  protected virtual void CheckForMandatoryColumns ()
-  {
-    CheckColumn ("ID");
-    CheckColumn ("ClassID");
-    CheckColumn ("Timestamp");
-  }
-
-  protected virtual void CheckColumn (string columnName)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
-
-    try
-    {  
-      _dataReader.GetOrdinal (columnName);
-    }
-    catch (IndexOutOfRangeException)
-    {
-      throw CreateRdbmsProviderException ("The mandatory column '{0}' could not be found.", columnName);
-    }
   }
 
   protected RdbmsProviderException CreateRdbmsProviderException (
