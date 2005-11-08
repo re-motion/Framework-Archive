@@ -30,7 +30,7 @@ public class LoadObjectsTest : DatabaseTest
   {
     const int numberOfTests = 10;
 
-    Console.WriteLine ("Expected average duration of LoadObjectsOverRelationTest: ~900ms");
+    Console.WriteLine ("Expected average duration of LoadObjectsOverRelationTest on reference system: ~270ms");
  
     TimeSpan elapsedTime = new TimeSpan (0);
     for (int i = 0; i < numberOfTests; i++)

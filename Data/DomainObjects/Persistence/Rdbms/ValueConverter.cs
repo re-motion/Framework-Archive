@@ -3,6 +3,7 @@ using System.Collections;
 using System.Data;
 
 using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 
@@ -13,6 +14,8 @@ public class ValueConverter : ValueConverterBase
   // types
 
   // static members and constants
+
+  private static Hashtable s_hasClassIDColumn = new Hashtable ();
 
   // member fields
 
@@ -175,21 +178,47 @@ public class ValueConverter : ValueConverterBase
     }
     else
     {
-      try
+      // Note: We cannot ask an IDataReader if a specific column exists without an exception thrown by IDataReader.
+      // Because throwing and catching exceptions is a very time consuming operation the result is cached per object class
+      // and relation and is reused in subsequent calls.
+      lock (typeof (ValueConverter))
       {
-        dataReader.GetOrdinal (GetClassIDColumnName (propertyDefinition.ColumnName));
+        int hashKey = GetClassIDColumnHashKey (propertyDefinition);
+        if (!s_hasClassIDColumn.Contains (hashKey))
+        {      
+          try
+          {
+            dataReader.GetOrdinal (GetClassIDColumnName (propertyDefinition.ColumnName));
+            s_hasClassIDColumn[hashKey] = true;
+          }
+          catch (IndexOutOfRangeException)
+          {
+            s_hasClassIDColumn[hashKey] = false;
+          }
+        }
 
-        throw CreateRdbmsProviderException (
-            "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
-            classDefinition.EntityName,
-            GetClassIDColumnName (propertyDefinition.ColumnName),
-            relatedMappingClassDefinition.ID);
+        if ((bool) s_hasClassIDColumn[hashKey])
+        {
+          throw CreateRdbmsProviderException (
+              "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
+              classDefinition.EntityName,
+              GetClassIDColumnName (propertyDefinition.ColumnName),
+              relatedMappingClassDefinition.ID);
+        }
       }
-      catch (IndexOutOfRangeException)
-      {
-        return relatedMappingClassDefinition;
-      }
+
+      return relatedMappingClassDefinition;
     }
+  }
+
+  private int GetClassIDColumnHashKey (PropertyDefinition propertyDefinition)
+  {
+    StorageProviderDefinition storageProviderDefinition = 
+        StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (propertyDefinition.ClassDefinition.StorageProviderID);
+
+    return storageProviderDefinition.GetHashCode () 
+        ^ propertyDefinition.ClassDefinition.EntityName.GetHashCode () 
+        ^ propertyDefinition.ColumnName.GetHashCode ();
   }
 
   private string GetClassIDColumnName (string columnName)
