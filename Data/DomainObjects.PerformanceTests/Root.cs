@@ -27,7 +27,6 @@ public class Root
   {
     Mapping.MappingConfiguration mappingConfiguration = Mapping.MappingConfiguration.Current;
     LoadObjectsTest test = new LoadObjectsTest ();
-    test.SetUp ();
     test.LoadObjectsOverRelationTest ();
   }
   
