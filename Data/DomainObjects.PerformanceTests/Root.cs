@@ -1,5 +1,9 @@
 using System;
 
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
+
 namespace Rubicon.Data.DomainObjects.PerformanceTests
 {
 /// <summary>
@@ -25,8 +29,14 @@ public class Root
   [STAThread]
   public static void Main (string[] args)
   {
-    Mapping.MappingConfiguration mappingConfiguration = Mapping.MappingConfiguration.Current;
+    // Have all xml files loaded, so if the code is instrumented by a profiler, 
+    // the loading does not falsify the method run times during the first call of GetObject.
+    MappingConfiguration mapping = MappingConfiguration.Current;
+    StorageProviderConfiguration storageProviderConfiguration = StorageProviderConfiguration.Current;
+    QueryConfiguration queryConfiguration = QueryConfiguration.Current;
+
     LoadObjectsTest test = new LoadObjectsTest ();
+    test.SetUp ();
     test.LoadObjectsOverRelationTest ();
   }
   

@@ -19,9 +19,9 @@
                 DefaultHTMLPageLayout = "Grid"
                 DefaultTargetSchema = "IE50"
                 DelaySign = "false"
-                OutputType = "Exe"
+                OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = "copy $(SolutionDir)DomainObjects\*.xsd $(TargetDir)&#xd;&#xa;copy $(ProjectDir)*.xml $(TargetDir)&#xd;&#xa;"
+                PostBuildEvent = 'copy $(SolutionDir)DomainObjects\*.xsd $(TargetDir)&#xd;&#xa;copy $(ProjectDir)*.xml $(TargetDir)&#xd;&#xa;copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"&#xd;&#xa;'
                 RootNamespace = "Rubicon.Data.DomainObjects.PerformanceTests"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
@@ -145,6 +145,11 @@
                 <File
                     RelPath = "Database\SetupDB.sql"
                     BuildAction = "None"
+                />
+                <File
+                    RelPath = "Database\TestDataLoader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "Doc\readme.txt"

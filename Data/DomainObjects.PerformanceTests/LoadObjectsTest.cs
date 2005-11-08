@@ -1,6 +1,7 @@
 using System;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.PerformanceTests.Database;
 using Rubicon.Data.DomainObjects.PerformanceTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.PerformanceTests
@@ -13,12 +14,12 @@ public class LoadObjectsTest
 
   // static members and constants
 
+  public const string c_connectionString = "Integrated Security=SSPI;Initial Catalog=PerformanceTestDomain;Data Source=localhost";
+
   private static ObjectID s_clientID = new ObjectID ("Client", new Guid ("6F20355F-FA99-4c4e-B432-02C41F7BD390"));
   private static ObjectID s_fileID = new ObjectID ("File", Guid.NewGuid ());
 
   // member fields
-
-  private Client _client;
 
   // construction and disposing
 
@@ -27,6 +28,15 @@ public class LoadObjectsTest
   }
 
   // methods and properties
+
+  [SetUp]
+  public void SetUp ()
+  {
+    using (TestDataLoader loader = new TestDataLoader (c_connectionString))
+    { 
+      loader.Load ();
+    }
+  }
 
   [Test]
   public void LoadObjectsOverRelationTest ()
@@ -39,11 +49,11 @@ public class LoadObjectsTest
     for (int i = 0; i < numberOfTests; i++)
     {
       ClientTransaction.SetCurrent (null);
-      _client = Client.GetObject (s_clientID);
+      Client client = Client.GetObject (s_clientID);
 
       DateTime startTime = DateTime.Now;
 
-      DomainObjectCollection files = _client.Files;
+      DomainObjectCollection files = client.Files;
 
       DateTime endTime = DateTime.Now;
 
