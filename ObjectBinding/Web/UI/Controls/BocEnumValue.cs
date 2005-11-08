@@ -73,6 +73,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   private ListControlStyle _listControlStyle;
   private Style _labelStyle;
 
+  private string _nullDisplayName = string.Empty;
+
   /// <summary> State field for special behaviour during load view state. </summary>
   /// <remarks> Used by <see cref="RefreshEnumListSelectedValue"/>. </remarks>
   private bool _isExecutingLoadViewState;
@@ -594,8 +596,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <returns> A <see cref="ListItem"/>. </returns>
   private ListItem CreateNullItem()
   {
-    string nullDisplayName = string.Empty;
-    if (! (_listControl is DropDownList))
+    string nullDisplayName = _nullDisplayName;
+    if (StringUtility.IsNullOrEmpty (nullDisplayName) && ! (_listControl is DropDownList))
     {
       if (IsDesignMode)
         nullDisplayName = "undefined";
@@ -837,6 +839,20 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   public Label Label
   {
     get { return _label; }
+  }
+
+  /// <summary> Gets or sets the text displayed for the null-item. </summary>
+  /// <value> 
+  ///   The text displayed for <see langword="null"/>. The default value is <see cref="String.Empty"/>.
+  ///   In case of the default value, the text is read from the resources for this control.
+  /// </value>
+  [Description("The description displayed for the null-item.")]
+  [Category ("Appearance")]
+  [DefaultValue("")]
+  public string NullDisplayName
+  {
+    get { return _nullDisplayName; }
+    set { _nullDisplayName = value; }
   }
 
   /// <summary> Gets or sets the validation error message. </summary>
