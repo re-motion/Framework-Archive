@@ -60,7 +60,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
     WebTreeNodeCollection nodes;
 
     nodes = WebTreeView.Nodes;
-    nodes.Add (new WebTreeNode ("node0", "Node 0", "Images/OBRTest.Job.gif"));
+    nodes.Add (new WebTreeNode ("node0", "Node 0", "Hello", new IconInfo ("Images/OBRTest.Job.gif", "Icon", "ToolTip", Unit.Pixel(16), Unit.Pixel(16))));
     nodes.Add (new WebTreeNode ("node1", "Node 1"));
     nodes.Add (new WebTreeNode ("node2", "Node 2"));
     nodes.Add (new WebTreeNode ("node3", "Node 3"));
@@ -75,8 +75,8 @@ public class SingleTestTreeView : SingleBocTestBasePage
 
     nodes = ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).Children;
     nodes.Add (new WebTreeNode ("node000", "Node 0-0-0"));
-    nodes.Add (new WebTreeNode ("node001", "Node 0-0-1", "Images/OBRTest.Job.gif"));
-    nodes.Add (new WebTreeNode ("node002", "Node 0-0-2", "Images/OBRTest.Job.gif"));
+    nodes.Add (new WebTreeNode ("node001", "Node 0-0-1", "Hello", new IconInfo ("Images/OBRTest.Job.gif")));
+    nodes.Add (new WebTreeNode ("node002", "Node 0-0-2", "Hello", new IconInfo ("Images/OBRTest.Job.gif", "Icon", null, Unit.Pixel(16), Unit.Pixel(16))));
     nodes.Add (new WebTreeNode ("node003", "Node 0-0-3", "Images/OBRTest.Job.gif"));
     ((WebTreeNode) ((WebTreeNode) WebTreeView.Nodes[0]).Children[0]).IsEvaluated = true;
 
