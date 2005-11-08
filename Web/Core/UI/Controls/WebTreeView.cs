@@ -56,23 +56,23 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
 
   // fields
   // The URL resolved icon paths.
-  #region private string _resolvedNodeIcon...
-  private string _resolvedNodeIconF;
-  private string _resolvedNodeIconFMinus;
-  private string _resolvedNodeIconFPlus;
-  private string _resolvedNodeIconI;
-  private string _resolvedNodeIconL;
-  private string _resolvedNodeIconLMinus;
-  private string _resolvedNodeIconLPlus;
-  private string _resolvedNodeIconMinus;
-  private string _resolvedNodeIconPlus;
-  private string _resolvedNodeIconR;
-  private string _resolvedNodeIconRMinus;
-  private string _resolvedNodeIconRPlus;
-  private string _resolvedNodeIconT;
-  private string _resolvedNodeIconTMinus;
-  private string _resolvedNodeIconTPlus;
-  private string _resolvedNodeIconWhite;
+  #region private IconInfo _resolvedNodeIcon...
+  private IconInfo _resolvedNodeIconF;
+  private IconInfo _resolvedNodeIconFMinus;
+  private IconInfo _resolvedNodeIconFPlus;
+  private IconInfo _resolvedNodeIconI;
+  private IconInfo _resolvedNodeIconL;
+  private IconInfo _resolvedNodeIconLMinus;
+  private IconInfo _resolvedNodeIconLPlus;
+  private IconInfo _resolvedNodeIconMinus;
+  private IconInfo _resolvedNodeIconPlus;
+  private IconInfo _resolvedNodeIconR;
+  private IconInfo _resolvedNodeIconRMinus;
+  private IconInfo _resolvedNodeIconRPlus;
+  private IconInfo _resolvedNodeIconT;
+  private IconInfo _resolvedNodeIconTMinus;
+  private IconInfo _resolvedNodeIconTPlus;
+  private IconInfo _resolvedNodeIconWhite;
   #endregion
 
   /// <summary> The nodes in this tree view. </summary>
@@ -482,7 +482,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
       bool isFirstNode, 
       bool isLastNode)
   {
-    string nodeIcon = GetNodeIcon (node, isFirstNode, isLastNode);
+    IconInfo nodeIcon = GetNodeIcon (node, isFirstNode, isLastNode);
     bool hasChildren = node.Children.Count > 0;
     bool isEvaluated = node.IsEvaluated;
     bool hasExpansionLink = hasChildren || ! isEvaluated;
@@ -493,11 +493,8 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
       writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
     }
-    writer.AddAttribute (HtmlTextWriterAttribute.Src, nodeIcon);
-    writer.AddStyleAttribute ("vertical-align", "middle");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-    writer.RenderBeginTag (HtmlTextWriterTag.Img);
-    writer.RenderEndTag();
+    
+    nodeIcon.Render (writer);
     if (hasExpansionLink)
       writer.RenderEndTag();
   }
@@ -509,6 +506,9 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHeadSelected);  
     else
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassNodeHead);  
+    if (! StringUtility.IsNullOrEmpty (node.ToolTip))
+      writer.AddAttribute (HtmlTextWriterAttribute.Title, node.ToolTip);
+
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
     string argument = c_clickCommandPrefix + nodePath;
@@ -518,11 +518,12 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
     if (   node.Icon != null 
         && ! StringUtility.IsNullOrEmpty (node.Icon.Url))
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, node.Icon.Url);
-      writer.AddStyleAttribute ("vertical-align", "middle");
-      writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-      writer.RenderBeginTag (HtmlTextWriterTag.Img);
-      writer.RenderEndTag();
+      bool hasIconToolTip = ! StringUtility.IsNullOrEmpty (node.Icon.ToolTip);
+      if (! hasIconToolTip)
+        node.Icon.ToolTip = node.ToolTip;
+      node.Icon.Render (writer);
+      if (! hasIconToolTip)
+        node.Icon.ToolTip = string.Empty;
       writer.Write ("&nbsp;");
     }
     if (! StringUtility.IsNullOrEmpty (node.Text))
@@ -605,7 +606,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   /// <param name="isFirstNode"> <see langword="true"/> if the node is the first node in the collection. </param>
   /// <param name="isLastNode"> <see langword="true"/> if the node is the last node in the collection. </param>
   /// <returns> An image URL. </returns>
-  private string GetNodeIcon (WebTreeNode node, bool isFirstNode, bool isLastNode)
+  private IconInfo GetNodeIcon (WebTreeNode node, bool isFirstNode, bool isLastNode)
   {
     bool hasChildren = node.Children.Count > 0;
     bool hasParent = node.ParentNode != null;
@@ -694,38 +695,38 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   /// <summary> Resolves the URLs for the node icons. </summary>
   private void ResolveNodeIcons()
   {
-    _resolvedNodeIconF = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconF);
-    _resolvedNodeIconFMinus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconFMinus);
-    _resolvedNodeIconFPlus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconFPlus);
-    _resolvedNodeIconI = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconI);
-    _resolvedNodeIconL = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconL);
-    _resolvedNodeIconLMinus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconLMinus);
-    _resolvedNodeIconLPlus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconLPlus);
-    _resolvedNodeIconMinus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconMinus);
-    _resolvedNodeIconPlus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconPlus);
-    _resolvedNodeIconR = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconR);
-    _resolvedNodeIconRMinus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconRMinus);
-    _resolvedNodeIconRPlus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconRPlus);
-    _resolvedNodeIconT = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconT);
-    _resolvedNodeIconTMinus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconTMinus);
-    _resolvedNodeIconTPlus = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconTPlus);
-    _resolvedNodeIconWhite = 
-        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconWhite);
+    _resolvedNodeIconF = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconF));
+    _resolvedNodeIconFMinus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconFMinus));
+    _resolvedNodeIconFPlus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconFPlus));
+    _resolvedNodeIconI = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconI));
+    _resolvedNodeIconL = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconL));
+    _resolvedNodeIconLMinus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconLMinus));
+    _resolvedNodeIconLPlus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconLPlus));
+    _resolvedNodeIconMinus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconMinus));
+    _resolvedNodeIconPlus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconPlus));
+    _resolvedNodeIconR = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconR));
+    _resolvedNodeIconRMinus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconRMinus));
+    _resolvedNodeIconRPlus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconRPlus));
+    _resolvedNodeIconT = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconT));
+    _resolvedNodeIconTMinus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconTMinus));
+    _resolvedNodeIconTPlus = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconTPlus));
+    _resolvedNodeIconWhite = new IconInfo (
+        ResourceUrlResolver.GetResourceUrl (this, Context, typeof (WebTreeView), ResourceType.Image, c_nodeIconWhite));
   }
   
   /// <summary> Sets the selected tree node. </summary>
