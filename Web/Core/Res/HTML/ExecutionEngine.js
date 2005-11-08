@@ -56,6 +56,7 @@ function Wxe_Context (
 
   var _statusIsCachedMessage = statusIsCachedMessage;
   var _statusMessageWindow = null;
+  var _hasUnloaded = false;
 
   var _aspnetDoPostBack = null;
   
@@ -193,7 +194,8 @@ function Wxe_Context (
   {
     _isAbortingBeforeUnload = false;
     
-    if (   ! _isSubmittingBeforeUnload
+    if (   ! _hasUnloaded
+        && ! _isSubmittingBeforeUnload
         && ! _hasAborted && ! _hasSubmitted
         && ! _isAborting && _isAbortConfirmationEnabled)
     {
@@ -234,6 +236,7 @@ function Wxe_Context (
       
       _isAbortingBeforeUnload = false;
     }
+    _hasUnloaded = true;
   }
 
   this.Refresh = function ()
@@ -250,7 +253,11 @@ function Wxe_Context (
 
   this.DoPostBack = function (eventTarget, eventArgument)
   {
-    if (_hasSubmitted || _hasAborted)
+    if (_hasUnloaded)
+    {
+      this.ShowIsCachedMessage();
+    }
+    else if (_hasSubmitted || _hasAborted)
     {
       return;
     }
@@ -278,7 +285,12 @@ function Wxe_Context (
 
   this.FormSubmit = function ()
   {
-    if (_hasSubmitted || _hasAborted)
+    if (_hasUnloaded)
+    {
+      this.ShowIsCachedMessage();
+      return false;
+    }
+    else if (_hasSubmitted || _hasAborted)
     {
       return false;
     }
