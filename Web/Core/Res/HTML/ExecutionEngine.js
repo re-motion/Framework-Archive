@@ -148,7 +148,7 @@ function Wxe_Context (
   {
     if (currentElement != null)
     {
-      if (currentElement.id != null && currentElement.id != '' && Wxe_IsFocusableTag (currentElement.tagName))
+      if (currentElement.id != null && currentElement.id != '' && IsFocusableTag (currentElement.tagName))
       {
 		    currentElement.onfocus = Wxe_OnElementFocus;
 		    currentElement.onblur  = Wxe_OnElementBlur;
@@ -486,6 +486,16 @@ function Wxe_Context (
     message.style.left = windowWidth/2 - message.offsetWidth/2 + scrollLeft;
     message.style.top = windowHeight/2 - message.offsetHeight/2 + scrollTop;
   }
+
+  function IsFocusableTag (tagName) 
+  {
+    tagName = tagName.toLowerCase();
+    return (tagName == "input" ||
+            tagName == "textarea" ||
+            tagName == "select" ||
+            tagName == "button" ||
+            tagName == "a");
+  }
 }
 
 function Wxe_OnScroll()
@@ -521,16 +531,6 @@ function Wxe_OnBeforeUnload()
 function Wxe_OnUnload()
 {
   _wxe_context.OnUnload();
-}
-
-function Wxe_IsFocusableTag (tagName) 
-{
-  tagName = tagName.toLowerCase();
-  return (tagName == "input" ||
-          tagName == "textarea" ||
-          tagName == "select" ||
-          tagName == "button" ||
-          tagName == "a");
 }
 
 function Wxe_OnElementBlur (evt) 
