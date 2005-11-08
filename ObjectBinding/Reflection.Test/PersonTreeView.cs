@@ -23,11 +23,13 @@ public class PersonTreeView: BocTreeView
       nodeInfos = new BusinessObjectPropertyTreeNodeInfo[2];
       nodeInfos[0] = new BusinessObjectPropertyTreeNodeInfo (
           "Children", 
+          "ToolTip: Children", 
           new IconInfo(null, Unit.Empty, Unit.Empty), 
           new ReflectionBusinessObjectReferenceProperty (
               typeof (Person).GetProperty ("Children"), typeof (Person), true));
       nodeInfos[1] = new BusinessObjectPropertyTreeNodeInfo (
           "Jobs", 
+          "ToolTip: Jobs",
           new IconInfo(null, Unit.Empty, Unit.Empty), 
           new ReflectionBusinessObjectReferenceProperty (
               typeof (Person).GetProperty ("Jobs"), typeof (Job), true));
