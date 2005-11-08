@@ -1,6 +1,11 @@
+1.3.21
+======
+- BocEnumValue
+  * Der NullDisplayName kann nun via Property gesetzt werden.
+  
 1.3.18
 ======
-* BocEditDetailsColumnDefinitionShow: Tippfehler im Namen ausgebessert.
+- BocEditDetailsColumnDefinitionShow: Tippfehler im Namen ausgebessert.
 
 1.3.14
 ======
