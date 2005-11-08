@@ -100,32 +100,53 @@ public class PersistenceManagerTest : ClientTransactionBaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (PersistenceException), 
-      "Cannot load related DataContainer of object"
-      + " 'ClassWithValidRelations|3e5aed0e-c6f9-4dca-a901-4da50f5a97ab|System.Guid'"
-      + " over mandatory relation 'ClassWithGuidKeyToClassWithValidRelationsNonOptional'.")] 
   public void LoadRelatedDataContainerByNonOptionalNullID ()
   {
-    ObjectID id = new ObjectID ("ClassWithValidRelations", new Guid ("{3E5AED0E-C6F9-4dca-A901-4DA50F5A97AB}"));
+    ClassDefinition classWithValidRelations = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("ClassWithValidRelations");
+    DataContainer dataContainer = _persistenceManager.CreateNewDataContainer (classWithValidRelations);
 
-    DataContainer dataContainer = _persistenceManager.LoadDataContainer (id);
+    try
+    {
+      _persistenceManager.LoadRelatedDataContainer (
+          dataContainer, new RelationEndPointID (dataContainer.ID, "ClassWithGuidKeyNonOptional"));
 
-    _persistenceManager.LoadRelatedDataContainer (
-        dataContainer, new RelationEndPointID (dataContainer.ID, "ClassWithGuidKeyNonOptional"));
+      Assert.Fail ("Test expects a PersistenceException.");
+    }
+    catch (PersistenceException e)
+    {
+      Assert.AreEqual (typeof (PersistenceException), e.GetType ());
+
+      string expectedMessage = string.Format (
+          "Cannot load related DataContainer of object"
+          + " 'ClassWithValidRelations|{0}|System.Guid'"
+          + " over mandatory relation 'ClassWithGuidKeyToClassWithValidRelationsNonOptional'.", dataContainer.ID.Value);
+
+      Assert.AreEqual (expectedMessage, e.Message);
+    }
   }
 
   [Test]
-  [ExpectedException (typeof (PersistenceException), 
-      "Cannot load related DataContainer of object"
-      + " 'Distributor|1514d668-a0a5-40e9-ac22-f24900e0eb39|System.Guid'"
-      + " over mandatory relation 'PartnerToPerson'.")] 
   public void LoadRelatedDataContainerByNonOptionalNullIDWithInheritance ()
   {
-    DataContainer dataContainer = _persistenceManager.LoadDataContainer (
-        DomainObjectIDs.DistributorWithoutContactPersonAndCeo);
+    ClassDefinition distributorClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Distributor");
+    DataContainer dataContainer = _persistenceManager.CreateNewDataContainer (distributorClass);
     
-    _persistenceManager.LoadRelatedDataContainer (
-        dataContainer, new RelationEndPointID (dataContainer.ID, "ContactPerson"));
+    try
+    {
+      _persistenceManager.LoadRelatedDataContainer (dataContainer, new RelationEndPointID (dataContainer.ID, "ContactPerson"));
+      Assert.Fail ("Test expects a PersistenceException.");
+    }
+    catch (PersistenceException e)
+    {
+      Assert.AreEqual (typeof (PersistenceException), e.GetType ());
+
+      string expectedMessage = string.Format (
+          "Cannot load related DataContainer of object"
+          + " 'Distributor|{0}|System.Guid'"
+          + " over mandatory relation 'PartnerToPerson'.", dataContainer.ID.Value);
+
+      Assert.AreEqual (expectedMessage, e.Message);
+    }
   }
 
   [Test]
