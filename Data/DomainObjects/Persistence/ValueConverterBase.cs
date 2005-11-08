@@ -23,19 +23,19 @@ public class ValueConverterBase
 
   // methods and properties
 
-  public virtual ObjectID GetObjectID (ClassDefinition classDefinition, object value)
+  public virtual ObjectID GetObjectID (ClassDefinition classDefinition, object dataValue)
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-    if (value == null)
+    if (dataValue == null)
       return null;
 
-    if (value.GetType () == typeof (string))
+    if (dataValue.GetType () == typeof (string))
     {
       ObjectID id = null;
       try
       {
-        id = ObjectID.Parse ((string) value);
+        id = ObjectID.Parse ((string) dataValue);
       }
       catch (ArgumentException)
       {
@@ -48,7 +48,7 @@ public class ValueConverterBase
         return id;
     }
 
-    return new ObjectID (classDefinition.ID, value);
+    return new ObjectID (classDefinition.ID, dataValue);
   }
 
   public virtual object GetValue (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, object dataValue)
@@ -61,7 +61,7 @@ public class ValueConverterBase
       if (!propertyDefinition.IsNullable)
       {
         throw CreateConverterException (
-            "Invalid null value for not-nullable property '{0}' encountered, class '{1}'.", 
+            "Invalid null value for not-nullable property '{0}' encountered. Class: '{1}'.", 
             propertyDefinition.PropertyName, classDefinition.ID);
       }
       else
