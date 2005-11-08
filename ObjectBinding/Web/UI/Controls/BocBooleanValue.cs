@@ -669,7 +669,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("The description displayed when the checkbox is set to True.")]
-  [Category ("Behavior")]
+  [Category ("Appearance")]
   [DefaultValue("")]
   public string TrueDescription
   {
@@ -683,7 +683,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("The description displayed when the checkbox is set to False.")]
-  [Category ("Behavior")]
+  [Category ("Appearance")]
   [DefaultValue("")]
   public string FalseDescription
   {
@@ -697,7 +697,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("The description displayed when the checkbox is set to null.")]
-  [Category ("Behavior")]
+  [Category ("Appearance")]
   [DefaultValue("")]
   public string NullDescription
   {
