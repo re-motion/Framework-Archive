@@ -2,6 +2,10 @@
 ======
 - BocEnumValue
   * Der NullDisplayName kann nun via Property gesetzt werden.
+- BocTreeView
+  * Zeigt nun auch ToolTips für die Nodes an.
+- IBusinessObjectWebUIService
+  * Neue Methode: string GetToolTip (IBusinessObject obj);
   
 1.3.18
 ======
