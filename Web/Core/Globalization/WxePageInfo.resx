@@ -42,16 +42,13 @@
     <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.AbortMessage">
         <value>Unsafed data will be lost if you continue.</value>
     </data>
-    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.IsAbortingMessage">
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsAbortingMessage">
         <value>&lt;p&gt;You are about to leave this page.&lt;/p&gt;&lt;p&gt;Therefore it is not possible to submit new input.&lt;/p&gt;</value>
     </data>
-    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.IsSubmittingMessage">
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsSubmittingMessage">
         <value>&lt;p&gt;This page is being reloaded.&lt;/p&gt;&lt;p&gt;Please wait until the transmission has completed.&lt;/p&gt;</value>
     </data>
-    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.HasAbortedMessage">
-        <value>This page has been aborted.</value>
-    </data>
-    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.HasSubmittedMessage">
-        <value>This page has been submitted.</value>
+    <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage">
+        <value>Navigating this page by using the Forward and Back buttons is not supported.</value>
     </data>
 </root>

@@ -4,8 +4,7 @@ function Wxe_Initialize (
     theFormID, 
     refreshInterval, refreshUrl, 
     abortUrl, abortMessage, 
-    isSubmittingMessage, isAbortingMessage,
-    hasSubmittedMessage, hasAbortedMessage,
+    statusIsSubmittingMessage, statusIsAbortingMessage, statusIsCachedMessage,
     smartScrollingFieldID, smartFocusFieldID,
     eventHandlers)
 {
@@ -13,8 +12,7 @@ function Wxe_Initialize (
       theFormID, 
       refreshInterval, refreshUrl, 
       abortUrl, abortMessage, 
-      isSubmittingMessage, isAbortingMessage,
-      hasSubmittedMessage, hasAbortedMessage,
+      statusIsSubmittingMessage, statusIsAbortingMessage, statusIsCachedMessage,
       smartScrollingFieldID, smartFocusFieldID,
       eventHandlers);
   
@@ -25,8 +23,7 @@ function Wxe_Context (
     theFormID, 
     refreshInterval, refreshUrl, 
     abortUrl, abortMessage, 
-    isSubmittingMessage, isAbortingMessage,
-    hasSubmittedMessage, hasAbortedMessage,
+    statusIsSubmittingMessage, statusIsAbortingMessage, statusIsCachedMessage,
     smartScrollingFieldID, smartFocusFieldID,
     eventHandlers)
 {
@@ -49,15 +46,15 @@ function Wxe_Context (
   var _hasSubmitted = false;
   // Special flag to support the OnBeforeUnload part
   var _isSubmittingBeforeUnload = false;
-  var _isSubmittingMessage = isSubmittingMessage;
-  var _hasSubmittedMessage = hasSubmittedMessage;
+  var _statusIsSubmittingMessage = statusIsSubmittingMessage;
 
   var _isAborting = false;
   var _hasAborted = false;
   // Special flag to support the OnBeforeUnload part
   var _isAbortingBeforeUnload = false;
-  var _isAbortingMessage = isAbortingMessage;
-  var _hasAbortedMessage = hasAbortedMessage;
+  var _statusIsAbortingMessage = statusIsAbortingMessage;
+
+  var _statusIsCachedMessage = statusIsCachedMessage;
 
   var _aspnetDoPostBack = null;
   
@@ -115,12 +112,12 @@ function Wxe_Context (
     if (field.value == _cacheStateHasSubmitted)
     {
       _hasSubmitted = true;
-      this.ShowHasSubmittedMessage ();
+      this.ShowStatusIsCachedMessage ();
     }
     else if (field.value == _cacheStateHasLoaded && _isAbortEnabled)
     {
       _hasAborted = true;
-      this.ShowHasAbortedMessage ();
+      this.ShowStatusIsCachedMessage ();
     }
     else
     {
@@ -256,11 +253,11 @@ function Wxe_Context (
     }
     else if (_isAborting)
     {
-      this.ShowIsAbortingMessage();
+      this.ShowStatusIsAbortingMessage();
     }
     else if (_isSubmitting)
     {
-      this.ShowIsSubmittingMessage();
+      this.ShowStatusIsSubmittingMessage();
     }
     else
     {
@@ -284,12 +281,12 @@ function Wxe_Context (
     }
     if (_isAborting)
     {
-      this.ShowIsAbortingMessage();
+      this.ShowStatusIsAbortingMessage();
       return false;
     }
     else if (_isSubmitting)
     {
-      this.ShowIsSubmittingMessage();
+      this.ShowStatusIsSubmittingMessage();
       return false;
     }
     else
@@ -380,28 +377,22 @@ function Wxe_Context (
     }
   }
 
-  this.ShowIsAbortingMessage = function ()
+  this.ShowStatusIsAbortingMessage = function ()
   {
-    if (_isAbortingMessage != null)
-      this.ShowMessage ('WxeIsAbortingMessage', _isAbortingMessage);
+    if (_statusIsAbortingMessage != null)
+      this.ShowMessage ('WxeStatusIsAbortingMessage', _statusIsAbortingMessage);
   }
 
-  this.ShowIsSubmittingMessage = function ()
+  this.ShowStatusIsSubmittingMessage = function ()
   {
-    if (_isSubmittingMessage != null)
-      this.ShowMessage ('WxeIsSubmittingMessage', _isSubmittingMessage);
+    if (_statusIsSubmittingMessage != null)
+      this.ShowMessage ('WxeStatusIsSubmittingMessage', _statusIsSubmittingMessage);
   }
 
-  this.ShowHasAbortedMessage = function ()
+  this.ShowStatusIsCachedMessage = function ()
   {
-    if (_hasAbortedMessage != null)
-      this.ShowMessage ('WxeHasAbortedMessage', _hasAbortedMessage);
-  }
-
-  this.ShowHasSubmittedMessage = function ()
-  {
-    if (_hasSubmittedMessage != null)
-      this.ShowMessage ('WxeHasSubmittedMessage', _hasSubmittedMessage);
+    if (_statusIsCachedMessage != null)
+      this.ShowMessage ('WxeStatusIsCachedMessage', _statusIsCachedMessage);
   }
 
   this.ShowMessage = function (id, message)
@@ -415,7 +406,7 @@ function Wxe_Context (
       div.style.position = 'absolute';
       div.style.left = '25%';
       div.style.top = '25%';
-      div.innerHTML = 
+      div.innerHTML =
             '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">'
           + message
           + '</td></tr></table>';

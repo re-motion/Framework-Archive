@@ -36,13 +36,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     /// <summary> Displayed when the user attempts to abort the WXE Function. </summary>
     AbortMessage,
     /// <summary> Displayed when the user attempts to submit while the page is already submitting. </summary>
-    IsSubmittingMessage,
+    StatusIsSubmittingMessage,
     /// <summary> Displayed when the user attempts to submit while the page is already aborting. </summary>
-    IsAbortingMessage,
-    /// <summary> Displayed when the user returnes to a cached page that has already been submitted. </summary>
-    HasSubmittedMessage,
-    /// <summary> Displayed when the user returnes to a cached page that has already been aborted. </summary>
-    HasAbortedMessage
+    StatusIsAbortingMessage,
+    /// <summary> Displayed when the user returnes to a cached page that has already been submitted or aborted. </summary>
+    StatusIsCachedMessage
   }
 
   public static readonly string ReturningTokenID = "wxeReturningTokenField";
@@ -266,32 +264,37 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         abortPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Abort + "'";
       
       if (isAbortEnabled && isAbortConfirmationEnabled)
-        abortMessage = "'" + resourceManager.GetString (ResourceIdentifier.AbortMessage) + "'";        
+      {
+        if (StringUtility.IsNullOrEmpty (_page.AbortMessage))
+          temp = resourceManager.GetString (ResourceIdentifier.AbortMessage);
+        else
+          temp = _page.AbortMessage;
+        abortMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
+      }
     }
 
-    string isSubmittingMessage = "null";
-    string isAbortingMessage = "null";        
-    string hasSubmittedMessage = "null";
-    string hasAbortedMessage = "null";  
+    string statusIsSubmittingMessage = "null";
+    string statusIsAbortingMessage = "null";        
+    string statusIsCachedMessage = "null";
     if (_page.AreStatusMessagesEnabled)
     {
-      temp = resourceManager.GetString (ResourceIdentifier.IsSubmittingMessage);
-      isSubmittingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
-
-      temp = resourceManager.GetString (ResourceIdentifier.IsAbortingMessage);
-      isAbortingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
-
-      if (StringUtility.IsNullOrEmpty (_page.HasSubmittedMessage))
-        temp = resourceManager.GetString (ResourceIdentifier.HasSubmittedMessage);
+      if (StringUtility.IsNullOrEmpty (_page.StatusIsSubmittingMessage))
+        temp = resourceManager.GetString (ResourceIdentifier.StatusIsSubmittingMessage);
       else
-        temp = _page.HasSubmittedMessage;
-      hasSubmittedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
+        temp = _page.StatusIsSubmittingMessage;
+      statusIsSubmittingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
 
-      if (StringUtility.IsNullOrEmpty (_page.HasAbortedMessage))
-        temp = resourceManager.GetString (ResourceIdentifier.HasAbortedMessage);
+      if (StringUtility.IsNullOrEmpty (_page.StatusIsAbortingMessage))
+        temp = resourceManager.GetString (ResourceIdentifier.StatusIsAbortingMessage);
       else
-        temp = _page.HasAbortedMessage;
-      hasAbortedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
+        temp = _page.StatusIsAbortingMessage;
+      statusIsAbortingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
+
+      if (StringUtility.IsNullOrEmpty (_page.StatusIsCachedMessage))
+        temp = resourceManager.GetString (ResourceIdentifier.StatusIsCachedMessage);
+      else
+        temp = _page.StatusIsCachedMessage;
+      statusIsCachedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
     }
 
     string smartScrollingFieldID = "null";
@@ -337,10 +340,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     initScript.Append ("    ").Append (refreshPath).Append (",\r\n");
     initScript.Append ("    ").Append (abortPath).Append (",\r\n");
     initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (isSubmittingMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (isAbortingMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (hasSubmittedMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (hasAbortedMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (statusIsSubmittingMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (statusIsAbortingMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (statusIsCachedMessage).Append (",\r\n");
     initScript.Append ("    ").Append (smartScrollingFieldID).Append (",\r\n");
     initScript.Append ("    ").Append (smartFocusFieldID).Append (",\r\n");
     initScript.Append ("    _wxe_eventHandlers); \r\n");

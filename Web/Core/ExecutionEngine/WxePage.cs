@@ -172,6 +172,38 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// <value> <see langowrd="true"/> to abort the session upon navigtion away from the page. </value>
   bool IsAbortEnabled { get; }
 
+  /// <summary> Gets the message displayed when the user attempts to abort the WXE Function. </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  string AbortMessage { get; }
+
+  /// <summary> 
+  ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
+  ///   tries to e.g. postback while a request is being processed.
+  /// </summary>
+  bool AreStatusMessagesEnabled { get; }
+
+  /// <summary> Gets the message displayed when the user attempts to submit while the page is already submitting. </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  string StatusIsSubmittingMessage { get; }
+
+  /// <summary> Gets the message displayed when the user attempts to submit while the page is already aborting. </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  string StatusIsAbortingMessage { get; }
+
+  /// <summary> 
+  ///   Gets the message displayed when the user returnes to a cached page that has already been submited or aborted. 
+  /// </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  string StatusIsCachedMessage { get; }
+
   /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePageEventHandler/*' />
   void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function);
@@ -194,17 +226,6 @@ public interface IWxePage: IPage, IWxeTemplateControl
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
 
-  /// <summary> 
-  ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
-  ///   tries to e.g. postback while a request is being processed.
-  /// </summary>
-  bool AreStatusMessagesEnabled { get; }
-
-  /// <summary> Gets the message displayed when the user returnes to a cached page that has already been submitted. </summary>
-  string HasSubmittedMessage { get; }
-
-  /// <summary> Gets the message displayed when the user returnes to a cached page that has already been aborted. </summary>
-  string HasAbortedMessage { get; }
 }
 
 /// <summary>
@@ -476,9 +497,11 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   private bool disposed;
   private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
+  private string _abortMessage;
   private NaBooleanEnum _enableStatusMessages = NaBooleanEnum.Undefined;
-  private string _hasAbortedMessage = string.Empty;
-  private string _hasSubmittedMessage = string.Empty;
+  private string _statusIsSubmittingMessage = string.Empty;
+  private string _statusIsAbortingMessage = string.Empty;
+  private string _statusIsCachedMessage = string.Empty;
   private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
 
@@ -721,6 +744,19 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
     get { return IsAbortEnabled; }
   }
 
+  /// <summary> Gets or sets the message displayed when the user attempts to abort the WXE Function. </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  [Description("The message displayed when the user attempts to abort the WXE Function.")]
+  [Category ("Appearance")]
+  [DefaultValue ("")]
+  public string AbortMessage 
+  {
+    get { return _abortMessage; }
+    set { _abortMessage = StringUtility.NullToEmpty (value); }
+  }
+
   /// <summary> 
   ///   Gets or sets the flag that determines whether to display a message when the user tries to start a second
   ///   request.
@@ -758,27 +794,49 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   }
 
   /// <summary> 
-  ///   Gets or sets the message displayed when the user returnes to a cached page that has already been aborted. 
+  ///   Gets or sets the message displayed when the user attempts to submit while the page is already aborting. 
   /// </summary>
-  [Description("The message displayed when the user returnes to a cached page that has already been aborted.")]
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  [Description("The message displayed when the user attempts to submit while the page is already aborting.")]
   [Category ("Appearance")]
   [DefaultValue ("")]
-  public virtual string HasAbortedMessage
+  public virtual string StatusIsAbortingMessage
   {
-    get { return _hasAbortedMessage; }
-    set { _hasAbortedMessage = StringUtility.NullToEmpty (value); }
+    get { return _statusIsAbortingMessage; }
+    set { _statusIsAbortingMessage = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> 
-  ///   Gets or sets the message displayed when the user returnes to a cached page that has already been submitted. 
+  ///   Gets or sets the message displayed when the user attempts to submit while the page is already submitting. 
   /// </summary>
-  [Description("The message displayed when the user returnes to a cached page that has already been submitted.")]
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
   [Category ("Appearance")]
   [DefaultValue ("")]
-  public virtual string HasSubmittedMessage
+  public virtual string StatusIsSubmittingMessage
   {
-    get { return _hasSubmittedMessage; }
-    set { _hasSubmittedMessage = StringUtility.NullToEmpty (value); }
+    get { return _statusIsSubmittingMessage; }
+    set { _statusIsSubmittingMessage = StringUtility.NullToEmpty (value); }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the message displayed when the user returnes to a cached page that has already been submitted 
+  ///   or aborted. 
+  /// </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  [Description("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
+  [Category ("Appearance")]
+  [DefaultValue ("")]
+  public virtual string StatusIsCachedMessage
+  {
+    get { return _statusIsCachedMessage; }
+    set { _statusIsCachedMessage = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets or sets the flag that determines whether to use smart scrolling. </summary>
