@@ -15,6 +15,15 @@ public class ReflectionBusinessObjectWebUIService: IBusinessObjectWebUIService
     else
       return new IconInfo ("Images/" + obj.BusinessObjectClass.Identifier + ".gif", Unit.Pixel (16), Unit.Pixel (16));
   }
+
+  public string GetToolTip (IBusinessObject obj)
+  {
+    if (obj == null)
+      return "No ToolTip";
+    else
+      return "ToolTip: " + obj.BusinessObjectClass.Identifier;
+  }
+
 }
 
 }
