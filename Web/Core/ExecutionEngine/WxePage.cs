@@ -29,7 +29,11 @@ public enum WxePageEvents
   /// <summary> Raised when the user posts back to the server. Signature: <c>void Function (eventTargetID, eventArgs</c> </summary>
   OnPostBack,
   /// <summary> Raised when the user leaves the page. Signature: <c>void Function ()</c> </summary>
-  OnAbort
+  OnAbort,
+  /// <summary> Raised when the user scrolls the page. Signature: <c>void Function ()</c> </summary>
+  OnScroll,
+  /// <summary> Raised when the user resizes the page. Signature: <c>void Function ()</c> </summary>
+  OnResize
 }
 
 /// <summary> This interface represents a page that can be used in a <see cref="WxePageStep"/>. </summary>
@@ -585,13 +589,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
   protected override void OnPreRender(EventArgs e)
   {
     base.OnPreRender (e);
-    SetCacheSettings();
-  }
-
-  protected virtual void SetCacheSettings()
-  {
-    HttpContext context = WxeContext.Current.HttpContext;
-    context.Response.Cache.SetCacheability(HttpCacheability.Private);
   }
 
   /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>

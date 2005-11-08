@@ -158,7 +158,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     PreRenderSmartNavigation();
   }
 
-  protected void PreRenderWxe()
+  private void PreRenderWxe()
   {
     WxeContext wxeContext = WxeContext.Current;
     Page page = (Page) _page;
@@ -199,9 +199,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   
     RegisterWxeInitializationScript(); 
+    SetCacheSettings();
   }
 
-  protected void PreRenderSmartNavigation()
+  private void SetCacheSettings()
+  {
+    HttpContext context = WxeContext.Current.HttpContext;
+    context.Response.Cache.SetCacheability (HttpCacheability.Private);
+  }
+
+  private void PreRenderSmartNavigation()
   {
     ISmartNavigablePage smartNavigablePage = _page as ISmartNavigablePage;
     if (smartNavigablePage == null)
@@ -236,7 +243,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
-  protected void RegisterWxeInitializationScript()
+  private void RegisterWxeInitializationScript()
   {
     IResourceManager resourceManager = GetResourceManager();
     

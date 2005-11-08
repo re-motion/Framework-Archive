@@ -15,9 +15,9 @@
 </head>
 <body MS_POSITIONING="FlowLayout">
     <form id=Form method=post runat="server">
-<table style="width:100%; height:100%">
+<table style="WIDTH:100%; HEIGHT:100%">
 <tr>
-<td style="vertical-align:top;">
+<td style="VERTICAL-ALIGN:top">
     <p><asp:label id="FunctionTokenLabel" runat="server">Token</asp:label>, 
     <asp:label id="PostBackIDLabel" runat="server">PostBackID</asp:label></p>
     <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton><rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
@@ -44,6 +44,7 @@
 <rubicon:WebButton id="OpenSessionFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Session Function with Permanent URL in New Window"></rubicon:WebButton><br>
 Permalink this: <asp:HyperLink id="CurrentFunctionPermaLink" runat="server"></asp:HyperLink><br>Permalink 
 Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>
+
 </td>
 </tr>
 </table>

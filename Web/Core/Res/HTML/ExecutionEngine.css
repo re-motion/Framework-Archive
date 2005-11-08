@@ -1,26 +1,25 @@
-div#WxeStatusIsAbortingMessage,
-div#WxeStatusIsSubmittingMessage
+#WxeStatusIsAbortingMessage,
+#WxeStatusIsSubmittingMessage,
+#WxeStatusIsCachedMessage
+{
+  background-color: White;
+  z-index: 100;
+}
+
+#WxeStatusIsAbortingMessage td,
+#WxeStatusIsSubmittingMessage td
 {
   background-color: White;
   border: solid 3pt Gray;
-}
-
-div#WxeStatusIsAbortingMessage td,
-div#WxeStatusIsSubmittingMessage td
-{
   font-weight: bold;
   font-size: 100%;
   color: Gray;
 }
-  
-div#WxeStatusIsCachedMessage
+    
+#WxeStatusIsCachedMessage td
 {
   background-color: White;
   border: solid 1pt Black;
-}
-  
-div#WxeStatusIsCachedMessage td
-{
   color: Black;
 }
 

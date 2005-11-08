@@ -14,6 +14,8 @@
       Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsAbortingMessage
       Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsSubmittingMessage
    * Sämtliche Meldungen (AbortMessage, StatusIsXXXMessage) lassen sich nun auch via Property setzen.
+  * RegisterClientSideEventHandler: Neue clientseitige Eventshandler werden unterstüzt: OnScroll, OnResize.
+  
    
 1.3.20
 ======

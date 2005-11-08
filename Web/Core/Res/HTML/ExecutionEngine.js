@@ -55,6 +55,7 @@ function Wxe_Context (
   var _statusIsAbortingMessage = statusIsAbortingMessage;
 
   var _statusIsCachedMessage = statusIsCachedMessage;
+  var _statusMessageWindow = null;
 
   var _aspnetDoPostBack = null;
   
@@ -70,7 +71,7 @@ function Wxe_Context (
   var _isMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
   var _cacheStateHasSubmitted = 'hasSubmitted';
   var _cacheStateHasLoaded = 'hasLoaded';
- 
+
   this.Init = function()
   {
     this.SetEventHandlers ();
@@ -165,6 +166,8 @@ function Wxe_Context (
     window.onload = Wxe_OnLoad;
     window.onbeforeunload = Wxe_OnBeforeUnload; // IE, Mozilla 1.7, Firefox 0.9
     window.onunload = Wxe_OnUnload;
+    window.onscroll = Wxe_OnScroll;
+    window.onresize = Wxe_OnResize;
     
     if (! _isMsIE)
   	  this.SetFocusEventHandlers (document.body);
@@ -305,6 +308,20 @@ function Wxe_Context (
       return true;
     }
   }
+  
+  this.OnScroll = function()
+  {
+    if (_statusMessageWindow != null)
+      AlignStatusMessage (_statusMessageWindow);      
+    this.ExecuteEventHandlers (_eventHandlers['onscroll']);
+  }
+
+  this.OnResize = function()
+  {
+    if (_statusMessageWindow != null)
+      AlignStatusMessage (_statusMessageWindow);      
+    this.ExecuteEventHandlers (_eventHandlers['onresize']);
+  }
 
   this.SendSessionRequest = function (url)
   {
@@ -397,23 +414,76 @@ function Wxe_Context (
 
   this.ShowMessage = function (id, message)
   {
-    if (document.getElementById (id) == null)
-    {
-      var div = document.createElement('DIV');
-      div.id = id;
-      div.style.width = '50%';
-      div.style.height = '50%';
-      div.style.position = 'absolute';
-      div.style.left = '25%';
-      div.style.top = '25%';
-      div.innerHTML =
+    if (_statusMessageWindow == null)
+    {  
+      var statusMessageWindow;
+      var statusMessageBlock
+      if (_isMsIE)
+      {
+        statusMessageWindow = document.createElement ('DIV');
+        
+        var iframe = document.createElement ('IFRAME');
+        iframe.src = 'javascript:false;';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.left = '0';
+        iframe.style.top = '0';
+        iframe.style.position = 'absolute';
+        iframe.style.filter = 'progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)';
+        iframe.style.border = 'none';
+        statusMessageWindow.appendChild (iframe);
+        
+        statusMessageBlock = document.createElement ('DIV');
+        statusMessageBlock.style.width = '100%';
+        statusMessageBlock.style.height = '100%';
+        statusMessageBlock.style.left = '0';
+        statusMessageBlock.style.top = '0';
+        statusMessageBlock.style.position = 'absolute';
+        statusMessageWindow.appendChild (statusMessageBlock);      
+      }
+      else
+      {
+        statusMessageWindow = document.createElement ('DIV');
+        statusMessageBlock = statusMessageWindow;
+      }
+      
+      statusMessageWindow.id = id;
+      statusMessageWindow.style.width = '50%';
+      statusMessageWindow.style.height = '50%';
+      statusMessageWindow.style.left = '25%';
+      statusMessageWindow.style.top = '25%';
+      statusMessageWindow.style.position = 'absolute';
+      statusMessageBlock.innerHTML =
             '<table style="border:none; height:100%; width:100%"><tr><td style="text-align:center;">'
           + message
           + '</td></tr></table>';
   	
-      document.body.appendChild(div);
+      document.body.insertBefore (statusMessageWindow, this.TheForm);
+      AlignStatusMessage (statusMessageWindow);
+      _statusMessageWindow = statusMessageWindow;
     }
   }
+  
+  function AlignStatusMessage (message)
+  {
+    var scrollLeft = window.document.body.scrollLeft;
+    var scrollTop = window.document.body.scrollTop;
+    var windowWidth = window.document.body.clientWidth;
+    var windowHeight = window.document.body.clientHeight;
+    
+    message.style.left = windowWidth/2 - message.offsetWidth/2 + scrollLeft;
+    message.style.top = windowHeight/2 - message.offsetHeight/2 + scrollTop;
+  }
+}
+
+function Wxe_OnScroll()
+{
+  _wxe_context.OnScroll();
+}
+
+function Wxe_OnResize()
+{
+  _wxe_context.OnResize();
 }
 
 function Wxe_FormSubmit()
