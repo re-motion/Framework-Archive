@@ -338,9 +338,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   {
     string id = businessObject.UniqueIdentifier;
     string text = businessObject.DisplayName;
-    string toolTip = BusinessObjectBoundWebControl.GetToolTip (
-        businessObject, 
-        businessObject.BusinessObjectClass.BusinessObjectProvider);
+    string toolTip = GetToolTip (businessObject);
     IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
         businessObject, 
         businessObject.BusinessObjectClass.BusinessObjectProvider);
@@ -349,10 +347,20 @@ public class BocTreeView: BusinessObjectBoundWebControl
     return node;
   }
 
+  protected virtual string GetToolTip (IBusinessObject businessObject)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    return BusinessObjectBoundWebControl.GetToolTip (
+        businessObject, 
+        businessObject.BusinessObjectClass.BusinessObjectProvider);
+  }
+
   protected virtual IBusinessObjectWithIdentity[] GetBusinessObjects (
       IBusinessObjectWithIdentity parent,
       IBusinessObjectReferenceProperty property)
   {
+    ArgumentUtility.CheckNotNull ("parent", parent);
+
     IList children = (IList) parent.GetProperty (property);
     ArrayList childrenList = new ArrayList (children);
     return  (IBusinessObjectWithIdentity[]) childrenList.ToArray (typeof (IBusinessObjectWithIdentity));
@@ -360,6 +368,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   protected virtual BusinessObjectPropertyTreeNodeInfo[] GetPropertyNodes (IBusinessObjectWithIdentity businessObject)
   {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     if (Property == null)
     {
       ArrayList referenceListPropertyInfos = new ArrayList();
