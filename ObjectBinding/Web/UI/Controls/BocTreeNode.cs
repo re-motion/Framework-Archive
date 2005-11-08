@@ -12,8 +12,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 public abstract class BocTreeNode: WebTreeNode
 {
-  public BocTreeNode (string itemID, string text, IconInfo icon)
-    : base (itemID, text, icon)
+  public BocTreeNode (string itemID, string text, string toolTip, IconInfo icon)
+    : base (itemID, text, toolTip, icon)
   {
   }
 
@@ -39,10 +39,11 @@ public class BusinessObjectTreeNode: BocTreeNode
   public BusinessObjectTreeNode (
       string itemID, 
       string text, 
+      string toolTip,
       IconInfo icon, 
       IBusinessObjectReferenceProperty property,
       IBusinessObjectWithIdentity businessObject)
-    : base (itemID, text, icon)
+    : base (itemID, text, toolTip, icon)
   {
     Property = property;
     if (_property != null)
@@ -55,7 +56,7 @@ public class BusinessObjectTreeNode: BocTreeNode
       string text, 
       IBusinessObjectReferenceProperty property,
       IBusinessObjectWithIdentity businessObject)
-    : this (itemID, text, null, property, businessObject)
+    : this (itemID, text, null, null, property, businessObject)
   {
   }
 
@@ -189,9 +190,10 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
   public BusinessObjectPropertyTreeNode (
       string itemID, 
       string text, 
+      string toolTip,
       IconInfo icon, 
       IBusinessObjectReferenceProperty property)
-    : base (itemID, text, icon)
+    : base (itemID, text, toolTip, icon)
   {
     Property = property;
   }
@@ -200,7 +202,7 @@ public class BusinessObjectPropertyTreeNode: BocTreeNode
       string itemID, 
       string text, 
       IBusinessObjectReferenceProperty property)
-    : this (itemID, text, null, property)
+    : this (itemID, text, null, null, property)
   {
   }
 
