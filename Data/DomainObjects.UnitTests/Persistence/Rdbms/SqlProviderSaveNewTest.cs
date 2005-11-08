@@ -35,9 +35,9 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
   public void NewDataContainer ()
   {
     DataContainer newDataContainer = Provider.CreateNewDataContainer (
-        TestMappingConfiguration.Current.ClassDefinitions["Order"]);
+        TestMappingConfiguration.Current.ClassDefinitions["Computer"]);
 
-    newDataContainer["DeliveryDate"] = new DateTime (2005, 1, 5);
+    newDataContainer["SerialNumber"] = "123";
 
     ObjectID newObjectID = newDataContainer.ID;
 
@@ -169,6 +169,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     Order order = new Order ();
     order.DeliveryDate = new DateTime (2005, 12, 24);
     order.Customer = Customer.GetObject (DomainObjectIDs.Customer1);
+    order.Official = Official.GetObject (DomainObjectIDs.Official1);
 
     ObjectID newObjectID = order.ID;
 
@@ -181,6 +182,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
 
     Assert.IsNotNull (loadedDataContainer);
     Assert.AreEqual (DomainObjectIDs.Customer1, loadedDataContainer.GetObjectID ("Customer"));
+    Assert.AreEqual (DomainObjectIDs.Official1, loadedDataContainer.GetObjectID ("Official"));
   }
 
   [Test]
@@ -188,9 +190,11 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
   {
     Customer newCustomer = new Customer ();
     Order newOrder = new Order ();
+    Official existingOfficial = Official.GetObject (DomainObjectIDs.Official1);
 
     newOrder.DeliveryDate = new DateTime (2005, 12, 24);
     newOrder.Customer = newCustomer;
+    newOrder.Official = existingOfficial;
 
     DataContainerCollection collection = new DataContainerCollection ();
     collection.Add (newOrder.DataContainer);
@@ -204,6 +208,7 @@ public class SqlProviderSaveNewTest : SqlProviderBaseTest
     Assert.IsNotNull (newCustomerContainer);
     Assert.IsNotNull (newOrderContainer);
     Assert.AreEqual (newCustomerContainer.ID, newOrderContainer.GetObjectID ("Customer"));
+    Assert.AreEqual (DomainObjectIDs.Official1, newOrderContainer.GetObjectID ("Official"));
   }
 
   [Test]

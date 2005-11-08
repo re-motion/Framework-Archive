@@ -689,11 +689,11 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
   {
     using (Provider)
     {
-      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
-      orderTicket.Order = null;
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer1);
+      computer.Employee = null;
 
       DataContainerCollection collection = new DataContainerCollection ();
-      collection.Add (orderTicket.DataContainer);
+      collection.Add (computer.DataContainer);
 
       Provider.Save (collection);
     }
@@ -701,8 +701,8 @@ public class SqlProviderSaveExistingTest : SqlProviderBaseTest
 
     using (SqlProvider sqlProvider = new SqlProvider (ProviderDefinition))
     {
-      DataContainer orderTicketContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.OrderTicket1);
-      Assert.IsNull (orderTicketContainer.GetObjectID ("Order"));
+      DataContainer computerContainer = sqlProvider.LoadDataContainer (DomainObjectIDs.Computer1);
+      Assert.IsNull (computerContainer.GetObjectID ("Employee"));
     }        
   }
 
