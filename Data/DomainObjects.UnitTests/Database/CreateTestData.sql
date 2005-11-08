@@ -1,5 +1,6 @@
 use TestDomain
 
+delete from [FileSystemItem]
 delete from [Location]
 delete from [Client]
 delete from [Computer]
@@ -22,6 +23,21 @@ delete from [TableWithKeyOfInvalidType]
 delete from [TableWithoutIDColumn]
 delete from [TableWithoutClassIDColumn]
 delete from [TableWithoutTimestampColumn]
+
+
+-- FileSystemItem
+-- An invalid file points to this folder:
+insert into [FileSystemItem] (ID, ClassID, [ParentFolderID], [ParentFolderIDClassID])
+    values ('{976A6864-3344-4b3c-8F67-6348CF361D22}', 'Folder', null, null)
+
+-- This file is invalid, because ParentFolderID is null
+insert into [FileSystemItem] (ID, ClassID, [ParentFolderID], [ParentFolderIDClassID])
+    values ('{DCBE9554-2724-49a6-AECA-B811E20E4110}', 'File', null, 'Folder')
+
+-- This file is invalid, because ParentFolderIDClassID is null
+insert into [FileSystemItem] (ID, ClassID, [ParentFolderID], [ParentFolderIDClassID])
+    values ('{A26B6A4E-D497-4b32-821B-74AFAD7EAD0A}', 'File', '{976A6864-3344-4b3c-8F67-6348CF361D22}', null)
+
 
 -- Employee
 insert into [Employee] (ID, ClassID, [Name], [SupervisorID])
@@ -92,6 +108,9 @@ insert into [IndustrialSector] (ID, ClassID, [Name])
 insert into [IndustrialSector] (ID, ClassID, [Name]) 
     values ('{8565A077-EA01-4b5d-BEAA-293DC484BDDC}', 'IndustrialSector', 'Tellerwäscherei')
 
+insert into [IndustrialSector] (ID, ClassID, [Name]) 
+    values ('{53B322BF-25D8-4fe1-96C8-508E055143E7}', 'IndustrialSector', 'Putzereibetrieb')
+
 
 -- Company
 insert into [Company] (ID, ClassID, [Name], [IndustrialSectorID]) 
@@ -151,7 +170,7 @@ insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [Ind
 
 -- This row does not conform to mapping, because it lacks a pointer to a contact person:
 insert into [Company] (ID, ClassID, [Name], ContactPersonID, NumberOfShops, [IndustrialSectorID]) 
-    values ('{1514D668-A0A5-40e9-AC22-F24900E0EB39}', 'Distributor', 'Händler 3', null, 5, '{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}')
+    values ('{1514D668-A0A5-40e9-AC22-F24900E0EB39}', 'Distributor', 'Händler 3', null, 5, '{53B322BF-25D8-4fe1-96C8-508E055143E7}')
 
 -- Order
 insert into [Order] (ID, ClassID, OrderNo, DeliveryDate, CustomerID, CustomerIDClassID, OfficialID) 
@@ -274,6 +293,18 @@ insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID)
 insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
     values ('{C3DB20D6-138E-4ced-8576-E81BB4B7961F}', 'Ceo', 'Ceo with invalid CompanyIDClassID', 
     '{C3DB20D6-138E-4ced-8576-E81BB4B7961F}', 'Customer')
+
+-- This CEO does not conform to mapping, because CompanyID and CompanyIDClassID are null.
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{2927059E-AE59-49a7-8B59-B959E579C629}', 'Ceo', 'Ceo with NULL CompanyID and ClassID', null, null)
+
+-- This CEO is invalid, because CompanyID is null.
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{523B490A-5B18-4f22-AF5B-BD9A4DA3F629}', 'Ceo', 'Ceo with NULL CompanyID', null, 'Distributor')
+
+-- This CEO is invalid, because CompanyIDClassID is null.
+insert into [Ceo] (ID, ClassID, [Name], CompanyID, CompanyIDClassID) 
+    values ('{04341C7D-7B7C-49fc-82E6-8E481CDACA30}', 'Ceo', 'Ceo with NULL CompanyIDClassID', '{1514D668-A0A5-40e9-AC22-F24900E0EB39}', null)
 
 
 -- Client

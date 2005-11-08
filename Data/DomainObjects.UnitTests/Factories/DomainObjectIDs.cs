@@ -89,11 +89,14 @@ public sealed class DomainObjectIDs
   
   #region IndustrialSector
 
-  // Companies: Customer1, Partner1, PartnerWithoutCeo, Supplier1, Distributor2, DistributorWithoutContactPerson
+  // Companies: Customer1, Partner1, PartnerWithoutCeo, Supplier1, Distributor2
   public static readonly ObjectID IndustrialSector1 = new ObjectID ("IndustrialSector", new Guid ("{3BB7BEE9-2AF9-4a85-998E-618BEBBE5A6B}"));
 
   // Companies: Company1, Company2, Customer2, Customer3, Partner2, Supplier2, Distributor1
   public static readonly ObjectID IndustrialSector2 = new ObjectID ("IndustrialSector", new Guid ("{8565A077-EA01-4b5d-BEAA-293DC484BDDC}"));
+
+  // Companies: DistributorWithoutContactPerson
+  public static readonly ObjectID IndustrialSector3 = new ObjectID ("IndustrialSector", new Guid ("{53B322BF-25D8-4fe1-96C8-508E055143E7}"));
   
   #endregion
 
@@ -179,7 +182,7 @@ public sealed class DomainObjectIDs
   // Ceo: Ceo11
   public static readonly ObjectID Distributor2 = new ObjectID ("Distributor", new Guid ("{247206C3-7B48-4e17-91DD-3363B568D7E4}"));
 
-  // IndustrialSector: IndustrialSector1
+  // IndustrialSector: IndustrialSector3
   // ContactPerson: -
   // Ceo: -
   public static readonly ObjectID DistributorWithoutContactPersonAndCeo = new ObjectID ("Distributor", new Guid ("{1514D668-A0A5-40e9-AC22-F24900E0EB39}"));
