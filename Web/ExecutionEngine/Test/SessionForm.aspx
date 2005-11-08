@@ -15,17 +15,14 @@
 </head>
 <body MS_POSITIONING="FlowLayout">
     <form id=Form method=post runat="server">
+<table style="width:100%; height:100%">
+<tr>
+<td style="vertical-align:top;">
     <p><asp:label id="FunctionTokenLabel" runat="server">Token</asp:label>, 
     <asp:label id="PostBackIDLabel" runat="server">PostBackID</asp:label></p>
     <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton><rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
     <asp:linkbutton id="LinkButton1" runat="server">LinkButton</asp:linkbutton>
     <a id="LinkButton2" href="#" onclick="__doPostBack('LinkButton1',''); return false;">LinkButton 2</a>
-    <div id="WaitMessage" 
-    style="BORDER-RIGHT: thin solid; PADDING-RIGHT: 10pt; BORDER-TOP: thin solid; PADDING-LEFT: 10pt; Z-INDEX: 10; LEFT: 20%; VISIBILITY: hidden; PADDING-BOTTOM: 10pt; MARGIN: 10pt; BORDER-LEFT: thin solid; COLOR: white; PADDING-TOP: 10pt; BORDER-BOTTOM: thin solid; FONT-FAMILY: Arial; POSITION: absolute; TOP: 50pt; BACKGROUND-COLOR: blue; TEXT-ALIGN: center">
-    Eine Interaktion mit dem Server läuft gerade.<br>
-
-    Bitte warten Sie, bis die Antwort vom Server kommt. 
-    </div>
 <p>
 <asp:button id="Button1" runat="server" Text="Button"></asp:button>
 </p><p>
@@ -47,6 +44,9 @@
 <rubicon:WebButton id="OpenSessionFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Session Function with Permanent URL in New Window"></rubicon:WebButton><br>
 Permalink this: <asp:HyperLink id="CurrentFunctionPermaLink" runat="server"></asp:HyperLink><br>Permalink 
 Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>
+</td>
+</tr>
+</table>
 </form>
     <script language="javascript">
     function Page_PostBack (eventTarget, eventArgs)
