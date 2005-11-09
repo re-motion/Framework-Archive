@@ -172,8 +172,8 @@ public class BocListSortingOrderEntryConverter: TypeConverter
       {
         string[] values = stringValue.Split (new char[] {','}, 2);
         int columnIndex = Int32.Parse (values[0]);
-        SortingDirection direction = 
-            (SortingDirection) Enum.ToObject (typeof (SortingDirection), Int32.Parse (values[1]));
+        int directionValue = Int32.Parse (values[1]);
+        SortingDirection direction = (SortingDirection) Enum.ToObject (typeof (SortingDirection), directionValue);
         return new BocListSortingOrderEntry (columnIndex, direction);
       }
     }
