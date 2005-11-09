@@ -2,6 +2,8 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+// TODO: Check entire assembly for necessary ArgumentUtility checks!
+
 //
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
