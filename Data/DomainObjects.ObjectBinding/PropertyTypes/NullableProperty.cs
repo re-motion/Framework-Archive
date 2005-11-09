@@ -31,7 +31,7 @@ public class NullableProperty : BaseProperty
     get { return base.IsRequired; }
   }
 
-  protected internal override object FromInternalType (object internalValue)
+  public override object FromInternalType (object internalValue)
   {
     if (internalValue == null)
       return null;
@@ -39,7 +39,7 @@ public class NullableProperty : BaseProperty
     return base.FromInternalType (internalValue);
   }
 
-  protected internal override object ToInternalType (object publicValue)
+  public override object ToInternalType (object publicValue)
   {
     if (!IsNullableType && publicValue == null)
       throw new InvalidNullAssignmentException (ItemType);
