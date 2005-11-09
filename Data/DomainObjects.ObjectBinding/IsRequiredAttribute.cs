@@ -7,7 +7,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// </summary>
 [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
 [Serializable]
-public class IsRequiredAttribute : Attribute
+public sealed class IsRequiredAttribute : Attribute
 {
   private bool _isRequired;
 
@@ -21,12 +21,11 @@ public class IsRequiredAttribute : Attribute
 	}
 
   /// <summary>
-  /// Gets or sets a value indicating if the property or field is required.
+  /// Gets a value indicating if the property or field is required.
   /// </summary>
   public bool IsRequired
   {
     get { return _isRequired; }
-    set { _isRequired = value; }
   }
 }
 }

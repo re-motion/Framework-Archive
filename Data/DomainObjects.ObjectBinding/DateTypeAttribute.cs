@@ -16,7 +16,7 @@ public enum DateTypeEnum
 /// </summary>
 [AttributeUsage (AttributeTargets.Field | AttributeTargets.Property)]
 [Serializable]
-public class DateTypeAttribute : Attribute
+public sealed class DateTypeAttribute : Attribute
 {
   private DateTypeEnum _dateType;
 
@@ -30,12 +30,11 @@ public class DateTypeAttribute : Attribute
 	}
 
   /// <summary>
-  /// Gets or sets the default date format.
+  /// Gets the default date format.
   /// </summary>
   public DateTypeEnum DateType
   {
     get { return _dateType; }
-    set { _dateType = value; }
   }
 }
 }
