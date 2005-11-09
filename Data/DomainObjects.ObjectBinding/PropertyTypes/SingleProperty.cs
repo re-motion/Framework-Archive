@@ -23,7 +23,7 @@ public class SingleProperty : NullableProperty, IBusinessObjectDoubleProperty
     get { return true; }
   }
 
-  protected internal override object FromInternalType (object internalValue)
+  public override object FromInternalType (object internalValue)
   {
     if (IsList)
       return internalValue;
@@ -34,7 +34,7 @@ public class SingleProperty : NullableProperty, IBusinessObjectDoubleProperty
     return base.FromInternalType (float.Parse (internalValue.ToString ()));  
   }
 
-  protected internal override object ToInternalType (object publicValue)
+  public override object ToInternalType (object publicValue)
   {
     if (IsList)
       return publicValue;

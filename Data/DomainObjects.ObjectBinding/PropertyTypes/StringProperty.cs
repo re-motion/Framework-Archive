@@ -26,7 +26,7 @@ public class StringProperty : BaseProperty, IBusinessObjectStringProperty
     get { return _maxLength; }
   }
 
-  protected internal override object ToInternalType (object publicValue)
+  public override object ToInternalType (object publicValue)
   {
     return publicValue;
   }
