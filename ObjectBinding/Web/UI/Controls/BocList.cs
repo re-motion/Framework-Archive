@@ -995,6 +995,7 @@ public class BocList:
     _sortingOrder.Clear();
     _sortingOrder.AddRange (workingSortingOrder);
     OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
+    ResetRows();
   }
 
   protected virtual void OnSortingOrderChanging (
@@ -3961,6 +3962,8 @@ public class BocList:
     SynchronizeSortingOrderColumns (_sortingOrder, EnsureColumnsGot());
     
     //OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
+
+    ResetRows();
   }
 
   /// <summary> Clears the sorting order for the <see cref="BocList"/>. </summary>
@@ -3976,6 +3979,8 @@ public class BocList:
     //OnSortingOrderChanging (oldSortingOrder, newSortingOrder);
     _sortingOrder.Clear();
     //OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
+
+    ResetRows();
   }
   /// <summary>
   ///   Gets the sorting order for the <see cref="BocList"/>.

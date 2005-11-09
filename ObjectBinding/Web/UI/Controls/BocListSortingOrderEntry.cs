@@ -41,6 +41,7 @@ public class BocListSortingOrderEntry
     _isEmpty = true;
   }
 
+  /// <summary> <see langword="true"/> if this sorting order entry is empty. </summary>
   public bool IsEmpty
   {
     get { return _isEmpty; }
@@ -81,6 +82,7 @@ public class BocListSortingOrderEntry
     _column = column; 
   }
 
+  /// <summary> Gets the sorting direction. </summary>
   public SortingDirection Direction
   {
     get { return _direction; }
@@ -139,7 +141,7 @@ public enum SortingDirection
   Descending
 }
 
-/// <summary> Converts a <see cref="BocListSortingOrderEnrty"/> in to a string. </summary>
+/// <summary> Converts a <see cref="BocListSortingOrderEnrty"/> from and to a string. </summary>
 /// <remarks> Used for persisting a <see cref="BocListSortingOrderEnrty"/> into the view state. </remarks>
 public class BocListSortingOrderEntryConverter: TypeConverter
 {
