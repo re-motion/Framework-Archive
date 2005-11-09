@@ -39,14 +39,19 @@ public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationPrope
     Debug.Assert (PropertyInfo.PropertyType.IsEnum, "type.IsEnum");
     FieldInfo[] fields = PropertyInfo.PropertyType.GetFields (BindingFlags.Static | BindingFlags.Public);
     ArrayList valueInfos = new ArrayList (fields.Length);
-
+    
+    object undefinedValue = GetUndefinedValue ();
     foreach (FieldInfo field in fields)
     {
-      bool isEnabled = !field.Name.StartsWith (c_disabledPrefix);
+      Enum fieldValue = (Enum) field.GetValue (null);
 
+      if ((undefinedValue != null) && fieldValue.Equals (undefinedValue))
+        continue;
+  
+      bool isEnabled = !field.Name.StartsWith (c_disabledPrefix);
       if (isEnabled || includeDisabledValues)
       {
-        string multiLingualDisplayName = EnumDescription.GetDescription ((System.Enum) field.GetValue (null));
+        string multiLingualDisplayName = EnumDescription.GetDescription (fieldValue);
         valueInfos.Add (new EnumerationValueInfo (field.GetValue (null), field.Name, multiLingualDisplayName, isEnabled));
       }
     }
@@ -54,40 +59,68 @@ public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationPrope
     return (IEnumerationValueInfo[]) valueInfos.ToArray (typeof (IEnumerationValueInfo));
   }
 
+  protected virtual object GetUndefinedValue ()
+  {
+    object[] undefinedEnumValueAttributes = ItemType.GetCustomAttributes (typeof (UndefinedEnumValueAttribute), false);
+
+    if (undefinedEnumValueAttributes.Length == 1)
+    {
+      UndefinedEnumValueAttribute undefinedEnumValueAttribute = (UndefinedEnumValueAttribute) undefinedEnumValueAttributes[0];
+      return undefinedEnumValueAttribute.Value;
+    }
+
+    return null;
+  }
+
+  public override object FromInternalType (object internalValue)
+  {
+    ArgumentUtility.CheckNotNullAndType ("internalValue", internalValue, typeof (Enum));
+    ArgumentUtility.CheckValidEnumValue ((Enum) internalValue, "internalValue");
+
+    object undefinedValue = GetUndefinedValue ();
+    if ((undefinedValue != null) && internalValue.Equals (undefinedValue))
+      return null;
+
+    return base.FromInternalType (internalValue);
+  }
+
+  public override object ToInternalType (object publicValue)
+  {
+    object undefinedValue = GetUndefinedValue ();
+    if ((undefinedValue != null) && publicValue == null)
+      return undefinedValue;
+
+    return base.ToInternalType (publicValue);
+  }
+
   /// <param name="value">
   ///   An enum value that belongs to the enum identified by <see cref="BaseProperty.PropertyType"/>.
   /// </param>
   public IEnumerationValueInfo GetValueInfoByValue (object value)
   {
-    if (value == null)
-    {
-      return null;
-    }
-    else
-    {
-      string valueString = value.ToString();
+    ArgumentUtility.CheckNotNull ("value", value);
 
-      //  Test if enum value is correct type, throws an exception if not
-      Enum.Parse (PropertyType, valueString, false);
-      bool isEnabled = !valueString.StartsWith (c_disabledPrefix);
-
-      string multiLingualEnumName = EnumDescription.GetDescription ((System.Enum) value);
-      string enumDisplayName = (multiLingualEnumName != null) ? multiLingualEnumName : valueString;
-      return new EnumerationValueInfo (value, value.ToString(), enumDisplayName, isEnabled);
-    }
-  }
-
-  public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
-  {
-    object value = Enum.Parse (PropertyType, identifier, false);
     string valueString = value.ToString();
+
+    //  Test if enum value is correct type, throws an exception if not
+    Enum.Parse (PropertyType, valueString, false);
     bool isEnabled = !valueString.StartsWith (c_disabledPrefix);
 
     string multiLingualEnumName = EnumDescription.GetDescription ((System.Enum) value);
     string enumDisplayName = (multiLingualEnumName != null) ? multiLingualEnumName : valueString;
+
     return new EnumerationValueInfo (value, value.ToString(), enumDisplayName, isEnabled);
   }
 
+  public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("identifier", identifier);
+
+    object value = Enum.Parse (PropertyType, identifier, false);
+    return GetValueInfoByValue (value);
+  }
+
+  // TODO: Remove this property. Check if we can do so.
   public override bool IsRequired
   {
     get { return true; }
