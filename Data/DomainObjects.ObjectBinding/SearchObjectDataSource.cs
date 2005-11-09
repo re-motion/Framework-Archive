@@ -43,6 +43,7 @@ public class SearchObjectDataSource : BusinessObjectDataSource
   public override IBusinessObject BusinessObject
   {
     get { return _object; }
+    //TODO: check the type of value here
     set { _object = value; }
   }
 
