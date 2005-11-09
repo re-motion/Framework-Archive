@@ -244,6 +244,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UndefinedEnumTest.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UndefinedEnumTest.aspx.cs"
+                    DependentUpon = "UndefinedEnumTest.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UndefinedEnumTest.aspx.resx"
+                    DependentUpon = "UndefinedEnumTest.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Web.config"
                     BuildAction = "Content"
                 />
@@ -332,7 +348,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Domain\ClassWithUndefinedEnum.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Domain\DomainObjectIDs.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\SearchObjectWithUndefinedEnum.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\UndefinedEnum.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -377,6 +408,11 @@
                 />
                 <File
                     RelPath = "WxeFunctions\SearchFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WxeFunctions\UndefinedEnumTestFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
