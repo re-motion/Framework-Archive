@@ -170,6 +170,21 @@ public class WxeContextTest
     Assert.IsNotNull (permanentUrl);
     Assert.AreEqual (expectedUrl, permanentUrl);
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException))]
+  public void GetPermanentUrlWithExistingReturnUrl()
+  {
+    string parameterName = "Param";
+    string parameterValue = "Hello World!";
+
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add (parameterName, parameterValue);
+    queryString.Add (WxeHandler.Parameters.WxeReturnUrl, "");
+    
+    _currentWxeContext.GetPermanentUrl (_functionType, queryString, true);
+    Assert.Fail();
+  }
 }
 
 }
