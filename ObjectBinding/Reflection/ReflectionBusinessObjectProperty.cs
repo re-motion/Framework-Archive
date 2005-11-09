@@ -398,6 +398,76 @@ public class ReflectionBusinessObjectEnumerationProperty: ReflectionBusinessObje
 
 }
 
+public class ReflectionBusinessObjectInstanceEnumerationProperty: ReflectionBusinessObjectProperty, IBusinessObjectInstanceEnumerationProperty
+{
+  private IEnumerationValueInfo[] _valueInfos;
+  private bool _isRequired;
+
+  public ReflectionBusinessObjectInstanceEnumerationProperty (
+      PropertyInfo propertyInfo, Type itemType, bool isList, bool isRequired, params object[] values)
+    : base (propertyInfo, itemType, isList)
+  {
+    _isRequired = isRequired;
+
+    if (values == null)
+    {
+      _valueInfos = new IEnumerationValueInfo[0];
+    }
+    else
+    {
+      ArgumentUtility.CheckNotNullOrItemsNull ("values", values);
+      _valueInfos = new IEnumerationValueInfo[values.Length];
+      for (int i = 0; i < values.Length; i++)
+        _valueInfos[i] = new EnumerationValueInfo (values[i], values[i].ToString(), values[i].ToString(), true);
+    }
+  }
+
+  public IEnumerationValueInfo[] GetEnabledValues (IBusinessObject businessObject)
+  {
+    return _valueInfos;
+  }
+
+  public IEnumerationValueInfo[] GetAllValues (IBusinessObject businessObject)
+  {
+    return _valueInfos;
+  }
+
+  IEnumerationValueInfo[] Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty.GetEnabledValues()
+  {
+    return GetEnabledValues (null);
+  }
+
+  IEnumerationValueInfo[] Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty.GetAllValues()
+  {
+    return GetAllValues (null);
+  }
+
+  public IEnumerationValueInfo GetValueInfoByValue (object value)
+  {
+    foreach (IEnumerationValueInfo valueInfo in _valueInfos)
+    {
+      if (valueInfo.Value == value)
+        return valueInfo;
+    }
+    throw new ArgumentException (string.Format ("The value '{0}' is not part of the possible values for this Instance Enumeration.", value), "value");
+  }
+
+  public IEnumerationValueInfo GetValueInfoByIdentifier (string identifier)
+  {
+    foreach (IEnumerationValueInfo valueInfo in _valueInfos)
+    {
+      if (valueInfo.Identifier == identifier)
+        return valueInfo;
+    }
+    throw new ArgumentException (string.Format ("The identifier '{0}' does not identify a possible value for this Instance Enumeration.", identifier), "identifier");
+  }
+
+  public override bool IsRequired
+  {
+    get { return _isRequired; }
+  }
+}
+
 public class ReflectionBusinessObjectReferenceProperty: ReflectionBusinessObjectProperty, IBusinessObjectReferenceProperty
 {
   public ReflectionBusinessObjectReferenceProperty (PropertyInfo propertyInfo, Type itemType, bool isList)
