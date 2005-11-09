@@ -37,7 +37,7 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
     return NaBoolean.False;
   }
 
-  protected internal override object FromInternalType (object internalValue)
+  public override object FromInternalType (object internalValue)
   {
     if (IsList)
       return internalValue;
@@ -48,7 +48,7 @@ public class BooleanProperty : NullableProperty, IBusinessObjectBooleanProperty,
     return internalValue;
   }
 
-  protected internal override object ToInternalType (object publicValue)
+  public override object ToInternalType (object publicValue)
   {
     if (IsList)
       return publicValue;
