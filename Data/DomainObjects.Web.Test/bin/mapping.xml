@@ -228,5 +228,17 @@
       <properties />
     </class>
     
-	</classes>
+    <class id="ClassWithUndefinedEnum">
+      <type>Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithUndefinedEnum, Rubicon.Data.DomainObjects.Web.Test</type>    
+      <entity name="TableWithUndefinedEnum"></entity>
+      <storageProviderID>RpaTest</storageProviderID>
+      <properties>
+        <property name="UndefinedEnum">
+          <type>Rubicon.Data.DomainObjects.Web.Test.Domain.UndefinedEnum, Rubicon.Data.DomainObjects.Web.Test</type>
+          <column>UndefinedEnum</column>
+        </property>
+      </properties>
+    </class>
+ 
+ 	</classes>
 </mapping>
