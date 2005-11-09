@@ -149,6 +149,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "UndefinedValueTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Database\CreateDB.sql"
                     BuildAction = "Content"
                 />
@@ -167,6 +172,11 @@
                 />
                 <File
                     RelPath = "PropertyTypes\BusinessObjectWithIdentity.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PropertyTypes\EnumerationPropertyTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
