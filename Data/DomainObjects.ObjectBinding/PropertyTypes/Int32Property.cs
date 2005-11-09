@@ -23,7 +23,7 @@ public class Int32Property : NullableProperty, IBusinessObjectInt32Property
     get { return true; }
   }
 
-  protected internal override object FromInternalType (object internalValue)
+  public override object FromInternalType (object internalValue)
   {
     if (IsList)
       return internalValue;
@@ -34,7 +34,7 @@ public class Int32Property : NullableProperty, IBusinessObjectInt32Property
     return base.FromInternalType (internalValue);
   }
 
-  protected internal override object ToInternalType (object publicValue)
+  public override object ToInternalType (object publicValue)
   {
     if (IsList)
       return publicValue;

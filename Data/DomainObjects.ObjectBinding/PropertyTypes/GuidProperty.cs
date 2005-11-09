@@ -23,7 +23,7 @@ public class GuidProperty : NullableProperty, IBusinessObjectStringProperty
     get { return 38; }
   }
 
-  protected internal override object FromInternalType(object internalValue)
+  public override object FromInternalType(object internalValue)
   {
     if (IsList)
       return internalValue;
@@ -39,7 +39,7 @@ public class GuidProperty : NullableProperty, IBusinessObjectStringProperty
     return guidValue;  
   }
 
-  protected internal override object ToInternalType(object publicValue)
+  public override object ToInternalType(object publicValue)
   {
     if (IsList)
       return publicValue;
