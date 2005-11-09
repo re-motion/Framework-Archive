@@ -1,7 +1,39 @@
 using System;
+using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
+
+public delegate void BocListSortingOrderChangeEventHandler (object sender, BocListSortingOrderChangeEventArgs e);
+
+public class BocListSortingOrderChangeEventArgs: EventArgs
+{
+  private BocListSortingOrderEntry[] _oldSortingOrder;
+  private BocListSortingOrderEntry[] _newSortingOrder;
+
+  /// <summary> Initializes a new instance. </summary>
+  public BocListSortingOrderChangeEventArgs (
+      BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("oldSortingOrder", oldSortingOrder);
+    ArgumentUtility.CheckNotNullOrItemsNull ("newSortingOrder", newSortingOrder);
+
+    _oldSortingOrder = oldSortingOrder;
+    _newSortingOrder = newSortingOrder;
+  }
+
+  /// <summary> Gets the old sorting order of the <see cref="BocList"/>. </summary>
+  public BocListSortingOrderEntry[] OldSortingOrder
+  {
+    get { return _oldSortingOrder; }
+  }
+
+  /// <summary> Gets the new sorting order of the <see cref="BocList"/>. </summary>
+  public BocListSortingOrderEntry[] NewSortingOrder
+  {
+    get { return _newSortingOrder; }
+  }
+}
 
 public delegate void BocListItemEventHandler (object sender, BocListItemEventArgs e);
 
