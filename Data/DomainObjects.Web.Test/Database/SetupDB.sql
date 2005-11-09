@@ -88,3 +88,14 @@ CREATE TABLE [TableWithoutColumns] (
   CONSTRAINT [PK_TableWithoutColumns] PRIMARY KEY CLUSTERED ([ID])
 ) 
 GO
+
+CREATE TABLE [TableWithUndefinedEnum] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [UndefinedEnum] int NOT NULL,
+
+  CONSTRAINT [PK_TableWithUndefinedEnum] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO

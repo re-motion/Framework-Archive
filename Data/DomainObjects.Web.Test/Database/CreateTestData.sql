@@ -40,4 +40,7 @@ insert into [TableForRelationTest] (ID, ClassID, [Name], [TableWithAllDataTypesM
 insert into [TableForRelationTest] (ID, ClassID, [Name], [TableWithAllDataTypesMandatory], [TableWithAllDataTypesOptional])
     values ('{9E86BD49-6D7D-4d73-87AC-9F7C5F46DEFB}', 'ClassForRelationTest', 'RelationTest6', '{583EC716-8443-4b55-92BF-09F7C8768529}', null)            
     
+-- TableWithUndefinedEnum
+insert into [TableWithUndefinedEnum] (ID, ClassID, [UndefinedEnum])
+    values ('{4F85CEE5-A53A-4bc5-B9D3-448C48946498}', 'ClassWithUndefinedEnum', 1)            
     
