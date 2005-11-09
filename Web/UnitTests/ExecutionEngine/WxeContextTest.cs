@@ -36,6 +36,7 @@ public class WxeContextTest
         new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (_functionType, _resource));
 
     _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "Other.wxe", null);
+    _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (WxeHandler.Parameters.WxeReturnUrl, "/Root.wxe");
     HttpContextHelper.SetQueryString (_currentHttpContext, queryString);
@@ -99,7 +100,6 @@ public class WxeContextTest
   }
 
   [Test]
-  [Ignore ("Not implemented.")]
   public void GetPermanentUrlWithQueryStringAndParentPermanentUrl()
   {
     string parameterName = "Param";
@@ -125,7 +125,6 @@ public class WxeContextTest
   }
 
   [Test]
-  [Ignore ("Not implemented.")]
   public void GetPermanentUrlWithParentPermanentUrlAndRemoveBothReturnUrls()
   {
     string parameterName = "Param";
@@ -147,7 +146,6 @@ public class WxeContextTest
   }
 
   [Test]
-  [Ignore ("Not implemented.")]
   public void GetPermanentUrlWithParentPermanentUrlAndRemoveInnermostReturnUrl()
   {
     string parameterName = "Param";
@@ -161,6 +159,7 @@ public class WxeContextTest
     
     string parentUrl = _currentHttpContext.Request.Url.AbsolutePath;
     parentUrl += UrlUtility.FormatQueryString (_currentHttpContext.Request.QueryString);
+    parentUrl = PageUtility.DeleteUrlParameter (parentUrl, WxeHandler.Parameters.WxeReturnUrl);
     expectedQueryString.Add (WxeHandler.Parameters.WxeReturnUrl, parentUrl);
     
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);

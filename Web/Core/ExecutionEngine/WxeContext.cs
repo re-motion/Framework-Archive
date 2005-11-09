@@ -275,7 +275,7 @@ public class WxeContext
     string permanentUrl = GetPermanentUrl (functionType, queryString);
     
     //TODO: Continue coding
-    return permanentUrl;
+    //return permanentUrl;
 
     if (useParentPermanentUrl)
     {
@@ -287,33 +287,68 @@ public class WxeContext
 
       StringCollection parentPermanentUrls = new StringCollection();
       string parentPermanentUrl = _httpContext.Request.Url.AbsolutePath + _queryString;
-      while (true)
+      System.Text.Encoding encoding = HttpContext.Current.Response.ContentEncoding;
+      while (! StringUtility.IsNullOrEmpty (parentPermanentUrl))
       {
-        parentPermanentUrls.Add (parentPermanentUrl);
-        if (PageUtility.GetUrlParameter (parentPermanentUrl, WxeHandler.Parameters.WxeReturnUrl) == string.Empty)
-          break;
-        parentPermanentUrl = PageUtility.GetUrlParameter (parentPermanentUrl, WxeHandler.Parameters.WxeReturnUrl);
+        string currentPermanentUrl = parentPermanentUrl;
+        parentPermanentUrl = 
+            PageUtility.GetUrlParameter (currentPermanentUrl, WxeHandler.Parameters.WxeReturnUrl);
+        parentPermanentUrl = HttpUtility.UrlDecode (parentPermanentUrl, encoding);
+
+        if (! StringUtility.IsNullOrEmpty (parentPermanentUrl))
+        {
+          currentPermanentUrl = 
+              PageUtility.DeleteUrlParameter (currentPermanentUrl, WxeHandler.Parameters.WxeReturnUrl);
+        }
+        parentPermanentUrls.Add (currentPermanentUrl);
       }
       parentPermanentUrl = null;
 
-      int successfullyMergedParentPermanentUrl = 0;
+      int successfullyMergedParentPermanentUrlCount = 0;
       for (int i = 0; i < parentPermanentUrls.Count; i++)
       {
-        string temp = permanentUrl;
+        parentPermanentUrl = null;
         for (int j = i; j >= 0; j--)
         {
-          parentPermanentUrl = parentPermanentUrls[j];
-          temp = PageUtility.AddUrlParameter (temp, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+//          parentPermanentUrl = parentPermanentUrls[j];
+//          temp = PageUtility.AddUrlParameter (temp, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+          string temp = parentPermanentUrls[j];
+          if (StringUtility.IsNullOrEmpty (parentPermanentUrl))
+          {
+            parentPermanentUrl = temp;
+          }
+          else
+          {
+            parentPermanentUrl = 
+                PageUtility.AddUrlParameter (temp, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+          }
         }
-        if (temp.Length >= maxLength)
+        if (parentPermanentUrl.Length >= maxLength)
           break;
-        successfullyMergedParentPermanentUrl = i;
+        string permanentUrlTemp = 
+            PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+        if (permanentUrlTemp.Length > maxLength)
+          break;
+        successfullyMergedParentPermanentUrlCount = i + 1;
       }
+      parentPermanentUrl = null;
 
-      for (int i = 0; i <= successfullyMergedParentPermanentUrl; i++)
+      for (int i = successfullyMergedParentPermanentUrlCount - 1; i >= 0; i--)
       {
+        string temp = parentPermanentUrls[i];
+        if (StringUtility.IsNullOrEmpty (parentPermanentUrl))
+        {
+          parentPermanentUrl = temp;
+        }
+        else
+        {
+          parentPermanentUrl = 
+              PageUtility.AddUrlParameter (temp, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+        }
       }
-
+      
+      permanentUrl = 
+          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
 //      if (permanentUrl.Length + parentPermanentUrl.Length > maxLength)
 //        return permanentUrl;
 //
