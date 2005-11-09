@@ -210,6 +210,9 @@ public class BocList:
   private static readonly object s_menuItemClickEvent = new object();
   private static readonly object s_customCellClickEvent = new object();
 
+  private static readonly object s_sortingOrderChangingEvent = new object();
+  private static readonly object s_sortingOrderChangedEvent = new object();
+
   private static readonly object s_editDetailsModeSavingEvent = new object();
   private static readonly object s_editDetailsModeSavedEvent = new object();
   private static readonly object s_editDetailsModeCancelingEvent = new object();
@@ -661,91 +664,6 @@ public class BocList:
     }
   }
 
-  /// <summary> Handles post back events raised by a sorting button. </summary>
-  /// <param name="eventArgument"> &lt;column-index&gt; </param>
-  private void HandleResorting (string eventArgument)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
-
-    int columnIndex;
-    try 
-    {
-      if (eventArgument.Length == 0)
-        throw new FormatException();
-      columnIndex = int.Parse (eventArgument);
-    }
-    catch (FormatException)
-    {
-      throw new ArgumentException ("Argument 'eventArgument' must be an integer.");
-    }
-
-    BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
-
-    if (columnIndex >= columns.Length)
-      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
-    if (   ! (columns[columnIndex] is BocValueColumnDefinition) 
-        && ! (   columns[columnIndex] is BocCustomColumnDefinition
-              && ((BocCustomColumnDefinition) columns[columnIndex]).IsSortable))
-    {
-      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value or sortable custom column at index" + columnIndex + ".");
-    }
-
-    BocListSortingOrderEntry sortingOrderEntry = BocListSortingOrderEntry.Empty;
-    for (int i = 0; i < _sortingOrder.Count; i++)
-    {
-      BocListSortingOrderEntry currentEntry = (BocListSortingOrderEntry) _sortingOrder[i];
-      if (currentEntry.ColumnIndex == columnIndex)
-      {
-        sortingOrderEntry = currentEntry;
-        break;
-      }
-    }
-
-    //  Cycle: Ascending -> Descending -> None -> Ascending
-    if (! sortingOrderEntry.IsEmpty)
-    {
-      _sortingOrder.Remove (sortingOrderEntry);
-      switch (sortingOrderEntry.Direction)
-      {
-        case SortingDirection.Ascending:
-        {
-          sortingOrderEntry.Direction = SortingDirection.Descending;
-          break;
-        }
-        case SortingDirection.Descending:
-        {
-          sortingOrderEntry = BocListSortingOrderEntry.Empty;
-          break;
-        }
-        case SortingDirection.None:
-        {
-          sortingOrderEntry.Direction = SortingDirection.Ascending;
-          break;
-        }
-      }
-    }
-    else
-    {
-      sortingOrderEntry = new BocListSortingOrderEntry (columnIndex, SortingDirection.Ascending);
-    }
-
-    if (sortingOrderEntry.IsEmpty)
-    {
-      if (_sortingOrder.Count > 1 && ! IsMultipleSortingEnabled)
-      {
-        BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[0];
-        _sortingOrder.Clear();
-        _sortingOrder.Add (entry);
-      }
-    }
-    else
-    {
-      if (! IsMultipleSortingEnabled)
-        _sortingOrder.Clear();
-      _sortingOrder.Add (sortingOrderEntry);
-    }
-  }
-
   /// <summary> Handles post back events raised by a custom cell event. </summary>
   /// <param name="eventArgument"> &lt;column-index&gt;,&lt;list-index&gt;[,&lt;customArgument&gt;] </param>
   private void HandleCustomCellEvent (string eventArgument)
@@ -973,6 +891,156 @@ public class BocList:
       BocCustomCellClickEventArgs e = new BocCustomCellClickEventArgs (column, businessObject, argument);
       clickHandler (this, e);
     }
+  }
+
+  /// <summary> Handles post back events raised by a sorting button. </summary>
+  /// <param name="eventArgument"> &lt;column-index&gt; </param>
+  private void HandleResorting (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+
+    int columnIndex;
+    try 
+    {
+      if (eventArgument.Length == 0)
+        throw new FormatException();
+      columnIndex = int.Parse (eventArgument);
+    }
+    catch (FormatException)
+    {
+      throw new ArgumentException ("Argument 'eventArgument' must be an integer.");
+    }
+
+    BocColumnDefinition[] columns = EnsureColumnsForPreviousLifeCycleGot();
+
+    if (columnIndex >= columns.Length)
+      throw new ArgumentOutOfRangeException ("Column index of argument 'eventargument' was out of the range of valid values. Index must be less than the number of displayed columns.'");
+    if (   ! (columns[columnIndex] is BocValueColumnDefinition) 
+        && ! (   columns[columnIndex] is BocCustomColumnDefinition
+              && ((BocCustomColumnDefinition) columns[columnIndex]).IsSortable))
+    {
+      throw new ArgumentOutOfRangeException ("The BocList '" + ID + "' does not have a value or sortable custom column at index" + columnIndex + ".");
+    }
+
+    ArrayList workingSortingOrder = new ArrayList (_sortingOrder);
+
+    BocListSortingOrderEntry oldSortingOrderEntry = BocListSortingOrderEntry.Empty;
+    BocListSortingOrderEntry newSortingOrderEntry = null;
+
+    for (int i = 0; i < workingSortingOrder.Count; i++)
+    {
+      BocListSortingOrderEntry currentEntry = (BocListSortingOrderEntry) workingSortingOrder[i];
+      if (currentEntry.ColumnIndex == columnIndex)
+      {
+        oldSortingOrderEntry = currentEntry;
+        break;
+      }
+    }
+
+    //  Cycle: Ascending -> Descending -> None -> Ascending
+    if (! oldSortingOrderEntry.IsEmpty)
+    {
+      workingSortingOrder.Remove (oldSortingOrderEntry);
+      switch (oldSortingOrderEntry.Direction)
+      {
+        case SortingDirection.Ascending:
+        {
+          newSortingOrderEntry = 
+              new BocListSortingOrderEntry (oldSortingOrderEntry.Column, SortingDirection.Descending);
+          newSortingOrderEntry.SetColumnIndex (oldSortingOrderEntry.ColumnIndex);
+          break;
+        }
+        case SortingDirection.Descending:
+        {
+          newSortingOrderEntry = null;
+          break;
+        }
+        case SortingDirection.None:
+        {
+          newSortingOrderEntry = 
+              new BocListSortingOrderEntry (oldSortingOrderEntry.Column, SortingDirection.Ascending);
+          newSortingOrderEntry.SetColumnIndex (oldSortingOrderEntry.ColumnIndex);
+          break;
+        }
+      }
+    }
+    else
+    {
+      newSortingOrderEntry = new BocListSortingOrderEntry (columns[columnIndex], SortingDirection.Ascending);
+      newSortingOrderEntry.SetColumnIndex (columnIndex);
+    }
+
+    if (newSortingOrderEntry == null)
+    {
+      if (workingSortingOrder.Count > 1 && ! IsMultipleSortingEnabled)
+      {
+        BocListSortingOrderEntry entry = (BocListSortingOrderEntry) workingSortingOrder[0];
+        workingSortingOrder.Clear();
+        workingSortingOrder.Add (entry);
+      }
+    }
+    else
+    {
+      if (! IsMultipleSortingEnabled)
+        workingSortingOrder.Clear();
+      workingSortingOrder.Add (newSortingOrderEntry);
+    }
+
+    BocListSortingOrderEntry[] oldSortingOrder = 
+        (BocListSortingOrderEntry[]) _sortingOrder.ToArray (typeof (BocListSortingOrderEntry));
+    BocListSortingOrderEntry[] newSortingOrder = 
+        (BocListSortingOrderEntry[]) workingSortingOrder.ToArray (typeof (BocListSortingOrderEntry));
+
+    OnSortingOrderChanging (oldSortingOrder, newSortingOrder);
+    _sortingOrder.Clear();
+    _sortingOrder.AddRange (workingSortingOrder);
+    OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
+  }
+
+  protected virtual void OnSortingOrderChanging (
+      BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
+  {
+    BocListSortingOrderChangeEventHandler handler = 
+        (BocListSortingOrderChangeEventHandler) Events[s_sortingOrderChangingEvent];
+    if (handler != null)
+    {
+      BocListSortingOrderChangeEventArgs e = 
+          new BocListSortingOrderChangeEventArgs (oldSortingOrder, newSortingOrder);
+      handler (this, e);
+    }
+  }
+
+  protected virtual void OnSortingOrderChanged (
+      BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
+  {
+    BocListSortingOrderChangeEventHandler handler = 
+        (BocListSortingOrderChangeEventHandler) Events[s_sortingOrderChangedEvent];
+    if (handler != null)
+    {
+      BocListSortingOrderChangeEventArgs e = 
+          new BocListSortingOrderChangeEventArgs (oldSortingOrder, newSortingOrder);
+      handler (this, e);
+    }
+  }
+
+  /// <summary> Is raised when the sorting order of the <see cref="BocList"/> is about to change. </summary>
+  /// <remarks> Will only be raised, if the change was caused by an UI action. </remarks>
+  [Category ("Action")]
+  [Description ("Occurs when the sorting order of the BocList is about to change.")]
+  public event BocListSortingOrderChangeEventHandler SortingOrderChangingEvent
+  {
+    add { Events.AddHandler (s_sortingOrderChangingEvent, value); }
+    remove { Events.RemoveHandler (s_sortingOrderChangingEvent, value); }
+  }
+
+  /// <summary> Is raised when the sorting order of the <see cref="BocList"/> has to changed. </summary>
+  /// <remarks> Will only be raised, if the change was caused by an UI action. </remarks>
+  [Category ("Action")]
+  [Description ("Occurs when the sorting order of the BocList has to changed.")]
+  public event BocListSortingOrderChangeEventHandler SortingOrderChangedEvent
+  {
+    add { Events.AddHandler (s_sortingOrderChangedEvent, value); }
+    remove { Events.RemoveHandler (s_sortingOrderChangedEvent, value); }
   }
 
   /// <summary>
@@ -3740,12 +3808,12 @@ public class BocList:
     if (isPostBackEventPhase)
     {
       columnDefinitions = GetColumnsForPreviousLifeCycle (columnDefinitions);
-      RestoreSortingOrderColumns (columnDefinitions);
+      RestoreSortingOrderColumns (_sortingOrder, columnDefinitions);
     }
     else
     {
       columnDefinitions = GetColumns (columnDefinitions);
-      SynchronizeSortingOrderColumns (columnDefinitions);
+      SynchronizeSortingOrderColumns (_sortingOrder, columnDefinitions);
     }
 
     CheckRowMenuColumns (columnDefinitions);
@@ -3753,38 +3821,50 @@ public class BocList:
     return columnDefinitions;
   }
 
-  private void RestoreSortingOrderColumns (BocColumnDefinition[] columnDefinitions)
+  private void RestoreSortingOrderColumns (ArrayList sortingOrder, BocColumnDefinition[] columnDefinitions)
   {
-    for (int i = 0; i < _sortingOrder.Count; i++)
+    ArrayList entriesToBeRemoved = new ArrayList();
+    for (int i = 0; i < sortingOrder.Count; i++)
     {
-      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
+      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) sortingOrder[i];
       if (entry.IsEmpty)
+      {
+        entriesToBeRemoved.Add (entry);
         continue;
+      }
       if (entry.ColumnIndex != Int32.MinValue)
-        entry.Column = columnDefinitions[entry.ColumnIndex];
+        entry.SetColumn (columnDefinitions[entry.ColumnIndex]);
     }
+    for (int i = 0; i < entriesToBeRemoved.Count; i++)
+      sortingOrder.Remove (entriesToBeRemoved[i]);
   }
 
-  private void SynchronizeSortingOrderColumns (BocColumnDefinition[] columnDefinitions)
+  private void SynchronizeSortingOrderColumns (ArrayList sortingOrder, BocColumnDefinition[] columnDefinitions)
   {
     ArrayList columnDefinitionList = new ArrayList (columnDefinitions);
   
-    for (int i = 0; i < _sortingOrder.Count; i++)
+    ArrayList entriesToBeRemoved = new ArrayList();
+    for (int i = 0; i < sortingOrder.Count; i++)
     {
-      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) _sortingOrder[i];
+      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) sortingOrder[i];
       if (entry.IsEmpty)
         continue;
       if (entry.Column == null)
       {
-        entry.Column = columnDefinitions[entry.ColumnIndex];
+        entry.SetColumn (columnDefinitions[entry.ColumnIndex]);
       }
       else
       {
-        entry.ColumnIndex = columnDefinitionList.IndexOf (entry.Column);
+        entry.SetColumnIndex (columnDefinitionList.IndexOf (entry.Column));
         if (entry.ColumnIndex < 0)
-          _sortingOrder[i] = BocListSortingOrderEntry.Empty;
+        {
+          sortingOrder[i] = BocListSortingOrderEntry.Empty;
+          entriesToBeRemoved.Add (entry);
+        }
       }
     }
+    for (int i = 0; i < entriesToBeRemoved.Count; i++)
+      sortingOrder.Remove (entriesToBeRemoved[i]);
   }
 
   /// <summary>
@@ -3847,26 +3927,56 @@ public class BocList:
     }
   }
 
-  /// <summary>
-  ///   Sets the sorting order for the <see cref="BocList"/>. Overwrites the current sorting order.
-  /// </summary>
+  /// <summary> Sets the sorting order for the <see cref="BocList"/>. </summary>
   /// <remarks>
-  ///   It is recommended to only set the sorting order when the <see cref="BocList"/> is initialized for the first 
-  ///   time. During subsequent postbacks, setting the sorting order before the post back events of the 
-  ///   <see cref="BocList"/> have been handled, will undo the user's chosen sorting order.
+  ///   <para>
+  ///     It is recommended to only set the sorting order when the <see cref="BocList"/> is initialized for the first 
+  ///     time. During subsequent postbacks, setting the sorting order before the post back events of the 
+  ///     <see cref="BocList"/> have been handled, will undo the user's chosen sorting order.
+  ///   </para><para>
+  ///     Does not raise the <see cref="SortingOrderChangingEvent"/> and <see cref="SortingOrderChangedEvent"/>.
+  ///   </para><para>
+  ///     Use <see cref="ClearSortingOrder"/> if you need to clear the sorting order.
+  ///   </para>
   /// </remarks>
-  /// <param name="sortingOrder"></param>
+  /// <param name="newSortingOrder"> 
+  ///   The new sorting order of the <see cref="BocList"/>. Must not be <see langword="null"/> or contain 
+  ///   <see langword="null"/>.
+  /// </param>
   /// <exception cref="InvalidOperationException">EnableMultipleSorting == False &amp;&amp; sortingOrder.Length > 1</exception>
-  public void  SetSortingOrder (BocListSortingOrderEntry[] sortingOrder)
+  public void SetSortingOrder (BocListSortingOrderEntry[] newSortingOrder)
   {
+    ArgumentUtility.CheckNotNullOrItemsNull ("newSortingOrder", newSortingOrder);
+
+    //BocListSortingOrderEntry[] oldSortingOrder = 
+    //    (BocListSortingOrderEntry[]) _sortingOrder.ToArray (typeof (BocListSortingOrderEntry));
+
+    //OnSortingOrderChanging (oldSortingOrder, newSortingOrder);
+
     _sortingOrder.Clear();
-    if (! IsMultipleSortingEnabled && sortingOrder.Length > 1)
+    if (! IsMultipleSortingEnabled && newSortingOrder.Length > 1)
       throw new InvalidOperationException ("Attempted to set multiple sorting keys but EnableMultipleSorting is False.");
     else
-      _sortingOrder.AddRange (sortingOrder);
-    SynchronizeSortingOrderColumns (EnsureColumnsGot());
+      _sortingOrder.AddRange (newSortingOrder);
+    SynchronizeSortingOrderColumns (_sortingOrder, EnsureColumnsGot());
+    
+    //OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
   }
 
+  /// <summary> Clears the sorting order for the <see cref="BocList"/>. </summary>
+  /// <remarks>
+  ///   Does not raise the <see cref="SortingOrderChangingEvent"/> and <see cref="SortingOrderChangedEvent"/>.
+  /// </remarks>
+  public void ClearSortingOrder ()
+  {
+    //BocListSortingOrderEntry[] oldSortingOrder = 
+    //    (BocListSortingOrderEntry[]) _sortingOrder.ToArray (typeof (BocListSortingOrderEntry));
+    //BocListSortingOrderEntry[] newSortingOrder = new BocListSortingOrderEntry[0];
+
+    //OnSortingOrderChanging (oldSortingOrder, newSortingOrder);
+    _sortingOrder.Clear();
+    //OnSortingOrderChanged (oldSortingOrder, newSortingOrder);
+  }
   /// <summary>
   ///   Gets the sorting order for the <see cref="BocList"/>.
   /// </summary>

@@ -53,7 +53,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   // static members
 	
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
-      typeof (IBusinessObjectEnumerationProperty) };
+      typeof (IBusinessObjectEnumerationProperty), typeof (IBusinessObjectInstanceEnumerationProperty) };
 
   private static readonly object s_selectionChangedEvent = new object();
 
@@ -479,7 +479,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
         if (! IsRequired)
           _listControl.Items.Add (CreateNullItem());
 
-        IEnumerationValueInfo[] valueInfos = Property.GetEnabledValues();
+        IEnumerationValueInfo[] valueInfos = GetEnabledValues();
 
         for (int i = 0; i < valueInfos.Length; i++)
         {
@@ -488,6 +488,25 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
           _listControl.Items.Add (item);
         }
       }
+    }
+  }
+
+  private IEnumerationValueInfo[] GetEnabledValues()
+  {
+    if (Property == null)
+      return new IEnumerationValueInfo[0];
+    IBusinessObjectInstanceEnumerationProperty instanceEnumProperty = 
+        Property as IBusinessObjectInstanceEnumerationProperty;
+    if (instanceEnumProperty != null)
+    {
+      if (DataSource != null && DataSource.BusinessObject != null)
+        return instanceEnumProperty.GetEnabledValues (DataSource.BusinessObject);
+      else
+        return instanceEnumProperty.GetEnabledValues();
+    }
+    else
+    {
+      return Property.GetEnabledValues();
     }
   }
 
