@@ -1,3 +1,16 @@
+1.3.21.0
+========
+
+- Neues Attribut Rubicon.Data.DomainObjects.ObjectBinding.UndefinedEnumValueAttribute für enum Typen:
+  Das Attribut kann für Enums verwendet werden, die im DomainModel Pflicht sind, in Suchmasken jedoch optional sein können.
+- Rubicon.Data.DomainObjects.ObjectBinding.IsRequiredAttribute:
+  Setter von IsRequired entfernt und Klasse sealed gesetzt.
+- Rubicon.Data.DomainObjects.ObjectBinding.ItemTypeAttribute:
+  Setter von ItemType entfernt und Klasse sealed gesetzt.
+- Rubicon.Data.DomainObjects.ObjectBinding.DateTypeAttribute:
+  Setter von DateType entfernt und Klasse sealed gesetzt.
+  
+
 1.3.20.0
 ========
 
