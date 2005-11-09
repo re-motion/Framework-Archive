@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
@@ -6,16 +7,12 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> Represents the sorting direction for an individual column. </summary>
 /// <remarks> Used when evaluating the current or new sorting order as well as to persist it into the view state. </remarks>
-[Serializable]
+[TypeConverter (typeof (BocListSortingOrderEntryConverter))]
 public class BocListSortingOrderEntry
 {
-  /// <summary> Gets or sets the index of the column for which the <see cref="Direction"/> is entered. </summary>
   private int _columnIndex;
-  [NonSerialized]
   private BocColumnDefinition _column;
-  /// <summary> Gets or sets the <see cref="SortingDirection"/> for the column at <see cref="ColumnIndex"/>. </summary>
   private SortingDirection _direction;
-  [NonSerialized]
   private bool _isEmpty = false;
 
   /// <summary> Represents a null <see cref="BocListSortingOrderEntry"/>. </summary>
@@ -26,7 +23,7 @@ public class BocListSortingOrderEntry
   {
     ArgumentUtility.CheckNotNull ("column", column);
     _columnIndex = Int32.MinValue;
-    Column = column;
+    SetColumn (column);
     _direction = direction;
   }
 
@@ -52,36 +49,46 @@ public class BocListSortingOrderEntry
   internal int ColumnIndex
   {
     get { return _columnIndex; }
-    set { _columnIndex = value; }
   }
 
-  /// <summary> The the column to sort by. </summary>
-  /// <remarks>
+  internal void SetColumnIndex (int columnIndex)
+  {
+    _columnIndex = columnIndex;
+  }
+
+  /// <summary> Gets the column to sort by. </summary>
+  public BocColumnDefinition Column
+  {
+    get { return _column; }
+  }
+
+  /// <summary> Sets the column to sort by. </summary>
+  /// <param name="column">
   ///   Must not be <see langword="null"/>. 
   ///   Must be of type <see cref="BocValueColumnDefinition"/> 
   ///   or <see cref="BocCustomColumnDefinition"/> with <see cref="BocCustomColumnDefinition.IsSortable"/> set
   ///   <see langword="true"/>.
-  /// </remarks>
-  public BocColumnDefinition Column
+  /// </param>
+  internal void SetColumn (BocColumnDefinition column)
   {
-    get { return _column; }
-    set 
+    ArgumentUtility.CheckNotNull ("column", column);
+    if (   ! (column is BocValueColumnDefinition) 
+        && ! (   column is BocCustomColumnDefinition
+              && ((BocCustomColumnDefinition) column).IsSortable))
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-      if (   ! (value is BocValueColumnDefinition) 
-          && ! (   value is BocCustomColumnDefinition
-                && ((BocCustomColumnDefinition) value).IsSortable))
-      {
-        throw new ArgumentException ("BocListSortingOrderEntry can only use columns of type BocValueColumnDefinition or BocCustomColumnDefinition with BocCustomColumnDefinition.IsSortable set true.", "value");
-      }
-      _column = value; 
+      throw new ArgumentException ("BocListSortingOrderEntry can only use columns of type BocValueColumnDefinition or BocCustomColumnDefinition with BocCustomColumnDefinition.IsSortable set true.", "column");
     }
+    _column = column; 
   }
 
   public SortingDirection Direction
   {
     get { return _direction; }
-    set { _direction = value; }
+  }
+
+  internal void SetDirection (SortingDirection direction)
+  {
+    _direction = direction;
   }
 
   /// <summary>
@@ -105,7 +112,10 @@ public class BocListSortingOrderEntry
     if (obj is BocListSortingOrderEntry)
     {
       BocListSortingOrderEntry entry = (BocListSortingOrderEntry) obj;
-      return ColumnIndex == entry.ColumnIndex && Direction == entry.Direction;;
+      if (_isEmpty && entry.IsEmpty)
+        return true;
+      else
+        return ColumnIndex == entry.ColumnIndex && Direction == entry.Direction;;
     }
     return false;
   }
@@ -121,12 +131,69 @@ public class BocListSortingOrderEntry
 /// <summary> The possible sorting directions. </summary>
 public enum SortingDirection
 {
-  /// <summary> Don't sort. </summary>
+  /// <summary> Do not sort. </summary>
   None,
   /// <summary> Sort ascending. </summary>
   Ascending,
   /// <summary> Sort descending. </summary>
   Descending
+}
+
+/// <summary> Converts a <see cref="BocListSortingOrderEnrty"/> in to a string. </summary>
+/// <remarks> Used for persisting a <see cref="BocListSortingOrderEnrty"/> into the view state. </remarks>
+public class BocListSortingOrderEntryConverter: TypeConverter
+{
+  private const string c_empty = "emtpy";
+
+  public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+  {
+    if (sourceType == typeof (string))
+      return true;
+    return base.CanConvertFrom (context, sourceType);
+  }
+
+  public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+  {
+    if (destinationType == typeof (string))
+      return true;
+    return base.CanConvertTo (context, destinationType);
+  }
+
+  public override object ConvertFrom (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+  {
+    if (value is string)
+    {
+      string stringValue = (string) value;
+      if (stringValue.CompareTo (c_empty) == 0)
+      {
+        return BocListSortingOrderEntry.Empty;
+      }
+      else
+      {
+        string[] values = stringValue.Split (new char[] {','}, 2);
+        int columnIndex = Int32.Parse (values[0]);
+        SortingDirection direction = 
+            (SortingDirection) Enum.ToObject (typeof (SortingDirection), Int32.Parse (values[1]));
+        return new BocListSortingOrderEntry (columnIndex, direction);
+      }
+    }
+    return base.ConvertFrom (context, culture, value);
+  }
+
+  public override object ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+  {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (BocListSortingOrderEntry));
+    if(destinationType == typeof (string))
+    {
+      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) value;
+      if (entry.IsEmpty)
+        return c_empty;
+      else
+        return entry.ColumnIndex.ToString() + "," + ((int) entry.Direction).ToString();
+    }
+    return base.ConvertTo (context, culture, value, destinationType);
+  }
+
 }
 
 }
