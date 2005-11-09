@@ -22,7 +22,6 @@ public class BaseProperty : IBusinessObjectProperty
   private Type _itemType;
   private bool _isList;
 
-  //TODO: should it be internal protected?
   //TODO: missing ArgumentUtility?!
   /// <summary>
   /// Instantiates a new object.
@@ -31,7 +30,7 @@ public class BaseProperty : IBusinessObjectProperty
   /// <param name="isRequired">A value indicating if the property is required by the business model, or not.</param>
   /// <param name="itemType">The type of the property value.</param>
   /// <param name="isList">A value indicating if the property contains multiple objects.</param>
-  internal BaseProperty (PropertyInfo propertyInfo, bool isRequired, Type itemType, bool isList)
+  internal protected BaseProperty (PropertyInfo propertyInfo, bool isRequired, Type itemType, bool isList)
   {
     _propertyInfo = propertyInfo;
     _isRequired = isRequired;
@@ -157,7 +156,7 @@ public class BaseProperty : IBusinessObjectProperty
   /// <note type="inheritinfo">
   ///   Override this method to perform conversions of data types or other logic.
   /// </note>
-  internal protected virtual object FromInternalType (object internalValue)
+  public virtual object FromInternalType (object internalValue)
   {
     if (!IsList)
     {
@@ -179,7 +178,7 @@ public class BaseProperty : IBusinessObjectProperty
   /// <param name="publicValue">The external value.</param>
   /// <returns>The internal value.</returns>
   /// <exception cref="InvalidNullAssignmentException"><paramref name="publicValue"/> is <see langword="null"/> and this value is not supported by this property.</exception>
-  internal protected virtual object ToInternalType (object publicValue)
+  public virtual object ToInternalType (object publicValue)
   {
     if (_itemType.IsValueType && publicValue == null)
       throw new InvalidNullAssignmentException (_itemType);
