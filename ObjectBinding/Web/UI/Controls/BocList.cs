@@ -2131,7 +2131,18 @@ public class BocList:
       if (! column.Width.IsEmpty)
       {
         writer.Write (" style=\"");
-        writer.WriteStyleAttribute ("width", column.Width.ToString());
+        string width;
+        BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
+        if (valueColumn != null && valueColumn.EnforceWidth && column.Width.Type != UnitType.Percentage)
+        {
+          //  1% would lead to automatic resizing if all widths don't add up to 100%
+          width = Unit.Percentage(0).ToString();
+        }
+        else
+        {
+          width = column.Width.ToString();
+        }
+        writer.WriteStyleAttribute ("width", width);
         writer.Write ("\"");
       }
       writer.Write (">");
@@ -2551,6 +2562,24 @@ public class BocList:
       if (valueColumn != null && ! hasEditModeControl)
         valueColumnText = valueColumn.GetStringValue (businessObject);
 
+      bool showEditModeControl = simpleColumn != null && hasEditModeControl && ! simpleColumn.IsReadOnly;
+
+      bool enforceWidth = 
+             valueColumn != null 
+          && valueColumn.EnforceWidth 
+          && ! column.Width.IsEmpty
+          && column.Width.Type != UnitType.Percentage
+          && ! showEditModeControl;
+
+      if (enforceWidth)
+      {
+        writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
+        writer.AddStyleAttribute ("overflow", "hidden");
+        writer.AddStyleAttribute ("white-space", "nowrap");
+        writer.AddAttribute (HtmlTextWriterAttribute.Title, valueColumnText);
+        writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      }
+
       //  Render the command
       bool isCommandEnabled = false;
       if (commandColumn != null || ! StringUtility.IsNullOrEmpty (valueColumnText))
@@ -2575,7 +2604,7 @@ public class BocList:
       }
       else if (simpleColumn != null)
       {
-        if (hasEditModeControl && ! simpleColumn.IsReadOnly)
+        if (showEditModeControl)
           RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex);
         else
           RenderValueColumnCellText (writer, valueColumnText);
@@ -2586,9 +2615,12 @@ public class BocList:
       }
 
       if (isCommandEnabled)
-        RenderEndTagDataCellCommand (writer, commandEnabledColumn);
+        RenderEndTagDataCellCommand (writer, commandEnabledColumn); // End Command
       else
-        writer.RenderEndTag();
+        writer.RenderEndTag(); // End Span
+
+      if (enforceWidth)
+        writer.RenderEndTag(); // End Div
     }
     else if (editDetailsColumn != null)
     {
