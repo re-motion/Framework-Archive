@@ -34,7 +34,7 @@ function Wxe_Context (
   if (refreshInterval > 0)
   {
     _refreshUrl = refreshUrl;
-    _refreshTimer = window.setInterval('Wxe_Refresh()', refreshInterval);
+    _refreshTimer = window.setInterval(Wxe_Refresh, refreshInterval);
   }
   
   var _abortUrl = abortUrl;
@@ -539,6 +539,11 @@ function Wxe_OnBeforeUnload()
 function Wxe_OnUnload()
 {
   _wxe_context.OnUnload();
+}
+
+function Wxe_Refresh()
+{
+  _wxe_context.Refresh();
 }
 
 function Wxe_OnElementBlur (evt) 
