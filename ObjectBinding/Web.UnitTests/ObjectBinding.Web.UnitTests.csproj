@@ -196,6 +196,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\BocListSortingOrderEntryConverterTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\BocListSortingOrderEntryMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\BocListWcagTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
