@@ -7,6 +7,7 @@ using System.Web.UI.HtmlControls;
 using System.ComponentModel;
 using Rubicon.Utilities;
 using Rubicon.Web.UI;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -129,16 +130,13 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
 
   protected override void Render(HtmlTextWriter writer)
   {
-    if (! Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended)
+    if (!ControlHelper.IsDesignMode (this))
     {
-      ISmartNavigablePage smartNavigablePage = Page as ISmartNavigablePage;
-      if (   WxeHandler.IsSessionManagementEnabled
-          || (   smartNavigablePage != null
-              && (   smartNavigablePage.IsSmartScrollingEnabled 
-                  || smartNavigablePage.IsSmartFocusingEnabled)))
-      {
-        throw new ApplicationException ("The Rubicon.Web.UI.Controls.HtmlHeadContents element is missing on the page.");
-      }
+      if (! Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended)
+        throw new WxeException ("The Rubicon.Web.UI.Controls.HtmlHeadContents element is missing on the page.");
+
+      if (Page.SmartNavigation)
+        throw new WxeException ("Enabling ASP.NET SmartNavigation is not supported on WXE Pages. Use the smart navigation feature integrated into rubicon framework instead.");
     }
     base.Render (writer);
   }
