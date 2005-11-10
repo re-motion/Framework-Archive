@@ -292,12 +292,14 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     if (isRefresh)
     {
+      s_log.Debug (string.Format ("WxeAction Request: Refresh WxeFunctionState {0}.", functionToken));
       functionState.Touch();
       return null;
     }
     else if (isAbort)
     {
       functionStates.CleanUpExpired();
+      s_log.Debug (string.Format ("WxeAction Request: Abort WxeFunctionState {0}.", functionToken));
       functionStates.Abort (functionState);
       return null;
     }
