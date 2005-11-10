@@ -156,6 +156,10 @@ public abstract class WxeFunction: WxeStepList
       NameObjectCollection parentVariables = (ParentStep != null) ? ParentStep.Variables : null;
       EnsureParametersInitialized (null);
     }
+    else
+    {
+      s_log.Debug (string.Format ("Resuming execution of " + this.GetType().FullName + "."));
+    }
 
     try
     {
@@ -192,7 +196,7 @@ public abstract class WxeFunction: WxeStepList
     if (_exception == null &&  ParentStep != null)
       ReturnParametersToCaller();
 
-    s_log.Debug ("Ending Execution of " + this.GetType().FullName + ".");
+    s_log.Debug ("Ending execution of " + this.GetType().FullName + ".");
   }
 
   public string ReturnUrl
