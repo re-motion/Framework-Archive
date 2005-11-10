@@ -122,6 +122,7 @@ public class WxeFunctionState
     _functionToken = Guid.NewGuid().ToString();
     _isCleanUpEnabled = enableCleanUp;
     _postBackID = 0;
+    s_log.Debug (string.Format ("Created WxeFunctionState {0}.", _functionToken));
   }
 
   public WxeFunction Function
