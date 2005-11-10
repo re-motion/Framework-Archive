@@ -1,3 +1,8 @@
+1.3.22
+======
+- ASP.NET SmartNavigation ist auf WxePages nicht mehr supported, da sie Nebeneffekte auf ClientScripts haben kann.
+  Statt dessen sei auf die rubicon SmartNavigation verwiesen.
+
 1.3.21
 ======
 - Rubicon.Web.ExecutionEngine.WxePage

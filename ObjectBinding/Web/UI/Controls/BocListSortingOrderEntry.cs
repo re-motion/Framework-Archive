@@ -28,7 +28,7 @@ public class BocListSortingOrderEntry
   }
 
   /// <summary> Initializes a new instance. </summary>
-  internal BocListSortingOrderEntry (int columnIndex, SortingDirection direction)
+  protected internal BocListSortingOrderEntry (int columnIndex, SortingDirection direction)
   {
     _columnIndex = columnIndex;
     _column = null;
@@ -47,12 +47,12 @@ public class BocListSortingOrderEntry
     get { return _isEmpty; }
   }
 
-  internal int ColumnIndex
+  protected internal int ColumnIndex
   {
     get { return _columnIndex; }
   }
 
-  internal void SetColumnIndex (int columnIndex)
+  protected internal void SetColumnIndex (int columnIndex)
   {
     _columnIndex = columnIndex;
   }
@@ -70,7 +70,7 @@ public class BocListSortingOrderEntry
   ///   or <see cref="BocCustomColumnDefinition"/> with <see cref="BocCustomColumnDefinition.IsSortable"/> set
   ///   <see langword="true"/>.
   /// </param>
-  internal void SetColumn (BocColumnDefinition column)
+  protected internal void SetColumn (BocColumnDefinition column)
   {
     ArgumentUtility.CheckNotNull ("column", column);
     if (   ! (column is BocValueColumnDefinition) 
@@ -88,7 +88,7 @@ public class BocListSortingOrderEntry
     get { return _direction; }
   }
 
-  internal void SetDirection (SortingDirection direction)
+  protected internal void SetDirection (SortingDirection direction)
   {
     _direction = direction;
   }
@@ -145,7 +145,7 @@ public enum SortingDirection
 /// <remarks> Used for persisting a <see cref="BocListSortingOrderEntry"/> into the view state. </remarks>
 public class BocListSortingOrderEntryConverter: TypeConverter
 {
-  private const string c_empty = "emtpy";
+  private const string c_empty = "empty";
 
   public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
   {
