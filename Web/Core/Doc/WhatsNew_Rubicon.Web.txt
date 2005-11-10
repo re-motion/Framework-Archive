@@ -14,8 +14,15 @@
       Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsAbortingMessage
       Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsSubmittingMessage
    * Sämtliche Meldungen (AbortMessage, StatusIsXXXMessage) lassen sich nun auch via Property setzen.
-  * RegisterClientSideEventHandler: Neue clientseitige Eventshandler werden unterstüzt: OnScroll, OnResize.
-  
+  * RegisterClientSideEventHandler: Neue clientseitige Eventshandler werden unterstüzt:  
+    OnScroll, OnResize, OnBeforeUnload, OnUnload
+- Rubicon.Web.ExecutionEngine.WxePage
+  * ExecuteFunctionXXX wertet nun den Parameter useParentPpermanentUrl aus.
+- Rubicon.Web.ExecutionEngine.WxeContext
+  * GetPermanentUrl: wertet nun den Parameter useParentPpermanentUrl aus.
+- Rubicon.Web.UI.Controls.DatePicker  
+  * Bugfix: Unter Umständen ist beim Öffnen des DatePickers der Internet Explorer abgestürtzt.
+    Vermutlich ein Bug im DOM-Tree.
    
 1.3.20
 ======

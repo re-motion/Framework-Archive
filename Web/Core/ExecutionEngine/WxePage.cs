@@ -33,7 +33,14 @@ public enum WxePageEvents
   /// <summary> Raised when the user scrolls the page. Signature: <c>void Function ()</c> </summary>
   OnScroll,
   /// <summary> Raised when the user resizes the page. Signature: <c>void Function ()</c> </summary>
-  OnResize
+  OnResize,
+  /// <summary> 
+  ///   Raised before the request to load a new page (or reload the current page) is executed. Not supported in Opera.
+  ///   Signature: <c>void Function ()</c>
+  /// </summary>
+  OnBeforeUnload,
+  /// <summary> Raised before the page is removed from the window. Signature: <c>void Function ()</c> </summary>
+  OnUnload
 }
 
 /// <summary> This interface represents a page that can be used in a <see cref="WxePageStep"/>. </summary>

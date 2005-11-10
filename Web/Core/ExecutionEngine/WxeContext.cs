@@ -268,6 +268,20 @@ public class WxeContext
     return permanentUrl;
   }
 
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
+  ///   and using the <paramref name="queryString"/>.
+  /// </summary>
+  /// <param name="functionType"> 
+  ///   The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 
+  ///   Must be derived from <see cref="WxeFunction"/>. 
+  /// </param>
+  /// <param name="queryString">
+  ///   The <see cref="NameValueCollection"/> containing the query string arguments. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="useParentPermanentUrl">
+  ///    <see langword="true"/> to add the executing function's perma-URL. Defaults to <see langword="false"/>.
+  /// </param>
   public string GetPermanentUrl (Type functionType, NameValueCollection queryString, bool useParentPermanentUrl)
   {
     ArgumentUtility.CheckNotNull ("queryString", queryString);
