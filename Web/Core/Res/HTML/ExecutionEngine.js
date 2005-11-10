@@ -193,6 +193,7 @@ function Wxe_Context (
   this.OnBeforeUnload = function ()
   {
     _isAbortingBeforeUnload = false;
+    var displayAbortMessage = false;
     
     if (   ! _hasUnloaded
         && ! _isSubmittingBeforeUnload
@@ -211,13 +212,19 @@ function Wxe_Context (
       if (! isJavaScriptAnchor)
       {
 	      _isAbortingBeforeUnload = true;
-        // IE alternate/official version: window.event.returnValue = _wxe_context.AbortMessage
-        return _abortMessage;
+        displayAbortMessage = true;
       }
     }
     else if (_isSubmittingBeforeUnload)
     {
       _isSubmittingBeforeUnload = false;
+    }
+    
+    this.ExecuteEventHandlers (_eventHandlers['onbeforeunload']);
+    if (displayAbortMessage)
+    {
+      // IE alternate/official version: window.event.returnValue = _wxe_context.AbortMessage
+      return _abortMessage;
     }
   }
 
@@ -237,6 +244,7 @@ function Wxe_Context (
       _isAbortingBeforeUnload = false;
     }
     _hasUnloaded = true;
+    this.ExecuteEventHandlers (_eventHandlers['onunload']);
   }
 
   this.Refresh = function ()

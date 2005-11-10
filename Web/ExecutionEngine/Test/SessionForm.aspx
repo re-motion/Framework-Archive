@@ -57,6 +57,18 @@ Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLi
     function Page_Abort ()
     {
     }
+    
+    function Page_Load ()
+    {
+    }
+    
+    function Page_BeforeUnload ()
+    {
+    }
+    
+    function Page_Unload ()
+    {
+    }
     </script>
   </body>
 </html>

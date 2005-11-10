@@ -50,6 +50,9 @@ public class SessionForm : WxePage
 	{
     RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "Page_PostBack", "Page_PostBack");
     RegisterClientSidePageEventHandler (WxePageEvents.OnPostBack, "Page_Abort", "Page_Abort");
+    RegisterClientSidePageEventHandler (WxePageEvents.OnLoad, "Page_Load", "Page_Load");
+    RegisterClientSidePageEventHandler (WxePageEvents.OnBeforeUnload, "Page_BeforeUnload", "Page_BeforeUnload");
+    RegisterClientSidePageEventHandler (WxePageEvents.OnUnload, "Page_Unload", "Page_Unload");
     FunctionTokenLabel.Text = "Token = " + WxeContext.Current.FunctionToken;
     PostBackIDLabel.Text = "PostBackID = " + WxeContext.Current.PostBackID.ToString();
 
