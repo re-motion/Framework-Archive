@@ -39,11 +39,19 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
   {
     left += currentNode.offsetLeft + currentNode.clientLeft;
     top += currentNode.offsetTop + currentNode.clientTop;
-    if (   currentNode.style.overflow.toLowerCase() == 'auto' 
-        || currentNode.style.overflow.toLowerCase() == 'scroll')
+    if (currentNode.tagName.toLowerCase() == 'body')
     {
       left -= currentNode.scrollLeft;
       top -= currentNode.scrollTop;
+    }
+    else
+    {   
+      var overflow = currentNode.style.overflow.toLowerCase();
+      if (overflow == 'auto' || overflow == 'scroll')
+      {
+        left -= currentNode.scrollLeft;
+        top -= currentNode.scrollTop;
+      }
     }
   }
   
@@ -133,7 +141,7 @@ function DatePicker_CloseVisibleDatePickerFrame (newDatePickerID)
 //  Belongs to the date picker frame.
 function DatePicker_Calendar_SelectionChanged (value)
 {
-  target = window.parent.document.getElementById (document.getElementById ('TargetIDField').value);
+  var target = window.parent.document.getElementById (document.getElementById ('TargetIDField').value);
   var isValueChanged = target.value != value;
   DatePicker_CloseDatePicker();
   target.value = value;
