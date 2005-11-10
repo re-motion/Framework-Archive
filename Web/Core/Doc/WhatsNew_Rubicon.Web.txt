@@ -23,7 +23,9 @@
 - Rubicon.Web.UI.Controls.DatePicker  
   * Bugfix: Unter Umständen ist beim Öffnen des DatePickers der Internet Explorer abgestürtzt.
     Vermutlich ein Bug im DOM-Tree.
-   
+- Rubicon.Web.Configuration.ExecutionEngineConfiguration
+  * MaximumUrlLength: Gibt die maximale URL Länge für generierte Urls an.
+  
 1.3.20
 ======
 - Rubicon.Web.UI.Controls.TabControl (NavigationTabs)

@@ -39,7 +39,7 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
   {
     left += currentNode.offsetLeft + currentNode.clientLeft;
     top += currentNode.offsetTop + currentNode.clientTop;
-    if (currentNode.tagName.toLowerCase() == 'body')
+    if (currentNode == window.document.body)
     {
       left -= currentNode.scrollLeft;
       top -= currentNode.scrollTop;

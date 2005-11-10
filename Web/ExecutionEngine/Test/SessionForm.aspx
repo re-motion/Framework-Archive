@@ -60,6 +60,26 @@ Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLi
     
     function Page_Load ()
     {
+      /*
+      // IE Only
+      var windowTop = 25 + 24 + 24 + 24; // Title bar, menu bar, stanarddbuttons bar, address bar
+      var windowBottom = 24;
+      var windowLeft = 4;
+      var windowRight = 4;
+      
+      _width = document.body.offsetWidth + windowLeft + windowRight;
+      _height = document.body.offsetHeight + windowTop + windowBottom;
+      _left = window.screenLeft - windowLeft;
+      _top = window.screenTop - windowTop;
+
+      var newWidth = 300;
+      var newHeight = 150;
+      window.resizeTo (newWidth, newHeight);
+      
+      var newLeft = ((screen.width - document.body.clientWidth - windowLeft - windowRight) / 2)
+      var newTop = ((screen.height - document.body.clientHeight - windowTop - windowBottom) / 2);      
+      window.moveTo (newTop, _top);
+      */
     }
     
     function Page_BeforeUnload ()
@@ -68,6 +88,10 @@ Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLi
     
     function Page_Unload ()
     {
+      /*
+      window.resizeTo (_width, _height);
+      window.moveTo (_left, _top);
+      */
     }
     </script>
   </body>

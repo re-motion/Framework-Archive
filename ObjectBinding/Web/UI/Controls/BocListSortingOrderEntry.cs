@@ -141,8 +141,8 @@ public enum SortingDirection
   Descending
 }
 
-/// <summary> Converts a <see cref="BocListSortingOrderEnrty"/> from and to a string. </summary>
-/// <remarks> Used for persisting a <see cref="BocListSortingOrderEnrty"/> into the view state. </remarks>
+/// <summary> Converts a <see cref="BocListSortingOrderEntry"/> from and to a string. </summary>
+/// <remarks> Used for persisting a <see cref="BocListSortingOrderEntry"/> into the view state. </remarks>
 public class BocListSortingOrderEntryConverter: TypeConverter
 {
   private const string c_empty = "emtpy";
