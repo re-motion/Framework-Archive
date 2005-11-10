@@ -2937,7 +2937,14 @@ public class BocList:
     }
     if (editModeControlStyle != null)
     {
-      if (StringUtility.IsNullOrEmpty (editModeControlStyle["width"]) && isEditModeControlWidthEmpty)
+      bool enforceWidth = 
+             column.EnforceWidth 
+          && ! column.Width.IsEmpty
+          && column.Width.Type != UnitType.Percentage;
+
+      if (enforceWidth)
+        editModeControlStyle["width"] = column.Width.ToString();
+      else if (StringUtility.IsNullOrEmpty (editModeControlStyle["width"]) && isEditModeControlWidthEmpty)
         editModeControlStyle["width"] = "100%";
       if (StringUtility.IsNullOrEmpty (editModeControlStyle["vertical-align"]))
         editModeControlStyle["vertical-align"] = "middle";

@@ -4,7 +4,9 @@
   * Für SimpleColumns und CompoundColumns lässt sich durch Angabe der Width (nicht %) + setzen des EnforceWidth
     Flags in der Read-Only Darstellung eine Spaltenbreite vorgeben. Der Inhalt wird abgeschnitten und mittels 
     ToolTip vollständig bereitgestellt.
-    Achtung: Dies gibt nicht für die Spaltentitel.
+    Achtung: 
+      Dies gilt nicht für die Spaltentitel. Kann dieser nicht umgebrochen werden, so definiert er die Mindestbreite.
+      Im EditDetailsMode kann die Breite nicht garantiert werden.
 
 1.3.21
 ======
