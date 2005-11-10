@@ -37,6 +37,12 @@ public class PersonCustomCell: BocCustomColumnDefinitionCell
 
   protected override void Render (HtmlTextWriter writer, BocCustomCellRenderArguments arguments)
   {
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "5em");
+    writer.AddStyleAttribute ("overflow", "hidden");
+    writer.AddStyleAttribute ("white-space", "nowrap");
+    writer.AddAttribute (HtmlTextWriterAttribute.Title, "This is a very, very, very, very, very, very, very, very, very long text.");
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+
     writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
     string onClickEvent = GetPostBackClientEvent ("1");
     writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClickEvent);
@@ -52,6 +58,9 @@ public class PersonCustomCell: BocCustomColumnDefinitionCell
     writer.Write ("2");
     writer.RenderEndTag();
     writer.Write ("<br>");
+    writer.Write ("This is a very, very, very, very, very, very, very, very, very long text.");
+
+    writer.RenderEndTag();
   }
 }
 
