@@ -161,13 +161,16 @@ public abstract class WxeTransactionBase: WxeStepList
 
   public override void Execute (WxeContext context)
   {
-    s_log.Debug ("Entering Execute of " + this.GetType().Name);
-    
     if (! ExecutionStarted)
     {
+      s_log.Debug ("Initializing execution of " + this.GetType().FullName + ".");
       _previousCurrentTransaction = CurrentTransaction;
       if (_transaction == null)
         _transaction = CreateTransaction();
+    }
+    else
+    {
+      s_log.Debug (string.Format ("Resuming execution of " + this.GetType().FullName + "."));
     }
 
     SetCurrentTransaction (_transaction);
@@ -183,7 +186,7 @@ public abstract class WxeTransactionBase: WxeStepList
 
       RollbackAndReleaseTransaction();
       RestorePreviousCurrentTransaction();
-      s_log.Debug ("Aborted Execute of " + this.GetType().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType().FullName + ").");
+      s_log.Debug ("Aborted execution of " + this.GetType().Name + " because of exception: \"" + e.Message + "\" (" + e.GetType().FullName + ").");
   
       throw;
     }
@@ -194,7 +197,7 @@ public abstract class WxeTransactionBase: WxeStepList
       RollbackAndReleaseTransaction();
     RestorePreviousCurrentTransaction();
    
-    s_log.Debug ("Leaving Execute of " + this.GetType().Name);
+    s_log.Debug ("Ending execution of " + this.GetType().Name);
   }
 
   protected override void AbortRecursive()
