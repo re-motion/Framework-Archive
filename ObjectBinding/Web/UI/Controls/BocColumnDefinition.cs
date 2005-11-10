@@ -293,6 +293,8 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
 /// <summary> A column definition for displaying data and an optional command. </summary>
 public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinition
 {
+  private bool _enforceWidth;
+
   /// <summary> Initializes a new instance of the <see cref="BocValueColumnDefinition"/> class. </summary>
   public BocValueColumnDefinition()
   {
@@ -302,6 +304,26 @@ public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinitio
   /// <param name="obj"> The <see cref="IBusinessObject"/> to be displayed in this column. </param>
   /// <returns> A <see cref="string"/> representing the contents of <paramref name="obj"/>. </returns>
   public abstract string GetStringValue (IBusinessObject obj);
+
+  /// <summary> 
+  ///   Gets or sets a flag that determines whether to hide overflowing contents in the data rows instead of 
+  ///   breaking into a new line. 
+  /// </summary>
+  /// <value> <see langword="true"/> to enforce the width. </value>
+  /// <remarks> 
+  ///     <see cref="Width"/> must not be of type <see cref="UnitType.Percentage"/>, if the width is to be enforced.
+  ///   </para>
+  /// </remarks>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Layout")]
+  [Description ("Hides overflowing contents in the data rows instead of breaking into a new line.")]
+  [DefaultValue(false)]
+  [NotifyParentProperty (true)]
+  public bool EnforceWidth 
+  { 
+    get { return _enforceWidth; } 
+    set { _enforceWidth = value; }
+  }
 
   /// <summary> Gets the human readable name of this type. </summary>
   protected override string DisplayedTypeName
