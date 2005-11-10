@@ -161,6 +161,7 @@ public class WxeFunctionState
 
   public void Touch()
   {
+    s_log.Debug (string.Format ("Refreshing WxeFunctionState {0}.", _functionToken));
     _lastAccess = DateTime.Now;
   }
 
