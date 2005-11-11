@@ -12,10 +12,10 @@
         You can use controls on the page and use the <see cref="Page.IsPostBack"/> flag as you would on any other 
         ASP.NET page.
       </para><para>
-        If you do not rely on the controls to handle form input, there is one exception to the rule of treating 
-        an <b>IWxePage</b> as a normal ASP.NET page. The post back data provided by the <see cref="Page.Request"/> 
-        object of the <see cref="Page"/> does not necessarily contain the correct data. The execution engine provides 
-        the relevant post back data via the <see cref="GetPostBackCollection"/> method. 
+        In case you do not rely on the controls to handle form input, there is one exception to the afore mentioned 
+        rule. The post back data provided by the <see cref="Page.Request"/> object of the <see cref="Page"/> is not 
+        guaranteed contain the correct data. The execution engine does provide the relevant post back data via the 
+        <see cref="GetPostBackCollection"/> method. 
       </para>
       <h4 class="dtH4">Using Flow Control</h4>
       <para>
@@ -33,10 +33,10 @@
           <para>
             To cancel the execution of the current step and function, it is possible to throw a 
             <see cref="WxeUserCancelException"/>. This is usually done in the click-event handler of a cancel button.
-            <see cref="ExecuteNextStep"/> should not be called when canceling the step.
+            Do not invoke <see cref="ExecuteNextStep"/> when canceling the step.
           </para><para>
             To prevent the <see cref="WxeUserCancelException"/> from being passed to the root function, e.g.
-            to continue with the execution in the previous function, use the 
+            if you intend to continue with the execution in the parent function, use the 
             <see cref="WxeFunction.SetCatchExceptionTypes">WxeFunction.SetCatchExceptionTypes</see> method or
             use a <see cref="WxeTryCatch"/> step. For details on working with exceptions, please refer to the 
             <see cref="WxeFunction"/>'s documentation.
