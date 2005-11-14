@@ -1773,6 +1773,7 @@ public class BocList:
                                 || menuItem.Command.Type == CommandType.WxeFunction;
         if (isPostBackCommand)
         {
+          // Clientside script creates an anchor with href="#" and onclick=function
           string argument = c_eventMenuItemPrefix + menuItemIndex.ToString();
           href = Page.GetPostBackClientHyperlink (this, argument) + ";";
           href = PageUtility.EscapeClientScript (href);
