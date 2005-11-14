@@ -1028,17 +1028,17 @@ public class BocList:
   /// <remarks> Will only be raised, if the change was caused by an UI action. </remarks>
   [Category ("Action")]
   [Description ("Occurs when the sorting order of the BocList is about to change.")]
-  public event BocListSortingOrderChangeEventHandler SortingOrderChangingEvent
+  public event BocListSortingOrderChangeEventHandler SortingOrderChanging
   {
     add { Events.AddHandler (s_sortingOrderChangingEvent, value); }
     remove { Events.RemoveHandler (s_sortingOrderChangingEvent, value); }
   }
 
-  /// <summary> Is raised when the sorting order of the <see cref="BocList"/> has to changed. </summary>
+  /// <summary> Is raised when the sorting order of the <see cref="BocList"/> has changed. </summary>
   /// <remarks> Will only be raised, if the change was caused by an UI action. </remarks>
   [Category ("Action")]
   [Description ("Occurs when the sorting order of the BocList has to changed.")]
-  public event BocListSortingOrderChangeEventHandler SortingOrderChangedEvent
+  public event BocListSortingOrderChangeEventHandler SortingOrderChanged
   {
     add { Events.AddHandler (s_sortingOrderChangedEvent, value); }
     remove { Events.RemoveHandler (s_sortingOrderChangedEvent, value); }

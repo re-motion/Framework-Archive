@@ -46,14 +46,12 @@ Permalink this: <asp:HyperLink id="CurrentFunctionPermaLink" runat="server"></as
 Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>
 <p><a href="javascript:alert('script in href');">script in href</a></p>
 <p><a href="#" onclick="alert('script in onclick');">script in onclick</a></p>
+<input type="submit" value="testvalue" name="testname"/>
 </td>
 </tr>
 </table>
 </form>
     <script language="javascript">
-    function Page_PostBack (eventTarget, eventArgs)
-    {
-    }
 
     function Page_Abort ()
     {
