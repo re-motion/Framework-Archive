@@ -860,12 +860,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     get { return _label; }
   }
 
-  /// <summary> Gets or sets the text displayed for the null-item. </summary>
+  /// <summary> Gets or sets the text displayed for the undefined item. </summary>
   /// <value> 
   ///   The text displayed for <see langword="null"/>. The default value is <see cref="String.Empty"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
-  [Description("The description displayed for the null-item.")]
+  [Description("The description displayed for the undefined item.")]
   [Category ("Appearance")]
   [DefaultValue("")]
   public string UndefinedItemText
