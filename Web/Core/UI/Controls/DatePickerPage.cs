@@ -76,7 +76,7 @@ public class DatePickerPage : Page
     Form.Controls.Add (DateValueField);
 
     //  Force the creation of the postback function
-    Page.GetPostBackClientHyperlink(this, "");
+    Page.GetPostBackEventReference (this, "");
 
     base.OnInit(e);
 	}
