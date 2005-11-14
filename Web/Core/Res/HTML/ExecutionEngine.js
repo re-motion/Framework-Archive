@@ -57,6 +57,7 @@ function Wxe_Context (
   var _statusIsCachedMessage = statusIsCachedMessage;
   var _statusMessageWindow = null;
   var _hasUnloaded = false;
+  var _isMsIEAspnetPostBack = false;
 
   var _aspnetDoPostBack = null;
   
@@ -169,7 +170,10 @@ function Wxe_Context (
     window.onunload = Wxe_OnUnload;
     window.onscroll = Wxe_OnScroll;
     window.onresize = Wxe_OnResize;
-    
+  }
+
+  this.OnStartUp = function ()
+  {
     if (! _isMsIE)
   	  this.SetFocusEventHandlers (document.body);
   }
@@ -201,15 +205,7 @@ function Wxe_Context (
         && ! _isAborting && _isAbortConfirmationEnabled)
     {
       var activeElement = this.GetActiveElement();
-      var isJavaScriptAnchor = false;
-      if (  activeElement != null
-          && activeElement.tagName.toLowerCase() == 'a'
-          && activeElement.href != null
-          && activeElement.href.toLowerCase().indexOf ('javascript:') >= 0)
-      {
-        isJavaScriptAnchor = true;
-      }
-      if (! isJavaScriptAnchor)
+      if (! IsJavaScriptAnchor (activeElement))
       {
 	      _isAbortingBeforeUnload = true;
         displayAbortMessage = true;
@@ -227,7 +223,7 @@ function Wxe_Context (
       return _abortMessage;
     }
   }
-
+  
   this.OnUnload = function ()
   {
     if (   (! _isSubmitting || _isAbortingBeforeUnload)
@@ -249,35 +245,21 @@ function Wxe_Context (
 
   this.Refresh = function ()
   {
-    this.SendSessionRequest (_refreshUrl)
+    this.SendSessionRequest (_refreshUrl + '&Wxe_Garbage=' + Math.random())
   }
 
   this.OverrideAspNetDoPostBack = function ()
   {
-	  this.TheForm.onsubmit = Wxe_FormSubmit;
+	  this.TheForm.onsubmit = Wxe_OnFormSubmit;
+    this.TheForm.onclick = Wxe_OnFormClick;
 	  _aspnetDoPostBack = __doPostBack;
 	  __doPostBack = Wxe_DoPostBack;
   }
 
   this.DoPostBack = function (eventTarget, eventArgument)
   {
-    if (_hasUnloaded)
-    {
-      this.ShowIsCachedMessage();
-    }
-    else if (_hasSubmitted || _hasAborted)
-    {
-      return;
-    }
-    else if (_isAborting)
-    {
-      this.ShowStatusIsAbortingMessage();
-    }
-    else if (_isSubmitting)
-    {
-      this.ShowStatusIsSubmittingMessage();
-    }
-    else
+    var continueRequest = this.CheckFormState();
+    if (continueRequest)
     {
       _isSubmitting = true;
       _isSubmittingBeforeUnload = true;
@@ -286,12 +268,55 @@ function Wxe_Context (
       this.ExecuteEventHandlers (_eventHandlers['onpostback'], eventTarget, eventArgument);
 
       this.SetCacheDetectionFieldSubmitted();
-          
+       
 	    _aspnetDoPostBack (eventTarget, eventArgument);
+      if (_isMsIE)
+	      _isMsIEAspnetPostBack = true;
     }
   }
 
-  this.FormSubmit = function ()
+  this.OnFormClick = function (evt)
+  {
+    if (_isMsIEAspnetPostBack)
+	  {
+	    _isMsIEAspnetPostBack = false;
+      return true;
+    }
+      
+    var eventSource = Wxe_GetEventSource (evt);
+    this.SetActiveElement (eventSource);
+    if (IsJavaScriptAnchor (eventSource))
+      return this.CheckFormState();
+    else
+      return true;
+  }
+
+  this.OnFormSubmit = function ()
+  {
+    var continueRequest = this.CheckFormState();
+    if (continueRequest)
+    {
+      _isSubmitting = true; 
+      _isSubmittingBeforeUnload = true;
+      
+      this.Backup();
+      var eventTarget = null;
+      if (this.GetActiveElement() != null)
+        eventTarget = this.GetActiveElement().id;
+      this.ExecuteEventHandlers (_eventHandlers['onpostback'], eventTarget, '');
+      
+      this.SetCacheDetectionFieldSubmitted();
+      
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  
+  // returns: true to continue with request
+  this.CheckFormState = function()
   {
     if (_hasUnloaded)
     {
@@ -314,17 +339,6 @@ function Wxe_Context (
     }
     else
     {
-      _isSubmitting = true; 
-      _isSubmittingBeforeUnload = true;
-      
-      this.Backup();
-      var eventTarget = null;
-      if (this.GetActiveElement() != null)
-        eventTarget = this.GetActiveElement().id;
-      this.ExecuteEventHandlers (_eventHandlers['onpostback'], eventTarget, '');
-      
-      this.SetCacheDetectionFieldSubmitted();
-      
       return true;
     }
   }
@@ -497,12 +511,26 @@ function Wxe_Context (
 
   function IsFocusableTag (tagName) 
   {
+    if (tagName == null)
+      return false;
     tagName = tagName.toLowerCase();
-    return (tagName == "input" ||
-            tagName == "textarea" ||
-            tagName == "select" ||
+    return (tagName == "a" ||
             tagName == "button" ||
-            tagName == "a");
+            tagName == "input" ||
+            tagName == "textarea" ||
+            tagName == "select");
+  }
+
+  function IsJavaScriptAnchor (element)
+  {
+    if (  element != null
+        && element.tagName.toLowerCase() == 'a'
+        && element.href != null
+        && element.href.substring (0, 11).toLowerCase() == 'javascript:')
+    {
+      return true;
+    }
+    return false;
   }
 }
 
@@ -516,14 +544,24 @@ function Wxe_OnResize()
   _wxe_context.OnResize();
 }
 
-function Wxe_FormSubmit()
+function Wxe_OnFormClick (evt)
 {
-  return _wxe_context.FormSubmit();
+  return _wxe_context.OnFormClick (evt);
+}
+
+function Wxe_OnFormSubmit()
+{
+  return _wxe_context.OnFormSubmit();
 }
 
 function Wxe_DoPostBack (eventTarget, eventArgument)
 {
   _wxe_context.DoPostBack (eventTarget, eventArgument);
+}
+
+function Wxe_OnStartUp()
+{
+  _wxe_context.OnStartUp();
 }
 
 function Wxe_OnLoad()
@@ -553,11 +591,18 @@ function Wxe_OnElementBlur (evt)
 
 function Wxe_OnElementFocus (evt)
 {
+  var eventSource = Wxe_GetEventSource (evt);
+  if (eventSource != null)
+		_wxe_context.SetActiveElement (eventSource);
+}
+
+function Wxe_GetEventSource (evt)
+{
 	var e = evt ? evt : window.event;
 	if (!e) 
-	  return;
+	  return null;
 	if (e.target)
-		_wxe_context.SetActiveElement (e.target);
+		return e.target;
 	else if (e.srcElement)
-	  _wxe_context.SetActiveElement (e.srcElement);
+	  return e.srcElement;
 }
