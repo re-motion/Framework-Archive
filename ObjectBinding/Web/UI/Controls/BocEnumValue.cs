@@ -45,7 +45,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   protected enum ResourceIdentifier
   {
     /// <summary> The text rendered for the null item in the list. </summary>
-    NullDisplayName,
+    UndefinedItemText,
     /// <summary> The validation error message displayed when the null item is selected. </summary>
     NullItemValidationMessage
   }
@@ -73,7 +73,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   private ListControlStyle _listControlStyle;
   private Style _labelStyle;
 
-  private string _nullDisplayName = string.Empty;
+  private string _undefinedItemText = string.Empty;
 
   /// <summary> State field for special behaviour during load view state. </summary>
   /// <remarks> Used by <see cref="RefreshEnumListSelectedValue"/>. </remarks>
@@ -615,13 +615,13 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <returns> A <see cref="ListItem"/>. </returns>
   private ListItem CreateNullItem()
   {
-    string nullDisplayName = _nullDisplayName;
+    string nullDisplayName = _undefinedItemText;
     if (StringUtility.IsNullOrEmpty (nullDisplayName) && ! (_listControl is DropDownList))
     {
       if (IsDesignMode)
         nullDisplayName = "undefined";
       else
-        nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.NullDisplayName);
+        nullDisplayName = GetResourceManager().GetString (ResourceIdentifier.UndefinedItemText);
     }
 
     ListItem emptyItem = new ListItem (nullDisplayName, c_nullIdentifier);
@@ -868,10 +868,10 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   [Description("The description displayed for the null-item.")]
   [Category ("Appearance")]
   [DefaultValue("")]
-  public string NullDisplayName
+  public string UndefinedItemText
   {
-    get { return _nullDisplayName; }
-    set { _nullDisplayName = value; }
+    get { return _undefinedItemText; }
+    set { _undefinedItemText = value; }
   }
 
   /// <summary> Gets or sets the validation error message. </summary>
