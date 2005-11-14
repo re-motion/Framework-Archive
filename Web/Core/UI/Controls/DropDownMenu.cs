@@ -220,6 +220,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
                                 || menuItem.Command.Type == CommandType.WxeFunction;
         if (isPostBackCommand)
         {
+          // Clientside script creates an anchor with href="#" and onclick=function
           string argument = menuItemIndex.ToString();
           href = Page.GetPostBackClientHyperlink (this, argument);
           href = PageUtility.EscapeClientScript (href);
