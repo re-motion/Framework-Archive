@@ -44,7 +44,8 @@
 <rubicon:WebButton id="OpenSessionFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Session Function with Permanent URL in New Window"></rubicon:WebButton><br>
 Permalink this: <asp:HyperLink id="CurrentFunctionPermaLink" runat="server"></asp:HyperLink><br>Permalink 
 Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>
-
+<p><a href="javascript:alert('script in href');">script in href</a></p>
+<p><a href="#" onclick="alert('script in onclick');">script in onclick</a></p>
 </td>
 </tr>
 </table>
