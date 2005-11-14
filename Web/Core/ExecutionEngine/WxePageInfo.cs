@@ -358,8 +358,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     initScript.Append ("_wxe_eventHandlers = null; \r\n");
     initScript.Append ("_wxe_eventHandlersByEvent = null;");
 
-    string key = "wxeInitialize";
-    PageUtility.RegisterClientScriptBlock ((Page)_page, key, initScript.ToString());
+    PageUtility.RegisterClientScriptBlock ((Page)_page, "wxeInitialize", initScript.ToString());
+    PageUtility.RegisterStartupScriptBlock ((Page)_page, "wxeStartUp", "Wxe_OnStartUp();");
   }
 
   public NameValueCollection EnsurePostBackModeDetermined (HttpContext context)
