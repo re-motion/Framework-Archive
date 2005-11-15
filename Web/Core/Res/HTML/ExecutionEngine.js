@@ -58,6 +58,7 @@ function Wxe_Context (
   var _statusMessageWindow = null;
   var _hasUnloaded = false;
   var _isMsIEAspnetPostBack = false;
+  var _isMsIEFormClicked = false;
 
   var _aspnetDoPostBack = null;
   
@@ -271,16 +272,28 @@ function Wxe_Context (
        
 	    _aspnetDoPostBack (eventTarget, eventArgument);
       if (_isMsIE)
-	      _isMsIEAspnetPostBack = true;
+	    {
+	      if (! _isMsIEFormClicked)
+  	      _isMsIEAspnetPostBack = true;
+        _isMsIEFormClicked = false;
+	    }
     }
   }
 
   this.OnFormClick = function (evt)
   {
-    if (_isMsIEAspnetPostBack)
-	  {
-	    _isMsIEAspnetPostBack = false;
-      return true;
+    if (_isMsIE)
+    {
+      if (_isMsIEAspnetPostBack)
+	    {
+        _isMsIEFormClicked = false;
+	      _isMsIEAspnetPostBack = false;
+        return true;
+      }
+      else
+      {
+        _isMsIEFormClicked = true;
+      }
     }
       
     var eventSource = Wxe_GetEventSource (evt);
@@ -523,14 +536,24 @@ function Wxe_Context (
 
   function IsJavaScriptAnchor (element)
   {
-    if (  element != null
-        && element.tagName.toLowerCase() == 'a'
-        && element.href != null
-        && element.href.substring (0, 11).toLowerCase() == 'javascript:')
+    if (element == null)
+    {
+      return false;
+    }
+    else if (   element.tagName.toLowerCase() == 'a'
+             && element.href != null
+             && element.href.substring (0, 11).toLowerCase() == 'javascript:')
     {
       return true;
     }
-    return false;
+    else if (element.tagName.toLowerCase() == 'img')
+    {
+      return IsJavaScriptAnchor (element.parentElement);
+    }
+    else
+    {
+      return false;
+    }
   }
 }
 
