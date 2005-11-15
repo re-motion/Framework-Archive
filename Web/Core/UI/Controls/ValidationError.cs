@@ -151,7 +151,7 @@ public class ValidationError
     HyperLink hyperLink = new HyperLink();
 
     hyperLink.Text = ValidationMessage;
-    hyperLink.NavigateUrl = "#" + ValidatedControl.ClientID;
+    hyperLink.Attributes.Add ("href", "#" + ValidatedControl.ClientID);
 
     if (! StringUtility.IsNullOrEmpty (cssClass))
       hyperLink.CssClass = cssClass;
