@@ -46,7 +46,7 @@
         <value>&lt;p&gt;Sie sind dabei diese Seite zu verlassen.&lt;/p&gt;&lt;p&gt;Daher k&amp;ouml;nnen Sie keine weiteren Eingaben zum Server senden.&lt;/p&gt;</value>
     </data>
     <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsSubmittingMessage">
-        <value>&lt;p&gt;Die Seite wird gerade new geladen.&lt;/p&gt;&lt;p&gt;Bitte warten Sie mit weiteren Eingaben bis die &amp;Uuml;bertragung abgeschlossen ist.&lt;/p&gt;</value>
+        <value>&lt;p&gt;Die Seite wird gerade neu geladen.&lt;/p&gt;&lt;p&gt;Bitte warten Sie mit weiteren Eingaben bis die &amp;Uuml;bertragung abgeschlossen ist.&lt;/p&gt;</value>
     </data>
     <data name="Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage">
         <value>Die Navigation über die Vorwärts und Zurück Schaltflächen wird nicht unterstützt.</value>

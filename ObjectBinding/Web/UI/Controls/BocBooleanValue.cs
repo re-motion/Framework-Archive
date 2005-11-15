@@ -291,7 +291,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
       _hyperLink.Style["padding"] = "0px";
       _hyperLink.Style["border"] = "none";
       _hyperLink.Style["background-color"] = "transparent";
-      _hyperLink.NavigateUrl = "#";
+      _hyperLink.Attributes.Add ("href", "#");
       _hyperLink.Enabled = Enabled;
     }
 
