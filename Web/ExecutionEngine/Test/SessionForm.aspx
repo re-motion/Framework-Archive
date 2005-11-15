@@ -23,6 +23,8 @@
     <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton><rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
     <asp:linkbutton id="LinkButton1" runat="server">LinkButton</asp:linkbutton>
     <a id="LinkButton2" href="#" onclick="__doPostBack('LinkButton1',''); return false;">LinkButton 2</a>
+    <a id="LinkButton3" href="#" onclick="__doPostBack('LinkButton1',''); return false;"><img alt="img link with onclick"></a>
+    <a id="LinkButton4" href="javascript:__doPostBack('LinkButton1','');"><img alt="img link with href"></a>
 <p>
 <asp:button id="Button1" runat="server" Text="Button"></asp:button>
 </p><p>
