@@ -2,6 +2,7 @@
 ======
 - Rubicon.Web.ExecutionEngine.WxePage
   * Bugfix: Tippfehler in IsSubmittingMessage: Im Text stand "new" statt "neu".
+  * Die WxePage kann nun mit Javascript im Href Attribut des Anchor Tags umgehen wenn dieses Img-Tags umschlieﬂt.
 
 1.3.23
 ======

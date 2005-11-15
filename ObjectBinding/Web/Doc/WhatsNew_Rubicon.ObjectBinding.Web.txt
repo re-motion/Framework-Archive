@@ -4,6 +4,9 @@
   * Ein Click auf den DatePickerButton führte auf Seiten die nicht im Application Root liegen zu einem Fehler.
 - BocBooleanValue
   * Ein Click auf den Value führte auf Seiten die nicht im Application Root liegen zu einem Fehler.
+- BocTreeView
+  * Bugfix: Der TreeView war nicht mit dem multiple Postbacks Catcher Script der WxePage kompatibel
+    -> Bei mehrfachen Submits hat die Wxe Page nicht mehr reagiert. (Betraf die Expander Icons)
   
 1.3.24
 ======
@@ -13,7 +16,7 @@
 1.3.23
 ======
 - BocTreeView
-  * Der TreeView war nicht mit dem multiple Postbacks Catcher Script der WxePage kompatibel
+  * Bugfix: Der TreeView war nicht mit dem multiple Postbacks Catcher Script der WxePage kompatibel
     -> Bei mehrfachen Submits hat die Wxe Page nicht mehr reagiert.
   
 1.3.22
