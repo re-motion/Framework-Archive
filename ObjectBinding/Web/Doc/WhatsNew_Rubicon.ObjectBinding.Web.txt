@@ -1,3 +1,10 @@
+1.3.25
+======
+- BocDateTimeValue
+  * Ein Click auf den DatePickerButton führte auf Seiten die nicht im Application Root liegen zu einem Fehler.
+- BocBooleanValue
+  * Ein Click auf den Value führte auf Seiten die nicht im Application Root liegen zu einem Fehler.
+  
 1.3.24
 ======
 - BocEnumValue
