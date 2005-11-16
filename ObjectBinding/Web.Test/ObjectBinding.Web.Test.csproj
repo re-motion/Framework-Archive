@@ -763,6 +763,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Design\DesignTestTreeViewForm.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Design\DesignTestTreeViewForm.aspx.cs"
+                    DependentUpon = "DesignTestTreeViewForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Design\DesignTestTreeViewForm.aspx.resx"
+                    DependentUpon = "DesignTestTreeViewForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Design\DesignTestWxeBasePage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
