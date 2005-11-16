@@ -545,22 +545,26 @@ function Wxe_Context (
   function IsJavaScriptAnchor (element)
   {
     if (element == null)
-    {
       return false;
-    }
-    else if (   element.tagName.toLowerCase() == 'a'
-             && element.href != null
-             && element.href.substring (0, 11).toLowerCase() == 'javascript:')
+
+    var tagName = element.tagName.toLowerCase();
+    if (   tagName == 'a'
+        && element.href != null
+        && element.href.substring (0, 11).toLowerCase() == 'javascript:')
     {
       return true;
     }
-    else if (element.tagName.toLowerCase() == 'img')
+    else if (   tagName == 'p'
+             || tagName == 'div'
+             || tagName == 'td'
+             || tagName == 'table'
+             || tagName == 'form')
     {
-      return IsJavaScriptAnchor (element.parentElement);
+      return false;
     }
     else
     {
-      return false;
+      return IsJavaScriptAnchor (element.parentElement);
     }
   }
 }
