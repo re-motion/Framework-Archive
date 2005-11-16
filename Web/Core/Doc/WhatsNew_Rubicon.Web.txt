@@ -23,7 +23,6 @@
 1.3.21
 ======
 - Rubicon.Web.ExecutionEngine.WxePage
-  * Bugfix: Tippfehler in der deutschen IsSubmitting Message
   * Die Anzeige der Seite aus dem Cache wird nun detektiert und eine Statusmeldung angezeigt.
     Der Text lässt sich mittels Resource überschreiben.
       Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsCachedMessage

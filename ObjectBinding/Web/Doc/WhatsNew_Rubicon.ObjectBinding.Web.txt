@@ -1,9 +1,17 @@
+1.3.26
+======
+- BocDateTimeValue
+  * Bugfix im DatePicker auf Seiten deren Body gescrollt ist: Die DatePicker Position stimmt nicht.
+    Aufgetreten mit 1.3.21, gefied mit 1.3.26
+
 1.3.25
 ======
 - BocDateTimeValue
   * Ein Click auf den DatePickerButton führte auf Seiten die nicht im Application Root liegen zu einem Fehler.
+    Aufgetreten mit 1.3.23
 - BocBooleanValue
   * Ein Click auf den Value führte auf Seiten die nicht im Application Root liegen zu einem Fehler.
+    Aufgetreten mit 1.3.23
 - BocTreeView
   * Bugfix: Der TreeView war nicht mit dem multiple Postbacks Catcher Script der WxePage kompatibel
     -> Bei mehrfachen Submits hat die Wxe Page nicht mehr reagiert. (Betraf die Expander Icons)
@@ -40,6 +48,9 @@
 - BocList
   * Neue Events: SortingOrderChanging und SortingOrderChanged für Änderungen welche durch das UI ausgelöst werden.
   * Bugfix: Die Sorting wurde erst nach einem weiteren PostBack aktualisiert. Vermutlich aufgetreten mit 1.3.4.
+- BocDateTimeValue
+  * Bugfix: Unter Umständen ist beim Öffnen des DatePickers der Internet Explorer abgestürtzt.
+    Vermutlich ein Bug im DOM-Tree.
   
 1.3.18
 ======
