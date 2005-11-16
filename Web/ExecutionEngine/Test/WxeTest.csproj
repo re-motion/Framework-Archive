@@ -134,6 +134,27 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "MultiplePostbackCatcherForm.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "MultiplePostbackCatcherForm.aspx.cs"
+                    DependentUpon = "MultiplePostbackCatcherForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "MultiplePostbackCatcherForm.aspx.resx"
+                    DependentUpon = "MultiplePostbackCatcherForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "MultiplePostbackCatcherWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "SampleWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
