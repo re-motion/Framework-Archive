@@ -21,8 +21,10 @@
         </a>
       </p>
       <p>
-        <a href="session.wxe?ReadOnly=True">session.wxe?ReadOnly=True
-        </a>
+        <a href="session.wxe?ReadOnly=True">session.wxe?ReadOnly=True</a>
+      </p>
+      <p>
+        <a href="mpc.wxe">Multiple Postback Catcher Test</a>
       </p>
       <asp:Button id="ResetSessionButton" runat="server" Text="Reset Session"></asp:Button>
     </form>

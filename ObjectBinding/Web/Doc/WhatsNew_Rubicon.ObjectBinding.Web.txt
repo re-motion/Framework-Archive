@@ -3,6 +3,7 @@
 - BocDateTimeValue
   * Bugfix im DatePicker auf Seiten deren Body gescrollt ist: Die DatePicker Position stimmt nicht.
     Aufgetreten mit 1.3.21, gefied mit 1.3.26
+  * Bugfix: Der DatePicker durch ein DropDownMenu verdeckt werden.
 
 1.3.25
 ======

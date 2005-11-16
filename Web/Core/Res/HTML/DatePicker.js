@@ -54,6 +54,7 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
   datePicker.style.width = width;
   datePicker.style.height = height;
   datePicker.style.position = 'absolute';
+  datePicker.style.zIndex = 100;
   datePicker.id = datePickerID;
   
   var frame = window.document.createElement ("iframe");
@@ -61,7 +62,6 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
   frame.src = src + '?TargetIDField=' + target.id + '&DatePickerIDField=' + datePicker.id + '&DateValueField=' + target.value;
   frame.frameBorder = 'no';
   frame.scrolling = 'no';
-  frame.style.zIndex = 100;
   frame.style.width = '100%';
   frame.style.height = '100%';
   frame.marginWidth = 0;
