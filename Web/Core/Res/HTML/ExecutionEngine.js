@@ -288,7 +288,7 @@ function Wxe_Context (
 	    {
         _isMsIEFormClicked = false;
 	      _isMsIEAspnetPostBack = false;
-        return true;
+        return;
       }
       else
       {
@@ -299,9 +299,17 @@ function Wxe_Context (
     var eventSource = Wxe_GetEventSource (evt);
     this.SetActiveElement (eventSource);
     if (IsJavaScriptAnchor (eventSource))
-      return this.CheckFormState();
+    {
+      var continueRequest = this.CheckFormState();
+      if (! continueRequest)
+        return false;
+      else
+        return;
+    }
     else
-      return true;
+    {
+      return;
+    }
   }
 
   this.OnFormSubmit = function ()
