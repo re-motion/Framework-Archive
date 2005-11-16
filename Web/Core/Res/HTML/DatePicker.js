@@ -110,9 +110,9 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
   datePicker.style.display = 'none';
 
   if (   visibleBodyTop > 0
-      && newTop < visibleBodyTop)
+      && datePickerTopAdjusted < visibleBodyTop)
   {
-    window.document.body.scrollTop = newTop;
+    window.document.body.scrollTop = datePickerTopAdjusted;
   }
   
   _datePicker_currentDatePicker = datePicker;
