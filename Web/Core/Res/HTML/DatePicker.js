@@ -54,7 +54,7 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
   datePicker.style.width = width;
   datePicker.style.height = height;
   datePicker.style.position = 'absolute';
-  datePicker.style.zIndex = 100;
+  datePicker.style.zIndex = 100; // Required so the DatePicker covers DropDownMenus
   datePicker.id = datePickerID;
   
   var frame = window.document.createElement ("iframe");
@@ -82,26 +82,39 @@ function DatePicker_ShowDatePicker (button, container, target, src, width, heigh
   datePickerHeight = datePicker.offsetHeight;
   datePicker.style.display = 'none';
   
+  
   //  Re-adjust the button, in case available screen space is insufficient
+  var totalBodyHeight = window.document.body.scrollHeight;
+  var visibleBodyTop = window.document.body.scrollTop;
+  var visibleBodyHeight = window.document.body.offsetHeight;
+  
   var datePickerTopAdjusted = datePickerTop;
-  var bodyHeight = window.document.body.offsetHeight;
-  if (bodyHeight < datePickerTop + datePickerHeight)
+  if (visibleBodyTop + visibleBodyHeight < datePickerTop + datePickerHeight)
   {
     var newTop = top - datePickerHeight - button.offsetTop - button.clientTop;
     if (newTop >= 0)
       datePickerTopAdjusted = newTop;
   }
   
+  var totalBodyWidth = window.document.body.scrollWidth;
+  var visibleBodyLeft = window.document.body.scrollLeft;
+  var visibleBodyWidth = window.document.body.offsetWidth;
+  
   var datePickerLeftAdjusted = datePickerLeft;
-  var bodyWidth = window.document.body.offsetWidth;
-  if (bodyWidth < datePickerLeft + datePickerWidth)
-    datePickerLeftAdjusted = 0;
+  if (datePickerLeft < visibleBodyLeft && datePickerWidth <= visibleBodyWidth)
+    datePickerLeftAdjusted = visibleBodyLeft;
   
   datePicker.style.display = '';
   datePicker.style.left = datePickerLeftAdjusted;
   datePicker.style.top = datePickerTopAdjusted;
   datePicker.style.display = 'none';
 
+  if (   visibleBodyTop > 0
+      && newTop < visibleBodyTop)
+  {
+    window.document.body.scrollTop = newTop;
+  }
+  
   _datePicker_currentDatePicker = datePicker;
   _datePicker_isEventAfterDatePickerButtonClick = true;
   target.document.onclick = DatePicker_OnDocumentClick;

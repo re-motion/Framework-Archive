@@ -1,3 +1,8 @@
+1.3.27
+======
+- BocDateTimeValue
+  * Positionierung des DatePickers auf gescrollten Seiten optimiert.
+  
 1.3.26
 ======
 - BocDateTimeValue

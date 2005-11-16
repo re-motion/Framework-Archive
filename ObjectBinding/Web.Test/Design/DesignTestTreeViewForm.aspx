@@ -6,7 +6,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
-    <title>SingleBocTest: TreeView Form</title>
+    <title>DesignTest: TreeView Form</title>
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
@@ -14,7 +14,7 @@
   </head>
 <body>
 <form id=Form method=post runat="server"><rwc:webbutton id=PostBackButton runat="server" Text="PostBack"></rwc:webbutton>
-<h1>DesignTest:&nbsp;TreeView Form</h1>
+<h1>DesignTest: TreeView Form</h1>
 <p><cc1:persontreeview id="PersonTreeView" runat="server" cssclass="TreeBlock" DataSourceControl="ReflectionBusinessObjectDataSourceControl" enabletoplevelexpander="False" enablelookaheadevaluation="True"></cc1:persontreeview></p>
 <p>
 
