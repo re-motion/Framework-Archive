@@ -14,7 +14,7 @@ public class DesignTestFunction: WxeFunction
   }
 
   // steps
-  private WxeStep Step1 = new WxePageStep ("Design/DesignTestEnumValueForm.aspx");
+  private WxeStep Step1 = new WxePageStep ("Design/DesignTestEnumValueForm.aspx");//Enum
 
   private WxeStep Step2 = new WxePageStep ("Design/DesignTestBooleanValueForm.aspx");
   private WxeStep Step3 = new WxePageStep ("Design/DesignTestCheckBoxForm.aspx");
@@ -25,6 +25,7 @@ public class DesignTestFunction: WxeFunction
   private WxeStep Step8 = new WxePageStep ("Design/DesignTestReferenceValueForm.aspx");
   private WxeStep Step9 = new WxePageStep ("Design/DesignTestTextValueForm.aspx");
   private WxeStep Step10 = new WxePageStep ("Design/DesignTestListForm.aspx");
+  private WxeStep Step11 = new WxePageStep ("Design/DesignTestTreeViewForm.aspx");
 }
 
 }

@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Page language="c#" Codebehind="DesignTestDateTimeValueForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.Design.DesignTestDateTimeValueForm" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="DesignTestDateTimeValueForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.Design.DesignTestDateTimeValueForm" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -13,7 +13,7 @@
   </head>
 <body>
 <form id=Form method=post runat="server"><rwc:webbutton id=PostBackButton runat="server" Text="PostBack"></rwc:webbutton>
-<h1>DesignTest: DateTimeVale Form</h1>
+<h1>DesignTest: DateTimeValue Form</h1>
 <table width="100%">
   <tr>
     <td colSpan=2>Edit Mode</td></tr>

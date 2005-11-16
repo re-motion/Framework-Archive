@@ -13,7 +13,7 @@
   </head>
 <body>
 <form id=Form method=post runat="server"><rwc:webbutton id=PostBackButton runat="server" Text="PostBack"></rwc:webbutton>
-<h1>DesignTest: DateTimeVale Form</h1>
+<h1>DesignTest: DateTimeValue Form</h1>
 <table width="100%">
   <tr>
     <td colSpan=2>Edit Mode</td></tr>
