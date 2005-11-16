@@ -1,5 +1,5 @@
-<%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.SessionForm" smartNavigation="False"%>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.SessionForm" smartNavigation="False"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -23,8 +23,6 @@
     <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton><rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
     <asp:linkbutton id="LinkButton1" runat="server">LinkButton</asp:linkbutton>
     <a id="LinkButton2" href="#" onclick="__doPostBack('LinkButton1',''); return false;">LinkButton 2</a>
-    <a id="LinkButton3" href="#" onclick="__doPostBack('LinkButton1',''); return false;"><img alt="img link with onclick"></a>
-    <a id="LinkButton4" href="javascript:__doPostBack('LinkButton1','');"><img alt="img link with href"></a>
 <p>
 <asp:button id="Button1" runat="server" Text="Button"></asp:button>
 </p><p>
@@ -48,7 +46,7 @@ Permalink this: <asp:HyperLink id="CurrentFunctionPermaLink" runat="server"></as
 Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLink></p>
 <p><a href="javascript:alert('script in href');">script in href</a></p>
 <p><a href="#" onclick="alert('script in onclick'); return false;">script in onclick</a></p>
-<input type="submit" value="testvalue" name="testname"/>
+<input type="submit" value="testvalue" name="testname">
 </td>
 </tr>
 </table>
