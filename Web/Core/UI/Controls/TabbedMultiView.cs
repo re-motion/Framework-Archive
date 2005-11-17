@@ -200,8 +200,6 @@ public class TabbedMultiView: WebControl, IControl
   {
     EnsureChildControls();
 
-    _tabStrip.Tabs.Add (WebTab.GetSeparator());
-
     MultiViewTab tab = new MultiViewTab ();
     tab.ItemID = view.ID + c_itemIDSuffix;
     tab.Text = view.Title;
@@ -223,10 +221,11 @@ public class TabbedMultiView: WebControl, IControl
     if (view != null && view == activeView)
     {
       int index = MultiViewInternal.Controls.IndexOf (view);
-      if (index == MultiViewInternal.Controls.Count - 1)
+      bool isLastTab = index == MultiViewInternal.Controls.Count - 1;
+      if (isLastTab)
       {
         if (MultiViewInternal.Controls.Count > 1)
-          _newActiveTabAfterRemove = (TabView) MultiViewInternal.Controls[MultiViewInternal.Controls.Count - 2];
+          _newActiveTabAfterRemove = (TabView) MultiViewInternal.Controls[index - 1];
         else // No Tabs left after this tab
           _newActiveTabAfterRemove = _placeHolderTabView;
       }
@@ -250,8 +249,7 @@ public class TabbedMultiView: WebControl, IControl
       return;
 
     int tabIndex = _tabStrip.Tabs.IndexOf (tab);
-    _tabStrip.Tabs.RemoveAt (tabIndex); //  Remove Tab
-    _tabStrip.Tabs.RemoveAt (tabIndex - 1); // Remove Separator
+    _tabStrip.Tabs.RemoveAt (tabIndex);
 
     if (_newActiveTabAfterRemove != null)
     {
@@ -353,16 +351,16 @@ public class TabbedMultiView: WebControl, IControl
     
     if (ControlHelper.IsDesignMode (this, Context))
       writer.AddStyleAttribute ("border", "solid 1px black");
-    writer.AddStyleAttribute ("vertical-align", "top");
     _tabStripStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_activeViewStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassActiveView);
+    else
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, _activeViewStyle.CssClass);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
     
     _activeViewStyle.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (_activeViewStyle.CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassActiveView);
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "100%");
-    writer.AddStyleAttribute ("overflow", "auto");
     writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID + "_ActiveView");
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // begin div
     
