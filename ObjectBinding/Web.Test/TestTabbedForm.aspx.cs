@@ -66,7 +66,7 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void AddTab (string id, string text, IconInfo icon)
   {
-    PagesTabStrip.Tabs.Add (WebTab.GetSeparator());
+    //PagesTabStrip.Tabs.Add (WebTab.GetSeparator());
     
     WebTab tab = new WebTab ();
     tab.Text = text;
