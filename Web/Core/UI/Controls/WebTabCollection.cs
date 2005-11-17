@@ -70,13 +70,10 @@ public class WebTabCollection: ControlItemCollection
   {
     if (_tabStrip != null && ! ControlHelper.IsDesignMode ((Control) _tabStrip))
     {
-      if (! tab.IsSeparator)
-      {
-        if (StringUtility.IsNullOrEmpty (tab.ItemID))
-          throw new ArgumentException ("The tab is no separator tab and does not contain a 'ItemID'. It can therfor not be inserted into the collection.", arguemntName);
-        if (Find (tab.ItemID) != null)
-          throw new ArgumentException ("The collection already contains a tab with ItemID '" + tab.ItemID + "'.", arguemntName);
-      }
+      if (StringUtility.IsNullOrEmpty (tab.ItemID))
+        throw new ArgumentException ("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", arguemntName);
+      if (Find (tab.ItemID) != null)
+        throw new ArgumentException ("The collection already contains a tab with ItemID '" + tab.ItemID + "'.", arguemntName);
     }
   }
 
@@ -105,15 +102,7 @@ public class WebTabCollection: ControlItemCollection
         && _tabStrip.SelectedTab == null 
         && InnerList.Count > 0)
     {
-      WebTab currentTab = null;
-      for (int i = 0; i < InnerList.Count; i++)
-      {
-        currentTab = (WebTab) InnerList[i];
-        if (! currentTab.IsSeparator)
-          break;
-      }
-      if (! currentTab.IsSeparator)
-        _tabStrip.SetSelectedTab (currentTab);
+      _tabStrip.SetSelectedTab ((WebTab) InnerList[0]);
     }
   }
 }
