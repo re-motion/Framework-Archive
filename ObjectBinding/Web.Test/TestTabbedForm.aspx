@@ -12,20 +12,18 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
-<table style="WIDTH: 100%; HEIGHT: 100%" cellSpacing=0 cellPadding=0 border=0>
-  <tr>
-    <td style="HEIGHT: 0%">
-      <h1>Test Tabbed Form</H1><rwc:validationstateviewer id=ValidationStateViewer runat="server" visible="true"></rwc:validationstateviewer><rwc:webtabstrip id=PagesTabStrip runat="server" width="100%"></rwc:webtabstrip></TD></TR>
-  <tr>
-    <td 
-    style="BORDER-RIGHT: red 1px solid; PADDING-RIGHT: 10px; BORDER-TOP: red 1px solid; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; BORDER-LEFT: red 1px solid; PADDING-TOP: 10px; BORDER-BOTTOM: red 1px solid" 
-    ><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+<rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+<TopControls>
+      <h1>Test Tabbed Form</H1>
+      <rwc:validationstateviewer id=ValidationStateViewer runat="server" visible="true"></rwc:validationstateviewer>
+      <rwc:webtabstrip id=PagesTabStrip runat="server" width="100%"></rwc:webtabstrip>
+</topcontrols>
 <views> 
  <rwc:tabview id="first" title="First">
  </rwc:tabview>
  <rwc:tabview id="second" title="Second">
  </rwc:tabview>
 </Views>
-</rwc:tabbedmultiview></TD></TR></TABLE></FORM>
+</rwc:tabbedmultiview></FORM>
   </body>
 </html>
