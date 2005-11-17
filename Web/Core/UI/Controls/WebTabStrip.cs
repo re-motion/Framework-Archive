@@ -206,13 +206,30 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
+    string backUpStyleWidth = Style["width"];
+    if (! StringUtility.IsNullOrEmpty (Style["width"]))
+      Style["width"] = null;
+    Unit backUpWidth = Width; // base.Width and base.ControlStyle.Width
+    if (! Width.IsEmpty)
+      Width = Unit.Empty;
+    
     base.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (CssClass))
+    
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+
+    if (! StringUtility.IsNullOrEmpty (backUpStyleWidth))
+      Style["width"] = backUpStyleWidth;
+    if (! backUpWidth.IsEmpty)
+      Width = backUpWidth;
+
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
   }
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+
     if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
       WcagHelper.HandleError (1, this);
 
@@ -223,20 +240,25 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     if (   ControlHelper.IsDesignMode (this, Context)
         && tabs.Count == 0)
     {
-      tabs = new WebTabCollection (null);
-      for (int i = 0; i < 5; i++)
-      {
-        tabs.Add (new WebTab (i.ToString(), "Tab " + (i + 1).ToString())); 
-        tabs.Add (WebTab.GetSeparator());
-      }
+      tabs = GetDesignTimeTabs(); 
     }
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
+    if (Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]))
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    else if (Width.IsEmpty)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["width"]);
+    else
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
+    writer.RenderBeginTag (HtmlTextWriterTag.Table); // Begin Table
 
     for (int i = 0; i < tabs.Count; i++)
     {
       WebTab tab = tabs[i];
 
-      if (   ! tab.IsSeparator
-          && ! _tabsPaneSize.IsNull 
+      if (   ! _tabsPaneSize.IsNull 
           && tabsOnPane == _tabsPaneSize.Value
           && isTabsPaneOpen)
       {
@@ -251,113 +273,100 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
         isTabsPaneOpen = true;
       }
 
-      if (! tab.IsSeparator)
-        tabsOnPane++;
+      tabsOnPane++;
 
-      writer.AddStyleAttribute ("white-space", "nowrap");
-      writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-      while (tab != null && tab.IsSeparator)
-      {
-        RenderTab (writer, tab);
-        tab = null;
-        if (++i < tabs.Count)
-        {
-          tab = tabs[i];
-          if (! tab.IsSeparator)
-            break;
-        }  
-      }
       if (tab != null)  
         RenderTab (writer, tab);
-      
-      writer.RenderEndTag();
     }
     if (isTabsPaneOpen)
       RenderEndTabsPane (writer);
+
+    writer.RenderEndTag(); // End Table
+  }
+
+  private WebTabCollection GetDesignTimeTabs()
+  {
+    WebTabCollection tabs = new WebTabCollection (null);
+    for (int i = 0; i < 5; i++)
+      tabs.Add (new WebTab (i.ToString(), "Tab " + (i + 1).ToString())); 
+    return tabs;
+  }
+
+  private void RenderBeginTabsPane (HtmlTextWriter writer)
+  {
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin Table Row
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin Table Cell
+
+    _tabsPaneStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabsPane);
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Div
+
+    writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin List
+  }
+
+  private void RenderEndTabsPane (HtmlTextWriter writer)
+  {
+    writer.RenderEndTag(); // End List
+    writer.RenderEndTag(); // End Div
+    writer.RenderEndTag(); // End Table Cell
+    writer.RenderEndTag(); // End Table Row
+  }
+
+  private string GetHref (WebTab tab)
+  {
+    if (Page != null)
+      return Page.GetPostBackClientHyperlink (this, tab.ItemID);
+    else if (ControlHelper.IsDesignMode ((Control) this))
+      return "#";
+    else
+      throw new InvalidOperationException (string.Format ("WebTabStrip '{0}' is not part of a page."));
   }
 
   private void RenderTab (HtmlTextWriter writer, WebTab tab)
   {
-      string postBackLink = null;
-      if (! tab.IsSeparator && ! tab.IsSelected)
-      {
-        Page page = Page;
-        if (page == null && _ownerControl != null)
-          page = _ownerControl.Page;
-        string postBackEvent = null;
-        if (page != null)
-          postBackEvent = page.GetPostBackClientEvent (this, tab.ItemID);
-        if (! StringUtility.IsNullOrEmpty (postBackEvent))
-        {
-          postBackEvent += "; return false;";
-          writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
-        }
-      }
-      writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-      writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-      writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
-      writer.AddStyleAttribute ("display", "inline");
-      writer.RenderBeginTag (HtmlTextWriterTag.Table);
-      writer.RenderBeginTag (HtmlTextWriterTag.Tr);
-      if (!tab.IsSeparator)
-      {
-        if (tab.IsSelected)
-          writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabLeftBorderSelected);
-        else
-          writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabLeftBorder);
-        writer.RenderBeginTag (HtmlTextWriterTag.Td);
-        writer.RenderEndTag();
-      }
-      
-      Style style = _tabStyle;
-      string cssClass = CssClassTab;
-      if (tab.IsSeparator)
-      {
-        style = _separatorStyle;
-        cssClass = CssClassSeparator;
-      }
-      else if (tab.IsSelected)
-      {
-        style = _tabSelectedStyle;
-        cssClass = CssClassTabSelected;
-      }
-      style.AddAttributesToRender (writer);
-      if (StringUtility.IsNullOrEmpty (style.CssClass))
-        writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
-      
-      writer.RenderBeginTag (HtmlTextWriterTag.Td);
-      tab.RenderContents(writer, postBackLink);
-      writer.RenderEndTag();
+    writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin list item
+    
+    RenderSeperator (writer);
 
-      if (!tab.IsSeparator)
-      {
-        if (tab.IsSelected)
-          writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabRightBorderSelected);
-        else
-          writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabRightBorder);
-        writer.RenderBeginTag (HtmlTextWriterTag.Td);
-        writer.RenderEndTag();
-      }
+    if (tab.IsSelected)
+    {
+      _tabSelectedStyle.AddAttributesToRender (writer);
+      if (StringUtility.IsNullOrEmpty (_tabSelectedStyle.CssClass))
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabSelected);
+    }
+    else
+    {
+      _tabStyle.AddAttributesToRender (writer);
+      if (StringUtility.IsNullOrEmpty (_tabStyle.CssClass))
+        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTab);
+    }
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span
 
-      writer.RenderEndTag(); // End tr
-      writer.RenderEndTag(); // End table
+    if (! tab.IsSelected)
+      writer.AddAttribute (HtmlTextWriterAttribute.Href, GetHref (tab));
+    writer.RenderBeginTag (HtmlTextWriterTag.A); // Begin anchor
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin format span
+
+    tab.RenderContents (writer);
+
+    writer.RenderEndTag(); // End format span
+    writer.RenderEndTag(); // End anchor
+
+    writer.RenderEndTag(); // End tab span
+
+    writer.RenderEndTag(); // End list item
+    writer.WriteLine();
   }
 
-  protected virtual void RenderBeginTabsPane (HtmlTextWriter writer)
+  private void RenderSeperator (HtmlTextWriter writer)
   {
-    _tabsPaneStyle.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabsPane);
-    if (! _tabsPaneSize.IsNull)
-      writer.AddStyleAttribute ("white-space", "nowrap");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);
+    _separatorStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_separatorStyle.CssClass))
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSeparator);
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
-
-  }
-
-  protected virtual void RenderEndTabsPane (HtmlTextWriter writer)
-  {
+    writer.RenderBeginTag (HtmlTextWriterTag.Span);
+    writer.Write ("&nbsp;");
     writer.RenderEndTag();
     writer.RenderEndTag();
   }
@@ -632,26 +641,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     get { return "tabStripTab"; }
   }
 
-  /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/>. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>tabStripTabLeftBorder</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabStyle"/>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabLeftBorder
-  {
-    get { return "tabStripTabLeftBorder"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/>. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>tabStripTabRightBorder</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabStyle"/>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabRightBorder
-  {
-    get { return "tabStripTabRightBorder"; }
-  }
-
   /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/> if it is selected. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabStripTabSelected</c>. </para>
@@ -662,37 +651,17 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     get { return "tabStripTabSelected"; }
   }
 
-  /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/> if it is selected. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>tabStripTabLeftBorderSelected</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabSelectedStyle"/>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabLeftBorderSelected
-  {
-    get { return "tabStripTabLeftBorderSelected"; }
-  }
-
-  /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/> if it is selected. </summary>
-  /// <remarks> 
-  ///   <para> Class: <c>tabStripTabRightBorderSelected</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabSelectedStyle"/>. </para>
-  /// </remarks>
-  protected virtual string CssClassTabRightBorderSelected
-  {
-    get { return "tabStripTabRightBorderSelected"; }
-  }
-
   /// <summary> 
   ///   Gets the CSS-Class applied to a <see cref="WebTab"/> with <see cref="WebTab.IsSeparator"/> set 
   ///   <see langword="true"/>. 
   /// </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripSeparator</c>. </para>
+  ///   <para> Class: <c>tabStripTabSeparator</c>. </para>
   ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="SeparatorStyle"/>. </para>
   /// </remarks>
   protected virtual string CssClassSeparator
   {
-    get { return "tabStripSeparator"; }
+    get { return "tabStripTabSeparator"; }
   }
   #endregion
 }
