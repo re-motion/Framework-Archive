@@ -1,3 +1,5 @@
+@import url("TabStripV3.css");
+
 /*  A template for the TabbedMultiView's CssClass. Not included automatically. */
 table.tabbedMultiView
 {
@@ -12,12 +14,21 @@ div.tabbedMultiViewTabStrip
 }
 
 /* Applied to the tabbed multi view's view.*/
-div.tabbedMultiViewActiveView
+td.tabbedMultiViewActiveView
 {
 	border-left: solid 1px #2254b1;	
 	border-right: solid 1px #2254b1;	
-	border-bottom: solid 1px #2254b1;	
+	border-bottom: solid 1px #2254b1;
+  vertical-align: top; 
+  height: 100%;
+}
+
+div.tabbedMultiViewActiveView
+{ 
 	padding: 2pt;
+  overflow: auto;	
+  height: 100%; 
+  width: 100%; 
 }
 
 /* Applied to the top section of the multi view. Height cannot be provided in percent. */
@@ -31,3 +42,128 @@ div.tabbedMultiViewBottomControls
 {
   padding-top: 10pt;
 }
+
+/* Non-IE Browsers hack \*/
+html>body table.tabbedMultiView
+{
+  height: 98%;
+}
+
+html>body div.tabbedMultiViewTabStrip
+{
+  margin-bottom: -2px;
+}
+
+html>body td.tabbedMultiViewActiveView
+{
+	border-top: solid 1px #2254b1;	
+}
+
+html>body div.tabbedMultiViewActiveView
+{
+  width: inherit;
+}  
+/* End Non-IE Browsers hack\*/
+
+/* Tab Strip */
+div.tabbedMultiViewTabStrip div.tabStripTabsPane
+{
+  border-bottom: solid 1px #2254b1;
+}
+
+div.tabbedMultiViewTabStrip div.tabStripTabsPane ul
+{
+  margin-bottom: -1px;  
+}
+
+div.tabbedMultiViewTabStrip div.tabStripTabsPane ul li
+{
+  margin-top: 3pt;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSeparator
+{
+  width: 10pt;
+  border-bottom: solid 1px #2254b1;	
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab a
+{  
+  background-color: #e1ecfc;
+  border-top: solid 1px #2254b1;	
+  border-bottom: solid 1px #2254b1;	
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a
+{
+  background-color: White;
+  border-top: solid 1px #2254b1;	
+  border-bottom: solid 1px White;	
+}
+
+/* Left Tab Border */
+div.tabbedMultiViewTabStrip span.tabStripTab a
+{
+  border-left: solid 1px #2254b1;
+  padding-left: 10px;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a
+{
+  border-left: solid 1px #2254b1;
+  padding-left: 10px;
+}
+
+/* Right Tab Border */
+div.tabbedMultiViewTabStrip span.tabStripTab a span
+{
+  border-right: solid 1px #2254b1;
+  padding-right: 10px;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a span
+{
+  border-right: solid 1px #2254b1;
+  padding-right: 10px;
+}
+
+div.tabbedMultiViewTabStrip span.tabStripTab,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected,
+div.tabbedMultiViewTabStrip span.tabStripTabSeparator
+{
+  margin-bottom: -3px;
+}
+
+/* Non-IE Browsers hack \*/
+
+html>body div.tabbedMultiViewTabStrip div.tabStripTabsPane
+{
+  border-bottom: none;
+}
+
+html>body div.tabbedMultiViewTabStrip div.tabStripTabsPane ul
+{
+  margin-bottom: 0px;
+}
+
+html>body div.tabbedMultiViewTabStrip span.tabStripTab,
+html>body div.tabbedMultiViewTabStrip span.tabStripTabSelected,
+html>body div.tabbedMultiViewTabStrip span.tabStripTabSeparator
+{
+  margin-bottom: 0px;
+}
+
+
+html>body div.tabbedMultiViewTabStrip span.tabStripTab a span,
+html>body div.tabbedMultiViewTabStrip span.tabStripTabSelected a span
+{
+  height: 1.5em;
+}
+
+html>body div.tabbedMultiViewTabStrip span.tabStripTabSeparator
+{
+  height: 1.5em;
+  padding-bottom: 3px;
+}
+
+/* End Non-IE Browsers hack\*/
