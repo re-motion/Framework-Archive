@@ -3,59 +3,171 @@ div.tabStrip
 {
 }
 
-/* Applied to the tab panes.*/
 div.tabStripTabsPane
 {
-	border-bottom: solid 1px #2254b1;	
 }
 
-div.tabStripTabsPane table
+div.tabStripTabsPane ul
 {
-  margin: 5pt 0px -1px 0px;
+  margin: 0;  
+  padding: 0;
+  
+  list-style: none;
+  
+  width: 100%; 
+  display: inline;
 }
 
-/* Applied to a tab. */
-td.tabStripTab
+div.tabStripTabsPane ul li
 {
-	border-top: solid 1px #2254b1;
+  padding: 0;
+  margin: 0;
+
+  float: left;
+  display: block;
+  white-space: nowrap;
+}
+
+span.tabStripTabSeparator
+{
+}
+
+span.tabStripTabSeparator span
+{
+}
+
+span.tabStripTab a
+{  
+  background-color: #e1ecfc;
+  border-top: solid 1px #2254b1;	
   border-bottom: solid 1px #2254b1;	
-  padding: 1pt 5pt 1pt 5pt;
-	background-color: #e1ecfc;
-	cursor: pointer;
+  text-decoration: none;
+  cursor: pointer;
 	cursor: hand;
 }
 
-/* Applied to a tab if it is selected. */
-td.tabStripTabSelected
+span.tabStripTabSelected a
 {
-	border-top: solid 1px #2254b1;
-  border-bottom: solid 1px white;	
-  padding: 1pt 5pt 1pt 5pt;
-	cursor: default;
-}
-
-td.tabStripTabLeftBorder,
-td.tabStripTabLeftBorderSelected
-{
-  width: 1px;
-  background-color: #2254b1;
-	cursor: pointer;
-	cursor: hand;
-}
-
-td.tabStripTabRightBorder,
-td.tabStripTabRightBorderSelected
-{
-  width: 1px;
-  background-color: #2254b1;
-	cursor: pointer;
-	cursor: hand;
-}
-
-/* Applied to a tab if it is a separator. */
-td.tabStripSeparator
-{
-  width: 10pt;
+  background-color: White;
+  border-top: solid 1px #2254b1;	
   border-bottom: solid 1px #2254b1;	
-	cursor: default;
+  text-decoration: none;
+  cursor: default;
 }
+
+span.tabStripTab a span,
+span.tabStripTabSelected a span
+{
+  padding-top: 1px;
+  padding-bottom: 1px;
+	vertical-align: middle;
+}
+
+/* Left Tab Border */
+span.tabStripTab a
+{
+  border-left: solid 1px #2254b1;
+  padding-left: 5px;
+}
+
+span.tabStripTabSelected a
+{
+  border-left: solid 1px #2254b1;
+  padding-left: 5px;
+}
+
+/* Right Tab Border */
+span.tabStripTab a span
+{
+  border-right: solid 1px #2254b1;
+  padding-right: 5px;
+}
+
+span.tabStripTabSelected a span
+{
+  border-right: solid 1px #2254b1;
+  padding-right: 5px;
+}
+
+span.tabStripTab,
+span.tabStripTabSelected,
+span.tabStripTabSeparator
+{
+  display: block;
+  float: left;
+}
+
+span.tabStripTab a, 
+span.tabStripTab a span,
+span.tabStripTabSelected a,
+span.tabStripTabSelected a span,
+span.tabStripTabSeparator span
+{
+  display: block;
+  float: left;
+}
+
+/* Commented backslash hack hides rule from IE5-Mac \*/
+span.tabStripTab,
+span.tabStripTabSelected,
+span.tabStripTabSeparator
+{
+  display: inline-block;
+  float: none;
+}
+
+span.tabStripTab a, 
+span.tabStripTab a span,
+span.tabStripTabSelected a,
+span.tabStripTabSelected a span,
+span.tabStripTabSeparator span
+{
+  float: none;
+}
+
+/* End IE5-Mac hack */
+
+/* Non-IE Browsers hack \*/
+
+html>body div.tabStripTabsPane
+{
+  border-bottom: none;
+}
+
+html>body div.tabStripTabsPane ul
+{
+  margin-bottom: 0px;
+  width: auto; 
+  display: block;
+}
+
+html>body span.tabStripTab,
+html>body span.tabStripTabSelected,
+html>body span.tabStripTabSeparator
+{
+  margin-bottom: 0px;
+  display: block;
+  float: left;
+}
+
+html>body span.tabStripTab a, 
+html>body span.tabStripTabSelected a
+{
+  display: block;
+  float: left;
+}
+
+html>body span.tabStripTab a span,
+html>body span.tabStripTabSelected a span
+{
+  display: block;
+  float: left;
+}
+
+html>body span.tabStripTabSeparator
+{
+  display: block;
+  float: left;
+}
+
+/* End Non-IE Browsers hack\*/
