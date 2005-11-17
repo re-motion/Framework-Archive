@@ -14,13 +14,6 @@ namespace Rubicon.Web.UI.Controls
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class WebTab: IControlItem
 {
-  private const string c_separator = "-";
-
-  public static WebTab GetSeparator()
-  {
-    return new WebTab (null, c_separator);
-  }
-
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
   private string _itemID = "";
@@ -157,13 +150,6 @@ public class WebTab: IControlItem
     }
   }
 
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public bool IsSeparator
-  {
-    get { return _text == c_separator; }
-  }
-
   /// <summary> Gets or sets the icon displayed in this tab. </summary>
   [PersistenceMode (PersistenceMode.Attribute)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
@@ -241,39 +227,18 @@ public class WebTab: IControlItem
     }
   }
 
-  public virtual void RenderContents (HtmlTextWriter writer, string postBackEvent)
+  public virtual void RenderContents (HtmlTextWriter writer)
   {
-    if (IsSeparator)
-    {
+    bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
+    bool hasText = ! StringUtility.IsNullOrEmpty (_text);
+    if (hasIcon)
+      _icon.Render (writer);
+    if (hasIcon && hasText)
       writer.Write ("&nbsp;");
-    }
-    else
-    {
-      bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
-      bool hasText = ! StringUtility.IsNullOrEmpty (_text);
-      if (! StringUtility.IsNullOrEmpty (postBackEvent))
-      {
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-      }
-      writer.RenderBeginTag (HtmlTextWriterTag.A);
-      if (hasIcon)
-      {
-        writer.AddAttribute (HtmlTextWriterAttribute.Src, _icon.Url);
-        writer.AddStyleAttribute ("vertical-align", "middle");
-        writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-        writer.RenderBeginTag (HtmlTextWriterTag.Img);
-        writer.RenderEndTag();
-      }
-      if (hasIcon && hasText)
-        writer.Write ("&nbsp;");
-      if (hasText)
-        writer.Write (_text);
-      if (!hasIcon && !hasText)
-        writer.Write ("&nbsp;");
-
-      writer.RenderEndTag(); // End achnor
-    }
+    if (hasText)
+      writer.Write (_text);
+    if (!hasIcon && !hasText)
+      writer.Write ("&nbsp;");
   }
 
   public virtual void OnClick()
