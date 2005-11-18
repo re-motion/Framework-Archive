@@ -42,7 +42,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   private Style _separatorStyle;
   private Style _tabStyle;
   private Style _tabSelectedStyle;
-  private NaInt32 _tabsPaneSize = NaInt32.Null;
   private Control _ownerControl;
   private WcagHelper _wcagHelper;
 
@@ -233,8 +232,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
       WcagHelper.HandleError (1, this);
 
-    int tabsOnPane = 0;
-    bool isTabsPaneOpen = false;
     WebTabCollection tabs = Tabs;
     
     if (   ControlHelper.IsDesignMode (this, Context)
@@ -254,32 +251,13 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
     writer.RenderBeginTag (HtmlTextWriterTag.Table); // Begin Table
 
+    RenderBeginTabsPane (writer);
     for (int i = 0; i < tabs.Count; i++)
     {
       WebTab tab = tabs[i];
-
-      if (   ! _tabsPaneSize.IsNull 
-          && tabsOnPane == _tabsPaneSize.Value
-          && isTabsPaneOpen)
-      {
-        RenderEndTabsPane (writer);
-        tabsOnPane = 0;
-        isTabsPaneOpen = false;
-      }
-    
-      if (! isTabsPaneOpen)
-      {
-        RenderBeginTabsPane (writer);
-        isTabsPaneOpen = true;
-      }
-
-      tabsOnPane++;
-
-      if (tab != null)  
-        RenderTab (writer, tab);
+      RenderTab (writer, tab);
     }
-    if (isTabsPaneOpen)
-      RenderEndTabsPane (writer);
+    RenderEndTabsPane (writer);
 
     writer.RenderEndTag(); // End Table
   }
@@ -346,11 +324,21 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     if (! tab.IsSelected)
       writer.AddAttribute (HtmlTextWriterAttribute.Href, GetHref (tab));
     writer.RenderBeginTag (HtmlTextWriterTag.A); // Begin anchor
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin format span
+    
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabLeftBorder);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin left border span
+ 
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabRightBorder);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin right border span
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabContent);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin content span
 
     tab.RenderContents (writer);
 
-    writer.RenderEndTag(); // End format span
+    writer.RenderEndTag(); // End content span
+    writer.RenderEndTag(); // End right border span
+    writer.RenderEndTag(); // End left border span
     writer.RenderEndTag(); // End anchor
 
     writer.RenderEndTag(); // End tab span
@@ -579,26 +567,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     remove { Events.RemoveHandler (s_selectedIndexChangedEvent, value); }
   }
 
-//  /// <summary> The number of tabs displayed per pane. Ignores separators. </summary>
-//  /// <value> 
-//  ///   An integer greater than zero to limit the number of tabs per pane to the specified value,
-//  ///   or zero, less than zero or <see cref="NaInt32.Null"/> to show all tabs in a single pane.
-//  /// </value>
-//  [Category ("Appearance")]
-//  [Description ("The number of tabs displayed per page. Set TabsPaneSize to 0 to show all tabs in a single pane.")]
-//  [DefaultValue (typeof(NaInt32), "null")]
-//  public NaInt32 TabsPaneSize
-//  {
-//    get { return _tabsPaneSize; }
-//    set
-//    {
-//      if (value.IsNull || value.Value <= 0)
-//        _tabsPaneSize = NaInt32.Null;
-//      else
-//        _tabsPaneSize = value; 
-//    }
-//  }
-
   /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
   protected virtual WcagHelper WcagHelper
   {
@@ -651,6 +619,33 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     get { return "tabStripTabSelected"; }
   }
 
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intendet for formatting the the left border. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripTabLeftBorder</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabLeftBorder
+  {
+    get { return "tabStripTabLeftBorder"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intendet for formatting the the right border. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripTabRightBorder</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabRightBorder
+  {
+    get { return "tabStripTabRightBorder"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intendet for formatting the content. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripTabContent</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabContent
+  {
+    get { return "tabStripTabContent"; }
+  }
+  
   /// <summary> 
   ///   Gets the CSS-Class applied to a <see cref="WebTab"/> with <see cref="WebTab.IsSeparator"/> set 
   ///   <see langword="true"/>. 
