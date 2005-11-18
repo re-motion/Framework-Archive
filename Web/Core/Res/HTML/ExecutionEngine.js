@@ -288,7 +288,7 @@ function Wxe_Context (
 	    {
         _isMsIEFormClicked = false;
 	      _isMsIEAspnetPostBack = false;
-        return;
+        return null;
       }
       else
       {
@@ -304,11 +304,11 @@ function Wxe_Context (
       if (! continueRequest)
         return false;
       else
-        return;
+        return null;
     }
     else
     {
-      return;
+      return null;
     }
   }
 

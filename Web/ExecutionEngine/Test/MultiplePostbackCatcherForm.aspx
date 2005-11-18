@@ -346,6 +346,12 @@
           <td><a href="#" onclick="alert('script in onclick'); return false;">OnClick</a></td>
           <td><a href="javascript:alert('script in href');">Href</a></td>
           </tr>          
-        </table></td></tr></table></form>
+          <tr><td colspan="17">&nbsp;</td></tr>         
+        </table>
+<a href="#" onclick="alert('script in onclick'); return false;">Javascript Link: Href="#", OnClick=Script</a><br/>
+<a href="javascript:alert('script in href');">Javascript Link: Href="javascript:..."</a><br>
+<a href="mpc.wxe?Parameter=Garbage;">Hyperlink</a><br>
+</td></tr></table>
+</form>
   </body>
 </html>
