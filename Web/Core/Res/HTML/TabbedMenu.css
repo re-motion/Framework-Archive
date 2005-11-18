@@ -1,0 +1,226 @@
+@import url("TabStripV3.css");
+
+td.navigationTabsMainMenuArea
+{
+}
+
+td.navigationTabsSubMenuArea
+{
+  background-color: #02537c;
+  padding: 3pt;
+}
+
+td.navigationTabsStatusArea
+{
+  background-color: #02537c;
+  padding: 3pt;
+  color: White;
+  text-align:right;
+  white-space: nowrap;
+}
+
+/* Main Menu Tabstrip*/
+div.navigationTabsMainMenu div.tabStripTabsPane
+{
+  border-bottom: none;
+}
+
+div.navigationTabsMainMenu div.tabStripTabsPane ul
+{
+}
+
+div.navigationTabsMainMenu div.tabStripTabsPane ul li
+{
+  margin-top: 3pt;
+  margin-right: 1pt;
+}
+
+div.navigationTabsMainMenu span.tabStripTabSeparator
+{
+  display: none;	
+}
+
+/* Top and bottom tab borders */
+div.navigationTabsMainMenu span.tabStripTab a span.tabStripTabLeftBorder
+{  
+  background-color: #e1ecfc;
+  border-top: none;	
+  border-bottom: solid 1px #e1ecfc;	
+}
+
+/* Top and bottom tab borders having focus*/
+div.navigationTabsMainMenu span.tabStripTab a:hover
+{
+	background-color: #fee197;	
+}
+
+div.navigationTabsMainMenu span.tabStripTab a:hover span.tabStripTabLeftBorder
+{
+	background-color: #fee197;	
+  border-bottom: solid 1px #fee197;	
+}
+
+/* Top and bottom selected tab borders */
+div.navigationTabsMainMenu span.tabStripTabSelected a span.tabStripTabLeftBorder
+{
+  background-color: #02537c;
+  border-top: none;	
+  border-bottom: solid 1px #02537c;	
+}
+
+/* Left tab border */
+div.navigationTabsMainMenu span.tabStripTab a span.tabStripTabLeftBorder,
+div.navigationTabsMainMenu span.tabStripTabSelected a span.tabStripTabLeftBorder
+{
+  border-left: none;
+  background-image: url(../Image/TabStripTabLeftCorner.gif);
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+/* Right tab border */
+div.navigationTabsMainMenu span.tabStripTab a span.tabStripTabRightBorder,
+div.navigationTabsMainMenu span.tabStripTabSelected a span.tabStripTabRightBorder
+{
+  border-right: none;	 
+  background-color: Transparent; 
+  background-image: url(../Image/TabStripTabRightCorner.gif);
+  background-repeat: no-repeat;
+  background-position: right top;
+}
+
+/* Inside of the tab */
+div.navigationTabsMainMenu span.tabStripTab a span.tabStripTabContent,
+div.navigationTabsMainMenu span.tabStripTabSelected a span.tabStripTabContent
+{
+  margin-left: 5px;
+  margin-right: 5px;
+  padding-top: 2pt;
+  padding-bottom: 2pt;
+	vertical-align: middle;
+}
+
+div.navigationTabsMainMenu span.tabStripTab a span.tabStripTabContent
+{
+  background-color: Transparent;
+  color: Blue;
+}
+
+div.navigationTabsMainMenu span.tabStripTabSelected a span.tabStripTabContent
+{
+  background-color: Transparent;
+  color: White;
+}
+
+div.navigationTabsMainMenu span.tabStripTab,
+div.navigationTabsMainMenu span.tabStripTabSelected,
+div.navigationTabsMainMenu span.tabStripTabSeparator
+{
+  margin-bottom: -3px;
+}
+
+/* Non-IE Browsers hack \*/
+html>body div.navigationTabsMainMenu div.tabStripTabsPane
+{
+  border-bottom: none;
+}
+
+html>body div.navigationTabsMainMenu span.tabStripTab,
+html>body div.navigationTabsMainMenu span.tabStripTabSelected,
+html>body div.navigationTabsMainMenu span.tabStripTabSeparator
+{
+  margin-bottom: -1px;
+}
+/* End Non-IE Browsers hack\*/
+
+
+/* Sub Menu Tabstrip */
+div.navigationTabsSubMenu div.tabStripTabsPane
+{
+  border-bottom: none;
+}
+
+div.navigationTabsSubMenu span.tabStripTabSeparator
+{
+  display: none;
+}
+
+div.navigationTabsSubMenu span.tabStripTab,
+div.navigationTabsSubMenu span.tabStripTabSelected
+{
+  padding-right: 1pt;
+  background-color: White;
+}
+
+div.navigationTabsSubMenu span.tabStripTab a span.tabStripTabLeftBorder
+{  
+  background-color: #02537c;
+  border-top: none;	
+  border-bottom: none;	
+}
+
+div.navigationTabsSubMenu span.tabStripTabSelected a span.tabStripTabLeftBorder
+{
+  background-color: #02537c;
+  border-top: none;	
+  border-bottom: none;	
+}
+
+/* Left Tab Border */
+div.navigationTabsSubMenu span.tabStripTab a span.tabStripTabLeftBorder,
+div.navigationTabsSubMenu span.tabStripTabSelected a span.tabStripTabLeftBorder
+{
+  border-left: none;
+}
+
+/* Right Tab Border */
+div.navigationTabsSubMenu span.tabStripTab a span.tabStripTabRightBorder,
+div.navigationTabsSubMenu span.tabStripTabSelected a span.tabStripTabRightBorder
+{
+  border-right: none;
+}
+
+/* Inside of the tab */
+div.navigationTabsSubMenu span.tabStripTab a span.tabStripTabContent,
+div.navigationTabsSubMenu span.tabStripTabSelected a span.tabStripTabContent
+{
+  margin-left: 2pt;
+  margin-right: 2pt;
+  padding-top: 2pt;
+  padding-bottom: 2pt;
+  padding-left: 4pt;
+  padding-right: 4pt;
+	vertical-align: middle;
+}
+
+div.navigationTabsSubMenu span.tabStripTab a span.tabStripTabContent
+{
+  background-color: #02537c;
+  color: White;
+}
+
+div.navigationTabsSubMenu span.tabStripTabSelected a span.tabStripTabContent
+{
+  background-color: #02537c;
+  color: White;
+  text-decoration: underline;
+}
+
+div.navigationTabsSubMenu span.tabStripTab a:hover,
+div.navigationTabsSubMenu span.tabStripTab a:hover span.tabStripTabContent
+{
+	background-color: #fee197;	
+  color: Blue;
+}
+
+/* Non-IE Browsers hack \*/
+html>body div.navigationTabsSubMenu div.tabStripTabsPane
+{
+  border-bottom: none;
+}
+
+html>body div.navigationTabsSubMenu span.tabStripTabSeparator span
+{
+  margin-bottom: 0px;
+}
+/* End Non-IE Browsers hack\*/
