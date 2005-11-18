@@ -28,19 +28,8 @@ div.tabStripTabsPane ul li
   white-space: nowrap;
 }
 
-span.tabStripTabSeparator
-{
-}
-
-span.tabStripTabSeparator span
-{
-}
-
 span.tabStripTab a
-{  
-  background-color: #e1ecfc;
-  border-top: solid 1px #2254b1;	
-  border-bottom: solid 1px #2254b1;	
+{
   text-decoration: none;
   cursor: pointer;
 	cursor: hand;
@@ -48,45 +37,64 @@ span.tabStripTab a
 
 span.tabStripTabSelected a
 {
-  background-color: White;
-  border-top: solid 1px #2254b1;	
-  border-bottom: solid 1px #2254b1;	
   text-decoration: none;
   cursor: default;
 }
 
-span.tabStripTab a span,
-span.tabStripTabSelected a span
+/* Top and bottom tab borders */
+span.tabStripTab a span.tabStripTabLeftBorder
+{  
+  border-top: solid 1px #2254b1;	
+  border-bottom: solid 1px #2254b1;	
+}
+
+/* Top and bottom selected tab borders */
+span.tabStripTabSelected a span.tabStripTabLeftBorder
 {
+  border-top: solid 1px #2254b1;	
+  border-bottom: solid 1px #2254b1;	
+}
+
+/* Left tab border */
+span.tabStripTab a span.tabStripTabLeftBorder,
+span.tabStripTabSelected a span.tabStripTabLeftBorder
+{
+  border-left: solid 1px #2254b1;
+}
+
+/* Right tab border */
+span.tabStripTab a span.tabStripTabRightBorder,
+span.tabStripTabSelected a span.tabStripTabRightBorder
+{
+  border-right: solid 1px #2254b1;
+}
+
+/* Inside of the tab */
+span.tabStripTab a span.tabStripTabContent,
+span.tabStripTabSelected a span.tabStripTabContent
+{
+  margin-right: -1px;
   padding-top: 1px;
   padding-bottom: 1px;
+  padding-left: 5pt;
+  padding-right: 5pt;
 	vertical-align: middle;
 }
 
-/* Left Tab Border */
-span.tabStripTab a
+span.tabStripTab a span.tabStripTabContent
 {
-  border-left: solid 1px #2254b1;
-  padding-left: 5px;
+  background-color: #e1ecfc;
 }
 
-span.tabStripTabSelected a
+span.tabStripTabSelected a span.tabStripTabContent
 {
-  border-left: solid 1px #2254b1;
-  padding-left: 5px;
+  background-color: White;
 }
 
-/* Right Tab Border */
-span.tabStripTab a span
+span.tabStripTab a:hover,
+span.tabStripTab a:hover span.tabStripTabContent
 {
-  border-right: solid 1px #2254b1;
-  padding-right: 5px;
-}
-
-span.tabStripTabSelected a span
-{
-  border-right: solid 1px #2254b1;
-  padding-right: 5px;
+	background-color: #fee197;	
 }
 
 span.tabStripTab,
@@ -97,14 +105,11 @@ span.tabStripTabSeparator
   float: left;
 }
 
-span.tabStripTab a, 
-span.tabStripTab a span,
-span.tabStripTabSelected a,
-span.tabStripTabSelected a span,
-span.tabStripTabSeparator span
+span.tabStripTabLeftBorder, 
+span.tabStripTabRightBorder,
+span.tabStripTabContent
 {
   display: block;
-  float: left;
 }
 
 /* Commented backslash hack hides rule from IE5-Mac \*/
@@ -116,19 +121,9 @@ span.tabStripTabSeparator
   float: none;
 }
 
-span.tabStripTab a, 
-span.tabStripTab a span,
-span.tabStripTabSelected a,
-span.tabStripTabSelected a span,
-span.tabStripTabSeparator span
-{
-  float: none;
-}
-
 /* End IE5-Mac hack */
 
 /* Non-IE Browsers hack \*/
-
 html>body div.tabStripTabsPane
 {
   border-bottom: none;
@@ -150,24 +145,9 @@ html>body span.tabStripTabSeparator
   float: left;
 }
 
-html>body span.tabStripTab a, 
-html>body span.tabStripTabSelected a
+html>body span.tabStripTab a span.tabStripTabContent,
+html>body span.tabStripTabSelected a span.tabStripTabContent
 {
-  display: block;
-  float: left;
+  margin-right: 0px;
 }
-
-html>body span.tabStripTab a span,
-html>body span.tabStripTabSelected a span
-{
-  display: block;
-  float: left;
-}
-
-html>body span.tabStripTabSeparator
-{
-  display: block;
-  float: left;
-}
-
 /* End Non-IE Browsers hack\*/
