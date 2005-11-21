@@ -89,19 +89,32 @@ public class ControlItemCollection: CollectionBase
       CollectionChanged(this, e);
   }
 
+  protected override void OnValidate (object value)
+  {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (IControlItem));
+    
+    IControlItem controlItem = (IControlItem) value;
+    if (! IsSupportedType (controlItem)) 
+      throw new ArgumentTypeException ("value", controlItem.GetType());
+    if (Find (controlItem.ItemID) != null)
+      throw new ArgumentException ("The collection already contains an item with ItemID '" + controlItem.ItemID + "'.", "value");
+    
+    base.OnValidate (value);
+  }
+
   protected override void OnInsert (int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (IControlItem));
-    IControlItem controlItem = (IControlItem) value;
-    if (! IsSupportedType (controlItem)) throw new ArgumentTypeException ("value", controlItem.GetType());
 
-    CheckItem ("value", controlItem);
     base.OnInsert (index, value);
+    IControlItem controlItem = (IControlItem) value;
     controlItem.OwnerControl = _ownerControl;
   }
 
-  protected override void OnInsertComplete(int index, object value)
+  protected override void OnInsertComplete (int index, object value)
   {
+    ArgumentUtility.CheckNotNull ("value", value);
+
     base.OnInsertComplete (index, value);
     _isChanged |= _isEditing;
     OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Add, value));
@@ -110,16 +123,17 @@ public class ControlItemCollection: CollectionBase
   protected override void OnSet (int index, object oldValue, object newValue)
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (IControlItem));
-    IControlItem controlItem = (IControlItem) newValue;
-    if (! IsSupportedType (controlItem)) throw new ArgumentTypeException ("newValue", controlItem.GetType());
 
-    CheckItem ("value", controlItem);
     base.OnSet (index, oldValue, newValue);
+    IControlItem controlItem = (IControlItem) newValue;
     controlItem.OwnerControl = _ownerControl;
   }
 
   protected override void OnSetComplete(int index, object oldValue, object newValue)
   {
+    ArgumentUtility.CheckNotNull ("oldValue", oldValue);
+    ArgumentUtility.CheckNotNull ("newValue", newValue);
+
     base.OnSetComplete (index, oldValue, newValue);
     _isChanged |= _isEditing;
     OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, oldValue));
@@ -128,15 +142,11 @@ public class ControlItemCollection: CollectionBase
 
   protected override void OnRemoveComplete(int index, object value)
   {
+    ArgumentUtility.CheckNotNull ("value", value);
+
     base.OnRemoveComplete (index, value);
     _isChanged |= _isEditing;
     OnCollectionChanged (new CollectionChangeEventArgs (CollectionChangeAction.Remove, value));
-  }
-
-  protected virtual void CheckItem (string argumentName, IControlItem item)
-  {
-    if (Find (item.ItemID) != null)
-      throw new ArgumentException ("The collection already contains an item with ItemID '" + item.ItemID + "'.", argumentName);
   }
 
   public int Add (IControlItem value)
@@ -148,6 +158,7 @@ public class ControlItemCollection: CollectionBase
   public void AddRange (IControlItem[] values)
   {
     ArgumentUtility.CheckNotNull ("values", values);
+    ArgumentUtility.CheckItemsNotNullAndType ("values", values, typeof (IControlItem));
 
     BeginEdit();
     for (int i = 0; i < values.Length; i++)
@@ -163,8 +174,7 @@ public class ControlItemCollection: CollectionBase
   /// <remarks> Redefine this member in a derived class if you wish to return a more specific array. </remarks>
   public IControlItem[] ToArray()
   {
-    ArrayList arrayList = new ArrayList (List);
-    return (IControlItem[]) arrayList.ToArray (typeof (IControlItem));
+    return (IControlItem[]) InnerList.ToArray (typeof (IControlItem));
   }
 
   public virtual void Sort()
@@ -172,13 +182,12 @@ public class ControlItemCollection: CollectionBase
     Sort (Comparer.Default);
   }
 
-
   public virtual void Sort (IComparer comparer)
   {
     Sort (0, Count, comparer);
   }
 
-  public virtual void Sort(int index, int count, IComparer comparer)
+  public virtual void Sort (int index, int count, IComparer comparer)
   {
     InnerList.Sort (index, count, comparer);
   }
