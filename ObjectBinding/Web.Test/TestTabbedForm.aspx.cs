@@ -26,6 +26,7 @@ public class TestTabbedForm : TestWxeBasePage
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   private IDataEditControl[] _dataEditControls;
   protected Rubicon.Web.UI.Controls.WebTabStrip PagesTabStrip;
+  protected Rubicon.Web.UI.Controls.TabStripMenu NavigationTabs;
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
   protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
   private PlaceHolder _wxeControlsPlaceHolder;
@@ -47,6 +48,14 @@ public class TestTabbedForm : TestWxeBasePage
     AddTab ("6", "Test Tab 6 foo", null);
     AddTab ("7", "Test Tab 7 foo foo bar", null);
 
+    AddMainMenuTab ("1", "Main Tab 1", null);
+    AddMainMenuTab ("2", "Main Tab 2 foo bar", null);
+    AddMainMenuTab ("3", "Main Tab 3 foo", null);
+    AddMainMenuTab ("4", "Main Tab 4 foo foo bar", null);
+    AddMainMenuTab ("5", "Main Tab 5", null);
+    AddMainMenuTab ("6", "Main Tab 6 foo", null);
+    AddMainMenuTab ("7", "Main Tab 7 foo foo bar", null);
+
     TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
     // load editor pages
     IDataEditControl dataEditControl;
@@ -66,13 +75,20 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void AddTab (string id, string text, IconInfo icon)
   {
-    //PagesTabStrip.Tabs.Add (WebTab.GetSeparator());
-    
     WebTab tab = new WebTab ();
     tab.Text = text;
     tab.ItemID = id ;
     tab.Icon = icon;
     PagesTabStrip.Tabs.Add (tab);
+  }
+
+  private void AddMainMenuTab (string id, string text, IconInfo icon)
+  {  
+    WebTab tab = new WebTab ();
+    tab.Text = text;
+    tab.ItemID = id ;
+    tab.Icon = icon;
+    NavigationTabs.Menu.Add (tab);
   }
 
   private IDataEditControl AddPage (string id, string title, IconInfo icon, string path)
@@ -152,6 +168,8 @@ public class TestTabbedForm : TestWxeBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
+    this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
     this.Unload += new System.EventHandler(this.Page_Unload);
     this.Load += new System.EventHandler(this.Page_Load);
 

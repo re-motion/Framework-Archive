@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head><title>Test Tabbed Form</title>
@@ -13,10 +13,11 @@
 <body>
 <form id=Form method=post runat="server">
 <rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
-<TopControls>
-      <h1>Test Tabbed Form</H1>
-      <rwc:validationstateviewer id=ValidationStateViewer runat="server" visible="true"></rwc:validationstateviewer>
-      <rwc:webtabstrip id=PagesTabStrip runat="server" width="100%"></rwc:webtabstrip>
+<topcontrols>
+      <h1>Test Tabbed Form</h1>
+      <rwc:validationstateviewer id="ValidationStateViewer" runat="server" visible="true"></rwc:validationstateviewer>
+      <rwc:webtabstrip id="PagesTabStrip" runat="server" width="100%"></rwc:webtabstrip>
+      <rwc:TabStripMenu id="NavigationTabs" runat="server" width="100%"></rwc:TabStripMenu>
 </topcontrols>
 <views> 
  <rwc:tabview id="first" title="First">
@@ -24,6 +25,6 @@
  <rwc:tabview id="second" title="Second">
  </rwc:tabview>
 </Views>
-</rwc:tabbedmultiview></FORM>
+</rwc:tabbedmultiview></form>
   </body>
 </html>
