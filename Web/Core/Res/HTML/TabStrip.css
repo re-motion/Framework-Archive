@@ -1,6 +1,7 @@
 /* Applied to the tab strip itself.*/
-div.tabStrip
+table.tabStrip
 {
+  border: none;
 }
 
 div.tabStripTabsPane
@@ -30,7 +31,7 @@ div.tabStripTabsPane ul li
 
 span.tabStripTab a
 {
-  border: solid 1px #2254b1;	
+  border: solid 1px #005588;	
   background-color: #e1ecfc;
   color: Blue;
   text-decoration: none;
@@ -45,7 +46,7 @@ span.tabStripTab a:hover
 
 span.tabStripTabSelected a
 {
-  border: solid 1px #2254b1;	
+  border: solid 1px #005588;	
   background-color: White;
   color: Blue;
   text-decoration: none;

@@ -1,16 +1,16 @@
 @import url("TabStrip.css");
 
-td.navigationTabsMainMenuArea
+td.tabbedMenuMainArea
 {
 }
 
-td.navigationTabsSubMenuArea
+td.tabbedMenuSubArea
 {
   background-color: #02537c;
   padding: 0.3em;
 }
 
-td.navigationTabsStatusArea
+td.tabbedMenuStatusArea
 {
   background-color: #02537c;
   padding: 0.3em;
@@ -20,49 +20,53 @@ td.navigationTabsStatusArea
 }
 
 /* Main Menu Tabstrip*/
-div.navigationTabsMainMenu div.tabStripTabsPane
+table.tabbedMenuMain div.tabStripTabsPane
 {
   border-bottom: none;
 }
 
-div.navigationTabsMainMenu div.tabStripTabsPane ul
+table.tabbedMenuMain div.tabStripTabsPane ul
 {
 }
 
-div.navigationTabsMainMenu div.tabStripTabsPane ul li
+table.tabbedMenuMain div.tabStripTabsPane ul li
 {
   margin-top: 0.3em;
   margin-right: 0.1em;
 }
 
-div.navigationTabsMainMenu span.tabStripTabSeparator
+table.tabbedMenuMain span.tabStripTabSeparator
 {
   display: none;	
 }
 
-div.navigationTabsMainMenu span.tabStripTab a
+table.tabbedMenuMain span.tabStripTab a
 {  
   border: none;
   background-color: #e1ecfc;
   color: Blue;
+  font-size: 120%;
+  font-weight: bold;
 }
 
-div.navigationTabsMainMenu span.tabStripTab a:hover
+table.tabbedMenuMain span.tabStripTab a:hover
 {
 	background-color: #fee197;	
   color: Blue;
 }
 
-div.navigationTabsMainMenu span.tabStripTabSelected a
+table.tabbedMenuMain span.tabStripTabSelected a
 {
   border: none;
   background-color: #02537c;
   color: White;
+  font-size: 120%;
+  font-weight: bold;
 }
 
 /* Top Left tab corner */
-div.navigationTabsMainMenu span.tabStripTab a span.topLeft,
-div.navigationTabsMainMenu span.tabStripTabSelected a span.topLeft
+table.tabbedMenuMain span.tabStripTab a span.topLeft,
+table.tabbedMenuMain span.tabStripTabSelected a span.topLeft
 {
   background-image: url(../Image/NavigationTabsMainMenuTabTopLeftCorner.gif);
   background-repeat: no-repeat;
@@ -70,8 +74,8 @@ div.navigationTabsMainMenu span.tabStripTabSelected a span.topLeft
 }
 
 /* Top Right tab corner */
-div.navigationTabsMainMenu span.tabStripTab a span.topRight,
-div.navigationTabsMainMenu span.tabStripTabSelected a span.topRight
+table.tabbedMenuMain span.tabStripTab a span.topRight,
+table.tabbedMenuMain span.tabStripTabSelected a span.topRight
 {
   background-image: url(../Image/NavigationTabsMainMenuTabTopRightCorner.gif);
   background-repeat: no-repeat;
@@ -79,26 +83,26 @@ div.navigationTabsMainMenu span.tabStripTabSelected a span.topRight
 }
 
 /* Content area of the tab */
-div.navigationTabsMainMenu span.tabStripTab a span.content,
-div.navigationTabsMainMenu span.tabStripTabSelected a span.content
+table.tabbedMenuMain span.tabStripTab a span.content,
+table.tabbedMenuMain span.tabStripTabSelected a span.content
 {
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  padding-left: 0.6em;
+  padding-right: 0.6em;
 }
 
-div.navigationTabsMainMenu span.tabStripTab,
-div.navigationTabsMainMenu span.tabStripTabSelected,
-div.navigationTabsMainMenu span.tabStripTabSeparator
+table.tabbedMenuMain span.tabStripTab,
+table.tabbedMenuMain span.tabStripTabSelected,
+table.tabbedMenuMain span.tabStripTabSeparator
 {
   margin-bottom: -0.3em;
 }
 
 /* Non-IE Browsers hack \*/
-html>body div.navigationTabsMainMenu span.tabStripTab,
-html>body div.navigationTabsMainMenu span.tabStripTabSelected,
-html>body div.navigationTabsMainMenu span.tabStripTabSeparator
+html>body table.tabbedMenuMain span.tabStripTab,
+html>body table.tabbedMenuMain span.tabStripTabSelected,
+html>body table.tabbedMenuMain span.tabStripTabSeparator
 {
   margin-bottom: 0;
 }
@@ -106,18 +110,23 @@ html>body div.navigationTabsMainMenu span.tabStripTabSeparator
 
 
 /* Sub Menu Tabstrip */
-div.navigationTabsSubMenu div.tabStripTabsPane
+table.tabbedMenuSub div.tabStripTabsPane
 {
   border-bottom: none;
 }
 
-div.navigationTabsSubMenu span.tabStripTabSeparator
+table.tabbedMenuSub div.tabStripTabsPane ul li
+{
+  margin-top: 0.2em;
+}
+
+table.tabbedMenuSub span.tabStripTabSeparator
 {
   display: none;
 }
 
-div.navigationTabsSubMenu span.tabStripTab,
-div.navigationTabsSubMenu span.tabStripTabSelected
+table.tabbedMenuSub span.tabStripTab,
+table.tabbedMenuSub span.tabStripTabSelected
 {  
   border-right: solid 1px White;
 
@@ -127,20 +136,20 @@ div.navigationTabsSubMenu span.tabStripTabSelected
   padding-right: 0.2em;
 }
 
-div.navigationTabsSubMenu span.tabStripTab a
+table.tabbedMenuSub span.tabStripTab a
 {  
   border: none;
   background-color: #02537c;
   color: White;
 }
 
-div.navigationTabsSubMenu span.tabStripTab a:hover
+table.tabbedMenuSub span.tabStripTab a:hover
 {
 	background-color: #fee197;	
   color: Blue;
 }
 
-div.navigationTabsSubMenu span.tabStripTabSelected a
+table.tabbedMenuSub span.tabStripTabSelected a
 {
   border: none;
   background-color: #02537c;
@@ -149,8 +158,8 @@ div.navigationTabsSubMenu span.tabStripTabSelected a
 }
 
 /* Content area of the tab */
-div.navigationTabsSubMenu span.tabStripTab a span.content,
-div.navigationTabsSubMenu span.tabStripTabSelected a span.content
+table.tabbedMenuSub span.tabStripTab a span.content,
+table.tabbedMenuSub span.tabStripTabSelected a span.content
 {
   padding-top: 0.1em;
   padding-bottom: 0.1em;
