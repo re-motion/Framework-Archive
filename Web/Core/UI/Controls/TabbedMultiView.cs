@@ -171,6 +171,7 @@ public class TabbedMultiView: WebControl, IControl
     _bottomControlsStyle = new Style();
   }
 
+  // methods and properties
   private void CreateControls()
   {
     _tabStrip = new WebTabStrip (this);
@@ -180,7 +181,6 @@ public class TabbedMultiView: WebControl, IControl
     _placeHolderTabView = new EmptyTabView();
   }
 
-  // methods and properties
   protected override void CreateChildControls()
   {
     _tabStrip.ID = ID + "_TabStrip";
