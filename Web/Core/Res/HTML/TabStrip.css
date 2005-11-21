@@ -30,71 +30,86 @@ div.tabStripTabsPane ul li
 
 span.tabStripTab a
 {
+  border: solid 1px #2254b1;	
+  background-color: #e1ecfc;
+  color: Blue;
   text-decoration: none;
   cursor: pointer;
 	cursor: hand;
 }
 
+span.tabStripTab a:hover
+{
+	background-color: #fee197;	
+}
+
 span.tabStripTabSelected a
 {
+  border: solid 1px #2254b1;	
+  background-color: White;
+  color: Blue;
   text-decoration: none;
   cursor: default;
 }
 
-/* Top and bottom tab borders */
-span.tabStripTab a span.tabStripTabLeftBorder
+/* Top tab border */
+span.tabStripTab a span.top,
+span.tabStripTabSelected a span.top
 {  
-  border-top: solid 1px #2254b1;	
-  border-bottom: solid 1px #2254b1;	
 }
 
-/* Top and bottom selected tab borders */
-span.tabStripTabSelected a span.tabStripTabLeftBorder
-{
-  border-top: solid 1px #2254b1;	
-  border-bottom: solid 1px #2254b1;	
+/* Bottom tab border */
+span.tabStripTab a span.bottom,
+span.tabStripTabSelected a span.bottom
+{  
 }
 
 /* Left tab border */
-span.tabStripTab a span.tabStripTabLeftBorder,
-span.tabStripTabSelected a span.tabStripTabLeftBorder
+span.tabStripTab a span.left,
+span.tabStripTabSelected a span.left
 {
-  border-left: solid 1px #2254b1;
 }
 
 /* Right tab border */
-span.tabStripTab a span.tabStripTabRightBorder,
-span.tabStripTabSelected a span.tabStripTabRightBorder
+span.tabStripTab a span.right,
+span.tabStripTabSelected a span.right
 {
-  border-right: solid 1px #2254b1;
 }
 
-/* Inside of the tab */
-span.tabStripTab a span.tabStripTabContent,
-span.tabStripTabSelected a span.tabStripTabContent
+/* Top left tab corner */
+span.tabStripTab a span.topLeft,
+span.tabStripTabSelected a span.topLeft
+{  
+}
+
+/* Bottom left tab corner */
+span.tabStripTab a span.bottomLeft,
+span.tabStripTabSelected a span.bottomLeft
+{  
+}
+
+/* Top right tab corner */
+span.tabStripTab a span.topRight,
+span.tabStripTabSelected a span.topRight
 {
-  margin-right: -1px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  padding-left: 5pt;
-  padding-right: 5pt;
+}
+
+/* Bottom right tab corner */
+span.tabStripTab a span.bottomRight,
+span.tabStripTabSelected a span.bottomRight
+{
+}
+
+
+/* Content area of the tab */
+span.tabStripTab a span.content,
+span.tabStripTabSelected a span.content
+{
+  padding-top: 2pt;
+  padding-bottom: 2pt;
+  padding-left: 2pt;
+  padding-right: 2pt;
 	vertical-align: middle;
-}
-
-span.tabStripTab a span.tabStripTabContent
-{
-  background-color: #e1ecfc;
-}
-
-span.tabStripTabSelected a span.tabStripTabContent
-{
-  background-color: White;
-}
-
-span.tabStripTab a:hover,
-span.tabStripTab a:hover span.tabStripTabContent
-{
-	background-color: #fee197;	
 }
 
 span.tabStripTab,
@@ -105,9 +120,17 @@ span.tabStripTabSeparator
   float: left;
 }
 
-span.tabStripTabLeftBorder, 
-span.tabStripTabRightBorder,
-span.tabStripTabContent
+span.tabStripTab a,
+span.tabStripTabSelected a,
+span.top, 
+span.bottom,
+span.left, 
+span.right,
+span.topLeft, 
+span.bottomLeft,
+span.topRight, 
+span.bottomRight,
+span.content
 {
   display: block;
 }
@@ -131,7 +154,6 @@ html>body div.tabStripTabsPane
 
 html>body div.tabStripTabsPane ul
 {
-  margin-bottom: 0px;
   width: auto; 
   display: block;
 }
@@ -140,14 +162,7 @@ html>body span.tabStripTab,
 html>body span.tabStripTabSelected,
 html>body span.tabStripTabSeparator
 {
-  margin-bottom: 0px;
   display: block;
   float: left;
-}
-
-html>body span.tabStripTab a span.tabStripTabContent,
-html>body span.tabStripTabSelected a span.tabStripTabContent
-{
-  margin-right: 0px;
 }
 /* End Non-IE Browsers hack\*/
