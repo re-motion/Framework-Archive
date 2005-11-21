@@ -37,42 +37,35 @@ public class WebTreeNodeCollection: ControlItemCollection
     set { List[index] = value; }
   }
 
-  protected override void OnInsert(int index, object value)
+  protected override void OnValidate (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTreeNode));
     WebTreeNode node = (WebTreeNode) value;
-    base.OnInsert (index, value);
+    
+    if (_treeView != null && ! ControlHelper.IsDesignMode ((Control) _treeView))
+    {
+      if (StringUtility.IsNullOrEmpty (node.ItemID))
+        throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
+    }
+    base.OnValidate (value);
   }
 
-  protected override void OnInsertComplete(int index, object value)
+  protected override void OnInsertComplete (int index, object value)
   {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTreeNode));
+
     base.OnInsertComplete (index, value);
     WebTreeNode node = (WebTreeNode) value;
     node.SetParent (_treeView, _parentNode);
   }
 
-  protected override void OnSet(int index, object oldValue, object newValue)
+  protected override void OnSetComplete (int index, object oldValue, object newValue)
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (WebTreeNode));
-    WebTreeNode node = (WebTreeNode) newValue;
-    base.OnSet (index, oldValue, newValue);
-  }
 
-  protected override void OnSetComplete(int index, object oldValue, object newValue)
-  {
     base.OnSetComplete (index, oldValue, newValue);
     WebTreeNode node = (WebTreeNode) newValue;
     node.SetParent (_treeView, _parentNode);
-  }
-
-  protected override void CheckItem (string argumentName, IControlItem item)
-  {
-    if (_treeView != null && ! ControlHelper.IsDesignMode ((Control) _treeView))
-    {
-      if (StringUtility.IsNullOrEmpty (item.ItemID))
-        throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", argumentName);
-    }
-    base.CheckItem (argumentName, item);
   }
 
   protected internal void SetParent (WebTreeView treeView, WebTreeNode parentNode)
