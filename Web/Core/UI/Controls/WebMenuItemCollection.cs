@@ -14,33 +14,14 @@ namespace Rubicon.Web.UI.Controls
 [Editor (typeof (WebMenuItemCollectionEditor), typeof (UITypeEditor))]
 public class WebMenuItemCollection: ControlItemCollection
 {
-  /// <summary> Initializes a new instance. </summary>
-  public WebMenuItemCollection (Control ownerControl, Type[] supportedTypes)
-    : base (ownerControl, supportedTypes)
-  {
-  }
-
-  /// <summary> Initializes a new instance. </summary>
-  public WebMenuItemCollection (Control ownerControl)
-    : this (ownerControl, new Type[] {typeof (WebMenuItem)})
-  {
-  }
-
-  public new WebMenuItem[] ToArray()
-  {
-    ArrayList arrayList = new ArrayList (List);
-    return (WebMenuItem[]) arrayList.ToArray (typeof (WebMenuItem));
-  }
-
-  //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
-  protected internal new WebMenuItem this[int index]
-  {
-    get { return (WebMenuItem) List[index]; }
-    set { List[index] = value; }
-  }
-
+  /// <summary> Sorts the <paramref name="menuItems"/> by their categories." </summary>
+  /// <param name="menuItems"> Must not be <see langword="null"/> or contain items that are <see langword="null"/>. </param>
+  /// <param name="generateSeparators"> <see langword="true"/> to generate a separator before starting a new category. </param>
+  /// <returns> The <paramref name="menuItems"/>, sorted by their categories. </returns>
   public static WebMenuItem[] GroupMenuItems (WebMenuItem[] menuItems, bool generateSeparators)
   {
+    ArgumentUtility.CheckNotNullOrItemsNull ("menuItems", menuItems);
+
     //  <string category, ArrayList menuItems>
     NameObjectCollection groupedMenuItems = new NameObjectCollection();
     ArrayList categories = new ArrayList();
@@ -81,6 +62,33 @@ public class WebMenuItemCollection: ControlItemCollection
     return (WebMenuItem[]) arrayList.ToArray (typeof (WebMenuItem));
   }
 
+  /// <summary> Initializes a new instance. </summary>
+  public WebMenuItemCollection (Control ownerControl, Type[] supportedTypes)
+    : base (ownerControl, supportedTypes)
+  {
+  }
+
+  /// <summary> Initializes a new instance. </summary>
+  public WebMenuItemCollection (Control ownerControl)
+    : this (ownerControl, new Type[] {typeof (WebMenuItem)})
+  {
+  }
+
+  public new WebMenuItem[] ToArray()
+  {
+    return (WebMenuItem[]) InnerList.ToArray (typeof (WebMenuItem));
+  }
+
+  //  Do NOT make this indexer public. Ever. Or ASP.net won't be able to de-serialize this property.
+  protected internal new WebMenuItem this[int index]
+  {
+    get { return (WebMenuItem) List[index]; }
+    set { List[index] = value; }
+  }
+
+  /// <summary> Sorts the <see cref="Items"/> by their categories." </summary>
+  /// <param name="generateSeparators"> <see langword="true"/> to generate a separator before starting a new category. </param>
+  /// <returns> The <see cref="Items"/>, sorted by their categories. </returns>
   public WebMenuItem[] GroupMenuItems (bool generateSeparators)
   {
     return WebMenuItemCollection.GroupMenuItems (ToArray(), generateSeparators);
