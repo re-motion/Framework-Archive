@@ -44,6 +44,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   private Style _tabSelectedStyle;
   private Control _ownerControl;
   private WcagHelper _wcagHelper;
+  private bool _enableSelectedTab = false;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTabStrip (Control ownerControl)
@@ -321,15 +322,33 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     }
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span
 
-    if (! tab.IsSelected)
+    if (! tab.IsSelected || _enableSelectedTab)
       writer.AddAttribute (HtmlTextWriterAttribute.Href, GetHref (tab));
     writer.RenderBeginTag (HtmlTextWriterTag.A); // Begin anchor
     
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopBorder);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin top border span
+ 
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomBorder);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin bottom border span
+
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabLeftBorder);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin left border span
  
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabRightBorder);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin right border span
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopLeftCorner);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin top left corner span
+ 
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomLeftCorner);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin bottom left corner span
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopRightCorner);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin top right corner span
+ 
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabBottomRightCorner);
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin bottom right corner span
 
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabContent);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin content span
@@ -337,7 +356,13 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     tab.RenderContents (writer);
 
     writer.RenderEndTag(); // End content span
+    writer.RenderEndTag(); // End bottom right border span
+    writer.RenderEndTag(); // End top right border span
+    writer.RenderEndTag(); // End bottom left border span
+    writer.RenderEndTag(); // End top left border span
     writer.RenderEndTag(); // End right border span
+    writer.RenderEndTag(); // End left border span
+    writer.RenderEndTag(); // End bottom border span
     writer.RenderEndTag(); // End left border span
     writer.RenderEndTag(); // End anchor
 
@@ -518,6 +543,14 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     get { return _tabs; }
   }
 
+  [Description ("Determines whether to enable the selected tab.")]
+  [DefaultValue (false)]
+  public bool EnableSelectedTab
+  {
+    get { return _enableSelectedTab; }
+    set { _enableSelectedTab = value; }
+  }
+
   [Category ("Style")]
   [Description ("The style that you want to apply to a pane of tabs.")]
   [NotifyParentProperty (true)]
@@ -619,31 +652,85 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     get { return "tabStripTabSelected"; }
   }
 
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intendet for formatting the the left border. </summary>
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top border. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripTabLeftBorder</c>. </para>
+  ///   <para> Class: <c>top</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabTopBorder
+  {
+    get { return "top"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom border. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bottom</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabBottomBorder
+  {
+    get { return "bottom"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the left border. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>left</c>. </para>
   /// </remarks>
   protected virtual string CssClassTabLeftBorder
   {
-    get { return "tabStripTabLeftBorder"; }
+    get { return "left"; }
   }
 
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intendet for formatting the the right border. </summary>
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the right border. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripTabRightBorder</c>. </para>
+  ///   <para> Class: <c>right</c>. </para>
   /// </remarks>
   protected virtual string CssClassTabRightBorder
   {
-    get { return "tabStripTabRightBorder"; }
+    get { return "right"; }
   }
 
-  /// <summary> Gets the CSS-Class applied to a <c>span</c> intendet for formatting the content. </summary>
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top left corner. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripTabContent</c>. </para>
+  ///   <para> Class: <c>topLeft</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabTopLeftCorner
+  {
+    get { return "topLeft"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom left corner. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bottomLeft</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabBottomLeftCorner
+  {
+    get { return "bottomLeft"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the top right corner. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>topRight</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabTopRightCorner
+  {
+    get { return "topRight"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the the bottom right corner. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>bottomRight</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabBottomRightCorner
+  {
+    get { return "bottomRight"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for formatting the content. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>content</c>. </para>
   /// </remarks>
   protected virtual string CssClassTabContent
   {
-    get { return "tabStripTabContent"; }
+    get { return "content"; }
   }
   
   /// <summary> 
