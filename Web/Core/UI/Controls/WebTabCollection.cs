@@ -35,50 +35,44 @@ public class WebTabCollection: ControlItemCollection
     set { List[index] = value; }
   }
 
-  protected override void OnInsert(int index, object value)
+  protected override void OnValidate (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTab));
+    
     WebTab tab = (WebTab) value;
-    CheckTab ("value", tab);
-    base.OnInsert (index, value);
+    if (_tabStrip != null && ! ControlHelper.IsDesignMode ((Control) _tabStrip))
+    {
+      if (StringUtility.IsNullOrEmpty (tab.ItemID))
+        throw new ArgumentException ("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", "value");
+      if (Find (tab.ItemID) != null)
+        throw new ArgumentException ("The collection already contains a tab with ItemID '" + tab.ItemID + "'.", "value");
+    }
+    base.OnValidate (value);
   }
 
-  protected override void OnInsertComplete(int index, object value)
+  protected override void OnInsertComplete (int index, object value)
   {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTab));
+
     base.OnInsertComplete (index, value);
     WebTab tab = (WebTab) value;
     tab.SetParent (_tabStrip);
     InitalizeSelectedTab();
   }
 
-  protected override void OnSet(int index, object oldValue, object newValue)
+  protected override void OnSetComplete (int index, object oldValue, object newValue)
   {
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (WebTab));
-    WebTab tab = (WebTab) newValue;
-    CheckTab ("newValue", tab);
-    base.OnSet (index, oldValue, newValue);
-  }
 
-  protected override void OnSetComplete(int index, object oldValue, object newValue)
-  {
     base.OnSetComplete (index, oldValue, newValue);
     WebTab tab = (WebTab) newValue;
     tab.SetParent (_tabStrip);
   }
 
-  private void CheckTab (string arguemntName, WebTab tab)
-  {
-    if (_tabStrip != null && ! ControlHelper.IsDesignMode ((Control) _tabStrip))
-    {
-      if (StringUtility.IsNullOrEmpty (tab.ItemID))
-        throw new ArgumentException ("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", arguemntName);
-      if (Find (tab.ItemID) != null)
-        throw new ArgumentException ("The collection already contains a tab with ItemID '" + tab.ItemID + "'.", arguemntName);
-    }
-  }
-
   protected internal void SetParent (WebTabStrip tabStrip)
   {
+    ArgumentUtility.CheckNotNull ("tabStrip", tabStrip);
+
     _tabStrip = tabStrip; 
     for (int i = 0; i < InnerList.Count; i++)
       ((WebTab) InnerList[i]).SetParent (_tabStrip);
