@@ -201,29 +201,17 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 
   protected override HtmlTextWriterTag TagKey
   {
-    get { return HtmlTextWriterTag.Div; }
+    get { return HtmlTextWriterTag.Table; }
   }
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
-  {
-    string backUpStyleWidth = Style["width"];
-    if (! StringUtility.IsNullOrEmpty (Style["width"]))
-      Style["width"] = null;
-    Unit backUpWidth = Width; // base.Width and base.ControlStyle.Width
-    if (! Width.IsEmpty)
-      Width = Unit.Empty;
-    
+  {  
     base.AddAttributesToRender (writer);
     
     if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-
-    if (! StringUtility.IsNullOrEmpty (backUpStyleWidth))
-      Style["width"] = backUpStyleWidth;
-    if (! backUpWidth.IsEmpty)
-      Width = backUpWidth;
-
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
   }
 
   protected override void RenderContents(HtmlTextWriter writer)
@@ -241,17 +229,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       tabs = GetDesignTimeTabs(); 
     }
 
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
-    if (Width.IsEmpty && StringUtility.IsNullOrEmpty (Style["width"]))
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-    else if (Width.IsEmpty)
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Style["width"]);
-    else
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, Width.ToString());
-    writer.RenderBeginTag (HtmlTextWriterTag.Table); // Begin Table
-
     RenderBeginTabsPane (writer);
     for (int i = 0; i < tabs.Count; i++)
     {
@@ -259,8 +236,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       RenderTab (writer, tab);
     }
     RenderEndTabsPane (writer);
-
-    writer.RenderEndTag(); // End Table
   }
 
   private WebTabCollection GetDesignTimeTabs()

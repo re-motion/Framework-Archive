@@ -457,6 +457,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Res\HTML\ColorScheme_1_3_26.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\DatePicker.js"
                     BuildAction = "Content"
                 />
@@ -865,6 +869,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\StandardButton.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\TabbedMenu.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
