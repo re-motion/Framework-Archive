@@ -505,10 +505,6 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\HTML\NavigationTabs.css"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Res\HTML\SmartNavigation.js"
                     BuildAction = "Content"
                 />
@@ -522,6 +518,10 @@
                 />
                 <File
                     RelPath = "Res\HTML\TabStrip.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\TabStripMenu.css"
                     BuildAction = "Content"
                 />
                 <File
