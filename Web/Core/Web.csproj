@@ -501,6 +501,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\NavigationTabs.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\SmartNavigation.js"
                     BuildAction = "Content"
                 />
@@ -530,6 +534,14 @@
                 />
                 <File
                     RelPath = "Res\Image\Help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\NavigationTabsMainMenuTabTopLeftCorner.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\NavigationTabsMainMenuTabTopRightCorner.gif"
                     BuildAction = "Content"
                 />
                 <File
