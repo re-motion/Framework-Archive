@@ -63,7 +63,7 @@ th.bocListTitleCell a:hover
 {
   color: Blue;
 	padding: 1px;
-	border-color: #2254b1;
+	border-color: #005588;
 	border-width: 1px;
 	border-style: solid;
 	background-color: #fee197;	
@@ -165,7 +165,7 @@ td.bocListDataCellEvenSelected a:hover
 {
   color: Blue;
 	padding: 1px;
-	border-color: #2254b1;
+	border-color: #005588;
 	border-width: 1px;
 	border-style: solid;
 	background-color: #fee197;	
@@ -225,7 +225,7 @@ span.contentMenuItem a:hover
   color: Blue;
 	padding: 1px;
 	border-width: 1px;
-	border-color: #2254b1;
+	border-color: #005588;
 	border-style: solid;
 	background-color: #fee197;	
 }
