@@ -214,7 +214,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
   }
 
-  protected override void RenderContents(HtmlTextWriter writer)
+  protected override void RenderContents (HtmlTextWriter writer)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
 
@@ -256,6 +256,13 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabsPane);
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Div
 
+    if (ControlHelper.IsDesignMode (this, Context))
+    {
+      writer.AddStyleAttribute ("list-style", "none");
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+      writer.AddStyleAttribute ("display", "inline");
+    }
+
     writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin List
   }
 
@@ -279,6 +286,13 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
 
   private void RenderTab (HtmlTextWriter writer, WebTab tab)
   {
+    if (ControlHelper.IsDesignMode (this, Context))
+    {
+      writer.AddStyleAttribute ("float", "left");
+      writer.AddStyleAttribute ("display", "block");
+      writer.AddStyleAttribute ("white-space", "nowrap");
+    }
+
     writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin list item
     
     RenderSeperator (writer);
