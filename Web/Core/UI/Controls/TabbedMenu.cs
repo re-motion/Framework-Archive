@@ -1,34 +1,48 @@
 using System;
+using System.ComponentModel;
+using System.Web.UI;
 using System.Web.UI.WebControls;
+using Rubicon.NullableValueTypes;
+using Rubicon.Utilities;
+using Rubicon.Web.Utilities;
+using Rubicon.Web.UI.Design;
+using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
-public class TabbedMenu: WebControl
+public class TabStripMenu: WebControl
 {
   // constants
+  private const string c_styleFileUrl = "TabStripMenu.css";
+
   // statics
   //private static readonly object s_clickEvent = new object();
   //private static readonly object s_selectionChangedEvent = new object();
+  private static readonly string s_styleFileKey = typeof (TabStripMenu).FullName + "_Style";
 
   // types
 
   // fields
+  private WebTabCollection _menu;
+  private Style _mainMenuStyle;
+  private Style _subMenuStyle;
+  private Style _statusStyle;
   private WebTabStrip _mainMenuTabStrip;
   private WebTabStrip _subMenuTabStrip;
   private WcagHelper _wcagHelper;
 
   // construction and destruction
-  public TabbedMenu()
+  public TabStripMenu()
   {
-    CreateControls();
+    _menu = new WebTabCollection (this);
+    _mainMenuTabStrip = new WebTabStrip (this);
+    _subMenuTabStrip = new WebTabStrip (this);
+    _mainMenuStyle = new Style();
+    _subMenuStyle = new Style();
+    _statusStyle = new Style();
   }
 
   // methods and properties
-  private void CreateControls()
-  {
-    _mainMenuTabStrip = new WebTabStrip (this);
-    _subMenuTabStrip = new WebTabStrip (this);
-  }
 
   protected override void CreateChildControls()
   {
@@ -38,5 +52,166 @@ public class TabbedMenu: WebControl
     _subMenuTabStrip.ID = ID + "_SubMenuTabStrip";
     Controls.Add (_subMenuTabStrip);
   }
+
+  protected override void OnPreRender(EventArgs e)
+  {
+    string url = null;
+    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    {
+      url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (TabStripMenu), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+    }
+
+//    if (Views.Count == 0)
+//      Views.Add (_placeHolderTabView);
+
+    base.OnPreRender (e);
+  }
+
+  protected override HtmlTextWriterTag TagKey
+  {
+    get { return HtmlTextWriterTag.Table; }
+  }
+
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+  }
+
+  protected override void RenderContents (HtmlTextWriter writer)
+  {
+    EnsureChildControls();
+   
+    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
+      WcagHelper.HandleError (1, this);
+
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin main menu row
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Colspan, "2");
+    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassMainMenuCell);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin main menu cell
+    _mainMenuTabStrip.Width = Unit.Percentage (100);
+    _mainMenuTabStrip.RenderControl (writer);
+    writer.RenderEndTag(); // End main menu cell
+
+    writer.RenderEndTag(); // End main menu row
+
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin sub menu row
+
+    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassSubMenuCell);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin sub menu cell
+    _subMenuTabStrip.Style["width"] = "auto";
+    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassMainMenu);
+    _subMenuTabStrip.RenderControl (writer);
+    writer.RenderEndTag(); // End sub menu cell
+
+    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassStatusCell);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin status cell
+    writer.Write ("Tabbed Menu");
+    writer.RenderEndTag(); // End status cell
+
+    writer.RenderEndTag(); // End sub menu row
+  }
+
+  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
+  protected virtual WcagHelper WcagHelper
+  {
+    get 
+    {
+      if (_wcagHelper == null)
+        _wcagHelper = new WcagHelper();
+      return _wcagHelper; 
+    }
+  }
+
+  public WebTabCollection Menu
+  {
+    get
+    {
+      return _menu;
+    }
+  }
+
+//  [Category ("Style")]
+//  [Description ("The style that you want to apply to the main menu.")]
+//  [NotifyParentProperty (true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style MainMenuStyle
+//  {
+//    get { return _mainMenuStyle; }
+//  }
+//
+//  [Category ("Style")]
+//  [Description ("The style that you want to apply to the sub menu.")]
+//  [NotifyParentProperty (true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style SubMenuStyle
+//  {
+//    get { return _subMenuStyle; }
+//  }
+//
+//  [Category ("Style")]
+//  [Description ("The style that you want to apply to the status area.")]
+//  [NotifyParentProperty (true)]
+//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+//  [PersistenceMode (PersistenceMode.InnerProperty)]
+//  public Style StatusStyle
+//  {
+//    get { return _statusStyle; }
+//  }
+
+  #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the main menu's tab strip. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripMenuMain</c>. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="MainMenuStyle"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassMainMenu
+  {
+    get { return "tabStripMenuMain"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the sub menu's tab strip. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripMenuSub</c>. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="SubMenuStyle"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassSubMenu
+  {
+    get { return "tabStripMenuSub"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the main menu cell. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripMenuMainMenuCell</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassMainMenuCell
+  {
+    get { return "tabStripMenuMainMenuCell"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the sub menu cell. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripMenuSubMenuCell</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassSubMenuCell
+  {
+    get { return "tabStripMenuSubMenuCell"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to the status cell. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripMenuStatusCell</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassStatusCell
+  {
+    get { return "tabStripMenuStatusCell"; }
+  }
+  #endregion
 }
 }

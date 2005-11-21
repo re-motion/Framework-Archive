@@ -312,7 +312,6 @@ public class TabbedMultiView: WebControl, IControl
       writer.AddStyleAttribute ("height", "50pt");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Border, "0");
   }
 
   protected override void RenderContents (HtmlTextWriter writer)
@@ -339,6 +338,8 @@ public class TabbedMultiView: WebControl, IControl
     _tabStrip.Style["width"] = "100%";
     if (StringUtility.IsNullOrEmpty (_tabStripStyle.CssClass))
       _tabStrip.CssClass = CssClassTabStrip;
+    else
+      _tabStrip.CssClass = _tabStripStyle.CssClass;
     _tabStrip.RenderControl (writer);
 
     writer.RenderEndTag(); // end td
@@ -585,26 +586,6 @@ public class TabbedMultiView: WebControl, IControl
     //  TabStrip.Tabs.Clear();
     //  MultiViewInternal.Controls.Clear();
   }
-
-//  /// <summary> The number of tabs displayed per pane. Ignores separators. </summary>
-//  /// <value> 
-//  ///   An integer greater than zero to limit the number of tabs per pane to the specified value,
-//  ///   or zero, less than zero or <see cref="NaInt32.Null"/> to show all tabs in a single pane.
-//  /// </value>
-//  [Category ("Appearance")]
-//  [Description ("The number of tabs displayed per page. Set TabsPaneSize to 0 to show all tabs in a single pane.")]
-//  [DefaultValue (typeof(NaInt32), "null")]
-//  public NaInt32 TabsPaneSize
-//  {
-//    get { return _tabStrip.TabsPaneSize; }
-//    set
-//    {
-//      if (value.IsNull || value.Value <= 0)
-//        _tabStrip.TabsPaneSize = NaInt32.Null;
-//      else
-//        _tabStrip.TabsPaneSize = value; 
-//    }
-//  }
 
   /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
   protected virtual WcagHelper WcagHelper
