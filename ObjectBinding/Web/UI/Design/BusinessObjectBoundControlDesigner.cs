@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Web.UI.Design;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
+using Rubicon.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
@@ -12,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.Design
 /// Provides a desinger for the DataSource property of BusinessObject-bound controls.
 /// </summary>
 [Obsolete ("Place a IBusinessObjectDataSourceControl onto the page instead and link it to the BusinessObjectBoundWebControl.")]
-public class BusinessObjectBoundControlDesigner: BocDesigner
+public class BusinessObjectBoundControlDesigner: WebControlDesigner
 {
   private IBusinessObjectBoundControl _boundControl;
 
