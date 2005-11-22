@@ -5,10 +5,11 @@ using System.Drawing.Design;
 using System.Web.UI.Design;
 using Rubicon.ObjectBinding.Web.Controls;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
-public class BocListDesigner: BocDesigner, IServiceProvider
+public class BocListDesigner: WebControlDesigner, IServiceProvider
 {
   private DesignerVerbCollection _verbs = null;
 
