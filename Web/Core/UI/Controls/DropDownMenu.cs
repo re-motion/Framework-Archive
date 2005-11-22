@@ -1,20 +1,22 @@
 using System;
+using System.ComponentModel;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.ComponentModel;
-using Rubicon.Web.UI;
-using Rubicon.Web;
-using Rubicon.Web.Utilities;
-using Rubicon.Utilities;
 using Rubicon.Collections;
+using Rubicon.Utilities;
+using Rubicon.Web;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UI;
+using Rubicon.Web.UI.Design;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 /// <include file='doc\include\UI\Controls\DropDownMenu.xml' path='DropDownMenu/Class/*' />
-public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
+[Designer (typeof (WebControlDesigner))]
+public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControlWithDesignTimeSupport
 {
   private static readonly object s_eventCommandClickEvent = new object();
   private static readonly object s_wxeFunctionCommandClickEvent = new object();
@@ -256,6 +258,16 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler
         isDisabled ? "true" : "false",
         href, 
         target);
+  }
+
+  /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
+  /// <remarks> Used by the <see cref="WebControlDesigner"/>. </remarks>
+  void IControlWithDesignTimeSupport.PreRenderForDesignMode()
+  {
+    if (! ControlHelper.IsDesignMode (this, Context))
+      throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
+    EnsureChildControls();
+    OnPreRender (EventArgs.Empty);
   }
 
   protected override HtmlTextWriterTag TagKey
