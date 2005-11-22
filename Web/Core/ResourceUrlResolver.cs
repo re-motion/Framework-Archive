@@ -94,7 +94,8 @@ public sealed class ResourceUrlResolver
 
     bool isDesignMode = Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control);
     string assemblyRoot = GetAssemblyRoot (isDesignMode, definingType.Assembly);
-    return assemblyRoot + resourceType.Name + "/" + relativeUrl;
+    string separator = isDesignMode ? @"\" : "/";
+    return assemblyRoot + resourceType.Name + separator + relativeUrl;
   }
 
   /// <summary> Returns the root folder for all resources belonging to the <paramref name="assembly"/>. </summary>
@@ -109,8 +110,8 @@ public sealed class ResourceUrlResolver
     
     string root = GetRoot (isDesignMode);
     string assemblyName = assembly.FullName.Split (new char[]{','}, 2)[0];
-
-    return root + assemblyName + "/";
+    string separator = isDesignMode ? @"\" : "/";
+    return root + assemblyName + separator;
   }
 
   /// <summary> Returns the root folder for all resources. </summary>
@@ -128,8 +129,9 @@ public sealed class ResourceUrlResolver
     else 
       root = GetRunTimeRoot();
 
-    if (root.Length > 0 && ! root.EndsWith ("/"))
-      root += "/";
+    string separator = isDesignMode ? @"\" : "/";
+    if (root.Length > 0 && ! root.EndsWith (separator))
+      root += separator;
     return root;
   }
 
