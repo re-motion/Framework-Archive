@@ -467,7 +467,7 @@ public class BocReferenceValue:
     if (! IsDesignMode && ! IsReadOnly && Enabled)
       Page.RegisterRequiresPostBack (this);
     
-    if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
+    if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
     {
       string scriptUrl = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_scriptFileUrl);
@@ -480,7 +480,7 @@ public class BocReferenceValue:
       PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
     }
 
-    if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     {
       string url = ResourceUrlResolver.GetResourceUrl (
           this, Context, typeof (BocReferenceValue), ResourceType.Html, c_styleFileUrl);
