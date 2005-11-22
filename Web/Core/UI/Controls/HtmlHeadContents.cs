@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Rubicon.Web.Utilities;
@@ -13,6 +14,14 @@ namespace Rubicon.Web.UI.Controls
 [ToolboxData ("<{0}:HtmlHeadContents runat=\"server\" id=\"HtmlHeadContents\"></{0}:HtmlHeadContents>")]
 public class HtmlHeadContents : Control
 {
+  private static bool s_isDesignMode;
+
+  protected override void OnInit (EventArgs e)
+  {
+    base.OnInit (e);
+    s_isDesignMode = ControlHelper.IsDesignMode (this);
+  }
+
   protected override void Render(HtmlTextWriter writer)
   {
     HtmlHeadAppender.Current.EnsureAppended (this);
@@ -46,8 +55,13 @@ public class HtmlHeadContents : Control
       {
         control.RenderControl(writer);
         writer.WriteLine();
-     }
+      }
     }
+  }
+
+  protected internal static bool IsDesignMode
+  {
+    get { return s_isDesignMode; }
   }
 
 }
