@@ -27,8 +27,10 @@ namespace Rubicon.Web.UI
 ///     HtmlHeadAppender.Current.Register...(key, ...);
 ///   </code>
 /// </example>
-public class HtmlHeadAppender
+public sealed class HtmlHeadAppender
 {
+  private const string c_contextKey = "Rubicon.Web.UI.HtmlHeadAppender.Current";
+
   public enum Priority
   {
     Script = 0, // Absolute values to emphasize sorted nature of enum values
@@ -36,6 +38,8 @@ public class HtmlHeadAppender
     UserControl = 2,
     Page = 3
   }
+
+  private static HtmlHeadAppender s_designModeCurrent;
 
   /// <summary> ListDictionary&lt;string key, Control headElement&gt; </summary>
   private ListDictionary _registeredHeadElements = new ListDictionary();
@@ -59,32 +63,37 @@ public class HtmlHeadAppender
   {
     get 
     { 
-      const string contextKey = "Rubicon.Web.UI.HtmlHeadAppender.Current";
-      HtmlHeadAppender current = null;
-      try
+      if (HtmlHeadContents.IsDesignMode)
+        return GetDesignModeCurrent();
+      else
+        return GetCurrent();
+    }
+  }
+
+  private static HtmlHeadAppender GetCurrent()
+  {
+    HtmlHeadAppender current = (HtmlHeadAppender) CallContext.GetData (c_contextKey);
+    
+    if (current == null)
+    {
+      lock (typeof (HtmlHeadAppender))
       {
-        current = (HtmlHeadAppender) CallContext.GetData (contextKey);
-      }
-      catch (InvalidCastException)
-      {
-        //  HACK: Only thrown in design mode. Occasionally.
-        return new HtmlHeadAppender();
-      }
-      
-      if (current == null)
-      {
-        lock (typeof (HtmlHeadAppender))
+        current = (HtmlHeadAppender) CallContext.GetData (c_contextKey);
+        if (current == null)
         {
-          current = (HtmlHeadAppender) CallContext.GetData (contextKey);
-          if (current == null)
-          {
-            current = new HtmlHeadAppender();
-            CallContext.SetData (contextKey, current);
-          }
+          current = new HtmlHeadAppender();
+          CallContext.SetData (c_contextKey, current);
         }
       }
-      return current;
     }
+    return current;
+  }
+
+  private static HtmlHeadAppender GetDesignModeCurrent()
+  {
+    if (s_designModeCurrent == null)
+      s_designModeCurrent = new HtmlHeadAppender();
+    return s_designModeCurrent;
   }
 
   /// <summary>
@@ -107,11 +116,12 @@ public class HtmlHeadAppender
 
     if (ControlHelper.IsDesignMode (htmlHeadContents))
       return;
+    if (ControlHelper.IsDesignMode (htmlHeadContents))
+      htmlHeadContents.Controls.Clear();
 
-    IList headElementLists = _sortedHeadElements.GetValueList();
-    for (int idxLists = 0; idxLists < headElementLists.Count; idxLists++)
+    for (int idxPriority = 0; idxPriority < _sortedHeadElements.Count; idxPriority++)
     {
-      ArrayList headElements = (ArrayList) headElementLists[idxLists];
+      ArrayList headElements = (ArrayList) _sortedHeadElements.GetByIndex (idxPriority);
       for (int idxElements = 0; idxElements < headElements.Count; idxElements++)
       {
         Control headElement = (Control) headElements[idxElements];
@@ -119,7 +129,16 @@ public class HtmlHeadAppender
           htmlHeadContents.Controls.Add (headElement);
       }
     }
-    _hasAppendExecuted = true;
+
+    if (ControlHelper.IsDesignMode (htmlHeadContents))
+    {
+      _sortedHeadElements.Clear();
+      _registeredHeadElements.Clear();
+    }
+    else
+    {
+      _hasAppendExecuted = true;
+    }
   }
 
   /// <summary> Gets a flag indicating wheter <see cref="EnsureAppended"/> has been executed. </summary>
@@ -314,7 +333,7 @@ public class HtmlHeadAppender
   /// <summary> Gets the list of head elements for the specified <see cref="Priority"/>. </summary>
   /// <param name="priority"> The <see cref="Priority"/> level to get the head elements for. </param>
   /// <returns> An <see cref="ArrayList"/> of the head elements for the specified <see cref="Priority"/>. </returns>
-  protected ArrayList GetHeadElements (Priority priority)
+  private ArrayList GetHeadElements (Priority priority)
   {
     ArrayList headElements = (ArrayList) _sortedHeadElements[priority];
     if (headElements == null)
