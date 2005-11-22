@@ -8,6 +8,7 @@ using System.Drawing.Design;
 using Rubicon.NullableValueTypes;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UI.Design;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
@@ -36,7 +37,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <seealso cref="ISmartControl"/>
 /// <seealso cref="IBusinessObjectBoundModifiableWebControl"/>
 /// <seealso cref="IBusinessObjectDataSourceControl"/>
-public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, ISmartControl
+public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, ISmartControl, IControlWithDesignTimeSupport
 {
   /// <summary>
   ///   Gets or sets the <b>ID</b> of the <see cref="IBusinessObjectDataSourceControl"/> encapsulating the 
@@ -64,7 +65,7 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
 ///   In order for the control to be visible, it requires a valid binding before <see cref="OnLoad"/> is called.
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundWebControl"/>
-[Designer (typeof (BocDesigner))]
+[Designer (typeof (WebControlDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
 {
   #region BusinessObjectBinding implementation
@@ -303,7 +304,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
   /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
-  internal void PreRenderForDesignMode()
+  void IControlWithDesignTimeSupport.PreRenderForDesignMode()
   {
     if (! IsDesignMode)
       throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
