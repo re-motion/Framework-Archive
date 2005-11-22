@@ -833,6 +833,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\IControlWithDesignTimeSupport.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\IFocusableControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -999,6 +1004,11 @@
                 />
                 <File
                     RelPath = "UI\Design\StringArrayToStringConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Design\WebControlDesigner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
