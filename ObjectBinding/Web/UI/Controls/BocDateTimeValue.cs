@@ -273,7 +273,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     
     bool isReadOnly = IsReadOnly;
 
-    //if (! IsDesignMode && ! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    //if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     //{
     //  string url = ResourceUrlResolver.GetResourceUrl (
     //      this, Context, typeof (BocDateTimeValue), ResourceType.Html, c_styleFileUrl);
