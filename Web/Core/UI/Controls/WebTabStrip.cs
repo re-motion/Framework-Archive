@@ -1,23 +1,24 @@
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.ComponentModel;
 using log4net;
+using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
 using Rubicon.Web.UI.Design;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
 
 /// <include file='doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
 [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
-public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResourceDispatchTarget
+[Designer (typeof (WebControlDesigner))]
+public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResourceDispatchTarget, IControlWithDesignTimeSupport
 {
   //  constants
   /// <summary> The key identifying a tab resource entry. </summary>
@@ -197,6 +198,16 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   
     IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
     LoadResources (resourceManager);
+  }
+
+  /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
+  /// <remarks> Used by the <see cref="WebControlDesigner"/>. </remarks>
+  void IControlWithDesignTimeSupport.PreRenderForDesignMode()
+  {
+    if (! ControlHelper.IsDesignMode (this, Context))
+      throw new InvalidOperationException ("PreRenderChildControlsForDesignMode may only be called during design time.");
+    EnsureChildControls();
+    OnPreRender (EventArgs.Empty);
   }
 
   protected override HtmlTextWriterTag TagKey
