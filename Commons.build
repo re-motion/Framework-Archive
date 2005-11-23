@@ -380,11 +380,11 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
     <exec program="osql.exe" 
-          commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\CreateDB.sql"
+          commandline="-S (local)\build -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\CreateDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
     <exec program="osql.exe" 
-          commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\setupDB.sql"
+          commandline="-S (local)\build -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\setupDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
     <copy todir="${tests.builddir}" overwrite="true">
@@ -414,11 +414,11 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.extension" value="dll" />
     <exec program="osql.exe" 
-          commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\CreateDB.sql"
+          commandline="-S (local)\build -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\CreateDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
     <exec program="osql.exe" 
-          commandline="-E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\setupDB.sql"
+          commandline="-S (local)\build -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\setupDB.sql"
           basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
     </exec>
     <copy todir="${tests.builddir}" overwrite="true">
@@ -716,7 +716,7 @@
     <zip zipfile="${zipfile.name}">
       <fileset basedir="${build.basedir}">
         <includes name="**/*" />
-        <excludes name="*/bin/documentation/*" />
+        <excludes name="*/bin/documentation/**/*" />
         <excludes name="temp/**/*" />
       </fileset>
     </zip>
