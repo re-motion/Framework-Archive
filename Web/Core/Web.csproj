@@ -998,12 +998,22 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Design\MainMenuTabCollectionEditor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\SmartControlToStringConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Design\StringArrayToStringConverter.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Design\SubMenuTabCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
