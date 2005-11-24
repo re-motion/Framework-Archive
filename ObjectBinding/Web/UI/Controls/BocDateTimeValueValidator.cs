@@ -82,21 +82,23 @@ public class BocDateTimeValueValidator: BaseValidator
     if (! control.IsRequired)
       return true;
 
+    bool isDateOrTimeRequired = control.ActualValueType == BocDateTimeValueType.Undefined;
     bool isDateRequired =    control.ActualValueType == BocDateTimeValueType.DateTime
                           || control.ActualValueType == BocDateTimeValueType.Date;
     bool isTimeRequired = control.ActualValueType == BocDateTimeValueType.DateTime;
 
     //  Neither field required because the value of the control of an unknown/undefined type
-    if (! isDateRequired && ! isTimeRequired)
+    if (! isDateOrTimeRequired && ! isDateRequired && ! isTimeRequired)
       return true;
 
     bool hasDate = ! StringUtility.IsNullOrEmpty (control.DateTextBox.Text); 
     bool hasTime = ! StringUtility.IsNullOrEmpty (control.TimeTextBox.Text); 
 
+    bool isDateAndTimeMissing = isDateOrTimeRequired && ! (hasDate || hasTime);
     bool isDateMissing = isDateRequired && ! hasDate;
     bool isTimeMissing = isTimeRequired && ! hasTime;
 
-    return ! (isDateMissing || isTimeMissing);
+    return ! (isDateAndTimeMissing || isDateMissing || isTimeMissing);
   }
 
   /// <summary> Checks that the input fields are completed. </summary>
@@ -128,10 +130,11 @@ public class BocDateTimeValueValidator: BaseValidator
   /// </remarks>
   private bool EvaluateIsValidDate (BocDateTimeValue control)
   {
-    bool isDateRequired =    control.ActualValueType == BocDateTimeValueType.DateTime
-                          || control.ActualValueType == BocDateTimeValueType.Date;
+    bool isValidDateRequired =   control.ActualValueType == BocDateTimeValueType.Undefined
+                              || control.ActualValueType == BocDateTimeValueType.DateTime
+                              || control.ActualValueType == BocDateTimeValueType.Date;
     
-    if (! isDateRequired)
+    if (! isValidDateRequired)
       return true;
 
     string dateValue = control.DateTextBox.Text;
@@ -200,9 +203,10 @@ public class BocDateTimeValueValidator: BaseValidator
   /// <remarks> Does not detect an included date of 01.01.0001. </remarks>
   private bool EvaluateIsValidTime (BocDateTimeValue control)
   {
-    bool isTimeRequired = control.ActualValueType == BocDateTimeValueType.DateTime;
+    bool isValidTimeRequired =   control.ActualValueType == BocDateTimeValueType.Undefined
+                              || control.ActualValueType == BocDateTimeValueType.DateTime;
     
-    if (! isTimeRequired)
+    if (! isValidTimeRequired)
       return true;
 
     string timeValue = control.TimeTextBox.Text;
