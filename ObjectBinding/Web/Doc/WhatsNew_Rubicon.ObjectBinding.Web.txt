@@ -2,6 +2,7 @@
 ======
 - BocDateTimeValue
   * Positionierung des DatePickers auf gescrollten Seiten optimiert.
+  * Validierung für ungebundene Controls ohne definierten ValueType eingebaut.
   
 1.3.26
 ======
