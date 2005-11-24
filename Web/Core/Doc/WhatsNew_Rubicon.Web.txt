@@ -4,6 +4,10 @@
   * HTML und CSS wurde komplett überarbeitet um den Browsersupport zu verbessern.
     In der Applikation überschriebene CSS Klassen müssen daher angepasst werden.
 
+- Rubicon.Web.UI.Controls.IconInfo
+  * IconInfo ist nicht mehr serialisierbar. Serilisierbarkeit wurde nur für ViewState benötigt und ist nun über 
+    TypeConverter gelöst.
+
 1.3.25
 ======
 - Rubicon.Web.ExecutionEngine.WxePage
