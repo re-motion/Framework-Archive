@@ -47,11 +47,10 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   private WcagHelper _wcagHelper;
   private bool _enableSelectedTab = false;
 
-  /// <summary> Initalizes a new instance. </summary>
-  public WebTabStrip (Control ownerControl)
+  public WebTabStrip (Control ownerControl, Type[] supportedMenuItemTypes)
   {
     _ownerControl = ownerControl;
-    _tabs = new WebTabCollection (ownerControl);
+    _tabs = new WebTabCollection (ownerControl, supportedMenuItemTypes);
     Tabs.SetParent (this);
     _tabsPaneStyle = new Style();
     _tabStyle = new Style();
@@ -59,7 +58,10 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     _separatorStyle = new Style();
   }
 
-  /// <summary> Initalizes a new instance. </summary>
+  public WebTabStrip (Control ownerControl)
+    : this (ownerControl, new Type[] {typeof (WebTab)})
+  {}
+
   public WebTabStrip()
     :this (null)
   {

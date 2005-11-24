@@ -48,13 +48,13 @@ public class TestTabbedForm : TestWxeBasePage
     AddTab ("6", "Test Tab 6 foo", null);
     AddTab ("7", "Test Tab 7 foo foo bar", null);
 
-    AddMainMenuTab ("1", "Main Tab 1", null);
-    AddMainMenuTab ("2", "Main Tab 2 foo bar", null);
-    AddMainMenuTab ("3", "Main Tab 3 foo", null);
-    AddMainMenuTab ("4", "Main Tab 4 foo foo bar", null);
-    AddMainMenuTab ("5", "Main Tab 5", null);
-    AddMainMenuTab ("6", "Main Tab 6 foo", null);
-    AddMainMenuTab ("7", "Main Tab 7 foo foo bar", null);
+//    AddMainMenuTab ("1", "Main Tab 1", null);
+//    AddMainMenuTab ("2", "Main Tab 2 foo bar", null);
+//    AddMainMenuTab ("3", "Main Tab 3 foo", null);
+//    AddMainMenuTab ("4", "Main Tab 4 foo foo bar", null);
+//    AddMainMenuTab ("5", "Main Tab 5", null);
+//    AddMainMenuTab ("6", "Main Tab 6 foo", null);
+//    AddMainMenuTab ("7", "Main Tab 7 foo foo bar", null);
 
     TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
     // load editor pages

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.NullableValueTypes;
@@ -23,7 +24,6 @@ public class TabStripMenu: WebControl
   // types
 
   // fields
-  private WebTabCollection _menu;
   private Style _mainMenuStyle;
   private Style _subMenuStyle;
   private Style _statusStyle;
@@ -34,8 +34,7 @@ public class TabStripMenu: WebControl
   // construction and destruction
   public TabStripMenu()
   {
-    _menu = new WebTabCollection (this);
-    _mainMenuTabStrip = new WebTabStrip (this);
+    _mainMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (MainMenuTab)});
     _subMenuTabStrip = new WebTabStrip (this);
     _mainMenuStyle = new Style();
     _subMenuStyle = new Style();
@@ -127,11 +126,17 @@ public class TabStripMenu: WebControl
     }
   }
 
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Behavior")]
+  [Description ("")]
+  [DefaultValue ((string) null)]
+  [Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
   public WebTabCollection Menu
   {
     get
     {
-      return _menu;
+      return _mainMenuTabStrip.Tabs;
     }
   }
 
@@ -213,5 +218,51 @@ public class TabStripMenu: WebControl
     get { return "tabStripMenuStatusCell"; }
   }
   #endregion
+}
+
+public class MainMenuTab: WebTab
+{
+  private WebTabCollection _subMenu;
+
+  public MainMenuTab (string itemID, string text, IconInfo icon)
+    : base (itemID, text, icon)
+  {
+    _subMenu = new WebTabCollection (null, new Type[] {typeof (SubMenuTab)});
+  }
+
+  public MainMenuTab()
+    : this (null, null, new IconInfo ())
+  {
+  }
+
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  [ListBindable (false)]
+  [Category ("Behavior")]
+  [Description ("")]
+  [DefaultValue ((string) null)]
+  [Editor (typeof (SubMenuTabCollectionEditor), typeof (UITypeEditor))]
+  public WebTabCollection SubMenu
+  {
+    get { return _subMenu; }
+  }
+
+  protected override void OnOwnerControlChanged()
+  {
+    base.OnOwnerControlChanged ();
+    _subMenu.OwnerControl = OwnerControl;
+  }
+
+}
+
+public class SubMenuTab: WebTab
+{
+  public SubMenuTab (string itemID, string text, IconInfo icon)
+    : base (itemID, text, icon)
+  {
+  }
+
+  public SubMenuTab()
+  {
+  }
 }
 }

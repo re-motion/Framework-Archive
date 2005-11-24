@@ -12,12 +12,20 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
+      <rwc:TabStripMenu id="NavigationTabs" runat="server" width="100%">
+<menu>
+<rwc:MainMenuTab>
+<submenu>
+<rwc:SubMenuTab ItemID="Submenutab1" TabID="Submenutab1" Text="sub1"></rwc:SubMenuTab>
+</SubMenu>
+</rwc:MainMenuTab>
+</menu>
+</rwc:TabStripMenu>
 <rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
 <topcontrols>
       <h1>Test Tabbed Form</h1>
       <rwc:validationstateviewer id="ValidationStateViewer" runat="server" visible="true"></rwc:validationstateviewer>
       <rwc:webtabstrip id="PagesTabStrip" runat="server" width="100%"></rwc:webtabstrip>
-      <rwc:TabStripMenu id="NavigationTabs" runat="server" width="100%"></rwc:TabStripMenu>
 </topcontrols>
 <views> 
  <rwc:tabview id="first" title="First">

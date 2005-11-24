@@ -11,7 +11,7 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 
-//[Editor (typeof (WebTreeNodeCollectionEditor), typeof (UITypeEditor))]
+//[Editor (typeof (WebTabCollectionEditor), typeof (UITypeEditor))]
 public class WebTabCollection: ControlItemCollection
 {
   private WebTabStrip _tabStrip;
