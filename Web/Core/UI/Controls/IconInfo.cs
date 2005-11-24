@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.Design;
 using System.Web.UI.WebControls;
@@ -14,10 +15,29 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
-[TypeConverter (typeof (ExpandableObjectConverter))]
-[Serializable]
-public sealed class IconInfo: ISerializable
+[TypeConverter (typeof (IconInfoConverter))]
+public sealed class IconInfo
 {
+  public static bool ShouldSerialize (IconInfo icon)
+  {
+    if (icon == null)
+    {
+      return false;
+    }
+    else if (   StringUtility.IsNullOrEmpty (icon.Url)
+             && StringUtility.IsNullOrEmpty (icon.AlternateText)
+             && StringUtility.IsNullOrEmpty (icon.ToolTip)
+             && icon.Height.IsEmpty
+             && icon.Width.IsEmpty)
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+
   private string _url;
   private string _alternateText;
   private string _toolTip;
@@ -131,45 +151,11 @@ public sealed class IconInfo: ISerializable
     writer.RenderEndTag();
   }
 
-  private IconInfo (SerializationInfo info, StreamingContext context)
-  {
-    string width = (string) info.GetValue ("_width", typeof (string));
-    string height = (string) info.GetValue ("_height", typeof (string));
-
-    _url = (string) info.GetValue ("_url", typeof (string));
-    _width = new Unit (width);
-    _height = new Unit (height);
-  }
-
-  void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-  {
-    info.AddValue ("_url", _url);
-    info.AddValue ("_width", _width.ToString());
-    info.AddValue ("_height", _height.ToString());
-  }
-
-  public static bool ShouldSerialize (IconInfo icon)
-  {
-    if (icon == null)
-    {
-      return false;
-    }
-    else if (   StringUtility.IsNullOrEmpty (icon.Url)
-             && icon.Height.IsEmpty
-             && icon.Width.IsEmpty)
-    {
-      return false;
-    }
-    else
-    {
-      return true;
-    }
-  }
-
   public void Reset()
   {
     _url = string.Empty;
     _alternateText = string.Empty;
+    _toolTip = string.Empty;
     _width = Unit.Empty;
     _height = Unit.Empty;
   }
@@ -187,7 +173,85 @@ public sealed class IconInfo: ISerializable
     key = ResourceManagerUtility.GetGlobalResourceKey (AlternateText);
     if (! StringUtility.IsNullOrEmpty (key))
       AlternateText = resourceManager.GetString (key);
+
+    key = ResourceManagerUtility.GetGlobalResourceKey (ToolTip);
+    if (! StringUtility.IsNullOrEmpty (key))
+      ToolTip = resourceManager.GetString (key);
   }
+}
+
+public class IconInfoConverter: ExpandableObjectConverter
+{
+  public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
+  {
+    if (sourceType == typeof (string))
+      return true;
+    return base.CanConvertFrom (context, sourceType);
+  }
+
+  public override bool CanConvertTo (ITypeDescriptorContext context, Type destinationType)
+  {
+    if (destinationType == typeof (string))
+      return true;
+    return base.CanConvertTo (context, destinationType);
+  }
+
+  public override object ConvertFrom 
+      (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+  {
+    if (value == null)
+      return null;
+    if (value is string)
+    {
+      string stringValue = (string) value;
+      IconInfo icon = new IconInfo();
+      if (stringValue != string.Empty)
+      {
+        string[] valueParts = stringValue.Split (new char[]{'\0'}, 5);
+        icon.Url = valueParts[0];
+        if (valueParts[1] != string.Empty)
+          icon.Width = Unit.Parse (valueParts[1]);
+        if (valueParts[2] != string.Empty)
+          icon.Height = Unit.Parse (valueParts[2]);
+        icon.AlternateText = valueParts[3];
+        icon.ToolTip = valueParts[4];
+      }
+      return icon;
+    }
+
+    return base.ConvertFrom (context, culture, value);
+  }
+
+  public override object ConvertTo
+    (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+  {
+    if (destinationType == typeof (string))
+    {
+      if (value == null)
+        return null;
+      if (value is IconInfo)
+      {
+        IconInfo icon = (IconInfo) value;
+        if (IconInfo.ShouldSerialize (icon))
+        {
+          StringBuilder serializedValue = new StringBuilder();
+          serializedValue.Append (icon.Url).Append ("\0");
+          serializedValue.Append (icon.Width.ToString()).Append ("\0");
+          serializedValue.Append (icon.Height.ToString()).Append ("\0");
+          serializedValue.Append (icon.AlternateText).Append ("\0");
+          serializedValue.Append (icon.ToolTip).Append ("\0");
+          return serializedValue.ToString();
+        }
+        else
+        {
+          return string.Empty;
+        }
+      }
+    }
+    return base.ConvertTo (context, culture, value, destinationType);
+  }
+
+
 }
 
 }
