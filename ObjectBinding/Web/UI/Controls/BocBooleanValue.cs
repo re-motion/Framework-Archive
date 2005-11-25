@@ -177,8 +177,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
-      WcagHelper.HandleError (1, this);
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
+      WcagHelper.Instance.HandleError (1, this);
   }
 
   /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
