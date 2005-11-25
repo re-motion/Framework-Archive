@@ -543,42 +543,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
       ToolTip = resourceManager.GetString (key);
   }
 
-  protected bool IsWcagDebuggingEnabled
-  {
-    get { return WcagHelper.IsWcagDebuggingEnabled(); }
-  }
-
-  protected virtual Rubicon.Web.Configuration.WaiConformanceLevel GetWaiConformanceLevel()
-  {
-    return WcagHelper.GetWaiConformanceLevel();
-  }
-
-  protected bool IsWaiConformanceLevelARequired
-  {
-    get { return WcagHelper.IsWaiConformanceLevelARequired (GetWaiConformanceLevel()); }
-  }
-
-  protected bool IsWaiConformanceLevelDoubleARequired
-  {
-    get { return WcagHelper.IsWaiConformanceLevelDoubleARequired (GetWaiConformanceLevel()); }
-  }
-
-  protected bool IsWaiConformanceLevelTripleARequired
-  {
-    get { return WcagHelper.IsWaiConformanceLevelTripleARequired (GetWaiConformanceLevel()); }
-  }
-
-  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
-  protected virtual WcagHelper WcagHelper
-  {
-    get 
-    {
-      if (_wcagHelper == null)
-        _wcagHelper = new WcagHelper();
-      return _wcagHelper; 
-    }
-  }
-
 //  /// <summary>
 //  ///   Occurs after either the <see cref="Property"/> property or the <see cref="PropertyIdentifier"/> property is assigned a new value.
 //  /// </summary>

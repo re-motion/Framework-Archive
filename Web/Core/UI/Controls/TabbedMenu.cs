@@ -11,6 +11,7 @@ using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
+[Designer (typeof (TabStripMenuDesigner))]
 public class TabStripMenu: WebControl
 {
   // constants
@@ -84,8 +85,8 @@ public class TabStripMenu: WebControl
   {
     EnsureChildControls();
    
-    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
-      WcagHelper.HandleError (1, this);
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
+      WcagHelper.Instance.HandleError (1, this);
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin main menu row
 
@@ -115,24 +116,13 @@ public class TabStripMenu: WebControl
     writer.RenderEndTag(); // End sub menu row
   }
 
-  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
-  protected virtual WcagHelper WcagHelper
-  {
-    get 
-    {
-      if (_wcagHelper == null)
-        _wcagHelper = new WcagHelper();
-      return _wcagHelper; 
-    }
-  }
-
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [Category ("Behavior")]
   [Description ("")]
   [DefaultValue ((string) null)]
   [Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
-  public WebTabCollection Menu
+  public WebTabCollection Tabs
   {
     get
     {
@@ -230,9 +220,12 @@ public class MainMenuTab: WebTab
     _subMenu = new WebTabCollection (null, new Type[] {typeof (SubMenuTab)});
   }
 
+  /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
+  /// <exclude/>
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public MainMenuTab()
-    : this (null, null, new IconInfo ())
   {
+    _subMenu = new WebTabCollection (null, new Type[] {typeof (SubMenuTab)});
   }
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -252,6 +245,11 @@ public class MainMenuTab: WebTab
     _subMenu.OwnerControl = OwnerControl;
   }
 
+  protected internal override void SetParent (WebTabStrip tabStrip)
+  {
+    base.SetParent (tabStrip);
+    _subMenu.SetParent (tabStrip);
+  }
 }
 
 public class SubMenuTab: WebTab
@@ -261,6 +259,9 @@ public class SubMenuTab: WebTab
   {
   }
 
+  /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
+  /// <exclude/>
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public SubMenuTab()
   {
   }

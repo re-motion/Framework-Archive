@@ -97,7 +97,7 @@ public class ControlItemCollection: CollectionBase
     if (! IsSupportedType (controlItem)) 
       throw new ArgumentTypeException ("value", controlItem.GetType());
     if (Find (controlItem.ItemID) != null)
-      throw new ArgumentException ("The collection already contains an item with ItemID '" + controlItem.ItemID + "'.", "value");
+      throw new ArgumentException (string.Format ("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), "value");
     
     base.OnValidate (value);
   }
@@ -202,7 +202,7 @@ public class ControlItemCollection: CollectionBase
   /// <returns> An <see cref="IControlItem"/> or <see langword="null"/> if no matching item was found. </returns>
   public IControlItem Find (string id)
   {
-    if (id == null)
+    if (StringUtility.IsNullOrEmpty (id))
       return null;
 
     for (int i = 0; i < InnerList.Count; i++)

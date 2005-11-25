@@ -8,6 +8,9 @@
   * IconInfo ist nicht mehr serialisierbar. Serilisierbarkeit wurde nur für ViewState benötigt und ist nun über 
     TypeConverter gelöst.
 
+- Rubicon.Web.UI.Controls.WebTab
+  * Obsolete Property TabID entfernt.
+
 1.3.25
 ======
 - Rubicon.Web.ExecutionEngine.WxePage
