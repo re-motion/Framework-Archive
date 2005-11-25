@@ -32,10 +32,8 @@ public class WebTreeNode: IControlItem
   /// <summary> Initalizes a new instance. </summary>
   public WebTreeNode (string itemID, string text, string toolTip, IconInfo icon)
   {
-    // Null-Check not allowed
-
     ItemID = itemID;
-    _text = text;
+    Text = text;
     _toolTip = StringUtility.NullToEmpty (toolTip);
     _icon = icon;
     _children = new WebTreeNodeCollection (null);
@@ -60,9 +58,10 @@ public class WebTreeNode: IControlItem
   {
   }
 
-  /// <summary> Initalizes a new instance. </summary>
+  /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
+  /// <exclude/>
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public WebTreeNode()
-    : this (null, null, new IconInfo (string.Empty, Unit.Empty, Unit.Empty))
   {
   }
 
@@ -159,6 +158,7 @@ public class WebTreeNode: IControlItem
   /// <remarks> Must be unique within the collection of tree nodes. Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The ID of this node.")]
+  //No Default value
   [NotifyParentProperty (true)]
   [ParenthesizePropertyName (true)]
   public virtual string ItemID
@@ -166,8 +166,7 @@ public class WebTreeNode: IControlItem
     get { return _itemID; }
     set
     {
-      //  Could not be added to collection in designer with this check enabled.
-      //ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
       if (! StringUtility.IsNullOrEmpty (value))
       {
         WebTreeNodeCollection nodes = null;
@@ -185,16 +184,12 @@ public class WebTreeNode: IControlItem
     }
   }
 
-  private bool ShouldSerializeItemID()
-  {
-    return true;
-  }
-
   /// <summary> Gets or sets the text displayed in this node. </summary>
   /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [Description ("The text displayed in this node.")]
+  //No Default value
   [NotifyParentProperty (true)]
   public virtual string Text
   {
@@ -211,6 +206,7 @@ public class WebTreeNode: IControlItem
   [Category ("Appearance")]
   [Description ("The tool-tip displayed in this node.")]
   [NotifyParentProperty (true)]
+  [DefaultValue ("")]
   public string ToolTip
   {
     get { return _toolTip; }
