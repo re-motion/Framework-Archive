@@ -391,11 +391,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Design\TypeDescriptorContext.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Doc\BocList.txt"
                     BuildAction = "Content"
                 />
