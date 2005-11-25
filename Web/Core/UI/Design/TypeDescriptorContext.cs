@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 
-namespace Rubicon.ObjectBinding.Web.Design
+namespace Rubicon.Web.UI.Design
 {
 
 public class TypeDescriptorContext : ITypeDescriptorContext
