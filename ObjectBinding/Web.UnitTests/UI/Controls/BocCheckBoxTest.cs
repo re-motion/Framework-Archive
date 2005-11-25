@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocCheckBoxTest
+public class BocCheckBoxTest: BocTest
 {
   private BocCheckBoxMock _bocCheckBox;
 
@@ -23,8 +23,9 @@ public class BocCheckBoxTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocCheckBox = new BocCheckBoxMock();
     _bocCheckBox.ID = "BocCheckBox";
   }
@@ -36,8 +37,8 @@ public class BocCheckBoxTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocCheckBox.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocCheckBox.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocCheckBox.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -47,8 +48,8 @@ public class BocCheckBoxTest
     _bocCheckBox.AutoPostBack = NaBoolean.True;
     _bocCheckBox.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocCheckBox.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocCheckBox.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 
@@ -59,10 +60,10 @@ public class BocCheckBoxTest
     _bocCheckBox.AutoPostBack = NaBoolean.True;
     _bocCheckBox.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocCheckBox.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocCheckBox.WcagHelperMock.Priority);
-    Assert.AreSame (_bocCheckBox, _bocCheckBox.WcagHelperMock.Control);
-    Assert.AreEqual ("AutoPostBack", _bocCheckBox.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocCheckBox, WcagHelperMock.Control);
+    Assert.AreEqual ("AutoPostBack", WcagHelperMock.Property);
   }
 }
 

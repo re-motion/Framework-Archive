@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocReferenceValueTest
+public class BocReferenceValueTest: BocTest
 {
   private BocReferenceValueMock _bocReferenceValue;
 
@@ -23,8 +23,9 @@ public class BocReferenceValueTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocReferenceValue = new BocReferenceValueMock();
     _bocReferenceValue.ID = "BocReferenceValue";
     _bocReferenceValue.ShowOptionsMenu = false;
@@ -40,8 +41,8 @@ public class BocReferenceValueTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocReferenceValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -51,8 +52,8 @@ public class BocReferenceValueTest
     _bocReferenceValue.ShowOptionsMenu = true;
     _bocReferenceValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 
@@ -63,10 +64,10 @@ public class BocReferenceValueTest
     _bocReferenceValue.DropDownListStyle.AutoPostBack = true;
     _bocReferenceValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocReferenceValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocReferenceValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocReferenceValue, _bocReferenceValue.WcagHelperMock.Control);
-    Assert.AreEqual ("DropDownListStyle.AutoPostBack", _bocReferenceValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocReferenceValue, WcagHelperMock.Control);
+    Assert.AreEqual ("DropDownListStyle.AutoPostBack", WcagHelperMock.Property);
   }
 
 
@@ -77,10 +78,10 @@ public class BocReferenceValueTest
     _bocReferenceValue.ShowOptionsMenu = true;
     _bocReferenceValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocReferenceValue.WcagHelperMock.HasError);
-    Assert.AreEqual (1, _bocReferenceValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocReferenceValue, _bocReferenceValue.WcagHelperMock.Control);
-    Assert.AreEqual ("ShowOptionsMenu", _bocReferenceValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasError);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocReferenceValue, WcagHelperMock.Control);
+    Assert.AreEqual ("ShowOptionsMenu", WcagHelperMock.Property);
   }
 
 
@@ -110,10 +111,10 @@ public class BocReferenceValueTest
     _bocReferenceValue.Command.Type = CommandType.Event;
     _bocReferenceValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocReferenceValue.WcagHelperMock.HasError);
-    Assert.AreEqual (1, _bocReferenceValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocReferenceValue, _bocReferenceValue.WcagHelperMock.Control);
-    Assert.AreEqual ("Command", _bocReferenceValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasError);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocReferenceValue, WcagHelperMock.Control);
+    Assert.AreEqual ("Command", WcagHelperMock.Property);
   }
 
   [Test]
@@ -140,10 +141,10 @@ public class BocReferenceValueTest
     _bocReferenceValue.Command.Type = CommandType.WxeFunction;
     _bocReferenceValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocReferenceValue.WcagHelperMock.HasError);
-    Assert.AreEqual (1, _bocReferenceValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocReferenceValue, _bocReferenceValue.WcagHelperMock.Control);
-    Assert.AreEqual ("Command", _bocReferenceValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasError);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocReferenceValue, WcagHelperMock.Control);
+    Assert.AreEqual ("Command", WcagHelperMock.Property);
   }
 
   [Test]
@@ -170,8 +171,8 @@ public class BocReferenceValueTest
     _bocReferenceValue.Command.Type = CommandType.Href;
     _bocReferenceValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -181,8 +182,8 @@ public class BocReferenceValueTest
     _bocReferenceValue.Command = null;
     _bocReferenceValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocReferenceValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 }
 

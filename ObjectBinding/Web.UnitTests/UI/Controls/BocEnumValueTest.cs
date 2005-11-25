@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocEnumValueTest
+public class BocEnumValueTest: BocTest
 {
   private BocEnumValueMock _bocEnumValue;
 
@@ -23,8 +23,9 @@ public class BocEnumValueTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocEnumValue = new BocEnumValueMock();
     _bocEnumValue.ID = "BocEnumValue";
   }
@@ -36,8 +37,8 @@ public class BocEnumValueTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocEnumValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocEnumValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocEnumValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -47,8 +48,8 @@ public class BocEnumValueTest
     _bocEnumValue.ListControlStyle.AutoPostBack = true;
     _bocEnumValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocEnumValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocEnumValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 
@@ -59,10 +60,10 @@ public class BocEnumValueTest
     _bocEnumValue.ListControlStyle.AutoPostBack = true;
     _bocEnumValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocEnumValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocEnumValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocEnumValue, _bocEnumValue.WcagHelperMock.Control);
-    Assert.AreEqual ("ListControlStyle.AutoPostBack", _bocEnumValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocEnumValue, WcagHelperMock.Control);
+    Assert.AreEqual ("ListControlStyle.AutoPostBack", WcagHelperMock.Property);
   }
 
 	[Test]
@@ -72,10 +73,10 @@ public class BocEnumValueTest
     _bocEnumValue.ListControl.AutoPostBack = true;
     _bocEnumValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocEnumValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocEnumValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocEnumValue, _bocEnumValue.WcagHelperMock.Control);
-    Assert.AreEqual ("ListControl.AutoPostBack", _bocEnumValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocEnumValue, WcagHelperMock.Control);
+    Assert.AreEqual ("ListControl.AutoPostBack", WcagHelperMock.Property);
   }
 }
 

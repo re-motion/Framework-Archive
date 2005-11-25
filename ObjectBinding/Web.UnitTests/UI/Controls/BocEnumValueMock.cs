@@ -9,21 +9,9 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 /// <summary> Exposes non-public members of the <see cref="BocEnumValue"/> type. </summary>
 public class BocEnumValueMock: BocEnumValue
 {
-  private WcagHelperMock _wcagHelper = new WcagHelperMock();
-
 	public new void EvaluateWaiConformity ()
   {
     base.EvaluateWaiConformity ();
-  }
-
-  protected override WcagHelper WcagHelper
-  {
-    get { return _wcagHelper; }
-  }
-
-  public WcagHelperMock WcagHelperMock
-  {
-    get { return _wcagHelper; }
   }
 }
 

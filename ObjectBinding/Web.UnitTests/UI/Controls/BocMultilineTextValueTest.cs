@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocMultilineTextValueTest
+public class BocMultilineTextValueTest: BocTest
 {
   private BocMultilineTextValueMock _bocMultilineTextValue;
 
@@ -23,8 +23,9 @@ public class BocMultilineTextValueTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocMultilineTextValue = new BocMultilineTextValueMock();
     _bocMultilineTextValue.ID = "BocMultilineTextValue";
   }
@@ -36,8 +37,8 @@ public class BocMultilineTextValueTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocMultilineTextValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocMultilineTextValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocMultilineTextValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -47,8 +48,8 @@ public class BocMultilineTextValueTest
     _bocMultilineTextValue.TextBoxStyle.AutoPostBack = true;
     _bocMultilineTextValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocMultilineTextValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocMultilineTextValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 
@@ -59,10 +60,10 @@ public class BocMultilineTextValueTest
     _bocMultilineTextValue.TextBoxStyle.AutoPostBack = true;
     _bocMultilineTextValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocMultilineTextValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocMultilineTextValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocMultilineTextValue, _bocMultilineTextValue.WcagHelperMock.Control);
-    Assert.AreEqual ("TextBoxStyle.AutoPostBack", _bocMultilineTextValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocMultilineTextValue, WcagHelperMock.Control);
+    Assert.AreEqual ("TextBoxStyle.AutoPostBack", WcagHelperMock.Property);
   }
 
 	[Test]
@@ -72,10 +73,10 @@ public class BocMultilineTextValueTest
     _bocMultilineTextValue.TextBox.AutoPostBack = true;
     _bocMultilineTextValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocMultilineTextValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocMultilineTextValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocMultilineTextValue, _bocMultilineTextValue.WcagHelperMock.Control);
-    Assert.AreEqual ("TextBox.AutoPostBack", _bocMultilineTextValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocMultilineTextValue, WcagHelperMock.Control);
+    Assert.AreEqual ("TextBox.AutoPostBack", WcagHelperMock.Property);
   }
 }
 

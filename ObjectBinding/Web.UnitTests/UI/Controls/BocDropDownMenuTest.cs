@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocDropDownMenuTest
+public class BocDropDownMenuTest: BocTest
 {
   private BocDropDownMenuMock _bocDropDownMenu;
 
@@ -23,8 +23,9 @@ public class BocDropDownMenuTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocDropDownMenu = new BocDropDownMenuMock();
     _bocDropDownMenu.ID = "BocDropDownMenu";
   }
@@ -36,8 +37,8 @@ public class BocDropDownMenuTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocDropDownMenu.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocDropDownMenu.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocDropDownMenu.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -46,8 +47,8 @@ public class BocDropDownMenuTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocDropDownMenu.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocDropDownMenu.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocDropDownMenu.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 
@@ -57,10 +58,10 @@ public class BocDropDownMenuTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _bocDropDownMenu.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocDropDownMenu.WcagHelperMock.HasError);
-    Assert.AreEqual (1, _bocDropDownMenu.WcagHelperMock.Priority);
-    Assert.AreSame (_bocDropDownMenu, _bocDropDownMenu.WcagHelperMock.Control);
-    Assert.IsNull (_bocDropDownMenu.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasError);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocDropDownMenu, WcagHelperMock.Control);
+    Assert.IsNull (WcagHelperMock.Property);
   }
 }
 

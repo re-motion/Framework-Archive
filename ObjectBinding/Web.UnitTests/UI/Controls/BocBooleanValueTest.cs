@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocBooleanValueTest
+public class BocBooleanValueTest: BocTest
 {
   private BocBooleanValueMock _bocBooleanValue;
 
@@ -23,8 +23,9 @@ public class BocBooleanValueTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocBooleanValue = new BocBooleanValueMock();
     _bocBooleanValue.ID = "BocBooleanValue";
   }
@@ -36,8 +37,8 @@ public class BocBooleanValueTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocBooleanValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocBooleanValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocBooleanValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -46,8 +47,8 @@ public class BocBooleanValueTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocBooleanValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocBooleanValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocBooleanValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 
@@ -57,10 +58,10 @@ public class BocBooleanValueTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _bocBooleanValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocBooleanValue.WcagHelperMock.HasError);
-    Assert.AreEqual (1, _bocBooleanValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocBooleanValue, _bocBooleanValue.WcagHelperMock.Control);
-    Assert.IsNull (_bocBooleanValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasError);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocBooleanValue, WcagHelperMock.Control);
+    Assert.IsNull (WcagHelperMock.Property);
   }
 }
 

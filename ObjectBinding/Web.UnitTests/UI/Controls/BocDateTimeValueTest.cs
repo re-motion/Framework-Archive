@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocDateTimeValueTest
+public class BocDateTimeValueTest: BocTest
 {
   private BocDateTimeValueMock _bocDateTimeValue;
 
@@ -23,8 +23,9 @@ public class BocDateTimeValueTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocDateTimeValue = new BocDateTimeValueMock();
     _bocDateTimeValue.ID = "BocDateTimeValue";
   }
@@ -36,8 +37,8 @@ public class BocDateTimeValueTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocDateTimeValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocDateTimeValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocDateTimeValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -47,8 +48,8 @@ public class BocDateTimeValueTest
     _bocDateTimeValue.DateTextBoxStyle.AutoPostBack = true;
     _bocDateTimeValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocDateTimeValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocDateTimeValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -58,10 +59,10 @@ public class BocDateTimeValueTest
     _bocDateTimeValue.ValueType = BocDateTimeValueType.DateTime;
     _bocDateTimeValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocDateTimeValue.WcagHelperMock.HasError);
-    Assert.AreEqual (2, _bocDateTimeValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocDateTimeValue, _bocDateTimeValue.WcagHelperMock.Control);
-    Assert.AreEqual ("ActualValueType", _bocDateTimeValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasError);
+    Assert.AreEqual (2, WcagHelperMock.Priority);
+    Assert.AreSame (_bocDateTimeValue, WcagHelperMock.Control);
+    Assert.AreEqual ("ActualValueType", WcagHelperMock.Property);
   }
 
 	[Test]
@@ -71,10 +72,10 @@ public class BocDateTimeValueTest
     _bocDateTimeValue.DateTimeTextBoxStyle.AutoPostBack = true;
     _bocDateTimeValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocDateTimeValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocDateTimeValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocDateTimeValue, _bocDateTimeValue.WcagHelperMock.Control);
-    Assert.AreEqual ("DateTimeTextBoxStyle.AutoPostBack", _bocDateTimeValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocDateTimeValue, WcagHelperMock.Control);
+    Assert.AreEqual ("DateTimeTextBoxStyle.AutoPostBack", WcagHelperMock.Property);
   }
 
 
@@ -85,10 +86,10 @@ public class BocDateTimeValueTest
     _bocDateTimeValue.DateTextBoxStyle.AutoPostBack = true;
     _bocDateTimeValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocDateTimeValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocDateTimeValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocDateTimeValue, _bocDateTimeValue.WcagHelperMock.Control);
-    Assert.AreEqual ("DateTextBoxStyle.AutoPostBack", _bocDateTimeValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocDateTimeValue, WcagHelperMock.Control);
+    Assert.AreEqual ("DateTextBoxStyle.AutoPostBack", WcagHelperMock.Property);
   }
 
 	[Test]
@@ -98,10 +99,10 @@ public class BocDateTimeValueTest
     _bocDateTimeValue.DateTextBox.AutoPostBack = true;
     _bocDateTimeValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocDateTimeValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocDateTimeValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocDateTimeValue, _bocDateTimeValue.WcagHelperMock.Control);
-    Assert.AreEqual ("DateTextBox.AutoPostBack", _bocDateTimeValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocDateTimeValue, WcagHelperMock.Control);
+    Assert.AreEqual ("DateTextBox.AutoPostBack", WcagHelperMock.Property);
   }
 
 
@@ -112,10 +113,10 @@ public class BocDateTimeValueTest
     _bocDateTimeValue.TimeTextBoxStyle.AutoPostBack = true;
     _bocDateTimeValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocDateTimeValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocDateTimeValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocDateTimeValue, _bocDateTimeValue.WcagHelperMock.Control);
-    Assert.AreEqual ("TimeTextBoxStyle.AutoPostBack", _bocDateTimeValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocDateTimeValue, WcagHelperMock.Control);
+    Assert.AreEqual ("TimeTextBoxStyle.AutoPostBack", WcagHelperMock.Property);
   }
 
 	[Test]
@@ -125,10 +126,10 @@ public class BocDateTimeValueTest
     _bocDateTimeValue.TimeTextBox.AutoPostBack = true;
     _bocDateTimeValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocDateTimeValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocDateTimeValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocDateTimeValue, _bocDateTimeValue.WcagHelperMock.Control);
-    Assert.AreEqual ("TimeTextBox.AutoPostBack", _bocDateTimeValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocDateTimeValue, WcagHelperMock.Control);
+    Assert.AreEqual ("TimeTextBox.AutoPostBack", WcagHelperMock.Property);
   }
 }
 
