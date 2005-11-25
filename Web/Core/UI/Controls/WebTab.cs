@@ -27,7 +27,7 @@ public class WebTab: IControlItem
   public WebTab (string itemID, string text, IconInfo icon)
   {
     ItemID = itemID;
-    _text = text;
+    Text = text;
     _icon = icon;
   }
 
@@ -39,14 +39,16 @@ public class WebTab: IControlItem
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text)
-    : this (itemID, text, string.Empty)
+    : this (itemID, text, new IconInfo (string.Empty))
   {
   }
 
-  /// <summary> Initalizes a new instance. </summary>
+  /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
+  /// <exclude/>
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public WebTab()
-    : this (null, null, new IconInfo ())
   {
+    _icon = new IconInfo();
   }
 
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
@@ -55,7 +57,7 @@ public class WebTab: IControlItem
   }
 
   /// <summary> Sets this tab's <see cref="WebTabStrip"/>. </summary>
-  protected internal void SetParent (WebTabStrip tabStrip)
+  protected internal virtual void SetParent (WebTabStrip tabStrip)
   {
     _tabStrip = tabStrip; 
     if (_selectDesired == 1)
@@ -71,7 +73,7 @@ public class WebTab: IControlItem
   }
 
   /// <summary> Sets the tab's selection state. </summary>
-  protected internal void SetSelected(bool value)
+  protected internal void SetSelected (bool value)
   {
     _isSelected = value;
     if (_tabStrip == null)
@@ -101,37 +103,20 @@ public class WebTab: IControlItem
     get { return _itemID; }
     set
     {
-//      //  Could not be added to collection in designer with this check enabled.
-//      //ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-//      if (! StringUtility.IsNullOrEmpty (value))
-//      {
-//        WebTreeNodeCollection nodes = null;
-//        if (ParentNode != null)
-//          nodes = ParentNode.Children;
-//        else if (TreeView != null)
-//          nodes = TreeView.Nodes;
-//        if (nodes != null)
-//        {
-//          if (nodes.Find (value) != null)
-//            throw new ArgumentException ("The collection already contains a node with NodeID '" + value + "'.", "value");
-//        }
-//      }
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      if (! StringUtility.IsNullOrEmpty (value))
+      {
+        WebTabCollection tabs = null;
+        if (_tabStrip != null)
+          tabs = _tabStrip.Tabs;
+        if (tabs != null)
+        {
+          if (tabs.Find (value) != null)
+            throw new ArgumentException (string.Format ("The collection already contains a tab with ItemID '{0}'.", value), "value");
+        }
+      }
       _itemID = value; 
     }
-  }
-
-  /// <exclude/>
-  [Browsable (false)]
-  [Obsolete ("Use ItemID instead.")]
-  public string TabID
-  {
-    get { return ItemID; }
-    set { ItemID = value; }
-  }
-
-  private bool ShouldSerializeTabID()
-  {
-    return false;
   }
 
   /// <summary> Gets or sets the text displayed in this tab. </summary>
@@ -139,6 +124,7 @@ public class WebTab: IControlItem
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [Description ("The text displayed in this tab. Use '-' for a separator tab.")]
+  //No Default value
   [NotifyParentProperty (true)]
   public virtual string Text
   {
