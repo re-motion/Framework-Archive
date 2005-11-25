@@ -440,21 +440,21 @@ public class BocReferenceValue:
   /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity()
   {
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
       if (_showOptionsMenu)
-        WcagHelper.HandleError (1, this, "ShowOptionsMenu");
+        WcagHelper.Instance.HandleError (1, this, "ShowOptionsMenu");
       bool hasPostBackCommand =     Command != null
                                 && (   Command.Type == CommandType.Event 
                                     || Command.Type == CommandType.WxeFunction);
       if (hasPostBackCommand)
-        WcagHelper.HandleError (1, this, "Command");
+        WcagHelper.Instance.HandleError (1, this, "Command");
 
       if (DropDownListStyle.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "DropDownListStyle.AutoPostBack");
 
       if (DropDownList.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "DropDownList.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "DropDownList.AutoPostBack");
     }
   }
 
@@ -807,7 +807,7 @@ public class BocReferenceValue:
 
   protected bool IsCommandEnabled (bool isReadOnly)
   {
-    if (IsWaiConformanceLevelARequired)
+    if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
       return false;
 
     bool isCommandEnabled = false;
@@ -1171,7 +1171,11 @@ public class BocReferenceValue:
   /// <summary> Gets a flag describing whether the <see cref="OptionsMenu"/> is visible. </summary>
   protected bool HasOptionsMenu
   {
-    get { return ! IsWaiConformanceLevelARequired && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); }
+    get 
+    {
+      return   ! WcagHelper.Instance.IsWaiConformanceLevelARequired() 
+            && _showOptionsMenu && (OptionsMenuItems.Count > 0 || IsDesignMode); 
+    }
   }
 
   /// <summary> Creates the <see cref="ListItem"/> symbolizing the undefined selection. </summary>
