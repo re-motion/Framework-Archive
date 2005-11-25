@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocTextValueTest
+public class BocTextValueTest: BocTest
 {
   private BocTextValueMock _bocTextValue;
 
@@ -23,8 +23,9 @@ public class BocTextValueTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocTextValue = new BocTextValueMock();
     _bocTextValue.ID = "BocTextValue";
   }
@@ -36,8 +37,8 @@ public class BocTextValueTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocTextValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocTextValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocTextValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -47,8 +48,8 @@ public class BocTextValueTest
     _bocTextValue.TextBoxStyle.AutoPostBack = true;
     _bocTextValue.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocTextValue.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocTextValue.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 
@@ -59,10 +60,10 @@ public class BocTextValueTest
     _bocTextValue.TextBoxStyle.AutoPostBack = true;
     _bocTextValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocTextValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocTextValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocTextValue, _bocTextValue.WcagHelperMock.Control);
-    Assert.AreEqual ("TextBoxStyle.AutoPostBack", _bocTextValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocTextValue, WcagHelperMock.Control);
+    Assert.AreEqual ("TextBoxStyle.AutoPostBack", WcagHelperMock.Property);
   }
 
 	[Test]
@@ -72,10 +73,10 @@ public class BocTextValueTest
     _bocTextValue.TextBox.AutoPostBack = true;
     _bocTextValue.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocTextValue.WcagHelperMock.HasWarning);
-    Assert.AreEqual (1, _bocTextValue.WcagHelperMock.Priority);
-    Assert.AreSame (_bocTextValue, _bocTextValue.WcagHelperMock.Control);
-    Assert.AreEqual ("TextBox.AutoPostBack", _bocTextValue.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasWarning);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocTextValue, WcagHelperMock.Control);
+    Assert.AreEqual ("TextBox.AutoPostBack", WcagHelperMock.Property);
   }
 }
 

@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class BocTreeViewTest
+public class BocTreeViewTest: BocTest
 {
   private BocTreeViewMock _bocTreeView;
 
@@ -23,8 +23,9 @@ public class BocTreeViewTest
 
   
   [SetUp]
-  public virtual void SetUp()
+  public override void SetUp()
   {
+    base.SetUp();
     _bocTreeView = new BocTreeViewMock();
     _bocTreeView.ID = "BocTreeView";
   }
@@ -36,8 +37,8 @@ public class BocTreeViewTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
     _bocTreeView.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocTreeView.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocTreeView.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 	[Test]
@@ -46,8 +47,8 @@ public class BocTreeViewTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
     _bocTreeView.EvaluateWaiConformity ();
     
-    Assert.IsFalse (_bocTreeView.WcagHelperMock.HasWarning);
-    Assert.IsFalse (_bocTreeView.WcagHelperMock.HasError);
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
   }
 
 
@@ -57,10 +58,10 @@ public class BocTreeViewTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
     _bocTreeView.EvaluateWaiConformity ();
 
-    Assert.IsTrue (_bocTreeView.WcagHelperMock.HasError);
-    Assert.AreEqual (1, _bocTreeView.WcagHelperMock.Priority);
-    Assert.AreSame (_bocTreeView, _bocTreeView.WcagHelperMock.Control);
-    Assert.IsNull (_bocTreeView.WcagHelperMock.Property);
+    Assert.IsTrue (WcagHelperMock.HasError);
+    Assert.AreEqual (1, WcagHelperMock.Priority);
+    Assert.AreSame (_bocTreeView, WcagHelperMock.Control);
+    Assert.IsNull (WcagHelperMock.Property);
   }
 }
 
