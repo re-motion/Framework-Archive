@@ -2,20 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.Design;
 using System.Globalization;
 using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.Design;
+using System.Web.UI.WebControls;
+using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
-using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -149,13 +150,13 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <exception cref="Rubicon.Web.UI.WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
       if (TextBoxStyle.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "TextBoxStyle.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "TextBoxStyle.AutoPostBack");
 
       if (TextBox.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "TextBox.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "TextBox.AutoPostBack");
     }
   }
 
