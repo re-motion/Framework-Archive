@@ -96,6 +96,7 @@ public class TabStripMenu: WebControl
     writer.AddAttribute (HtmlTextWriterAttribute.Colspan, "2");
     writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassMainMenuCell);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin main menu cell
+    _mainMenuTabStrip.CssClass = CssClassMainMenu;
     _mainMenuTabStrip.Width = Unit.Percentage (100);
     _mainMenuTabStrip.RenderControl (writer);
     writer.RenderEndTag(); // End main menu cell
@@ -107,7 +108,7 @@ public class TabStripMenu: WebControl
     writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassSubMenuCell);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin sub menu cell
     _subMenuTabStrip.Style["width"] = "auto";
-    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassMainMenu);
+    _subMenuTabStrip.CssClass = CssClassSubMenu;
     _subMenuTabStrip.RenderControl (writer);
     writer.RenderEndTag(); // End sub menu cell
 
@@ -246,12 +247,6 @@ public class TabStripMainMenuItem: WebTab
   {
     base.OnOwnerControlChanged ();
     _subMenu.OwnerControl = OwnerControl;
-  }
-
-  protected internal override void SetParent (WebTabStrip tabStrip)
-  {
-    base.SetParent (tabStrip);
-    _subMenu.SetParent (tabStrip);
   }
 }
 

@@ -998,11 +998,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Design\MainMenuTabCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Design\SmartControlToStringConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1013,12 +1008,17 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Design\SubMenuTabCollectionEditor.cs"
+                    RelPath = "UI\Design\TabStripMainMenuItemCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Design\TabStripMenuDesigner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Design\TabStripSubMenuItemCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

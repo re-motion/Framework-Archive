@@ -14,11 +14,16 @@
 <form id=Form method=post runat="server">
       <rwc:TabStripMenu id="NavigationTabs" runat="server" width="100%">
 <tabs>
-<rwc:TabStripMainMenuItem ItemID="Tab1" Text="Tab 1"></rwc:TabStripMainMenuItem>
+<rwc:TabStripMainMenuItem ItemID="Tab1" Text="Tab 1">
+<submenutabs>
+<rwc:tabstripsubmenuitem ItemID="SubTab1" Text="Sub Tab 1.1"></rwc:tabstripsubmenuitem>
+<rwc:tabstripsubmenuitem ItemID="SubTab2" Text="Sub Tab 1.2"></rwc:tabstripsubmenuitem>
+</submenutabs>
+</rwc:TabStripMainMenuItem>
 <rwc:TabStripMainMenuItem ItemID="Tab2" Text="Tab 2">
 <SubMenuTabs>
-<rwc:TabStripSubMenuItem ItemID="SubTab1" Text="Sub Tab 1"></rwc:TabStripSubMenuItem>
-<rwc:TabStripSubMenuItem ItemID="SubTab2" Text="Sub Tab 2"></rwc:TabStripSubMenuItem>
+<rwc:TabStripSubMenuItem ItemID="SubTab1" Text="Sub Tab 2.1"></rwc:TabStripSubMenuItem>
+<rwc:TabStripSubMenuItem ItemID="SubTab2" Text="Sub Tab 2.2"></rwc:TabStripSubMenuItem>
 </SubMenuTabs>
 </rwc:TabStripMainMenuItem>
 <rwc:TabStripMainMenuItem ItemID="Tab3" Text="Tab 3"></rwc:TabStripMainMenuItem>

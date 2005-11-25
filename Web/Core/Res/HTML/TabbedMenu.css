@@ -1,10 +1,10 @@
 @import url ("TabStrip.css");
 
-td.tabStripMenuMainCell
+td.tabStripMenuMainMenuCell
 {
 }
 
-td.tabStripMenuSubCell
+td.tabStripMenuSubMenuCell
 {
   background-color: #02537c;
   padding: 0.3em;
