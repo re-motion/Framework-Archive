@@ -1018,6 +1018,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Design\TabStripMenuDesigner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Design\TypeDescriptorContext.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\WebControlDesigner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
