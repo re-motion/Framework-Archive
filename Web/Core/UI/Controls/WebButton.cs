@@ -205,10 +205,10 @@ public class WebButton :
   /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
       if (_useLegacyButton != NaBooleanEnum.True)
-        WcagHelper.HandleError (1, this, "UseLegacyButton");
+        WcagHelper.Instance.HandleError (1, this, "UseLegacyButton");
     }
   }
 
@@ -320,7 +320,7 @@ public class WebButton :
 
   protected bool IsLegacyButtonEnabled
   {
-    get { return WcagHelper.IsWaiConformanceLevelARequired() || _useLegacyButton == NaBooleanEnum.True;}
+    get { return WcagHelper.Instance.IsWaiConformanceLevelARequired() || _useLegacyButton == NaBooleanEnum.True;}
   }
 
   private string EnsureEndWithSemiColon (string value)
@@ -343,17 +343,6 @@ public class WebButton :
     if (secondScript.TrimStart(new char[0]).StartsWith("javascript:"))
       return secondScript;
     return ("javascript:" + secondScript);
-  }
-
-  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
-  protected virtual WcagHelper WcagHelper
-  {
-    get 
-    {
-      if (_wcagHelper == null)
-        _wcagHelper = new WcagHelper();
-      return _wcagHelper; 
-    }
   }
 
   #region protected virtual string CssClass...

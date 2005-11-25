@@ -30,24 +30,13 @@ public class WebLinkButton : LinkButton
 
   protected override void RenderContents(HtmlTextWriter writer)
   {
-    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
-      WcagHelper.HandleError (1, this);
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
+      WcagHelper.Instance.HandleError (1, this);
 
     if (HasControls())
       base.RenderContents (writer);
     else
       writer.Write (_text);
-  }
-
-  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
-  protected virtual WcagHelper WcagHelper
-  {
-    get 
-    {
-      if (_wcagHelper == null)
-        _wcagHelper = new WcagHelper();
-      return _wcagHelper; 
-    }
   }
 }
 
