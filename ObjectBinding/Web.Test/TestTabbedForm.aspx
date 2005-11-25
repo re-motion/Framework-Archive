@@ -13,13 +13,16 @@
 <body>
 <form id=Form method=post runat="server">
       <rwc:TabStripMenu id="NavigationTabs" runat="server" width="100%">
-<menu>
-<rwc:MainMenuTab>
+<tabs>
+<rwc:MainMenuTab ItemID="Tab1" Text="Tab 1"></rwc:MainMenuTab>
+<rwc:MainMenuTab ItemID="Tab2" Text="Tab 2">
 <submenu>
-<rwc:SubMenuTab ItemID="Submenutab1" TabID="Submenutab1" Text="sub1"></rwc:SubMenuTab>
+<rwc:SubMenuTab ItemID="SubTab1" Text="Sub Tab 1"></rwc:SubMenuTab>
+<rwc:SubMenuTab ItemID="SubTab2" Text="Sub Tab 2"></rwc:SubMenuTab>
 </SubMenu>
 </rwc:MainMenuTab>
-</menu>
+<rwc:MainMenuTab ItemID="Tab3" Text="Tab 3"></rwc:MainMenuTab>
+</Tabs>
 </rwc:TabStripMenu>
 <rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
 <topcontrols>

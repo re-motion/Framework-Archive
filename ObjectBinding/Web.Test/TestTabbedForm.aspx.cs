@@ -88,7 +88,7 @@ public class TestTabbedForm : TestWxeBasePage
     tab.Text = text;
     tab.ItemID = id ;
     tab.Icon = icon;
-    NavigationTabs.Menu.Add (tab);
+    NavigationTabs.Tabs.Add (tab);
   }
 
   private IDataEditControl AddPage (string id, string title, IconInfo icon, string path)
