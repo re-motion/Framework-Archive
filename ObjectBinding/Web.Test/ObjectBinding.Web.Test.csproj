@@ -244,6 +244,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "Frameset.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Frameset.aspx.cs"
+                    DependentUpon = "Frameset.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Frameset.aspx.resx"
+                    DependentUpon = "Frameset.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Global.asax"
                     SubType = "Component"
                     BuildAction = "Content"
@@ -257,6 +273,22 @@
                 <File
                     RelPath = "Global.asax.resx"
                     DependentUpon = "Global.asax.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "LeftFrame.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "LeftFrame.aspx.cs"
+                    DependentUpon = "LeftFrame.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "LeftFrame.aspx.resx"
+                    DependentUpon = "LeftFrame.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
@@ -291,6 +323,22 @@
                 <File
                     RelPath = "PersonsForm.aspx.resx"
                     DependentUpon = "PersonsForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "RightFrame.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "RightFrame.aspx.cs"
+                    DependentUpon = "RightFrame.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "RightFrame.aspx.resx"
+                    DependentUpon = "RightFrame.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
