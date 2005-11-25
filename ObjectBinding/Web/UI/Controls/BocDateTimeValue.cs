@@ -235,28 +235,28 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <exception cref="WcagException"> Thrown if the control does not conform to the required WAI level. </exception>
   protected virtual void EvaluateWaiConformity ()
   {
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
       if (DateTextBoxStyle.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "DateTextBoxStyle.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "DateTextBoxStyle.AutoPostBack");
 
       if (TimeTextBoxStyle.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "TimeTextBoxStyle.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "TimeTextBoxStyle.AutoPostBack");
 
       if (DateTimeTextBoxStyle.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "DateTimeTextBoxStyle.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "DateTimeTextBoxStyle.AutoPostBack");
 
       if (DateTextBox.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "DateTextBox.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "DateTextBox.AutoPostBack");
 
       if (TimeTextBox.AutoPostBack)
-        WcagHelper.HandleWarning (1, this, "TimeTextBox.AutoPostBack");
+        WcagHelper.Instance.HandleWarning (1, this, "TimeTextBox.AutoPostBack");
     }
 
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelDoubleARequired())
     {
       if (ActualValueType == BocDateTimeValueType.DateTime)
-        WcagHelper.HandleError (2, this, "ActualValueType");
+        WcagHelper.Instance.HandleError (2, this, "ActualValueType");
     }
   }
 
