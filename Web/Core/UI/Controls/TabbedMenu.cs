@@ -35,7 +35,7 @@ public class TabStripMenu: WebControl
   // construction and destruction
   public TabStripMenu()
   {
-    _mainMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (MainMenuTab)});
+    _mainMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (TabStripMainMenuItem)});
     _subMenuTabStrip = new WebTabStrip (this);
     _mainMenuStyle = new Style();
     _subMenuStyle = new Style();
@@ -63,6 +63,9 @@ public class TabStripMenu: WebControl
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
+    TabStripMainMenuItem selectedMainMenuItem = (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab;
+    _subMenuTabStrip.Tabs.Clear();
+    _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
 //    if (Views.Count == 0)
 //      Views.Add (_placeHolderTabView);
 
@@ -121,7 +124,7 @@ public class TabStripMenu: WebControl
   [Category ("Behavior")]
   [Description ("")]
   [DefaultValue ((string) null)]
-  [Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
+  [Editor (typeof (TabStripMainMenuItemCollectionEditor), typeof (UITypeEditor))]
   public WebTabCollection Tabs
   {
     get
@@ -210,22 +213,22 @@ public class TabStripMenu: WebControl
   #endregion
 }
 
-public class MainMenuTab: WebTab
+public class TabStripMainMenuItem: WebTab
 {
   private WebTabCollection _subMenu;
 
-  public MainMenuTab (string itemID, string text, IconInfo icon)
+  public TabStripMainMenuItem (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
   {
-    _subMenu = new WebTabCollection (null, new Type[] {typeof (SubMenuTab)});
+    _subMenu = new WebTabCollection (null, new Type[] {typeof (TabStripSubMenuItem)});
   }
 
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
   /// <exclude/>
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public MainMenuTab()
+  public TabStripMainMenuItem()
   {
-    _subMenu = new WebTabCollection (null, new Type[] {typeof (SubMenuTab)});
+    _subMenu = new WebTabCollection (null, new Type[] {typeof (TabStripSubMenuItem)});
   }
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -233,8 +236,8 @@ public class MainMenuTab: WebTab
   [Category ("Behavior")]
   [Description ("")]
   [DefaultValue ((string) null)]
-  [Editor (typeof (SubMenuTabCollectionEditor), typeof (UITypeEditor))]
-  public WebTabCollection SubMenu
+  [Editor (typeof (TabStripSubMenuItemCollectionEditor), typeof (UITypeEditor))]
+  public WebTabCollection SubMenuTabs
   {
     get { return _subMenu; }
   }
@@ -252,9 +255,9 @@ public class MainMenuTab: WebTab
   }
 }
 
-public class SubMenuTab: WebTab
+public class TabStripSubMenuItem: WebTab
 {
-  public SubMenuTab (string itemID, string text, IconInfo icon)
+  public TabStripSubMenuItem (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
   {
   }
@@ -262,7 +265,7 @@ public class SubMenuTab: WebTab
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
   /// <exclude/>
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public SubMenuTab()
+  public TabStripSubMenuItem()
   {
   }
 }

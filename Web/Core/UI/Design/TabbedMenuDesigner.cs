@@ -30,10 +30,10 @@ public class TabStripMenuDesigner: WebControlDesigner, IServiceProvider
 
     TypeDescriptorContext context = new TypeDescriptorContext (this, this, propertyDescriptor);
     object value = propertyDescriptor.GetValue (Component);
-    MainMenuTabCollectionEditor editor = null;
+    TabStripMainMenuItemCollectionEditor editor = null;
     //Does not work because EditorAttribute is applied on property
-    //editor = (MainMenuTabCollectionEditor) TypeDescriptor.GetEditor (value, typeof(UITypeEditor));
-    editor = new MainMenuTabCollectionEditor (typeof (WebTabCollection));
+    //editor = (TabStripMainMenuItemCollectionEditor) TypeDescriptor.GetEditor (value, typeof(UITypeEditor));
+    editor = new TabStripMainMenuItemCollectionEditor (typeof (WebTabCollection));
     editor.EditValue (context, this, value);
   }
 

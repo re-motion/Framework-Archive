@@ -878,11 +878,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\TabbedMenu.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\TabbedMultiView.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -894,6 +889,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\TableControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\TabStripMenu.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

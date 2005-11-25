@@ -157,12 +157,17 @@ public class ControlItemCollection: CollectionBase
 
   public void AddRange (IControlItem[] values)
   {
+    AddRange ((IList) values);
+  }
+
+  protected void AddRange (IList values)
+  {
     ArgumentUtility.CheckNotNull ("values", values);
     ArgumentUtility.CheckItemsNotNullAndType ("values", values, typeof (IControlItem));
 
     BeginEdit();
-    for (int i = 0; i < values.Length; i++)
-      Add (values[i]);
+    for (int i = 0; i < values.Count; i++)
+      Add ((IControlItem) values[i]);
     EndEdit();
   }
 

@@ -88,6 +88,11 @@ public class WebTabCollection: ControlItemCollection
     tab.SetParent (_tabStrip);
   }
 
+  public void AddRange (WebTabCollection values)
+  {
+    base.AddRange (values);
+  }
+
   protected internal void SetParent (WebTabStrip tabStrip)
   {
     ArgumentUtility.CheckNotNull ("tabStrip", tabStrip);
