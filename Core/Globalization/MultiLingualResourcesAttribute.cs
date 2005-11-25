@@ -140,9 +140,9 @@ public class MultiLingualResourcesAttribute: Attribute
 
     //  Create a new resource mananger wrapper set and put it into the cache.
 
-    resourceManagerSet = ResourceManagerWrapper.CreateWrapperSet (
-        (ResourceManager[])resourceManagers.ToArray(typeof(ResourceManager)));
-    
+    ResourceManager[] resourceManagerArray = (ResourceManager[]) resourceManagers.ToArray (typeof (ResourceManager));
+    resourceManagerSet = ResourceManagerWrapper.CreateWrapperSet (resourceManagerArray);
+
     lock (s_resourceManagerWrappersCache)
     {
       s_resourceManagerWrappersCache[key] = resourceManagerSet;
