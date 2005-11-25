@@ -45,16 +45,16 @@ public class Global : System.Web.HttpApplication // , IResourceUrlResolver
 
 	protected void Application_BeginRequest(Object sender, EventArgs e)
 	{
+    
+	}
 
+	protected void Application_AuthenticateRequest(Object sender, EventArgs e)
+	{
 	}
 
 	protected void Application_EndRequest(Object sender, EventArgs e)
 	{
 
-	}
-
-	protected void Application_AuthenticateRequest(Object sender, EventArgs e)
-	{
 	}
 
 	protected void Application_Error(Object sender, EventArgs e)
@@ -79,8 +79,10 @@ public class Global : System.Web.HttpApplication // , IResourceUrlResolver
 	/// </summary>
 	private void InitializeComponent()
 	{    
-		this.components = new System.ComponentModel.Container();
-	}
+    // 
+    // Global
+    // 
+  }
 	#endregion
 }
 }
