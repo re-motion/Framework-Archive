@@ -42,12 +42,34 @@ public class WebTreeNodeCollection: ControlItemCollection
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTreeNode));
     WebTreeNode node = (WebTreeNode) value;
     
-    if (_treeView != null && ! ControlHelper.IsDesignMode ((Control) _treeView))
-    {
-      if (StringUtility.IsNullOrEmpty (node.ItemID))
-        throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
-    }
+    EnsureDesignModeTreeNodeInitialized (node);
+    if (StringUtility.IsNullOrEmpty (node.ItemID))
+      throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
+
     base.OnValidate (value);
+  }
+
+  private void EnsureDesignModeTreeNodeInitialized (WebTreeNode node)
+  {
+    ArgumentUtility.CheckNotNull ("node", node);
+    if (   StringUtility.IsNullOrEmpty (node.ItemID)
+        && _treeView != null && ControlHelper.IsDesignMode ((Control) _treeView))
+    {
+      int index = InnerList.Count;
+      do {
+        index++;
+        string itemID = "Node" + index.ToString();
+        if (Find (itemID) == null)
+        {
+          node.ItemID = itemID;
+          if (StringUtility.IsNullOrEmpty (node.Text))
+          {
+            node.Text = "Node " + index.ToString();
+          }
+          break;
+        }
+      } while (true);
+    }
   }
 
   protected override void OnInsertComplete (int index, object value)
