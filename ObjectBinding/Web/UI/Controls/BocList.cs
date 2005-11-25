@@ -1083,26 +1083,26 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelARequired)
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
     {
       if (ShowOptionsMenu)
-        WcagHelper.HandleError (1, this, "ShowOptionsMenu");
+        WcagHelper.Instance.HandleError (1, this, "ShowOptionsMenu");
       if (ShowListMenu)
-        WcagHelper.HandleError (1, this, "ShowListMenu");
+        WcagHelper.Instance.HandleError (1, this, "ShowListMenu");
       if (ShowAvailableViewsList)
-        WcagHelper.HandleError (1, this, "ShowAvailableViewsList");
+        WcagHelper.Instance.HandleError (1, this, "ShowAvailableViewsList");
       bool isPagingEnabled = !_pageSize.IsNull && _pageSize.Value != 0;
       if (isPagingEnabled)
-        WcagHelper.HandleError (1, this, "PageSize");
+        WcagHelper.Instance.HandleError (1, this, "PageSize");
       if (EnableSorting)
-        WcagHelper.HandleWarning (1, this, "EnableSorting");
+        WcagHelper.Instance.HandleWarning (1, this, "EnableSorting");
       if (RowMenuDisplay == RowMenuDisplay.Automatic)
-        WcagHelper.HandleError (1, this, "RowMenuDisplay");
+        WcagHelper.Instance.HandleError (1, this, "RowMenuDisplay");
 
       for (int i = 0; i < columns.Length; i++)
       {
         if (columns[i] is BocEditDetailsColumnDefinition)
-          WcagHelper.HandleError (1, this, string.Format ("Columns[{0}]", i));
+          WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}]", i));
 
         BocCommandEnabledColumnDefinition commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
         if (commandColumn != null)
@@ -1111,17 +1111,17 @@ public class BocList:
                                           && (   commandColumn.Command.Type == CommandType.Event 
                                               || commandColumn.Command.Type == CommandType.WxeFunction);
           if (hasPostBackColumnCommand)
-            WcagHelper.HandleError (1, this, string.Format ("Columns[{0}]", i));
+            WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}]", i));
         }
 
         if (columns[i] is BocDropDownMenuColumnDefinition)
-          WcagHelper.HandleError (1, this, string.Format ("Columns[{0}]", i));
+          WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}]", i));
       }
     }
-    if (IsWcagDebuggingEnabled && IsWaiConformanceLevelDoubleARequired)
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelDoubleARequired())
     {
       if (IsSelectionEnabled && ! IsIndexEnabled)
-        WcagHelper.HandleError (2, this, "Selection");
+        WcagHelper.Instance.HandleError (2, this, "Selection");
     }
   }
 
@@ -1513,7 +1513,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiConformanceLevelARequired)
+      if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
 
       bool showAvailableViewsList =    _showAvailableViewsList 
@@ -1531,7 +1531,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiConformanceLevelARequired)
+      if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
 
       bool showOptionsMenu =   ShowOptionsMenu 
@@ -1549,7 +1549,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiConformanceLevelARequired)
+      if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
 
       bool showListMenu =   ShowListMenu 
@@ -1574,7 +1574,7 @@ public class BocList:
     BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
     if (commandColumn != null && commandColumn.Command != null)
     {
-      if (   IsWaiConformanceLevelARequired
+      if (   WcagHelper.Instance.IsWaiConformanceLevelARequired()
           && (   commandColumn.Command.Type == CommandType.Event
               || commandColumn.Command.Type == CommandType.WxeFunction))
       {
@@ -1585,7 +1585,7 @@ public class BocList:
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
     if (editDetailsColumn != null)
     {
-      if (IsWaiConformanceLevelARequired)
+      if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
       if (   editDetailsColumn.Show == BocEditDetailsColumnDefinitionShow.EditMode 
           && isReadOnly)
@@ -1595,7 +1595,7 @@ public class BocList:
     }
     
     BocDropDownMenuColumnDefinition dropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
-    if (dropDownMenuColumn != null && IsWaiConformanceLevelARequired)
+    if (dropDownMenuColumn != null && WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
     
     return true;
@@ -3041,7 +3041,7 @@ public class BocList:
         && (   command.CommandState == null
             || command.CommandState.IsEnabled (this, businessObject, column)))
     {
-      if (IsWaiConformanceLevelARequired && command.Type != CommandType.Href)
+      if (WcagHelper.Instance.IsWaiConformanceLevelARequired() && command.Type != CommandType.Href)
         isCommandEnabled = false;
       else
         isCommandEnabled = true;
@@ -3514,7 +3514,7 @@ public class BocList:
   {
     get
     {
-      if (IsWaiConformanceLevelARequired)
+      if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
       if (   _rowMenuDisplay == RowMenuDisplay.Undefined
           || _rowMenuDisplay == RowMenuDisplay.Disabled)
@@ -5688,7 +5688,10 @@ public class BocList:
 
   protected bool IsPagingEnabled
   {
-    get { return !IsWaiConformanceLevelARequired && !_pageSize.IsNull && _pageSize.Value != 0; }
+    get 
+    { 
+      return ! WcagHelper.Instance.IsWaiConformanceLevelARequired() && !_pageSize.IsNull && _pageSize.Value != 0; 
+    }
   }
 
   /// <summary>
