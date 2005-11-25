@@ -38,16 +38,35 @@ public class WebTabCollection: ControlItemCollection
   protected override void OnValidate (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTab));
-    
+
     WebTab tab = (WebTab) value;
-    if (_tabStrip != null && ! ControlHelper.IsDesignMode ((Control) _tabStrip))
-    {
-      if (StringUtility.IsNullOrEmpty (tab.ItemID))
-        throw new ArgumentException ("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", "value");
-      if (Find (tab.ItemID) != null)
-        throw new ArgumentException ("The collection already contains a tab with ItemID '" + tab.ItemID + "'.", "value");
-    }
+    EnsureDesignModeTabInitialized (tab);
+    if (StringUtility.IsNullOrEmpty (tab.ItemID))
+      throw new ArgumentException ("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", "value");
     base.OnValidate (value);
+  }
+
+  private void EnsureDesignModeTabInitialized (WebTab tab)
+  {
+    ArgumentUtility.CheckNotNull ("tab", tab);
+    if (   StringUtility.IsNullOrEmpty (tab.ItemID)
+        && _tabStrip != null && ControlHelper.IsDesignMode ((Control) _tabStrip))
+    {
+      int index = InnerList.Count;
+      do {
+        index++;
+        string itemID = "Tab" + index.ToString();
+        if (Find (itemID) == null)
+        {
+          tab.ItemID = itemID;
+          if (StringUtility.IsNullOrEmpty (tab.Text))
+          {
+            tab.Text = "Tab " + index.ToString();
+          }
+          break;
+        }
+      } while (true);
+    }
   }
 
   protected override void OnInsertComplete (int index, object value)

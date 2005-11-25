@@ -231,8 +231,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
 
-    if (WcagHelper.IsWcagDebuggingEnabled() && WcagHelper.IsWaiConformanceLevelARequired())
-      WcagHelper.HandleError (1, this);
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
+      WcagHelper.Instance.HandleError (1, this);
 
     WebTabCollection tabs = Tabs;
     
@@ -600,17 +600,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   {
     add { Events.AddHandler (s_selectedIndexChangedEvent, value); }
     remove { Events.RemoveHandler (s_selectedIndexChangedEvent, value); }
-  }
-
-  /// <summary> Gets an instance of the the <see cref="WcagHelper"/> type. </summary>
-  protected virtual WcagHelper WcagHelper
-  {
-    get 
-    {
-      if (_wcagHelper == null)
-        _wcagHelper = new WcagHelper();
-      return _wcagHelper; 
-    }
   }
 
   #region protected virtual string CssClass...
