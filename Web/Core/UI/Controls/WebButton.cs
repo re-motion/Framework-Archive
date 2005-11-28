@@ -31,7 +31,6 @@ public class WebButton :
 #endif
 
   private NaBooleanEnum _useLegacyButton = NaBooleanEnum.Undefined;
-  private WcagHelper _wcagHelper;
 
   public WebButton()
   {

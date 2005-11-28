@@ -8,6 +8,10 @@ div.tabStripTabsPane
 {
 }
 
+div.tabStripTabsPane.empty
+{
+}
+
 div.tabStripTabsPane ul
 {
   margin: 0;  
@@ -35,13 +39,14 @@ span.tabStripTab a
   background-color: #e1ecfc;
   color: Blue;
   text-decoration: none;
-  cursor: pointer;
-	cursor: hand;
+  cursor: default;
 }
 
 span.tabStripTab a:hover
 {
 	background-color: #fee197;	
+  cursor: pointer;
+	cursor: hand;
 }
 
 span.tabStripTabSelected a

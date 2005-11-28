@@ -14,7 +14,6 @@ namespace Rubicon.Web.UI.Controls
 public class WebLinkButton : LinkButton
 {
   private string _text;
-  private WcagHelper _wcagHelper;
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {

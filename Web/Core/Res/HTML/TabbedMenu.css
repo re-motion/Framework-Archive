@@ -53,6 +53,15 @@ table.tabStripMenuMain span.tabStripTab a:hover
 {
 	background-color: #fee197;	
   color: Blue;
+  cursor: pointer;
+	cursor: hand;
+}
+table.tabStripMenuMain span.tabStripTabSelected a:hover
+{
+  color: #fee197;
+  text-decoration: underline;
+  cursor: pointer;
+	cursor: hand;
 }
 
 table.tabStripMenuMain span.tabStripTabSelected a
@@ -115,6 +124,12 @@ table.tabStripMenuSub div.tabStripTabsPane
   border-bottom: none;
 }
 
+table.tabStripMenuSub div.tabStripTabsPane.empty
+{
+  padding-top: 0.5em;
+  padding-bottom: 0.3em;
+}
+
 table.tabStripMenuSub div.tabStripTabsPane ul li
 {
   margin-top: 0.2em;
@@ -143,10 +158,13 @@ table.tabStripMenuSub span.tabStripTab a
   color: White;
 }
 
-table.tabStripMenuSub span.tabStripTab a:hover
+table.tabStripMenuSub span.tabStripTab a:hover,
+table.tabStripMenuSub span.tabStripTabSelected a:hover
 {
 	background-color: #fee197;	
   color: Blue;
+  cursor: pointer;
+	cursor: hand;
 }
 
 table.tabStripMenuSub span.tabStripTabSelected a
@@ -168,4 +186,9 @@ table.tabStripMenuSub span.tabStripTabSelected a span.content
 }
 
 /* Non-IE Browsers hack \*/
+html>body table.tabStripMenuSub div.tabStripTabsPane.empty
+{
+  padding-top: 0.4em;
+  padding-bottom: 0.2em;
+}
 /* End Non-IE Browsers hack\*/

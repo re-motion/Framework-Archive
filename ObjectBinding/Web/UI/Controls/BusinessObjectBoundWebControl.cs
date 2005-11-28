@@ -196,7 +196,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
   private ResourceManagerSet _cachedResourceManager;
   private bool _controlExistedInPreviousRequest = false; 
-  private WcagHelper _wcagHelper;
 
   /// <summary> Creates a new instance of the BusinessObjectBoundWebControl type. </summary>
   public BusinessObjectBoundWebControl ()

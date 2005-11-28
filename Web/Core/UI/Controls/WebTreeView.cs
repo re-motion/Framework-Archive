@@ -88,7 +88,6 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
   private bool _enableTreeNodeViewState = true;
   private bool _hasTreeNodesCreated = false;
   private WebTreeNode _selectedNode = null;
-  private WcagHelper _wcagHelper;
 
   /// <summary>
   ///   The delegate called before a node with <see cref="WebTreeNode.IsEvaluated"/> set to <see langword="false"/>

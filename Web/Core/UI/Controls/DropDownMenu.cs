@@ -35,8 +35,6 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
   private WebMenuItemCollection _menuItems;
   private RenderMethod _renderHeadTitleMethod;
   
-  private WcagHelper _wcagHelper;
-
 	public DropDownMenu (Control ownerControl, Type[] supportedMenuItemTypes)
 	{
     if (ownerControl == null)
