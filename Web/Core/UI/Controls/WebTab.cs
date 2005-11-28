@@ -12,7 +12,7 @@ namespace Rubicon.Web.UI.Controls
 {
 
 [TypeConverter (typeof (ExpandableObjectConverter))]
-public class WebTab: IControlItem
+public class WebTab: IControlItem, IControlStateManager
 {
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
@@ -21,7 +21,8 @@ public class WebTab: IControlItem
   private IconInfo _icon;
   private WebTabStrip _tabStrip;
   private bool _isSelected = false;
-  int _selectDesired = 0;
+  private int _selectDesired = 0;
+  private bool _isControlStateRestored;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, IconInfo icon)
@@ -57,7 +58,7 @@ public class WebTab: IControlItem
   }
 
   /// <summary> Sets this tab's <see cref="WebTabStrip"/>. </summary>
-  protected internal virtual void SetParent (WebTabStrip tabStrip)
+  protected internal virtual void SetTabStrip (WebTabStrip tabStrip)
   {
     _tabStrip = tabStrip; 
     if (_selectDesired == 1)
@@ -246,6 +247,34 @@ public class WebTab: IControlItem
     
     if (Icon != null)
       Icon.LoadResources (resourceManager);
+  }
+
+  void IControlStateManager.LoadControlState (object state)
+  {
+    if (_isControlStateRestored)
+      return;
+    _isControlStateRestored = true;
+    LoadControlState (state);
+  }
+
+  protected virtual void LoadControlState (object state)
+  {
+    if (state == null)
+      return;
+
+    IsSelected = (bool) state;
+  }
+
+  object IControlStateManager.SaveControlState ()
+  {
+    return SaveControlState();
+  }
+
+  protected virtual object SaveControlState()
+  {
+    if (! IsSelected)
+      return null;
+    return IsSelected;
   }
 }
 

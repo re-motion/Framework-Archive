@@ -833,6 +833,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\IControlStateManager.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\IControlWithDesignTimeSupport.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

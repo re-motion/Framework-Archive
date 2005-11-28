@@ -12,7 +12,7 @@ namespace Rubicon.Web.UI.Controls
 {
 
 //[Editor (typeof (WebTabCollectionEditor), typeof (UITypeEditor))]
-public class WebTabCollection: ControlItemCollection
+public class WebTabCollection: ControlItemCollection, IControlStateManager
 {
   private WebTabStrip _tabStrip;
 
@@ -75,7 +75,7 @@ public class WebTabCollection: ControlItemCollection
 
     base.OnInsertComplete (index, value);
     WebTab tab = (WebTab) value;
-    tab.SetParent (_tabStrip);
+    tab.SetTabStrip (_tabStrip);
     InitalizeSelectedTab();
   }
 
@@ -85,7 +85,7 @@ public class WebTabCollection: ControlItemCollection
 
     base.OnSetComplete (index, oldValue, newValue);
     WebTab tab = (WebTab) newValue;
-    tab.SetParent (_tabStrip);
+    tab.SetTabStrip (_tabStrip);
   }
 
   public void AddRange (WebTabCollection values)
@@ -93,13 +93,13 @@ public class WebTabCollection: ControlItemCollection
     base.AddRange (values);
   }
 
-  protected internal void SetParent (WebTabStrip tabStrip)
+  protected internal void SetTabStrip (WebTabStrip tabStrip)
   {
     ArgumentUtility.CheckNotNull ("tabStrip", tabStrip);
 
     _tabStrip = tabStrip; 
     for (int i = 0; i < InnerList.Count; i++)
-      ((WebTab) InnerList[i]).SetParent (_tabStrip);
+      ((WebTab) InnerList[i]).SetTabStrip (_tabStrip);
     InitalizeSelectedTab();
   }
 
@@ -122,6 +122,53 @@ public class WebTabCollection: ControlItemCollection
     {
       _tabStrip.SetSelectedTab ((WebTab) InnerList[0]);
     }
+  }
+
+  void IControlStateManager.LoadControlState (object state)
+  {
+    LoadControlState (state);
+  }
+
+  protected virtual void LoadControlState (object state)
+  {
+    if (state == null)
+      return;
+
+    Pair[] tabsState = (Pair[]) state;
+    for (int i = 0; i < tabsState.Length; i++)
+    {
+      Pair pair = tabsState[i];
+      string itemID = (string) pair.First;
+      WebTab tab = Find (itemID);
+      if (tab != null)
+        ((IControlStateManager) tab).LoadControlState (pair.Second);
+    }
+  }
+
+  object IControlStateManager.SaveControlState ()
+  {
+    return SaveControlState();
+  }
+
+  protected virtual object SaveControlState()
+  {
+    ArrayList tabsState = new ArrayList();
+    for (int i = 0; i < InnerList.Count; i++)
+    {
+      WebTab tab = (WebTab) InnerList[i];   
+      object tabStateValue = ((IControlStateManager) tab).SaveControlState();
+      if (tabStateValue != null)
+      {
+        Pair pair = new Pair();
+        pair.First = tab.ItemID;
+        pair.Second = tabStateValue;
+        tabsState.Add (pair);
+      }
+    }
+    if (tabsState.Count == 0)
+      return null;
+    else
+      return (Pair[]) tabsState.ToArray (typeof (Pair));
   }
 }
 

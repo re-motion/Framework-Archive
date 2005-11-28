@@ -159,7 +159,6 @@ public class TabbedMultiView: WebControl, IControl
   private Style _bottomControlsStyle;
 
   private EmptyTabView _placeHolderTabView;
-  private WcagHelper _wcagHelper;
 
   // construction and destruction
   public TabbedMultiView()
@@ -425,8 +424,6 @@ public class TabbedMultiView: WebControl, IControl
     writer.RenderEndTag(); // end tr
   }
 
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
   public override ControlCollection Controls
   {
     get

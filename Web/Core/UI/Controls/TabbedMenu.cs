@@ -30,7 +30,17 @@ public class TabStripMenu: WebControl
   private Style _statusStyle;
   private WebTabStrip _mainMenuTabStrip;
   private WebTabStrip _subMenuTabStrip;
-  private WcagHelper _wcagHelper;
+
+  protected internal WebTabStrip MainMenuTabStrip
+  {
+    get { return _mainMenuTabStrip; }
+  }
+
+  protected internal WebTabStrip SubMenuTabStrip
+  {
+    get { return _subMenuTabStrip; }
+  }
+
 
   // construction and destruction
   public TabStripMenu()
@@ -43,6 +53,27 @@ public class TabStripMenu: WebControl
   }
 
   // methods and properties
+
+  protected override void OnInit(EventArgs e)
+  {
+    EnsureChildControls();
+    base.OnInit (e);
+    _mainMenuTabStrip.EnableSelectedTab = true;
+    _subMenuTabStrip.EnableSelectedTab = true;
+    RefreshSubMenuTabStrip (true);
+  }
+
+  protected internal void RefreshSubMenuTabStrip (bool resetSubMenu)
+  {
+    TabStripMainMenuItem selectedMainMenuItem = (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab;
+    _subMenuTabStrip.Tabs.Clear();
+    _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
+    if (   (resetSubMenu || _subMenuTabStrip.SelectedTab == null)
+        && _subMenuTabStrip.Tabs.Count > 0)
+    {
+      _subMenuTabStrip.SetSelectedTab (_subMenuTabStrip.Tabs[0]);
+    }
+  }
 
   protected override void CreateChildControls()
   {
@@ -63,9 +94,6 @@ public class TabStripMenu: WebControl
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
-    TabStripMainMenuItem selectedMainMenuItem = (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab;
-    _subMenuTabStrip.Tabs.Clear();
-    _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
 //    if (Views.Count == 0)
 //      Views.Add (_placeHolderTabView);
 
@@ -119,6 +147,16 @@ public class TabStripMenu: WebControl
 
     writer.RenderEndTag(); // End sub menu row
   }
+
+  public override ControlCollection Controls
+  {
+    get
+    {
+      EnsureChildControls();
+      return base.Controls;
+    }
+  }
+
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
@@ -216,12 +254,13 @@ public class TabStripMenu: WebControl
 
 public class TabStripMainMenuItem: WebTab
 {
-  private WebTabCollection _subMenu;
+  private TabStripSubMenuItemCollection _subMenuTabs;
 
   public TabStripMainMenuItem (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
   {
-    _subMenu = new WebTabCollection (null, new Type[] {typeof (TabStripSubMenuItem)});
+    _subMenuTabs = new TabStripSubMenuItemCollection (null);
+    _subMenuTabs.SetParent (this);
   }
 
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
@@ -229,7 +268,8 @@ public class TabStripMainMenuItem: WebTab
   [EditorBrowsable (EditorBrowsableState.Never)]
   public TabStripMainMenuItem()
   {
-    _subMenu = new WebTabCollection (null, new Type[] {typeof (TabStripSubMenuItem)});
+    _subMenuTabs = new TabStripSubMenuItemCollection (null);
+    _subMenuTabs.SetParent (this);
   }
 
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -238,20 +278,66 @@ public class TabStripMainMenuItem: WebTab
   [Description ("")]
   [DefaultValue ((string) null)]
   [Editor (typeof (TabStripSubMenuItemCollectionEditor), typeof (UITypeEditor))]
-  public WebTabCollection SubMenuTabs
+  public TabStripSubMenuItemCollection SubMenuTabs
   {
-    get { return _subMenu; }
+    get { return _subMenuTabs; }
   }
 
   protected override void OnOwnerControlChanged()
   {
     base.OnOwnerControlChanged ();
-    _subMenu.OwnerControl = OwnerControl;
+    if (! (OwnerControl is TabStripMenu))
+      throw new InvalidOperationException ("A TabStripMainMenuItem can only be added to a WebTabStrip that is part of a TabStripMenu.");
+    _subMenuTabs.OwnerControl = OwnerControl;
+  }
+
+  protected override void LoadControlState (object state)
+  {
+    base.LoadControlState (state);
+    if (IsSelected)
+    {
+      TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
+      tabStripMenu.SubMenuTabStrip.Tabs.Clear();
+      tabStripMenu.SubMenuTabStrip.Tabs.AddRange (_subMenuTabs);
+      if (tabStripMenu.SubMenuTabStrip.SelectedTab == null && tabStripMenu.SubMenuTabStrip.Tabs.Count > 0)
+      {
+        tabStripMenu.SubMenuTabStrip.SetSelectedTab (tabStripMenu.SubMenuTabStrip.Tabs[0]);
+      }
+    }
+  }
+
+//  protected override void LoadControlState (object state)
+//  {
+//    if (state == null)
+//      return;
+//
+//    object[] values = (object[]) state;
+//    base.LoadControlState (values[0]);
+//    ((IControlStateManager) _subMenuTabs).LoadControlState (values[1]);    
+//  }
+//
+//  protected override object SaveControlState()
+//  {
+//    object[] values = new object[2];
+//    values[0] = base.SaveControlState ();
+//    values[1] = ((IControlStateManager) _subMenuTabs).SaveControlState ();
+//    if (values[0] == null && values[1] == null)
+//      return null;
+//    return values;
+//  }
+//
+  public override void OnSelectionChanged()
+  {
+    base.OnSelectionChanged ();
+    TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
+    tabStripMenu.RefreshSubMenuTabStrip (true);
   }
 }
 
 public class TabStripSubMenuItem: WebTab
 {
+  private TabStripMainMenuItem _parent;
+
   public TabStripSubMenuItem (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
   {
@@ -262,6 +348,83 @@ public class TabStripSubMenuItem: WebTab
   [EditorBrowsable (EditorBrowsableState.Never)]
   public TabStripSubMenuItem()
   {
+  }
+  protected override void OnOwnerControlChanged()
+  {
+    base.OnOwnerControlChanged ();
+    if (! (OwnerControl is TabStripMenu))
+      throw new InvalidOperationException ("A TabStripSubMenuItem can only be added to a WebTabStrip that is part of a TabStripMenu.");
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public TabStripMainMenuItem Parent
+  {
+    get { return _parent; }
+  }
+
+  protected internal void SetParent (TabStripMainMenuItem parent)
+  {
+    ArgumentUtility.CheckNotNull ("parent", parent);
+    _parent = parent;
+  }
+
+  protected override void LoadControlState (object state)
+  {
+    TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
+    tabStripMenu.MainMenuTabStrip.EnsureTabsRestored();
+    base.LoadControlState (state);
+  }
+
+}
+
+public class TabStripSubMenuItemCollection: WebTabCollection
+{
+  private TabStripMainMenuItem _parent;
+
+  /// <summary> Initializes a new instance. </summary>
+  public TabStripSubMenuItemCollection (Control ownerControl, Type[] supportedTypes)
+    : base (ownerControl, supportedTypes)
+  {
+  }
+
+  /// <summary> Initializes a new instance. </summary>
+  public TabStripSubMenuItemCollection (Control ownerControl)
+    : this (ownerControl, new Type[] {typeof (TabStripSubMenuItem)})
+  {
+  }
+
+  protected override void OnInsertComplete (int index, object value)
+  {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (TabStripSubMenuItem));
+
+    base.OnInsertComplete (index, value);
+    TabStripSubMenuItem tab = (TabStripSubMenuItem) value;
+    tab.SetParent (_parent);
+  }
+
+  protected override void OnSetComplete(int index, object oldValue, object newValue)
+  {
+    ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (TabStripSubMenuItem));
+
+    base.OnSetComplete (index, oldValue, newValue);
+    TabStripSubMenuItem tab = (TabStripSubMenuItem) newValue;
+    tab.SetParent (_parent);
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public TabStripMainMenuItem Parent
+  {
+    get { return _parent; }
+  }
+
+  protected internal void SetParent (TabStripMainMenuItem parent)
+  {
+    ArgumentUtility.CheckNotNull ("parent", parent);
+    _parent = parent;
+    for (int i = 0; i < InnerList.Count; i++)
+      ((TabStripSubMenuItem) InnerList[i]).SetParent (_parent);
   }
 }
 }

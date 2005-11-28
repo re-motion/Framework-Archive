@@ -38,20 +38,19 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   private string _tabToBeSelected = null;
   private bool _hasTabsRestored;
   private bool _isRestoringTabs;
-  private Triplet[] _tabsViewState;
+  private object _tabsControlState;
   private Style _tabsPaneStyle;
   private Style _separatorStyle;
   private Style _tabStyle;
   private Style _tabSelectedStyle;
   private Control _ownerControl;
-  private WcagHelper _wcagHelper;
   private bool _enableSelectedTab = false;
 
   public WebTabStrip (Control ownerControl, Type[] supportedMenuItemTypes)
   {
     _ownerControl = ownerControl;
     _tabs = new WebTabCollection (ownerControl, supportedMenuItemTypes);
-    Tabs.SetParent (this);
+    Tabs.SetTabStrip (this);
     _tabsPaneStyle = new Style();
     _tabStyle = new Style();
     _tabSelectedStyle = new Style();
@@ -106,15 +105,15 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       handler (this, EventArgs.Empty);
   }
 
-  private void EnsureTabsRestored()
+  internal void EnsureTabsRestored()
   {
     if (_hasTabsRestored)
       return;
  
     _isRestoringTabs = true;
-    if (_tabsViewState != null)
+    if (_tabsControlState != null)
     {
-      LoadTabsViewStateRecursive (_tabsViewState, _tabs);
+      LoadTabsControlState (_tabsControlState, _tabs);
       _hasTabsRestored = true;
     }
     _isRestoringTabs = false;
@@ -126,7 +125,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     {
       object[] values = (object[]) savedState;
       base.LoadViewState(values[0]);
-      _tabsViewState = (Triplet[]) values[1];
+      _tabsControlState = values[1];
       _selectedItemID = (string) values[2];
     }
   }
@@ -135,49 +134,22 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   {
     object[] values = new object[3];
     values[0] = base.SaveViewState();
-    values[1] = SaveNodesViewStateRecursive (_tabs);
+    values[1] = SaveTabsControlState (_tabs);
     values[2] = _selectedItemID;
     return values;
   }
 
-  /// <summary> Loads the settings of the <paramref name="tabs"/> from <paramref name="tabsViewState"/>. </summary>
-  private void LoadTabsViewStateRecursive (Triplet[] tabsViewState, WebTabCollection tabs)
+  /// <summary> Loads the settings of the <paramref name="tabs"/> from <paramref name="tabsControlState"/>. </summary>
+  private void LoadTabsControlState (object tabsControlState, WebTabCollection tabs)
   {
-    // Not the most efficient method, but be once the tab strip is more advanced.
-    for (int i = 0; i < tabsViewState.Length; i++)
-    {
-      Triplet tabViewState = (Triplet) tabsViewState[i];
-      string itemID = (string) tabViewState.First;
-      WebTab tab = tabs.Find (itemID);
-      if (tab != null)
-      {
-        object[] values = (object[]) tabViewState.Second;
-        bool isSelected = (bool) values[0];
-        if (isSelected)
-          tab.IsSelected = true;
-        // LoadNodesViewStateRecursive ((Triplet[]) tabViewState.Third, tab.Children);
-      }
-    }
+    ((IControlStateManager) tabs).LoadControlState (tabsControlState);
   }
 
   /// <summary> Saves the settings of the  <paramref name="tabs"/> and returns this view state </summary>
-  private Triplet[] SaveNodesViewStateRecursive (WebTabCollection tabs)
+  private object SaveTabsControlState (WebTabCollection tabs)
   {
     EnsureTabsRestored();
-    // Not the most efficient method, but be once the tab strip is more advanced.
-    Triplet[] tabsViewState = new Triplet[tabs.Count];
-    for (int i = 0; i < tabs.Count; i++)
-    {
-      WebTab tab = tabs[i];    
-      Triplet tabViewState = new Triplet();
-      tabViewState.First = tab.ItemID;
-      object[] values = new object[1];
-      values[0] = tab.IsSelected;
-      tabViewState.Second = values;
-      // tabViewState.Third = SaveNodesViewStateRecursive (tab.Children);
-      tabsViewState[i] = tabViewState;
-    }
-    return tabsViewState;
+    return ((IControlStateManager) tabs).SaveControlState();
   }
   
   protected override void OnPreRender(EventArgs e)
@@ -264,9 +236,25 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin Table Row
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin Table Cell
 
+    bool isEmpty = Tabs.Count == 0;
+
+    string backUpCssClass = _tabsPaneStyle.CssClass;
+    if (isEmpty && ! StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
+      _tabsPaneStyle.CssClass += " " + CssClassTabsPaneEmpty;
+    
     _tabsPaneStyle.AddAttributesToRender (writer);
+
+    if (isEmpty && ! StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
+      _tabsPaneStyle.CssClass = backUpCssClass;
+    
     if (StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabsPane);
+    {
+      string cssClass = CssClassTabsPane;
+      if (isEmpty)
+        cssClass += " " + CssClassTabsPaneEmpty;
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+    }
+
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Div
 
     if (ControlHelper.IsDesignMode (this, Context))
@@ -275,7 +263,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddStyleAttribute ("display", "inline");
     }
-
+    if (isEmpty)
+      writer.Write ("&nbsp;");
     writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin List
   }
 
@@ -621,6 +610,16 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   protected virtual string CssClassTabsPane
   {
     get { return "tabStripTabsPane"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a pane of <see cref="WebTab"/> items if no items are present. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStripTabsPane</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <c>div.tabStripTabsPane.readOnly</c> as a selector. </para>
+  /// </remarks>
+  protected virtual string CssClassTabsPaneEmpty
+  {
+    get { return "empty"; }
   }
 
   /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/>. </summary>
