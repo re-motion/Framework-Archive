@@ -30,13 +30,15 @@ public class TabStripMenu: WebControl
   private Style _statusStyle;
   private WebTabStrip _mainMenuTabStrip;
   private WebTabStrip _subMenuTabStrip;
+  private bool _isSubMenuTabStripRefreshed;
+  private bool _isPastInitialization;
 
-  protected internal WebTabStrip MainMenuTabStrip
+  protected WebTabStrip MainMenuTabStrip
   {
     get { return _mainMenuTabStrip; }
   }
 
-  protected internal WebTabStrip SubMenuTabStrip
+  protected WebTabStrip SubMenuTabStrip
   {
     get { return _subMenuTabStrip; }
   }
@@ -58,27 +60,33 @@ public class TabStripMenu: WebControl
   {
     EnsureChildControls();
     base.OnInit (e);
+    _isPastInitialization = true;
     _mainMenuTabStrip.EnableSelectedTab = true;
     _subMenuTabStrip.EnableSelectedTab = true;
   }
 
-  [Obsolete ("Chagne to ensure pattern.")]
-  protected override void OnLoad(EventArgs e)
+  internal void EnsureMainMenuTabStripRestored ()
   {
-    base.OnLoad (e);
-    if (! Page.IsPostBack)
-      RefreshSubMenuTabStrip ();
+    _mainMenuTabStrip.EnsureTabsRestored();
   }
 
-  protected internal void RefreshSubMenuTabStrip ()
+  internal void EnsureSubMenuTabStripRefreshed ()
   {
+    if (_isSubMenuTabStripRefreshed)
+      return;
+    _isSubMenuTabStripRefreshed = true;
+    RefreshSubMenuTabStrip (false);
+  }
+
+  internal void RefreshSubMenuTabStrip (bool resetSubMenu)
+  {
+    if (resetSubMenu)
+      _subMenuTabStrip.Tabs.Clear();
     TabStripMainMenuItem selectedMainMenuItem = (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab;
-    _subMenuTabStrip.Tabs.Clear();
-    _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
+    if (selectedMainMenuItem != null)
+      _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
     if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
-    {
       _subMenuTabStrip.SetSelectedTab (_subMenuTabStrip.Tabs[0]);
-    }
   }
 
   protected override void CreateChildControls()
@@ -92,6 +100,8 @@ public class TabStripMenu: WebControl
 
   protected override void OnPreRender(EventArgs e)
   {
+    EnsureSubMenuTabStripRefreshed ();
+
     string url = null;
     if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     {
@@ -174,6 +184,8 @@ public class TabStripMenu: WebControl
   {
     get
     {
+      if (_isPastInitialization)
+        EnsureSubMenuTabStripRefreshed ();
       return _mainMenuTabStrip.Tabs;
     }
   }
@@ -303,12 +315,7 @@ public class TabStripMainMenuItem: WebTab
     if (IsSelected)
     {
       TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
-      tabStripMenu.SubMenuTabStrip.Tabs.Clear();
-      tabStripMenu.SubMenuTabStrip.Tabs.AddRange (_subMenuTabs);
-      if (tabStripMenu.SubMenuTabStrip.SelectedTab == null && tabStripMenu.SubMenuTabStrip.Tabs.Count > 0)
-      {
-        tabStripMenu.SubMenuTabStrip.SetSelectedTab (tabStripMenu.SubMenuTabStrip.Tabs[0]);
-      }
+      tabStripMenu.EnsureSubMenuTabStripRefreshed ();
     }
   }
 
@@ -316,7 +323,7 @@ public class TabStripMainMenuItem: WebTab
   {
     base.OnSelectionChanged ();
     TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
-    tabStripMenu.RefreshSubMenuTabStrip ();
+    tabStripMenu.RefreshSubMenuTabStrip (true);
   }
 }
 
@@ -358,7 +365,7 @@ public class TabStripSubMenuItem: WebTab
   protected override void LoadControlState (object state)
   {
     TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
-    tabStripMenu.MainMenuTabStrip.EnsureTabsRestored();
+    tabStripMenu.EnsureMainMenuTabStripRestored();
     base.LoadControlState (state);
   }
 

@@ -13,7 +13,10 @@ td.tabStripMenuSubMenuCell
 td.tabStripMenuStatusCell
 {
   background-color: #02537c;
-  padding: 0.3em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  padding-left: 0.3em;
+  padding-right: 0.8em;
   color: White;
   text-align:right;
   white-space: nowrap;

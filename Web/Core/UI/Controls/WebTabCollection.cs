@@ -92,7 +92,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
     WebTab oldTab = (WebTab) oldValue;
     oldTab.SetTabStrip (null);
     
-    if (oldTab.IsSelected)
+    if (_tabStrip != null && oldTab.IsSelected)
     {
       bool isLastTab = index + 1 == InnerList.Count;
       if (isLastTab)
@@ -115,7 +115,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
     }
   }
 
-  protected override void OnRemoveComplete(int index, object value)
+  protected override void OnRemoveComplete (int index, object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTab));
 
@@ -123,7 +123,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
     
     WebTab tab = (WebTab) value;
     tab.SetTabStrip (null);
-    if (tab.IsSelected)
+    if (_tabStrip != null && tab.IsSelected)
     {
       bool wasLastTab = index == InnerList.Count;
       if (wasLastTab)
@@ -144,6 +144,18 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
         _tabStrip.SetSelectedTab (nextTab);
       }
     }
+  }
+
+  protected override void OnClear()
+  {
+    base.OnClear ();
+    for (int i = 0; i < InnerList.Count; i++)
+    {
+      WebTab tab = (WebTab) InnerList[i];
+      tab.SetTabStrip (null);
+    }
+    if (_tabStrip != null)
+      _tabStrip.SetSelectedTab (null);
   }
 
   public void AddRange (WebTabCollection values)

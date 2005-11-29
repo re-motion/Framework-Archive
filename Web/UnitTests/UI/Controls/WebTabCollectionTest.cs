@@ -345,5 +345,19 @@ public class WebTabCollectionTest: WebControlTest
     Assert.IsNull (_tabStrip.SelectedTab, "Tab selected.");
   }
 
+  [Test]
+  public void ClearTabs()
+  {
+    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add (_tab1);
+    _tabStrip.Tabs.Add (_tab2);
+    _tabStrip.Tabs.Add (_tab3);
+    _tab2.IsSelected = true;
+
+    _tabStrip.Tabs.Clear();
+
+    Assert.AreEqual (0, _tabStrip.Tabs.Count);
+    Assert.IsNull (_tabStrip.SelectedTab, "Tab selected.");
+  }
 }
 }

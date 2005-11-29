@@ -73,8 +73,7 @@ public sealed class ResourceUrlResolver
   ///   </para>
   /// </remarks>
   /// <param name="control"> 
-  ///   The current <see cref="Control"/>. Currently, this parameter is only used to detect design time.
-  ///   Must not be <see langword="null"/>.
+  ///   The current <see cref="Control"/>. This parameter is only used to detect design time.
   /// </param>
   /// <param name="definingType"> 
   ///   The type that this resource item is associated with. Must not be <see langword="null"/>.
@@ -87,12 +86,11 @@ public sealed class ResourceUrlResolver
       ResourceType resourceType, 
       string relativeUrl)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
     ArgumentUtility.CheckNotNull ("definingType", definingType);
     ArgumentUtility.CheckNotNull ("resourceType", resourceType);
     ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
 
-    bool isDesignMode = Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control);
+    bool isDesignMode = (control == null) ? false : Rubicon.Web.Utilities.ControlHelper.IsDesignMode (control);
     string assemblyRoot = GetAssemblyRoot (isDesignMode, definingType.Assembly);
     string separator = isDesignMode ? @"\" : "/";
     return assemblyRoot + resourceType.Name + separator + relativeUrl;

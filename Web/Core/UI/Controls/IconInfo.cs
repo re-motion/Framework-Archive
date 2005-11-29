@@ -18,6 +18,28 @@ namespace Rubicon.Web.UI.Controls
 [TypeConverter (typeof (IconInfoConverter))]
 public sealed class IconInfo
 {
+  private static IconInfo s_spacer;
+
+  public static IconInfo Spacer
+  {
+    get 
+    { 
+      if (s_spacer == null)
+      {
+        lock (typeof (IconInfo))
+        {
+          if (s_spacer == null)
+          {
+            string url = 
+                ResourceUrlResolver.GetResourceUrl (null, typeof (IconInfo), ResourceType.Image, "Spacer.gif");
+            s_spacer = new IconInfo (url);
+          }
+        }
+      }
+      return s_spacer; 
+    }
+  }
+
   public static bool ShouldSerialize (IconInfo icon)
   {
     if (icon == null)
@@ -36,6 +58,20 @@ public sealed class IconInfo
     {
       return true;
     }
+  }
+
+  public static void RenderInvisibleSpacer (HtmlTextWriter writer)
+  {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Src, Spacer.Url);
+    writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "0px");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0px");
+    writer.AddStyleAttribute ("vertical-align", "middle");
+    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
+    writer.RenderBeginTag (HtmlTextWriterTag.Img);
+    writer.RenderEndTag();
   }
 
   private string _url;

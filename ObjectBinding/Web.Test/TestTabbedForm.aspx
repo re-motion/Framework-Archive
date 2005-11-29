@@ -1,7 +1,7 @@
-<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head><title>Test Tabbed Form</title>
@@ -21,12 +21,14 @@
 <submenutabs>
 <rwc:tabstripsubmenuitem ItemID="SubTab1" Text="Sub Tab 1.1"></rwc:tabstripsubmenuitem>
 <rwc:tabstripsubmenuitem ItemID="SubTab2" Text="Sub Tab 1.2"></rwc:tabstripsubmenuitem>
+<rwc:tabstripsubmenuitem ItemID="SubTab13" Text="Sub Tab 1.3"></rwc:tabstripsubmenuitem>
 </submenutabs>
 </rwc:TabStripMainMenuItem>
 <rwc:TabStripMainMenuItem ItemID="Tab2" Text="Tab 2">
-<SubMenuTabs>
+<submenutabs>
 <rwc:TabStripSubMenuItem ItemID="SubTab1" Text="Sub Tab 2.1"></rwc:TabStripSubMenuItem>
 <rwc:TabStripSubMenuItem ItemID="SubTab2" Text="Sub Tab 2.2"></rwc:TabStripSubMenuItem>
+<rwc:tabstripsubmenuitem ItemID="SubTab23" Text="Sub Tab 2.3"></rwc:tabstripsubmenuitem>
 </SubMenuTabs>
 </rwc:TabStripMainMenuItem>
 <rwc:TabStripMainMenuItem ItemID="Tab3" Text="Tab 3"></rwc:TabStripMainMenuItem>

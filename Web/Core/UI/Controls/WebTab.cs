@@ -220,6 +220,8 @@ public class WebTab: IControlItem, IControlStateManager
     bool hasText = ! StringUtility.IsNullOrEmpty (_text);
     if (hasIcon)
       _icon.Render (writer);
+    else
+      IconInfo.RenderInvisibleSpacer (writer);
     if (hasIcon && hasText)
       writer.Write ("&nbsp;");
     if (hasText)
