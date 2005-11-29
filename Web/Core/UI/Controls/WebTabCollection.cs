@@ -35,7 +35,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
     set { List[index] = value; }
   }
 
-  protected override void OnValidate (object value)
+  protected override void ValidateNewValue (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTab));
 
@@ -43,7 +43,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
     EnsureDesignModeTabInitialized (tab);
     if (StringUtility.IsNullOrEmpty (tab.ItemID))
       throw new ArgumentException ("The tab does not have an 'ItemID'. It can therfor not be inserted into the collection.", "value");
-    base.OnValidate (value);
+    base.ValidateNewValue (value);
   }
 
   private void EnsureDesignModeTabInitialized (WebTab tab)
@@ -81,11 +81,69 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
 
   protected override void OnSetComplete (int index, object oldValue, object newValue)
   {
+    ArgumentUtility.CheckNotNullAndType ("oldValue", oldValue, typeof (WebTab));
     ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (WebTab));
 
     base.OnSetComplete (index, oldValue, newValue);
-    WebTab tab = (WebTab) newValue;
-    tab.SetTabStrip (_tabStrip);
+
+    WebTab newTab = (WebTab) newValue;
+    newTab.SetTabStrip (_tabStrip);
+
+    WebTab oldTab = (WebTab) oldValue;
+    oldTab.SetTabStrip (null);
+    
+    if (oldTab.IsSelected)
+    {
+      bool isLastTab = index + 1 == InnerList.Count;
+      if (isLastTab)
+      {
+        if (InnerList.Count > 1)
+        {
+          WebTab penultimateTab = (WebTab) InnerList[index - 1];
+          _tabStrip.SetSelectedTab (penultimateTab);
+        }
+        else
+        {
+          _tabStrip.SetSelectedTab (null);
+        }
+      }
+      else
+      {
+        WebTab nextTab = (WebTab) InnerList[index + 1];
+        _tabStrip.SetSelectedTab (nextTab);
+      }
+    }
+  }
+
+  protected override void OnRemoveComplete(int index, object value)
+  {
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTab));
+
+    base.OnRemoveComplete (index, value);
+    
+    WebTab tab = (WebTab) value;
+    tab.SetTabStrip (null);
+    if (tab.IsSelected)
+    {
+      bool wasLastTab = index == InnerList.Count;
+      if (wasLastTab)
+      {
+        if (InnerList.Count > 1)
+        {
+          WebTab lastTab = (WebTab) InnerList[index - 1];
+          _tabStrip.SetSelectedTab (lastTab);
+        }
+        else
+        {
+          _tabStrip.SetSelectedTab (null);
+        }
+      }
+      else
+      {
+        WebTab nextTab = (WebTab) InnerList[index];
+        _tabStrip.SetSelectedTab (nextTab);
+      }
+    }
   }
 
   public void AddRange (WebTabCollection values)

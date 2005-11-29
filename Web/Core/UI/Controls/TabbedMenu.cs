@@ -60,16 +60,22 @@ public class TabStripMenu: WebControl
     base.OnInit (e);
     _mainMenuTabStrip.EnableSelectedTab = true;
     _subMenuTabStrip.EnableSelectedTab = true;
-    RefreshSubMenuTabStrip (true);
   }
 
-  protected internal void RefreshSubMenuTabStrip (bool resetSubMenu)
+  [Obsolete ("Chagne to ensure pattern.")]
+  protected override void OnLoad(EventArgs e)
+  {
+    base.OnLoad (e);
+    if (! Page.IsPostBack)
+      RefreshSubMenuTabStrip ();
+  }
+
+  protected internal void RefreshSubMenuTabStrip ()
   {
     TabStripMainMenuItem selectedMainMenuItem = (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab;
     _subMenuTabStrip.Tabs.Clear();
     _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
-    if (   (resetSubMenu || _subMenuTabStrip.SelectedTab == null)
-        && _subMenuTabStrip.Tabs.Count > 0)
+    if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
     {
       _subMenuTabStrip.SetSelectedTab (_subMenuTabStrip.Tabs[0]);
     }
@@ -306,31 +312,11 @@ public class TabStripMainMenuItem: WebTab
     }
   }
 
-//  protected override void LoadControlState (object state)
-//  {
-//    if (state == null)
-//      return;
-//
-//    object[] values = (object[]) state;
-//    base.LoadControlState (values[0]);
-//    ((IControlStateManager) _subMenuTabs).LoadControlState (values[1]);    
-//  }
-//
-//  protected override object SaveControlState()
-//  {
-//    object[] values = new object[2];
-//    values[0] = base.SaveControlState ();
-//    values[1] = ((IControlStateManager) _subMenuTabs).SaveControlState ();
-//    if (values[0] == null && values[1] == null)
-//      return null;
-//    return values;
-//  }
-//
   public override void OnSelectionChanged()
   {
     base.OnSelectionChanged ();
     TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
-    tabStripMenu.RefreshSubMenuTabStrip (true);
+    tabStripMenu.RefreshSubMenuTabStrip ();
   }
 }
 

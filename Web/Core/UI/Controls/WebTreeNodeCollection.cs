@@ -37,7 +37,7 @@ public class WebTreeNodeCollection: ControlItemCollection
     set { List[index] = value; }
   }
 
-  protected override void OnValidate (object value)
+  protected override void ValidateNewValue (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTreeNode));
     WebTreeNode node = (WebTreeNode) value;
@@ -46,7 +46,7 @@ public class WebTreeNodeCollection: ControlItemCollection
     if (StringUtility.IsNullOrEmpty (node.ItemID))
       throw new ArgumentException ("The node does not contain an 'ItemID' and can therfor not be inserted into the collection.", "value");
 
-    base.OnValidate (value);
+    base.ValidateNewValue (value);
   }
 
   private void EnsureDesignModeTreeNodeInitialized (WebTreeNode node)

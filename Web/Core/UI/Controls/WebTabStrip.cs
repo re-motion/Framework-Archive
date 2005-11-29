@@ -89,10 +89,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
   /// <param name="itemID"> The id of the tab. </param>
   private void HandleSelectionChangeEvent (string itemID)
   {
-    WebTab currentTab = _selectedTab;
     SetSelectedTab (itemID);
-    if (currentTab != _selectedTab)
-      OnSelectedIndexChanged();
+    OnSelectedIndexChanged();
   }
 
   protected virtual void OnSelectedIndexChanged()

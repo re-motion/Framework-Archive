@@ -89,7 +89,7 @@ public class ControlItemCollection: CollectionBase
       CollectionChanged(this, e);
   }
 
-  protected override void OnValidate (object value)
+  protected virtual void ValidateNewValue (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (IControlItem));
     
@@ -98,13 +98,11 @@ public class ControlItemCollection: CollectionBase
       throw new ArgumentTypeException ("value", controlItem.GetType());
     if (Find (controlItem.ItemID) != null)
       throw new ArgumentException (string.Format ("The collection already contains an item with ItemID '{0}'.", controlItem.ItemID), "value");
-    
-    base.OnValidate (value);
   }
 
   protected override void OnInsert (int index, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (IControlItem));
+    ValidateNewValue (value);
 
     base.OnInsert (index, value);
     IControlItem controlItem = (IControlItem) value;
@@ -122,7 +120,7 @@ public class ControlItemCollection: CollectionBase
 
   protected override void OnSet (int index, object oldValue, object newValue)
   {
-    ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (IControlItem));
+    ValidateNewValue (newValue);
 
     base.OnSet (index, oldValue, newValue);
     IControlItem controlItem = (IControlItem) newValue;
