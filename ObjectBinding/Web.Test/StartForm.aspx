@@ -1,6 +1,6 @@
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Page Trace="false" language="c#" Codebehind="StartForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.StartForm" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head>
@@ -18,6 +18,35 @@ function OpenClientWindow (url)
 </head>
 <body MS_POSITIONING="FlowLayout">
 <form id=Form method=post runat="server">
+<script language=javascript>
+document.onkeydown = document.onkeypress = function (evt) 
+{
+  if (typeof evt == 'undefined')
+  {
+    evt = window.event;
+  }
+  if (evt) 
+  {
+    var keyCode = evt.keyCode ? evt.keyCode : evt.charCode;
+    if (keyCode == 8)
+    {
+      if (evt.preventDefault) 
+      {
+         evt.preventDefault();
+      }
+      return false;
+    }
+    else 
+    {
+      return true;
+    }
+  }
+  else 
+  {
+    return true;
+  }
+}
+</script>
 <p>Wxe-Enabled Tests for individual Business Object 
 Controls<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest</A></p>
 <p>Wxe-Enabled Tests containing all the Business Object 
@@ -39,7 +68,7 @@ href="WxeHandler.ashx?WxeFunctionType=OBWTest.Design.DesignTestFunction,OBWTest"
 </p><p>
 <rubicon:WebButton id="Submit1Button" runat="server" Text="Submit 1"></rubicon:WebButton>
 </p><p>
-<rubicon:WebButton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></rubicon:WebButton>
+<rubicon:WebButton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></rubicon:WebButton><asp:TextBox id="TextBox1" runat="server"></asp:TextBox>
 </p></form>
   </body>
 </html>
