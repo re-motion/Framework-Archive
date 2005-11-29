@@ -208,13 +208,25 @@ public class UrlMappingCollection: CollectionBase
       List.Remove (mapping);
   }
 
-  protected override void OnValidate (object value)
+  protected virtual void ValidateNewValue (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (UrlMapping));
     base.OnValidate (value);
     UrlMapping mapping = (UrlMapping) value;
     if (Find (mapping.Resource) != null)
       throw new ArgumentException (string.Format ("The mapping already contains an entry for the following resource: '{0}'.", mapping.Resource), "value");
+  }
+
+  protected override void OnInsert(int index, object value)
+  {
+    ValidateNewValue (value);
+    base.OnInsert (index, value);
+  }
+
+  protected override void OnSet(int index, object oldValue, object newValue)
+  {
+    ValidateNewValue (newValue);
+    base.OnSet (index, oldValue, newValue);
   }
 
   public Type FindType (string path)
