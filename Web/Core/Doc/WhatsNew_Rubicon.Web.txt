@@ -11,6 +11,9 @@
 - Rubicon.Web.UI.Controls.WebTab
   * Obsolete Property TabID entfernt.
 
+- Rubicon.Web.Configuration.ExecutionEngineConfiguration
+  * Attribut ViewStateInSession entfernt. ViewState ist nun imm in der Session.
+
 1.3.25
 ======
 - Rubicon.Web.ExecutionEngine.WxePage
