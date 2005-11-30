@@ -17,7 +17,6 @@ public class ExecutionEngineConfiguration
   private int _functionTimeout = 20;
   private bool _enableSessionManagement = true;
   private int _refreshInterval = 10;
-  private bool _viewStateInSession = true;
   private string _urlMappingFile = string.Empty;
   private int _maximumUrlLength = 1024;
 
@@ -46,15 +45,6 @@ public class ExecutionEngineConfiguration
   {
     get { return _refreshInterval; }
     set { _refreshInterval = value; }
-  }
-
-  /// <summary> Gets or sets a flag specifying whether the page view state should be stored in the session. </summary>
-  /// <value> <see langword="true"/> to use the session. Defaults to <see langword="true"/>. </value>
-  [XmlAttribute ("viewStateInSession")]
-  public bool ViewStateInSession
-  {
-    get { return _viewStateInSession; }
-    set { _viewStateInSession = value; }
   }
 
   /// <summary> Gets or sets the path to the file holding the URL mapping configuration. </summary>
