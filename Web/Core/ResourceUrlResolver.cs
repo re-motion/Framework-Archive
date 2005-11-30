@@ -136,29 +136,10 @@ public sealed class ResourceUrlResolver
   private static string GetRunTimeRoot()
   {
     string root = WebConfiguration.Current.Resources.Root;
-
-    switch (WebConfiguration.Current.Resources.RootMode)
-    {
-      case ResourceRootMode.AbsoluteWithApplicationRoot:
-      {
-        if (HttpRuntime.AppDomainAppVirtualPath != "/")
-          root = HttpRuntime.AppDomainAppVirtualPath + "/" + root;
-        if (! root.StartsWith ("/"))
-          root = "/" + root;
-        break;
-      }
-      case ResourceRootMode.Absolute:
-      {
-        if (! root.StartsWith ("/"))
-          root = "/" + root;
-        break;
-      }
-      case ResourceRootMode.Relative:
-      {
-        // root is always relative by default
-        break;
-      }
-    }
+    if (HttpRuntime.AppDomainAppVirtualPath != "/")
+      root = HttpRuntime.AppDomainAppVirtualPath + "/" + root;
+    if (! root.StartsWith ("/"))
+      root = "/" + root;
     return root;
   }
 

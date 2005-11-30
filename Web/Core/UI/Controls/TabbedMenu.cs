@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
@@ -62,24 +63,88 @@ public class TabStripMenu: WebControl
     base.OnInit (e);
     _isPastInitialization = true;
     _mainMenuTabStrip.EnableSelectedTab = true;
+    _mainMenuTabStrip.EnableViewState = false;
     _subMenuTabStrip.EnableSelectedTab = true;
+    _subMenuTabStrip.EnableViewState = false;
+
+    LoadSelectedTabs ();
   }
 
-  internal void EnsureMainMenuTabStripRestored ()
+  protected virtual string SelectedTab
   {
-    _mainMenuTabStrip.EnsureTabsRestored();
+    get { return "TabStripMenuSelected"; }
   }
 
-  internal void EnsureSubMenuTabStripRefreshed ()
+  private void LoadSelectedTabs ()
+  {
+    IWindowStateManager windowStateManager = Page as IWindowStateManager;
+    string value = null;
+    if (windowStateManager != null)
+      value = (string) windowStateManager.GetData (SelectedTab);
+
+    string[] selectedTabIDs;
+    if (value != null)
+      selectedTabIDs = (string[]) TypeConversionServices.Current.Convert (typeof (string), typeof (string[]), value);
+    else
+      selectedTabIDs = new string[0];
+
+    if (selectedTabIDs.Length > 0)
+    {
+      string selectedMainMenuItemID = selectedTabIDs[0];
+      WebTab selectedMainMenuItem = _mainMenuTabStrip.Tabs.Find (selectedMainMenuItemID);
+      selectedMainMenuItem.IsSelected = true;
+    }
+    RefreshSubMenuTabStrip (true);
+    if (selectedTabIDs.Length > 1)
+    {
+      string selectedSubMenuItemID = selectedTabIDs[1];
+      WebTab selectedSubMenuItem = _subMenuTabStrip.Tabs.Find (selectedSubMenuItemID);
+      selectedSubMenuItem.IsSelected = true;
+    }
+  }
+
+  private void SaveSelectedTabs ()
+  {
+    IWindowStateManager windowStateManager = Page as IWindowStateManager;
+    if (windowStateManager == null)
+      return;
+
+    if (_mainMenuTabStrip.SelectedTab == null)
+      return;
+
+    string[] selectedTabIDs;
+    if (_subMenuTabStrip.SelectedTab == null)
+    {
+      selectedTabIDs = new string[1];
+      selectedTabIDs[0] = _mainMenuTabStrip.SelectedTab.ItemID;
+    }
+    else
+    {
+      selectedTabIDs = new string[2];
+      selectedTabIDs[0] = _mainMenuTabStrip.SelectedTab.ItemID;
+      selectedTabIDs[1] = _subMenuTabStrip.SelectedTab.ItemID;
+    }
+    string value = 
+        (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), selectedTabIDs);
+    windowStateManager.SetData (SelectedTab, value);
+  }
+
+//
+//  private void EnsureMainMenuTabStripRestored ()
+//  {
+//    _mainMenuTabStrip.EnsureTabsRestored();
+//  }
+
+  private void EnsureSubMenuTabStripRefreshed ()
   {
     if (_isSubMenuTabStripRefreshed)
       return;
-    _isSubMenuTabStripRefreshed = true;
     RefreshSubMenuTabStrip (false);
   }
 
   internal void RefreshSubMenuTabStrip (bool resetSubMenu)
   {
+    _isSubMenuTabStripRefreshed = true;
     if (resetSubMenu)
       _subMenuTabStrip.Tabs.Clear();
     TabStripMainMenuItem selectedMainMenuItem = (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab;
@@ -102,6 +167,8 @@ public class TabStripMenu: WebControl
   {
     EnsureSubMenuTabStripRefreshed ();
 
+    base.OnPreRender (e);
+
     string url = null;
     if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     {
@@ -113,7 +180,7 @@ public class TabStripMenu: WebControl
 //    if (Views.Count == 0)
 //      Views.Add (_placeHolderTabView);
 
-    base.OnPreRender (e);
+    SaveSelectedTabs();
   }
 
   protected override HtmlTextWriterTag TagKey
@@ -309,15 +376,15 @@ public class TabStripMainMenuItem: WebTab
     _subMenuTabs.OwnerControl = OwnerControl;
   }
 
-  protected override void LoadControlState (object state)
-  {
-    base.LoadControlState (state);
-    if (IsSelected)
-    {
-      TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
-      tabStripMenu.EnsureSubMenuTabStripRefreshed ();
-    }
-  }
+//  protected override void LoadControlState (object state)
+//  {
+//    base.LoadControlState (state);
+//    if (IsSelected)
+//    {
+//      TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
+//      tabStripMenu.EnsureSubMenuTabStripRefreshed ();
+//    }
+//  }
 
   public override void OnSelectionChanged()
   {
@@ -362,13 +429,12 @@ public class TabStripSubMenuItem: WebTab
     _parent = parent;
   }
 
-  protected override void LoadControlState (object state)
-  {
-    TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
-    tabStripMenu.EnsureMainMenuTabStripRestored();
-    base.LoadControlState (state);
-  }
-
+//  protected override void LoadControlState (object state)
+//  {
+//    TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
+//    tabStripMenu.EnsureMainMenuTabStripRestored();
+//    base.LoadControlState (state);
+//  }
 }
 
 public class TabStripSubMenuItemCollection: WebTabCollection
@@ -419,5 +485,11 @@ public class TabStripSubMenuItemCollection: WebTabCollection
     for (int i = 0; i < InnerList.Count; i++)
       ((TabStripSubMenuItem) InnerList[i]).SetParent (_parent);
   }
+}
+
+public interface IWindowStateManager
+{
+  object GetData (string key);
+  void SetData (string key, object value);
 }
 }

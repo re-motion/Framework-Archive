@@ -103,7 +103,7 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
       handler (this, EventArgs.Empty);
   }
 
-  internal void EnsureTabsRestored()
+  private void EnsureTabsRestored()
   {
     if (_hasTabsRestored)
       return;
