@@ -551,7 +551,8 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
-    if (WebConfiguration.Current.ExecutionEngine.ViewStateInSession)
+    bool isViewStateInSession = true;
+    if (isViewStateInSession)
       _wxeInfo.SavePageStateToPersistenceMedium (viewState);
     else
       base.SavePageStateToPersistenceMedium (viewState);
@@ -559,7 +560,8 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   protected override object LoadPageStateFromPersistenceMedium()
   {
-    if (WebConfiguration.Current.ExecutionEngine.ViewStateInSession)
+    bool isViewStateInSession = true;
+    if (isViewStateInSession)
       return _wxeInfo.LoadPageStateFromPersistenceMedium ();
     else
       return base.LoadPageStateFromPersistenceMedium ();
