@@ -3,6 +3,18 @@
 - BocDateTimeValue
   * Positionierung des DatePickers auf gescrollten Seiten optimiert.
   * Validierung für ungebundene Controls ohne definierten ValueType eingebaut.
+
+- Rubicon.ObjectBinding.Web.Controls.BocCommand
+  * Click Event:
+    Typ von EventHander auf CommandClickEventHandler geändert. Die EventArgs auf CommandClickEventArgs.
+    Als Sender wird nun das OwnerControl übergeben anstelle des Commands. 
+    Auf das Command kann über die Args abgefragt werden.
+
+- Rubicon.ObjectBinding.Web.Controls.BocListItemCommand
+  * Click Event:
+    Typ von EventHander auf CommandClickEventHandler geändert. Die EventArgs auf CommandClickEventArgs.
+    Als Sender wird nun das OwnerControl übergeben anstelle des Commands. 
+    Auf das Command kann über die Args abgefragt werden.
   
 1.3.26
 ======

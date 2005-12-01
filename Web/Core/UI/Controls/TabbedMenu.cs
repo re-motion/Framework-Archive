@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.Utilities;
 using Rubicon.Web.UI.Design;
 using Rubicon.Web.UI.Globalization;
@@ -70,22 +71,17 @@ public class TabStripMenu: WebControl
     LoadSelectedTabs ();
   }
 
-  protected virtual string SelectedTab
+  protected virtual string SelectedTabIDsID
   {
     get { return "TabStripMenuSelected"; }
   }
 
   private void LoadSelectedTabs ()
   {
-    IWindowStateManager windowStateManager = Page as IWindowStateManager;
-    string value = null;
-    if (windowStateManager != null)
-      value = (string) windowStateManager.GetData (SelectedTab);
-
-    string[] selectedTabIDs;
-    if (value != null)
-      selectedTabIDs = (string[]) TypeConversionServices.Current.Convert (typeof (string), typeof (string[]), value);
-    else
+    string[] selectedTabIDs = GetSelectedTabIDsFromWindowState();
+    if (selectedTabIDs == null)
+      selectedTabIDs = GetSelectedTabIDsFromQueryString();
+    if (selectedTabIDs == null)
       selectedTabIDs = new string[0];
 
     if (selectedTabIDs.Length > 0)
@@ -103,17 +99,65 @@ public class TabStripMenu: WebControl
     }
   }
 
-  private void SaveSelectedTabs ()
+  private string[] GetSelectedTabIDsFromQueryString()
+  {
+    string value;
+    if (Page is IWxePage)
+    {
+      value = PageUtility.GetUrlParameter (WxeContext.Current.QueryString, SelectedTabIDsID);
+      value = System.Web.HttpUtility.UrlDecode (value, System.Web.HttpContext.Current.Response.ContentEncoding);
+    }
+    else
+    {
+      value = Context.Request.QueryString[SelectedTabIDsID];
+    }
+    if (value != null)
+      return (string[]) TypeConversionServices.Current.Convert (typeof (string), typeof (string[]), value);
+    else
+      return null;
+  }
+
+  private string[] GetSelectedTabIDsFromWindowState()
+  {
+    IWindowStateManager windowStateManager = Page as IWindowStateManager;
+    if (windowStateManager != null)
+      return (string[]) windowStateManager.GetData (SelectedTabIDsID);
+    else
+      return null;
+  }
+
+  private void SaveSelectedTabs()
+  {
+    SaveSelectedTabsInWindowState();
+  }
+
+  private void SaveSelectedTabsInWindowState()
   {
     IWindowStateManager windowStateManager = Page as IWindowStateManager;
     if (windowStateManager == null)
       return;
 
-    if (_mainMenuTabStrip.SelectedTab == null)
-      return;
+    string[] selectedTabIDs = GetSelectedTabIDs();
+    windowStateManager.SetData (SelectedTabIDsID, selectedTabIDs);
+  }
 
-    string[] selectedTabIDs;
-    if (_subMenuTabStrip.SelectedTab == null)
+  public string AddSelectedTabsToUrl (string url)
+  {
+    string[] selectedTabIDs = GetSelectedTabIDs();
+
+    string value = 
+        (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), selectedTabIDs);
+    return PageUtility.AddUrlParameter (url, SelectedTabIDsID, value);
+  }
+
+  private string[] GetSelectedTabIDs()
+  {
+    string[] selectedTabIDs = new string[2];
+    if (_mainMenuTabStrip.SelectedTab == null)
+    {
+      selectedTabIDs = new string[0];
+    }
+    else if (_subMenuTabStrip.SelectedTab == null)
     {
       selectedTabIDs = new string[1];
       selectedTabIDs[0] = _mainMenuTabStrip.SelectedTab.ItemID;
@@ -124,16 +168,8 @@ public class TabStripMenu: WebControl
       selectedTabIDs[0] = _mainMenuTabStrip.SelectedTab.ItemID;
       selectedTabIDs[1] = _subMenuTabStrip.SelectedTab.ItemID;
     }
-    string value = 
-        (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), selectedTabIDs);
-    windowStateManager.SetData (SelectedTab, value);
+    return selectedTabIDs;
   }
-
-//
-//  private void EnsureMainMenuTabStripRestored ()
-//  {
-//    _mainMenuTabStrip.EnsureTabsRestored();
-//  }
 
   private void EnsureSubMenuTabStripRefreshed ()
   {
@@ -177,9 +213,7 @@ public class TabStripMenu: WebControl
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
-//    if (Views.Count == 0)
-//      Views.Add (_placeHolderTabView);
-
+    string value = AddSelectedTabsToUrl ("?");
     SaveSelectedTabs();
   }
 
@@ -376,16 +410,6 @@ public class TabStripMainMenuItem: WebTab
     _subMenuTabs.OwnerControl = OwnerControl;
   }
 
-//  protected override void LoadControlState (object state)
-//  {
-//    base.LoadControlState (state);
-//    if (IsSelected)
-//    {
-//      TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
-//      tabStripMenu.EnsureSubMenuTabStripRefreshed ();
-//    }
-//  }
-
   public override void OnSelectionChanged()
   {
     base.OnSelectionChanged ();
@@ -428,13 +452,6 @@ public class TabStripSubMenuItem: WebTab
     ArgumentUtility.CheckNotNull ("parent", parent);
     _parent = parent;
   }
-
-//  protected override void LoadControlState (object state)
-//  {
-//    TabStripMenu tabStripMenu = (TabStripMenu) OwnerControl;
-//    tabStripMenu.EnsureMainMenuTabStripRestored();
-//    base.LoadControlState (state);
-//  }
 }
 
 public class TabStripSubMenuItemCollection: WebTabCollection
