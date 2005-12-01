@@ -285,13 +285,15 @@ public class BocReferenceValue:
   /// </param>
   protected virtual void OnCommandClick (IBusinessObjectWithIdentity businessObject)
   {
-    BocCommandClickEventHandler commandClickHandler = (BocCommandClickEventHandler) Events[s_commandClickEvent];
     if (Command != null)
-      Command.OnClick (businessObject);
-    if (commandClickHandler != null)
     {
-      BocCommandClickEventArgs e = new BocCommandClickEventArgs (businessObject);
-      commandClickHandler (this, e);
+      Command.OnClick (businessObject);
+      BocCommandClickEventHandler commandClickHandler = (BocCommandClickEventHandler) Events[s_commandClickEvent];
+      if (commandClickHandler != null)
+      {
+        BocCommandClickEventArgs e = new BocCommandClickEventArgs (Command, businessObject);
+        commandClickHandler (this, e);
+      }
     }
   }
 

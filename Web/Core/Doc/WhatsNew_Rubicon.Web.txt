@@ -11,6 +11,12 @@
 - Rubicon.Web.UI.Controls.WebTab
   * Obsolete Property TabID entfernt.
 
+- Rubicon.Web.UI.Controls.Command
+  * Click Event:
+    Typ von EventHander auf CommandClickEventHandler geändert. Die EventArgs auf CommandClickEventArgs.
+    Als Sender wird nun das OwnerControl übergeben anstelle des Commands. 
+    Auf das Command kann über die Args abgefragt werden.
+  
 - Rubicon.Web.Configuration.ExecutionEngineConfiguration
   * Attribut ViewStateInSession entfernt. ViewState ist nun imm in der Session.
 
