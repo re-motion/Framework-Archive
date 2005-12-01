@@ -216,7 +216,7 @@ public class Command: IControlItem
   private Control _ownerControl = null;
   
   [Browsable (false)]
-  public EventHandler Click;
+  public CommandClickEventHandler Click;
 
   public Command ()
     : this (CommandType.None)
@@ -236,7 +236,7 @@ public class Command: IControlItem
       return;
     _hasClickFired = true;
     if (Click != null)
-      Click (this, EventArgs.Empty);
+      Click (OwnerControl, new CommandClickEventArgs (this));
   }
 
   /// <summary> Renders the opening tag for the command. </summary>
@@ -536,6 +536,31 @@ public enum CommandShow
   ReadOnly,
   /// <summary> The command is only active if the containing element is in edit-mode. </summary>
   EditMode
+}
+
+/// <summary>
+///   Represents the method that handles the <see cref="Command.Click"/> event
+///   raised when clicking on a <see cref="Command"/> of type <see cref="CommandType.Event"/>.
+/// </summary>
+public delegate void CommandClickEventHandler (object sender, CommandClickEventArgs e);
+
+/// <summary> Provides data for the <see cref="Command.Click"/> event. </summary>
+public class CommandClickEventArgs: EventArgs
+{
+  private Command _command;
+
+  /// <summary> Initializes a new instance. </summary>
+  public CommandClickEventArgs (Command command)
+  {
+    ArgumentUtility.CheckNotNull ("command", command);
+    _command = command;
+  }
+
+  /// <summary> The <see cref="Command"/> that caused the event. </summary>
+  public Command Command
+  {
+    get { return _command; }
+  }
 }
 
 }
