@@ -665,6 +665,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         WxePageInfo.PageTokenID, pageToken, senderID, functionToken);
   }
 
+  
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl()">IWxePage.GetPermanentUrl()</see>.
   /// </summary>
@@ -688,6 +689,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     return WxeContext.Current.GetPermanentUrl (functionType, queryString);
   }
+
 
   /// <summary> Implements <see cref="IWxePage.IsReturningPostBack">IWxePage.IsReturningPostBack</see>. </summary>
   public bool IsReturningPostBack
@@ -841,11 +843,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
+  
   /// <summary> Find the <see cref="IResourceManager"/> for this WxePageInfo. </summary>
   protected virtual IResourceManager GetResourceManager()
   {
     return GetResourceManager (typeof (ResourceIdentifier));
   }
+
 
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.UI.ISmartNavigablePage.DiscardSmartNavigationData()">ISmartNavigablePage.DiscardSmartNavigationData()</see>.
@@ -874,6 +878,40 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
     _smartFocusID = id;
   }
+
+  private NameObjectCollection WindowState
+  {
+    get
+    {
+      NameObjectCollection windowState = 
+          (NameObjectCollection) CurrentFunction.RootFunction.Variables["WxeWindowState"];
+      if (windowState == null)
+      {
+        windowState = new NameObjectCollection();
+        CurrentFunction.RootFunction.Variables["WxeWindowState"] = windowState;
+      }
+      return windowState;
+    }
+  }
+
+  /// <summary>
+  ///   Implements <see cref="Rubicon.Web.UI.Controls.IWindowStateManager.GetData">Rubicon.Web.UI.Controls.IWindowStateManager.GetData</see>.
+  /// </summary>
+  public object GetData (string key)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+    return WindowState[key]; 
+  }
+
+  /// <summary>
+  ///   Implements <see cref="Rubicon.Web.UI.Controls.IWindowStateManager.SetData">Rubicon.Web.UI.Controls.IWindowStateManager.SetData</see>.
+  /// </summary>
+  public void SetData (string key, object value)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+    WindowState[key] = value;
+  }
+
 }
 
 }
