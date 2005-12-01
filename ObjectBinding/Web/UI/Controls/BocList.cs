@@ -813,13 +813,16 @@ public class BocList:
       IBusinessObject businessObject)
   {
     if (column != null && column.Command != null)
-      column.Command.OnClick (column, listIndex, businessObject);
-    BocListItemCommandClickEventHandler commandClickHandler = 
-        (BocListItemCommandClickEventHandler) Events[s_listItemCommandClickEvent];
-    if (commandClickHandler != null)
     {
-      BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs (column, listIndex, businessObject);
-      commandClickHandler (this, e);
+      column.Command.OnClick (column, listIndex, businessObject);
+      BocListItemCommandClickEventHandler commandClickHandler = 
+          (BocListItemCommandClickEventHandler) Events[s_listItemCommandClickEvent];
+      if (commandClickHandler != null)
+      {
+        BocListItemCommandClickEventArgs e = 
+            new BocListItemCommandClickEventArgs (column.Command, column, listIndex, businessObject);
+        commandClickHandler (this, e);
+      }
     }
   }
 
