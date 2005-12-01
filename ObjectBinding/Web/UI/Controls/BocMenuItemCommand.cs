@@ -94,7 +94,7 @@ public class BocMenuItemCommand: BocCommand
     if (Click != null)
     {
       WebMenuItemClickEventArgs e = new WebMenuItemClickEventArgs (menuItem);
-      Click (this, e);
+      Click (OwnerControl, e);
     }
   }
 
