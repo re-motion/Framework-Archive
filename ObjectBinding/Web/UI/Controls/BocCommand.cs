@@ -119,8 +119,8 @@ public class BocCommand: Command
     _hasClickFired = true;
     if (Click != null)
     {
-      BocCommandClickEventArgs e = new BocCommandClickEventArgs (businessObject);
-      Click (this, e);
+      BocCommandClickEventArgs e = new BocCommandClickEventArgs (this, businessObject);
+      Click (OwnerControl, e);
     }
   }
 
@@ -217,15 +217,21 @@ public class BocCommand: Command
 public delegate void BocCommandClickEventHandler (object sender, BocCommandClickEventArgs e);
 
 /// <summary> Provides data for the <see cref="BocCommand.Click"/> event. </summary>
-public class BocCommandClickEventArgs: EventArgs
+public class BocCommandClickEventArgs: CommandClickEventArgs
 {
   private IBusinessObject _businessObject;
 
   /// <summary> Initializes a new instance. </summary>
-  public BocCommandClickEventArgs (
-      IBusinessObject businessObject)
+  public BocCommandClickEventArgs (BocCommand command, IBusinessObject businessObject)
+    : base (command)
   {
     _businessObject = businessObject;
+  }
+
+  /// <summary> The <see cref="BocCommand"/> that caused the event. </summary>
+  public new BocCommand Command
+  {
+    get { return (BocCommand) base.Command; }
   }
 
   /// <summary>
