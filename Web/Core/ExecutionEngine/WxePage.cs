@@ -246,7 +246,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
 /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/Class/*' />
 /// <seealso cref="IWxePage"/>
 /// <seealso cref="ISmartNavigablePage"/>
-public class WxePage: Page, IWxePage, ISmartNavigablePage
+public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
 {
   /// <summary> Obsolete. Executes the <paramref name="function"/> in another window or frame. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
@@ -502,6 +502,20 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage
 
   #endregion
   
+  #region IWindowStateManager Implementation
+
+  object IWindowStateManager.GetData (string key)
+  {
+    return _wxeInfo.GetData (key);
+  }
+
+  void IWindowStateManager.SetData (string key, object value)
+  {
+    _wxeInfo.SetData (key, value);
+  }
+  
+  #endregion
+
   private WxePageInfo _wxeInfo;
   private ValidatableControlInitializer _validatableControlInitializer;
   private PostLoadInvoker _postLoadInvoker;

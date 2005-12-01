@@ -594,21 +594,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TestTabStripWithoutWxeForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "TestTabStripWithoutWxeForm.aspx.cs"
-                    DependentUpon = "TestTabStripWithoutWxeForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestTabStripWithoutWxeForm.aspx.resx"
-                    DependentUpon = "TestTabStripWithoutWxeForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "TestUserControlBinding.aspx"
                     SubType = "Form"
                     BuildAction = "Content"
