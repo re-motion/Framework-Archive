@@ -36,7 +36,7 @@ public class WebMenuItem: IControlItem
   /// <summary> The control to which this object belongs. </summary>
   private Control _ownerControl = null;
   private EventHandler _ownerControlPreRender;
-  private EventHandler _commandClick;
+  private CommandClickEventHandler _commandClick;
 
   public WebMenuItem (
       string itemID, 
@@ -60,7 +60,7 @@ public class WebMenuItem: IControlItem
     _command = new SingleControlItemCollection (command, new Type[] {typeof (Command)});
 
     _ownerControlPreRender = new EventHandler(OwnerControl_PreRender);
-    _commandClick = new EventHandler (Command_Click);
+    _commandClick = new CommandClickEventHandler (Command_Click);
     if (Command != null)
       Command.Click += _commandClick;
   }
@@ -89,7 +89,7 @@ public class WebMenuItem: IControlItem
   {
   }
 
-  private void Command_Click (object sender, EventArgs e)
+  private void Command_Click (object sender, CommandClickEventArgs e)
   {
     OnClick ();
   }
@@ -373,7 +373,14 @@ public class WebMenuItemClickEventArgs: EventArgs
   /// <summary> Initializes an instance. </summary>
   public WebMenuItemClickEventArgs (WebMenuItem item)
   {
+    ArgumentUtility.CheckNotNull ("item", item);
     _item = item;
+  }
+
+  /// <summary> The <see cref="Command"/> that caused the event. </summary>
+  public Command Command
+  {
+    get { return _item.Command; }
   }
 
   /// <summary> The <see cref="WebMenuItem"/> that was clicked. </summary>
