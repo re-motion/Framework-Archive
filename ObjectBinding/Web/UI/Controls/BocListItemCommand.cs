@@ -132,8 +132,9 @@ public class BocListItemCommand: BocCommand
   {
     if (Click != null)
     {
-      BocListItemCommandClickEventArgs e = new BocListItemCommandClickEventArgs (column, listIndex, businessObject);
-      Click (this, e);
+      BocListItemCommandClickEventArgs e = 
+          new BocListItemCommandClickEventArgs (this, column, listIndex, businessObject);
+      Click (OwnerControl, e);
     }
   }
 
@@ -268,13 +269,20 @@ public class BocListItemCommandClickEventArgs: BocCommandClickEventArgs
 
   /// <summary> Initializes a new instance. </summary>
   public BocListItemCommandClickEventArgs (
+      BocListItemCommand command,
       BocCommandEnabledColumnDefinition column, 
       int listIndex, 
       IBusinessObject businessObject)
-    : base (businessObject)
+    : base (command, businessObject)
   {
     _column = column;
     _listIndex = listIndex;
+  }
+
+  /// <summary> The <see cref="BocListItemCommand"/> that caused the event. </summary>
+  public new BocListItemCommand Command
+  {
+    get { return (BocListItemCommand) base.Command; }
   }
 
   /// <summary> The <see cref="BocCommandEnabledColumnDefinition"/> to which the command belongs. </summary>
