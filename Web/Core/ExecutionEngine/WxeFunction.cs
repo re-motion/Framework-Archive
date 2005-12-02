@@ -63,6 +63,116 @@ public abstract class WxeFunction: WxeStepList
     return declarations;
   }
 
+  /// <summary>
+  ///   Parses a string of comma separated actual parameters.
+  /// </summary>
+  /// <remarks>
+  ///   <list type="table">
+  ///     <listheader>
+  ///       <term> Type </term>
+  ///       <description> Syntax </description>
+  ///     </listheader>
+  ///     <item>
+  ///       <term> <see cref="String"/> </term>
+  ///       <description> A quoted string. Escape quotes and line breaks using the backslash character.</description>
+  ///     </item>
+  ///     <item>
+  ///       <term> Any type that has a <see langword="static"/> <c>Parse</c> method. </term>
+  ///       <description> A quoted string that can be passed to the type's <c>Parse</c> method. For boolean constants 
+  ///         (&quot;true&quot;, &quot;false&quot;) and numeric constants, quotes are optional.  </description>
+  ///     </item>
+  ///     <item>
+  ///       <term> Variable Reference </term>
+  ///       <description> An unquoted variable name. </description>
+  ///     </item>
+  ///   </list>
+  /// </remarks>
+  /// <example>
+  ///   "the first \"string\" argument, containing quotes and a comma", "true", "12/30/04 12:00", variableName
+  /// </example>
+  public static object[] ParseActualParameters (
+      WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
+  {
+    StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList (actualParameters, ',');
+
+    if (parsedItems.Length > parameterDeclarations.Length)
+      throw new ApplicationException ("Number of actual parameters exceeds number of formal paramteres.");
+
+    ArrayList arguments = new ArrayList();
+    for (int i = 0; i < parsedItems.Length; ++i)
+    {
+      StringUtility.ParsedItem item = parsedItems[i];
+      WxeParameterDeclaration paramDecl = parameterDeclarations[i];
+
+      try
+      {
+        if (item.IsQuoted)
+        {
+          if (paramDecl.Type == typeof (string))                              // string constant
+          {
+            arguments.Add (item.Value);
+          }
+          else                                                                // parse constant
+          {
+            arguments.Add (TypeConversionServices.Current.Convert (
+                null, culture, typeof (string), paramDecl.Type, item.Value));
+          }
+        }
+        else
+        {
+          if (string.CompareOrdinal (item.Value, "true") == 0)                // true
+          {
+            arguments.Add (true);
+          }
+          else if (string.CompareOrdinal (item.Value, "false") == 0)          // false
+          {
+            arguments.Add (false);
+          }
+          else if (item.Value.Length > 0 && char.IsDigit (item.Value[0]))     // starts with digit -> parse constant
+          {
+            arguments.Add (TypeConversionServices.Current.Convert (
+                null, culture, typeof (string), paramDecl.Type, item.Value));
+          }
+          else                                                                // variable name
+          {
+            arguments.Add (new WxeVariableReference (item.Value));
+          }
+        }
+      }
+      catch (ArgumentException e)
+      {
+        throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
+      }
+      catch (ParseException e)
+      {
+        throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
+      }
+    }
+
+    return arguments.ToArray ();
+  }
+
+  public static NameValueCollection SerializeParametersForQueryString (
+      WxeParameterDeclaration[] parameterDeclarations, object[] parameterValues)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("parameterDeclarations", parameterDeclarations);
+    ArgumentUtility.CheckNotNullOrItemsNull ("parameterValues", parameterValues);
+
+    NameValueCollection serializedParameters = new NameValueCollection();
+
+    for (int i = 0; i < parameterDeclarations.Length; i++)
+    {
+      WxeParameterDeclaration parameterDeclaration = parameterDeclarations[i];
+      object parameterValue = null;
+      if (i < parameterValues.Length)
+        parameterValue = parameterValues[i];
+      string serializedValue = parameterDeclaration.Converter.ConvertToString (parameterValue, null);
+      if (serializedValue != null)
+        serializedParameters.Add (parameterDeclaration.Name, serializedValue);
+    }
+    return serializedParameters;
+  }
+
   /// <summary> Hashtable&lt;Type, WxeParameterDeclaration[]&gt; </summary>
   private static Hashtable s_parameterDeclarations = new Hashtable();
 
@@ -263,8 +373,13 @@ public abstract class WxeFunction: WxeStepList
     _parametersInitialized = true; // since parameterString may not contain variable references, initialization is done right away
   }
 
+  /// <summary> Initalizes parameters by name. </summary>
+  /// <param name="parameters"> 
+  ///   The list of parameter. Must contain an entry for each required parameter. Must not be <see langword="null"/>. 
+  /// </param>
   public void InitializeParameters (NameValueCollection parameters)
   {
+    ArgumentUtility.CheckNotNull ("parameters", parameters);
     CheckParametersNotInitialized();
 
     WxeParameterDeclaration[] parameterDeclarations = ParameterDeclarations;
@@ -304,104 +419,16 @@ public abstract class WxeFunction: WxeStepList
     InitializeParameters (parameterString, additionalParameters, false);
   }
 
-  /// <summary>
-  ///   Parses a string of comma separated actual parameters.
-  /// </summary>
-  /// <remarks>
-  ///   <list type="table">
-  ///     <listheader>
-  ///       <term> Type </term>
-  ///       <description> Syntax </description>
-  ///     </listheader>
-  ///     <item>
-  ///       <term> <see cref="String"/> </term>
-  ///       <description> A quoted string. Escape quotes and line breaks using the backslash character.</description>
-  ///     </item>
-  ///     <item>
-  ///       <term> Any type that has a <see langword="static"/> <c>Parse</c> method. </term>
-  ///       <description> A quoted string that can be passed to the type's <c>Parse</c> method. For boolean constants 
-  ///         (&quot;true&quot;, &quot;false&quot;) and numeric constants, quotes are optional.  </description>
-  ///     </item>
-  ///     <item>
-  ///       <term> Variable Reference </term>
-  ///       <description> An unquoted variable name. </description>
-  ///     </item>
-  ///   </list>
-  /// </remarks>
-  /// <example>
-  ///   "the first \"string\" argument, containing quotes and a comma", "true", "12/30/04 12:00", variableName
-  /// </example>
   private void InitializeParameters (
       string parameterString, NameObjectCollection additionalParameters, bool delayInitialization)
   {
     CheckParametersNotInitialized();
 
-    _actualParameters = ParseActualParameters (ParameterDeclarations, parameterString, CultureInfo.InvariantCulture);
+    _actualParameters = 
+        WxeFunction.ParseActualParameters (ParameterDeclarations, parameterString, CultureInfo.InvariantCulture);
   
     if (! delayInitialization)
       EnsureParametersInitialized (additionalParameters);
-  }
-
-  private static object[] ParseActualParameters (
-      WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
-  {
-    StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList (actualParameters, ',');
-
-    if (parsedItems.Length > parameterDeclarations.Length)
-      throw new ApplicationException ("Number of actual parameters exceeds number of formal paramteres.");
-
-    ArrayList arguments = new ArrayList();
-    for (int i = 0; i < parsedItems.Length; ++i)
-    {
-      StringUtility.ParsedItem item = parsedItems[i];
-      WxeParameterDeclaration paramDecl = parameterDeclarations[i];
-
-      try
-      {
-        if (item.IsQuoted)
-        {
-          if (paramDecl.Type == typeof (string))                              // string constant
-          {
-            arguments.Add (item.Value);
-          }
-          else                                                                // parse constant
-          {
-            arguments.Add (TypeConversionServices.Current.Convert (
-                null, culture, typeof (string), paramDecl.Type, item.Value));
-          }
-        }
-        else
-        {
-          if (string.CompareOrdinal (item.Value, "true") == 0)                // true
-          {
-            arguments.Add (true);
-          }
-          else if (string.CompareOrdinal (item.Value, "false") == 0)          // false
-          {
-            arguments.Add (false);
-          }
-          else if (item.Value.Length > 0 && char.IsDigit (item.Value[0]))     // starts with digit -> parse constant
-          {
-            arguments.Add (TypeConversionServices.Current.Convert (
-                null, culture, typeof (string), paramDecl.Type, item.Value));
-          }
-          else                                                                // variable name
-          {
-            arguments.Add (new WxeVariableReference (item.Value));
-          }
-        }
-      }
-      catch (ArgumentException e)
-      {
-        throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
-      }
-      catch (ParseException e)
-      {
-        throw new ApplicationException ("Parameter " + paramDecl.Name + ": " + e.Message, e);
-      }
-    }
-
-    return arguments.ToArray ();
   }
 
   /// <summary> Pass actualParameters to Variables. </summary>
