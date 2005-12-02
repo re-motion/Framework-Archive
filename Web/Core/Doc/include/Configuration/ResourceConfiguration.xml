@@ -23,16 +23,11 @@
   </Class>
   <Root>
     <value> 
-      A string specifying an absolute path or a path relative to the application root. Defaults to <c>res</c>.
+      A string specifying a path relative to the application root. Defaults to <c>res</c>.
     </value>
     <remarks> 
       Leading and trailing slashes are removed. 
     </remarks>
     <seealso cref="Rubicon.Web.ResourceUrlResolver"/>
   </Root>
-  <RootMode>
-    <value> 
-      A value of the <see cref="ResourceRootMode"/> enumeration. Defaults to <see cref="ResourceRootMode.Relative"/>.
-    </value>
-  </RootMode>
 </ResourceConfiguration>
