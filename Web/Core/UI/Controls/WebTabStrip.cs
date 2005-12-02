@@ -18,7 +18,10 @@ namespace Rubicon.Web.UI.Controls
 /// <include file='doc\include\UI\Controls\WebTabStrip.xml' path='WebTabStrip/Class/*' />
 [ToolboxData("<{0}:WebTabStrip runat=server></{0}:WebTabStrip>")]
 [Designer (typeof (WebControlDesigner))]
-public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResourceDispatchTarget, IControlWithDesignTimeSupport
+public class WebTabStrip : 
+    WebControl, IControl, 
+    IPostBackDataHandler, IPostBackEventHandler, 
+    IResourceDispatchTarget, IControlWithDesignTimeSupport
 {
   //  constants
   /// <summary> The key identifying a tab resource entry. </summary>
@@ -101,6 +104,26 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     EventHandler handler = (EventHandler) Events[s_selectedIndexChangedEvent];
     if (handler != null)
       handler (this, EventArgs.Empty);
+  }
+
+  void IPostBackEventHandler.RaisePostBackEvent (string eventArgument)
+  {
+    EnsureTabsRestored();
+    HandleClickEvent (eventArgument);
+  }
+
+  private void HandleClickEvent (string eventArgument)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
+    WebTab tab = Tabs.Find (eventArgument);
+    if (tab != null)
+      OnClick (tab);
+  }
+
+  protected virtual void OnClick (WebTab tab)
+  {
+    ArgumentUtility.CheckNotNull ("tab", tab);
+    tab.OnClick();
   }
 
   private void EnsureTabsRestored()
@@ -274,16 +297,6 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     writer.RenderEndTag(); // End Table Row
   }
 
-  private string GetHref (WebTab tab)
-  {
-    if (Page != null)
-      return Page.GetPostBackClientHyperlink (this, tab.ItemID);
-    else if (ControlHelper.IsDesignMode ((Control) this))
-      return "#";
-    else
-      throw new InvalidOperationException (string.Format ("WebTabStrip '{0}' is not part of a page."));
-  }
-
   private void RenderTab (HtmlTextWriter writer, WebTab tab)
   {
     if (ControlHelper.IsDesignMode (this, Context))
@@ -311,9 +324,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     }
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span
 
-    if (! tab.IsSelected || _enableSelectedTab)
-      writer.AddAttribute (HtmlTextWriterAttribute.Href, GetHref (tab));
-    writer.RenderBeginTag (HtmlTextWriterTag.A); // Begin anchor
+    bool isEnabled = ! tab.IsSelected || _enableSelectedTab;
+    tab.RenderBeginTagForCommand (writer, isEnabled);
     
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopBorder);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin top border span
@@ -353,7 +365,8 @@ public class WebTabStrip : WebControl, IControl, IPostBackDataHandler, IResource
     writer.RenderEndTag(); // End left border span
     writer.RenderEndTag(); // End bottom border span
     writer.RenderEndTag(); // End left border span
-    writer.RenderEndTag(); // End anchor
+    
+    tab.RenderEndTagForCommand (writer);
 
     writer.RenderEndTag(); // End tab span
 

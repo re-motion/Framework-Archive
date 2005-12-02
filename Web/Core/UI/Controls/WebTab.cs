@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using Rubicon.Utilities;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -23,6 +24,7 @@ public class WebTab: IControlItem, IControlStateManager
   private bool _isSelected = false;
   private int _selectDesired = 0;
   private bool _isControlStateRestored;
+  private EventHandler _ownerControlPreRender;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, IconInfo icon)
@@ -30,6 +32,7 @@ public class WebTab: IControlItem, IControlStateManager
     ItemID = itemID;
     Text = text;
     _icon = icon;
+    Initialize();
   }
 
   /// <summary> Initalizes a new instance. </summary>
@@ -50,10 +53,28 @@ public class WebTab: IControlItem, IControlStateManager
   public WebTab()
   {
     _icon = new IconInfo();
+    Initialize();
+  }
+
+  private void Initialize()
+  {
+    _ownerControlPreRender = new EventHandler(OwnerControl_PreRender);
   }
 
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
   protected virtual void OnOwnerControlChanged()
+  {
+  }
+
+  private void OwnerControl_PreRender(object sender, EventArgs e)
+  {
+    if (Rubicon.Web.Utilities.ControlHelper.IsDesignMode (_ownerControl))
+      return;
+    PreRender();
+  }
+
+  /// <summary> Is called when the <see cref="OwnerControl"/> is Pre-Rendered. </summary>
+  protected virtual void PreRender()
   {
   }
 
@@ -93,7 +114,7 @@ public class WebTab: IControlItem, IControlStateManager
   }
 
   /// <summary> Gets or sets the ID of this tab. </summary>
-// /// <remarks> Must be unique within the collection of tabs. Must not be <see langword="null"/> or emtpy. </remarks>
+  /// <remarks> Must be unique within the collection of tabs. Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Description ("The ID of this tab.")]
   //No Default value
@@ -208,14 +229,55 @@ public class WebTab: IControlItem, IControlStateManager
     { 
       if (_ownerControl != value)
       {
+        if (OwnerControl != null)
+          OwnerControl.PreRender -= _ownerControlPreRender;
         _ownerControl = value;
+        if (OwnerControl != null)          
+          OwnerControl.PreRender += _ownerControlPreRender;
         OnOwnerControlChanged();
       }
     }
   }
 
+  protected string GetPostBackClientEvent ()
+  {
+    try
+    {
+      //  VS.NET Designer Bug: VS does is not able to determine whether _tabStrip is null.
+      if (ControlHelper.IsDesignMode ((Control) _tabStrip))
+        return string.Empty;
+      if (_tabStrip == null) 
+        throw new InvalidOperationException ("The WebTab is not part of a WebTabStrip.");
+      if (_tabStrip.Page == null) 
+        throw new InvalidOperationException (string.Format ("WebTabStrip '{0}' is not part of a page.", _tabStrip.ID));
+    }
+    catch (NullReferenceException)
+    {
+      return string.Empty;
+    }
+    return _tabStrip.Page.GetPostBackClientHyperlink (_tabStrip, ItemID);
+  }
+
+  public virtual void RenderBeginTagForCommand (HtmlTextWriter writer, bool isEnabled)
+  {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+    if (isEnabled)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, GetPostBackClientEvent ());
+    }
+    writer.RenderBeginTag (HtmlTextWriterTag.A); // Begin anchor
+  }
+
+  public virtual void RenderEndTagForCommand (HtmlTextWriter writer)
+  {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+    writer.RenderEndTag();
+  }
+
   public virtual void RenderContents (HtmlTextWriter writer)
   {
+    ArgumentUtility.CheckNotNull ("writer", writer);
     bool hasIcon = _icon != null && ! StringUtility.IsNullOrEmpty (_icon.Url);
     bool hasText = ! StringUtility.IsNullOrEmpty (_text);
     if (hasIcon)
