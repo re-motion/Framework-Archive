@@ -116,6 +116,7 @@ public class Command: IControlItem
     private string _typeName = string.Empty;
     private string _parameters = string.Empty;
     private string _target = string.Empty;
+    private bool _executeOnClientSide = false;
 
     /// <summary> Simple constructor. </summary>
     public WxeFunctionCommandInfo()
@@ -197,6 +198,17 @@ public class Command: IControlItem
       get { return _target; }
       set { _target = value; }
     }
+
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behaviour")]
+    [Description ("If set, the function is executed on the client-side as an external function.")]
+    [DefaultValue (true)]
+    [NotifyParentProperty (true)]
+    public virtual bool ExecuteOnClientSide
+    {
+      get { return _executeOnClientSide; }
+      set { _executeOnClientSide = value; }
+    }
   }
 
   private string _toolTip;
@@ -240,7 +252,7 @@ public class Command: IControlItem
   }
 
   /// <summary> Renders the opening tag for the command. </summary>
-  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. Must not be <see langword="null"/>. </param>
   /// <param name="postBackEvent">
   ///   The string executed upon the click on a command of types
   ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
@@ -251,7 +263,7 @@ public class Command: IControlItem
   ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
   /// </param>
   /// <param name="parameters">
-  ///   The strings inserted into the href attribute using <c>string.Formar</c>.
+  ///   The strings inserted into the href attribute using <c>string.Format</c>.
   /// </param>
   public virtual void RenderBegin (
       HtmlTextWriter writer, 
@@ -259,6 +271,7 @@ public class Command: IControlItem
       string onClick,
       params string[] parameters)
   {
+    ArgumentUtility.CheckNotNull ("writer", writer);
     switch (_type)
     {
       case CommandType.Href:
@@ -290,7 +303,7 @@ public class Command: IControlItem
           writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
         break;
       }
-      default:
+      case CommandType.None:
       {
         break;
       }
@@ -302,6 +315,7 @@ public class Command: IControlItem
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
   public virtual void RenderEnd (HtmlTextWriter writer)
   {
+    ArgumentUtility.CheckNotNull ("writer", writer);
     writer.RenderEndTag();
   }
 
@@ -354,12 +368,11 @@ public class Command: IControlItem
     return stringBuilder.ToString();
   }
 
-  /// <summary>
-  ///   Executes the <see cref="WxeFunction"/> defined by the 
-  ///   <see cref="WxeFunctionCommandInfo"/>.
-  /// </summary>
+  /// <summary> Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. </summary>
   /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. Must not be null</param>
-  /// <param name="parameters"> The parameters passed to the <see cref="WxeFunction"/>. </param>
+  /// <param name="parameters"> 
+  ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
+  /// </param>
   public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection parameters)
   {
     ArgumentUtility.CheckNotNull ("wxePage", wxePage);
@@ -381,6 +394,17 @@ public class Command: IControlItem
       else
         wxePage.ExecuteFunction (function);
     }
+  }
+
+  public virtual string FormatWxeFunctionUrl()
+  {
+    Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
+    WxeParameterDeclaration[] parameterDeclarations = WxeFunction.GetParamaterDeclarations (functionType);
+    object[] parameterValues = WxeFunction.ParseActualParameters (
+        parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);
+    NameValueCollection queryString = 
+        WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
+    return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);
   }
 
   /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
