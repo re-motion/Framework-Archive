@@ -43,6 +43,101 @@ public class WxeContext
     System.Runtime.Remoting.Messaging.CallContext.SetData ("WxeContext", value);
   }
 
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
+  ///   and using the <paramref name="queryString"/>.
+  /// </summary>
+  /// <param name="httpContext"> 
+  ///   The <see cref="HttpContext"/> used for resolving the path. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="functionType"> 
+  ///   The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 
+  ///   Must be derived from <see cref="WxeFunction"/>. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="queryString">
+  ///   The <see cref="NameValueCollection"/> containing the query string arguments. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <remarks> Call this method only from pages not implementing <see cref="IWxePage"/>. </remarks>
+  /// <exception cref="WxeException">
+  ///   Thrown if no mapping for the <paramref name="functionType"/> has been defined, and the 
+  ///   <see cref="Rubicon.Web.Configuration.WxeConfiguration.DefaultWxeHandler"/> is not set. 
+  /// </exception>
+  public static string GetPermanentUrl (HttpContext httpContext, Type functionType, NameValueCollection queryString)
+  {
+    return GetPermanentUrl (httpContext, functionType, queryString, false);
+  }
+
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
+  ///   and using the <paramref name="queryString"/>.
+  /// </summary>
+  /// <param name="httpContext"> 
+  ///   The <see cref="HttpContext"/> used for resolving the path. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="functionType"> 
+  ///   The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 
+  ///   Must be derived from <see cref="WxeFunction"/>. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="queryString">
+  ///   The <see cref="NameValueCollection"/> containing the query string arguments. Must not be <see langword="null"/>. 
+  /// </param>
+  /// <param name="fallbackOnCurrentUrl"> 
+  ///   If <see langword="true"/>, the method uses the <see cref="Uri.AbsolutePath"/> of the 
+  ///   <paramref name="httpContext"/>'s <see cref="HttpContext.Request"/> as a fallback if no mapping for the
+  ///   <paramref name="functionType"/> has been defined, and the 
+  ///   <see cref="Rubicon.Web.Configuration.WxeConfiguration.DefaultWxeHandler"/> is not set. 
+  ///   Otherwise, a <see cref="WxeException"/> is thrown.
+  /// </param>
+  protected static string GetPermanentUrl (
+      HttpContext httpContext, Type functionType, NameValueCollection queryString, bool fallbackOnCurrentUrl)
+  {
+    ArgumentUtility.CheckNotNull ("httpContext", httpContext);
+    ArgumentUtility.CheckNotNull ("functionType", functionType);
+    if (! typeof (WxeFunction).IsAssignableFrom (functionType))
+      throw new ArgumentException (string.Format ("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
+    ArgumentUtility.CheckNotNull ("queryString", queryString);
+
+    UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
+    if (mapping == null)
+    {
+      string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
+      queryString.Add (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
+    }
+
+    string path;
+    if (mapping == null)
+    {
+      string defaultWxeHandler = Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+      if (StringUtility.IsNullOrEmpty (defaultWxeHandler))
+      {
+        if (fallbackOnCurrentUrl)
+          path = httpContext.Request.Url.AbsolutePath;
+        else
+          throw new WxeException (string.Format ("The WXE Function '{0}' has no mapping and no default WxeHandler URL has been defined in the configuration.", functionType.FullName));
+      }
+      else
+      {
+        path = httpContext.Response.ApplyAppPathModifier (defaultWxeHandler);
+      }
+    }
+    else
+    {
+      path = httpContext.Response.ApplyAppPathModifier (mapping.Resource);
+    }
+
+    string permanentUrl = UrlUtility.GetAbsoluteUrl (httpContext, path) + UrlUtility.FormatQueryString (queryString);
+    
+    int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
+    if (permanentUrl.Length > maxLength)
+    {
+      throw new WxeException (string.Format (
+          "Error while creating the permanent URL for WXE function '{0}'. "
+          + "The URL exceeds the maximum length of {1} bytes. Generated URL: {2}",
+          functionType.Name, maxLength, permanentUrl));
+    }
+
+    return permanentUrl;
+  }
 
   private HttpContext _httpContext;
   private bool _isPostBack = false;
@@ -170,7 +265,7 @@ public class WxeContext
     return GetPath (_httpContext.Request.Url.AbsolutePath, FunctionToken, QueryString);
   }
 
-  /// <summary> Gets the absolute path to the WXE handler. </summary>
+  /// <summary> Gets the absolute path to the WXE handler used for the current function. </summary>
   /// <param name="queryString"> An optional query string to be appended to the path. </param>
   protected internal string GetPath (string queryString)
   {
@@ -229,43 +324,14 @@ public class WxeContext
   /// </summary>
   /// <param name="functionType"> 
   ///   The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 
-  ///   Must be derived from <see cref="WxeFunction"/>. 
+  ///   Must be derived from <see cref="WxeFunction"/>. Must not be <see langword="null"/>. 
   /// </param>
   /// <param name="queryString">
   ///   The <see cref="NameValueCollection"/> containing the query string arguments. Must not be <see langword="null"/>. 
   /// </param>
   public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
   {
-    ArgumentUtility.CheckNotNull ("functionType", functionType);
-    if (! typeof (WxeFunction).IsAssignableFrom (functionType))
-      throw new ArgumentException (string.Format ("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
-    ArgumentUtility.CheckNotNull ("queryString", queryString);
-
-    UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
-    if (mapping == null)
-    {
-      string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
-      queryString.Add (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
-    }
-
-    string path;
-    if (mapping == null)
-      path = _httpContext.Request.Url.AbsolutePath;
-    else
-      path = _httpContext.Response.ApplyAppPathModifier (mapping.Resource);
-
-    string permanentUrl = UrlUtility.GetAbsoluteUrl (_httpContext, path) + UrlUtility.FormatQueryString (queryString);
-    
-    int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
-    if (permanentUrl.Length > maxLength)
-    {
-      throw new WxeException (string.Format (
-          "Error while creating the permanent URL for WXE function '{0}'. "
-          + "The URL exceeds the maximum length of {1} bytes. Generated URL: {2}",
-          functionType.Name, maxLength, permanentUrl));
-    }
-
-    return permanentUrl;
+    return GetPermanentUrl (functionType, queryString, false);
   }
 
   /// <summary> 
@@ -274,7 +340,7 @@ public class WxeContext
   /// </summary>
   /// <param name="functionType"> 
   ///   The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 
-  ///   Must be derived from <see cref="WxeFunction"/>. 
+  ///   Must be derived from <see cref="WxeFunction"/>. Must not be <see langword="null"/>. 
   /// </param>
   /// <param name="queryString">
   ///   The <see cref="NameValueCollection"/> containing the query string arguments. Must not be <see langword="null"/>. 
@@ -286,23 +352,25 @@ public class WxeContext
   {
     ArgumentUtility.CheckNotNull ("queryString", queryString);
 
-    string permanentUrl = GetPermanentUrl (functionType, queryString);
+    string permanentUrl = WxeContext.GetPermanentUrl (_httpContext, functionType, queryString, true);
 
-    if (! useParentPermanentUrl)
-      return permanentUrl;
+    if (useParentPermanentUrl)
+    {
+      if (queryString[WxeHandler.Parameters.WxeReturnUrl] != null)
+        throw new ArgumentException ("The 'queryString' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", "queryString");
 
-    if (queryString[WxeHandler.Parameters.WxeReturnUrl] != null)
-      throw new ArgumentException ("The 'queryString' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", "queryString");
+      int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
 
-    int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
+      string currentFunctionUrl = _httpContext.Request.Url.AbsolutePath + _queryString;
+      StringCollection parentPermanentUrls = ExtractReturnUrls (currentFunctionUrl);
 
-    string parentPermanentUrl = _httpContext.Request.Url.AbsolutePath + _queryString;
-    StringCollection parentPermanentUrls = ExtractReturnUrls (parentPermanentUrl);
-
-    int count = GetMergeablePermanentUrlCount (permanentUrl, parentPermanentUrls, maxLength);
-    parentPermanentUrl = FormatParentPermanentUrl (parentPermanentUrls, count);
-    
-    return PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+      int count = GetMergeablePermanentUrlCount (permanentUrl, parentPermanentUrls, maxLength);
+      string parentPermanentUrl = FormatParentPermanentUrl (parentPermanentUrls, count);
+      
+      permanentUrl = 
+          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+    }
+    return permanentUrl;
   }
 
   private StringCollection ExtractReturnUrls (string url)
