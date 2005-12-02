@@ -14,6 +14,13 @@ namespace Rubicon.Web.UnitTests.Configuration
 
 public class WebConfigurationFactory
 {
+  public static WebConfiguration GetExecutionEngineWithDefaultWxeHandler()
+  {
+    WebConfigurationMock config = new WebConfigurationMock();
+    config.ExecutionEngine.DefaultWxeHandler = "WxeHandler.ashx";
+    return config;
+  }
+
   public static WebConfiguration GetExecutionEngineUrlMapping()
   {
     WebConfigurationMock config = new WebConfigurationMock();
