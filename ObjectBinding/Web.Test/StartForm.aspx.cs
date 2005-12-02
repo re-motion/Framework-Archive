@@ -54,6 +54,7 @@ public class StartForm : System.Web.UI.Page
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
+    SerializeTestForHashtablesAndArrays();
   }
 
   private void SerializeTestFunction()
@@ -186,6 +187,74 @@ public class StartForm : System.Web.UI.Page
     S2[] s2Deserialized = (S2[]) s2formatter.Deserialize(s2Stream);
     end = DateTime.Now.Ticks;
     Debug.WriteLine (string.Format ("Deserializing Attribute version: {0} ms", (end - start)/10000));
+
+    Debug.WriteLine("");
+  }
+
+  private void SerializeTestForHashtablesAndArrays()
+  {
+    Hashtable[] hashtables = new Hashtable[5000];
+    for (int i = 0; i < hashtables.Length; i++)
+    {
+      hashtables[i] = new Hashtable ();
+      hashtables[i]["abcdefghi"] = "test test test test test ";
+      hashtables[i]["jklmnopqr"] = "test test test test test ";
+      hashtables[i]["stuvwxzyz"] = "test test test test test ";
+    }
+    for (int i = 0; i < hashtables.Length; i++)
+    {
+      if (i > 0)
+        hashtables[1]["prev"] = hashtables[i-1];
+      if (i+1 < hashtables.Length)
+        hashtables[1]["next"] = hashtables[i+1];
+    }
+
+    ArrayList[] arrayLists = new ArrayList[5000];
+    for (int i = 0; i < arrayLists.Length; i++)
+    {
+      arrayLists[i] = new ArrayList ();
+      arrayLists[i].Add ("test test test test test ");
+      arrayLists[i].Add ("test test test test test ");
+      arrayLists[i].Add ("test test test test test ");
+    }
+    for (int i = 0; i < arrayLists.Length; i++)
+    {
+      if (i > 0)
+        arrayLists[1].Add (arrayLists[i-1]);
+      if (i+1 < arrayLists.Length)
+        arrayLists[1].Add (arrayLists[i+1]);
+    }
+
+    long start;
+    long end;
+
+    Debug.WriteLine("");
+
+    BinaryFormatter hashtablesFormatter = new BinaryFormatter();
+    Stream hashtablesStream = new MemoryStream();
+    start = DateTime.Now.Ticks;
+    hashtablesFormatter.Serialize(hashtablesStream, hashtables);
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Serializing Hashtables: {0} ms", (end - start)/10000));
+    
+    BinaryFormatter arrayListsFormatter = new BinaryFormatter();
+    Stream arrayListsStream = new MemoryStream();
+    start = DateTime.Now.Ticks;
+    arrayListsFormatter.Serialize(arrayListsStream, arrayLists);
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Serializing ArrayLists: {0} ms", (end - start)/10000));
+
+    hashtablesStream.Position = 0;
+    start = DateTime.Now.Ticks;
+    Hashtable[] hashtablesDeserialized = (Hashtable[]) hashtablesFormatter.Deserialize(hashtablesStream);
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Deserializing Hashtables: {0} ms", (end - start)/10000));
+
+    arrayListsStream.Position = 0;
+    start = DateTime.Now.Ticks;
+    ArrayList[] arrayListsDeserialized = (ArrayList[]) arrayListsFormatter.Deserialize(arrayListsStream);
+    end = DateTime.Now.Ticks;
+    Debug.WriteLine (string.Format ("Deserializing ArrayLists: {0} ms", (end - start)/10000));
 
     Debug.WriteLine("");
   }

@@ -19,6 +19,7 @@ public class ExecutionEngineConfiguration
   private int _refreshInterval = 10;
   private string _urlMappingFile = string.Empty;
   private int _maximumUrlLength = 1024;
+  private string _defaultWxeHandler = string.Empty;
 
   /// <summary> Gets or sets the default timeout for individual functions within one session. </summary>
   /// <value> The timeout in mintues. Defaults to 20 minutes. </value>
@@ -64,6 +65,27 @@ public class ExecutionEngineConfiguration
     get { return _maximumUrlLength; }
     set { _maximumUrlLength = value; }
   }
+
+  /// <summary> Gets or sets the path to the default <see cref="WxeHandler"/>. </summary>
+  /// <remarks> If not set, either a mapping is required or the function must be executed by a WxePage. </remarks>
+  /// <value> A virtual path, relative to the application root. Will always start with <c>~/</c>. </value>
+  [XmlAttribute ("defaultWxeHandler")]
+  public string DefaultWxeHandler
+  {
+    get { return _defaultWxeHandler; }
+    set 
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      value = value.Trim();
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      if (value.StartsWith ("/") || value.IndexOf (":") != -1)
+        throw new ArgumentException (string.Format ("No absolute paths are allowed. Resource: '{0}'", value), "value");
+      if (! value.StartsWith ("~/"))
+        value = "~/" + value;
+      _defaultWxeHandler = value; 
+    }
+  }
+
 }
 
 }

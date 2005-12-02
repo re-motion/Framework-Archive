@@ -12,28 +12,64 @@
   </head>
 <body>
 <form id=Form method=post runat="server">
-<rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
-<topcontrols>
-      <h1>Test Tabbed Form</h1>
       <rwc:TabStripMenu id="NavigationTabs" runat="server" width="100%">
 <tabs>
 <rwc:TabStripMainMenuItem ItemID="Tab1" Text="Tab 1">
 <submenutabs>
-<rwc:tabstripsubmenuitem ItemID="SubTab1" Text="Sub Tab 1.1"></rwc:tabstripsubmenuitem>
-<rwc:tabstripsubmenuitem ItemID="SubTab2" Text="Sub Tab 1.2"></rwc:tabstripsubmenuitem>
-<rwc:tabstripsubmenuitem ItemID="SubTab13" Text="Sub Tab 1.3"></rwc:tabstripsubmenuitem>
-</submenutabs>
+<rwc:TabStripSubMenuItem ItemID="EventTab" Text="Event">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
+</rwc:TabStripSubMenuItem>
+<rwc:TabStripSubMenuItem ItemID="HrefTab" Text="Href">
+<persistedcommand>
+<rwc:Command Type="Href" HrefCommand-Href="StartForm.aspx"></rwc:Command>
+</PersistedCommand>
+</rwc:TabStripSubMenuItem>
+<rwc:TabStripSubMenuItem ItemID="Wxe" Text="Wxe">
+<persistedcommand>
+<rwc:Command Type="WxeFunction" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:Command>
+</PersistedCommand>
+</rwc:TabStripSubMenuItem>
+</SubMenuTabs>
+
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
 </rwc:TabStripMainMenuItem>
 <rwc:TabStripMainMenuItem ItemID="Tab2" Text="Tab 2">
 <submenutabs>
-<rwc:TabStripSubMenuItem ItemID="SubTab1" Text="Sub Tab 2.1"></rwc:TabStripSubMenuItem>
-<rwc:TabStripSubMenuItem ItemID="SubTab2" Text="Sub Tab 2.2"></rwc:TabStripSubMenuItem>
-<rwc:tabstripsubmenuitem ItemID="SubTab23" Text="Sub Tab 2.3"></rwc:tabstripsubmenuitem>
+<rwc:TabStripSubMenuItem ItemID="SubTab1" Text="Sub Tab 2.1">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
+</rwc:TabStripSubMenuItem>
+<rwc:TabStripSubMenuItem ItemID="SubTab2" Text="Sub Tab 2.2">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
+</rwc:TabStripSubMenuItem>
+<rwc:TabStripSubMenuItem ItemID="SubTab23" Text="Sub Tab 2.3">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
+</rwc:TabStripSubMenuItem>
 </SubMenuTabs>
+
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
 </rwc:TabStripMainMenuItem>
-<rwc:TabStripMainMenuItem ItemID="Tab3" Text="Tab 3"></rwc:TabStripMainMenuItem>
+<rwc:TabStripMainMenuItem ItemID="Tab3" Text="Tab 3">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
+</rwc:TabStripMainMenuItem>
 </Tabs>
 </rwc:TabStripMenu>
+<rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+<topcontrols>
+      <h1>Test Tabbed Form</h1>
       <rwc:validationstateviewer id="ValidationStateViewer" runat="server" visible="true"></rwc:validationstateviewer>
 </topcontrols>
 <views> 
