@@ -29,7 +29,7 @@ public class WxeContextTest
   public virtual void SetUp()
   {   
     _functionType = typeof (TestFunction);
-    _functionTypeName = _functionType.AssemblyQualifiedName;
+    _functionTypeName = _functionType.FullName + "," + _functionType.Assembly.GetName().Name;
     _resource = "~/Test.wxe";
 
     Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
@@ -53,14 +53,97 @@ public class WxeContextTest
   [TearDown]
   public virtual void TearDown()
   { 
+    WebConfigurationMock.Current = null;
     Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+  }
+
+	[Test]
+  public void GetStaticPermanentUrlWithDefaultWxeHandlerWithoutMappingForFunctionType()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+
+    string wxeHandler = Rubicon.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, wxeHandler);
+    NameValueCollection expectedQueryString = new NameValueCollection();
+    expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
+    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+
+    string permanentUrl = WxeContext.GetPermanentUrl (_currentHttpContext, _functionType, new NameValueCollection());
+    Assert.IsNotNull (permanentUrl);
+    Assert.AreEqual (expectedUrl, permanentUrl);
+  }
+
+	[Test]
+  public void GetStaticPermanentUrlWithDefaultWxeHandlerForMappedFunctionType()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();
+
+    string wxeHandler = Rubicon.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);
+    string permanentUrl = WxeContext.GetPermanentUrl (_currentHttpContext, _functionType, new NameValueCollection());
+    Assert.IsNotNull (permanentUrl);
+    Assert.AreEqual (expectedUrl, permanentUrl);
+  }
+
+	[Test]
+  public void GetStaticPermanentUrlWithEmptyQueryString()
+  {
+    string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);
+    string permanentUrl = WxeContext.GetPermanentUrl (_currentHttpContext, _functionType, new NameValueCollection());
+    Assert.IsNotNull (permanentUrl);
+    Assert.AreEqual (expectedUrl, permanentUrl);
+  }
+
+  [Test]
+  public void GetStaticPermanentUrlWithQueryString()
+  {
+    string parameterName = "Param";
+    string parameterValue = "Hello World!";
+
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add (parameterName, parameterValue);
+
+    NameValueCollection expectedQueryString = new NameValueCollection();
+    expectedQueryString.Add (queryString);
+    string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);
+    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+
+    string permanentUrl = WxeContext.GetPermanentUrl (_currentHttpContext, _functionType, queryString);
+
+    Assert.IsNotNull (permanentUrl);
+    Assert.AreEqual (expectedUrl, permanentUrl);
+  }
+
+  [Test]
+  [ExpectedException (typeof (WxeException))]
+  public void GetStaticPermanentUrlWithQueryStringExceedingMaxLength()
+  {
+    string parameterName = "Param";
+    string parameterValue = "123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 ";
+
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add (parameterName, parameterValue);
+
+    WxeContext.GetPermanentUrl (_currentHttpContext,_functionType, queryString);
+    Assert.Fail();
+  }
+
+	[Test]
+  [ExpectedException (typeof (WxeException))]
+  public void GetStaticPermanentUrlWithoutWxeHandler()
+  {
+    WebConfigurationMock.Current = null;
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
+    WxeContext.GetPermanentUrl (_currentHttpContext, _functionType, new NameValueCollection());
+    Assert.Fail();
   }
 
 	[Test]
   public void GetPermanentUrlWithEmptyQueryString()
   {
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);
-    string permanentUrl = _currentWxeContext.GetPermanentUrl (_functionType, new NameValueCollection());
+    string permanentUrl = _currentWxeContext.GetPermanentUrl (_functionType, new NameValueCollection(), false);
     Assert.IsNotNull (permanentUrl);
     Assert.AreEqual (expectedUrl, permanentUrl);
   }
