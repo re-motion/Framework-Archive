@@ -69,7 +69,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private string _smartFocusID = null;
 
   private bool _executeNextStep = false;
-  private HttpResponse _response; // used for cleanup in Dispose
+  private HttpContext _httpContext;
 
   private bool _isPreRendering = false;
   private AutoInitHashtable _clientSideEventHandlers = new AutoInitHashtable (typeof (NameValueCollection));
@@ -90,9 +90,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     ArgumentUtility.CheckNotNull ("context", context);
     base.Initialize (_page, context);
 
-    // TODO: .net 2.0
-    //_httpContext = context;
-    //_httpContext.Handler = _page;
+    _httpContext = context;
+    _httpContext.Handler = _page;
 
     if (! ControlHelper.IsDesignMode (_page, context))
     {
@@ -105,15 +104,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
     _page.PreRender += new EventHandler(Page_PreRender);
-    // TODO: .net 2.0
-    // _page.Unload += new EventHandler(Page_Unload);
-  }
 
-  // TODO: .net 2.0
-  //void Page_Unload(object sender, EventArgs e)
-  //{
-  //  _httpContext.Handler = WxeHandler;
-  //}
+    _page.Unload += new EventHandler(Page_Unload);
+  }
 
   private void Form_LoadPostData (object sender, EventArgs e)
   {
@@ -402,7 +395,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteNextStep ()
   {
     _executeNextStep = true;
-    _response = _page.Response;
     _page.Visible = false; // suppress prerender and render events
   }
 
@@ -740,6 +732,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     return CurrentStep.LoadPageStateFromPersistenceMedium ();
   }
 
+  void Page_Unload (object sender, EventArgs e)
+  {
+    _httpContext.Handler = WxeHandler;
+  }
+
   /// <summary> 
   ///   If <see cref="ExecuteNextStep"/> has been called prior to disposing the page, <b>Dispose</b> will
   ///   break execution of this page life cycle and allow the Execution Engine to continue with the next step.
@@ -765,7 +762,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     if (_executeNextStep)
     {
-      _response.Clear(); // throw away page trace output
+      _httpContext.Response.Clear(); // throw away page trace output
       throw new WxeExecuteNextStepException();
     }
   }
