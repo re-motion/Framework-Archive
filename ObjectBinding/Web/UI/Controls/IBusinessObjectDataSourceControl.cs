@@ -44,7 +44,7 @@ public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IC
 ///     this property.
 ///   </para>
 /// </remarks>
-#if net20
+#if ! NET11
 [System.Web.UI.NonVisualControl]
 #endif
 [Designer (typeof (BocDataSourceDesigner))]
