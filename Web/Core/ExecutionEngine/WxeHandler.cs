@@ -94,7 +94,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   }
 
   /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and its context. </summary>
-  WxeFunctionState _currentFunctionState;
+  private WxeFunctionState _currentFunctionState;
 
   //TODO: Remove
   [Obsolete ("Use RootFunction instead.")]
