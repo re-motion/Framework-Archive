@@ -14,7 +14,7 @@ namespace Rubicon.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:TabView runat=server></{0}:TabView>")]
-#if ! net20
+#if NET11
 [CLSCompliant (false)]
 public class TabView : Rubicon.Web.UI.Controls.PageView
 #else
@@ -44,7 +44,7 @@ public class TabView : System.Web.UI.WebControls.View
   // methods and properties
   internal void OnInsert (TabbedMultiView.MultiView multiView)
   {
-#if ! net20
+#if NET11
     base.ParentMultiPage = multiView;
 #endif
   }
@@ -89,7 +89,7 @@ public class TabView : System.Web.UI.WebControls.View
 }
 
 
-#if ! net20
+#if NET11
 [CLSCompliant (false)]
 #endif
 public class EmptyTabView: TabView

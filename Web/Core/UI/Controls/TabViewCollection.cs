@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 
-#if ! net20
+#if NET11
 public class TabViewCollection: ControlCollection
 #else
 public class TabViewCollection: System.Web.UI.WebControls.ViewCollection
@@ -59,8 +59,7 @@ public class TabViewCollection: System.Web.UI.WebControls.ViewCollection
     Owner.OnTabViewRemoved (view);
   }
 
-#if net20
-  [CLSCompliant (false)]
+#if ! NET11
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new TabView this[int index]
   {
@@ -68,7 +67,7 @@ public class TabViewCollection: System.Web.UI.WebControls.ViewCollection
   }
 #endif
 
-#if ! net20
+#if NET11
   [CLSCompliant (false)]
 #endif
   private new TabbedMultiView.MultiView Owner
