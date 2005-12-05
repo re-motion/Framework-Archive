@@ -17,7 +17,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 
 /// <summary> Validates a <see cref="BocDateTimeValue"/> control. </summary>
 /// <include file='doc\include\Controls\BocDateTimeValueValidator.xml' path='BocDateTimeValueValidator/Class/*' />
-[ToolboxItemFilter("System.Web.UI")]
+[ToolboxItem (false)]
 public class BocDateTimeValueValidator: BaseValidator
 {
   protected enum ValidationError
