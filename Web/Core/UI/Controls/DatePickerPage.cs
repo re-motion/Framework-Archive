@@ -37,7 +37,7 @@ public class DatePickerPage : Page
 {
   private const string c_datePickerScriptUrl = "DatePicker.js";
   
-#if ! net20
+#if NET11
   protected HtmlForm Form;
 #endif
   protected HtmlHeadContents HtmlHeadContents;
