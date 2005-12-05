@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel;
 using Rubicon.ObjectBinding.Web.Controls;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
 
+[ToolboxItem (false)]
 public class BocListSortingOrderEntryMock : BocListSortingOrderEntry
 {
   public BocListSortingOrderEntryMock (BocColumnDefinition column, SortingDirection direction)
