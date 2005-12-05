@@ -18,7 +18,7 @@ namespace Rubicon.Web.UI.Controls
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
 public class WebButton : 
     Button
-#if ! net20
+#if NET11
     // Required because Page.ProcessPostData always registers the last IPostBackEventHandler in the controls 
     // collection for controls (buttons) having PostData but no IPostBackDataHandler. 
     // .net 2.0 resolves this issue for controls using a javascript induced postback event.
@@ -26,7 +26,7 @@ public class WebButton :
 #endif
 {
   private IconInfo _icon;
-#if ! net20
+#if NET11
   private bool _useSubmitBehavior = true;
 #endif
 
@@ -37,7 +37,7 @@ public class WebButton :
     _icon = new IconInfo();
   }
 
-#if ! net20
+#if NET11
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
   }
@@ -95,7 +95,7 @@ public class WebButton :
       Text = text;
     }
 
-#if ! net20
+#if NET11
     AddAttributesToRender_net11 (writer);
 #else
     AddAttributesToRender_net20 (writer);
@@ -110,7 +110,7 @@ public class WebButton :
   /// <summary> Method to be executed when compiled for .net 1.1. </summary>
   private void AddAttributesToRender_net11 (HtmlTextWriter writer)
   {
-#if ! net20
+#if NET11
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
@@ -149,7 +149,7 @@ public class WebButton :
   /// <summary> Method to be executed when compiled for .net 2.0. </summary>
   private void AddAttributesToRender_net20 (HtmlTextWriter writer)
   {
-#if net20
+#if ! NET11
 //    if (base.IsEnabled)
 //    {
 //      string tempOnClientClick = OnClientClick;
@@ -261,7 +261,7 @@ public class WebButton :
     set { _icon = value; }
   }
 
-#if ! net20
+#if NET11
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category("Behavior")]
   [DefaultValue(true)]

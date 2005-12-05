@@ -25,14 +25,14 @@ public class TabbedMultiView: WebControl, IControl
 
   // types
 
-#if ! net20
+#if NET11
   [CLSCompliant (false)]
   protected internal class MultiView: Rubicon.Web.UI.Controls.MultiPage
 #else
   protected internal class MultiView: System.Web.UI.WebControls.MultiView
 #endif
   {
-#if ! net20
+#if NET11
     bool _isLoadViewStateComplete = false;
 #endif
 
@@ -65,7 +65,7 @@ public class TabbedMultiView: WebControl, IControl
       get { return (TabbedMultiView) base.Parent; }
     }
 
-#if ! net20
+#if NET11
     protected override void LoadViewState(object savedState)
     {
       base.LoadViewState (savedState);
@@ -258,7 +258,7 @@ public class TabbedMultiView: WebControl, IControl
     }
   }
 
-#if ! net20
+#if NET11
   [CLSCompliant (false)]
 #endif
   public void SetActiveView (TabView view)
@@ -269,7 +269,7 @@ public class TabbedMultiView: WebControl, IControl
     nextActiveTab.IsSelected = true;
   }
 
-#if ! net20
+#if NET11
   [CLSCompliant (false)]
 #endif
   public TabView GetActiveView()
@@ -459,7 +459,7 @@ public class TabbedMultiView: WebControl, IControl
     }
   }
 
-#if ! net20
+#if NET11
   [CLSCompliant (false)]
 #endif
   protected TabbedMultiView.MultiView MultiViewInternal
