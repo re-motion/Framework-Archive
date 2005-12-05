@@ -14,6 +14,7 @@ namespace Rubicon.Web.ExecutionEngine
 
 public class WxeTemplateControlInfo
 {
+  private WxeHandler _wxeHandler;
   private WxePageStep _currentStep;
   private WxeFunction _currentFunction;
   private IWxeTemplateControl _control;
@@ -33,12 +34,17 @@ public class WxeTemplateControlInfo
     if (ControlHelper.IsDesignMode (control, context))
       return;
 
-    WxeHandler wxeHandler = context.Handler as WxeHandler;
-    if (wxeHandler == null)
+    _wxeHandler = context.Handler as WxeHandler;
+    if (_wxeHandler == null)
       throw new HttpException ("No current WxeHandler found.");
 
-    _currentStep = wxeHandler.RootFunction.ExecutingStep as WxePageStep;
+    _currentStep = _wxeHandler.RootFunction.ExecutingStep as WxePageStep;
     _currentFunction = WxeStep.GetFunction (_currentStep);
+  }
+
+  protected WxeHandler WxeHandler
+  {
+    get { return _wxeHandler; }
   }
 
   public WxePageStep CurrentStep
