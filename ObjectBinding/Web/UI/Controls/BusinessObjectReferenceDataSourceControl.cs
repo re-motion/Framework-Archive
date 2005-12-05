@@ -60,7 +60,7 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
 /// </summary>
 /// <seealso cref="IBusinessObjectReferenceDataSource"/>
 /// <seealso cref="IBusinessObjectDataSourceControl"/>
-#if net20
+#if ! NET11
 [System.Web.UI.NonVisualControl]
 #endif
 [Designer (typeof (BocDataSourceDesigner))]
