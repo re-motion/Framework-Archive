@@ -83,16 +83,16 @@ public class Command: IControlItem
     }
 
     /// <summary> 
-    ///   Gets or sets the target window or frame to display the Web page content linked to when 
-    ///   the rendered command is clicked.
+    ///   Gets or sets the target window or frame to display the web page specified by <see cref="Href"/> 
+    ///   when  the rendered command is clicked.
     /// </summary>
     /// <value> 
-    ///   The target window or frame to load the Web page linked to when the rendered command
+    ///   The target window or frame to load the web page specified by <see cref="Href"/> when the rendered command
     ///   is clicked.  The default value is <see cref="String.Empty"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
-    [Description ("The target frame of the command. Leave it blank for no target.")]
+    [Description ("The target window or frame of the command. Leave it blank for no target.")]
     [DefaultValue("")]
     [NotifyParentProperty (true)]
     public virtual string Target 
@@ -116,7 +116,7 @@ public class Command: IControlItem
     private string _typeName = string.Empty;
     private string _parameters = string.Empty;
     private string _target = string.Empty;
-    private bool _executeOnClientSide = false;
+    private bool _createPermanentUrlForExternalFunction = false;
 
     /// <summary> Simple constructor. </summary>
     public WxeFunctionCommandInfo()
@@ -188,9 +188,16 @@ public class Command: IControlItem
       }
     }
 
+    /// <summary> 
+    ///   Gets or sets the target window or frame to open the Wxe Function when the rendered command is clicked.
+    /// </summary>
+    /// <value> 
+    ///   The target window or frame to open the Wxe Function when the rendered command is clicked. 
+    ///   The default value is <see cref="String.Empty"/>. 
+    /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behaviour")]
-    [Description ("Link target (_blank, etc.)")]
+    [Description ("The target window or frame of the command. Leave it blank for no target.")]
     [DefaultValue ("")]
     [NotifyParentProperty (true)]
     public string Target
@@ -199,15 +206,24 @@ public class Command: IControlItem
       set { _target = value; }
     }
 
+    /// <summary>
+    ///   Gets or sets a flag that determines whether a hyperlink will be created that executes the function as an
+    ///   extneral function.
+    /// </summary>
+    /// <value> A boolean value. The default value is <see langword="true"/>. </value>
+    /// <remarks>
+    ///   If <see langword="true"/>, the function's required parameters must be provided via the 
+    ///   <see cref="Parameters"/> string.
+    /// </remarks>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behaviour")]
-    [Description ("If set, the function is executed on the client-side as an external function.")]
-    [DefaultValue (true)]
+    [Description ("If set, the function is executed on the client-side as an external function without requiring a round-trip to the server.")]
+    [DefaultValue (false)]
     [NotifyParentProperty (true)]
-    public virtual bool ExecuteOnClientSide
+    public virtual bool CreatePermanentUrlForExternalFunction
     {
-      get { return _executeOnClientSide; }
-      set { _executeOnClientSide = value; }
+      get { return _createPermanentUrlForExternalFunction; }
+      set { _createPermanentUrlForExternalFunction = value; }
     }
   }
 
@@ -271,36 +287,21 @@ public class Command: IControlItem
       string onClick,
       params string[] parameters)
   {
-    ArgumentUtility.CheckNotNull ("writer", writer);
     switch (_type)
     {
       case CommandType.Href:
       {
-        ArgumentUtility.CheckNotNull ("parameters", postBackEvent);        
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, HrefCommand.FormatHref (parameters));
-        if (HrefCommand.Target != null) 
-          writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
-        if (! StringUtility.IsNullOrEmpty (_toolTip))
-          writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+        AddAttributesToRenderForHrefCommand (writer, parameters, onClick);
         break;
       }
       case CommandType.Event:
       {
-        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);        
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + onClick);
-        if (! StringUtility.IsNullOrEmpty (_toolTip))
-          writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+        AddAttributesToRenderForEventCommand (writer, postBackEvent, onClick);
         break;
       }
       case CommandType.WxeFunction:
       {
-        ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);        
-        writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + onClick);
-        if (! StringUtility.IsNullOrEmpty (_toolTip))
-          writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+        AddAttributesToRenderForWxeFunctionCommand (writer, postBackEvent, onClick);
         break;
       }
       case CommandType.None:
@@ -309,6 +310,108 @@ public class Command: IControlItem
       }
     }
     writer.RenderBeginTag (HtmlTextWriterTag.A);
+  }
+
+  /// <summary> Adds the attributes for the Href command to the anchor tag. </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. Must not be <see langword="null"/>. </param>
+  /// <param name="parameters">
+  ///   The strings inserted into the href attribute using <c>string.Format</c>.
+  /// </param>
+  /// <param name="onClick"> 
+  ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
+  /// </param>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Href"/>.
+  /// </exception> 
+  protected virtual void AddAttributesToRenderForHrefCommand (
+      HtmlTextWriter writer,
+      string[] parameters, 
+      string onClick)
+  {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+    ArgumentUtility.CheckNotNull ("parameters", parameters);  
+    if (Type != CommandType.Href)
+      throw new InvalidOperationException ("Call to AddAttributesToRenderForHrefCommand not allowed unless Type is set to CommandType.Href.");
+      
+    string href = HrefCommand.FormatHref (parameters);
+    writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
+    if (! StringUtility.IsNullOrEmpty (HrefCommand.Target))
+      writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
+    if (! StringUtility.IsNullOrEmpty (_toolTip))
+      writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+  }
+
+  /// <summary> Adds the attributes for the Event command to the anchor tag. </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. Must not be <see langword="null"/>. </param>
+  /// <param name="postBackEvent">
+  ///   The string executed upon the click on a command of types
+  ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
+  ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
+  ///   to force a post back. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="onClick"> 
+  ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
+  /// </param>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Event"/>.
+  /// </exception> 
+  protected virtual void AddAttributesToRenderForEventCommand (
+      HtmlTextWriter writer, 
+      string postBackEvent,
+      string onClick)
+  {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+    ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent);     
+    if (Type != CommandType.Event)
+      throw new InvalidOperationException ("Call to AddAttributesToRenderForEventCommand not allowed unless Type is set to CommandType.Event.");
+   
+    writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + StringUtility.NullToEmpty (onClick));
+    if (! StringUtility.IsNullOrEmpty (_toolTip))
+      writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+  }
+
+  /// <summary> Adds the attributes for the Wxe Function command to the anchor tag. </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. Must not be <see langword="null"/>. </param>
+  /// <param name="postBackEvent">
+  ///   The string executed upon the click on a command of types
+  ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
+  ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
+  ///   to force a post back. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="onClick"> 
+  ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
+  /// </param>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  protected virtual void AddAttributesToRenderForWxeFunctionCommand (
+      HtmlTextWriter writer, 
+      string postBackEvent,
+      string onClick)
+  {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+    ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent); 
+    if (Type != CommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to AddAttributesToRenderForWxeFunctionCommand not allowed unless Type is set to CommandType.WxeFunction.");
+       
+    if (WxeFunctionCommand.CreatePermanentUrlForExternalFunction)
+    {
+      string href = GetWxeFunctionPermanentUrl();
+      writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
+      if (! StringUtility.IsNullOrEmpty (WxeFunctionCommand.Target))
+        writer.AddAttribute (HtmlTextWriterAttribute.Target, WxeFunctionCommand.Target);
+      if (! StringUtility.IsNullOrEmpty (onClick))
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
+    }
+    else
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + StringUtility.NullToEmpty (onClick));
+    }
+    if (! StringUtility.IsNullOrEmpty (_toolTip))
+      writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
   }
 
   /// <summary> Renders the closing tag for the command. </summary>
@@ -369,11 +472,18 @@ public class Command: IControlItem
   }
 
   /// <summary> Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. </summary>
-  /// <param name="wxePage"> The <see cref="IWxePage"/> where this command is rendered on. Must not be null</param>
-  /// <param name="parameters"> 
-  ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
+  /// <param name="wxePage"> 
+  ///   The <see cref="IWxePage"/> where this command is rendered on. Must not be <see langword="null"/>.
   /// </param>
-  public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection parameters)
+  /// <param name="additionalParameters"> 
+  ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
+  ///   Use <see langword="null"/> or an empty collection if all parameters are supplied by the 
+  ///   <see cref="WxeFunctionCommandInfo.Parameters"/> string and the function stack.
+  /// </param>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection additionalParameters)
   {
     ArgumentUtility.CheckNotNull ("wxePage", wxePage);
 
@@ -387,7 +497,7 @@ public class Command: IControlItem
       Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
       WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
 
-      function.InitializeParameters (WxeFunctionCommand.Parameters, parameters);
+      function.InitializeParameters (WxeFunctionCommand.Parameters, additionalParameters);
 
       if (hasTarget)
         wxePage.ExecuteFunctionExternal (function, target, null, false);
@@ -396,8 +506,17 @@ public class Command: IControlItem
     }
   }
 
-  public virtual string FormatWxeFunctionUrl()
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
+  /// </summary>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  public virtual string GetWxeFunctionPermanentUrl()
   {
+    if (Type != CommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
+
     Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
     WxeParameterDeclaration[] parameterDeclarations = WxeFunction.GetParamaterDeclarations (functionType);
     object[] parameterValues = WxeFunction.ParseActualParameters (
