@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.UI.Controls
 {
 
-#if ! net20 
+#if NET11 
 /// <summary> A hidden value control that can raise a data changed event when its contents has been modified. </summary>
 /// <remarks> .net 2.0 will provide such this control in its class library. </remarks>
 public class HiddenField: WebControl, IPostBackDataHandler
