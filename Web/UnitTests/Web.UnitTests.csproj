@@ -32,7 +32,7 @@
                     BaseAddress = "285212672"
                     CheckForOverflowUnderflow = "false"
                     ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE"
+                    DefineConstants = ""
                     DocumentationFile = ""
                     DebugSymbols = "true"
                     FileAlignment = "4096"
@@ -52,7 +52,7 @@
                     BaseAddress = "285212672"
                     CheckForOverflowUnderflow = "false"
                     ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE"
+                    DefineConstants = ""
                     DocumentationFile = ""
                     DebugSymbols = "false"
                     FileAlignment = "4096"
@@ -124,6 +124,11 @@
                 <File
                     RelPath = "Web.UnitTests.build"
                     BuildAction = "None"
+                />
+                <File
+                    RelPath = "AspNetFramework\HtmlTextWriterSingleTagMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "AspNetFramework\HttpContextHelper.cs"

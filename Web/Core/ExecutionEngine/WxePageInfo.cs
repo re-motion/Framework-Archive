@@ -103,9 +103,29 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       _page.RegisterHiddenField (WxePageInfo.PageTokenID, CurrentStep.PageToken);
 
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
+    _page.Init += new EventHandler (Page_Init);
     _page.PreRender += new EventHandler(Page_PreRender);
-
     _page.Unload += new EventHandler(Page_Unload);
+  }
+
+  void Page_Init(object sender, EventArgs e)
+  {
+#if ! NET11
+    if (((Page) _page).Header != null)
+    {
+      bool hasHeadContents = false;
+      foreach (Control control in ((Page) _page).Header.Controls)
+      {
+        if (control is HtmlHeadContents)
+        {
+          hasHeadContents = true;
+          break;
+        }
+      }
+      if (! hasHeadContents)
+        ((Page) _page).Header.Controls.AddAt (0, new HtmlHeadContents());
+    }
+#endif
   }
 
   private void Form_LoadPostData (object sender, EventArgs e)

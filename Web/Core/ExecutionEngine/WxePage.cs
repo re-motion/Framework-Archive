@@ -544,11 +544,14 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   {
     NameValueCollection result = _wxeInfo.EnsurePostBackModeDetermined (Context);
     _wxeInfo.Initialize (Context);
+#if NET11
     OnPreInit();
     OnBeforeInit();
+#endif
     return result;
   }
 
+#if NET11
   /// <summary> Called before the initialization phase of the page. </summary>
   /// <remarks> 
   ///   In ASP.NET 1.1 this method is called by <b>DeterminePostBackMode</b>. Therefor you should not use
@@ -562,6 +565,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   protected virtual void OnBeforeInit()
   {
   }
+#endif
 
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
