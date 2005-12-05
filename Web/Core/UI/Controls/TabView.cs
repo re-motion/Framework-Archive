@@ -92,6 +92,7 @@ public class TabView : System.Web.UI.WebControls.View
 #if NET11
 [CLSCompliant (false)]
 #endif
+[ToolboxItem (false)]
 public class EmptyTabView: TabView
 {
   public EmptyTabView()
