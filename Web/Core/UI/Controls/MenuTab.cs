@@ -164,23 +164,25 @@ public abstract class TabStripMenuItem: WebTab
     }
   }
 
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
   protected virtual void ExecuteWxeFunction (IWxePage page, Command command)
   {
     ArgumentUtility.CheckNotNull ("page", page);
     ArgumentUtility.CheckNotNull ("command", command);
-    if (command.Type != CommandType.WxeFunction)
-      throw new ArgumentException ("Only commands with Type 'WxeFunction' allowed.", "command");
 
-    Command.ExecuteWxeFunction (page, new NameObjectCollection());
+    Command.ExecuteWxeFunction (page, null);
   }
 
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
   protected virtual void RedirectToWxeFunction (Command command)
   {
     ArgumentUtility.CheckNotNull ("command", command);
-    if (command.Type != CommandType.WxeFunction)
-      throw new ArgumentException ("Only commands with Type 'WxeFunction' allowed.", "command");
 
-    string url = Command.FormatWxeFunctionUrl ();
+    string url = Command.GetWxeFunctionPermanentUrl ();
     PageUtility.Redirect (TabStripMenu.Page.Response, url);
   }
 }
