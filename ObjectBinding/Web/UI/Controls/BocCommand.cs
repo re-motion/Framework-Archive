@@ -1,12 +1,12 @@
 using System;
-using System.Web.UI;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Web.UI;
+using Rubicon.Collections;
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -82,6 +82,16 @@ public class BocCommand: Command
     {
       get { return base.Parameters; }
       set { base.Parameters = value; }
+    }
+
+    /// <exclude />
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable (false)]
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public override bool CreatePermanentUrlForExternalFunction
+    {
+      get { return false; }
+      set { throw new NotSupportedException ("A BocWxeFunctionCommandInfo does not support the creation of permantent URLs."); }
     }
   }
 
