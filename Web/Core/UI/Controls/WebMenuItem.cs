@@ -223,13 +223,13 @@ public class WebMenuItem: IControlItem
   {
     get
     {
-      return (Command) _command.Item; 
+      return (Command) _command.ControlItem; 
     }
     set 
     {
       if (Command != null)
         Command.Click -= _commandClick;
-      _command.Item = value; 
+      _command.ControlItem = value; 
       if (Command != null)
         Command.Click += _commandClick;
     }

@@ -50,7 +50,8 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
   {
     ArgumentUtility.CheckNotNull ("tab", tab);
     if (   StringUtility.IsNullOrEmpty (tab.ItemID)
-        && _tabStrip != null && ControlHelper.IsDesignMode ((Control) _tabStrip))
+        && (   _tabStrip != null && ControlHelper.IsDesignMode ((Control) _tabStrip))
+            || (OwnerControl != null && ControlHelper.IsDesignMode ((Control) OwnerControl)))
     {
       int index = InnerList.Count;
       do {

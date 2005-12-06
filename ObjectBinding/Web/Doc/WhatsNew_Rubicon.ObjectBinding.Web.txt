@@ -16,6 +16,10 @@
     Als Sender wird nun das OwnerControl übergeben anstelle des Commands. 
     Auf das Command kann über die Args abgefragt werden.
   
+- Rubicon.ObjectBinding.Web.Controls.BocCustomColumnDefinition
+  * Bugfix: IsSortable hatte den falschen Default-Wert: Resultat: IsSortable konnte nicht im Designer auf True
+    gesetzt werden.
+    
 1.3.26
 ======
 - BocDateTimeValue
