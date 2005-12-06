@@ -118,7 +118,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("A flag determining whether to enable sorting for this columns.")]
-  [DefaultValue (true)]
+  [DefaultValue (false)]
   [NotifyParentProperty (true)]
   public bool IsSortable
   {
