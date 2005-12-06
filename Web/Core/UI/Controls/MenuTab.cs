@@ -53,11 +53,11 @@ public abstract class TabStripMenuItem: WebTab
   {
     get
     {
-      return (Command) _command.Item; 
+      return (Command) _command.ControlItem; 
     }
     set 
     {
-      _command.Item = value; 
+      _command.ControlItem = value; 
     }
   }
 
@@ -194,7 +194,7 @@ public class TabStripMainMenuItem: TabStripMenuItem
   public TabStripMainMenuItem (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
   {
-    _subMenuTabs = new TabStripSubMenuItemCollection (null);
+    _subMenuTabs = new TabStripSubMenuItemCollection (OwnerControl);
     _subMenuTabs.SetParent (this);
   }
 
@@ -203,7 +203,7 @@ public class TabStripMainMenuItem: TabStripMenuItem
   [EditorBrowsable (EditorBrowsableState.Never)]
   public TabStripMainMenuItem()
   {
-    _subMenuTabs = new TabStripSubMenuItemCollection (null);
+    _subMenuTabs = new TabStripSubMenuItemCollection (OwnerControl);
     _subMenuTabs.SetParent (this);
   }
 

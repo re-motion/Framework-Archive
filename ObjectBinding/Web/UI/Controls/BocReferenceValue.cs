@@ -1552,12 +1552,12 @@ public class BocReferenceValue:
   [NotifyParentProperty (true)]
   public BocCommand Command
   {
-    get { return (BocCommand) _command.Item; }
+    get { return (BocCommand) _command.ControlItem; }
     set 
     { 
-      _command.Item = value; 
+      _command.ControlItem = value; 
       if (value != null)
-        _command.Item.OwnerControl = this;
+        _command.ControlItem.OwnerControl = this;
     }
   }
 
