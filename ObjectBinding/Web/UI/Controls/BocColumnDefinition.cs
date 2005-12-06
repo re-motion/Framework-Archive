@@ -163,12 +163,12 @@ public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
   [NotifyParentProperty (true)]
   public BocListItemCommand Command
   {
-    get { return (BocListItemCommand) _command.Item; }
+    get { return (BocListItemCommand) _command.ControlItem; }
     set 
     { 
-      _command.Item = value; 
+      _command.ControlItem = value; 
       if (OwnerControl != null)
-        _command.Item.OwnerControl = (Control) OwnerControl;
+        _command.ControlItem.OwnerControl = (Control) OwnerControl;
     }
   }
 
