@@ -136,8 +136,12 @@ public class WebButton :
           }
         }
       }
-      onClick += "this.disabled=true; ";
-      onClick += Page.GetPostBackEventReference (this) + "; ";
+      onClick += "this.disabled = (typeof (Page_IsValid) == 'undefined' || Page_IsValid == null || Page_IsValid == true);";
+      string postBackEventReference = Page.GetPostBackEventReference (this);
+      if (CausesValidation)
+        onClick += " if (Page_IsValid) " + postBackEventReference + "; ";
+      else
+        onClick += postBackEventReference + "; ";
       onClick += "return false;";
       writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
     }
