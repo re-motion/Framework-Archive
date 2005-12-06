@@ -16,17 +16,17 @@
 <tabs>
 <rwc:TabStripMainMenuItem ItemID="Tab1" Text="Tab 1">
 <submenutabs>
-<rwc:TabStripSubMenuItem ItemID="EventTab" Text="Event">
+<rwc:TabStripSubMenuItem ItemID="Tab1" Text="Event">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:TabStripSubMenuItem>
-<rwc:TabStripSubMenuItem ItemID="HrefTab" Text="Href">
+<rwc:TabStripSubMenuItem ItemID="Tab2" Text="Href">
 <persistedcommand>
 <rwc:Command Type="Href" HrefCommand-Href="StartForm.aspx"></rwc:Command>
 </PersistedCommand>
 </rwc:TabStripSubMenuItem>
-<rwc:TabStripSubMenuItem ItemID="Wxe" Text="Wxe">
+<rwc:TabStripSubMenuItem ItemID="Tab3" Text="Wxe">
 <persistedcommand>
 <rwc:Command Type="WxeFunction" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:Command>
 </PersistedCommand>
