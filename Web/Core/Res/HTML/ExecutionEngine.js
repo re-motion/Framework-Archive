@@ -60,6 +60,7 @@ function Wxe_Context (
   var _isMsIEAspnetPostBack = false;
   var _isMsIEFormClicked = false;
 
+  var _aspnetFormOnSubmit = null;
   var _aspnetDoPostBack = null;
   
   var _smartScrollingField = null;
@@ -251,6 +252,7 @@ function Wxe_Context (
 
   this.OverrideAspNetDoPostBack = function ()
   {
+    _aspnetFormOnSubmit = this.TheForm.onsubmit;
 	  this.TheForm.onsubmit = Wxe_OnFormSubmit;
     this.TheForm.onclick = Wxe_OnFormClick;
 	  _aspnetDoPostBack = __doPostBack;
@@ -328,7 +330,10 @@ function Wxe_Context (
       
       this.SetCacheDetectionFieldSubmitted();
       
-      return true;
+      if (_aspnetFormOnSubmit != null)
+        return _aspnetFormOnSubmit();
+      else
+        return true;
     }
     else
     {

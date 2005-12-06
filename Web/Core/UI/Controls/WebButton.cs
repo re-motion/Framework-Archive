@@ -28,6 +28,8 @@ public class WebButton :
   private IconInfo _icon;
 #if NET11
   private bool _useSubmitBehavior = true;
+#else
+  PostBackOptions _options;
 #endif
 
   private NaBooleanEnum _useLegacyButton = NaBooleanEnum.Undefined;
@@ -107,10 +109,10 @@ public class WebButton :
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
   }
 
+#if NET11
   /// <summary> Method to be executed when compiled for .net 1.1. </summary>
   private void AddAttributesToRender_net11 (HtmlTextWriter writer)
   {
-#if NET11
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
@@ -143,51 +145,81 @@ public class WebButton :
     CausesValidation = false;
     base.AddAttributesToRender (writer);
     CausesValidation = causesValidationTemp;
-#endif
   }
+#endif
 
+#if ! NET11
   /// <summary> Method to be executed when compiled for .net 2.0. </summary>
   private void AddAttributesToRender_net20 (HtmlTextWriter writer)
   {
-#if ! NET11
-//    if (base.IsEnabled)
-//    {
-//      string tempOnClientClick = OnClientClick;
-//      OnClientClick = null;
-//      string onClick = EnsureEndWithSemiColon (tempOnClientClick);
-//      if (HasAttributes)
-//      {
-//        string onClickAttribute = Attributes["onclick"];
-//        if (onClickAttribute != null)
-//        {
-//          onClick = onClick + EnsureEndWithSemiColon (onClickAttribute);
-//          Attributes.Remove ("onclick");
-//        }
-//      }
-//      if (Page != null)
-//      {
-//        PostBackOptions options = GetPostBackOptions();
-//        bool tempClientSubmit = options.ClientSubmit;
-//        options.ClientSubmit = false;
-//        string postBackScript = Page.ClientScript.GetPostBackEventReference (options);
-//        options.ClientSubmit = tempClientSubmit;
-//        postBackScript = EnsureEndWithSemiColon (postBackScript);
-//        postBackScript += "this.disabled=true; ";
-//        postBackScript += Page.ClientScript.GetPostBackEventReference (this, null) + "; ";
-//        postBackScript += "return false;";
-//
-//        if (postBackScript != null)
-//          onClick = MergeScript(onClick, postBackScript);
-//      }
-//      if (! StringUtility.IsNullOrEmpty (onClick))
-//      {
-//        writer.AddAttribute(HtmlTextWriterAttribute.Onclick, onClick);
-//      }
-//      OnClientClick = tempOnClientClick;
-//    }
+    if (this.Page != null)
+      Page.VerifyRenderingInServerForm(this);
+    
+    if (IsEnabled)
+    {
+      string onClick = EnsureEndWithSemiColon (OnClientClick);
+      if (HasAttributes)
+      {
+        string onClickAttribute = Attributes["onclick"];
+        if (onClickAttribute != null)
+        {
+          onClick = onClick + EnsureEndWithSemiColon (onClickAttribute);
+          Attributes.Remove ("onclick");
+        }
+      }
+
+      if (Page != null)
+      {       
+        PostBackOptions options = GetPostBackOptions();
+        options.ClientSubmit = true;
+
+        string postBackScript;
+        if (options.PerformValidation)
+          postBackScript = "this.disabled = true;";
+        else
+          postBackScript = "this.disabled = (typeof (Page_IsValid) == 'undefined' || Page_IsValid == null || Page_IsValid == true);";
+        
+        string postBackEventReference = Page.ClientScript.GetPostBackEventReference (options, false);
+        if (StringUtility.IsNullOrEmpty (postBackEventReference))
+          postBackEventReference = Page.ClientScript.GetPostBackEventReference (this, null);
+        postBackScript += EnsureEndWithSemiColon (postBackEventReference);
+        
+        if (options.PerformValidation)
+          postBackScript += "this.disabled = Page_IsValid;";
+        postBackScript += "return false;";
+
+        if (postBackScript != null)
+          onClick = MergeScript(onClick, postBackScript);
+      }
+
+      if (! StringUtility.IsNullOrEmpty (onClick))
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
+    }
+
+
+    _options = base.GetPostBackOptions();
+    _options.ClientSubmit = false;
+    _options.PerformValidation = false;
+    _options.AutoPostBack = false;
+    
+    string backUpOnClientClick = OnClientClick;
+    OnClientClick = null;
+    
     base.AddAttributesToRender (writer);
-#endif
+
+    OnClientClick = backUpOnClientClick;
+    
+    _options = null;
   }
+
+  protected override PostBackOptions GetPostBackOptions ()
+  {
+    if (_options == null)
+      return base.GetPostBackOptions ();
+    else
+      return _options;
+  }
+#endif
 
   protected override HtmlTextWriterTag TagKey
   {

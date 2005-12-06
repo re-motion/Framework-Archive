@@ -158,6 +158,7 @@ public class TabbedMultiView: WebControl, IControl
   private Style _topControlsStyle;
   private Style _bottomControlsStyle;
 
+  private TabView _newActiveTabAfterRemove;
   private EmptyTabView _placeHolderTabView;
 
   // construction and destruction
@@ -208,9 +209,11 @@ public class TabbedMultiView: WebControl, IControl
 
     if (Views.Count == 2 && Views.IndexOf (_placeHolderTabView) > 0)
       Views.Remove (_placeHolderTabView);
+#if ! NET11
+    if (Views.Count == 1)
+      _multiViewInternal.ActiveViewIndex = 0;
+#endif
   }
-
-  private TabView _newActiveTabAfterRemove;
 
   private void OnTabViewRemove (TabView view)
   {
