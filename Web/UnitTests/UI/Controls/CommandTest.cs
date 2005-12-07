@@ -87,9 +87,15 @@ public class CommandTest
   public void RenderHrefCommand()
   {
     string[] parameters = new string[] {"Value1", "Value2"};
+
+    NameValueCollection additionalUrlParameters = new NameValueCollection();
+    additionalUrlParameters.Add ("Parameter3", "Value3");
+
     string expectedHref = _hrefCommand.HrefCommand.FormatHref (parameters);
+    expectedHref = PageUtility.AddUrlParameter (
+        expectedHref, additionalUrlParameters.GetKey (0), additionalUrlParameters.Get (0));
     string expectedOnClick = _onClick;
-    _hrefCommand.RenderBegin (_writer, _postBackEvent, _onClick, parameters);
+    _hrefCommand.RenderBegin (_writer, _postBackEvent, parameters, _onClick, additionalUrlParameters);
 
     Assert.IsNotNull (_writer.Tag, "Missing Tag");
     Assert.AreEqual (HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
@@ -111,7 +117,7 @@ public class CommandTest
   public void RenderEventCommand()
   {
     string expectedOnClick = _postBackEvent + _onClick;
-    _eventCommand.RenderBegin (_writer, _postBackEvent, _onClick);
+    _eventCommand.RenderBegin (_writer, _postBackEvent, new string[0], _onClick);
 
     Assert.IsNotNull (_writer.Tag, "Missing Tag");
     Assert.AreEqual (HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
@@ -132,7 +138,7 @@ public class CommandTest
   public void RenderWxeFunctionCommandForServerSideFunction()
   {
     _wxeFunctionCommand.WxeFunctionCommand.CreatePermanentUrlForExternalFunction = false;
-    _wxeFunctionCommand.RenderBegin (_writer, _postBackEvent, _onClick);
+    _wxeFunctionCommand.RenderBegin (_writer, _postBackEvent, new string[0], _onClick);
 
     string expectedOnClick = _postBackEvent + _onClick;
 
@@ -157,10 +163,13 @@ public class CommandTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
     _wxeFunctionCommand.WxeFunctionCommand.CreatePermanentUrlForExternalFunction = true;
     
-    string expectedHref = _wxeFunctionCommand.GetWxeFunctionPermanentUrl();
+    NameValueCollection additionalUrlParameters = new NameValueCollection();
+    additionalUrlParameters.Add ("Parameter2", "Value2");
+
+    string expectedHref = _wxeFunctionCommand.GetWxeFunctionPermanentUrl (additionalUrlParameters);
     string expectedOnClick = _onClick;
 
-    _wxeFunctionCommand.RenderBegin (_writer, _postBackEvent, _onClick);
+    _wxeFunctionCommand.RenderBegin (_writer, _postBackEvent, new string[0], _onClick, additionalUrlParameters);
 
     Assert.IsNotNull (_writer.Tag, "Missing Tag");
     Assert.AreEqual (HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
@@ -181,7 +190,7 @@ public class CommandTest
   [Test]
   public void RenderNoneCommand()
   {
-    _noneCommand.RenderBegin (_writer, _postBackEvent, _onClick);
+    _noneCommand.RenderBegin (_writer, _postBackEvent, new string[0], _onClick);
 
     Assert.IsNotNull (_writer.Tag, "Missing Tag");
     Assert.AreEqual (HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
@@ -194,6 +203,7 @@ public class CommandTest
     WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
     
     string wxeHandler = Rubicon.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, wxeHandler);
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add ("Parameter1", _wxeFunctionParameter1Value);
@@ -204,7 +214,7 @@ public class CommandTest
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
-    string url = command.GetWxeFunctionPermanentUrl ();
+    string url = command.GetWxeFunctionPermanentUrl (null);
 
     Assert.IsNotNull (url);
     Assert.AreEqual (expectedUrl, url);
@@ -227,7 +237,61 @@ public class CommandTest
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    string url = command.GetWxeFunctionPermanentUrl ();
+    string url = command.GetWxeFunctionPermanentUrl (null);
+
+    Assert.IsNotNull (url);
+    Assert.AreEqual (expectedUrl, url);
+  }
+
+  [Test]
+  public void GetWxeFunctionPermanentUrlWithDefaultWxeHandlerAndAdditionalUrlParameters()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetExecutionEngineWithDefaultWxeHandler();    
+    
+    string wxeHandler = Rubicon.Web.Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
+    
+    NameValueCollection additionalUrlParameters = new NameValueCollection();
+    additionalUrlParameters.Add ("Parameter2", "Value2");
+
+    string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, wxeHandler);
+    NameValueCollection expectedQueryString = new NameValueCollection();
+    expectedQueryString.Add ("Parameter1", _wxeFunctionParameter1Value);
+    expectedQueryString.Add (additionalUrlParameters);
+    expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
+    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+
+    Command command = new Command ();
+    command.Type = CommandType.WxeFunction;
+    command.WxeFunctionCommand.TypeName = _functionTypeName;
+    command.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
+    string url = command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
+
+    Assert.IsNotNull (url);
+    Assert.AreEqual (expectedUrl, url);
+  }
+
+  [Test]
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndAdditionalUrlParameters()
+  {
+    string resource = "~/Test.wxe";
+    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
+        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (_functionType, resource));
+    string parameter1 = "Value1";
+
+    NameValueCollection additionalUrlParameters = new NameValueCollection();
+    additionalUrlParameters.Add ("Parameter2", "Value2");
+    
+    string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, resource);
+    NameValueCollection expectedQueryString = new NameValueCollection();
+    expectedQueryString.Add ("Parameter1", parameter1);
+    expectedQueryString.Add (additionalUrlParameters);
+    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+
+    Command command = new Command ();
+    command.Type = CommandType.WxeFunction;
+    command.WxeFunctionCommand.TypeName = _functionTypeName;
+    command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
+    string url = command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
 
     Assert.IsNotNull (url);
     Assert.AreEqual (expectedUrl, url);
@@ -244,7 +308,7 @@ public class CommandTest
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    command.GetWxeFunctionPermanentUrl ();
+    command.GetWxeFunctionPermanentUrl (null);
 
     Assert.Fail();
   }

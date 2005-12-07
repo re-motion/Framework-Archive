@@ -126,13 +126,7 @@ public abstract class MenuTab: WebTab
     ArgumentUtility.CheckNotNull ("writer", writer);
     if (isEnabled && Command != null)
     {
-      string backedUpHref = Command.HrefCommand.Href;
-      if (! ControlHelper.IsDesignMode (TabbedMenu))
-        Command.HrefCommand.Href = TabbedMenu.AddTabsToUrl (Command.HrefCommand.Href, this);
-
-      Command.RenderBegin (writer, GetPostBackClientEvent(), string.Empty);
-
-      Command.HrefCommand.Href = backedUpHref;
+      Command.RenderBegin (writer, GetPostBackClientEvent(), new string[0], string.Empty);
     }
     else
     {
@@ -182,7 +176,8 @@ public abstract class MenuTab: WebTab
   {
     ArgumentUtility.CheckNotNull ("command", command);
 
-    string url = Command.GetWxeFunctionPermanentUrl ();
+    NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
+    string url = Command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
     PageUtility.Redirect (TabbedMenu.Page.Response, url);
   }
 }

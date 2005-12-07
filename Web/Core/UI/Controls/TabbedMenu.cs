@@ -151,51 +151,62 @@ public class TabbedMenu: WebControl
     windowStateManager.SetData (SelectedTabIDsID, tabIDs);
   }
 
-  public string AddSelectedTabsToUrl (string url)
+  public NameValueCollection GetUrlParameters (MenuTab menuTab)
   {
+    ArgumentUtility.CheckNotNull ("menuTab", menuTab);
+
+    NameValueCollection urlParameters = new NameValueCollection();
+
     string[] tabIDs = GetTabIDs (
         (MainMenuTab) _mainMenuTabStrip.SelectedTab, 
         (SubMenuTab) _subMenuTabStrip.SelectedTab);
 
     string value = (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), tabIDs);
-    return PageUtility.AddUrlParameter (url, SelectedTabIDsID, value);
+
+    urlParameters.Add (SelectedTabIDsID, value);
+    return urlParameters;
   }
 
-  public string AddTabsToUrl (string url, MenuTab menuItem)
+  public string FormatUrl (string url)
   {
-    ArgumentUtility.CheckNotNull ("menuItem", menuItem);
-    string[] tabIDs;
-    if (menuItem is MainMenuTab)
-    {
-      tabIDs = GetTabIDs ((MainMenuTab) menuItem, null);
-    }
-    else
-    {
-      SubMenuTab subMenuItem = (SubMenuTab) menuItem;
-      tabIDs = GetTabIDs (subMenuItem.Parent, subMenuItem);
-    }
+    ArgumentUtility.CheckNotNullOrEmpty ("url", url);
 
-    string value = (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), tabIDs);
-    return PageUtility.AddUrlParameter (url, SelectedTabIDsID, value);
+    if (_subMenuTabStrip.SelectedTab != null)
+      return FormatUrl (url, (SubMenuTab) _subMenuTabStrip.SelectedTab);
+    else if (_mainMenuTabStrip.SelectedTab != null)
+      return FormatUrl (url, (MainMenuTab) _mainMenuTabStrip.SelectedTab);
+    else
+      return url;
   }
 
-  private string[] GetTabIDs (MainMenuTab mainMenuItem, SubMenuTab subMenuItem)
+  public string FormatUrl (string url, MenuTab menuTab)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("url", url);
+    
+    NameValueCollection urlParameters = GetUrlParameters (menuTab);
+    for (int i = 0; i < urlParameters.Count; i++)
+      url = PageUtility.AddUrlParameter (url, urlParameters.GetKey(i), urlParameters.Get(i));
+  
+    return url;
+  }
+
+  private string[] GetTabIDs (MainMenuTab mainMenuTab, SubMenuTab subMenuTab)
   {
     string[] tabIDs = new string[2];
-    if (mainMenuItem == null)
+    if (mainMenuTab == null)
     {
       tabIDs = new string[0];
     }
-    else if (subMenuItem == null)
+    else if (subMenuTab == null)
     {
       tabIDs = new string[1];
-      tabIDs[0] = mainMenuItem.ItemID;
+      tabIDs[0] = mainMenuTab.ItemID;
     }
     else
     {
       tabIDs = new string[2];
-      tabIDs[0] = mainMenuItem.ItemID;
-      tabIDs[1] = subMenuItem.ItemID;
+      tabIDs[0] = mainMenuTab.ItemID;
+      tabIDs[1] = subMenuTab.ItemID;
     }
     return tabIDs;
   }
@@ -241,8 +252,6 @@ public class TabbedMenu: WebControl
           this, Context, typeof (TabbedMenu), ResourceType.Html, c_styleFileUrl);
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
-
-    string value = AddSelectedTabsToUrl ("?");
     SaveSelectedTabs();
   }
 
