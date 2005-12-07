@@ -244,7 +244,7 @@ public class WebTab: IControlItem, IControlStateManager
     try
     {
       //  VS.NET Designer Bug: VS does is not able to determine whether _tabStrip is null.
-      if (ControlHelper.IsDesignMode ((Control) _tabStrip))
+      if (ControlHelper.IsDesignMode (_tabStrip, System.Web.HttpContext.Current))
         return string.Empty;
       if (_tabStrip == null) 
         throw new InvalidOperationException ("The WebTab is not part of a WebTabStrip.");

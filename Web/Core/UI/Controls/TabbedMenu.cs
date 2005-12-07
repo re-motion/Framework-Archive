@@ -155,14 +155,18 @@ public class TabbedMenu: WebControl
   {
     ArgumentUtility.CheckNotNull ("menuTab", menuTab);
 
-    NameValueCollection urlParameters = new NameValueCollection();
-
-    string[] tabIDs = GetTabIDs (
-        (MainMenuTab) _mainMenuTabStrip.SelectedTab, 
-        (SubMenuTab) _subMenuTabStrip.SelectedTab);
+    MainMenuTab mainMenuTab = menuTab as MainMenuTab;
+    SubMenuTab subMenuTab = menuTab as SubMenuTab;
+    
+    string[] tabIDs;
+    if (mainMenuTab != null)
+      tabIDs = GetTabIDs (mainMenuTab, null);
+    else
+      tabIDs = GetTabIDs (subMenuTab.Parent, subMenuTab);
 
     string value = (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), tabIDs);
 
+    NameValueCollection urlParameters = new NameValueCollection();
     urlParameters.Add (SelectedTabIDsID, value);
     return urlParameters;
   }

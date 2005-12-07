@@ -126,7 +126,8 @@ public abstract class MenuTab: WebTab
     ArgumentUtility.CheckNotNull ("writer", writer);
     if (isEnabled && Command != null)
     {
-      Command.RenderBegin (writer, GetPostBackClientEvent(), new string[0], string.Empty);
+      NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
+      Command.RenderBegin (writer, GetPostBackClientEvent(), new string[0], string.Empty, additionalUrlParameters);
     }
     else
     {
