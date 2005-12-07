@@ -151,7 +151,8 @@ function Wxe_Context (
   {
     if (currentElement != null)
     {
-      if (currentElement.id != null && currentElement.id != '' && IsFocusableTag (currentElement.tagName))
+      if (   typeof (currentElement.id) != 'undefined' && currentElement.id != null && currentElement.id != '' 
+          && IsFocusableTag (currentElement.tagName))
       {
 		    currentElement.onfocus = Wxe_OnElementFocus;
 		    currentElement.onblur  = Wxe_OnElementBlur;
@@ -554,7 +555,7 @@ function Wxe_Context (
 
     var tagName = element.tagName.toLowerCase();
     if (   tagName == 'a'
-        && element.href != null
+        && typeof (element.href) != 'undefined' && element.href != null
         && element.href.substring (0, 11).toLowerCase() == 'javascript:')
     {
       return true;
