@@ -164,7 +164,7 @@ public class BocListItemCommand: BocCommand
       int listIndex, 
       string businessObjectID)
   {
-    base.RenderBegin (writer, postBackLink, onClick, listIndex.ToString(), businessObjectID);
+    base.RenderBegin (writer, postBackLink, new string[] {listIndex.ToString(), businessObjectID}, onClick);
   }
 
   /// <summary>

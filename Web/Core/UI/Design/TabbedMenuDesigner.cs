@@ -9,11 +9,11 @@ using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI.Design
 {
-public class TabStripMenuDesigner: WebControlDesigner, IServiceProvider
+public class TabbedMenuDesigner: WebControlDesigner, IServiceProvider
 {
   private DesignerVerbCollection _verbs = null;
 
-	public TabStripMenuDesigner()
+	public TabbedMenuDesigner()
 	{
     _verbs = new DesignerVerbCollection();
     _verbs.Add (new DesignerVerb ("Edit Menu Tabs", new EventHandler(OnVerbEditFixedColumns)));
@@ -21,19 +21,19 @@ public class TabStripMenuDesigner: WebControlDesigner, IServiceProvider
 
   private void OnVerbEditFixedColumns (object sender, EventArgs e) 
   {
-    TabStripMenu tabStripMenu = Component as TabStripMenu;
+    TabbedMenu tabStripMenu = Component as TabbedMenu;
     if (tabStripMenu == null)
-      throw new InvalidOperationException ("Cannot use TabStripMenuDesigner for objects other than TabStripMenu.");
+      throw new InvalidOperationException ("Cannot use TabbedMenuDesigner for objects other than TabbedMenu.");
 
     PropertyDescriptorCollection propertyDescriptors = TypeDescriptor.GetProperties (tabStripMenu);
     PropertyDescriptor propertyDescriptor = propertyDescriptors["Tabs"];
 
     TypeDescriptorContext context = new TypeDescriptorContext (this, this, propertyDescriptor);
     object value = propertyDescriptor.GetValue (Component);
-    TabStripMainMenuItemCollectionEditor editor = null;
+    MainMenuTabCollectionEditor editor = null;
     //Does not work because EditorAttribute is applied on property
-    //editor = (TabStripMainMenuItemCollectionEditor) TypeDescriptor.GetEditor (value, typeof(UITypeEditor));
-    editor = new TabStripMainMenuItemCollectionEditor (typeof (WebTabCollection));
+    //editor = (MainMenuTabCollectionEditor) TypeDescriptor.GetEditor (value, typeof(UITypeEditor));
+    editor = new MainMenuTabCollectionEditor (typeof (WebTabCollection));
     editor.EditValue (context, this, value);
   }
 

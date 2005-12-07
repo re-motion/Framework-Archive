@@ -26,7 +26,7 @@ public class TestTabbedForm : TestWxeBasePage
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   private IDataEditControl[] _dataEditControls;
   protected Rubicon.Web.UI.Controls.WebTabStrip PagesTabStrip;
-  protected Rubicon.Web.UI.Controls.TabStripMenu NavigationTabs;
+  protected Rubicon.Web.UI.Controls.TabbedMenu NavigationTabs;
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
   protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
   private PlaceHolder _wxeControlsPlaceHolder;

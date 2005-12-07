@@ -1,17 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Text;
-using System.Web;
-using System.Web.UI;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Reflection;
+using System.Text;
+using System.Web;
+using System.Web.UI;
+using Rubicon.Collections;
+using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.Collections;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -275,23 +276,27 @@ public class Command: IControlItem
   ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
   ///   to force a post back.
   /// </param>
+  /// <param name="parameters">
+  ///   The strings inserted into the href attribute using <c>string.Format</c>.
+  /// </param>
   /// <param name="onClick"> 
   ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
   /// </param>
-  /// <param name="parameters">
-  ///   The strings inserted into the href attribute using <c>string.Format</c>.
+  /// <param name="additionalUrlParameters">
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters. Defaults to <see langword="null"/>.
   /// </param>
   public virtual void RenderBegin (
       HtmlTextWriter writer, 
       string postBackEvent,
+      string[] parameters,
       string onClick,
-      params string[] parameters)
+      NameValueCollection additionalUrlParameters)
   {
     switch (_type)
     {
       case CommandType.Href:
       {
-        AddAttributesToRenderForHrefCommand (writer, parameters, onClick);
+        AddAttributesToRenderForHrefCommand (writer, parameters, onClick, additionalUrlParameters);
         break;
       }
       case CommandType.Event:
@@ -301,7 +306,7 @@ public class Command: IControlItem
       }
       case CommandType.WxeFunction:
       {
-        AddAttributesToRenderForWxeFunctionCommand (writer, postBackEvent, onClick);
+        AddAttributesToRenderForWxeFunctionCommand (writer, postBackEvent, onClick, additionalUrlParameters);
         break;
       }
       case CommandType.None:
@@ -312,6 +317,25 @@ public class Command: IControlItem
     writer.RenderBeginTag (HtmlTextWriterTag.A);
   }
 
+  /// <summary> Renders the opening tag for the command. </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. Must not be <see langword="null"/>. </param>
+  /// <param name="postBackEvent">
+  ///   The string executed upon the click on a command of types
+  ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
+  ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
+  ///   to force a post back.
+  /// </param>
+  /// <param name="parameters">
+  ///   The strings inserted into the href attribute using <c>string.Format</c>.
+  /// </param>
+  /// <param name="onClick"> 
+  ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
+  /// </param>
+  public void RenderBegin (HtmlTextWriter writer, string postBackEvent, string[] parameters, string onClick)
+  {
+    RenderBegin (writer, postBackEvent, parameters, onClick, null);
+  }
+
   /// <summary> Adds the attributes for the Href command to the anchor tag. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. Must not be <see langword="null"/>. </param>
   /// <param name="parameters">
@@ -320,13 +344,17 @@ public class Command: IControlItem
   /// <param name="onClick"> 
   ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
   /// </param>
+  /// <param name="additionalUrlParameters">
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters.
+  /// </param>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Href"/>.
   /// </exception> 
   protected virtual void AddAttributesToRenderForHrefCommand (
       HtmlTextWriter writer,
       string[] parameters, 
-      string onClick)
+      string onClick,
+      NameValueCollection additionalUrlParameters)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("parameters", parameters);  
@@ -334,6 +362,11 @@ public class Command: IControlItem
       throw new InvalidOperationException ("Call to AddAttributesToRenderForHrefCommand not allowed unless Type is set to CommandType.Href.");
       
     string href = HrefCommand.FormatHref (parameters);
+    if (additionalUrlParameters != null)
+    {
+      for (int i = 0; i < additionalUrlParameters.Count; i++)
+        href = PageUtility.AddUrlParameter (href, additionalUrlParameters.GetKey(i), additionalUrlParameters.Get(i));
+    }
     writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
     if (! StringUtility.IsNullOrEmpty (HrefCommand.Target))
       writer.AddAttribute (HtmlTextWriterAttribute.Target, HrefCommand.Target);
@@ -383,13 +416,17 @@ public class Command: IControlItem
   /// <param name="onClick"> 
   ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
   /// </param>
+  /// <param name="additionalUrlParameters">
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters.
+  /// </param>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   /// </exception> 
   protected virtual void AddAttributesToRenderForWxeFunctionCommand (
       HtmlTextWriter writer, 
       string postBackEvent,
-      string onClick)
+      string onClick,
+      NameValueCollection additionalUrlParameters)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent); 
@@ -398,7 +435,7 @@ public class Command: IControlItem
        
     if (WxeFunctionCommand.CreatePermanentUrlForExternalFunction)
     {
-      string href = GetWxeFunctionPermanentUrl();
+      string href = GetWxeFunctionPermanentUrl (additionalUrlParameters);
       writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
       if (! StringUtility.IsNullOrEmpty (WxeFunctionCommand.Target))
         writer.AddAttribute (HtmlTextWriterAttribute.Target, WxeFunctionCommand.Target);
@@ -509,10 +546,13 @@ public class Command: IControlItem
   /// <summary> 
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
   /// </summary>
+  /// <param name="additionalUrlParameters">
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters. Defaults to <see langword="null"/>.
+  /// </param>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   /// </exception> 
-  public virtual string GetWxeFunctionPermanentUrl()
+  public virtual string GetWxeFunctionPermanentUrl (NameValueCollection additionalUrlParameters)
   {
     if (Type != CommandType.WxeFunction)
       throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
@@ -520,12 +560,25 @@ public class Command: IControlItem
     Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
     WxeParameterDeclaration[] parameterDeclarations = WxeFunction.GetParamaterDeclarations (functionType);
     object[] parameterValues = WxeFunction.ParseActualParameters (
-        parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);
+        parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);   
     NameValueCollection queryString = 
         WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
+    if (additionalUrlParameters != null)
+      queryString.Add (additionalUrlParameters);
     return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);
   }
 
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
+  /// </summary>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  public string GetWxeFunctionPermanentUrl ()
+  {
+    return GetWxeFunctionPermanentUrl (null);
+  }
+  
   /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
   /// <value> One of the <see cref="CommandType"/> enumeration values. The default is <see cref="CommandType.None"/>. </value>
   [PersistenceMode (PersistenceMode.Attribute)]

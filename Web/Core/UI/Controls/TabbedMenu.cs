@@ -21,16 +21,16 @@ public interface IWindowStateManager
   void SetData (string key, object value);
 }
 
-[Designer (typeof (TabStripMenuDesigner))]
-public class TabStripMenu: WebControl
+[Designer (typeof (TabbedMenuDesigner))]
+public class TabbedMenu: WebControl
 {
   // constants
-  private const string c_styleFileUrl = "TabStripMenu.css";
+  private const string c_styleFileUrl = "TabbedMenu.css";
 
   // statics
   //private static readonly object s_clickEvent = new object();
   //private static readonly object s_selectionChangedEvent = new object();
-  private static readonly string s_styleFileKey = typeof (TabStripMenu).FullName + "_Style";
+  private static readonly string s_styleFileKey = typeof (TabbedMenu).FullName + "_Style";
 
   // types
 
@@ -55,9 +55,9 @@ public class TabStripMenu: WebControl
 
 
   // construction and destruction
-  public TabStripMenu()
+  public TabbedMenu()
   {
-    _mainMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (TabStripMainMenuItem)});
+    _mainMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (MainMenuTab)});
     _subMenuTabStrip = new WebTabStrip (this);
     _mainMenuStyle = new Style();
     _subMenuStyle = new Style();
@@ -81,7 +81,7 @@ public class TabStripMenu: WebControl
 
   protected virtual string SelectedTabIDsID
   {
-    get { return "TabStripMenuSelected"; }
+    get { return "TabbedMenuSelected"; }
   }
 
   private void LoadSelectedTabs ()
@@ -146,32 +146,32 @@ public class TabStripMenu: WebControl
       return;
 
     string[] tabIDs = GetTabIDs (
-        (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab, 
-        (TabStripSubMenuItem) _subMenuTabStrip.SelectedTab);
+        (MainMenuTab) _mainMenuTabStrip.SelectedTab, 
+        (SubMenuTab) _subMenuTabStrip.SelectedTab);
     windowStateManager.SetData (SelectedTabIDsID, tabIDs);
   }
 
   public string AddSelectedTabsToUrl (string url)
   {
     string[] tabIDs = GetTabIDs (
-        (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab, 
-        (TabStripSubMenuItem) _subMenuTabStrip.SelectedTab);
+        (MainMenuTab) _mainMenuTabStrip.SelectedTab, 
+        (SubMenuTab) _subMenuTabStrip.SelectedTab);
 
     string value = (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), tabIDs);
     return PageUtility.AddUrlParameter (url, SelectedTabIDsID, value);
   }
 
-  public string AddTabsToUrl (string url, TabStripMenuItem menuItem)
+  public string AddTabsToUrl (string url, MenuTab menuItem)
   {
     ArgumentUtility.CheckNotNull ("menuItem", menuItem);
     string[] tabIDs;
-    if (menuItem is TabStripMainMenuItem)
+    if (menuItem is MainMenuTab)
     {
-      tabIDs = GetTabIDs ((TabStripMainMenuItem) menuItem, null);
+      tabIDs = GetTabIDs ((MainMenuTab) menuItem, null);
     }
     else
     {
-      TabStripSubMenuItem subMenuItem = (TabStripSubMenuItem) menuItem;
+      SubMenuTab subMenuItem = (SubMenuTab) menuItem;
       tabIDs = GetTabIDs (subMenuItem.Parent, subMenuItem);
     }
 
@@ -179,7 +179,7 @@ public class TabStripMenu: WebControl
     return PageUtility.AddUrlParameter (url, SelectedTabIDsID, value);
   }
 
-  private string[] GetTabIDs (TabStripMainMenuItem mainMenuItem, TabStripSubMenuItem subMenuItem)
+  private string[] GetTabIDs (MainMenuTab mainMenuItem, SubMenuTab subMenuItem)
   {
     string[] tabIDs = new string[2];
     if (mainMenuItem == null)
@@ -212,7 +212,7 @@ public class TabStripMenu: WebControl
     _isSubMenuTabStripRefreshed = true;
     if (resetSubMenu)
       _subMenuTabStrip.Tabs.Clear();
-    TabStripMainMenuItem selectedMainMenuItem = (TabStripMainMenuItem) _mainMenuTabStrip.SelectedTab;
+    MainMenuTab selectedMainMenuItem = (MainMenuTab) _mainMenuTabStrip.SelectedTab;
     if (selectedMainMenuItem != null)
       _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
     if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
@@ -238,7 +238,7 @@ public class TabStripMenu: WebControl
     if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
     {
       url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (TabStripMenu), ResourceType.Html, c_styleFileUrl);
+          this, Context, typeof (TabbedMenu), ResourceType.Html, c_styleFileUrl);
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
 
@@ -309,7 +309,7 @@ public class TabStripMenu: WebControl
   [Category ("Behavior")]
   [Description ("")]
   [DefaultValue ((string) null)]
-  [Editor (typeof (TabStripMainMenuItemCollectionEditor), typeof (UITypeEditor))]
+  [Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
   public WebTabCollection Tabs
   {
     get
@@ -353,49 +353,49 @@ public class TabStripMenu: WebControl
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the main menu's tab strip. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripMenuMain</c>. </para>
+  ///   <para> Class: <c>tabbedMainMenu</c>. </para>
   ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="MainMenuStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassMainMenu
   {
-    get { return "tabStripMenuMain"; }
+    get { return "tabbedMainMenu"; }
   }
 
   /// <summary> Gets the CSS-Class applied to the sub menu's tab strip. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripMenuSub</c>. </para>
+  ///   <para> Class: <c>tabbedSubMenu</c>. </para>
   ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="SubMenuStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassSubMenu
   {
-    get { return "tabStripMenuSub"; }
+    get { return "tabbedSubMenu"; }
   }
 
   /// <summary> Gets the CSS-Class applied to the main menu cell. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripMenuMainMenuCell</c>. </para>
+  ///   <para> Class: <c>tabbedMainMenuCell</c>. </para>
   /// </remarks>
   protected virtual string CssClassMainMenuCell
   {
-    get { return "tabStripMenuMainMenuCell"; }
+    get { return "tabbedMainMenuCell"; }
   }
 
   /// <summary> Gets the CSS-Class applied to the sub menu cell. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripMenuSubMenuCell</c>. </para>
+  ///   <para> Class: <c>tabbedSubMenuCell</c>. </para>
   /// </remarks>
   protected virtual string CssClassSubMenuCell
   {
-    get { return "tabStripMenuSubMenuCell"; }
+    get { return "tabbedSubMenuCell"; }
   }
 
   /// <summary> Gets the CSS-Class applied to the status cell. </summary>
   /// <remarks> 
-  ///   <para> Class: <c>tabStripMenuStatusCell</c>. </para>
+  ///   <para> Class: <c>tabbedMenuStatusCell</c>. </para>
   /// </remarks>
   protected virtual string CssClassStatusCell
   {
-    get { return "tabStripMenuStatusCell"; }
+    get { return "tabbedMenuStatusCell"; }
   }
   #endregion
 }

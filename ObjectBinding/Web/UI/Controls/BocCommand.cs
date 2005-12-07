@@ -155,7 +155,7 @@ public class BocCommand: Command
       string onClick, 
       string businessObjectID)
   {
-    base.RenderBegin (writer, postBackLink, onClick, businessObjectID);
+    base.RenderBegin (writer, postBackLink, new string[] {businessObjectID}, onClick);
   }
 
   /// <summary>

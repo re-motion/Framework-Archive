@@ -513,15 +513,15 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\TabbedMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\TabbedMultiView.css"
                     BuildAction = "Content"
                 />
                 <File
                     RelPath = "Res\HTML\TabStrip.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\TabStripMenu.css"
                     BuildAction = "Content"
                 />
                 <File
@@ -541,19 +541,19 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Res\Image\NavigationTabsMainMenuTabTopLeftCorner.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\NavigationTabsMainMenuTabTopRightCorner.gif"
-                    BuildAction = "Content"
-                />
-                <File
                     RelPath = "Res\Image\RequiredField.gif"
                     BuildAction = "Content"
                 />
                 <File
                     RelPath = "Res\Image\Spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TabbedMainMenuTabTopLeftCorner.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\Image\TabbedMainMenuTabTopRightCorner.gif"
                     BuildAction = "Content"
                 />
                 <File
@@ -858,6 +858,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\MenuTab.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\NumericValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -883,6 +888,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\TabbedMenu.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\TabbedMultiView.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -894,16 +904,6 @@
                 />
                 <File
                     RelPath = "UI\Controls\TableControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\TabStripMenu.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\TabStripMenuItem.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -1008,6 +1008,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Design\MainMenuTabCollectionEditor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\SmartControlToStringConverter.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1018,17 +1023,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Design\TabStripMainMenuItemCollectionEditor.cs"
+                    RelPath = "UI\Design\SubMenuTabCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Design\TabStripMenuDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\TabStripSubMenuItemCollectionEditor.cs"
+                    RelPath = "UI\Design\TabbedMenuDesigner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

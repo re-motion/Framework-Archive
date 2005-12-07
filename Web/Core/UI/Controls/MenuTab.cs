@@ -17,18 +17,18 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
-public abstract class TabStripMenuItem: WebTab
+public abstract class MenuTab: WebTab
 {
   /// <summary> The command rendered for this menu item. </summary>
   private SingleControlItemCollection _command = null;
 
-  protected TabStripMenuItem (string itemID, string text, IconInfo icon)
+  protected MenuTab (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
   {
     Initialize();
   }
 
-  protected TabStripMenuItem()
+  protected MenuTab()
   {
     Initialize();
   }
@@ -38,9 +38,9 @@ public abstract class TabStripMenuItem: WebTab
     _command = new SingleControlItemCollection (new Command (CommandType.Event), new Type[] {typeof (Command)});
   }
 
-  protected TabStripMenu TabStripMenu
+  protected TabbedMenu TabbedMenu
   {
-    get { return (TabStripMenu) OwnerControl; }
+    get { return (TabbedMenu) OwnerControl; }
   }
 
   /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
@@ -107,8 +107,8 @@ public abstract class TabStripMenuItem: WebTab
   {
     base.OnOwnerControlChanged();
 
-    if (OwnerControl != null && ! (OwnerControl is TabStripMenu))
-      throw new InvalidOperationException ("A TabStripSubMenuItem can only be added to a WebTabStrip that is part of a TabStripMenu.");
+    if (OwnerControl != null && ! (OwnerControl is TabbedMenu))
+      throw new InvalidOperationException ("A SubMenuTab can only be added to a WebTabStrip that is part of a TabbedMenu.");
 
     if (Command != null)
       Command.OwnerControl = OwnerControl;
@@ -127,8 +127,8 @@ public abstract class TabStripMenuItem: WebTab
     if (isEnabled && Command != null)
     {
       string backedUpHref = Command.HrefCommand.Href;
-      if (! ControlHelper.IsDesignMode (TabStripMenu))
-        Command.HrefCommand.Href = TabStripMenu.AddTabsToUrl (Command.HrefCommand.Href, this);
+      if (! ControlHelper.IsDesignMode (TabbedMenu))
+        Command.HrefCommand.Href = TabbedMenu.AddTabsToUrl (Command.HrefCommand.Href, this);
 
       Command.RenderBegin (writer, GetPostBackClientEvent(), string.Empty);
 
@@ -157,8 +157,8 @@ public abstract class TabStripMenuItem: WebTab
 
     if (Command != null && Command.Type == CommandType.WxeFunction)
     {
-      if (TabStripMenu.Page is IWxePage)
-        ExecuteWxeFunction ((IWxePage) TabStripMenu.Page, Command);
+      if (TabbedMenu.Page is IWxePage)
+        ExecuteWxeFunction ((IWxePage) TabbedMenu.Page, Command);
       else
         RedirectToWxeFunction (Command);
     }
@@ -183,27 +183,27 @@ public abstract class TabStripMenuItem: WebTab
     ArgumentUtility.CheckNotNull ("command", command);
 
     string url = Command.GetWxeFunctionPermanentUrl ();
-    PageUtility.Redirect (TabStripMenu.Page.Response, url);
+    PageUtility.Redirect (TabbedMenu.Page.Response, url);
   }
 }
 
-public class TabStripMainMenuItem: TabStripMenuItem
+public class MainMenuTab: MenuTab
 {
-  private TabStripSubMenuItemCollection _subMenuTabs;
+  private SubMenuTabCollection _subMenuTabs;
 
-  public TabStripMainMenuItem (string itemID, string text, IconInfo icon)
+  public MainMenuTab (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
   {
-    _subMenuTabs = new TabStripSubMenuItemCollection (OwnerControl);
+    _subMenuTabs = new SubMenuTabCollection (OwnerControl);
     _subMenuTabs.SetParent (this);
   }
 
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
   /// <exclude/>
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public TabStripMainMenuItem()
+  public MainMenuTab()
   {
-    _subMenuTabs = new TabStripSubMenuItemCollection (OwnerControl);
+    _subMenuTabs = new SubMenuTabCollection (OwnerControl);
     _subMenuTabs.SetParent (this);
   }
 
@@ -212,8 +212,8 @@ public class TabStripMainMenuItem: TabStripMenuItem
   [Category ("Behavior")]
   [Description ("")]
   [DefaultValue ((string) null)]
-  [Editor (typeof (TabStripSubMenuItemCollectionEditor), typeof (UITypeEditor))]
-  public TabStripSubMenuItemCollection SubMenuTabs
+  [Editor (typeof (SubMenuTabCollectionEditor), typeof (UITypeEditor))]
+  public SubMenuTabCollection SubMenuTabs
   {
     get { return _subMenuTabs; }
   }
@@ -227,15 +227,15 @@ public class TabStripMainMenuItem: TabStripMenuItem
   public override void OnSelectionChanged()
   {
     base.OnSelectionChanged ();
-    TabStripMenu.RefreshSubMenuTabStrip (true);
+    TabbedMenu.RefreshSubMenuTabStrip (true);
   }
 }
 
-public class TabStripSubMenuItem: TabStripMenuItem
+public class SubMenuTab: MenuTab
 {
-  private TabStripMainMenuItem _parent;
+  private MainMenuTab _parent;
 
-  public TabStripSubMenuItem (string itemID, string text, IconInfo icon)
+  public SubMenuTab (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
   {
   }
@@ -243,71 +243,71 @@ public class TabStripSubMenuItem: TabStripMenuItem
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
   /// <exclude/>
   [EditorBrowsable (EditorBrowsableState.Never)]
-  public TabStripSubMenuItem()
+  public SubMenuTab()
   {
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public TabStripMainMenuItem Parent
+  public MainMenuTab Parent
   {
     get { return _parent; }
   }
 
-  protected internal void SetParent (TabStripMainMenuItem parent)
+  protected internal void SetParent (MainMenuTab parent)
   {
     ArgumentUtility.CheckNotNull ("parent", parent);
     _parent = parent;
   }
 }
 
-public class TabStripSubMenuItemCollection: WebTabCollection
+public class SubMenuTabCollection: WebTabCollection
 {
-  private TabStripMainMenuItem _parent;
+  private MainMenuTab _parent;
 
   /// <summary> Initializes a new instance. </summary>
-  public TabStripSubMenuItemCollection (Control ownerControl, Type[] supportedTypes)
+  public SubMenuTabCollection (Control ownerControl, Type[] supportedTypes)
     : base (ownerControl, supportedTypes)
   {
   }
 
   /// <summary> Initializes a new instance. </summary>
-  public TabStripSubMenuItemCollection (Control ownerControl)
-    : this (ownerControl, new Type[] {typeof (TabStripSubMenuItem)})
+  public SubMenuTabCollection (Control ownerControl)
+    : this (ownerControl, new Type[] {typeof (SubMenuTab)})
   {
   }
 
   protected override void OnInsertComplete (int index, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (TabStripSubMenuItem));
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (SubMenuTab));
 
     base.OnInsertComplete (index, value);
-    TabStripSubMenuItem tab = (TabStripSubMenuItem) value;
+    SubMenuTab tab = (SubMenuTab) value;
     tab.SetParent (_parent);
   }
 
   protected override void OnSetComplete(int index, object oldValue, object newValue)
   {
-    ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (TabStripSubMenuItem));
+    ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (SubMenuTab));
 
     base.OnSetComplete (index, oldValue, newValue);
-    TabStripSubMenuItem tab = (TabStripSubMenuItem) newValue;
+    SubMenuTab tab = (SubMenuTab) newValue;
     tab.SetParent (_parent);
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public TabStripMainMenuItem Parent
+  public MainMenuTab Parent
   {
     get { return _parent; }
   }
 
-  protected internal void SetParent (TabStripMainMenuItem parent)
+  protected internal void SetParent (MainMenuTab parent)
   {
     ArgumentUtility.CheckNotNull ("parent", parent);
     _parent = parent;
     for (int i = 0; i < InnerList.Count; i++)
-      ((TabStripSubMenuItem) InnerList[i]).SetParent (_parent);
+      ((SubMenuTab) InnerList[i]).SetParent (_parent);
   }
 }
 

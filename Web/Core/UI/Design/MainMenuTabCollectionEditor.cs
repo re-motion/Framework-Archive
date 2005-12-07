@@ -6,16 +6,16 @@ using Rubicon.Web.UI.Controls;
 namespace Rubicon.Web.UI.Design
 {
 
-public class TabStripMainMenuItemCollectionEditor: AdvancedCollectionEditor
+public class MainMenuTabCollectionEditor: AdvancedCollectionEditor
 {
-  public TabStripMainMenuItemCollectionEditor (Type type)
+  public MainMenuTabCollectionEditor (Type type)
     : base (type)
   {
   }
 
   protected override Type[] CreateNewItemTypes()
   {
-    return new Type[] {typeof (TabStripMainMenuItem)};
+    return new Type[] {typeof (MainMenuTab)};
   }
 }
 

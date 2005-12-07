@@ -139,7 +139,7 @@ public class WebButton :
       onClick += "this.disabled = (typeof (Page_IsValid) == 'undefined' || Page_IsValid == null || Page_IsValid == true);";
       string postBackEventReference = Page.GetPostBackEventReference (this);
       if (CausesValidation)
-        onClick += " if (Page_IsValid) " + postBackEventReference + "; ";
+        onClick += " if (typeof (Page_IsValid) == 'undefined' || Page_IsValid == null || Page_IsValid == true) " + postBackEventReference + "; ";
       else
         onClick += postBackEventReference + "; ";
       onClick += "return false;";
@@ -189,7 +189,7 @@ public class WebButton :
         postBackScript += EnsureEndWithSemiColon (postBackEventReference);
         
         if (options.PerformValidation)
-          postBackScript += "this.disabled = Page_IsValid;";
+          postBackScript += "this.disabled = (typeof (Page_IsValid) == 'undefined' || Page_IsValid == null || Page_IsValid == true);";
         postBackScript += "return false;";
 
         if (postBackScript != null)

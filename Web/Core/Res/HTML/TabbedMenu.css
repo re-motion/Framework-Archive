@@ -1,16 +1,16 @@
 @import url ("TabStrip.css");
 
-td.tabStripMenuMainMenuCell
+td.tabbedMainMenuCell
 {
 }
 
-td.tabStripMenuSubMenuCell
+td.tabbedSubMenuCell
 {
   background-color: #02537c;
   padding: 0.3em;
 }
 
-td.tabStripMenuStatusCell
+td.tabbedMenuStatusCell
 {
   background-color: #02537c;
   padding-top: 0.3em;
@@ -23,27 +23,27 @@ td.tabStripMenuStatusCell
 }
 
 /* Main Menu Tabstrip*/
-table.tabStripMenuMain div.tabStripTabsPane
+table.tabbedMainMenu div.tabStripTabsPane
 {
   border-bottom: none;
 }
 
-table.tabStripMenuMain div.tabStripTabsPane ul
+table.tabbedMainMenu div.tabStripTabsPane ul
 {
 }
 
-table.tabStripMenuMain div.tabStripTabsPane ul li
+table.tabbedMainMenu div.tabStripTabsPane ul li
 {
   margin-top: 0.3em;
   margin-right: 0.1em;
 }
 
-table.tabStripMenuMain span.tabStripTabSeparator
+table.tabbedMainMenu span.tabStripTabSeparator
 {
   display: none;	
 }
 
-table.tabStripMenuMain span.tabStripTab a
+table.tabbedMainMenu span.tabStripTab a
 {  
   border: none;
   background-color: #e1ecfc;
@@ -52,14 +52,14 @@ table.tabStripMenuMain span.tabStripTab a
   font-weight: bold;
 }
 
-table.tabStripMenuMain span.tabStripTab a:hover
+table.tabbedMainMenu span.tabStripTab a:hover
 {
 	background-color: #fee197;	
   color: Blue;
   cursor: pointer;
 	cursor: hand;
 }
-table.tabStripMenuMain span.tabStripTabSelected a:hover
+table.tabbedMainMenu span.tabStripTabSelected a:hover
 {
   color: #fee197;
   text-decoration: underline;
@@ -67,7 +67,7 @@ table.tabStripMenuMain span.tabStripTabSelected a:hover
 	cursor: hand;
 }
 
-table.tabStripMenuMain span.tabStripTabSelected a
+table.tabbedMainMenu span.tabStripTabSelected a
 {
   border: none;
   background-color: #02537c;
@@ -77,26 +77,26 @@ table.tabStripMenuMain span.tabStripTabSelected a
 }
 
 /* Top Left tab corner */
-table.tabStripMenuMain span.tabStripTab a span.topLeft,
-table.tabStripMenuMain span.tabStripTabSelected a span.topLeft
+table.tabbedMainMenu span.tabStripTab a span.topLeft,
+table.tabbedMainMenu span.tabStripTabSelected a span.topLeft
 {
-  background-image: url(../Image/NavigationTabsMainMenuTabTopLeftCorner.gif);
+  background-image: url(../Image/TabbedMainMenuTabTopLeftCorner.gif);
   background-repeat: no-repeat;
   background-position: left top;
 }
 
 /* Top Right tab corner */
-table.tabStripMenuMain span.tabStripTab a span.topRight,
-table.tabStripMenuMain span.tabStripTabSelected a span.topRight
+table.tabbedMainMenu span.tabStripTab a span.topRight,
+table.tabbedMainMenu span.tabStripTabSelected a span.topRight
 {
-  background-image: url(../Image/NavigationTabsMainMenuTabTopRightCorner.gif);
+  background-image: url(../Image/TabbedMainMenuTabTopRightCorner.gif);
   background-repeat: no-repeat;
   background-position: right top;
 }
 
 /* Content area of the tab */
-table.tabStripMenuMain span.tabStripTab a span.content,
-table.tabStripMenuMain span.tabStripTabSelected a span.content
+table.tabbedMainMenu span.tabStripTab a span.content,
+table.tabbedMainMenu span.tabStripTabSelected a span.content
 {
   padding-top: 0.3em;
   padding-bottom: 0.3em;
@@ -104,17 +104,17 @@ table.tabStripMenuMain span.tabStripTabSelected a span.content
   padding-right: 0.6em;
 }
 
-table.tabStripMenuMain span.tabStripTab,
-table.tabStripMenuMain span.tabStripTabSelected,
-table.tabStripMenuMain span.tabStripTabSeparator
+table.tabbedMainMenu span.tabStripTab,
+table.tabbedMainMenu span.tabStripTabSelected,
+table.tabbedMainMenu span.tabStripTabSeparator
 {
   margin-bottom: -0.3em;
 }
 
 /* Non-IE Browsers hack \*/
-html>body table.tabStripMenuMain span.tabStripTab,
-html>body table.tabStripMenuMain span.tabStripTabSelected,
-html>body table.tabStripMenuMain span.tabStripTabSeparator
+html>body table.tabbedMainMenu span.tabStripTab,
+html>body table.tabbedMainMenu span.tabStripTabSelected,
+html>body table.tabbedMainMenu span.tabStripTabSeparator
 {
   margin-bottom: 0;
 }
@@ -122,29 +122,29 @@ html>body table.tabStripMenuMain span.tabStripTabSeparator
 
 
 /* Sub Menu Tabstrip */
-table.tabStripMenuSub div.tabStripTabsPane
+table.tabbedSubMenu div.tabStripTabsPane
 {
   border-bottom: none;
 }
 
-table.tabStripMenuSub div.tabStripTabsPane.empty
+table.tabbedSubMenu div.tabStripTabsPane.empty
 {
   padding-top: 0.5em;
   padding-bottom: 0.3em;
 }
 
-table.tabStripMenuSub div.tabStripTabsPane ul li
+table.tabbedSubMenu div.tabStripTabsPane ul li
 {
   margin-top: 0.2em;
 }
 
-table.tabStripMenuSub span.tabStripTabSeparator
+table.tabbedSubMenu span.tabStripTabSeparator
 {
   display: none;
 }
 
-table.tabStripMenuSub span.tabStripTab,
-table.tabStripMenuSub span.tabStripTabSelected
+table.tabbedSubMenu span.tabStripTab,
+table.tabbedSubMenu span.tabStripTabSelected
 {  
   border-right: solid 1px White;
 
@@ -154,15 +154,15 @@ table.tabStripMenuSub span.tabStripTabSelected
   padding-right: 0.2em;
 }
 
-table.tabStripMenuSub span.tabStripTab a
+table.tabbedSubMenu span.tabStripTab a
 {  
   border: none;
   background-color: #02537c;
   color: White;
 }
 
-table.tabStripMenuSub span.tabStripTab a:hover,
-table.tabStripMenuSub span.tabStripTabSelected a:hover
+table.tabbedSubMenu span.tabStripTab a:hover,
+table.tabbedSubMenu span.tabStripTabSelected a:hover
 {
 	background-color: #fee197;	
   color: Blue;
@@ -170,7 +170,7 @@ table.tabStripMenuSub span.tabStripTabSelected a:hover
 	cursor: hand;
 }
 
-table.tabStripMenuSub span.tabStripTabSelected a
+table.tabbedSubMenu span.tabStripTabSelected a
 {
   border: none;
   background-color: #02537c;
@@ -179,8 +179,8 @@ table.tabStripMenuSub span.tabStripTabSelected a
 }
 
 /* Content area of the tab */
-table.tabStripMenuSub span.tabStripTab a span.content,
-table.tabStripMenuSub span.tabStripTabSelected a span.content
+table.tabbedSubMenu span.tabStripTab a span.content,
+table.tabbedSubMenu span.tabStripTabSelected a span.content
 {
   padding-top: 0.1em;
   padding-bottom: 0.1em;
@@ -189,7 +189,7 @@ table.tabStripMenuSub span.tabStripTabSelected a span.content
 }
 
 /* Non-IE Browsers hack \*/
-html>body table.tabStripMenuSub div.tabStripTabsPane.empty
+html>body table.tabbedSubMenu div.tabStripTabsPane.empty
 {
   padding-top: 0.4em;
   padding-bottom: 0.2em;
