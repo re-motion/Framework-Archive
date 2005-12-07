@@ -74,7 +74,7 @@ function SmartScrolling_GetScrollPositions (currentElement)
   var scrollElements = new Array();
   if (currentElement != null)
   {
-    if (   currentElement.id != null && currentElement.id != ''
+    if (   typeof (currentElement.id) != 'undefined' && currentElement.id != null && currentElement.id != ''
         && (currentElement.scrollTop != 0 || currentElement.scrollLeft != 0))
     {
       var sseCurrentElement = SmartScrolling_GetScrollPosition (currentElement);
