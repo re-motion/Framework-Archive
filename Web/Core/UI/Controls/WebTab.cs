@@ -20,6 +20,7 @@ public class WebTab: IControlItem, IControlStateManager
   private string _itemID = "";
   private string _text = "";
   private IconInfo _icon;
+  private bool _isVisible = true;
   private WebTabStrip _tabStrip;
   private bool _isSelected = false;
   private int _selectDesired = 0;
@@ -95,8 +96,13 @@ public class WebTab: IControlItem, IControlStateManager
   }
 
   /// <summary> Sets the tab's selection state. </summary>
+  /// <exception cref="InvalidOperationException"> 
+  ///   Thrown if <see cref="IsVisible"/> is <see langword="false"/> but <paramref name="value"/> is <see langword="true"/>.
+  /// </exception>
   protected internal void SetSelected (bool value)
   {
+    if (value && ! _isVisible)
+      throw new InvalidOperationException (string.Format ("Cannot select tab '{0}' because it is invisible.", _itemID));
     _isSelected = value;
     if (_tabStrip == null)
       _selectDesired = value ? 1 : -1;
@@ -179,6 +185,22 @@ public class WebTab: IControlItem, IControlStateManager
     set { _icon = value; }
   }
 
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("False to hide the tab.")]
+  [NotifyParentProperty (true)]
+  [DefaultValue (true)]
+  public bool IsVisible
+  {
+    get { return _isVisible; }
+    set 
+    {
+      _isVisible = value; 
+      if (! _isVisible && _tabStrip != null)
+        _tabStrip.Tabs.OnHideTab (this);
+    }
+  }
+
   private bool ShouldSerializeIcon()
   {
     return IconInfo.ShouldSerialize (_icon);
@@ -198,6 +220,9 @@ public class WebTab: IControlItem, IControlStateManager
   }
 
   /// <summary> Gets or sets a flag that determines whether this node is the selected node of the tree view. </summary>
+  /// <exception cref="InvalidOperationException"> 
+  ///   Thrown if <see cref="IsVisible"/> is <see langword="false"/> but <paramref name="value"/> is <see langword="true"/>.
+  /// </exception>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public bool IsSelected

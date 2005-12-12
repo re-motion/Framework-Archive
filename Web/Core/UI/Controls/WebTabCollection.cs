@@ -17,9 +17,20 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
   private WebTabStrip _tabStrip;
 
   /// <summary> Initializes a new instance. </summary>
+  /// <param name="ownerControl"> Owner control. </param>
+  /// <param name="supportedTypes">
+  ///   Supported types must either be <see cref="WebTab"/> or derived from <see cref="WebTab"/>. 
+  ///   Must not be <see langword="null"/> or contain items that are <see langword="null"/>.
+  /// </param>
   public WebTabCollection (Control ownerControl, Type[] supportedTypes)
     : base (ownerControl, supportedTypes)
   {
+    for (int i = 0; i < supportedTypes.Length; i++)
+    {
+      Type type = supportedTypes[i];
+      if (! typeof (WebTab).IsAssignableFrom (type)) 
+        throw new ArgumentException (string.Format ("Type '{0}' at index {1} is not compatible with type 'WebTab'.", type.FullName, i), "type");
+    }
   }
 
   /// <summary> Initializes a new instance. </summary>
@@ -93,27 +104,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
     WebTab oldTab = (WebTab) oldValue;
     oldTab.SetTabStrip (null);
     
-    if (_tabStrip != null && oldTab.IsSelected)
-    {
-      bool isLastTab = index + 1 == InnerList.Count;
-      if (isLastTab)
-      {
-        if (InnerList.Count > 1)
-        {
-          WebTab penultimateTab = (WebTab) InnerList[index - 1];
-          _tabStrip.SetSelectedTabInternal (penultimateTab);
-        }
-        else
-        {
-          _tabStrip.SetSelectedTabInternal (null);
-        }
-      }
-      else
-      {
-        WebTab nextTab = (WebTab) InnerList[index + 1];
-        _tabStrip.SetSelectedTabInternal (nextTab);
-      }
-    }
+    DeselectTab (oldTab, index);
   }
 
   protected override void OnRemoveComplete (int index, object value)
@@ -159,6 +150,43 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
       _tabStrip.SetSelectedTabInternal (null);
   }
 
+  protected internal virtual void OnHideTab (WebTab tab)
+  {
+    ArgumentUtility.CheckNotNull ("tab", tab);
+    if (tab.TabStrip != null && tab.TabStrip != _tabStrip)
+      throw new ArgumentException ("The tab is not part of this collection's Tabstrip", "tab");
+    
+    DeselectTab (tab, IndexOf (tab));
+  }
+
+  /// <summary> Deselects a <see cref="WebTab"/> whose position in the list is still occupied. </summary>
+  protected void DeselectTab (WebTab tab, int index)
+  {
+    ArgumentUtility.CheckNotNull ("tab", tab);
+
+    if (_tabStrip != null && tab.IsSelected)
+    {
+      bool isLastTab = index + 1 == InnerList.Count;
+      if (isLastTab)
+      {
+        if (InnerList.Count > 1)
+        {
+          WebTab penultimateTab = (WebTab) InnerList[index - 1];
+          _tabStrip.SetSelectedTabInternal (penultimateTab);
+        }
+        else
+        {
+          _tabStrip.SetSelectedTabInternal (null);
+        }
+      }
+      else
+      {
+        WebTab nextTab = (WebTab) InnerList[index + 1];
+        _tabStrip.SetSelectedTabInternal (nextTab);
+      }
+    }
+  }
+
   public void AddRange (WebTabCollection values)
   {
     base.AddRange (values);
@@ -188,10 +216,17 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
   {
     if (   _tabStrip != null 
         && (_tabStrip.Page == null || ! _tabStrip.Page.IsPostBack)
-        && _tabStrip.SelectedTab == null 
-        && InnerList.Count > 0)
+        && _tabStrip.SelectedTab == null)
     {
-      _tabStrip.SetSelectedTabInternal ((WebTab) InnerList[0]);
+      for (int i = 0; i < InnerList.Count; i++)
+      {
+        WebTab tab = (WebTab) InnerList[i];
+        if (tab.IsVisible)
+        {
+          _tabStrip.SetSelectedTabInternal (tab);
+          break;
+        }
+      }
     }
   }
 

@@ -242,7 +242,8 @@ public class WebTabStrip :
     for (int i = 0; i < tabs.Count; i++)
     {
       WebTab tab = tabs[i];
-      RenderTab (writer, tab);
+      if (tab.IsVisible || ControlHelper.IsDesignMode (this, Context))
+        RenderTab (writer, tab);
     }
     RenderEndTabsPane (writer);
   }

@@ -1,7 +1,7 @@
-<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head><title>Test Tabbed Form</title>
@@ -14,19 +14,19 @@
 <form id=Form method=post runat="server">
       <rwc:TabbedMenu id="NavigationTabs" runat="server" width="100%">
 <tabs>
-<rwc:MainMenuTab ItemID="Tab1" Text="Tab 1">
+<rwc:MainMenuTab Text="Tab 1" ItemID="Tab1">
 <submenutabs>
-<rwc:SubMenuTab ItemID="Tab1" Text="Event">
+<rwc:SubMenuTab Text="Event" ItemID="Tab1">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
-<rwc:SubMenuTab ItemID="Tab2" Text="Href">
+<rwc:SubMenuTab Text="Href" ItemID="Tab2">
 <persistedcommand>
 <rwc:Command Type="Href" HrefCommand-Href="StartForm.aspx"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
-<rwc:SubMenuTab ItemID="Tab3" Text="Wxe">
+<rwc:SubMenuTab Text="Wxe" ItemID="Tab3">
 <persistedcommand>
 <rwc:Command Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:Command>
 </PersistedCommand>
@@ -37,19 +37,19 @@
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:MainMenuTab>
-<rwc:MainMenuTab ItemID="Tab2" Text="Tab 2">
+<rwc:MainMenuTab Text="Tab 2" ItemID="Tab2">
 <submenutabs>
-<rwc:SubMenuTab ItemID="SubTab1" Text="Sub Tab 2.1">
+<rwc:SubMenuTab Text="Sub Tab 2.1" ItemID="SubTab1">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
-<rwc:SubMenuTab ItemID="SubTab2" Text="Sub Tab 2.2">
+<rwc:SubMenuTab Text="Sub Tab 2.2" ItemID="SubTab2">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
-<rwc:SubMenuTab ItemID="SubTab23" Text="Sub Tab 2.3">
+<rwc:SubMenuTab Text="Sub Tab 2.3" ItemID="SubTab23">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
@@ -60,7 +60,12 @@
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:MainMenuTab>
-<rwc:MainMenuTab ItemID="Tab3" Text="Tab 3">
+<rwc:MainMenuTab Text="Tab 3" ItemID="Tab3" IsVisible="False">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
+</rwc:MainMenuTab>
+<rwc:MainMenuTab Text="Tab 4" ItemID="Tab4">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>

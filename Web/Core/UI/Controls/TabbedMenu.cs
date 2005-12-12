@@ -98,14 +98,16 @@ public class TabbedMenu: WebControl, IControl
     {
       string selectedMainMenuItemID = selectedTabIDs[0];
       WebTab selectedMainMenuItem = _mainMenuTabStrip.Tabs.Find (selectedMainMenuItemID);
-      selectedMainMenuItem.IsSelected = true;
+      if (selectedMainMenuItem.IsVisible)
+        selectedMainMenuItem.IsSelected = true;
     }
     RefreshSubMenuTabStrip (true);
     if (selectedTabIDs.Length > 1)
     {
       string selectedSubMenuItemID = selectedTabIDs[1];
       WebTab selectedSubMenuItem = _subMenuTabStrip.Tabs.Find (selectedSubMenuItemID);
-      selectedSubMenuItem.IsSelected = true;
+      if (selectedSubMenuItem.IsVisible)
+        selectedSubMenuItem.IsSelected = true;
     }
   }
 

@@ -44,20 +44,33 @@ public class ControlItemCollection: CollectionBase
 
   /// <summary> Creates a new instance. </summary>
   /// <param name="ownerControl"> Owner control. </param>
-  /// <param name="supportedTypes"> Supported types must implement <see cref="IControlItem"/>. </param>
+  /// <param name="supportedTypes">
+  ///   Supported types must implement <see cref="IControlItem"/>. 
+  ///   Must not be <see langword="null"/> or contain items that are <see langword="null"/>.
+  /// </param>
   public ControlItemCollection (Control ownerControl, Type[] supportedTypes)
   {
+    ArgumentUtility.CheckNotNullOrItemsNull ("supportedTypes", supportedTypes);
+    for (int i = 0; i < supportedTypes.Length; i++)
+    {
+      Type type = supportedTypes[i];
+      if (! typeof (IControlItem).IsAssignableFrom (type)) 
+        throw new ArgumentException (string.Format ("Type '{0}' at index {1} does not implement interface 'IControlItem'.", type.FullName, i), "type");
+    }
+
     _ownerControl = ownerControl;
     _supportedTypes = supportedTypes;
   }
 
   /// <summary> Creates a new instance. </summary>
   /// <param name="ownerControl"> Owner control. </param>
-  /// <param name="supportedTypes"> Supported types must implement <see cref="IControlItem"/>. </param>
+  /// <param name="supportedTypes"> 
+  ///   Supported types must implement <see cref="IControlItem"/>. 
+  ///   Must not be <see langword="null"/> or contain items that are <see langword="null"/>.
+  /// </param>
   public ControlItemCollection (IControl ownerControl, Type[] supportedTypes)
+    : this ((Control) ownerControl, supportedTypes)
   {
-    _ownerControl = (Control) ownerControl;
-    _supportedTypes = supportedTypes;
   }
 
   /// <summary> Places the collection into edit mode. </summary>
