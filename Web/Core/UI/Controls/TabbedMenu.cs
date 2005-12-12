@@ -307,7 +307,7 @@ public class TabbedMenu: WebControl, IControl
         if (Page is IWxePage)
           ExecuteWxeFunction ((IWxePage) Page, tab);
         else
-          RedirectToWxeFunction (tab);
+          ExecuteWxeFunction (tab);
       }
     }
   }
@@ -325,8 +325,12 @@ public class TabbedMenu: WebControl, IControl
     }
   }
 
+  /// <summary> 
+  ///   Executes the Wxe Function associated with the <paramref name="tab"/>. Used when the page is an 
+  ///   <see cref="IWxePage"/>. 
+  /// </summary>
   /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   If called while the <see cref="Command.Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   /// </exception> 
   protected virtual void ExecuteWxeFunction (IWxePage page, MenuTab tab)
   {
@@ -337,17 +341,41 @@ public class TabbedMenu: WebControl, IControl
     tab.Command.ExecuteWxeFunction (page, null);
   }
 
+  /// <summary> 
+  ///   Executes the Wxe Function associated with the <paramref name="tab"/>. Used when the page is not an 
+  ///   <see cref="IWxePage"/>. 
+  /// </summary>
   /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   If called while the <see cref="Command.Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   /// </exception> 
-  protected virtual void RedirectToWxeFunction (MenuTab tab)
+  protected virtual void ExecuteWxeFunction (MenuTab tab)
   {
     ArgumentUtility.CheckNotNull ("tab", tab);
     ArgumentUtility.CheckNotNull ("tab.Command", tab.Command);
+    if (tab.Command.Type != CommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless tab.Command.Type is set to CommandType.WxeFunction.");
+
+    string target = tab.Command.WxeFunctionCommand.Target;
+    bool hasTarget = ! StringUtility.IsNullOrEmpty (target);
 
     NameValueCollection additionalUrlParameters = GetUrlParameters (tab);
+    if (hasTarget)
+    {
+      string returnUrl = "javascript:window.close();";
+      additionalUrlParameters.Add (WxeHandler.Parameters.ReturnUrl, returnUrl);
+    }
     string url = tab.Command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
-    PageUtility.Redirect (Page.Response, url);
+
+
+    if (hasTarget)
+    {
+      string openScript = string.Format ("window.open('{0}', '{1}');", url, target);
+      PageUtility.RegisterStartupScriptBlock (Page, "WxeExecuteFunction", openScript);
+    }
+    else
+    {
+      PageUtility.Redirect (Page.Response, url);
+    }
   }
 
   protected override void OnPreRender(EventArgs e)
@@ -443,7 +471,7 @@ public class TabbedMenu: WebControl, IControl
   /// <summary> Is raised when a tab with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
   [Category ("Action")]
   [Description ("Is raised when a tab with a command of type Event is clicked.")]
-  public event MenuTabClickEventHandler Click
+  public event MenuTabClickEventHandler EventCommandClick
   {
     add { Events.AddHandler (s_eventCommandClickEvent, value); }
     remove { Events.RemoveHandler (s_eventCommandClickEvent, value); }
