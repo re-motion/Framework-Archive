@@ -176,7 +176,7 @@ public class WxeHandlerTest: WxeTest
   public void CreateNewFunctionStateStateWithReturnUrl()
   {
     NameValueCollection queryString = new NameValueCollection();
-    queryString.Set (WxeHandler.Parameters.WxeReturnUrl, _returnUrl);
+    queryString.Set (WxeHandler.Parameters.ReturnUrl, _returnUrl);
     HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType);
