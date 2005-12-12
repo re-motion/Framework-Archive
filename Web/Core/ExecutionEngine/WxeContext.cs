@@ -356,7 +356,7 @@ public class WxeContext
 
     if (useParentPermanentUrl)
     {
-      if (queryString[WxeHandler.Parameters.WxeReturnUrl] != null)
+      if (queryString[WxeHandler.Parameters.ReturnUrl] != null)
         throw new ArgumentException ("The 'queryString' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", "queryString");
 
       int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
@@ -368,7 +368,7 @@ public class WxeContext
       string parentPermanentUrl = FormatParentPermanentUrl (parentPermanentUrls, count);
       
       permanentUrl = 
-          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
     }
     return permanentUrl;
   }
@@ -381,11 +381,11 @@ public class WxeContext
     while (! StringUtility.IsNullOrEmpty (url))
     {
       string currentUrl = url;
-      url = PageUtility.GetUrlParameter (currentUrl, WxeHandler.Parameters.WxeReturnUrl);
+      url = PageUtility.GetUrlParameter (currentUrl, WxeHandler.Parameters.ReturnUrl);
       url = HttpUtility.UrlDecode (url, encoding);
 
       if (! StringUtility.IsNullOrEmpty (url))
-        currentUrl = PageUtility.DeleteUrlParameter (currentUrl, WxeHandler.Parameters.WxeReturnUrl);
+        currentUrl = PageUtility.DeleteUrlParameter (currentUrl, WxeHandler.Parameters.ReturnUrl);
 
       returnUrls.Add (currentUrl);
     }
@@ -408,7 +408,7 @@ public class WxeContext
       else
       {
         parentPermanentUrl = 
-            PageUtility.AddUrlParameter (temp, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+            PageUtility.AddUrlParameter (temp, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
       }
     }
     return parentPermanentUrl;
@@ -422,7 +422,7 @@ public class WxeContext
       string parentPermanentUrl = FormatParentPermanentUrl (parentPermanentUrls, i + 1);
       if (parentPermanentUrl.Length >= maxLength)
         break;
-      string url = PageUtility.AddUrlParameter (baseUrl, WxeHandler.Parameters.WxeReturnUrl, parentPermanentUrl);
+      string url = PageUtility.AddUrlParameter (baseUrl, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
       if (url.Length > maxLength)
         break;
     }

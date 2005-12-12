@@ -38,7 +38,7 @@ public class WxeContextTest
     _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "Other.wxe", null);
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
     NameValueCollection queryString = new NameValueCollection();
-    queryString.Add (WxeHandler.Parameters.WxeReturnUrl, "/Root.wxe");
+    queryString.Add (WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
     HttpContextHelper.SetQueryString (_currentHttpContext, queryString);
     HttpContextHelper.SetCurrent (_currentHttpContext);
 
@@ -196,7 +196,7 @@ public class WxeContextTest
     
     string parentUrl = _currentHttpContext.Request.Url.AbsolutePath;
     parentUrl += UrlUtility.FormatQueryString (_currentHttpContext.Request.QueryString);
-    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnUrl, parentUrl);
+    expectedQueryString.Add (WxeHandler.Parameters.ReturnUrl, parentUrl);
     
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
@@ -242,8 +242,8 @@ public class WxeContextTest
     
     string parentUrl = _currentHttpContext.Request.Url.AbsolutePath;
     parentUrl += UrlUtility.FormatQueryString (_currentHttpContext.Request.QueryString);
-    parentUrl = PageUtility.DeleteUrlParameter (parentUrl, WxeHandler.Parameters.WxeReturnUrl);
-    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnUrl, parentUrl);
+    parentUrl = PageUtility.DeleteUrlParameter (parentUrl, WxeHandler.Parameters.ReturnUrl);
+    expectedQueryString.Add (WxeHandler.Parameters.ReturnUrl, parentUrl);
     
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
@@ -263,7 +263,7 @@ public class WxeContextTest
 
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (parameterName, parameterValue);
-    queryString.Add (WxeHandler.Parameters.WxeReturnUrl, "");
+    queryString.Add (WxeHandler.Parameters.ReturnUrl, "");
     
     _currentWxeContext.GetPermanentUrl (_functionType, queryString, true);
     Assert.Fail();

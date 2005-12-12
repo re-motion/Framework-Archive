@@ -44,7 +44,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ///   Only evaluated during initialization. Replaces the <see cref="WxeFunction.ReturnUrl"/> defined by the 
     ///   function it self. 
     /// </remarks>
-    public const string WxeReturnUrl = "ReturnUrl";
+    public const string ReturnUrl = "ReturnUrl";
     
     /// <summary> Denotes a special action to be executed. </summary>
     /// <remarks> See the <see cref="Actions"/> type for a list of supported arguments. </remarks>
@@ -240,7 +240,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     functionStates.Add (functionState);
 
     function.InitializeParameters (context.Request.QueryString);
-    string returnUrlArg = context.Request.QueryString[Parameters.WxeReturnUrl];
+    string returnUrlArg = context.Request.QueryString[Parameters.ReturnUrl];
     if (! StringUtility.IsNullOrEmpty (returnUrlArg))
       function.ReturnUrl = returnUrlArg;
 
