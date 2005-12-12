@@ -22,7 +22,7 @@ public interface IWindowStateManager
 }
 
 [Designer (typeof (TabbedMenuDesigner))]
-public class TabbedMenu: WebControl
+public class TabbedMenu: WebControl, IControl
 {
   // constants
   private const string c_styleFileUrl = "TabbedMenu.css";
@@ -57,8 +57,8 @@ public class TabbedMenu: WebControl
   // construction and destruction
   public TabbedMenu()
   {
-    _mainMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (MainMenuTab)});
-    _subMenuTabStrip = new WebTabStrip (this);
+    _mainMenuTabStrip = new WebTabStrip (new MainMenuTabCollection (this, new Type[] {typeof (MainMenuTab)}));
+    _subMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (SubMenuTab)});
     _mainMenuStyle = new Style();
     _subMenuStyle = new Style();
     _statusStyle = new Style();
@@ -79,7 +79,9 @@ public class TabbedMenu: WebControl
     LoadSelectedTabs ();
   }
 
-  protected virtual string SelectedTabIDsID
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public virtual string SelectedTabIDsID
   {
     get { return "TabbedMenuSelected"; }
   }
@@ -109,6 +111,9 @@ public class TabbedMenu: WebControl
 
   private string[] GetSelectedTabIDsFromQueryString()
   {
+    if (ControlHelper.IsDesignMode (this, Context))
+      return null;
+
     string value;
     if (Page is IWxePage)
     {
@@ -127,6 +132,9 @@ public class TabbedMenu: WebControl
 
   private string[] GetSelectedTabIDsFromWindowState()
   {
+    if (ControlHelper.IsDesignMode (this, Context))
+      return null;
+
     IWindowStateManager windowStateManager = Page as IWindowStateManager;
     if (windowStateManager != null)
       return (string[]) windowStateManager.GetData (SelectedTabIDsID);
@@ -151,6 +159,15 @@ public class TabbedMenu: WebControl
     windowStateManager.SetData (SelectedTabIDsID, tabIDs);
   }
 
+  /// <summary> Gets the parameters required for selecting the <paramref name="menuTab"/>. </summary>
+  /// <param name="menuTab"> 
+  ///   The <see cref="MenuTab"/> that should be selected by the when using the returned URL parameters. 
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <returns> 
+  ///   A <see cref="NameValueCollection"/> that contains the URL parameters parameters required by this 
+  ///   <see cref="TabbedMenu"/>.
+  /// </returns>
   public NameValueCollection GetUrlParameters (MenuTab menuTab)
   {
     ArgumentUtility.CheckNotNull ("menuTab", menuTab);
@@ -171,6 +188,12 @@ public class TabbedMenu: WebControl
     return urlParameters;
   }
 
+  /// <summary> 
+  ///   Adds parameters required for re-selecting the currently selected <see cref="MenuTab"/> to the 
+  ///   <paramref name="url"/>. 
+  /// </summary>
+  /// <param name="url"> The URL. Must not be <see langword="null"/> or empty. </param>
+  /// <returns> The <paramref name="url"/> extended with the parameters required by this <see cref="TabbedMenu"/>. </returns>
   public string FormatUrl (string url)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("url", url);
@@ -183,6 +206,15 @@ public class TabbedMenu: WebControl
       return url;
   }
 
+  /// <summary> 
+  ///   Adds the parameters required for selecting the <paramref name="menuTab"/> to the <paramref name="url"/>.
+  /// </summary>
+  /// <param name="url"> The URL. Must not be <see langword="null"/> or empty. </param>
+  /// <param name="menuTab"> 
+  ///   The <see cref="MenuTab"/> that should be selected by the <paramref name="url"/>. 
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <returns> The <paramref name="url"/> extended with the parameters required by this <see cref="TabbedMenu"/>. </returns>
   public string FormatUrl (string url, MenuTab menuTab)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("url", url);
@@ -231,7 +263,7 @@ public class TabbedMenu: WebControl
     if (selectedMainMenuItem != null)
       _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
     if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
-      _subMenuTabStrip.SetSelectedTab (_subMenuTabStrip.Tabs[0]);
+      _subMenuTabStrip.SetSelectedTabInternal (_subMenuTabStrip.Tabs[0]);
   }
 
   protected override void CreateChildControls()
@@ -329,7 +361,7 @@ public class TabbedMenu: WebControl
     {
       if (_isPastInitialization)
         EnsureSubMenuTabStripRefreshed ();
-      return _mainMenuTabStrip.Tabs;
+      return (MainMenuTabCollection) _mainMenuTabStrip.Tabs;
     }
   }
 

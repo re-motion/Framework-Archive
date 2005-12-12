@@ -135,13 +135,31 @@ public class TabbedMultiView: WebControl, IControl
       set { _target = value; }
     }
 
-    public override void OnSelectionChanged()
+    protected override void OnSelectionChanged()
     {
+      base.OnSelectionChanged();
+
       TabbedMultiView multiView = ((TabbedMultiView) OwnerControl);
       ISmartNavigablePage smartNavigablePage = multiView.Page as ISmartNavigablePage;
       if (smartNavigablePage != null)
         smartNavigablePage.DiscardSmartNavigationData ();
-      TabView view = (TabView) multiView.MultiViewInternal.FindControl (_target);
+      TabView view = null;
+      //  Cannot use FindControl without a Naming Container. Only during initialization phase of aspx.
+      if (multiView.NamingContainer != null)
+      {
+        view = (TabView) multiView.MultiViewInternal.FindControl (_target);
+      }
+      else
+      {
+        foreach (TabView tabView in multiView.MultiViewInternal.Controls)
+        {
+          if (tabView.ID == _target)
+          {
+            view = tabView;
+            break;
+          }
+        }
+      }
       multiView.SetActiveView (view);
     }
   }
@@ -266,6 +284,7 @@ public class TabbedMultiView: WebControl, IControl
 #endif
   public void SetActiveView (TabView view)
   {
+    ArgumentUtility.CheckNotNull ("view", view);
     MultiViewInternal.SetActiveView (view);
     TabView activeView = GetActiveView();
     WebTab nextActiveTab = _tabStrip.Tabs.Find (activeView.ID + c_itemIDSuffix);

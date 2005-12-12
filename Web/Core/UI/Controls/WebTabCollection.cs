@@ -101,17 +101,17 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
         if (InnerList.Count > 1)
         {
           WebTab penultimateTab = (WebTab) InnerList[index - 1];
-          _tabStrip.SetSelectedTab (penultimateTab);
+          _tabStrip.SetSelectedTabInternal (penultimateTab);
         }
         else
         {
-          _tabStrip.SetSelectedTab (null);
+          _tabStrip.SetSelectedTabInternal (null);
         }
       }
       else
       {
         WebTab nextTab = (WebTab) InnerList[index + 1];
-        _tabStrip.SetSelectedTab (nextTab);
+        _tabStrip.SetSelectedTabInternal (nextTab);
       }
     }
   }
@@ -132,17 +132,17 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
         if (InnerList.Count > 1)
         {
           WebTab lastTab = (WebTab) InnerList[index - 1];
-          _tabStrip.SetSelectedTab (lastTab);
+          _tabStrip.SetSelectedTabInternal (lastTab);
         }
         else
         {
-          _tabStrip.SetSelectedTab (null);
+          _tabStrip.SetSelectedTabInternal (null);
         }
       }
       else
       {
         WebTab nextTab = (WebTab) InnerList[index];
-        _tabStrip.SetSelectedTab (nextTab);
+        _tabStrip.SetSelectedTabInternal (nextTab);
       }
     }
   }
@@ -156,7 +156,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
       tab.SetTabStrip (null);
     }
     if (_tabStrip != null)
-      _tabStrip.SetSelectedTab (null);
+      _tabStrip.SetSelectedTabInternal (null);
   }
 
   public void AddRange (WebTabCollection values)
@@ -191,7 +191,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
         && _tabStrip.SelectedTab == null 
         && InnerList.Count > 0)
     {
-      _tabStrip.SetSelectedTab ((WebTab) InnerList[0]);
+      _tabStrip.SetSelectedTabInternal ((WebTab) InnerList[0]);
     }
   }
 

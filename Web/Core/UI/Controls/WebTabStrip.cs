@@ -49,15 +49,21 @@ public class WebTabStrip :
   private Control _ownerControl;
   private bool _enableSelectedTab = false;
 
-  public WebTabStrip (Control ownerControl, Type[] supportedMenuItemTypes)
+  public WebTabStrip (WebTabCollection tabCollection)
   {
-    _ownerControl = ownerControl;
-    _tabs = new WebTabCollection (ownerControl, supportedMenuItemTypes);
-    Tabs.SetTabStrip (this);
+    ArgumentUtility.CheckNotNull ("tabCollection", tabCollection);
+    _ownerControl = tabCollection.OwnerControl;
+    _tabs = tabCollection;
+    _tabs.SetTabStrip (this);
     _tabsPaneStyle = new Style();
     _tabStyle = new Style();
     _tabSelectedStyle = new Style();
     _separatorStyle = new Style();
+  }
+
+  public WebTabStrip (Control ownerControl, Type[] supportedTabTypes)
+    : this (new WebTabCollection (ownerControl, supportedTabTypes))
+  {
   }
 
   public WebTabStrip (Control ownerControl)
@@ -65,7 +71,7 @@ public class WebTabStrip :
   {}
 
   public WebTabStrip()
-    :this (null)
+    : this (null, new Type[] {typeof (WebTab)})
   {
   }
 
@@ -98,9 +104,6 @@ public class WebTabStrip :
 
   protected virtual void OnSelectedIndexChanged()
   {
-    if (_selectedTab != null)
-      _selectedTab.OnSelectionChanged();
-
     EventHandler handler = (EventHandler) Events[s_selectedIndexChangedEvent];
     if (handler != null)
       handler (this, EventArgs.Empty);
@@ -483,7 +486,7 @@ public class WebTabStrip :
   }
 
   /// <summary> Sets the selected tab. </summary>
-  internal void SetSelectedTab (WebTab tab)
+  internal void SetSelectedTabInternal (WebTab tab)
   {
     if (! _isRestoringTabs)
       EnsureTabsRestored();
@@ -502,6 +505,9 @@ public class WebTabStrip :
         _selectedItemID = null;
       else
         _selectedItemID = _selectedTab.ItemID;
+
+      if (_selectedTab != null)
+        _selectedTab.OnSelectionChangedInternal();
     }
   }
 
@@ -512,7 +518,7 @@ public class WebTabStrip :
     {
       WebTab tab = Tabs.Find (itemID);
       if (tab != _selectedTab)
-        SetSelectedTab (tab);
+        SetSelectedTabInternal (tab);
     }
   }
 
@@ -540,7 +546,7 @@ public class WebTabStrip :
   //  Default category
   [Description ("The tabs displayed by this tab strip.")]
   [DefaultValue ((string) null)]
-  public virtual WebTabCollection Tabs
+  public WebTabCollection Tabs
   {
     get { return _tabs; }
   }

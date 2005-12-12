@@ -194,6 +194,11 @@ public class MainMenuTab: MenuTab
     _subMenuTabs.SetParent (this);
   }
 
+  public MainMenuTab (string itemID, string text)
+    : this (itemID, text, null)
+  {
+  }
+
   /// <summary> Initalizes a new instance. For VS.NET Designer use only. </summary>
   /// <exclude/>
   [EditorBrowsable (EditorBrowsableState.Never)]
@@ -208,7 +213,6 @@ public class MainMenuTab: MenuTab
   [Category ("Behavior")]
   [Description ("")]
   [DefaultValue ((string) null)]
-  [Editor (typeof (SubMenuTabCollectionEditor), typeof (UITypeEditor))]
   public SubMenuTabCollection SubMenuTabs
   {
     get { return _subMenuTabs; }
@@ -220,7 +224,7 @@ public class MainMenuTab: MenuTab
     _subMenuTabs.OwnerControl = OwnerControl;
   }
 
-  public override void OnSelectionChanged()
+  protected override void OnSelectionChanged()
   {
     base.OnSelectionChanged ();
     TabbedMenu.RefreshSubMenuTabStrip (true);
@@ -233,6 +237,11 @@ public class SubMenuTab: MenuTab
 
   public SubMenuTab (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
+  {
+  }
+
+  public SubMenuTab (string itemID, string text)
+    : this (itemID, text, null)
   {
   }
 
@@ -257,6 +266,38 @@ public class SubMenuTab: MenuTab
   }
 }
 
+[Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
+public class MainMenuTabCollection: WebTabCollection
+{
+  /// <summary> Initializes a new instance. </summary>
+  public MainMenuTabCollection (Control ownerControl, Type[] supportedTypes)
+    : base (ownerControl, supportedTypes)
+  {
+  }
+
+  /// <summary> Initializes a new instance. </summary>
+  public MainMenuTabCollection (Control ownerControl)
+    : this (ownerControl, new Type[] {typeof (SubMenuTab)})
+  {
+  }
+
+  public int Add (MainMenuTab tab)
+  {
+    return base.Add (tab);
+  }
+
+  public void AddRange (params MainMenuTab[] tabs)
+  {
+    base.AddRange (tabs);
+  }
+
+  public void Insert (int index, MainMenuTab tab)
+  {
+    base.Insert (index, tab);
+  }
+}
+
+[Editor (typeof (SubMenuTabCollectionEditor), typeof (UITypeEditor))]
 public class SubMenuTabCollection: WebTabCollection
 {
   private MainMenuTab _parent;
@@ -304,6 +345,21 @@ public class SubMenuTabCollection: WebTabCollection
     _parent = parent;
     for (int i = 0; i < InnerList.Count; i++)
       ((SubMenuTab) InnerList[i]).SetParent (_parent);
+  }
+
+  public int Add (SubMenuTab tab)
+  {
+    return base.Add (tab);
+  }
+
+  public void AddRange (params SubMenuTab[] tabs)
+  {
+    base.AddRange (tabs);
+  }
+
+  public void Insert (int index, SubMenuTab tab)
+  {
+    base.Insert (index, tab);
   }
 }
 

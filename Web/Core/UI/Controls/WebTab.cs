@@ -102,6 +102,15 @@ public class WebTab: IControlItem, IControlStateManager
       _selectDesired = value ? 1 : -1;
   }
 
+  internal void OnSelectionChangedInternal ()
+  {
+    OnSelectionChanged ();
+  }
+
+  protected virtual void OnSelectionChanged ()
+  {
+  }
+
   public override string ToString()
   {
     string displayName = ItemID;
@@ -200,9 +209,9 @@ public class WebTab: IControlItem, IControlStateManager
       if (_tabStrip != null)
       {
         if (value)
-          _tabStrip.SetSelectedTab (this);
+          _tabStrip.SetSelectedTabInternal (this);
         else if (this == _tabStrip.SelectedTab)
-          _tabStrip.SetSelectedTab (null);
+          _tabStrip.SetSelectedTabInternal (null);
       }
     }
   }
@@ -293,10 +302,6 @@ public class WebTab: IControlItem, IControlStateManager
   }
 
   public virtual void OnClick()
-  {
-  }
-
-  public virtual void OnSelectionChanged()
   {
   }
 

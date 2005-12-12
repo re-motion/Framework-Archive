@@ -347,6 +347,7 @@ public class Command: IControlItem
   /// </param>
   /// <param name="additionalUrlParameters">
   ///   The <see cref="NameValueCollection"/> containing additional url parameters.
+  ///   Must not be <see langword="null"/>.
   /// </param>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Href"/>.
@@ -359,11 +360,12 @@ public class Command: IControlItem
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("parameters", parameters);  
+    ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters); 
     if (Type != CommandType.Href)
       throw new InvalidOperationException ("Call to AddAttributesToRenderForHrefCommand not allowed unless Type is set to CommandType.Href.");
       
     string href = HrefCommand.FormatHref (parameters);
-    if (additionalUrlParameters != null)
+    if (System.Web.HttpContext.Current != null)
     {
       for (int i = 0; i < additionalUrlParameters.Count; i++)
         href = PageUtility.AddUrlParameter (href, additionalUrlParameters.GetKey(i), additionalUrlParameters.Get(i));

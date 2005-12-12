@@ -153,7 +153,7 @@ public class ControlItemCollection: CollectionBase
     return count;
   }
 
-  public void AddRange (IControlItem[] values)
+  public void AddRange (params IControlItem[] values)
   {
     AddRange ((IList) values);
   }
