@@ -204,7 +204,7 @@ public class WebMenuItem: IControlItem
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
-  [Description ("False hide the menu item.")]
+  [Description ("False to hide the menu item.")]
   [NotifyParentProperty (true)]
   [DefaultValue (true)]
   public bool IsVisible

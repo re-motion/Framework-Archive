@@ -310,6 +310,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\TabbedMenuTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\WebButtonMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
