@@ -60,9 +60,9 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
   private void EnsureDesignModeTabInitialized (WebTab tab)
   {
     ArgumentUtility.CheckNotNull ("tab", tab);
-    if (   StringUtility.IsNullOrEmpty (tab.ItemID)
-        && (   _tabStrip != null && ControlHelper.IsDesignMode ((Control) _tabStrip))
-            || (OwnerControl != null && ControlHelper.IsDesignMode ((Control) OwnerControl)))
+    if (   ! tab.HasItemID()
+        && (   _tabStrip != null && ControlHelper.IsDesignMode ((Control) _tabStrip)
+            || OwnerControl != null && ControlHelper.IsDesignMode ((Control) OwnerControl)))
     {
       int index = InnerList.Count;
       do {

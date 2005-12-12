@@ -156,6 +156,12 @@ public class WebTab: IControlItem, IControlStateManager
     }
   }
 
+  // TODO: Test if still required in VS 2005. Workaround for Designer bug: Get Accessor does not evalute.
+  internal bool HasItemID()
+  {
+    return ! StringUtility.IsNullOrEmpty (_itemID);
+  }
+
   /// <summary> Gets or sets the text displayed in this tab. </summary>
   /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -372,4 +378,30 @@ public class WebTab: IControlItem, IControlStateManager
   }
 }
 
+/// <summary>
+///   Represents the method that handles the <c>Click</c> event raised when clicking on a web tab.
+/// </summary>
+public delegate void WebTabClickEventHandler (object sender, WebTabClickEventArgs e);
+
+/// <summary>
+///   Provides data for the <c>Click</c> event.
+/// </summary>
+public class WebTabClickEventArgs: EventArgs
+{
+  /// <summary> The <see cref="WebTab"/> that was clicked. </summary>
+  private WebTab _tab;
+
+  /// <summary> Initializes an instance. </summary>
+  public WebTabClickEventArgs (WebTab tab)
+  {
+    ArgumentUtility.CheckNotNull ("tab", tab);
+    _tab = tab;
+  }
+
+  /// <summary> The <see cref="WebTab"/> that was clicked. </summary>
+  public WebTab Tab
+  {
+    get { return _tab; }
+  }
+}
 }

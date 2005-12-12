@@ -28,9 +28,8 @@ public class TabbedMenu: WebControl, IControl
   private const string c_styleFileUrl = "TabbedMenu.css";
 
   // statics
-  //private static readonly object s_clickEvent = new object();
-  //private static readonly object s_selectionChangedEvent = new object();
   private static readonly string s_styleFileKey = typeof (TabbedMenu).FullName + "_Style";
+  private static readonly object s_eventCommandClickEvent = new object();
 
   // types
 
@@ -73,8 +72,10 @@ public class TabbedMenu: WebControl, IControl
     _isPastInitialization = true;
     _mainMenuTabStrip.EnableSelectedTab = true;
     _mainMenuTabStrip.EnableViewState = false;
+    _mainMenuTabStrip.Click += new WebTabClickEventHandler (MainMenuTabStrip_Click);
     _subMenuTabStrip.EnableSelectedTab = true;
     _subMenuTabStrip.EnableViewState = false;
+    _subMenuTabStrip.Click += new WebTabClickEventHandler (SubMenuTabStrip_Click);
 
     LoadSelectedTabs ();
   }
@@ -277,6 +278,78 @@ public class TabbedMenu: WebControl, IControl
     Controls.Add (_subMenuTabStrip);
   }
 
+  /// <summary> 
+  ///   Event handler for the <see cref="WebTabStrip.Click"/> of the <see cref="MainMenuTabStrip"/>.
+  /// </summary>
+  private void MainMenuTabStrip_Click (object sender, WebTabClickEventArgs e)
+  {
+    OnEventCommandClick ((MenuTab) e.Tab);
+  }
+
+  /// <summary> 
+  ///   Event handler for the <see cref="WebTabStrip.Click"/> of the <see cref="SubMenuTabStrip"/>.
+  /// </summary>
+  private void SubMenuTabStrip_Click (object sender, WebTabClickEventArgs e)
+  {
+    OnEventCommandClick ((MenuTab) e.Tab);
+  }
+
+  private void HandleTabStripClick (MenuTab tab)
+  {
+    if (tab != null && tab.Command != null)
+    {
+      if (tab.Command.Type == CommandType.Event)
+      {
+        OnEventCommandClick (tab);
+      }
+      else if (tab.Command.Type == CommandType.WxeFunction)
+      {
+        if (Page is IWxePage)
+          ExecuteWxeFunction ((IWxePage) Page, tab);
+        else
+          RedirectToWxeFunction (tab);
+      }
+    }
+  }
+
+  protected virtual void OnEventCommandClick (MenuTab tab)
+  {
+    if (tab != null && tab.Command != null)
+      tab.Command.OnClick();
+
+    MenuTabClickEventHandler handler = (MenuTabClickEventHandler) Events[s_eventCommandClickEvent];
+    if (handler != null)
+    {
+      MenuTabClickEventArgs e = new MenuTabClickEventArgs (tab);
+      handler (this, e);
+    }
+  }
+
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  protected virtual void ExecuteWxeFunction (IWxePage page, MenuTab tab)
+  {
+    ArgumentUtility.CheckNotNull ("page", page);
+    ArgumentUtility.CheckNotNull ("tab", tab);
+    ArgumentUtility.CheckNotNull ("tab.Command", tab.Command);
+
+    tab.Command.ExecuteWxeFunction (page, null);
+  }
+
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  protected virtual void RedirectToWxeFunction (MenuTab tab)
+  {
+    ArgumentUtility.CheckNotNull ("tab", tab);
+    ArgumentUtility.CheckNotNull ("tab.Command", tab.Command);
+
+    NameValueCollection additionalUrlParameters = GetUrlParameters (tab);
+    string url = tab.Command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
+    PageUtility.Redirect (Page.Response, url);
+  }
+
   protected override void OnPreRender(EventArgs e)
   {
     EnsureSubMenuTabStripRefreshed ();
@@ -367,6 +440,14 @@ public class TabbedMenu: WebControl, IControl
     }
   }
 
+  /// <summary> Is raised when a tab with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
+  [Category ("Action")]
+  [Description ("Is raised when a tab with a command of type Event is clicked.")]
+  public event MenuTabClickEventHandler Click
+  {
+    add { Events.AddHandler (s_eventCommandClickEvent, value); }
+    remove { Events.RemoveHandler (s_eventCommandClickEvent, value); }
+  }
 //  [Category ("Style")]
 //  [Description ("The style that you want to apply to the main menu.")]
 //  [NotifyParentProperty (true)]

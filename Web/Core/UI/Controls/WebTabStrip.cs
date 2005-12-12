@@ -28,9 +28,10 @@ public class WebTabStrip :
   private const string c_resourceKeyTabs = "Tabs";
 
   // statics
-  private static readonly object s_selectedIndexChangedEvent = new object();
   /// <summary> The log4net logger. </summary>
   private static readonly log4net.ILog s_log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+  private static readonly object s_selectedIndexChangedEvent = new object();
+  private static readonly object s_clickEvent = new object();
 
   // types
 
@@ -127,6 +128,12 @@ public class WebTabStrip :
   {
     ArgumentUtility.CheckNotNull ("tab", tab);
     tab.OnClick();
+    WebTabClickEventHandler handler = (WebTabClickEventHandler) Events[s_clickEvent];
+    if (handler != null)
+    {
+      WebTabClickEventArgs e = new WebTabClickEventArgs (tab);
+      handler (this, e);
+    }
   }
 
   private void EnsureTabsRestored()
@@ -607,6 +614,15 @@ public class WebTabStrip :
   {
     add { Events.AddHandler (s_selectedIndexChangedEvent, value); }
     remove { Events.RemoveHandler (s_selectedIndexChangedEvent, value); }
+  }
+
+  /// <summary> Is raised when a tab is clicked. </summary>
+  [Category ("Action")]
+  [Description ("Is raised when a tab is clicked.")]
+  public event WebTabClickEventHandler Click
+  {
+    add { Events.AddHandler (s_clickEvent, value); }
+    remove { Events.RemoveHandler (s_clickEvent, value); }
   }
 
   #region protected virtual string CssClass...

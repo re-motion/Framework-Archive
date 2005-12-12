@@ -440,7 +440,9 @@ public class Command: IControlItem
        
     if (WxeFunctionCommand.CreatePermanentUrlForExternalFunction)
     {
-      string href = GetWxeFunctionPermanentUrl (additionalUrlParameters);
+      string href = "#";
+      if (System.Web.HttpContext.Current != null)
+        href = GetWxeFunctionPermanentUrl (additionalUrlParameters);
       writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
       if (! StringUtility.IsNullOrEmpty (WxeFunctionCommand.Target))
         writer.AddAttribute (HtmlTextWriterAttribute.Target, WxeFunctionCommand.Target);

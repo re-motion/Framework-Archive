@@ -105,7 +105,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
     _page.Init += new EventHandler (Page_Init);
     _page.PreRender += new EventHandler(Page_PreRender);
-    _page.Unload += new EventHandler(Page_Unload);
   }
 
   void Page_Init(object sender, EventArgs e)
@@ -441,7 +440,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteFunction (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
   {
-    CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+    _httpContext.Handler = WxeHandler;
+    try
+    {
+      CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+    }
+    finally
+    {
+      _httpContext.Handler = _page;
+    }
   }
 
 
@@ -496,8 +503,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       WxeFunction function, Control sender, bool usesEventTarget, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
   {
-    CurrentStep.ExecuteFunctionNoRepost (
-        _page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+    _httpContext.Handler = WxeHandler;
+    try
+    {
+      CurrentStep.ExecuteFunctionNoRepost (
+          _page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+    }
+    finally
+    {
+      _httpContext.Handler = _page;
+    }
   }
 
   /// <summary> 
@@ -752,10 +767,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     return CurrentStep.LoadPageStateFromPersistenceMedium ();
   }
 
-  void Page_Unload (object sender, EventArgs e)
-  {
-    _httpContext.Handler = WxeHandler;
-  }
 
   /// <summary> 
   ///   If <see cref="ExecuteNextStep"/> has been called prior to disposing the page, <b>Dispose</b> will
@@ -773,6 +784,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </remarks>
   public void Dispose ()
   {
+    _httpContext.Handler = WxeHandler;
+
     if (_returningFunctionState != null)
     {
       bool isRootFunction = _returningFunctionState.Function == _returningFunctionState.Function.RootFunction;

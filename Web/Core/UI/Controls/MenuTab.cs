@@ -149,37 +149,6 @@ public abstract class MenuTab: WebTab
     base.OnClick ();
     if (! IsSelected)
       IsSelected = true;
-
-    if (Command != null && Command.Type == CommandType.WxeFunction)
-    {
-      if (TabbedMenu.Page is IWxePage)
-        ExecuteWxeFunction ((IWxePage) TabbedMenu.Page, Command);
-      else
-        RedirectToWxeFunction (Command);
-    }
-  }
-
-  /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
-  /// </exception> 
-  protected virtual void ExecuteWxeFunction (IWxePage page, Command command)
-  {
-    ArgumentUtility.CheckNotNull ("page", page);
-    ArgumentUtility.CheckNotNull ("command", command);
-
-    Command.ExecuteWxeFunction (page, null);
-  }
-
-  /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
-  /// </exception> 
-  protected virtual void RedirectToWxeFunction (Command command)
-  {
-    ArgumentUtility.CheckNotNull ("command", command);
-
-    NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
-    string url = Command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
-    PageUtility.Redirect (TabbedMenu.Page.Response, url);
   }
 }
 
@@ -360,6 +329,36 @@ public class SubMenuTabCollection: WebTabCollection
   public void Insert (int index, SubMenuTab tab)
   {
     base.Insert (index, tab);
+  }
+}
+
+/// <summary>
+///   Represents the method that handles the <c>Click</c> event raised when clicking on a <see cref="MenuTab"/>.
+/// </summary>
+public delegate void MenuTabClickEventHandler (object sender, MenuTabClickEventArgs e);
+
+/// <summary>
+///   Provides data for the <c>Click</c> event.
+/// </summary>
+public class MenuTabClickEventArgs: WebTabClickEventArgs
+{
+
+  /// <summary> Initializes an instance. </summary>
+  public MenuTabClickEventArgs (MenuTab tab)
+    : base (tab)
+  {
+  }
+
+  /// <summary> The <see cref="Command"/> that caused the event. </summary>
+  public Command Command
+  {
+    get { return Tab.Command; }
+  }
+
+  /// <summary> The <see cref="MenuTab"/> that was clicked. </summary>
+  public new MenuTab Tab
+  {
+    get { return (MenuTab) base.Tab; }
   }
 }
 

@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head><title>Test Tabbed Form</title>
@@ -16,19 +16,24 @@
 <tabs>
 <rwc:MainMenuTab Text="Tab 1" ItemID="Tab1">
 <submenutabs>
-<rwc:SubMenuTab Text="Event" ItemID="Tab1">
+<rwc:SubMenuTab Text="Event" ItemID="EventTab">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
-<rwc:SubMenuTab Text="Href" ItemID="Tab2">
+<rwc:SubMenuTab Text="Href" ItemID="HrefTab">
 <persistedcommand>
 <rwc:Command Type="Href" HrefCommand-Href="StartForm.aspx"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
-<rwc:SubMenuTab Text="Wxe" ItemID="Tab3">
+<rwc:SubMenuTab Text="Server Wxe" ItemID="ServerWxeTab">
 <persistedcommand>
 <rwc:Command Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:Command>
+</PersistedCommand>
+</rwc:SubMenuTab>
+<rwc:SubMenuTab Text="Client Wxe" ItemID="ClientWxeTab">
+<persistedcommand>
+<rwc:Command Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-CreatePermanentUrlForExternalFunction="True" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
 </SubMenuTabs>
