@@ -214,7 +214,7 @@ public class CommandTest
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
-    string url = command.GetWxeFunctionPermanentUrl (null);
+    string url = command.GetWxeFunctionPermanentUrl ();
 
     Assert.IsNotNull (url);
     Assert.AreEqual (expectedUrl, url);
@@ -237,7 +237,7 @@ public class CommandTest
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    string url = command.GetWxeFunctionPermanentUrl (null);
+    string url = command.GetWxeFunctionPermanentUrl ();
 
     Assert.IsNotNull (url);
     Assert.AreEqual (expectedUrl, url);
@@ -308,7 +308,7 @@ public class CommandTest
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    command.GetWxeFunctionPermanentUrl (null);
+    command.GetWxeFunctionPermanentUrl ();
 
     Assert.Fail();
   }

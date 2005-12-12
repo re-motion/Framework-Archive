@@ -283,7 +283,8 @@ public class Command: IControlItem
   ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
   /// </param>
   /// <param name="additionalUrlParameters">
-  ///   The <see cref="NameValueCollection"/> containing additional url parameters. Defaults to <see langword="null"/>.
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters.
+  ///   Must not be <see langword="null"/>.
   /// </param>
   public virtual void RenderBegin (
       HtmlTextWriter writer, 
@@ -333,7 +334,7 @@ public class Command: IControlItem
   /// </param>
   public void RenderBegin (HtmlTextWriter writer, string postBackEvent, string[] parameters, string onClick)
   {
-    RenderBegin (writer, postBackEvent, parameters, onClick, null);
+    RenderBegin (writer, postBackEvent, parameters, onClick, new NameValueCollection (0));
   }
 
   /// <summary> Adds the attributes for the Href command to the anchor tag. </summary>
@@ -418,6 +419,7 @@ public class Command: IControlItem
   /// </param>
   /// <param name="additionalUrlParameters">
   ///   The <see cref="NameValueCollection"/> containing additional url parameters.
+  ///   Must not be <see langword="null"/>.
   /// </param>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
@@ -430,6 +432,7 @@ public class Command: IControlItem
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent); 
+    ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters); 
     if (Type != CommandType.WxeFunction)
       throw new InvalidOperationException ("Call to AddAttributesToRenderForWxeFunctionCommand not allowed unless Type is set to CommandType.WxeFunction.");
        
@@ -547,13 +550,16 @@ public class Command: IControlItem
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
   /// </summary>
   /// <param name="additionalUrlParameters">
-  ///   The <see cref="NameValueCollection"/> containing additional url parameters. Defaults to <see langword="null"/>.
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters. 
+  ///   Must not be <see langword="null"/>.
   /// </param>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   /// </exception> 
   public virtual string GetWxeFunctionPermanentUrl (NameValueCollection additionalUrlParameters)
   {
+    ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
+
     if (Type != CommandType.WxeFunction)
       throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
 
@@ -563,8 +569,7 @@ public class Command: IControlItem
         parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);   
     NameValueCollection queryString = 
         WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
-    if (additionalUrlParameters != null)
-      queryString.Add (additionalUrlParameters);
+    queryString.Add (additionalUrlParameters);
     return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);
   }
 
@@ -576,7 +581,7 @@ public class Command: IControlItem
   /// </exception> 
   public string GetWxeFunctionPermanentUrl ()
   {
-    return GetWxeFunctionPermanentUrl (null);
+    return GetWxeFunctionPermanentUrl (new NameValueCollection (0));
   }
   
   /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
