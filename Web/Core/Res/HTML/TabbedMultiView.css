@@ -9,10 +9,12 @@ table.tabbedMultiView
   border: none;
 }
 
-/* Applied to the tabbed multi view's tab strip.*/
-table.tabbedMultiViewTabStrip
+/* Non-IE Browsers hack \*/
+html>body table.tabbedMultiView
 {
+  height: 98%;
 }
+/* End Non-IE Browsers hack\*/
 
 /* Applied to the tabbed multi view's view.*/
 td.tabbedMultiViewActiveView
@@ -32,29 +34,7 @@ div.tabbedMultiViewActiveView
   width: 100%; 
 }
 
-/* Applied to the top section of the multi view. Height cannot be provided in percent. */
-div.tabbedMultiViewTopControls
-{
-  padding-bottom: 1em;
-}
-
-/* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
-div.tabbedMultiViewBottomControls
-{
-  padding-top: 1em;
-}
-
 /* Non-IE Browsers hack \*/
-html>body table.tabbedMultiView
-{
-  height: 98%;
-}
-
-html>body table.tabbedMultiViewTabStrip
-{
-  margin-bottom: -2px;
-}
-
 html>body td.tabbedMultiViewActiveView
 {
 	border-top: solid 1px #005588;	
@@ -65,6 +45,21 @@ html>body div.tabbedMultiViewActiveView
   width: inherit;
 }  
 /* End Non-IE Browsers hack\*/
+
+
+/* Applied to the top section of the multi view. Height cannot be provided in percent. */
+div.tabbedMultiViewTopControls
+{
+  padding-bottom: 1em;
+}
+
+
+/* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
+div.tabbedMultiViewBottomControls
+{
+  padding-top: 1em;
+}
+
 
 /* Tab Strip */
 table.tabbedMultiViewTabStrip div.tabStripTabsPane
@@ -159,6 +154,11 @@ table.tabbedMultiViewTabStrip span.tabStripTabSeparator
 }
 
 /* Non-IE Browsers hack \*/
+html>body table.tabbedMultiViewTabStrip
+{
+  margin-bottom: -2px;
+}
+
 html>body table.tabbedMultiViewTabStrip div.tabStripTabsPane
 {
   border-bottom: none;

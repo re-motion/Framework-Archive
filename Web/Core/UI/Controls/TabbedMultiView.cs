@@ -514,46 +514,6 @@ public class TabbedMultiView: WebControl, IControl
   }
 
   [Category ("Style")]
-  [Description ("The style that you want to apply to a pane of tabs.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style TabsPaneStyle
-  {
-    get { return _tabStrip.TabsPaneStyle; }
-  }
-
-  [Category ("Style")]
-  [Description ("The style that you want to apply to a tab that is neither selected nor a separator.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style TabStyle
-  {
-    get { return _tabStrip.TabStyle; }
-  }
-
-  [Category ("Style")]
-  [Description ("The style that you want to apply to the selected tab.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style TabSelectedStyle
-  {
-    get { return _tabStrip.TabSelectedStyle; }
-  }
-
-  [Category ("Style")]
-  [Description ("The style that you want to apply to the separators.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style SeparatorStyle
-  {
-    get { return _tabStrip.SeparatorStyle; }
-  }
-
-  [Category ("Style")]
   [Description ("The style that you want to the top section. The height cannot be provided in percent.")]
   [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

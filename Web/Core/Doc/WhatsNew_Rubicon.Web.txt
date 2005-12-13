@@ -3,6 +3,9 @@
 - Rubicon.Web.TabbedMultiView
   * HTML und CSS wurde komplett überarbeitet um den Browsersupport zu verbessern.
     In der Applikation überschriebene CSS Klassen müssen daher angepasst werden.
+  * Style Properties für die Tabs wurden entfernt. 
+    Falls nicht alle TabbedMutliViews in der Applikation von einem Style betroffen sein sollen, 
+    kann die CssClass Property als Selector verwendet werden.
 
 - Rubicon.Web.UI.Controls.IconInfo
   * IconInfo ist nicht mehr serialisierbar. Serilisierbarkeit wurde nur für ViewState benötigt und ist nun über 

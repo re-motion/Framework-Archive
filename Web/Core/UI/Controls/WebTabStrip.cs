@@ -43,10 +43,6 @@ public class WebTabStrip :
   private bool _hasTabsRestored;
   private bool _isRestoringTabs;
   private object _tabsControlState;
-  private Style _tabsPaneStyle;
-  private Style _separatorStyle;
-  private Style _tabStyle;
-  private Style _tabSelectedStyle;
   private Control _ownerControl;
   private bool _enableSelectedTab = false;
 
@@ -56,10 +52,6 @@ public class WebTabStrip :
     _ownerControl = tabCollection.OwnerControl;
     _tabs = tabCollection;
     _tabs.SetTabStrip (this);
-    _tabsPaneStyle = new Style();
-    _tabStyle = new Style();
-    _tabSelectedStyle = new Style();
-    _separatorStyle = new Style();
   }
 
   public WebTabStrip (Control ownerControl, Type[] supportedTabTypes)
@@ -270,22 +262,10 @@ public class WebTabStrip :
 
     bool isEmpty = Tabs.Count == 0;
 
-    string backUpCssClass = _tabsPaneStyle.CssClass;
-    if (isEmpty && ! StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
-      _tabsPaneStyle.CssClass += " " + CssClassTabsPaneEmpty;
-    
-    _tabsPaneStyle.AddAttributesToRender (writer);
-
-    if (isEmpty && ! StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
-      _tabsPaneStyle.CssClass = backUpCssClass;
-    
-    if (StringUtility.IsNullOrEmpty (_tabsPaneStyle.CssClass))
-    {
-      string cssClass = CssClassTabsPane;
-      if (isEmpty)
-        cssClass += " " + CssClassTabsPaneEmpty;
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
-    }
+    string cssClass = CssClassTabsPane;
+    if (isEmpty)
+      cssClass += " " + CssClassTabsPaneEmpty;
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
 
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin Div
 
@@ -321,10 +301,14 @@ public class WebTabStrip :
     
     RenderSeperator (writer);
 
+    string cssClass;
     if (tab.IsSelected)
-      AddAttributesForTabSpan (writer, tab, _tabSelectedStyle, CssClassTabSelected, CssClassDisabled);
+      cssClass = CssClassTabSelected;
     else
-      AddAttributesForTabSpan (writer, tab, _tabStyle, CssClassTab, CssClassDisabled);
+      cssClass = CssClassTab;
+    if (tab.IsDisabled)
+      cssClass += " " + CssClassDisabled;
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span
 
     bool isEnabled = ! tab.IsSelected || _enableSelectedTab;
@@ -377,31 +361,9 @@ public class WebTabStrip :
     writer.WriteLine();
   }
 
-  private void AddAttributesForTabSpan (
-      HtmlTextWriter writer, WebTab tab, Style style, string cssClass, string cssClassDisabled)
-  {
-    string backUpCssClass = style.CssClass;
-    if (tab.IsDisabled && ! StringUtility.IsNullOrEmpty (style.CssClass))
-      style.CssClass += " " + CssClassDisabled;
-    
-    _tabStyle.AddAttributesToRender (writer);
-
-    if (tab.IsDisabled && ! StringUtility.IsNullOrEmpty (style.CssClass))
-      style.CssClass = backUpCssClass;
-  
-    if (StringUtility.IsNullOrEmpty (style.CssClass))
-    {
-      if (tab.IsDisabled)
-        cssClass += " " + CssClassDisabled;
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
-    }
-  }
-
   private void RenderSeperator (HtmlTextWriter writer)
   {
-    _separatorStyle.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (_separatorStyle.CssClass))
-      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSeparator);
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSeparator);
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
     writer.Write ("&nbsp;");
@@ -577,46 +539,6 @@ public class WebTabStrip :
   {
     get { return _enableSelectedTab; }
     set { _enableSelectedTab = value; }
-  }
-
-  [Category ("Style")]
-  [Description ("The style that you want to apply to a pane of tabs.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style TabsPaneStyle
-  {
-    get { return _tabsPaneStyle; }
-  }
-
-  [Category ("Style")]
-  [Description ("The style that you want to apply to a tab that is neither selected nor a separator.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style TabStyle
-  {
-    get { return _tabStyle; }
-  }
-
-  [Category ("Style")]
-  [Description ("The style that you want to apply to the selected tab.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style TabSelectedStyle
-  {
-    get { return _tabSelectedStyle; }
-  }
-
-  [Category ("Style")]
-  [Description ("The style that you want to apply to the separators.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style SeparatorStyle
-  {
-    get { return _separatorStyle; }
   }
 
   /// <summary> Occurs when a node is clicked. </summary>
