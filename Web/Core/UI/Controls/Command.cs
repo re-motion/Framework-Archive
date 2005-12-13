@@ -553,6 +553,49 @@ public class Command: IControlItem
   }
 
   /// <summary> 
+  ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/> on a page
+  ///   not implementing <see cref="IWxePage"/>.
+  /// </summary>
+  /// <param name="page"> 
+  ///   The <see cref="Page"/> where this command is rendered on. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="additionalParameters"> 
+  ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
+  ///   Use <see langword="null"/> or an empty collection if all parameters are supplied by the 
+  ///   <see cref="WxeFunctionCommandInfo.Parameters"/> string and the function stack.
+  /// </param>
+  /// <param name="additionalUrlParameters">
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters.
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  public virtual void ExecuteWxeFunction (
+      Page page, NameObjectCollection additionalWxeParameters, NameValueCollection additionalUrlParameters)
+  {
+    ArgumentUtility.CheckNotNull ("page", page);
+    ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
+
+    if (Type != CommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
+
+    string target = WxeFunctionCommand.Target;
+    bool hasTarget = ! StringUtility.IsNullOrEmpty (target);
+    Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
+    WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
+
+    function.InitializeParameters (WxeFunctionCommand.Parameters, additionalWxeParameters);
+
+    NameValueCollection permaUrlQueryString = function.SerializeParametersForQueryString();
+    permaUrlQueryString.Add (additionalUrlParameters);
+    if (hasTarget)
+      WxePageInfo.ExecuteFunctionExternal (page, function, target, null, permaUrlQueryString);
+    else
+      WxePageInfo.ExecuteFunction (page, function, permaUrlQueryString);
+  }
+
+  /// <summary> 
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
   /// </summary>
   /// <param name="additionalUrlParameters">

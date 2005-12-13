@@ -196,7 +196,7 @@ public class MainMenuTab: MenuTab
   protected override void OnSelectionChanged()
   {
     base.OnSelectionChanged ();
-    TabbedMenu.RefreshSubMenuTabStrip (true);
+    TabbedMenu.RefreshSubMenuTabStrip ();
   }
 }
 

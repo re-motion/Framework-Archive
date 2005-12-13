@@ -13,6 +13,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
@@ -42,6 +43,95 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     /// <summary> Displayed when the user returnes to a cached page that has already been submitted or aborted. </summary>
     StatusIsCachedMessage
   }
+
+
+  /// <summary> 
+  ///   Executes a <see cref="WxeFunction"/> in the current window from outside an <see cref="IWxePage"/> by using
+  ///   a redirect.
+  /// </summary>
+  /// <param name="page"> The <see cref="Page"/>. </param>
+  /// <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
+  /// <param name="permaUrlQueryString">
+  ///   Provides a serparate list auf arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
+  ///   which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
+  /// </param>
+  public static void ExecuteFunction (Page page, WxeFunction function, NameValueCollection permaUrlQueryString)
+  {
+    ArgumentUtility.CheckNotNull ("page", page);
+    ArgumentUtility.CheckNotNull ("function", function);
+
+    string functionToken = WxePageInfo.GetFunctionTokenForExternalFunction (function, false);
+
+    NameValueCollection queryString;
+    if (permaUrlQueryString == null)
+      queryString = function.SerializeParametersForQueryString();
+    else
+      queryString = permaUrlQueryString;
+
+    queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+    string href = WxeContext.GetPermanentUrl (HttpContext.Current, function.GetType(), queryString);
+
+    PageUtility.Redirect (HttpContext.Current.Response, href);
+  }
+
+  /// <summary> 
+  ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from outside an <see cref="IWxePage"/>.
+  ///   by using java script
+  /// </summary>
+  /// <param name="page"> The <see cref="Page"/>. </param>
+  /// <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
+  /// <param name="target">
+  ///   The HTML frame/window name that will be used to execute the function. Must not be <see langword="null"/> or 
+  ///   empty.
+  /// </param>
+  /// <param name="features"> 
+  ///   The features argument that is passed to the javascript function <b>window.open()</b>. 
+  /// </param>
+  /// <param name="permaUrlQueryString">
+  ///   Provides a serparate list auf arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
+  ///   which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
+  /// </param>
+  public static void ExecuteFunctionExternal (
+      Page page, WxeFunction function, string target, string features, NameValueCollection permaUrlQueryString)
+  {
+    ArgumentUtility.CheckNotNull ("page", page);
+    ArgumentUtility.CheckNotNull ("function", function);
+    ArgumentUtility.CheckNotNullOrEmpty ("target", target);
+
+    string functionToken = WxePageInfo.GetFunctionTokenForExternalFunction (function, false);
+
+    NameValueCollection queryString;
+    if (permaUrlQueryString == null)
+      queryString = function.SerializeParametersForQueryString();
+    else
+      queryString = permaUrlQueryString;
+
+    queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+    string href = WxeContext.GetPermanentUrl (HttpContext.Current, function.GetType(), queryString);
+
+    string openScript;
+    if (features != null)
+      openScript = string.Format ("window.open('{0}', '{1}', '{2}');", href, target, features);
+    else
+      openScript = string.Format ("window.open('{0}', '{1}');", href, target);
+    PageUtility.RegisterStartupScriptBlock ((Page) page, "WxeExecuteFunction", openScript);
+
+    function.ReturnUrl = "javascript:window.close();";
+  }
+
+  /// <summary> 
+  ///   Initalizes a new <see cref="WxeFunctionState"/> with the passed <paramref name="function"/> and returns
+  ///   the associated function token.
+  /// </summary>
+  private static string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
+  {
+    bool enableCleanUp = ! returningPostback;
+    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
+    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+    functionStates.Add (functionState);
+    return functionState.FunctionToken;
+  }
+
 
   public static readonly string ReturningTokenID = "wxeReturningTokenField";
   public static readonly string PageTokenID = "wxePageTokenField";
@@ -584,7 +674,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     WxeContext wxeContext = WxeContext.Current;
 
-    string functionToken = GetFunctionTokenForExternalFunction (function, returningPostback);
+    string functionToken = WxePageInfo.GetFunctionTokenForExternalFunction (function, returningPostback);
 
     string href;
     if (createPermaUrl)
@@ -600,7 +690,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     else
     {
-      UrlMapping.UrlMappingEntry mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[function.GetType()];
+      UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
       string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
       href = wxeContext.GetPath (path, functionToken, null);
     }
@@ -610,23 +700,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       openScript = string.Format ("window.open('{0}', '{1}', '{2}');", href, target, features);
     else
       openScript = string.Format ("window.open('{0}', '{1}');", href, target);
-    PageUtility.RegisterStartupScriptBlock ((Page)_page, "WxeExecuteFunction", openScript);
+    PageUtility.RegisterStartupScriptBlock ((Page) _page, "WxeExecuteFunction", openScript);
 
     function.ReturnUrl = 
         "javascript:" + GetClosingScriptForExternalFunction (functionToken, sender, returningPostback);
-  }
-
-  /// <summary> 
-  ///   Initalizes a new <see cref="WxeFunctionState"/> with the passed <paramref name="function"/> and returns
-  ///   the associated function token.
-  /// </summary>
-  private string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
-  {
-    bool enableCleanUp = !returningPostback;
-    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
-    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
-    functionStates.Add (functionState);
-    return functionState.FunctionToken;
   }
 
   /// <summary> Gets the client script to be used as the return URL for the window of the external function. </summary>
@@ -639,7 +716,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     else if (UsesEventTarget)
     {
       string eventTarget = _page.GetPostBackCollection()[ControlHelper.PostEventSourceID];
-      string eventArgument = _page.GetPostBackCollection()[ControlHelper.PostEventArgumentID ];
+      string eventArgument = _page.GetPostBackCollection()[ControlHelper.PostEventArgumentID];
       return FormatDoPostBackClientScript (
           functionToken, _page.CurrentStep.PageToken, sender.ClientID, eventTarget, eventArgument);
     }

@@ -49,8 +49,6 @@ public class WxeHandlerTest: WxeTest
 
     _wxeHandler = new WxeHandlerMock();
 
-    WxeFunctionStateCollection.Instance = new WxeFunctionStateCollection();
-
     _functionStateWithEnabledCleanUp = new WxeFunctionStateMock (
         new TestFunction(), 10, true, c_functionTokenForFunctionStateWithEnabledCleanUp);
     WxeFunctionStateCollection.Instance.Add (_functionStateWithEnabledCleanUp);

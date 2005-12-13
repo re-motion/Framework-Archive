@@ -62,10 +62,12 @@ public class TabbedMenu: WebControl, IControl
 
   // methods and properties
 
+  /// <summary> Overrides the <see cref="Control.OnInit"/> method. </summary>
   protected override void OnInit(EventArgs e)
   {
     EnsureChildControls();
     base.OnInit (e);
+
     _isPastInitialization = true;
     _mainMenuTabStrip.EnableSelectedTab = true;
     _mainMenuTabStrip.EnableViewState = false;
@@ -74,23 +76,185 @@ public class TabbedMenu: WebControl, IControl
     _subMenuTabStrip.EnableViewState = false;
     _subMenuTabStrip.Click += new WebTabClickEventHandler (SubMenuTabStrip_Click);
 
-    LoadSelectedTabs ();
+    LoadSelection ();
   }
 
+  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
+  protected override void CreateChildControls()
+  {
+    _mainMenuTabStrip.ID = ID + "_MainMenuTabStrip";
+    Controls.Add (_mainMenuTabStrip);
+
+    _subMenuTabStrip.ID = ID + "_SubMenuTabStrip";
+    Controls.Add (_subMenuTabStrip);
+  }
+
+  /// <summary> Ensures that the <see cref="SubMenuTabStrip"/> is populated with the tabs from the selected 
+  ///   <see cref="MainMenuTab"/>'s <see cref="MainMenuTab.SubMenuTabs"/>. 
+  /// </summary>
+  private void EnsureSubMenuTabStripPopulated ()
+  {
+    if (_isSubMenuTabStripRefreshed)
+      return;
+    PopulateSubMenuTabStrip ();
+  }
+
+  /// <summary> 
+  ///   Refreshes the <see cref="SubMenuTabStrip"/> with the tabs from the selected <see cref="MainMenuTab"/>'s
+  ///   <see cref="MainMenuTab.SubMenuTabs"/>. 
+  /// </summary>
+  internal void RefreshSubMenuTabStrip ()
+  {
+    _subMenuTabStrip.Tabs.Clear();
+    PopulateSubMenuTabStrip ();
+  }
+
+  /// <summary> 
+  ///   Populates the <see cref="SubMenuTabStrip"/> with the tabs from the selected <see cref="MainMenuTab"/>'s
+  ///   <see cref="MainMenuTab.SubMenuTabs"/>. 
+  /// </summary>
+  private void PopulateSubMenuTabStrip ()
+  {
+    _isSubMenuTabStripRefreshed = true;
+    MainMenuTab selectedMainMenuItem = (MainMenuTab) _mainMenuTabStrip.SelectedTab;
+    if (selectedMainMenuItem != null)
+      _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
+    if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
+      _subMenuTabStrip.SetSelectedTabInternal (_subMenuTabStrip.Tabs[0]);
+  }
+
+  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
+  protected override void OnPreRender(EventArgs e)
+  {
+    EnsureSubMenuTabStripPopulated ();
+
+    base.OnPreRender (e);
+
+    string url = null;
+    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
+    {
+      url = ResourceUrlResolver.GetResourceUrl (
+          this, Context, typeof (TabbedMenu), ResourceType.Html, c_styleFileUrl);
+      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
+    }
+    SaveSelection();
+  }
+
+  /// <summary> Overrides the <see cref="Control.TagKey"/> property. </summary>
+  /// <value> Returns a <see cref="HtmlTextWriterTag.Table"/> tab. </value>
+  protected override HtmlTextWriterTag TagKey
+  {
+    get { return HtmlTextWriterTag.Table; }
+  }
+
+  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  protected override void AddAttributesToRender(HtmlTextWriter writer)
+  {
+    base.AddAttributesToRender (writer);
+    if (ControlHelper.IsDesignMode (this, Context))
+      writer.AddStyleAttribute ("width", "100%");
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
+    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
+  }
+
+  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
+  protected override void RenderContents (HtmlTextWriter writer)
+  {
+    EnsureChildControls();
+   
+    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
+      WcagHelper.Instance.HandleError (1, this);
+
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin main menu row
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Colspan, "2");
+    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassMainMenuCell);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin main menu cell
+    _mainMenuTabStrip.CssClass = CssClassMainMenu;
+    _mainMenuTabStrip.Width = Unit.Percentage (100);
+    _mainMenuTabStrip.RenderControl (writer);
+    writer.RenderEndTag(); // End main menu cell
+
+    writer.RenderEndTag(); // End main menu row
+
+    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin sub menu row
+
+    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassSubMenuCell);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin sub menu cell
+    _subMenuTabStrip.Style["width"] = "auto";
+    _subMenuTabStrip.CssClass = CssClassSubMenu;
+    _subMenuTabStrip.RenderControl (writer);
+    writer.RenderEndTag(); // End sub menu cell
+
+    _statusStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_statusStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassStatusCell);
+    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin status cell
+    if (! StringUtility.IsNullOrEmpty (_statusText))
+      writer.Write (_statusText);
+    writer.RenderEndTag(); // End status cell
+
+    writer.RenderEndTag(); // End sub menu row
+  }
+
+  /// <summary> Overrides the <see cref="Control.Controls"/> property. </summary>
+  public override ControlCollection Controls
+  {
+    get
+    {
+      EnsureChildControls();
+      return base.Controls;
+    }
+  }
+
+
+  /// <summary> Gets the ID used for reading and persisting the selected tab IDs. </summary>
+  /// <remarks> Value: <c>TabbedMenuSelection</c>. </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
-  public virtual string SelectedTabIDsID
+  public virtual string SelectionID
   {
-    get { return "TabbedMenuSelected"; }
+    get { return "TabbedMenuSelection"; }
   }
 
-  private void LoadSelectedTabs ()
+  /// <summary> 
+  ///   Creates a string array from the IDs of the provided <paramref name="mainMenuTab"/> and 
+  ///   <paramref name="subMenuTab"/>.
+  /// </summary>
+  /// <param name="mainMenuTab"> 
+  ///   The <see cref="MainMenuTab"/>. If <see langword="null"/>, an empty array will be returned.
+  /// </param>
+  /// <param name="subMenuTab"> The <see cref="SubMenuTab"/>. </param>
+  /// <returns> A string array. </returns>
+  private string[] ConvertTabIDsToArray (MainMenuTab mainMenuTab, SubMenuTab subMenuTab)
   {
-    string[] selectedTabIDs = GetSelectedTabIDsFromWindowState();
-    if (selectedTabIDs == null)
-      selectedTabIDs = GetSelectedTabIDsFromQueryString();
-    if (selectedTabIDs == null)
-      selectedTabIDs = new string[0];
+    string[] tabIDs = new string[2];
+    if (mainMenuTab == null)
+    {
+      tabIDs = new string[0];
+    }
+    else if (subMenuTab == null)
+    {
+      tabIDs = new string[1];
+      tabIDs[0] = mainMenuTab.ItemID;
+    }
+    else
+    {
+      tabIDs = new string[2];
+      tabIDs[0] = mainMenuTab.ItemID;
+      tabIDs[1] = subMenuTab.ItemID;
+    }
+    return tabIDs;
+  }
+
+  /// <summary> Loads the selected tabs from the window state or the query string. </summary>
+  private void LoadSelection ()
+  {
+    string[] selectedTabIDs = GetSelectionFromWindowState();
+    if (selectedTabIDs.Length == 0)
+      selectedTabIDs = GetSelectionFromQueryString();
 
     if (selectedTabIDs.Length > 0)
     {
@@ -99,7 +263,7 @@ public class TabbedMenu: WebControl, IControl
       if (selectedMainMenuItem.IsVisible)
         selectedMainMenuItem.IsSelected = true;
     }
-    RefreshSubMenuTabStrip (true);
+    RefreshSubMenuTabStrip ();
     if (selectedTabIDs.Length > 1)
     {
       string selectedSubMenuItemID = selectedTabIDs[1];
@@ -109,54 +273,60 @@ public class TabbedMenu: WebControl, IControl
     }
   }
 
-  private string[] GetSelectedTabIDsFromQueryString()
+  /// <summary> Gets the IDs of the tabs to be selected from the query string. </summary>
+  /// <returns> 
+  ///   A string array containing the ID of the <see cref="MainMenuTab"/> at index 0 and the ID of the 
+  ///   <see cref="SubMenuTab"/> at index 1. If no selected tab could be found, the array is empty.
+  /// </returns>
+  private string[] GetSelectionFromQueryString()
   {
     if (ControlHelper.IsDesignMode (this, Context))
-      return null;
+      return new string[0];
 
     string value;
     if (Page is IWxePage)
     {
-      value = PageUtility.GetUrlParameter (WxeContext.Current.QueryString, SelectedTabIDsID);
+      value = PageUtility.GetUrlParameter (WxeContext.Current.QueryString, SelectionID);
       value = System.Web.HttpUtility.UrlDecode (value, System.Web.HttpContext.Current.Response.ContentEncoding);
     }
     else
     {
-      value = Context.Request.QueryString[SelectedTabIDsID];
+      value = Context.Request.QueryString[SelectionID];
     }
     if (value != null)
       return (string[]) TypeConversionServices.Current.Convert (typeof (string), typeof (string[]), value);
     else
-      return null;
+      return new string[0];
   }
 
-  private string[] GetSelectedTabIDsFromWindowState()
+  /// <summary> Gets the IDs of the tabs to be selected from the <see cref="IWindowStateManager"/>. </summary>
+  /// <returns> 
+  ///   A string array containing the ID of the <see cref="MainMenuTab"/> at index 0 and the ID of the 
+  ///   <see cref="SubMenuTab"/> at index 1. If no selected tab could be found, the array is empty.
+  /// </returns>
+  private string[] GetSelectionFromWindowState()
   {
     if (ControlHelper.IsDesignMode (this, Context))
-      return null;
+      return new string[0];
 
     IWindowStateManager windowStateManager = Page as IWindowStateManager;
     if (windowStateManager != null)
-      return (string[]) windowStateManager.GetData (SelectedTabIDsID);
+      return (string[]) windowStateManager.GetData (SelectionID);
     else
-      return null;
+      return new string[0];
   }
 
-  private void SaveSelectedTabs()
-  {
-    SaveSelectedTabsInWindowState();
-  }
-
-  private void SaveSelectedTabsInWindowState()
+  /// <summary> Saves the selected tabs into the window state. </summary>
+  private void SaveSelection()
   {
     IWindowStateManager windowStateManager = Page as IWindowStateManager;
     if (windowStateManager == null)
       return;
 
-    string[] tabIDs = GetTabIDs (
+    string[] tabIDs = ConvertTabIDsToArray (
         (MainMenuTab) _mainMenuTabStrip.SelectedTab, 
         (SubMenuTab) _subMenuTabStrip.SelectedTab);
-    windowStateManager.SetData (SelectedTabIDsID, tabIDs);
+    windowStateManager.SetData (SelectionID, tabIDs);
   }
 
   /// <summary> Gets the parameters required for selecting the <paramref name="menuTab"/>. </summary>
@@ -177,14 +347,14 @@ public class TabbedMenu: WebControl, IControl
     
     string[] tabIDs;
     if (mainMenuTab != null)
-      tabIDs = GetTabIDs (mainMenuTab, null);
+      tabIDs = ConvertTabIDsToArray (mainMenuTab, null);
     else
-      tabIDs = GetTabIDs (subMenuTab.Parent, subMenuTab);
+      tabIDs = ConvertTabIDsToArray (subMenuTab.Parent, subMenuTab);
 
     string value = (string) TypeConversionServices.Current.Convert (typeof (string[]), typeof (string), tabIDs);
 
     NameValueCollection urlParameters = new NameValueCollection();
-    urlParameters.Add (SelectedTabIDsID, value);
+    urlParameters.Add (SelectionID, value);
     return urlParameters;
   }
 
@@ -226,61 +396,12 @@ public class TabbedMenu: WebControl, IControl
     return url;
   }
 
-  private string[] GetTabIDs (MainMenuTab mainMenuTab, SubMenuTab subMenuTab)
-  {
-    string[] tabIDs = new string[2];
-    if (mainMenuTab == null)
-    {
-      tabIDs = new string[0];
-    }
-    else if (subMenuTab == null)
-    {
-      tabIDs = new string[1];
-      tabIDs[0] = mainMenuTab.ItemID;
-    }
-    else
-    {
-      tabIDs = new string[2];
-      tabIDs[0] = mainMenuTab.ItemID;
-      tabIDs[1] = subMenuTab.ItemID;
-    }
-    return tabIDs;
-  }
-
-  private void EnsureSubMenuTabStripRefreshed ()
-  {
-    if (_isSubMenuTabStripRefreshed)
-      return;
-    RefreshSubMenuTabStrip (false);
-  }
-
-  internal void RefreshSubMenuTabStrip (bool resetSubMenu)
-  {
-    _isSubMenuTabStripRefreshed = true;
-    if (resetSubMenu)
-      _subMenuTabStrip.Tabs.Clear();
-    MainMenuTab selectedMainMenuItem = (MainMenuTab) _mainMenuTabStrip.SelectedTab;
-    if (selectedMainMenuItem != null)
-      _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
-    if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
-      _subMenuTabStrip.SetSelectedTabInternal (_subMenuTabStrip.Tabs[0]);
-  }
-
-  protected override void CreateChildControls()
-  {
-    _mainMenuTabStrip.ID = ID + "_MainMenuTabStrip";
-    Controls.Add (_mainMenuTabStrip);
-
-    _subMenuTabStrip.ID = ID + "_SubMenuTabStrip";
-    Controls.Add (_subMenuTabStrip);
-  }
-
   /// <summary> 
   ///   Event handler for the <see cref="WebTabStrip.Click"/> of the <see cref="MainMenuTabStrip"/>.
   /// </summary>
   private void MainMenuTabStrip_Click (object sender, WebTabClickEventArgs e)
   {
-    OnEventCommandClick ((MenuTab) e.Tab);
+    HandleTabStripClick ((MenuTab) e.Tab);
   }
 
   /// <summary> 
@@ -288,9 +409,13 @@ public class TabbedMenu: WebControl, IControl
   /// </summary>
   private void SubMenuTabStrip_Click (object sender, WebTabClickEventArgs e)
   {
-    OnEventCommandClick ((MenuTab) e.Tab);
+    HandleTabStripClick ((MenuTab) e.Tab);
   }
 
+  /// <summary> 
+  ///   Handles the click events of the <see cref="MainMenuTabStrip"/> and the <see cref="SubMenuTabStrip"/>.
+  /// </summary>
+  /// <param name="tab"> The <see cref="MenuTab"/> whose command was clicked. </param>
   private void HandleTabStripClick (MenuTab tab)
   {
     if (tab != null && tab.Command != null)
@@ -309,6 +434,8 @@ public class TabbedMenu: WebControl, IControl
     }
   }
 
+  /// <summary> Fires the <see cref="EventCommandClick"/> event. </summary>
+  /// <param name="tab"> The <see cref="MenuTab"/> whose command was clicked. </param>
   protected virtual void OnEventCommandClick (MenuTab tab)
   {
     if (tab != null && tab.Command != null)
@@ -349,114 +476,10 @@ public class TabbedMenu: WebControl, IControl
   {
     ArgumentUtility.CheckNotNull ("tab", tab);
     ArgumentUtility.CheckNotNull ("tab.Command", tab.Command);
-    if (tab.Command.Type != CommandType.WxeFunction)
-      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless tab.Command.Type is set to CommandType.WxeFunction.");
-
-    string target = tab.Command.WxeFunctionCommand.Target;
-    bool hasTarget = ! StringUtility.IsNullOrEmpty (target);
 
     NameValueCollection additionalUrlParameters = GetUrlParameters (tab);
-    if (hasTarget)
-    {
-      string returnUrl = "javascript:window.close();";
-      additionalUrlParameters.Add (WxeHandler.Parameters.ReturnUrl, returnUrl);
-    }
-    string url = tab.Command.GetWxeFunctionPermanentUrl (additionalUrlParameters);
-
-
-    if (hasTarget)
-    {
-      string openScript = string.Format ("window.open('{0}', '{1}');", url, target);
-      PageUtility.RegisterStartupScriptBlock (Page, "WxeExecuteFunction", openScript);
-    }
-    else
-    {
-      PageUtility.Redirect (Page.Response, url);
-    }
+    tab.Command.ExecuteWxeFunction (Page, null, additionalUrlParameters);
   }
-
-  protected override void OnPreRender(EventArgs e)
-  {
-    EnsureSubMenuTabStripRefreshed ();
-
-    base.OnPreRender (e);
-
-    string url = null;
-    if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))
-    {
-      url = ResourceUrlResolver.GetResourceUrl (
-          this, Context, typeof (TabbedMenu), ResourceType.Html, c_styleFileUrl);
-      HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
-    }
-    SaveSelectedTabs();
-  }
-
-  protected override HtmlTextWriterTag TagKey
-  {
-    get { return HtmlTextWriterTag.Table; }
-  }
-
-  protected override void AddAttributesToRender(HtmlTextWriter writer)
-  {
-    base.AddAttributesToRender (writer);
-    if (ControlHelper.IsDesignMode (this, Context))
-    {
-      writer.AddStyleAttribute ("width", "100%");
-    }
-    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
-  }
-
-  protected override void RenderContents (HtmlTextWriter writer)
-  {
-    EnsureChildControls();
-   
-    if (WcagHelper.Instance.IsWcagDebuggingEnabled() && WcagHelper.Instance.IsWaiConformanceLevelARequired())
-      WcagHelper.Instance.HandleError (1, this);
-
-    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin main menu row
-
-    writer.AddAttribute (HtmlTextWriterAttribute.Colspan, "2");
-    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassMainMenuCell);
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin main menu cell
-    _mainMenuTabStrip.CssClass = CssClassMainMenu;
-    _mainMenuTabStrip.Width = Unit.Percentage (100);
-    _mainMenuTabStrip.RenderControl (writer);
-    writer.RenderEndTag(); // End main menu cell
-
-    writer.RenderEndTag(); // End main menu row
-
-    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin sub menu row
-
-    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassSubMenuCell);
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin sub menu cell
-    _subMenuTabStrip.Style["width"] = "auto";
-    _subMenuTabStrip.CssClass = CssClassSubMenu;
-    _subMenuTabStrip.RenderControl (writer);
-    writer.RenderEndTag(); // End sub menu cell
-
-    _statusStyle.AddAttributesToRender (writer);
-    if (StringUtility.IsNullOrEmpty (_statusStyle.CssClass))
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassStatusCell);
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin status cell
-    if (! StringUtility.IsNullOrEmpty (_statusText))
-      writer.Write (_statusText);
-    writer.RenderEndTag(); // End status cell
-
-    writer.RenderEndTag(); // End sub menu row
-  }
-
-  public override ControlCollection Controls
-  {
-    get
-    {
-      EnsureChildControls();
-      return base.Controls;
-    }
-  }
-
 
   /// <summary> Gets the collection of <see cref="MainMenuTabs"/>. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
@@ -469,7 +492,7 @@ public class TabbedMenu: WebControl, IControl
     get
     {
       if (_isPastInitialization)
-        EnsureSubMenuTabStripRefreshed ();
+        EnsureSubMenuTabStripPopulated ();
       return (MainMenuTabCollection) _mainMenuTabStrip.Tabs;
     }
   }

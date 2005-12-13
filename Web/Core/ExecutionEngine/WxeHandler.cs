@@ -224,15 +224,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNull ("type", type);
 
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
-    if (functionStates == null)
-    {
-      functionStates = new WxeFunctionStateCollection();
-      WxeFunctionStateCollection.Instance = functionStates;
-    }
-    else
-    {
-      functionStates.CleanUpExpired();
-    }
+    functionStates.CleanUpExpired();
 
     WxeFunction function = (WxeFunction) Activator.CreateInstance (type);
 
@@ -262,8 +254,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     
     bool isPostRequest = string.Compare (context.Request.HttpMethod, "POST", true) == 0;
 
-    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
-    if (functionStates == null)
+    if (! WxeFunctionStateCollection.HasInstance)
     {
       if (isPostRequest || isPostBackAction)
       {
@@ -273,6 +264,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       return CreateNewFunctionState (context, GetType (context));
     }
 
+    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     WxeFunctionState functionState = functionStates.GetItem (functionToken);
     if (functionState == null || functionState.IsExpired)
     {
