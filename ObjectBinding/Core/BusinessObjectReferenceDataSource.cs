@@ -370,6 +370,12 @@ public class BusinessObjectReferenceDataSource:
       return _property.IsAccessible (_dataSource.BusinessObjectClass, _dataSource.BusinessObject);
     }
   }
+
+  /// <summary> Returns always <see langword="false"/>. </summary>
+  bool IBusinessObjectBoundModifiableControl.IsReadOnly
+  {
+    get { return false; }
+  }
 }
 
 }
