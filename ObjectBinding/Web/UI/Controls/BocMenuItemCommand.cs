@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Web.UI;
+using Rubicon.Collections;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
-using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -113,25 +115,51 @@ public class BocMenuItemCommand: BocCommand
   {
     if (! WxeContext.Current.IsReturningPostBack)
     {
-      NameObjectCollection parameters = new NameObjectCollection();
-      parameters["indices"] = listIndices;
-      parameters["objects"] = businessObjects;
-      if (businessObjects.Length > 0 && businessObjects[0] is IBusinessObjectWithIdentity)
-      {
-        string[] ids = new string[businessObjects.Length];
-        for (int i = 0; i < businessObjects.Length; i++)
-          ids[i] = ((IBusinessObjectWithIdentity) businessObjects[i]).UniqueIdentifier;
-        parameters["ids"] = ids;
-      }
-      if (OwnerControl != null)
-      {
-        if (OwnerControl.DataSource != null && OwnerControl.Value != null)
-          parameters["parent"] = OwnerControl.DataSource.BusinessObject;
-        if (OwnerControl.Property != null)
-          parameters["parentproperty"] = OwnerControl.Property;
-      }
+      NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndices, businessObjects);
       ExecuteWxeFunction (wxePage, parameters);
     }
+  }
+
+  /// <summary>
+  ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/> on a page
+  ///   not implementing <see cref="IWxePage"/>.
+  /// </summary>
+  /// <param name="page"> The <see cref="Page"/> where this command is rendered on. </param>
+  /// <param name="listIndices"> 
+  ///   The array of indices for the <see cref="IBusinessObject"/> instances on which the rendered 
+  ///   command is applied on.
+  /// </param>
+  /// <param name="businessObjects"> 
+  ///   The array of <see cref="IBusinessObject"/> instances on which the rendered command is applied on.
+  /// </param>
+  public void ExecuteWxeFunction (Page page, int[] listIndices, IBusinessObject[] businessObjects)
+  {
+    NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndices, businessObjects);
+    ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
+  }
+
+  private NameObjectCollection PrepareWxeFunctionParameters (int[] listIndices, IBusinessObject[] businessObjects)
+  {
+    NameObjectCollection parameters = new NameObjectCollection();
+    
+    parameters["indices"] = listIndices;
+    parameters["objects"] = businessObjects;
+    if (businessObjects.Length > 0 && businessObjects[0] is IBusinessObjectWithIdentity)
+    {
+      string[] ids = new string[businessObjects.Length];
+      for (int i = 0; i < businessObjects.Length; i++)
+        ids[i] = ((IBusinessObjectWithIdentity) businessObjects[i]).UniqueIdentifier;
+      parameters["ids"] = ids;
+    }
+    if (OwnerControl != null)
+    {
+      if (OwnerControl.DataSource != null && OwnerControl.Value != null)
+        parameters["parent"] = OwnerControl.DataSource.BusinessObject;
+      if (OwnerControl.Property != null)
+        parameters["parentproperty"] = OwnerControl.Property;
+    }
+
+    return parameters;
   }
 
   /// <summary>

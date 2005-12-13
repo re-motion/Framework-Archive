@@ -6,12 +6,12 @@ using System.Web.UI;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Reflection;
+using Rubicon.Collections;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
-using Rubicon.Collections;
 
 namespace Rubicon.ObjectBinding.Web.Controls
 {
@@ -181,22 +181,47 @@ public class BocListItemCommand: BocCommand
   {
     if (! WxeContext.Current.IsReturningPostBack)
     {
-      NameObjectCollection parameters = new NameObjectCollection();
-      parameters["index"] = listIndex;
-      parameters["object"] = businessObject;
-      if (businessObject is IBusinessObjectWithIdentity)
-        parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
-      else
-        parameters["id"] = null;
-      if (OwnerControl != null)
-      {
-        if (OwnerControl.DataSource != null && OwnerControl.Value != null)
-          parameters["parent"] = OwnerControl.DataSource.BusinessObject;
-        if (OwnerControl.Property != null)
-          parameters["parentproperty"] = OwnerControl.Property;
-      }
+      NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndex, businessObject);
       ExecuteWxeFunction (wxePage, parameters);
     }
+  }
+
+  /// <summary>
+  ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/> on a page
+  ///   not implementing <see cref="IWxePage"/>.
+  /// </summary>
+  /// <param name="page"> The <see cref="Page"/> where this command is rendered on. </param>
+  /// <param name="listIndex"> 
+  ///   The index of the <see cref="IBusinessObject"/> in the row where the command was clicked.
+  /// </param>
+  /// <param name="businessObject">
+  ///   The <see cref="IBusinessObject"/> in the row where the command was clicked.
+  /// </param>
+  public void ExecuteWxeFunction (Page page, int listIndex, IBusinessObject businessObject)
+  {
+    NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndex, businessObject);
+    ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
+  }
+
+  private NameObjectCollection PrepareWxeFunctionParameters (int listIndex, IBusinessObject businessObject)
+  {
+    NameObjectCollection parameters = new NameObjectCollection();
+    
+    parameters["index"] = listIndex;
+    parameters["object"] = businessObject;
+    if (businessObject is IBusinessObjectWithIdentity)
+      parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
+    else
+      parameters["id"] = null;
+    if (OwnerControl != null)
+    {
+      if (OwnerControl.DataSource != null && OwnerControl.Value != null)
+        parameters["parent"] = OwnerControl.DataSource.BusinessObject;
+      if (OwnerControl.Property != null)
+        parameters["parentproperty"] = OwnerControl.Property;
+    }
+
+    return parameters;
   }
 
   /// <summary> The <see cref="ListItemHrefCommandInfo"/> used when rendering the command as a hyperlink. </summary>

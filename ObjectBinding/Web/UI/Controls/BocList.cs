@@ -611,7 +611,10 @@ public class BocList:
         IBusinessObject businessObject = null;
         if (listIndex < Value.Count)
           businessObject = (IBusinessObject) Value[listIndex];
-        command.ExecuteWxeFunction ((IWxePage) Page, listIndex, businessObject);
+        if (Page is IWxePage)
+          command.ExecuteWxeFunction ((IWxePage) Page, listIndex, businessObject);
+        else
+          command.ExecuteWxeFunction (Page, listIndex, businessObject);
         break;
       }
       default:
@@ -871,11 +874,17 @@ public class BocList:
       if (menuItem is BocMenuItem)
       {
         BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-        command.ExecuteWxeFunction ((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
+        if (Page is IWxePage)
+          command.ExecuteWxeFunction ((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
+        else
+          command.ExecuteWxeFunction (Page, GetSelectedRows(), GetSelectedBusinessObjects());
       }
       else
       {
-        menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+        if (Page is IWxePage)
+          menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+        else
+          menuItem.Command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
     }
   }
@@ -3505,11 +3514,17 @@ public class BocList:
       if (menuItem is BocMenuItem)
       {
         BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-        command.ExecuteWxeFunction ((IWxePage) Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
+        if (Page is IWxePage)
+          command.ExecuteWxeFunction ((IWxePage) Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
+        else
+          command.ExecuteWxeFunction (Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
       }
       else
       {
-        menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+        if (Page is IWxePage)
+          menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+        else
+          menuItem.Command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
     }
   }
