@@ -220,8 +220,11 @@ public class IconInfoConverter: ExpandableObjectConverter
 {
   public override bool CanConvertFrom (ITypeDescriptorContext context, Type sourceType)
   {
-    if (sourceType == typeof (string))
+    if (   context == null // Requried to circumvent the Designer
+        && sourceType == typeof (string))
+    {
       return true;
+    }
     return base.CanConvertFrom (context, sourceType);
   }
 
@@ -268,19 +271,26 @@ public class IconInfoConverter: ExpandableObjectConverter
       if (value is IconInfo)
       {
         IconInfo icon = (IconInfo) value;
-        if (IconInfo.ShouldSerialize (icon))
+        if (context == null) // Requried to circumvent the Designer
         {
-          StringBuilder serializedValue = new StringBuilder();
-          serializedValue.Append (icon.Url).Append ("\0");
-          serializedValue.Append (icon.Width.ToString()).Append ("\0");
-          serializedValue.Append (icon.Height.ToString()).Append ("\0");
-          serializedValue.Append (icon.AlternateText).Append ("\0");
-          serializedValue.Append (icon.ToolTip).Append ("\0");
-          return serializedValue.ToString();
+          if (IconInfo.ShouldSerialize (icon))
+          {
+            StringBuilder serializedValue = new StringBuilder();
+            serializedValue.Append (icon.Url).Append ("\0");
+            serializedValue.Append (icon.Width.ToString()).Append ("\0");
+            serializedValue.Append (icon.Height.ToString()).Append ("\0");
+            serializedValue.Append (icon.AlternateText).Append ("\0");
+            serializedValue.Append (icon.ToolTip).Append ("\0");
+            return serializedValue.ToString();
+          }
+          else
+          {
+            return string.Empty;
+          }
         }
         else
         {
-          return string.Empty;
+          return icon.Url;
         }
       }
     }

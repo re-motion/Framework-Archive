@@ -41,7 +41,7 @@
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
-<rwc:SubMenuTab Text="Disabled Tab" ItemID="DisabledTab" IsDisabled="True">
+<rwc:SubMenuTab Text="Disabled Tab" ItemID="DisabledTab" Icon-Url="Images/DeleteItem.gif" IsDisabled="True">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
@@ -85,7 +85,7 @@
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:MainMenuTab>
-<rwc:MainMenuTab Text="Tab 5" ItemID="Tab5" IsDisabled="True">
+<rwc:MainMenuTab Text="Tab 5" ItemID="Tab5" Icon-Url="Images/DeleteItem.gif" IsDisabled="True">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>

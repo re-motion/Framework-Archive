@@ -194,6 +194,13 @@ table.tabbedSubMenu span.tabStripTab.disabled a:hover
   cursor: default;
 }
 
+table.tabbedSubMenu span.tabStripTab.disabled img
+{
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=1),
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=0);
+  -moz-opacity: 1;
+}
+
 /* Content area of the tab */
 table.tabbedSubMenu span.tabStripTab a span.content,
 table.tabbedSubMenu span.tabStripTabSelected a span.content

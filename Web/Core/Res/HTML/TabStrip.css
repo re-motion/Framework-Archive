@@ -68,7 +68,9 @@ span.tabStripTab.disabled a:hover
 
 span.tabStripTab.disabled img
 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(Opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=0.40), 
+          progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  -moz-opacity: 0.4;
 }
 
 /* Top tab border */

@@ -94,6 +94,7 @@ public class CommandTest
     string expectedHref = _hrefCommand.HrefCommand.FormatHref (parameters);
     expectedHref = PageUtility.AddUrlParameter (
         expectedHref, additionalUrlParameters.GetKey (0), additionalUrlParameters.Get (0));
+    expectedHref = UrlUtility.GetAbsoluteUrl (_currentHttpContext, expectedHref);
     string expectedOnClick = _onClick;
     _hrefCommand.RenderBegin (_writer, _postBackEvent, parameters, _onClick, additionalUrlParameters);
 
