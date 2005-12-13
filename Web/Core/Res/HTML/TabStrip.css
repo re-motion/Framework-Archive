@@ -58,6 +58,19 @@ span.tabStripTabSelected a
   cursor: default;
 }
 
+span.tabStripTab.disabled a,
+span.tabStripTab.disabled a:hover
+{
+  color: Gray;
+  background-color: #E8E8E8;
+  cursor: default;
+}
+
+span.tabStripTab.disabled img
+{
+  filter: progid:DXImageTransform.Microsoft.BasicImage(Opacity=0.40), progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+}
+
 /* Top tab border */
 span.tabStripTab a span.top,
 span.tabStripTabSelected a span.top

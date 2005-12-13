@@ -1784,7 +1784,10 @@ public class BocList:
         }
         else if (menuItem.Command.Type == CommandType.Href)
         {
-          href = "'" + menuItem.Command.HrefCommand.FormatHref (menuItemIndex.ToString(), menuItem.ItemID) + "'";
+          href = menuItem.Command.HrefCommand.FormatHref (menuItemIndex.ToString(), menuItem.ItemID);
+          if (! ControlHelper.IsDesignMode (this, Context))
+            href = UrlUtility.GetAbsoluteUrl (Page, href);
+          href = "'" + href + "'";
           target = "'" + menuItem.Command.HrefCommand.Target + "'";
         }
       }

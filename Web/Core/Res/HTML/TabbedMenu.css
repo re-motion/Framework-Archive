@@ -76,6 +76,14 @@ table.tabbedMainMenu span.tabStripTabSelected a
   font-weight: bold;
 }
 
+table.tabbedMainMenu span.tabStripTab.disabled a,
+table.tabbedMainMenu span.tabStripTab.disabled a:hover
+{
+  color: Gray;
+  background-color: #E8E8E8;
+  cursor: default;
+}
+
 /* Top Left tab corner */
 table.tabbedMainMenu span.tabStripTab a span.topLeft,
 table.tabbedMainMenu span.tabStripTabSelected a span.topLeft
@@ -176,6 +184,14 @@ table.tabbedSubMenu span.tabStripTabSelected a
   background-color: #02537c;
   color: White;
   text-decoration: underline;
+}
+
+table.tabbedSubMenu span.tabStripTab.disabled a,
+table.tabbedSubMenu span.tabStripTab.disabled a:hover
+{
+  color: White;
+  background-color: Transparent;
+  cursor: default;
 }
 
 /* Content area of the tab */

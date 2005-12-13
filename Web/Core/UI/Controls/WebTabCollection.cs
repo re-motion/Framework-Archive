@@ -150,7 +150,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
       _tabStrip.SetSelectedTabInternal (null);
   }
 
-  protected internal virtual void OnHideTab (WebTab tab)
+  internal void DeselectTabInternal (WebTab tab)
   {
     ArgumentUtility.CheckNotNull ("tab", tab);
     if (tab.TabStrip != null && tab.TabStrip != _tabStrip)
@@ -221,7 +221,7 @@ public class WebTabCollection: ControlItemCollection, IControlStateManager
       for (int i = 0; i < InnerList.Count; i++)
       {
         WebTab tab = (WebTab) InnerList[i];
-        if (tab.IsVisible)
+        if (tab.IsVisible && ! tab.IsDisabled)
         {
           _tabStrip.SetSelectedTabInternal (tab);
           break;

@@ -124,7 +124,7 @@ public abstract class MenuTab: WebTab
   public override void RenderBeginTagForCommand (HtmlTextWriter writer, bool isEnabled)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
-    if (isEnabled && Command != null)
+    if (isEnabled && Command != null && ! IsDisabled)
     {
       NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
       Command.RenderBegin (writer, GetPostBackClientEvent(), new string[0], string.Empty, additionalUrlParameters);

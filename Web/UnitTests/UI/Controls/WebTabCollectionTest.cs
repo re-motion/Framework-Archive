@@ -442,5 +442,86 @@ public class WebTabCollectionTest: WebControlTest
     Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
   }
 
+  [Test]
+  public void AddFirstTabAsDisabledTab()
+  {
+    _tab0.IsDisabled = true;
+    _tabStrip.Tabs.Add (_tab0);
+ 
+    Assert.AreEqual (1, _tabStrip.Tabs.Count);
+    Assert.IsNull (_tabStrip.SelectedTab);
+  }
+
+  [Test]
+  public void AddSecondTabAfterDisabledTab()
+  {
+    _tab0.IsDisabled = true;
+    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add (_tab1);
+ 
+    Assert.AreEqual (2, _tabStrip.Tabs.Count);
+    Assert.IsNotNull (_tabStrip.SelectedTab);
+    Assert.AreSame (_tab1, _tabStrip.SelectedTab);
+  }
+
+  [Test]
+  [ExpectedException (typeof (InvalidOperationException))]
+  public void SelectDisabledTab()
+  {
+    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add (_tab1);
+    _tab1.IsDisabled = true;
+    _tab1.IsSelected = true;
+
+    Assert.Fail(); 
+  }
+  [Test]
+  public void DisableFirstTabWithTabBeingSelected()
+  {
+    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add (_tab1);
+    _tabStrip.Tabs.Add (_tab2);
+    _tabStrip.Tabs.Add (_tab3);
+    _tab0.IsSelected = true;
+
+    _tab0.IsDisabled = true;
+    
+    Assert.AreEqual (4, _tabStrip.Tabs.Count);
+    
+    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame (_tab1, _tabStrip.SelectedTab, "Wrong tab selected.");
+  }
+
+  [Test]
+  public void DisableMiddleTabWithTabBeingSelected()
+  {
+    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add (_tab1);
+    _tabStrip.Tabs.Add (_tab2);
+    _tabStrip.Tabs.Add (_tab3);
+    _tab1.IsSelected = true;
+
+    _tab1.IsDisabled = true;
+        
+    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+  }
+
+  [Test]
+  public void DisableLastTabWithTabBeingSelected()
+  {
+    _tabStrip.Tabs.Add (_tab0);
+    _tabStrip.Tabs.Add (_tab1);
+    _tabStrip.Tabs.Add (_tab2);
+    _tabStrip.Tabs.Add (_tab3);
+    _tab3.IsSelected = true;
+
+    _tab3.IsDisabled = true;
+    
+    Assert.AreEqual (4, _tabStrip.Tabs.Count);
+    
+    Assert.IsNotNull (_tabStrip.SelectedTab, "No tab selected.");
+    Assert.AreSame (_tab2, _tabStrip.SelectedTab, "Wrong tab selected.");
+  }
 }
 }

@@ -322,17 +322,9 @@ public class WebTabStrip :
     RenderSeperator (writer);
 
     if (tab.IsSelected)
-    {
-      _tabSelectedStyle.AddAttributesToRender (writer);
-      if (StringUtility.IsNullOrEmpty (_tabSelectedStyle.CssClass))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabSelected);
-    }
+      AddAttributesForTabSpan (writer, tab, _tabSelectedStyle, CssClassTabSelected, CssClassDisabled);
     else
-    {
-      _tabStyle.AddAttributesToRender (writer);
-      if (StringUtility.IsNullOrEmpty (_tabStyle.CssClass))
-        writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTab);
-    }
+      AddAttributesForTabSpan (writer, tab, _tabStyle, CssClassTab, CssClassDisabled);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span
 
     bool isEnabled = ! tab.IsSelected || _enableSelectedTab;
@@ -383,6 +375,26 @@ public class WebTabStrip :
 
     writer.RenderEndTag(); // End list item
     writer.WriteLine();
+  }
+
+  private void AddAttributesForTabSpan (
+      HtmlTextWriter writer, WebTab tab, Style style, string cssClass, string cssClassDisabled)
+  {
+    string backUpCssClass = style.CssClass;
+    if (tab.IsDisabled && ! StringUtility.IsNullOrEmpty (style.CssClass))
+      style.CssClass += " " + CssClassDisabled;
+    
+    _tabStyle.AddAttributesToRender (writer);
+
+    if (tab.IsDisabled && ! StringUtility.IsNullOrEmpty (style.CssClass))
+      style.CssClass = backUpCssClass;
+  
+    if (StringUtility.IsNullOrEmpty (style.CssClass))
+    {
+      if (tab.IsDisabled)
+        cssClass += " " + CssClassDisabled;
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
+    }
   }
 
   private void RenderSeperator (HtmlTextWriter writer)
@@ -769,6 +781,15 @@ public class WebTabStrip :
   {
     get { return "tabStripTabSeparator"; }
   }
+  
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTab"/> when it is displayed disabled. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>disabled</c>. </para>
+  ///   <para> Applied in addition to the regular CSS-Class. Use <c>.tabStripTab.disabled</c> as a selector.</para>
+  /// </remarks>
+  protected virtual string CssClassDisabled
+  { get { return "disabled"; } }
+
   #endregion
 }
 

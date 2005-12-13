@@ -1,7 +1,7 @@
-<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head><title>Test Tabbed Form</title>
@@ -34,6 +34,16 @@
 <rwc:SubMenuTab Text="Client Wxe" ItemID="ClientWxeTab">
 <persistedcommand>
 <rwc:Command Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-CreatePermanentUrlForExternalFunction="True" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:Command>
+</PersistedCommand>
+</rwc:SubMenuTab>
+<rwc:SubMenuTab Text="Invisible Tab" ItemID="InvisibleTab" IsVisible="False">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
+</rwc:SubMenuTab>
+<rwc:SubMenuTab Text="Disabled Tab" ItemID="DisabledTab" IsDisabled="True">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>
 </rwc:SubMenuTab>
 </SubMenuTabs>
@@ -71,6 +81,11 @@
 </PersistedCommand>
 </rwc:MainMenuTab>
 <rwc:MainMenuTab Text="Tab 4" ItemID="Tab4">
+<persistedcommand>
+<rwc:Command Type="Event"></rwc:Command>
+</PersistedCommand>
+</rwc:MainMenuTab>
+<rwc:MainMenuTab Text="Tab 5" ItemID="Tab5" IsDisabled="True">
 <persistedcommand>
 <rwc:Command Type="Event"></rwc:Command>
 </PersistedCommand>

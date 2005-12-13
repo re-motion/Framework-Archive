@@ -21,6 +21,7 @@ public class WebTab: IControlItem, IControlStateManager
   private string _text = "";
   private IconInfo _icon;
   private bool _isVisible = true;
+  private bool _isDisabled = false;
   private WebTabStrip _tabStrip;
   private bool _isSelected = false;
   private int _selectDesired = 0;
@@ -103,6 +104,8 @@ public class WebTab: IControlItem, IControlStateManager
   {
     if (value && ! _isVisible)
       throw new InvalidOperationException (string.Format ("Cannot select tab '{0}' because it is invisible.", _itemID));
+    if (value && _isDisabled)
+      throw new InvalidOperationException (string.Format ("Cannot select tab '{0}' because it is disabled.", _itemID));
     _isSelected = value;
     if (_tabStrip == null)
       _selectDesired = value ? 1 : -1;
@@ -198,12 +201,34 @@ public class WebTab: IControlItem, IControlStateManager
   [DefaultValue (true)]
   public bool IsVisible
   {
-    get { return _isVisible; }
+    get 
+    { 
+      return _isVisible; 
+    }
     set 
     {
       _isVisible = value; 
       if (! _isVisible && _tabStrip != null)
-        _tabStrip.Tabs.OnHideTab (this);
+        _tabStrip.Tabs.DeselectTabInternal (this);
+    }
+  }
+
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Behavior")]
+  [Description ("True to manually disable the tab.")]
+  [NotifyParentProperty (true)]
+  [DefaultValue (false)]
+  public bool IsDisabled
+  {
+    get 
+    {
+      return _isDisabled; 
+    }
+    set
+    {
+      _isDisabled = value; 
+      if (_isDisabled && _tabStrip != null)
+        _tabStrip.Tabs.DeselectTabInternal (this);
     }
   }
 
@@ -301,7 +326,7 @@ public class WebTab: IControlItem, IControlStateManager
   public virtual void RenderBeginTagForCommand (HtmlTextWriter writer, bool isEnabled)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
-    if (isEnabled)
+    if (isEnabled && ! _isDisabled)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, GetPostBackClientEvent ());

@@ -365,10 +365,12 @@ public class Command: IControlItem
       throw new InvalidOperationException ("Call to AddAttributesToRenderForHrefCommand not allowed unless Type is set to CommandType.Href.");
       
     string href = HrefCommand.FormatHref (parameters);
-    if (System.Web.HttpContext.Current != null)
+    if (HttpContext.Current != null)
     {
       for (int i = 0; i < additionalUrlParameters.Count; i++)
         href = PageUtility.AddUrlParameter (href, additionalUrlParameters.GetKey(i), additionalUrlParameters.Get(i));
+      
+      href = UrlUtility.GetAbsoluteUrl (HttpContext.Current, href);
     }
     writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
     if (! StringUtility.IsNullOrEmpty (HrefCommand.Target))
