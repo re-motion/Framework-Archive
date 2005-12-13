@@ -112,6 +112,11 @@ public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundCont
   /// </remarks>
   /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
   void SaveValue (bool interim);
+  
+  /// <summary>
+  ///   Gets a flag that determines whether the control is to be displayed in read-only mode.
+  /// </summary>
+  bool IsReadOnly { get; }
 }
 
 }
