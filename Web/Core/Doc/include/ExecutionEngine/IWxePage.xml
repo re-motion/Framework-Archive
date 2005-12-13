@@ -110,7 +110,7 @@ public override void LoadPageStateFromPersistenceMedium()
     </example>
   </Class>
   <ExecuteFunction>
-    <param name="function"> The WXE new function to be executed. Must not be <see langword="null"/>. </param>  
+    <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
     <param name="createPermaUrl"> 
       <see langword="true"/> to redirect the client to a URL that can be used as a perma-URL. 
       Defaults to <see langword="false"/>.
@@ -125,7 +125,7 @@ public override void LoadPageStateFromPersistenceMedium()
     </param>
   </ExecuteFunction>
   <ExecuteFunctionNoRepost>
-    <param name="function"> The WXE new function to be executed. Must not be <see langword="null"/>. </param>  
+    <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
     <param name="sender"> 
       For calls from event handlers, the control that caused the event (i.e. the <b>sender</b> argument of the 
       event handler). Otherwise, the sender may be <see landword="null"/>.
@@ -146,7 +146,7 @@ public override void LoadPageStateFromPersistenceMedium()
     </param>
   </ExecuteFunctionNoRepost>
   <ExecuteFunctionExternal>
-    <param name="function"> The WXE new function to be executed. Must not be <see langword="null"/>. </param>  
+    <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
     <param name="target">
       The HTML frame/window name that will be used to execute the function. Must not be <see langword="null"/> or empty.
     </param>

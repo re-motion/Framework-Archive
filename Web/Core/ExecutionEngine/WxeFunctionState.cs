@@ -18,8 +18,22 @@ public class WxeFunctionStateCollection
   private static readonly string s_sessionKey = typeof (WxeFunctionStateCollection).FullName;
   public static WxeFunctionStateCollection Instance
   {
-    get { return (WxeFunctionStateCollection) HttpContext.Current.Session[s_sessionKey]; }
-    set { HttpContext.Current.Session[s_sessionKey] = value; }
+    get 
+    {
+      WxeFunctionStateCollection functionStates = 
+          (WxeFunctionStateCollection) HttpContext.Current.Session[s_sessionKey];
+      if (functionStates == null)
+      {
+        functionStates = new WxeFunctionStateCollection();
+        HttpContext.Current.Session[s_sessionKey] = functionStates;
+      }
+      return functionStates; 
+    }
+  }
+
+  public static bool HasInstance
+  {
+    get { return HttpContext.Current.Session[s_sessionKey] != null; }
   }
 
   private ArrayList _functionStates = new ArrayList();
