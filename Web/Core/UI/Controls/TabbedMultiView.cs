@@ -147,7 +147,11 @@ public class TabbedMultiView: WebControl, IControl
       //  Cannot use FindControl without a Naming Container. Only during initialization phase of aspx.
       if (multiView.NamingContainer != null)
       {
-        view = (TabView) multiView.MultiViewInternal.FindControl (_target);
+        bool isPlaceHolderTab = _target == null;
+        if (isPlaceHolderTab) 
+          view = multiView._placeHolderTabView;
+        else
+          view = (TabView) multiView.MultiViewInternal.FindControl (_target);
       }
       else
       {
@@ -171,7 +175,6 @@ public class TabbedMultiView: WebControl, IControl
   private PlaceHolder _topControl;
   private PlaceHolder _bottomControl;
 
-  private Style _tabStripStyle;
   private Style _activeViewStyle;
   private Style _topControlsStyle;
   private Style _bottomControlsStyle;
@@ -183,7 +186,6 @@ public class TabbedMultiView: WebControl, IControl
   public TabbedMultiView()
   {
     CreateControls();
-    _tabStripStyle = new Style();
     _activeViewStyle = new Style();
     _topControlsStyle = new Style();
     _bottomControlsStyle = new Style();
@@ -330,7 +332,10 @@ public class TabbedMultiView: WebControl, IControl
   {
     base.AddAttributesToRender (writer);
     if (ControlHelper.IsDesignMode (this, Context))
-      writer.AddStyleAttribute ("height", "50pt");
+    {
+      writer.AddStyleAttribute ("width", "100%");
+      writer.AddStyleAttribute ("height", "75%");
+    }
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
   }
@@ -353,14 +358,10 @@ public class TabbedMultiView: WebControl, IControl
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
     
     writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
-    _tabStripStyle.AddAttributesToRender (writer);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
 
     _tabStrip.Style["width"] = "100%";
-    if (StringUtility.IsNullOrEmpty (_tabStripStyle.CssClass))
-      _tabStrip.CssClass = CssClassTabStrip;
-    else
-      _tabStrip.CssClass = _tabStripStyle.CssClass;
+    _tabStrip.CssClass = CssClassTabStrip;
     _tabStrip.RenderControl (writer);
 
     writer.RenderEndTag(); // end td
@@ -373,11 +374,9 @@ public class TabbedMultiView: WebControl, IControl
     
     if (ControlHelper.IsDesignMode (this, Context))
       writer.AddStyleAttribute ("border", "solid 1px black");
-    _tabStripStyle.AddAttributesToRender (writer);
+    _activeViewStyle.AddAttributesToRender (writer);
     if (StringUtility.IsNullOrEmpty (_activeViewStyle.CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassActiveView);
-    else
-      writer.AddAttribute(HtmlTextWriterAttribute.Class, _activeViewStyle.CssClass);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
     
     _activeViewStyle.AddAttributesToRender (writer);
@@ -394,6 +393,10 @@ public class TabbedMultiView: WebControl, IControl
         Control control = (Control) view.Controls[i];
         control.RenderControl (writer);
       }
+    }
+    else
+    {
+      writer.Write ("&nbsp;");
     }
     
     writer.RenderEndTag(); // end div
@@ -455,8 +458,8 @@ public class TabbedMultiView: WebControl, IControl
     }
   }
 
-  [PersistenceMode (PersistenceMode.InnerProperty)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
   [Browsable (false)]
   public TabViewCollection Views
   { 
@@ -491,16 +494,6 @@ public class TabbedMultiView: WebControl, IControl
       EnsureChildControls();
       return _multiViewInternal; 
     }
-  }
-
-  [Category ("Style")]
-  [Description ("The style that you want to apply to the tab strip section.")]
-  [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-  [PersistenceMode (PersistenceMode.InnerProperty)]
-  public Style TabStripStyle
-  {
-    get { return _tabStripStyle; }
   }
 
   [Category ("Style")]

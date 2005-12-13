@@ -7,11 +7,12 @@ using System.Reflection;
 using System.Threading;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Web.ExecutionEngine;
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Web.UnitTests.AspNetFramework;
-using Rubicon.Web.Utilities;
 using Rubicon.Web.UnitTests.Configuration;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
@@ -32,8 +33,7 @@ public class WxeContextTest
     _functionTypeName = _functionType.FullName + "," + _functionType.Assembly.GetName().Name;
     _resource = "~/Test.wxe";
 
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
-        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (_functionType, _resource));
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, _resource));
 
     _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "Other.wxe", null);
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;

@@ -97,7 +97,8 @@ public class EmptyTabView: TabView
 {
   public EmptyTabView()
   {
-    Title = "--";
+    Title = "&nbsp;";
+    ID = null;
   }
 
   protected override ControlCollection CreateControlCollection()

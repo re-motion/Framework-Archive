@@ -84,23 +84,23 @@ public class UrlMappingConfiguration: ConfigurationBase
 }
 
 [XmlType ("add", Namespace = UrlMappingConfiguration.SchemaUri)]
-public class UrlMapping
+public class UrlMappingEntry
 {
   private string _functionTypeName = null;
   private Type _functionType = null;
   private string _resource = null;
 
-  public UrlMapping()
+  public UrlMappingEntry()
   {
   }
 
-  public UrlMapping (Type functionType, string resource)
+  public UrlMappingEntry (Type functionType, string resource)
   {
     FunctionType = functionType;
     Resource = resource;
   }
 
-  public UrlMapping (string functionTypeName, string resource)
+  public UrlMappingEntry (string functionTypeName, string resource)
   {
     FunctionTypeName = functionTypeName;
     Resource = resource;
@@ -181,40 +181,40 @@ public class UrlMappingCollection: CollectionBase
   {
   }
 
-  public UrlMapping this[int index]
+  public UrlMappingEntry this[int index]
   {
-    get { return (UrlMapping) List[index]; }
+    get { return (UrlMappingEntry) List[index]; }
     set { List[index] = value; }
   }
 
-  public UrlMapping this[string path]
+  public UrlMappingEntry this[string path]
   {
     get { return Find (path); }
   }
 
-  public UrlMapping this[Type functionType]
+  public UrlMappingEntry this[Type functionType]
   {
     get { return Find (functionType); }
   }
 
-  public int Add (UrlMapping mapping)
+  public int Add (UrlMappingEntry entry)
   {
-    return List.Add (mapping);
+    return List.Add (entry);
   }
 
-  public void Remove (UrlMapping mapping)
+  public void Remove (UrlMappingEntry entry)
   {
-    if (mapping != null)
-      List.Remove (mapping);
+    if (entry != null)
+      List.Remove (entry);
   }
 
   protected virtual void ValidateNewValue (object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (UrlMapping));
+    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (UrlMappingEntry));
     base.OnValidate (value);
-    UrlMapping mapping = (UrlMapping) value;
-    if (Find (mapping.Resource) != null)
-      throw new ArgumentException (string.Format ("The mapping already contains an entry for the following resource: '{0}'.", mapping.Resource), "value");
+    UrlMappingEntry entry = (UrlMappingEntry) value;
+    if (Find (entry.Resource) != null)
+      throw new ArgumentException (string.Format ("The mapping already contains an entry for the following resource: '{0}'.", entry.Resource), "value");
   }
 
   protected override void OnInsert(int index, object value)
@@ -231,18 +231,18 @@ public class UrlMappingCollection: CollectionBase
 
   public Type FindType (string path)
   {
-    UrlMapping mapping = Find (path);
-    if (mapping == null)
+    UrlMappingEntry entry = Find (path);
+    if (entry == null)
       return null;
-    return mapping.FunctionType;
+    return entry.FunctionType;
   }
 
   public string FindResource (Type type)
   {
-    UrlMapping mapping = Find (type);
-    if (mapping == null)
+    UrlMappingEntry entry = Find (type);
+    if (entry == null)
       return null;
-    return mapping.Resource;
+    return entry.Resource;
   }
 
   public string FindResource (string typeName)
@@ -253,7 +253,7 @@ public class UrlMappingCollection: CollectionBase
     return FindResource (type);
   }
 
-  public UrlMapping Find (string path)
+  public UrlMappingEntry Find (string path)
   {
     if (StringUtility.IsNullOrEmpty (path))
       return null;
@@ -265,7 +265,7 @@ public class UrlMappingCollection: CollectionBase
     return null;
   }
 
-  public UrlMapping Find (Type functionType)
+  public UrlMappingEntry Find (Type functionType)
   {
     if (functionType == null)
       return null;

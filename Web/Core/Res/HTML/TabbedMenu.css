@@ -1,5 +1,10 @@
 @import url ("TabStrip.css");
 
+table.tabbedMenu
+{
+  width: 100%;
+}
+
 td.tabbedMainMenuCell
 {
 }

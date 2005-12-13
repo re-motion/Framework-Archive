@@ -2569,7 +2569,9 @@ public class BocList:
       if (valueColumn != null && ! hasEditModeControl)
         valueColumnText = valueColumn.GetStringValue (businessObject);
 
-      bool showEditModeControl = simpleColumn != null && hasEditModeControl && ! simpleColumn.IsReadOnly;
+      bool showEditModeControl =   simpleColumn != null 
+                                && hasEditModeControl 
+                                && ! _rowEditModeControls[columnIndex].IsReadOnly;
 
       bool enforceWidth = 
              valueColumn != null 

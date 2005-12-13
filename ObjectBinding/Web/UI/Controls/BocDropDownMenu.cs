@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.ComponentModel;
 using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
@@ -345,11 +346,17 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
           businessObjects = new IBusinessObject[0];
    
         BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
-        command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
+        if (Page is IWxePage)
+          command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
+        else
+          command.ExecuteWxeFunction (Page, indices, businessObjects);
       }
       else
       {
-        menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+        if (Page is IWxePage)
+          menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+        else
+          menuItem.Command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
     }
   }

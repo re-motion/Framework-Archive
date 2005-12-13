@@ -7,8 +7,9 @@ using System.Reflection;
 using System.Threading;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Web.ExecutionEngine;
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Web.UnitTests.AspNetFramework;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
@@ -155,8 +156,7 @@ public class WxeHandlerTest: WxeTest
   [Test]
   public void GetFunctionTypeByPath()
   {
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
-        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (_functionType, "~/Test.wxe"));
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, "~/Test.wxe"));
 
     Type type = _wxeHandler.GetTypeByPath (@"/Test.wxe");
 
@@ -250,8 +250,7 @@ public class WxeHandlerTest: WxeTest
   {
     HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
 
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
-        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (_functionType, "~/Test.wxe"));
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, "~/Test.wxe"));
 
     WxeFunctionState functionState = 
         _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
@@ -269,8 +268,7 @@ public class WxeHandlerTest: WxeTest
     queryString.Add (WxeHandler.Parameters.WxeAction, WxeHandler.Actions.Refresh);
     HttpContextHelper.SetQueryString (context, queryString);
 
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
-        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (typeof (TestFunction), "~/Test.wxe"));
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (typeof (TestFunction), "~/Test.wxe"));
 
     _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
     Assert.Fail();
@@ -285,8 +283,7 @@ public class WxeHandlerTest: WxeTest
     form.Add (WxeHandler.Parameters.WxeFunctionToken, c_functionTokenForMissingFunctionState);
     HttpContextHelper.SetForm (context, form);
 
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
-        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (typeof (TestFunction), "~/Test.wxe"));
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (typeof (TestFunction), "~/Test.wxe"));
 
     _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
     Assert.Fail();

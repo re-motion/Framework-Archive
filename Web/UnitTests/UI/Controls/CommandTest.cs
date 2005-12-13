@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using NUnit.Framework;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UnitTests.AspNetFramework;
 using Rubicon.Web.UnitTests.Configuration;
@@ -225,8 +226,7 @@ public class CommandTest
   public void GetWxeFunctionPermanentUrlWithMappedFunctionType()
   {
     string resource = "~/Test.wxe";
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
-        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (_functionType, resource));
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, resource));
     string parameter1 = "Value1";
     
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, resource);
@@ -275,8 +275,7 @@ public class CommandTest
   public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndAdditionalUrlParameters()
   {
     string resource = "~/Test.wxe";
-    Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.Current.Mappings.Add (
-        new Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping (_functionType, resource));
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, resource));
     string parameter1 = "Value1";
 
     NameValueCollection additionalUrlParameters = new NameValueCollection();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Web.UI;
@@ -169,19 +170,41 @@ public class BocCommand: Command
   {
     if (! WxeContext.Current.IsReturningPostBack)
     {
-      NameObjectCollection parameters = new NameObjectCollection();
-      parameters["object"] = businessObject;
-      if (businessObject is IBusinessObjectWithIdentity)
-        parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
-      if (OwnerControl != null)
-      {
-        if (OwnerControl.DataSource != null && OwnerControl.Value != null)
-          parameters["parent"] = OwnerControl.DataSource.BusinessObject;
-        if (OwnerControl.Property != null)
-          parameters["parentproperty"] = OwnerControl.Property;
-      }
+      NameObjectCollection parameters = PrepareWxeFunctionParameters (businessObject);
       ExecuteWxeFunction (wxePage, parameters);
     }
+  }
+
+  /// <summary>
+  ///   Executes the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommand"/> from a page
+  ///   not implementing <see cref="IWxePage"/>.
+  /// </summary>
+  /// <param name="page"> The <see cref="Page"/> where this command is rendered on. </param>
+  /// <param name="businessObject">
+  ///   The <see cref="IBusinessObject"/> in the row where the command was clicked.
+  /// </param>
+  public void ExecuteWxeFunction (Page page, IBusinessObject businessObject)
+  {
+    NameObjectCollection parameters = PrepareWxeFunctionParameters (businessObject);
+    ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
+  }
+
+  private NameObjectCollection PrepareWxeFunctionParameters (IBusinessObject businessObject)
+  {
+    NameObjectCollection parameters = new NameObjectCollection();
+    
+    parameters["object"] = businessObject;
+    if (businessObject is IBusinessObjectWithIdentity)
+      parameters["id"] = ((IBusinessObjectWithIdentity) businessObject).UniqueIdentifier;
+    if (OwnerControl != null)
+    {
+      if (OwnerControl.DataSource != null && OwnerControl.Value != null)
+        parameters["parent"] = OwnerControl.DataSource.BusinessObject;
+      if (OwnerControl.Property != null)
+        parameters["parentproperty"] = OwnerControl.Property;
+    }
+
+    return parameters;
   }
 
   /// <summary> The <see cref="BocHrefCommandInfo"/> used when rendering the command as a hyperlink. </summary>

@@ -34,11 +34,10 @@ public class TabbedMenu: WebControl, IControl
   // types
 
   // fields
-  private Style _mainMenuStyle;
-  private Style _subMenuStyle;
   private Style _statusStyle;
   private WebTabStrip _mainMenuTabStrip;
   private WebTabStrip _subMenuTabStrip;
+  private string _statusText;
   private bool _isSubMenuTabStripRefreshed;
   private bool _isPastInitialization;
 
@@ -58,8 +57,6 @@ public class TabbedMenu: WebControl, IControl
   {
     _mainMenuTabStrip = new WebTabStrip (new MainMenuTabCollection (this, new Type[] {typeof (MainMenuTab)}));
     _subMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (SubMenuTab)});
-    _mainMenuStyle = new Style();
-    _subMenuStyle = new Style();
     _statusStyle = new Style();
   }
 
@@ -402,6 +399,12 @@ public class TabbedMenu: WebControl, IControl
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
+    if (ControlHelper.IsDesignMode (this, Context))
+    {
+      writer.AddStyleAttribute ("width", "100%");
+    }
+    if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
     writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
     writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
   }
@@ -434,9 +437,12 @@ public class TabbedMenu: WebControl, IControl
     _subMenuTabStrip.RenderControl (writer);
     writer.RenderEndTag(); // End sub menu cell
 
-    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassStatusCell);
+    _statusStyle.AddAttributesToRender (writer);
+    if (StringUtility.IsNullOrEmpty (_statusStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassStatusCell);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin status cell
-    writer.Write ("Tabbed Menu");
+    if (! StringUtility.IsNullOrEmpty (_statusText))
+      writer.Write (_statusText);
     writer.RenderEndTag(); // End status cell
 
     writer.RenderEndTag(); // End sub menu row
@@ -452,13 +458,13 @@ public class TabbedMenu: WebControl, IControl
   }
 
 
+  /// <summary> Gets the collection of <see cref="MainMenuTabs"/>. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
-  [Category ("Behavior")]
   [Description ("")]
   [DefaultValue ((string) null)]
   [Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
-  public WebTabCollection Tabs
+  public MainMenuTabCollection Tabs
   {
     get
     {
@@ -476,37 +482,38 @@ public class TabbedMenu: WebControl, IControl
     add { Events.AddHandler (s_eventCommandClickEvent, value); }
     remove { Events.RemoveHandler (s_eventCommandClickEvent, value); }
   }
-//  [Category ("Style")]
-//  [Description ("The style that you want to apply to the main menu.")]
-//  [NotifyParentProperty (true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style MainMenuStyle
-//  {
-//    get { return _mainMenuStyle; }
-//  }
-//
-//  [Category ("Style")]
-//  [Description ("The style that you want to apply to the sub menu.")]
-//  [NotifyParentProperty (true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style SubMenuStyle
-//  {
-//    get { return _subMenuStyle; }
-//  }
-//
-//  [Category ("Style")]
-//  [Description ("The style that you want to apply to the status area.")]
-//  [NotifyParentProperty (true)]
-//  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
-//  [PersistenceMode (PersistenceMode.InnerProperty)]
-//  public Style StatusStyle
-//  {
-//    get { return _statusStyle; }
-//  }
+
+  /// <summary> Gets or sets the text displayed in the status area. </summary>
+  [Description ("The text displayed in the status area.")]
+  [DefaultValue ("")]
+  public string StatusText
+  {
+    get { return _statusText; }
+    set { _statusText = value; }
+  }
+
+  /// <summary> Gets the style applied to the status area. </summary>
+  [Category ("Style")]
+  [Description ("The style applied to the status area.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public Style StatusStyle
+  {
+    get { return _statusStyle; }
+  }
 
   #region protected virtual string CssClass...
+  /// <summary> Gets the CSS-Class applied to the <see cref="WebTabStrip"/> itself. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>tabStrip</c>. </para>
+  ///   <para> Applied only if the <see cref="WebControl.CssClass"/> is not set. </para>
+  /// </remarks>
+  protected virtual string CssClassBase
+  {
+    get { return "tabbedMenu"; }
+  }
+
   /// <summary> Gets the CSS-Class applied to the main menu's tab strip. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMainMenu</c>. </para>

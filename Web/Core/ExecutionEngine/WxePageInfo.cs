@@ -600,8 +600,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     else
     {
-      UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[function.GetType()];
-      string path = (mapping != null) ? mapping.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
+      UrlMapping.UrlMappingEntry mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[function.GetType()];
+      string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
       href = wxeContext.GetPath (path, functionToken, null);
     }
 

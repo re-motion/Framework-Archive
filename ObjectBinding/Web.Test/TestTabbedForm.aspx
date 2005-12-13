@@ -11,8 +11,7 @@
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rwc:htmlheadcontents id=HtmlHeadContents runat="server"></rwc:htmlheadcontents>
   </head>
 <body>
-<form id=Form method=post runat="server">
-      <rwc:TabbedMenu id="NavigationTabs" runat="server" width="100%" cssclass="test">
+<form id=Form method=post runat="server"><rwc:tabbedmenu id=NavigationTabs runat="server" StatusText="Status Text">
 <tabs>
 <rwc:MainMenuTab Text="Tab 1" ItemID="Tab1">
 <submenutabs>
@@ -91,12 +90,13 @@
 </PersistedCommand>
 </rwc:MainMenuTab>
 </Tabs>
-</rwc:TabbedMenu>
-<rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+</rwc:tabbedmenu><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+
 <topcontrols>
-      <h1>Test Tabbed Form</h1>
-      <rwc:validationstateviewer id="ValidationStateViewer" runat="server" visible="true"></rwc:validationstateviewer>
-</topcontrols>
+<system.web.ui.htmlcontrols.htmlgenericcontrol>Test Tabbed Form</System.Web.UI.HtmlControls.HtmlGenericControl>
+<rwc:ValidationStateViewer ID="ValidationStateViewer"></rwc:ValidationStateViewer>
+</TopControls>
+
 <views> 
  <rwc:tabview id="first" title="First">
       <rwc:webtabstrip id="PagesTabStrip" runat="server" style="margin:3em"></rwc:webtabstrip>

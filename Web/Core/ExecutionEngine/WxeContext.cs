@@ -97,15 +97,15 @@ public class WxeContext
       throw new ArgumentException (string.Format ("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
     ArgumentUtility.CheckNotNull ("queryString", queryString);
 
-    UrlMapping.UrlMapping mapping = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
-    if (mapping == null)
+    UrlMapping.UrlMappingEntry mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
+    if (mappingEntry == null)
     {
       string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
       queryString.Add (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
     }
 
     string path;
-    if (mapping == null)
+    if (mappingEntry == null)
     {
       string defaultWxeHandler = Configuration.WebConfiguration.Current.ExecutionEngine.DefaultWxeHandler;
       if (StringUtility.IsNullOrEmpty (defaultWxeHandler))
@@ -122,7 +122,7 @@ public class WxeContext
     }
     else
     {
-      path = httpContext.Response.ApplyAppPathModifier (mapping.Resource);
+      path = httpContext.Response.ApplyAppPathModifier (mappingEntry.Resource);
     }
 
     string permanentUrl = UrlUtility.GetAbsoluteUrl (httpContext, path) + UrlUtility.FormatQueryString (queryString);

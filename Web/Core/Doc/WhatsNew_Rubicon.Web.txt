@@ -23,6 +23,9 @@
 - Rubicon.Web.Configuration.ExecutionEngineConfiguration
   * Attribut ViewStateInSession entfernt. ViewState ist nun imm in der Session.
 
+- Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping
+  * Umbenannt zu Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingEntry.
+
 1.3.25
 ======
 - Rubicon.Web.ExecutionEngine.WxePage
