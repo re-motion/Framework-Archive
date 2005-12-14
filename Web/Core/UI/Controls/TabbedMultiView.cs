@@ -507,6 +507,26 @@ public class TabbedMultiView: WebControl, IControl
   }
 
   [Category ("Style")]
+  [Description ("The style that you want to apply to a tab that is not selected.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle TabStyle
+  {
+    get { return _tabStrip.TabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the selected tab.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle SelectedTabStyle
+  {
+    get { return _tabStrip.SelectedTabStyle; }
+  }
+
+  [Category ("Style")]
   [Description ("The style that you want to the top section. The height cannot be provided in percent.")]
   [NotifyParentProperty (true)]
   [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

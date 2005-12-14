@@ -45,6 +45,8 @@ public class WebTabStrip :
   private object _tabsControlState;
   private Control _ownerControl;
   private bool _enableSelectedTab = false;
+  private WebTabStyle _tabStyle;
+  private WebTabStyle _selectedTabStyle;
 
   public WebTabStrip (WebTabCollection tabCollection)
   {
@@ -52,6 +54,8 @@ public class WebTabStrip :
     _ownerControl = tabCollection.OwnerControl;
     _tabs = tabCollection;
     _tabs.SetTabStrip (this);
+    _tabStyle = new WebTabStyle();
+    _selectedTabStyle = new WebTabStyle();
   }
 
   public WebTabStrip (Control ownerControl, Type[] supportedTabTypes)
@@ -312,7 +316,8 @@ public class WebTabStrip :
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span
 
     bool isEnabled = ! tab.IsSelected || _enableSelectedTab;
-    tab.RenderBeginTagForCommand (writer, isEnabled);
+    WebTabStyle style = tab.IsSelected ? _selectedTabStyle : _tabStyle;
+    tab.RenderBeginTagForCommand (writer, isEnabled, style);
     
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabTopBorder);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin top border span
@@ -557,6 +562,26 @@ public class WebTabStrip :
   {
     add { Events.AddHandler (s_clickEvent, value); }
     remove { Events.RemoveHandler (s_clickEvent, value); }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a tab that is not selected.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle TabStyle
+  {
+    get { return _tabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the selected tab.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle SelectedTabStyle
+  {
+    get { return _selectedTabStyle; }
   }
 
   #region protected virtual string CssClass...

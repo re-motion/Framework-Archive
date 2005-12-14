@@ -121,16 +121,20 @@ public abstract class MenuTab: WebTab
       Command.LoadResources (resourceManager);
   }
 
-  public override void RenderBeginTagForCommand (HtmlTextWriter writer, bool isEnabled)
+  public override void RenderBeginTagForCommand (HtmlTextWriter writer, bool isEnabled, WebTabStyle style)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
+    ArgumentUtility.CheckNotNull ("style", style);
+
     if (isEnabled && Command != null && ! IsDisabled)
     {
       NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
-      Command.RenderBegin (writer, GetPostBackClientEvent(), new string[0], string.Empty, additionalUrlParameters);
+      Command.RenderBegin (
+          writer, GetPostBackClientEvent(), new string[0], string.Empty, additionalUrlParameters, style);
     }
     else
     {
+      style.AddAttributesToRender (writer);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
     }
   }

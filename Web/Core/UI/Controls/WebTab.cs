@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
@@ -323,14 +324,16 @@ public class WebTab: IControlItem, IControlStateManager
     return _tabStrip.Page.GetPostBackClientHyperlink (_tabStrip, ItemID);
   }
 
-  public virtual void RenderBeginTagForCommand (HtmlTextWriter writer, bool isEnabled)
+  public virtual void RenderBeginTagForCommand (HtmlTextWriter writer, bool isEnabled, WebTabStyle style)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
+    ArgumentUtility.CheckNotNull ("style", style);
     if (isEnabled && ! _isDisabled)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, GetPostBackClientEvent ());
     }
+    style.AddAttributesToRender (writer);
     writer.RenderBeginTag (HtmlTextWriterTag.A); // Begin anchor
   }
 
@@ -427,6 +430,59 @@ public class WebTabClickEventArgs: EventArgs
   public WebTab Tab
   {
     get { return _tab; }
+  }
+}
+
+public class WebTabStyle: Style
+{
+  /// <exclude />
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public new Color BorderColor 
+  {
+    get { return base.BorderColor; }
+    set { base.BorderColor = value; }
+  }
+
+  /// <exclude />
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public new BorderStyle BorderStyle
+  {
+    get { return base.BorderStyle; }
+    set { base.BorderStyle = value; }
+  }
+
+  /// <exclude />
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public new Unit BorderWidth
+  {
+    get { return base.BorderWidth; }
+    set { base.BorderWidth = value; }
+  }
+
+  /// <exclude />
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public new Unit Width
+  {
+    get { return base.Width; }
+    set { base.Width = value; }
+  }
+
+  /// <exclude />
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  public new Unit Height
+  {
+    get { return base.Height; }
+    set { base.Height = value; }
   }
 }
 }

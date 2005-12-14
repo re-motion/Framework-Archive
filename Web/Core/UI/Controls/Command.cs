@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Rubicon.Collections;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
@@ -266,13 +267,18 @@ public class Command: IControlItem
   ///   The <see cref="NameValueCollection"/> containing additional url parameters.
   ///   Must not be <see langword="null"/>.
   /// </param>
+  /// <param name="style"> The style applied to the opening tag. </param>
   public virtual void RenderBegin (
       HtmlTextWriter writer, 
       string postBackEvent,
       string[] parameters,
       string onClick,
-      NameValueCollection additionalUrlParameters)
+      NameValueCollection additionalUrlParameters,
+      Style style)
   {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+    ArgumentUtility.CheckNotNull ("style", style);
+
     switch (_type)
     {
       case CommandType.Href:
@@ -295,6 +301,7 @@ public class Command: IControlItem
         break;
       }
     }
+    style.AddAttributesToRender (writer);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
   }
 
@@ -314,7 +321,7 @@ public class Command: IControlItem
   /// </param>
   public void RenderBegin (HtmlTextWriter writer, string postBackEvent, string[] parameters, string onClick)
   {
-    RenderBegin (writer, postBackEvent, parameters, onClick, new NameValueCollection (0));
+    RenderBegin (writer, postBackEvent, parameters, onClick, new NameValueCollection (0), new Style());
   }
 
   /// <summary> Adds the attributes for the Href command to the anchor tag. </summary>

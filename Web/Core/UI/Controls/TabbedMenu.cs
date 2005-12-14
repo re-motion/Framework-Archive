@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -40,6 +41,7 @@ public class TabbedMenu: WebControl, IControl
   private string _statusText;
   private bool _isSubMenuTabStripRefreshed;
   private bool _isPastInitialization;
+  private Color _subMenuBackgroundColor;
 
   protected WebTabStrip MainMenuTabStrip
   {
@@ -58,6 +60,7 @@ public class TabbedMenu: WebControl, IControl
     _mainMenuTabStrip = new WebTabStrip (new MainMenuTabCollection (this, new Type[] {typeof (MainMenuTab)}));
     _subMenuTabStrip = new WebTabStrip (this, new Type[] {typeof (SubMenuTab)});
     _statusStyle = new Style();
+    _subMenuBackgroundColor = new Color();
   }
 
   // methods and properties
@@ -181,7 +184,12 @@ public class TabbedMenu: WebControl, IControl
 
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin sub menu row
 
-    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassSubMenuCell);
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSubMenuCell);
+    if (! _subMenuBackgroundColor.IsEmpty)
+    {
+      string backGroundColor = ColorTranslator.ToHtml (_subMenuBackgroundColor);
+      writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundColor, backGroundColor);
+    }
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin sub menu cell
     _subMenuTabStrip.Style["width"] = "auto";
     _subMenuTabStrip.CssClass = CssClassSubMenu;
@@ -494,12 +502,66 @@ public class TabbedMenu: WebControl, IControl
   [Category ("Style")]
   [Description ("The style applied to the status area.")]
   [NotifyParentProperty (true)]
-  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [PersistenceMode (PersistenceMode.InnerProperty)]
   public Style StatusStyle
   {
     get { return _statusStyle; }
   }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a main menu tab that is not selected.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle MainMenuTabStyle
+  {
+    get { return _mainMenuTabStrip.TabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the selected main menu tab.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle MainMenuSelectedTabStyle
+  {
+    get { return _mainMenuTabStrip.SelectedTabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a sub menu tab that is not selected.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle SubMenuTabStyle
+  {
+    get { return _subMenuTabStrip.TabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to the selected sub menu tab.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle SubMenuSelectedTabStyle
+  {
+    get { return _subMenuTabStrip.SelectedTabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The background color that you want to apply to the sub menu area.")]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [NotifyParentProperty (true)]
+  [TypeConverter (typeof (WebColorConverter))]
+  [DefaultValue (typeof (Color), "")]
+  public Color SubMenuBackgroundColor
+  {
+    get { return _subMenuBackgroundColor; }
+    set { _subMenuBackgroundColor = value; }
+  }
+
+
 
   #region protected virtual string CssClass...
   /// <summary> Gets the CSS-Class applied to the <see cref="WebTabStrip"/> itself. </summary>
