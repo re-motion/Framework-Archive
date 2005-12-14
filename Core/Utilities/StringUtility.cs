@@ -34,11 +34,30 @@ public sealed class StringUtility
 
   private static Hashtable s_parseMethods = new Hashtable();
 
+  /// <summary>
+  ///   Parses a delimiter-separated string into individual elements.
+  /// </summary>
+  /// <remarks>
+  ///   This method handles quotes and escaping. A quoted string may contain commas that
+  ///   will not be treated as separators. Commas prefixed with a backslash are treated
+  ///   like normal commas, double backslashes are treated as single backslashes.
+  /// </remarks>
+  /// <param name="value"> The string to be parsed. Must not be <see langword="null"/>. </param>
+  /// <param name="delimiter"> The character used for list separation. Default is comma (,). </param>
   public static ParsedItem[] ParseSeparatedList (string value, char delimiter)
   {
     return ParseSeparatedList (value, delimiter, '\"', '\"', '\\', " ", true);
   }
 
+  /// <summary>
+  ///   Parses a delimiter-separated string into individual elements.
+  /// </summary>
+  /// <remarks>
+  ///   This method handles quotes and escaping. A quoted string may contain commas that
+  ///   will not be treated as separators. Commas prefixed with a backslash are treated
+  ///   like normal commas, double backslashes are treated as single backslashes.
+  /// </remarks>
+  /// <param name="value"> The string to be parsed. Must not be <see langword="null"/>. </param>
   public static ParsedItem[] ParseSeparatedList (string value)
   {
     return ParseSeparatedList (value, ',', '\"', '\"', '\\', " ", true);
@@ -52,7 +71,7 @@ public sealed class StringUtility
   ///   will not be treated as separators. Commas prefixed with a backslash are treated
   ///   like normal commas, double backslashes are treated as single backslashes.
   /// </remarks>
-  /// <param name="value"> The string to be parsed. </param>
+  /// <param name="value"> The string to be parsed. Must not be <see langword="null"/>. </param>
   /// <param name="delimiter"> The character used for list separation. Default is comma (,). </param>
   /// <param name="openingQuote"> The character used as opening quote. Default is double quote (&quot;). </param>
   /// <param name="closingQuote"> The character used as closing quote. Default is double quote (&quot;). </param>
@@ -66,6 +85,8 @@ public sealed class StringUtility
       char delimiter, char openingQuote, char closingQuote, char escapingChar, string whitespaceCharacters, 
       bool interpretSpecialCharacters) 
   {
+    ArgumentUtility.CheckNotNull ("value", value);
+
     string specialCharacters = "rnt";
     string specialCharacterResults = "\r\n\t";
 
