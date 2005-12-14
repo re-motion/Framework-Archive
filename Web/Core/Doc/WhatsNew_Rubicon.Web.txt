@@ -26,6 +26,12 @@
 - Rubicon.Web.ExecutionEngine.UrlMapping.UrlMapping
   * Umbenannt zu Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingEntry.
 
+- Rubicon.Web.ExecutionEngine.WxeTemplateControlInfo
+  * OnInit Methode entfernt. Initialize is stattdessen vorgesehen.
+
+- Rubicon.Web.ExecutionEngine.WxeHandler
+  * CurrentFunction Property entfernt. RootFunction ist stattdessen vorgesehen.
+  
 1.3.25
 ======
 - Rubicon.Web.ExecutionEngine.WxePage

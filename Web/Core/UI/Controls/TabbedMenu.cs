@@ -280,23 +280,27 @@ public class TabbedMenu: WebControl, IControl
   /// </returns>
   private string[] GetSelectionFromQueryString()
   {
-    if (ControlHelper.IsDesignMode (this, Context))
-      return new string[0];
+    string[] selection = null;
 
-    string value;
-    if (Page is IWxePage)
+    if (! ControlHelper.IsDesignMode (this, Context))
     {
-      value = PageUtility.GetUrlParameter (WxeContext.Current.QueryString, SelectionID);
-      value = System.Web.HttpUtility.UrlDecode (value, System.Web.HttpContext.Current.Response.ContentEncoding);
+      string value;
+      if (Page is IWxePage)
+      {
+        value = PageUtility.GetUrlParameter (WxeContext.Current.QueryString, SelectionID);
+        value = System.Web.HttpUtility.UrlDecode (value, System.Web.HttpContext.Current.Response.ContentEncoding);
+      }
+      else
+      {
+        value = Context.Request.QueryString[SelectionID];
+      }
+      if (value != null)
+        selection = (string[]) TypeConversionServices.Current.Convert (typeof (string), typeof (string[]), value);
     }
-    else
-    {
-      value = Context.Request.QueryString[SelectionID];
-    }
-    if (value != null)
-      return (string[]) TypeConversionServices.Current.Convert (typeof (string), typeof (string[]), value);
-    else
-      return new string[0];
+
+    if (selection == null)
+      selection = new string[0];
+    return selection;
   }
 
   /// <summary> Gets the IDs of the tabs to be selected from the <see cref="IWindowStateManager"/>. </summary>
@@ -306,14 +310,18 @@ public class TabbedMenu: WebControl, IControl
   /// </returns>
   private string[] GetSelectionFromWindowState()
   {
-    if (ControlHelper.IsDesignMode (this, Context))
-      return new string[0];
+    string[] selection = null;
 
-    IWindowStateManager windowStateManager = Page as IWindowStateManager;
-    if (windowStateManager != null)
-      return (string[]) windowStateManager.GetData (SelectionID);
-    else
-      return new string[0];
+    if (! ControlHelper.IsDesignMode (this, Context))
+    {
+      IWindowStateManager windowStateManager = Page as IWindowStateManager;
+      if (windowStateManager != null)
+        selection = (string[]) windowStateManager.GetData (SelectionID);
+    }
+    
+    if (selection == null)
+      selection = new string[0];
+    return selection;
   }
 
   /// <summary> Saves the selected tabs into the window state. </summary>

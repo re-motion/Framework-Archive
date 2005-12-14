@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
-using System.IO;
-using System.Web;
-using System.Web.UI;
-using System.Web.SessionState;
-using System.Reflection;
+using System.ComponentModel;
 using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Web;
+using System.Web.SessionState;
+using System.Web.UI;
 using log4net;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
@@ -96,13 +97,6 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and its context. </summary>
   private WxeFunctionState _currentFunctionState;
 
-  //TODO: Remove
-  [Obsolete ("Use RootFunction instead.")]
-  public WxeFunction CurrentFunction
-  {
-    get { return RootFunction; }
-  }
-
   /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>
   /// <value> The <see cref="WxeFunction"/> invoked by the <see cref="Parameters.WxeFunctionType"/> parameter. </value>
   public WxeFunction RootFunction
@@ -112,6 +106,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
   /// <summary> Processes the requests associated with the <see cref="WxeHandler"/>. </summary>
   /// <param name="context"> The <see cref="HttpContext"/> of the request. Must not be <see langword="null"/>. </param>
+  [EditorBrowsable(EditorBrowsableState.Never)]
   public virtual void ProcessRequest (HttpContext context)
   {
     ArgumentUtility.CheckNotNull ("context", context);

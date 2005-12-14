@@ -64,13 +64,6 @@ table.tabbedMainMenu span.tabStripTab a:hover
   cursor: pointer;
 	cursor: hand;
 }
-table.tabbedMainMenu span.tabStripTabSelected a:hover
-{
-  color: #fee197;
-  text-decoration: underline;
-  cursor: pointer;
-	cursor: hand;
-}
 
 table.tabbedMainMenu span.tabStripTabSelected a
 {
@@ -79,6 +72,14 @@ table.tabbedMainMenu span.tabStripTabSelected a
   color: White;
   font-size: 120%;
   font-weight: bold;
+}
+
+table.tabbedMainMenu span.tabStripTabSelected a:hover
+{
+  color: #fee197;
+  text-decoration: underline;
+  cursor: pointer;
+	cursor: hand;
 }
 
 table.tabbedMainMenu span.tabStripTab.disabled a,

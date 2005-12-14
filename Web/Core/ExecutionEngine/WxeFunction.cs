@@ -66,6 +66,16 @@ public abstract class WxeFunction: WxeStepList
   /// <summary>
   ///   Parses a string of comma separated actual parameters.
   /// </summary>
+  /// <param name="parameterDeclarations">
+  ///  The <see cref="WxeParameterDeclaration"/> list used for parsing the <paramref name="actualParameters"/>.
+  ///  Must not be <see langword="null"/> or contain items that are <see langword="null"/>.
+  /// </param>
+  /// <param name="actualParameters"> 
+  ///   The comma separated list of parameters. Must contain an entry for each required parameter.
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="culture"> The <see cref="CultureInfo"/> to use as the current culture. </param>
+  /// <returns> An array of parameter values. </returns>
   /// <remarks>
   ///   <list type="table">
   ///     <listheader>
@@ -93,6 +103,9 @@ public abstract class WxeFunction: WxeStepList
   public static object[] ParseActualParameters (
       WxeParameterDeclaration[] parameterDeclarations, string actualParameters, CultureInfo culture)
   {
+    ArgumentUtility.CheckNotNullOrItemsNull ("parameterDeclarations", parameterDeclarations);
+    ArgumentUtility.CheckNotNull ("actualParameters", actualParameters);
+
     StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList (actualParameters, ',');
 
     if (parsedItems.Length > parameterDeclarations.Length)
@@ -152,11 +165,25 @@ public abstract class WxeFunction: WxeStepList
     return arguments.ToArray ();
   }
 
+  /// <summary>
+  ///   Converts a list of parameter values into a <see cref="NameValueCollection"/>.
+  /// </summary>
+  /// <param name="parameterDeclarations">
+  ///  The <see cref="WxeParameterDeclaration"/> list used for serializing the <paramref name="parameterValues"/>.
+  ///  Must not be <see langword="null"/> or contain items that are <see langword="null"/>.
+  /// </param>
+  /// <param name="parameterValues"> 
+  ///   The list parameter values. Must not be <see langword="null"/>.
+  /// </param>
+  /// <returns> 
+  ///   A <see cref="NameValueCollection"/> containing the serialized <paramref name="parameterValues"/>.
+  ///   The names of the parameters are used as keys.
+  /// </returns>
   public static NameValueCollection SerializeParametersForQueryString (
       WxeParameterDeclaration[] parameterDeclarations, object[] parameterValues)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("parameterDeclarations", parameterDeclarations);
-    ArgumentUtility.CheckNotNullOrItemsNull ("parameterValues", parameterValues);
+    ArgumentUtility.CheckNotNull ("parameterValues", parameterValues);
 
     NameValueCollection serializedParameters = new NameValueCollection();
 
@@ -414,6 +441,20 @@ public abstract class WxeFunction: WxeStepList
     InitializeParameters (parameterString, null, delayInitialization);
   }
 
+  /// <summary> Initializes the <see cref="WxeFunction"/> with the supplied parameters. </summary>
+  /// <param name="parameterString"> 
+  ///   The comma separated list of parameters. Must contain an entry for each required parameter.
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="additionalParameters"> 
+  ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
+  ///   Use <see langword="null"/> or an empty collection if all parameters are supplied by the 
+  ///   <see cref="WxeFunctionCommandInfo.Parameters"/> string and the function stack.
+  /// </param>
+  /// <exception cref="InvalidOperationException"> 
+  ///   Thrown if the <see cref="WxeFunction"/>'s parameters have already been initialized, either because 
+  ///   execution has started or <b>InitializeParameters</b> has been called before.
+  /// </exception>
   public void InitializeParameters (string parameterString, NameObjectCollection additionalParameters)
   {
     InitializeParameters (parameterString, additionalParameters, false);

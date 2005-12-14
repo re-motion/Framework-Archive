@@ -45,94 +45,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
 
-  /// <summary> 
-  ///   Executes a <see cref="WxeFunction"/> in the current window from outside an <see cref="IWxePage"/> by using
-  ///   a redirect.
-  /// </summary>
-  /// <param name="page"> The <see cref="Page"/>. </param>
-  /// <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
-  /// <param name="permaUrlQueryString">
-  ///   Provides a serparate list auf arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
-  ///   which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
-  /// </param>
-  public static void ExecuteFunction (Page page, WxeFunction function, NameValueCollection permaUrlQueryString)
-  {
-    ArgumentUtility.CheckNotNull ("page", page);
-    ArgumentUtility.CheckNotNull ("function", function);
-
-    string functionToken = WxePageInfo.GetFunctionTokenForExternalFunction (function, false);
-
-    NameValueCollection queryString;
-    if (permaUrlQueryString == null)
-      queryString = function.SerializeParametersForQueryString();
-    else
-      queryString = permaUrlQueryString;
-
-    queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-    string href = WxeContext.GetPermanentUrl (HttpContext.Current, function.GetType(), queryString);
-
-    PageUtility.Redirect (HttpContext.Current.Response, href);
-  }
-
-  /// <summary> 
-  ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from outside an <see cref="IWxePage"/>.
-  ///   by using java script
-  /// </summary>
-  /// <param name="page"> The <see cref="Page"/>. </param>
-  /// <param name="function"> The WXE function to be executed. Must not be <see langword="null"/>. </param>  
-  /// <param name="target">
-  ///   The HTML frame/window name that will be used to execute the function. Must not be <see langword="null"/> or 
-  ///   empty.
-  /// </param>
-  /// <param name="features"> 
-  ///   The features argument that is passed to the javascript function <b>window.open()</b>. 
-  /// </param>
-  /// <param name="permaUrlQueryString">
-  ///   Provides a serparate list auf arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
-  ///   which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
-  /// </param>
-  public static void ExecuteFunctionExternal (
-      Page page, WxeFunction function, string target, string features, NameValueCollection permaUrlQueryString)
-  {
-    ArgumentUtility.CheckNotNull ("page", page);
-    ArgumentUtility.CheckNotNull ("function", function);
-    ArgumentUtility.CheckNotNullOrEmpty ("target", target);
-
-    string functionToken = WxePageInfo.GetFunctionTokenForExternalFunction (function, false);
-
-    NameValueCollection queryString;
-    if (permaUrlQueryString == null)
-      queryString = function.SerializeParametersForQueryString();
-    else
-      queryString = permaUrlQueryString;
-
-    queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-    string href = WxeContext.GetPermanentUrl (HttpContext.Current, function.GetType(), queryString);
-
-    string openScript;
-    if (features != null)
-      openScript = string.Format ("window.open('{0}', '{1}', '{2}');", href, target, features);
-    else
-      openScript = string.Format ("window.open('{0}', '{1}');", href, target);
-    PageUtility.RegisterStartupScriptBlock ((Page) page, "WxeExecuteFunction", openScript);
-
-    function.ReturnUrl = "javascript:window.close();";
-  }
-
-  /// <summary> 
-  ///   Initalizes a new <see cref="WxeFunctionState"/> with the passed <paramref name="function"/> and returns
-  ///   the associated function token.
-  /// </summary>
-  private static string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
-  {
-    bool enableCleanUp = ! returningPostback;
-    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
-    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
-    functionStates.Add (functionState);
-    return functionState.FunctionToken;
-  }
-
-
   public static readonly string ReturningTokenID = "wxeReturningTokenField";
   public static readonly string PageTokenID = "wxePageTokenField";
   public static readonly string PostBackSequenceNumberID = "wxePostBackSequenceNumberField";
@@ -528,12 +440,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunction (
-      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
     _httpContext.Handler = WxeHandler;
     try
     {
-      CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+      CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl, urlParameters);
     }
     finally
     {
@@ -572,9 +484,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, 
-      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
-    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters);
   }
 
   /// <summary>
@@ -591,13 +503,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, 
-      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
     _httpContext.Handler = WxeHandler;
     try
     {
       CurrentStep.ExecuteFunctionNoRepost (
-          _page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+          _page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters);
     }
     finally
     {
@@ -647,9 +559,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
-      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
-    ExecuteFunctionExternal (function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl, permaUrlQueryString);
+    ExecuteFunctionExternal (function, target, null, sender, returningPostback, createPermaUrl, useParentPermaUrl, urlParameters);
   }
 
   /// <summary>
@@ -667,32 +579,35 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
-      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlQueryString)
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
     ArgumentUtility.CheckNotNull ("function", function);
     ArgumentUtility.CheckNotNullOrEmpty ("target", target);
 
     WxeContext wxeContext = WxeContext.Current;
 
-    string functionToken = WxePageInfo.GetFunctionTokenForExternalFunction (function, returningPostback);
+    string functionToken = WxeContext.GetFunctionTokenForExternalFunction (function, returningPostback);
 
     string href;
     if (createPermaUrl)
     {
-      NameValueCollection queryString;
-      if (permaUrlQueryString == null)
-        queryString = function.SerializeParametersForQueryString();
+      NameValueCollection internalUrlParameters;
+      if (urlParameters == null)
+        internalUrlParameters = function.SerializeParametersForQueryString();
       else
-        queryString = permaUrlQueryString;
+        internalUrlParameters = new NameValueCollection (urlParameters);
 
-      queryString.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-      href = wxeContext.GetPermanentUrl (function.GetType(), queryString, useParentPermaUrl);
+      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+      href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
     }
     else
     {
       UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
       string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
-      href = wxeContext.GetPath (path, functionToken, null);
+      string queryString = null;
+      if (urlParameters != null)
+        queryString = UrlUtility.FormatQueryString (urlParameters);
+      href = wxeContext.GetPath (path, functionToken, queryString);
     }
 
     string openScript;

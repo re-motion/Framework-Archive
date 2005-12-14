@@ -168,8 +168,8 @@ public class Command: IControlItem
     ///   command is clicked.
     /// </summary>
     /// <value> 
-    ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
-    ///   command is clicked. The default value is <see cref="String.Empty"/>. 
+    ///   The comma separated list of parameters passed to the WxeFunction when the rendered command is clicked. 
+    ///   The default value is <see cref="String.Empty"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
@@ -521,7 +521,7 @@ public class Command: IControlItem
   /// <param name="wxePage"> 
   ///   The <see cref="IWxePage"/> where this command is rendered on. Must not be <see langword="null"/>.
   /// </param>
-  /// <param name="additionalParameters"> 
+  /// <param name="additionalWxeParameters"> 
   ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
   ///   Use <see langword="null"/> or an empty collection if all parameters are supplied by the 
   ///   <see cref="WxeFunctionCommandInfo.Parameters"/> string and the function stack.
@@ -529,7 +529,7 @@ public class Command: IControlItem
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   /// </exception> 
-  public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection additionalParameters)
+  public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection additionalWxeParameters)
   {
     ArgumentUtility.CheckNotNull ("wxePage", wxePage);
 
@@ -543,7 +543,7 @@ public class Command: IControlItem
       Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
       WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
 
-      function.InitializeParameters (WxeFunctionCommand.Parameters, additionalParameters);
+      function.InitializeParameters (WxeFunctionCommand.Parameters, additionalWxeParameters);
 
       if (hasTarget)
         wxePage.ExecuteFunctionExternal (function, target, null, false);
@@ -587,12 +587,10 @@ public class Command: IControlItem
 
     function.InitializeParameters (WxeFunctionCommand.Parameters, additionalWxeParameters);
 
-    NameValueCollection permaUrlQueryString = function.SerializeParametersForQueryString();
-    permaUrlQueryString.Add (additionalUrlParameters);
     if (hasTarget)
-      WxePageInfo.ExecuteFunctionExternal (page, function, target, null, permaUrlQueryString);
+      WxeContext.ExecuteFunctionExternal (page, function, target, null, additionalUrlParameters);
     else
-      WxePageInfo.ExecuteFunction (page, function, permaUrlQueryString);
+      WxeContext.ExecuteFunctionExternal (page, function, additionalUrlParameters);
   }
 
   /// <summary> 
