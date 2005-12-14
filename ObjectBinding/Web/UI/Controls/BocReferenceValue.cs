@@ -1269,10 +1269,11 @@ public class BocReferenceValue:
       }
       else
       {
+        Command command = menuItem.Command;
         if (Page is IWxePage)
-          menuItem.Command.ExecuteWxeFunction ((IWxePage) Page, null);
+          command.ExecuteWxeFunction ((IWxePage) Page, null);
         else
-          menuItem.Command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
+          command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
     }
   }

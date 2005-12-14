@@ -119,8 +119,8 @@ public override void LoadPageStateFromPersistenceMedium()
       <see langword="true"/> to add the parent function's perma-URL. 
       Defaults to <see langword="false"/>.
     </param>
-    <param name="permaUrlQueryString">
-      Provides a serparate list auf arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
+    <param name="urlParameters">
+      Provides the list of arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
       which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
     </param>
   </ExecuteFunction>
@@ -140,8 +140,8 @@ public override void LoadPageStateFromPersistenceMedium()
       <see langword="true"/> to add the parent function's perma-URL. 
       Defaults to <see langword="false"/>.
     </param>
-    <param name="permaUrlQueryString">
-      Provides a serparate list auf arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
+    <param name="urlParameters">
+      Provides the list of arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
       which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
     </param>
   </ExecuteFunctionNoRepost>
@@ -165,8 +165,8 @@ public override void LoadPageStateFromPersistenceMedium()
       <see langword="true"/> to add the parent function's perma-URL. 
       Defaults to <see langword="false"/>.
     </param>
-    <param name="permaUrlQueryString">
-      Provides a serparate list auf arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
+    <param name="urlParameters">
+      Provides the list of arguments for the URL's query string. Defaults to <see langword="null"/>, 
       which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
     </param>
   </ExecuteFunctionExternal>
