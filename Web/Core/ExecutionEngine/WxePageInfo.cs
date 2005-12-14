@@ -441,12 +441,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunction(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunction(WxeFunction,Boolean,Boolean,NameValueCollection)</see>.
   /// </summary>
   public void ExecuteFunction (
-      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters)
   {
     _httpContext.Handler = WxeHandler;
     try
     {
-      CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl, urlParameters);
+      CurrentStep.ExecuteFunction (_page, function, createPermaUrl, useParentPermaUrl, permaUrlParameters);
     }
     finally
     {
@@ -485,9 +485,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, 
-      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters)
   {
-    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters);
+    ExecuteFunctionNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlParameters);
   }
 
   /// <summary>
@@ -504,13 +504,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, 
-      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters)
   {
     _httpContext.Handler = WxeHandler;
     try
     {
       CurrentStep.ExecuteFunctionNoRepost (
-          _page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters);
+          _page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlParameters);
     }
     finally
     {
@@ -777,6 +777,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </remarks>
   public void Dispose ()
   {
+    if (ControlHelper.IsDesignMode (_page, _httpContext))
+      return;
+
     _httpContext.Handler = WxeHandler;
 
     if (_returningFunctionState != null)
