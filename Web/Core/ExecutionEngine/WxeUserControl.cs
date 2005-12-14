@@ -10,12 +10,17 @@ namespace Rubicon.Web.ExecutionEngine
 
 public class WxeUserControl: UserControl, IWxeTemplateControl
 {
-  WxeTemplateControlInfo _wxeInfo = new WxeTemplateControlInfo();
+  WxeTemplateControlInfo _wxeInfo;
 
-  protected override void OnLoad (EventArgs e)
+  public WxeUserControl ()
   {
-    _wxeInfo.Initialize (this, Context);
-    base.OnLoad (e);
+    _wxeInfo = new WxeTemplateControlInfo (this);
+  }
+
+  protected override void OnInit (EventArgs e)
+  {
+    _wxeInfo.Initialize (Context);
+    base.OnInit (e);
   }
 
   public WxePageStep CurrentStep
