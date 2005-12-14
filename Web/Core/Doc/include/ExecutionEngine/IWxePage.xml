@@ -119,7 +119,7 @@ public override void LoadPageStateFromPersistenceMedium()
       <see langword="true"/> to add the parent function's perma-URL. 
       Defaults to <see langword="false"/>.
     </param>
-    <param name="urlParameters">
+    <param name="permaUrlParameters">
       Provides the list of arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
       which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
     </param>
@@ -140,7 +140,7 @@ public override void LoadPageStateFromPersistenceMedium()
       <see langword="true"/> to add the parent function's perma-URL. 
       Defaults to <see langword="false"/>.
     </param>
-    <param name="urlParameters">
+    <param name="permaUrlParameters">
       Provides the list of arguments for the perma-URL's query string. Defaults to <see langword="null"/>, 
       which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
     </param>

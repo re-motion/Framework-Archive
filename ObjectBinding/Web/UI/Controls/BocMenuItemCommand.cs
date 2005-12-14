@@ -13,7 +13,7 @@ public class BocMenuItemCommand: BocCommand
 {
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class MenuItemWxeFunctionCommandInfo: Command.WxeFunctionCommandInfo
+  public class MenuItemWxeFunctionCommandInfo: BocCommand.BocWxeFunctionCommandInfo
   {
     /// <summary> Create a new instance. </summary>
     public MenuItemWxeFunctionCommandInfo()
@@ -65,11 +65,8 @@ public class BocMenuItemCommand: BocCommand
     }
   }
 
-  /// <summary>
-  ///   The <see cref="MenuItemWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
-  /// </summary>
-  private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand = new MenuItemWxeFunctionCommandInfo();
   private bool _hasClickFired = false;
+  private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
   [Browsable (false)]
   public new WebMenuItemClickEventHandler Click;
@@ -84,6 +81,7 @@ public class BocMenuItemCommand: BocCommand
   public BocMenuItemCommand (CommandType defaultType)
     : base (defaultType)
   {
+    _wxeFunctionCommand = new MenuItemWxeFunctionCommandInfo();
   }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>

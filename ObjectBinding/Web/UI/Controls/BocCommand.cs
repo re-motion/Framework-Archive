@@ -84,30 +84,13 @@ public class BocCommand: Command
       get { return base.Parameters; }
       set { base.Parameters = value; }
     }
-
-    /// <exclude />
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    [Browsable (false)]
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    public override bool CreatePermanentUrlForExternalFunction
-    {
-      get { return false; }
-      set { throw new NotSupportedException ("A BocWxeFunctionCommandInfo does not support the creation of permantent URLs."); }
-    }
   }
-
-  /// <summary>
-  ///   The <see cref="BocHrefCommandInfo"/> used when rendering the command as a hyperlink.
-  /// </summary>
-  private BocHrefCommandInfo _hrefCommand = new BocHrefCommandInfo();
-  /// <summary>
-  ///   The <see cref="BocWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
-  /// </summary>
-  private BocWxeFunctionCommandInfo _wxeFunctionCommand = new BocWxeFunctionCommandInfo();
-  private bool _hasClickFired = false;
 
   [Browsable (false)]
   public new BocCommandClickEventHandler Click;
+  private bool _hasClickFired = false;
+  private BocHrefCommandInfo _hrefCommand;
+  private BocWxeFunctionCommandInfo _wxeFunctionCommand;
 
   /// <summary> Initializes an instance. </summary>
   public BocCommand()
@@ -119,6 +102,8 @@ public class BocCommand: Command
   public BocCommand (CommandType defaultType)
     : base (defaultType)
   {
+    _hrefCommand = new BocHrefCommandInfo();
+    _wxeFunctionCommand = new BocWxeFunctionCommandInfo();
   }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>

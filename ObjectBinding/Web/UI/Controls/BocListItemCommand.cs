@@ -23,7 +23,7 @@ public class BocListItemCommand: BocCommand
 {
   /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class ListItemHrefCommandInfo: Command.HrefCommandInfo
+  public class ListItemHrefCommandInfo: BocCommand.BocHrefCommandInfo
   {
     /// <summary> Initalizes a new instance </summary>
     public ListItemHrefCommandInfo()
@@ -45,7 +45,7 @@ public class BocListItemCommand: BocCommand
 
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
-  public class ListItemWxeFunctionCommandInfo: Command.WxeFunctionCommandInfo
+  public class ListItemWxeFunctionCommandInfo: BocCommand.BocWxeFunctionCommandInfo
   {
     /// <summary> Initalizes a new instance </summary>
     public ListItemWxeFunctionCommandInfo()
@@ -99,18 +99,12 @@ public class BocListItemCommand: BocCommand
     }
   }
 
-  /// <summary>
-  ///   The <see cref="ListItemHrefCommandInfo"/> used when rendering the command as a hyperlink.
-  /// </summary>
-  private ListItemHrefCommandInfo _hrefCommand = new ListItemHrefCommandInfo();
-  /// <summary>
-  ///   The <see cref="ListItemWxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
-  /// </summary>
-  private ListItemWxeFunctionCommandInfo _wxeFunctionCommand = new ListItemWxeFunctionCommandInfo();
 
   public new BocListItemCommandClickEventHandler Click;
   private IBocListItemCommandState _commandState;
   private string _commandStateType;
+  private ListItemHrefCommandInfo _hrefCommand;
+  private ListItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
   /// <summary> Initializes an instance. </summary>
   public BocListItemCommand()
@@ -122,6 +116,8 @@ public class BocListItemCommand: BocCommand
   public BocListItemCommand (CommandType defaultType)
     : base (defaultType)
   {
+    _hrefCommand = new ListItemHrefCommandInfo();
+    _wxeFunctionCommand = new ListItemWxeFunctionCommandInfo();
   }
 
   /// <summary> Fires the <see cref="Click"/> event. </summary>
