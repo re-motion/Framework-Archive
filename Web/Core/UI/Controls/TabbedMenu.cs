@@ -530,6 +530,16 @@ public class TabbedMenu: WebControl, IControl
   }
 
   [Category ("Style")]
+  [Description ("The style that you want to apply to a disabled main menu tab.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle MainMenuDisabledTabStyle
+  {
+    get { return _mainMenuTabStrip.DisabledTabStyle; }
+  }
+
+  [Category ("Style")]
   [Description ("The style that you want to apply to a sub menu tab that is not selected.")]
   [NotifyParentProperty (true)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
@@ -547,6 +557,16 @@ public class TabbedMenu: WebControl, IControl
   public WebTabStyle SubMenuSelectedTabStyle
   {
     get { return _subMenuTabStrip.SelectedTabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a disabled sub menu tab.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle SubMenuDisabledTabStyle
+  {
+    get { return _subMenuTabStrip.DisabledTabStyle; }
   }
 
   [Category ("Style")]

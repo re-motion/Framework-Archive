@@ -47,6 +47,7 @@ public class WebTabStrip :
   private bool _enableSelectedTab = false;
   private WebTabStyle _tabStyle;
   private WebTabStyle _selectedTabStyle;
+  private WebTabStyle _disabledTabStyle;
 
   public WebTabStrip (WebTabCollection tabCollection)
   {
@@ -56,6 +57,7 @@ public class WebTabStrip :
     _tabs.SetTabStrip (this);
     _tabStyle = new WebTabStyle();
     _selectedTabStyle = new WebTabStyle();
+    _disabledTabStyle = new WebTabStyle();
   }
 
   public WebTabStrip (Control ownerControl, Type[] supportedTabTypes)
@@ -582,6 +584,16 @@ public class WebTabStrip :
   public WebTabStyle SelectedTabStyle
   {
     get { return _selectedTabStyle; }
+  }
+
+  [Category ("Style")]
+  [Description ("The style that you want to apply to a disabled tab.")]
+  [NotifyParentProperty (true)]
+  [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+  [PersistenceMode (PersistenceMode.InnerProperty)]
+  public WebTabStyle DisabledTabStyle
+  {
+    get { return _disabledTabStyle; }
   }
 
   #region protected virtual string CssClass...

@@ -25,11 +25,6 @@
 <rwc:MenuTabCommand Type="Href" HrefCommand-Href="StartForm.aspx"></rwc:MenuTabCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
-<rwc:SubMenuTab Text="Server Wxe" ItemID="ServerWxeTab">
-<persistedcommand>
-<rwc:MenuTabCommand Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:MenuTabCommand>
-</PersistedCommand>
-</rwc:SubMenuTab>
 <rwc:SubMenuTab Text="Client Wxe" ItemID="ClientWxeTab">
 <persistedcommand>
 <rwc:MenuTabCommand Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:MenuTabCommand>
