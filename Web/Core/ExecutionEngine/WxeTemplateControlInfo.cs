@@ -21,20 +21,29 @@ public class WxeTemplateControlInfo
   /// <summary> Caches the <see cref="ResourceManagerSet"/> for this control. </summary>
   private ResourceManagerSet _cachedResourceManager;
 
-  [Obsolete ("Use Initialize instead.")]
-  public void OnInit (IWxeTemplateControl control, HttpContext context)
+  public WxeTemplateControlInfo (IWxeTemplateControl control)
   {
-    Initialize (control, context);
+    ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TemplateControl));
+    _control = control;
   }
 
-  public void Initialize (IWxeTemplateControl control, HttpContext context)
+  public virtual void Initialize (HttpContext context)
   {
-    ArgumentUtility.CheckNotNullAndType ("control", control, typeof (Control));
-    _control = control;
-    if (ControlHelper.IsDesignMode (control, context))
+    if (ControlHelper.IsDesignMode (_control, context))
       return;
+    ArgumentUtility.CheckNotNull ("context", context);
 
-    _wxeHandler = context.Handler as WxeHandler;
+    if (_control is Page)
+    {
+      _wxeHandler = context.Handler as WxeHandler;
+    }
+    else
+    {
+      IWxePage wxePage = _control.Page as IWxePage;
+      if (wxePage == null)
+        throw new InvalidOperationException (string.Format ("'{0}' can only be added to an IWxePage.", _control.GetType().FullName));
+      _wxeHandler = wxePage.WxeHandler;
+    }
     if (_wxeHandler == null)
       throw new HttpException ("No current WxeHandler found.");
 
@@ -42,7 +51,7 @@ public class WxeTemplateControlInfo
     _currentFunction = WxeStep.GetFunction (_currentStep);
   }
 
-  protected WxeHandler WxeHandler
+  public WxeHandler WxeHandler
   {
     get { return _wxeHandler; }
   }

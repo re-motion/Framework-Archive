@@ -237,6 +237,10 @@ public interface IWxePage: IPage, IWxeTemplateControl
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
 
+
+  /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  WxeHandler WxeHandler { get; }
 }
 
 /// <summary>
@@ -655,7 +659,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
 
   /// <summary> Gets or sets the <b>HtmlForm</b> of this page. </summary>
   /// <remarks> Redirects the call to the <see cref="HtmlForm"/> property. </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm IWxePage.HtmlForm
   {
     get { return HtmlForm; }
@@ -674,6 +677,12 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   {
     get { return _wxeInfo.HtmlForm; }
     set { _wxeInfo.HtmlForm = value; }
+  }
+
+  /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
+  WxeHandler IWxePage.WxeHandler 
+  { 
+    get { return _wxeInfo.WxeHandler; }
   }
 
   /// <summary> Disposes the page. </summary>

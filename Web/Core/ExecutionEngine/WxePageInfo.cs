@@ -82,15 +82,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   ///   The page must be derived from <see cref="System.Web.UI.Page">System.Web.UI.Page</see>.
   /// </param>
   public WxePageInfo (IWxePage page)
+    : base (page)
   {
     ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));
     _page = page;
   }
 
-  public void Initialize (HttpContext context)
+  public override void Initialize (HttpContext context)
   {
     ArgumentUtility.CheckNotNull ("context", context);
-    base.Initialize (_page, context);
+    base.Initialize (context);
 
     _httpContext = context;
     _httpContext.Handler = _page;
@@ -806,19 +807,20 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       bool isDesignMode = ControlHelper.IsDesignMode (_page);
 
-      // TODO: .net 2.0
-      //Control page = (Page)_page;
-      //if (((Page)_page).Master != null)
-      //  page = ((Page)_page).Master;
+      Control page = (Page) _page;
+#if ! NET11      
+      if (((Page) page).Master != null)
+        page = ((Page) page).Master;
+#endif
 
-      MemberInfo[] fields = _page.GetType().FindMembers (
+      MemberInfo[] fields = page.GetType().FindMembers (
             MemberTypes.Field, 
             BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
             new MemberFilter (FindHtmlFormControlFilter), null);
       if (fields.Length < 1 && ! isDesignMode)
-        throw new ApplicationException ("Page class " + _page.GetType().FullName + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
+        throw new ApplicationException ("Page class " + page.GetType().FullName + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
       else if (fields.Length > 1)
-        throw new ApplicationException ("Page class " + _page.GetType().FullName + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
+        throw new ApplicationException ("Page class " + page.GetType().FullName + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
       if (fields.Length > 0) // Can only be null without an exception during design mode
       {
         _htmlFormField = (FieldInfo) fields[0];
@@ -841,13 +843,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       EnsureHtmlFormFieldInitialized();
 
-      // TODO: .net 2.0
-      //Control page = (Page)_page;
-      //if (((Page)_page).Master != null)
-      //  page = ((Page)_page).Master;
-
+      Control page = (Page) _page;
+#if ! NET11      
+      if (((Page) page).Master != null)
+        page = ((Page) page).Master;
+#endif
       if (_htmlFormField != null) // Can only be null without an exception during design mode
-        return (HtmlForm) _htmlFormField.GetValue (_page);
+        return (HtmlForm) _htmlFormField.GetValue (page);
       else
         return null;
     }
@@ -855,13 +857,14 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       EnsureHtmlFormFieldInitialized();
 
-      // TODO: .net 2.0
-      //Control page = (Page)_page;
-      //if (((Page)_page).Master != null)
-      //  page = ((Page)_page).Master;
+      Control page = (Page) _page;
+#if ! NET11      
+      if (((Page) page).Master != null)
+        page = ((Page) page).Master;
+#endif
 
       if (_htmlFormField != null) // Can only be null without an exception during design mode
-        _htmlFormField.SetValue (_page, value);
+        _htmlFormField.SetValue (page, value);
     }
   }
 
