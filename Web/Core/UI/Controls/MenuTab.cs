@@ -35,7 +35,7 @@ public abstract class MenuTab: WebTab
 
   private void Initialize()
   {
-    _command = new SingleControlItemCollection (new Command (CommandType.Event), new Type[] {typeof (Command)});
+    _command = new SingleControlItemCollection (new MenuTabCommand (CommandType.Href), new Type[] {typeof (MenuTabCommand)});
   }
 
   protected TabbedMenu TabbedMenu
@@ -43,17 +43,17 @@ public abstract class MenuTab: WebTab
     get { return (TabbedMenu) OwnerControl; }
   }
 
-  /// <summary> Gets or sets the <see cref="Command"/> rendered for this menu item. </summary>
-  /// <value> A <see cref="Command"/>. </value>
+  /// <summary> Gets or sets the <see cref="MenuTabCommand"/> rendered for this menu item. </summary>
+  /// <value> A <see cref="MenuTabCommand"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Category ("Behavior")]
   [Description ("The command rendered for this menu item.")]
   [NotifyParentProperty (true)]
-  public virtual Command Command
+  public virtual MenuTabCommand Command
   {
     get
     {
-      return (Command) _command.ControlItem; 
+      return (MenuTabCommand) _command.ControlItem; 
     }
     set 
     {
@@ -81,7 +81,7 @@ public abstract class MenuTab: WebTab
   {
     if (Command != null)
     {
-      Command = (Command) Activator.CreateInstance (Command.GetType());
+      Command = (MenuTabCommand) Activator.CreateInstance (Command.GetType());
       Command.Type = CommandType.None;
     }
   }
@@ -362,4 +362,96 @@ public class MenuTabClickEventArgs: WebTabClickEventArgs
   }
 }
 
+public class MenuTabCommand: Command
+{
+  public MenuTabCommand ()
+    : this (CommandType.Href)
+  {
+  }
+
+  public MenuTabCommand (CommandType defaultType)
+    : base (defaultType)
+  {
+  }
+
+  /// <summary> Adds the attributes for the Wxe Function command to the anchor tag. </summary>
+  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. Must not be <see langword="null"/>. </param>
+  /// <param name="postBackEvent">
+  ///   The string executed upon the click on a command of types
+  ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
+  ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
+  ///   to force a post back. Must not be <see langword="null"/>.
+  /// </param>
+  /// <param name="onClick"> 
+  ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
+  /// </param>
+  /// <param name="additionalUrlParameters">
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters.
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  protected override void AddAttributesToRenderForWxeFunctionCommand (
+      HtmlTextWriter writer, 
+      string postBackEvent,
+      string onClick,
+      NameValueCollection additionalUrlParameters)
+  {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+    ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent); 
+    ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters); 
+    if (Type != CommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to AddAttributesToRenderForWxeFunctionCommand not allowed unless Type is set to CommandType.WxeFunction.");
+       
+    string href = "#";
+    if (System.Web.HttpContext.Current != null)
+      href = GetWxeFunctionPermanentUrl (additionalUrlParameters);
+    writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
+    if (! StringUtility.IsNullOrEmpty (WxeFunctionCommand.Target))
+      writer.AddAttribute (HtmlTextWriterAttribute.Target, WxeFunctionCommand.Target);
+    if (! StringUtility.IsNullOrEmpty (onClick))
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
+    if (! StringUtility.IsNullOrEmpty (ToolTip))
+      writer.AddAttribute (HtmlTextWriterAttribute.Title, ToolTip);
+  }
+
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
+  /// </summary>
+  /// <param name="additionalUrlParameters">
+  ///   The <see cref="NameValueCollection"/> containing additional url parameters. 
+  ///   Must not be <see langword="null"/>.
+  /// </param>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  public virtual string GetWxeFunctionPermanentUrl (NameValueCollection additionalUrlParameters)
+  {
+    ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
+
+    if (Type != CommandType.WxeFunction)
+      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
+
+    Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
+    WxeParameterDeclaration[] parameterDeclarations = WxeFunction.GetParamaterDeclarations (functionType);
+    object[] parameterValues = WxeFunction.ParseActualParameters (
+        parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);   
+    NameValueCollection queryString = 
+        WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
+    queryString.Add (additionalUrlParameters);
+    return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);
+  }
+
+  /// <summary> 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
+  /// </summary>
+  /// <exception cref="InvalidOperationException">
+  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  /// </exception> 
+  public string GetWxeFunctionPermanentUrl ()
+  {
+    return GetWxeFunctionPermanentUrl (new NameValueCollection (0));
+  }
+}
 }

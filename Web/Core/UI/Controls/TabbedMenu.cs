@@ -404,6 +404,7 @@ public class TabbedMenu: WebControl, IControl
     return url;
   }
 
+
   /// <summary> 
   ///   Event handler for the <see cref="WebTabStrip.Click"/> of the <see cref="MainMenuTabStrip"/>.
   /// </summary>
@@ -434,10 +435,7 @@ public class TabbedMenu: WebControl, IControl
       }
       else if (tab.Command.Type == CommandType.WxeFunction)
       {
-        if (Page is IWxePage)
-          ExecuteWxeFunction ((IWxePage) Page, tab);
-        else
-          ExecuteWxeFunction (tab);
+        throw new InvalidOperationException ("MenuTab commands of CommandType WxeFunction must always execute on client side.");
       }
     }
   }
@@ -457,37 +455,6 @@ public class TabbedMenu: WebControl, IControl
     }
   }
 
-  /// <summary> 
-  ///   Executes the Wxe Function associated with the <paramref name="tab"/>. Used when the page is an 
-  ///   <see cref="IWxePage"/>. 
-  /// </summary>
-  /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Command.Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
-  /// </exception> 
-  protected virtual void ExecuteWxeFunction (IWxePage page, MenuTab tab)
-  {
-    ArgumentUtility.CheckNotNull ("page", page);
-    ArgumentUtility.CheckNotNull ("tab", tab);
-    ArgumentUtility.CheckNotNull ("tab.Command", tab.Command);
-
-    tab.Command.ExecuteWxeFunction (page, null);
-  }
-
-  /// <summary> 
-  ///   Executes the Wxe Function associated with the <paramref name="tab"/>. Used when the page is not an 
-  ///   <see cref="IWxePage"/>. 
-  /// </summary>
-  /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Command.Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
-  /// </exception> 
-  protected virtual void ExecuteWxeFunction (MenuTab tab)
-  {
-    ArgumentUtility.CheckNotNull ("tab", tab);
-    ArgumentUtility.CheckNotNull ("tab.Command", tab.Command);
-
-    NameValueCollection additionalUrlParameters = GetUrlParameters (tab);
-    tab.Command.ExecuteWxeFunction (Page, null, additionalUrlParameters);
-  }
 
   /// <summary> Gets the collection of <see cref="MainMenuTabs"/>. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]

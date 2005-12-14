@@ -117,7 +117,6 @@ public class Command: IControlItem
     private string _typeName = string.Empty;
     private string _parameters = string.Empty;
     private string _target = string.Empty;
-    private bool _createPermanentUrlForExternalFunction = false;
 
     /// <summary> Simple constructor. </summary>
     public WxeFunctionCommandInfo()
@@ -207,25 +206,6 @@ public class Command: IControlItem
       set { _target = value; }
     }
 
-    /// <summary>
-    ///   Gets or sets a flag that determines whether a hyperlink will be created that executes the function as an
-    ///   extneral function.
-    /// </summary>
-    /// <value> A boolean value. The default value is <see langword="true"/>. </value>
-    /// <remarks>
-    ///   If <see langword="true"/>, the function's required parameters must be provided via the 
-    ///   <see cref="Parameters"/> string.
-    /// </remarks>
-    [PersistenceMode (PersistenceMode.Attribute)]
-    [Category ("Behaviour")]
-    [Description ("If set, the function is executed on the client-side as an external function without requiring a round-trip to the server.")]
-    [DefaultValue (false)]
-    [NotifyParentProperty (true)]
-    public virtual bool CreatePermanentUrlForExternalFunction
-    {
-      get { return _createPermanentUrlForExternalFunction; }
-      set { _createPermanentUrlForExternalFunction = value; }
-    }
   }
 
   private string _toolTip;
@@ -440,22 +420,8 @@ public class Command: IControlItem
     if (Type != CommandType.WxeFunction)
       throw new InvalidOperationException ("Call to AddAttributesToRenderForWxeFunctionCommand not allowed unless Type is set to CommandType.WxeFunction.");
        
-    if (WxeFunctionCommand.CreatePermanentUrlForExternalFunction)
-    {
-      string href = "#";
-      if (System.Web.HttpContext.Current != null)
-        href = GetWxeFunctionPermanentUrl (additionalUrlParameters);
-      writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
-      if (! StringUtility.IsNullOrEmpty (WxeFunctionCommand.Target))
-        writer.AddAttribute (HtmlTextWriterAttribute.Target, WxeFunctionCommand.Target);
-      if (! StringUtility.IsNullOrEmpty (onClick))
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
-    }
-    else
-    {
-      writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
-      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + StringUtility.NullToEmpty (onClick));
-    }
+    writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
+    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + StringUtility.NullToEmpty (onClick));
     if (! StringUtility.IsNullOrEmpty (_toolTip))
       writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
   }
@@ -593,43 +559,6 @@ public class Command: IControlItem
       WxeContext.ExecuteFunctionExternal (page, function, additionalUrlParameters);
   }
 
-  /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
-  /// </summary>
-  /// <param name="additionalUrlParameters">
-  ///   The <see cref="NameValueCollection"/> containing additional url parameters. 
-  ///   Must not be <see langword="null"/>.
-  /// </param>
-  /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
-  /// </exception> 
-  public virtual string GetWxeFunctionPermanentUrl (NameValueCollection additionalUrlParameters)
-  {
-    ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters);
-
-    if (Type != CommandType.WxeFunction)
-      throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
-
-    Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
-    WxeParameterDeclaration[] parameterDeclarations = WxeFunction.GetParamaterDeclarations (functionType);
-    object[] parameterValues = WxeFunction.ParseActualParameters (
-        parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);   
-    NameValueCollection queryString = 
-        WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
-    queryString.Add (additionalUrlParameters);
-    return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);
-  }
-
-  /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
-  /// </summary>
-  /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
-  /// </exception> 
-  public string GetWxeFunctionPermanentUrl ()
-  {
-    return GetWxeFunctionPermanentUrl (new NameValueCollection (0));
-  }
   
   /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
   /// <value> One of the <see cref="CommandType"/> enumeration values. The default is <see cref="CommandType.None"/>. </value>
