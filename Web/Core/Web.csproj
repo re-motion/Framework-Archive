@@ -513,6 +513,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\SmartPage.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\HTML\Style.css"
                     BuildAction = "Content"
                 />
