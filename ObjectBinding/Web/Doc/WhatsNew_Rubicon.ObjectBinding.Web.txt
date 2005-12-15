@@ -26,6 +26,10 @@
     markiert war. Andernfalls kam das BO-Control zum Zug. Effekt: Formatierungsangaben in der Spalte wurden nicht
     berücksichtigt.
     
+- BocMenuItem
+  * EvaluateVisible: von protected auf public gesetzt.
+  * EvaluateDisabled: von protected auf public gesetzt.
+  
 1.3.26
 ======
 - BocDateTimeValue

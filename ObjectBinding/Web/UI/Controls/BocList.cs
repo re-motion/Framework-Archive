@@ -1124,7 +1124,7 @@ public class BocList:
                                           && (   commandColumn.Command.Type == CommandType.Event 
                                               || commandColumn.Command.Type == CommandType.WxeFunction);
           if (hasPostBackColumnCommand)
-            WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}]", i));
+            WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}].Command", i));
         }
 
         if (columns[i] is BocDropDownMenuColumnDefinition)
@@ -1583,6 +1583,8 @@ public class BocList:
 
   protected bool IsColumnVisible (BocColumnDefinition column)
   {
+    ArgumentUtility.CheckNotNull ("column", column);
+
     bool isReadOnly = IsReadOnly;
     BocCommandColumnDefinition commandColumn = column as BocCommandColumnDefinition;
     if (commandColumn != null && commandColumn.Command != null)
@@ -1706,7 +1708,7 @@ public class BocList:
     {
 
       WebMenuItem currentItem = groupedListMenuItems[idxItems];
-      if (! currentItem.IsVisible)
+      if (! currentItem.EvaluateVisible())
         continue;
       // HACK: Required since ListManuItems are not added to a ListMenu's WebMenuItemCollection.
       currentItem.OwnerControl = this;
@@ -1747,7 +1749,7 @@ public class BocList:
       for (int idxItems = 0; idxItems < groupedListMenuItems.Length; idxItems++)
       {
         WebMenuItem currentItem = groupedListMenuItems[idxItems];
-        if (! currentItem.IsVisible)
+        if (! currentItem.EvaluateVisible())
           continue;
 
         if (isFirstItemInGroup)
@@ -1813,7 +1815,7 @@ public class BocList:
       disabledIcon =  "'" + menuItem.DisabledIcon + "'";
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
 
-    bool isDisabled = menuItem.IsDisabled || IsEditDetailsModeActive || ! isCommandEnabled;
+    bool isDisabled = menuItem.EvaluateDisabled() || IsEditDetailsModeActive || ! isCommandEnabled;
     stringBuilder.AppendFormat (
         "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
         menuID + "_" + menuItemIndex.ToString(), 

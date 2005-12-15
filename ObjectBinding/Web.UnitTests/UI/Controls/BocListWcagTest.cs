@@ -300,7 +300,7 @@ public class BocListWcagTest: BocTest
   }
 
   [Test]
-  public void IsCommandColumnSetToEventWithoutWcagOverride()
+  public void IsCommandColumnSetToEventVisibleWithoutWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
     BocCommandColumnDefinition commandColumn = new BocCommandColumnDefinition();
