@@ -4,7 +4,8 @@
 /*  Theoretically intended settings. */
 body
 {
-  font-size: 80%;
+  /* Font-Size in body must be in percent. Otherwise IE has a cascading bug. */  
+  font-size: 80%; 
 }
 
 /*  First block catches for all browsers.
@@ -14,10 +15,10 @@ body
 td, 
 th
 {
-  font-size: 80%;
+  font-size: 0.8em;
   voice-family: "\"}\""; 
   voice-family:inherit;
-  font-size: 100%;
+  font-size: 1em;
 }
 
 /*  Catches for Opera 7 (5+?), Mozilla/Firefox. 
@@ -25,7 +26,7 @@ th
 html>body td,
 html>body th
 {
-  font-size: 100%;
+  font-size: 1em;
 }
 
 /*  Style applied to the title cell  */
@@ -33,27 +34,27 @@ html>body th
 td.formGridTitleCell,
 td.formGridSubTitleCell
 {
-  font-size: 100%;
+  font-size: 1em;
   voice-family: "\"}\""; 
   voice-family:inherit;
-  font-size: 125%;
+  font-size: 1.25em;
 }
 
 html>body td.formGridTitleCell
 {
-  font-size: 125%;
+  font-size: 1.25em;
 }
 
 /*  Style applied to the BocList's in-place menu  */
 td.contentMenuRow
 {
-  font-size: 64%;
+  font-size: 0.64em;
   voice-family: "\"}\""; 
   voice-family:inherit;
-  font-size: 80%;
+  font-size: 0.8em;
 }
 
 html>body td.contentMenuRow
 {
-  font-size: 80%;
+  font-size: 0.8em;
 }

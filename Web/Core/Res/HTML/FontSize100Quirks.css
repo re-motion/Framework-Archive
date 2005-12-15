@@ -3,6 +3,7 @@
 
 body
 {
+  /* Font-Size in body must be in percent. Otherwise IE has a cascading bug. */  
   font-size: 100%;
 }
 
@@ -10,7 +11,7 @@ body
 td, 
 th
 {
-  font-size: 100%;
+  font-size: 1em;
 }
 
 /*  Style applied to the title cell  */
@@ -19,12 +20,12 @@ th
 td.formGridTitleCell,
 td.formGridSubTitleCell
 {
-	font-size: 125%;
+	font-size: 1.25em;
 }
 
 /*  Style applied to the BocList's in-place menu  */
 /*  no inheritence from body */
 td.contentMenuRow
 {
-  font-size: 80%;
+  font-size: 0.8em;
 }
