@@ -316,6 +316,16 @@ public class WebMenuItem: IControlItem
     }
   }
 
+  public virtual bool EvaluateVisible ()
+  {
+    return IsVisible;
+  }
+
+  public virtual bool EvaluateDisabled ()
+  {
+    return IsDisabled;
+  }
+
   public virtual void LoadResources (IResourceManager resourceManager)
   {
     if (resourceManager == null)

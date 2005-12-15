@@ -154,6 +154,21 @@ public abstract class MenuTab: WebTab
     if (! IsSelected)
       IsSelected = true;
   }
+  
+  public override bool EvaluateVisibile()
+  {
+    if (Command != null)
+    {
+      if (   WcagHelper.Instance.IsWaiConformanceLevelARequired()
+          && Command.Type == CommandType.Event)
+      {
+        return false;
+      }
+    }
+    
+    return base.EvaluateVisibile();
+  }
+
 }
 
 public class MainMenuTab: MenuTab

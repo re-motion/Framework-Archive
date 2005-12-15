@@ -247,7 +247,7 @@ public class WebTabStrip :
     for (int i = 0; i < tabs.Count; i++)
     {
       WebTab tab = tabs[i];
-      if (tab.IsVisible || ControlHelper.IsDesignMode (this, Context))
+      if (tab.EvaluateVisibile() || ControlHelper.IsDesignMode (this, Context))
         RenderTab (writer, tab);
     }
     RenderEndTabsPane (writer);
@@ -312,7 +312,7 @@ public class WebTabStrip :
       cssClass = CssClassTabSelected;
     else
       cssClass = CssClassTab;
-    if (tab.IsDisabled)
+    if (tab.EvaluateDisabled())
       cssClass += " " + CssClassDisabled;
     writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span

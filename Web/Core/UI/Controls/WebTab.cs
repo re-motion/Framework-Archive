@@ -305,6 +305,16 @@ public class WebTab: IControlItem, IControlStateManager
     }
   }
 
+  public virtual bool EvaluateVisibile ()
+  {
+    return IsVisible;
+  }
+
+  public virtual bool EvaluateDisabled ()
+  {
+    return IsDisabled;
+  }
+
   protected string GetPostBackClientEvent ()
   {
     try

@@ -182,7 +182,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
           category = menuItem.Category;
           isCategoryVisible = false;
         }
-        if (! menuItem.IsVisible)
+        if (! menuItem.EvaluateVisible())
           continue;
         if (_enableGrouping && menuItem.IsSeparator && ! isCategoryVisible)
           continue;
@@ -247,7 +247,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
       disabledIcon =  "'" + menuItem.DisabledIcon + "'";
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
     
-    bool isDisabled = menuItem.IsDisabled || ! isCommandEnabled;
+    bool isDisabled = menuItem.EvaluateDisabled() || ! isCommandEnabled;
     stringBuilder.AppendFormat (
         "\t\tnew DropDownMenu_ItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
         menuItemIndex.ToString(), 
