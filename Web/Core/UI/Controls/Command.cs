@@ -19,7 +19,7 @@ namespace Rubicon.Web.UI.Controls
 {
 
 //  TODO: Command: Move long comment blocks to xml-file
-/// <summary> An <see cref="Command"/> defines an action the user can invoke. </summary>
+/// <summary> A <see cref="Command"/> defines an action the user can invoke. </summary>
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class Command: IControlItem
 {

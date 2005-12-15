@@ -15,7 +15,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 {
 
 [TestFixture]
-public class MenuTabCommandTest
+public class NavigationCommandTest
 {
   private HttpContext _currentHttpContext;
   private Type _functionType;
@@ -32,10 +32,6 @@ public class MenuTabCommandTest
   private string _postBackEvent;
   private string _onClick;
   private HtmlTextWriterSingleTagMock _writer;
-
-  public MenuTabCommandTest()
-	{
-	}
 
   [SetUp]
   public virtual void SetUp()

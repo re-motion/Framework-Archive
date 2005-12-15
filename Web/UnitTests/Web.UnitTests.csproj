@@ -310,12 +310,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\MenuTabCommandTest.cs"
+                    RelPath = "UI\Controls\MenuTabTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\MenuTabTest.cs"
+                    RelPath = "UI\Controls\NavigationCommandTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
