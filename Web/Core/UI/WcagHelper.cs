@@ -2,8 +2,9 @@ using System;
 using System.Web.UI;
 using log4net;
 using Rubicon.Utilities;
-using Rubicon.Web.UI;
 using Rubicon.Web.Configuration;
+using Rubicon.Web.UI;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI
 {
@@ -92,20 +93,24 @@ public class WcagHelper
   public virtual void HandleWarning (int priority, Control control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
+    if (ControlHelper.IsDesignMode (control))
+      return;
 
     string message = string.Format (
-       "{0} '{1}' might not comply with a priority {2} checkpoint.", 
-        control.GetType().Name, control.ID, priority);
+       "{0} '{1}' on page {2} might not comply with a priority {3} checkpoint.", 
+        control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
     HandleWarning (message);
   }
 
   public virtual void HandleWarning (int priority, Control control, string property)
   {
     ArgumentUtility.CheckNotNull ("control", control);
+    if (ControlHelper.IsDesignMode (control))
+      return;
 
     string message = string.Format (
-        "The value of property '{0}' for {1} '{2}' might not comply with a priority {3} checkpoint.", 
-        property, control.GetType().Name, control.ID, priority);
+        "The value of property '{0}' for {1} '{2}' on page {3} might not comply with a priority {4} checkpoint.", 
+        property, control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
     HandleWarning (message);
   }
 
@@ -125,20 +130,24 @@ public class WcagHelper
   public virtual void HandleError (int priority, Control control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
+    if (ControlHelper.IsDesignMode (control))
+      return;
 
     string message = string.Format (
-       "{0} '{1}' does not comply with a priority {2} checkpoint.", 
-        control.GetType().Name, control.ID, priority);
+       "{0} '{1}' on page {2} does not comply with a priority {3} checkpoint.", 
+        control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
     HandleError (message);
   }
 
   public virtual void HandleError (int priority, Control control, string property)
   {
     ArgumentUtility.CheckNotNull ("control", control);
+    if (ControlHelper.IsDesignMode (control))
+      return;
 
     string message = string.Format (
-        "The value of property '{0}' for {1} '{2}' does not comply with a priority {3} checkpoint.", 
-        property, control.GetType().Name, control.ID, priority);
+        "The value of property '{0}' for {1} '{2}' on page {3} does not comply with a priority {4} checkpoint.", 
+        property, control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
     HandleError (message);
   }
 
