@@ -95,17 +95,9 @@ public class BocMenuItem: WebMenuItem
     get { return (IBocMenuItemContainer) OwnerControl; }
   }
 
-  protected override void PreRender()
+  public override bool EvaluateVisible()
   {
-    base.PreRender();
-
-    IsDisabled = EvaluateDisabled ();
-    IsVisible = EvaluateVisible ();
-  }
-
-  protected virtual bool EvaluateVisible ()
-  {
-    if (! IsVisible)
+    if (! base.EvaluateVisible())
       return false;
 
     bool isReadOnly = BocMenuItemContainer.IsReadOnly;
@@ -124,11 +116,6 @@ public class BocMenuItem: WebMenuItem
       return false;
 
     return true;
-  }
-
-  protected virtual bool EvaluateDisabled ()
-  {
-    return IsDisabled;
   }
 }
 
