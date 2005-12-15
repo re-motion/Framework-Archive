@@ -1,17 +1,10 @@
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using Rubicon.Collections;
 using Rubicon.Globalization;
-using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
-using Rubicon.Web.Utilities;
-using Rubicon.Web.UI.Design;
 using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
@@ -251,133 +244,6 @@ public class SubMenuTab: MenuTab
   {
     ArgumentUtility.CheckNotNull ("parent", parent);
     _parent = parent;
-  }
-}
-
-[Editor (typeof (MainMenuTabCollectionEditor), typeof (UITypeEditor))]
-public class MainMenuTabCollection: WebTabCollection
-{
-  /// <summary> Initializes a new instance. </summary>
-  public MainMenuTabCollection (Control ownerControl, Type[] supportedTypes)
-    : base (ownerControl, supportedTypes)
-  {
-  }
-
-  /// <summary> Initializes a new instance. </summary>
-  public MainMenuTabCollection (Control ownerControl)
-    : this (ownerControl, new Type[] {typeof (SubMenuTab)})
-  {
-  }
-
-  public int Add (MainMenuTab tab)
-  {
-    return base.Add (tab);
-  }
-
-  public void AddRange (params MainMenuTab[] tabs)
-  {
-    base.AddRange (tabs);
-  }
-
-  public void Insert (int index, MainMenuTab tab)
-  {
-    base.Insert (index, tab);
-  }
-}
-
-[Editor (typeof (SubMenuTabCollectionEditor), typeof (UITypeEditor))]
-public class SubMenuTabCollection: WebTabCollection
-{
-  private MainMenuTab _parent;
-
-  /// <summary> Initializes a new instance. </summary>
-  public SubMenuTabCollection (Control ownerControl, Type[] supportedTypes)
-    : base (ownerControl, supportedTypes)
-  {
-  }
-
-  /// <summary> Initializes a new instance. </summary>
-  public SubMenuTabCollection (Control ownerControl)
-    : this (ownerControl, new Type[] {typeof (SubMenuTab)})
-  {
-  }
-
-  protected override void OnInsertComplete (int index, object value)
-  {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (SubMenuTab));
-
-    base.OnInsertComplete (index, value);
-    SubMenuTab tab = (SubMenuTab) value;
-    tab.SetParent (_parent);
-  }
-
-  protected override void OnSetComplete(int index, object oldValue, object newValue)
-  {
-    ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (SubMenuTab));
-
-    base.OnSetComplete (index, oldValue, newValue);
-    SubMenuTab tab = (SubMenuTab) newValue;
-    tab.SetParent (_parent);
-  }
-
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  [Browsable (false)]
-  public MainMenuTab Parent
-  {
-    get { return _parent; }
-  }
-
-  protected internal void SetParent (MainMenuTab parent)
-  {
-    ArgumentUtility.CheckNotNull ("parent", parent);
-    _parent = parent;
-    for (int i = 0; i < InnerList.Count; i++)
-      ((SubMenuTab) InnerList[i]).SetParent (_parent);
-  }
-
-  public int Add (SubMenuTab tab)
-  {
-    return base.Add (tab);
-  }
-
-  public void AddRange (params SubMenuTab[] tabs)
-  {
-    base.AddRange (tabs);
-  }
-
-  public void Insert (int index, SubMenuTab tab)
-  {
-    base.Insert (index, tab);
-  }
-}
-
-/// <summary>
-///   Represents the method that handles the <c>Click</c> event raised when clicking on a <see cref="MenuTab"/>.
-/// </summary>
-public delegate void MenuTabClickEventHandler (object sender, MenuTabClickEventArgs e);
-
-/// <summary>
-///   Provides data for the <c>Click</c> event.
-/// </summary>
-public class MenuTabClickEventArgs: WebTabClickEventArgs
-{
-
-  /// <summary> Initializes an instance. </summary>
-  public MenuTabClickEventArgs (MenuTab tab)
-    : base (tab)
-  {
-  }
-
-  /// <summary> The <see cref="Command"/> that caused the event. </summary>
-  public Command Command
-  {
-    get { return Tab.Command; }
-  }
-
-  /// <summary> The <see cref="MenuTab"/> that was clicked. </summary>
-  public new MenuTab Tab
-  {
-    get { return (MenuTab) base.Tab; }
   }
 }
 

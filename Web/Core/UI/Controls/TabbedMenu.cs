@@ -22,6 +22,9 @@ public interface IWindowStateManager
   void SetData (string key, object value);
 }
 
+/// <summary>
+///   The <b>TabbedMenu</b> can be used to provide a navigation menu.
+/// </summary>
 [Designer (typeof (TabbedMenuDesigner))]
 public class TabbedMenu: WebControl, IControl
 {
@@ -43,16 +46,6 @@ public class TabbedMenu: WebControl, IControl
   private bool _isPastInitialization;
   private Color _subMenuBackgroundColor;
   private ResourceManagerSet _cachedResourceManager;
-
-  protected WebTabStrip MainMenuTabStrip
-  {
-    get { return _mainMenuTabStrip; }
-  }
-
-  protected WebTabStrip SubMenuTabStrip
-  {
-    get { return _subMenuTabStrip; }
-  }
 
 
   // construction and destruction
@@ -571,6 +564,15 @@ public class TabbedMenu: WebControl, IControl
     }
   }
 
+  /// <summary> Gets or sets the text displayed in the status area. </summary>
+  [Description ("The text displayed in the status area.")]
+  [DefaultValue ("")]
+  public string StatusText
+  {
+    get { return _statusText; }
+    set { _statusText = value; }
+  }
+
   /// <summary> Is raised when a tab with a command of type <see cref="CommandType.Event"/> is clicked. </summary>
   [Category ("Action")]
   [Description ("Is raised when a tab with a command of type Event is clicked.")]
@@ -580,13 +582,38 @@ public class TabbedMenu: WebControl, IControl
     remove { Events.RemoveHandler (s_eventCommandClickEvent, value); }
   }
 
-  /// <summary> Gets or sets the text displayed in the status area. </summary>
-  [Description ("The text displayed in the status area.")]
-  [DefaultValue ("")]
-  public string StatusText
+  /// <summary> Gets the selected <see cref="MainMenuTab"/>. </summary>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public MainMenuTab SelectedMainMenuTab
   {
-    get { return _statusText; }
-    set { _statusText = value; }
+    get
+    {
+      return (MainMenuTab) _mainMenuTabStrip.SelectedTab;
+    }
+  }
+
+  /// <summary> Gets the selected <see cref="SubMenuTab"/>. </summary>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public SubMenuTab SelectedSubMenuTab
+  {
+    get
+    {
+      return (SubMenuTab) _subMenuTabStrip.SelectedTab;
+    }
+  }
+
+  /// <summary> Gets the <see cref="WebTabStrip"/> used for the main menu. </summary>
+  protected WebTabStrip MainMenuTabStrip
+  {
+    get { return _mainMenuTabStrip; }
+  }
+
+  /// <summary> Gets the <see cref="WebTabStrip"/> used for the sub menu. </summary>
+  protected WebTabStrip SubMenuTabStrip
+  {
+    get { return _subMenuTabStrip; }
   }
 
   /// <summary> Gets the style applied to the status area. </summary>
