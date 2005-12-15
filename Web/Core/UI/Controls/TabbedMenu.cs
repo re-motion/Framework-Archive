@@ -113,7 +113,7 @@ public class TabbedMenu: WebControl, IControl
   private void PopulateSubMenuTabStrip ()
   {
     _isSubMenuTabStripRefreshed = true;
-    MainMenuTab selectedMainMenuItem = (MainMenuTab) _mainMenuTabStrip.SelectedTab;
+    MainMenuTab selectedMainMenuItem = SelectedMainMenuTab;
     if (selectedMainMenuItem != null)
       _subMenuTabStrip.Tabs.AddRange (selectedMainMenuItem.SubMenuTabs);
     if (_subMenuTabStrip.SelectedTab == null && _subMenuTabStrip.Tabs.Count > 0)
@@ -170,7 +170,7 @@ public class TabbedMenu: WebControl, IControl
       MainMenuTabCollection mainMenuTabs = Tabs;
       for (int mainMenuTabsIdx = 0; mainMenuTabsIdx < mainMenuTabs.Count; mainMenuTabsIdx++)
       {
-        MainMenuTab mainMenuTab = (MainMenuTab) mainMenuTabs[mainMenuTabsIdx];
+        MainMenuTab mainMenuTab = mainMenuTabs[mainMenuTabsIdx];
         bool hasMainMenuTabPostBackCommand =   mainMenuTab.Command != null
                                             && mainMenuTab.Command.Type == CommandType.Event;
         if (hasMainMenuTabPostBackCommand)
@@ -179,7 +179,7 @@ public class TabbedMenu: WebControl, IControl
         SubMenuTabCollection subMenuTabs = mainMenuTab.SubMenuTabs;
         for (int subMenuTabsIdx = 0; subMenuTabsIdx < subMenuTabs.Count; subMenuTabsIdx++)
         {
-          SubMenuTab subMenuTab = (SubMenuTab) subMenuTabs[subMenuTabsIdx];
+          SubMenuTab subMenuTab = subMenuTabs[subMenuTabsIdx];
           bool hasSubMenuTabPostBackCommand =   subMenuTab.Command != null
                                              && subMenuTab.Command.Type == CommandType.Event;
           if (hasSubMenuTabPostBackCommand)
@@ -371,9 +371,7 @@ public class TabbedMenu: WebControl, IControl
     if (windowStateManager == null)
       return;
 
-    string[] tabIDs = ConvertTabIDsToArray (
-        (MainMenuTab) _mainMenuTabStrip.SelectedTab, 
-        (SubMenuTab) _subMenuTabStrip.SelectedTab);
+    string[] tabIDs = ConvertTabIDsToArray (SelectedMainMenuTab, SelectedSubMenuTab);
     windowStateManager.SetData (SelectionID, tabIDs);
   }
 
@@ -417,9 +415,9 @@ public class TabbedMenu: WebControl, IControl
     ArgumentUtility.CheckNotNullOrEmpty ("url", url);
 
     if (_subMenuTabStrip.SelectedTab != null)
-      return FormatUrl (url, (SubMenuTab) _subMenuTabStrip.SelectedTab);
+      return FormatUrl (url, SelectedSubMenuTab);
     else if (_mainMenuTabStrip.SelectedTab != null)
-      return FormatUrl (url, (MainMenuTab) _mainMenuTabStrip.SelectedTab);
+      return FormatUrl (url, SelectedMainMenuTab);
     else
       return url;
   }
