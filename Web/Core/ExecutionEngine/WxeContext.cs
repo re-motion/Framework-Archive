@@ -144,6 +144,7 @@ public class WxeContext
     ArgumentUtility.CheckNotNull ("function", function);
 
     string href = GetExternalFunctionUrl (function, createPermaUrl, urlParameters);
+    function.ReturnUrl = page.Request.RawUrl;
     PageUtility.Redirect (HttpContext.Current.Response, href);
   }
 
