@@ -20,10 +20,10 @@ public class MenuTabCommandTest
   private HttpContext _currentHttpContext;
   private Type _functionType;
   private string _functionTypeName;
-  private MenuTabCommand _hrefCommand;
-  private MenuTabCommand _eventCommand;
-  private MenuTabCommand _wxeFunctionCommand;
-  private MenuTabCommand _noneCommand;
+  private NavigationCommand _hrefCommand;
+  private NavigationCommand _eventCommand;
+  private NavigationCommand _wxeFunctionCommand;
+  private NavigationCommand _noneCommand;
   private string _toolTip;
   private string _href;
   private string _wxeFunctionParameter1Value;
@@ -55,24 +55,24 @@ public class MenuTabCommandTest
     _postBackEvent = "__doPostBack (\"Target\", \"Args\");";
     _onClick = "return false;";
 
-    _hrefCommand = new MenuTabCommand();
+    _hrefCommand = new NavigationCommand();
     _hrefCommand.Type = CommandType.Href;
     _hrefCommand.ToolTip = _toolTip;
     _hrefCommand.HrefCommand.Href = _href;
     _hrefCommand.HrefCommand.Target = _target;
 
-    _eventCommand = new MenuTabCommand();
+    _eventCommand = new NavigationCommand();
     _eventCommand.Type = CommandType.Event;
     _eventCommand.ToolTip = _toolTip;
 
-    _wxeFunctionCommand = new MenuTabCommand();
+    _wxeFunctionCommand = new NavigationCommand();
     _wxeFunctionCommand.Type = CommandType.WxeFunction;
     _wxeFunctionCommand.ToolTip = _toolTip;
     _wxeFunctionCommand.WxeFunctionCommand.TypeName = _functionTypeName;
     _wxeFunctionCommand.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
     _wxeFunctionCommand.WxeFunctionCommand.Target = _target;
 
-    _noneCommand = new MenuTabCommand ();
+    _noneCommand = new NavigationCommand ();
     _noneCommand.Type = CommandType.None;
 
     _writer = new HtmlTextWriterSingleTagMock();
@@ -127,7 +127,7 @@ public class MenuTabCommandTest
     expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
 
-    MenuTabCommand command = new MenuTabCommand ();
+    NavigationCommand command = new NavigationCommand ();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
@@ -149,7 +149,7 @@ public class MenuTabCommandTest
     expectedQueryString.Add ("Parameter1", parameter1);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
 
-    MenuTabCommand command = new MenuTabCommand ();
+    NavigationCommand command = new NavigationCommand ();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
@@ -176,7 +176,7 @@ public class MenuTabCommandTest
     expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
 
-    MenuTabCommand command = new MenuTabCommand ();
+    NavigationCommand command = new NavigationCommand ();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
@@ -202,7 +202,7 @@ public class MenuTabCommandTest
     expectedQueryString.Add (additionalUrlParameters);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
 
-    MenuTabCommand command = new MenuTabCommand ();
+    NavigationCommand command = new NavigationCommand ();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
@@ -219,7 +219,7 @@ public class MenuTabCommandTest
     WebConfigurationMock.Current = null;
     string parameter1 = "Hello World!";
     
-    MenuTabCommand command = new MenuTabCommand ();
+    NavigationCommand command = new NavigationCommand ();
     command.Type = CommandType.WxeFunction;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";

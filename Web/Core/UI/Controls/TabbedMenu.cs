@@ -42,6 +42,7 @@ public class TabbedMenu: WebControl, IControl
   private bool _isSubMenuTabStripRefreshed;
   private bool _isPastInitialization;
   private Color _subMenuBackgroundColor;
+  private ResourceManagerSet _cachedResourceManager;
 
   protected WebTabStrip MainMenuTabStrip
   {
@@ -141,6 +142,9 @@ public class TabbedMenu: WebControl, IControl
       HtmlHeadAppender.Current.RegisterStylesheetLink (s_styleFileKey, url, HtmlHeadAppender.Priority.Library);
     }
     SaveSelection();
+  
+    IResourceManager resourceManager = ResourceManagerUtility.GetResourceManager (this, true);
+    LoadResources (resourceManager);
   }
 
   /// <summary> Overrides the <see cref="Control.TagKey"/> property. </summary>
@@ -233,8 +237,10 @@ public class TabbedMenu: WebControl, IControl
     if (StringUtility.IsNullOrEmpty (_statusStyle.CssClass))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassStatusCell);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin status cell
+    
     if (! StringUtility.IsNullOrEmpty (_statusText))
       writer.Write (_statusText);
+    
     writer.RenderEndTag(); // End status cell
 
     writer.RenderEndTag(); // End sub menu row
@@ -494,6 +500,58 @@ public class TabbedMenu: WebControl, IControl
       MenuTabClickEventArgs e = new MenuTabClickEventArgs (tab);
       handler (this, e);
     }
+  }
+
+
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  protected virtual IResourceManager GetResourceManager()
+  {
+    return GetResourceManager (null);
+  }
+
+  /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
+  /// <param name="localResourcesType"> 
+  ///   A type with the <see cref="MultiLingualResourcesAttribute"/> applied to it.
+  ///   Typically an <b>enum</b> or the derived class itself.
+  /// </param>
+  protected IResourceManager GetResourceManager (Type localResourcesType)
+  {
+    //Rubicon.Utilities.ArgumentUtility.CheckNotNull ("localResourcesType", localResourcesType);
+
+    //  Provider has already been identified.
+    if (_cachedResourceManager != null)
+        return _cachedResourceManager;
+
+    //  Get the resource managers
+
+    IResourceManager localResourceManager;
+    if (localResourcesType == null)
+      localResourceManager = NullResourceManager.Instance;
+    else
+      localResourceManager = MultiLingualResourcesAttribute.GetResourceManager (localResourcesType, true);
+    IResourceManager namingContainerResourceManager = 
+        ResourceManagerUtility.GetResourceManager (NamingContainer, true);
+
+    if (namingContainerResourceManager == null)
+      _cachedResourceManager = new ResourceManagerSet (localResourceManager);
+    else
+      _cachedResourceManager = new ResourceManagerSet (localResourceManager, namingContainerResourceManager);
+
+    return _cachedResourceManager;
+  }
+
+  /// <summary> Loads the resources into the control's properties. </summary>
+  protected virtual void LoadResources  (IResourceManager resourceManager)
+  {
+    if (resourceManager == null)
+      return;
+    if (ControlHelper.IsDesignMode (this, Context))
+      return;
+
+    string key;    
+    key = ResourceManagerUtility.GetGlobalResourceKey (StatusText);
+    if (! StringUtility.IsNullOrEmpty (key))
+      StatusText = resourceManager.GetString (key);
   }
 
 

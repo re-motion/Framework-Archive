@@ -186,7 +186,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     Type type = UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType ("~/" + relativePath);
     if (type == null)
-      throw new HttpException (string.Format ("Could not map the path '{0}' to a WXE function.", "absolutePath"));
+      throw new HttpException (string.Format ("Could not map the path '{0}' to a WXE function.", absolutePath));
 
     return type;
   }
@@ -251,24 +251,34 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     if (! WxeFunctionStateCollection.HasInstance)
     {
-      if (isPostRequest || isPostBackAction)
+      try
+      {
+        if (isPostRequest || isPostBackAction)
+          throw new HttpException();
+        return CreateNewFunctionState (context, GetType (context));
+      }
+      catch (HttpException)
       {
         s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
         throw new HttpException (c_httpRequestTimeout, "Session timeout."); // TODO: display error message
       }
-      return CreateNewFunctionState (context, GetType (context));
     }
 
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     WxeFunctionState functionState = functionStates.GetItem (functionToken);
     if (functionState == null || functionState.IsExpired)
     {
-      if (isPostRequest || isPostBackAction)
+      try
+      {
+        if (isPostRequest || isPostBackAction)
+          throw new HttpException ();
+        return CreateNewFunctionState (context, GetType (context));
+      }
+      catch (HttpException)
       {
         s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
         throw new HttpException (c_httpRequestTimeout, "Function Timeout."); // TODO: display error message
       }
-      return CreateNewFunctionState (context, GetType (context));
     }
 
     if (functionState.IsAborted)

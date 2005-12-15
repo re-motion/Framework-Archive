@@ -20,7 +20,7 @@ public class TabbedMenuTest: WebControlTest
 {
   private HttpContext _currentHttpContext;
 
-  private TabbedMenu _tabbedMenu;
+  private TabbedMenuMock _tabbedMenu;
 
   private MainMenuTab _mainMenuTab1;
   private MainMenuTab _mainMenuTab2;
@@ -43,7 +43,7 @@ public class TabbedMenuTest: WebControlTest
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
     HttpContextHelper.SetCurrent (_currentHttpContext);
 
-    _tabbedMenu = new TabbedMenu();
+    _tabbedMenu = new TabbedMenuMock();
     _tabbedMenu.ID = "TabbedMenu";
 
     _mainMenuTab1 = new MainMenuTab("MainMenuTab1", "Main 1");
@@ -159,6 +159,47 @@ public class TabbedMenuTest: WebControlTest
 
     Assert.IsNotNull (value);
     Assert.AreEqual (expectedUrl, value);
+  }
+
+	[Test]
+  public void EvaluateWaiConformityDebugLevelUndefined()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelUndefined();
+    _mainMenuTab1.Command.Type = CommandType.Event;
+    _subMenuTab11.Command.Type = CommandType.Event;
+    
+    _tabbedMenu.EvaluateWaiConformity();
+
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsFalse (WcagHelperMock.HasError);
+  }
+
+	[Test]
+  public void EvaluateWaiConformityDebugLevelAWithMainMenuTabSetToEvent()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
+    _tabbedMenu.Tabs.Clear();
+    _tabbedMenu.Tabs.Add (_mainMenuTab1);
+    _mainMenuTab1.Command.Type = CommandType.Event;
+
+    _tabbedMenu.EvaluateWaiConformity();
+    
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsTrue (WcagHelperMock.HasError);
+  }
+
+	[Test]
+  public void EvaluateWaiConformityDebugLevelAWithSubMenuTabSetToEvent()
+  {
+    WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
+    _tabbedMenu.Tabs.Clear();
+    _tabbedMenu.Tabs.Add (_mainMenuTab1);
+    _mainMenuTab1.Command.Type = CommandType.Event;
+
+    _tabbedMenu.EvaluateWaiConformity();
+    
+    Assert.IsFalse (WcagHelperMock.HasWarning);
+    Assert.IsTrue (WcagHelperMock.HasError);
   }
 }
 

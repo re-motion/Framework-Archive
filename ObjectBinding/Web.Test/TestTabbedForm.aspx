@@ -17,71 +17,71 @@
 <submenutabs>
 <rwc:SubMenuTab Text="Event" ItemID="EventTab">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
 <rwc:SubMenuTab Text="Href" ItemID="HrefTab">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Href" HrefCommand-Href="StartForm.aspx"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Href" HrefCommand-Href="StartForm.aspx"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
 <rwc:SubMenuTab Text="Client Wxe" ItemID="ClientWxeTab">
 <persistedcommand>
-<rwc:MenuTabCommand Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="WxeFunction" WxeFunctionCommand-Parameters="false" WxeFunctionCommand-TypeName="OBWTest.TestTabbedFormWxeFunction,OBWTest"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
 <rwc:SubMenuTab Text="Invisible Tab" ItemID="InvisibleTab" IsVisible="False">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
 <rwc:SubMenuTab Text="Disabled Tab" ItemID="DisabledTab" Icon-Url="Images/DeleteItem.gif" IsDisabled="True">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
 </SubMenuTabs>
 
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:MainMenuTab>
 <rwc:MainMenuTab Text="Tab 2" ItemID="Tab2">
 <submenutabs>
 <rwc:SubMenuTab Text="Sub Tab 2.1" ItemID="SubTab1">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
 <rwc:SubMenuTab Text="Sub Tab 2.2" ItemID="SubTab2">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
 <rwc:SubMenuTab Text="Sub Tab 2.3" ItemID="SubTab23">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:SubMenuTab>
 </SubMenuTabs>
 
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:MainMenuTab>
 <rwc:MainMenuTab Text="Tab 3" ItemID="Tab3" IsVisible="False">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:MainMenuTab>
 <rwc:MainMenuTab Text="Tab 4" ItemID="Tab4">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:MainMenuTab>
 <rwc:MainMenuTab Text="Tab 5" ItemID="Tab5" Icon-Url="Images/DeleteItem.gif" IsDisabled="True">
 <persistedcommand>
-<rwc:MenuTabCommand Type="Event"></rwc:MenuTabCommand>
+<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:MainMenuTab>
 </Tabs>

@@ -35,7 +35,7 @@ public abstract class MenuTab: WebTab
 
   private void Initialize()
   {
-    _command = new SingleControlItemCollection (new MenuTabCommand (CommandType.Href), new Type[] {typeof (MenuTabCommand)});
+    _command = new SingleControlItemCollection (new NavigationCommand (), new Type[] {typeof (NavigationCommand)});
   }
 
   protected TabbedMenu TabbedMenu
@@ -43,17 +43,17 @@ public abstract class MenuTab: WebTab
     get { return (TabbedMenu) OwnerControl; }
   }
 
-  /// <summary> Gets or sets the <see cref="MenuTabCommand"/> rendered for this menu item. </summary>
-  /// <value> A <see cref="MenuTabCommand"/>. </value>
+  /// <summary> Gets or sets the <see cref="NavigationCommand"/> rendered for this menu item. </summary>
+  /// <value> A <see cref="NavigationCommand"/>. </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Category ("Behavior")]
   [Description ("The command rendered for this menu item.")]
   [NotifyParentProperty (true)]
-  public virtual MenuTabCommand Command
+  public virtual NavigationCommand Command
   {
     get
     {
-      return (MenuTabCommand) _command.ControlItem; 
+      return (NavigationCommand) _command.ControlItem; 
     }
     set 
     {
@@ -81,7 +81,7 @@ public abstract class MenuTab: WebTab
   {
     if (Command != null)
     {
-      Command = (MenuTabCommand) Activator.CreateInstance (Command.GetType());
+      Command = (NavigationCommand) Activator.CreateInstance (Command.GetType());
       Command.Type = CommandType.None;
     }
   }
@@ -381,14 +381,14 @@ public class MenuTabClickEventArgs: WebTabClickEventArgs
   }
 }
 
-public class MenuTabCommand: Command
+public class NavigationCommand: Command
 {
-  public MenuTabCommand ()
+  public NavigationCommand ()
     : this (CommandType.Href)
   {
   }
 
-  public MenuTabCommand (CommandType defaultType)
+  public NavigationCommand (CommandType defaultType)
     : base (defaultType)
   {
   }
