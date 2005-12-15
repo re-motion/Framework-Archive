@@ -97,7 +97,7 @@ public class WcagHelper
       return;
 
     string message = string.Format (
-       "{0} '{1}' on page {2} might not comply with a priority {3} checkpoint.", 
+       "{0} '{1}' on page '{2}' might not comply with a priority {3} checkpoint.", 
         control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
     HandleWarning (message);
   }
@@ -109,7 +109,7 @@ public class WcagHelper
       return;
 
     string message = string.Format (
-        "The value of property '{0}' for {1} '{2}' on page {3} might not comply with a priority {4} checkpoint.", 
+        "The value of property '{0}' for {1} '{2}' on page '{3}' might not comply with a priority {4} checkpoint.", 
         property, control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
     HandleWarning (message);
   }
@@ -134,7 +134,7 @@ public class WcagHelper
       return;
 
     string message = string.Format (
-       "{0} '{1}' on page {2} does not comply with a priority {3} checkpoint.", 
+       "{0} '{1}' on page '{2}' does not comply with a priority {3} checkpoint.", 
         control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
     HandleError (message);
   }
@@ -146,7 +146,7 @@ public class WcagHelper
       return;
 
     string message = string.Format (
-        "The value of property '{0}' for {1} '{2}' on page {3} does not comply with a priority {4} checkpoint.", 
+        "The value of property '{0}' for {1} '{2}' on page '{3}' does not comply with a priority {4} checkpoint.", 
         property, control.GetType().Name, control.ID, control.Page.GetType().FullName, priority);
     HandleError (message);
   }
