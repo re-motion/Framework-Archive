@@ -40,7 +40,7 @@ function Wxe_Context (
   var _isSubmittingBeforeUnload = false;
 
   var _isAborting = false;
-  var _hasAborted = false;
+  var _isCached = false;
   // Special flag to support the OnBeforeUnload part
   var _isAbortingBeforeUnload = false;
   var _statusIsAbortingMessage = statusIsAbortingMessage;
@@ -52,66 +52,21 @@ function Wxe_Context (
     
   var _activeElement = null;
   var _isMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
-  var _cacheStateHasSubmitted = 'hasSubmitted';
-  var _cacheStateHasLoaded = 'hasLoaded';
 
   this.Init = function()
   {
   }
 
-  this.CheckIfCached = function ()
+  this.OnLoad = function (hasSubmitted, isCached)
   {
-    var field = this.TheForm.wxeCacheDetectionField;
-    if (field.value == _cacheStateHasSubmitted)
-    {
-      _hasSubmitted = true;
+    if (hasSubmitted || isCached)
       this.ShowStatusIsCachedMessage ();
-    }
-    else if (field.value == _cacheStateHasLoaded && _isAbortEnabled)
-    {
-      _hasAborted = true;
-      this.ShowStatusIsCachedMessage ();
-    }
-    else
-    {
-      this.SetCacheDetectionFieldLoaded();
-    }
   }
   
-  this.SetCacheDetectionFieldLoaded = function ()
+  this.OnAbort = function (hasSubmitted, isCached)
   {
-    var field = this.TheForm.wxeCacheDetectionField;
-    field.value = _cacheStateHasLoaded;   
-  }
-
-  this.SetCacheDetectionFieldSubmitted = function ()
-  {
-    var field = this.TheForm.wxeCacheDetectionField;
-    field.value = _cacheStateHasSubmitted;   
-  }
-
-  this.SetCacheDetectionFieldAborted = function ()
-  {
-    // Do nothing, abort cannot be remembered via hidden field
-  }
-
-  this.OnLoad = function ()
-  {
-    this.CheckIfCached();
-  }
-  
-  this.OnPostback = function ()
-  {
-    this.SetCacheDetectionFieldSubmitted();
-  }
-  
-  this.OnAbort = function ()
-  {
-    if (_isAbortEnabled)
-    {  
-      this.SetCacheDetectionFieldAborted();
+    if (! isCached && _isAbortEnabled)
       this.SendSessionRequest (_abortUrl);
-    }  
   }
   
   this.Refresh = function ()
@@ -119,26 +74,22 @@ function Wxe_Context (
     this.SendSessionRequest (_refreshUrl + '&Wxe_Garbage=' + Math.random())
   }
   
-  // returns: true to continue with request
-  this.CheckFormState = function()
+  this.SendSessionRequest = function (url)
   {
-    if (_hasUnloaded)
+    _smartPage_context.SendOutOfBandRequest (url);
+  }
+  
+  // returns: true to continue with request
+  this.CheckFormState = function (isAborting, hasSubmitted, hasUnloaded, isCached)
+  {
+    if (hasSubmitted || isCached || hasUnloaded)
     {
-      this.ShowIsCachedMessage();
+      this.ShowStatusIsCachedMessage();
       return false;
     }
-    else if (_hasSubmitted || _hasAborted)
-    {
-      return false;
-    }
-    if (_isAborting)
+    if (isAborting)
     {
       this.ShowStatusIsAbortingMessage();
-      return false;
-    }
-    else if (_isSubmitting)
-    {
-      this.ShowStatusIsSubmittingMessage();
       return false;
     }
     else
@@ -150,7 +101,7 @@ function Wxe_Context (
   this.ShowStatusIsAbortingMessage = function ()
   {
     if (_statusIsAbortingMessage != null)
-      _smartPage_context.ShowMessage ('WxeStatusIsAbortingMessage', _statusIsAbortingMessage);
+      window._smartPage_context.ShowMessage ('WxeStatusIsAbortingMessage', _statusIsAbortingMessage);
   }
 
   this.ShowStatusIsCachedMessage = function ()
@@ -160,9 +111,9 @@ function Wxe_Context (
   }
 }
 
-function Wxe_OnLoad()
+function Wxe_OnLoad (hasSubmitted, isCached)
 {
-  _wxe_context.OnLoad();
+  _wxe_context.OnLoad (hasSubmitted, isCached);
 }
 
 function Wxe_OnBeforeUnload()
@@ -175,12 +126,17 @@ function Wxe_OnUnload()
   _wxe_context.OnUnload();
 }
 
-function Wxe_OnPostback (eventTarget, eventArgument)
+function Wxe_OnAbort (hasSubmitted, isCached)
 {
-  _wxe_context.OnPostback (eventTarget, eventArgument);
+  _wxe_context.OnAbort (hasSubmitted, isCached);
 }
 
 function Wxe_Refresh()
 {
   _wxe_context.Refresh();
+}
+
+function Wxe_CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached)
+{
+  return _wxe_context.CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached)
 }

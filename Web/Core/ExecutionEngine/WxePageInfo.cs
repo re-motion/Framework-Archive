@@ -55,11 +55,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private const string c_styleFileUrl = "ExecutionEngine.css";
   private const string c_styleFileUrlForIE = "ExecutionEngineIE.css";
   private const string c_smartNavigationScriptFileUrl = "SmartNavigation.js";
+  private const string c_smartPageScriptFileUrl = "SmartPage.js";
 
   private static readonly string s_scriptFileKey = typeof (WxePageInfo).FullName + "_Script";
   private static readonly string s_styleFileKey = typeof (WxePageInfo).FullName + "_Style";
   private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).FullName + "_StyleIE";
   private static readonly string s_smartNavigationScriptKey = typeof (WxePageInfo).FullName+ "_SmartNavigation";
+  private static readonly string s_smartPageScriptKey = typeof (WxePageInfo).FullName+ "_SmartPage";
 
   private IWxePage _page;
   private WxeForm _wxeForm;
@@ -167,10 +169,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
   private void Page_PreRender (object sender, EventArgs e)
   {
-    _isPreRendering = true;
-    
     PreRenderWxe();
     PreRenderSmartNavigation();
+    
+    _isPreRendering = true;
   }
 
   private void PreRenderWxe()
@@ -200,7 +202,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         + "  __doPostBack (control, argument); \r\n"
         + "}");
 
-    string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
+    string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_smartPageScriptFileUrl);
+    HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartPageScriptKey, url);
+
+    url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
     HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
 
     if (! ControlHelper.IsDesignMode (page))
@@ -330,51 +335,69 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       if (smartNavigablePage.IsSmartFocusingEnabled)
         smartFocusFieldID = "'" + c_smartFocusID + "'";
     }
-   
+ 
+    RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "Wxe_OnLoad", "Wxe_OnLoad");
+    RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "Wxe_OnAbort", "Wxe_OnAbort");
+    RegisterClientSidePageEventHandler (SmartPageEvents.OnBeforeUnload, "Wxe_OnBeforeUnload", "Wxe_OnBeforeUnload");
+    RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Wxe_OnUnload", "Wxe_OnUnload");
+
+  
     StringBuilder initScript = new StringBuilder (500);
 
-    initScript.Append ("var _wxe_eventHandlers = new Array(); \r\n");
-    initScript.Append ("var _wxe_eventHandlersByEvent = null; \r\n");
+    initScript.Append ("var _smartPage_eventHandlers = new Array(); \r\n");
+    initScript.Append ("var _smartPage_eventHandlersByEvent = null; \r\n");
     initScript.Append ("\r\n");
 
-    foreach (WxePageEvents pageEvent in _clientSideEventHandlers.Keys)
+    foreach (SmartPageEvents pageEvent in _clientSideEventHandlers.Keys)
     {
       NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
 
-      initScript.Append ("_wxe_eventHandlersByEvent = new Array(); \r\n");
+      initScript.Append ("_smartPage_eventHandlersByEvent = new Array(); \r\n");
 
       for (int i = 0; i < eventHandlers.Keys.Count; i++)
       {
-        initScript.Append ("_wxe_eventHandlersByEvent.push ('");
+        initScript.Append ("_smartPage_eventHandlersByEvent.push ('");
         initScript.Append (eventHandlers.Get (i));
         initScript.Append ("'); \r\n");
       }
       
-      initScript.Append ("_wxe_eventHandlers['");
+      initScript.Append ("_smartPage_eventHandlers['");
       initScript.Append (pageEvent.ToString().ToLower());
-      initScript.Append ("'] = _wxe_eventHandlersByEvent; \r\n");
+      initScript.Append ("'] = _smartPage_eventHandlersByEvent; \r\n");
       initScript.Append ("\r\n");
     }
+
+    initScript.Append ("SmartPage_Initialize (\r\n");
+    initScript.Append ("    '").Append (_wxeForm.ClientID).Append ("',\r\n");
+    initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (statusIsSubmittingMessage).Append (",\r\n");
+    initScript.Append ("    ").Append (smartScrollingFieldID).Append (",\r\n");
+    initScript.Append ("    ").Append (smartFocusFieldID).Append (",\r\n");
+    initScript.Append ("    'Wxe_CheckFormState',\r\n");
+    initScript.Append ("    _smartPage_eventHandlers); \r\n");
+
+    initScript.Append ("\r\n");
+    initScript.Append ("_smartPage_eventHandlers = null; \r\n");
+    initScript.Append ("_smartPage_eventHandlersByEvent = null;");
+
+    PageUtility.RegisterClientScriptBlock ((Page)_page, "smartPageInitialize", initScript.ToString());
+    PageUtility.RegisterStartupScriptBlock ((Page)_page, "smartPageStartUp", "SmartPage_OnStartUp();");
+
+
+
+    initScript = new StringBuilder (500);
 
     initScript.Append ("Wxe_Initialize (\r\n");
     initScript.Append ("    '").Append (_wxeForm.ClientID).Append ("',\r\n");
     initScript.Append ("    ").Append (refreshIntervall).Append (",\r\n");
     initScript.Append ("    ").Append (refreshPath).Append (",\r\n");
     initScript.Append ("    ").Append (abortPath).Append (",\r\n");
-    initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (statusIsSubmittingMessage).Append (",\r\n");
     initScript.Append ("    ").Append (statusIsAbortingMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (statusIsCachedMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (smartScrollingFieldID).Append (",\r\n");
-    initScript.Append ("    ").Append (smartFocusFieldID).Append (",\r\n");
-    initScript.Append ("    _wxe_eventHandlers); \r\n");
+    initScript.Append ("    ").Append (statusIsCachedMessage).Append ("); \r\n");
 
     initScript.Append ("\r\n");
-    initScript.Append ("_wxe_eventHandlers = null; \r\n");
-    initScript.Append ("_wxe_eventHandlersByEvent = null;");
 
     PageUtility.RegisterClientScriptBlock ((Page)_page, "wxeInitialize", initScript.ToString());
-    PageUtility.RegisterStartupScriptBlock ((Page)_page, "wxeStartUp", "Wxe_OnStartUp();");
   }
 
   public NameValueCollection EnsurePostBackModeDetermined (HttpContext context)
@@ -732,7 +755,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary> Implements <see cref="IWxePage.RegisterClientSidePageEventHandler">IWxePage.RegisterClientSidePageEventHandler</see>. </summary>
-  public void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function)
+  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("key", key);
     ArgumentUtility.CheckNotNullOrEmpty ("function", function);
@@ -746,7 +769,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     eventHandlers[key] = function;
   }
 
-  /// <summary> aves the viewstate into the executing <see cref="WxePageStep"/>. </summary>
+  /// <summary> Saves the viewstate into the executing <see cref="WxePageStep"/>. </summary>
   /// <param name="viewState"> An <b>ASP.NET</b> viewstate object. </param>
   public void SavePageStateToPersistenceMedium (object viewState)
   {

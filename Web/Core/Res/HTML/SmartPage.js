@@ -2,14 +2,16 @@ var _smartPage_context = null;
 
 function SmartPage_Initialize (
     theFormID, 
-    statusIsSubmittingMessage, abortMessage, 
+    abortMessage, statusIsSubmittingMessage,
     smartScrollingFieldID, smartFocusFieldID,
+    checkFormStateFunctionName,
     eventHandlers)
 {
   _smartPage_context = new SmartPage_Context (
     theFormID, 
-    statusIsSubmittingMessage, abortMessage, 
+    abortMessage, statusIsSubmittingMessage,
     smartScrollingFieldID, smartFocusFieldID,
+    checkFormStateFunctionName,
     eventHandlers)
   
   _smartPage_context.Init();
@@ -17,8 +19,9 @@ function SmartPage_Initialize (
 
 function SmartPage_Context (
     theFormID, 
-    statusIsSubmittingMessage, abortMessage, 
+    abortMessage, statusIsSubmittingMessage,
     smartScrollingFieldID, smartFocusFieldID,
+    checkFormStateFunctionName,
     eventHandlers)
 {
   this.TheForm = document.forms[theFormID];
@@ -33,9 +36,11 @@ function SmartPage_Context (
   var _statusIsSubmittingMessage = statusIsSubmittingMessage;
 
   var _isAborting = false;
-  var _hasAborted = false;
+  var _isCached = false;
   // Special flag to support the OnBeforeUnload part
   var _isAbortingBeforeUnload = false;
+
+  var _checkFormStateFunctionName = checkFormStateFunctionName;
 
   var _statusMessageWindow = null;
   var _hasUnloaded = false;
@@ -55,6 +60,8 @@ function SmartPage_Context (
   var _activeElement = null;
   var _eventHandlers = eventHandlers
   var _isMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
+  var _cacheStateHasSubmitted = 'hasSubmitted';
+  var _cacheStateHasLoaded = 'hasLoaded';
 
   this.Init = function()
   {
@@ -136,10 +143,41 @@ function SmartPage_Context (
 
   this.OnLoad = function ()
   {
+    this.CheckIfCached();
 	  this.Restore();
-    this.ExecuteEventHandlers (_eventHandlers['onload']);
+    this.ExecuteEventHandlers (_eventHandlers['onload'], _hasSubmitted, _isCached);
+  }
+
+  this.CheckIfCached = function ()
+  {
+    var field = this.TheForm.wxeCacheDetectionField;
+    if (field.value == _cacheStateHasSubmitted)
+    {
+      _hasSubmitted = true;
+      _isCached = true;
+    }
+    else if (field.value == _cacheStateHasLoaded)
+    {
+      _isCached = true;
+    }
+    else
+    {
+      this.SetCacheDetectionFieldLoaded();
+    }
   }
   
+  this.SetCacheDetectionFieldLoaded = function ()
+  {
+    var field = this.TheForm.wxeCacheDetectionField;
+    field.value = _cacheStateHasLoaded;   
+  }
+
+  this.SetCacheDetectionFieldSubmitted = function ()
+  {
+    var field = this.TheForm.wxeCacheDetectionField;
+    field.value = _cacheStateHasSubmitted;   
+  }
+   
   // __doPostBack
   // {
   //   Form.submit()
@@ -155,8 +193,8 @@ function SmartPage_Context (
     var displayAbortMessage = false;
     
     if (   ! _hasUnloaded
+        && ! _isCached
         && ! _isSubmittingBeforeUnload
-        && ! _hasAborted && ! _hasSubmitted
         && ! _isAborting && _isAbortConfirmationEnabled)
     {
       var activeElement = this.GetActiveElement();
@@ -182,16 +220,16 @@ function SmartPage_Context (
   this.OnUnload = function ()
   {
     if (   (! _isSubmitting || _isAbortingBeforeUnload)
-        && (! _hasAborted || _hasSubmitted)
         && ! _isAborting)
     {
       _isAborting = true;
-      this.ExecuteEventHandlers (_eventHandlers['onabort']);
-            
+      this.ExecuteEventHandlers (_eventHandlers['onabort'], _hasSubmitted, _isCached);
       _isAbortingBeforeUnload = false;
     }
-    _hasUnloaded = true;
     this.ExecuteEventHandlers (_eventHandlers['onunload']);
+    _hasUnloaded = true;
+    _isSubmitting = false;
+    _isAborting = false;
   }
 
   this.DoPostBack = function (eventTarget, eventArgument)
@@ -205,6 +243,7 @@ function SmartPage_Context (
       this.Backup();
       
       this.ExecuteEventHandlers (_eventHandlers['onpostback'], eventTarget, eventArgument);
+      this.SetCacheDetectionFieldSubmitted();
     
 	    _aspnetDoPostBack (eventTarget, eventArgument);
       if (_isMsIE)
@@ -230,6 +269,7 @@ function SmartPage_Context (
       if (this.GetActiveElement() != null)
         eventTarget = this.GetActiveElement().id;
       this.ExecuteEventHandlers (_eventHandlers['onpostback'], eventTarget, '');
+      this.SetCacheDetectionFieldSubmitted();
              
       if (_aspnetFormOnSubmit != null)
         return _aspnetFormOnSubmit();
@@ -277,18 +317,23 @@ function SmartPage_Context (
   // returns: true to continue with request
   this.CheckFormState = function()
   {
-    if (_hasUnloaded)
+    var continueRequest = true;
+    var fct = null;
+    if (_checkFormStateFunctionName != null)
+      fct = this.GetFunctionPointer (_checkFormStateFunctionName);
+    if (fct != null)
     {
-      this.ShowIsCachedMessage();
-      return false;
+      try
+      {
+        continueRequest = fct (_isAborting, _hasSubmitted, _hasUnloaded, _isCached);
+      }
+      catch (e)
+      {
+      }
     }
-    else if (_hasSubmitted || _hasAborted)
+    
+    if (! continueRequest)
     {
-      return false;
-    }
-    if (_isAborting)
-    {
-      this.ShowStatusIsAbortingMessage();
       return false;
     }
     else if (_isSubmitting)

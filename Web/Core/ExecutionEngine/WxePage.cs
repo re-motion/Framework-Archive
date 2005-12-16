@@ -22,13 +22,13 @@ namespace Rubicon.Web.ExecutionEngine
 {
 
 /// <summary> Specifies the client side events supported for registration by the <see cref="IWxePage"/>. </summary>
-public enum WxePageEvents
+public enum SmartPageEvents
 {
-  /// <summary> Rasied when the document has finished loading. Signature: <c>void Function ()</c> </summary>
+  /// <summary> Rasied when the document has finished loading. Signature: <c>void Function (hasSubmitted, isCached)</c> </summary>
   OnLoad,
-  /// <summary> Raised when the user posts back to the server. Signature: <c>void Function (eventTargetID, eventArgs</c> </summary>
+  /// <summary> Raised when the user posts back to the server. Signature: <c>void Function (eventTargetID, eventArgs)</c> </summary>
   OnPostBack,
-  /// <summary> Raised when the user leaves the page. Signature: <c>void Function ()</c> </summary>
+  /// <summary> Raised when the user leaves the page. Signature: <c>void Function (hasSubmitted, isCached)</c> </summary>
   OnAbort,
   /// <summary> Raised when the user scrolls the page. Signature: <c>void Function ()</c> </summary>
   OnScroll,
@@ -217,7 +217,7 @@ public interface IWxePage: IPage, IWxeTemplateControl
 
   /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePageEventHandler/*' />
-  void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function);
+  void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function);
 
   /// <summary> Gets the permanent URL for the current page. </summary>
   string GetPermanentUrl();
@@ -476,7 +476,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
 
   /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageEventHandler/*' />
-  public void RegisterClientSidePageEventHandler (WxePageEvents pageEvent, string key, string function)
+  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
   {
     _wxeInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
   }

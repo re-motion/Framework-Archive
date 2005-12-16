@@ -1,12 +1,46 @@
 1.3.27
 ======
 - Rubicon.Web.TabbedMultiView
+  * TabStyle und TabSelectedStyle:  
+    Properties BorderColor, BorderStyle, BorderWidth, Width und Height wurden entfernt.
+  * TabStripStyle, SeparatorStyle und TabsPaneStyle entfernt.
   * HTML und CSS wurde komplett überarbeitet um den Browsersupport zu verbessern.
     In der Applikation überschriebene CSS Klassen müssen daher angepasst werden.
-  * Style Properties für die Tabs wurden entfernt. 
-    Falls nicht alle TabbedMutliViews in der Applikation von einem Style betroffen sein sollen, 
-    kann die CssClass Property als Selector verwendet werden.
-
+      "div.tabbedMultiViewTabStrip" -> "table.tabbedMultiViewTabStrip"
+      "div.tabStripTabsPane" -> "table.tabbedMultiViewTabStrip div.tabStripTabsPane"
+        "border-bottom" kann beibehalten werden.
+      "div.tabStripTabsPane table"
+        "margin-top" muss nach "table.tabbedMultiViewTabStrip div.tabStripTabsPane ul li" übernommen werden.
+        "margin-bottom" muss nach "table.tabbedMultiViewTabStrip div.tabStripTabsPane ul" übernommen werden.
+      "td.tabStripTab"
+        "border-top" muss nach "table.tabbedMultiViewTabStrip span.tabStripTab a span.top" übernommen werden.
+        "border-bottom" muss nach "table.tabbedMultiViewTabStrip span.tabStripTab a span.bottom" übernommen werden.
+        "background-color" muss nach "table.tabbedMultiViewTabStrip span.tabStripTab a" übernommen werden.
+        "cursor" muss nach "table.tabbedMultiViewTabStrip span.tabStripTab a" übernommen werden.
+        "padding" muss nach "table.tabbedMultiViewTabStrip span.tabStripTab a span.content" übernommen werden.
+      "td.tabStripTabSelected"
+        "border-top" muss nach "table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.top" übernommen werden.
+        "border-bottom" muss nach "table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.bottom" übernommen 
+          werden.
+        "background-color" muss nach "table.tabbedMultiViewTabStrip span.tabStripTabSelected a" übernommen werden.
+        "cursor" muss nach "table.tabbedMultiViewTabStrip span.tabStripTabSelected a" übernommen werden.
+        "padding" muss nach "table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.content" übernommen werden.
+      "td.tabStripTabLeftBorder" -> "table.tabbedMultiViewTabStrip span.tabStripTab a span.right,
+        Statt "width" und "background-color" ist nun "border-left" zu verwenden.
+        "cursor" wird nicht mehr benötigt.
+      "td.tabStripTabLeftBorderSelected" -> "table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.right"
+        Statt "width" und "background-color" ist nun "border-left" zu verwenden.
+        "cursor" wird nicht mehr benötigt.
+      "td.tabStripTabRightBorder" -> "table.tabbedMultiViewTabStrip span.tabStripTab a span.right",
+        Statt "width" und "background-color" ist nun "border-right" zu verwenden.
+        "cursor" wird nicht mehr benötigt.
+      "td.tabStripTabRightBorderSelected" -> "table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.right"
+        Statt "width" und "background-color" ist nun "border-right" zu verwenden.
+        "cursor" wird nicht mehr benötigt.
+      "td.tabStripSeparator" -> "table.tabbedMultiViewTabStrip span.tabStripTabSeparator"
+        "width" und "border-bottom" können beibehalten werden.
+        "cursor" wird nicht mehr benötigt.
+    
 - Rubicon.Web.UI.Controls.IconInfo
   * IconInfo ist nicht mehr serialisierbar. Serilisierbarkeit wurde nur für ViewState benötigt und ist nun über 
     TypeConverter gelöst.
@@ -31,6 +65,12 @@
 
 - Rubicon.Web.ExecutionEngine.WxeHandler
   * CurrentFunction Property entfernt. RootFunction ist stattdessen vorgesehen.
+  
+- Rubicon.Web.ExecutionEngine.WxePageEvents
+  Umbenannt zu Rubicon.Web.UI.SmartPageEvents.
+  
+- Rubicon.Web.ExecutionEngine.WxePage
+  * CSS-Class #WxeStatusIsSubmittingMessage umbenannt zu #SmartPageStatusIsSubmittingMessage
   
 1.3.25
 ======
