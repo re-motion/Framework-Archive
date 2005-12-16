@@ -111,7 +111,10 @@ function SmartPage_Context (
   {
     window.onload = SmartPage_OnLoad;
     window.onbeforeunload = SmartPage_OnBeforeUnload; // IE, Mozilla 1.7, Firefox 0.9
-    window.onunload = SmartPage_OnUnload;
+    window.onunload = function()
+    {
+      _smartPage_context.OnUnload();
+    };
     window.onscroll = SmartPage_OnScroll;
     window.onresize = SmartPage_OnResize;
   }
@@ -596,11 +599,6 @@ function SmartPage_DoPostBack (eventTarget, eventArgument)
 function SmartPage_OnBeforeUnload()
 {
   return _smartPage_context.OnBeforeUnload();
-}
-
-function SmartPage_OnUnload()
-{
-  _smartPage_context.OnUnload();
 }
 
 function SmartPage_OnScroll()

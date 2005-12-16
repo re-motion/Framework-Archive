@@ -144,14 +144,14 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (! IsSessionManagementEnabled)
       return;
 
+    int functionTimeout = WebConfiguration.Current.ExecutionEngine.FunctionTimeout;
+    if (functionTimeout > context.Session.Timeout)
+      throw new ApplicationException ("The FunctionTimeout setting in the configuration must not be greater than the session timeout.");
     int refreshInterval = WebConfiguration.Current.ExecutionEngine.RefreshInterval;
     if (refreshInterval > 0)
     {
-      if (refreshInterval >= context.Session.Timeout)
-        throw new ApplicationException ("The RefreshInterval setting in the configuration must be less than the session timeout.");
-      int functionTimeout = WebConfiguration.Current.ExecutionEngine.FunctionTimeout;
       if (refreshInterval >= functionTimeout)
-        throw new ApplicationException ("The RefreshInterval setting in the configuration must be less than the function timeout.");
+        throw new ApplicationException ("The RefreshInterval setting in the configuration must be less than the FunctionTimeout.");
     }
   }
 

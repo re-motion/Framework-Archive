@@ -43,8 +43,11 @@ function Wxe_Context (
   
   this.OnAbort = function (hasSubmitted, isCached)
   {
-    if (! isCached && _isAbortEnabled)
+    if (   (! isCached || hasSubmitted)
+        && _isAbortEnabled)
+    {
       this.SendSessionRequest (_abortUrl);
+    }
   }
   
   this.Refresh = function ()
