@@ -71,6 +71,10 @@
   
 - Rubicon.Web.ExecutionEngine.WxePage
   * CSS-Class #WxeStatusIsSubmittingMessage umbenannt zu #SmartPageStatusIsSubmittingMessage
+ 
+- Rubicon.Web.Configuration.ExecutionEngineConfiguration
+  * FunctionTimeout muss größer als 0 und kleiner gleich dem SessionTimeout sein.
+  * RefreshIntervall muss größer gleich 0 und kleiner dem FunctionTimeout sein.
   
 1.3.25
 ======

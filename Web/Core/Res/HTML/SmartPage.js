@@ -17,6 +17,12 @@ function SmartPage_Initialize (
   _smartPage_context.Init();
 }
 
+
+function SmartPage_OnStartUp()
+{
+  _smartPage_context.OnStartUp();
+}
+
 function SmartPage_Context (
     theFormID, 
     abortMessage, statusIsSubmittingMessage,
@@ -67,7 +73,7 @@ function SmartPage_Context (
   {
     this.SetEventHandlers ();
     this.OverrideAspNetDoPostBack ();
-  }
+  };
 
   this.GetActiveElement = function()
   {
@@ -75,12 +81,12 @@ function SmartPage_Context (
       return window.document.activeElement;
     else
       return _activeElement;
-  }
+  };
 
   this.SetActiveElement = function (value)
   {
     _activeElement = value;
-  }
+  };
   
   this.Backup = function ()
   {
@@ -88,7 +94,7 @@ function SmartPage_Context (
       _smartScrollingField.value = SmartScrolling_Backup (this.GetActiveElement());
     if (_smartFocusField != null)
       _smartFocusField.value = SmartFocus_Backup (this.GetActiveElement());
-  }
+  };
   
   this.Restore = function ()
   {
@@ -96,28 +102,26 @@ function SmartPage_Context (
   	  SmartScrolling_Restore (_smartScrollingField.value);
     if (_smartFocusField != null)
   	  SmartFocus_Restore (_smartFocusField.value);
-  }
+  };
 
   this.OverrideAspNetDoPostBack = function ()
   {
     _aspnetFormOnSubmit = this.TheForm.onsubmit;
-	  this.TheForm.onsubmit = SmartPage_OnFormSubmit;
-    this.TheForm.onclick = SmartPage_OnFormClick;
+	  this.TheForm.onsubmit = function() { return _smartPage_context.OnFormSubmit(); };
+    this.TheForm.onclick = function (evt) { return _smartPage_context.OnFormClick (evt); };
 	  _aspnetDoPostBack = __doPostBack;
-	  __doPostBack = SmartPage_DoPostBack;
-  }
-  
+	  __doPostBack = function (eventTarget, eventArg) { _smartPage_context.DoPostBack (eventTarget, eventArg); };
+  };
+
   this.SetEventHandlers = function ()
   {
-    window.onload = SmartPage_OnLoad;
-    window.onbeforeunload = SmartPage_OnBeforeUnload; // IE, Mozilla 1.7, Firefox 0.9
-    window.onunload = function()
-    {
-      _smartPage_context.OnUnload();
-    };
-    window.onscroll = SmartPage_OnScroll;
-    window.onresize = SmartPage_OnResize;
-  }
+    window.onload = function() { _smartPage_context.OnLoad(); };
+    // IE, Mozilla 1.7, Firefox 0.9
+    window.onbeforeunload = function() { return _smartPage_context.OnBeforeUnload(); }; 
+    window.onunload = function() { _smartPage_context.OnUnload(); };
+    window.onscroll = function() { _smartPage_context.OnScroll(); };
+    window.onresize = function() { _smartPage_context.OnResize(); };
+  };
  
   this.SetFocusEventHandlers = function (currentElement)
   {
@@ -126,8 +130,8 @@ function SmartPage_Context (
       if (   typeof (currentElement.id) != 'undefined' && currentElement.id != null && currentElement.id != '' 
           && IsFocusableTag (currentElement.tagName))
       {
-		    currentElement.onfocus = SmartPage_OnElementFocus;
-		    currentElement.onblur  = SmartPage_OnElementBlur;
+		    currentElement.onfocus = function (evt) { _smartPage_context.OnElementBlur (evt); };
+		    currentElement.onblur  = function (evt) { _smartPage_context.OnElementFocus (evt); };
       }
       
       for (var i = 0; i < currentElement.childNodes.length; i++)
@@ -136,20 +140,20 @@ function SmartPage_Context (
         this.SetFocusEventHandlers (element);
       }
     }
-  }
+  };
 
   this.OnStartUp = function ()
   {
     if (! _isMsIE)
   	  this.SetFocusEventHandlers (document.body);
-  }
+  };
 
   this.OnLoad = function ()
   {
     this.CheckIfCached();
 	  this.Restore();
     this.ExecuteEventHandlers (_eventHandlers['onload'], _hasSubmitted, _isCached);
-  }
+  };
 
   this.CheckIfCached = function ()
   {
@@ -167,7 +171,7 @@ function SmartPage_Context (
     {
       this.SetCacheDetectionFieldLoaded();
     }
-  }
+  };
   
   this.SetCacheDetectionFieldLoaded = function ()
   {
@@ -179,7 +183,7 @@ function SmartPage_Context (
   {
     var field = this.TheForm.wxeCacheDetectionField;
     field.value = _cacheStateHasSubmitted;   
-  }
+  };
    
   // __doPostBack
   // {
@@ -218,7 +222,7 @@ function SmartPage_Context (
       // IE alternate/official version: window.event.returnValue = _smartPage_context.AbortMessage
       return _abortMessage;
     }
-  }
+  };
   
   this.OnUnload = function ()
   {
@@ -233,7 +237,7 @@ function SmartPage_Context (
     _hasUnloaded = true;
     _isSubmitting = false;
     _isAborting = false;
-  }
+  };
 
   this.DoPostBack = function (eventTarget, eventArgument)
   {
@@ -256,7 +260,7 @@ function SmartPage_Context (
         _isMsIEFormClicked = false;
 	    }
     }
-  }
+  };
 
   this.OnFormSubmit = function ()
   {
@@ -283,7 +287,7 @@ function SmartPage_Context (
     {
       return false;
     }
-  }
+  };
     
   this.OnFormClick = function (evt)
   {
@@ -315,7 +319,7 @@ function SmartPage_Context (
     {
       return null;
     }
-  }
+  };
 
   // returns: true to continue with request
   this.CheckFormState = function()
@@ -348,21 +352,21 @@ function SmartPage_Context (
     {
       return true;
     }
-  }
+  };
 
   this.OnScroll = function()
   {
     if (_statusMessageWindow != null)
       AlignStatusMessage (_statusMessageWindow);      
     this.ExecuteEventHandlers (_eventHandlers['onscroll']);
-  }
+  };
 
   this.OnResize = function()
   {
     if (_statusMessageWindow != null)
       AlignStatusMessage (_statusMessageWindow);      
     this.ExecuteEventHandlers (_eventHandlers['onresize']);
-  }
+  };
 
   this.SendOutOfBandRequest = function (url)
   {
@@ -391,7 +395,7 @@ function SmartPage_Context (
       {
       }
     }
-  }
+  };
 
   this.ExecuteEventHandlers = function (eventHandlers)
   {
@@ -421,7 +425,7 @@ function SmartPage_Context (
         }
       }
     }
-  }
+  };
 
   this.GetFunctionPointer = function (functionName)
   {
@@ -437,13 +441,13 @@ function SmartPage_Context (
     {
       return null;
     }
-  }
+  };
 
   this.ShowStatusIsSubmittingMessage = function ()
   {
     if (_statusIsSubmittingMessage != null)
       this.ShowMessage ('SmartPageStatusIsSubmittingMessage', _statusIsSubmittingMessage);
-  }
+  };
 
   this.ShowMessage = function (id, message)
   {
@@ -495,7 +499,7 @@ function SmartPage_Context (
       AlignStatusMessage (statusMessageWindow);
       _statusMessageWindow = statusMessageWindow;
     }
-  }
+  };
   
   function AlignStatusMessage (message)
   {
@@ -518,7 +522,7 @@ function SmartPage_Context (
             tagName == "input" ||
             tagName == "textarea" ||
             tagName == "select");
-  }
+  };
 
   function IsJavaScriptAnchor (element)
   {
@@ -544,12 +548,12 @@ function SmartPage_Context (
     {
       return IsJavaScriptAnchor (element.parentElement);
     }
-  }
+  };
 
   this.OnElementBlur = function (evt) 
   {
 	  this.SetActiveElement (null);
-  }
+  };
 
   this.OnElementFocus = function (evt)
   {
@@ -557,66 +561,19 @@ function SmartPage_Context (
     var eventSource = GetEventSource (evt);
     if (eventSource != null)
 		  this.SetActiveElement (eventSource);
-  }
+  };
 
   function GetEventSource (evt)
   {
-	  var e = evt ? evt : window.event;
-	  if (!e) 
+	  var e = (typeof (evt) != 'undefined') ? evt : window.event;
+	  if (e == null) 
 	    return null;
-	  if (e.target)
+	    
+	  if (typeof (e.target) != 'undefined' && e.target != null)
 		  return e.target;
-	  else if (e.srcElement)
+	  else if (typeof (e.srcElement) != 'undefined' && e.srcElement != null)
 	    return e.srcElement;
-  }
-}
-
-function SmartPage_OnStartUp()
-{
-  _smartPage_context.OnStartUp();
-}
-
-function SmartPage_OnLoad()
-{
-  _smartPage_context.OnLoad();
-}
-
-function SmartPage_OnFormClick (evt)
-{
-  return _smartPage_context.OnFormClick (evt);
-}
-
-function SmartPage_OnFormSubmit()
-{
-  return _smartPage_context.OnFormSubmit();
-}
-
-function SmartPage_DoPostBack (eventTarget, eventArgument)
-{
-  _smartPage_context.DoPostBack (eventTarget, eventArgument);
-}
-
-function SmartPage_OnBeforeUnload()
-{
-  return _smartPage_context.OnBeforeUnload();
-}
-
-function SmartPage_OnScroll()
-{
-  _smartPage_context.OnScroll();
-}
-
-function SmartPage_OnResize()
-{
-  _smartPage_context.OnResize();
-}
-
-function SmartPage_OnElementBlur (evt) 
-{
-  _smartPage_context.OnElementBlur (evt);
-}
-
-function SmartPage_OnElementFocus (evt)
-{
-  _smartPage_context.OnElementFocus (evt);
+	  else
+	    return null;
+  };
 }

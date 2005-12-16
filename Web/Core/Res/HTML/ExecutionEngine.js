@@ -26,9 +26,9 @@ function Wxe_Context (
   if (refreshInterval > 0)
   {
     _refreshUrl = refreshUrl;
-    _refreshTimer = window.setInterval(Wxe_Refresh, refreshInterval);
+    _refreshTimer = window.setInterval (function() { _wxe_context.Refresh(); }, refreshInterval);
   }
-  
+
   var _abortUrl = abortUrl;
   var _isAbortEnabled = abortUrl != null;
 
@@ -110,11 +110,6 @@ function Wxe_OnUnload()
 function Wxe_OnAbort (hasSubmitted, isCached)
 {
   _wxe_context.OnAbort (hasSubmitted, isCached);
-}
-
-function Wxe_Refresh()
-{
-  _wxe_context.Refresh();
 }
 
 function Wxe_CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached)
