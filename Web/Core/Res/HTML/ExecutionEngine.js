@@ -11,8 +11,6 @@ function Wxe_Initialize (
       refreshInterval, refreshUrl, 
       abortUrl, 
       statusIsAbortingMessage, statusIsCachedMessage);
-  
-  _wxe_context.Init();
 }
 
 function Wxe_Context (
@@ -34,28 +32,8 @@ function Wxe_Context (
   var _abortUrl = abortUrl;
   var _isAbortEnabled = abortUrl != null;
 
-  var _isSubmitting = false;
-  var _hasSubmitted = false;
-  // Special flag to support the OnBeforeUnload part
-  var _isSubmittingBeforeUnload = false;
-
-  var _isAborting = false;
-  var _isCached = false;
-  // Special flag to support the OnBeforeUnload part
-  var _isAbortingBeforeUnload = false;
   var _statusIsAbortingMessage = statusIsAbortingMessage;
-
   var _statusIsCachedMessage = statusIsCachedMessage;
-  var _hasUnloaded = false;
-  var _isMsIEAspnetPostBack = false;
-  var _isMsIEFormClicked = false;
-    
-  var _activeElement = null;
-  var _isMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
-
-  this.Init = function()
-  {
-  }
 
   this.OnLoad = function (hasSubmitted, isCached)
   {

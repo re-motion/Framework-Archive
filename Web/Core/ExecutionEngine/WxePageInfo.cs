@@ -284,8 +284,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
       string resumePath = wxeContext.GetPath (wxeContext.FunctionToken, null);
 
-      refreshIntervall = WxeHandler.RefreshInterval * 60000;
-      refreshPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Refresh + "'";
+      if (WxeHandler.IsSessionRefreshEnabled)
+      {
+        refreshIntervall = WxeHandler.RefreshInterval * 60000;
+        refreshPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Refresh + "'";
+      }
       
       if (isAbortEnabled)
         abortPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Abort + "'";

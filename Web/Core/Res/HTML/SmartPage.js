@@ -424,7 +424,11 @@ function SmartPage_Context (
   {
     try
     {
-      return eval (functionName);
+      var fct = eval (functionName);
+      if (typeof (fct) == 'function')
+        return fct;
+      else
+        return null
     }
     catch (e)
     {
@@ -564,14 +568,14 @@ function SmartPage_Context (
   }
 }
 
-function SmartPage_OnScroll()
+function SmartPage_OnStartUp()
 {
-  _smartPage_context.OnScroll();
+  _smartPage_context.OnStartUp();
 }
 
-function SmartPage_OnResize()
+function SmartPage_OnLoad()
 {
-  _smartPage_context.OnResize();
+  _smartPage_context.OnLoad();
 }
 
 function SmartPage_OnFormClick (evt)
@@ -589,16 +593,6 @@ function SmartPage_DoPostBack (eventTarget, eventArgument)
   _smartPage_context.DoPostBack (eventTarget, eventArgument);
 }
 
-function SmartPage_OnStartUp()
-{
-  _smartPage_context.OnStartUp();
-}
-
-function SmartPage_OnLoad()
-{
-  _smartPage_context.OnLoad();
-}
-
 function SmartPage_OnBeforeUnload()
 {
   return _smartPage_context.OnBeforeUnload();
@@ -607,6 +601,16 @@ function SmartPage_OnBeforeUnload()
 function SmartPage_OnUnload()
 {
   _smartPage_context.OnUnload();
+}
+
+function SmartPage_OnScroll()
+{
+  _smartPage_context.OnScroll();
+}
+
+function SmartPage_OnResize()
+{
+  _smartPage_context.OnResize();
 }
 
 function SmartPage_OnElementBlur (evt) 

@@ -22,12 +22,20 @@ public class ExecutionEngineConfiguration
   private string _defaultWxeHandler = string.Empty;
 
   /// <summary> Gets or sets the default timeout for individual functions within one session. </summary>
-  /// <value> The timeout in mintues. Defaults to 20 minutes. </value>
+  /// <value> The timeout in mintues. Defaults to 20 minutes. Must greater than zero. </value>
   [XmlAttribute ("functionTimeout")]
   public int FunctionTimeout
   {
-    get { return _functionTimeout; }
-    set { _functionTimeout = value; }
+    get 
+    {
+      return _functionTimeout; 
+    }
+    set
+    {
+      if (value < 1)
+        throw new ArgumentException ("The FunctionTimeout must be greater than zero.");
+      _functionTimeout = value; 
+    }
   }
 
   /// <summary> Gets or sets a flag that determines whether session management is employed. </summary>
@@ -40,12 +48,20 @@ public class ExecutionEngineConfiguration
   }
 
   /// <summary> Gets or sets the default refresh intervall for a function. </summary>
-  /// <include file='doc\include\Configuration\ExecutionEngineConfiguration.xml' path='ExecutionEngineConfiguration/EnableSessionManagement/*' />
+  /// <include file='doc\include\Configuration\ExecutionEngineConfiguration.xml' path='ExecutionEngineConfiguration/RefreshInterval/*' />
   [XmlAttribute ("refreshInterval")]
   public int RefreshInterval
   {
-    get { return _refreshInterval; }
-    set { _refreshInterval = value; }
+    get
+    {
+      return _refreshInterval; 
+    }
+    set
+    {
+      if (value < 0)
+        throw new ArgumentException ("The RefreshInterval must not be a negative number.");
+      _refreshInterval = value; 
+    }
   }
 
   /// <summary> Gets or sets the path to the file holding the URL mapping configuration. </summary>
