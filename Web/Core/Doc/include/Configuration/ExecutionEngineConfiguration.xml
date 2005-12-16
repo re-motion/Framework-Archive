@@ -38,7 +38,7 @@
   </EnableSessionManagement>
   <RefreshIntervall>
     <value> 
-      The timeout in mintues. Use zero to disable refreshing. Defaults to 10 minutes. 
+      The timeout in mintues. Use zero to disable refreshing. Defaults to 10 minutes. Must not be a negative number.
     </value>
     <remarks> 
       The value must be less than both the <see cref="FunctionTimeout"/> and the 
