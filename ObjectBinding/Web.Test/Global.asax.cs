@@ -79,9 +79,7 @@ public class Global : System.Web.HttpApplication // , IResourceUrlResolver
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    // 
-    // Global
-    // 
+			this.components = new System.ComponentModel.Container();
   }
 	#endregion
 }

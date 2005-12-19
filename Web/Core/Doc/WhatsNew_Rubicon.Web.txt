@@ -67,11 +67,21 @@
   * CurrentFunction Property entfernt. RootFunction ist stattdessen vorgesehen.
   
 - Rubicon.Web.ExecutionEngine.WxePageEvents
-  Umbenannt zu Rubicon.Web.UI.SmartPageEvents.
+  Umbenannt zu SmartPageEvents im Namespace Rubicon.Web.UI.
   
 - Rubicon.Web.ExecutionEngine.WxePage
   * CSS-Class #WxeStatusIsSubmittingMessage umbenannt zu #SmartPageStatusIsSubmittingMessage
- 
+  * Obsolete Methoden void ExecuteFunction (WxeFunction, string, Control, bool)
+    und void ExecuteFunction (WxeFunction, string, string, Control, bool) entfernt.
+    Funktionalität wird durch void ExecuteFunctionExternal (WxeFunction, string, Control, bool)
+    bzw void ExecuteFunctionExternal (WxeFunction, string, Control, bool) bereitgestellt.  
+  * Obsolete Methode void OnBeforeInit() entfernt. Funktionalität wird nun void OnPreInit() bereitgestellt
+  * Resourcen:
+    "Rubicon.Web.ExecutionEngine.WxePageInfo.AbortMessage" umbenannt zu 
+      "Rubicon.Web.UI.SmartPageInfo.AbortMessage"
+    "Rubicon.Web.ExecutionEngine.WxePageInfo.StatusIsSubmittingMessage" umbenannt zu 
+      "Rubicon.Web.UI.SmartPageInfo.StatusIsSubmittingMessage"
+    
 - Rubicon.Web.Configuration.ExecutionEngineConfiguration
   * FunctionTimeout muss größer als 0 und kleiner gleich dem SessionTimeout sein.
   * RefreshIntervall muss größer gleich 0 und kleiner dem FunctionTimeout sein.

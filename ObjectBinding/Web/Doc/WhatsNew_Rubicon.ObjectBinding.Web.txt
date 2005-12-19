@@ -18,7 +18,7 @@
   
 - BocCustomColumnDefinition
   * Bugfix: IsSortable hatte den falschen Default-Wert: Resultat: IsSortable konnte nicht im Designer auf True
-    gesetzt werden.
+    gesetzt werden. Vorhanden seit Einführung von IsSortable in Version 1.2.8.
 
 - BocList
   * Inline Editing: Es wird nur noch ein BO-Control gerendert, wenn sowohl die Spalte als auch die Property 
@@ -778,7 +778,7 @@
 - BocList
   * EnableSelection wurde zu Selection vom Typ RowSelection geändert.
     Muss in allen aspx/ascx Dateien angepasst werden, wo eine BocList mit eingeschalteter Selection ist.
-  * AdditionColumns
+  * AdditionalColumns
     Können die AdditionalColumns erst nach dem LoadViewState wieder hergestellt werden, so muss bis zur erfolgten 
     Wiederherstellung ShowAdditionalColumns auf false gesetzt werden.
     

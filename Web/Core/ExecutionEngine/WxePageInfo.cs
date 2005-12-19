@@ -34,49 +34,36 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   [MultiLingualResources ("Rubicon.Web.Globalization.WxePageInfo")]
   protected enum ResourceIdentifier
   {
-    /// <summary> Displayed when the user attempts to abort the WXE Function. </summary>
-    AbortMessage,
-    /// <summary> Displayed when the user attempts to submit while the page is already submitting. </summary>
-    StatusIsSubmittingMessage,
     /// <summary> Displayed when the user attempts to submit while the page is already aborting. </summary>
     StatusIsAbortingMessage,
     /// <summary> Displayed when the user returnes to a cached page that has already been submitted or aborted. </summary>
     StatusIsCachedMessage
   }
 
-
   public static readonly string ReturningTokenID = "wxeReturningTokenField";
   public static readonly string PageTokenID = "wxePageTokenField";
   public static readonly string PostBackSequenceNumberID = "wxePostBackSequenceNumberField";
-  public static readonly string CacheDetectionID = "wxeCacheDetectionField";
-  private const string c_smartScrollingID = "smartScrolling";
-  private const string c_smartFocusID = "smartFocus";
+  
   private const string c_scriptFileUrl = "ExecutionEngine.js";
   private const string c_styleFileUrl = "ExecutionEngine.css";
   private const string c_styleFileUrlForIE = "ExecutionEngineIE.css";
-  private const string c_smartNavigationScriptFileUrl = "SmartNavigation.js";
-  private const string c_smartPageScriptFileUrl = "SmartPage.js";
 
   private static readonly string s_scriptFileKey = typeof (WxePageInfo).FullName + "_Script";
   private static readonly string s_styleFileKey = typeof (WxePageInfo).FullName + "_Style";
   private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).FullName + "_StyleIE";
-  private static readonly string s_smartNavigationScriptKey = typeof (WxePageInfo).FullName+ "_SmartNavigation";
-  private static readonly string s_smartPageScriptKey = typeof (WxePageInfo).FullName+ "_SmartPage";
 
+  private const string c_checkFormStateMethod = "Wxe_CheckFormState";
+
+  private SmartPageInfo _smartPageInfo;
   private IWxePage _page;
   private WxeForm _wxeForm;
   private bool _postbackCollectionInitialized = false;
   private NameValueCollection _postbackCollection = null;
   /// <summary> The <see cref="WxeFunctionState"/> designated by <b>WxeForm.ReturningToken</b>. </summary>
   private WxeFunctionState _returningFunctionState = null;
-  private bool _isSmartNavigationDataDisacarded = false;
-  private string _smartFocusID = null;
 
   private bool _executeNextStep = false;
   private HttpContext _httpContext;
-
-  private bool _isPreRendering = false;
-  private AutoInitHashtable _clientSideEventHandlers = new AutoInitHashtable (typeof (NameValueCollection));
 
   /// <summary> Initializes a new instance of the <b>WxePageInfo</b> type. </summary>
   /// <param name="page"> 
@@ -88,6 +75,16 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));
     _page = page;
+    _smartPageInfo = new SmartPageInfo ((ISmartPage) page);
+  }
+
+  /// <summary> 
+  ///   Implements <see cref="ISmartPage.HtmlForm">ISmartPage.HtmlForm</see>.
+  /// </summary>
+  public HtmlForm HtmlForm
+  {
+    get { return _smartPageInfo.HtmlForm; }
+    set { _smartPageInfo.HtmlForm = value; }
   }
 
   public override void Initialize (HttpContext context)
@@ -107,29 +104,14 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     if (_page.CurrentStep != null)
       _page.RegisterHiddenField (WxePageInfo.PageTokenID, CurrentStep.PageToken);
 
-    _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
-    _page.Init += new EventHandler (Page_Init);
+    // First register event handlers for WXE
     _page.PreRender += new EventHandler(Page_PreRender);
-  }
-
-  void Page_Init(object sender, EventArgs e)
-  {
-#if ! NET11
-    if (((Page) _page).Header != null)
-    {
-      bool hasHeadContents = false;
-      foreach (Control control in ((Page) _page).Header.Controls)
-      {
-        if (control is HtmlHeadContents)
-        {
-          hasHeadContents = true;
-          break;
-        }
-      }
-      if (! hasHeadContents)
-        ((Page) _page).Header.Controls.AddAt (0, new HtmlHeadContents());
-    }
-#endif
+    _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
+    
+    //  Then initialize SmartPageInfo. 
+    // WxePageInfo event handlers will be invoked before SmartPageInfo event handlers.
+    _smartPageInfo.Initialize (context);
+    _smartPageInfo.CheckFormStateMethod = c_checkFormStateMethod;
   }
 
   private void Form_LoadPostData (object sender, EventArgs e)
@@ -169,14 +151,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
   private void Page_PreRender (object sender, EventArgs e)
   {
-    PreRenderWxe();
-    PreRenderSmartNavigation();
-    
-    _isPreRendering = true;
-  }
-
-  private void PreRenderWxe()
-  {
     WxeContext wxeContext = WxeContext.Current;
     Page page = (Page) _page;
     
@@ -184,7 +158,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     page.RegisterHiddenField (WxePageInfo.ReturningTokenID, null);
     int nextPostBackID = wxeContext.PostBackID + 1;
     page.RegisterHiddenField (WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString());
-    page.RegisterHiddenField (WxePageInfo.CacheDetectionID, null);
 
     string key = "wxeDoSubmit";
     PageUtility.RegisterClientScriptBlock (page, key,
@@ -202,10 +175,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         + "  __doPostBack (control, argument); \r\n"
         + "}");
 
-    string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_smartPageScriptFileUrl);
-    HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartPageScriptKey, url);
-
-    url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
+    string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
     HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
 
     if (! ControlHelper.IsDesignMode (page))
@@ -228,41 +198,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     context.Response.Cache.SetCacheability (HttpCacheability.Private);
   }
 
-  private void PreRenderSmartNavigation()
-  {
-    ISmartNavigablePage smartNavigablePage = _page as ISmartNavigablePage;
-    if (smartNavigablePage == null)
-      return;
-
-    NameValueCollection postBackCollection = _page.GetPostBackCollection();
-    Page page = (Page) _page;
-
-    if (smartNavigablePage.IsSmartScrollingEnabled || smartNavigablePage.IsSmartFocusingEnabled)
-    {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          page, typeof (WxePageInfo), ResourceType.Html, c_smartNavigationScriptFileUrl);
-      HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_smartNavigationScriptKey, url);
-    }
-
-    if (smartNavigablePage.IsSmartScrollingEnabled)
-    {
-      string smartScrollingValue = null;
-      if (postBackCollection != null && !_isSmartNavigationDataDisacarded)
-        smartScrollingValue = postBackCollection[c_smartScrollingID];
-      page.RegisterHiddenField (c_smartScrollingID, smartScrollingValue);
-    }
-
-    if (smartNavigablePage.IsSmartFocusingEnabled)
-    {
-      string smartFocusValue = null;
-      if (postBackCollection != null && !_isSmartNavigationDataDisacarded)
-        smartFocusValue = postBackCollection[c_smartFocusID];
-      if (! StringUtility.IsNullOrEmpty (_smartFocusID))
-        smartFocusValue = _smartFocusID;
-      page.RegisterHiddenField (c_smartFocusID, smartFocusValue);
-    }
-  }
-
   private void RegisterWxeInitializationScript()
   {
     IResourceManager resourceManager = GetResourceManager();
@@ -273,13 +208,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     int refreshIntervall = 0;
     string refreshPath = "null";
     string abortPath = "null";
-    string abortMessage = "null";
     if (WxeHandler.IsSessionManagementEnabled)
     {
       //  Ensure the registration of "__doPostBack" on the page.
       temp = _page.GetPostBackEventReference ((Page)_page);
 
-      bool isAbortConfirmationEnabled = _page.IsAbortConfirmationEnabled;
       bool isAbortEnabled = _page.IsAbortEnabled;
 
       string resumePath = wxeContext.GetPath (wxeContext.FunctionToken, null);
@@ -292,28 +225,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       
       if (isAbortEnabled)
         abortPath = "'" + resumePath + "&" + WxeHandler.Parameters.WxeAction + "=" + WxeHandler.Actions.Abort + "'";
-      
-      if (isAbortEnabled && isAbortConfirmationEnabled)
-      {
-        if (StringUtility.IsNullOrEmpty (_page.AbortMessage))
-          temp = resourceManager.GetString (ResourceIdentifier.AbortMessage);
-        else
-          temp = _page.AbortMessage;
-        abortMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
-      }
     }
 
-    string statusIsSubmittingMessage = "null";
     string statusIsAbortingMessage = "null";        
     string statusIsCachedMessage = "null";
     if (_page.AreStatusMessagesEnabled)
     {
-      if (StringUtility.IsNullOrEmpty (_page.StatusIsSubmittingMessage))
-        temp = resourceManager.GetString (ResourceIdentifier.StatusIsSubmittingMessage);
-      else
-        temp = _page.StatusIsSubmittingMessage;
-      statusIsSubmittingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
-
       if (StringUtility.IsNullOrEmpty (_page.StatusIsAbortingMessage))
         temp = resourceManager.GetString (ResourceIdentifier.StatusIsAbortingMessage);
       else
@@ -326,69 +243,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         temp = _page.StatusIsCachedMessage;
       statusIsCachedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
     }
-
-    string smartScrollingFieldID = "null";
-    string smartFocusFieldID = "null";
-
-    ISmartNavigablePage smartNavigablePage = _page as ISmartNavigablePage;
-    if (smartNavigablePage != null)
-    {
-      if (smartNavigablePage.IsSmartScrollingEnabled)
-        smartScrollingFieldID = "'" + c_smartScrollingID + "'";
-      if (smartNavigablePage.IsSmartFocusingEnabled)
-        smartFocusFieldID = "'" + c_smartFocusID + "'";
-    }
  
     RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "Wxe_OnLoad", "Wxe_OnLoad");
     RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "Wxe_OnAbort", "Wxe_OnAbort");
-    RegisterClientSidePageEventHandler (SmartPageEvents.OnBeforeUnload, "Wxe_OnBeforeUnload", "Wxe_OnBeforeUnload");
     RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Wxe_OnUnload", "Wxe_OnUnload");
 
   
     StringBuilder initScript = new StringBuilder (500);
-
-    initScript.Append ("var _smartPage_eventHandlers = new Array(); \r\n");
-    initScript.Append ("var _smartPage_eventHandlersByEvent = null; \r\n");
-    initScript.Append ("\r\n");
-
-    foreach (SmartPageEvents pageEvent in _clientSideEventHandlers.Keys)
-    {
-      NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
-
-      initScript.Append ("_smartPage_eventHandlersByEvent = new Array(); \r\n");
-
-      for (int i = 0; i < eventHandlers.Keys.Count; i++)
-      {
-        initScript.Append ("_smartPage_eventHandlersByEvent.push ('");
-        initScript.Append (eventHandlers.Get (i));
-        initScript.Append ("'); \r\n");
-      }
-      
-      initScript.Append ("_smartPage_eventHandlers['");
-      initScript.Append (pageEvent.ToString().ToLower());
-      initScript.Append ("'] = _smartPage_eventHandlersByEvent; \r\n");
-      initScript.Append ("\r\n");
-    }
-
-    initScript.Append ("SmartPage_Initialize (\r\n");
-    initScript.Append ("    '").Append (_wxeForm.ClientID).Append ("',\r\n");
-    initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (statusIsSubmittingMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (smartScrollingFieldID).Append (",\r\n");
-    initScript.Append ("    ").Append (smartFocusFieldID).Append (",\r\n");
-    initScript.Append ("    'Wxe_CheckFormState',\r\n");
-    initScript.Append ("    _smartPage_eventHandlers); \r\n");
-
-    initScript.Append ("\r\n");
-    initScript.Append ("_smartPage_eventHandlers = null; \r\n");
-    initScript.Append ("_smartPage_eventHandlersByEvent = null;");
-
-    PageUtility.RegisterClientScriptBlock ((Page)_page, "smartPageInitialize", initScript.ToString());
-    PageUtility.RegisterStartupScriptBlock ((Page)_page, "smartPageStartUp", "SmartPage_OnStartUp();");
-
-
-
-    initScript = new StringBuilder (500);
 
     initScript.Append ("Wxe_Initialize (\r\n");
     initScript.Append ("    '").Append (_wxeForm.ClientID).Append ("',\r\n");
@@ -757,21 +618,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
-  /// <summary> Implements <see cref="IWxePage.RegisterClientSidePageEventHandler">IWxePage.RegisterClientSidePageEventHandler</see>. </summary>
-  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-    ArgumentUtility.CheckNotNullOrEmpty ("function", function);
-    if (! System.Text.RegularExpressions.Regex.IsMatch (function, @"^([a-zA-Z_][a-zA-Z0-9_]*)$"))
-      throw new ArgumentException ("Invalid function name: '" + function + "'.", "function");
-
-    if (_isPreRendering)
-      throw new InvalidOperationException ("RegisterClientSidePageEventHandler must not be called after the PreRender method of the System.Web.UI.Page has been invoked.");
-
-    NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
-    eventHandlers[key] = function;
-  }
-
   /// <summary> Saves the viewstate into the executing <see cref="WxePageStep"/>. </summary>
   /// <param name="viewState"> An <b>ASP.NET</b> viewstate object. </param>
   public void SavePageStateToPersistenceMedium (object viewState)
@@ -827,76 +673,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     get { return _wxeForm; }
   }
 
-  private FieldInfo _htmlFormField = null;
-  private bool _htmlFormFieldInitialized = false;
-
-  private void EnsureHtmlFormFieldInitialized()
-  {
-    if (! _htmlFormFieldInitialized)
-    {
-      bool isDesignMode = ControlHelper.IsDesignMode (_page);
-
-      Control page = (Page) _page;
-#if ! NET11      
-      if (((Page) page).Master != null)
-        page = ((Page) page).Master;
-#endif
-
-      MemberInfo[] fields = page.GetType().FindMembers (
-            MemberTypes.Field, 
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
-            new MemberFilter (FindHtmlFormControlFilter), null);
-      if (fields.Length < 1 && ! isDesignMode)
-        throw new ApplicationException ("Page class " + page.GetType().FullName + " has no field of type HtmlForm. Please add a field or override property IWxePage.HtmlForm.");
-      else if (fields.Length > 1)
-        throw new ApplicationException ("Page class " + page.GetType().FullName + " has more than one field of type HtmlForm. Please remove excessive fields or override property IWxePage.HtmlForm.");
-      if (fields.Length > 0) // Can only be null without an exception during design mode
-      {
-        _htmlFormField = (FieldInfo) fields[0];
-        _htmlFormFieldInitialized = true;
-      }
-    }
-  }
-
-  private bool FindHtmlFormControlFilter (MemberInfo member, object filterCriteria)
-  {
-    return (member is FieldInfo && ((FieldInfo)member).FieldType == typeof (HtmlForm));
-  }
-
-  /// <summary> 
-  ///   Implements <see cref="IWxePage.HtmlForm">IWxePage.HtmlForm</see>.
-  /// </summary>
-  public HtmlForm HtmlForm
-  {
-    get
-    {
-      EnsureHtmlFormFieldInitialized();
-
-      Control page = (Page) _page;
-#if ! NET11      
-      if (((Page) page).Master != null)
-        page = ((Page) page).Master;
-#endif
-      if (_htmlFormField != null) // Can only be null without an exception during design mode
-        return (HtmlForm) _htmlFormField.GetValue (page);
-      else
-        return null;
-    }
-    set
-    {
-      EnsureHtmlFormFieldInitialized();
-
-      Control page = (Page) _page;
-#if ! NET11      
-      if (((Page) page).Master != null)
-        page = ((Page) page).Master;
-#endif
-
-      if (_htmlFormField != null) // Can only be null without an exception during design mode
-        _htmlFormField.SetValue (page, value);
-    }
-  }
-
   
   /// <summary> Find the <see cref="IResourceManager"/> for this WxePageInfo. </summary>
   protected virtual IResourceManager GetResourceManager()
@@ -905,12 +681,18 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
 
+  /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
+  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
+  {
+    _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
+  }
+
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.UI.ISmartNavigablePage.DiscardSmartNavigationData()">ISmartNavigablePage.DiscardSmartNavigationData()</see>.
   /// </summary>
   public void DiscardSmartNavigationData ()
   {
-    _isSmartNavigationDataDisacarded = true;
+    _smartPageInfo.DiscardSmartNavigationData();
   }
 
   /// <summary>
@@ -918,10 +700,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void SetFocus (IFocusableControl control)
   {
-    ArgumentUtility.CheckNotNull ("control", control);
-    if (StringUtility.IsNullOrEmpty (control.FocusID))
-      return;
-    SetFocus (control.FocusID);
+    _smartPageInfo.SetFocus (control);
   }
 
   /// <summary>
@@ -929,8 +708,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public void SetFocus (string id)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-    _smartFocusID = id;
+    _smartPageInfo.SetFocus (id);
   }
 
   private NameObjectCollection WindowState

@@ -35,21 +35,21 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ///     The argument may be presented as a regular .net Type string or the abbreviated version as specified in
     ///     <see cref="TypeUtility.ParseAbbreviatedTypeName"/>.
     /// </remarks>
-    public const string WxeFunctionType = "WxeFunctionType";
+    public static readonly string WxeFunctionType = "WxeFunctionType";
 
     /// <summary> Denotes the <b>ID</b> of the <see cref="WxeFunction"/> to be resumed. </summary>
-    public const string WxeFunctionToken = "WxeFunctionToken";
+    public static readonly string WxeFunctionToken = "WxeFunctionToken";
     
     /// <summary> Denotes the <b>URL</b> to return to after the function has completed. </summary>
     /// <remarks>   
     ///   Only evaluated during initialization. Replaces the <see cref="WxeFunction.ReturnUrl"/> defined by the 
     ///   function it self. 
     /// </remarks>
-    public const string ReturnUrl = "ReturnUrl";
+    public static readonly string ReturnUrl = "ReturnUrl";
     
     /// <summary> Denotes a special action to be executed. </summary>
     /// <remarks> See the <see cref="Actions"/> type for a list of supported arguments. </remarks>
-    public const string WxeAction = "WxeAction";
+    public static readonly string WxeAction = "WxeAction";
   }
 
   /// <summary> Denotes the arguments supported for the <see cref="Parameters.WxeAction"/> parameter. </summary>
@@ -57,13 +57,13 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   public class Actions
   {
     /// <summary> Denotes a session refresh. </summary>
-    public const string Refresh = "Refresh";
+    public static readonly string Refresh = "Refresh";
     
     /// <summary> Denotes a session abort. </summary>
-    public const string Abort = "Abort";
+    public static readonly string Abort = "Abort";
 
     /// <summary> Denotes a session abort. (Obsolete) </summary>
-    public const string Cancel = "Cancel";
+    public static readonly string Cancel = "Cancel";
   }
 
 

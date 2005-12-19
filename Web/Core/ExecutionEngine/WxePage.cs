@@ -21,36 +21,10 @@ using Rubicon.Utilities;
 namespace Rubicon.Web.ExecutionEngine
 {
 
-/// <summary> Specifies the client side events supported for registration by the <see cref="IWxePage"/>. </summary>
-public enum SmartPageEvents
-{
-  /// <summary> Rasied when the document has finished loading. Signature: <c>void Function (hasSubmitted, isCached)</c> </summary>
-  OnLoad,
-  /// <summary> Raised when the user posts back to the server. Signature: <c>void Function (eventTargetID, eventArgs)</c> </summary>
-  OnPostBack,
-  /// <summary> Raised when the user leaves the page. Signature: <c>void Function (hasSubmitted, isCached)</c> </summary>
-  OnAbort,
-  /// <summary> Raised when the user scrolls the page. Signature: <c>void Function ()</c> </summary>
-  OnScroll,
-  /// <summary> Raised when the user resizes the page. Signature: <c>void Function ()</c> </summary>
-  OnResize,
-  /// <summary> 
-  ///   Raised before the request to load a new page (or reload the current page) is executed. Not supported in Opera.
-  ///   Signature: <c>void Function ()</c>
-  /// </summary>
-  OnBeforeUnload,
-  /// <summary> Raised before the page is removed from the window. Signature: <c>void Function ()</c> </summary>
-  OnUnload
-}
-
 /// <summary> This interface represents a page that can be used in a <see cref="WxePageStep"/>. </summary>
 /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/Class/*' />
-public interface IWxePage: IPage, IWxeTemplateControl
+public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
 {
-  /// <summary> Gets the post back data for the page. </summary>
-  /// <remarks> Application developers should only rely on this collection for accessing the post back data. </remarks>
-  NameValueCollection GetPostBackCollection ();
-
   /// <summary> End this page step and continue with the WXE function. </summary>
   void ExecuteNextStep ();
 
@@ -172,34 +146,16 @@ public interface IWxePage: IPage, IWxeTemplateControl
   WxeFunction ReturningFunction { get; }
 
   /// <summary>
-  ///   Gets or sets a flag that determines whether to display a confirmation dialog before aborting the session. 
-  ///  </summary>
-  /// <value> <see langowrd="true"/> to display the confirmation dialog. </value>
-  bool IsAbortConfirmationEnabled { get; }
-
-  /// <summary>
   ///   Gets or sets a flag that determines whether abort the session upon closing the window. 
   ///  </summary>
   /// <value> <see langowrd="true"/> to abort the session upon navigtion away from the page. </value>
   bool IsAbortEnabled { get; }
-
-  /// <summary> Gets the message displayed when the user attempts to abort the WXE Function. </summary>
-  /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
-  /// </remarks>
-  string AbortMessage { get; }
 
   /// <summary> 
   ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
   ///   tries to e.g. postback while a request is being processed.
   /// </summary>
   bool AreStatusMessagesEnabled { get; }
-
-  /// <summary> Gets the message displayed when the user attempts to submit while the page is already submitting. </summary>
-  /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
-  /// </remarks>
-  string StatusIsSubmittingMessage { get; }
 
   /// <summary> Gets the message displayed when the user attempts to submit while the page is already aborting. </summary>
   /// <remarks> 
@@ -215,9 +171,6 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// </remarks>
   string StatusIsCachedMessage { get; }
 
-  /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/RegisterClientSidePageEventHandler/*' />
-  void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function);
 
   /// <summary> Gets the permanent URL for the current page. </summary>
   string GetPermanentUrl();
@@ -233,11 +186,6 @@ public interface IWxePage: IPage, IWxeTemplateControl
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
   string GetPermanentUrl (Type functionType, NameValueCollection queryString);
 
-  /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  HtmlForm HtmlForm { get; set; }
-
-
   /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
   WxeHandler WxeHandler { get; }
@@ -252,23 +200,6 @@ public interface IWxePage: IPage, IWxeTemplateControl
 /// <seealso cref="ISmartNavigablePage"/>
 public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
 {
-  /// <summary> Obsolete. Executes the <paramref name="function"/> in another window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
-  [Obsolete ("Use ExecuteFunctionExternal (WxeFunction, string, Control, bool) instead.")]
-  public void ExecuteFunction (WxeFunction function, string target, Control sender, bool returningPostback)
-  {
-    ExecuteFunctionExternal (function, target, sender, returningPostback);
-  }
-
-  /// <summary> Obsolete. Executes the <paramref name="function"/> in another window or frame. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
-  [Obsolete ("Use ExecuteFunctionExternal (WxeFunction, string, string Control, bool) instead.")]
-  public void ExecuteFunction (
-      WxeFunction function, string target, string features, Control sender, bool returningPostback)
-  {
-    ExecuteFunctionExternal (function, target, features, sender, returningPostback);
-  }
-
   #region IWxePage Impleplementation
 
   /// <summary> End this page step and continue with the WXE function. </summary>
@@ -474,12 +405,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     get { return _wxeInfo.ReturningFunction; }
   }
 
-  /// <summary> Registers a Java Script function to be executed when the page is aborted. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageEventHandler/*' />
-  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
-  {
-    _wxeInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
-  }
 
   /// <summary> Gets the permanent URL for the current page. </summary>
   public string GetPermanentUrl ()
@@ -534,8 +459,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
 
-  // protected HtmlForm Form; - won't work in VS 2005
-
   public WxePage ()
   {
     _wxeInfo = new WxePageInfo (this);
@@ -550,7 +473,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     _wxeInfo.Initialize (Context);
 #if NET11
     OnPreInit();
-    OnBeforeInit();
 #endif
     return result;
   }
@@ -562,11 +484,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   ///   the postback collection during pre init.
   /// </remarks>
   protected virtual void OnPreInit ()
-  {
-  }
-
-  [Obsolete ("Use OnPreInit instead.") ]
-  protected virtual void OnBeforeInit()
   {
   }
 #endif
@@ -612,6 +529,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   }
 
   /// <summary> Gets the post back data for the page. </summary>
+  /// <remarks> Application developers should only rely on this collection for accessing the post back data. </remarks>
   public NameValueCollection GetPostBackCollection ()
   {
     return _wxeInfo.EnsurePostBackModeDetermined (Context);
@@ -659,7 +577,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
 
   /// <summary> Gets or sets the <b>HtmlForm</b> of this page. </summary>
   /// <remarks> Redirects the call to the <see cref="HtmlForm"/> property. </remarks>
-  HtmlForm IWxePage.HtmlForm
+  HtmlForm ISmartPage.HtmlForm
   {
     get { return HtmlForm; }
     set { HtmlForm = value; }
@@ -712,6 +630,16 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
 
 
   /// <summary> 
+  ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageEventHandler/*' />
+  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
+  {
+    _wxeInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
+  }
+
+
+  /// <summary> 
   ///   Gets or sets the flag that determines whether to display a confirmation dialog before aborting the session. 
   /// </summary>
   /// <value> 
@@ -739,9 +667,9 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
 
   /// <summary> Implementation of <see cref="IWxePage.IsAbortConfirmationEnabled"/>. </summary>
   /// <value> The value returned by <see cref="IsAbortConfirmationEnabled"/>. </value>
-  bool IWxePage.IsAbortConfirmationEnabled
+  bool ISmartPage.IsAbortConfirmationEnabled
   {
-    get { return IsAbortConfirmationEnabled; }
+    get { return IsAbortEnabled && IsAbortConfirmationEnabled; }
   }
 
   /// <summary> Gets or sets the flag that determines whether to abort the session upon closing the window. </summary>
@@ -826,6 +754,13 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     get { return AreStatusMessagesEnabled; }
   }
 
+  /// <summary> Implementation of <see cref="ISmartPage.IsStatusIsSubmittingMessageEnabled"/>. </summary>
+  /// <value> The value returned by <see cref="AreStatusMessagesEnabled"/>. </value>
+  bool ISmartPage.IsStatusIsSubmittingMessageEnabled
+  {
+    get { return AreStatusMessagesEnabled; }
+  }
+
   /// <summary> 
   ///   Gets or sets the message displayed when the user attempts to submit while the page is already aborting. 
   /// </summary>
@@ -845,7 +780,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   ///   Gets or sets the message displayed when the user attempts to submit while the page is already submitting. 
   /// </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
   [Category ("Appearance")]
@@ -871,6 +806,7 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     get { return _statusIsCachedMessage; }
     set { _statusIsCachedMessage = StringUtility.NullToEmpty (value); }
   }
+
 
   /// <summary> Gets or sets the flag that determines whether to use smart scrolling. </summary>
   /// <value> 
