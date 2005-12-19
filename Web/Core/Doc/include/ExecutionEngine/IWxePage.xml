@@ -66,12 +66,14 @@
       <note type="inheritinfo">
         If you cannot derive your pages from the default implementation (e.g., because you need to derive from 
         another class), override your page's <see cref="Page.DeterminePostBackMode"/> and 
-        <see cref="Control.Dispose"/> methods to include the initialization and clean-up logic. Override the
+        <see cref="Control.Dispose"/> methods to include the initialization and clean-up logic. Override the 
+        <see cref="Control.OnPreRender"/> method to include the pre-render logic. Override the
         <see cref="Page.SavePageStateToPersistenceMedium"/> and <see cref="Page.LoadPageStateFromPersistenceMedium"/> 
         methods to save and restore the page's viewstate. Use <see cref="WxePageInfo"/> to implement all methods and 
         properties.
       </note>
     </remarks>
+    <seealso cref="ISmartPage"/>
     <seealso cref="WxePage"/>
     <seealso cref="WxePageInfo"/>
     <seealso cref="WxePageStep"/>
@@ -81,16 +83,24 @@
 protected override NameValueCollection DeterminePostBackMode()
 {
   NameValueCollection result = this.m_wxeInfo.EnsurePostBackModeDetermined (Context);
-  _wxeInfo.Initialize (Context);
+  this.m_wxeInfo.Initialize (Context);
   return result;
 }
 </code>
-      Sample implementation of <see cref="Page.DeterminePostBackMode"/>.
+      Sample implementation of <see cref="Page.Dispose"/>.
 <code>
 public override void Dispose()
 {
   base.Dispose ();
   this.m_wxeInfo.Dispose();
+}
+</code>
+      Sample implementation of <see cref="Page.OnPreRender"/>. 
+<code>
+protected override void OnPreRender (EventArgs e)
+{
+  this.m_wxeInfo.PreRender();
+  base.OnPreRender (e);
 }
 </code>
       Sample implementation of <see cref="Page.SavePageStateToPersistenceMedium"/>.
@@ -170,24 +180,6 @@ public override void LoadPageStateFromPersistenceMedium()
       which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
     </param>
   </ExecuteFunctionExternal>
-  <RegisterClientSidePageEventHandler>
-    <param name="pageEvent"> The type of event to register for. </param>
-    <param name="key"> 
-      Forms in combination with <paramref name="pageEvent"/> a unique key that identifies the function.
-    </param>
-    <param name="function"> The name of the Java Script function to be called. </param>
-    <remarks> 
-      <para>
-        The Java Script function will be called without arguments and a return value will be ignored.
-      </para><para>
-        Any script blocks with the same <paramref name="pageEvent"/> and <paremref name="key"/> parameter values 
-        are considered duplicates. 
-      </para>
-    </remarks>
-    <exception type="InvalidOperationException">
-      Thrown if the method is called after the <b>OnPreRender</b> method of the base page has been invoked invoked.
-    </exception>
-  </RegisterClientSidePageEventHandler>
   <GetPermanentUrl>
     <param name="functionType"> 
       The type of the <see cref="WxeFunction"/> for which to create the permanent URL. 

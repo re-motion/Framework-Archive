@@ -453,6 +453,14 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Globalization\SmartPageInfo.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\SmartPageInfo.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\WxePageInfo.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -510,6 +518,10 @@
                 />
                 <File
                     RelPath = "Res\HTML\SmartNavigation.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Res\HTML\SmartPage.css"
                     BuildAction = "Content"
                 />
                 <File
@@ -707,6 +719,16 @@
                 />
                 <File
                     RelPath = "UI\PostLoad.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\SmartPage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\SmartPageInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
