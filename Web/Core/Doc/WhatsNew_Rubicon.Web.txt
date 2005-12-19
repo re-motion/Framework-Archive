@@ -2,6 +2,7 @@
 ======
 - Rubicon.Web.TabbedMultiView
   * TabStyle und TabSelectedStyle:  
+    TabSelectedStyle umbenannt zu SelectedTabStyle.
     Properties BorderColor, BorderStyle, BorderWidth, Width und Height wurden entfernt.
   * TabStripStyle, SeparatorStyle und TabsPaneStyle entfernt.
   * HTML und CSS wurde komplett überarbeitet um den Browsersupport zu verbessern.

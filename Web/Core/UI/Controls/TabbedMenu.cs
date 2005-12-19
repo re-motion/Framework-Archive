@@ -140,14 +140,14 @@ public class TabbedMenu: WebControl, IControl
     LoadResources (resourceManager);
   }
 
-  /// <summary> Overrides the <see cref="Control.TagKey"/> property. </summary>
+  /// <summary> Overrides the <see cref="WebControl.TagKey"/> property. </summary>
   /// <value> Returns a <see cref="HtmlTextWriterTag.Table"/> tab. </value>
   protected override HtmlTextWriterTag TagKey
   {
     get { return HtmlTextWriterTag.Table; }
   }
 
-  /// <summary> Overrides the <see cref="Control.AddAttributesToRender"/> method. </summary>
+  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
@@ -546,7 +546,7 @@ public class TabbedMenu: WebControl, IControl
   }
 
 
-  /// <summary> Gets the collection of <see cref="MainMenuTabs"/>. </summary>
+  /// <summary> Gets the collection of <see cref="MainMenuTab"/> objects. </summary>
   [PersistenceMode (PersistenceMode.InnerProperty)]
   [ListBindable (false)]
   [Description ("")]
@@ -713,7 +713,6 @@ public class TabbedMenu: WebControl, IControl
   /// <summary> Gets the CSS-Class applied to the main menu's tab strip. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMainMenu</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="MainMenuStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassMainMenu
   {
@@ -723,7 +722,6 @@ public class TabbedMenu: WebControl, IControl
   /// <summary> Gets the CSS-Class applied to the sub menu's tab strip. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedSubMenu</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="SubMenuStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassSubMenu
   {

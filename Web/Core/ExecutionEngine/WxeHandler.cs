@@ -26,7 +26,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   /// <summary> Contains a list of parameters supported by the <see cref="WxeHandler"/>. </summary>
   /// <remarks> 
   ///   The available parameters are <see cref="WxeFunctionType"/>, <see cref="WxeFunctionToken"/>,
-  ///   <see cref="WxeReturnUrl"/>, and <see cref="WxeAction"/>.
+  ///   <see cref="ReturnUrl"/>, and <see cref="WxeAction"/>.
   /// </remarks>
   public class Parameters
   {
@@ -94,7 +94,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     get { return WebConfiguration.Current.ExecutionEngine.RefreshInterval; }
   }
 
-  /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="CurrentFunction"/> and its context. </summary>
+  /// <summary> The <see cref="WxeFunctionState"/> representing the <see cref="RootFunction"/> and its context. </summary>
   private WxeFunctionState _currentFunctionState;
 
   /// <summary> The root function executed by the <b>WxeHanlder</b>. </summary>

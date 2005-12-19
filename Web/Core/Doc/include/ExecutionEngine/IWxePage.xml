@@ -15,7 +15,7 @@
         In case you do not rely on the controls to handle form input, there is one exception to the afore mentioned 
         rule. The post back data provided by the <see cref="Page.Request"/> object of the <see cref="Page"/> is not 
         guaranteed contain the correct data. The execution engine does provide the relevant post back data via the 
-        <see cref="GetPostBackCollection"/> method. 
+        <see cref="ISmartPage.GetPostBackCollection"/> method. 
       </para>
       <h4 class="dtH4">Using Flow Control</h4>
       <para>
@@ -87,7 +87,7 @@ protected override NameValueCollection DeterminePostBackMode()
   return result;
 }
 </code>
-      Sample implementation of <see cref="Page.Dispose"/>.
+      Sample implementation of <see cref="Control.Dispose"/>.
 <code>
 public override void Dispose()
 {
@@ -95,7 +95,7 @@ public override void Dispose()
   this.m_wxeInfo.Dispose();
 }
 </code>
-      Sample implementation of <see cref="Page.OnPreRender"/>. 
+      Sample implementation of <see cref="Control.OnPreRender"/>. 
 <code>
 protected override void OnPreRender (EventArgs e)
 {

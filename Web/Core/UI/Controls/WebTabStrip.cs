@@ -607,10 +607,9 @@ public class WebTabStrip :
     get { return "tabStrip"; }
   }
 
-  /// <summary> Gets the CSS-Class applied to a pane of <see cref="WebTab"/> items. </summary>
+  /// <summary> Gets the CSS-Class applied to the pane of <see cref="WebTab"/> items. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabStripTabsPane</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabsPaneStyle"/>. </para>
   /// </remarks>
   protected virtual string CssClassTabsPane
   {
@@ -640,7 +639,7 @@ public class WebTabStrip :
   /// <summary> Gets the CSS-Class applied to a <see cref="WebTab"/> if it is selected. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabStripTabSelected</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="TabSelectedStyle"/>. </para>
+  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="SelectedTabStyle"/>. </para>
   /// </remarks>
   protected virtual string CssClassTabSelected
   {
@@ -728,13 +727,9 @@ public class WebTabStrip :
     get { return "content"; }
   }
   
-  /// <summary> 
-  ///   Gets the CSS-Class applied to a <see cref="WebTab"/> with <see cref="WebTab.IsSeparator"/> set 
-  ///   <see langword="true"/>. 
-  /// </summary>
+  /// <summary> Gets the CSS-Class applied to a separator. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabStripTabSeparator</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> is not set for the <see cref="SeparatorStyle"/>. </para>
   /// </remarks>
   protected virtual string CssClassSeparator
   {

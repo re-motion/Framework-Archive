@@ -160,7 +160,7 @@ public class SmartPageInfo
   }
 
   /// <summary> 
-  ///   Implements <see cref="IWxePage.HtmlForm">IWxePage.HtmlForm</see>.
+  ///   Implements <see cref="ISmartPage.HtmlForm">IWxePage.HtmlForm</see>.
   /// </summary>
   public HtmlForm HtmlForm
   {

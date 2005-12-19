@@ -532,7 +532,7 @@ public class Command: IControlItem
   /// <param name="page"> 
   ///   The <see cref="Page"/> where this command is rendered on. Must not be <see langword="null"/>.
   /// </param>
-  /// <param name="additionalParameters"> 
+  /// <param name="additionalWxeParameters"> 
   ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
   ///   Use <see langword="null"/> or an empty collection if all parameters are supplied by the 
   ///   <see cref="WxeFunctionCommandInfo.Parameters"/> string and the function stack.
@@ -728,7 +728,7 @@ public enum CommandShow
 /// </summary>
 public delegate void CommandClickEventHandler (object sender, CommandClickEventArgs e);
 
-/// <summary> Provides data for the <see cref="Command.Click"/> event. </summary>
+/// <summary> Provides data for the <see cref="Rubicon.Web.UI.Controls.Command.Click"/> event. </summary>
 public class CommandClickEventArgs: EventArgs
 {
   private Command _command;

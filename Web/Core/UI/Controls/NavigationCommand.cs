@@ -74,7 +74,7 @@ public class NavigationCommand: Command
   }
 
   /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="Command.WxeFunctionCommandInfo"/>.
   /// </summary>
   /// <param name="additionalUrlParameters">
   ///   The <see cref="NameValueCollection"/> containing additional url parameters. 
@@ -101,7 +101,7 @@ public class NavigationCommand: Command
   }
 
   /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="WxeFunctionCommandInfo"/>. 
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="Command.WxeFunctionCommandInfo"/>.
   /// </summary>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.

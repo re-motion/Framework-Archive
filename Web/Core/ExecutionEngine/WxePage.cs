@@ -610,10 +610,10 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     get { return IsAbortEnabled; }
   }
 
-  /// <summary> Gets the evaluated value for the <see cref="EnableAbortConfirmation"/> property. </summary>
+  /// <summary> Gets the evaluated value for the <see cref="SmartPage.EnableAbortConfirmation"/> property. </summary>
   /// <value> 
-  ///   <see langowrd="true"/> if <see cref="EnableAbortConfirmation"/> and <see cref="IsAbortEnabled"/> are
-  ///   <see cref="NaBooleanEnum.True"/>. 
+  ///   <see langowrd="true"/> if <see cref="SmartPage.EnableAbortConfirmation"/> and <see cref="IsAbortEnabled"/> 
+  ///   are <see cref="NaBooleanEnum.True"/>. 
   /// </value>
   protected override bool IsAbortConfirmationEnabled
   {

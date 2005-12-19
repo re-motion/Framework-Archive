@@ -289,7 +289,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   }
 
   /// <summary> Implementation of <see cref="ISmartPage.IsStatusIsSubmittingMessageEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="AreStatusMessagesEnabled"/>. </value>
+  /// <value> The value returned by <see cref="IsStatusIsSubmittingMessageEnabled"/>. </value>
   bool ISmartPage.IsStatusIsSubmittingMessageEnabled
   {
     get { return IsStatusIsSubmittingMessageEnabled; }

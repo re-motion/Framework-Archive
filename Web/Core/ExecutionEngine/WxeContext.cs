@@ -5,6 +5,7 @@ using System.Web;
 using System.Collections;
 using System.Web.UI;
 using Rubicon.Utilities;
+using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -58,7 +59,7 @@ public class WxeContext
   ///   Thrown if no mapping for the <paramref name="functionType"/> has been defined, and the 
   ///   <see cref="Rubicon.Web.Configuration.WxeConfiguration.DefaultWxeHandler"/> is not set. 
   /// </exception>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param'[@name="httpContext" or @name="functionType" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters"]' />
   public static string GetPermanentUrl (HttpContext httpContext, Type functionType, NameValueCollection urlParameters)
   {
     return GetPermanentUrl (httpContext, functionType, urlParameters, false);
@@ -68,7 +69,7 @@ public class WxeContext
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param'[@name="httpContext" or @name="functionType" or @name="urlParameters" or @name="fallbackOnCurrentUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="httpContext" or @name="functionType" or @name="urlParameters" or @name="fallbackOnCurrentUrl"]' />
   protected static string GetPermanentUrl (
       HttpContext httpContext, Type functionType, NameValueCollection urlParameters, bool fallbackOnCurrentUrl)
   {
@@ -125,7 +126,7 @@ public class WxeContext
   ///   Executes a <see cref="WxeFunction"/> in the current window from a <see cref="Page"/> not implementing 
   ///   <see cref="IWxePage"/> by using a redirect.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param'[@name="page" or @name="function" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="urlParameters"]' />
   public static void ExecuteFunctionExternal (
       Page page, WxeFunction function, NameValueCollection urlParameters)
   {
@@ -136,7 +137,7 @@ public class WxeContext
   ///   Executes a <see cref="WxeFunction"/> in the current window from a <see cref="Page"/> not implementing 
   ///   <see cref="IWxePage"/> by using a redirect.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param'[@name="page" or @name="function" or @name="createPermaUrl" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="createPermaUrl" or @name="urlParameters"]' />
   public static void ExecuteFunctionExternal (
       Page page, WxeFunction function, bool createPermaUrl, NameValueCollection urlParameters)
   {
@@ -152,7 +153,7 @@ public class WxeContext
   ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from a <see cref="Page"/> not 
   ///   implementing <see cref="IWxePage"/> by using java script.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param'[@name="page" or @name="function" or @name="target" or @name="features" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="urlParameters"]' />
   public static void ExecuteFunctionExternal (
       Page page, WxeFunction function, string target, string features, NameValueCollection urlParameters)
   {
@@ -163,7 +164,7 @@ public class WxeContext
   ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from a <see cref="Page"/> not 
   ///   implementing <see cref="IWxePage"/> by using java script.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param'[@name="page" or @name="function" or @name="target" or @name="features" or @name="createPermaUrl" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="createPermaUrl" or @name="urlParameters"]' />
   public static void ExecuteFunctionExternal (
       Page page, WxeFunction function, string target, string features, 
       bool createPermaUrl, NameValueCollection urlParameters)
@@ -282,7 +283,7 @@ public class WxeContext
   ///     initialization infrastructure.
   ///   </para><para>
   ///     Application developers should only use the 
-  ///     <see cref="IWxePage.GetPostBackCollection">IWxePage.GetPostBackCollection</see> method to access the
+  ///     <see cref="ISmartPage.GetPostBackCollection">ISmartPage.GetPostBackCollection</see> method to access the
   ///     postback data.
   ///   </para><para>
   ///     Control developers should either implement <see cref="System.Web.UI.IPostBackDataHandler"/> to access 
@@ -402,7 +403,7 @@ public class WxeContext
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param'[@name="functionType" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="functionType" or @name="urlParameters"]' />
   public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters)
   {
     return GetPermanentUrl (functionType, urlParameters, false);
@@ -412,7 +413,7 @@ public class WxeContext
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param'[@name="functionType" or @name="urlParameters" or @name="useParentPermanentUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/GetPermanentUrl/param[@name="functionType" or @name="urlParameters" or @name="useParentPermanentUrl"]' />
   public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters, bool useParentPermanentUrl)
   {
     ArgumentUtility.CheckNotNull ("urlParameters", urlParameters);

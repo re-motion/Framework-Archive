@@ -86,9 +86,9 @@ public class WebMenuItemCollection: ControlItemCollection
     set { List[index] = value; }
   }
 
-  /// <summary> Sorts the <see cref="Items"/> by their categories." </summary>
+  /// <summary> Sorts the <see cref="WebMenuItem"/> objects by their categories." </summary>
   /// <param name="generateSeparators"> <see langword="true"/> to generate a separator before starting a new category. </param>
-  /// <returns> The <see cref="Items"/>, sorted by their categories. </returns>
+  /// <returns> The <see cref="WebMenuItem"/> objects, sorted by their categories. </returns>
   public WebMenuItem[] GroupMenuItems (bool generateSeparators)
   {
     return WebMenuItemCollection.GroupMenuItems (ToArray(), generateSeparators);

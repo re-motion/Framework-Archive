@@ -583,7 +583,6 @@ public class TabbedMultiView: WebControl, IControl
   /// <summary> Gets the CSS-Class applied to the <see cref="TabbedMultiView"/>'s tab strip. </summary>
   /// <remarks> 
   ///   <para> Class: <c>tabbedMultiViewTabStrip</c>. </para>
-  ///   <para> Applied only if the <see cref="Style.CssClass"/> of the <see cref="TabStripStyle"/> is not set. </para>
   /// </remarks>
   protected virtual string CssClassTabStrip
   {

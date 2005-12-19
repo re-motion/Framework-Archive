@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using System.Reflection;
 using Rubicon.Xml;
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.Configuration
 {

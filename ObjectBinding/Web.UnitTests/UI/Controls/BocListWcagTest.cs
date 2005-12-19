@@ -287,7 +287,7 @@ public class BocListWcagTest: BocTest
     Assert.IsTrue (WcagHelperMock.HasError);
     Assert.AreEqual (1, WcagHelperMock.Priority);
     Assert.AreSame (_bocList, WcagHelperMock.Control);
-    Assert.AreEqual ("Columns[0]", WcagHelperMock.Property);
+    Assert.AreEqual ("Columns[0].Command", WcagHelperMock.Property);
   }
 
   [Test]
@@ -320,7 +320,7 @@ public class BocListWcagTest: BocTest
     Assert.IsTrue (WcagHelperMock.HasError);
     Assert.AreEqual (1, WcagHelperMock.Priority);
     Assert.AreSame (_bocList, WcagHelperMock.Control);
-    Assert.AreEqual ("Columns[0]", WcagHelperMock.Property);
+    Assert.AreEqual ("Columns[0].Command", WcagHelperMock.Property);
   }
 
   [Test]
