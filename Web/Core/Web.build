@@ -21,7 +21,6 @@
       </sources>
       <references failonempty="true">
         <includes name="${project.builddir}/Rubicon.Core.dll" />
-        <includes name="${project.builddir}/Rubicon.Globalization.dll" />
         <includes name="${project.builddir}/log4net.dll" />
         <includes name="${project.builddir}/Microsoft.Web.UI.WebControls.dll" />
         <includes asis="true" name="System.dll"/>
