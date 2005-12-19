@@ -198,7 +198,7 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
 /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/Class/*' />
 /// <seealso cref="IWxePage"/>
 /// <seealso cref="ISmartNavigablePage"/>
-public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
+public class WxePage: SmartPage, IWxePage, IWindowStateManager
 {
   #region IWxePage Impleplementation
 
@@ -446,24 +446,15 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   #endregion
 
   private WxePageInfo _wxeInfo;
-  private ValidatableControlInitializer _validatableControlInitializer;
-  private PostLoadInvoker _postLoadInvoker;
   private bool disposed;
-  private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
-  private string _abortMessage;
   private NaBooleanEnum _enableStatusMessages = NaBooleanEnum.Undefined;
-  private string _statusIsSubmittingMessage = string.Empty;
   private string _statusIsAbortingMessage = string.Empty;
   private string _statusIsCachedMessage = string.Empty;
-  private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
-  private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
 
   public WxePage ()
   {
     _wxeInfo = new WxePageInfo (this);
-    _validatableControlInitializer = new ValidatableControlInitializer (this);
-    _postLoadInvoker = new PostLoadInvoker (this);
     disposed = false;
   }
 
@@ -471,22 +462,14 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   {
     NameValueCollection result = _wxeInfo.EnsurePostBackModeDetermined (Context);
     _wxeInfo.Initialize (Context);
+
 #if NET11
-    OnPreInit();
+    base.OnPreInit();
 #endif
+
     return result;
   }
 
-#if NET11
-  /// <summary> Called before the initialization phase of the page. </summary>
-  /// <remarks> 
-  ///   In ASP.NET 1.1 this method is called by <b>DeterminePostBackMode</b>. Therefor you should not use
-  ///   the postback collection during pre init.
-  /// </remarks>
-  protected virtual void OnPreInit ()
-  {
-  }
-#endif
 
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
@@ -506,28 +489,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
       return base.LoadPageStateFromPersistenceMedium ();
   }
 
-  /// <summary> Makes sure that PostLoad is called on all controls that support <see cref="ISupportsPostLoadControl"/>. </summary>
-  public void EnsurePostLoadInvoked ()
-  {
-    _postLoadInvoker.EnsurePostLoadInvoked();
-  }
-
-  /// <summary> Makes sure that all validators are registered with their <see cref="IValidatableControl"/> controls. </summary>
-  public void EnsureValidatableControlsInitialized ()
-  {
-    _validatableControlInitializer.EnsureValidatableControlsInitialized ();
-  }
-
-  /// <summary>
-  ///   Call this method before validating when using <see cref="Rubicon.Web.UI.Controls.FormGridManager"/> 
-  ///   and <see cref="M:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl.Validate()"/>.
-  /// </summary>
-  public void PrepareValidation()
-  {
-    EnsurePostLoadInvoked();
-    EnsureValidatableControlsInitialized();
-  }
-
   /// <summary> Gets the post back data for the page. </summary>
   /// <remarks> Application developers should only rely on this collection for accessing the post back data. </remarks>
   public NameValueCollection GetPostBackCollection ()
@@ -535,8 +496,17 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     return _wxeInfo.EnsurePostBackModeDetermined (Context);
   }
 
-  protected override void OnPreRender(EventArgs e)
+  NameValueCollection ISmartPage.GetPostBackCollection ()
   {
+    return GetPostBackCollection();
+  }
+
+  protected override void OnPreRender (EventArgs e)
+  {
+    // wxeInfo.PreRender() must be called before base.OnPreRender (EventArgs)
+    // Base-Implementation calls _smartPageInfo.PreRender(), which must be called after wxeInfo.PreRender()
+    _wxeInfo.PreRender();
+
     base.OnPreRender (e);
   }
 
@@ -575,28 +545,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     get { return _wxeInfo.WxeForm; }
   }
 
-  /// <summary> Gets or sets the <b>HtmlForm</b> of this page. </summary>
-  /// <remarks> Redirects the call to the <see cref="HtmlForm"/> property. </remarks>
-  HtmlForm ISmartPage.HtmlForm
-  {
-    get { return HtmlForm; }
-    set { HtmlForm = value; }
-  }
-
-  /// <summary> Gets or sets the <b>HtmlForm</b> of this page. </summary>
-  /// <remarks>
-  ///   <note type="inheritinfo"> 
-  ///     Override this property you do not wish to rely on automatic detection of the <see cref="HtmlForm"/>
-  ///     using reflection.
-  ///   </note>
-  /// </remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  protected virtual HtmlForm HtmlForm
-  {
-    get { return _wxeInfo.HtmlForm; }
-    set { _wxeInfo.HtmlForm = value; }
-  }
-
   /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
   WxeHandler IWxePage.WxeHandler 
   { 
@@ -628,49 +576,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   {
   }
 
-
-  /// <summary> 
-  ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
-  /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageEventHandler/*' />
-  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
-  {
-    _wxeInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
-  }
-
-
-  /// <summary> 
-  ///   Gets or sets the flag that determines whether to display a confirmation dialog before aborting the session. 
-  /// </summary>
-  /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to display a confirmation dialog. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
-  /// </value>
-  /// <remarks>
-  ///   Use <see cref="IsAbortConfirmationEnabled"/> to evaluate this property.
-  /// </remarks>
-  [Description("The flag that determines whether to display a confirmation dialog before aborting the session. Undefined is interpreted as false.")]
-  [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableAbortConfirmation
-  {
-    get { return _enableAbortConfirmation; }
-    set { _enableAbortConfirmation = value; }
-  }
-
-  /// <summary> Gets the evaluated value for the <see cref="EnableAbortConfirmation"/> property. </summary>
-  /// <value> <see langowrd="true"/> if <see cref="EnableAbortConfirmation"/> is <see cref="NaBooleanEnum.True"/>. </value>
-  protected virtual bool IsAbortConfirmationEnabled
-  {
-    get { return _enableAbortConfirmation == NaBooleanEnum.True; }
-  }
-
-  /// <summary> Implementation of <see cref="IWxePage.IsAbortConfirmationEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsAbortConfirmationEnabled"/>. </value>
-  bool ISmartPage.IsAbortConfirmationEnabled
-  {
-    get { return IsAbortEnabled && IsAbortConfirmationEnabled; }
-  }
 
   /// <summary> Gets or sets the flag that determines whether to abort the session upon closing the window. </summary>
   /// <value> 
@@ -705,22 +610,19 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     get { return IsAbortEnabled; }
   }
 
-  /// <summary> Gets or sets the message displayed when the user attempts to abort the WXE Function. </summary>
-  /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
-  /// </remarks>
-  [Description("The message displayed when the user attempts to abort the WXE Function.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
-  public string AbortMessage 
+  /// <summary> Gets the evaluated value for the <see cref="EnableAbortConfirmation"/> property. </summary>
+  /// <value> 
+  ///   <see langowrd="true"/> if <see cref="EnableAbortConfirmation"/> and <see cref="IsAbortEnabled"/> are
+  ///   <see cref="NaBooleanEnum.True"/>. 
+  /// </value>
+  protected override bool IsAbortConfirmationEnabled
   {
-    get { return _abortMessage; }
-    set { _abortMessage = StringUtility.NullToEmpty (value); }
+    get { return IsAbortEnabled && base.IsAbortConfirmationEnabled; }
   }
 
   /// <summary> 
   ///   Gets or sets the flag that determines whether to display a message when the user tries to start a second
-  ///   request.
+  ///   request or returns to a page that has already been submittet (i.e. a cached page).
   /// </summary>
   /// <value> 
   ///   <see cref="NaBooleanEnum.True"/> to enable the status messages. 
@@ -729,7 +631,9 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   /// <remarks>
   ///   Use <see cref="AreStatusMessagesEnabled"/> to evaluate this property.
   /// </remarks>
-  [Description("The flag that determines whether to display a status message when the user attempts to start a second request. Undefined is interpreted as true.")]
+  [Description("The flag that determines whether to display a status message when the user attempts to start a "
+             + "second request or returns to a page that has already been submitted (i.e. a cached page). "
+             + "Undefined is interpreted as true.")]
   [Category ("Behavior")]
   [DefaultValue (NaBooleanEnum.Undefined)]
   public virtual NaBooleanEnum EnableStatusMessages
@@ -754,9 +658,25 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     get { return AreStatusMessagesEnabled; }
   }
 
-  /// <summary> Implementation of <see cref="ISmartPage.IsStatusIsSubmittingMessageEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="AreStatusMessagesEnabled"/>. </value>
-  bool ISmartPage.IsStatusIsSubmittingMessageEnabled
+  /// <exclude/>
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public override NaBooleanEnum EnableStatusIsSubmittingMessage
+  {
+    get
+    {
+      return base.EnableStatusIsSubmittingMessage;
+    }
+    set
+    {
+      base.EnableStatusIsSubmittingMessage = value;
+    }
+  }
+
+  /// <summary> Overridden to return the value of <see cref="AreStatusMessagesEnabled"/>. </summary>
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  protected override bool IsStatusIsSubmittingMessageEnabled
   {
     get { return AreStatusMessagesEnabled; }
   }
@@ -777,21 +697,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
   }
 
   /// <summary> 
-  ///   Gets or sets the message displayed when the user attempts to submit while the page is already submitting. 
-  /// </summary>
-  /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
-  /// </remarks>
-  [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
-  public virtual string StatusIsSubmittingMessage
-  {
-    get { return _statusIsSubmittingMessage; }
-    set { _statusIsSubmittingMessage = StringUtility.NullToEmpty (value); }
-  }
-
-  /// <summary> 
   ///   Gets or sets the message displayed when the user returnes to a cached page that has already been submitted 
   ///   or aborted. 
   /// </summary>
@@ -807,110 +712,6 @@ public class WxePage: Page, IWxePage, ISmartNavigablePage, IWindowStateManager
     set { _statusIsCachedMessage = StringUtility.NullToEmpty (value); }
   }
 
-
-  /// <summary> Gets or sets the flag that determines whether to use smart scrolling. </summary>
-  /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to use smart scrolling. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
-  /// </value>
-  /// <remarks>
-  ///   Use <see cref="IsSmartScrollingEnabled"/> to evaluate this property.
-  /// </remarks>
-  [Description("The flag that determines whether to use smart scrolling. Undefined is interpreted as true.")]
-  [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableSmartScrolling
-  {
-    get { return _enableSmartScrolling; }
-    set { _enableSmartScrolling = value; }
-  }
-
-  /// <summary> Gets the evaluated value for the <see cref="EnableSmartScrolling"/> property. </summary>
-  /// <value> 
-  ///   <see langowrd="false"/> if <see cref="EnableSmartScrolling"/> is <see cref="NaBooleanEnum.False"/>
-  ///   or the <see cref="SmartNavigationConfiguration.EnableScrolling"/> configuration setting is 
-  ///   <see langword="false"/>.
-  /// </value>
-  protected virtual bool IsSmartScrollingEnabled
-  {
-    get
-    {
-      if (! WebConfiguration.Current.SmartNavigation.EnableScrolling)
-        return false;
-      return _enableSmartScrolling != NaBooleanEnum.False; 
-    }
-  }
-
-  /// <summary> Implementation of <see cref="ISmartNavigablePage.IsSmartScrollingEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsSmartScrollingEnabled"/>. </value>
-  bool ISmartNavigablePage.IsSmartScrollingEnabled
-  {
-    get { return IsSmartScrollingEnabled; }
-  }
-
-  /// <summary> Gets or sets the flag that determines whether to use smart navigation. </summary>
-  /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to use smart navigation. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.True"/>.
-  /// </value>
-  /// <remarks>
-  ///   Use <see cref="IsSmartFocusingEnabled"/> to evaluate this property.
-  /// </remarks>
-  [Description("The flag that determines whether to use smart navigation. Undefined is interpreted as true.")]
-  [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableSmartFocusing
-  {
-    get { return _enableSmartFocusing; }
-    set { _enableSmartFocusing = value; }
-  }
-
-  /// <summary> Gets the evaluated value for the <see cref="EnableSmartFocusing"/> property. </summary>
-  /// <value> 
-  ///   <see langowrd="false"/> if <see cref="EnableSmartFocusing"/> is <see cref="NaBooleanEnum.False"/>
-  ///   or the <see cref="SmartNavigationConfiguration.EnableFocusing"/> configuration setting is 
-  ///   <see langword="false"/>.
-  /// </value>
-  protected virtual bool IsSmartFocusingEnabled
-  {
-    get
-    {
-      if (! WebConfiguration.Current.SmartNavigation.EnableFocusing)
-        return false;
-      return _enableSmartFocusing != NaBooleanEnum.False; 
-    }
-  }
-
-  /// <summary> Implementation of <see cref="ISmartNavigablePage.IsSmartFocusingEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsSmartFocusingEnabled"/>. </value>
-  bool ISmartNavigablePage.IsSmartFocusingEnabled
-  {
-    get { return IsSmartFocusingEnabled; }
-  }
-
-  /// <summary> Clears scrolling and focus information on the page. </summary>
-  public void DiscardSmartNavigationData ()
-  {
-    _wxeInfo.DiscardSmartNavigationData();
-  }
-
-  /// <summary> Sets the focus to the passed control. </summary>
-  /// <param name="control"> 
-  ///   The <see cref="IFocusableControl"/> to assign the focus to. Must no be <see langword="null"/>.
-  /// </param>
-  public void SetFocus (IFocusableControl control)
-  {
-    _wxeInfo.SetFocus (control);
-  }
-
-  /// <summary> Sets the focus to the passed control ID. </summary>
-  /// <param name="id"> 
-  ///   The client side ID of the control to assign the focus to. Must no be <see langword="null"/> or empty. 
-  /// </param>
-  public void SetFocus (string id)
-  {
-    _wxeInfo.SetFocus (id);
-  }
 }
 
 }

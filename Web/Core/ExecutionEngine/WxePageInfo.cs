@@ -52,9 +52,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private static readonly string s_styleFileKey = typeof (WxePageInfo).FullName + "_Style";
   private static readonly string s_styleFileKeyForIE = typeof (WxePageInfo).FullName + "_StyleIE";
 
-  private const string c_checkFormStateMethod = "Wxe_CheckFormState";
-
-  private SmartPageInfo _smartPageInfo;
   private IWxePage _page;
   private WxeForm _wxeForm;
   private bool _postbackCollectionInitialized = false;
@@ -75,16 +72,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));
     _page = page;
-    _smartPageInfo = new SmartPageInfo ((ISmartPage) page);
-  }
-
-  /// <summary> 
-  ///   Implements <see cref="ISmartPage.HtmlForm">ISmartPage.HtmlForm</see>.
-  /// </summary>
-  public HtmlForm HtmlForm
-  {
-    get { return _smartPageInfo.HtmlForm; }
-    set { _smartPageInfo.HtmlForm = value; }
   }
 
   public override void Initialize (HttpContext context)
@@ -104,14 +91,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     if (_page.CurrentStep != null)
       _page.RegisterHiddenField (WxePageInfo.PageTokenID, CurrentStep.PageToken);
 
-    // First register event handlers for WXE
-    _page.PreRender += new EventHandler(Page_PreRender);
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
-    
-    //  Then initialize SmartPageInfo. 
-    // WxePageInfo event handlers will be invoked before SmartPageInfo event handlers.
-    _smartPageInfo.Initialize (context);
-    _smartPageInfo.CheckFormStateMethod = c_checkFormStateMethod;
   }
 
   private void Form_LoadPostData (object sender, EventArgs e)
@@ -148,8 +128,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
-  /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
-  private void Page_PreRender (object sender, EventArgs e)
+  public void PreRender ()
   {
     WxeContext wxeContext = WxeContext.Current;
     Page page = (Page) _page;
@@ -244,9 +223,10 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       statusIsCachedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
     }
  
-    RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "Wxe_OnLoad", "Wxe_OnLoad");
-    RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "Wxe_OnAbort", "Wxe_OnAbort");
-    RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Wxe_OnUnload", "Wxe_OnUnload");
+    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "Wxe_OnLoad", "Wxe_OnLoad");
+    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "Wxe_OnAbort", "Wxe_OnAbort");
+    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Wxe_OnUnload", "Wxe_OnUnload");
+    _page.CheckFormStateMethod = "Wxe_CheckFormState";
 
   
     StringBuilder initScript = new StringBuilder (500);
@@ -680,36 +660,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-
-  /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
-  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
-  {
-    _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
-  }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.UI.ISmartNavigablePage.DiscardSmartNavigationData()">ISmartNavigablePage.DiscardSmartNavigationData()</see>.
-  /// </summary>
-  public void DiscardSmartNavigationData ()
-  {
-    _smartPageInfo.DiscardSmartNavigationData();
-  }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.UI.ISmartNavigablePage.SetFocus(Rubicon.Web.UI.Controls.IFocusableControl)">ISmartNavigablePage.SetFocus(IFocusableControl)</see>.
-  /// </summary>
-  public void SetFocus (IFocusableControl control)
-  {
-    _smartPageInfo.SetFocus (control);
-  }
-
-  /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.UI.ISmartNavigablePage.SetFocus(System.String)">ISmartNavigablePage.SetFocus(String)</see>.
-  /// </summary>
-  public void SetFocus (string id)
-  {
-    _smartPageInfo.SetFocus (id);
-  }
 
   private NameObjectCollection WindowState
   {

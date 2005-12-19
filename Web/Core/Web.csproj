@@ -252,6 +252,14 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\UI\ISmartPage.xml"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Doc\include\UI\SmartPage.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\UI\Controls\DropDownMenu.xml"
                     BuildAction = "Content"
                 />
@@ -724,7 +732,7 @@
                 />
                 <File
                     RelPath = "UI\SmartPage.cs"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File

@@ -55,7 +55,7 @@
     <property name="build.createdoc" value="false" />
     <property name="project.config" value="debug" />
     <property name="build.debug" value="true" />
-    <property name="build.csc.define" value="DEBUG;TRACE" />
+    <property name="build.csc.define" value="DEBUG;TRACE;NET11" />
     <call target="initialize" />
   </target>
 
@@ -64,7 +64,7 @@
     <property name="build.createdoc" value="false" />
     <property name="project.config" value="release" />
     <property name="build.debug" value="false" />
-    <property name="build.csc.define" value="TRACE" />
+    <property name="build.csc.define" value="TRACE;NET11" />
     <call target="initialize" />
   </target>
 
@@ -79,7 +79,7 @@
     <property name="build.createdoc" value="true" />
     <property name="project.config" value="documentation" />
     <property name="build.debug" value="false" />
-    <property name="build.csc.define" value="DEBUG;TRACE" />
+    <property name="build.csc.define" value="DEBUG;TRACE;NET11" />
     <call target="initialize" />
   </target>
 
@@ -201,6 +201,10 @@
     <property name="project.dir" value="Web/Core" />
     <call target="vsassemblyinfo" />
 
+    <property name="project.name" value="Web.Legacy" />
+    <property name="project.dir" value="Web/Legacy" />
+    <call target="vsassemblyinfo" />
+
     <property name="project.name" value="ObjectBinding" />
     <property name="project.dir" value="ObjectBinding/Core" />
     <call target="vsassemblyinfo" />
@@ -217,10 +221,10 @@
   <!--======================= PROJECTS =======================-->
 
   <target name="all" 
-      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web,Data.DomainObjects.CodeGenerator,Data.DomainObjects.CodeGenerator.Console,Data.DomainObjects.Web" />
+      depends="Core,DevelopmentCore,CodeDom,Web,Web.Legacy,ObjectBinding,ObjectBinding.Web,ObjectBinding.Reflection,Data.DomainObjects.ObjectBinding.Web,Data.DomainObjects.CodeGenerator,Data.DomainObjects.CodeGenerator.Console,Data.DomainObjects.Web" />
 
   <target name="forCooNet" 
-      depends="Core,DevelopmentCore,CodeDom,Web,ObjectBinding,ObjectBinding.Web" />
+      depends="Core,DevelopmentCore,CodeDom,Web,Web.Legacy,ObjectBinding,ObjectBinding.Web" />
   
   <target name="Core" depends="initialize">
     <property name="project.name" value="Core" />
@@ -302,6 +306,14 @@
     <call target="build" />
   </target>
 
+  <target name="Web.Legacy" depends="Core,Web,initialize">
+    <property name="project.name" value="Web.Legacy" />
+    <property name="project.dir" value="Web/Legacy" />
+    <property name="project.output" value="Rubicon.Web.Legacy" />
+    <property name="project.extension" value="dll" />
+    <call target="build" />
+  </target>
+
   <target name="ObjectBinding" depends="Core,initialize">
     <property name="project.name" value="ObjectBinding" />
     <property name="project.dir" value="ObjectBinding/Core" />
@@ -310,7 +322,7 @@
     <call target="build" />
   </target>
 
-  <target name="ObjectBinding.Web" depends="Core,ObjectBinding,initialize">
+  <target name="ObjectBinding.Web" depends="Core,ObjectBinding,Web,initialize">
     <property name="project.name" value="ObjectBinding.Web" />
     <property name="project.dir" value="ObjectBinding/Web" />
     <property name="project.output" value="Rubicon.ObjectBinding.Web" />
@@ -574,6 +586,7 @@
         <includes name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
         <includes name="Rubicon.Data.DomainObjects.Web.dll" />
         <includes name="Rubicon.Web.dll" />
+        <includes name="Rubicon.Web.Legacy.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
         <includes name="Rubicon.ObjectBinding.Reflection.dll" />
@@ -609,6 +622,7 @@
       <summaries>
         <includes name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
         <includes name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/Web/Legacy/Doc/include/NamespaceDoc.xml"/>
         <includes name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
         <includes name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
         <includes name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
@@ -635,6 +649,7 @@
         <includes name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
         <includes name="Rubicon.Data.DomainObjects.Web.dll" />
         <includes name="Rubicon.Web.dll" />
+        <includes name="Rubicon.Web.Legacy.dll" />
         <includes name="Rubicon.ObjectBinding.dll" />
         <includes name="Rubicon.ObjectBinding.Web.dll" />
         <includes name="Rubicon.ObjectBinding.Reflection.dll" />
@@ -670,6 +685,7 @@
       <summaries>
         <includes name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
         <includes name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
+        <includes name="${nant.project.basedir}/Web/Legacy/Doc/include/NamespaceDoc.xml"/>
         <includes name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
         <includes name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
         <includes name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>

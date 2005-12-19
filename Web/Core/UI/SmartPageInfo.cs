@@ -67,13 +67,8 @@ public class SmartPageInfo
 	{
     ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));
     _page = page;
-	}
-
-  public virtual void Initialize (HttpContext context)
-  {
     _page.Init += new EventHandler (Page_Init);
-    _page.PreRender += new EventHandler (Page_PreRender);
-  }
+	}
 
   /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
   public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
@@ -94,7 +89,7 @@ public class SmartPageInfo
   public string CheckFormStateMethod
   {
     get { return _checkFormStateMethod; }
-    set { _checkFormStateMethod = value; }
+    set { _checkFormStateMethod = StringUtility.EmptyToNull (value); }
   }
 
   /// <summary> Find the <see cref="IResourceManager"/> for this SmartPageInfo. </summary>
@@ -220,8 +215,7 @@ public class SmartPageInfo
   }
 
 
-  /// <summary> Handles the <b>PreRender</b> event of the page. </summary>
-  private void Page_PreRender (object sender, EventArgs e)
+  public void PreRender ()
   {
     PreRenderSmartPage();
     PreRenderSmartNavigation();
@@ -325,7 +319,7 @@ public class SmartPageInfo
 
     initScript.Append ("\r\n");
     initScript.Append ("_smartPage_eventHandlers = null; \r\n");
-    initScript.Append ("_smartPage_eventHandlersByEvent = null;");
+    initScript.Append ("_smartPage_eventHandlersByEvent = null; \r\n");
     initScript.Append ("delete _smartPage_eventHandlers; \r\n");
     initScript.Append ("delete _smartPage_eventHandlersByEvent;");
 
