@@ -85,7 +85,7 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
     remove { Events.RemoveHandler (s_loadPostDataEvent, value); }
   }
 
-  protected override void OnPreRender(EventArgs e)
+  protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
     Page.RegisterRequiresPostBack (this);
@@ -128,7 +128,7 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
     this.Attributes.Render(writer);
   }
 
-  protected override void Render(HtmlTextWriter writer)
+  protected override void Render (HtmlTextWriter writer)
   {
     if (!ControlHelper.IsDesignMode (this))
     {
