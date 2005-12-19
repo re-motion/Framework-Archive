@@ -18,11 +18,6 @@ function Wxe_OnLoad (hasSubmitted, isCached)
   _wxe_context.OnLoad (hasSubmitted, isCached);
 }
 
-function Wxe_OnBeforeUnload()
-{
-  _wxe_context.OnBeforeUnload();
-}
-
 function Wxe_OnUnload()
 {
   _wxe_context.OnUnload();
@@ -82,7 +77,7 @@ function Wxe_Context (
   
   this.SendSessionRequest = function (url)
   {
-    _smartPage_context.SendOutOfBandRequest (url);
+    window._smartPage_context.SendOutOfBandRequest (url);
   };
   
   // returns: true to continue with request

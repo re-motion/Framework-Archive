@@ -1,4 +1,3 @@
-#SmartPageStatusIsSubmittingMessage,
 #WxeStatusIsAbortingMessage,
 #WxeStatusIsCachedMessage
 {
@@ -6,7 +5,6 @@
   z-index: 100;
 }
 
-#SmartPageStatusIsSubmittingMessage td,
 #WxeStatusIsAbortingMessage td
 {
   background-color: White;
@@ -22,10 +20,3 @@
   border: solid 1pt Black;
   color: Black;
 }
-
-/* Ignore
-html>body #SmartPageIsSubmittingMessage
-{   
-  position: fixed;
-}
-*/
