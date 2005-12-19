@@ -68,9 +68,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Legacy", "Web\Legacy\Web.Legacy.csproj", "{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 17
+		SccNumberOfProjects = 18
 		SccLocalPath0 = .
 		CanCheckoutShared = false
 		SolutionUniqueID = {1CB16516-20F9-4EA8-9D27-56DF2EA34DCC}
@@ -141,6 +145,10 @@ Global
 		SccLocalPath16 = .
 		CanCheckoutShared = false
 		SccProjectFilePathRelativizedFromConnection16 = ObjectBinding\\Web.UnitTests\\
+		SccProjectUniqueName17 = Web\\Legacy\\Web.Legacy.csproj
+		SccLocalPath17 = .
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection17 = Web\\Legacy\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -209,6 +217,10 @@ Global
 		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Debug.Build.0 = Debug|.NET
 		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release.ActiveCfg = Release|.NET
 		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release.Build.0 = Release|.NET
+		{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}.Debug.ActiveCfg = Debug|.NET
+		{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}.Debug.Build.0 = Debug|.NET
+		{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}.Release.ActiveCfg = Release|.NET
+		{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
