@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<SamrtPage>
+  <Class>
+    <remarks>
+      <h4 class="dtH4">Features of the <b>SmartPage</b></h4>
+      <list type="bullet">
+        <item>
+          An implementation of <see cref="ISmartNavigablePage"/>. It also provides the 
+          <see cref="EnableSmartScrolling"/> and <see cref="EnableSmartFocusing"/> properties, which allow you to 
+          disable the smart navigation individually for each page. Override the <see cref="IsSmartScrollingEnabled"/> 
+          and <see cref="IsSmartFocusingEnabled"/> to use additional criteria (besides the application configuration 
+          and the properties) for disabling smart navigation.
+        </item>
+        <item>
+          An <see cref="OnPreInit"/> method, which is a rough equivalent to the <b>OnPreInit</b> method introduced
+          with <b>ASP.NET 2.0</b>.
+        </item>
+        <item>
+          The <see cref="PrepareValidation"/> method, which ensures that all controls implenting 
+          <see cref="IValidatableControl"/> know their validators. Call this method prior to validation if you 
+          intend to validate using the 
+          <see cref="M:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl.Validate">IBusinessObjectDataSourceControl.Validate</see> 
+          method instead of <see cref="Page.Validate">Page.Validate</see>.
+        </item>
+      </list>
+    </remarks>
+    <seealso cref="ISmartPage"/>
+  </Class>
+  <RegisterClientSidePageEventHandler>
+    <param name="pageEvent"> The type of event to register for. </param>
+    <param name="key"> 
+      Forms in combination with <paramref name="pageEvent"/> a unique key that identifies the function.
+    </param>
+    <param name="function"> The name of the Java Script function to be called. </param>
+    <remarks> 
+      <para>
+        The Java Script function will be called without arguments and a return value will be ignored.
+      </para><para>
+        Any script blocks with the same <paramref name="pageEvent"/> and <paremref name="key"/> parameter values 
+        are considered duplicates. 
+      </para>
+    </remarks>
+    <exception type="InvalidOperationException">
+      Thrown if the method is called after the <b>OnPreRender</b> method of the base page has been invoked.
+    </exception>
+  </RegisterClientSidePageEventHandler>
+</SmartPage>
