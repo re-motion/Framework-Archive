@@ -14,8 +14,13 @@ public class DomainObjectDataSourceDesigner: BocDataSourceDesigner
     
     ApplicationException designTimeException = dataSourceControl.GetDesignTimeException();
     if (designTimeException != null)
+    {
+#if NET11
       return CreateErrorDesignTimeHtml (designTimeException.Message, designTimeException.InnerException, Component);
-
+#else
+      return CreateErrorDesignTimeHtml (designTimeException.Message, designTimeException.InnerException);
+#endif
+    }
     return CreatePlaceHolderDesignTimeHtml ();
   }
 }
