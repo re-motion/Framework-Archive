@@ -39,9 +39,9 @@
     </param>
     <param name="fallbackOnCurrentUrl"> 
       If <see langword="true"/>, the method uses the <see cref="Uri.AbsolutePath"/> of the 
-      <paramref name="httpContext"/>'s <see cref="HttpContext.Request"/> as a fallback if no mapping for the
+      <paramref name="httpContext"/>'s <see cref="System.Web.HttpContext.Request"/> as a fallback if no mapping for the
       <paramref name="functionType"/> has been defined, and the 
-      <see cref="Rubicon.Web.Configuration.WxeConfiguration.DefaultWxeHandler"/> is not set. 
+      <see cref="Rubicon.Web.Configuration.ExecutionEngineConfiguration.DefaultWxeHandler"/> is not set. 
       Otherwise, a <see cref="WxeException"/> is thrown.
     </param>
   </GetPermanentUrl>

@@ -23,21 +23,24 @@ namespace Rubicon.Web.ExecutionEngine
 
 /// <summary> This interface represents a page that can be used in a <see cref="WxePageStep"/>. </summary>
 /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/Class/*' />
-public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
+public interface IWxePage: ISmartPage, IWxeTemplateControl
 {
   /// <summary> End this page step and continue with the WXE function. </summary>
   void ExecuteNextStep ();
 
   /// <summary> Executes the <paramref name="function"/> in the current. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunction/param[@name="function"]' />
   void ExecuteFunction (WxeFunction function);
 
   /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl);
 
   /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
   void ExecuteFunction (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
 
@@ -45,28 +48,32 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender"]' />
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender);
   
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml'
+  ///     path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget);
 
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl);
 
   /// <summary>
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///   path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
   void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
@@ -75,7 +82,8 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///   p ath='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl);
   
@@ -83,7 +91,8 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
   ///   on returning.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///   path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
   void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
@@ -92,14 +101,16 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
   void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback);
   
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
   void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback);
 
@@ -107,7 +118,8 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl);
@@ -116,7 +128,8 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
   void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters);
@@ -125,7 +138,8 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl);
@@ -134,7 +148,8 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
   void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters);
@@ -176,14 +191,16 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
   string GetPermanentUrl();
   
   /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/GetPermanentUrl/param[@name="queryString"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/GetPermanentUrl/param[@name="queryString"]' />
   string GetPermanentUrl (NameValueCollection queryString);
   
   /// <summary> 
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
+  ///     path='IWxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
   string GetPermanentUrl (Type functionType, NameValueCollection queryString);
 
   /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
@@ -196,8 +213,6 @@ public interface IWxePage: ISmartPage, IPage, IWxeTemplateControl
 ///   a base class for pages that can be called by <see cref="WxePageStep"/>.
 /// </summary>
 /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/Class/*' />
-/// <seealso cref="IWxePage"/>
-/// <seealso cref="ISmartNavigablePage"/>
 public class WxePage: SmartPage, IWxePage, IWindowStateManager
 {
   #region IWxePage Impleplementation
@@ -205,29 +220,31 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   /// <summary> End this page step and continue with the WXE function. </summary>
   public void ExecuteNextStep ()
   {
-    _wxeInfo.ExecuteNextStep();
+    _wxePageInfo.ExecuteNextStep();
   }
 
   /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function"]' />
   public void ExecuteFunction (WxeFunction function)
   {
-    _wxeInfo.ExecuteFunction (function);
+    _wxePageInfo.ExecuteFunction (function);
   }
 
   /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   public void ExecuteFunction (WxeFunction function, bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteFunction (function, createPermaUrl, useParentPermaUrl);
+    _wxePageInfo.ExecuteFunction (function, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary> Executes the <paramref name="function"/> in the current window. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunction/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
   public void ExecuteFunction (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters)
   {
-    _wxeInfo.ExecuteFunction (function, createPermaUrl, useParentPermaUrl, permaUrlParameters);
+    _wxePageInfo.ExecuteFunction (function, createPermaUrl, useParentPermaUrl, permaUrlParameters);
   }
 
   /// <summary>
@@ -238,10 +255,11 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET</c> 
   ///   field.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender"]' />
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender)
   {
-    _wxeInfo.ExecuteFunctionNoRepost (function, sender);
+    _wxePageInfo.ExecuteFunctionNoRepost (function, sender);
   }
 
   /// <summary>
@@ -252,10 +270,11 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control)">ExecuteFunctionNoRepost(WxeFunction,Control)</see>.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget"]' />
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget)
   {
-    _wxeInfo.ExecuteFunctionNoRepost (function, sender, usesEventTarget);
+    _wxePageInfo.ExecuteFunctionNoRepost (function, sender, usesEventTarget);
   }
 
   /// <summary>
@@ -266,10 +285,11 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET</c> 
   ///   field.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   public void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteFunctionNoRepost (function, sender, createPermaUrl, useParentPermaUrl);
+    _wxePageInfo.ExecuteFunctionNoRepost (function, sender, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary>
@@ -280,12 +300,13 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   This overload tries to determine automatically whether the current event was caused by the <c>__EVENTTARGET</c> 
   ///   field.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters)
   {
-    _wxeInfo.ExecuteFunctionNoRepost (function, sender, createPermaUrl, useParentPermaUrl, permaUrlParameters);
+    _wxePageInfo.ExecuteFunctionNoRepost (function, sender, createPermaUrl, useParentPermaUrl, permaUrlParameters);
   }
 
   /// <summary>
@@ -296,11 +317,12 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean)</see>.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteFunctionNoRepost (function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl);
+    _wxePageInfo.ExecuteFunctionNoRepost (function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary>
@@ -311,12 +333,13 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   This overload allows you to specify whether the current event was caused by the <c>__EVENTTARGET</c> field.
   ///   When in doubt, use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.ExecuteFunctionNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">ExecuteFunctionNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
   /// </remarks>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
   public void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters)
   {
-    _wxeInfo.ExecuteFunctionNoRepost (
+    _wxePageInfo.ExecuteFunctionNoRepost (
         function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlParameters);
   }
 
@@ -324,45 +347,49 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback"]' />
   public void ExecuteFunctionExternal (WxeFunction function, string target, Control sender, bool returningPostback)
   {
-    _wxeInfo.ExecuteFunctionExternal (function, target, sender, returningPostback);
+    _wxePageInfo.ExecuteFunctionExternal (function, target, sender, returningPostback);
   }
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback"]' />
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback)
   {
-    _wxeInfo.ExecuteFunctionExternal (function, target, features, sender, returningPostback);
+    _wxePageInfo.ExecuteFunctionExternal (function, target, features, sender, returningPostback);
   }
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteFunctionExternal (function, target, sender, returningPostback, createPermaUrl, useParentPermaUrl);
+    _wxePageInfo.ExecuteFunctionExternal (function, target, sender, returningPostback, createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
-    _wxeInfo.ExecuteFunctionExternal (
+    _wxePageInfo.ExecuteFunctionExternal (
         function, target, sender, returningPostback, createPermaUrl, useParentPermaUrl, urlParameters);
   }
 
@@ -370,24 +397,27 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl)
   {
-    _wxeInfo.ExecuteFunctionExternal (function, target, features, sender, returningPostback,  createPermaUrl, useParentPermaUrl);
+    _wxePageInfo.ExecuteFunctionExternal (
+      function, target, features, sender, returningPostback,  createPermaUrl, useParentPermaUrl);
   }
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="target" or @name="features" or @name="sender" or @name="returningPostback" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
   public void ExecuteFunctionExternal (
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
-    _wxeInfo.ExecuteFunctionExternal (
+    _wxePageInfo.ExecuteFunctionExternal (
         function, target, features, sender, returningPostback,  createPermaUrl, useParentPermaUrl, urlParameters);
   }
 
@@ -395,73 +425,112 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   [Browsable (false)]
   public bool IsReturningPostBack
   {
-    get { return _wxeInfo.IsReturningPostBack; }
+    get { return _wxePageInfo.IsReturningPostBack; }
   }
 
   /// <summary> Gets the WXE function that has been executed in the current page. </summary>
   [Browsable (false)]
   public WxeFunction ReturningFunction
   {
-    get { return _wxeInfo.ReturningFunction; }
+    get { return _wxePageInfo.ReturningFunction; }
   }
-
 
   /// <summary> Gets the permanent URL for the current page. </summary>
   public string GetPermanentUrl ()
   {
-    return _wxeInfo.GetPermanentUrl ();
+    return _wxePageInfo.GetPermanentUrl ();
   }
   
   /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
   public string GetPermanentUrl (NameValueCollection queryString)
   {
-    return _wxeInfo.GetPermanentUrl (queryString);
+    return _wxePageInfo.GetPermanentUrl (queryString);
   }
   
   /// <summary> 
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
+  ///     path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
   public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
   {
-    return _wxeInfo.GetPermanentUrl (functionType, queryString);
+    return _wxePageInfo.GetPermanentUrl (functionType, queryString);
   }
 
+  /// <summary> 
+  ///   Gets or sets the message displayed when the user attempts to submit while the page is already aborting. 
+  /// </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  [Description("The message displayed when the user attempts to submit while the page is already aborting.")]
+  [Category ("Appearance")]
+  [DefaultValue ("")]
+  public virtual string StatusIsAbortingMessage
+  {
+    get { return _wxePageInfo.StatusIsAbortingMessage; }
+    set { _wxePageInfo.StatusIsAbortingMessage = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the message displayed when the user returnes to a cached page that has already been submitted 
+  ///   or aborted. 
+  /// </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  /// </remarks>
+  [Description("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
+  [Category ("Appearance")]
+  [DefaultValue ("")]
+  public virtual string StatusIsCachedMessage
+  {
+    get { return _wxePageInfo.StatusIsCachedMessage; }
+    set { _wxePageInfo.StatusIsCachedMessage = value; }
+  }
+
+  /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
+  WxeHandler IWxePage.WxeHandler 
+  { 
+    get { return _wxePageInfo.WxeHandler; }
+  }
+  
   #endregion
   
   #region IWindowStateManager Implementation
 
   object IWindowStateManager.GetData (string key)
   {
-    return _wxeInfo.GetData (key);
+    return _wxePageInfo.GetData (key);
   }
 
   void IWindowStateManager.SetData (string key, object value)
   {
-    _wxeInfo.SetData (key, value);
+    _wxePageInfo.SetData (key, value);
   }
   
   #endregion
 
-  private WxePageInfo _wxeInfo;
+  private WxePageInfo _wxePageInfo;
   private bool disposed;
   private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableStatusMessages = NaBooleanEnum.Undefined;
-  private string _statusIsAbortingMessage = string.Empty;
-  private string _statusIsCachedMessage = string.Empty;
 
   public WxePage ()
   {
-    _wxeInfo = new WxePageInfo (this);
+    _wxePageInfo = new WxePageInfo (this);
     disposed = false;
   }
 
+
+  /// <summary> Overrides <see cref="Page.DeterminePostBackMode"/>. </summary>
+  /// <remarks> Uses <see cref="WxeInfo.EnsurePostBackModeDetermined"/> determine the postback mode. </remarks>
   protected override NameValueCollection DeterminePostBackMode()
   {
-    NameValueCollection result = _wxeInfo.EnsurePostBackModeDetermined (Context);
-    _wxeInfo.Initialize (Context);
+    NameValueCollection result = _wxePageInfo.EnsurePostBackModeDetermined (Context);
+    _wxePageInfo.Initialize (Context);
 
 #if NET11
     base.OnPreInit();
@@ -470,51 +539,61 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     return result;
   }
 
-
-  protected override void SavePageStateToPersistenceMedium (object viewState)
-  {
-    bool isViewStateInSession = true;
-    if (isViewStateInSession)
-      _wxeInfo.SavePageStateToPersistenceMedium (viewState);
-    else
-      base.SavePageStateToPersistenceMedium (viewState);
-  }
-
-  protected override object LoadPageStateFromPersistenceMedium()
-  {
-    bool isViewStateInSession = true;
-    if (isViewStateInSession)
-      return _wxeInfo.LoadPageStateFromPersistenceMedium ();
-    else
-      return base.LoadPageStateFromPersistenceMedium ();
-  }
-
   /// <summary> Gets the post back data for the page. </summary>
   /// <remarks> Application developers should only rely on this collection for accessing the post back data. </remarks>
   public NameValueCollection GetPostBackCollection ()
   {
-    return _wxeInfo.EnsurePostBackModeDetermined (Context);
+    return _wxePageInfo.EnsurePostBackModeDetermined (Context);
   }
 
+  /// <summary> Implementation of <see cref="ISmartPage.GetPostBackCollection"/>. </summary>
+  /// <returns> The value returned by <see cref="GetPostBackCollection"/. ></returns>
   NameValueCollection ISmartPage.GetPostBackCollection ()
   {
     return GetPostBackCollection();
   }
 
+
+  /// <summary> Overrides <see cref="Page.SavePageStateToPersistenceMedium"/>. </summary>
+  /// <remarks> Uses <see cref="WxeInfo.SavePageStateToPersistenceMedium"/> to save the viewstate. </remarks>
+  protected override void SavePageStateToPersistenceMedium (object viewState)
+  {
+    bool isViewStateInSession = true;
+    if (isViewStateInSession)
+      _wxePageInfo.SavePageStateToPersistenceMedium (viewState);
+    else
+      base.SavePageStateToPersistenceMedium (viewState);
+  }
+
+  /// <summary> Overrides <see cref="Page.LoadPageStateFromPersistenceMedium"/>. </summary>
+  /// <remarks> Uses <see cref="WxeInfo.LoadPageStateFromPersistenceMedium"/> to load the viewstate. </remarks>
+  protected override object LoadPageStateFromPersistenceMedium()
+  {
+    bool isViewStateInSession = true;
+    if (isViewStateInSession)
+      return _wxePageInfo.LoadPageStateFromPersistenceMedium ();
+    else
+      return base.LoadPageStateFromPersistenceMedium ();
+  }
+
+
+  /// <summary> Overrides <see cref="Control.OnPreRender"/>. </summary>
+  /// <remarks> Invokes <see cref="WxeInfo.PreRender"/> before calling the base-implementation. </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     // wxeInfo.PreRender() must be called before base.OnPreRender (EventArgs)
-    // Base-Implementation calls _smartPageInfo.PreRender(), which must be called after wxeInfo.PreRender()
-    _wxeInfo.PreRender();
+    // Base-Implementation uses SmartPageInfo, which registers for the PreRender event.
+    _wxePageInfo.PreRender();
 
     base.OnPreRender (e);
   }
 
+  
   /// <summary> Gets the <see cref="WxePageStep"/> that called this <see cref="WxePage"/>. </summary>
   [Browsable (false)]
   public WxePageStep CurrentStep
   {
-    get { return _wxeInfo.CurrentStep; }
+    get { return _wxePageInfo.CurrentStep; }
   }
   
   /// <summary> Gets the <see cref="WxeFunction"/> of which the <see cref="CurrentStep"/> is a part. </summary>
@@ -525,7 +604,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   [Browsable (false)]
   public WxeFunction CurrentFunction
   {
-    get { return _wxeInfo.CurrentFunction; }
+    get { return _wxePageInfo.CurrentFunction; }
   }
 
   /// <summary> Gets the <see cref="WxeStep.Variables"/> collection of the <see cref="CurrentStep"/>. </summary>
@@ -536,28 +615,24 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   [Browsable (false)]
   public NameObjectCollection Variables 
   {
-    get { return _wxeInfo.Variables; }
+    get { return _wxePageInfo.Variables; }
   }
+
 
   /// <summary> Gets the <see cref="WxeForm"/> of this page. </summary>
   protected WxeForm WxeForm
   {
-    get { return _wxeInfo.WxeForm; }
+    get { return _wxePageInfo.WxeForm; }
   }
 
-  /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
-  WxeHandler IWxePage.WxeHandler 
-  { 
-    get { return _wxeInfo.WxeHandler; }
-  }
-
+  
   /// <summary> Disposes the page. </summary>
   /// <remarks>
   ///   <b>Dispose</b> is part of the ASP.NET page execution life cycle. It does not actually implement the 
   ///   disposeable pattern.
   ///   <note type="inheritinfo">
-  ///     Do not override this method. Use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.Dispose(System.Boolean)">Dispose(Boolean)</see>
-  ///     instead.
+  ///     Do not override this method.
+  ///     Use <see cref="M:Rubicon.Web.ExecutionEngine.WxePage.Dispose(System.Boolean)">Dispose(Boolean)</see> instead.
   ///   </note>
   /// </remarks>
   public override void Dispose()
@@ -567,7 +642,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     {
       Dispose (true);
       disposed = true;
-      _wxeInfo.Dispose();
+      _wxePageInfo.Dispose();
     }
   }
 
@@ -619,6 +694,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   {
     get { return IsAbortEnabled && base.IsAbortConfirmationEnabled; }
   }
+
 
   /// <summary> 
   ///   Gets or sets the flag that determines whether to display a message when the user tries to start a second
@@ -679,37 +755,6 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   protected override bool IsStatusIsSubmittingMessageEnabled
   {
     get { return AreStatusMessagesEnabled; }
-  }
-
-  /// <summary> 
-  ///   Gets or sets the message displayed when the user attempts to submit while the page is already aborting. 
-  /// </summary>
-  /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
-  /// </remarks>
-  [Description("The message displayed when the user attempts to submit while the page is already aborting.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
-  public virtual string StatusIsAbortingMessage
-  {
-    get { return _statusIsAbortingMessage; }
-    set { _statusIsAbortingMessage = StringUtility.NullToEmpty (value); }
-  }
-
-  /// <summary> 
-  ///   Gets or sets the message displayed when the user returnes to a cached page that has already been submitted 
-  ///   or aborted. 
-  /// </summary>
-  /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
-  /// </remarks>
-  [Description("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
-  public virtual string StatusIsCachedMessage
-  {
-    get { return _statusIsCachedMessage; }
-    set { _statusIsCachedMessage = StringUtility.NullToEmpty (value); }
   }
 
 }

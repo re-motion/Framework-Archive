@@ -62,6 +62,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private bool _executeNextStep = false;
   private HttpContext _httpContext;
 
+  private string _statusIsAbortingMessage = string.Empty;
+  private string _statusIsCachedMessage = string.Empty;
+
   /// <summary> Initializes a new instance of the <b>WxePageInfo</b> type. </summary>
   /// <param name="page"> 
   ///   The <see cref="IWxePage"/> containing this <b>WxePageInfo</b> object. 
@@ -93,6 +96,44 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     _wxeForm.LoadPostData += new EventHandler(Form_LoadPostData);
   }
+
+  
+  public NameValueCollection EnsurePostBackModeDetermined (HttpContext context)
+  {
+    ArgumentUtility.CheckNotNull ("context", context);
+
+    if (! _postbackCollectionInitialized)
+    {
+      _postbackCollection = DeterminePostBackMode (context);
+      _postbackCollectionInitialized = true;
+    }
+    return _postbackCollection;
+  }  
+
+  private NameValueCollection DeterminePostBackMode (HttpContext httpContext)
+  {
+    WxeContext wxeContext = WxeContext.Current;
+    if (wxeContext == null)
+      return null;
+    if (! wxeContext.IsPostBack)
+      return null;
+    if (wxeContext.PostBackCollection != null)
+      return wxeContext.PostBackCollection;
+    if (httpContext.Request == null)
+      return null;
+
+    NameValueCollection collection;
+    if (StringUtility.AreEqual (httpContext.Request.HttpMethod, "POST", false))
+      collection = httpContext.Request.Form;
+    else
+      collection = httpContext.Request.QueryString;
+
+    if ((collection[ControlHelper.ViewStateID] == null) && (collection[ControlHelper.PostEventSourceID] == null))
+      return null;
+    else
+      return collection;
+  }
+
 
   private void Form_LoadPostData (object sender, EventArgs e)
   {
@@ -128,6 +169,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
+  
   public void PreRender ()
   {
     WxeContext wxeContext = WxeContext.Current;
@@ -226,7 +268,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "Wxe_OnLoad", "Wxe_OnLoad");
     _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "Wxe_OnAbort", "Wxe_OnAbort");
     _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Wxe_OnUnload", "Wxe_OnUnload");
-    _page.CheckFormStateMethod = "Wxe_CheckFormState";
+    _page.CheckFormStateFunction = "Wxe_CheckFormState";
 
   
     StringBuilder initScript = new StringBuilder (500);
@@ -244,40 +286,19 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     PageUtility.RegisterClientScriptBlock ((Page)_page, "wxeInitialize", initScript.ToString());
   }
 
-  public NameValueCollection EnsurePostBackModeDetermined (HttpContext context)
+  
+  /// <summary> Implements <see cref="IWxePage.StatusIsCachedMessage">IWxePage.StatusIsCachedMessage</see>. </summary>
+  public string StatusIsCachedMessage
   {
-    ArgumentUtility.CheckNotNull ("context", context);
+    get { return _statusIsCachedMessage; }
+    set { _statusIsCachedMessage = StringUtility.NullToEmpty (value); }
+  }
 
-    if (! _postbackCollectionInitialized)
-    {
-      _postbackCollection = DeterminePostBackMode (context);
-      _postbackCollectionInitialized = true;
-    }
-    return _postbackCollection;
-  }  
-
-  private NameValueCollection DeterminePostBackMode (HttpContext httpContext)
+  /// <summary> Implements <see cref="IWxePage.StatusIsAbortingMessage">IWxePage.StatusIsAbortingMessage</see>. </summary>
+  public string StatusIsAbortingMessage
   {
-    WxeContext wxeContext = WxeContext.Current;
-    if (wxeContext == null)
-      return null;
-    if (! wxeContext.IsPostBack)
-      return null;
-    if (wxeContext.PostBackCollection != null)
-      return wxeContext.PostBackCollection;
-    if (httpContext.Request == null)
-      return null;
-
-    NameValueCollection collection;
-    if (StringUtility.AreEqual (httpContext.Request.HttpMethod, "POST", false))
-      collection = httpContext.Request.Form;
-    else
-      collection = httpContext.Request.QueryString;
-
-    if ((collection[ControlHelper.ViewStateID] == null) && (collection[ControlHelper.PostEventSourceID] == null))
-      return null;
-    else
-      return collection;
+    get { return _statusIsAbortingMessage; }
+    set { _statusIsAbortingMessage = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Implements <see cref="IWxePage.ExecuteNextStep">IWxePage.ExecuteNextStep</see>. </summary>

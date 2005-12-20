@@ -450,7 +450,7 @@ public abstract class WxeFunction: WxeStepList
   /// <param name="additionalParameters"> 
   ///   The parameters passed to the <see cref="WxeFunction"/> in addition to the executing function's variables.
   ///   Use <see langword="null"/> or an empty collection if all parameters are supplied by the 
-  ///   <see cref="WxeFunctionCommandInfo.Parameters"/> string and the function stack.
+  ///   <see cref="Command.WxeFunctionCommandInfo.Parameters"/> string and the function stack.
   /// </param>
   /// <exception cref="InvalidOperationException"> 
   ///   Thrown if the <see cref="WxeFunction"/>'s parameters have already been initialized, either because 

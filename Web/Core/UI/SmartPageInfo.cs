@@ -1,25 +1,21 @@
 using System;
-using System.Collections;
 using System.Collections.Specialized;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Globalization;
-using System.Reflection;
 using Rubicon.Collections;
 using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
 
-
 namespace Rubicon.Web.UI
 {
+
 public class SmartPageInfo
 {
   /// <summary> A list of resources. </summary>
@@ -53,10 +49,12 @@ public class SmartPageInfo
 
   private bool _isSmartNavigationDataDisacarded = false;
   private string _smartFocusID = null;
+  private string _abortMessage;
+  private string _statusIsSubmittingMessage = string.Empty;
 
   private bool _isPreRendering = false;
   private AutoInitHashtable _clientSideEventHandlers = new AutoInitHashtable (typeof (NameValueCollection));
-  private string _checkFormStateMethod;
+  private string _checkFormStateFunction;
 
   private ResourceManagerSet _cachedResourceManager;
 
@@ -68,6 +66,7 @@ public class SmartPageInfo
     ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));
     _page = page;
     _page.Init += new EventHandler (Page_Init);
+    _page.PreRender +=new EventHandler(Page_PreRender);
 	}
 
   /// <summary> Implements <see cref="ISmartPage.RegisterClientSidePageEventHandler">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
@@ -86,10 +85,10 @@ public class SmartPageInfo
   }
 
 
-  public string CheckFormStateMethod
+  public string CheckFormStateFunction
   {
-    get { return _checkFormStateMethod; }
-    set { _checkFormStateMethod = StringUtility.EmptyToNull (value); }
+    get { return _checkFormStateFunction; }
+    set { _checkFormStateFunction = StringUtility.EmptyToNull (value); }
   }
 
   /// <summary> Find the <see cref="IResourceManager"/> for this SmartPageInfo. </summary>
@@ -214,8 +213,7 @@ public class SmartPageInfo
 #endif
   }
 
-
-  public void PreRender ()
+  private void Page_PreRender (object sender, EventArgs e)
   {
     PreRenderSmartPage();
     PreRenderSmartNavigation();
@@ -268,8 +266,8 @@ public class SmartPageInfo
     }
 
     string checkFormStateMethod = "null";
-    if (! StringUtility.IsNullOrEmpty (_checkFormStateMethod))
-      checkFormStateMethod = "'" + _checkFormStateMethod + "'";
+    if (! StringUtility.IsNullOrEmpty (_checkFormStateFunction))
+      checkFormStateMethod = "'" + _checkFormStateFunction + "'";
 
     string smartScrollingFieldID = "null";
     string smartFocusFieldID = "null";
@@ -364,7 +362,25 @@ public class SmartPageInfo
 
 
   /// <summary>
-  ///   Implements <see cref="M:Rubicon.Web.UI.ISmartNavigablePage.DiscardSmartNavigationData()">ISmartNavigablePage.DiscardSmartNavigationData()</see>.
+  ///   Implements <see cref="ISmartPage.StatusIsSubmittingMessage">ISmartPage.StatusIsSubmittingMessage</see>.
+  /// </summary>
+  public string StatusIsSubmittingMessage
+  {
+    get { return _statusIsSubmittingMessage; }
+    set { _statusIsSubmittingMessage = StringUtility.NullToEmpty (value); }
+  }
+
+  /// <summary>
+  ///   Implements <see cref="ISmartPage.AbortMessage">ISmartPage.AbortMessage</see>.
+  /// </summary>
+  public string AbortMessage 
+  {
+    get { return _abortMessage; }
+    set { _abortMessage = StringUtility.NullToEmpty (value); }
+  }
+
+  /// <summary>
+  ///   Implements <see cref="ISmartNavigablePage.DiscardSmartNavigationData">ISmartNavigablePage.DiscardSmartNavigationData</see>.
   /// </summary>
   public void DiscardSmartNavigationData ()
   {
@@ -390,6 +406,6 @@ public class SmartPageInfo
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
     _smartFocusID = id;
   }
-
 }
+
 }

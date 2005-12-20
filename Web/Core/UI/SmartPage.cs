@@ -1,22 +1,15 @@
 using System;
-using System.Collections;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.ComponentModel;
-using System.Reflection;
-using Rubicon.NullableValueTypes;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.ExecutionEngine;
 using Rubicon.Collections;
-using Rubicon.Globalization;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.UI;
-using Rubicon.Web.Utilities;
-using Rubicon.Web.Configuration;
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
+using Rubicon.Web.Configuration;
+using Rubicon.Web.UI.Controls;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI
 {
@@ -43,6 +36,10 @@ public enum SmartPageEvents
   OnUnload
 }
 
+/// <summary>
+///   This interface represents a page that has a dirty-state and can prevent multiple postbacks.
+/// </summary>
+/// <include file='doc\include\UI\ISmartPage.xml' path='ISmartPage/Class/*' />
 public interface ISmartPage: IPage
 {
   /// <summary> Gets the post back data for the page. </summary>
@@ -77,25 +74,108 @@ public interface ISmartPage: IPage
   /// </summary>
   /// <include file='doc\include\UI\ISmartPage.xml' path='ISmartPage/RegisterClientSidePageEventHandler/*' />
   void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function);
-  string CheckFormStateMethod { get; set; }
+  /// <summary>
+  ///   Regisiters a Java Script function used to evaluate whether to continue with the submit.
+  ///   Signature: <c>bool Function (isAborting, hasSubmitted, hasUnloaded, isCached)</c>
+  /// </summary>
+  string CheckFormStateFunction { get; set; }
 
   /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
 }
 
+/// <summary>
+///   <b>SmartPage</b> is the default implementation of the <see cref="ISmartPage"/> interface. Use this type
+///   a base class for pages that should supress multiple postbacks, require smart navigation, or have a dirty-state.
+/// </summary>
+/// <include file='doc\include\UI\SmartPage.xml' path='SmartPage/Class/*' />
 public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 {
+  #region ISamrtPage Implementation
+
+  /// <summary> 
+  ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
+  /// </summary>
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageEventHandler/*' />
+  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
+  {
+    _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
+  }
+
+
+  /// <summary> Implementation of <see cref="ISmartPage.CheckFormStateFunction"/>. </summary>
+  string ISmartPage.CheckFormStateFunction
+  {
+    get { return _smartPageInfo.CheckFormStateFunction; }
+    set { _smartPageInfo.CheckFormStateFunction = value; }
+  }
+
+  /// <summary> Gets or sets the message displayed when the user attempts to leave the page. </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
+  /// </remarks>
+  [Description("The message displayed when the user attempts to leave the page.")]
+  [Category ("Appearance")]
+  [DefaultValue ("")]
+  public virtual string AbortMessage 
+  {
+    get { return _smartPageInfo.AbortMessage; }
+    set { _smartPageInfo.AbortMessage = value; }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the message displayed when the user attempts to submit while the page is already submitting. 
+  /// </summary>
+  /// <remarks> 
+  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
+  /// </remarks>
+  [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
+  [Category ("Appearance")]
+  [DefaultValue ("")]
+  public virtual string StatusIsSubmittingMessage
+  {
+    get { return _smartPageInfo.StatusIsSubmittingMessage; }
+    set { _smartPageInfo.StatusIsSubmittingMessage = value; }
+  }
+
+  #endregion
+
+  #region ISmartNavigablePage Implementation
+
+  /// <summary> Clears scrolling and focus information on the page. </summary>
+  public void DiscardSmartNavigationData ()
+  {
+    _smartPageInfo.DiscardSmartNavigationData();
+  }
+
+  /// <summary> Sets the focus to the passed control. </summary>
+  /// <param name="control"> 
+  ///   The <see cref="IFocusableControl"/> to assign the focus to. Must no be <see langword="null"/>.
+  /// </param>
+  public void SetFocus (IFocusableControl control)
+  {
+    _smartPageInfo.SetFocus (control);
+  }
+
+  /// <summary> Sets the focus to the passed control ID. </summary>
+  /// <param name="id"> 
+  ///   The client side ID of the control to assign the focus to. Must no be <see langword="null"/> or empty. 
+  /// </param>
+  public void SetFocus (string id)
+  {
+    _smartPageInfo.SetFocus (id);
+  }
+
+  #endregion
+
   private SmartPageInfo _smartPageInfo;
   private ValidatableControlInitializer _validatableControlInitializer;
   private PostLoadInvoker _postLoadInvoker;
-  private string _abortMessage;
-  private string _statusIsSubmittingMessage = string.Empty;
   private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableStatusIsSubmittingMessage;
   private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
-
 
   public SmartPage()
   {
@@ -103,6 +183,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer = new ValidatableControlInitializer (this);
     _postLoadInvoker = new PostLoadInvoker (this);
   }
+
 
   protected override NameValueCollection DeterminePostBackMode()
   {
@@ -129,16 +210,10 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   /// <summary> Gets the post back data for the page. </summary>
   NameValueCollection ISmartPage.GetPostBackCollection ()
   {
-    if (string.Compare (Request.HttpMethod, "POST", false, CultureInfo.InvariantCulture) == 0)
+    if (string.Compare (Request.HttpMethod, "POST", true) == 0)
       return Request.Form;
     else
       return Request.QueryString;
-  }
-
-  protected override void OnPreRender (EventArgs e)
-  {
-    base.OnPreRender (e);
-    _smartPageInfo.PreRender();
   }
 
 
@@ -187,41 +262,6 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer.EnsureValidatableControlsInitialized ();
   }
 
-
-  /// <summary> 
-  ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
-  /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/RegisterClientSidePageEventHandler/*' />
-  public void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function)
-  {
-    _smartPageInfo.RegisterClientSidePageEventHandler (pageEvent, key, function);
-  }
-
-  protected string CheckFormStateMethod
-  {
-    get { return _smartPageInfo.CheckFormStateMethod; }
-    set { _smartPageInfo.CheckFormStateMethod = value; }
-  }
-
-  string ISmartPage.CheckFormStateMethod
-  {
-    get { return _smartPageInfo.CheckFormStateMethod; }
-    set { _smartPageInfo.CheckFormStateMethod = value; }
-  }
-
-
-  /// <summary> Gets or sets the message displayed when the user attempts to leave the page. </summary>
-  /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
-  /// </remarks>
-  [Description("The message displayed when the user attempts to leave the page.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
-  public string AbortMessage 
-  {
-    get { return _abortMessage; }
-    set { _abortMessage = StringUtility.NullToEmpty (value); }
-  }
 
   /// <summary> 
   ///   Gets or sets the flag that determines whether to display a confirmation dialog before leaving the page. 
@@ -295,21 +335,6 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     get { return IsStatusIsSubmittingMessageEnabled; }
   }
 
-  /// <summary> 
-  ///   Gets or sets the message displayed when the user attempts to submit while the page is already submitting. 
-  /// </summary>
-  /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
-  /// </remarks>
-  [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
-  [Category ("Appearance")]
-  [DefaultValue ("")]
-  public virtual string StatusIsSubmittingMessage
-  {
-    get { return _statusIsSubmittingMessage; }
-    set { _statusIsSubmittingMessage = StringUtility.NullToEmpty (value); }
-  }
-
 
   /// <summary> Gets or sets the flag that determines whether to use smart scrolling. </summary>
   /// <value> 
@@ -351,6 +376,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     get { return IsSmartScrollingEnabled; }
   }
 
+
   /// <summary> Gets or sets the flag that determines whether to use smart navigation. </summary>
   /// <value> 
   ///   <see cref="NaBooleanEnum.True"/> to use smart navigation. 
@@ -389,30 +415,6 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   bool ISmartNavigablePage.IsSmartFocusingEnabled
   {
     get { return IsSmartFocusingEnabled; }
-  }
-
-  /// <summary> Clears scrolling and focus information on the page. </summary>
-  public void DiscardSmartNavigationData ()
-  {
-    _smartPageInfo.DiscardSmartNavigationData();
-  }
-
-  /// <summary> Sets the focus to the passed control. </summary>
-  /// <param name="control"> 
-  ///   The <see cref="IFocusableControl"/> to assign the focus to. Must no be <see langword="null"/>.
-  /// </param>
-  public void SetFocus (IFocusableControl control)
-  {
-    _smartPageInfo.SetFocus (control);
-  }
-
-  /// <summary> Sets the focus to the passed control ID. </summary>
-  /// <param name="id"> 
-  ///   The client side ID of the control to assign the focus to. Must no be <see langword="null"/> or empty. 
-  /// </param>
-  public void SetFocus (string id)
-  {
-    _smartPageInfo.SetFocus (id);
   }
 }
 
