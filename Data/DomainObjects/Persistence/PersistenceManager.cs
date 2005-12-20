@@ -84,10 +84,11 @@ public class PersistenceManager : IDisposable
       {
         provider.Rollback ();
       }
-      finally
+      catch
       {
-        throw;
       }
+
+      throw;
     }
   }
 
