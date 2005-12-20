@@ -28,7 +28,7 @@ public class SmartPageInfo
   [MultiLingualResources ("Rubicon.Web.Globalization.SmartPageInfo")]
   protected enum ResourceIdentifier
   {
-    /// <summary> Displayed when the user attempts to abort the WXE Function. </summary>
+    /// <summary> Displayed when the user attempts to leave the page. </summary>
     AbortMessage,
     /// <summary> Displayed when the user attempts to submit while the page is already submitting. </summary>
     StatusIsSubmittingMessage
