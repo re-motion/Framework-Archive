@@ -217,6 +217,10 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "UtilitiesTest.htm"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Web.config"
                     BuildAction = "Content"
                 />
