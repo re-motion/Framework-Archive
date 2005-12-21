@@ -557,6 +557,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Res\HTML\Utilities.js"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Res\Image\DropDownMenuArrow.gif"
                     BuildAction = "Content"
                 />

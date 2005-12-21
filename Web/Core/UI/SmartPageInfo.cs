@@ -34,7 +34,7 @@ public class SmartPageInfo
     StatusIsSubmittingMessage
   }
 
-  public static readonly string CacheDetectionID = "wxeCacheDetectionField";
+  public static readonly string CacheDetectionID = "SmartPage_CacheDetectionField";
   private const string c_smartScrollingID = "smartScrolling";
   private const string c_smartFocusID = "smartFocus";
   private const string c_scriptFileUrl = "SmartPage.js";
@@ -225,6 +225,7 @@ public class SmartPageInfo
   {    
     _page.RegisterHiddenField (SmartPageInfo.CacheDetectionID, null);
 
+    HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ((Page) _page);
     string url = ResourceUrlResolver.GetResourceUrl (
         (Page) _page, typeof (SmartPageInfo), ResourceType.Html, c_scriptFileUrl);
     HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
@@ -306,7 +307,7 @@ public class SmartPageInfo
       initScript.Append ("\r\n");
     }
 
-    initScript.Append ("SmartPage_Initialize (\r\n");
+    initScript.Append ("SmartPage_Context_Instance = new SmartPage_Context (\r\n");
     initScript.Append ("    '").Append (_page.HtmlForm.ClientID).Append ("',\r\n");
     initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
     initScript.Append ("    ").Append (statusIsSubmittingMessage).Append (",\r\n");

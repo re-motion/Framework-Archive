@@ -209,19 +209,6 @@ public sealed class HtmlHeadAppender
     RegisterHeadElement (key, headElement, priority);
   }
 
-//  public void RegisterStylesheetLingForInternetExplorerOnly (string key, string href, Priority priority)
-//  {
-//    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
-//    ArgumentUtility.CheckNotNullOrEmpty ("href", href);
-//
-//    LiteralControl headElement = new LiteralControl();
-//    headElement.EnableViewState = false;
-//    StringBuilder innerHtml = new StringBuilder();
-//    innerHtml.AppendFormat (
-//        "<!--[if IE]><style type=\"text/css\" rel=\"stylesheet\">@import url({0});</style><![endif]-->", href);
-//    headElement.Text = innerHtml.ToString();
-//    RegisterHeadElement (key, headElement, priority);
-//  }
 
   /// <summary> Registers a stylesheet file. </summary>
   /// <remarks>
@@ -281,6 +268,18 @@ public sealed class HtmlHeadAppender
     headElement.Attributes.Add ("type", "text/javascript");
     headElement.Attributes.Add ("src", src);
     RegisterHeadElement (key, headElement, Priority.Script);
+  }
+
+  public void RegisterUtilitiesJavaScriptInclude (Control control)
+  {
+    ArgumentUtility.CheckNotNull ("control", control);
+    string key = typeof (HtmlHeadContents).FullName + "_Utilities";
+    if (! IsRegistered (key))
+    {
+      string href = 
+          ResourceUrlResolver.GetResourceUrl (control, typeof (HtmlHeadContents), ResourceType.Html, "Utilities.js");
+      RegisterJavaScriptInclude (key, href);
+    }
   }
 
   /// <summary> Registers a <see cref="Control"/> containing an HTML head element. </summary>
@@ -343,6 +342,20 @@ public sealed class HtmlHeadAppender
     }
     return headElements;
   }
+
+  //  public void RegisterStylesheetLingForInternetExplorerOnly (string key, string href, Priority priority)
+  //  {
+  //    ArgumentUtility.CheckNotNullOrEmpty ("key", key);
+  //    ArgumentUtility.CheckNotNullOrEmpty ("href", href);
+  //
+  //    LiteralControl headElement = new LiteralControl();
+  //    headElement.EnableViewState = false;
+  //    StringBuilder innerHtml = new StringBuilder();
+  //    innerHtml.AppendFormat (
+  //        "<!--[if IE]><style type=\"text/css\" rel=\"stylesheet\">@import url({0});</style><![endif]-->", href);
+  //    headElement.Text = innerHtml.ToString();
+  //    RegisterHeadElement (key, headElement, priority);
+  //  }
 }
 
 }
