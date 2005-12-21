@@ -40,8 +40,13 @@ public class HttpContextHelper
 
     object httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
     PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppPath", c_appPhysicalDir);
+#if NET11
     PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", c_appVirtualDir);
-
+#else
+    Type virtualPathType = TypeUtility.GetType ("System.Web.VirtualPath, System.Web", true, false);
+    object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", c_appVirtualDir);
+    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", virtualPath);
+#endif
     HttpContext context = new HttpContext (workerRequest);
     PrivateInvoke.SetNonPublicField (context.Request, "_httpMethod", httpMethod);
 
