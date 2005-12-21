@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="nant-schema" name="Rubicon.CooNet">
+<project xmlns="nant-schema" name="Rubicon.Commons">
 
   <target name="debug" depends="setdebug,all" />
   <target name="release" depends="setrelease,all" />
@@ -7,15 +7,27 @@
   <target name="doc" depends="doc-public,doc-internal" />
   <target name="deploy" depends="cleantemp,zip,sourcezip,getcurrent" />
 
-  <include buildfile="build/properties.include.xml"/>
+  <include buildfile="build/properties.include.xml" verbose="true"/>
+  <target name="setProperties">
+    <property name="text.copyright" value="(c) 2003 rubicon informationstechnologie gmbh, www.rubicon-it.com" />
+    <property name="text.companyname" value="rubicon informationstechnologie gmbh" />
+    <property name="text.companyurl" value="http://www.rubicon-it.com" />
+    <property name="text.productname" value="Rubicon .NET Commons" />
+    <property name="text.productshortname" value="RubiconCommons" />
+  </target>
+  <call target="setProperties" />
 
   <property name="doc.sdkdocversion" value="SDK_v1_1" />
   <property name="dir.development" value="\development" overwrite="false"/>
   <property name="global.dir" value="${dir.development}\global"/>
   <property name="solution.basedir" value="${nant.project.basedir}" />
-  <property name="prereq.assemblies" value="${nant.project.basedir}/prereq/assemblies" />
+  <property name="prereq.assemblies" value="${nant.project.basedir}\prereq\assemblies" />
 
-  <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
+  <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn" />
+  <property name="sql.instance" value="localhost" />
+  
+  <property name="build.keyfile" value="\development\global\rubicon.snk" />
+  <echo message="${build.keyfile}" />
   <property name="dummy" value="true" />
 
   <target name="local" depends="initNoConfig" description="make local build into directory build/current">
@@ -50,21 +62,27 @@
   <!--======================= CONFIGURATION  =======================-->
   <!-- specify one or more of these targets before the main targets to initialize the correct configuration properties -->
 
-  <target name="setdebug">
+  <target name="setFrameworkFlag">
+    <property name="net20" value="${nant.settings.currentframework == 'net-2.0-legacy'}" />
+  </target>
+  
+  <target name="setdebug" depends="setFrameworkFlag">
     <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="false" />
     <property name="project.config" value="debug" />
     <property name="build.debug" value="true" />
-    <property name="build.csc.define" value="DEBUG;TRACE;NET11" />
+    <property name="build.csc.define" value="DEBUG;TRACE;" if="${net20}"/>
+    <property name="build.csc.define" value="DEBUG;TRACE;NET11" unless="${net20}"/>
     <call target="initialize" />
   </target>
 
-  <target name="setrelease">
+  <target name="setrelease" depends="setFrameworkFlag">
     <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="false" />
     <property name="project.config" value="release" />
     <property name="build.debug" value="false" />
-    <property name="build.csc.define" value="TRACE;NET11" />
+    <property name="build.csc.define" value="TRACE;" if="${net20}"/>
+    <property name="build.csc.define" value="TRACE;NET11" unless="${net20}"/>
     <call target="initialize" />
   </target>
 
@@ -74,12 +92,13 @@
     <call target="initialize" />
   </target>
 
-  <target name="setdocumentation">
+  <target name="setdocumentation" depends="setFrameworkFlag">
     <property name="build.copyresources" value="false" />
     <property name="build.createdoc" value="true" />
     <property name="project.config" value="documentation" />
     <property name="build.debug" value="false" />
-    <property name="build.csc.define" value="DEBUG;TRACE;NET11" />
+    <property name="build.csc.define" value="DEBUG;TRACE;" if="${net20}"/>
+    <property name="build.csc.define" value="DEBUG;TRACE;NET11" unless="${net20}"/>
     <call target="initialize" />
   </target>
 
@@ -392,12 +411,12 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
     <exec program="osql.exe" 
-          commandline="-S (local)\build -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\CreateDB.sql"
-          basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
+          commandline="-S ${sql.instance} -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\CreateDB.sql"
+          basedir="${sql.dir}">
     </exec>
     <exec program="osql.exe" 
-          commandline="-S (local)\build -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\setupDB.sql"
-          basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
+          commandline="-S ${sql.instance} -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\setupDB.sql"
+          basedir="${sql.dir}">
     </exec>
     <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/Database/">
@@ -426,12 +445,12 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.extension" value="dll" />
     <exec program="osql.exe" 
-          commandline="-S (local)\build -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\CreateDB.sql"
-          basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
+          commandline="-S ${sql.instance} -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\CreateDB.sql"
+          basedir="${sql.dir}">
     </exec>
     <exec program="osql.exe" 
-          commandline="-S (local)\build -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\setupDB.sql"
-          basedir="C:\Program Files\Microsoft SQL Server\80\Tools\Binn">
+          commandline="-S ${sql.instance} -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\setupDB.sql"
+          basedir="${sql.dir}">
     </exec>
     <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/Database/">
@@ -500,7 +519,7 @@
       <nant buildfile="${project.dir}/${project.name}.build" target="build" />
 
       <if unless="${build.createdoc}" propertyexists="dummy">
-        <style style="${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />
+        <style style="file:///c:${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />
       </if>
     </if>
   </target>
