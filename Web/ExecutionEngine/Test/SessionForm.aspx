@@ -10,10 +10,17 @@
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
 <rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
   
-<script language="javascript">
-</script>
 </head>
 <body MS_POSITIONING="FlowLayout">
+<script language="javascript">
+/*  function Window_OnError(msg, url, linenumber)
+    {
+     alert (msg + ',' + url + ',' + linenumber);
+     document.write ('<p>' + msg + ',' + url + ',' + linenumber + '</p>');
+    }
+    window.onerror= Window_OnError;
+*/
+</script>
     <form id=Form method=post runat="server">
 <table style="WIDTH:100%; HEIGHT:100%">
 <tr>
@@ -58,7 +65,7 @@ Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLi
     }
     
     function Page_Load ()
-    {
+    { 
       /*
       // IE Only
       var windowTop = 25 + 24 + 24 + 24; // Title bar, menu bar, stanarddbuttons bar, address bar
