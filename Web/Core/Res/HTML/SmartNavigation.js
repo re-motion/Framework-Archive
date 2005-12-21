@@ -6,7 +6,7 @@ function SmartScrolling_Element (id, top, left)
   
   this.ToString = function ()
   {
-    if (this.ID == null || this.ID == '')
+    if (StringUtility_IsNullOrEmpty (this.ID))
       return '';
     else
       return this.ID + ' ' + this.Top + ' ' + this.Left;
@@ -15,29 +15,27 @@ function SmartScrolling_Element (id, top, left)
 
 SmartScrolling_Element.Parse = function (value)
 {
-  if (value != null && value != '')
-  {
-    var fields = value.split (' ');
-    return new SmartScrolling_Element (fields[0], fields[1], fields[2]);
-  }
-  else
-  {
+  ArgumentUtility_CheckTypeIsString ('value', value);
+  if (StringUtility_IsNullOrEmpty (value))
     return null;
-  }
+
+  var fields = value.split (' ');
+  return new SmartScrolling_Element (fields[0], fields[1], fields[2]);
 }
 
 function SmartScrolling_Restore (data)
 {
-  if (data == null || data == '')
+  ArgumentUtility_CheckTypeIsString ('data', data);
+  if (StringUtility_IsNullOrEmpty (data))
     return;
-    
+        
   var dataFields = data.split ('*');
   if (dataFields.length == 0)
     return;
   
   var sseBody = SmartScrolling_Element.Parse (dataFields.shift());
-  document.body.scrollTop = sseBody.Top;
-  document.body.scrollLeft = sseBody.Left;
+  window.document.body.scrollTop = sseBody.Top;
+  window.document.body.scrollLeft = sseBody.Left;
   
   for (var i = 0; i < dataFields.length; i++)
   {
@@ -51,12 +49,12 @@ function SmartScrolling_Backup (activeElement)
   var data = '';
   var scrollElements = new Array();
   
-  if (document.body.id == null || document.body.id == '')
+  if (TypeUtility_IsUndefined (window.document.body.id) || StringUtility_IsNullOrEmpty (window.document.body.id))
   {
-    var sseBody = new SmartScrolling_Element ('body', document.body.scrollTop, document.body.scrollLeft);
+    var sseBody = new SmartScrolling_Element ('body', window.document.body.scrollTop, window.document.body.scrollLeft);
     scrollElements.push (sseBody);
   }
-  scrollElements = scrollElements.concat (SmartScrolling_GetScrollPositions (document.body));
+  scrollElements = scrollElements.concat (SmartScrolling_GetScrollPositions (window.document.body));
   
   for (var i = 0; i < scrollElements.length; i++)
   {
@@ -74,7 +72,7 @@ function SmartScrolling_GetScrollPositions (currentElement)
   var scrollElements = new Array();
   if (currentElement != null)
   {
-    if (   typeof (currentElement.id) != 'undefined' && currentElement.id != null && currentElement.id != ''
+    if (   ! TypeUtility_IsUndefined (currentElement.id) && ! StringUtility_IsNullOrEmpty (currentElement.id)
         && (currentElement.scrollTop != 0 || currentElement.scrollLeft != 0))
     {
       var sseCurrentElement = SmartScrolling_GetScrollPosition (currentElement);
@@ -103,7 +101,7 @@ function SmartScrolling_SetScrollPosition (scrollElement)
 {
   if (scrollElement == null)
     return;
-  var htmlElement = document.getElementById (scrollElement.ID)
+  var htmlElement = window.document.getElementById (scrollElement.ID)
   if (htmlElement == null)
     return;
   htmlElement.scrollTop = scrollElement.Top;
@@ -123,13 +121,10 @@ function SmartFocus_Backup (activeElement)
 
 function SmartFocus_Restore (data)
 {
-  if (data == null || data == '')
-    return;
-
   var activeElementID = data;
-  if (activeElementID != null && activeElementID != '')
+  if (! StringUtility_IsNullOrEmpty (activeElementID))
   {
-    var activeElement = document.getElementById (activeElementID);
+    var activeElement = window.document.getElementById (activeElementID);
     if (activeElement != null)
     {
       activeElement.focus();

@@ -198,6 +198,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     string url = ResourceUrlResolver.GetResourceUrl (page, typeof (WxePageInfo), ResourceType.Html, c_scriptFileUrl);
     HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, url);
+    HtmlHeadAppender.Current.RegisterUtilitiesJavaScriptInclude ((Page) _page);
 
     if (! ControlHelper.IsDesignMode (page))
     {
@@ -265,23 +266,20 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       statusIsCachedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
     }
  
-    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "Wxe_OnLoad", "Wxe_OnLoad");
-    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "Wxe_OnAbort", "Wxe_OnAbort");
-    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Wxe_OnUnload", "Wxe_OnUnload");
-    _page.CheckFormStateFunction = "Wxe_CheckFormState";
+    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "WxePage_OnLoad", "WxePage_OnLoad");
+    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnAbort, "WxePage_OnAbort", "WxePage_OnAbort");
+    _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "WxePage_OnUnload", "WxePage_OnUnload");
+    _page.CheckFormStateFunction = "WxePage_CheckFormState";
 
   
     StringBuilder initScript = new StringBuilder (500);
 
-    initScript.Append ("Wxe_Initialize (\r\n");
-    initScript.Append ("    '").Append (_wxeForm.ClientID).Append ("',\r\n");
+    initScript.Append ("WxePage_Context_Instance = new WxePage_Context (\r\n");
     initScript.Append ("    ").Append (refreshIntervall).Append (",\r\n");
     initScript.Append ("    ").Append (refreshPath).Append (",\r\n");
     initScript.Append ("    ").Append (abortPath).Append (",\r\n");
     initScript.Append ("    ").Append (statusIsAbortingMessage).Append (",\r\n");
-    initScript.Append ("    ").Append (statusIsCachedMessage).Append ("); \r\n");
-
-    initScript.Append ("\r\n");
+    initScript.Append ("    ").Append (statusIsCachedMessage).Append (");");
 
     PageUtility.RegisterClientScriptBlock ((Page)_page, "wxeInitialize", initScript.ToString());
   }
