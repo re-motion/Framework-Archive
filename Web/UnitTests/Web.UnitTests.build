@@ -6,7 +6,6 @@
     <csc  target="library" 
           output="${tests.builddir}/${project.output}.${project.extension}" 
           unsafe="true" 
-          doc="${project.doc}" 
           nowarn="1591" 
           debug="${build.debug}"
           define="${build.csc.define}">
