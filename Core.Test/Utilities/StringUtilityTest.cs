@@ -45,27 +45,27 @@ public class StringUtilityTest
   [Test]
 	public void NullToEmpty()
 	{
-    Assertion.AssertEquals (string.Empty, StringUtility.NullToEmpty (null));
-    Assertion.AssertEquals ("1", StringUtility.NullToEmpty ("1"));
+    Assert.AreEqual (string.Empty, StringUtility.NullToEmpty (null));
+    Assert.AreEqual ("1", StringUtility.NullToEmpty ("1"));
 	}
 
   [Test]
   public void IsNullOrEmpty()
   {
-    Assertion.AssertEquals (true, StringUtility.IsNullOrEmpty (null));
-    Assertion.AssertEquals (true, StringUtility.IsNullOrEmpty (""));
-    Assertion.AssertEquals (false, StringUtility.IsNullOrEmpty (" "));
+    Assert.AreEqual (true, StringUtility.IsNullOrEmpty (null));
+    Assert.AreEqual (true, StringUtility.IsNullOrEmpty (""));
+    Assert.AreEqual (false, StringUtility.IsNullOrEmpty (" "));
   }
 
   [Test]
   public void AreEqual()
   {
-    Assertion.AssertEquals (true, StringUtility.AreEqual ("test1", "test1", false));
-    Assertion.AssertEquals (true, StringUtility.AreEqual ("test1", "test1", true));
-    Assertion.AssertEquals (false, StringUtility.AreEqual ("test1", "TEST1", false));
-    Assertion.AssertEquals (true, StringUtility.AreEqual ("test1", "TEST1", true));
-    Assertion.AssertEquals (false, StringUtility.AreEqual ("täst1", "TÄST1", false));
-    Assertion.AssertEquals (true, StringUtility.AreEqual ("täst1", "TÄST1", true));
+    Assert.AreEqual (true, StringUtility.AreEqual ("test1", "test1", false));
+    Assert.AreEqual (true, StringUtility.AreEqual ("test1", "test1", true));
+    Assert.AreEqual (false, StringUtility.AreEqual ("test1", "TEST1", false));
+    Assert.AreEqual (true, StringUtility.AreEqual ("test1", "TEST1", true));
+    Assert.AreEqual (false, StringUtility.AreEqual ("täst1", "TÄST1", false));
+    Assert.AreEqual (true, StringUtility.AreEqual ("täst1", "TÄST1", true));
   }
   [Test]
   public void GetParseMethodFromCache()
