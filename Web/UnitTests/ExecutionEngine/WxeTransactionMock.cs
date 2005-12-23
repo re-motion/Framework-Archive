@@ -12,7 +12,7 @@ using Rubicon.Data;
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
 
-/// <summary> Provides a test implementation of the abstract <see cref="WxeTransactionBase"/> type. </summary>
+/// <summary> Provides a test implementation of the <see langword="abstract"/> <see cref="WxeTransactionBase"/> type. </summary>
 [Serializable]
 public class WxeTransactionMock: WxeTransactionBase
 {
