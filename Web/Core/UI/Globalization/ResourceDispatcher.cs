@@ -262,10 +262,6 @@ public sealed class ResourceDispatcher
 
   //  construction and disposing
   
-  /// <summary>
-  /// Empty private instance constructor to prevent accidental cosntruction,
-  /// since class is only used static
-  /// </summary>
   private ResourceDispatcher ()
   {
   }
