@@ -23,26 +23,26 @@ public class EqualityTests
     CheckNotEquals (NaInt32.Zero, NaInt32.Null);
     CheckNotEquals (NaInt32.MinValue, NaInt32.Null);
 
-    Assertion.Assert (  new NaInt32 (2) == 2); // implicit conversion
-    Assertion.Assert (  new NaInt32 (2).Equals (2)); // implicit conversion
-    Assertion.Assert (! new NaInt32 (2).Equals ((object)2)); // different types cannot be equal
-    Assertion.Assert (! NaInt32.Null.Equals (null)); // NaInt32.Null != null
+    Assert.IsTrue (new NaInt32 (2) == 2); // implicit conversion
+    Assert.IsTrue (  new NaInt32 (2).Equals (2)); // implicit conversion
+    Assert.IsTrue (! new NaInt32 (2).Equals ((object)2)); // different types cannot be equal
+    Assert.IsTrue (! NaInt32.Null.Equals (null)); // NaInt32.Null != null
   }
 
   [Test]
   public void NaInt32CompareTo()
   {
-    Assertion.Assert ( new NaInt32 (3).CompareTo (new NaInt32 (4)) < 0);
-    Assertion.Assert ( NaInt32.Null.CompareTo (new NaInt32 (4)) < 0);
+    Assert.IsTrue ( new NaInt32 (3).CompareTo (new NaInt32 (4)) < 0);
+    Assert.IsTrue ( NaInt32.Null.CompareTo (new NaInt32 (4)) < 0);
 
-    Assertion.Assert ( new NaInt32 (3).CompareTo (new NaInt32 (3)) == 0);
-    Assertion.Assert ( NaInt32.Null.CompareTo (NaInt32.Null) == 0);
+    Assert.IsTrue ( new NaInt32 (3).CompareTo (new NaInt32 (3)) == 0);
+    Assert.IsTrue ( NaInt32.Null.CompareTo (NaInt32.Null) == 0);
 
-    Assertion.Assert ( new NaInt32 (4).CompareTo (new NaInt32 (3)) > 0);
-    Assertion.Assert ( new NaInt32(4).CompareTo (NaInt32.Null) > 0);
+    Assert.IsTrue ( new NaInt32 (4).CompareTo (new NaInt32 (3)) > 0);
+    Assert.IsTrue ( new NaInt32(4).CompareTo (NaInt32.Null) > 0);
 
-    Assertion.Assert ( new NaInt32 (3).CompareTo (null) > 0);
-    Assertion.Assert ( NaInt32.Null.CompareTo (null) == 0);
+    Assert.IsTrue ( new NaInt32 (3).CompareTo (null) > 0);
+    Assert.IsTrue ( NaInt32.Null.CompareTo (null) == 0);
   }
 
   public void CheckEquals (NaInt32 x)
@@ -60,16 +60,16 @@ public class EqualityTests
     bool result;
 
     result = x.Equals (y);
-    Assertion.AssertEquals ("Equals (NaInt32) failed", equals, result);
+    Assert.AreEqual (equals, result, "Equals (NaInt32) failed");
 
     result = NaInt32.Equals (x, y);
-    Assertion.AssertEquals ("static Equals (NaInt32, NaInt32) failed", equals, result);
+    Assert.AreEqual (equals, result, "static Equals (NaInt32, NaInt32) failed");
 
     result = x == y;
-    Assertion.AssertEquals ("operator == failed", equals, result);
+    Assert.AreEqual (equals, result, "operator == failed");
 
     result = x != y;
-    Assertion.AssertEquals ("operatpr != failed", !equals, result);
+    Assert.AreEqual (!equals, result, "operatpr != failed");
   }
 }
 

@@ -13,24 +13,24 @@ public class FormattingTests
   public void TestNaInt32Formatting()
   {
     NaInt32 i10 = 10;
-    Assertion.AssertEquals ("10", i10.ToString());
-    Assertion.AssertEquals ("A", i10.ToString("X"));
-    Assertion.AssertEquals ("A", i10.ToString("~X"));
-    Assertion.AssertEquals ("null", NaInt32.Null.ToString());
-    Assertion.AssertEquals ("", NaInt32.Null.ToString("~"));
-    Assertion.AssertEquals ("null", string.Format ("{0}", NaInt32.Null));
-    Assertion.AssertEquals ("", string.Format ("{0:~}", NaInt32.Null));
+    Assert.AreEqual ("10", i10.ToString());
+    Assert.AreEqual ("A", i10.ToString("X"));
+    Assert.AreEqual ("A", i10.ToString("~X"));
+    Assert.AreEqual ("null", NaInt32.Null.ToString());
+    Assert.AreEqual ("", NaInt32.Null.ToString("~"));
+    Assert.AreEqual ("null", string.Format ("{0}", NaInt32.Null));
+    Assert.AreEqual ("", string.Format ("{0:~}", NaInt32.Null));
   }
 	
   [Test]
   public void TestNaInt32Parsing()
   {
     NaInt32 i10 = 10;
-    Assertion.AssertEquals (i10, NaInt32.Parse ("10"));
-    Assertion.AssertEquals (i10, NaInt32.Parse ("A", NumberStyles.HexNumber));
-    Assertion.AssertEquals (NaInt32.Null, NaInt32.Parse(null));
-    Assertion.AssertEquals (NaInt32.Null, NaInt32.Parse(""));
-    Assertion.AssertEquals (NaInt32.Null, NaInt32.Parse("null"));
+    Assert.AreEqual (i10, NaInt32.Parse ("10"));
+    Assert.AreEqual (i10, NaInt32.Parse ("A", NumberStyles.HexNumber));
+    Assert.AreEqual (NaInt32.Null, NaInt32.Parse(null));
+    Assert.AreEqual (NaInt32.Null, NaInt32.Parse(""));
+    Assert.AreEqual (NaInt32.Null, NaInt32.Parse("null"));
   }
 }
 
