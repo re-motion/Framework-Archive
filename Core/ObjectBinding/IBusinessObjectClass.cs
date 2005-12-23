@@ -37,7 +37,7 @@ public interface IBusinessObjectClass
 
   /// <summary> Gets the <see cref="IBusinessObjectProvider"/> for this business object class. </summary>
   /// <value> An instance of the <see cref="IBusinessObjectProvider"/> type.
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     Must not return <see langword="null"/>.
   ///   </note>
   /// </value>

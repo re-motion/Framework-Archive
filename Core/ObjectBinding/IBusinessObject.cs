@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding
 ///   </para><para>
 ///     Its state can be accessed through a number of get and set methods as well as indexers.
 ///   </para>
-///   <note type="inheritinfo">
+///   <note type="inotes">
 ///     Unless you must extend an existing class with the business object functionality, you can use the 
 ///     <see cref="BusinessObject"/> class as a base implementation.
 ///   </note>
