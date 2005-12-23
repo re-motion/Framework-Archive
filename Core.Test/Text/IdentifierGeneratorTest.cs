@@ -97,17 +97,17 @@ public class IdentifierGeneratorTest
 
   public void CheckValidIdentifier (IdentifierGenerator idGen, string uniqueName, string expectedIdentifier)
   {
-    Assertion.AssertEquals (expectedIdentifier, idGen.GetValidIdentifier (uniqueName));
+    Assert.AreEqual (expectedIdentifier, idGen.GetValidIdentifier (uniqueName));
   }
 
   public void CheckUniqueIdentifier (IdentifierGenerator idGen, string uniqueName, string expectedIdentifier)
   {
-    Assertion.AssertEquals (expectedIdentifier, idGen.GetUniqueIdentifier (uniqueName));
+    Assert.AreEqual (expectedIdentifier, idGen.GetUniqueIdentifier (uniqueName));
   }
 
   public void CheckUniqueIdentifier (IdentifierGenerator idGen, object uniqueObject, string name, string expectedIdentifier)
   {
-    Assertion.AssertEquals (expectedIdentifier, idGen.GetUniqueIdentifier (uniqueObject, name));
+    Assert.AreEqual (expectedIdentifier, idGen.GetUniqueIdentifier (uniqueObject, name));
   }
 }
 

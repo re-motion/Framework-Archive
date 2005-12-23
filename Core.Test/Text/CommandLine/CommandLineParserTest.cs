@@ -69,11 +69,11 @@ public class CommandLineParserTest
         "/B-",
         "/Re:y" });
 
-    Assertion.AssertEquals ("source", argSourceDir.Value);
-    Assertion.AssertEquals ("dest", argDestinationDir.Value);
-    Assertion.AssertEquals (NaBoolean.False, argCopyBinary.Value);
-    Assertion.AssertEquals (true, argEnumOption.HasValue);
-    Assertion.AssertEquals (TestOption.yes, argEnumOption.Value);
+    Assert.AreEqual ("source", argSourceDir.Value);
+    Assert.AreEqual ("dest", argDestinationDir.Value);
+    Assert.AreEqual (NaBoolean.False, argCopyBinary.Value);
+    Assert.AreEqual (true, argEnumOption.HasValue);
+    Assert.AreEqual (TestOption.yes, argEnumOption.Value);
   }
 
   public void TestParsingLeaveOutOptional ()
@@ -87,10 +87,10 @@ public class CommandLineParserTest
     parser.Parse (new string[] {
         "source"} );
 
-    Assertion.AssertEquals ("source", argSourceDir.Value);
-    Assertion.AssertEquals (null, argDestinationDir.Value);
-    Assertion.AssertEquals (NaBoolean.True, argCopyBinary.Value);
-    Assertion.AssertEquals (false, argEnumOption.HasValue);
+    Assert.AreEqual ("source", argSourceDir.Value);
+    Assert.AreEqual (null, argDestinationDir.Value);
+    Assert.AreEqual (NaBoolean.True, argCopyBinary.Value);
+    Assert.AreEqual (false, argEnumOption.HasValue);
   }
 
   [ExpectedException (typeof (MissingRequiredCommandLineParameterException))]
@@ -147,10 +147,10 @@ public class CommandLineParserTest
         "/B-",
         "/Rep:y" });
 
-    Assertion.AssertEquals ("source", argSourceDir.Value);
-    Assertion.AssertEquals ("dest", argDestinationDir.Value);
-    Assertion.AssertEquals (NaBoolean.False, argCopyBinary.Value);
-    Assertion.AssertEquals (TestOption.yes, argEnumOption.Value);
+    Assert.AreEqual ("source", argSourceDir.Value);
+    Assert.AreEqual ("dest", argDestinationDir.Value);
+    Assert.AreEqual (NaBoolean.False, argCopyBinary.Value);
+    Assert.AreEqual (TestOption.yes, argEnumOption.Value);
   }
 
   [ExpectedException (typeof (InvalidNumberOfCommandLineArgumentsException))]
@@ -182,7 +182,7 @@ public class CommandLineParserTest
         + "\n  /b                     binary copy on (+, default) or off (-)" 
         + "\n  /rep                   replace target";
 
-    Assertion.AssertEquals (expectedResult, synopsis);
+    Assert.AreEqual (expectedResult, synopsis);
   }
 
   [Test]
@@ -192,11 +192,11 @@ public class CommandLineParserTest
     
     enumArg = new CommandLineEnumArgument (false, typeof (TestOption));
     PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "yes");
-    Assertion.AssertEquals (TestOption.yes, (TestOption) enumArg.Value);
+    Assert.AreEqual (TestOption.yes, (TestOption) enumArg.Value);
 
     enumArg = new CommandLineEnumArgument (false, typeof (IncrementalTestOptions));
     PrivateInvoke.InvokeNonPublicMethod (enumArg, "SetStringValue", "no");
-    Assertion.AssertEquals (IncrementalTestOptions.no, (IncrementalTestOptions) enumArg.Value);
+    Assert.AreEqual (IncrementalTestOptions.no, (IncrementalTestOptions) enumArg.Value);
   }
 
   [Test]
@@ -206,11 +206,11 @@ public class CommandLineParserTest
 
     intArg = new CommandLineInt32Argument (true);
     PrivateInvoke.InvokeNonPublicMethod (intArg, "SetStringValue", "32");
-    Assertion.AssertEquals ((NaInt32)32, intArg.Value);
+    Assert.AreEqual ((NaInt32)32, intArg.Value);
 
     intArg = new CommandLineInt32Argument (true);
     PrivateInvoke.InvokeNonPublicMethod (intArg, "SetStringValue", " ");
-    Assertion.AssertEquals (NaInt32.Null, intArg.Value);
+    Assert.AreEqual (NaInt32.Null, intArg.Value);
   }
 
   [Test]
@@ -224,7 +224,7 @@ public class CommandLineParserTest
     }
     catch (InvalidCommandLineArgumentValueException e)
     {
-      Assertion.Assert (e.Message.IndexOf ("Ambiguous") >= 0);
+      Assert.IsTrue (e.Message.IndexOf ("Ambiguous") >= 0);
       throw e;
     }
   }
@@ -240,7 +240,7 @@ public class CommandLineParserTest
     }
     catch (InvalidCommandLineArgumentValueException e)
     {
-      Assertion.Assert (e.Message.IndexOf ("Use one of") >= 0);
+      Assert.IsTrue (e.Message.IndexOf ("Use one of") >= 0);
       throw e;
     }
   }
