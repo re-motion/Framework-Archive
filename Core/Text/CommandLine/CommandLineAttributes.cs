@@ -13,7 +13,10 @@ public abstract class CommandLineArgumentAttribute: Attribute
 
   #region dummy constructor
   /// <summary> do not use this constructor </summary>
-  /// <remarks> this constructor is necessary because, even in abstract attribute classes, one constructor must have arguments that meet the constraints of attribute declarations. </remarks>
+  /// <remarks> 
+  ///   This constructor is necessary because, even in <see langword="abstract"/> attribute classes, one constructor 
+  ///   must have arguments that meet the constraints of attribute declarations. 
+  /// </remarks>
   [Obsolete]
   protected CommandLineArgumentAttribute (int doNotUseThisConstructor)
   {
