@@ -12,11 +12,11 @@ function WxePage_Context (
       abortUrl, 
       statusIsAbortingMessage, statusIsCachedMessage)
 {
-  ArgumentUtility_CheckNotNullAndTypeIsNumber ('refreshInterval', refreshInterval);
-  ArgumentUtility_CheckTypeIsString ('refreshUrl', refreshUrl);
-  ArgumentUtility_CheckTypeIsString ('abortUrl', abortUrl);
-  ArgumentUtility_CheckTypeIsString ('statusIsAbortingMessage', statusIsAbortingMessage);
-  ArgumentUtility_CheckTypeIsString ('statusIsCachedMessage', statusIsCachedMessage);
+  ArgumentUtility.CheckNotNullAndTypeIsNumber ('refreshInterval', refreshInterval);
+  ArgumentUtility.CheckTypeIsString ('refreshUrl', refreshUrl);
+  ArgumentUtility.CheckTypeIsString ('abortUrl', abortUrl);
+  ArgumentUtility.CheckTypeIsString ('statusIsAbortingMessage', statusIsAbortingMessage);
+  ArgumentUtility.CheckTypeIsString ('statusIsCachedMessage', statusIsCachedMessage);
 
   // The URL used to post the refresh request to.
   var _refreshUrl = null;
@@ -24,9 +24,9 @@ function WxePage_Context (
   var _refreshTimer = null;
   if (refreshInterval > 0)
   {
-    ArgumentUtility_CheckNotNull ('refreshUrl', refreshUrl);
+    ArgumentUtility.CheckNotNull ('refreshUrl', refreshUrl);
     _refreshUrl = refreshUrl;
-    _refreshTimer = window.setInterval (function() { WxePage_Context_Instance.Refresh(); }, refreshInterval);
+    _refreshTimer = window.setInterval (function() { WxePage_Context.Instance.Refresh(); }, refreshInterval);
   };
 
   // The URL used to post the abort request to.
@@ -41,8 +41,8 @@ function WxePage_Context (
   // Handles the page load event.
   this.OnLoad = function (hasSubmitted, isCached)
   {
-    ArgumentUtility_CheckNotNullAndTypeIsBoolean ('hasSubmitted', hasSubmitted);
-    ArgumentUtility_CheckNotNullAndTypeIsBoolean ('isCached', isCached);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('hasSubmitted', hasSubmitted);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isCached', isCached);
 
     if (hasSubmitted || isCached)
       this.ShowStatusIsCachedMessage ();
@@ -51,30 +51,30 @@ function WxePage_Context (
   // Handles the page abort event.
   this.OnAbort = function (hasSubmitted, isCached)
   {
-    ArgumentUtility_CheckNotNullAndTypeIsBoolean ('hasSubmitted', hasSubmitted);
-    ArgumentUtility_CheckNotNullAndTypeIsBoolean ('isCached', isCached);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('hasSubmitted', hasSubmitted);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isCached', isCached);
 
     if (   (! isCached || hasSubmitted)
         && _isAbortEnabled)
     {
-      SmartPage_Context_Instance.SendOutOfBandRequest (_abortUrl);
+      SmartPage_Context.Instance.SendOutOfBandRequest (_abortUrl);
     }
   };
   
   // Handles the refresh timer events
   this.Refresh = function ()
   {
-    SmartPage_Context_Instance.SendOutOfBandRequest (_refreshUrl + '&WxePage_Garbage=' + Math.random())
+    SmartPage_Context.Instance.SendOutOfBandRequest (_refreshUrl + '&WxePage_Garbage=' + Math.random())
   };
     
   // Evaluates whether the postback request should continue.
   // returns: true to continue with request
   this.CheckFormState = function (isAborting, hasSubmitted, hasUnloaded, isCached)
   {
-    ArgumentUtility_CheckNotNullAndTypeIsBoolean ('isAborting', isAborting);
-    ArgumentUtility_CheckNotNullAndTypeIsBoolean ('hasSubmitted', hasSubmitted);
-    ArgumentUtility_CheckNotNullAndTypeIsBoolean ('hasUnloaded', hasUnloaded);
-    ArgumentUtility_CheckNotNullAndTypeIsBoolean ('isCached', isCached);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isAborting', isAborting);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('hasSubmitted', hasSubmitted);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('hasUnloaded', hasUnloaded);
+    ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isCached', isCached);
 
     if (hasSubmitted || isCached || hasUnloaded)
     {
@@ -96,36 +96,36 @@ function WxePage_Context (
   this.ShowStatusIsAbortingMessage = function ()
   {
     if (_statusIsAbortingMessage != null)
-      SmartPage_Context_Instance.ShowMessage ('WxeStatusIsAbortingMessage', _statusIsAbortingMessage);
+      SmartPage_Context.Instance.ShowMessage ('WxeStatusIsAbortingMessage', _statusIsAbortingMessage);
   };
 
   // Shows the "page is cached" message
   this.ShowStatusIsCachedMessage = function ()
   {
     if (_statusIsCachedMessage != null)
-      SmartPage_Context_Instance.ShowMessage ('WxeStatusIsCachedMessage', _statusIsCachedMessage);
+      SmartPage_Context.Instance.ShowMessage ('WxeStatusIsCachedMessage', _statusIsCachedMessage);
   };
 }
 
 // The single instance of the WxePage_Context object
-var WxePage_Context_Instance = null;
+WxePage_Context.Instance = null;
 
 function WxePage_OnLoad (hasSubmitted, isCached)
 {
-  WxePage_Context_Instance.OnLoad (hasSubmitted, isCached);
+  WxePage_Context.Instance.OnLoad (hasSubmitted, isCached);
 }
 
 function WxePage_OnUnload()
 {
-  WxePage_Context_Instance.OnUnload();
+  WxePage_Context.Instance.OnUnload();
 }
 
 function WxePage_OnAbort (hasSubmitted, isCached)
 {
-  WxePage_Context_Instance.OnAbort (hasSubmitted, isCached);
+  WxePage_Context.Instance.OnAbort (hasSubmitted, isCached);
 }
 
 function WxePage_CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached)
 {
-  return WxePage_Context_Instance.CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached)
+  return WxePage_Context.Instance.CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached)
 }

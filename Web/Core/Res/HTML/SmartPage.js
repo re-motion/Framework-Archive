@@ -17,13 +17,13 @@ function SmartPage_Context (
     checkFormStateFunctionName,
     eventHandlers)
 {
-  ArgumentUtility_CheckNotNullAndTypeIsString ('theFormID', theFormID);
-  ArgumentUtility_CheckTypeIsString ('abortMessage', abortMessage);
-  ArgumentUtility_CheckTypeIsString ('statusIsSubmittingMessage', statusIsSubmittingMessage);
-  ArgumentUtility_CheckTypeIsString ('smartScrollingFieldID', smartScrollingFieldID);
-  ArgumentUtility_CheckTypeIsString ('smartFocusFieldID', smartFocusFieldID);
-  ArgumentUtility_CheckTypeIsString ('checkFormStateFunctionName', checkFormStateFunctionName);
-  ArgumentUtility_CheckTypeIsObject ('eventHandlers', eventHandlers);
+  ArgumentUtility.CheckNotNullAndTypeIsString ('theFormID', theFormID);
+  ArgumentUtility.CheckTypeIsString ('abortMessage', abortMessage);
+  ArgumentUtility.CheckTypeIsString ('statusIsSubmittingMessage', statusIsSubmittingMessage);
+  ArgumentUtility.CheckTypeIsString ('smartScrollingFieldID', smartScrollingFieldID);
+  ArgumentUtility.CheckTypeIsString ('smartFocusFieldID', smartFocusFieldID);
+  ArgumentUtility.CheckTypeIsString ('checkFormStateFunctionName', checkFormStateFunctionName);
+  ArgumentUtility.CheckTypeIsObject ('eventHandlers', eventHandlers);
 
   var _theForm;
     
@@ -64,7 +64,7 @@ function SmartPage_Context (
   
   var _activeElement = null;
   // The hashtable of eventhandlers: Hashtable < event-key, Array < event-handler > >
-  var _eventHandlers = eventHandlers
+  var _eventHandlers = eventHandlers;
   var _isMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
   var _cacheStateHasSubmitted = 'hasSubmitted';
   var _cacheStateHasLoaded = 'hasLoaded';
@@ -97,20 +97,21 @@ function SmartPage_Context (
   // Attaches the event handlers to the page's events.
   this.SetEventHandlers = function ()
   {
-    window.onload = function() { SmartPage_Context_Instance.OnLoad(); };
+    window.onload = function() { SmartPage_Context.Instance.OnLoad(); };
     // IE, Mozilla 1.7, Firefox 0.9
-    window.onbeforeunload = function() { return SmartPage_Context_Instance.OnBeforeUnload(); }; 
-    window.onunload = function() { SmartPage_Context_Instance.OnUnload(); };
-    window.onscroll = function() { SmartPage_Context_Instance.OnScroll(); };
-    window.onresize = function() { SmartPage_Context_Instance.OnResize(); };
+    window.onbeforeunload = function() { return SmartPage_Context.Instance.OnBeforeUnload(); }; 
+    window.onunload = function() { SmartPage_Context.Instance.OnUnload(); };
+    window.onscroll = function() { SmartPage_Context.Instance.OnScroll(); };
+    window.onresize = function() { SmartPage_Context.Instance.OnResize(); };
     
     _aspnetFormOnSubmit = _theForm.onsubmit;
-	  _theForm.onsubmit = function() { return SmartPage_Context_Instance.OnFormSubmit(); };
-    _theForm.onclick = function (evt) { return SmartPage_Context_Instance.OnFormClick (evt); };
+	  _theForm.onsubmit = function() { return SmartPage_Context.Instance.OnFormSubmit(); };
+    _theForm.onclick = function (evt) { return SmartPage_Context.Instance.OnFormClick (evt); };
     if (__doPostBack != null)
     {
 	    _aspnetDoPostBack = __doPostBack;
-	    __doPostBack = function (eventTarget, eventArg) { SmartPage_Context_Instance.DoPostBack (eventTarget, eventArg); };
+	    __doPostBack = 
+	        function (eventTarget, eventArg) { SmartPage_Context.Instance.DoPostBack (eventTarget, eventArg); };
 	  }
   };
 
@@ -128,11 +129,11 @@ function SmartPage_Context (
   {
     if (currentElement != null)
     {
-      if (   ! TypeUtility_IsUndefined (currentElement.id) && ! StringUtility_IsNullOrEmpty (currentElement.id) 
+      if (   ! TypeUtility.IsUndefined (currentElement.id) && ! StringUtility.IsNullOrEmpty (currentElement.id) 
           && IsFocusableTag (currentElement.tagName))
       {
-		    currentElement.onfocus = function (evt) { SmartPage_Context_Instance.OnElementBlur (evt); };
-		    currentElement.onblur  = function (evt) { SmartPage_Context_Instance.OnElementFocus (evt); };
+		    currentElement.onfocus = function (evt) { SmartPage_Context.Instance.OnElementBlur (evt); };
+		    currentElement.onblur  = function (evt) { SmartPage_Context.Instance.OnElementFocus (evt); };
       }
       
       for (var i = 0; i < currentElement.childNodes.length; i++)
@@ -146,7 +147,7 @@ function SmartPage_Context (
   //  Gets the element that caused the current event.
   this.GetActiveElement = function()
   {
-    if (TypeUtility_IsUndefined (window.document.activeElement))
+    if (TypeUtility.IsUndefined (window.document.activeElement))
       return _activeElement;
     else
       return window.document.activeElement;
@@ -208,7 +209,7 @@ function SmartPage_Context (
   {
     var field = _theForm.SmartPage_CacheDetectionField;
     field.value = _cacheStateHasLoaded;   
-  }
+  };
 
   // Marks the page as submitted.
   this.SetCacheDetectionFieldSubmitted = function ()
@@ -252,7 +253,7 @@ function SmartPage_Context (
     ExecuteEventHandlers (_eventHandlers['onbeforeunload']);
     if (displayAbortMessage)
     {
-      // IE alternate/official version: window.event.returnValue = SmartPage_Context_Instance.AbortMessage
+      // IE alternate/official version: window.event.returnValue = SmartPage_Context.Instance.AbortMessage
       return _abortMessage;
     }
   };
@@ -410,7 +411,7 @@ function SmartPage_Context (
   // Sends an AJAX request to the server. Fallback to the load-image technique.
   this.SendOutOfBandRequest = function (url)
   {
-    ArgumentUtility_CheckNotNullAndTypeIsString ('url', url);
+    ArgumentUtility.CheckNotNullAndTypeIsString ('url', url);
     try 
     {
       var xhttp;
@@ -420,7 +421,7 @@ function SmartPage_Context (
       else
         xhttp = new XMLHttpRequest(); 
 
-      var method = 'GET'
+      var method = 'GET';
       var isSynchronousCall = false;
       xhttp.open (method, url, isSynchronousCall);
       xhttp.send ();    
@@ -475,8 +476,8 @@ function SmartPage_Context (
   // Returns: The function or null if the function could not be found.
   function GetFunctionPointer (functionName)
   {
-    ArgumentUtility_CheckTypeIsString ('functionName', functionName);
-    if (StringUtility_IsNullOrEmpty (functionName))
+    ArgumentUtility.CheckTypeIsString ('functionName', functionName);
+    if (StringUtility.IsNullOrEmpty (functionName))
       return null;
     var fct = null;
     try
@@ -487,7 +488,7 @@ function SmartPage_Context (
     {
       return null;
     }
-    if (TypeUtility_IsFunction (fct))
+    if (TypeUtility.IsFunction (fct))
       return fct;
     else
       return null
@@ -503,13 +504,13 @@ function SmartPage_Context (
   //  Shows a status message in the window using a DIV
   this.ShowMessage = function (id, message)
   {
-    ArgumentUtility_CheckNotNullAndTypeIsString ('id', id);
-    ArgumentUtility_CheckNotNullAndTypeIsString ('message', message);
+    ArgumentUtility.CheckNotNullAndTypeIsString ('id', id);
+    ArgumentUtility.CheckNotNullAndTypeIsString ('message', message);
     
     if (_statusMessageWindow == null)
     {  
       var statusMessageWindow;
-      var statusMessageBlock
+      var statusMessageBlock;
       if (_isMsIE)
       {
         statusMessageWindow = window.document.createElement ('DIV');
@@ -559,7 +560,7 @@ function SmartPage_Context (
   // (Re-)Aligns the status message in the window.
   function AlignStatusMessage (message)
   {
-    ArgumentUtility_CheckNotNullAndTypeIsObject ('message', message);
+    ArgumentUtility.CheckNotNullAndTypeIsObject ('message', message);
     
     var scrollLeft = window.document.body.scrollLeft;
     var scrollTop = window.document.body.scrollTop;
@@ -568,13 +569,13 @@ function SmartPage_Context (
     
     message.style.left = windowWidth/2 - message.offsetWidth/2 + scrollLeft;
     message.style.top = windowHeight/2 - message.offsetHeight/2 + scrollTop;
-  }
+  };
 
   // Determines whether the elements of the specified tag can receive the focus.
   function IsFocusableTag (tagName) 
   {
-    ArgumentUtility_CheckTypeIsString ('tagName', tagName);
-    if (StringUtility_IsNullOrEmpty (tagName))
+    ArgumentUtility.CheckTypeIsString ('tagName', tagName);
+    if (StringUtility.IsNullOrEmpty (tagName))
       return false;
     tagName = tagName.toLowerCase();
     return (tagName == "a" ||
@@ -588,13 +589,13 @@ function SmartPage_Context (
   // and if javascript is used as the HREF.
   function IsJavaScriptAnchor (element)
   {
-    ArgumentUtility_CheckTypeIsObject ('element', element);
+    ArgumentUtility.CheckTypeIsObject ('element', element);
     if (element == null)
       return false;
 
     var tagName = element.tagName.toLowerCase();
     if (   tagName == 'a'
-        && ! TypeUtility_IsUndefined (element.href) && element.href != null
+        && ! TypeUtility.IsUndefined (element.href) && element.href != null
         && element.href.substring (0, 11).toLowerCase() == 'javascript:')
     {
       return true;
@@ -632,13 +633,13 @@ function SmartPage_Context (
   // evt: the event object. Used for Mozilla browsers.
   function GetEventSource (evt)
   {
-	  var e = TypeUtility_IsUndefined (evt) ? window.event : evt;
+	  var e = TypeUtility.IsUndefined (evt) ? window.event : evt;
 	  if (e == null) 
 	    return null;
 	    
-	  if (! TypeUtility_IsUndefined (e.target) && e.target != null)
+	  if (! TypeUtility.IsUndefined (e.target) && e.target != null)
 		  return e.target;
-	  else if (! TypeUtility_IsUndefined (e.srcElement) && e.srcElement != null)
+	  else if (! TypeUtility.IsUndefined (e.srcElement) && e.srcElement != null)
 	    return e.srcElement;
 	  else
 	    return null;
@@ -649,10 +650,10 @@ function SmartPage_Context (
 }
 
 // The single instance of the SmartPage_Context object
-var SmartPage_Context_Instance = null;
+SmartPage_Context.Instance = null;
 
 // Called after page's html content is complete.
 function SmartPage_OnStartUp()
 {
-  SmartPage_Context_Instance.OnStartUp();
+  SmartPage_Context.Instance.OnStartUp();
 }

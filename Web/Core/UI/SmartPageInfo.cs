@@ -307,7 +307,7 @@ public class SmartPageInfo
       initScript.Append ("\r\n");
     }
 
-    initScript.Append ("SmartPage_Context_Instance = new SmartPage_Context (\r\n");
+    initScript.Append ("SmartPage_Context.Instance = new SmartPage_Context (\r\n");
     initScript.Append ("    '").Append (_page.HtmlForm.ClientID).Append ("',\r\n");
     initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
     initScript.Append ("    ").Append (statusIsSubmittingMessage).Append (",\r\n");

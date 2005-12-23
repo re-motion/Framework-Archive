@@ -274,7 +274,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   
     StringBuilder initScript = new StringBuilder (500);
 
-    initScript.Append ("WxePage_Context_Instance = new WxePage_Context (\r\n");
+    initScript.Append ("WxePage_Context.Instance = new WxePage_Context (\r\n");
     initScript.Append ("    ").Append (refreshIntervall).Append (",\r\n");
     initScript.Append ("    ").Append (refreshPath).Append (",\r\n");
     initScript.Append ("    ").Append (abortPath).Append (",\r\n");
