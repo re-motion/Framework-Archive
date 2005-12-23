@@ -51,7 +51,7 @@ public abstract class WxeTransactionBase: WxeStepList
   ///   transaction exists.
   /// </value>
   /// <remarks> 
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     If the <see cref="ITransaction"/> implementation does not support the concept of a current transaction,
   ///     it is valid to always return <see langword="null"/>.
   ///   </note>
@@ -61,7 +61,7 @@ public abstract class WxeTransactionBase: WxeStepList
   /// <summary> Sets the current <see cref="ITransaction"/> to <paramref name="transaction"/>. </summary>
   /// <param name="transaction"> The new current transaction. </param>
   /// <remarks> 
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     It the <see cref="ITransaction"/> implementation does not support the concept of a current transaction,
   ///     it is valid to implement an empty method.
   ///   </note>
