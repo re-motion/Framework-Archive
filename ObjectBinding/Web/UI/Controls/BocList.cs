@@ -3945,8 +3945,8 @@ public class BocList:
   ///     to correctly handle the events raised on the BocList, such as an <see cref="Command"/> event 
   ///     or a data changed event.
   ///   </para><para>
-  ///     Make the method <c>protected virtual</c> should this feature be ever required and change the 
-  ///     method's body to return the passed <c>columnDefinitions</c>.
+  ///     Make the method protected <see langword="virtual"/> should this feature be ever required and change the 
+  ///     method's body to return the passed <paramref name="columnDefinitions"/>.
   ///   </para>
   /// </remarks>
   /// <param name="columnDefinitions"> 

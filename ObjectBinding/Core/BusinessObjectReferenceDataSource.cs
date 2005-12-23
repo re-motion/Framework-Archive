@@ -64,7 +64,7 @@ public interface IBusinessObjectReferenceDataSource: IBusinessObjectDataSource
 }
 
 /// <summary>
-///   This abstract class provides base functionality usually required by an implementation of
+///   This <see langword="abstract"/> class provides base functionality usually required by an implementation of
 ///   <see cref="IBusinessObjectReferenceDataSource"/>.
 /// </summary>
 /// <remarks>
@@ -198,13 +198,13 @@ public abstract class BusinessObjectReferenceDataSourceBase:
 
   /// <summary>
   ///   See <see cref="IBusinessObjectReferenceDataSource.ReferenceProperty">IBusinessObjectReferenceDataSource.ReferenceProperty</see>
-  ///   for information on how to implement this abstract property.
+  ///   for information on how to implement this <see langword="abstract"/> property.
   /// </summary>
   public abstract IBusinessObjectReferenceProperty ReferenceProperty { get; set; }
 
   /// <summary>
   ///   See <see cref="IBusinessObjectReferenceDataSource.ReferencedDataSource">IBusinessObjectReferenceDataSource.ReferencedDataSource</see>
-  ///   for information on how to implement this abstract property.
+  ///   for information on how to implement this <see langword="abstract"/> property.
   /// </summary>
   public abstract IBusinessObjectDataSource ReferencedDataSource { get; }
 }
