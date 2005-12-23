@@ -138,7 +138,9 @@ public interface IBusinessObjectDataSource
   IBusinessObjectBoundControl[] BoundControls { get; }
 }
 
-/// <summary> The abstract default implementation of the <see cref="IBusinessObjectDataSource"/> interface. </summary>
+/// <summary> 
+///   The <see langword="abstract"/> default implementation of the <see cref="IBusinessObjectDataSource"/> interface. 
+/// </summary>
 /// <remarks>
 ///   Any specialized version of the <b>BusinessObjectDataSource</b> requires an override for the
 ///   <see cref="BusinessObjectClass"/> property. It is also necessary to provide a way for specifying which 
