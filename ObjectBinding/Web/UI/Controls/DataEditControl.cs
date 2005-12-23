@@ -112,7 +112,8 @@ public class DataEditUserControl: UserControl, IDataEditControl
   ///   Gets the control's data source. This method must be overridden in derived classes.
   /// </summary>
   /// <remarks>
-  ///   This method should be abstract, but abstract base classes are not supported by VS.NET designer.
+  ///   This method should be <see langword="abstract"/>, but <see langword="abstract"/> base classes are not 
+  ///   supported by VS.NET designer.
   /// </remarks>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public virtual IBusinessObjectDataSourceControl DataSource
