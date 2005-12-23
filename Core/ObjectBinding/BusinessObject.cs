@@ -7,7 +7,7 @@ using System.Globalization;
 namespace Rubicon.ObjectBinding
 {
 
-/// <summary> The abstract default implementation of the <see cref="IBusinessObject"/> interface. </summary>
+/// <summary> The <see langword="abstract"/> default implementation of the <see cref="IBusinessObject"/> interface. </summary>
 [Serializable]
 public abstract class BusinessObject: IBusinessObject
 {
