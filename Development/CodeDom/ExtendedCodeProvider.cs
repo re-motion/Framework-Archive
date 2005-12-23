@@ -99,7 +99,7 @@ public abstract class ExtendedCodeProvider
   /// <param name="toType">Type that the method casts to.</param>
   /// <param name="argumentName">The name of the cast operator's argument.</param>
   /// <param name="statements">Statements that perform the conversion, ending with a <c>CodeMethodReturnStatement</c>.</param>
-  /// <param name="attributes">Method attributes that define access and scope. Must be static.</param>
+  /// <param name="attributes">Method attributes that define access and scope. Must be <see langword="static"/>.</param>
   /// <param name="castOperatorKind"><c>Implicit</c> to create an implicit casting operator, <c>Explicit</c> otherwise.</param>
   /// <returns>A <c>CodeTypeMember</c> object that can be appended to a CodeDOM type object.</returns>
   /// <exception cref="NotSupportedException">The default implementation always throws this exception.</exception>
