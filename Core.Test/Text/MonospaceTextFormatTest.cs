@@ -27,8 +27,8 @@ public class MonospaceTextFormatTest
     string before;
     string after;
     MonospaceTextFormat.SplitTextOnSeparator (text, out before, out after, splitAt, new char[] {' '});
-    Assertion.AssertEquals (expectedBefore, before);
-    Assertion.AssertEquals (expectedAfter, after);
+    Assert.AreEqual (expectedBefore, before);
+    Assert.AreEqual (expectedAfter, after);
   }
 
   [Test]
@@ -49,7 +49,7 @@ public class MonospaceTextFormatTest
         + "\n                   JUMPS OVER"
         + "\n                   THE LAZY"
         + "\n                   DOG.";
-    Assertion.AssertEquals (expectedText, sb.ToString());
+    Assert.AreEqual (expectedText, sb.ToString());
   }
 }
 
