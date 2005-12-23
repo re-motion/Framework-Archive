@@ -146,13 +146,14 @@
               <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/>, 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty"/> and 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/> must also provide a matching implementation of
-              <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl"/>. The abstract class 
+              <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl"/>. 
+              The <see langword="abstract"/> class 
               <see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectDataSourceControl"/> provides a default 
               implementation from which to inherit from.
             </para>
             <para>
-              <see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectDataSourceControl"/> is an abstract
-              default implementation.
+              <see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectDataSourceControl"/> is an 
+              <see langword="abstract"/> default implementation.
             </para>
           </td>
         </tr>
