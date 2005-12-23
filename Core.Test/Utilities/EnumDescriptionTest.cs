@@ -41,9 +41,9 @@ public class EnumDescriptionTest
     // try twice to test caching
     for (int i = 0; i < 2; ++i)
     {
-      Assertion.AssertEquals ("Value One", EnumDescription.GetDescription (EnumWithDescriptions.Value1));
-      Assertion.AssertEquals ("Value 2", EnumDescription.GetDescription (EnumWithDescriptions.Value2));
-      Assertion.AssertEquals ("Value III", EnumDescription.GetDescription (EnumWithDescriptions.Value3));
+      Assert.AreEqual ("Value One", EnumDescription.GetDescription (EnumWithDescriptions.Value1));
+      Assert.AreEqual ("Value 2", EnumDescription.GetDescription (EnumWithDescriptions.Value2));
+      Assert.AreEqual ("Value III", EnumDescription.GetDescription (EnumWithDescriptions.Value3));
     }
   }
 
@@ -54,27 +54,27 @@ public class EnumDescriptionTest
     for (int i = 0; i < 2; ++i)
     {
       EnumValue[] enumValues = EnumDescription.GetAllValues (typeof (EnumWithDescriptions));
-      Assertion.AssertEquals (3, enumValues.Length);
-      Assertion.AssertEquals (EnumWithDescriptions.Value1, enumValues[0].Value);
-      Assertion.AssertEquals ("Value One",                 enumValues[0].Description);
-      Assertion.AssertEquals (EnumWithDescriptions.Value2, enumValues[1].Value);
-      Assertion.AssertEquals ("Value 2",                   enumValues[1].Description);
-      Assertion.AssertEquals (EnumWithDescriptions.Value3, enumValues[2].Value);
-      Assertion.AssertEquals ("Value III",                 enumValues[2].Description);
+      Assert.AreEqual (3, enumValues.Length);
+      Assert.AreEqual (EnumWithDescriptions.Value1, enumValues[0].Value);
+      Assert.AreEqual ("Value One",                 enumValues[0].Description);
+      Assert.AreEqual (EnumWithDescriptions.Value2, enumValues[1].Value);
+      Assert.AreEqual ("Value 2",                   enumValues[1].Description);
+      Assert.AreEqual (EnumWithDescriptions.Value3, enumValues[2].Value);
+      Assert.AreEqual ("Value III",                 enumValues[2].Description);
     }
   }
 
   [Test]
   public void TestGetDescriptionForEnumFromResource()
   {
-    Assertion.AssertEquals ("Wert Eins", EnumDescription.GetDescription (EnumFromResource.Value1));
-    Assertion.AssertEquals ("Wert 2", EnumDescription.GetDescription (EnumFromResource.Value2));
-    Assertion.AssertEquals ("Wert III", EnumDescription.GetDescription (EnumFromResource.Value3));
+    Assert.AreEqual ("Wert Eins", EnumDescription.GetDescription (EnumFromResource.Value1));
+    Assert.AreEqual ("Wert 2", EnumDescription.GetDescription (EnumFromResource.Value2));
+    Assert.AreEqual ("Wert III", EnumDescription.GetDescription (EnumFromResource.Value3));
 
     CultureInfo culture = new CultureInfo ("en-US");
-    Assertion.AssertEquals ("Val1", EnumDescription.GetDescription (EnumFromResource.Value1, culture));
-    Assertion.AssertEquals ("Val2", EnumDescription.GetDescription (EnumFromResource.Value2, culture));
-    Assertion.AssertEquals ("Val3", EnumDescription.GetDescription (EnumFromResource.Value3, culture));
+    Assert.AreEqual ("Val1", EnumDescription.GetDescription (EnumFromResource.Value1, culture));
+    Assert.AreEqual ("Val2", EnumDescription.GetDescription (EnumFromResource.Value2, culture));
+    Assert.AreEqual ("Val3", EnumDescription.GetDescription (EnumFromResource.Value3, culture));
   }
 
   [Test]
@@ -84,13 +84,13 @@ public class EnumDescriptionTest
     for (int i = 0; i < 2; ++i)
     {
       EnumValue[] enumValues = EnumDescription.GetAllValues (typeof (EnumFromResource));
-      Assertion.AssertEquals (3, enumValues.Length);
-      Assertion.AssertEquals (EnumFromResource.Value1, enumValues[0].Value);
-      Assertion.AssertEquals ("Wert Eins",             enumValues[0].Description);
-      Assertion.AssertEquals (EnumFromResource.Value2, enumValues[1].Value);
-      Assertion.AssertEquals ("Wert 2",                enumValues[1].Description);
-      Assertion.AssertEquals (EnumFromResource.Value3, enumValues[2].Value);
-      Assertion.AssertEquals ("Wert III",              enumValues[2].Description);
+      Assert.AreEqual (3, enumValues.Length);
+      Assert.AreEqual (EnumFromResource.Value1, enumValues[0].Value);
+      Assert.AreEqual ("Wert Eins",             enumValues[0].Description);
+      Assert.AreEqual (EnumFromResource.Value2, enumValues[1].Value);
+      Assert.AreEqual ("Wert 2",                enumValues[1].Description);
+      Assert.AreEqual (EnumFromResource.Value3, enumValues[2].Value);
+      Assert.AreEqual ("Wert III",              enumValues[2].Description);
     }
   }
 }
