@@ -113,7 +113,7 @@ public class SerializationTests
   private void CheckSerialization (object obj)
   {
     object result = SerializeAndDeserialize (obj);
-    Assertion.AssertEquals ("Serialization and deserialization changed the value of the argument.", obj, result);
+    Assert.AreEqual (obj, result, "Serialization and deserialization changed the value of the argument.");
   }
 
 }
