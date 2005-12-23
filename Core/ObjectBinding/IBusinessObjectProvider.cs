@@ -10,12 +10,13 @@ namespace Rubicon.ObjectBinding
 ///   <see cref="T:Rubicon.ObjectBinding.Web.IBusinessObjectWebUIService"/>) from the object model, as well as provide
 ///   functionality required by more than one of the business object components (<b>Class</b>, <b>Property</b>, and
 ///   <b>Object</b>).
-///   <note type="inheritinfo">
-///     If this interface is implemented using singletons, the singleton must be thread save.
-///   </note>
-///   <note type="inheritinfo">
-///     You can use the <see langword="abstract"/> default implemtation (<see cref="BusinessObjectProvider"/>) as a 
-///     base for implementing the business object provider for your object model.
+///   <note type="inotes">
+///     <para>
+///       If this interface is implemented using singletons, the singleton must be thread save.
+///     </para><para>
+///       You can use the <see langword="abstract"/> default implemtation (<see cref="BusinessObjectProvider"/>) as a 
+///       base for implementing the business object provider for your object model.
+///     </para>
 ///   </note>
 /// </remarks>
 public interface IBusinessObjectProvider
@@ -27,7 +28,7 @@ public interface IBusinessObjectProvider
   ///   be found or instantiated.
   ///  </returns>
   ///  <remarks>
-  ///    <note type="inheritinfo">
+  ///    <note type="inotes">
   ///     If your object model does not support services, this method may always return null.
   ///    </note>
   ///  </remarks>
@@ -54,7 +55,7 @@ public abstract class BusinessObjectProvider: IBusinessObjectProvider
 {
   /// <summary> The <see cref="IDictionary"/> used to store the references to the registered servies. </summary>
   /// <remarks>
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///    If your object model does not support services, this property may always return <see langword="null"/>.
   ///   </note>
   /// </remarks>

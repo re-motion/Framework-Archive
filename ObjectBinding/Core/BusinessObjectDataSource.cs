@@ -28,7 +28,7 @@ public enum DataSourceMode
 ///   </para><para>
 ///     The data source usually provides a way of specifying a type identifier. This identifier is used to
 ///     get or instantiate the matching <see cref="IBusinessObjectClass"/> from the object model.
-///     <note type="inheritinfo">
+///     <note type="inotes">
 ///       It is important to use an identifier that can be persisted as a string. Otherwise it would not be possible to 
 ///       specify and later persist the <see cref="IBusinessObjectClass"/> in the Visual Studio .NET Designer, 
 ///       preventing any further design time features from working.
@@ -115,7 +115,7 @@ public interface IBusinessObjectDataSource
   /// </summary>
   /// <value> The <see cref="IBusinessObjectProvider"/> for the current <see cref="BusinessObjectClass"/>. </value>
   /// <remarks>
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     Must not return <see langword="null"/> if the <see cref="BusinessObjectClass"/> is set.
   ///   </note>
   /// </remarks>

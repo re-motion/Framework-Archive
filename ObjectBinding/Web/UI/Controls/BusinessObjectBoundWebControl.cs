@@ -50,7 +50,7 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
   /// <remarks>
   ///   The value of this property is used to find the <see cref="IBusinessObjectDataSourceControl"/> in the controls
   ///   collection.
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     Apply an <see cref="BusinessObjectDataSourceControlConverter"/> when implementing the property. 
   ///   </note>
   /// </remarks>
