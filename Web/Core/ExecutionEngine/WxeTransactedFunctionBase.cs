@@ -28,7 +28,7 @@ public abstract class WxeTransactedFunctionBase: WxeFunction, IDeserializationCa
   /// </returns>
   /// <remarks>
   ///   Called during the first invokation of <see cref="Execute"/>
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     Override this method to initialize your <see cref="WxeTransactionBase"/> implementation.
   ///   </note>
   /// </remarks>
