@@ -79,7 +79,7 @@ public interface IBusinessObjectProperty
   /// <summary> Gets the <see cref="IBusinessObjectProvider"/> for this property. </summary>
   /// <value> An instance of the <see cref="IBusinessObjectProvider"/> type. </value>
   /// <remarks>
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     Must not return <see langword="null"/>.
   ///   </note>
   /// </remarks>
@@ -97,7 +97,7 @@ public interface IBusinessObjectStringProperty: IBusinessObjectProperty
   /// </summary>
   /// <value> An instance of the <see cref="NaInt32"/> data type.</value>
   /// <remarks>
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     Must not return <see langword="null"/>.
   ///   </note>
   /// </remarks>
@@ -180,7 +180,7 @@ public interface IBusinessObjectReferenceProperty: IBusinessObjectProperty
   /// <remarks> 
   ///   This method is used if the seach statement is entered via the Visual Studio .NET designer, for instance in
   ///   the <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/> control.
-  ///   <note type="inheritinfo">
+  ///   <note type="inotes">
   ///     If your object model cannot evaluate a search string, but allows search through a less generic method,
   ///     provide an overload, and document that getting the list of available objects is only possible during runtime.
   ///   </note>
@@ -234,7 +234,7 @@ public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty
 /// </summary>
 /// <remarks> 
 ///   This property is not restrained to the enumerations derived from the <see cref="Enum"/> type. 
-///   <note type="inheritinfo">
+///   <note type="inotes">
 ///     The native value must be serializable if this property is to be bound to the 
 ///     <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/> control.
 ///   </note>
@@ -274,7 +274,7 @@ public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty
 /// </summary>
 /// <remarks> 
 ///   This property is not restrained to the enumerations derived from the <see cref="Enum"/> type. 
-///   <note type="inheritinfo">
+///   <note type="inotes">
 ///     The native value must be serializable if this property is to be bound to the 
 ///     <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/> control.
 ///   </note>
