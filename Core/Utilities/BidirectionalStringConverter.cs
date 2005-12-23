@@ -21,8 +21,9 @@ namespace Rubicon.Utilities
 ///       The <see cref="Type"/> is an array of scalar values.
 ///     </item>
 ///     <item>
-///       A <see cref="Type"/> implements either a public static &lt;DestinationType&gt; Parse (string) or a 
-///       public static &lt;DestinationType&gt; Parse (string, IFormatProvider) method.
+///       A <see cref="Type"/> implements either a 
+///       public <see langword="static"/> &lt;DestinationType&gt; Parse (string) or a 
+///       public <see langword="static"/> &lt;DestinationType&gt; Parse (string, IFormatProvider) method.
 ///     </item>
 ///   </list>
 /// </remarks>
