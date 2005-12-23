@@ -14,8 +14,8 @@ namespace Rubicon.ObjectBinding
 ///     If this interface is implemented using singletons, the singleton must be thread save.
 ///   </note>
 ///   <note type="inheritinfo">
-///     You can use the abstract default implemtation (<see cref="BusinessObjectProvider"/>) as a base for implementing
-///     the business object provider for your object model.
+///     You can use the <see langword="abstract"/> default implemtation (<see cref="BusinessObjectProvider"/>) as a 
+///     base for implementing the business object provider for your object model.
 ///   </note>
 /// </remarks>
 public interface IBusinessObjectProvider
@@ -47,7 +47,9 @@ public interface IBusinessObjectProvider
   BusinessObjectPropertyPath CreatePropertyPath (IBusinessObjectProperty[] properties);
 }
 
-/// <summary> The abstract default implementation of the <see cref="IBusinessObjectProvider"/> interface. </summary>
+/// <summary> 
+///   The <see langword="abstract"/> default implementation of the <see cref="IBusinessObjectProvider"/> interface. 
+/// </summary>
 public abstract class BusinessObjectProvider: IBusinessObjectProvider
 {
   /// <summary> The <see cref="IDictionary"/> used to store the references to the registered servies. </summary>
