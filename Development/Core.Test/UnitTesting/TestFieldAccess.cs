@@ -29,20 +29,20 @@ public class TestFieldAccess
     TypeWithFields twp = new TypeWithFields();
 
     PrivateInvoke.SetPublicField (twp, "IntField", 21);
-    Assertion.AssertEquals (21, PrivateInvoke.GetPublicField (twp, "IntField"));
+    Assert.AreEqual (21, PrivateInvoke.GetPublicField (twp, "IntField"));
 
     PrivateInvoke.SetNonPublicField (twp, "_stringField", "test 3");
-    Assertion.AssertEquals ("test 3", PrivateInvoke.GetNonPublicField (twp, "_stringField"));
+    Assert.AreEqual ("test 3", PrivateInvoke.GetNonPublicField (twp, "_stringField"));
 	}
 
   [Test]
 	public void TestStaticFields()
 	{
     PrivateInvoke.SetPublicStaticField (typeof (TypeWithFields), "StaticIntField", 22);
-    Assertion.AssertEquals (22, PrivateInvoke.GetPublicStaticField (typeof (TypeWithFields), "StaticIntField"));
+    Assert.AreEqual (22, PrivateInvoke.GetPublicStaticField (typeof (TypeWithFields), "StaticIntField"));
 
     PrivateInvoke.SetNonPublicStaticField (typeof (TypeWithFields), "s_stringField", "test 4");
-    Assertion.AssertEquals ("test 4", PrivateInvoke.GetNonPublicStaticField (typeof (TypeWithFields), "s_stringField"));
+    Assert.AreEqual ("test 4", PrivateInvoke.GetNonPublicStaticField (typeof (TypeWithFields), "s_stringField"));
 	}
 }
 

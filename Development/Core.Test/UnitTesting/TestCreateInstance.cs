@@ -56,15 +56,15 @@ public class TestCreateInstance
     internalInstance = (PublicClass) PrivateInvoke.CreateInstancePublicCtor (
         c_assemblyName, c_internalClassName, 
         "test 1");
-    Assertion.AssertEquals ("test 1", PrivateInvoke.InvokeNonPublicMethod (internalInstance, "f"));
+    Assert.AreEqual ("test 1", PrivateInvoke.InvokeNonPublicMethod (internalInstance, "f"));
 
     internalInstance = (PublicClass) PrivateInvoke.CreateInstanceNonPublicCtor (
         c_assemblyName, c_internalClassName);
-    Assertion.AssertEquals ("private ctor", PrivateInvoke.InvokeNonPublicMethod (internalInstance, "f"));
+    Assert.AreEqual ("private ctor", PrivateInvoke.InvokeNonPublicMethod (internalInstance, "f"));
 
     PublicClass publicInstance = (PublicClass) PrivateInvoke.CreateInstancePublicCtor (
         c_assemblyName, c_publicClassName);
-    Assertion.AssertEquals ("PublicClass", PrivateInvoke.InvokeNonPublicMethod (publicInstance, "f"));
+    Assert.AreEqual ("PublicClass", PrivateInvoke.InvokeNonPublicMethod (publicInstance, "f"));
   }
 
   [Test]

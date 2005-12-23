@@ -46,20 +46,20 @@ public class TestPropertyAccess
     TypeWithProperties twp = new TypeWithProperties();
 
     PrivateInvoke.SetPublicProperty (twp, "IntProperty", 12);
-    Assertion.AssertEquals (12, PrivateInvoke.GetPublicProperty (twp, "IntProperty"));
+    Assert.AreEqual (12, PrivateInvoke.GetPublicProperty (twp, "IntProperty"));
 
     PrivateInvoke.SetNonPublicProperty (twp, "StringProperty", "test 1");
-    Assertion.AssertEquals ("test 1", PrivateInvoke.GetNonPublicProperty (twp, "StringProperty"));
+    Assert.AreEqual ("test 1", PrivateInvoke.GetNonPublicProperty (twp, "StringProperty"));
 	}
 
   [Test]
 	public void TestStaticProperties()
 	{
     PrivateInvoke.SetPublicStaticProperty (typeof (TypeWithProperties), "StaticIntProperty", 13);
-    Assertion.AssertEquals (13, PrivateInvoke.GetPublicStaticProperty (typeof (TypeWithProperties), "StaticIntProperty"));
+    Assert.AreEqual (13, PrivateInvoke.GetPublicStaticProperty (typeof (TypeWithProperties), "StaticIntProperty"));
 
     PrivateInvoke.SetNonPublicStaticProperty (typeof (TypeWithProperties), "StaticStringProperty", "test 2");
-    Assertion.AssertEquals ("test 2", PrivateInvoke.GetNonPublicStaticProperty (typeof (TypeWithProperties), "StaticStringProperty"));
+    Assert.AreEqual ("test 2", PrivateInvoke.GetNonPublicStaticProperty (typeof (TypeWithProperties), "StaticStringProperty"));
 	}
 }
 

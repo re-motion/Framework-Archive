@@ -57,19 +57,19 @@ namespace Rubicon.Development.UnitTests.UnitTesting
     [Test]
     public void TestInvoke()
     {
-      Assertion.AssertEquals ("f",                    PrivateInvoke.InvokePublicMethod (_twm, "f"));
-      Assertion.AssertEquals ("f int",                PrivateInvoke.InvokePublicMethod (_twm, "f", 1));
-      Assertion.AssertEquals ("f int string",         PrivateInvoke.InvokePublicMethod (_twm, "f", 1, null));
-      Assertion.AssertEquals ("f string",             PrivateInvoke.InvokePublicMethod (_twm, "f", "test"));
-      Assertion.AssertEquals ("f StringBuilder",      PrivateInvoke.InvokePublicMethod (_twm, "f", new StringBuilder()));
-      Assertion.AssertEquals ("f int StringBuilder",  PrivateInvoke.InvokeNonPublicMethod (_twm, "f", 1, new StringBuilder()));
+      Assert.AreEqual ("f",                    PrivateInvoke.InvokePublicMethod (_twm, "f"));
+      Assert.AreEqual ("f int",                PrivateInvoke.InvokePublicMethod (_twm, "f", 1));
+      Assert.AreEqual ("f int string",         PrivateInvoke.InvokePublicMethod (_twm, "f", 1, null));
+      Assert.AreEqual ("f string",             PrivateInvoke.InvokePublicMethod (_twm, "f", "test"));
+      Assert.AreEqual ("f StringBuilder",      PrivateInvoke.InvokePublicMethod (_twm, "f", new StringBuilder()));
+      Assert.AreEqual ("f int StringBuilder",  PrivateInvoke.InvokeNonPublicMethod (_twm, "f", 1, new StringBuilder()));
     }
 
     [Test]
     public void TestStaticInvoke()
     {
-      Assertion.AssertEquals ("s int",                PrivateInvoke.InvokePublicStaticMethod (typeof(TypeWithMethods), "s", 1));
-      Assertion.AssertEquals ("s string",             PrivateInvoke.InvokeNonPublicStaticMethod (typeof(TypeWithMethods), "s", "test"));
+      Assert.AreEqual ("s int",                PrivateInvoke.InvokePublicStaticMethod (typeof(TypeWithMethods), "s", 1));
+      Assert.AreEqual ("s string",             PrivateInvoke.InvokeNonPublicStaticMethod (typeof(TypeWithMethods), "s", "test"));
     }
 
     [Test]
