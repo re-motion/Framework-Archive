@@ -27,7 +27,8 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///     See <see cref="IBusinessObjectBoundModifiableControl.SaveValue"/> for a description of the data binding 
 ///     process.
 ///   </para><para>
-///     See <see cref="BusinessObjectBoundModifiableWebControl"/> for the abstract default implementation.
+///     See <see cref="BusinessObjectBoundModifiableWebControl"/> for the <see langword="abstract"/> default 
+///     implementation.
 ///   </para>
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundWebControl"/>
@@ -51,7 +52,7 @@ public interface IBusinessObjectBoundModifiableWebControl:
 }
 
 /// <summary>
-///   <b>BusinessObjectBoundModifiableWebControl</b> is the abstract default implementation of 
+///   <b>BusinessObjectBoundModifiableWebControl</b> is the <see langword="abstract"/> default implementation of 
 ///   <see cref="IBusinessObjectBoundModifiableWebControl"/>.
 /// </summary>
 /// <seealso cref="IBusinessObjectBoundModifiableWebControl"/>
