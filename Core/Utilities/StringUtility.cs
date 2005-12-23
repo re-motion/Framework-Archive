@@ -327,7 +327,7 @@ public sealed class StringUtility
   ///   Parses the specified type from a string.
   /// </summary>
   /// <param name="type"> The type that should be created from the string. This type must have 
-  ///   a public static <b>Parse</b> method with either no arguments or a single 
+  ///   a public <see langword="static"/> <b>Parse</b> method with either no arguments or a single 
   ///   <see cref="IFormatProvider"/>argument. 
   ///   If <paramref name="type"/> is an array type, the values must be comma-separated. (Escaping is 
   ///   handled as for <see cref="ParseSeparatedList"/>.) </param>
