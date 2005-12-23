@@ -30,7 +30,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///     See the <see href="Rubicon.ObjectBinding.html">Rubicon.ObjectBinding</see> namespace documentation for general 
 ///     information on the data binding process.
 ///   </para><para>
-///     See <see cref="BusinessObjectBoundWebControl"/> for the abstract default implementation.
+///     See <see cref="BusinessObjectBoundWebControl"/> for the <see langword="abstract"/> default implementation.
 ///   </para>
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundControl"/>
@@ -58,7 +58,7 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
 }
 
 /// <summary>
-///   <b>BusinessObjectBoundWebControl</b> is the abstract default implementation of 
+///   <b>BusinessObjectBoundWebControl</b> is the <see langword="abstract"/> default implementation of 
 ///   <see cref="IBusinessObjectBoundWebControl"/>.
 /// </summary>
 /// <remarks>
