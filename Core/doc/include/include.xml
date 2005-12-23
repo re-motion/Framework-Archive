@@ -47,11 +47,9 @@ catch (Exception e)
   <Enter>
     <Method>
       <remarks>
-        Instead of creating a new <see cref="WorkContext"/> and entering it using this method, you can use the static 
-        method 
-        <see cref="EnterNew"/>. Using <see cref="Enter"/> makes sense if the call is conditional, especially if you use 
-        the
-        methods <see cref="EnterIfDebug"/> or <see cref="EnterIfTrace"/>.
+        Instead of creating a new <see cref="WorkContext"/> and entering it using this method, you can use the 
+        <see langword="static"/> method <see cref="EnterNew"/>. Using <see cref="Enter"/> makes sense if the call is 
+        conditional, especially if you use the methods <see cref="EnterIfDebug"/> or <see cref="EnterIfTrace"/>.
       </remarks>
     </Method>
     <Signature_Text>

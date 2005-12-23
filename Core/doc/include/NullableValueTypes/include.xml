@@ -26,7 +26,8 @@ public bool IsNull { get; }
 </code>
       </item>
       <item>
-        It must contain s static property <see langword="null"/> of its own type to represent null values.
+        It must contain s <see langword="static"/> property <see langword="null"/> of its own type to represent null 
+        values.
 <code>
 public static readonly NaT Null;
 </code>
@@ -52,18 +53,19 @@ public T Value {get;}
         </para> 
       </item>
       <item>
-        It must contain a public static conversion method for converting boxed values to this type <b>NaT</b>. 
-        This method must have the name <b>FromBoxed&lt;T&gt;</b> and accept a parameter of type <see cref="Object"/>.
-        It must return its null-value if the parameter is <see langword="null"/>, and the according <b>NaT</b> value 
-        if the parameter is an instance of <b>T</b>. All other types may yield an <see cref="ArgumentException"/>.
+        It must contain a public <see langword="static"/>  conversion method for converting boxed values to this type 
+        <b>NaT</b>. This method must have the name <b>FromBoxed&lt;T&gt;</b> and accept a parameter of type 
+        <see cref="Object"/>. It must return its null-value if the parameter is <see langword="null"/>, and the 
+        according <b>NaT</b> value if the parameter is an instance of <b>T</b>. All other types may yield an 
+        <see cref="ArgumentException"/>.
 <code>
 public static NaT FromBoxed&lt;T&gt; (object value);
 </code>
       </item>
       <item>
-        It must contain a public static conversion method for converting its values to boxed values of the wrapped 
-        type <b>T</b>. This method must have the name <b>ToBoxed&lt;T&gt;</b> and accept a parameter of type 
-        <b>NaT</b>. It must return <see langword="null"/> if the parameter is its null-value, and the according 
+        It must contain a public <see langword="static"/>  conversion method for converting its values to boxed values 
+        of the wrapped type <b>T</b>. This method must have the name <b>ToBoxed&lt;T&gt;</b> and accept a parameter of 
+        type <b>NaT</b>. It must return <see langword="null"/> if the parameter is its null-value, and the according 
         <b>T</b> value otherwise.
 <code>
 public static object ToBoxed&lt;T&gt; (NaT value);
