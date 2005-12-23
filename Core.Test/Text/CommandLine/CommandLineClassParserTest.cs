@@ -28,10 +28,10 @@ namespace Rubicon.Core.UnitTests.Text.CommandLine
     {
       CommandLineClassParser parser = new CommandLineClassParser (typeof (Arguments));
       Arguments arguments = (Arguments) parser.Parse ("sdir ddir /b- /rep:y", true);
-      Assertion.AssertEquals ("sdir", arguments.SourceDirectory);
-      Assertion.AssertEquals ("ddir", arguments.DestinationDirectory);
-      Assertion.AssertEquals (false, arguments.CopyBinary);
-      Assertion.AssertEquals (TestOption.yes, arguments.ReplaceTarget);
+      Assert.AreEqual ("sdir", arguments.SourceDirectory);
+      Assert.AreEqual ("ddir", arguments.DestinationDirectory);
+      Assert.AreEqual (false, arguments.CopyBinary);
+      Assert.AreEqual (TestOption.yes, arguments.ReplaceTarget);
     }
   }
 }
