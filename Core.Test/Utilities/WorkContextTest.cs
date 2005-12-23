@@ -15,7 +15,7 @@ public class WorkContextTest
   [Test]
   public void TestCatchMainInside ()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "? main",
       PerformTest (ThrowLocation.main_inside, true));
   }
@@ -23,7 +23,7 @@ public class WorkContextTest
   [Test]
   public void TestCatchMainOutside ()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "",
       PerformTest (ThrowLocation.main_outside, true));
   }
@@ -31,7 +31,7 @@ public class WorkContextTest
   [Test]
   public void TestCatchSub1Inside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "main\n" + 
       "? sub1",
       PerformTest (ThrowLocation.sub1_inside, true));
@@ -40,7 +40,7 @@ public class WorkContextTest
   [Test]
   public void TestCatchSub1Outside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "main",
       PerformTest (ThrowLocation.sub1_outside, true));
   }
@@ -48,7 +48,7 @@ public class WorkContextTest
   [Test]
   public void TestCatchSub2Inside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "main\n" + 
       "? sub2",
       PerformTest (ThrowLocation.sub2_inside, true));
@@ -57,7 +57,7 @@ public class WorkContextTest
   [Test]
   public void TestCatchSub2Outside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "main",
       PerformTest (ThrowLocation.sub2_outside, true));
   }
@@ -65,7 +65,7 @@ public class WorkContextTest
   [Test]
   public void TestCatchSub2_1Inside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "main\n" + 
       "? sub2\n" + 
       "? sub2.1",
@@ -77,7 +77,7 @@ public class WorkContextTest
   [Test]
   public void TestNoCatchMainInside ()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "? main",
       PerformTest (ThrowLocation.main_inside, false));
   }
@@ -85,7 +85,7 @@ public class WorkContextTest
   [Test]
   public void TestNoCatchMainOutside ()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "",
       PerformTest (ThrowLocation.main_outside, false));
   }
@@ -93,7 +93,7 @@ public class WorkContextTest
   [Test]
   public void TestNoCatchSub1Inside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "? main\n" + 
       "? sub1",
       PerformTest (ThrowLocation.sub1_inside, false));
@@ -102,7 +102,7 @@ public class WorkContextTest
   [Test]
   public void TestNoCatchSub1Outside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "? main",
       PerformTest (ThrowLocation.sub1_outside, false));
   }
@@ -110,7 +110,7 @@ public class WorkContextTest
   [Test]
   public void TestNoCatchSub2Inside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "? main\n" + 
       "? sub2",
       PerformTest (ThrowLocation.sub2_inside, false));
@@ -119,7 +119,7 @@ public class WorkContextTest
   [Test]
   public void TestNoCatchSub2Outside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "? main",
       PerformTest (ThrowLocation.sub2_outside, false));
   }
@@ -127,7 +127,7 @@ public class WorkContextTest
   [Test]
   public void TestNoCatchSub2_1Inside()
   {
-    Assertion.AssertEquals (
+    Assert.AreEqual (
       "? main\n" + 
       "? sub2\n" + 
       "? sub2.1",
@@ -153,7 +153,7 @@ public class WorkContextTest
         {
           if (!catchInInnerHandler)
             throw;
-          Assertion.AssertEquals (location.ToString(), e.Message);
+          Assert.AreEqual (location.ToString(), e.Message);
           return WorkContext.Stack.ToString();
         }
         try
@@ -174,7 +174,7 @@ public class WorkContextTest
         {
           if (!catchInInnerHandler)
             throw;
-          Assertion.AssertEquals (location.ToString(), e.Message);
+          Assert.AreEqual (location.ToString(), e.Message);
           return WorkContext.Stack.ToString();
         }
         if (location == ThrowLocation.main_inside) throw new Exception (location.ToString());
@@ -185,7 +185,7 @@ public class WorkContextTest
     }
     catch (Exception e)
     {
-      Assertion.AssertEquals (location.ToString(), e.Message);
+      Assert.AreEqual (location.ToString(), e.Message);
       return WorkContext.Stack.ToString();
     }
   }
