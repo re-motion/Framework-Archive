@@ -88,8 +88,8 @@ public abstract class WxeFunction: WxeStepList
   ///       <description> A quoted string. Escape quotes and line breaks using the backslash character.</description>
   ///     </item>
   ///     <item>
-  ///       <term> Any type that has a <see langword="static"/> <c>Parse</c> method. </term>
-  ///       <description> A quoted string that can be passed to the type's <c>Parse</c> method. For boolean constants 
+  ///       <term> Any type that has a <see langword="static"/> <b>Parse</b> method. </term>
+  ///       <description> A quoted string that can be passed to the type's <b>Parse</b> method. For boolean constants 
   ///         (&quot;true&quot;, &quot;false&quot;) and numeric constants, quotes are optional.  </description>
   ///     </item>
   ///     <item>

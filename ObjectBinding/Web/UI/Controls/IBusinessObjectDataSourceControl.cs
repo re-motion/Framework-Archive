@@ -16,7 +16,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 ///  or <b>ASCX User Control</b>.
 /// </summary>
 /// <remarks>
-///   It is usually sufficient to use the abstract default implementation 
+///   It is usually sufficient to use the <see langword="abstract"/> default implementation 
 ///   (<see cref="BusinessObjectDataSourceControl"/>) as base for creating a new 
 ///   <b>IBusinessObjectDataSourceControl</b>.
 /// </remarks>
@@ -35,9 +35,9 @@ public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IC
 /// </summary>
 /// <remarks>
 ///   <para>
-///     When creating a specialized implementation of this class, override the abstract <see cref="GetDataSource"/> 
-///     method. It is recommended to create the instance to be returned by <see cref="GetDataSource"/> during 
-///     the construction phase of the <b>BusinessObjectDataSourceControl</b>.
+///     When creating a specialized implementation of this class, override the <see langword="abstract"/> 
+///     <see cref="GetDataSource"/> method. It is recommended to create the instance to be returned by 
+///     <see cref="GetDataSource"/> during the construction phase of the <b>BusinessObjectDataSourceControl</b>.
 ///   </para><para>
 ///     In addition, an identifier for the <see cref="BusinessObjectClass"/> must be provided in form of a 
 ///     property. See the remarks section of the <see cref="IBusinessObjectDataSource"/> for details on implementing 
