@@ -17,8 +17,8 @@ public class ArrayUtilityTest
     string[] s4 = { "e", "f" };
 
     string[] res = (string[]) ArrayUtility.Combine (s1, s2, s3, s4);
-    //Assertion.AssertEquals (6, res.Length);
-    Assertion.AssertEquals ("abcdef", string.Concat (res));
+    //Assert.AreEqual (6, res.Length);
+    Assert.AreEqual ("abcdef", string.Concat (res));
   }
 
   [Test]
@@ -26,21 +26,21 @@ public class ArrayUtilityTest
   {
     string[] s1 = { "a", "b", "c", "d" };
     string[] res = (string[]) ArrayUtility.Insert (s1, 0, "X");
-    Assertion.AssertEquals ("Xabcd", string.Concat (res));
+    Assert.AreEqual ("Xabcd", string.Concat (res));
   }
   [Test]
   public void TestInsertMiddle()
   {
     string[] s1 = { "a", "b", "c", "d" };
     string[] res = (string[]) ArrayUtility.Insert (s1, 2, "X");
-    Assertion.AssertEquals ("abXcd", string.Concat (res));
+    Assert.AreEqual ("abXcd", string.Concat (res));
   }
   [Test]
   public void TestInsertEnd()
   {
     string[] s1 = { "a", "b", "c", "d" };
     string[] res = (string[]) ArrayUtility.Insert (s1, 4, "X");
-    Assertion.AssertEquals ("abcdX", string.Concat (res));
+    Assert.AreEqual ("abcdX", string.Concat (res));
   }
   [ExpectedException (typeof (IndexOutOfRangeException))]
   [Test]
