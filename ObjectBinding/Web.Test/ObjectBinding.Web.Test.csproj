@@ -326,6 +326,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "RepeaterTest.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "RepeaterTest.aspx.cs"
+                    DependentUpon = "RepeaterTest.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "RepeaterTest.aspx.resx"
+                    DependentUpon = "RepeaterTest.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "RightFrame.aspx"
                     SubType = "Form"
                     BuildAction = "Content"
