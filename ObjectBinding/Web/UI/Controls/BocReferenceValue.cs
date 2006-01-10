@@ -1007,7 +1007,8 @@ public class BocReferenceValue:
     _dropDownList.Items.Clear();
 
     //  Add Undefined item
-    if (! IsRequired)
+    bool isNullItem = InternalValue == null;
+    if (isNullItem || ! IsRequired)
       _dropDownList.Items.Add (CreateNullItem());
 
     if (businessObjects != null)
