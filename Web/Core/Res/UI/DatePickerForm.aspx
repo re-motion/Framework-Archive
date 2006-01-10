@@ -1,4 +1,4 @@
-<%@ Page language="c#" AutoEventWireup="false" Inherits="Rubicon.Web.UI.Controls.DatePickerPage" %>
+<%@ Page language="c#" AutoEventWireup="false" Inherits="Rubicon.Web.UI.Controls.DatePickerPage" EnableSessionState="False"%>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
