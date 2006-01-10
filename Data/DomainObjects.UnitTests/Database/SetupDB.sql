@@ -93,6 +93,14 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
 DROP TABLE [TableWithoutTimestampColumn]
 GO
 
+IF OBJECT_ID ('rpf_testSPQuery', 'P') IS NOT NULL 
+  DROP PROCEDURE rpf_testSPQuery;
+GO
+
+IF OBJECT_ID ('rpf_testSPQueryWithParameter', 'P') IS NOT NULL 
+  DROP PROCEDURE rpf_testSPQueryWithParameter;
+GO
+
 CREATE TABLE [Employee] (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
@@ -432,3 +440,13 @@ CREATE TABLE [TableWithRelatedClassIDColumnAndNoInheritance] (
 ) 
 GO
 
+CREATE PROCEDURE rpf_testSPQuery
+AS
+  SELECT * FROM [Order] WHERE [Order].[OrderNo] = 1 OR [Order].[OrderNo] = 3 ORDER BY OrderNo ASC
+GO
+
+CREATE PROCEDURE rpf_testSPQueryWithParameter
+  @customerID uniqueidentifier
+AS
+  SELECT * FROM [Order] WHERE [Order].[CustomerID] = @customerID ORDER BY OrderNo ASC
+GO
