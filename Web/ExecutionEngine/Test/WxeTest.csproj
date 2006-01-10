@@ -240,10 +240,6 @@
                     DependentUpon = "WebForm1.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
-                <File
-                    RelPath = "WxeHandler.ashx"
-                    BuildAction = "None"
-                />
             </Include>
         </Files>
     </CSHARP>
