@@ -220,6 +220,12 @@ public sealed class DomainObjectIDs
   // Customer: Customer4
   // Official: Official1
   public static readonly ObjectID Order4 = new ObjectID ("Order", new Guid ("{90E26C86-611F-4735-8D1B-E1D0918515C2}"));
+
+  // OrderTicket: -
+  // OrderItems: -
+  // Customer: invalid
+  // Official: does not exist
+  public static readonly ObjectID InvalidOrder = new ObjectID ("Order", new Guid ("{DA658F26-8107-44ce-9DD0-1804503ECCAF}"));
   
   #endregion
 
