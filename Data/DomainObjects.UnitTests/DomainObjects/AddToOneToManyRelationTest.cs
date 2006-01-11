@@ -370,7 +370,7 @@ public class AddToOneToManyRelationTest : ClientTransactionBaseTest
 
     Assert.IsNotNull (_supervisor.Subordinates[subordinate.ID]);
     Assert.AreEqual (_supervisor.Subordinates.Count - 1, _supervisor.Subordinates.IndexOf (subordinate));
-    Assert.IsFalse (oldSupervisorOfSubordinate.Subordinates.Contains (subordinate));
+    Assert.IsFalse (oldSupervisorOfSubordinate.Subordinates.ContainsObject (subordinate));
     Assert.AreSame (_supervisor, subordinate.Supervisor);
   }
 }
