@@ -80,10 +80,10 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     Assert.AreSame (_newOrder, _customer.Orders[replaceIndex]);
     Assert.AreSame (_customer, _newOrder.Customer);
 
-    Assert.IsFalse (_customer.Orders.Contains (_oldOrder));
+    Assert.IsFalse (_customer.Orders.ContainsObject (_oldOrder));
     Assert.IsNull (_oldOrder.Customer);
 
-    Assert.IsFalse (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+    Assert.IsFalse (_oldCustomerOfNewOrder.Orders.ContainsObject (_newOrder));
   }
 
   [Test]
@@ -123,7 +123,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     Assert.AreSame (newOrder, _customer.Orders[replaceIndex]);
     Assert.AreSame (_customer, newOrder.Customer);
 
-    Assert.IsFalse (_customer.Orders.Contains (_oldOrder));
+    Assert.IsFalse (_customer.Orders.ContainsObject (_oldOrder));
     Assert.IsNull (_oldOrder.Customer);
   }
 
@@ -160,7 +160,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
       Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
       Assert.AreSame (_customer, _oldOrder.Customer);
 
-      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.ContainsObject (_newOrder));
       Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
     }
   }
@@ -199,7 +199,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
       Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
       Assert.AreSame (_customer, _oldOrder.Customer);
 
-      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.ContainsObject (_newOrder));
       Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
     }
   }
@@ -239,7 +239,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
       Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
       Assert.AreSame (_customer, _oldOrder.Customer);
 
-      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.ContainsObject (_newOrder));
       Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
     }
   }
@@ -280,7 +280,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
       Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
       Assert.AreSame (_customer, _oldOrder.Customer);
 
-      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.ContainsObject (_newOrder));
       Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
     }
   }
@@ -322,7 +322,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
       Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
       Assert.AreSame (_customer, _oldOrder.Customer);
 
-      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.ContainsObject (_newOrder));
       Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
     }
   }
@@ -365,7 +365,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
       Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
       Assert.AreSame (_customer, _oldOrder.Customer);
 
-      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.ContainsObject (_newOrder));
       Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
     }
   }
@@ -409,7 +409,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
       Assert.AreSame (_oldOrder, _customer.Orders[replaceIndex]);
       Assert.AreSame (_customer, _oldOrder.Customer);
 
-      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.Contains (_newOrder));
+      Assert.IsTrue (_oldCustomerOfNewOrder.Orders.ContainsObject (_newOrder));
       Assert.AreSame (_oldCustomerOfNewOrder, _newOrder.Customer);
     }
   }
@@ -439,10 +439,7 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     }
     catch (InvalidOperationException e)
     {
-      string expectedMessage = string.Format (
-          "Cannot replace an object '{0}' with another object '{1}' already part of this collection.",
-          _customer.Orders[0].ID, _customer.Orders[1].ID);
-
+      string expectedMessage = string.Format ("The object '{0}' is already part of this collection.", _customer.Orders[1].ID);
       Assert.AreEqual (expectedMessage, e.Message);
     }
   }
@@ -460,11 +457,11 @@ public class ReplaceInOneToManyRelationTest : ClientTransactionBaseTest
     _customer.Orders[replaceIndex] = newOrder;
 
     Assert.AreSame (_customer, newOrder.Customer);
-    Assert.IsTrue (_customer.Orders.Contains (newOrder));
+    Assert.IsTrue (_customer.Orders.ContainsObject (newOrder));
 
     Customer oldCustomerOfNewOrder = Customer.GetObject (DomainObjectIDs.Customer4);
 
-    Assert.IsFalse (oldCustomerOfNewOrder.Orders.Contains (newOrder));
+    Assert.IsFalse (oldCustomerOfNewOrder.Orders.ContainsObject (newOrder));
 
     ChangeState[] expectedStates = new ChangeState[]
     {

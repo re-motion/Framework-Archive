@@ -246,8 +246,8 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     _supervisor.Subordinates[0] = null;
 
     Assert.AreEqual (1, _supervisor.Subordinates.Count);
-    Assert.IsTrue (_supervisor.Subordinates.Contains (unaffectedEmployee));
-    Assert.IsFalse (_supervisor.Subordinates.Contains (employeeToRemove));
+    Assert.IsTrue (_supervisor.Subordinates.ContainsObject (unaffectedEmployee));
+    Assert.IsFalse (_supervisor.Subordinates.ContainsObject (employeeToRemove));
 
     Assert.AreSame (_supervisor, unaffectedEmployee.Supervisor);
     Assert.IsNull (employeeToRemove.Supervisor);
@@ -263,8 +263,8 @@ public class RemoveFromOneToManyRelationTest : ClientTransactionBaseTest
     list[0] = null;
 
     Assert.AreEqual (1, _supervisor.Subordinates.Count);
-    Assert.IsTrue (_supervisor.Subordinates.Contains (unaffectedEmployee));
-    Assert.IsFalse (_supervisor.Subordinates.Contains (employeeToRemove));
+    Assert.IsTrue (_supervisor.Subordinates.ContainsObject (unaffectedEmployee));
+    Assert.IsFalse (_supervisor.Subordinates.ContainsObject (employeeToRemove));
 
     Assert.AreSame (_supervisor, unaffectedEmployee.Supervisor);
     Assert.IsNull (employeeToRemove.Supervisor);
