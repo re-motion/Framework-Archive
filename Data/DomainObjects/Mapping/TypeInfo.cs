@@ -13,7 +13,6 @@ public class TypeInfo
 
   // static members and constants
 
-  private static readonly Hashtable s_types;
   private static readonly Hashtable s_mappingTypes;
 
   public static void AddInstance (TypeInfo typeInfo)
@@ -23,7 +22,6 @@ public class TypeInfo
     lock (typeof (TypeInfo))
     {
       s_mappingTypes.Add (GetMappingTypeKey (typeInfo), typeInfo);
-      s_types.Add (typeInfo.Type, typeInfo);
     }
   }
 
@@ -32,25 +30,6 @@ public class TypeInfo
     ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
 
     return (TypeInfo) s_mappingTypes[GetMappingTypeKey (mappingType, isNullable)];
-  }
-
-  public static TypeInfo GetInstance (Type type)
-  {
-    ArgumentUtility.CheckNotNull ("type", type);
-
-    return (TypeInfo) s_types[type];
-  }
-
-  public static TypeInfo GetMandatory (Type type)
-  {
-    ArgumentUtility.CheckNotNull ("type", type);
-
-    TypeInfo typeInfo = GetInstance (type);
-    
-    if (typeInfo == null)
-      throw new MandatoryTypeNotFoundException (type);
-
-    return typeInfo;
   }
 
   public static TypeInfo GetMandatory (string mappingType, bool isNullable)
@@ -106,28 +85,19 @@ public class TypeInfo
 
   static TypeInfo ()
   {
-    s_types = new Hashtable ();
     s_mappingTypes = new Hashtable ();
 
     foreach (TypeInfo typeInfo in GetAllKnownTypeInfos ())
-    {
-      if (!s_types.Contains (typeInfo.Type))
-        s_types.Add (typeInfo.Type, typeInfo);
-
       s_mappingTypes.Add (GetMappingTypeKey (typeInfo), typeInfo);
-    }
   }
 
   private static TypeInfo[] GetAllKnownTypeInfos ()
   {
     TypeInfo[] allTypeInfos = new TypeInfo[28];
 
-    // Note: Nullable types must be added first to ensure hashtable s_types contains the nullable version (e.g. string, byte[])
-
     allTypeInfos[0] = new TypeInfo (typeof (NaBoolean), "boolean", true, NaBoolean.Null);
     allTypeInfos[1] = new TypeInfo (typeof (NaByte), "byte", true, NaByte.Null);
 
-    // Note: mappingType "dateTime" must be before mappingType "date" to ensure hashtable s_types contains the "NaDateTime" version
     allTypeInfos[2] = new TypeInfo (typeof (NaDateTime), "dateTime", true, NaDateTime.Null);
     allTypeInfos[3] = new TypeInfo (typeof (NaDateTime), "date", true, NaDateTime.Null);
     
@@ -145,7 +115,6 @@ public class TypeInfo
     allTypeInfos[14] = new TypeInfo (typeof (bool), "boolean", false, false);
     allTypeInfos[15] = new TypeInfo (typeof (byte), "byte", false, byte.MinValue);
 
-    // Note: mappingType "dateTime" must be before mappingType "date" to ensure hashtable s_types contains the "dateTime" version
     allTypeInfos[16] = new TypeInfo (typeof (DateTime), "dateTime", false, DateTime.MinValue);
     allTypeInfos[17] = new TypeInfo (typeof (DateTime), "date", false, DateTime.MinValue);
 
@@ -205,6 +174,5 @@ public class TypeInfo
   {
     return new ArgumentException (string.Format (message, args), argumentName, innerException);
   }
-
 }
 }
