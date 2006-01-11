@@ -1,3 +1,15 @@
+1.4.1.0
+=======
+
+- Rubicon.Data.DomainObjects.DomainObjectCollection:
+  * Contains (DomainObject) ist jetzt obsolete. Analoge Funktinalität bietet ContainsObject (DomainObject). In den häufigsten Anwendungsfällen
+    sollten jedoch Aufrufe von Contains (domainObject) auf Contains (domainObject.ID) geändert werden.
+  * Die DomainObjectCollection-Methoden/Properties Combine, this[int], Add und Insert verwenden jetzt Contains (domainObject.ID),
+    um eine konsistente Verhaltensweise bei der Verwendung von mehreren ClientTransactions zu erzielen.
+  * this[int] liefert jetzt eine verständlichere Fehlermeldung, wenn das übergebene DomainObject bereits in der Collection ist.
+- Rubicon.Data.DomainObjects.Queries.QueryManager unterstützt jetzt offiziell Stored Procedures. Stored Procedures mit Parameter müssen exec verwenden!
+
+
 1.3.21.0
 ========
 
