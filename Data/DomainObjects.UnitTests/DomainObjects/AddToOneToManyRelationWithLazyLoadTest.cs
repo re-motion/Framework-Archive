@@ -38,7 +38,7 @@ public class AddToOneToManyRelationWithLazyLoadTest : ClientTransactionBaseTest
     Assert.AreSame (newSupervisor, subordinate.Supervisor);
 
     Employee oldSupervisor = Employee.GetObject (DomainObjectIDs.Employee2);
-    Assert.IsFalse (oldSupervisor.Subordinates.Contains (subordinate));
+    Assert.IsFalse (oldSupervisor.Subordinates.ContainsObject (subordinate));
   }
 }
 }
