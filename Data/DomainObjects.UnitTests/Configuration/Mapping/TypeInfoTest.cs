@@ -65,54 +65,11 @@ public class TypeInfoTest
     Check (new TypeInfo (typeof (byte[]), "binary", false, new byte[0]), TypeInfo.GetInstance ("binary", false));  
   }
 
-
-  [Test]
-  public void Types ()
-  {
-    Check (new TypeInfo (typeof (NaBoolean), "boolean", true, NaBoolean.Null), TypeInfo.GetInstance (typeof (NaBoolean)));
-    Check (new TypeInfo (typeof (NaByte), "byte", true, NaByte.Null), TypeInfo.GetInstance (typeof (NaByte)));
-    Check (new TypeInfo (typeof (NaDateTime), "dateTime", true, NaDateTime.Null), TypeInfo.GetInstance (typeof (NaDateTime)));
-    Check (new TypeInfo (typeof (NaDecimal), "decimal", true, NaDecimal.Null), TypeInfo.GetInstance (typeof (NaDecimal)));
-    Check (new TypeInfo (typeof (NaGuid), "guid", true, NaGuid.Null), TypeInfo.GetInstance (typeof (NaGuid)));
-    Check (new TypeInfo (typeof (NaInt16), "int16", true, NaInt16.Null), TypeInfo.GetInstance (typeof (NaInt16)));
-    Check (new TypeInfo (typeof (NaInt32), "int32", true, NaInt32.Null), TypeInfo.GetInstance (typeof (NaInt32)));
-    Check (new TypeInfo (typeof (NaInt64), "int64", true, NaInt64.Null), TypeInfo.GetInstance (typeof (NaInt64)));
-    Check (new TypeInfo (typeof (NaDouble), "double", true, NaDouble.Null), TypeInfo.GetInstance (typeof (NaDouble)));
-    Check (new TypeInfo (typeof (NaSingle), "single", true, NaSingle.Null), TypeInfo.GetInstance (typeof (NaSingle)));
-    Check (new TypeInfo (typeof (string), "string", true, null), TypeInfo.GetInstance (typeof (string)));
-    Check (new TypeInfo (typeof (ObjectID), "objectID", true, null), TypeInfo.GetInstance (typeof (ObjectID)));
-    Check (new TypeInfo (typeof (byte[]), "binary", true, null), TypeInfo.GetInstance (typeof (byte[])));
-
-    Check (new TypeInfo (typeof (bool), "boolean", false, false), TypeInfo.GetInstance (typeof (bool)));
-    Check (new TypeInfo (typeof (byte), "byte", false, byte.MinValue), TypeInfo.GetInstance (typeof (byte)));
-    Check (new TypeInfo (typeof (DateTime), "dateTime", false, DateTime.MinValue), TypeInfo.GetInstance (typeof (DateTime)));
-    Check (new TypeInfo (typeof (decimal), "decimal", false, decimal.MinValue), TypeInfo.GetInstance (typeof (decimal)));
-    Check (new TypeInfo (typeof (double), "double", false, double.MinValue), TypeInfo.GetInstance (typeof (double)));
-    Check (new TypeInfo (typeof (Guid), "guid", false, Guid.Empty), TypeInfo.GetInstance (typeof (Guid)));
-    Check (new TypeInfo (typeof (short), "int16", false, short.MinValue), TypeInfo.GetInstance (typeof (short)));
-    Check (new TypeInfo (typeof (int), "int32", false, int.MinValue), TypeInfo.GetInstance (typeof (int)));
-    Check (new TypeInfo (typeof (long), "int64", false, long.MinValue), TypeInfo.GetInstance (typeof (long)));
-    Check (new TypeInfo (typeof (float), "single", false, float.MinValue), TypeInfo.GetInstance (typeof (float)));
-  }
-
   [Test]
   public void UnknownMappingType ()
   {
     Assert.IsNull (TypeInfo.GetInstance (
         "Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping.TypeMappingTest+TypeMappingTestEnum, Rubicon.Data.DomainObjects.UnitTests", false));
-  }
-
-  [Test]
-  public void UnknownType ()
-  {
-    Assert.IsNull (TypeInfo.GetInstance (this.GetType ()));
-  }
-
-  [Test]
-  [ExpectedException (typeof (MandatoryTypeNotFoundException))]
-  public void UnknownMandatoryType ()
-  {
-    TypeInfo.GetMandatory (this.GetType ());
   }
 
   [Test]
