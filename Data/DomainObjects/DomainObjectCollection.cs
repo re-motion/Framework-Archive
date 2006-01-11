@@ -181,7 +181,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
 
     foreach (DomainObject domainObject in collection1)
     {
-      if (!collection2.Contains (domainObject))
+      if (!collection2.ContainsObject (domainObject))
         return false;
     }
 
@@ -303,7 +303,13 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Adds all items of the given <see cref="DomainObjectCollection"/> to the <b>DomainObjectCollection</b>, that are not already part of it.
   /// </summary>
-  /// <remarks>The method does not modify the given <see cref="DomainObjectCollection"/>.</remarks>
+  /// <remarks>
+  /// <para>The method does not modify the given <see cref="DomainObjectCollection"/>.</para>
+  /// <para>To check if an item is already part of the <b>DomainObjectCollection</b> its <see cref="DomainObject.ID"/> is used. 
+  /// <b>Combine</b> does not check if the item references are identical.
+  /// The two <see cref="DomainObjectCollection"/>s could contain items with the same ID, but reference different <see cref="DomainObject"/>s, 
+  /// if the collections contain items of different <see cref="ClientTransaction"/>s.</para>
+  /// </remarks>
   /// <param name="domainObjects">The <see cref="DomainObjectCollection"/> to add items from. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
@@ -318,7 +324,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
 
     foreach (DomainObject domainObject in domainObjects)
     {
-      if (!Contains (domainObject))
+      if (!Contains (domainObject.ID))
         Add (domainObject);
     }
   }
@@ -326,7 +332,12 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <summary>
   /// Returns all items of a given <see cref="DomainObjectCollection"/> that are not part of the <b>DomainObjectCollection</b>.
   /// </summary>
-  /// <remarks>The method does not return any items that are in the collection, but not in <paramref name="domainObjects"/>.</remarks>
+  /// <remarks>
+  /// <para>The method does not modify the given <see cref="DomainObjectCollection"/> nor the <b>DomainObjectCollection</b> itself.</para>
+  /// <para>To check if an item is already part of the <b>DomainObjectCollection</b> its <see cref="DomainObject.ID"/> 
+  /// and the item reference are considered. 
+  /// Therefore <b>GetItemsNotInCollection</b> does return items with the same ID but are from different <see cref="ClientTransaction"/>s.</para>
+  /// </remarks>
   /// <param name="domainObjects">The collection to evaluate. Must not be <see langword="null"/>.</param>
   /// <returns>A <see cref="DomainObjectCollection"/> with all items of <paramref name="domainObjects"/> that are not part of the collection.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObjects"/> is <see langword="null"/>.</exception>
@@ -338,7 +349,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
 
     foreach (DomainObject domainObject in domainObjects)
     {
-      if (!Contains (domainObject))
+      if (!ContainsObject (domainObject))
         itemsNotInCollection.Add (domainObject);
     }
 
@@ -359,13 +370,33 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   }
 
   /// <summary>
-  /// Determines whether an item is in the <see cref="DomainObjectCollection"/>.
+  /// Determines whether the <see cref="DomainObjectCollection"/> contains a reference to the specified <paramref name="domainObject"/>.
   /// </summary>
   /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
   /// <returns><see langword="true"/> if <paramref name="domainObject"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/></exception>
   /// <remarks>This method only returns true, if the same reference is found in the collection.</remarks>
+  [Obsolete ("Use Contains (ObjectID) to determine if the DomainObjectCollection contains a DomainObject with the specified ID or use"
+      + " ContainsObject (DomainObject) to determine if the DomainObjectCollection contains a reference to the specified DomainObject."
+      + " Note: In most scenarios Contains (ObjectID) should be used.", true)]
+  // TODO: Remove this method after 01.03.2006
   public bool Contains (DomainObject domainObject)
+  {
+    return ContainsObject (domainObject);
+  }
+
+  /// <summary>
+  /// Determines whether the <see cref="DomainObjectCollection"/> contains a reference to the specified <paramref name="domainObject"/>.
+  /// </summary>
+  /// <param name="domainObject">The <see cref="DomainObject"/> to locate in the <see cref="DomainObjectCollection"/>. Must not be <see langword="null"/>.</param>
+  /// <returns><see langword="true"/> if <paramref name="domainObject"/> is found in the <see cref="DomainObjectCollection"/>; otherwise, false;</returns>
+  /// <exception cref="System.ArgumentNullException"><paramref name="domainObject"/> is <see langword="null"/></exception>
+  /// <remarks>
+  /// <para>This method only returns true, if the same reference is found in the collection.</para>
+  /// <para>Note: The <b>DomainObjectCollection</b> could contain an item with the same ID, 
+  /// but reference a different <see cref="DomainObject"/>, 
+  /// if the given <paramref name="domainObject" /> is part of a different <see cref="ClientTransaction"/>.</para></remarks>
+  public bool ContainsObject (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
@@ -381,7 +412,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   public bool Contains (ObjectID id)
   {
     ArgumentUtility.CheckNotNull ("id", id);
-
+    
     return BaseContainsKey (id);
   }
 
@@ -421,12 +452,8 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
       if (object.ReferenceEquals (this[index], value))
         return;
 
-      if (Contains (value))
-      {
-        throw CreateInvalidOperationException (
-            "Cannot replace an object '{0}' with another object '{1}' already part of this collection.", 
-            this[index].ID, value.ID);
-      }
+      if (Contains (value.ID))
+        throw CreateInvalidOperationException ("The object '{0}' is already part of this collection.", value.ID);
 
       if (_changeDelegate != null)
       {
@@ -476,7 +503,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     CheckItemType (domainObject, "domainObject");
     if (IsReadOnly) throw new NotSupportedException ("Cannot add an item to a read-only collection.");
 
-    if (Contains (domainObject))
+    if (Contains (domainObject.ID))
     {
       throw CreateArgumentException (
           "domainObject", "Cannot add object '{0}' already part of this collection.", domainObject.ID);
@@ -625,7 +652,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     if (IsReadOnly) throw new NotSupportedException ("Cannot insert an item into a read-only collection.");
     CheckItemType (domainObject, "domainObject");
     
-    if (Contains (domainObject))
+    if (Contains (domainObject.ID))
     {
       throw CreateArgumentException (
           "domainObject", "Cannot insert object '{0}' already part of this collection.", domainObject.ID);
@@ -705,14 +732,14 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   }
 
   /// <summary>
-  /// Determines whether the <see cref="IList"/> contains a specific <paramref name="value"/>.
+  /// Determines whether the <see cref="IList"/> contains a specific <see cref="DomainObject"/> or <see cref="ObjectID"/>.
   /// </summary>
-  /// <param name="value">The <see cref="Object"/> to locate in the <see cref="IList"/>.</param>
-  /// <returns><see langword="true"/> if the <see cref="Object"/> is found in the <see cref="IList"/>; otherwise, <see langword="false"/></returns>
+  /// <param name="value">The <see cref="DomainObject"/> or <see cref="ObjectID"/> to locate in the <see cref="IList"/>.</param>
+  /// <returns><see langword="true"/> if the <see cref="DomainObject"/> or <see cref="ObjectID"/> is found in the <see cref="IList"/>; otherwise, <see langword="false"/></returns>
   bool IList.Contains (object value)
   {
     if (value is DomainObject)
-      return Contains ((DomainObject) value);
+      return ContainsObject ((DomainObject) value);
 
     if (value is ObjectID)
       return Contains ((ObjectID) value);
