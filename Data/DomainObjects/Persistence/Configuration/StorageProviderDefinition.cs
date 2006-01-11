@@ -43,8 +43,8 @@ public abstract class StorageProviderDefinition
     get { return _id; }
   }
 
-  // TODO: Remove this property after 1.1.2006.
-  [Obsolete ("Use property ID instead.")]
+  // TODO: Remove this property after 1.3.2006.
+  [Obsolete ("Use property ID instead.", true)]
   public string StorageProviderID
   {
     get { return _id; }
