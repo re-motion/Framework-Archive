@@ -84,11 +84,11 @@ public class CommitEventsTest : ClientTransactionBaseTest
     Assert.AreEqual (2, committingDomainObjects.Count);
     Assert.AreEqual (2, committedDomainObjects.Count);
 
-    Assert.IsTrue (committingDomainObjects.Contains (_customer));
-    Assert.IsTrue (committedDomainObjects.Contains (_customer));
+    Assert.IsTrue (committingDomainObjects.ContainsObject (_customer));
+    Assert.IsTrue (committedDomainObjects.ContainsObject (_customer));
 
-    Assert.IsTrue (committingDomainObjects.Contains (ceo));
-    Assert.IsTrue (committedDomainObjects.Contains (ceo));
+    Assert.IsTrue (committingDomainObjects.ContainsObject (ceo));
+    Assert.IsTrue (committedDomainObjects.ContainsObject (ceo));
   }
 
   [Test]
@@ -118,14 +118,14 @@ public class CommitEventsTest : ClientTransactionBaseTest
     Assert.AreEqual (1, committingDomainObjectsForSecondCommit.Count);
     Assert.AreEqual (2, committedDomainObjects.Count);
 
-    Assert.IsTrue (committingDomainObjectsForFirstCommitEvent.Contains (_customer));
-    Assert.IsFalse (committingDomainObjectsForFirstCommitEvent.Contains (ceo));
+    Assert.IsTrue (committingDomainObjectsForFirstCommitEvent.ContainsObject (_customer));
+    Assert.IsFalse (committingDomainObjectsForFirstCommitEvent.ContainsObject (ceo));
 
-    Assert.IsFalse (committingDomainObjectsForSecondCommit.Contains (_customer));
-    Assert.IsTrue (committingDomainObjectsForSecondCommit.Contains (ceo));
+    Assert.IsFalse (committingDomainObjectsForSecondCommit.ContainsObject (_customer));
+    Assert.IsTrue (committingDomainObjectsForSecondCommit.ContainsObject (ceo));
 
-    Assert.IsTrue (committedDomainObjects.Contains (_customer));
-    Assert.IsTrue (committedDomainObjects.Contains (ceo));
+    Assert.IsTrue (committedDomainObjects.ContainsObject (_customer));
+    Assert.IsTrue (committedDomainObjects.ContainsObject (ceo));
   }
 
   [Test]
@@ -173,16 +173,16 @@ public class CommitEventsTest : ClientTransactionBaseTest
     Assert.AreEqual (1, committingDomainObjectsForSecondCommit.Count);
     Assert.AreEqual (4, committedDomainObjects.Count);
 
-    Assert.IsTrue (committingDomainObjectsForFirstCommitEvent.Contains (_customer));
-    Assert.IsTrue (committingDomainObjectsForFirstCommitEvent.Contains (ceo));
-    Assert.IsTrue (committingDomainObjectsForFirstCommitEvent.Contains (order));
+    Assert.IsTrue (committingDomainObjectsForFirstCommitEvent.ContainsObject (_customer));
+    Assert.IsTrue (committingDomainObjectsForFirstCommitEvent.ContainsObject (ceo));
+    Assert.IsTrue (committingDomainObjectsForFirstCommitEvent.ContainsObject (order));
 
-    Assert.IsTrue (committingDomainObjectsForSecondCommit.Contains (industrialSector));
+    Assert.IsTrue (committingDomainObjectsForSecondCommit.ContainsObject (industrialSector));
 
-    Assert.IsTrue (committedDomainObjects.Contains (_customer));
-    Assert.IsTrue (committedDomainObjects.Contains (ceo));
-    Assert.IsTrue (committedDomainObjects.Contains (order));
-    Assert.IsTrue (committedDomainObjects.Contains (industrialSector));
+    Assert.IsTrue (committedDomainObjects.ContainsObject (_customer));
+    Assert.IsTrue (committedDomainObjects.ContainsObject (ceo));
+    Assert.IsTrue (committedDomainObjects.ContainsObject (order));
+    Assert.IsTrue (committedDomainObjects.ContainsObject (industrialSector));
   }
 
   [Test]
