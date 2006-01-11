@@ -122,7 +122,7 @@ public class TypeInfo
   {
     TypeInfo[] allTypeInfos = new TypeInfo[28];
 
-    // Note: Nullable types must be added first to ensure hashtable s_types contains the nullable version
+    // Note: Nullable types must be added first to ensure hashtable s_types contains the nullable version (e.g. string, byte[])
 
     allTypeInfos[0] = new TypeInfo (typeof (NaBoolean), "boolean", true, NaBoolean.Null);
     allTypeInfos[1] = new TypeInfo (typeof (NaByte), "byte", true, NaByte.Null);
