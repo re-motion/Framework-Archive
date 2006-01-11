@@ -184,7 +184,7 @@ public class RollbackDomainObjectTest : ClientTransactionBaseTest
     orderItem = new OrderItem (order);
 
     Assert.AreSame (order, orderItem.Order);
-    Assert.IsTrue (order.OrderItems.Contains (orderItem));
+    Assert.IsTrue (order.OrderItems.ContainsObject (orderItem));
   }
 
   [Test]
