@@ -158,7 +158,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
 
     customers.Add (customer);
 
-    Assert.IsTrue (customers.Contains (customer));
+    Assert.IsTrue (customers.ContainsObject (customer));
   }
 
   [Test]
@@ -171,7 +171,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
 
     Customer copy = Customer.GetObject (customer.ID, new ClientTransaction ());
 
-    Assert.IsFalse (customers.Contains (copy));
+    Assert.IsFalse (customers.ContainsObject (copy));
   }
 
   [Test]
@@ -180,7 +180,7 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   {
     DomainObjectCollection customers = new DomainObjectCollection ();
     
-    customers.Contains ((DomainObject) null);
+    customers.ContainsObject ((DomainObject) null);
   }
 
   [Test]
@@ -937,8 +937,8 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     DomainObjectCollection itemsNotInCollection = collection2.GetItemsNotInCollection (_collection);
     
     Assert.AreEqual (2, itemsNotInCollection.Count);
-    Assert.IsTrue (itemsNotInCollection.Contains (_customer1));
-    Assert.IsTrue (itemsNotInCollection.Contains (_customer2));
+    Assert.IsTrue (itemsNotInCollection.ContainsObject (_customer1));
+    Assert.IsTrue (itemsNotInCollection.ContainsObject (_customer2));
   }
 
   [Test]
@@ -950,8 +950,8 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
     _collection.Combine (secondCollection);
     
     Assert.AreEqual (3, _collection.Count);
-    Assert.IsTrue (_collection.Contains (_customer1));
-    Assert.IsTrue (_collection.Contains (_customer2));
+    Assert.IsTrue (_collection.ContainsObject (_customer1));
+    Assert.IsTrue (_collection.ContainsObject (_customer2));
     Assert.IsTrue (_collection.Contains (DomainObjectIDs.Customer3));
     Assert.IsFalse (_collection.IsReadOnly);
   }
