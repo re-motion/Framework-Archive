@@ -10,14 +10,11 @@
 <!--
   <include buildfile="build/properties.include.xml" verbose="true"/>
 -->  
-  <target name="setProperties">
-    <property name="text.copyright" value="(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com" />
-    <property name="text.companyname" value="rubicon informationstechnologie gmbh" />
-    <property name="text.companyurl" value="http://www.rubicon-it.com" />
-    <property name="text.productname" value="Rubicon .NET Commons" />
-    <property name="text.productshortname" value="RubiconCommons" />
-  </target>
-  <call target="setProperties" />
+  <property name="text.copyright" value="(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com" />
+  <property name="text.companyname" value="rubicon informationstechnologie gmbh" />
+  <property name="text.companyurl" value="http://www.rubicon-it.com" />
+  <property name="text.productname" value="Rubicon .NET Commons" />
+  <property name="text.productshortname" value="RubiconCommons" />
 
   <property name="doc.sdkdocversion" value="SDK_v1_1" />
   <property name="dir.development" value="\development" overwrite="false"/>
@@ -25,11 +22,11 @@
   <property name="solution.basedir" value="${nant.project.basedir}" />
   <property name="prereq.assemblies" value="${nant.project.basedir}\prereq\assemblies" />
 
+<!-- Build Machine has SQL Server 2005 Client Tools installed.
   <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\80\Tools\Binn" />
-<!--
-  <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn" />
 -->  
-  <property name="sql.instance" value="(local)\build" />
+  <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn" />
+  <property name="sql.instance" value="localhost" />
 
   <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
   <echo message="${build.keyfile}" />
