@@ -83,7 +83,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   ///   on returning.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
-  ///   p ath='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
+  ///   path='IWxePage/ExecuteFunctionNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl"]' />
   void ExecuteFunctionNoRepost (
       WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl);
   
@@ -526,7 +526,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
 
   /// <summary> Overrides <see cref="Page.DeterminePostBackMode"/>. </summary>
-  /// <remarks> Uses <see cref="WxeInfo.EnsurePostBackModeDetermined"/> determine the postback mode. </remarks>
+  /// <remarks> Uses <see cref="WxePageInfo.EnsurePostBackModeDetermined"/> determine the postback mode. </remarks>
   protected override NameValueCollection DeterminePostBackMode()
   {
     NameValueCollection result = _wxePageInfo.EnsurePostBackModeDetermined (Context);
@@ -547,7 +547,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary> Implementation of <see cref="ISmartPage.GetPostBackCollection"/>. </summary>
-  /// <returns> The value returned by <see cref="GetPostBackCollection"/. ></returns>
+  /// <returns> The value returned by <see cref="GetPostBackCollection"/>. </returns>
   NameValueCollection ISmartPage.GetPostBackCollection ()
   {
     return GetPostBackCollection();
@@ -555,7 +555,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
 
   /// <summary> Overrides <see cref="Page.SavePageStateToPersistenceMedium"/>. </summary>
-  /// <remarks> Uses <see cref="WxeInfo.SavePageStateToPersistenceMedium"/> to save the viewstate. </remarks>
+  /// <remarks> Uses <see cref="WxePageInfo.SavePageStateToPersistenceMedium"/> to save the viewstate. </remarks>
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
     bool isViewStateInSession = true;
@@ -566,7 +566,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary> Overrides <see cref="Page.LoadPageStateFromPersistenceMedium"/>. </summary>
-  /// <remarks> Uses <see cref="WxeInfo.LoadPageStateFromPersistenceMedium"/> to load the viewstate. </remarks>
+  /// <remarks> Uses <see cref="WxePageInfo.LoadPageStateFromPersistenceMedium"/> to load the viewstate. </remarks>
   protected override object LoadPageStateFromPersistenceMedium()
   {
     bool isViewStateInSession = true;
@@ -578,7 +578,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
 
   /// <summary> Overrides <see cref="Control.OnPreRender"/>. </summary>
-  /// <remarks> Invokes <see cref="WxeInfo.PreRender"/> before calling the base-implementation. </remarks>
+  /// <remarks> Invokes <see cref="WxePageInfo.PreRender"/> before calling the base-implementation. </remarks>
   protected override void OnPreRender (EventArgs e)
   {
     // wxeInfo.PreRender() must be called before base.OnPreRender (EventArgs)

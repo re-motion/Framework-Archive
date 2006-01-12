@@ -722,7 +722,7 @@
   <target name="cleantemp" depends="setdocumentation">
     <exec program="cmd" commandline="/C del *.* /S /Q /F > NUL" workingdir="${build.basedir}\temp" failonerror="false"/>
     <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${build.basedir}\temp" failonerror="false"/>
-    <delete>
+    <delete failonerror="false">
       <fileset failonempty="false">
         <includes name="${build.basedir}/temp/**/*"/>
         <includes name="${build.basedir}/temp"/>
@@ -733,7 +733,7 @@
   <target name="clean" depends="setdocumentation">
     <exec program="cmd" commandline="/C del *.* /S /Q /F > NUL" workingdir="${build.basedir}" failonerror="false"/>
     <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${build.basedir}" failonerror="false"/>
-    <delete>
+    <delete failonerror="false">
       <fileset failonempty="false">
         <includes name="${build.basedir}/**/*"/>
         <includes name="${build.basedir}"/>

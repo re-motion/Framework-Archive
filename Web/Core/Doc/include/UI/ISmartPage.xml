@@ -13,9 +13,9 @@
       </note>
     </remarks>
     <seealso cref="ISmartPage"/>
-    <seealso cref="WxePage"/>
-    <seealso cref="WxePageInfo"/>
-    <seealso cref="WxePageStep"/>
+    <seealso cref="Rubicon.Web.ExecutionEngine.WxePage"/>
+    <seealso cref="Rubicon.Web.ExecutionEngine.WxePageInfo"/>
+    <seealso cref="Rubicon.Web.ExecutionEngine.WxePageStep"/>
   </Class>
   <RegisterClientSidePageEventHandler>
     <param name="pageEvent"> The type of event to register for. </param>
