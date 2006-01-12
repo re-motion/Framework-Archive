@@ -302,7 +302,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   protected abstract object ValueImplementation { get; set; }
 
   /// <summary> Calls <see cref="Control.OnPreRender"/> on every invocation. </summary>
-  /// <remarks> Used by the <see cref="BocDesigner"/>. </remarks>
+  /// <remarks> Used by the <see cref="WebControlDesigner"/>. </remarks>
   void IControlWithDesignTimeSupport.PreRenderForDesignMode()
   {
     if (! IsDesignMode)

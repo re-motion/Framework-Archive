@@ -311,8 +311,8 @@ public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinitio
   /// </summary>
   /// <value> <see langword="true"/> to enforce the width. </value>
   /// <remarks> 
-  ///     <see cref="Width"/> must not be of type <see cref="UnitType.Percentage"/>, if the width is to be enforced.
-  ///   </para>
+  ///     <see cref="BocColumnDefinition.Width"/> must not be of type <see cref="UnitType.Percentage"/>, 
+  ///     if the width is to be enforced.
   /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Layout")]

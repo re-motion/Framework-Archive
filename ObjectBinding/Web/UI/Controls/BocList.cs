@@ -4007,7 +4007,7 @@ public class BocList:
   ///     time. During subsequent postbacks, setting the sorting order before the post back events of the 
   ///     <see cref="BocList"/> have been handled, will undo the user's chosen sorting order.
   ///   </para><para>
-  ///     Does not raise the <see cref="SortingOrderChangingEvent"/> and <see cref="SortingOrderChangedEvent"/>.
+  ///     Does not raise the <see cref="SortingOrderChanging"/> and <see cref="SortingOrderChanged"/>.
   ///   </para><para>
   ///     Use <see cref="ClearSortingOrder"/> if you need to clear the sorting order.
   ///   </para>
@@ -4040,7 +4040,7 @@ public class BocList:
 
   /// <summary> Clears the sorting order for the <see cref="BocList"/>. </summary>
   /// <remarks>
-  ///   Does not raise the <see cref="SortingOrderChangingEvent"/> and <see cref="SortingOrderChangedEvent"/>.
+  ///   Does not raise the <see cref="SortingOrderChanging"/> and <see cref="SortingOrderChanged"/>.
   /// </remarks>
   public void ClearSortingOrder ()
   {
