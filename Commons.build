@@ -9,7 +9,7 @@
 
   <include buildfile="build/properties.include.xml" verbose="true"/>
   <target name="setProperties">
-    <property name="text.copyright" value="(c) 2003 rubicon informationstechnologie gmbh, www.rubicon-it.com" />
+    <property name="text.copyright" value="(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com" />
     <property name="text.companyname" value="rubicon informationstechnologie gmbh" />
     <property name="text.companyurl" value="http://www.rubicon-it.com" />
     <property name="text.productname" value="Rubicon .NET Commons" />
@@ -23,10 +23,14 @@
   <property name="solution.basedir" value="${nant.project.basedir}" />
   <property name="prereq.assemblies" value="${nant.project.basedir}\prereq\assemblies" />
 
+  <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\80\Tools\Binn" />
+  <property name="sql.instance" value="localhost\build" />
+<!--
   <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn" />
   <property name="sql.instance" value="localhost" />
-  
-  <property name="build.keyfile" value="\development\global\rubicon.snk" />
+-->  
+
+  <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
   <echo message="${build.keyfile}" />
   <property name="dummy" value="true" />
 
@@ -63,7 +67,7 @@
   <!-- specify one or more of these targets before the main targets to initialize the correct configuration properties -->
 
   <target name="setFrameworkFlag">
-    <property name="net20" value="${nant.settings.currentframework == 'net-2.0-legacy'}" />
+    <property name="net20" value="${nant.settings.currentframework == 'net-2.0'}" />
   </target>
   
   <target name="setdebug" depends="setFrameworkFlag">
