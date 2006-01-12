@@ -7,14 +7,7 @@
   <target name="doc" depends="doc-public,doc-internal" />
   <target name="deploy" depends="cleantemp,zip,sourcezip,getcurrent" />
 
-<!--
   <include buildfile="build/properties.include.xml" verbose="true"/>
--->  
-  <property name="text.copyright" value="(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com" />
-  <property name="text.companyname" value="rubicon informationstechnologie gmbh" />
-  <property name="text.companyurl" value="http://www.rubicon-it.com" />
-  <property name="text.productname" value="Rubicon .NET Commons" />
-  <property name="text.productshortname" value="RubiconCommons" />
 
   <property name="doc.sdkdocversion" value="SDK_v1_1" />
   <property name="dir.development" value="\development" overwrite="false"/>
