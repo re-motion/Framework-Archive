@@ -435,6 +435,11 @@ public class BocList:
   {
     base.OnLoad (e);
     
+    if (! Page.IsPostBack)
+      EnsureColumnsGot();
+    else
+      EnsureColumnsForPreviousLifeCycleGot();
+    
     EnsureRowEditModeRestored();
     EnsureRowMenusInitialized();
     RestoreCustomColumns();
@@ -4127,6 +4132,8 @@ public class BocList:
       }
       for (int i = 0; i < entriesToBeRemoved.Count; i++)
         _sortingOrder.Remove (entriesToBeRemoved[i]);
+      if (entriesToBeRemoved.Count > 0)
+        ResetRows();
     }
   }
 
@@ -4693,6 +4700,7 @@ public class BocList:
         }
       }
 
+      ResetRows();
       Pair[] sortedRows = EnsureGotIndexedRowsSorted();
       for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
       {

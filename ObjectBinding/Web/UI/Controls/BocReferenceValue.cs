@@ -25,7 +25,7 @@ namespace Rubicon.ObjectBinding.Web.Controls
 /// <summary> This control can be used to display or edit reference values. </summary>
 /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
 // TODO: see "Doc\Bugs and ToDos.txt"
-[ValidationProperty ("Value")]
+[ValidationProperty ("BusinessObjectID")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
 [Designer (typeof (BocReferenceValueDesigner))]
@@ -1365,6 +1365,22 @@ public class BocReferenceValue:
           _dropDownList.Items.Insert (0, CreateNullItem());
         _dropDownList.SelectedValue = c_nullIdentifier;
       }
+    }
+  }
+
+  /// <summary>
+  ///   Gets the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the selected 
+  ///   <see cref="IBusinessObjectWithIdentity"/>.
+  /// </summary>
+  /// <value> A string or <see langword="null"/> if no  <see cref="IBusinessObjectWithIdentity"/> is selected. </value>
+  [Browsable (false)]
+  public string BusinessObjectID
+  {
+    get
+    {
+      if (InternalValue == c_nullIdentifier)
+        return null;
+      return _internalValue;
     }
   }
 
