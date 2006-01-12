@@ -63,6 +63,11 @@
 					<column>String</column>
 					<maxLength>100</maxLength>
 				</property>
+				<property name="DelimitedStringArrayProperty">
+					<type>string</type>
+					<column>DelimitedStringArray</column>
+					<maxLength>1000</maxLength>
+				</property>
 				<property name="BinaryProperty">
 					<type>binary</type>
 					<column>Binary</column>
@@ -127,6 +132,12 @@
 					<column>StringWithNullValue</column>
 					<nullable>true</nullable>
 					<maxLength>100</maxLength>
+				</property>
+				<property name="DelimitedNullStringArrayProperty">
+					<type>string</type>
+					<column>DelimitedNullStringArray</column>
+					<nullable>true</nullable>
+					<maxLength>1000</maxLength>
 				</property>
 				<property name="NaBooleanWithNullValueProperty">
 					<type>boolean</type>
