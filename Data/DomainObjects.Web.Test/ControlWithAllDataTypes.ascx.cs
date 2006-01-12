@@ -99,6 +99,8 @@ public class ControlWithAllDataTypes : System.Web.UI.UserControl
   protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue Bocenumvalue5;
+  protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue BocMultilineTextValue1;
+  protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue BocMultilineTextValue2;
 
   private ClassWithAllDataTypes _objectWithAllDataTypes;
 

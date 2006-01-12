@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="ControlWithAllDataTypes.ascx.cs" Inherits="Rubicon.Data.DomainObjects.Web.Test.ControlWithAllDataTypes" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Register TagPrefix="dob" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
 
@@ -111,6 +111,12 @@ beachten!</FONT></STRONG></P>
         <TextBoxStyle TextMode="MultiLine"></TextBoxStyle>
       </obc:boctextvalue></TD>
   </TR>
+  <TR>
+    <TD></TD>
+    <TD><obc:BocMultilineTextValue id="BocMultilineTextValue1" runat="server" PropertyIdentifier="StringArray" DataSourceControl="CurrentObject">
+<TextBoxStyle TextMode="MultiLine">
+</TextBoxStyle>
+</obc:BocMultilineTextValue></TD></TR>
   <tr>
     <td></td>
     <td><br>
@@ -277,6 +283,12 @@ beachten!</FONT></STRONG></P>
         <TextBoxStyle TextMode="SingleLine"></TextBoxStyle>
       </obc:boctextvalue></TD>
   </TR>
+  <TR>
+    <TD></TD>
+    <TD><obc:BocMultilineTextValue id="BocMultilineTextValue2" runat="server" PropertyIdentifier="NullStringArray" DataSourceControl="CurrentObject">
+<TextBoxStyle TextMode="MultiLine">
+</TextBoxStyle>
+</obc:BocMultilineTextValue></TD></TR>
   <tr>
     <td></td>
     <td><br>
