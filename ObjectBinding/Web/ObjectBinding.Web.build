@@ -6,29 +6,32 @@
     <csc  target="library" 
           output="${project.builddir}/${project.output}.${project.extension}" 
           doc="${project.doc}" 
-          nowarn="1591" 
           debug="${build.debug}"
           define="${build.csc.define}">
+      <nowarn>
+        <warning number="1591" /> <!-- missing XML comment -->
+        <warning number="0612" if="${net20}" /> <!-- no obsolete warning for net2.0-->
+      </nowarn> 
       <sources failonempty="true">
-        <includes name="*.cs" />
-        <includes name="Controls/**/*.cs" />
-        <includes name="Design/**/*.cs" />
-        <excludes name="AssemblyInfoTemplate.cs" />
+        <include name="*.cs" />
+        <include name="Controls/**/*.cs" />
+        <include name="Design/**/*.cs" />
+        <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <includes name="${project.builddir}/Rubicon.Core.dll" />
-        <includes name="${project.builddir}/Rubicon.ObjectBinding.dll" />
-        <includes name="${project.builddir}/Rubicon.Web.dll" />
-        <includes name="${project.builddir}/log4net.dll" />
-        <includes asis="true" name="System.dll"/>
-        <includes asis="true" name="System.Data.dll"/>
-        <includes asis="true" name="System.Design.dll"/>
-        <includes asis="true" name="System.Drawing.dll"/>
-        <includes asis="true" name="System.Web.dll"/>
-        <includes asis="true" name="System.Xml.dll"/>
+        <include name="${project.builddir}/Rubicon.Core.dll" />
+        <include name="${project.builddir}/Rubicon.ObjectBinding.dll" />
+        <include name="${project.builddir}/Rubicon.Web.dll" />
+        <include name="${project.builddir}/log4net.dll" />
+        <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Data.dll"/>
+        <include asis="true" name="System.Design.dll"/>
+        <include asis="true" name="System.Drawing.dll"/>
+        <include asis="true" name="System.Web.dll"/>
+        <include asis="true" name="System.Xml.dll"/>
       </references>
       <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.ObjectBinding.Web">
-        <includes name="Globalization/*.resx" />
+        <include name="Globalization/*.resx" />
       </resources>
     </csc>
         
