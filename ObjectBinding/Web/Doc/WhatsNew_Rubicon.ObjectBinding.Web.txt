@@ -21,6 +21,13 @@
     gesetzt werden. Vorhanden seit Einführung von IsSortable in Version 1.2.8.
 
 - BocList
+  * Bugfix: Wurden RowMenus verwendet und gleichzeitig sortiert, so konnte es vorkommen dass die Sortierung nicht 
+    korrekt war.
+  * Bugfix: Inline Editing: Änderungen in der Sortierreihenfolge durch das Inline Editing wurden erst nach einem
+    weiteren Postback berücksichtigt.
+  * Bugfix: CustomColumns: IsSortable wurde im Designer nicht persistiert.
+  * Bugfix: Wurde auch nach Spalten sortiert die in einem View liegen, und wurde der view gändert, so 
+    wurden die Zeilen nicht neu sortiert bis zum nächsten Postback.
   * Inline Editing: Es wird nur noch ein BO-Control gerendert, wenn sowohl die Spalte als auch die Property 
     editierbar sind. Bisher wurde das Rendering nur durch die BocList durchgeführt, wenn die Spalte als read-only 
     markiert war. Andernfalls kam das BO-Control zum Zug. Effekt: Formatierungsangaben in der Spalte wurden nicht
@@ -29,6 +36,10 @@
 - BocMenuItem
   * EvaluateVisible: von protected auf public gesetzt.
   * EvaluateDisabled: von protected auf public gesetzt.
+  
+- BocReferenceValue
+  * BusinessObjectID: neue Property, welche die ID des ausgewählten BusinessObjects zurückliefert. Verwendet für 
+    zB CustomValidators und um den Wert auszulesen wenn keine Property auf den BocReferneceValue gebunden werden kann
   
 1.3.26
 ======

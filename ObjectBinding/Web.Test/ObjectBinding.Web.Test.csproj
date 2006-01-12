@@ -709,10 +709,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "WxeHandler.ashx"
-                    BuildAction = "None"
-                />
-                <File
                     RelPath = "WxeLauncher.ashx"
                     BuildAction = "None"
                 />
