@@ -7,17 +7,20 @@
           output="${project.builddir}/${project.output}.${project.extension}" 
           unsafe="true" 
           doc="${project.doc}" 
-          nowarn="1591" 
           debug="${build.debug}"
           define="${build.csc.define}">
+      <nowarn>
+        <warning number="1591" /> <!-- missing XML comment -->
+        <warning number="0612" if="${net20}" /> <!-- no obsolete warning for net2.0-->
+      </nowarn> 
       <sources failonempty="true">
-        <includes name="*.cs" />
-        <includes name="UnitTesting/**/*.cs" />
-        <excludes name="AssemblyInfoTemplate.cs" />
+        <include name="*.cs" />
+        <include name="UnitTesting/**/*.cs" />
+        <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <includes asis="true" name="System.dll"/>
-        <includes asis="true" name="System.Data.dll"/>
+        <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Data.dll"/>
       </references>
     </csc>
         
