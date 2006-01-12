@@ -128,7 +128,8 @@ public class WxeContext
   ///   <see cref="IWxePage"/> by using a redirect.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="urlParameters"]' />
-  public static void ExecuteFunctionExternal (
+  [Obsolete ("Make public should this ever be needed.")]
+  internal static void ExecuteFunctionExternal (
       Page page, WxeFunction function, NameValueCollection urlParameters)
   {
     ExecuteFunctionExternal (page, function, false, urlParameters);
@@ -139,7 +140,8 @@ public class WxeContext
   ///   <see cref="IWxePage"/> by using a redirect.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="createPermaUrl" or @name="urlParameters"]' />
-  public static void ExecuteFunctionExternal (
+  [Obsolete ("Make public should this ever be needed.")]
+  internal static void ExecuteFunctionExternal (
       Page page, WxeFunction function, bool createPermaUrl, NameValueCollection urlParameters)
   {
     ArgumentUtility.CheckNotNull ("page", page);
@@ -155,7 +157,8 @@ public class WxeContext
   ///   implementing <see cref="IWxePage"/> by using java script.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="urlParameters"]' />
-  public static void ExecuteFunctionExternal (
+  [Obsolete ("Make public should this ever be needed.")]
+  internal static void ExecuteFunctionExternal (
       Page page, WxeFunction function, string target, string features, NameValueCollection urlParameters)
   {
     ExecuteFunctionExternal (page, function, target, features, false, urlParameters);
@@ -166,7 +169,8 @@ public class WxeContext
   ///   implementing <see cref="IWxePage"/> by using java script.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="createPermaUrl" or @name="urlParameters"]' />
-  public static void ExecuteFunctionExternal (
+  [Obsolete ("Make public should this ever be needed.")]
+  internal static void ExecuteFunctionExternal (
       Page page, WxeFunction function, string target, string features, 
       bool createPermaUrl, NameValueCollection urlParameters)
   {
@@ -211,7 +215,7 @@ public class WxeContext
   ///   Initalizes a new <see cref="WxeFunctionState"/> with the passed <paramref name="function"/> and returns
   ///   the associated function token.
   /// </summary>
-  internal static string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
+  private static string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
   {
     bool enableCleanUp = ! returningPostback;
     WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);

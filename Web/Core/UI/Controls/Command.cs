@@ -544,7 +544,8 @@ public class Command: IControlItem
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   /// </exception> 
-  public virtual void ExecuteWxeFunction (
+  [Obsolete ("Make public should this ever be needed.")]
+  private void ExecuteWxeFunction (
       Page page, NameObjectCollection additionalWxeParameters, NameValueCollection additionalUrlParameters)
   {
     ArgumentUtility.CheckNotNull ("page", page);

@@ -168,10 +168,11 @@ public class BocCommand: Command
   /// <param name="businessObject">
   ///   The <see cref="IBusinessObject"/> in the row where the command was clicked.
   /// </param>
-  public void ExecuteWxeFunction (Page page, IBusinessObject businessObject)
+  [Obsolete ("Make public should this ever be needed.")]
+  private void ExecuteWxeFunction (Page page, IBusinessObject businessObject)
   {
     NameObjectCollection parameters = PrepareWxeFunctionParameters (businessObject);
-    ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
+    //ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
   }
 
   private NameObjectCollection PrepareWxeFunctionParameters (IBusinessObject businessObject)

@@ -185,7 +185,6 @@ public class WebTreeNode: IControlItem
   }
 
   /// <summary> Gets or sets the text displayed in this node. </summary>
-  /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
   [Description ("The text displayed in this node.")]
@@ -196,8 +195,7 @@ public class WebTreeNode: IControlItem
     get { return _text; }
     set 
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      _text = value; 
+      _text = StringUtility.NullToEmpty (value); 
     }
   }
 

@@ -193,10 +193,11 @@ public class BocListItemCommand: BocCommand
   /// <param name="businessObject">
   ///   The <see cref="IBusinessObject"/> in the row where the command was clicked.
   /// </param>
-  public void ExecuteWxeFunction (Page page, int listIndex, IBusinessObject businessObject)
+  [Obsolete ("Make public should this ever be needed.")]
+  private void ExecuteWxeFunction (Page page, int listIndex, IBusinessObject businessObject)
   {
     NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndex, businessObject);
-    ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
+    //ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
   }
 
   private NameObjectCollection PrepareWxeFunctionParameters (int listIndex, IBusinessObject businessObject)

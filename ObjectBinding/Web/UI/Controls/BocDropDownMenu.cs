@@ -348,16 +348,16 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
         BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
-        else
-          command.ExecuteWxeFunction (Page, indices, businessObjects);
+        //else
+        //  command.ExecuteWxeFunction (Page, indices, businessObjects);
       }
       else
       {
         Command command = menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, null);
-        else
-          command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
+        //else
+        //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
     }
   }

@@ -270,8 +270,8 @@ public class BocReferenceValue:
       {
         if (Page is IWxePage)
           Command.ExecuteWxeFunction ((IWxePage) Page, Value);
-        else
-          Command.ExecuteWxeFunction (Page, Value);
+        //else
+        //  Command.ExecuteWxeFunction (Page, Value);
         break;
       }
       default:
@@ -1265,16 +1265,16 @@ public class BocReferenceValue:
         BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, indices, businessObjects);
-        else
-          command.ExecuteWxeFunction (Page, indices, businessObjects);
+        //else
+        //  command.ExecuteWxeFunction (Page, indices, businessObjects);
       }
       else
       {
         Command command = menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, null);
-        else
-          command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
+        //else
+        //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
     }
   }

@@ -618,8 +618,8 @@ public class BocList:
           businessObject = (IBusinessObject) Value[listIndex];
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, listIndex, businessObject);
-        else
-          command.ExecuteWxeFunction (Page, listIndex, businessObject);
+        //else
+        //  command.ExecuteWxeFunction (Page, listIndex, businessObject);
         break;
       }
       default:
@@ -881,16 +881,16 @@ public class BocList:
         BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, GetSelectedRows(), GetSelectedBusinessObjects());
-        else
-          command.ExecuteWxeFunction (Page, GetSelectedRows(), GetSelectedBusinessObjects());
+        //else
+        //  command.ExecuteWxeFunction (Page, GetSelectedRows(), GetSelectedBusinessObjects());
       }
       else
       {
         Command command = menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, null);
-        else
-          command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
+        //else
+        //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
     }
   }
@@ -3524,16 +3524,16 @@ public class BocList:
         BocMenuItemCommand command = (BocMenuItemCommand) menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
-        else
-          command.ExecuteWxeFunction (Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
+        //else
+        //  command.ExecuteWxeFunction (Page, new int[1] {listIndex}, new IBusinessObject[1] {businessObject});
       }
       else
       {
         Command command = menuItem.Command;
         if (Page is IWxePage)
           command.ExecuteWxeFunction ((IWxePage) Page, null);
-        else
-          command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
+        //else
+        //  command.ExecuteWxeFunction (Page, null, new NameValueCollection (0));
       }
     }
   }

@@ -473,7 +473,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     WxeContext wxeContext = WxeContext.Current;
 
-    string functionToken = WxeContext.GetFunctionTokenForExternalFunction (function, returningPostback);
+    string functionToken = GetFunctionTokenForExternalFunction (function, returningPostback);
 
     string href;
     if (createPermaUrl)
@@ -506,6 +506,19 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     function.ReturnUrl = 
         "javascript:" + GetClosingScriptForExternalFunction (functionToken, sender, returningPostback);
+  }
+
+  /// <summary> 
+  ///   Initalizes a new <see cref="WxeFunctionState"/> with the passed <paramref name="function"/> and returns
+  ///   the associated function token.
+  /// </summary>
+  private string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
+  {
+    bool enableCleanUp = ! returningPostback;
+    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
+    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+    functionStates.Add (functionState);
+    return functionState.FunctionToken;
   }
 
   /// <summary> Gets the client script to be used as the return URL for the window of the external function. </summary>

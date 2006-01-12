@@ -130,10 +130,11 @@ public class BocMenuItemCommand: BocCommand
   /// <param name="businessObjects"> 
   ///   The array of <see cref="IBusinessObject"/> instances on which the rendered command is applied on.
   /// </param>
-  public void ExecuteWxeFunction (Page page, int[] listIndices, IBusinessObject[] businessObjects)
+  [Obsolete ("Make public should this ever be needed.")]
+  private void ExecuteWxeFunction (Page page, int[] listIndices, IBusinessObject[] businessObjects)
   {
     NameObjectCollection parameters = PrepareWxeFunctionParameters (listIndices, businessObjects);
-    ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
+    //ExecuteWxeFunction (page, parameters, new NameValueCollection (0));
   }
 
   private NameObjectCollection PrepareWxeFunctionParameters (int[] listIndices, IBusinessObject[] businessObjects)
