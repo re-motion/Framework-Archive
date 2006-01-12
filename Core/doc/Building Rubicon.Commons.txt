@@ -1,11 +1,14 @@
 1. Prerequisites
-  * Installation NAnt Version 0.8.4: \\at-vie-dc-02\Install\NAnt
+  * Installation NAnt Version 0.85-20051213: <\\at-vie-dc-02\Install\NAnt\nant-bin-0.85-20051213.zip>
 		zB nach c:\program files\nant
 		bin verzeichnis in PATH aufnehmen
   * Rubicon.Nant.Tasks.dll von SourceSafe rubicon\tools\NantTasks\NantTasks\bin in das lokale 
 	  NAnt-bin Verzeichnis (C:\Program Files\NAnt\bin) kopieren.
-  * NAnt.exe.config im NAnt-bin Verzeichnis: default .net Framework auf 1.1 setzen
-    Zeile 21: <platform name="win32" default="net-1.1">
+  * NAnt.exe.config im NAnt-bin Verzeichnis: 
+    default .net Framework auf 1.1 setzen
+      Zeile 21: <platform name="win32" default="net-1.1">
+    Startup-Framework auf net-1.1 einstellen.
+      Zeile 1660: <startup>...
   * files aus SourceSafe rubicon\global holen
   * Installierte SQL Server 2000 Instanz "Build"
     und die Datei C:\Program Files\Microsoft SQL Server\80\Tools\Binn\osql.exe
