@@ -22,7 +22,6 @@
   <property name="sql.instance" value="localhost" />
 
   <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
-  <echo message="${build.keyfile}" />
   <property name="dummy" value="true" />
 
   <target name="local" depends="initNoConfig" description="make local build into directory build/current">
@@ -33,7 +32,7 @@
     <buildversion versionfile="build/buildversion.xml" increment="false" />
     <echo message="new version is ${build.version.noconfig}"/>
     <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />
-    <if propertyexists="build.local">
+    <if test="${property::exists('build.local')}">
       <property name="build.basedir" value="${solution.basedir}/build/Current" />
     </if>
     <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" />
@@ -42,10 +41,10 @@
   <target name="initialize" depends="initNoConfig">
     <!-- make sure that one of the set...-targets was called -->
     <property name="local.setnotcalled" value="true"/>
-    <if propertyexists="project.config">
+    <if test="${property::exists('project.config')}">
       <property name="local.setnotcalled" value="false"/>
     </if>
-    <if propertytrue="local.setnotcalled">
+    <if test="${local.setnotcalled}">
       <fail message="Specify a set&lt;configuration&gt; target first. (setdebug, setrelease or setdocumentation)" />
     </if>
 
@@ -107,7 +106,7 @@
 
   <!--======================= SS Command =======================-->
   <target name="SSCommandline">
-    <ifnot propertyexists="SS.dir" >
+    <ifnot test="${property::exists('SS.dir')}" >
       <property name="SS.dir" value="." />
     </ifnot>
     <exec program="SS.EXE" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
@@ -363,6 +362,7 @@
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
     <nunit2>
+      <formatter type="Plain" />
       <test assemblyname="${tests.builddir}/Rubicon.Core.UnitTests.dll" />
     </nunit2>
   </target>
@@ -374,6 +374,7 @@
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
     <nunit2>
+      <formatter type="Plain" />
       <test assemblyname="${tests.builddir}/Rubicon.Development.UnitTests.dll" />
     </nunit2>
   </target>
@@ -385,6 +386,7 @@
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
     <nunit2>
+      <formatter type="Plain" />
       <test assemblyname="${tests.builddir}/Rubicon.Web.UnitTests.dll" />
     </nunit2>
   </target>
@@ -396,6 +398,7 @@
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
     <nunit2>
+      <formatter type="Plain" />
       <test assemblyname="${tests.builddir}/Rubicon.ObjectBinding.Web.UnitTests.dll" />
     </nunit2>
   </target>
@@ -415,21 +418,22 @@
     </exec>
     <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/Database/">
-        <includes name="*.sql" />
+        <include name="*.sql" />
       </fileset>
     </copy>
     <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/">
-        <includes name="*.xml" />
+        <include name="*.xml" />
       </fileset>
     </copy>
     <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/../">
-        <includes name="*.xsd" />
+        <include name="*.xsd" />
       </fileset>
     </copy>
     <call target="buildtest" />
     <nunit2>
+      <formatter type="Plain" />
       <test assemblyname="${tests.builddir}/Rubicon.Data.DomainObjects.UnitTests.dll" />
     </nunit2>
   </target>
@@ -449,21 +453,22 @@
     </exec>
     <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/Database/">
-        <includes name="*.sql" />
+        <include name="*.sql" />
       </fileset>
     </copy>
     <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/">
-        <includes name="*.xml" />
+        <include name="*.xml" />
       </fileset>
     </copy>
     <copy todir="${tests.builddir}" overwrite="true">
       <fileset basedir="${project.dir}/../">
-        <includes name="*.xsd" />
+        <include name="*.xsd" />
       </fileset>
     </copy>
     <call target="buildtest" />
     <nunit2>
+      <formatter type="Plain" />
       <test assemblyname="${tests.builddir}/Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.dll" />
     </nunit2>
   </target>
@@ -471,35 +476,35 @@
   <!--======================= BUILD =======================-->
 
   <target name="build">
-    <if if="${build.copyresources}" propertyexists="dummy">
+    <if if="${build.copyresources}" test="${property::exists('dummy')}">
       <copy todir="${build.basedir}/res/${project.output}" >
         <fileset basedir="${project.dir}/res">
-          <includes name="**/*" />
+          <include name="**/*" />
         </fileset>
       </copy>
       <copy todir="${build.basedir}" flatten="true">
         <fileset basedir="${project.dir}/">
-          <includes name="**/WhatsNew*" />
+          <include name="**/WhatsNew*" />
         </fileset>
       </copy>
       <copy todir="${build.basedir}" flatten="true">
         <fileset basedir="${project.dir}/">
-          <includes name="Doc/Readme*" />
+          <include name="Doc/Readme*" />
         </fileset>
       </copy>
       <copy todir="${build.basedir}/schema/${project.output}" flatten="true">
         <fileset basedir="${project.dir}/">
-          <includes name="**/*.xsd" />
+          <include name="**/*.xsd" />
         </fileset>
       </copy>
-    <!-- else --> </if> <if unless="${build.copyresources}" propertyexists="dummy">
+    <!-- else --> </if> <if unless="${build.copyresources}" test="${property::exists('dummy')}">
       <echo message="building ${project.output}.${project.extension} ${build.version}"/>
 
-      <if if="${build.createdoc}" propertyexists="dummy">
+      <if if="${build.createdoc}" test="${property::exists('dummy')}">
         <property name="project.doc" value="${project.builddir}/${project.output}.xml" />
         <!-- else -->
       </if>
-      <if unless="${build.createdoc}" propertyexists="dummy">
+      <if unless="${build.createdoc}" test="${property::exists('dummy')}">
         <property name="project.doc" value="${project.tempdir}/${project.output}.complete.xml" />
       </if>
 
@@ -513,7 +518,7 @@
 
       <nant buildfile="${project.dir}/${project.name}.build" target="build" />
 
-      <if unless="${build.createdoc}" propertyexists="dummy">
+      <if unless="${build.createdoc}" test="${property::exists('dummy')}">
         <style style="file:///c:${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />
       </if>
     </if>
@@ -530,9 +535,9 @@
     <copy todir="${tests.builddir}" file="${prereq.assemblies}/nunit.framework.dll" overwrite="true"/>
     <copy todir="${tests.builddir}">
       <fileset basedir="${project.builddir}">
-        <includes name="*.dll" />
-        <includes name="*.pdb" />
-        <includes name="*.xsd" /> <!-- TODO: warum ging das bisher auch ohne? entfernen sobald XSDs als resourcen gelinkt werden! -->
+        <include name="*.dll" />
+        <include name="*.pdb" />
+        <include name="*.xsd" /> <!-- TODO: warum ging das bisher auch ohne? entfernen sobald XSDs als resourcen gelinkt werden! -->
       </fileset>
     </copy>
 
@@ -554,7 +559,7 @@
         <filter token="productname" value="${text.productname}" />
       </filterset>
       <fileset>
-        <includes name="${project.basedir}/AssemblyInfo.cs" />
+        <include name="${project.basedir}/AssemblyInfo.cs" />
       </fileset>
     </replace>
     <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
@@ -574,7 +579,7 @@
         <filter token="productname" value="${text.productname}" />
       </filterset>
       <fileset>
-        <includes name="${project.basedir}/AssemblyInfo.cs" />
+        <include name="${project.basedir}/AssemblyInfo.cs" />
       </fileset>
     </replace>
     <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
@@ -591,19 +596,19 @@
     <mkdir dir="${doc.targetdir}"/>
     <ndoc>
       <assemblies basedir="${project.builddir}" failonempty="true">
-        <includes name="Rubicon.Core.dll" />
-        <includes name="Rubicon.Development.dll" />
-        <includes name="Rubicon.Development.CodeDom.dll" />
-        <includes name="Rubicon.Data.DomainObjects.dll" />
-        <includes name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
-        <includes name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
-        <includes name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
-        <includes name="Rubicon.Data.DomainObjects.Web.dll" />
-        <includes name="Rubicon.Web.dll" />
-        <includes name="Rubicon.Web.Legacy.dll" />
-        <includes name="Rubicon.ObjectBinding.dll" />
-        <includes name="Rubicon.ObjectBinding.Web.dll" />
-        <includes name="Rubicon.ObjectBinding.Reflection.dll" />
+        <include name="Rubicon.Core.dll" />
+        <include name="Rubicon.Development.dll" />
+        <include name="Rubicon.Development.CodeDom.dll" />
+        <include name="Rubicon.Data.DomainObjects.dll" />
+        <include name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
+        <include name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
+        <include name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
+        <include name="Rubicon.Data.DomainObjects.Web.dll" />
+        <include name="Rubicon.Web.dll" />
+        <include name="Rubicon.Web.Legacy.dll" />
+        <include name="Rubicon.ObjectBinding.dll" />
+        <include name="Rubicon.ObjectBinding.Web.dll" />
+        <include name="Rubicon.ObjectBinding.Reflection.dll" />
       </assemblies>
       <documenters>
         <documenter name="MSDN">
@@ -634,12 +639,12 @@
         </documenter>
       </documenters>
       <summaries>
-        <includes name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/Web/Legacy/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/Web/Legacy/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
       </summaries>
     </ndoc>
     <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
@@ -654,19 +659,19 @@
     <mkdir dir="${doc.targetdir}"/>
     <ndoc>
       <assemblies basedir="${project.builddir}" failonempty="true">
-        <includes name="Rubicon.Core.dll" />
-        <includes name="Rubicon.Development.dll" />
-        <includes name="Rubicon.Development.CodeDom.dll" />
-        <includes name="Rubicon.Data.DomainObjects.dll" />
-        <includes name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
-        <includes name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
-        <includes name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
-        <includes name="Rubicon.Data.DomainObjects.Web.dll" />
-        <includes name="Rubicon.Web.dll" />
-        <includes name="Rubicon.Web.Legacy.dll" />
-        <includes name="Rubicon.ObjectBinding.dll" />
-        <includes name="Rubicon.ObjectBinding.Web.dll" />
-        <includes name="Rubicon.ObjectBinding.Reflection.dll" />
+        <include name="Rubicon.Core.dll" />
+        <include name="Rubicon.Development.dll" />
+        <include name="Rubicon.Development.CodeDom.dll" />
+        <include name="Rubicon.Data.DomainObjects.dll" />
+        <include name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
+        <include name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
+        <include name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
+        <include name="Rubicon.Data.DomainObjects.Web.dll" />
+        <include name="Rubicon.Web.dll" />
+        <include name="Rubicon.Web.Legacy.dll" />
+        <include name="Rubicon.ObjectBinding.dll" />
+        <include name="Rubicon.ObjectBinding.Web.dll" />
+        <include name="Rubicon.ObjectBinding.Reflection.dll" />
       </assemblies>
       <documenters>
         <documenter name="MSDN">
@@ -697,12 +702,12 @@
         </documenter>
       </documenters>
       <summaries>
-        <includes name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/Web/Legacy/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
-        <includes name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/Web/Legacy/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
+        <include name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
       </summaries>
     </ndoc>
     <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
@@ -715,8 +720,8 @@
     <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${build.basedir}\temp" failonerror="false"/>
     <delete failonerror="false">
       <fileset failonempty="false">
-        <includes name="${build.basedir}/temp/**/*"/>
-        <includes name="${build.basedir}/temp"/>
+        <include name="${build.basedir}/temp/**/*"/>
+        <include name="${build.basedir}/temp"/>
       </fileset>
     </delete>
   </target>
@@ -726,8 +731,8 @@
     <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${build.basedir}" failonerror="false"/>
     <delete failonerror="false">
       <fileset failonempty="false">
-        <includes name="${build.basedir}/**/*"/>
-        <includes name="${build.basedir}"/>
+        <include name="${build.basedir}/**/*"/>
+        <include name="${build.basedir}"/>
       </fileset>
     </delete>
   </target>
@@ -745,9 +750,9 @@
     <delete file="${zipfile.name}" failonerror="false" />
     <zip zipfile="${zipfile.name}">
       <fileset basedir="${build.basedir}">
-        <includes name="**/*" />
-        <excludes name="*/bin/documentation/**/*" />
-        <excludes name="temp/**/*" />
+        <include name="**/*" />
+        <exclude name="*/bin/documentation/**/*" />
+        <exclude name="temp/**/*" />
       </fileset>
     </zip>
   </target>
@@ -756,17 +761,17 @@
     <delete file="${sourcezipfile.name}" failonerror="false" />
     <zip zipfile="${sourcezipfile.name}">
       <fileset>
-        <includes name="Core/**/*" />
-        <includes name="Core.Test/**/*" />
-        <includes name="Development/**/*" />
-        <includes name="Data/**/*" />
-        <includes name="ObjectBinding/**/*" />
-        <includes name="Web/**/*" />
-        <includes name="build/*.xml" />
-        <excludes name="**/*.zip" />
-        <excludes name="**/*.dll" />
-        <excludes name="**/*.exe" />
-        <excludes name="**/*.pdb" />
+        <include name="Core/**/*" />
+        <include name="Core.Test/**/*" />
+        <include name="Development/**/*" />
+        <include name="Data/**/*" />
+        <include name="ObjectBinding/**/*" />
+        <include name="Web/**/*" />
+        <include name="build/*.xml" />
+        <exclude name="**/*.zip" />
+        <exclude name="**/*.dll" />
+        <exclude name="**/*.exe" />
+        <exclude name="**/*.pdb" />
       </fileset>
     </zip>
   </target>
@@ -776,14 +781,14 @@
 
     <delete failonerror="false">
       <fileset>
-        <includes name="${local.currentdir}//*" />
-        <includes name="${local.currentdir}" />
+        <include name="${local.currentdir}//*" />
+        <include name="${local.currentdir}" />
       </fileset>
     </delete>
 
     <copy todir="${local.currentdir}">
       <fileset basedir="${build.basedir}">
-        <includes name="**/*" />
+        <include name="**/*" />
       </fileset>
     </copy>
   </target>
