@@ -7,7 +7,9 @@
   <target name="doc" depends="doc-public,doc-internal" />
   <target name="deploy" depends="cleantemp,zip,sourcezip,getcurrent" />
 
+<!--
   <include buildfile="build/properties.include.xml" verbose="true"/>
+-->  
   <target name="setProperties">
     <property name="text.copyright" value="(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com" />
     <property name="text.companyname" value="rubicon informationstechnologie gmbh" />
@@ -24,11 +26,10 @@
   <property name="prereq.assemblies" value="${nant.project.basedir}\prereq\assemblies" />
 
   <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\80\Tools\Binn" />
-  <property name="sql.instance" value="localhost\build" />
 <!--
   <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn" />
-  <property name="sql.instance" value="localhost" />
 -->  
+  <property name="sql.instance" value="(local)\build" />
 
   <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
   <echo message="${build.keyfile}" />
