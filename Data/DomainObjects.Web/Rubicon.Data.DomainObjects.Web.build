@@ -5,22 +5,24 @@
     <csc  target="library"
           output="${project.builddir}/${project.output}.${project.extension}"
           doc="${project.doc}"
-          nowarn=""
           debug="${build.debug}"
           define="${build.csc.define}">
+      <nowarn>
+        <warning number="0612" if="${net20}" /> <!-- no obsolete warning for net2.0-->
+      </nowarn> 
       <sources failonempty="true">
-        <includes name="*.cs"/>
-        <includes name="ExecutionEngine/*.cs"/>
-        <excludes name="AssemblyInfoTemplate.cs" />
+        <include name="*.cs"/>
+        <include name="ExecutionEngine/*.cs"/>
+        <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <includes asis="true" name="${project.builddir}/Rubicon.Core.dll"/>
-        <includes asis="true" name="${project.builddir}/Rubicon.Web.dll"/>
-        <includes asis="true" name="${project.builddir}/Rubicon.Data.DomainObjects.dll"/>
-        <includes asis="true" name="System.dll"/>
-        <includes asis="true" name="System.Data.dll"/>
-        <includes asis="true" name="System.Xml.dll"/>
-        <includes asis="true" name="System.Web.dll"/>
+        <include asis="true" name="${project.builddir}/Rubicon.Core.dll"/>
+        <include asis="true" name="${project.builddir}/Rubicon.Web.dll"/>
+        <include asis="true" name="${project.builddir}/Rubicon.Data.DomainObjects.dll"/>
+        <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Data.dll"/>
+        <include asis="true" name="System.Xml.dll"/>
+        <include asis="true" name="System.Web.dll"/>
       </references>
     </csc>
   </target>
