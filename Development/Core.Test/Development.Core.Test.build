@@ -6,18 +6,20 @@
     <csc  target="library" 
           output="${tests.builddir}/${project.output}.${project.extension}" 
           unsafe="true" 
-          nowarn="1591" 
           debug="${build.debug}"
           define="${build.csc.define}">
+      <nowarn>
+        <warning number="0612" if="${net20}" /> <!-- no obsolete warning for net2.0-->
+      </nowarn> 
       <sources failonempty="true">
-        <includes name="*.cs" />
-        <includes name="UnitTesting/**/*.cs" />
-        <excludes name="AssemblyInfoTemplate.cs" />
+        <include name="*.cs" />
+        <include name="UnitTesting/**/*.cs" />
+        <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <includes name="${tests.builddir}/Rubicon.Development.dll" />
-        <includes name="${tests.builddir}/nunit.framework.dll" />
-        <includes asis="true" name="System.dll"/>
+        <include name="${tests.builddir}/Rubicon.Development.dll" />
+        <include name="${tests.builddir}/nunit.framework.dll" />
+        <include asis="true" name="System.dll"/>
       </references>
     </csc>
         
