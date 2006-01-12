@@ -13,6 +13,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
 DROP TABLE [TableWithoutColumns]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithUndefinedEnum') 
+DROP TABLE [TableWithUndefinedEnum]
+GO
+
 CREATE TABLE [TableWithAllDataTypes] (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
@@ -31,6 +35,7 @@ CREATE TABLE [TableWithAllDataTypes] (
   [Int64] bigint NOT NULL,
   [Single] real NOT NULL,
   [String] nvarchar (100) NOT NULL,
+  [DelimitedStringArray] nvarchar (1000) NOT NULL,
   [Binary] image NOT NULL,
 
   [NaBoolean] bit NULL,
@@ -46,6 +51,7 @@ CREATE TABLE [TableWithAllDataTypes] (
   [NaSingle] real NULL,
   
   [StringWithNullValue] nvarchar (100) NULL,
+  [DelimitedNullStringArray] nvarchar (1000) NULL,
   [NaBooleanWithNullValue] bit NULL,
   [NaByteWithNullValue] tinyint NULL,
   [NaDateWithNullValue] dateTime NULL,
