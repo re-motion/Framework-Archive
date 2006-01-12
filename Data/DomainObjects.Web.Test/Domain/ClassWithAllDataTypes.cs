@@ -52,6 +52,41 @@ public class ClassWithAllDataTypes : BindableDomainObject
 
   // methods and properties
 
+  public string[] StringArray
+  {
+    get
+    {
+      return DataContainer.GetString ("DelimitedStringArrayProperty").Split (';');
+    }
+    set
+    {
+      if (value == null)
+        DataContainer.SetValue ("DelimitedStringArrayProperty", string.Empty);
+      else
+        DataContainer.SetValue ("DelimitedStringArrayProperty", string.Join (";", value));
+    }
+  }
+
+  public string[] NullStringArray
+  {
+    get
+    {
+      string delimitedNullStringArray = DataContainer.GetString ("DelimitedNullStringArrayProperty");
+      
+      if (delimitedNullStringArray == null)
+        return null;
+
+      return delimitedNullStringArray.Split (';');
+    }
+    set
+    {
+      if (value == null)
+        DataContainer.SetValue ("DelimitedNullStringArrayProperty", null);
+      else
+        DataContainer.SetValue ("DelimitedNullStringArrayProperty", string.Join (";", value));
+    }
+  }
+
   public new DataContainer DataContainer
   {
     get { return base.DataContainer; }
