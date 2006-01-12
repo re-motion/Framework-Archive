@@ -63,6 +63,8 @@
       </para><para>
         The <see cref="Property"/> must be set in order to get the <see cref="Value"/> after a postback. 
         This means the latest time to set the <b>Property</b> is before a call to <see cref="SaveValue"/>.
+        If it is not possible to assign a <see cref="Property"/>, you can use <see cref="BusinessObjectID"/> to get
+        the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object.
       </para><para>
         The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocReferenceValue</c>.
       </para><para>
