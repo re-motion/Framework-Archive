@@ -7,25 +7,28 @@
           output="${project.builddir}/${project.output}.${project.extension}" 
           unsafe="true" 
           doc="${project.doc}" 
-          nowarn="1591" 
           debug="${build.debug}"
           define="${build.csc.define}">
+      <nowarn>
+        <warning number="1591" /> <!-- missing XML comment -->
+        <warning number="0612" if="${net20}" /> <!-- no obsolete warning for net2.0-->
+      </nowarn> 
       <sources failonempty="true">
-        <includes name="*.cs" />
-        <includes name="Data/**/*.cs" />
-        <includes name="Globalization/**/*.cs" />
-        <includes name="NullableValueTypes/**/*.cs" />
-        <includes name="ObjectBinding/**/*.cs" />
-        <includes name="Text/**/*.cs" />
-        <includes name="Utilities/**/*.cs" />
-        <includes name="Collections/**/*.cs" />
-        <includes name="Xml/**/*.cs" />
-        <excludes name="AssemblyInfoTemplate.cs" />
+        <include name="*.cs" />
+        <include name="Data/**/*.cs" />
+        <include name="Globalization/**/*.cs" />
+        <include name="NullableValueTypes/**/*.cs" />
+        <include name="ObjectBinding/**/*.cs" />
+        <include name="Text/**/*.cs" />
+        <include name="Utilities/**/*.cs" />
+        <include name="Collections/**/*.cs" />
+        <include name="Xml/**/*.cs" />
+        <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <includes name="${project.builddir}/log4net.dll" />
-        <includes asis="true" name="System.dll"/>
-        <includes asis="true" name="System.Data.dll"/>
+        <include name="${project.builddir}/log4net.dll" />
+        <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Data.dll"/>
       </references>
     </csc>
         
