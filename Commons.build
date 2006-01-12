@@ -22,10 +22,10 @@
   <property name="solution.basedir" value="${nant.project.basedir}" />
   <property name="prereq.assemblies" value="${nant.project.basedir}\prereq\assemblies" />
 
+<!-- Build Machine has SQL Server 2005 Client Tools installed.
   <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\80\Tools\Binn" />
-<!-- 
-  <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn" />
 -->  
+  <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn" />
   <property name="sql.instance" value="localhost" />
 
   <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
