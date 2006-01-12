@@ -6,21 +6,24 @@
     <csc  target="library" 
           output="${project.builddir}/${project.output}.${project.extension}" 
           doc="${project.doc}" 
-          nowarn="1591" 
           debug="${build.debug}"
           define="${build.csc.define}">
+      <nowarn>
+        <warning number="1591" /> <!-- missing XML comment -->
+        <warning number="0612" if="${net20}" /> <!-- no obsolete warning for net2.0-->
+      </nowarn> 
       <sources failonempty="true">
-        <includes name="*.cs" />
-        <excludes name="AssemblyInfoTemplate.cs" />
+        <include name="*.cs" />
+        <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <includes name="${project.builddir}/Rubicon.Core.dll" />
-        <includes name="${project.builddir}/Rubicon.Web.dll" />
-        <includes name="${project.builddir}/Rubicon.ObjectBinding.dll" />
-        <includes name="${project.builddir}/Rubicon.ObjectBinding.Web.dll" />
-        <includes asis="true" name="System.dll"/>
-        <includes asis="true" name="System.Data.dll"/>
-        <includes asis="true" name="System.Xml.dll"/>
+        <include name="${project.builddir}/Rubicon.Core.dll" />
+        <include name="${project.builddir}/Rubicon.Web.dll" />
+        <include name="${project.builddir}/Rubicon.ObjectBinding.dll" />
+        <include name="${project.builddir}/Rubicon.ObjectBinding.Web.dll" />
+        <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Data.dll"/>
+        <include asis="true" name="System.Xml.dll"/>
       </references>
     </csc>
         
