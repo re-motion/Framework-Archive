@@ -218,7 +218,7 @@
     The <b>Rubicon.ObjectBinding.Web.Controls</b> namespace provides object bindable controls implementing 
     <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectBoundWebControl"/>. 
     To allow integration with the <see cref="T:Rubicon.Web.UI.Controls.FormGridManager"/>, the controls also implement 
-    <see cref="T:Rubicon.Web.UI.ISmartControl"/>. By provinding automation for both object binding and rendering, the 
+    <see cref="T:Rubicon.Web.UI.ISmartControl"/>. By providing automation for both, object binding and rendering, the 
     bound web controls provide a maximum of usability with a minimum of coding effort.
     
     <h3 class="dtH3">Browser Compatibility Chart: Transitional Quirks Mode</h3>
