@@ -11,6 +11,7 @@ using System.Web.UI.HtmlControls;
 
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.Web.UI;
 
 using OBRTest;
 
@@ -19,24 +20,18 @@ namespace OBWTest
 /// <summary>
 /// Summary description for RepeaterTest.
 /// </summary>
-public class RepeaterTest : System.Web.UI.Page
+public class RepeaterTest : SmartPage
 {
-  protected BocTextValue BocTextValue1;
-  protected BusinessObjectDataSourceControl ItemDataSourceControl;
-  protected OBRTest.ObjectBoundRepeater Repeater2;
   protected ReflectionBusinessObjectDataSourceControl CurrentObject;
-  protected OBRTest.ObjectBoundRepeater Repeater3;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
+  protected OBRTest.ObjectBoundRepeater Repeater2;
+  protected OBRTest.ObjectBoundRepeater Repeater3;
   protected Rubicon.Web.UI.Controls.WebButton SaveButton;
-  protected System.Web.UI.WebControls.Repeater Repeater1;
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
     Guid personID = new Guid(0,0,0,0,0,0,0,0,0,0,1);
     Person person = Person.GetObject (personID);
-
-    Repeater1.DataSource = person.Children;
-    Repeater1.DataBind();
 
     CurrentObject.BusinessObject = person;
     CurrentObject.LoadValues (IsPostBack);
@@ -59,26 +54,17 @@ public class RepeaterTest : System.Web.UI.Page
 	private void InitializeComponent()
 	{    
     this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
-    this.Repeater1.ItemCreated += new System.Web.UI.WebControls.RepeaterItemEventHandler(this.Repeater1_ItemCreated);
-    this.Repeater1.ItemDataBound += new System.Web.UI.WebControls.RepeaterItemEventHandler(this.Repeater1_ItemDataBound);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
 
-  private void Repeater1_ItemCreated(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
-  {
-  
-  }
-
-  private void Repeater1_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
-  {
-  
-  }
-
   private void SaveButton_Click(object sender, System.EventArgs e)
   {
-    CurrentObject.SaveValues (false);
+    PrepareValidation();
+    bool isValid = CurrentObject.Validate();
+    if (isValid)
+      CurrentObject.SaveValues (false);
   }
 }
 }

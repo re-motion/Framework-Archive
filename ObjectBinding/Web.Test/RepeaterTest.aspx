@@ -12,20 +12,11 @@
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
-<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
-<rubicon:htmlheadcontents id="HtmlHeadContents" runat="server"></rubicon:htmlheadcontents>
+<meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema><rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
   </head>
 <body MS_POSITIONING="FlowLayout">
-<form id=Form1 method=post runat="server"><rubicon:WebButton id="SaveButton" runat="server" Text="Save"></rubicon:WebButton><asp:repeater id=Repeater1 runat="server">
-    <itemtemplate>
-    <div>
-    <obw:boctextvalue id="UnboundField" runat="server">
-</obw:boctextvalue>
-</div>
-</itemtemplate>
-</asp:repeater>
-<hr>
-<obrt:objectboundrepeater id=Repeater2 runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children">
+<form id=Form1 method=post runat="server"><rubicon:webbutton id=SaveButton runat="server" Text="Save"></rubicon:webbutton>
+<obrt:objectboundrepeater id=Repeater2 runat="server" propertyidentifier="Children" datasourcecontrol="CurrentObject">
 <itemtemplate>
     <div>
     <obw:boctextvalue id="FirstNameField" runat="server" ReadOnly="true" DataSourceControl="ItemDataSourceControl" PropertyIdentifier="FirstName">
@@ -35,21 +26,23 @@
 </ItemTemplate>
 </obrt:objectboundrepeater>
 <hr>
-<obrt:objectboundrepeater id="Repeater3" runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" readonly="True">
+<obrt:objectboundrepeater id=Repeater3 runat="server" propertyidentifier="Children" datasourcecontrol="CurrentObject">
 <itemtemplate>
 <table style="width:100%">
 <tr>
 <td>
+<!--DataEditUserControl-->
 <uc1:testtabbedpersondetailsusercontrol id="TestTabbedPersonDetailsUserControl1" runat="server"></uc1:testtabbedpersondetailsusercontrol>
 </td>
 <td>
+<!--DataEditUserControl-->
 <uc1:testtabbedpersonjobsusercontrol id="TestTabbedPersonJobsUserControl1" runat="server"></uc1:testtabbedpersonjobsusercontrol>
 </td></tr>
 </table>
 </ItemTemplate>
 </obrt:objectboundrepeater>
 <hr>
-<cc1:reflectionbusinessobjectdatasourcecontrol id="CurrentObject" runat="server" typename="OBRTest.Person,OBRTest"></cc1:reflectionbusinessobjectdatasourcecontrol>
-	</form>
+<cc1:reflectionbusinessobjectdatasourcecontrol id=CurrentObject runat="server" 
+typename="OBRTest.Person,OBRTest"></cc1:reflectionbusinessobjectdatasourcecontrol></form>
   </body>
 </html>
