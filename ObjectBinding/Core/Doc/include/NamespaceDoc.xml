@@ -18,11 +18,11 @@
     </para>
     
     <h3 class="dtH3">The Business Object Model</h3>
-    <h4 class="dtH4">Introducution</h4>
+    <h4 class="dtH4">Introduction</h4>
     <para>
       When implementing an object model using the CLS types, the object model is defined at compile time. 
       This is an advantage that is missing when interfacing with a highly dynamic system such as Fabasoft Components.
-      The <b>Rubicon.Coonet</b> framework provides the funcitonality required to access a Fabasoft Components domain 
+      The <b>Rubicon.Coonet</b> framework provides the functionality required to access a Fabasoft Components domain 
       using <b>Business Object Binding</b>.
     </para><para>
       If the object model is defined at compile time but has to be accessed by a generic data access layer, this is 
@@ -30,8 +30,8 @@
       for instance to use the web controls provided by the 
       <see href="Rubicon.ObjectBinding.Web.html">Rubicon.ObjectBinding.Web</see> namespace.
     </para><para>
-      In addition to these obvious problems, an application often requires a greater set of meta data than the CLS types 
-      can provide by themselve. For instance, a CLS property can only provide its data type and the implicit 
+      In addition to these obvious problems, an application often requires a greater set of meta data than the CLS 
+      types can provide by themselves. For instance, a CLS property can only provide its data type and the implicit 
       information as to whether it can be <see langword="null"/>.
     </para>
     
@@ -95,7 +95,7 @@
       <note type="caution">
         For a web application's subsequent page loads, the <b>interim</b> parameter must be set <see langword="true" />. 
       </note>
-      When the data source's <b>LoadValues</b> method is exeucted, it loops through all controls bound to this 
+      When the data source's <b>LoadValues</b> method is executed, it loops through all controls bound to this 
       data source, calling each individual control's
       <see cref="M:Rubicon.ObjectBinding.IBusinessObjectBoundControl.LoadValue(System.Boolean)" /> method in the process.
       <b>LoadValue</b> then uses the <see cref="P:Rubicon.ObjectBinding.IBusinessObjectBoundControl.Property" /> 
@@ -126,7 +126,7 @@
       <note>
         It is important to ensure that all the controls' values are valid before executing <b>SaveValues</b>. 
         The reason for this is that an attempt to write invalid data back into the business object could result in 
-        any number of invalid data exceptions thown by the <see cref="T:Rubicon.ObjectBinding.IBusinessObject" />
+        any number of invalid data exceptions thrown by the <see cref="T:Rubicon.ObjectBinding.IBusinessObject" />
         implementation
       </note>
     </para>
