@@ -620,6 +620,7 @@
           <property name="Title" value="${text.productname}" />
           <property name="SplitTOCs" value="False" />
           <property name="DefaulTOC" value="" />
+          <property name="BinaryTOC" value="True" />
           <property name="ShowVisualBasic" value="True" />
           <property name="ShowMissingSummaries" value="False" />
           <property name="ShowMissingRemarks" value="False" />
@@ -683,6 +684,7 @@
           <property name="Title" value="${text.productname} Internal" />
           <property name="SplitTOCs" value="False" />
           <property name="DefaulTOC" value="" />
+          <property name="BinaryTOC" value="True" />
           <property name="ShowVisualBasic" value="False" />
           <property name="ShowMissingSummaries" value="True" />
           <property name="ShowMissingRemarks" value="True" />
