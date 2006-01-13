@@ -26,10 +26,10 @@
         "background-color" muss nach "table.tabbedMultiViewTabStrip span.tabStripTabSelected a" übernommen werden.
         "cursor" muss nach "table.tabbedMultiViewTabStrip span.tabStripTabSelected a" übernommen werden.
         "padding" muss nach "table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.content" übernommen werden.
-      "td.tabStripTabLeftBorder" -> "table.tabbedMultiViewTabStrip span.tabStripTab a span.right,
+      "td.tabStripTabLeftBorder" -> "table.tabbedMultiViewTabStrip span.tabStripTab a span.left,
         Statt "width" und "background-color" ist nun "border-left" zu verwenden.
         "cursor" wird nicht mehr benötigt.
-      "td.tabStripTabLeftBorderSelected" -> "table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.right"
+      "td.tabStripTabLeftBorderSelected" -> "table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.left"
         Statt "width" und "background-color" ist nun "border-left" zu verwenden.
         "cursor" wird nicht mehr benötigt.
       "td.tabStripTabRightBorder" -> "table.tabbedMultiViewTabStrip span.tabStripTab a span.right",
