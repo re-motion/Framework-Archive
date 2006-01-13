@@ -113,6 +113,16 @@
                     Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "system.design"
+                    AssemblyName = "system.design"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.design.dll"
+                />
+                <Reference
+                    Name = "system.drawing"
+                    AssemblyName = "system.drawing"
+                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -124,6 +134,11 @@
                 />
                 <File
                     RelPath = "Job.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ObjectBoundRepeater.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
