@@ -176,8 +176,12 @@ function DropDownMenu_OpenPopUp (id, menuID, context, getSelectionCount)
   _arrSelected[_nLevel] = null;
   _wzPrefixID = popUp.uniqueID;
   
+  //context.onblur = function () {window.status = 'blur';}
+  //popUpWindow.document.body.onload = function (){window.status =  new Date().valueOf();};
+  //popUpWindow.document.body.onunload = DropDownMenu_ClosePopUpEvent;
 	return popUpWindow;
 }
+
 function DropDownMenu_OpenPopUpEvent()
 {
 	var popUp=event.srcElement;
@@ -202,14 +206,23 @@ function DropDownMenu_RepositionPopUp()
 	_dropDownMenu_currentPopUp.style.left = (left - _dropDownMenu_currentPopUpWidth) + 'px';
 }
 
+function DropDownMenu_ClosePopUpEvent()
+{
+  DropDownMenu_ClosePopUp();
+}
+
 function DropDownMenu_ClosePopUp()
 {
+  return;
+  
   if (_dropDownMenu_currentPopUp != null)
     _dropDownMenu_currentPopUp.hide();
   _dropDownMenu_currentPopUp = null;
   if (_dropDownMenu_currentMenu != null)
     DropDownMenu_OnHeadMouseOut (_dropDownMenu_currentMenu.children[0]);
   _dropDownMenu_currentMenu = null;
+
+  window.status =  new Date().valueOf();
 }
 
 function DropDownMenu_CreateItem (popUpDocument, itemInfo, selectionCount, showExpandSeparators)
@@ -338,12 +351,16 @@ function DropDownMenu_UnselectItem (menuItem)
 
 function DropDownMenu_OnHeadMouseOver (head)
 {
+  return;
+  
   if (_dropDownMenu_currentPopUp == null)
   	head.className = _dropDownMenu_headFocusClassName;
 }
 
 function DropDownMenu_OnHeadMouseOut (head)
 {
+  return;
+  
   if (_dropDownMenu_currentPopUp == null)
   	head.className = _dropDownMenu_headClassName;
 }
