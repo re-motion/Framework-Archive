@@ -1,6 +1,5 @@
 /*  */
-div.dropDownMenuHead,
-div.dropDownMenuHeadFocus
+div.dropDownMenuHead
 {
   border-color: #005588;
   border-style: solid;
@@ -8,32 +7,55 @@ div.dropDownMenuHeadFocus
 	background-color: White;
 }
 
-td.dropDownMenuHeadTitle,
-td.dropDownMenuHeadTitleFocus
+/*div.dropDownMenuHead
+{
+  padding: 1px;
+}
+
+div.dropDownMenuHeadFocus
+{
+  border-color: #005588;
+  border-style: solid;
+  border-width: 1px;
+	background-color: White;
+}*/
+
+td.dropDownMenuHeadTitle
 {
   white-space: nowrap;
   vertical-align: middle;
   cursor: default;
-	background-color: White;
 }
 
-td.dropDownMenuHeadTitle a,
-td.dropDownMenuHeadTitleFocus a
+/*div.dropDownMenuHeadFocus td.dropDownMenuHeadTitle
+{
+	background-color: White;
+}*/
+
+td.dropDownMenuHeadTitle a
 {
   color: Blue;
 }
 
 /*  */
-td.dropDownMenuHeadButton,
-td.dropDownMenuHeadButtonFocus
+td.dropDownMenuHeadButton
 {
   vertical-align: middle;
   cursor: default;
   background-color: #d7e7fd;
 }
 
-td.dropDownMenuHeadButton a,
-td.dropDownMenuHeadButtonFocus a
+/*div.dropDownMenuHead td.dropDownMenuHeadButton
+{
+  visibility: hidden;
+}
+
+div.dropDownMenuHeadFocus td.dropDownMenuHeadButton
+{
+  visibility: visible;
+}*/
+
+td.dropDownMenuHeadButton a
 {
   cursor: default;
   background-color: Transparent;
@@ -41,8 +63,7 @@ td.dropDownMenuHeadButtonFocus a
 	padding: 0px;
 }
 
-td.dropDownMenuHeadButton a:hover,
-td.dropDownMenuHeadButtonFocus a:hover
+td.dropDownMenuHeadButton a:hover
 {
   cursor: default;
   background-color: Transparent;
