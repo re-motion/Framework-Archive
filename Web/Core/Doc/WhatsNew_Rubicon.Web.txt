@@ -1,3 +1,8 @@
+1.3.31
+======
+- Rubicon.Web.UI.SmartPage
+  * Bietet Dirty-State Handling.
+  
 1.3.28
 ======
 - Rubicon.Web.TabbedMultiView
@@ -88,7 +93,7 @@
   * RefreshIntervall muss größer gleich 0 und kleiner dem FunctionTimeout sein.
   
 - Rubicon.Web.UI.SmartPage
-  * Neue Klasse. Bietet SmartNaviation und Dirty-State Handling ohne WXE-Funktionalität.
+  * Neue Klasse. Bietet SmartNaviation ohne WXE-Funktionalität.
   
 1.3.25
 ======
