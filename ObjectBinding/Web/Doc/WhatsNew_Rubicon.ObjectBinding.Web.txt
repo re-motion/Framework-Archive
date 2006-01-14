@@ -25,7 +25,6 @@
     korrekt war.
   * Bugfix: Inline Editing: Änderungen in der Sortierreihenfolge durch das Inline Editing wurden erst nach einem
     weiteren Postback berücksichtigt.
-  * Bugfix: CustomColumns: IsSortable wurde im Designer nicht persistiert.
   * Bugfix: Wurde auch nach Spalten sortiert die in einem View liegen, und wurde der view gändert, so 
     wurden die Zeilen nicht neu sortiert bis zum nächsten Postback.
   * Inline Editing: Es wird nur noch ein BO-Control gerendert, wenn sowohl die Spalte als auch die Property 
