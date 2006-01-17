@@ -4,7 +4,7 @@
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="TestTabbedPersonDetailsUserControl.ascx.cs" Inherits="OBWTest.TestTabbedPersonDetailsUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
 
 
-<table id="FormGrid" runat="server" style="MARGIN-TOP: 60%">
+<table id="FormGrid" runat="server" style="MARGIN-TOP: 0%">
   <tr>
     <td></td>
     <td><rubicon:boctextvalue id="LastNameField" required="true" runat="server" propertyidentifier="LastName" datasourcecontrol="ReflectionBusinessObjectDataSourceControl">
