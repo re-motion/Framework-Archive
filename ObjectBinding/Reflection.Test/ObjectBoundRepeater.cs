@@ -65,6 +65,11 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
       set { _parent.IsDirtyInternal = value; }
     }
 
+    public override string[] GetTrackedClientIDs()
+    {
+      return _parent.GetTrackedClientIDsInternal();
+    }
+
     /// <summary> Gets or sets the current value. </summary>
     /// <value> An object implementing <see cref="IList"/>. </value>
     [Browsable (false)]
@@ -200,6 +205,11 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
   {
     get { return _repeaterInternal.IsDirty; }
     set { _repeaterInternal.IsDirty = value; }
+  }
+
+  public virtual string[] GetTrackedClientIDs()
+  {
+    return _repeaterInternal.GetTrackedClientIDs();
   }
 
   public bool Validate()
@@ -417,6 +427,11 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
   {
     get { return _isDirty; }
     set { _isDirty = value; }
+  }
+
+  public virtual string[] GetTrackedClientIDsInternal()
+  {
+    return new string[0];
   }
 
 
