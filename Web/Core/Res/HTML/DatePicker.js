@@ -153,15 +153,14 @@ function DatePicker_Calendar_SelectionChanged (value)
   var isValueChanged = target.value != value;
   DatePicker_CloseDatePicker();
   target.value = value;
-  if (isValueChanged && target.onchange != null)
+  if (isValueChanged)
   {
-    try
-    {
+    if (typeof (target.fireEvent) != 'undefined')
+      target.fireEvent ('onchange');
+    else if (typeof (target.dispatchEvent) != 'undefined')
+      target.dispatchEvent ('change');
+    else if (target.onchange != null)
       target.onchange();
-    }
-    catch (e)
-    {
-    }  
   }
 }
 
