@@ -28,6 +28,7 @@ public class BocBooleanValueTest: BocTest
     base.SetUp();
     _bocBooleanValue = new BocBooleanValueMock();
     _bocBooleanValue.ID = "BocBooleanValue";
+    NamingContainer.Controls.Add (_bocBooleanValue);
   }
 
 
@@ -62,6 +63,25 @@ public class BocBooleanValueTest: BocTest
     Assert.AreEqual (1, WcagHelperMock.Priority);
     Assert.AreSame (_bocBooleanValue, WcagHelperMock.Control);
     Assert.IsNull (WcagHelperMock.Property);
+  }
+
+
+  [Test]
+  public void GetTrackedClientIDsInReadOnlyMode()
+  {
+    _bocBooleanValue.ReadOnly = NaBoolean.True;
+    string[] actual = _bocBooleanValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (0, actual.Length);
+  }
+
+  [Test]
+  public void GetTrackedClientIDsInEditMode()
+  {
+    _bocBooleanValue.ReadOnly = NaBoolean.False;
+    string[] actual = _bocBooleanValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.Ignore("Not implemented.");
   }
 }
 

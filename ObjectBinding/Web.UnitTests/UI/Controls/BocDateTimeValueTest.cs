@@ -28,6 +28,7 @@ public class BocDateTimeValueTest: BocTest
     base.SetUp();
     _bocDateTimeValue = new BocDateTimeValueMock();
     _bocDateTimeValue.ID = "BocDateTimeValue";
+    NamingContainer.Controls.Add (_bocDateTimeValue);
   }
 
 
@@ -130,6 +131,51 @@ public class BocDateTimeValueTest: BocTest
     Assert.AreEqual (1, WcagHelperMock.Priority);
     Assert.AreSame (_bocDateTimeValue, WcagHelperMock.Control);
     Assert.AreEqual ("TimeTextBox.AutoPostBack", WcagHelperMock.Property);
+  }
+
+
+  [Test]
+  public void GetTrackedClientIDsInReadOnlyMode()
+  {
+    _bocDateTimeValue.ReadOnly = NaBoolean.True;
+    string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (0, actual.Length);
+  }
+
+  [Test]
+  public void GetTrackedClientIDsInEditModeAndValueTypeIsDateTime()
+  {
+    _bocDateTimeValue.ReadOnly = NaBoolean.False;
+    _bocDateTimeValue.ValueType = BocDateTimeValueType.DateTime;
+    string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (2, actual.Length);
+    Assert.AreEqual (_bocDateTimeValue.DateTextBox.ClientID, actual[0]);
+    Assert.AreEqual (_bocDateTimeValue.TimeTextBox.ClientID, actual[1]);
+  }
+
+  [Test]
+  public void GetTrackedClientIDsInEditModeAndValueTypeIsDate()
+  {
+    _bocDateTimeValue.ReadOnly = NaBoolean.False;
+    _bocDateTimeValue.ValueType = BocDateTimeValueType.Date;
+    string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (1, actual.Length);
+    Assert.AreEqual (_bocDateTimeValue.DateTextBox.ClientID, actual[0]);
+  }
+
+  [Test]
+  public void GetTrackedClientIDsInEditModeAndValueTypeIsUndefined()
+  {
+    _bocDateTimeValue.ReadOnly = NaBoolean.False;
+    _bocDateTimeValue.ValueType = BocDateTimeValueType.Undefined;
+    string[] actual = _bocDateTimeValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (2, actual.Length);
+    Assert.AreEqual (_bocDateTimeValue.DateTextBox.ClientID, actual[0]);
+    Assert.AreEqual (_bocDateTimeValue.TimeTextBox.ClientID, actual[1]);
   }
 }
 

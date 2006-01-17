@@ -123,6 +123,11 @@
                     Project = "{B719A305-0493-4C72-88FE-9A2FC6964578}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "ObjectBinding.Reflection"
+                    Project = "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -139,6 +144,11 @@
                 <File
                     RelPath = "ObjectBinding.Web.UnitTests.build"
                     BuildAction = "None"
+                />
+                <File
+                    RelPath = "Domain\TypeWithEnum.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Controls\BocBooleanValueMock.cs"
@@ -202,6 +212,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\BocListSortingOrderEntryMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\BocListTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -28,6 +28,7 @@ public class BocCheckBoxTest: BocTest
     base.SetUp();
     _bocCheckBox = new BocCheckBoxMock();
     _bocCheckBox.ID = "BocCheckBox";
+    NamingContainer.Controls.Add (_bocCheckBox);
   }
 
 
@@ -64,6 +65,26 @@ public class BocCheckBoxTest: BocTest
     Assert.AreEqual (1, WcagHelperMock.Priority);
     Assert.AreSame (_bocCheckBox, WcagHelperMock.Control);
     Assert.AreEqual ("AutoPostBack", WcagHelperMock.Property);
+  }
+
+
+  [Test]
+  public void GetTrackedClientIDsInReadOnlyMode()
+  {
+    _bocCheckBox.ReadOnly = NaBoolean.True;
+    string[] actual = _bocCheckBox.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (0, actual.Length);
+  }
+
+  [Test]
+  public void GetTrackedClientIDsInEditMode()
+  {
+    _bocCheckBox.ReadOnly = NaBoolean.False;
+    string[] actual = _bocCheckBox.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (1, actual.Length);
+    Assert.AreEqual (_bocCheckBox.CheckBox.ClientID, actual[0]);
   }
 }
 
