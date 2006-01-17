@@ -1134,6 +1134,27 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     set { _isDirty = value; }
   }
 
+  public override string[] GetTrackedClientIDs()
+  {
+    if (IsReadOnly)
+    {
+      return new string[0];
+    }
+    else if (   ActualValueType == BocDateTimeValueType.DateTime
+             || ActualValueType == BocDateTimeValueType.Undefined)
+    {
+      return new string[2] { _dateTextBox.ClientID, _timeTextBox.ClientID };
+    }
+    else if (ActualValueType == BocDateTimeValueType.Date)
+    {
+      return new string[1] { _dateTextBox.ClientID} ;
+    }
+    else
+    {
+      return new string[0];
+    }
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
   protected override Type[] SupportedPropertyInterfaces
   {

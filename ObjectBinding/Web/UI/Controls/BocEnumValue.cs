@@ -617,7 +617,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   private ListItem CreateNullItem()
   {
     string nullDisplayName = _undefinedItemText;
-    if (StringUtility.IsNullOrEmpty (nullDisplayName) && ! (_listControl is DropDownList))
+    if (StringUtility.IsNullOrEmpty (nullDisplayName) && ! (ListControl is DropDownList))
     {
       if (IsDesignMode)
         nullDisplayName = "undefined";
@@ -749,7 +749,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <value> The <see cref="ListControl"/> if the control is in edit mode, otherwise the control itself. </value>
   public override Control TargetControl 
   {
-    get { return (_listControl == null || IsReadOnly) ? (Control) this : _listControl; }
+    get { return IsReadOnly ? (Control) this : ListControl; }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
@@ -757,6 +757,31 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     get { return _isDirty; }
     set { _isDirty = value; }
+  }
+
+  public override string[] GetTrackedClientIDs()
+  {
+    if (IsReadOnly)
+    {
+      return new string[0];
+    }
+    else if (   ListControlStyle.ControlType == ListControlType.DropDownList
+             || ListControlStyle.ControlType == ListControlType.ListBox)
+    {
+      return new string[1] { ListControl.ClientID };
+    }
+    else if (ListControlStyle.ControlType == ListControlType.RadioButtonList)
+    {
+      RadioButtonList radioButtonList = (RadioButtonList) ListControl;
+      string[] clientIDs = new string[radioButtonList.Items.Count];
+      for (int i = 0; i < clientIDs.Length; i++)
+        clientIDs[i] = radioButtonList.ClientID + "_" + i.ToString(NumberFormatInfo.InvariantInfo);
+      return clientIDs;
+    }
+    else
+    {
+      return new string[0];
+    }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
@@ -787,7 +812,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   [Browsable (false)]
   public string FocusID
   { 
-    get { return IsReadOnly ? null : _listControl.ClientID; }
+    get { return IsReadOnly ? null : ListControl.ClientID; }
   }
 
   /// <summary> This event is fired when the selection is changed between postbacks. </summary>

@@ -28,6 +28,7 @@ public class BocTextValueTest: BocTest
     base.SetUp();
     _bocTextValue = new BocTextValueMock();
     _bocTextValue.ID = "BocTextValue";
+    NamingContainer.Controls.Add (_bocTextValue);
   }
 
 
@@ -77,6 +78,26 @@ public class BocTextValueTest: BocTest
     Assert.AreEqual (1, WcagHelperMock.Priority);
     Assert.AreSame (_bocTextValue, WcagHelperMock.Control);
     Assert.AreEqual ("TextBox.AutoPostBack", WcagHelperMock.Property);
+  }
+
+
+  [Test]
+  public void GetTrackedClientIDsInReadOnlyMode()
+  {
+    _bocTextValue.ReadOnly = NaBoolean.True;
+    string[] actual = _bocTextValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (0, actual.Length);
+  }
+
+  [Test]
+  public void GetTrackedClientIDsInEditMode()
+  {
+    _bocTextValue.ReadOnly = NaBoolean.False;
+    string[] actual = _bocTextValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (1, actual.Length);
+    Assert.AreEqual (_bocTextValue.TextBox.ClientID, actual[0]);
   }
 }
 

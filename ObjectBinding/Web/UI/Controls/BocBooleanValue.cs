@@ -551,6 +551,11 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     set { _isDirty = value; }
   }
 
+  public override string[] GetTrackedClientIDs()
+  {
+    return new string[0];
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
   protected override Type[] SupportedPropertyInterfaces
   {

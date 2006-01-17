@@ -32,6 +32,7 @@ public class BocReferenceValueTest: BocTest
     _bocReferenceValue.Command.Type = CommandType.None;
     _bocReferenceValue.Command.Show = CommandShow.Always;
     _bocReferenceValue.InternalValue = Guid.Empty.ToString();
+    NamingContainer.Controls.Add (_bocReferenceValue);
   }
 
 
@@ -184,6 +185,26 @@ public class BocReferenceValueTest: BocTest
     
     Assert.IsFalse (WcagHelperMock.HasWarning);
     Assert.IsFalse (WcagHelperMock.HasError);
+  }
+
+
+  [Test]
+  public void GetTrackedClientIDsInReadOnlyMode()
+  {
+    _bocReferenceValue.ReadOnly = NaBoolean.True;
+    string[] actual = _bocReferenceValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (0, actual.Length);
+  }
+
+  [Test]
+  public void GetTrackedClientIDsInEditMode()
+  {
+    _bocReferenceValue.ReadOnly = NaBoolean.False;
+    string[] actual = _bocReferenceValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (1, actual.Length);
+    Assert.AreEqual (_bocReferenceValue.DropDownList.ClientID, actual[0]);
   }
 }
 

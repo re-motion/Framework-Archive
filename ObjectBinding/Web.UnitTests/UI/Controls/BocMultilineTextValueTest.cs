@@ -28,6 +28,7 @@ public class BocMultilineTextValueTest: BocTest
     base.SetUp();
     _bocMultilineTextValue = new BocMultilineTextValueMock();
     _bocMultilineTextValue.ID = "BocMultilineTextValue";
+    NamingContainer.Controls.Add (_bocMultilineTextValue);
   }
 
 
@@ -77,6 +78,26 @@ public class BocMultilineTextValueTest: BocTest
     Assert.AreEqual (1, WcagHelperMock.Priority);
     Assert.AreSame (_bocMultilineTextValue, WcagHelperMock.Control);
     Assert.AreEqual ("TextBox.AutoPostBack", WcagHelperMock.Property);
+  }
+
+
+  [Test]
+  public void GetTrackedClientIDsInReadOnlyMode()
+  {
+    _bocMultilineTextValue.ReadOnly = NaBoolean.True;
+    string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (0, actual.Length);
+  }
+
+  [Test]
+  public void GetTrackedClientIDsInEditMode()
+  {
+    _bocMultilineTextValue.ReadOnly = NaBoolean.False;
+    string[] actual = _bocMultilineTextValue.GetTrackedClientIDs();
+    Assert.IsNotNull (actual);
+    Assert.AreEqual (1, actual.Length);
+    Assert.AreEqual (_bocMultilineTextValue.TextBox.ClientID, actual[0]);
   }
 }
 
