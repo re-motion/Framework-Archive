@@ -1460,6 +1460,11 @@ public class BocReferenceValue:
     set { _isDirty = value; }
   }
 
+  public override string[] GetTrackedClientIDs()
+  {
+    return IsReadOnly ? new string[0] : new string[1] { _dropDownList.ClientID };
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
