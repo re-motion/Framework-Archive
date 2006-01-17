@@ -4670,7 +4670,7 @@ public class BocList:
         {
           for (int i = 0; i < _rowEditModeControls.Length; i++)
           {
-            IBusinessObjectBoundModifiableWebControl control = _rowEditModeControls[i];
+            IModifiableControl control = _rowEditModeControls[i];
             if (control != null)
               _isDirty |= control.IsDirty;
           }
@@ -5168,6 +5168,11 @@ public class BocList:
   {
     get { return _isDirty; }
     set { _isDirty = value; }
+  }
+
+  public override string[] GetTrackedClientIDs()
+  {
+    return IsReadOnly ? new string[0] : new string[0];
   }
 
   /// <summary>
