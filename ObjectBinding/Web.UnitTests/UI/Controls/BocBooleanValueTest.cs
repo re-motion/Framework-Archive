@@ -81,7 +81,8 @@ public class BocBooleanValueTest: BocTest
     _bocBooleanValue.ReadOnly = NaBoolean.False;
     string[] actual = _bocBooleanValue.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
-    Assert.Ignore("Not implemented.");
+    Assert.AreEqual (1, actual.Length);
+    Assert.AreEqual (_bocBooleanValue.HiddenField.ClientID, actual[0]);
   }
 }
 
