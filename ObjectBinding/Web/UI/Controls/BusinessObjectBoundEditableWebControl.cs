@@ -38,17 +38,9 @@ namespace Rubicon.ObjectBinding.Web.Controls
 public interface IBusinessObjectBoundModifiableWebControl:
   IBusinessObjectBoundWebControl, 
   IBusinessObjectBoundModifiableControl, 
-  IValidatableControl
+  IValidatableControl, 
+  IModifiableControl
 {
-  /// <summary>
-  ///   Specifies whether the value of the control has been changed on the Client since the last load/save operation.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Resetting <c>IsDirty</c> during saving is not implemented by all controls.
-  /// </remarks>
-  // TODO: redesign IsDirty semantics!
-  bool IsDirty { get; set; }
 }
 
 /// <summary>
@@ -62,6 +54,13 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   private NaBooleanEnum _required = NaBooleanEnum.Undefined;
   private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
   private TypedArrayList _validators;
+
+  protected override void OnInit (EventArgs e)
+  {
+    base.OnInit (e);
+    if (Page is ISmartPage)
+      ((ISmartPage) Page).RegisterForDirtyStateTracking (this);
+  }
 
   /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>
   /// <remarks>
@@ -103,6 +102,9 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   // TODO: redesign IsDirty semantics!
   [Browsable(false)]
   public abstract bool IsDirty { get; set; }
+
+#warning Add doku
+  public abstract string[] GetTrackedClientIDs();
 
   /// <summary>
   ///   Saves the <see cref="IBusinessObjectBoundControl.Value"/> back into the bound <see cref="IBusinessObject"/>.

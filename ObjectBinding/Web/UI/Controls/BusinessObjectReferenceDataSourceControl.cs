@@ -126,6 +126,11 @@ public class BusinessObjectReferenceDataSourceControl:
     set { _internalDataSource.IsDirty = value; }
   }
 
+  public override string[] GetTrackedClientIDs()
+  {
+    return new string[0];
+  }
+
   /// <summary> 
   ///   Loads the <see cref="BusinessObject"/> from the <see cref="ReferencedDataSource"/> using 
   ///   <see cref="ReferenceProperty"/> and populates the bound controls using <see cref="LoadValues"/>.

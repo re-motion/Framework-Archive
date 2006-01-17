@@ -764,6 +764,11 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     set { _isDirty = value; }
   }
 
+  public override string[] GetTrackedClientIDs()
+  {
+    return IsReadOnly ? new string[0] : new string[1] { _textBox.ClientID };
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
   protected override Type[] SupportedPropertyInterfaces
   {
