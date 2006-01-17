@@ -315,6 +315,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\NamingContainerMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\NavigationCommandTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
