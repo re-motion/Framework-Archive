@@ -152,7 +152,7 @@ function SmartPage_Context (
       if (tagName == 'input')
       {
         var type = element.type.toLowerCase();
-        if (type == 'text')
+        if (type == 'text' || type == 'hidden')
         {
           AddEventHandler (element, 'change', function (evt) { SmartPage_Context.Instance.OnValueChanged (evt); });
         }
@@ -171,6 +171,7 @@ function SmartPage_Context (
   this.OnValueChanged = function()
   {
     _isDirty = true;
+    window.alert ('isdirty');
   };
   
   

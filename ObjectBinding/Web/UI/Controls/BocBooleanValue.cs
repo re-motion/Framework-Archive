@@ -553,7 +553,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   public override string[] GetTrackedClientIDs()
   {
-    return new string[0];
+    return IsReadOnly ? new string[0] : new string[1] { _hiddenField.ClientID };
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
