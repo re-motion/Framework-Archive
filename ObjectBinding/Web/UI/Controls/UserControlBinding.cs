@@ -121,6 +121,12 @@ public class UserControlBinding: BusinessObjectBoundModifiableWebControl
     }
   }
 
+  public override string[] GetTrackedClientIDs()
+  {
+    return new string[0];
+  }
+
+
   protected override void Render (HtmlTextWriter writer)
   {
     if (ControlHelper.IsDesignMode (this, Context))
