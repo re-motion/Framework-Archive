@@ -124,6 +124,13 @@ function BocBooleanValue_SelectNextCheckboxValue (
   icon.alt = iconAlt;
   if (label != null)
     label.innerHTML = labelText;
+    
+  if (typeof (hiddenField.fireEvent) != 'undefined')
+    hiddenField.fireEvent ('onchange');
+  else if (typeof (hiddenField.dispatchEvent) != 'undefined')
+    hiddenField.dispatchEvent ('change');
+  else if (hiddenField.onchange != null)
+    hiddenField.onchange();
 }
 
 function BocBooleanValue_OnKeyDown (context)
