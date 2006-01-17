@@ -158,6 +158,9 @@ public class TestTabbedForm : TestWxeBasePage
     MultiView.BottomControls.Add (_wxeControlsPlaceHolder);
 		
     base.OnInit(e);
+
+    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.True;
+    this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
 	}
 	#region Web Form Designer generated code
 
@@ -168,8 +171,6 @@ public class TestTabbedForm : TestWxeBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
-    this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
     this.Unload += new System.EventHandler(this.Page_Unload);
     this.Load += new System.EventHandler(this.Page_Load);
 
