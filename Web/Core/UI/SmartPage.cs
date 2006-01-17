@@ -14,6 +14,20 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.UI
 {
 
+public interface IModifiableControl: IControl
+{
+  /// <summary>
+  ///   Specifies whether the value of the control has been changed on the Client since the last load/save operation.
+  /// </summary>
+  /// <remarks>
+  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
+  ///   and saving values. Resetting <c>IsDirty</c> during saving is not implemented by all controls.
+  /// </remarks>
+  // TODO: redesign IsDirty semantics!
+  bool IsDirty { get; set; }
+  string[] GetTrackedClientIDs();
+}
+
 /// <summary> Specifies the client side events supported for registration by the <see cref="ISmartPage"/>. </summary>
 public enum SmartPageEvents
 {
@@ -45,6 +59,10 @@ public interface ISmartPage: IPage
   /// <summary> Gets the post back data for the page. </summary>
   NameValueCollection GetPostBackCollection ();
 
+  void RegisterForDirtyStateTracking (IModifiableControl control);
+
+  bool IsDirty { get; }
+  bool IsDirtyStateTrackingEnabled { get; }
   /// <summary>
   ///   Gets or sets a flag that determines whether to display a confirmation dialog before aborting the session. 
   ///  </summary>
@@ -92,7 +110,7 @@ public interface ISmartPage: IPage
 /// <include file='doc\include\UI\SmartPage.xml' path='SmartPage/Class/*' />
 public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 {
-  #region ISamrtPage Implementation
+  #region ISmartPage Implementation
 
   /// <summary> 
   ///   Registers Java Script functions to be executed when the respective <paramref name="pageEvent"/> is raised.
@@ -139,6 +157,11 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     set { _smartPageInfo.StatusIsSubmittingMessage = value; }
   }
 
+  public void RegisterForDirtyStateTracking (IModifiableControl control)
+  {
+    _smartPageInfo.RegisterForDirtyStateTracking (control);
+  }
+
   #endregion
 
   #region ISmartNavigablePage Implementation
@@ -172,6 +195,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   private SmartPageInfo _smartPageInfo;
   private ValidatableControlInitializer _validatableControlInitializer;
   private PostLoadInvoker _postLoadInvoker;
+  private bool _isDirty = false;
   private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableStatusIsSubmittingMessage;
   private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
@@ -262,6 +286,36 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     _validatableControlInitializer.EnsureValidatableControlsInitialized ();
   }
 
+
+
+  /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
+  /// <value> <see langowrd="true"/> if the page requires saving. Defaults to <see langword="false"/>.  </value>
+  protected virtual bool IsDirty
+  {
+    get { return _isDirty; }
+    set { _isDirty = value; }
+  }
+
+  /// <summary> Implementation of <see cref="ISmartPage.IsDirty"/>. </summary>
+  /// <value> The value returned by <see cref="IsDirty"/>. </value>
+  bool ISmartPage.IsDirty
+  {
+    get { return IsDirty; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="IsDirtyStateTrackingEnabled"/> property. </summary>
+  /// <value> <see langowrd="true"/> if <see cref="IsAbortConfirmationEnabled"/> is <see langowrd="true"/>. </value>
+  protected virtual bool IsDirtyStateTrackingEnabled
+  {
+    get { return IsAbortConfirmationEnabled; }
+  }
+
+  /// <summary> Implementation of <see cref="ISmartPage.IsDirtyStateTrackingEnabled"/>. </summary>
+  /// <value> The value returned by <see cref="IsDirtyStateTrackingEnabled"/>. </value>
+  bool ISmartPage.IsDirtyStateTrackingEnabled
+  {
+    get { return IsDirtyStateTrackingEnabled; }
+  }
 
   /// <summary> 
   ///   Gets or sets the flag that determines whether to display a confirmation dialog before leaving the page. 
@@ -415,6 +469,22 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   bool ISmartNavigablePage.IsSmartFocusingEnabled
   {
     get { return IsSmartFocusingEnabled; }
+  }
+
+
+  protected override void LoadViewState(object savedState)
+  {
+    object[] values = (object[]) savedState;
+    base.LoadViewState (values[0]);
+    _isDirty = (bool)  values[1];
+  }
+
+  protected override object SaveViewState()
+  {
+    object[] values = new object[2];
+    values[0] = base.SaveViewState();
+    values[1] = _isDirty;
+    return values;
   }
 }
 

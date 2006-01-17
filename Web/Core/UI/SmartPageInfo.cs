@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Text;
@@ -55,6 +56,7 @@ public class SmartPageInfo
   private bool _isPreRendering = false;
   private AutoInitHashtable _clientSideEventHandlers = new AutoInitHashtable (typeof (NameValueCollection));
   private string _checkFormStateFunction;
+  private Hashtable _trackedControls = new Hashtable();
 
   private ResourceManagerSet _cachedResourceManager;
 
@@ -82,6 +84,12 @@ public class SmartPageInfo
 
     NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
     eventHandlers[key] = function;
+  }
+
+  public void RegisterForDirtyStateTracking (IModifiableControl control)
+  {
+    ArgumentUtility.CheckNotNull ("control", control);
+    _trackedControls[control] = control;
   }
 
 
@@ -242,29 +250,13 @@ public class SmartPageInfo
 
   private void RegisterSmartPageInitializationScript()
   {
-    IResourceManager resourceManager = GetResourceManager();
-    
-    string temp;
-    string abortMessage = "null";
+    //IResourceManager resourceManager = GetResourceManager();
 
-    if (_page.IsAbortConfirmationEnabled)
-    {
-      if (StringUtility.IsNullOrEmpty (_page.AbortMessage))
-        temp = resourceManager.GetString (ResourceIdentifier.AbortMessage);
-      else
-        temp = _page.AbortMessage;
-      abortMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
-    }
+    string isDirtyStateTrackingEnabled = _page.IsDirtyStateTrackingEnabled ? "true" : "false";
+    string isDirty = _page.IsDirty ? "true" : "false";
 
-    string statusIsSubmittingMessage = "null";
-    if (_page.IsStatusIsSubmittingMessageEnabled)
-    {
-      if (StringUtility.IsNullOrEmpty (_page.StatusIsSubmittingMessage))
-        temp = resourceManager.GetString (ResourceIdentifier.StatusIsSubmittingMessage);
-      else
-        temp = _page.StatusIsSubmittingMessage;
-      statusIsSubmittingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
-    }
+    string abortMessage = GetAbortMessage();
+    string statusIsSubmittingMessage = GetStatusIsSubmittingMessage ();
 
     string checkFormStateMethod = "null";
     if (! StringUtility.IsNullOrEmpty (_checkFormStateFunction))
@@ -284,46 +276,120 @@ public class SmartPageInfo
   
     StringBuilder initScript = new StringBuilder (500);
 
-    initScript.Append ("var _smartPage_eventHandlers = new Array(); \r\n");
-    initScript.Append ("var _smartPage_eventHandlersByEvent = null; \r\n");
+    const string eventHandlersArray = "_smartPage_eventHandlers";
+    initScript.Append ("var ").Append (eventHandlersArray).Append (" = new Array(); \r\n");
+    FormatPopulateEventHandlersArrayClientScript (initScript, eventHandlersArray);
     initScript.Append ("\r\n");
 
-    foreach (SmartPageEvents pageEvent in _clientSideEventHandlers.Keys)
-    {
-      NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
-
-      initScript.Append ("_smartPage_eventHandlersByEvent = new Array(); \r\n");
-
-      for (int i = 0; i < eventHandlers.Keys.Count; i++)
-      {
-        initScript.Append ("_smartPage_eventHandlersByEvent.push ('");
-        initScript.Append (eventHandlers.Get (i));
-        initScript.Append ("'); \r\n");
-      }
-      
-      initScript.Append ("_smartPage_eventHandlers['");
-      initScript.Append (pageEvent.ToString().ToLower());
-      initScript.Append ("'] = _smartPage_eventHandlersByEvent; \r\n");
-      initScript.Append ("\r\n");
-    }
+    const string trackedControlsArray = "_smartPage_trackedControls";
+    initScript.Append ("var ").Append (trackedControlsArray).Append (" = new Array(); \r\n");
+    FormatPopulateTrackedControlsArrayClientScript (initScript, trackedControlsArray);
+    initScript.Append ("\r\n");
 
     initScript.Append ("SmartPage_Context.Instance = new SmartPage_Context (\r\n");
     initScript.Append ("    '").Append (_page.HtmlForm.ClientID).Append ("',\r\n");
+    initScript.Append ("    ").Append (isDirtyStateTrackingEnabled).Append (",\r\n");
+    initScript.Append ("    ").Append (isDirty).Append (",\r\n");
     initScript.Append ("    ").Append (abortMessage).Append (",\r\n");
     initScript.Append ("    ").Append (statusIsSubmittingMessage).Append (",\r\n");
     initScript.Append ("    ").Append (smartScrollingFieldID).Append (",\r\n");
     initScript.Append ("    ").Append (smartFocusFieldID).Append (",\r\n");
     initScript.Append ("    ").Append (checkFormStateMethod).Append (",\r\n");
-    initScript.Append ("    _smartPage_eventHandlers); \r\n");
+    initScript.Append ("    ").Append (eventHandlersArray).Append (",\r\n");
+    initScript.Append ("    ").Append (trackedControlsArray).Append ("); \r\n");
 
     initScript.Append ("\r\n");
-    initScript.Append ("_smartPage_eventHandlers = null; \r\n");
-    initScript.Append ("_smartPage_eventHandlersByEvent = null; \r\n");
-    initScript.Append ("delete _smartPage_eventHandlers; \r\n");
-    initScript.Append ("delete _smartPage_eventHandlersByEvent;");
+    initScript.Append (eventHandlersArray).Append (" = null; \r\n");
+    initScript.Append (trackedControlsArray).Append (" = null; \r\n");
+    initScript.Append ("delete ").Append (eventHandlersArray).Append ("; \r\n");
+    initScript.Append ("delete ").Append (trackedControlsArray).Append (";");
 
     PageUtility.RegisterClientScriptBlock ((Page) _page, "smartPageInitialize", initScript.ToString());
     PageUtility.RegisterStartupScriptBlock ((Page) _page, "smartPageStartUp", "SmartPage_OnStartUp();");
+  }
+
+  private string GetAbortMessage ()
+  {
+    string abortMessage = "null";
+    IResourceManager resourceManager = GetResourceManager ();
+
+    if (_page.IsAbortConfirmationEnabled)
+    {
+      string temp;
+      if (StringUtility.IsNullOrEmpty (_page.AbortMessage))
+        temp = resourceManager.GetString (ResourceIdentifier.AbortMessage);
+      else
+        temp = _page.AbortMessage;
+      abortMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
+    }
+
+    return abortMessage;
+  }
+
+  private string GetStatusIsSubmittingMessage ()
+  {
+    string statusIsSubmittingMessage = "null";
+    IResourceManager resourceManager = GetResourceManager ();
+
+    if (_page.IsStatusIsSubmittingMessageEnabled)
+    {
+      string temp;
+      if (StringUtility.IsNullOrEmpty (_page.StatusIsSubmittingMessage))
+        temp = resourceManager.GetString (ResourceIdentifier.StatusIsSubmittingMessage);
+      else
+        temp = _page.StatusIsSubmittingMessage;
+      statusIsSubmittingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
+    }
+
+    return statusIsSubmittingMessage;
+  }
+
+  private void FormatPopulateTrackedControlsArrayClientScript (StringBuilder script, string trackedControlsArray)
+  {
+    if (! _page.IsDirtyStateTrackingEnabled || _page.IsDirty)
+      return;
+
+    foreach (IModifiableControl control in _trackedControls.Values)
+    {
+      if (control.Visible)
+      {
+        string[] trackedIDs = control.GetTrackedClientIDs ();
+        for (int i = 0; i < trackedIDs.Length; i++)
+        {
+          script.Append (trackedControlsArray).Append (".push ('");
+          script.Append (trackedIDs[i]);
+          script.Append ("'); \r\n");
+        }
+      }
+    }
+  }
+
+  private void FormatPopulateEventHandlersArrayClientScript (StringBuilder script, string eventHandlersArray)
+  {
+    const string eventHandlersByEventArray = "_smartPage_eventHandlersByEvent";
+
+    script.Append ("var ").Append (eventHandlersByEventArray).Append (" = null; \r\n");
+    script.Append ("\r\n");
+    foreach (SmartPageEvents pageEvent in _clientSideEventHandlers.Keys)
+    {
+      NameValueCollection eventHandlers = (NameValueCollection) _clientSideEventHandlers[pageEvent];
+
+      script.Append (eventHandlersByEventArray).Append (" = new Array(); \r\n");
+
+      for (int i = 0; i < eventHandlers.Keys.Count; i++)
+      {
+        script.Append (eventHandlersByEventArray).Append (".push ('");
+        script.Append (eventHandlers.Get (i));
+        script.Append ("'); \r\n");
+      }
+
+      script.Append (eventHandlersArray).Append ("['");
+      script.Append (pageEvent.ToString ().ToLower ());
+      script.Append ("'] = ").Append (eventHandlersByEventArray).Append ("; \r\n");
+      script.Append ("\r\n");
+    }
+    script.Append (eventHandlersByEventArray).Append (" = null; \r\n");
+    script.Append ("delete ").Append (eventHandlersByEventArray).Append ("; \r\n");
   }
 
   private void PreRenderSmartNavigation()

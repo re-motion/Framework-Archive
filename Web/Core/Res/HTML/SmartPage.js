@@ -2,6 +2,8 @@
 
 // The context contains all information required by the smart page.
 // theFormID: The ID of the HTML Form on the page.
+// isDirtyStateTrackingEnabled: true if the page should watch the form-fields for changes.
+// isDirty: true if the page is dirty (client or server-side)
 // abortMessage: The message displayed when the user attempts to leave the page. null to disable the message.
 // statusIsSubmittingMessage: The message displayed when the user attempts to submit while a submit is already in 
 //    progress. null to disable the message.
@@ -12,20 +14,28 @@
 // eventHandlers: The hashtable of eventhandlers: Hashtable < event-key, Array < event-handler > >
 function SmartPage_Context (
     theFormID, 
+    isDirtyStateTrackingEnabled, isDirty,
     abortMessage, statusIsSubmittingMessage,
     smartScrollingFieldID, smartFocusFieldID,
     checkFormStateFunctionName,
-    eventHandlers)
+    eventHandlers,
+    trackedIDs)
 {
   ArgumentUtility.CheckNotNullAndTypeIsString ('theFormID', theFormID);
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isDirtyStateTrackingEnabled', isDirtyStateTrackingEnabled);
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isDirty', isDirty);
   ArgumentUtility.CheckTypeIsString ('abortMessage', abortMessage);
   ArgumentUtility.CheckTypeIsString ('statusIsSubmittingMessage', statusIsSubmittingMessage);
   ArgumentUtility.CheckTypeIsString ('smartScrollingFieldID', smartScrollingFieldID);
   ArgumentUtility.CheckTypeIsString ('smartFocusFieldID', smartFocusFieldID);
   ArgumentUtility.CheckTypeIsString ('checkFormStateFunctionName', checkFormStateFunctionName);
   ArgumentUtility.CheckTypeIsObject ('eventHandlers', eventHandlers);
+  ArgumentUtility.CheckTypeIsObject ('trackedIDs', trackedIDs);
 
   var _theForm;
+    
+  var _isDirtyStateTrackingEnabled = isDirtyStateTrackingEnabled;
+  var _isDirty = isDirty;
     
   // The message displayed when the user attempts to leave the page.
   // null to disable the message.
@@ -65,6 +75,9 @@ function SmartPage_Context (
   var _activeElement = null;
   // The hashtable of eventhandlers: Hashtable < event-key, Array < event-handler > >
   var _eventHandlers = eventHandlers;
+  // The array of IDs
+  var _trackedIDs = trackedIDs;
+
   var _isMsIE = window.navigator.appName.toLowerCase().indexOf("microsoft") > -1;
   var _cacheStateHasSubmitted = 'hasSubmitted';
   var _cacheStateHasLoaded = 'hasLoaded';
@@ -97,12 +110,12 @@ function SmartPage_Context (
   // Attaches the event handlers to the page's events.
   this.SetEventHandlers = function ()
   {
-    window.onload = function() { SmartPage_Context.Instance.OnLoad(); };
+    AddEventHandler (window, 'load', function() { SmartPage_Context.Instance.OnLoad(); });
     // IE, Mozilla 1.7, Firefox 0.9
     window.onbeforeunload = function() { return SmartPage_Context.Instance.OnBeforeUnload(); }; 
     window.onunload = function() { SmartPage_Context.Instance.OnUnload(); };
-    window.onscroll = function() { SmartPage_Context.Instance.OnScroll(); };
-    window.onresize = function() { SmartPage_Context.Instance.OnResize(); };
+    AddEventHandler (window, 'scroll', function() { SmartPage_Context.Instance.OnScroll(); });
+    AddEventHandler (window, 'resize', function() { SmartPage_Context.Instance.OnResize(); });
     
     _aspnetFormOnSubmit = _theForm.onsubmit;
 	  _theForm.onsubmit = function() { return SmartPage_Context.Instance.OnFormSubmit(); };
@@ -120,10 +133,47 @@ function SmartPage_Context (
   // Used to perform initalization code that only requires complete the HTML source but not necessarily all images.
   this.OnStartUp = function ()
   {
+    SetDataChangedEventHandlers (_theForm);
     if (! _isMsIE)
   	  SetFocusEventHandlers (window.document.body);
   };
 
+  function SetDataChangedEventHandlers (theForm)
+  {
+    for (var i = 0; i < _trackedIDs.length; i++)
+    {
+      var id = _trackedIDs[i];
+      var element = theForm.elements[id];
+      if (element == null)
+        continue;
+        
+      var tagName = element.tagName.toLowerCase();
+      
+      if (tagName == 'input')
+      {
+        var type = element.type.toLowerCase();
+        if (type == 'text')
+        {
+          AddEventHandler (element, 'change', function (evt) { SmartPage_Context.Instance.OnValueChanged (evt); });
+        }
+        else if (type == 'checkbox' || type == 'radio')
+        {
+          AddEventHandler (element, 'click', function (evt) { SmartPage_Context.Instance.OnValueChanged (evt); });
+        }
+      }
+      else if (tagName == 'textarea' || tagName == 'select')
+      {
+        AddEventHandler (element, 'change', function (evt) { SmartPage_Context.Instance.OnValueChanged (evt); });
+      }
+    }
+  };
+  
+  this.OnValueChanged = function()
+  {
+    _isDirty = true;
+  };
+  
+  
   // Attaches the event handlers to the OnFocus and OnBlur events.
   function SetFocusEventHandlers (currentElement)
   {
@@ -231,18 +281,18 @@ function SmartPage_Context (
   this.OnBeforeUnload = function ()
   {
     _isAbortingBeforeUnload = false;
-    var displayAbortMessage = false;
+    var displayAbortConfirmation = false;
     
     if (   ! _hasUnloaded
         && ! _isCached
         && ! _isSubmittingBeforeUnload
-        && ! _isAborting && _isAbortConfirmationEnabled)
+        && ! _isAborting && _isAbortConfirmationEnabled && _isDirty)
     {
       var activeElement = this.GetActiveElement();
       if (! IsJavaScriptAnchor (activeElement))
       {
 	      _isAbortingBeforeUnload = true;
-        displayAbortMessage = true;
+        displayAbortConfirmation = true;
       }
     }
     else if (_isSubmittingBeforeUnload)
@@ -251,7 +301,7 @@ function SmartPage_Context (
     }
     
     ExecuteEventHandlers (_eventHandlers['onbeforeunload']);
-    if (displayAbortMessage)
+    if (displayAbortConfirmation)
     {
       // IE alternate/official version: window.event.returnValue = SmartPage_Context.Instance.AbortMessage
       return _abortMessage;
@@ -439,6 +489,39 @@ function SmartPage_Context (
     }
   };
 
+  function AddEventHandler (object, eventType, handler)
+  {
+    if (! TypeUtility.IsUndefined (object.attachEvent))
+    {
+      // // Make the function part of the object to provide 'this' pointer to object inside the handler.
+      // var uniqueKey = eventType + handler;
+      // object['e' + uniqueKey] = handler;
+      // object[uniqueKey] = function() { object['e' + uniqueKey](window.event); }
+      // object.attachEvent ('on' + eventType, object[uniqueKey]);
+      object.attachEvent ('on' + eventType, handler);
+    } 
+    else if (! TypeUtility.IsUndefined (object.addEventListener))
+    {
+      object.addEventListener (eventType, handler, false);
+    }
+  };
+  
+  function RemoveEventHandler (object, eventType, handler)
+  {
+    if (! TypeUtility.IsUndefined (objectdetachEvent))
+    {
+      // var uniqueKey = eventType + handler;
+      // object.detachEvent ('on' + eventType, object[uniqueKey]);
+      // object[uniqueKey] = null;
+      // object['e' + uniqueKey] = null;
+      object.detachEvent ('on' + eventType, handler);
+    } 
+    else if (! TypeUtility.IsUndefined (object.removeEventListener))
+    {
+      object.removeEventListener (eventType, handler, false);
+    }
+  }
+
   // Executes the event handlers.
   // eventHandlers: an array of event handlers.
   function ExecuteEventHandlers (eventHandlers)
@@ -578,11 +661,11 @@ function SmartPage_Context (
     if (StringUtility.IsNullOrEmpty (tagName))
       return false;
     tagName = tagName.toLowerCase();
-    return (tagName == "a" ||
-            tagName == "button" ||
-            tagName == "input" ||
-            tagName == "textarea" ||
-            tagName == "select");
+    return (tagName == 'a' ||
+            tagName == 'button' ||
+            tagName == 'input' ||
+            tagName == 'textarea' ||
+            tagName == 'select');
   };
 
   // Determines whether the element (or it's parent) is an anchor tag 
