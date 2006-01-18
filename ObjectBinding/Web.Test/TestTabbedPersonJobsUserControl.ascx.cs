@@ -59,7 +59,7 @@ public class TestTabbedPersonJobsUserControl :
 
     BocTextValue incomeField = new BocTextValue();
     incomeField.ID = "IncomeField";
-    incomeField.DataSourceControl = ReflectionBusinessObjectDataSourceControl.ID;
+    incomeField.DataSource = ReflectionBusinessObjectDataSourceControl;
     incomeField.PropertyIdentifier = "Income";
     _incomeField = incomeField;
 
