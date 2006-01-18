@@ -133,11 +133,13 @@ function SmartPage_Context (
   // Used to perform initalization code that only requires complete the HTML source but not necessarily all images.
   this.OnStartUp = function ()
   {
-    SetDataChangedEventHandlers (_theForm);
+    if (_isDirtyStateTrackingEnabled)
+      SetDataChangedEventHandlers (_theForm);
     if (! _isMsIE)
   	  SetFocusEventHandlers (window.document.body);
   };
 
+  // Attached the OnValueChanged event handler to all form data elements listed in _trackedIDs.
   function SetDataChangedEventHandlers (theForm)
   {
     for (var i = 0; i < _trackedIDs.length; i++)
@@ -168,6 +170,7 @@ function SmartPage_Context (
     }
   };
   
+  // Event handler attached to the change event of tracked form elements
   this.OnValueChanged = function()
   {
     _isDirty = true;
@@ -286,10 +289,14 @@ function SmartPage_Context (
     if (   ! _hasUnloaded
         && ! _isCached
         && ! _isSubmittingBeforeUnload
-        && ! _isAborting && _isAbortConfirmationEnabled && _isDirty)
+        && ! _isAborting && _isAbortConfirmationEnabled)
     {
       var activeElement = this.GetActiveElement();
-      if (! IsJavaScriptAnchor (activeElement))
+      var isJavaScriptAnchor = IsJavaScriptAnchor (activeElement);
+      var isAbortConfirmationRequired =    ! isJavaScriptAnchor 
+                                        && (! _isDirtyStateTrackingEnabled || _isDirty);
+
+      if (isAbortConfirmationRequired)
       {
 	      _isAbortingBeforeUnload = true;
         displayAbortConfirmation = true;
@@ -307,7 +314,7 @@ function SmartPage_Context (
       return _abortMessage;
     }
   };
-  
+   
   // Event handler for window.OnUnload.
   this.OnUnload = function ()
   {
@@ -508,7 +515,7 @@ function SmartPage_Context (
   
   function RemoveEventHandler (object, eventType, handler)
   {
-    if (! TypeUtility.IsUndefined (objectdetachEvent))
+    if (! TypeUtility.IsUndefined (object.detachEvent))
     {
       // var uniqueKey = eventType + handler;
       // object.detachEvent ('on' + eventType, object[uniqueKey]);
