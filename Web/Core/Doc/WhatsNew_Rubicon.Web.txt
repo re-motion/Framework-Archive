@@ -2,7 +2,12 @@
 ======
 - Rubicon.Web.UI.SmartPage
   * Bietet Dirty-State Handling.
-  
+  * EnableAbortConfirmation: Umgestellt zu ShowAbortConfirmation mit den Werten "Never", "Always", und "OnlyIfDirty".
+    Defaultwert: "OnlyIfDirty". Bisher: "Undefined", was "Never" entsprochen hat.
+    Für WXE Pages: benötigt man die AbortConfirmation als Schutz vor History-Back, so muss "Always" verwendet werden.
+      Benötigt man ledigleich eine Sicherheitsabfrage für die Navigation mittels Links (Stichwort: NavigationTabs),
+      oder beim Schließen des Fensters, so wird "OnlyIfDirty" empfohlen.
+    
 1.3.28
 ======
 - Rubicon.Web.TabbedMultiView
@@ -76,6 +81,7 @@
   Umbenannt zu SmartPageEvents im Namespace Rubicon.Web.UI.
   
 - Rubicon.Web.ExecutionEngine.WxePage
+  * Leitet von Rubicon.Web.UI.SmartPage ab.
   * CSS-Class #WxeStatusIsSubmittingMessage umbenannt zu #SmartPageStatusIsSubmittingMessage
   * Obsolete Methoden void ExecuteFunction (WxeFunction, string, Control, bool)
     und void ExecuteFunction (WxeFunction, string, string, Control, bool) entfernt.
