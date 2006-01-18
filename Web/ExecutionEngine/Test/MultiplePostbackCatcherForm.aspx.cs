@@ -167,9 +167,8 @@ public class MultiplePostbackCatcherForm : WxePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
     this.Load += new System.EventHandler(this.Page_Load);
-
+    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
   }
 	#endregion
 }
