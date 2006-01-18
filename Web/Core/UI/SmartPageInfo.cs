@@ -109,6 +109,7 @@ public class SmartPageInfo
     set { _checkFormStateFunction = StringUtility.EmptyToNull (value); }
   }
 
+
   /// <summary> Find the <see cref="IResourceManager"/> for this SmartPageInfo. </summary>
   protected virtual IResourceManager GetResourceManager()
   {
@@ -263,9 +264,9 @@ public class SmartPageInfo
     string abortMessage = GetAbortMessage();
     string statusIsSubmittingMessage = GetStatusIsSubmittingMessage ();
 
-    string checkFormStateMethod = "null";
+    string checkFormStateFunction = "null";
     if (! StringUtility.IsNullOrEmpty (_checkFormStateFunction))
-      checkFormStateMethod = "'" + _checkFormStateFunction + "'";
+      checkFormStateFunction = "'" + _checkFormStateFunction + "'";
 
     string smartScrollingFieldID = "null";
     string smartFocusFieldID = "null";
@@ -309,7 +310,7 @@ public class SmartPageInfo
     initScript.Append ("    ").Append (statusIsSubmittingMessage).Append (",\r\n");
     initScript.Append ("    ").Append (smartScrollingFieldID).Append (",\r\n");
     initScript.Append ("    ").Append (smartFocusFieldID).Append (",\r\n");
-    initScript.Append ("    ").Append (checkFormStateMethod).Append (",\r\n");
+    initScript.Append ("    ").Append (checkFormStateFunction).Append (",\r\n");
     initScript.Append ("    ").Append (eventHandlersArray).Append (",\r\n");
     initScript.Append ("    ").Append (trackedControlsArray).Append ("); \r\n");
 

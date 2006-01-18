@@ -14,20 +14,6 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.UI
 {
 
-public interface IModifiableControl: IControl
-{
-  /// <summary>
-  ///   Specifies whether the value of the control has been changed on the Client since the last load/save operation.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Resetting <c>IsDirty</c> during saving is not implemented by all controls.
-  /// </remarks>
-  // TODO: redesign IsDirty semantics!
-  bool IsDirty { get; set; }
-  string[] GetTrackedClientIDs();
-}
-
 /// <summary> Specifies the client side events supported for registration by the <see cref="ISmartPage"/>. </summary>
 public enum SmartPageEvents
 {
@@ -68,15 +54,22 @@ public interface ISmartPage: IPage
   bool EvaluateDirtyState();
 
   /// <summary>
-  ///   Gets a falg that determines whether the dirty state will be taken into account when the user leaves the page.
+  ///   Gets a flag that determines whether the dirty state will be taken into account when displaying the abort 
+  ///   confirmation dialog.
   /// </summary>
-  /// <value> <see langword="true"/> to evaluate <see cref="EvaluateDirtyState"/> and track changes on the client. </value>
+  /// <value> 
+  ///   <see langword="true"/> to invoke <see cref="EvaluateDirtyState"/> and track changes on the client. 
+  /// </value>
   bool IsDirtyStateTrackingEnabled { get; }
 
   /// <summary>
-  ///   Gets or sets a flag that determines whether to display a confirmation dialog before aborting the session. 
+  ///   Gets or sets a flag that determines whether to display a confirmation dialog before leaving the page. 
   ///  </summary>
-  /// <value> <see langowrd="true"/> to display the confirmation dialog. </value>
+  /// <value> <see langword="true"/> to display the confirmation dialog. </value>
+  /// <remarks> 
+  ///   If <see cref="IsDirtyStateTrackingEnabled"/> evaluates <see langword="true"/>, a confirmation will only be 
+  ///   displayed if the page is dirty.
+  /// </remarks>
   bool IsAbortConfirmationEnabled { get; }
 
   /// <summary> Gets the message displayed when the user attempts to abort the WXE Function. </summary>
@@ -102,6 +95,7 @@ public interface ISmartPage: IPage
   /// </summary>
   /// <include file='doc\include\UI\ISmartPage.xml' path='ISmartPage/RegisterClientSidePageEventHandler/*' />
   void RegisterClientSidePageEventHandler (SmartPageEvents pageEvent, string key, string function);
+
   /// <summary>
   ///   Regisiters a Java Script function used to evaluate whether to continue with the submit.
   ///   Signature: <c>bool Function (isAborting, hasSubmitted, hasUnloaded, isCached)</c>
@@ -111,6 +105,13 @@ public interface ISmartPage: IPage
   /// <summary> Gets or sets the <see cref="HtmlForm"/> of the ASP.NET page. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
   HtmlForm HtmlForm { get; set; }
+}
+
+public enum ShowAbortConfirmation
+{
+  Never,
+  Always,
+  OnlyIfDirty
 }
 
 /// <summary>
@@ -206,7 +207,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   private ValidatableControlInitializer _validatableControlInitializer;
   private PostLoadInvoker _postLoadInvoker;
   private bool _isDirty = false;
-  private NaBooleanEnum _enableAbortConfirmation = NaBooleanEnum.Undefined;
+  private ShowAbortConfirmation _showAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   private NaBooleanEnum _enableStatusIsSubmittingMessage;
   private NaBooleanEnum _enableSmartScrolling = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableSmartFocusing = NaBooleanEnum.Undefined;
@@ -299,7 +300,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
 
   /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
-  /// <value> <see langowrd="true"/> if the page requires saving. Defaults to <see langword="false"/>.  </value>
+  /// <value> <see langword="true"/> if the page requires saving. Defaults to <see langword="false"/>.  </value>
   public bool IsDirty
   {
     get { return _isDirty; }
@@ -315,11 +316,14 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     return _smartPageInfo.EvaluateDirtyState();
   }
 
-  /// <summary> Gets the evaluated value for the <see cref="IsDirtyStateTrackingEnabled"/> property. </summary>
-  /// <value> <see langowrd="true"/> if <see cref="IsAbortConfirmationEnabled"/> is <see langowrd="true"/>. </value>
+  /// <summary> Gets a flag whether to only show the abort confirmation if the page is dirty. </summary>
+  /// <value> 
+  ///   <see langword="true"/> if <see cref="ShowAbortConfirmation"/> is set to 
+  ///   <see cref="ShowAbortConfirmation.OnlyIfDirty"/>. 
+  /// </value>
   protected virtual bool IsDirtyStateTrackingEnabled
   {
-    get { return IsAbortConfirmationEnabled; }
+    get { return ShowAbortConfirmation == ShowAbortConfirmation.OnlyIfDirty; }
   }
 
   /// <summary> Implementation of <see cref="ISmartPage.IsDirtyStateTrackingEnabled"/>. </summary>
@@ -330,30 +334,37 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   }
 
   /// <summary> 
-  ///   Gets or sets the flag that determines whether to display a confirmation dialog before leaving the page. 
+  ///   Gets or sets a value that determines whether to display a confirmation dialog before leaving the page. 
   /// </summary>
   /// <value> 
   ///   <see cref="NaBooleanEnum.True"/> to display a confirmation dialog. 
-  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
+  ///   Defaults to <see cref="ShowAbortConfirmation.OnlyIfDirty"/>.
   /// </value>
-  /// <remarks>
-  ///   Use <see cref="IsAbortConfirmationEnabled"/> to evaluate this property.
-  /// </remarks>
-  [Description("The flag that determines whether to display a confirmation dialog before leaving the page. "
-             + "Undefined is interpreted as false.")]
+  [Description("Determines whether to display a confirmation dialog before leaving the page.")]
   [Category ("Behavior")]
-  [DefaultValue (NaBooleanEnum.Undefined)]
-  public virtual NaBooleanEnum EnableAbortConfirmation
+  [DefaultValue (ShowAbortConfirmation.OnlyIfDirty)]
+  public virtual ShowAbortConfirmation ShowAbortConfirmation
   {
-    get { return _enableAbortConfirmation; }
-    set { _enableAbortConfirmation = value; }
+    get { return _showAbortConfirmation; }
+    set { _showAbortConfirmation = value; }
   }
 
-  /// <summary> Gets the evaluated value for the <see cref="EnableAbortConfirmation"/> property. </summary>
-  /// <value> <see langowrd="true"/> if <see cref="EnableAbortConfirmation"/> is <see cref="NaBooleanEnum.True"/>. </value>
+  /// <summary> Gets the evaluated value for the <see cref="ShowAbortConfirmation"/> property. </summary>
+  /// <value> 
+  ///   <see langword="true"/> if <see cref="ShowAbortConfirmation"/> is set to
+  ///   <see cref="ShowAbortConfirmation.Always"/> or <see cref="ShowAbortConfirmation.OnlyIfDirty"/>. 
+  /// </value>
+  /// <remarks> 
+  ///   If <see cref="IsDirtyStateTrackingEnabled"/> evaluates <see langword="true"/>, a confirmation will only be 
+  ///   displayed if the page is dirty.
+  /// </remarks>
   protected virtual bool IsAbortConfirmationEnabled
   {
-    get { return _enableAbortConfirmation == NaBooleanEnum.True; }
+    get
+    {
+      return   ShowAbortConfirmation == ShowAbortConfirmation.Always
+            || ShowAbortConfirmation == ShowAbortConfirmation.OnlyIfDirty;
+    }
   }
 
   /// <summary> Implementation of <see cref="ISmartPage.IsAbortConfirmationEnabled"/>. </summary>
@@ -421,7 +432,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets the evaluated value for the <see cref="EnableSmartScrolling"/> property. </summary>
   /// <value> 
-  ///   <see langowrd="false"/> if <see cref="EnableSmartScrolling"/> is <see cref="NaBooleanEnum.False"/>
+  ///   <see langword="false"/> if <see cref="EnableSmartScrolling"/> is <see cref="NaBooleanEnum.False"/>
   ///   or the <see cref="SmartNavigationConfiguration.EnableScrolling"/> configuration setting is 
   ///   <see langword="false"/>.
   /// </value>
@@ -462,7 +473,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets the evaluated value for the <see cref="EnableSmartFocusing"/> property. </summary>
   /// <value> 
-  ///   <see langowrd="false"/> if <see cref="EnableSmartFocusing"/> is <see cref="NaBooleanEnum.False"/>
+  ///   <see langword="false"/> if <see cref="EnableSmartFocusing"/> is <see cref="NaBooleanEnum.False"/>
   ///   or the <see cref="SmartNavigationConfiguration.EnableFocusing"/> configuration setting is 
   ///   <see langword="false"/>.
   /// </value>
