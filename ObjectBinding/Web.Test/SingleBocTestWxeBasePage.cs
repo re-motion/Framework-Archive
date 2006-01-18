@@ -21,6 +21,13 @@ namespace OBWTest
 [MultiLingualResources ("OBWTest.Globalization.SingleBocTestBasePage")]
 public class SingleBocTestWxeBasePage: TestWxeBasePage
 {
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.True;
+    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.OnlyIfDirty;
+  }
+
 }
 
 }
