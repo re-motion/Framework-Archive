@@ -106,9 +106,8 @@ public class SessionForm : WxePage
     this.OpenSessionFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlButton_Click);
     this.OpenSessionFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionInNewWindowButton_Click);
     this.OpenSessionFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlInNewWindowButton_Click);
-    this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
     this.Load += new System.EventHandler(this.Page_Load);
-
+    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
   }
 	#endregion
 
