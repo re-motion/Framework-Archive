@@ -62,7 +62,7 @@ public class DesignTestTreeViewForm : DesignTestWxeBasePage
 	private void InitializeComponent()
 	{    
     this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
-    this.EnableAbortConfirmation = Rubicon.NullableValueTypes.NaBooleanEnum.True;
+    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
