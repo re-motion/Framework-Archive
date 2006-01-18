@@ -163,7 +163,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   /// <summary>
   ///   Gets or sets a flag that determines whether abort the session upon closing the window. 
   ///  </summary>
-  /// <value> <see langowrd="true"/> to abort the session upon navigtion away from the page. </value>
+  /// <value> <see langword="true"/> to abort the session upon navigtion away from the page. </value>
   bool IsAbortEnabled { get; }
 
   /// <summary> 
@@ -671,7 +671,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   /// <summary> Gets the evaluated value for the <see cref="EnableAbort"/> property. </summary>
   /// <value>
-  ///   <see langowrd="false"/> if <see cref="EnableAbort"/> is <see cref="NaBooleanEnum.False"/>. 
+  ///   <see langword="false"/> if <see cref="EnableAbort"/> is <see cref="NaBooleanEnum.False"/>. 
   /// </value>
   protected virtual bool IsAbortEnabled
   {
@@ -685,16 +685,28 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     get { return IsAbortEnabled; }
   }
 
-  /// <summary> Gets the evaluated value for the <see cref="SmartPage.EnableAbortConfirmation"/> property. </summary>
+  /// <summary> Gets the evaluated value for the <see cref="ShowAbortConfirmation"/> property. </summary>
   /// <value> 
-  ///   <see langowrd="true"/> if <see cref="SmartPage.EnableAbortConfirmation"/> and <see cref="IsAbortEnabled"/> 
-  ///   are <see cref="NaBooleanEnum.True"/>. 
+  ///   <see langword="true"/> if <see cref="SmartPage.IsAbortConfirmationEnabled"/> and <see cref="IsAbortEnabled"/> 
+  ///   evaluate <see langword="true"/>. 
   /// </value>
   protected override bool IsAbortConfirmationEnabled
   {
     get { return IsAbortEnabled && base.IsAbortConfirmationEnabled; }
   }
 
+  /// <summary> 
+  ///   Gets the value of the base class's <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> property ANDed with
+  ///   <see cref="IsAbortEnabled"/>.
+  /// </summary>
+  /// <value> 
+  ///   <see langword="true"/> if <see cref="SmartPage.IsDirtyStateTrackingEnabled"/> and <see cref="IsAbortEnabled"/> 
+  ///   evaluate <see langword="true"/>. 
+  /// </value>
+  protected override bool IsDirtyStateTrackingEnabled
+  {
+    get { return IsAbortEnabled && base.IsDirtyStateTrackingEnabled; }
+  }
 
   /// <summary> 
   ///   Gets or sets the flag that determines whether to display a message when the user tries to start a second
