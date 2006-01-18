@@ -91,7 +91,7 @@ function WxePage_Context (
       return true;
     }
   };
-
+  
   // Shows the "page is aborting" message
   this.ShowStatusIsAbortingMessage = function ()
   {
@@ -127,5 +127,5 @@ function WxePage_OnAbort (hasSubmitted, isCached)
 
 function WxePage_CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached)
 {
-  return WxePage_Context.Instance.CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached)
+  return WxePage_Context.Instance.CheckFormState (isAborting, hasSubmitted, hasUnloaded, isCached);
 }
