@@ -65,7 +65,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   private static readonly string s_startUpScriptKey = typeof (BocCheckBox).FullName+ "_Startup";
 
 	// member fields
-  private bool _isDirty = false;
+
   private bool _value = false;
   private NaBooleanEnum _defaultValue = NaBooleanEnum.Undefined;
   private bool _isActive = true;
@@ -142,7 +142,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     if (isDataChanged)
     {
       _value = newBooleanValue;
-      _isDirty = true;
+      IsDirty = true;
     }
     return isDataChanged;
   }
@@ -386,7 +386,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     base.LoadViewState (values[0]);
     _value = (bool) values[1];
     _isActive = (bool) values[2];
-    _isDirty = (bool)  values[3];
 
     _checkBox.Checked = _value;
   }
@@ -394,12 +393,11 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
-    object[] values = new object[4];
+    object[] values = new object[3];
 
     values[0] = base.SaveViewState();
     values[1] = _value;
     values[2] = _isActive;
-    values[3] = _isDirty;
 
     return values;
   }
@@ -426,7 +424,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
-        _isDirty = false;
+        IsDirty = false;
       }
     }
   }
@@ -504,12 +502,12 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
     set
     {
-      _isDirty = false;
+      IsDirty = false;
      
       if (value == null)
       {
         _value = GetDefaultValue();
-        _isDirty = true;
+        IsDirty = true;
       }
       else
       {
@@ -599,13 +597,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     get { return IsReadOnly ? (Control) this : _checkBox; }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
-  public override bool IsDirty
-  {
-    get { return _isDirty; }
-    set { _isDirty = value; }
-  }
-
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
   public override string[] GetTrackedClientIDs()
   {
     return IsReadOnly ? new string[0] : new string[1] { _checkBox.ClientID };

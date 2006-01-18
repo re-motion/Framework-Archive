@@ -119,13 +119,14 @@ public class BusinessObjectReferenceDataSourceControl:
     set { _internalDataSource.BusinessObject = (IBusinessObject) value; }
   }
 
-  /// <summary> Initializes a new instance of the BusinessObjectReferenceDataSourceControl class. </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
   public override bool IsDirty
   {
     get { return _internalDataSource.IsDirty; }
     set { _internalDataSource.IsDirty = value; }
   }
 
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
   public override string[] GetTrackedClientIDs()
   {
     return new string[0];

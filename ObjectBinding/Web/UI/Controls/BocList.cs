@@ -226,12 +226,6 @@ public class BocList:
 
 	// member fields
 
-  /// <summary>
-  ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
-  ///   <see cref="SaveValue"/>.
-  /// </summary>
-  private bool _isDirty = false;
-
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _availableViewsList;
   /// <summary> The <see cref="string"/> that is rendered in front of the <see cref="_availableViewsList"/>. </summary>
@@ -3201,14 +3195,13 @@ public class BocList:
     _modifiableRowIndex = (NaInt32) values[5];
     _isEditNewRow = (bool) values[6];
     _selectorControlCheckedState = (Hashtable) values[7];
-    _isDirty = (bool) values[8];
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
   /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[9];
+    object[] values = new object[8];
 
     values[0] = base.SaveViewState();
     values[1] = _selectedViewIndex;
@@ -3218,7 +3211,6 @@ public class BocList:
     values[5] = _modifiableRowIndex;
     values[6] = _isEditNewRow;
     values[7] = _selectorControlCheckedState;
-    values[8] = _isDirty;
 
     return values;
   }
@@ -3226,7 +3218,12 @@ public class BocList:
   public override void LoadValue (bool interim)
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
+    {
+      bool isDirtyBackup = IsDirty;
       Value = (IList) DataSource.BusinessObject.GetProperty (Property);
+      if (interim)
+        IsDirty = isDirtyBackup;
+    }
   }
 
   /// <summary>
@@ -3248,7 +3245,7 @@ public class BocList:
     {
       DataSource.BusinessObject.SetProperty (Property, Value);
       if (! interim)
-        _isDirty = false;
+        IsDirty = false;
     }
   }
 
@@ -4550,7 +4547,7 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
     Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
-    _isDirty = true;
+    IsDirty = true;
   }
 
   /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
@@ -4559,7 +4556,7 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
-    _isDirty = true;
+    IsDirty = true;
     if (Value == null)
       return -1;
     else
@@ -4587,7 +4584,7 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObjects, Property, false);
-    _isDirty = true;
+    IsDirty = true;
   }
 
   /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
@@ -4606,7 +4603,7 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObject, Property, false);
-    _isDirty = true;
+    IsDirty = true;
   }
 
   /// <summary> 
@@ -4677,13 +4674,13 @@ public class BocList:
         if (! isValid)
           return;
 
-        if (! _isDirty)
+        if (! IsDirty)
         {
           for (int i = 0; i < _rowEditModeControls.Length; i++)
           {
             IBusinessObjectBoundModifiableWebControl control = _rowEditModeControls[i];
             if (control != null)
-              _isDirty |= control.IsDirty;
+              IsDirty |= control.IsDirty;
           }
         }
 
@@ -5138,7 +5135,7 @@ public class BocList:
     }
     set 
     {
-      _isDirty = false;
+      IsDirty = false;
       _value = value; 
       ResetRows();
     }
@@ -5167,25 +5164,23 @@ public class BocList:
     get { return true; }
   }
 
-  /// <summary>
-  ///   Gets or sets the dirty flag.
-  /// </summary>
-  /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <see langword="true"/>. The value is 
-  ///   set to <see langword="false"/> during loading
-  ///   and saving values. Text changes by the user cause <c>IsDirty</c> to be reset to 
-  ///   <see langword="false"/> during the
-  ///   loading phase of the request (i.e., before the page's <c>Load</c> event is raised).
-  /// </remarks>
-  public override bool IsDirty
-  {
-    get { return _isDirty; }
-    set { _isDirty = value; }
-  }
-
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
   public override string[] GetTrackedClientIDs()
   {
-    return IsReadOnly ? new string[0] : new string[0];
+    if (IsReadOnly)
+      return new string[0];
+    if (! IsEditDetailsModeActive)
+      return new string[0];
+
+    StringCollection trackedIDs = new StringCollection();
+    foreach (IBusinessObjectBoundModifiableWebControl control in _rowEditModeControls)
+    {
+      if (control != null)
+        trackedIDs.AddRange (control.GetTrackedClientIDs());
+    }
+    string[] trackedIDsArray = new string[trackedIDs.Count];
+    trackedIDs.CopyTo (trackedIDsArray, 0);
+    return trackedIDsArray;
   }
 
   /// <summary>

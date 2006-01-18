@@ -89,7 +89,6 @@ public class BocReferenceValue:
 
 	// member fields
 
-  private bool _isDirty = false;
   private bool _isBusinessObejectListPopulated = false;
 
   private DropDownList _dropDownList;
@@ -224,7 +223,7 @@ public class BocReferenceValue:
         InternalValue = null;
       else
         InternalValue = newValue;
-      _isDirty = true;
+      IsDirty = true;
     }
     return isDataChanged;
   }
@@ -840,7 +839,6 @@ public class BocReferenceValue:
     base.LoadViewState (values[0]);
     if (values[1] != null)    
       InternalValue = (string) values[1];  
-    _isDirty = (bool) values[2];
 
     //  Drop down list has enabled view state, selected value must not be restored
   }
@@ -848,11 +846,10 @@ public class BocReferenceValue:
   /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
-    object[] values = new object[3];
+    object[] values = new object[2];
 
     values[0] = base.SaveViewState();
     values[1] = _internalValue;
-    values[2] = _isDirty;
 
     return values;
   }
@@ -879,7 +876,7 @@ public class BocReferenceValue:
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
-        _isDirty = false;
+        IsDirty = false;
       }
     }
   }
@@ -1314,7 +1311,7 @@ public class BocReferenceValue:
     }
     set 
     { 
-      _isDirty = false;
+      IsDirty = false;
 
       IBusinessObjectWithIdentity businessObjectWithIdentity = value;
       _value = businessObjectWithIdentity; 
@@ -1425,7 +1422,7 @@ public class BocReferenceValue:
       if (((IBusinessObjectWithIdentity) businessObjects[0]).UniqueIdentifier == Value.UniqueIdentifier)
       {
         Value = null;
-        _isDirty = true;
+        IsDirty = true;
       }
     }
   }
@@ -1437,7 +1434,7 @@ public class BocReferenceValue:
     if (businessObjects.Length > 0)
     {
       Value = (IBusinessObjectWithIdentity) businessObjects[0];
-      _isDirty = true;
+      IsDirty = true;
     }
   }
 
@@ -1467,13 +1464,7 @@ public class BocReferenceValue:
     get { return IsReadOnly ? (Control) this : _dropDownList; }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
-  public override bool IsDirty
-  {
-    get { return _isDirty; }
-    set { _isDirty = value; }
-  }
-
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
   public override string[] GetTrackedClientIDs()
   {
     return IsReadOnly ? new string[0] : new string[1] { _dropDownList.ClientID };

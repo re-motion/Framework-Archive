@@ -54,6 +54,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   private NaBooleanEnum _required = NaBooleanEnum.Undefined;
   private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
   private TypedArrayList _validators;
+  private bool _isDirty = false;
 
   protected override void OnInit (EventArgs e)
   {
@@ -92,16 +93,25 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   }
 
   /// <summary>
-  ///   <preliminary/>
-  ///   Specifies whether the value of the control has been changed on the Client since the last load/save operation.
+  ///   Gets or sets the dirty flag.
   /// </summary>
   /// <remarks>
-  ///   Initially, the value of <c>IsDirty</c> is <c>true</c>. The value is set to <c>false</c> during loading
-  ///   and saving values. Resetting <c>IsDirty</c> during saving is not implemented by all controls.
+  ///   <para>
+  ///     Initially, the <see cref="IsDirty"/> flag is <see langword="false"/>. It is reset to <see langword="false"/>
+  ///     when the <see cref="Value"/> is set. This can happen either explicitly via the set-accessor, or implicit
+  ///     by invoking <see cref="LoadValue"/> with <b>intrim</b> <see langword="false"/>.
+  ///   </para><para>
+  ///     It is set <see langword="true"/> when the user changes the value of the control in the user interface.
+  ///     It is also set if the application uses the control to modify the contents of the <see cref="Value"/>. 
+  ///     (E.g. a row is added to the list of values by invoking a method on the <see cref="BocList"/>.)
+  ///   </para>
   /// </remarks>
-  // TODO: redesign IsDirty semantics!
-  [Browsable(false)]
-  public abstract bool IsDirty { get; set; }
+  [Browsable (false)]
+  public virtual bool IsDirty
+  {
+    get { return _isDirty; }
+    set { _isDirty = value; }
+  }
 
 #warning Add doku
   public abstract string[] GetTrackedClientIDs();
@@ -258,6 +268,23 @@ public abstract class BusinessObjectBoundModifiableWebControl:
       isValid &= validator.IsValid;
     }
     return isValid;
+  }
+
+  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
+  protected override void LoadViewState(object savedState)
+  {
+    object[] values = (object[]) savedState;
+    base.LoadViewState (values[0]);
+    _isDirty = (bool)  values[1];
+  }
+
+  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
+  protected override object SaveViewState()
+  {
+    object[] values = new object[2];
+    values[0] = base.SaveViewState();
+    values[1] = _isDirty;
+    return values;
   }
 }
 

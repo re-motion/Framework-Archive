@@ -76,8 +76,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
 	// member fields
 
-  private bool _isDirty = false;
-
   private TextBox _dateTextBox;
   private TextBox _timeTextBox;
   private Label _label;
@@ -192,7 +190,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       {
          _savedDateTimeValue = _savedDateTimeValue.Date;
       }
-      _isDirty = true;
+      IsDirty = true;
     }
 
     //  Time input field
@@ -211,7 +209,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
           TimeSpan seconds = new TimeSpan (0, 0, _savedDateTimeValue.Second);
          _savedDateTimeValue = _savedDateTimeValue.Subtract (seconds);
       }
-      _isDirty = true;
+      IsDirty = true;
     }
 
     return isDateChanged || isTimeChanged;
@@ -517,7 +515,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     _showSeconds = (bool) values[5];
     _provideMaxLength = (bool) values[6];
     _savedDateTimeValue = (NaDateTime) values[7];
-    _isDirty = (bool) values[8];
 
     _dateTextBox.Text = _internalDateValue;
     _timeTextBox.Text = _internalTimeValue;
@@ -526,7 +523,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
-    object[] values = new object[9];
+    object[] values = new object[8];
 
     values[0] = base.SaveViewState();
     values[1] = _internalDateValue;
@@ -536,7 +533,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     values[5] = _showSeconds;
     values[6] = _provideMaxLength;
     values[7] = _savedDateTimeValue;
-    values[8] = _isDirty;
 
     return values;
   }
@@ -563,7 +559,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
-        _isDirty = false;
+        IsDirty = false;
         //  get_Value parses the internal representation of the date/time value
         //  set_Value updates the internal representation of the date/time value
         Value = Value;
@@ -1048,7 +1044,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
     set 
     {
-      _isDirty = false;
+      IsDirty = false;
 
       if (value == null)
       {
@@ -1129,13 +1125,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     get { return IsReadOnly ? (Control) this : _dateTextBox; }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
-  public override bool IsDirty
-  {
-    get { return _isDirty; }
-    set { _isDirty = value; }
-  }
-
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
   public override string[] GetTrackedClientIDs()
   {
     if (IsReadOnly)

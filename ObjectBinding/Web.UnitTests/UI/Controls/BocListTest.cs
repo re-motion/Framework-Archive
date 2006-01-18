@@ -42,13 +42,24 @@ public class BocListTest: BocTest
   }
 
   [Test]
-  public void GetTrackedClientIDsInEditMode()
+  public void GetTrackedClientIDsInEditModeWithoutEditDetailsModeActive()
   {
     _bocList.ReadOnly = NaBoolean.False;
+    Assert.IsFalse (_bocList.IsEditDetailsModeActive);
     string[] actual = _bocList.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
-    Assert.Ignore("Not implemented.");
+    Assert.AreEqual (0, actual.Length);
   }
+
+  // EditDetailsMode currently not testable
+  //  [Test]
+  //  public void GetTrackedClientIDsInEditMode()
+  //  {
+  //    _bocList.ReadOnly = NaBoolean.False;
+  //    string[] actual = _bocList.GetTrackedClientIDs();
+  //    Assert.IsNotNull (actual);
+  //    Assert.Ignore("Not implemented.");
+  //  }
 }
 
 }

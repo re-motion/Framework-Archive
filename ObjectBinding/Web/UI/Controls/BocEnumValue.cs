@@ -60,8 +60,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
 	// member fields
 
-  private bool _isDirty = false;
-
   private ListControl _listControl;
   private Label _label;
 
@@ -163,7 +161,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
         InternalValue = null;
       else
         InternalValue = newValue;
-      _isDirty = true;
+      IsDirty = true;
     }
     return isDataChanged;
   }
@@ -351,7 +349,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     _value = values[1];
     if (values[2] != null)
       _internalValue = (string) values[2];
-    _isDirty = (bool)  values[3];
 
     _isExecutingLoadViewState = false;
   }
@@ -359,12 +356,11 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
-    object[] values = new object[4];
+    object[] values = new object[3];
 
     values[0] = base.SaveViewState();
     values[1] = _value;
     values[2] = _internalValue;
-    values[3] = _isDirty;
 
     return values;
   }
@@ -391,7 +387,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
-        _isDirty = false;
+        IsDirty = false;
       }
     }
   }
@@ -658,7 +654,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
     set
     {
-      _isDirty = false;
+      IsDirty = false;
       _value = value;
 
       if (Property != null && _value != null)
@@ -755,13 +751,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     get { return IsReadOnly ? (Control) this : ListControl; }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
-  public override bool IsDirty
-  {
-    get { return _isDirty; }
-    set { _isDirty = value; }
-  }
-
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
   public override string[] GetTrackedClientIDs()
   {
     if (IsReadOnly)
