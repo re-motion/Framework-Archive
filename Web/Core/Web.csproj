@@ -895,6 +895,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\IModifiableControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\LengthValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
