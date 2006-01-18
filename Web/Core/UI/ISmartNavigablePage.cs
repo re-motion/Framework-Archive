@@ -7,11 +7,11 @@ namespace Rubicon.Web.UI
 public interface ISmartNavigablePage: IPage
 {
   /// <summary> Gets or sets the flag that determines whether smart scrolling is enabled on this page.  </summary>
-  /// <value> <see langowrd="true"/> to enable smart scrolling. </value>
+  /// <value> <see langword="true"/> to enable smart scrolling. </value>
   bool IsSmartScrollingEnabled { get; }
 
   /// <summary> Gets or sets the flag that determines whether smart naviagtion is enabled on this page.  </summary>
-  /// <value> <see langowrd="true"/> to enable smart focusing. </value>
+  /// <value> <see langword="true"/> to enable smart focusing. </value>
   bool IsSmartFocusingEnabled { get; }
 
   /// <summary> Clears scrolling and focus information on the page. </summary>
