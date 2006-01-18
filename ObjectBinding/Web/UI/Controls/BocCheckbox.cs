@@ -65,7 +65,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   private static readonly string s_startUpScriptKey = typeof (BocCheckBox).FullName+ "_Startup";
 
 	// member fields
-  private bool _isDirty = true;
+  private bool _isDirty = false;
   private bool _value = false;
   private NaBooleanEnum _defaultValue = NaBooleanEnum.Undefined;
   private bool _isActive = true;
@@ -412,8 +412,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
+        Value = DataSource.BusinessObject.GetProperty (Property);
       }
     }
   }
@@ -425,7 +424,10 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     if (! interim)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+      {
         DataSource.BusinessObject.SetProperty (Property, Value);
+        _isDirty = false;
+      }
     }
   }
 
@@ -492,6 +494,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   ///   The boolean value currently displayed. If <see langword="null"/> is assigned, <see cref="GetDefaultValue"/>
   ///   is evaluated to get the value. The <see cref="IsDirty"/> flag is set in this case.
   /// </value>
+  /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable(false)]
   public new object Value
   {
@@ -501,6 +504,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
     set
     {
+      _isDirty = false;
+     
       if (value == null)
       {
         _value = GetDefaultValue();

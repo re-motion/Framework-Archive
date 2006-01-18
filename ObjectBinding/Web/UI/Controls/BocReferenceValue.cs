@@ -89,7 +89,7 @@ public class BocReferenceValue:
 
 	// member fields
 
-  private bool _isDirty = true;
+  private bool _isDirty = false;
   private bool _isBusinessObejectListPopulated = false;
 
   private DropDownList _dropDownList;
@@ -865,8 +865,7 @@ public class BocReferenceValue:
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
+        Value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
       }
     }
   }
@@ -878,7 +877,10 @@ public class BocReferenceValue:
     if (! interim)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+      {
         DataSource.BusinessObject.SetProperty (Property, Value);
+        _isDirty = false;
+      }
     }
   }
 
@@ -1312,6 +1314,8 @@ public class BocReferenceValue:
     }
     set 
     { 
+      _isDirty = false;
+
       IBusinessObjectWithIdentity businessObjectWithIdentity = value;
       _value = businessObjectWithIdentity; 
       
@@ -1409,6 +1413,8 @@ public class BocReferenceValue:
     InsertBusinessObjects (businessObjects);
   }
 
+  /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   protected virtual void RemoveBusinessObjects (IBusinessObject[] businessObjects)
   {
     if (Value == null)
@@ -1417,14 +1423,22 @@ public class BocReferenceValue:
     if (businessObjects.Length > 0 && businessObjects[0] is IBusinessObjectWithIdentity)
     {
       if (((IBusinessObjectWithIdentity) businessObjects[0]).UniqueIdentifier == Value.UniqueIdentifier)
+      {
         Value = null;
+        _isDirty = true;
+      }
     }
   }
 
+  /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   protected virtual void InsertBusinessObjects (IBusinessObject[] businessObjects)
   {
     if (businessObjects.Length > 0)
+    {
       Value = (IBusinessObjectWithIdentity) businessObjects[0];
+      _isDirty = true;
+    }
   }
 
   /// <summary>

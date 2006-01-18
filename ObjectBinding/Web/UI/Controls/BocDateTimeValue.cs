@@ -76,7 +76,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
 	// member fields
 
-  private bool _isDirty = true;
+  private bool _isDirty = false;
 
   private TextBox _dateTextBox;
   private TextBox _timeTextBox;
@@ -549,8 +549,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
+        Value = DataSource.BusinessObject.GetProperty (Property);
       }
     }
   }
@@ -564,7 +563,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
-
+        _isDirty = false;
         //  get_Value parses the internal representation of the date/time value
         //  set_Value updates the internal representation of the date/time value
         Value = Value;
@@ -968,6 +967,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   ///   The value has the type specified in the <see cref="ActualValueType"/> property. If the parsing fails,
   ///   <see langword="null"/> is returned.
   /// </value>
+  /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable(false)]
   public new object Value
   {
@@ -1048,6 +1048,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
     set 
     {
+      _isDirty = false;
+
       if (value == null)
       {
         InternalDateValue = null;

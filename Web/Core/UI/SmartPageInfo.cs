@@ -93,6 +93,16 @@ public class SmartPageInfo
   }
 
 
+  public bool EvaluateDirtyState()
+  {
+    foreach (IModifiableControl control in _trackedControls.Values)
+    {
+      if (control.IsDirty)
+        return true;
+    }
+    return false;
+  }
+
   public string CheckFormStateFunction
   {
     get { return _checkFormStateFunction; }
@@ -250,11 +260,6 @@ public class SmartPageInfo
 
   private void RegisterSmartPageInitializationScript()
   {
-    //IResourceManager resourceManager = GetResourceManager();
-
-    string isDirtyStateTrackingEnabled = _page.IsDirtyStateTrackingEnabled ? "true" : "false";
-    string isDirty = _page.IsDirty ? "true" : "false";
-
     string abortMessage = GetAbortMessage();
     string statusIsSubmittingMessage = GetStatusIsSubmittingMessage ();
 
@@ -274,6 +279,9 @@ public class SmartPageInfo
         smartFocusFieldID = "'" + c_smartFocusID + "'";
     }
   
+    string isDirtyStateTrackingEnabled = "false";
+    string isDirty = "false";
+
     StringBuilder initScript = new StringBuilder (500);
 
     const string eventHandlersArray = "_smartPage_eventHandlers";
@@ -283,7 +291,14 @@ public class SmartPageInfo
 
     const string trackedControlsArray = "_smartPage_trackedControls";
     initScript.Append ("var ").Append (trackedControlsArray).Append (" = new Array(); \r\n");
-    FormatPopulateTrackedControlsArrayClientScript (initScript, trackedControlsArray);
+    if (_page.IsDirtyStateTrackingEnabled)
+    {
+      isDirtyStateTrackingEnabled = "true";
+      if (_page.EvaluateDirtyState())
+        isDirty = "true";
+      else
+        FormatPopulateTrackedControlsArrayClientScript (initScript, trackedControlsArray);
+    }
     initScript.Append ("\r\n");
 
     initScript.Append ("SmartPage_Context.Instance = new SmartPage_Context (\r\n");
@@ -346,9 +361,6 @@ public class SmartPageInfo
 
   private void FormatPopulateTrackedControlsArrayClientScript (StringBuilder script, string trackedControlsArray)
   {
-    if (! _page.IsDirtyStateTrackingEnabled || _page.IsDirty)
-      return;
-
     foreach (IModifiableControl control in _trackedControls.Values)
     {
       if (control.Visible)

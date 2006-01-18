@@ -171,7 +171,6 @@ function SmartPage_Context (
   this.OnValueChanged = function()
   {
     _isDirty = true;
-    window.alert ('isdirty');
   };
   
   

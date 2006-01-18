@@ -60,7 +60,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
 	// member fields
 
-  private bool _isDirty = true;
+  private bool _isDirty = false;
 
   private ListControl _listControl;
   private Label _label;
@@ -377,20 +377,22 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
+        Value = DataSource.BusinessObject.GetProperty (Property);
       }
     }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/SaveValue/*' />
+  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+      {
         DataSource.BusinessObject.SetProperty (Property, Value);
+        _isDirty = false;
+      }
     }
   }
 
@@ -656,6 +658,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
     set
     {
+      _isDirty = false;
       _value = value;
 
       if (Property != null && _value != null)

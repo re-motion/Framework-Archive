@@ -230,7 +230,7 @@ public class BocList:
   ///   <see langword="true"/> if <see cref="Value"/> has been changed since last call to
   ///   <see cref="SaveValue"/>.
   /// </summary>
-  private bool _isDirty = true;
+  private bool _isDirty = false;
 
   /// <summary> The <see cref="DropDownList"/> used to select the column configuration. </summary>
   private DropDownList _availableViewsList;
@@ -3226,10 +3226,7 @@ public class BocList:
   public override void LoadValue (bool interim)
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-      ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-
-    if (! interim)
-      _isDirty = false;
+      Value = (IList) DataSource.BusinessObject.GetProperty (Property);
   }
 
   /// <summary>
@@ -3241,13 +3238,18 @@ public class BocList:
   ///   <see langword="false"/> to write the <see cref="Value"/> into the 
   ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
   /// </param>
+  /// <remarks> Resets the dirty state after the <see cref="Value"/> has been saved. </remarks>
   public override void SaveValue (bool interim)
   {
     if (! interim)
       EndEditDetailsMode (true);
 
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+    {
       DataSource.BusinessObject.SetProperty (Property, Value);
+      if (! interim)
+        _isDirty = false;
+    }
   }
 
   /// <summary> Find the <see cref="IResourceManager"/> for this control. </summary>
@@ -4542,19 +4544,21 @@ public class BocList:
     }
   }
 
+  /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   public void AddRows (IBusinessObject[] businessObjects)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
     Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
-    ResetRows();
     _isDirty = true;
   }
 
+  /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   public int AddRow (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
-    ResetRows();
     _isDirty = true;
     if (Value == null)
       return -1;
@@ -4562,6 +4566,8 @@ public class BocList:
       return Value.Count - 1;
   }
 
+  /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   public void RemoveRows (IBusinessObject[] businessObjects)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
@@ -4581,10 +4587,11 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObjects, Property, false);
-    ResetRows();
     _isDirty = true;
   }
 
+  /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   public void RemoveRow (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
@@ -4599,10 +4606,14 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObject, Property, false);
-    ResetRows();
     _isDirty = true;
   }
 
+  /// <summary> 
+  ///   Removes the <see cref="IBusinessObject"/> at the specifed <paramref name="index"/> from the 
+  ///   <see cref="Value"/> collection. 
+  /// </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   public void RemoveRow (int index)
   {
     if (Value == null)
@@ -4670,7 +4681,7 @@ public class BocList:
         {
           for (int i = 0; i < _rowEditModeControls.Length; i++)
           {
-            IModifiableControl control = _rowEditModeControls[i];
+            IBusinessObjectBoundModifiableWebControl control = _rowEditModeControls[i];
             if (control != null)
               _isDirty |= control.IsDirty;
           }
@@ -5117,6 +5128,7 @@ public class BocList:
 
   /// <summary> Gets or sets the current value. </summary>
   /// <value> An object implementing <see cref="IList"/>. </value>
+  /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable (false)]
   public new IList Value
   {
@@ -5126,6 +5138,7 @@ public class BocList:
     }
     set 
     {
+      _isDirty = false;
       _value = value; 
       ResetRows();
     }
@@ -5431,11 +5444,15 @@ public class BocList:
     }
   }
 
+  /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   protected virtual void InsertBusinessObjects (IBusinessObject[] businessObjects)
   {
     AddRows (businessObjects);
   }
  
+  /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
   protected virtual void RemoveBusinessObjects (IBusinessObject[] businessObjects)
   {
     ClearSelectedRows();

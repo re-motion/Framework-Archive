@@ -71,7 +71,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   private BocTextValueType _actualValueType = BocTextValueType.Undefined;
 
   private string _text = string.Empty;
-  private bool _isDirty = true;
+  private bool _isDirty = false;
   private TextBox _textBox;
   private Label _label;
 
@@ -370,7 +370,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         Value = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
       }
     }
   }
@@ -382,7 +381,10 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     if (! interim)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+      {
         DataSource.BusinessObject.SetProperty (Property, Value);
+        _isDirty = false;
+      }
     }
   }
 
@@ -587,6 +589,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///     Returns <see langword="null"/> if <see cref="Text"/> is <see cref="String.Empty"/>.
   ///   </para>
   /// </value>
+  /// <remarks> The dirty state is reset when the value is set. </remarks>
   /// <exception cref="FormatException"> 
   ///   The value of the <see cref="Text"/> property cannot be converted to the specified <see cref="ValueType"/>.
   /// </exception>
@@ -617,6 +620,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
     set 
     { 
+      _isDirty = false;
+
       if (value == null)
       {
         _text = null;

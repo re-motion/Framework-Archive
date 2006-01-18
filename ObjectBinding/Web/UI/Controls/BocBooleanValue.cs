@@ -71,7 +71,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   private static readonly string s_startUpScriptKey = typeof (BocBooleanValue).FullName+ "_Startup";
 
 	// member fields
-  private bool _isDirty = true;
+  private bool _isDirty = false;
   private NaBoolean _value = NaBoolean.Null;
 
   private HyperLink _hyperLink;
@@ -399,8 +399,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
+        Value = DataSource.BusinessObject.GetProperty (Property);
       }
     }
   }
@@ -412,7 +411,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     if (! interim)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+      {
         DataSource.BusinessObject.SetProperty (Property, Value);
+        _isDirty = false;
+      }
     }
   }
 
@@ -507,6 +509,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   
   /// <summary> Gets or sets the current value. </summary>
   /// <value> The boolean value currently displayed or <see langword="null"/>. </value>
+  /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable(false)]
   public new object Value
   {
@@ -521,6 +524,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
     set
     {
+      _isDirty = false;
+
       if (value == null)
         _value = NaBoolean.Null;
       else if ((bool) value)

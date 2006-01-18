@@ -61,7 +61,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   private static readonly object s_textChangedEvent = new object();
 
 	// member fields
-  private bool _isDirty = true;
+  private bool _isDirty = false;
 
   private TextBox _textBox;
   private Label _label;
@@ -355,8 +355,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
-        _isDirty = false;
+        Value = (string[]) DataSource.BusinessObject.GetProperty (Property);
       }
     }
   }
@@ -368,7 +367,10 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     if (! interim)
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
+      {
         DataSource.BusinessObject.SetProperty (Property, Value);
+        _isDirty = false;
+      }
     }
   }
 
@@ -453,6 +455,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   
   /// <summary> Gets or sets the current value. </summary>
   /// <value> The <see cref="String"/> array currently displayed or <see langword="null"/> if no text is entered. </value>
+  /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable(false)]
   public new string[] Value
   {
@@ -475,6 +478,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
     set
     {
+      _isDirty = false;
+
       if (value == null)
         _internalValue = null;
       else

@@ -61,8 +61,18 @@ public interface ISmartPage: IPage
 
   void RegisterForDirtyStateTracking (IModifiableControl control);
 
-  bool IsDirty { get; }
+  /// <summary> 
+  ///   Evaluates whether any control on the page has values that must be persisted before the user leaves the page. 
+  /// </summary>
+  /// <returns> <see langword="true"/> if the page is dirty (i.e. has unpersisted changes). </returns>
+  bool EvaluateDirtyState();
+
+  /// <summary>
+  ///   Gets a falg that determines whether the dirty state will be taken into account when the user leaves the page.
+  /// </summary>
+  /// <value> <see langword="true"/> to evaluate <see cref="EvaluateDirtyState"/> and track changes on the client. </value>
   bool IsDirtyStateTrackingEnabled { get; }
+
   /// <summary>
   ///   Gets or sets a flag that determines whether to display a confirmation dialog before aborting the session. 
   ///  </summary>
@@ -290,17 +300,19 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets or sets a flag describing whether the page is dirty. </summary>
   /// <value> <see langowrd="true"/> if the page requires saving. Defaults to <see langword="false"/>.  </value>
-  protected virtual bool IsDirty
+  public bool IsDirty
   {
     get { return _isDirty; }
     set { _isDirty = value; }
   }
 
-  /// <summary> Implementation of <see cref="ISmartPage.IsDirty"/>. </summary>
+  /// <summary> Implementation of <see cref="ISmartPage.EvaluateDirtyState"/>. </summary>
   /// <value> The value returned by <see cref="IsDirty"/>. </value>
-  bool ISmartPage.IsDirty
+  public virtual bool EvaluateDirtyState()
   {
-    get { return IsDirty; }
+    if (_isDirty)
+      return true;
+    return _smartPageInfo.EvaluateDirtyState();
   }
 
   /// <summary> Gets the evaluated value for the <see cref="IsDirtyStateTrackingEnabled"/> property. </summary>
