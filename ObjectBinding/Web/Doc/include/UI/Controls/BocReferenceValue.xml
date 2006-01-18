@@ -248,6 +248,8 @@
       </para><para>
         Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
         a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para><para>
+        Resets the dirty state after the <see cref="Value"/> has been saved.
       </para>
     </remarks>
   </SaveValue>
@@ -279,10 +281,14 @@
       or <see langword="null"/> if no item / the null item is selected.
     </value>
     <remarks>
-      Only the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the value is cached between postbacks. 
-      In order to return a value, the control requires the <see cref="Property"/> to be set. 
-      The <see cref="Property"/>'s <see cref="IBusinessObjectReferenceProperty.ReferenceClass"/> is then used to get the 
-      <see cref="IBusinessObjectWithIdentity"/> for the cached <b>ID</b>.
+      <para>
+        Only the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the value is cached between postbacks. 
+        In order to return a value, the control requires the <see cref="Property"/> to be set. 
+        The <see cref="Property"/>'s <see cref="IBusinessObjectReferenceProperty.ReferenceClass"/> is then used to get 
+        the <see cref="IBusinessObjectWithIdentity"/> for the cached <b>ID</b>.
+      </para><para>
+        The dirty state is reset when the value is set.
+      </para>
     </remarks>
   </Value>
 </BocReferenceValue>
