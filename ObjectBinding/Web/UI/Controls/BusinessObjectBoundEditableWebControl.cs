@@ -99,7 +99,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   ///   <para>
   ///     Initially, the <see cref="IsDirty"/> flag is <see langword="false"/>. It is reset to <see langword="false"/>
   ///     when the <see cref="BusinessObjectBoundWebControl.Value"/> is set. The dirty flag is also cleared when 
-  ///     using <see cref="BusinessObjectBoundWebControl.LoadValue"/> to read the value from, or 
+  ///     using <see cref="BusinessObjectBoundWebControl.LoadValue"/> to read the value from, or using
   ///     <see cref="SaveValue"/> to write the value back into the <see cref="IBusinessObject"/> bound to the 
   ///     <see cref="BusinessObjectBoundWebControl.DataSource"/>
   ///   </para><para>

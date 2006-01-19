@@ -3219,10 +3219,7 @@ public class BocList:
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
     {
-      bool isDirtyBackup = base.IsDirty;
       Value = (IList) DataSource.BusinessObject.GetProperty (Property);
-      if (interim)
-        base.IsDirty = isDirtyBackup;
     }
   }
 
