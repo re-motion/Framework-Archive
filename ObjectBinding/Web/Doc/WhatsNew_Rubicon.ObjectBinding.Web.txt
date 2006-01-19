@@ -12,7 +12,7 @@
   * DirtyState überarbeitet:
     Bisheriges Verhalten: IsDirty war immer true, außer es wurde LoadValues aufgerufen.
     Neues Verhalten: IsDirty ist nur true, wenn seit dem letzten Setzen des Values (direkt oder durch LoadValues)
-      der Inhalt von Value durch das Control geändert wurde, UserInput oder bei der BocList zB AddRow.
+      der Inhalt von Value durch das Control geändert wurde (UserInput oder bei der BocList zB AddRow).
       IsDirty wird gelöscht, sobald SaveValue aufgerufen wird und Value wieder in die DataSource zurückgeschrieben
       wird.
       Für die BocList gilt das auch bei SaveValue(interim=true). Im Regelfall wird SaveValue(interim=true) im 
