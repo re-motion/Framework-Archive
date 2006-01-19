@@ -128,8 +128,8 @@
   <!--======================= CheckZip =======================-->
   <target name="checkzip" depends="zipfilename">
     <property name="ToDir" value="\\at-vie-dc-02\Development\build\libraries\Commons\build\"/>
-    <if test="${    not file::exists(ToDir concat zipfile.filename) 
-                and not file::exists(ToDir concat sourcezipfile.filename)}">
+    <if test="${    not file::exists(ToDir + zipfile.filename) 
+                and not file::exists(ToDir + sourcezipfile.filename)}">
       <fail message="ZipFile existiert bereits" if="${zipfile.present}" />
     </if> 
   </target>
