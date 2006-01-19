@@ -88,8 +88,8 @@ public class ResourceManagerWrapper: IResourceManager
   /// <summary>
   ///   Searches for all string resources inside the resource manager whose name is prefixed 
   ///   with a matching tag.
-  ///   <seealso cref="IResourceManager.GetAllStrings"/>
   /// </summary>
+  /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetAllStrings(System.String)"/>
   /// <include file='doc\include\Globalization\ResourceManagerWrapper.xml' path='ResourceManagerWrapper/GetAllStrings/remarks' />
   public NameValueCollection GetAllStrings (string prefix)
   {
@@ -124,8 +124,8 @@ public class ResourceManagerWrapper: IResourceManager
 
   /// <summary>
   ///   Gets the value of the specified string resource. 
-  ///   <seealso cref="IResourceManager.GetString"/>
   /// </summary>
+  /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)"/>
   public string GetString (Enum enumValue)
   {
     return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
@@ -133,8 +133,8 @@ public class ResourceManagerWrapper: IResourceManager
 
   /// <summary>
   ///   Gets the value of the specified string resource. 
-  ///   <seealso cref="IResourceManager.GetString"/>
   /// </summary>
+  /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetString(System.String)"/>
   public string GetString (string id)
   {
     ArgumentUtility.CheckNotNull ("id", id);

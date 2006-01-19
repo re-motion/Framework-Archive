@@ -73,10 +73,9 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
   }
 
   /// <summary>
-  ///   Searches for all string resources inside the resource manager whose name is prefixed 
-  ///   with a matching tag.
-  ///   <seealso cref="IResourceManager.GetAllStrings"/>
+  ///   Searches for all string resources inside the resource manager whose name is prefixed with a matching tag.
   /// </summary>
+  /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetAllStrings(System.String)"/>
   public NameValueCollection GetAllStrings (string prefix)
   {
     NameValueCollection result = new NameValueCollection();
@@ -95,8 +94,8 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
 
   /// <summary>
   ///   Gets the value of the specified string resource. 
-  ///   <seealso cref="IResourceManager.GetString"/>
   /// </summary>
+  /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetString(System.String)"/>
   public string GetString (string id)
   {
     for (int i = this.Count - 1; i >= 0; --i)
@@ -112,8 +111,8 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
 
   /// <summary>
   ///   Gets the value of the specified string resource. 
-  ///   <seealso cref="IResourceManager.GetString"/>
   /// </summary>
+  /// <seealso cref="M:Rubicon.Globalization.IResourceManager.GetString(System.Enum)"/>
   public string GetString (Enum enumValue)
   {
     return GetString (ResourceIdentifiersAttribute.GetResourceIdentifier (enumValue));
