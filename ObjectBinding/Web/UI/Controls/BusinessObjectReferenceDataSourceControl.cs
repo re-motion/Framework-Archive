@@ -89,8 +89,20 @@ public class BusinessObjectReferenceDataSourceControl:
 
     public bool IsDirty
     {
-      get { return _businessObjectChanged; }
-      set { _businessObjectChanged = value; }
+      get
+      {
+        if (IsBusinessObjectChanged)
+          return true;
+        
+        foreach (IBusinessObjectBoundControl control in BoundControls)
+        {
+          IBusinessObjectBoundModifiableWebControl modifiableControl = 
+              control as IBusinessObjectBoundModifiableWebControl;
+          if (modifiableControl != null && modifiableControl.IsDirty)
+            return true;
+        }
+        return false;
+      }
     }
   }
 
@@ -119,11 +131,21 @@ public class BusinessObjectReferenceDataSourceControl:
     set { _internalDataSource.BusinessObject = (IBusinessObject) value; }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> property. </summary>
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> method. </summary>
+  /// <value> 
+  ///   Evaluates <see langword="true"/> if either the <see cref="BusinessObjectReferenceDataSourceControl"/> or one 
+  ///   of the bound controls is dirty.
+  /// </value>
   public override bool IsDirty
   {
-    get { return _internalDataSource.IsDirty; }
-    set { _internalDataSource.IsDirty = value; }
+    get
+    {
+      return base.IsDirty || _internalDataSource.IsDirty; 
+    }
+    set 
+    {
+      base.IsDirty = value; 
+    }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
