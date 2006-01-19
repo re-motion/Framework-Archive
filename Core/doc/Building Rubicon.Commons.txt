@@ -8,7 +8,8 @@
     default .net Framework auf 1.1 setzen
       Zeile 21: <platform name="win32" default="net-1.1">
     Startup-Framework auf net-1.1 einstellen.
-      Zeile 1660: <startup>...
+      Zeile 1660: <startup>... <supportedFramework version=1.1..."/> als ersten Eintrag hinterlegen.
+      Für .net 2.0 Build: <supportedFramework version=2.0..."/> als ersten Eintrag hinterlegen.
   * files aus SourceSafe rubicon\global holen
   * Installierte SQL Server 2000 Instanz "Build"
     und die Datei C:\Program Files\Microsoft SQL Server\80\Tools\Binn\osql.exe
