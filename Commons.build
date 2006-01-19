@@ -255,7 +255,7 @@
     <call target="build" />
   </target>
 
-  <target name="CodeDom" depends="Core,initialize">
+  <target name="CodeDom" depends="Core, initialize">
     <property name="project.name" value="Development.CodeDom" />
     <property name="project.dir" value="Development/CodeDom" />
     <property name="project.output" value="Rubicon.Development.CodeDom" />
@@ -263,7 +263,7 @@
     <call target="build" />
   </target>
 
-  <target name="Data.DomainObjects" depends="Core,initialize">
+  <target name="Data.DomainObjects" depends="Core, initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects" />
     <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Rubicon.Data.DomainObjects" />
@@ -271,7 +271,7 @@
     <call target="build" />
   </target>
 
-  <target name="Data.DomainObjects.CodeGenerator" depends="Data.DomainObjects,initialize">
+  <target name="Data.DomainObjects.CodeGenerator" depends="Data.DomainObjects, initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator" />
     <property name="project.dir" value="Data/DomainObjects.CodeGenerator" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator" />
@@ -279,7 +279,7 @@
     <call target="build" />
   </target>
 
-  <target name="Data.DomainObjects.CodeGenerator.Console" depends="Data.DomainObjects.CodeGenerator,initialize">
+  <target name="Data.DomainObjects.CodeGenerator.Console" depends="Data.DomainObjects.CodeGenerator, initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator.Console" />
     <property name="project.dir" value="Data/DomainObjects.CodeGenerator.Console" />
     <property name="project.output" value="DOGen" />
@@ -287,7 +287,7 @@
     <call target="build" />
   </target>
 
-  <target name="Data.DomainObjects.ObjectBinding" depends="Data.DomainObjects,initialize">
+  <target name="Data.DomainObjects.ObjectBinding" depends="Data.DomainObjects, initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding" />
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
@@ -295,7 +295,7 @@
     <call target="build" />
   </target>
 
-  <target name="Data.DomainObjects.ObjectBinding.Web" depends="Data.DomainObjects.ObjectBinding,initialize">
+  <target name="Data.DomainObjects.ObjectBinding.Web" depends="Data.DomainObjects.ObjectBinding, initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding.Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
@@ -303,7 +303,7 @@
     <call target="build" />
   </target>
 
-  <target name="Data.DomainObjects.Web" depends="Data.DomainObjects,Web,initialize">
+  <target name="Data.DomainObjects.Web" depends="Data.DomainObjects,Web, initialize">
     <property name="project.name" value="Rubicon.Data.DomainObjects.Web" />
     <property name="project.dir" value="Data/DomainObjects.Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.Web" />
@@ -311,7 +311,7 @@
     <call target="build" />
   </target>
 
-  <target name="Web" depends="Core,initialize">
+  <target name="Web" depends="Core, initialize">
     <property name="project.name" value="Web" />
     <property name="project.dir" value="Web/Core" />
     <property name="project.output" value="Rubicon.Web" />
@@ -319,7 +319,7 @@
     <call target="build" />
   </target>
 
-  <target name="Web.Legacy" depends="Core,Web,initialize">
+  <target name="Web.Legacy" depends="Web, initialize">
     <property name="project.name" value="Web.Legacy" />
     <property name="project.dir" value="Web/Legacy" />
     <property name="project.output" value="Rubicon.Web.Legacy" />
@@ -327,7 +327,7 @@
     <call target="build" />
   </target>
 
-  <target name="ObjectBinding" depends="Core,initialize">
+  <target name="ObjectBinding" depends="Core, initialize">
     <property name="project.name" value="ObjectBinding" />
     <property name="project.dir" value="ObjectBinding/Core" />
     <property name="project.output" value="Rubicon.ObjectBinding" />
@@ -335,7 +335,7 @@
     <call target="build" />
   </target>
 
-  <target name="ObjectBinding.Web" depends="Core,ObjectBinding,Web,initialize">
+  <target name="ObjectBinding.Web" depends="ObjectBinding, Web, initialize">
     <property name="project.name" value="ObjectBinding.Web" />
     <property name="project.dir" value="ObjectBinding/Web" />
     <property name="project.output" value="Rubicon.ObjectBinding.Web" />
@@ -343,7 +343,7 @@
     <call target="build" />
   </target>
 
-  <target name="ObjectBinding.Reflection" depends="Core,ObjectBinding,initialize">
+  <target name="ObjectBinding.Reflection" depends="ObjectBinding, initialize">
     <property name="project.name" value="ObjectBinding.Reflection" />
     <property name="project.dir" value="ObjectBinding/Reflection" />
     <property name="project.output" value="Rubicon.ObjectBinding.Reflection" />
@@ -355,7 +355,7 @@
 
   <target name="alltests" depends="CoreTest, DevelopmentCoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, Data.DomainObjects.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests" />
 
-  <target name="CoreTest" depends="Core,DevelopmentCore">
+  <target name="CoreTest" depends="Core, DevelopmentCore">
     <property name="project.name" value="Core.Test" />
     <property name="project.dir" value="Core.Test" />
     <property name="project.output" value="Rubicon.Core.UnitTests" />
@@ -367,7 +367,7 @@
     </nunit2>
   </target>
 
-  <target name="DevelopmentCoreTest" depends="Core,DevelopmentCore">
+  <target name="DevelopmentCoreTest" depends="Core, DevelopmentCore">
     <property name="project.name" value="Development.Core.Test" />
     <property name="project.dir" value="Development/Core.Test" />
     <property name="project.output" value="Rubicon.Development.UnitTests" />
@@ -379,7 +379,7 @@
     </nunit2>
   </target>
 
-  <target name="Web.UnitTests" depends="Core,DevelopmentCore, Web">
+  <target name="Web.UnitTests" depends="Web, DevelopmentCore">
     <property name="project.name" value="Web.UnitTests" />
     <property name="project.dir" value="Web/UnitTests" />
     <property name="project.output" value="Rubicon.Web.UnitTests" />
@@ -391,7 +391,7 @@
     </nunit2>
   </target>
 
-  <target name="ObjectBinding.Web.UnitTests" depends="Core,DevelopmentCore, Web, Web.UnitTests, ObjectBinding, ObjectBinding.Web">
+  <target name="ObjectBinding.Web.UnitTests" depends="ObjectBinding.Web, ObjectBinding.Reflection, DevelopmentCore, Web.UnitTests">
     <property name="project.name" value="ObjectBinding.Web.UnitTests" />
     <property name="project.dir" value="ObjectBinding/Web.UnitTests" />
     <property name="project.output" value="Rubicon.ObjectBinding.Web.UnitTests" />
