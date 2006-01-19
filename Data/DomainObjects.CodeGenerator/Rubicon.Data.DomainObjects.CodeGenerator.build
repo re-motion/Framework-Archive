@@ -10,6 +10,7 @@
       <nowarn>
         <warning number="1591" /> <!-- missing XML comment -->
         <warning number="0612" if="${net20}" /> <!-- no obsolete warning for net2.0-->
+        <warning number="0618" if="${net20}" /> <!-- no obsolete warning for net2.0-->
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs"/>
