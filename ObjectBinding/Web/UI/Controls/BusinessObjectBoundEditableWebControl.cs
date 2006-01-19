@@ -106,8 +106,8 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   ///     It is set to <see langword="true"/> when the control's <see cref="BusinessObjectBoundWebControl.Value"/> 
   ///     is changed by the control after it has been set. This can happen either when the user submits new data in
   ///     the user interface or through the application using the control to modify the contents of the 
-  ///     <see cref="Value"/>. (E.g. a row is added to the list of values by invoking a method on the 
-  ///     <see cref="BocList"/>.)
+  ///     <see cref="BusinessObjectBoundWebControl.Value"/>. (E.g. a row is added to the list of values by invoking a 
+  ///     method on the <see cref="BocList"/>.)
   ///   </para><para>
   ///     If the control is used unbound, it is the application developers responsibility to reset the dirty flag 
   ///     after reading the value from the control.
@@ -120,7 +120,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     set { _isDirty = value; }
   }
 
-  /// <summary> Returns the <see cref="ClientID"/> values of all controls containing modifiable data. </summary>
+  /// <summary> Returns the <see cref="Control.ClientID"/> values of all controls containing modifiable data. </summary>
   /// <returns> A string arry containing zero or more client ids. </returns>
   public abstract string[] GetTrackedClientIDs();
 

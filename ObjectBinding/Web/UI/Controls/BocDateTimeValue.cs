@@ -169,8 +169,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary>
-  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed between
-  ///   postbacks.
+  ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
+  ///   between postbacks.
   /// </summary>
   /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)

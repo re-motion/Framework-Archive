@@ -490,7 +490,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Gets or sets the current value. </summary>
   /// <value> 
   ///   The boolean value currently displayed. If <see langword="null"/> is assigned, <see cref="GetDefaultValue"/>
-  ///   is evaluated to get the value. The <see cref="IsDirty"/> flag is set in this case.
+  ///   is evaluated to get the value. The <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> flag is set 
+  ///   in this case.
   /// </value>
   /// <remarks> The dirty state is reset when the value is set. </remarks>
   [Browsable(false)]
