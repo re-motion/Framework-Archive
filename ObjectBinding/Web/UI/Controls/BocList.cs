@@ -3219,10 +3219,10 @@ public class BocList:
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
     {
-      bool isDirtyBackup = IsDirty;
+      bool isDirtyBackup = base.IsDirty;
       Value = (IList) DataSource.BusinessObject.GetProperty (Property);
       if (interim)
-        IsDirty = isDirtyBackup;
+        base.IsDirty = isDirtyBackup;
     }
   }
 
@@ -3244,8 +3244,7 @@ public class BocList:
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
     {
       DataSource.BusinessObject.SetProperty (Property, Value);
-      if (! interim)
-        IsDirty = false;
+      base.IsDirty = false;
     }
   }
 
@@ -4674,14 +4673,9 @@ public class BocList:
         if (! isValid)
           return;
 
-        if (! IsDirty)
+        if (! base.IsDirty)
         {
-          for (int i = 0; i < _rowEditModeControls.Length; i++)
-          {
-            IBusinessObjectBoundModifiableWebControl control = _rowEditModeControls[i];
-            if (control != null)
-              IsDirty |= control.IsDirty;
-          }
+          base.IsDirty = this.IsDirty;
         }
 
         _rowEditModeDataSource.SaveValues (false);
@@ -5162,6 +5156,35 @@ public class BocList:
   public override bool UseLabel
   {
     get { return true; }
+  }
+
+  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> method. </summary>
+  /// <value> 
+  ///   Evaluates <see langword="true"/> if either the <see cref="BocList"/> or one of the edit mode controls is 
+  ///   dirty.
+  /// </value>
+  public override bool IsDirty
+  {
+    get
+    {
+      if (base.IsDirty)
+        return true;
+      
+      if (_rowEditModeControls != null)
+      {
+        for (int i = 0; i < _rowEditModeControls.Length; i++)
+        {
+          IBusinessObjectBoundModifiableWebControl control = _rowEditModeControls[i];
+          if (control != null && control.IsDirty)
+            return true;
+        }
+      }
+      return false;
+    }
+    set
+    {
+      base.IsDirty = value;
+    }
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>

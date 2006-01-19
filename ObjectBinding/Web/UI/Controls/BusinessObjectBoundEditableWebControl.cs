@@ -98,12 +98,19 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   /// <remarks>
   ///   <para>
   ///     Initially, the <see cref="IsDirty"/> flag is <see langword="false"/>. It is reset to <see langword="false"/>
-  ///     when the <see cref="Value"/> is set. This can happen either explicitly via the set-accessor, or implicit
-  ///     by invoking <see cref="LoadValue"/> with <b>intrim</b> <see langword="false"/>.
+  ///     when the <see cref="BusinessObjectBoundWebControl.Value"/> is set. The dirty flag is also cleared when 
+  ///     using <see cref="BusinessObjectBoundWebControl.LoadValue"/> to read the value from, or 
+  ///     <see cref="SaveValue"/> to write the value back into the <see cref="IBusinessObject"/> bound to the 
+  ///     <see cref="BusinessObjectBoundWebControl.DataSource"/>
   ///   </para><para>
-  ///     It is set <see langword="true"/> when the user changes the value of the control in the user interface.
-  ///     It is also set if the application uses the control to modify the contents of the <see cref="Value"/>. 
-  ///     (E.g. a row is added to the list of values by invoking a method on the <see cref="BocList"/>.)
+  ///     It is set to <see langword="true"/> when the control's <see cref="BusinessObjectBoundWebControl.Value"/> 
+  ///     is changed by the control after it has been set. This can happen either when the user submits new data in
+  ///     the user interface or through the application using the control to modify the contents of the 
+  ///     <see cref="Value"/>. (E.g. a row is added to the list of values by invoking a method on the 
+  ///     <see cref="BocList"/>.)
+  ///   </para><para>
+  ///     If the control is used unbound, it is the application developers responsibility to reset the dirty flag 
+  ///     after reading the value from the control.
   ///   </para>
   /// </remarks>
   [Browsable (false)]
@@ -113,7 +120,8 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     set { _isDirty = value; }
   }
 
-#warning Add doku
+  /// <summary> Returns the <see cref="ClientID"/> values of all controls containing modifiable data. </summary>
+  /// <returns> A string arry containing zero or more client ids. </returns>
   public abstract string[] GetTrackedClientIDs();
 
   /// <summary>

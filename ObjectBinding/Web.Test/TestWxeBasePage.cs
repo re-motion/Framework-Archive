@@ -45,13 +45,13 @@ public class TestWxeBasePage:
 
       _nextButton.ID = "NextButton";
       _nextButton.Text = "Next";
-      _nextButton.Click += new EventHandler(NextButton_Click);
       WxeControls.AddAt (0, _nextButton);
     }
 
     ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
     EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
     base.OnInit (e);
+    RegisterEventHandlers();
   }
 
   protected override void OnPreRender(EventArgs e)
@@ -86,6 +86,11 @@ public class TestWxeBasePage:
     stack.Text = sb.ToString();
     
     WxeControls.Add (stack);
+  }
+
+  protected virtual void RegisterEventHandlers()
+  {
+    _nextButton.Click += new EventHandler(NextButton_Click);
   }
 
   protected virtual IResourceManager GetResourceManager()

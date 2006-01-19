@@ -66,6 +66,8 @@ function SmartPage_Context (
 
   var _aspnetFormOnSubmit = null;
   var _aspnetDoPostBack = null;
+  // Sepcial flag to support the Form.OnSubmit event being executed by the ASP.NET __doPostBack function.
+  var _isExecutingDoPostBack = false;
   
   // The hidden field containing the smart scrolling data.
   var _smartScrollingField = null;
@@ -345,7 +347,10 @@ function SmartPage_Context (
       ExecuteEventHandlers (_eventHandlers['onpostback'], eventTarget, eventArgument);
       this.SetCacheDetectionFieldSubmitted();
     
+      _isExecutingDoPostBack = true;
 	    _aspnetDoPostBack (eventTarget, eventArgument);
+	    _isExecutingDoPostBack = false;
+	    
       if (_isMsIE)
 	    {
 	      if (! _isMsIEFormClicked)
@@ -358,20 +363,8 @@ function SmartPage_Context (
   // Event handler for Form.Submit.
   this.OnFormSubmit = function ()
   {
-    var continueRequest = this.CheckFormState();
-    if (continueRequest)
+    if (_isExecutingDoPostBack)
     {
-      _isSubmitting = true; 
-      _isSubmittingBeforeUnload = true;
-      
-      this.Backup();
-      
-      var eventTarget = null;
-      if (this.GetActiveElement() != null)
-        eventTarget = this.GetActiveElement().id;
-      ExecuteEventHandlers (_eventHandlers['onpostback'], eventTarget, '');
-      this.SetCacheDetectionFieldSubmitted();
-             
       if (_aspnetFormOnSubmit != null)
         return _aspnetFormOnSubmit();
       else
@@ -379,7 +372,29 @@ function SmartPage_Context (
     }
     else
     {
-      return false;
+      var continueRequest = this.CheckFormState();
+      if (continueRequest)
+      {
+        _isSubmitting = true; 
+        _isSubmittingBeforeUnload = true;
+        
+        this.Backup();
+        
+        var eventTarget = null;
+        if (this.GetActiveElement() != null)
+          eventTarget = this.GetActiveElement().id;
+        ExecuteEventHandlers (_eventHandlers['onpostback'], eventTarget, '');
+        this.SetCacheDetectionFieldSubmitted();
+               
+        if (_aspnetFormOnSubmit != null)
+          return _aspnetFormOnSubmit();
+        else
+          return true;
+      }
+      else
+      {
+        return false;
+      }
     }
   };
     
