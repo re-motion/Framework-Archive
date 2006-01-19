@@ -13,6 +13,7 @@
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
+        <include name="Domain/**/*.cs" />
         <include name="UI/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
