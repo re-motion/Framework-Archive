@@ -80,15 +80,13 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   The <see cref="IBusinessObject"/> accessed through <see cref="ReferenceProperty"/> and provided as 
   ///   the <see cref="BusinessObject"/>.
   /// </summary>
-  [CLSCompliant (false)]
-  protected IBusinessObject _businessObject;
+  private IBusinessObject _businessObject;
 
   /// <summary>
-  ///   A flag that is cleared when the <see cref="_businessObject"/> is loaded from or saved to the
+  ///   A flag that is cleared when the <see cref="BusinessObject"/> is loaded from or saved to the
   ///   <see cref="ReferencedDataSource"/>.
   /// </summary>
-  [CLSCompliant (false)]
-  protected bool _businessObjectChanged = false;
+  private bool _isBusinessObjectChanged = false;
 
   /// <summary> 
   ///   Loads the <see cref="BusinessObject"/> from the <see cref="ReferencedDataSource"/> using 
@@ -106,10 +104,10 @@ public abstract class BusinessObjectReferenceDataSourceBase:
     // load value from "parent" data source
     if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null && ReferenceProperty != null)
     {
-      _businessObject = (IBusinessObject) ReferencedDataSource.BusinessObject[ReferenceProperty];
+      BusinessObject = (IBusinessObject) ReferencedDataSource.BusinessObject.GetProperty (ReferenceProperty);
+      _isBusinessObjectChanged = false;
       if (_businessObject == null && Mode == DataSourceMode.Edit && ReferenceProperty.CreateIfNull)
-        _businessObject = ReferenceProperty.Create (ReferencedDataSource.BusinessObject);     
-      _businessObjectChanged = false;
+        BusinessObject = ReferenceProperty.Create (ReferencedDataSource.BusinessObject);     
     }
 
     // load values into "child" controls
@@ -133,13 +131,22 @@ public abstract class BusinessObjectReferenceDataSourceBase:
     SaveValues (interim);
 
     // if required, save value into "parent" data source
-    if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null && ReferenceProperty != null 
-        && ReferenceProperty.ReferenceClass != null 
-        && (_businessObjectChanged || ReferenceProperty.ReferenceClass.RequiresWriteBack))
+    if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null 
+        && ReferenceProperty != null && ReferenceProperty.ReferenceClass != null 
+        && (_isBusinessObjectChanged || ReferenceProperty.ReferenceClass.RequiresWriteBack))
     {
-      ReferencedDataSource.BusinessObject[ReferenceProperty] = _businessObject;
-      _businessObjectChanged = false;
+      ReferencedDataSource.BusinessObject.SetProperty (ReferenceProperty, BusinessObject);
+      _isBusinessObjectChanged = false;
     }
+  }
+
+  /// <summary> 
+  ///   Gets a flag that is <see langword="true"/> if the <see cref="BusinessObject"/> has been set since the last
+  ///   call to <see cref="SaveValue"/>.
+  /// </summary>
+  public bool IsBusinessObjectChanged
+  {
+    get { return _isBusinessObjectChanged; }
   }
 
   /// <summary>
@@ -164,11 +171,17 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   Gets or sets the <see cref="IBusinessObject"/> accessed through the <see cref="ReferenceProperty"/>.
   /// </summary>
   /// <value> An <see cref="IBusinessObject"/> or <see langword="null"/>. </value>
-  /// <remarks> Setting the <b>BusinessObject</b> does not set the <see cref="_businessObjectChanged"/> flag. </remarks>
   public override IBusinessObject BusinessObject
   {
-    get { return _businessObject; }
-    set { _businessObject = value; }
+    get 
+    {
+      return _businessObject; 
+    }
+    set
+    {
+      _businessObject = value; 
+      _isBusinessObjectChanged = true;
+    }
   }
 
   /// <summary> 
@@ -288,8 +301,6 @@ public class BusinessObjectReferenceDataSource:
     }
   }
 
-  // Ndoc is unable to understand the explicit interface implemtation of a property
-  // Ndoc 1.3 has a workaround for this: DocumentExplicitInterfaceImplementations=false, which is the default
   /// <summary>
   ///   Gets or sets the <see cref="IBusinessObjectReferenceProperty"/> used to access the 
   ///   <see cref="IBusinessObject"/> to which this <see cref="IBusinessObjectReferenceDataSource"/> connects.
@@ -302,10 +313,7 @@ public class BusinessObjectReferenceDataSource:
   IBusinessObjectProperty IBusinessObjectBoundControl.Property
   {
     get { return ReferenceProperty; }
-    set 
-    { 
-      _property = (IBusinessObjectReferenceProperty) value; 
-    }
+    set { _property = (IBusinessObjectReferenceProperty) value; }
   }
 
   /// <summary>
@@ -337,18 +345,12 @@ public class BusinessObjectReferenceDataSource:
     }
   }
 
-  // Ndoc seems unable to understand the explicit interface implemtation of a property
-  // Ndoc 1.3 has a workaround for this: DocumentExplicitInterfaceImplementations=false, which is the default
   /// <summary> Gets or sets the value provided by the <see cref="BusinessObjectReferenceDataSource"/>. </summary>
   /// <value> The <see cref="IBusinessObject"/> accessed using <see cref="P:IBusinessObjectBoundControl.Property"/>. </value>
   object IBusinessObjectBoundControl.Value
   {
-    get { return _businessObject; }
-    set 
-    { 
-      _businessObject = (IBusinessObject) value; 
-      _businessObjectChanged = true;
-    }
+    get { return BusinessObject; }
+    set { BusinessObject = (IBusinessObject) value; }
   }
 
   /// <summary>
