@@ -106,9 +106,9 @@
 
   <!--======================= SS Command =======================-->
   <target name="SSCommandline">
-    <ifnot test="${property::exists('SS.dir')}" >
+    <if test="${not property::exists('SS.dir')}" >
       <property name="SS.dir" value="." />
-    </ifnot>
+    </if>
     <exec program="SS.EXE" commandline="${SS.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Microsoft Visual Studio\VSS\win32"
                                      workingdir="${SS.dir}" >
       <environment>
