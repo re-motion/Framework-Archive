@@ -23,6 +23,7 @@
         <include name="${tests.builddir}/Rubicon.Web.dll" />
         <include name="${tests.builddir}/Rubicon.Web.UnitTests.dll" />
         <include name="${tests.builddir}/Rubicon.ObjectBinding.dll" />
+        <include name="${tests.builddir}/Rubicon.ObjectBinding.Reflection.dll" />
         <include name="${tests.builddir}/Rubicon.ObjectBinding.Web.dll" />
         <include name="${tests.builddir}/nunit.framework.dll" />
         <include asis="true" name="System.dll"/>
