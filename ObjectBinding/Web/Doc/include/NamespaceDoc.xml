@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocBooleanValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue"/></td>
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty"/>, 
@@ -31,7 +31,7 @@
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocCheckBox"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox"/></td>
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBooleanProperty"/>, 
@@ -40,7 +40,7 @@
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue"/></td>
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDateProperty"/>, 
@@ -49,7 +49,7 @@
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue"/></td>
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectEnumerationProperty"/>, 
@@ -57,7 +57,7 @@
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocList"/></td>
           <td>
             <para>
               Use this control for displaying the value of an <see cref="T:Rubicon.ObjectBinding.IBusinessObjectReferenceProperty"/> 
@@ -65,14 +65,14 @@
               or an <see cref="T:System.Collections.IList"/> of <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/> 
               objects and <see langword="null"/>.
             </para><para>
-              The <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/> supports editing the the values the 
+              The <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocList"/> supports editing the the values the 
               individual rows, attatching hyperlinks, events, or an 
               <see cref="T:Rubicon.Web.ExecutionEngine.WxeFunction"/> to the cells or the entire list.
             </para> 
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/></td>
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectStringProperty"/> 
@@ -81,7 +81,7 @@
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue"/></td>
           <td>
             <para>
               Use this control for displaying and editing the value of an 
@@ -90,14 +90,14 @@
               or <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity"/> and <see langword="null"/> if used 
               without data binding.
             </para><para>
-              The <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/> supports attaching hyperlinks, 
+              The <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue"/> supports attaching hyperlinks, 
               events, or an <see cref="T:Rubicon.Web.ExecutionEngine.WxeFunction"/> to the currently selected value
               or the control itself.
             </para> 
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTextValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue"/></td>
           <td>
             Use this control for displaying and editing the value of an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectStringProperty"/>,
@@ -109,7 +109,7 @@
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTreeView"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocTreeView"/></td>
           <td>
             Use this control for displaying a hierarchy of 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectWithIdentity"/> 
@@ -135,30 +135,30 @@
       </thead>
       <tbody>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl"/></td>
           <td>
             <para>
               Use an invisible control inherited from this interface for binding an 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/> 
-              to an <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectBoundWebControl"/> on your page.
+              to an <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectBoundWebControl"/> on your page.
             </para><para>
               Each business object model, consisting of implementations for 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/>, 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObjectProperty"/> and 
               <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/> must also provide a matching implementation of
-              <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl"/>. 
+              <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl"/>. 
               The <see langword="abstract"/> class 
-              <see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectDataSourceControl"/> provides a default 
+              <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectDataSourceControl"/> provides a default 
               implementation from which to inherit from.
             </para>
             <para>
-              <see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectDataSourceControl"/> is an 
+              <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectDataSourceControl"/> is an 
               <see langword="abstract"/> default implementation.
             </para>
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceDataSourceControl"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl"/></td>
           <td>
             Use this invisible control for cascading business objects on a web page, i.e. displaying or editing the 
             property value of an <see cref="T:Rubicon.ObjectBinding.IBusinessObject"/> pointed to by the primary 
@@ -166,10 +166,10 @@
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceSearchDataSourceControl"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceSearchDataSourceControl"/></td>
           <td>
             Use this invisible control to provide an otherwise unbound 
-            <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/> with an 
+            <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocList"/> with an 
             <see cref="T:Rubicon.ObjectBinding.IBusinessObjectClass"/>. This is required for selecting which properties
             to display.
           </td>
@@ -200,7 +200,7 @@
           </td>
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.DataEditUserControl"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.DataEditUserControl"/></td>
           <td>
             Use this control if you want to have central page and only switch between user controls. The page can than 
             implement the business object management, binding the current object to the respective user control's 
@@ -211,12 +211,12 @@
     </table>
     </div>
     For information on the browser compatibility of the controls, see the 
-    <see href="Rubicon.ObjectBinding.Web.Controls.html">Rubicon.ObjectBinding.Web.Controls</see> namespace.
+    <see href="Rubicon.ObjectBinding.Web.UI.Controls.html">Rubicon.ObjectBinding.Web.UI.Controls</see> namespace.
   </namespace>
   
-  <namespace name="Rubicon.ObjectBinding.Web.Controls">
-    The <b>Rubicon.ObjectBinding.Web.Controls</b> namespace provides object bindable controls implementing 
-    <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectBoundWebControl"/>. 
+  <namespace name="Rubicon.ObjectBinding.Web.UI.Controls">
+    The <b>Rubicon.ObjectBinding.Web.UI.Controls</b> namespace provides object bindable controls implementing 
+    <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectBoundWebControl"/>. 
     To allow integration with the <see cref="T:Rubicon.Web.UI.Controls.FormGridManager"/>, the controls also implement 
     <see cref="T:Rubicon.Web.UI.ISmartControl"/>. By providing automation for both, object binding and rendering, the 
     bound web controls provide a maximum of usability with a minimum of coding effort.
@@ -259,7 +259,7 @@
       </thead>
       <tbody>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocBooleanValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue"/></td>
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -271,7 +271,7 @@
           <td style="text-align:center;">3)</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocCheckBox"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox"/></td>
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -283,7 +283,7 @@
           <td style="text-align:center;">3)</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue"/></td>
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -295,7 +295,7 @@
           <td style="text-align:center;">2) 3)</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue"/></td>
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -307,7 +307,7 @@
           <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocList"/></td>
           <td style="text-align:center;">1)</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -319,7 +319,7 @@
           <td style="text-align:center;">1) 3)</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/></td>
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -331,7 +331,7 @@
           <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue"/></td>
           <td style="text-align:center;">1)</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -343,7 +343,7 @@
           <td style="text-align:center;">1) 3)</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTextValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue"/></td>
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -355,7 +355,7 @@
           <td style="text-align:center;">X</td><!-- Opera 7.5.4 -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTreeView"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocTreeView"/></td>
           <td style="text-align:center;">3)</td><!-- Internet Explorer 5.0.1 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 5.5 -->
           <td style="text-align:center;">X</td><!-- Internet Explorer 6.0 SP1-->
@@ -416,63 +416,63 @@
       </thead>
       <tbody>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocBooleanValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">-</td><!-- WAI Conformance default -->
           <td style="text-align:center;">-</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocCheckBox"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocCheckBox"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">Triple-A</td><!-- WAI Conformance default -->
           <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">A</td><!-- WAI Conformance default -->
           <td style="text-align:center;">Double-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">A</td><!-- WAI Conformance default -->
           <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocList"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocList"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">-</td><!-- WAI Conformance default -->
           <td style="text-align:center;">A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">Double-A</td><!-- WAI Conformance default -->
           <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">-</td><!-- WAI Conformance default -->
           <td style="text-align:center;">A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTextValue"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">Double-A</td><!-- WAI Conformance default -->
           <td style="text-align:center;">Triple-A</td><!-- WAI Conformance possible -->
         </tr>
         <tr>
-          <td><see cref="T:Rubicon.ObjectBinding.Web.Controls.BocTreeView"/></td>
+          <td><see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocTreeView"/></td>
           <td style="text-align:center;">X</td><!-- HTML 4.01 Conformance -->
           <td style="text-align:center;">X</td><!-- XHTML 1.0 Conformance -->
           <td style="text-align:center;">-</td><!-- WAI Conformance default -->
