@@ -2,7 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI;
 
 namespace OBRTest
