@@ -495,8 +495,8 @@
     </para>
   </namespace>
   
-  <namespace name="Rubicon.ObjectBinding.Web.Design">
-    The <b>Rubicon.ObjectBinding.Web.Design</b> namespace provides classes required for Visual Studio .net Designer
+  <namespace name="Rubicon.ObjectBinding.Web.UI.Design">
+    The <b>Rubicon.ObjectBinding.Web.UI.Design</b> namespace provides classes required for Visual Studio .net Designer
     support.
   </namespace>  
 </namespaces>

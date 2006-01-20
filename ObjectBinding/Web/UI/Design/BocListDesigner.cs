@@ -7,7 +7,7 @@ using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.Design
+namespace Rubicon.ObjectBinding.Web.UI.Design
 {
 public class BocListDesigner: WebControlDesigner, IServiceProvider
 {
