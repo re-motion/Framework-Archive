@@ -20,8 +20,8 @@ namespace OBWTest
     protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl DataSource;
     protected System.Web.UI.HtmlControls.HtmlTable NameFormGrid;
     protected System.Web.UI.WebControls.Label Label1;
-    protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue1;
-    protected Rubicon.ObjectBinding.Web.Controls.UserControlBinding UserControlBinding1;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.UserControlBinding UserControlBinding1;
     protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   
 		private void Page_Load(object sender, System.EventArgs e)
