@@ -761,11 +761,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\DateRangeValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\DropDownMenu.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
