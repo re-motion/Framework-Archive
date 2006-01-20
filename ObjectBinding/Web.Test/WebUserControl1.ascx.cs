@@ -15,8 +15,8 @@ namespace OBWTest
 	[Obsolete ("DataSourceUserControl is obsolete, rendering this implementation obsoelte as well.")]
 	public class WebUserControl1 : DataSourceUserControl
 	{
-    protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
-    protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue1;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
     protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource CurrentObject;
     protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
 
