@@ -20,9 +20,9 @@ public class UndefinedEnumTestPage : WxePage
   protected System.Web.UI.HtmlControls.HtmlTable SearchFormGrid;
   protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl ExistingObjectWithUndefinedEnumDataSource;
   protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl NewObjectWithUndefinedEnumDataSource;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue ExistingObjectEnumProperty;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue NewObjectEnumProperty;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue SearchObjectEnumProperty;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue ExistingObjectEnumProperty;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue NewObjectEnumProperty;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue SearchObjectEnumProperty;
   protected Rubicon.Data.DomainObjects.ObjectBinding.Web.SearchObjectDataSourceControl SearchObjectWithUndefinedEnumDataSource;
   protected System.Web.UI.WebControls.Button TestButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
