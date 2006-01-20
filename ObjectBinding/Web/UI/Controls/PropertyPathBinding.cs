@@ -11,7 +11,7 @@ using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 /// <summary>
 ///   A <see cref="PropertyPathBinding"/> encapsulates the creation of a 
