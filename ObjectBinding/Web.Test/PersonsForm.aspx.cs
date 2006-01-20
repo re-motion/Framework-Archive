@@ -26,7 +26,7 @@ public class PersonsForm : SingleBocTestWxeBasePage
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Rubicon.ObjectBinding.Web.Controls.BocList PersonList;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList PersonList;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)
