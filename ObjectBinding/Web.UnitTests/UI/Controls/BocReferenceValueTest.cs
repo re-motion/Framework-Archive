@@ -5,7 +5,7 @@ using Rubicon.Web.UI;
 using Rubicon.NullableValueTypes;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.UnitTests.Configuration;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 
