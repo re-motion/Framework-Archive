@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.ObjectBinding.Design;
