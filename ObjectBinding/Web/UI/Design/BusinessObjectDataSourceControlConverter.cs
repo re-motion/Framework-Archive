@@ -4,7 +4,7 @@ using System.ComponentModel;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Design
+namespace Rubicon.ObjectBinding.Web.UI.Design
 {
 public class BusinessObjectDataSourceControlConverter : StringConverter
 {
