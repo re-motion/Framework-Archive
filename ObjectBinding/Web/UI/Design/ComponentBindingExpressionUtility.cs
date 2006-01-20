@@ -6,7 +6,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding.Design;
 
-namespace Rubicon.ObjectBinding.Web.Design
+namespace Rubicon.ObjectBinding.Web.UI.Design
 {
 
 [Obsolete ("Only required when configuring a component in the VS.NET ASP.NET Designer.")]
