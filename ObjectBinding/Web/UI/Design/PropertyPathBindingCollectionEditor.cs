@@ -4,7 +4,7 @@ using System.ComponentModel.Design;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.Design
+namespace Rubicon.ObjectBinding.Web.UI.Design
 {
 public class PropertyPathBindingCollectionEditor: AdvancedCollectionEditor
 {
