@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Web.UI.WebControls;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Web.UI.Controls;
