@@ -18,12 +18,13 @@
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
-<!--        <include name="UI/**/*.cs" /> -->
-<!--        <include name="Utilities/**/*.cs" /> -->
+        <include name="UI/**/*.cs" />
+        <include name="Utilities/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include name="${project.builddir}/Rubicon.Core.dll" />
+        <include name="${project.builddir}/Rubicon.Web.dll" />
         <include name="${project.builddir}/log4net.dll" />
         <include name="${project.builddir}/Microsoft.Web.UI.WebControls.dll" />
         <include asis="true" name="System.dll"/>
@@ -33,11 +34,9 @@
         <include asis="true" name="System.Windows.Forms.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
-<!--
       <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Web.Legacy">
         <include name="UI/Globalization/*.resx" /> 
       </resources>
--->
     </csc>
         
   </target>
