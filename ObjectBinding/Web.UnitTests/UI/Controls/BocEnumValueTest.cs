@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 using Rubicon.Development.UnitTesting;
 using Rubicon.NullableValueTypes;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
