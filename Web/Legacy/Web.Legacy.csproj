@@ -110,7 +110,7 @@
                 />
                 <Reference
                     Name = "system.drawing"
-                    AssemblyName = "system.drawing"
+                    AssemblyName = "System.Drawing"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
                 />
             </References>
@@ -167,6 +167,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\DataDropDownList.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\DateRangeValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

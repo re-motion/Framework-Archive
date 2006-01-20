@@ -23,6 +23,7 @@
   Rubicon.Web.UI.Controls.CommandHandler
   Rubicon.Web.UI.Controls.CurrencyTextBox
   Rubicon.Web.UI.Controls.DataDropDownList
+  Rubicon.Web.UI.Controls.DateRangeValidator
   Rubicon.Web.UI.Controls.DefaultTextControl
   Rubicon.Web.UI.Controls.EntryFormGrid
   Rubicon.Web.UI.Controls.ExtendedDropDownList
