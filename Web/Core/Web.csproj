@@ -715,21 +715,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\MultiLingualPage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\MultiLingualUserControl.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\NavigablePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\PostLoad.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -742,16 +727,6 @@
                 <File
                     RelPath = "UI\SmartPageInfo.cs"
                     SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\StandardPage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\StandardUserControl.cs"
-                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -770,27 +745,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\CommandHandler.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\CompoundValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Controls\ControlItemCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\CurrencyTextBox.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\DataDropDownList.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -805,32 +765,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\DefaultTextControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\DropDownMenu.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Controls\EmailAddressValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\EntryFormGrid.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ExtendedDropDownList.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Form.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -925,22 +865,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\PostBackHandler.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\SingleControlItemCollection.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\Controls\SmartLabel.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\StandardButton.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -965,11 +895,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\TableControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\TabView.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -990,17 +915,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\ViewControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\WebButton.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebControls.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -1021,7 +936,7 @@
                 />
                 <File
                     RelPath = "UI\Controls\WebTab.cs"
-                    SubType = "Code"
+                    SubType = "Component"
                     BuildAction = "Compile"
                 />
                 <File
@@ -1120,22 +1035,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Globalization\EntryFormGrid.en.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Globalization\EntryFormGrid.fr.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Globalization\EntryFormGrid.it.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Globalization\EntryFormGrid.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "UI\Globalization\FormGridManager.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -1159,22 +1058,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Globalization\TabControl.en.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Globalization\TabControl.fr.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Globalization\TabControl.it.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Globalization\TabControl.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "UI\Globalization\ValidationStateViewer.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -1189,11 +1072,6 @@
                 />
                 <File
                     RelPath = "Utilities\HtmlUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\ImageUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
