@@ -20,7 +20,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 /// <summary> This control can be used to display or edit reference values. </summary>
 /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
