@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 public delegate void BocListSortingOrderChangeEventHandler (object sender, BocListSortingOrderChangeEventArgs e);
