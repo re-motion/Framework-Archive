@@ -29,7 +29,7 @@ public class ValidationStateViewer : WebControl, IControl
   /// <summary> A list of validation state viewer wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.Web.UI.Globalization.ValidationStateViewer")]
+  [MultiLingualResources ("Rubicon.Web.Globalization.ValidationStateViewer")]
   protected enum ResourceIdentifier
   {
     /// <summary>The summary message displayed if validation errors where found. </summary>
