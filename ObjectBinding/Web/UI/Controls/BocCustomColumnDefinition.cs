@@ -11,7 +11,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 /// <summary> A column definition using <see cref="BocCustomColumnDefinitionCell"/> for rendering the data. </summary>
 public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClassSource
