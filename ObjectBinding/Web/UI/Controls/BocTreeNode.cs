@@ -7,7 +7,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI;
 using Rubicon.ObjectBinding.Web.Design;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 public abstract class BocTreeNode: WebTreeNode
