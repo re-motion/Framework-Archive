@@ -19,7 +19,7 @@
           The <see cref="PrepareValidation"/> method, which ensures that all controls implenting 
           <see cref="IValidatableControl"/> know their validators. Call this method prior to validation if you 
           intend to validate using the 
-          <see cref="M:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl.Validate">IBusinessObjectDataSourceControl.Validate</see> 
+          <see cref="M:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl.Validate">IBusinessObjectDataSourceControl.Validate</see> 
           method instead of <see cref="Page.Validate">Page.Validate</see>.
         </item>
       </list>
