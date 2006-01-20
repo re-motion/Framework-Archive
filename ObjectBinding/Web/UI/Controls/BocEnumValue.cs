@@ -15,7 +15,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit enumeration values. </summary>
@@ -786,7 +786,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
   /// <value> 
   ///   <see langword="false"/> if the <see cref="ListControlStyle"/>'s 
-  ///   <see cref="Rubicon.ObjectBinding.Web.Controls.ListControlStyle.ControlType"/> is set to 
+  ///   <see cref="Rubicon.ObjectBinding.Web.UI.Controls.ListControlStyle.ControlType"/> is set to 
   ///   <see cref="ListControlType.DropDownList"/> or <see cref="ListControlType.ListBox"/>. 
   /// </value>
   public override bool UseLabel

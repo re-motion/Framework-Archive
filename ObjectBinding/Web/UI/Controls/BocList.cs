@@ -23,7 +23,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Collections;
 using Rubicon.Globalization;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> 
