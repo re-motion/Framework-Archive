@@ -27,7 +27,7 @@ public class TabbedMultiView: WebControl, IControl
 
 #if NET11
   [CLSCompliant (false)]
-  protected internal class MultiView: Rubicon.Web.UI.Controls.MultiPage
+  protected internal class MultiView: Microsoft.Web.UI.WebControls.MultiPage
 #else
   protected internal class MultiView: System.Web.UI.WebControls.MultiView
 #endif
@@ -97,6 +97,17 @@ public class TabbedMultiView: WebControl, IControl
     {
       add { SelectedIndexChange += value; }
       remove { SelectedIndexChange -= value; }
+    }
+
+    protected override Microsoft.Web.UI.WebControls.RenderPathID RenderPath
+    {
+      get 
+      { 
+    	  if (this.IsDesignMode)
+		      return Microsoft.Web.UI.WebControls.RenderPathID.DesignerPath;
+        else
+	  	    return Microsoft.Web.UI.WebControls.RenderPathID.DownLevelPath;
+      }
     }
 #endif
   }

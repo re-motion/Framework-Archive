@@ -13,10 +13,10 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
-[ToolboxData("<{0}:TabView runat=server></{0}:TabView>")]
+[ToolboxData("<{0}:TabView runat=\"server\"></{0}:TabView>")]
 #if NET11
 [CLSCompliant (false)]
-public class TabView : Rubicon.Web.UI.Controls.PageView
+public class TabView : Microsoft.Web.UI.WebControls.PageView
 #else
 public class TabView : System.Web.UI.WebControls.View
 #endif
@@ -86,6 +86,20 @@ public class TabView : System.Web.UI.WebControls.View
   {
     _icon.Reset();
   }
+
+#if NET11
+    protected override Microsoft.Web.UI.WebControls.RenderPathID RenderPath
+    {
+      get 
+      { 
+    	  if (this.IsDesignMode)
+		      return Microsoft.Web.UI.WebControls.RenderPathID.DesignerPath;
+        else
+	  	    return Microsoft.Web.UI.WebControls.RenderPathID.DownLevelPath;
+      }
+    }
+#endif
+
 }
 
 
