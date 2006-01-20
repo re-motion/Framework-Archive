@@ -49,7 +49,7 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   /// <summary> A list of form grid manager wide resources. </summary>
   /// <remarks> Resources will be accessed using IResourceManager.GetString (Enum). </remarks>
   [ResourceIdentifiers]
-  [MultiLingualResources ("Rubicon.Web.UI.Globalization.FormGridManager")]
+  [MultiLingualResources ("Rubicon.Web.Globalization.FormGridManager")]
   protected enum ResourceIdentifier
   {
     /// <summary>The alternate text for the required icon.</summary>
