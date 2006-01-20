@@ -2,7 +2,7 @@ using System;
 using System.Web.UI.Design;
 using Rubicon.Web.UI.Design;
 
-namespace Rubicon.ObjectBinding.Web.Design
+namespace Rubicon.ObjectBinding.Web.UI.Design
 {
 
 public class BocDataSourceDesigner: WebControlDesigner
