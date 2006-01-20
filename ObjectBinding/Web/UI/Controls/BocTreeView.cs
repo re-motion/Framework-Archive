@@ -21,7 +21,7 @@ using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.UI.Globalization;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> Object bound tree view. </summary>
