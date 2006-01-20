@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding;
 using Rubicon.Web.UI.Controls;
@@ -13,15 +13,15 @@ namespace OBWTest
 public class TestTabbedPersonDetailsUserControl : 
     DataEditUserControl, IControl, IFormGridRowProvider
 {
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
-  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DateOfBirthField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue PartnerField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue DeceasedField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DateOfDeathField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue MarriageStatusField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfBirthField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateOfDeathField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue MarriageStatusField;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   private AutoInitHashtable _listOfFormGridRowInfos =
       new AutoInitHashtable (typeof (FormGridRowInfoCollection));
