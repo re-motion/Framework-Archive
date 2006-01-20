@@ -13,7 +13,7 @@ using Rubicon.Web.Utilities;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
 using OBRTest;
