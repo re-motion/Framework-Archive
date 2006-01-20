@@ -19,12 +19,12 @@ namespace OBWTest
 	/// </summary>
 	public class WebForm3: System.Web.UI.Page
 	{
-    protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
     protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel1;
     protected System.Web.UI.WebControls.Button SaveButton;
-    protected Rubicon.ObjectBinding.Web.Controls.BocTextValue HeightField;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue HeightField;
     protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel2;
-    protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
     protected System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
     protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
   
