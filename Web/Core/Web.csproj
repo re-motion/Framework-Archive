@@ -461,11 +461,27 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Globalization\FormGridManager.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\FormGridManager.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\SmartPageInfo.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "Globalization\SmartPageInfo.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\ValidationStateViewer.de.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\ValidationStateViewer.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
@@ -1035,14 +1051,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Globalization\FormGridManager.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Globalization\FormGridManager.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "UI\Globalization\IResourceDispatchTarget.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1056,14 +1064,6 @@
                     RelPath = "UI\Globalization\ResourceManagerUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Globalization\ValidationStateViewer.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "UI\Globalization\ValidationStateViewer.resx"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "Utilities\ControlHelper.cs"
