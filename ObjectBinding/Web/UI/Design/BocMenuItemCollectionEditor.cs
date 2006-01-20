@@ -1,6 +1,6 @@
 using System;
 using Rubicon.Web.UI.Design;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.Design
 {
