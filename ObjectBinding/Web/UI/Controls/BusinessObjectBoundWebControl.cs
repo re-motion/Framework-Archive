@@ -18,7 +18,7 @@ using Rubicon.Globalization;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary>
