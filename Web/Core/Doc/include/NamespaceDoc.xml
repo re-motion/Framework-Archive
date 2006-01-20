@@ -63,7 +63,7 @@ summary
     </para><para>
       A list of WCAG conform controls can be found in the 
       <see href="Rubicon.Web.UI.Controls.html">Rubicon.Web.UI.Controls</see> and
-      <see href="Rubicon.ObjectBinding.Web.Controls.html">Rubicon.ObjectBinding.Web.Controls</see> namespace 
+      <see href="Rubicon.ObjectBinding.Web.UI.Controls.html">Rubicon.ObjectBinding.Web.UI.Controls</see> namespace 
       documentation.
     </para>
   </namespace>
