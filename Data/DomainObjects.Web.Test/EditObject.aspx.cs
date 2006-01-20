@@ -13,7 +13,7 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
 using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Data.DomainObjects.Web.Test
