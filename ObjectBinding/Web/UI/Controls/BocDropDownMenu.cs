@@ -12,7 +12,7 @@ using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 [ToolboxData("<{0}:BocDropDownMenu runat=server></{0}:BocDropDownMenu>")]

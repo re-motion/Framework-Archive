@@ -12,7 +12,7 @@ using Rubicon.Web.UI.Design;
 using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> Validates a <see cref="BocDateTimeValue"/> control. </summary>
