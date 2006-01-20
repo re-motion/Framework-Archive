@@ -6,7 +6,7 @@ using Rubicon.Web.UI;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.Design;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary>

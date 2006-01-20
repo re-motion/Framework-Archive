@@ -4,7 +4,7 @@ using System.Web.UI;
 using Rubicon.ObjectBinding;
 using Rubicon.Web.UI;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 public interface IDataEditControl: IControl
