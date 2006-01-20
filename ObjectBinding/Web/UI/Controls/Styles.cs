@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Web.Utilities;
 using Rubicon.Web.UI;
 using Rubicon.Web;
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 public enum ListControlType
 {
