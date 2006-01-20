@@ -13,7 +13,7 @@ using Rubicon.Collections;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Utilities;
 using Rubicon.Web.UI;
