@@ -17,7 +17,7 @@ using Rubicon.ObjectBinding.Design;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Globalization;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
