@@ -1,5 +1,12 @@
-1.3.31
-======
+1.4.0
+=====
+- Namespace geändert:
+  Rubicon.ObjectBinding.Web.Controls zu Rubicon.ObjectBinding.Web.UI.Controls
+  Best Practice für Migration der Projekte:
+  1. Alle betroffenen Projekte auschecken
+  2. Search & Replace auf alle Files durchführen um den alten Namespace durch den neuen zu ersetzen.
+     Funktioniert sowaohl für aspx/aspcx als auch für Code-Behind.
+     
 - BusinessObjectReferenceDataSourceControl
   * Das Verhalten von LoadValues und SaveValues überarbeitet: Jetzt das BusinessObject selbst nur gespeichert,
     wenn es nicht aus der referenzierten DataSource geladen wurde. 
@@ -17,7 +24,7 @@
       wird.
       Für die BocList gilt das auch bei SaveValue(interim=true). Im Regelfall wird SaveValue(interim=true) im 
       Page.Unload aufgerufen und damit kann der neue IsDirty Zustand nicht mehr im ViewState perisistiert werden.
-  
+    
 1.3.28
 ======
 - BocDateTimeValue
