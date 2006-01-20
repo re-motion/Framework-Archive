@@ -18,7 +18,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Globalization;
 using Rubicon.Web.UI.Globalization;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit a boolean value (true or false). </summary>
