@@ -69,7 +69,7 @@
         The control provides a default <b>CSS Class</b>, applied to the top level element: <c>bocReferenceValue</c>.
       </para><para>
         The control supports auto-postback. Use the <see cref="DropDownListStyle"/>'s 
-        <see cref="Rubicon.ObjectBinding.Web.Controls.DropDownListStyle.AutoPostBack"/> property to enable this
+        <see cref="Rubicon.ObjectBinding.Web.UI.Controls.DropDownListStyle.AutoPostBack"/> property to enable this
         behavior.
       </para><para>
         Use the <see cref="SetBusinessObjectList"/> method to programmatically populate the list of 
