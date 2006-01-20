@@ -231,7 +231,7 @@
     <para>
       Implement <see cref="T:Rubicon.ObjectBinding.IBusinessObjectDataSource" /> to provide the 
       business object controls with a data source custom fit to your object model. Also implement
-      <see cref="T:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl" /> if you intend to
+      <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" /> if you intend to
       use your business objects inside a web application.
     </para>
     <h4 class="dtH4">Implementing the Supporting Interfaces</h4>
