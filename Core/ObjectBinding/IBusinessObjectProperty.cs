@@ -179,7 +179,7 @@ public interface IBusinessObjectReferenceProperty: IBusinessObjectProperty
   /// </exception>
   /// <remarks> 
   ///   This method is used if the seach statement is entered via the Visual Studio .NET designer, for instance in
-  ///   the <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocReferenceValue"/> control.
+  ///   the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue"/> control.
   ///   <note type="inotes">
   ///     If your object model cannot evaluate a search string, but allows search through a less generic method,
   ///     provide an overload, and document that getting the list of available objects is only possible during runtime.
@@ -236,7 +236,7 @@ public interface IBusinessObjectBooleanProperty: IBusinessObjectProperty
 ///   This property is not restrained to the enumerations derived from the <see cref="Enum"/> type. 
 ///   <note type="inotes">
 ///     The native value must be serializable if this property is to be bound to the 
-///     <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/> control.
+///     <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue"/> control.
 ///   </note>
 /// </remarks>
 public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty
@@ -276,7 +276,7 @@ public interface IBusinessObjectEnumerationProperty: IBusinessObjectProperty
 ///   This property is not restrained to the enumerations derived from the <see cref="Enum"/> type. 
 ///   <note type="inotes">
 ///     The native value must be serializable if this property is to be bound to the 
-///     <see cref="T:Rubicon.ObjectBinding.Web.Controls.BocEnumValue"/> control.
+///     <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue"/> control.
 ///   </note>
 /// </remarks>
 public interface IBusinessObjectInstanceEnumerationProperty: IBusinessObjectEnumerationProperty
