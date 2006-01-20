@@ -18,19 +18,19 @@ namespace Rubicon.Data.DomainObjects.Web.Test
 public class SearchObjectPage : WxePage
 {
   protected Rubicon.Web.UI.Controls.FormGridManager SearchFormGridManager;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue StringPropertyValue;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue StringPropertyValue;
   protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl FoundObjects;
   protected System.Web.UI.WebControls.Button SearchButton;
-  protected Rubicon.ObjectBinding.Web.Controls.BocList ResultList;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BytePropertyFromTextBox;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BytePropertyToTextBox;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue EnumPropertyValue;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ResultList;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BytePropertyFromTextBox;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BytePropertyToTextBox;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue EnumPropertyValue;
   protected System.Web.UI.HtmlControls.HtmlTable SearchFormGrid;
-  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DatePropertyFromValue;
-  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DatePropertyToValue;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DatePropertyFromValue;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DatePropertyToValue;
   protected Rubicon.Data.DomainObjects.ObjectBinding.Web.SearchObjectDataSourceControl CurrentSearchObject;
-  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DateTimeFromValue;
-  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BocDateTimeValue2;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeFromValue;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BocDateTimeValue2;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
   private SearchFunction MyFunction 
@@ -63,7 +63,7 @@ public class SearchObjectPage : WxePage
 	private void InitializeComponent()
 	{    
     this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
-    this.ResultList.EditedRowSaved += new Rubicon.ObjectBinding.Web.Controls.BocListItemEventHandler(this.ResultList_EditedRowSaved);
+    this.ResultList.EditedRowSaved += new Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventHandler(this.ResultList_EditedRowSaved);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -81,7 +81,7 @@ public class SearchObjectPage : WxePage
     }
   }
 
-  private void ResultList_EditedRowSaved(object sender, Rubicon.ObjectBinding.Web.Controls.BocListItemEventArgs e)
+  private void ResultList_EditedRowSaved(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
   {
     ClientTransaction.Current.Commit ();
   }
