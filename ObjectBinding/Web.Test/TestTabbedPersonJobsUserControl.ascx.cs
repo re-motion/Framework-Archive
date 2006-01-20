@@ -2,7 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.Web.UI.HtmlControls;
 using System.Web.UI;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding;
 using Rubicon.Web.UI.Controls;
@@ -14,10 +14,10 @@ namespace OBWTest
 public class TestTabbedPersonJobsUserControl : 
     DataEditUserControl, IControl, IFormGridRowProvider
 {
-  protected Rubicon.ObjectBinding.Web.Controls.BocList ListField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ListField;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-  protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue MultilineTextField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
 
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   private AutoInitHashtable _listOfFormGridRowInfos =
