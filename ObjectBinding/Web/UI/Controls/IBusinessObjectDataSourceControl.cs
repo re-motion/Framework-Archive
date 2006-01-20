@@ -4,7 +4,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Web.UI;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {

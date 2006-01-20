@@ -8,7 +8,7 @@ using System.Web.UI.Design;
 using System.Web.UI.WebControls;
 using System.Globalization;
 using Rubicon.Utilities;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls

@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Reflection;
 using Rubicon.Collections;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;

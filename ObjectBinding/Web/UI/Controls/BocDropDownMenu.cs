@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;

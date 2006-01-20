@@ -13,7 +13,7 @@ using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Globalization;
 using Rubicon.Collections;
 using Rubicon.Utilities;

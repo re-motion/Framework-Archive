@@ -277,7 +277,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary>
   ///   Call this method before validating when using <see cref="Rubicon.Web.UI.Controls.FormGridManager"/> 
-  ///   and <see cref="M:Rubicon.ObjectBinding.Web.Controls.IBusinessObjectDataSourceControl.Validate()"/>.
+  ///   and <see cref="M:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl.Validate()"/>.
   /// </summary>
   public void PrepareValidation()
   {

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Web.Utilities;
 using Rubicon.Utilities;
 

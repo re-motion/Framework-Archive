@@ -4,7 +4,7 @@ using System.Drawing.Design;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.NullableValueTypes;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls

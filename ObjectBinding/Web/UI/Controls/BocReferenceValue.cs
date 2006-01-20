@@ -11,7 +11,7 @@ using log4net;
 using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Utilities;
 using Rubicon.Web;
 using Rubicon.Web.ExecutionEngine;

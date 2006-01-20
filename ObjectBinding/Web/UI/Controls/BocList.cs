@@ -14,7 +14,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
-using Rubicon.ObjectBinding.Web.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Web;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.ExecutionEngine;
