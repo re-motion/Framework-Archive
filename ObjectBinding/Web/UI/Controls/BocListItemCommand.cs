@@ -13,7 +13,7 @@ using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 //  TODO: BocListItemCommand: Move long comment blocks to xml-file
