@@ -9,7 +9,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using Rubicon.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using OBRTest;
 
 namespace OBWTest
@@ -122,8 +122,8 @@ public class SingleTestTreeView : SingleBocTestBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.PersonTreeView.Click += new Rubicon.ObjectBinding.Web.Controls.BocTreeNodeClickEventHandler(this.PersonTreeView_Click);
-    this.PersonTreeView.SelectionChanged += new Rubicon.ObjectBinding.Web.Controls.BocTreeNodeEventHandler(this.PersonTreeView_SelectionChanged);
+    this.PersonTreeView.Click += new Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventHandler(this.PersonTreeView_Click);
+    this.PersonTreeView.SelectionChanged += new Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeEventHandler(this.PersonTreeView_SelectionChanged);
     this.RefreshPesonTreeViewButton.Click += new System.EventHandler(this.RefreshPesonTreeViewButton_Click);
     this.WebTreeView.Click += new Rubicon.Web.UI.Controls.WebTreeNodeClickEventHandler(this.TreeView_Click);
     this.Node101Button.Click += new System.EventHandler(this.Node101Button_Click);
@@ -136,7 +136,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
     TreeViewLabel.Text = "Node = " + e.Node.Text;
   }
 
-  private void PersonTreeView_Click(object sender, Rubicon.ObjectBinding.Web.Controls.BocTreeNodeClickEventArgs e)
+  private void PersonTreeView_Click(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeClickEventArgs e)
   {
     TreeViewLabel.Text = "Node = " + e.Node.Text;
   }
@@ -146,7 +146,7 @@ public class SingleTestTreeView : SingleBocTestBasePage
     PersonTreeView.RefreshTreeNodes();
   }
 
-  private void PersonTreeView_SelectionChanged(object sender, Rubicon.ObjectBinding.Web.Controls.BocTreeNodeEventArgs e)
+  private void PersonTreeView_SelectionChanged(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocTreeNodeEventArgs e)
   {
   
   }
