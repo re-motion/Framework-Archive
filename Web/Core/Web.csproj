@@ -706,27 +706,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\ISmartControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\ISmartNavigablePage.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\ITemplateControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\IUserControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\IValidatableControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -852,6 +837,21 @@
                 />
                 <File
                     RelPath = "UI\Controls\IModifiableControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\ISmartControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\IUserControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\IValidatableControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

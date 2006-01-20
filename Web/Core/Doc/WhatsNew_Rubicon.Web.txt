@@ -8,6 +8,11 @@
       Benötigt man ledigleich eine Sicherheitsabfrage für die Navigation mittels Links (Stichwort: NavigationTabs),
       oder beim Schließen des Fensters, so wird "OnlyIfDirty" empfohlen.
 
+- Namespace geändert:
+  Rubicon.Web.UI.ISmartControl -> Rubicon.Web.UI.Controls.ISmartControl
+  Rubicon.Web.UI.IUserControl -> Rubicon.Web.UI.Controls.IUserControl
+  Rubicon.Web.UI.IValidatableControl -> Rubicon.Web.UI.Controls.IValidatableControl
+  
 - Klassen in der Legacy-DLL:
   Rubicon.Web.UI.MultiLingualPage
   Rubicon.Web.UI.MultiLingualUserControl
