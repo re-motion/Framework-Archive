@@ -19,7 +19,7 @@ using Rubicon.Web.UI;
 using Rubicon.Utilities;
 using Rubicon.Globalization;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 
 namespace OBWTest
 {
@@ -29,7 +29,7 @@ public class TestForm : Page
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager1;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue BocTextValue1;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
   protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
   protected System.Web.UI.WebControls.TextBox TextBox1;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
