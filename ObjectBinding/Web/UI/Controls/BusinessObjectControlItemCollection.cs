@@ -6,7 +6,7 @@ using System.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Globalization;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
  
 /// <summary> A collection of <see cref="BusinessObjectControlItem"/> objects. </summary>
