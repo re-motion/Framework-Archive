@@ -6,7 +6,7 @@ using System.Web.UI.HtmlControls;
 using System.Collections.Specialized;
 using Rubicon.Collections;
 using Rubicon.Web.UI.Controls;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding;
 using OBRTest;
@@ -21,19 +21,19 @@ public class CompleteBocUserControl :
   private AutoInitHashtable _listOfFormGridRowInfos = new AutoInitHashtable (typeof (FormGridRowInfoCollection));
   private AutoInitHashtable _listOfHiddenRows = new AutoInitHashtable (typeof (StringCollection));
 
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue TextField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue DateTimeField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue EnumField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue ReferenceField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocList ListField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue BooleanField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue MultilineTextField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue DateTimeField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue EnumField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue ReferenceField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ListField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue BooleanField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue MultilineTextField;
   protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
