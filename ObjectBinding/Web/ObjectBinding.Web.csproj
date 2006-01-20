@@ -572,11 +572,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\Styles.resx"
-                    DependentUpon = "Styles.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "UI\Controls\UserControlBinding.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
