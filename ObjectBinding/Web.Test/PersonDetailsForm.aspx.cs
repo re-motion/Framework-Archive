@@ -14,7 +14,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.ObjectBinding;
-using Rubicon.ObjectBinding.Web.Controls;
+using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Reflection;
 using OBRTest;
 
@@ -27,18 +27,18 @@ public class PersonDetailsForm : SingleBocTestWxeBasePage
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
   protected System.Web.UI.WebControls.Button SaveButton;
   protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue FirstNameField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocEnumValue GenderField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocReferenceValue PartnerField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocDateTimeValue BirthdayField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue LastNameField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstNameField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GenderField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue PartnerField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue BirthdayField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl ReflectionBusinessObjectDataSourceControl;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Rubicon.ObjectBinding.Web.Controls.BocBooleanValue DeceasedField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocMultilineTextValue CVField;
-  protected Rubicon.ObjectBinding.Web.Controls.BocList JobList;
-  protected Rubicon.ObjectBinding.Web.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue ParterFirstNameField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue DeceasedField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocMultilineTextValue CVField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocList JobList;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl PartnerDataSource;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue ParterFirstNameField;
   protected System.Web.UI.WebControls.Button PostBackButton;
 
 	private void Page_Load(object sender, System.EventArgs e)
