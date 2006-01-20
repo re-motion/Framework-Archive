@@ -6,7 +6,7 @@ using System.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.Design;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> A collection of <see cref="BocListView"/> objects. </summary>

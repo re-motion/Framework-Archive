@@ -6,7 +6,7 @@ using Rubicon.Collections;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 public class BocMenuItemCommand: BocCommand

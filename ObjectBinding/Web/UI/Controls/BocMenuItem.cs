@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 public interface IBocMenuItemContainer
