@@ -11,7 +11,7 @@ using Rubicon.Utilities;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> A BocListView is a named collection of column definitions. </summary>
