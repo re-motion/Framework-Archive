@@ -39,61 +39,61 @@
     <resheader name="Writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.PageInfo">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.PageInfo">
         <value>Seite {0} von {1}</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.OptionsTitle">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.OptionsTitle">
         <value>Optionen</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.AvailableViewsListTitle">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.AvailableViewsListTitle">
         <value>Ansicht</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsErrorMessage">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsErrorMessage">
         <value>In der gerade bearbeiteten Zeile sind Fehler aufgetreten.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RequiredFieldTitle">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle">
         <value>Eingabe benötigt in der gerade bearbeiteten Zeile.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EmptyListMessage">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage">
         <value>Keine Daten vorhanden.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EmptyListMessage.SortAscendingAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage.SortAscendingAlternateText">
         <value>Aufsteigend sortiert.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EmptyListMessage.SortDescendingAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage.SortDescendingAlternateText">
         <value>Absteigend sortiert.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsEditAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsEditAlternateText">
         <value>Zeile bearbeiten.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsSaveAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsSaveAlternateText">
         <value>Änderungen an der Zeile übernehmen.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsCancelAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsCancelAlternateText">
         <value>Änderungen an der Zeile verwerfen.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToFirstAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToFirstAlternateText">
         <value>Zur ersten Seite gehen.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToLastAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToLastAlternateText">
         <value>Zur letzten Seite gehen.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToNextAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToNextAlternateText">
         <value>Zur nächsten Seite gehen</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.GoToPreviousAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToPreviousAlternateText">
         <value>Zur vorherigen Seite gehen.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SelectRowAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.SelectRowAlternateText">
         <value>Diese Zeile markieren.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.SelectAllRowsAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.SelectAllRowsAlternateText">
         <value>Alle Zeilen markieren.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.IndexColumnTitle">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.IndexColumnTitle">
         <value>Nr.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.Controls.BocList.RowMenuTitle">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowMenuTitle">
         <value>Optionen</value>
     </data>
 </root>
