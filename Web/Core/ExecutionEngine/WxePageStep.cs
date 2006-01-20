@@ -272,7 +272,12 @@ public class WxePageStep: WxeStep
     _function.SetParentStep (this);    
 
     // page.SaveVieState()
-    MethodInfo saveViewStateMethod = typeof (Page).GetMethod ("SavePageViewState", BindingFlags.Instance | BindingFlags.NonPublic);
+    MethodInfo saveViewStateMethod;
+#if NET11    
+    saveViewStateMethod = typeof (Page).GetMethod ("SavePageViewState", BindingFlags.Instance | BindingFlags.NonPublic);
+#else
+    saveViewStateMethod = typeof (Page).GetMethod ("SaveAllState", BindingFlags.Instance | BindingFlags.NonPublic);
+#endif
     saveViewStateMethod.Invoke (page, new object[0]); 
 
     _isRedirectingToPermaUrlRequired = createPermaUrl;
