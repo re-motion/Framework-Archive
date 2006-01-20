@@ -18,9 +18,9 @@ namespace OBWTest
 public class WebForm2: System.Web.UI.Page
 {
   protected System.Web.UI.WebControls.Button SaveButton;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValue DateOfBirthField;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue DateOfBirthField;
   protected Rubicon.Web.UI.Controls.SmartLabel BocPropertyLabel3;
-  protected Rubicon.ObjectBinding.Web.Controls.BocTextValueValidator BocTextValueValidator1;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValueValidator BocTextValueValidator1;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSource reflectionBusinessObjectDataSource1;
 
 	private void Page_Load (object sender, System.EventArgs e)
