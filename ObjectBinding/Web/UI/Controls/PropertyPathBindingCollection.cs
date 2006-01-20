@@ -5,7 +5,7 @@ using System.Drawing.Design;
 using Rubicon.ObjectBinding.Web.Design;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.ObjectBinding.Web.Controls
+namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
  
 /// <summary> A collection of <see cref="PropertyPathBinding"/> objects. </summary>
