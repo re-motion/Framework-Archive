@@ -165,7 +165,9 @@
 
   <!--======================= BuildNoDoc =======================-->
   <target name="buildnodoc" >
+  <!--
     <call target="clean" />
+    -->
     <call target="resources" />
     <call target="setdebug" />
     <call target="all" />
