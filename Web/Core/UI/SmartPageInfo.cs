@@ -320,8 +320,8 @@ public class SmartPageInfo
     initScript.Append ("delete ").Append (eventHandlersArray).Append ("; \r\n");
     initScript.Append ("delete ").Append (trackedControlsArray).Append (";");
 
-    PageUtility.RegisterClientScriptBlock ((Page) _page, "smartPageInitialize", initScript.ToString());
-    PageUtility.RegisterStartupScriptBlock ((Page) _page, "smartPageStartUp", "SmartPage_OnStartUp();");
+    ScriptUtility.RegisterClientScriptBlock ((Page) _page, "smartPageInitialize", initScript.ToString());
+    ScriptUtility.RegisterStartupScriptBlock ((Page) _page, "smartPageStartUp", "SmartPage_OnStartUp();");
   }
 
   private string GetAbortMessage ()
@@ -336,7 +336,7 @@ public class SmartPageInfo
         temp = resourceManager.GetString (ResourceIdentifier.AbortMessage);
       else
         temp = _page.AbortMessage;
-      abortMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
+      abortMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
     }
 
     return abortMessage;
@@ -354,7 +354,7 @@ public class SmartPageInfo
         temp = resourceManager.GetString (ResourceIdentifier.StatusIsSubmittingMessage);
       else
         temp = _page.StatusIsSubmittingMessage;
-      statusIsSubmittingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
+      statusIsSubmittingMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
     }
 
     return statusIsSubmittingMessage;
