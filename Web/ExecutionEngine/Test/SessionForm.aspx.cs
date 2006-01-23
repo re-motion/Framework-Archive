@@ -43,7 +43,6 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionInNewWindowButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlButton;
-  protected Rubicon.Web.UI.Controls.TabControl NavigationTabControl;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
