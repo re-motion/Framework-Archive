@@ -249,7 +249,7 @@ public class WxeContext
     {
       if (! queryString.StartsWith ("?"))
         queryString = "?" + queryString;
-      queryString = PageUtility.DeleteUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
+      queryString = UrlUtility.DeleteParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
       if (queryString != "?")
         _queryString = queryString;
     }
@@ -391,14 +391,12 @@ public class WxeContext
     if (path.IndexOf ("?") != -1)
       throw new ArgumentException ("The path must be provided without a query string. Use the query string parameter instead.", "path");
 
-    if (! StringUtility.IsNullOrEmpty (queryString) && ! queryString.StartsWith ("?"))
+    queryString = StringUtility.NullToEmpty (queryString);
+    if (! queryString.StartsWith ("?"))
       queryString = "?" + queryString;
     
-    if (! StringUtility.IsNullOrEmpty (queryString))
-      queryString = PageUtility.DeleteUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
-    if (StringUtility.IsNullOrEmpty (queryString) || queryString == "?")
-      queryString = string.Empty;
-    queryString = PageUtility.AddUrlParameter (queryString, WxeHandler.Parameters.WxeFunctionToken, functionToken);
+    queryString = UrlUtility.DeleteParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
+    queryString = UrlUtility.AddParameter (queryString, WxeHandler.Parameters.WxeFunctionToken, functionToken);
     
     path = response.ApplyAppPathModifier (path);
     return path + queryString;
@@ -438,8 +436,7 @@ public class WxeContext
       int count = GetMergeablePermanentUrlCount (permanentUrl, parentPermanentUrls, maxLength);
       string parentPermanentUrl = FormatParentPermanentUrl (parentPermanentUrls, count);
       
-      permanentUrl = 
-          PageUtility.AddUrlParameter (permanentUrl, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
+      permanentUrl = UrlUtility.AddParameter (permanentUrl, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
     }
     return permanentUrl;
   }
@@ -456,7 +453,7 @@ public class WxeContext
       url = HttpUtility.UrlDecode (url, encoding);
 
       if (! StringUtility.IsNullOrEmpty (url))
-        currentUrl = PageUtility.DeleteUrlParameter (currentUrl, WxeHandler.Parameters.ReturnUrl);
+        currentUrl = UrlUtility.DeleteParameter (currentUrl, WxeHandler.Parameters.ReturnUrl);
 
       returnUrls.Add (currentUrl);
     }
@@ -478,8 +475,7 @@ public class WxeContext
       }
       else
       {
-        parentPermanentUrl = 
-            PageUtility.AddUrlParameter (temp, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
+        parentPermanentUrl = UrlUtility.AddParameter (temp, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
       }
     }
     return parentPermanentUrl;
@@ -493,7 +489,7 @@ public class WxeContext
       string parentPermanentUrl = FormatParentPermanentUrl (parentPermanentUrls, i + 1);
       if (parentPermanentUrl.Length >= maxLength)
         break;
-      string url = PageUtility.AddUrlParameter (baseUrl, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
+      string url = UrlUtility.AddParameter (baseUrl, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
       if (url.Length > maxLength)
         break;
     }
