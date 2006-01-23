@@ -131,6 +131,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "UI\INavigablePage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\MultiLingualPage.cs"
                     SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
@@ -259,6 +264,11 @@
                 />
                 <File
                     RelPath = "Utilities\ImageUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\StandardPageUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
