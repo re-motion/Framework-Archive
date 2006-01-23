@@ -154,7 +154,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
             this, Context, typeof (DropDownMenu), ResourceType.Html, "DropDownMenu.css");
       }
       string script = string.Format ("DropDownMenu_InitializeGlobals ('{0}');", styleSheetUrl);
-      PageUtility.RegisterStartupScriptBlock (Page, key, script);
+      ScriptUtility.RegisterStartupScriptBlock (Page, key, script);
     }
 
     key = UniqueID;
@@ -197,7 +197,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
       script.Append (" )"); // Close Array
       script.Append (" )"); // Close new MenuInfo
       script.Append (" );"); // Close AddMenuInfo
-      PageUtility.RegisterStartupScriptBlock (Page, key, script.ToString());
+      ScriptUtility.RegisterStartupScriptBlock (Page, key, script.ToString());
     }
   }
 
@@ -223,7 +223,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
           // Clientside script creates an anchor with href="#" and onclick=function
           string argument = menuItemIndex.ToString();
           href = Page.GetPostBackClientHyperlink (this, argument);
-          href = PageUtility.EscapeClientScript (href);
+          href = ScriptUtility.EscapeClientScript (href);
           href = "'" + href + "'";
         }
         else if (menuItem.Command.Type == CommandType.Href)

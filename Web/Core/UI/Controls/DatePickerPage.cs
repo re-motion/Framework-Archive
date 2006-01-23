@@ -131,7 +131,7 @@ public class DatePickerPage : Page
     string key = typeof (DatePickerPage).FullName + "_Calendar_SelectionChanged";
     string script = "DatePicker_Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "');";
     if (! Page.IsStartupScriptRegistered (key))
-      PageUtility.RegisterStartupScriptBlock (this, key, script);
+      ScriptUtility.RegisterStartupScriptBlock (this, key, script);
   }
 }
 

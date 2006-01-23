@@ -181,7 +181,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     page.RegisterHiddenField (WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString());
 
     string key = "wxeDoSubmit";
-    PageUtility.RegisterClientScriptBlock (page, key,
+    ScriptUtility.RegisterClientScriptBlock (page, key,
           "function wxeDoSubmit (button, pageToken) { \r\n"
         + "  var theForm = document." + _wxeForm.ClientID + "; \r\n"
         + "  theForm." + WxePageInfo.ReturningTokenID + ".value = pageToken; \r\n"
@@ -189,7 +189,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         + "}");
 
     key = "wxeDoPostBack";
-    PageUtility.RegisterClientScriptBlock (page, key,
+    ScriptUtility.RegisterClientScriptBlock (page, key,
           "function wxeDoPostBack (control, argument, returningToken) { \r\n"
         + "  var theForm = document." + _wxeForm.ClientID + "; \r\n"
         + "  theForm." + WxePageInfo.ReturningTokenID + ".value = returningToken; \r\n"
@@ -257,13 +257,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
         temp = resourceManager.GetString (ResourceIdentifier.StatusIsAbortingMessage);
       else
         temp = _page.StatusIsAbortingMessage;
-      statusIsAbortingMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";        
+      statusIsAbortingMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";        
 
       if (StringUtility.IsNullOrEmpty (_page.StatusIsCachedMessage))
         temp = resourceManager.GetString (ResourceIdentifier.StatusIsCachedMessage);
       else
         temp = _page.StatusIsCachedMessage;
-      statusIsCachedMessage = "'" + PageUtility.EscapeClientScript (temp) + "'";
+      statusIsCachedMessage = "'" + ScriptUtility.EscapeClientScript (temp) + "'";
     }
  
     _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnLoad, "WxePage_OnLoad", "WxePage_OnLoad");
@@ -281,7 +281,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     initScript.Append ("    ").Append (statusIsAbortingMessage).Append (",\r\n");
     initScript.Append ("    ").Append (statusIsCachedMessage).Append (");");
 
-    PageUtility.RegisterClientScriptBlock ((Page)_page, "wxeInitialize", initScript.ToString());
+    ScriptUtility.RegisterClientScriptBlock ((Page)_page, "wxeInitialize", initScript.ToString());
   }
 
   
@@ -502,7 +502,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       openScript = string.Format ("window.open('{0}', '{1}', '{2}');", href, target, features);
     else
       openScript = string.Format ("window.open('{0}', '{1}');", href, target);
-    PageUtility.RegisterStartupScriptBlock ((Page) _page, "WxeExecuteFunction", openScript);
+    ScriptUtility.RegisterStartupScriptBlock ((Page) _page, "WxeExecuteFunction", openScript);
 
     function.ReturnUrl = 
         "javascript:" + GetClosingScriptForExternalFunction (functionToken, sender, returningPostback);
