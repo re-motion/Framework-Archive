@@ -354,9 +354,7 @@ public class Command: IControlItem
     string href = HrefCommand.FormatHref (parameters);
     if (HttpContext.Current != null)
     {
-      for (int i = 0; i < additionalUrlParameters.Count; i++)
-        href = PageUtility.AddUrlParameter (href, additionalUrlParameters.GetKey(i), additionalUrlParameters.Get(i));
-      
+      href = UrlUtility.AddParameters (href, additionalUrlParameters);      
       href = UrlUtility.GetAbsoluteUrl (HttpContext.Current, href);
     }
     writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
