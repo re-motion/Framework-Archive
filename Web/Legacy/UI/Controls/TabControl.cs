@@ -376,10 +376,10 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 
     string url = PageUtility.GetPhysicalPageUrl (this.Page, navigableItem.Href);
     if (navigableItem.SupportsPageToken)
-      url = PageUtility.AddPageToken (url);
+      url = StandardPageUtility.AddPageToken (url);
 
-    url = PageUtility.AddUrlParameter (url, "navSelectedTab", newSelectedTabIndex.ToString());
-    url = PageUtility.AddUrlParameter (url, "navSelectedMenu", newSelectedMenuIndex.ToString());
+    url = StandardPageUtility.AddUrlParameter (url, "navSelectedTab", newSelectedTabIndex.ToString());
+    url = StandardPageUtility.AddUrlParameter (url, "navSelectedMenu", newSelectedMenuIndex.ToString());
 
     return url;
   }
@@ -397,7 +397,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
   {
     INavigablePage navigablePage = this.Page as INavigablePage;
     if (navigablePage != null)
-      return PageUtility.AddCleanupToken (navigablePage, url);
+      return StandardPageUtility.AddCleanupToken (navigablePage, url);
     else 
       return url;
   }

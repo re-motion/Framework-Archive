@@ -57,7 +57,7 @@ public class StandardPage : NavigablePage
     _saveViewStateToSession = false;
     CleanupSession ();
 
-    PageUtility.CloseBrowserWindow (this, refreshParent);
+    StandardPageUtility.CloseBrowserWindow (this, refreshParent);
   }
 
   public string GetErrorImage (string errorMessage)
@@ -87,7 +87,7 @@ public class StandardPage : NavigablePage
 
   public void RegisterOpenReportScript (string reportUrl)
   {
-    PageUtility.RegisterOpenReportScript (this, reportUrl);
+    StandardPageUtility.RegisterOpenReportScript (this, reportUrl);
   }
 
   public Control FocusControl 
@@ -135,8 +135,8 @@ public class StandardPage : NavigablePage
   /// <returns>The Javascript method call to open the URL in the new window.</returns>
   public string GetWindowOpenJavascriptWithRegistration (string url, bool useScrollbars)
   {
-    PageUtility.RegisterWindowOpenJavascript (this);
-    return PageUtility.GetWindowOpenJavascript (url, useScrollbars);
+    StandardPageUtility.RegisterWindowOpenJavascript (this);
+    return StandardPageUtility.GetWindowOpenJavascript (url, useScrollbars);
   }
 
   protected override void SavePageStateToPersistenceMedium (object viewState)

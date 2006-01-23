@@ -35,7 +35,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
   /// <returns></returns>
   public static string GetUniqueToken ()
   {
-    return PageUtility.GetUniqueToken ();
+    return StandardPageUtility.GetUniqueToken ();
   }
 
   /// <summary>
@@ -50,7 +50,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
       Page sourcePage, 
       string destinationUrl, 
       bool returnToThisPage, 
-      PageUtility.NavigationBar showNavBar)
+      StandardPageUtility.NavigationBar showNavBar)
   {
     CallPage (sourcePage, destinationUrl, null, returnToThisPage, showNavBar);
   }
@@ -65,9 +65,9 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
       string destinationUrl, 
       IDictionary parameters, 
       bool returnToThisPage,
-      PageUtility.NavigationBar showNavBar)
+      StandardPageUtility.NavigationBar showNavBar)
   {
-    PageUtility.CallPage (sourcePage, destinationUrl, parameters, returnToThisPage, showNavBar);
+    StandardPageUtility.CallPage (sourcePage, destinationUrl, parameters, returnToThisPage, showNavBar);
   }
 
   /// <summary>
@@ -80,10 +80,10 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
       string destinationUrl, 
       IDictionary parameters, 
       bool returnToThisPage,
-      PageUtility.NavigationBar showNavBar,
+      StandardPageUtility.NavigationBar showNavBar,
       string referrerUrl)
   {
-    PageUtility.CallPage (sourcePage, destinationUrl, parameters, returnToThisPage, showNavBar, referrerUrl);
+    StandardPageUtility.CallPage (sourcePage, destinationUrl, parameters, returnToThisPage, showNavBar, referrerUrl);
   }
 
 
@@ -100,7 +100,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
     {
       string cleanupToken = this.Request.QueryString["cleanupToken"];
       CleanupSession (cleanupToken);
-      PageUtility.DeleteOutdatedSessions( this );
+      StandardPageUtility.DeleteOutdatedSessions( this );
     }
 	}
 
@@ -161,18 +161,18 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
   protected object GetSessionValue (string token, string key, bool required)
   {
     if (token == null) token = string.Empty;
-    return PageUtility.GetSessionValue (this, token, key, required);
+    return StandardPageUtility.GetSessionValue (this, token, key, required);
   }
 
   protected void SetSessionValue (string token, string key, object sessionValue)
   {
     if (token == null) token = string.Empty;
-    PageUtility.SetSessionValue (this, token, key, sessionValue);
+    StandardPageUtility.SetSessionValue (this, token, key, sessionValue);
   }
 
   protected void ClearSessionValue (string token, string key)
   { 
-    PageUtility.ClearSessionValue (this, token, key);
+    StandardPageUtility.ClearSessionValue (this, token, key);
   }
 
   protected void CleanupSession ()
@@ -182,18 +182,18 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
   
   protected void CleanupSession (string token)
   {
-    PageUtility.ClearSession (this, token);
+    StandardPageUtility.ClearSession (this, token);
   }
 
 
   public string Token
   {
-    get {return PageUtility.GetToken (this);}
+    get {return StandardPageUtility.GetToken (this);}
   }
   
   public string GetParentToken()
   {
-    return PageUtility.GetParentToken (this);
+    return StandardPageUtility.GetParentToken (this);
   }
 
   /// <summary>
@@ -206,7 +206,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
   /// <returns>IDictionary containing parameters</returns>
   public IDictionary GetCallParameters (bool requireParameters)
   {
-    return PageUtility.GetCallParameters (this, requireParameters);    
+    return StandardPageUtility.GetCallParameters (this, requireParameters);    
   }
   
   public IDictionary GetCallParameters ()
@@ -253,7 +253,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
       {
         string parameterValue = this.Request.QueryString[parameter];
         if (parameterValue != null && parameterValue != string.Empty)
-          url = PageUtility.AddUrlParameter (url, parameter, parameterValue);
+          url = StandardPageUtility.AddUrlParameter (url, parameter, parameterValue);
       }
     }
 
@@ -322,7 +322,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
   /// <returns></returns>
   private string GetUniqueKey (string key)
   {
-    return PageUtility.GetUniqueKey (this, key);
+    return StandardPageUtility.GetUniqueKey (this, key);
   }
 
   protected virtual ShowBackLinkType GetShowBackLinkType ()
