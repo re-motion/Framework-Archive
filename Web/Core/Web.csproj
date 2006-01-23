@@ -901,11 +901,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\TabControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\Controls\TabView.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
