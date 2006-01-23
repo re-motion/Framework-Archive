@@ -18,12 +18,9 @@ namespace Rubicon.Web.UI.Controls
 [ToolboxData("<{0}:WebButton runat=server></{0}:WebButton>")]
 public class WebButton : 
     Button
-#if NET11
     // Required because Page.ProcessPostData always registers the last IPostBackEventHandler in the controls 
     // collection for controls (buttons) having PostData but no IPostBackDataHandler. 
-    // .net 2.0 resolves this issue for controls using a javascript induced postback event.
     , IPostBackDataHandler
-#endif
 {
   private IconInfo _icon;
 #if NET11
@@ -39,7 +36,6 @@ public class WebButton :
     _icon = new IconInfo();
   }
 
-#if NET11
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
   }
@@ -63,7 +59,6 @@ public class WebButton :
     }
     return false;
   }
-#endif
 
   protected override void OnPreRender(EventArgs e)
   {
