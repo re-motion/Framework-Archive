@@ -436,9 +436,7 @@ public class TabbedMenu: WebControl, IControl
     ArgumentUtility.CheckNotNullOrEmpty ("url", url);
     
     NameValueCollection urlParameters = GetUrlParameters (menuTab);
-    for (int i = 0; i < urlParameters.Count; i++)
-      url = PageUtility.AddUrlParameter (url, urlParameters.GetKey(i), urlParameters.Get(i));
-  
+    url = UrlUtility.AddParameters (url, urlParameters);
     return url;
   }
 
