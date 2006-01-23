@@ -696,11 +696,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\INavigablePage.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\IPage.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -1067,6 +1062,11 @@
                 />
                 <File
                     RelPath = "Utilities\PageUtility.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Utilities\ScriptUtility.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
