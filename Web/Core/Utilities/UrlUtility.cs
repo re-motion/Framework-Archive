@@ -247,6 +247,10 @@ public class UrlUtility
     return value;
   }
 
+  public static string GetParameter (string url, string name)
+  {
+    return UrlUtility.GetParameter (url, name, HttpContext.Current.Response.ContentEncoding);
+  }
 
   /// <summary> Gets the index of the <paramref name="parameter"/> in the <paramref name="url"/>. </summary>
   /// <returns> The index of the <paramref name="parameter"/> or -1 if it is not part of the <paramref name="url"/>. </returns>

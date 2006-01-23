@@ -18,7 +18,7 @@ namespace Rubicon.Web.Utilities
 /// </summary>
 public class PageUtility
 {
-  #region UrlUtility
+  #region Obsolete UrlUtility
 
   [Obsolete ("Legacy implementation moved to StandardPageUtility in Rubicon.Web.Legacy.dll. New implementation moved to UrlUtility.AddParameter")]
   public static string AddUrlParameter (string url, string name, string value)
@@ -26,58 +26,21 @@ public class PageUtility
     return UrlUtility.AddParameter (url, name, value);
   }
 
-  [Obsolete ("Legacy implementation moved to StandardPageUtility in Rubicon.Web.Legacy.dll. New implementation moved to UrlUtility.")]
+  [Obsolete ("Legacy implementation moved to StandardPageUtility in Rubicon.Web.Legacy.dll. New implementation moved to UrlUtility.DeleteParameter.")]
   public static string DeleteUrlParameter (string url, string name)
   {
-    int startPos = url.IndexOf (name);
-
-    if (startPos >= 0)
-    {
-      int nextParameterPos = url.IndexOf ("&", startPos);
-      if (nextParameterPos < 0)
-        nextParameterPos = url.Length;
-      else
-        nextParameterPos++;
-
-      // Delimiter is concatenated separately
-      startPos--;
-
-      string delimiter = url.Substring (startPos, 1);
-
-      string remainingUrl = url.Substring (nextParameterPos);
-
-      if (remainingUrl.Length > 0)
-        url = url.Substring (0, startPos) + delimiter + url.Substring (nextParameterPos);
-      else
-        url = url.Substring (0, startPos);
-    }
-
-    return url;
+    return UrlUtility.DeleteParameter (url, name);
   }
 
-  [Obsolete ("Legacy implementation moved to StandardPageUtility in Rubicon.Web.Legacy.dll. New implementation moved to UrlUtility.")]
+  [Obsolete ("Legacy implementation moved to StandardPageUtility in Rubicon.Web.Legacy.dll. New implementation moved to UrlUtility.GetParameter.")]
   public static string GetUrlParameter (string url, string name)
   {
-    int startPos = url.IndexOf (name);
-    
-    if (startPos >= 0)
-    {
-      startPos += name.Length + 1;
-      int endPos = url.IndexOf ("&", startPos);
-      if (endPos == -1)
-        endPos = url.Length;
-
-      int length = endPos - startPos;
-
-      return url.Substring (startPos, length);
-    }
-
-    return string.Empty;
+    return UrlUtility.GetParameter (url, name);
   }
 
   #endregion
 
-  #region ScriptUtility
+  #region Obsolete ScriptUtility
 
   [Obsolete ("Moved to ScriptUtility.")]
   public static string EscapeClientScript (string input)
@@ -99,7 +62,7 @@ public class PageUtility
 
   #endregion
 
-  #region StandardPageUtility
+  #region Obsolete StandardPageUtility
 
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public const string c_supressNavParam = "SupressNav";
@@ -288,8 +251,6 @@ public class PageUtility
   }
 
   #endregion
-
-  private const string c_windowOpenJavascriptKey = "WindowOpenJavascript";
 
   /// <summary>
   /// Returns the physical URL for the current page.

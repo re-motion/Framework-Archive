@@ -449,8 +449,7 @@ public class WxeContext
     while (! StringUtility.IsNullOrEmpty (url))
     {
       string currentUrl = url;
-      url = PageUtility.GetUrlParameter (currentUrl, WxeHandler.Parameters.ReturnUrl);
-      url = HttpUtility.UrlDecode (url, encoding);
+      url = UrlUtility.GetParameter (currentUrl, WxeHandler.Parameters.ReturnUrl);
 
       if (! StringUtility.IsNullOrEmpty (url))
         currentUrl = UrlUtility.DeleteParameter (currentUrl, WxeHandler.Parameters.ReturnUrl);

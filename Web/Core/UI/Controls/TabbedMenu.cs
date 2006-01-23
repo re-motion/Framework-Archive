@@ -326,14 +326,9 @@ public class TabbedMenu: WebControl, IControl
     {
       string value;
       if (Page is IWxePage)
-      {
-        value = PageUtility.GetUrlParameter (WxeContext.Current.QueryString, SelectionID);
-        value = System.Web.HttpUtility.UrlDecode (value, System.Web.HttpContext.Current.Response.ContentEncoding);
-      }
+        value = UrlUtility.GetParameter (WxeContext.Current.QueryString, SelectionID);
       else
-      {
         value = Context.Request.QueryString[SelectionID];
-      }
       if (value != null)
         selection = (string[]) TypeConversionServices.Current.Convert (typeof (string), typeof (string[]), value);
     }
