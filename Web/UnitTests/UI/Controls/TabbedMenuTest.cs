@@ -109,7 +109,7 @@ public class TabbedMenuTest: WebControlTest
     string url = "/AppDir/page.aspx";
     string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_mainMenuTab2.ItemID});
-    string expectedUrl = PageUtility.AddUrlParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
+    string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
     
     string value = _tabbedMenu.FormatUrl (url, _mainMenuTab2);
 
@@ -123,7 +123,7 @@ public class TabbedMenuTest: WebControlTest
     string url = "/AppDir/page.aspx";
     string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_subMenuTab22.Parent.ItemID, _subMenuTab22.ItemID});
-    string expectedUrl = PageUtility.AddUrlParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
+    string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
     
     string value = _tabbedMenu.FormatUrl (url, _subMenuTab22);
 
@@ -138,7 +138,7 @@ public class TabbedMenuTest: WebControlTest
     _mainMenuTab3.IsSelected = true;
     string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_mainMenuTab3.ItemID});
-    string expectedUrl = PageUtility.AddUrlParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
+    string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
     
     string value = _tabbedMenu.FormatUrl (url);
 
@@ -153,7 +153,7 @@ public class TabbedMenuTest: WebControlTest
     _subMenuTab12.IsSelected = true;
     string expectedParameterValue = (string) TypeConversionServices.Current.Convert (
         typeof (string[]), typeof (string), new string[] {_subMenuTab12.Parent.ItemID, _subMenuTab12.ItemID});
-    string expectedUrl = PageUtility.AddUrlParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
+    string expectedUrl = UrlUtility.AddParameter (url, _tabbedMenu.SelectionID, expectedParameterValue);
     
     string value = _tabbedMenu.FormatUrl (url);
 

@@ -242,7 +242,7 @@ public class WxeContextTest
     
     string parentUrl = _currentHttpContext.Request.Url.AbsolutePath;
     parentUrl += UrlUtility.FormatQueryString (_currentHttpContext.Request.QueryString);
-    parentUrl = PageUtility.DeleteUrlParameter (parentUrl, WxeHandler.Parameters.ReturnUrl);
+    parentUrl = UrlUtility.DeleteParameter (parentUrl, WxeHandler.Parameters.ReturnUrl);
     expectedQueryString.Add (WxeHandler.Parameters.ReturnUrl, parentUrl);
     
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, _resource);
