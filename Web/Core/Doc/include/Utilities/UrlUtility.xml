@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<UrlUtility>
+  <AddParameter>
+    <param name="url"> 
+      A string containing a url or a query string. Must not be <see langword="null"/>. 
+      It may be empty or end with an empty query string's <c>?</c> or an <c>&amp;</c>.
+    </param>
+    <param name="name"> 
+      The name of the url parameter to be added. Must not be <see langword="null"/> or empty. 
+    </param>
+    <param name="value"> 
+      The value of the url parameter to be added. Must not be <see langword="null"/>. 
+    </param>
+    <param name="encoding"> 
+      The <see cref="Encoding"/> used to encode the <paramref name="value"/>. Must not be <see langword="null"/>.
+       Defaults to the <see cref="HttpResponse.ContentEncoding">HttpResponse.ContentEncoding</see> of the
+      <see cref="HttpContext.Current">Current</see> HttpContext.
+    </param>
+    <returns> 
+      A string containing the <paramref name="url"/> appended with the encoded url parameter. 
+    </returns>
+  </AddParameter>
+  <AddParameters>
+    <param name="url"> 
+      A string containing a url or a query string. Must not be <see langword="null"/>. 
+      It may be empty or end with an empty query string's <c>?</c> or an <c>&amp;</c>.
+    </param>
+    <param name="queryStringCollection"> 
+      The <see cref="NameValueCollection"/> containing the name value pairs for the query string.
+    </param>
+    <param name="encoding"> 
+      The <see cref="Encoding"/> used to encode the <paramref name="value"/>. Must not be <see langword="null"/>.
+       Defaults to the <see cref="HttpResponse.ContentEncoding">HttpResponse.ContentEncoding</see> of the
+      <see cref="HttpContext.Current">Current</see> HttpContext.
+    </param>
+    <returns> 
+      A string containing the <paramref name="url"/> appedned with the encoded url parameters.
+    </returns>
+  </AddParameters>
+  <FormatQueryString>
+    <param name="queryStringCollection"> 
+      The <see cref="NameValueCollection"/> containing the name value pairs for the query string.
+    </param>
+    <param name="encoding"> 
+      The <see cref="Encoding"/> used to encode the <paramref name="value"/>. Must not be <see langword="null"/>.
+       Defaults to the <see cref="HttpResponse.ContentEncoding">HttpResponse.ContentEncoding</see> of the
+      <see cref="HttpContext.Current">Current</see> HttpContext.
+    </param>
+    <returns> 
+      The encoded query string, starting with a <c>?</c>, or an empty string if the 
+      <paramref name="queryStringCollection"/> was empty.
+    </returns>
+  </FormatQueryString>
+  <DeleteParameter>
+    <param name="url"> 
+      A string containing a url or a query string. Must not be <see langword="null"/>.
+      If it contains only a query string, it must begin with a <c>?</c>.
+      It may be empty or end with an empty query string's <c>?</c> or an <c>&amp;</c>.
+    </param>
+    <param name="name"> 
+      The name of the url parameter to be removed. Must not be <see langword="null"/> or empty. 
+    </param>
+    <returns> 
+      A string containing the <paramref name="url"/> minus the url parameter. 
+    </returns>
+  </DeleteParameter>
+</UrlUtility>
