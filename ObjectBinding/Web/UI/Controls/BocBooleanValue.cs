@@ -257,7 +257,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
               trueValue, falseValue, nullValue, 
               defaultTrueDescription, defaultFalseDescription, defaultNullDescription, 
               trueIconUrl, falseIconUrl, nullIconUrl);
-          PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
+          ScriptUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
         }
       }
 

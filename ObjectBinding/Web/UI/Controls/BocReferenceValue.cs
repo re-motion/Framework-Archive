@@ -481,7 +481,7 @@ public class BocReferenceValue:
     if (! IsDesignMode && ! Page.IsStartupScriptRegistered (s_startUpScriptKey))
     {
       const string script = "BocReferenceValue_InitializeGlobals ('" + c_nullIdentifier + "');";
-      PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
+      ScriptUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
     }
 
     if (! HtmlHeadAppender.Current.IsRegistered (s_styleFileKey))

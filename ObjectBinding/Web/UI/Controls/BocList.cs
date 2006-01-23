@@ -1172,7 +1172,7 @@ public class BocList:
             CssClassDataCellEven,
             CssClassDataCellOddSelected,
             CssClassDataCellEvenSelected);
-        PageUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
+        ScriptUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
       }
     }
 
@@ -1764,7 +1764,7 @@ public class BocList:
       script.AppendFormat (
           "BocList_UpdateListMenu ( document.getElementById ('{0}'), document.getElementById ('{1}'));",
           ClientID, menuID);
-      PageUtility.RegisterStartupScriptBlock (Page, key, script.ToString());
+      ScriptUtility.RegisterStartupScriptBlock (Page, key, script.ToString());
     }
   }
 
@@ -1790,7 +1790,7 @@ public class BocList:
           // Clientside script creates an anchor with href="#" and onclick=function
           string argument = c_eventMenuItemPrefix + menuItemIndex.ToString();
           href = Page.GetPostBackClientHyperlink (this, argument) + ";";
-          href = PageUtility.EscapeClientScript (href);
+          href = ScriptUtility.EscapeClientScript (href);
           href = "'" + href + "'";
         }
         else if (menuItem.Command.Type == CommandType.Href)
