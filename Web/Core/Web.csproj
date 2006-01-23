@@ -292,6 +292,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\Utilities\UrlUtility.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "ExecutionEngine\NumberedMemberFinder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
