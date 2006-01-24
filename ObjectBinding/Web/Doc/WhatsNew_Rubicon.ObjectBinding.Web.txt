@@ -26,6 +26,15 @@
       Für die BocList gilt das auch bei SaveValue(interim=true). Im Regelfall wird SaveValue(interim=true) im 
       Page.Unload aufgerufen und damit kann der neue IsDirty Zustand nicht mehr im ViewState perisistiert werden.
     
+- BocBooleanValue
+  * Bugfix: Wurde Value auf NaBoolean gesetzt, hat das zu einer CastException geführt.
+
+- BocCheckBox
+  * Bugfix: Wurde Value auf NaBoolean gesetzt, hat das zu einer CastException geführt.
+  
+- BocDateTimeValue
+  * Bugfix: Wurde Value auf NaDateTime gesetzt, hat das zu einer CastException geführt.
+  
 1.3.28
 ======
 - BocDateTimeValue

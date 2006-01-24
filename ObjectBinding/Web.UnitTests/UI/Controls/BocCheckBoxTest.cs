@@ -1,12 +1,14 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Web.UI;
 using Rubicon.NullableValueTypes;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.UnitTests.Configuration;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.UnitTests.Domain;
+using Rubicon.Web.Configuration;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UnitTests.Configuration;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
@@ -16,6 +18,10 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 public class BocCheckBoxTest: BocTest
 {
   private BocCheckBoxMock _bocCheckBox;
+  private TypeWithBoolean _businessObject;
+  private BusinessObjectReferenceDataSource _dataSource;
+  private IBusinessObjectBooleanProperty _propertyBooleanValue;
+  private IBusinessObjectBooleanProperty _propertyNaBooleanValue;
 
   public BocCheckBoxTest()
   {
@@ -29,6 +35,14 @@ public class BocCheckBoxTest: BocTest
     _bocCheckBox = new BocCheckBoxMock();
     _bocCheckBox.ID = "BocCheckBox";
     NamingContainer.Controls.Add (_bocCheckBox);
+ 
+    _businessObject = new TypeWithBoolean();
+    
+    _propertyBooleanValue = (IBusinessObjectBooleanProperty) _businessObject.GetBusinessObjectProperty ("BooleanValue");
+    _propertyNaBooleanValue = (IBusinessObjectBooleanProperty) _businessObject.GetBusinessObjectProperty ("NaBooleanValue");
+    
+    _dataSource = new BusinessObjectReferenceDataSource();
+    _dataSource.BusinessObject = _businessObject;
   }
 
 
@@ -85,6 +99,151 @@ public class BocCheckBoxTest: BocTest
     Assert.IsNotNull (actual);
     Assert.AreEqual (1, actual.Length);
     Assert.AreEqual (_bocCheckBox.CheckBox.ClientID, actual[0]);
+  }
+
+
+  [Test]
+  public void SetValueTrue()
+  {
+    _bocCheckBox.IsDirty = false;
+    _bocCheckBox.Value = true;
+    Assert.AreEqual (true, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueFalse()
+  {
+    _bocCheckBox.IsDirty = false;
+    _bocCheckBox.Value = false;
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNull()
+  {
+    _bocCheckBox.DefaultValue = NaBoolean.False;
+    _bocCheckBox.IsDirty = false;
+    _bocCheckBox.Value = null;
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNaBooleanTrue()
+  {
+    _bocCheckBox.IsDirty = false;
+    _bocCheckBox.Value = NaBoolean.True;
+    Assert.AreEqual (true, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNaBooleanFalse()
+  {
+    _bocCheckBox.IsDirty = false;
+    _bocCheckBox.Value = NaBoolean.False;
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNaBooleanNull()
+  {
+    _bocCheckBox.DefaultValue = NaBoolean.False;
+    _bocCheckBox.IsDirty = false;
+    _bocCheckBox.Value = NaBoolean.Null;
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  {
+    _businessObject.BooleanValue = true;
+    _bocCheckBox.DataSource = _dataSource;
+    _bocCheckBox.Property = _propertyBooleanValue;
+    _bocCheckBox.Value = false;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (true);
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueTrue()
+  {
+    _businessObject.BooleanValue = true;
+    _bocCheckBox.DataSource = _dataSource;
+    _bocCheckBox.Property = _propertyBooleanValue;
+    _bocCheckBox.Value = false;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (false);
+    Assert.AreEqual (_businessObject.BooleanValue, _bocCheckBox.Value);
+    Assert.IsFalse (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueFalse()
+  {
+    _businessObject.BooleanValue = false;
+    _bocCheckBox.DataSource = _dataSource;
+    _bocCheckBox.Property = _propertyBooleanValue;
+    _bocCheckBox.Value = true;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (false);
+    Assert.AreEqual (_businessObject.BooleanValue, _bocCheckBox.Value);
+    Assert.IsFalse (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanTrue()
+  {
+    _businessObject.NaBooleanValue = NaBoolean.True;
+    _bocCheckBox.DataSource = _dataSource;
+    _bocCheckBox.Property = _propertyNaBooleanValue;
+    _bocCheckBox.Value = false;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (false);
+    NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocCheckBox.Value);
+    Assert.AreEqual (_businessObject.NaBooleanValue, actual);
+    Assert.IsFalse (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanFalse()
+  {
+    _businessObject.NaBooleanValue = NaBoolean.False;
+    _bocCheckBox.DataSource = _dataSource;
+    _bocCheckBox.Property = _propertyNaBooleanValue;
+    _bocCheckBox.Value = true;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (false);
+    NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocCheckBox.Value);
+    Assert.AreEqual (_businessObject.NaBooleanValue, actual);
+    Assert.IsFalse (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanNull()
+  {
+    _businessObject.NaBooleanValue = NaBoolean.Null;
+    _bocCheckBox.DefaultValue = NaBoolean.False;
+    _bocCheckBox.DataSource = _dataSource;
+    _bocCheckBox.Property = _propertyNaBooleanValue;
+    _bocCheckBox.Value = true;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (false);
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
   }
 }
 

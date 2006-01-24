@@ -1,15 +1,14 @@
 using System;
-
 using NUnit.Framework;
-
 using Rubicon.Development.UnitTesting;
 using Rubicon.NullableValueTypes;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.UnitTests.Domain;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UnitTests.Configuration;
-using Rubicon.ObjectBinding.Web.UnitTests.Domain;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
@@ -19,7 +18,9 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 public class BocEnumValueTest: BocTest
 {
   private BocEnumValueMock _bocEnumValue;
-  private TypeWithEnum _typeWithEnum;
+  private TypeWithEnum _businessObject;
+  private BusinessObjectReferenceDataSource _dataSource;
+  private IBusinessObjectEnumerationProperty _propertyEnumValue;
 
   public BocEnumValueTest()
   {
@@ -33,7 +34,13 @@ public class BocEnumValueTest: BocTest
     _bocEnumValue = new BocEnumValueMock();
     _bocEnumValue.ID = "BocEnumValue";
     NamingContainer.Controls.Add (_bocEnumValue);
-    _typeWithEnum = new TypeWithEnum();
+
+    _businessObject = new TypeWithEnum();
+    
+    _propertyEnumValue = (IBusinessObjectEnumerationProperty) _businessObject.GetBusinessObjectProperty ("EnumValue");
+    
+    _dataSource = new BusinessObjectReferenceDataSource();
+    _dataSource.BusinessObject = _businessObject;
   }
 
 
@@ -122,12 +129,11 @@ public class BocEnumValueTest: BocTest
   {
     _bocEnumValue.ReadOnly = NaBoolean.False;
     _bocEnumValue.ListControlStyle.ControlType = ListControlType.RadioButtonList;
-    IBusinessObjectProperty property = _typeWithEnum.GetBusinessObjectProperty ("EnumValue");
-    Assert.IsNotNull (property, "Could not find property 'EnumValue'.");
+    Assert.IsNotNull (_propertyEnumValue, "Could not find property 'EnumValue'.");
     Assert.IsTrue (
-        typeof (IBusinessObjectEnumerationProperty).IsAssignableFrom (property.GetType()), 
+        typeof (IBusinessObjectEnumerationProperty).IsAssignableFrom (_propertyEnumValue.GetType()), 
         "Property 'EnumValue' of invalid type.");
-    _bocEnumValue.Property = (IBusinessObjectEnumerationProperty) property;
+    _bocEnumValue.Property = (IBusinessObjectEnumerationProperty) _propertyEnumValue;
     _bocEnumValue.RefreshEnumList();
 
     string[] actual = _bocEnumValue.GetTrackedClientIDs();
@@ -136,6 +142,56 @@ public class BocEnumValueTest: BocTest
     Assert.AreEqual (_bocEnumValue.ListControl.ClientID + "_0", actual[0]);
     Assert.AreEqual (_bocEnumValue.ListControl.ClientID + "_1", actual[1]);
     Assert.AreEqual (_bocEnumValue.ListControl.ClientID + "_2", actual[2]);
+  }
+
+
+  [Test]
+  public void SetValueEnum()
+  {
+    _bocEnumValue.Property = _propertyEnumValue;
+    _bocEnumValue.IsDirty = false;
+    _bocEnumValue.Value = TestEnum.Second;
+    Assert.AreEqual (TestEnum.Second, _bocEnumValue.Value);
+    Assert.IsTrue (_bocEnumValue.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNull()
+  {
+    _bocEnumValue.Property = _propertyEnumValue;
+    _bocEnumValue.IsDirty = false;
+    _bocEnumValue.Value = null;
+    Assert.AreEqual (null, _bocEnumValue.Value);
+    Assert.IsTrue (_bocEnumValue.IsDirty);
+  }
+    
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  {
+    _businessObject.EnumValue = TestEnum.Second;
+    _bocEnumValue.DataSource = _dataSource;
+    _bocEnumValue.Property = _propertyEnumValue;
+    _bocEnumValue.Value = null;
+    _bocEnumValue.IsDirty = true;
+
+    _bocEnumValue.LoadValue (true);
+    Assert.AreEqual (null, _bocEnumValue.Value);
+    Assert.IsTrue (_bocEnumValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithEnum()
+  {
+    _businessObject.EnumValue = TestEnum.Second;
+    _bocEnumValue.DataSource = _dataSource;
+    _bocEnumValue.Property = _propertyEnumValue;
+    _bocEnumValue.Value = null;
+    _bocEnumValue.IsDirty = true;
+
+    _bocEnumValue.LoadValue (false);
+    Assert.AreEqual (_businessObject.EnumValue, _bocEnumValue.Value);
+    Assert.IsFalse (_bocEnumValue.IsDirty);
   }
 }
 

@@ -1,12 +1,14 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Web.UI;
 using Rubicon.NullableValueTypes;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.UnitTests.Configuration;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.UnitTests.Domain;
+using Rubicon.Web.Configuration;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UnitTests.Configuration;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
@@ -16,6 +18,10 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 public class BocDateTimeValueTest: BocTest
 {
   private BocDateTimeValueMock _bocDateTimeValue;
+  private TypeWithDateTime _businessObject;
+  private BusinessObjectReferenceDataSource _dataSource;
+  private IBusinessObjectDateTimeProperty _propertyDateTimeValue;
+  private IBusinessObjectDateTimeProperty _propertyNaDateTimeValue;
 
   public BocDateTimeValueTest()
   {
@@ -29,6 +35,14 @@ public class BocDateTimeValueTest: BocTest
     _bocDateTimeValue = new BocDateTimeValueMock();
     _bocDateTimeValue.ID = "BocDateTimeValue";
     NamingContainer.Controls.Add (_bocDateTimeValue);
+  
+    _businessObject = new TypeWithDateTime();
+    
+    _propertyDateTimeValue = (IBusinessObjectDateTimeProperty) _businessObject.GetBusinessObjectProperty ("DateTimeValue");
+    _propertyNaDateTimeValue = (IBusinessObjectDateTimeProperty) _businessObject.GetBusinessObjectProperty ("NaDateTimeValue");
+    
+    _dataSource = new BusinessObjectReferenceDataSource();
+    _dataSource.BusinessObject = _businessObject;
   }
 
 
@@ -176,6 +190,105 @@ public class BocDateTimeValueTest: BocTest
     Assert.AreEqual (2, actual.Length);
     Assert.AreEqual (_bocDateTimeValue.DateTextBox.ClientID, actual[0]);
     Assert.AreEqual (_bocDateTimeValue.TimeTextBox.ClientID, actual[1]);
+  }
+
+
+  [Test]
+  public void SetValueDateTime()
+  {
+    DateTime dateTime = new DateTime (2006, 1, 1, 1, 1, 1);
+    _bocDateTimeValue.IsDirty = false;
+    _bocDateTimeValue.Value = dateTime;
+    Assert.AreEqual (dateTime, _bocDateTimeValue.Value);
+    Assert.IsTrue (_bocDateTimeValue.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNull()
+  {
+    _bocDateTimeValue.IsDirty = false;
+    _bocDateTimeValue.Value = null;
+    Assert.AreEqual (null, _bocDateTimeValue.Value);
+    Assert.IsTrue (_bocDateTimeValue.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNaDateTime()
+  {
+    NaDateTime dateTime = new NaDateTime (2006, 1, 1, 1, 1, 1);
+    _bocDateTimeValue.IsDirty = false;
+    _bocDateTimeValue.Value = dateTime;
+    NaDateTime actual = NaDateTime.FromBoxedDateTime (_bocDateTimeValue.Value);
+    Assert.AreEqual (dateTime, actual);
+    Assert.IsTrue (_bocDateTimeValue.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNaDateTimeNull()
+  {
+    _bocDateTimeValue.IsDirty = false;
+    _bocDateTimeValue.Value = NaDateTime.Null;
+    Assert.AreEqual (null, _bocDateTimeValue.Value);
+    Assert.IsTrue (_bocDateTimeValue.IsDirty);
+  }
+
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  {
+    _businessObject.DateTimeValue = new DateTime (2006, 1, 1, 1, 1, 1);
+    _bocDateTimeValue.DataSource = _dataSource;
+    _bocDateTimeValue.Property = _propertyDateTimeValue;
+    _bocDateTimeValue.Value = null;
+    _bocDateTimeValue.IsDirty = true;
+
+    _bocDateTimeValue.LoadValue (true);
+    Assert.AreEqual (null, _bocDateTimeValue.Value);
+    Assert.IsTrue (_bocDateTimeValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithDateTime()
+  {
+    _businessObject.DateTimeValue = new DateTime (2006, 1, 1, 1, 1, 1);
+    _bocDateTimeValue.DataSource = _dataSource;
+    _bocDateTimeValue.Property = _propertyDateTimeValue;
+    _bocDateTimeValue.Value = null;
+    _bocDateTimeValue.IsDirty = true;
+
+    _bocDateTimeValue.LoadValue (false);
+    Assert.AreEqual (_businessObject.DateTimeValue, _bocDateTimeValue.Value);
+    Assert.IsFalse (_bocDateTimeValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaDateTime()
+  {
+    _businessObject.NaDateTimeValue = new NaDateTime (2006, 1, 1, 1, 1, 1);
+    _bocDateTimeValue.DataSource = _dataSource;
+    _bocDateTimeValue.Property = _propertyNaDateTimeValue;
+    _bocDateTimeValue.Value = null;
+    _bocDateTimeValue.IsDirty = true;
+
+    _bocDateTimeValue.LoadValue (false);
+    NaDateTime actual = NaDateTime.FromBoxedDateTime (_bocDateTimeValue.Value);
+    Assert.AreEqual (_businessObject.NaDateTimeValue, actual);
+    Assert.IsFalse (_bocDateTimeValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaDateTimeNull()
+  {
+    _businessObject.NaDateTimeValue = NaDateTime.Null;
+    _bocDateTimeValue.DataSource = _dataSource;
+    _bocDateTimeValue.Property = _propertyNaDateTimeValue;
+    _bocDateTimeValue.Value = DateTime.Now;
+    _bocDateTimeValue.IsDirty = true;
+
+    _bocDateTimeValue.LoadValue (false);
+    NaDateTime actual = NaDateTime.FromBoxedDateTime (_bocDateTimeValue.Value);
+    Assert.AreEqual (_businessObject.NaDateTimeValue, actual);
+    Assert.IsFalse (_bocDateTimeValue.IsDirty);
   }
 }
 
