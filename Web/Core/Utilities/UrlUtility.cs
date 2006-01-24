@@ -183,7 +183,7 @@ public class UrlUtility
   /// <include file='doc\include\Utilities\UrlUtility.xml' path='UrlUtility/FormatQueryString/returns' />
   public static string FormatQueryString (NameValueCollection queryStringCollection)
   {
-    return UrlUtility.FormatUrl (string.Empty, queryStringCollection, HttpContext.Current.Response.ContentEncoding);
+    return UrlUtility.FormatQueryString (queryStringCollection, HttpContext.Current.Response.ContentEncoding);
   }
 
   
