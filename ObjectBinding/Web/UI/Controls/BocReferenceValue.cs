@@ -854,6 +854,16 @@ public class BocReferenceValue:
     return values;
   }
 
+
+  public virtual void LoadValue (IBusinessObjectWithIdentity value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      IsDirty = value != Value;
+    }
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
   /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
   public override void LoadValue (bool interim)
@@ -864,8 +874,7 @@ public class BocReferenceValue:
       {
         IBusinessObjectWithIdentity value = 
             (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
-        Value = value;
-        IsDirty = value != Value;
+        LoadValue (value, interim);
       }
     }
   }

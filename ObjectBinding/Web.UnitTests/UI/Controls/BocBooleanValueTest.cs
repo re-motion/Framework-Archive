@@ -156,7 +156,7 @@ public class BocBooleanValueTest: BocTest
 
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  public void LoadValueBoundAndInterimTrue()
   {
     _businessObject.BooleanValue = true;
     _bocBooleanValue.DataSource = _dataSource;
@@ -170,7 +170,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueTrue()
+  public void LoadValueBoundAndInterimFalseWithValueTrue()
   {
     _businessObject.BooleanValue = true;
     _bocBooleanValue.DataSource = _dataSource;
@@ -184,7 +184,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueFalse()
+  public void LoadValueBoundAndInterimFalseWithValueFalse()
   {
     _businessObject.BooleanValue = false;
     _bocBooleanValue.DataSource = _dataSource;
@@ -198,7 +198,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanTrue()
+  public void LoadValueBoundAndInterimFalseWithValueNaBooelanTrue()
   {
     _businessObject.NaBooleanValue = NaBoolean.True;
     _bocBooleanValue.DataSource = _dataSource;
@@ -213,7 +213,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanFalse()
+  public void LoadValueBoundAndInterimFalseWithValueNaBooelanFalse()
   {
     _businessObject.NaBooleanValue = NaBoolean.False;
     _bocBooleanValue.DataSource = _dataSource;
@@ -228,7 +228,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanNull()
+  public void LoadValueBoundAndInterimFalseWithValueNaBooelanNull()
   {
     _businessObject.NaBooleanValue = NaBoolean.Null;
     _bocBooleanValue.DataSource = _dataSource;
@@ -239,6 +239,94 @@ public class BocBooleanValueTest: BocTest
     _bocBooleanValue.LoadValue (false);
     NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocBooleanValue.Value);
     Assert.AreEqual (_businessObject.NaBooleanValue, actual);
+    Assert.IsFalse (_bocBooleanValue.IsDirty);
+  }
+
+
+  [Test]
+  public void LoadValueUnboundAndInterimTrue()
+  {
+    bool value = true;
+    _bocBooleanValue.Value = null;
+    _bocBooleanValue.IsDirty = true;
+
+    _bocBooleanValue.LoadValue (value, true);
+    Assert.AreEqual (null, _bocBooleanValue.Value);
+    Assert.IsTrue (_bocBooleanValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueTrue()
+  {
+    bool value = true;
+    _bocBooleanValue.Value = null;
+    _bocBooleanValue.IsDirty = true;
+
+    _bocBooleanValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocBooleanValue.Value);
+    Assert.IsFalse (_bocBooleanValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueFalse()
+  {
+    bool value = false;
+    _bocBooleanValue.Value = null;
+    _bocBooleanValue.IsDirty = true;
+
+    _bocBooleanValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocBooleanValue.Value);
+    Assert.IsFalse (_bocBooleanValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueNull()
+  {
+    object value = null;
+    _bocBooleanValue.Value = true;
+    _bocBooleanValue.IsDirty = true;
+
+    _bocBooleanValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocBooleanValue.Value);
+    Assert.IsFalse (_bocBooleanValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanTrue()
+  {
+    NaBoolean value = NaBoolean.True;
+    _bocBooleanValue.Value = null;
+    _bocBooleanValue.IsDirty = true;
+
+    _bocBooleanValue.LoadValue (value, false);
+    NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocBooleanValue.Value);
+    Assert.AreEqual (value, actual);
+    Assert.IsFalse (_bocBooleanValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanFalse()
+  {
+    NaBoolean value = NaBoolean.False;
+    _bocBooleanValue.Value = null;
+    _bocBooleanValue.IsDirty = true;
+
+    _bocBooleanValue.LoadValue (value, false);
+    NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocBooleanValue.Value);
+    Assert.AreEqual (value, actual);
+    Assert.IsFalse (_bocBooleanValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanNull()
+  {
+    NaBoolean value = NaBoolean.Null;
+    _bocBooleanValue.Value = true;
+    _bocBooleanValue.IsDirty = true;
+
+    _bocBooleanValue.LoadValue (value, false);
+    NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocBooleanValue.Value);
+    Assert.AreEqual (value, actual);
     Assert.IsFalse (_bocBooleanValue.IsDirty);
   }
 }

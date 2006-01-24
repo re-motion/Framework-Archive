@@ -160,7 +160,7 @@ public class BocCheckBoxTest: BocTest
 
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  public void LoadValueBoundAndInterimTrue()
   {
     _businessObject.BooleanValue = true;
     _bocCheckBox.DataSource = _dataSource;
@@ -174,7 +174,7 @@ public class BocCheckBoxTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueTrue()
+  public void LoadValueBoundAndInterimFalseWithValueTrue()
   {
     _businessObject.BooleanValue = true;
     _bocCheckBox.DataSource = _dataSource;
@@ -188,7 +188,7 @@ public class BocCheckBoxTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueFalse()
+  public void LoadValueBoundAndInterimFalseWithValueFalse()
   {
     _businessObject.BooleanValue = false;
     _bocCheckBox.DataSource = _dataSource;
@@ -202,7 +202,7 @@ public class BocCheckBoxTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanTrue()
+  public void LoadValueBoundAndInterimFalseWithValueNaBooelanTrue()
   {
     _businessObject.NaBooleanValue = NaBoolean.True;
     _bocCheckBox.DataSource = _dataSource;
@@ -217,7 +217,7 @@ public class BocCheckBoxTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanFalse()
+  public void LoadValueBoundAndInterimFalseWithValueNaBooelanFalse()
   {
     _businessObject.NaBooleanValue = NaBoolean.False;
     _bocCheckBox.DataSource = _dataSource;
@@ -232,7 +232,7 @@ public class BocCheckBoxTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithValueNaBooelanNull()
+  public void LoadValueBoundAndInterimFalseWithValueNaBooelanNull()
   {
     _businessObject.NaBooleanValue = NaBoolean.Null;
     _bocCheckBox.DefaultValue = NaBoolean.False;
@@ -242,6 +242,94 @@ public class BocCheckBoxTest: BocTest
     _bocCheckBox.IsDirty = true;
 
     _bocCheckBox.LoadValue (false);
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+
+
+  [Test]
+  public void LoadValueUnboundAndInterimTrue()
+  {
+    bool value = true;
+    _bocCheckBox.Value = false;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (value, true);
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueTrue()
+  {
+    bool value = true;
+    _bocCheckBox.Value = false;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (value, false);
+    Assert.AreEqual (value, _bocCheckBox.Value);
+    Assert.IsFalse (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueFalse()
+  {
+    bool value = false;
+    _bocCheckBox.Value = true;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (value, false);
+    Assert.AreEqual (value, _bocCheckBox.Value);
+    Assert.IsFalse (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueNull()
+  {
+    _bocCheckBox.DefaultValue = NaBooleanEnum.False;
+    _bocCheckBox.Value = true;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (null, false);
+    Assert.AreEqual (false, _bocCheckBox.Value);
+    Assert.IsTrue (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanTrue()
+  {
+    NaBoolean value = NaBoolean.True;
+    _bocCheckBox.Value = false;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (value, false);
+    NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocCheckBox.Value);
+    Assert.AreEqual (value, actual);
+    Assert.IsFalse (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanFalse()
+  {
+    NaBoolean value = NaBoolean.False;
+    _bocCheckBox.Value = true;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (value, false);
+    NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocCheckBox.Value);
+    Assert.AreEqual (value, actual);
+    Assert.IsFalse (_bocCheckBox.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanNull()
+  {
+    NaBoolean value = NaBoolean.Null;
+    _bocCheckBox.DefaultValue = NaBooleanEnum.False;
+    _bocCheckBox.Value = true;
+    _bocCheckBox.IsDirty = true;
+
+    _bocCheckBox.LoadValue (value, false);
     Assert.AreEqual (false, _bocCheckBox.Value);
     Assert.IsTrue (_bocCheckBox.IsDirty);
   }

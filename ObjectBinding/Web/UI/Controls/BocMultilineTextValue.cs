@@ -344,6 +344,16 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     return values;
   }
 
+
+  public virtual void LoadValue (string[] value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      IsDirty = false;
+    }
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
   /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
   public override void LoadValue (bool interim)
@@ -352,8 +362,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = (string[]) DataSource.BusinessObject.GetProperty (Property);
-        IsDirty = false;
+        string[] value = (string[]) DataSource.BusinessObject.GetProperty (Property);
+        LoadValue (value, interim);
       }
     }
   }

@@ -167,7 +167,7 @@ public class BocEnumValueTest: BocTest
     
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  public void LoadValueBoundAndInterimTrue()
   {
     _businessObject.EnumValue = TestEnum.Second;
     _bocEnumValue.DataSource = _dataSource;
@@ -181,7 +181,7 @@ public class BocEnumValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithEnum()
+  public void LoadValueBoundAndInterimFalseWithEnum()
   {
     _businessObject.EnumValue = TestEnum.Second;
     _bocEnumValue.DataSource = _dataSource;
@@ -191,6 +191,46 @@ public class BocEnumValueTest: BocTest
 
     _bocEnumValue.LoadValue (false);
     Assert.AreEqual (_businessObject.EnumValue, _bocEnumValue.Value);
+    Assert.IsFalse (_bocEnumValue.IsDirty);
+  }
+
+
+  [Test]
+  public void LoadValueUnboundAndInterimTrue()
+  {
+    TestEnum value = TestEnum.Second;
+    _bocEnumValue.Property = _propertyEnumValue;
+    _bocEnumValue.Value = null;
+    _bocEnumValue.IsDirty = true;
+
+    _bocEnumValue.LoadValue (value, true);
+    Assert.AreEqual (null, _bocEnumValue.Value);
+    Assert.IsTrue (_bocEnumValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithEnum()
+  {
+    TestEnum value = TestEnum.Second;
+    _bocEnumValue.Property = _propertyEnumValue;
+    _bocEnumValue.Value = null;
+    _bocEnumValue.IsDirty = true;
+
+    _bocEnumValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocEnumValue.Value);
+    Assert.IsFalse (_bocEnumValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithNull()
+  {
+    object value = null;
+    _bocEnumValue.Property = _propertyEnumValue;
+    _bocEnumValue.Value = TestEnum.Second;
+    _bocEnumValue.IsDirty = true;
+
+    _bocEnumValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocEnumValue.Value);
     Assert.IsFalse (_bocEnumValue.IsDirty);
   }
 }

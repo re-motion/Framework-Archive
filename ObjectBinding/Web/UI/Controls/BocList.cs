@@ -3215,13 +3215,19 @@ public class BocList:
     return values;
   }
 
+
+  public virtual void LoadValue (IList value, bool interim)
+  {
+    Value = value;
+    IsDirty = ! Object.ReferenceEquals (Value, value);
+  }
+
   public override void LoadValue (bool interim)
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
     {
       IList value = (IList) DataSource.BusinessObject.GetProperty (Property);
-      Value = value;
-      IsDirty = ! Object.ReferenceEquals (Value, value);
+      LoadValue (value, interim);
     }
   }
 

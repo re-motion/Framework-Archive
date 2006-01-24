@@ -134,7 +134,7 @@ public class BocMultilineTextValueTest: BocTest
     
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  public void LoadValueBoundAndInterimTrue()
   {
     _businessObject.StringArray = new string[] {"Foo", "Bar"};
     _bocMultilineTextValue.DataSource = _dataSource;
@@ -148,7 +148,7 @@ public class BocMultilineTextValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithString()
+  public void LoadValueBoundAndInterimFalseWithString()
   {
     _businessObject.StringArray = new string[] {"Foo", "Bar"};
     _bocMultilineTextValue.DataSource = _dataSource;
@@ -162,7 +162,7 @@ public class BocMultilineTextValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithNull()
+  public void LoadValueBoundAndInterimFalseWithNull()
   {
     _businessObject.StringArray = null;
     _bocMultilineTextValue.DataSource = _dataSource;
@@ -172,6 +172,42 @@ public class BocMultilineTextValueTest: BocTest
 
     _bocMultilineTextValue.LoadValue (false);
     Assert.AreEqual (_businessObject.StringArray, _bocMultilineTextValue.Value);
+    Assert.IsFalse (_bocMultilineTextValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimTrue()
+  {
+    string[] value = new string[] {"Foo", "Bar"};
+    _bocMultilineTextValue.Value = null;
+    _bocMultilineTextValue.IsDirty = true;
+
+    _bocMultilineTextValue.LoadValue (value, true);
+    Assert.AreEqual (null, _bocMultilineTextValue.Value);
+    Assert.IsTrue (_bocMultilineTextValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithString()
+  {
+    string[] value = new string[] {"Foo", "Bar"};
+    _bocMultilineTextValue.Value = null;
+    _bocMultilineTextValue.IsDirty = true;
+
+    _bocMultilineTextValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocMultilineTextValue.Value);
+    Assert.IsFalse (_bocMultilineTextValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithNull()
+  {
+    string[] value = null;
+    _bocMultilineTextValue.Value = new string[] {"Foo", "Bar"};
+    _bocMultilineTextValue.IsDirty = true;
+
+    _bocMultilineTextValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocMultilineTextValue.Value);
     Assert.IsFalse (_bocMultilineTextValue.IsDirty);
   }
 }

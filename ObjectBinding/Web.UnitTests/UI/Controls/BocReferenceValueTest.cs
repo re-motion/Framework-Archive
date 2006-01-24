@@ -241,7 +241,7 @@ public class BocReferenceValueTest: BocTest
     
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  public void LoadValueBoundAndInterimTrue()
   {
     _businessObject.ReferenceValue = new TypeWithReference();
     _bocReferenceValue.DataSource = _dataSource;
@@ -255,7 +255,7 @@ public class BocReferenceValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithObject()
+  public void LoadValueBoundAndInterimFalseWithObject()
   {
     _businessObject.ReferenceValue = new TypeWithReference();
     _bocReferenceValue.DataSource = _dataSource;
@@ -269,7 +269,7 @@ public class BocReferenceValueTest: BocTest
   }
 
   [Test]
-  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithNull()
+  public void LoadValueBoundAndInterimFalseWithNull()
   {
     _businessObject.ReferenceValue = null;
     _bocReferenceValue.DataSource = _dataSource;
@@ -279,6 +279,45 @@ public class BocReferenceValueTest: BocTest
 
     _bocReferenceValue.LoadValue (false);
     Assert.AreEqual (_businessObject.ReferenceValue, _bocReferenceValue.Value);
+    Assert.IsFalse (_bocReferenceValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimTrue()
+  {
+    TypeWithReference value = new TypeWithReference();
+    _bocReferenceValue.Property = _propertyReferenceValue;
+    _bocReferenceValue.Value = null;
+    _bocReferenceValue.IsDirty = true;
+
+    _bocReferenceValue.LoadValue (value, true);
+    Assert.AreEqual (null, _bocReferenceValue.Value);
+    Assert.IsTrue (_bocReferenceValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithObject()
+  {
+    TypeWithReference value = new TypeWithReference();
+    _bocReferenceValue.Property = _propertyReferenceValue;
+    _bocReferenceValue.Value = null;
+    _bocReferenceValue.IsDirty = true;
+
+    _bocReferenceValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocReferenceValue.Value);
+    Assert.IsFalse (_bocReferenceValue.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueUnboundAndInterimFalseWithNull()
+  {
+    TypeWithReference value = null;
+    _bocReferenceValue.Property = _propertyReferenceValue;
+    _bocReferenceValue.Value = new TypeWithReference();
+    _bocReferenceValue.IsDirty = true;
+
+    _bocReferenceValue.LoadValue (value, false);
+    Assert.AreEqual (value, _bocReferenceValue.Value);
     Assert.IsFalse (_bocReferenceValue.IsDirty);
   }
 }

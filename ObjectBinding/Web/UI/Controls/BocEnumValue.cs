@@ -365,6 +365,17 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     return values;
   }
 
+
+  public virtual void LoadValue (object value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      bool areEqual = Enum.Equals (value, Value);
+      IsDirty = ! areEqual;
+    }
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
   /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/LoadValue/*' />
   public override void LoadValue (bool interim)
@@ -374,8 +385,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         object value = DataSource.BusinessObject.GetProperty (Property);
-        Value = value;
-        IsDirty = ! Object.Equals (value, Value);
+        LoadValue (value, interim);
       }
     }
   }

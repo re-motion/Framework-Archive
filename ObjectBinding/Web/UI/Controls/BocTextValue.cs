@@ -358,6 +358,16 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     return values;
   }
 
+
+  public virtual void LoadValue (object value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      IsDirty = ! Object.Equals (value, Value);
+    }
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
   /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadValue/*' />
   public override void LoadValue (bool interim)
@@ -367,8 +377,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         object value = DataSource.BusinessObject.GetProperty (Property);
-        Value = value;
-        IsDirty = ! Object.Equals (value, Value);
+        LoadValue (value, interim);
       }
     }
   }

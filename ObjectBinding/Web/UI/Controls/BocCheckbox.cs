@@ -402,6 +402,20 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     return values;
   }
 
+  public virtual void LoadValue (object value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      bool areEqual;
+      if (value is NaBoolean)
+        areEqual = ((NaBoolean) value) == NaBoolean.FromBoxedBoolean (Value);
+      else
+        areEqual = bool.Equals (value, Value);
+      IsDirty = ! areEqual;
+    }
+  }
+
   /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
   /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/LoadValue/*' />
   public override void LoadValue (bool interim)
@@ -411,8 +425,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         object value = DataSource.BusinessObject.GetProperty (Property);
-        Value = value;
-        IsDirty = ! Object.Equals (value, Value);
+        LoadValue (value, interim);
       }
     }
   }
