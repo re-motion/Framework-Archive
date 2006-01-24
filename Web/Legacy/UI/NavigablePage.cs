@@ -43,7 +43,7 @@ public class NavigablePage : MultiLingualPage, INavigablePage, IPostBackEventHan
   /// </summary>
   protected static string GetPhysicalPageUrl (Page page)
   {
-    return PageUtility.GetPhysicalPageUrl (page);
+    return StandardPageUtility.GetPhysicalPageUrl (page);
   }
 
   protected static void CallPage (

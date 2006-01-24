@@ -374,7 +374,7 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
   {
     ITabItem navigableItem = tabItem.GetNavigableItem();
 
-    string url = PageUtility.GetPhysicalPageUrl (this.Page, navigableItem.Href);
+    string url = StandardPageUtility.GetPhysicalPageUrl (this.Page, navigableItem.Href);
     if (navigableItem.SupportsPageToken)
       url = StandardPageUtility.AddPageToken (url);
 
@@ -448,16 +448,8 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     }
 		if (resultHref == null)
     {
-      if (IsWxeCompatibilityEnabled)
-      {
-        resultHref = "href=\"#\"";
-        onClick = "onclick=\"" + script + "\"";
-      }
-      else
-      {
-  			resultHref = "href=\"javascript:" + script + "\"";
-        onClick = string.Empty;
-      }
+  		resultHref = "href=\"javascript:" + script + "\"";
+      onClick = string.Empty;
     }
     else
     {
@@ -465,19 +457,6 @@ public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
     }
 
     return resultHref;
-  }
-
-  /// <summary> 
-  ///   Gets a flag that determines whether scripted links will be rendered in the href or the onclick attribute
-  ///   of the anchor tag.
-  /// </summary>
-  /// <value> <see langword="true"/> if the Page is a <see cref="Rubicon.Web.ExecutionEngine.IWxePage"/>. </value>
-  protected virtual bool IsWxeCompatibilityEnabled
-  {
-    get 
-    {
-      return Page is ExecutionEngine.IWxePage;
-    }
   }
 
   public void SelectItem (string tabID, string menuID)

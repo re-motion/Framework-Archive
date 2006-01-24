@@ -100,7 +100,7 @@ public class UrlUtility
     string[] encodedArgs = new string[args.Length];
     System.Text.Encoding encoding = HttpContext.Current.Response.ContentEncoding;
     for (int i = 0; i < args.Length; ++i)
-      encodedArgs[i] = HttpUtility.UrlDecode (args.ToString(), encoding);
+      encodedArgs[i] = HttpUtility.UrlEncode (args.ToString(), encoding);
   
     return string.Format (format, encodedArgs);
   }
@@ -216,7 +216,8 @@ public class UrlUtility
     return url;
   }
 
-
+  /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
+  /// <include file='doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/*' />
   public static string GetParameter (string url, string name, Encoding encoding)
   {
     ArgumentUtility.CheckNotNull ("url", url);
@@ -247,9 +248,12 @@ public class UrlUtility
     return value;
   }
 
+  /// <summary> Gets the decoded value of the parameter identified by <paramref name="name"/>. </summary>
+  /// <include file='doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/param[@name="url" or @name="name"]' />
+  /// <include file='doc\include\Utilities\UrlUtility.xml' path='UrlUtility/GetParameter/returns' />
   public static string GetParameter (string url, string name)
   {
-    return UrlUtility.GetParameter (url, name, HttpContext.Current.Response.ContentEncoding);
+    return UrlUtility.GetParameter (url, name, HttpContext.Current.Request.ContentEncoding);
   }
 
   /// <summary> Gets the index of the <paramref name="parameter"/> in the <paramref name="url"/>. </summary>
