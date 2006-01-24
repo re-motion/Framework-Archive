@@ -146,7 +146,32 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Domain\TypeWithBoolean.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\TypeWithDateTime.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Domain\TypeWithEnum.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\TypeWithNumber.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\TypeWithReference.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Domain\TypeWithString.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
