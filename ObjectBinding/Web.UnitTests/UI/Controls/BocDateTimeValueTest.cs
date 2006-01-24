@@ -194,7 +194,7 @@ public class BocDateTimeValueTest: BocTest
 
 
   [Test]
-  public void SetValueDateTime()
+  public void SetValueToDateTime()
   {
     DateTime dateTime = new DateTime (2006, 1, 1, 1, 1, 1);
     _bocDateTimeValue.IsDirty = false;
@@ -204,7 +204,7 @@ public class BocDateTimeValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNull()
+  public void SetValueToNull()
   {
     _bocDateTimeValue.IsDirty = false;
     _bocDateTimeValue.Value = null;
@@ -213,7 +213,7 @@ public class BocDateTimeValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNaDateTime()
+  public void SetValueToNaDateTime()
   {
     NaDateTime dateTime = new NaDateTime (2006, 1, 1, 1, 1, 1);
     _bocDateTimeValue.IsDirty = false;
@@ -224,7 +224,7 @@ public class BocDateTimeValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNaDateTimeNull()
+  public void SetValueToNaDateTimeNull()
   {
     _bocDateTimeValue.IsDirty = false;
     _bocDateTimeValue.Value = NaDateTime.Null;

@@ -101,7 +101,7 @@ public class BocBooleanValueTest: BocTest
 
 
   [Test]
-  public void SetValueTrue()
+  public void SetValueToTrue()
   {
     _bocBooleanValue.IsDirty = false;
     _bocBooleanValue.Value = true;
@@ -110,7 +110,7 @@ public class BocBooleanValueTest: BocTest
   }
     
   [Test]
-  public void SetValueFalse()
+  public void SetValueToFalse()
   {
     _bocBooleanValue.IsDirty = false;
     _bocBooleanValue.Value = false;
@@ -119,7 +119,7 @@ public class BocBooleanValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNull()
+  public void SetValueToNull()
   {
     _bocBooleanValue.IsDirty = false;
     _bocBooleanValue.Value = null;
@@ -128,7 +128,7 @@ public class BocBooleanValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNaBooleanTrue()
+  public void SetValueToNaBooleanTrue()
   {
     _bocBooleanValue.IsDirty = false;
     _bocBooleanValue.Value = NaBoolean.True;
@@ -137,7 +137,7 @@ public class BocBooleanValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNaBooleanFalse()
+  public void SetValueToNaBooleanFalse()
   {
     _bocBooleanValue.IsDirty = false;
     _bocBooleanValue.Value = NaBoolean.False;
@@ -146,7 +146,7 @@ public class BocBooleanValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNaBooleanNull()
+  public void SetValueToNaBooleanNull()
   {
     _bocBooleanValue.IsDirty = false;
     _bocBooleanValue.Value = NaBoolean.Null;

@@ -146,7 +146,7 @@ public class BocEnumValueTest: BocTest
 
 
   [Test]
-  public void SetValueEnum()
+  public void SetValueToEnum()
   {
     _bocEnumValue.Property = _propertyEnumValue;
     _bocEnumValue.IsDirty = false;
@@ -156,7 +156,7 @@ public class BocEnumValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNull()
+  public void SetValueToNull()
   {
     _bocEnumValue.Property = _propertyEnumValue;
     _bocEnumValue.IsDirty = false;

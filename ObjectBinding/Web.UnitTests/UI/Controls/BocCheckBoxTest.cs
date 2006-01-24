@@ -103,7 +103,7 @@ public class BocCheckBoxTest: BocTest
 
 
   [Test]
-  public void SetValueTrue()
+  public void SetValueToTrue()
   {
     _bocCheckBox.IsDirty = false;
     _bocCheckBox.Value = true;
@@ -112,7 +112,7 @@ public class BocCheckBoxTest: BocTest
   }
     
   [Test]
-  public void SetValueFalse()
+  public void SetValueToFalse()
   {
     _bocCheckBox.IsDirty = false;
     _bocCheckBox.Value = false;
@@ -121,7 +121,7 @@ public class BocCheckBoxTest: BocTest
   }
     
   [Test]
-  public void SetValueNull()
+  public void SetValueToNull()
   {
     _bocCheckBox.DefaultValue = NaBoolean.False;
     _bocCheckBox.IsDirty = false;
@@ -131,7 +131,7 @@ public class BocCheckBoxTest: BocTest
   }
     
   [Test]
-  public void SetValueNaBooleanTrue()
+  public void SetValueToNaBooleanTrue()
   {
     _bocCheckBox.IsDirty = false;
     _bocCheckBox.Value = NaBoolean.True;
@@ -140,7 +140,7 @@ public class BocCheckBoxTest: BocTest
   }
     
   [Test]
-  public void SetValueNaBooleanFalse()
+  public void SetValueToNaBooleanFalse()
   {
     _bocCheckBox.IsDirty = false;
     _bocCheckBox.Value = NaBoolean.False;
@@ -149,7 +149,7 @@ public class BocCheckBoxTest: BocTest
   }
     
   [Test]
-  public void SetValueNaBooleanNull()
+  public void SetValueToNaBooleanNull()
   {
     _bocCheckBox.DefaultValue = NaBoolean.False;
     _bocCheckBox.IsDirty = false;

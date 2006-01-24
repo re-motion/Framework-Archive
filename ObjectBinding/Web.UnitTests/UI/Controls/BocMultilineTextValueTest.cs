@@ -114,7 +114,7 @@ public class BocMultilineTextValueTest: BocTest
 
 
   [Test]
-  public void SetValueString()
+  public void SetValueToString()
   {
     string[] value = new string[] {"Foo", "Bar"};
     _bocMultilineTextValue.IsDirty = false;
@@ -124,7 +124,7 @@ public class BocMultilineTextValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNull()
+  public void SetValueToNull()
   {
     _bocMultilineTextValue.IsDirty = false;
     _bocMultilineTextValue.Value = null;
