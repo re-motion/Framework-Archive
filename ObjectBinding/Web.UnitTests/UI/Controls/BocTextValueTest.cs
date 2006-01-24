@@ -114,7 +114,7 @@ public class BocTextValueTest: BocTest
 
 
   [Test]
-  public void SetValueString()
+  public void SetValueToString()
   {
     string value = "Foo Bar";
     _bocTextValue.IsDirty = false;
@@ -124,7 +124,7 @@ public class BocTextValueTest: BocTest
   }
     
   [Test]
-  public void SetValueNull()
+  public void SetValueToNull()
   {
     _bocTextValue.IsDirty = false;
     _bocTextValue.Value = null;

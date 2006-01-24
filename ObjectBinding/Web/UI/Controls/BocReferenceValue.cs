@@ -862,7 +862,10 @@ public class BocReferenceValue:
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
+        IBusinessObjectWithIdentity value = 
+            (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
+        Value = value;
+        IsDirty = value != Value;
       }
     }
   }
@@ -1311,7 +1314,7 @@ public class BocReferenceValue:
     }
     set 
     { 
-      IsDirty = false;
+      IsDirty = true;
 
       IBusinessObjectWithIdentity businessObjectWithIdentity = value;
       _value = businessObjectWithIdentity; 
