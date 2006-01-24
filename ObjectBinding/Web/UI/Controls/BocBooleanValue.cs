@@ -396,7 +396,9 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = DataSource.BusinessObject.GetProperty (Property);
+        object value = DataSource.BusinessObject.GetProperty (Property);
+        Value = value;
+        IsDirty = ! Object.Equals (value, Value);
       }
     }
   }
@@ -521,14 +523,12 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     }
     set
     {
-      IsDirty = false;
+      IsDirty = true;
 
-      if (value == null)
-        _value = NaBoolean.Null;
-      else if ((bool) value)
-        _value = NaBoolean.True;
+      if (value is NaBoolean)
+        _value = (NaBoolean) value;
       else
-        _value = NaBoolean.False;
+        _value =  NaBoolean.FromBoxedBoolean (value);
     }
   }
 

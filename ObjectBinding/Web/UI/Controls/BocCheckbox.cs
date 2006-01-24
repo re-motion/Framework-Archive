@@ -410,7 +410,9 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = DataSource.BusinessObject.GetProperty (Property);
+        object value = DataSource.BusinessObject.GetProperty (Property);
+        Value = value;
+        IsDirty = ! Object.Equals (value, Value);
       }
     }
   }
@@ -503,17 +505,18 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
     set
     {
-      IsDirty = false;
-     
-      if (value == null)
-      {
-        _value = GetDefaultValue();
-        IsDirty = true;
-      }
+      IsDirty = true;
+      
+      NaBoolean temp;
+      if (value is NaBoolean)
+        temp = (NaBoolean) value;
       else
-      {
-        _value = (bool) value;
-      }
+        temp =  NaBoolean.FromBoxedBoolean (value);
+     
+      if (temp.IsNull)
+        _value = GetDefaultValue();
+      else
+        _value = temp.Value;
     }
   }
 
