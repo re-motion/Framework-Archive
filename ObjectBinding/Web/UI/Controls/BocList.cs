@@ -3219,7 +3219,9 @@ public class BocList:
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
     {
-      Value = (IList) DataSource.BusinessObject.GetProperty (Property);
+      IList value = (IList) DataSource.BusinessObject.GetProperty (Property);
+      Value = value;
+      IsDirty = ! Object.ReferenceEquals (Value, value);
     }
   }
 
@@ -3241,7 +3243,7 @@ public class BocList:
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
     {
       DataSource.BusinessObject.SetProperty (Property, Value);
-      base.IsDirty = false;
+      IsDirty = false;
     }
   }
 
@@ -4543,7 +4545,6 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
     Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
-    IsDirty = true;
   }
 
   /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
@@ -4552,7 +4553,7 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
-    IsDirty = true;
+
     if (Value == null)
       return -1;
     else
@@ -4580,7 +4581,6 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObjects, Property, false);
-    IsDirty = true;
   }
 
   /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
@@ -4599,7 +4599,6 @@ public class BocList:
     }
 
     Value = ListUtility.Remove (Value, businessObject, Property, false);
-    IsDirty = true;
   }
 
   /// <summary> 
@@ -5126,7 +5125,7 @@ public class BocList:
     }
     set 
     {
-      IsDirty = false;
+      IsDirty = true;
       _value = value; 
       ResetRows();
     }
