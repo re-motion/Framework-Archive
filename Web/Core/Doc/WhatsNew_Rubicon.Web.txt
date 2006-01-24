@@ -36,6 +36,45 @@
      
   Rubicon.Web.Utilities.ImageUtility
    
+- Rubicon.Utilities.PageUtility
+  * Die folgenden Methoden sind in das Rubicon.Web.StandardPageUtility verschoben worden:
+    AddActiveTabParameter
+    AddCleanupToken
+    AddPageToken  
+    AddParentToken   
+    CallPage   
+    ClearSession   
+    ClearSessionValue   
+    CloseBrowserWindow   
+    DeleteOutdatedSessions   
+    GetCallParameters   
+    GetParentToken   
+    GetPhysicalHttpPageUrl   
+    GetPhysicalPageUrl
+    GetSessionValue   
+    GetToken  
+    GetUniqueKey  
+    GetUniqueToken   
+    GetWindowOpenJavascript   
+    NavigateTo   
+    RegisterOpenReportScript   
+    RegisterWindowOpenJavascript   
+    RemoveHttps   
+    SetSessionValue 
+
+  * Die folgenden Methoden sind in das Rubicon.Web.UrlUtility verschoben worden:
+    AddUrlParameter   
+    DeleteUrlParameter   
+    GetUrlParameter   
+
+  * Die folgenden Methoden sind in das Rubicon.Web.ScriptUtility verschoben worden:
+    EscapeClientScript 
+    RegisterClientScriptBlock   
+    RegisterStartupScriptBlock  
+
+  * Die folgenden Methode ist durch Rubicon.Web.UI.HtmlHeadAppender.RegisterJavascriptInclude ersetzt worden:
+    RegisterClientScriptInclude   
+
 1.3.28
 ======
 - Rubicon.Web.TabbedMultiView
