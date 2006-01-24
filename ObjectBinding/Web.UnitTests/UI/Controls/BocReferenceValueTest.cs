@@ -1,12 +1,14 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Web.UI;
 using Rubicon.NullableValueTypes;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.UnitTests.Configuration;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.UnitTests.Domain;
+using Rubicon.Web.Configuration;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UnitTests.Configuration;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
@@ -16,6 +18,9 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 public class BocReferenceValueTest: BocTest
 {
   private BocReferenceValueMock _bocReferenceValue;
+  private TypeWithReference _businessObject;
+  private BusinessObjectReferenceDataSource _dataSource;
+  private IBusinessObjectReferenceProperty _propertyReferenceValue;
 
   public BocReferenceValueTest()
   {
@@ -33,6 +38,13 @@ public class BocReferenceValueTest: BocTest
     _bocReferenceValue.Command.Show = CommandShow.Always;
     _bocReferenceValue.InternalValue = Guid.Empty.ToString();
     NamingContainer.Controls.Add (_bocReferenceValue);
+ 
+    _businessObject = new TypeWithReference();
+    
+    _propertyReferenceValue = (IBusinessObjectReferenceProperty) _businessObject.GetBusinessObjectProperty ("ReferenceValue");
+    
+    _dataSource = new BusinessObjectReferenceDataSource();
+    _dataSource.BusinessObject = _businessObject;
   }
 
 
@@ -205,6 +217,69 @@ public class BocReferenceValueTest: BocTest
     Assert.IsNotNull (actual);
     Assert.AreEqual (1, actual.Length);
     Assert.AreEqual (_bocReferenceValue.DropDownList.ClientID, actual[0]);
+  }
+
+
+  [Test]
+  public void SetValueToObject()
+  {
+    TypeWithReference referencedObject = new TypeWithReference();
+    _bocReferenceValue.IsDirty = false;
+    _bocReferenceValue.Value = referencedObject;
+    Assert.AreEqual (referencedObject, _bocReferenceValue.Value);
+    Assert.IsTrue (_bocReferenceValue.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueToNull()
+  {
+    _bocReferenceValue.IsDirty = false;
+    _bocReferenceValue.Value = null;
+    Assert.AreEqual (null, _bocReferenceValue.Value);
+    Assert.IsTrue (_bocReferenceValue.IsDirty);
+  }
+    
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  {
+    _businessObject.ReferenceValue = new TypeWithReference();
+    _bocReferenceValue.DataSource = _dataSource;
+    _bocReferenceValue.Property = _propertyReferenceValue;
+    _bocReferenceValue.Value = null;
+    _bocReferenceValue.IsDirty = true;
+
+    _bocReferenceValue.LoadValue (true);
+    Assert.AreEqual (null, _bocReferenceValue.Value);
+    Assert.IsTrue (_bocReferenceValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithObject()
+  {
+    _businessObject.ReferenceValue = new TypeWithReference();
+    _bocReferenceValue.DataSource = _dataSource;
+    _bocReferenceValue.Property = _propertyReferenceValue;
+    _bocReferenceValue.Value = null;
+    _bocReferenceValue.IsDirty = true;
+
+    _bocReferenceValue.LoadValue (false);
+    Assert.AreEqual (_businessObject.ReferenceValue, _bocReferenceValue.Value);
+    Assert.IsFalse (_bocReferenceValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithNull()
+  {
+    _businessObject.ReferenceValue = null;
+    _bocReferenceValue.DataSource = _dataSource;
+    _bocReferenceValue.Property = _propertyReferenceValue;
+    _bocReferenceValue.Value = new TypeWithReference();
+    _bocReferenceValue.IsDirty = true;
+
+    _bocReferenceValue.LoadValue (false);
+    Assert.AreEqual (_businessObject.ReferenceValue, _bocReferenceValue.Value);
+    Assert.IsFalse (_bocReferenceValue.IsDirty);
   }
 }
 
