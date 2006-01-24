@@ -1,5 +1,5 @@
-1.4.0
-=====
+1.4.1
+======
 - Namespace geändert:
   * Rubicon.ObjectBinding.Web.Controls zu Rubicon.ObjectBinding.Web.UI.Controls
   * Rubicon.ObjectBinding.Web.Design zu Rubicon.ObjectBinding.Web.UI.Design

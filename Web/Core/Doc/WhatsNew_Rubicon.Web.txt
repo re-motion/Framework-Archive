@@ -1,4 +1,4 @@
-1.4.0
+1.4.1
 =====
 - Rubicon.Web.UI.SmartPage
   * Bietet Dirty-State Handling.
