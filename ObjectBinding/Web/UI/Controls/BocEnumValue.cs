@@ -373,7 +373,9 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = DataSource.BusinessObject.GetProperty (Property);
+        object value = DataSource.BusinessObject.GetProperty (Property);
+        Value = value;
+        IsDirty = ! Object.Equals (value, Value);
       }
     }
   }
@@ -654,7 +656,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
     set
     {
-      IsDirty = false;
+      IsDirty = true;
       _value = value;
 
       if (Property != null && _value != null)

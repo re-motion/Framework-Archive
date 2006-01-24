@@ -1,12 +1,14 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Web.UI;
 using Rubicon.NullableValueTypes;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.UnitTests.Configuration;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.UnitTests.Domain;
+using Rubicon.Web.Configuration;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UnitTests.Configuration;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
@@ -16,6 +18,9 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 public class BocMultilineTextValueTest: BocTest
 {
   private BocMultilineTextValueMock _bocMultilineTextValue;
+  private TypeWithString _businessObject;
+  private BusinessObjectReferenceDataSource _dataSource;
+  private IBusinessObjectStringProperty _propertyStringArray;
 
   public BocMultilineTextValueTest()
   {
@@ -29,6 +34,13 @@ public class BocMultilineTextValueTest: BocTest
     _bocMultilineTextValue = new BocMultilineTextValueMock();
     _bocMultilineTextValue.ID = "BocMultilineTextValue";
     NamingContainer.Controls.Add (_bocMultilineTextValue);
+
+    _businessObject = new TypeWithString();
+    
+    _propertyStringArray = (IBusinessObjectStringProperty) _businessObject.GetBusinessObjectProperty ("StringArray");
+    
+    _dataSource = new BusinessObjectReferenceDataSource();
+    _dataSource.BusinessObject = _businessObject;
   }
 
 
@@ -98,6 +110,69 @@ public class BocMultilineTextValueTest: BocTest
     Assert.IsNotNull (actual);
     Assert.AreEqual (1, actual.Length);
     Assert.AreEqual (_bocMultilineTextValue.TextBox.ClientID, actual[0]);
+  }
+
+
+  [Test]
+  public void SetValueString()
+  {
+    string[] value = new string[] {"Foo", "Bar"};
+    _bocMultilineTextValue.IsDirty = false;
+    _bocMultilineTextValue.Value = value;
+    Assert.AreEqual (value, _bocMultilineTextValue.Value);
+    Assert.IsTrue (_bocMultilineTextValue.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNull()
+  {
+    _bocMultilineTextValue.IsDirty = false;
+    _bocMultilineTextValue.Value = null;
+    Assert.AreEqual (null, _bocMultilineTextValue.Value);
+    Assert.IsTrue (_bocMultilineTextValue.IsDirty);
+  }
+    
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  {
+    _businessObject.StringArray = new string[] {"Foo", "Bar"};
+    _bocMultilineTextValue.DataSource = _dataSource;
+    _bocMultilineTextValue.Property = _propertyStringArray;
+    _bocMultilineTextValue.Value = null;
+    _bocMultilineTextValue.IsDirty = true;
+
+    _bocMultilineTextValue.LoadValue (true);
+    Assert.AreEqual (null, _bocMultilineTextValue.Value);
+    Assert.IsTrue (_bocMultilineTextValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithString()
+  {
+    _businessObject.StringArray = new string[] {"Foo", "Bar"};
+    _bocMultilineTextValue.DataSource = _dataSource;
+    _bocMultilineTextValue.Property = _propertyStringArray;
+    _bocMultilineTextValue.Value = null;
+    _bocMultilineTextValue.IsDirty = true;
+
+    _bocMultilineTextValue.LoadValue (false);
+    Assert.AreEqual (_businessObject.StringArray, _bocMultilineTextValue.Value);
+    Assert.IsFalse (_bocMultilineTextValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithNull()
+  {
+    _businessObject.StringArray = null;
+    _bocMultilineTextValue.DataSource = _dataSource;
+    _bocMultilineTextValue.Property = _propertyStringArray;
+    _bocMultilineTextValue.Value = new string[] {"Foo", "Bar"};
+    _bocMultilineTextValue.IsDirty = true;
+
+    _bocMultilineTextValue.LoadValue (false);
+    Assert.AreEqual (_businessObject.StringArray, _bocMultilineTextValue.Value);
+    Assert.IsFalse (_bocMultilineTextValue.IsDirty);
   }
 }
 

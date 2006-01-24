@@ -366,7 +366,9 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = DataSource.BusinessObject.GetProperty (Property);
+        object value = DataSource.BusinessObject.GetProperty (Property);
+        Value = value;
+        IsDirty = ! Object.Equals (value, Value);
       }
     }
   }
@@ -617,7 +619,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
     set 
     { 
-      IsDirty = false;
+      IsDirty = true;
 
       if (value == null)
       {

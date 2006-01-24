@@ -1,12 +1,14 @@
 using System;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
-using Rubicon.Web.UI;
 using Rubicon.NullableValueTypes;
-using Rubicon.Web.Configuration;
-using Rubicon.Web.UnitTests.Configuration;
+using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.ObjectBinding.Web.UnitTests.Domain;
+using Rubicon.Web.Configuration;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UnitTests.Configuration;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
@@ -16,6 +18,9 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 public class BocTextValueTest: BocTest
 {
   private BocTextValueMock _bocTextValue;
+  private TypeWithString _businessObject;
+  private BusinessObjectReferenceDataSource _dataSource;
+  private IBusinessObjectStringProperty _propertyStringValue;
 
   public BocTextValueTest()
   {
@@ -29,6 +34,13 @@ public class BocTextValueTest: BocTest
     _bocTextValue = new BocTextValueMock();
     _bocTextValue.ID = "BocTextValue";
     NamingContainer.Controls.Add (_bocTextValue);
+
+    _businessObject = new TypeWithString();
+    
+    _propertyStringValue = (IBusinessObjectStringProperty) _businessObject.GetBusinessObjectProperty ("StringValue");
+    
+    _dataSource = new BusinessObjectReferenceDataSource();
+    _dataSource.BusinessObject = _businessObject;
   }
 
 
@@ -98,6 +110,69 @@ public class BocTextValueTest: BocTest
     Assert.IsNotNull (actual);
     Assert.AreEqual (1, actual.Length);
     Assert.AreEqual (_bocTextValue.TextBox.ClientID, actual[0]);
+  }
+
+
+  [Test]
+  public void SetValueString()
+  {
+    string value = "Foo Bar";
+    _bocTextValue.IsDirty = false;
+    _bocTextValue.Value = value;
+    Assert.AreEqual (value, _bocTextValue.Value);
+    Assert.IsTrue (_bocTextValue.IsDirty);
+  }
+    
+  [Test]
+  public void SetValueNull()
+  {
+    _bocTextValue.IsDirty = false;
+    _bocTextValue.Value = null;
+    Assert.AreEqual (null, _bocTextValue.Value);
+    Assert.IsTrue (_bocTextValue.IsDirty);
+  }
+    
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimTrue()
+  {
+    _businessObject.StringValue = "Foo Bar";
+    _bocTextValue.DataSource = _dataSource;
+    _bocTextValue.Property = _propertyStringValue;
+    _bocTextValue.Value = null;
+    _bocTextValue.IsDirty = true;
+
+    _bocTextValue.LoadValue (true);
+    Assert.AreEqual (null, _bocTextValue.Value);
+    Assert.IsTrue (_bocTextValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithString()
+  {
+    _businessObject.StringValue = "Foo Bar";
+    _bocTextValue.DataSource = _dataSource;
+    _bocTextValue.Property = _propertyStringValue;
+    _bocTextValue.Value = null;
+    _bocTextValue.IsDirty = true;
+
+    _bocTextValue.LoadValue (false);
+    Assert.AreEqual (_businessObject.StringValue, _bocTextValue.Value);
+    Assert.IsFalse (_bocTextValue.IsDirty);
+  }
+
+  [Test]
+  public void IsDirtyAfterLoadValueBoundAndInterimFalseWithNull()
+  {
+    _businessObject.StringValue = null;
+    _bocTextValue.DataSource = _dataSource;
+    _bocTextValue.Property = _propertyStringValue;
+    _bocTextValue.Value = "Foo Bar";
+    _bocTextValue.IsDirty = true;
+
+    _bocTextValue.LoadValue (false);
+    Assert.AreEqual (_businessObject.StringValue, _bocTextValue.Value);
+    Assert.IsFalse (_bocTextValue.IsDirty);
   }
 }
 

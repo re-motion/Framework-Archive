@@ -353,6 +353,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         Value = (string[]) DataSource.BusinessObject.GetProperty (Property);
+        IsDirty = false;
       }
     }
   }
@@ -475,7 +476,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
     set
     {
-      IsDirty = false;
+      IsDirty = true;
 
       if (value == null)
         _internalValue = null;

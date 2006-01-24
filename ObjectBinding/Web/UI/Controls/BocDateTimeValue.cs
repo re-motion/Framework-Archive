@@ -545,7 +545,9 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     {
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
-        Value = DataSource.BusinessObject.GetProperty (Property);
+        object value = DataSource.BusinessObject.GetProperty (Property);
+        Value = value;
+        IsDirty = ! Object.Equals (value, Value);
       }
     }
   }
@@ -1044,22 +1046,23 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
     set 
     {
-      IsDirty = false;
+      IsDirty = true;
 
-      if (value == null)
+      if (value is NaDateTime)
+        _savedDateTimeValue = (NaDateTime) value;
+      else
+        _savedDateTimeValue = NaDateTime.FromBoxedDateTime (value);
+
+      if (_savedDateTimeValue.IsNull)
       {
         InternalDateValue = null;
         InternalTimeValue = null;
-        _savedDateTimeValue = NaDateTime.Null;
         return;
       }
 
-      DateTime dateTimeValue = (DateTime) value;
-      _savedDateTimeValue = new NaDateTime (dateTimeValue);
-
       try
       {
-        InternalDateValue = FormatDateValue (dateTimeValue);
+        InternalDateValue = FormatDateValue (_savedDateTimeValue.Value);
       }
       catch  (InvalidCastException e)
       {
@@ -1071,7 +1074,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       {
         try
         {
-          InternalTimeValue = FormatTimeValue (dateTimeValue);
+          InternalTimeValue = FormatTimeValue (_savedDateTimeValue.Value);
         }
         catch  (InvalidCastException e)
         {
