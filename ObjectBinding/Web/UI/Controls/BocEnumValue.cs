@@ -19,7 +19,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit enumeration values. </summary>
-/// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/Class/*' />
+/// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Class/*' />
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -142,7 +142,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
   ///   between postbacks.
   /// </summary>
-  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
+  /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _listControl.UniqueID);
@@ -367,7 +367,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -382,7 +382,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The enumeration value or <see langword="null"/> to load or <see langword="null"/>. </param>
-  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (object value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -400,7 +400,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/SaveValue/*' />
+  /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -435,7 +435,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
-  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/CreateValidators/*' />
+  /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly || ! IsRequired)
@@ -664,7 +664,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
   
   /// <summary> Gets or sets the current value. </summary>
-  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/Value/*' />
+  /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/Value/*' />
   [Browsable(false)]
   public new object Value
   {

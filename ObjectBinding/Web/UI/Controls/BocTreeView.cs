@@ -25,7 +25,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> Object bound tree view. </summary>
-/// <include file='doc\include\Controls\BocTreeView.xml' path='BocTreeView/Class/*' />
+/// <include file='doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/Class/*' />
 [DefaultEvent ("Click")]
 public class BocTreeView: BusinessObjectBoundWebControl
 {
@@ -392,7 +392,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocTreeView.xml' path='BocTreeView/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (DataSource != null && DataSource.BusinessObject != null)
@@ -407,7 +407,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   ///   The <see cref="Array"/> of objects implementing <see cref="IBusinessObjectWithIdentity"/> to load,
   ///   or <see langword="null"/>. 
   /// </param>
-  /// <include file='doc\include\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
   public void LoadUnboundValue (IBusinessObjectWithIdentity[] value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -418,7 +418,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   ///   The <see cref="IList"/> of objects implementing <see cref="IBusinessObjectWithIdentity"/> to load,
   ///   or <see langword="null"/>. 
   /// </param>
-  /// <include file='doc\include\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
   public void LoadUnboundValue (IList value, bool interim)
   {
     LoadValueInternal (value, interim);

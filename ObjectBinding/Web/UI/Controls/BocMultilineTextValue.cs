@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit a list of strings. </summary>
-/// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
+/// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/Class/*' />
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -118,7 +118,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
   ///   between postbacks.
   /// </summary>
-  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadPostData/*' />
+  /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
@@ -346,7 +346,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -361,7 +361,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="String"/> <see cref="Array"/> to load or <see langword="null"/>. </param>
-  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (string[] value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -378,7 +378,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
+  /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -412,7 +412,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
-  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/CreateValidators/*' />
+  /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly || ! IsRequired)

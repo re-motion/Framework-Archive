@@ -23,7 +23,7 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 /// <summary> This control can be used to display or edit reference values. </summary>
-/// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
+/// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/Class/*' />
 // TODO: see "Doc\Bugs and ToDos.txt"
 [ValidationProperty ("BusinessObjectID")]
 [DefaultEvent ("SelectionChanged")]
@@ -204,7 +204,7 @@ public class BocReferenceValue:
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
   ///   between postbacks.
   /// </summary>
-  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadPostData/*' />
+  /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _dropDownList.UniqueID);
@@ -856,7 +856,7 @@ public class BocReferenceValue:
 
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -874,7 +874,7 @@ public class BocReferenceValue:
   /// <param name="value"> 
   ///   The object implementing <see cref="IBusinessObjectWithIdentity"/> to load, or <see langword="null"/>. 
   /// </param>
-  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -891,7 +891,7 @@ public class BocReferenceValue:
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
+  /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -911,7 +911,7 @@ public class BocReferenceValue:
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
-  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/CreateValidators/*' />
+  /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly || ! IsRequired)
@@ -1312,7 +1312,7 @@ public class BocReferenceValue:
   }
 
   /// <summary> Gets or sets the current value. </summary>
-  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/Value/*' />
+  /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/Value/*' />
   [Browsable (false)]
   public new IBusinessObjectWithIdentity Value
   {

@@ -19,7 +19,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit values that can be edited in a text box. </summary>
-/// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/Class/*' />
+/// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/Class/*' />
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -125,7 +125,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
   ///   between postbacks.
   /// </summary>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
@@ -360,7 +360,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -378,7 +378,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///   The boxed <see cref="Int32"/>, <see cref="Double"/>, or <see cref="DateTime"/> value to load, 
   ///   or <see langword="null"/>. 
   /// </param>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (object value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -386,7 +386,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> A <see cref="String"/> to load or <see langword="null"/>. </param>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (string value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -394,7 +394,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="Int32"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (int value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -402,7 +402,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="Double"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (double value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -410,7 +410,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="DateTime"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (DateTime value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -427,7 +427,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/SaveValue/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -462,7 +462,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
-  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/CreateValidators/*' />
+  /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly)

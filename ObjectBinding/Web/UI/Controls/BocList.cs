@@ -30,7 +30,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 ///   This control can be used to display and edit a list of <see cref="IBusinessObject"/> instances.
 ///   The properties of the business objects are displayed in individual columns. 
 /// </summary>
-/// <include file='doc\include\Controls\BocList.xml' path='BocList/Class/*' />
+/// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/Class/*' />
 // TODO: see "Doc\Bugs and ToDos.txt"
 [Designer (typeof (BocListDesigner))]
 [DefaultEvent ("CommandClick")]
@@ -808,7 +808,7 @@ public class BocList:
   }
 
   /// <summary> Fires the <see cref="ListItemCommandClick"/> event. </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnListItemCommandClick/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/OnListItemCommandClick/*' />
   protected virtual void OnListItemCommandClick (
       BocCommandEnabledColumnDefinition column, 
       int listIndex, 
@@ -837,7 +837,7 @@ public class BocList:
   }
 
   /// <summary> Fires the <see cref="MenuItemClick"/> event. </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnMenuItemEventCommandClick/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/OnMenuItemEventCommandClick/*' />
   protected virtual void OnMenuItemEventCommandClick (WebMenuItem menuItem)
   {
     if (menuItem != null && menuItem.Command != null)
@@ -865,7 +865,7 @@ public class BocList:
   }
 
   /// <summary> Handles the click to a WXE function command. </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnMenuItemWxeFunctionCommandClick/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/OnMenuItemWxeFunctionCommandClick/*' />
   protected virtual void OnMenuItemWxeFunctionCommandClick (WebMenuItem menuItem)
   {
     if (menuItem != null && menuItem.Command != null)
@@ -3216,7 +3216,7 @@ public class BocList:
   }
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
@@ -3231,7 +3231,7 @@ public class BocList:
   ///   The <see cref="Array"/> of objects implementing <see cref="IBusinessObject"/> to load,
   ///   or <see langword="null"/>. 
   /// </param>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
   public void LoadUnboundValue (IBusinessObject[] value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -3242,7 +3242,7 @@ public class BocList:
   ///   The <see cref="IList"/> of objects implementing <see cref="IBusinessObject"/> to load,
   ///   or <see langword="null"/>. 
   /// </param>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
   public void LoadUnboundValue (IList value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -3259,7 +3259,7 @@ public class BocList:
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/LoadValue/*' />
   public override void SaveValue (bool interim)
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
@@ -3495,7 +3495,7 @@ public class BocList:
   }
 
   /// <summary> Handles the click on an Event command of a row menu. </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnRowMenuItemEventCommandClick/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/OnRowMenuItemEventCommandClick/*' />
   protected virtual void OnRowMenuItemEventCommandClick (
       WebMenuItem menuItem, 
       IBusinessObject businessObject, 
@@ -3533,7 +3533,7 @@ public class BocList:
   }
 
   /// <summary> Handles the click to a WXE function command or a row menu. </summary>
-  /// <include file='doc\include\Controls\BocList.xml' path='BocList/OnRowMenuItemWxeFunctionCommandClick/*' />
+  /// <include file='doc\include\UI\Controls\BocList.xml' path='BocList/OnRowMenuItemWxeFunctionCommandClick/*' />
   protected virtual void OnRowMenuItemWxeFunctionCommandClick (
       WebMenuItem menuItem, 
       IBusinessObject businessObject, 
