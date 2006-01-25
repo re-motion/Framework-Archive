@@ -230,6 +230,7 @@
     </returns>
   </LoadPostData>
   <LoadValue>
+    <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
     <remarks>
       <para>
         Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
@@ -239,20 +240,36 @@
         a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
       </para>
     </remarks>
+    <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
   </LoadValue>
+  <LoadUnboundValue>
+    <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+    <remarks>
+      <para>
+        Populates the <see cref="Value"/> with the provided <paramref name="value"/> if <paramref name="interim"/> 
+        is <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para>
+    </remarks>
+  </LoadUnboundValue>
   <SaveValue>
+    <param name="interim"> Specifies whether this is the final saving or an interim saving. </param>
     <remarks>
       <para>
         Saves the <see cref="Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
         if <paramref name="interim"/> is <see langword="false"/> and the control's 
         <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
       </para><para>
-        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
-        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and a 
+        <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
       </para><para>
-        Resets the dirty state after the <see cref="Value"/> has been saved.
+        <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> will be <see langword="false"/> after invoking
+        <see cref="SaveValue"/> with <paramref name="interim"/> <see langword="false"/>.
       </para>
     </remarks>
+    <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
   </SaveValue>
   <CreateValidators>
     <remarks>
