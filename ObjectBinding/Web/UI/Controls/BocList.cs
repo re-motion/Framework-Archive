@@ -3215,8 +3215,17 @@ public class BocList:
     return values;
   }
 
+  public void LoadUnboundValue (IBusinessObject[] value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
 
-  public virtual void LoadValue (IList value, bool interim)
+  public void LoadUnboundValue (IList value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  protected virtual void LoadValueInternal (IList value, bool interim)
   {
     Value = value;
     IsDirty = ! Object.ReferenceEquals (Value, value);
@@ -3227,7 +3236,7 @@ public class BocList:
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
     {
       IList value = (IList) DataSource.BusinessObject.GetProperty (Property);
-      LoadValue (value, interim);
+      LoadValueInternal (value, interim);
     }
   }
 

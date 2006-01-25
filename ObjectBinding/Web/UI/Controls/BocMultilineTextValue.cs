@@ -345,7 +345,12 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
 
-  public virtual void LoadValue (string[] value, bool interim)
+  public void LoadUnboundValue (string[] value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  protected virtual void LoadValueInternal (string[] value, bool interim)
   {
     if (! interim)
     {
@@ -363,7 +368,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         string[] value = (string[]) DataSource.BusinessObject.GetProperty (Property);
-        LoadValue (value, interim);
+        LoadValueInternal (value, interim);
       }
     }
   }

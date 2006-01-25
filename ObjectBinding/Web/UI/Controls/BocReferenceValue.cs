@@ -855,7 +855,12 @@ public class BocReferenceValue:
   }
 
 
-  public virtual void LoadValue (IBusinessObjectWithIdentity value, bool interim)
+  public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
   {
     if (! interim)
     {
@@ -874,7 +879,7 @@ public class BocReferenceValue:
       {
         IBusinessObjectWithIdentity value = 
             (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
-        LoadValue (value, interim);
+        LoadValueInternal (value, interim);
       }
     }
   }
