@@ -91,7 +91,7 @@ public class BusinessObjectReferenceDataSourceControl:
     {
       get
       {
-        if (IsBusinessObjectChanged)
+        if (HasBusinessObjectChanged)
           return true;
         
         foreach (IBusinessObjectBoundControl control in BoundControls)

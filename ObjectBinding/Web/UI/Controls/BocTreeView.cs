@@ -390,19 +390,32 @@ public class BocTreeView: BusinessObjectBoundWebControl
     return new BusinessObjectPropertyTreeNodeInfo[] { new BusinessObjectPropertyTreeNodeInfo (Property) };
   }
 
+  
+  public void LoadValue (IBusinessObjectWithIdentity[] value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  public void LoadValue (IList value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  protected virtual void LoadValueInternal (object value, bool interim)
+  {
+    ValueImplementation = value;
+  }
+
   /// <summary>
-  ///   Loads the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> or uses the cached
-  ///   information if <paramref name="interim"/> is <see langword="false"/>.
+  ///   Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/>.
   /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to load the <see cref="Value"/> from the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </param>
   public override void LoadValue (bool interim)
   {
     if (DataSource != null && DataSource.BusinessObject != null)
-      ValueImplementation = DataSource.BusinessObject;
+    {
+      IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity) DataSource.BusinessObject;
+      LoadValueInternal (value, interim);
+    }
   }
 
   /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
@@ -548,7 +561,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   }
 
   /// <summary> Gets or sets the current value. </summary>
-  /// <value> An object implementing <see cref="IBusinessObjectWithIdentity"/>. </value>
+  /// <value> A list of <see cref="IBusinessObjectWithIdentity"/> implementations or <see langword="null"/>. </value>
   [Browsable (false)]
   public new IList Value
   {
@@ -568,7 +581,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
     get { return Value; }
     set 
     {
-      if (value is IList)
+      if (value == null)
+        Value = null;
+      else if (value is IList)
         Value = (IList) value; 
       else
         Value = new IBusinessObjectWithIdentity[] { (IBusinessObjectWithIdentity) value };
