@@ -92,25 +92,20 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     set { _readOnly = value; }
   }
 
-  /// <summary>
-  ///   Gets or sets the dirty flag.
-  /// </summary>
+  /// <summary> Gets or sets the dirty flag. </summary>
   /// <remarks>
   ///   <para>
   ///     Initially, the <see cref="IsDirty"/> flag is <see langword="false"/>. It is reset to <see langword="false"/>
-  ///     when the <see cref="BusinessObjectBoundWebControl.Value"/> is set. The dirty flag is also cleared when 
-  ///     using <see cref="BusinessObjectBoundWebControl.LoadValue"/> to read the value from, or using
+  ///     when using <see cref="BusinessObjectBoundWebControl.LoadValue"/> to read the value from, or using
   ///     <see cref="SaveValue"/> to write the value back into the <see cref="IBusinessObject"/> bound to the 
-  ///     <see cref="BusinessObjectBoundWebControl.DataSource"/>
+  ///     <see cref="BusinessObjectBoundWebControl.DataSource"/>. It is also reset when using <b>LoadUnboundValue</b>
+  ///     to set the value for an unbound control.
   ///   </para><para>
   ///     It is set to <see langword="true"/> when the control's <see cref="BusinessObjectBoundWebControl.Value"/> 
-  ///     is changed by the control after it has been set. This can happen either when the user submits new data in
-  ///     the user interface or through the application using the control to modify the contents of the 
-  ///     <see cref="BusinessObjectBoundWebControl.Value"/>. (E.g. a row is added to the list of values by invoking a 
-  ///     method on the <see cref="BocList"/>.)
-  ///   </para><para>
-  ///     If the control is used unbound, it is the application developers responsibility to reset the dirty flag 
-  ///     after reading the value from the control.
+  ///     is set by means other than <see cref="BusinessObjectBoundWebControl.LoadValue"/> or <b>LoadUnboundValue</b>.
+  ///     It is also set when value changes due to the user submitting new data in the user interface or through the 
+  ///     application using the control to modify the contents of the <see cref="BusinessObjectBoundWebControl.Value"/>. 
+  ///     (E.g. a row is added to the list of values by invoking a method on the <see cref="BocList"/>.)
   ///   </para>
   /// </remarks>
   [Browsable (false)]
@@ -120,8 +115,11 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     set { _isDirty = value; }
   }
 
-  /// <summary> Returns the <see cref="Control.ClientID"/> values of all controls containing modifiable data. </summary>
-  /// <returns> A string arry containing zero or more client ids. </returns>
+  /// <summary> 
+  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
+  ///   interface.
+  /// </summary>
+  /// <returns> A string array containing zero or more client ids. </returns>
   public abstract string[] GetTrackedClientIDs();
 
   /// <summary>

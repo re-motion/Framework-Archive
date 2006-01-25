@@ -15,11 +15,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 ///  to controls of type <see cref="IBusinessObjectBoundWebControl"/> inside an <b>ASPX Web Form</b> 
 ///  or <b>ASCX User Control</b>.
 /// </summary>
-/// <remarks>
-///   It is usually sufficient to use the <see langword="abstract"/> default implementation 
-///   (<see cref="BusinessObjectDataSourceControl"/>) as base for creating a new 
-///   <b>IBusinessObjectDataSourceControl</b>.
-/// </remarks>
+/// <include file='doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml' path='IBusinessObjectDataSourceControl/Class/*' />
 public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IControl
 {
   /// <summary> Validates all bound controls implementing <see cref="IValidatableControl"/>. </summary>
