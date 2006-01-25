@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<IBusinessObjectDataSourceControl>
+  <Class>
+    <remarks>
+      It is usually sufficient to use the <see langword="abstract"/> default implementation 
+      (<see cref="BusinessObjectDataSourceControl"/>) as base for creating a new 
+      <b>IBusinessObjectDataSourceControl</b>.
+    </remarks>
+    <example>
+      <b>SaveValues-Pattern</b>
+      <code escaped="true">
+      </code>
+    </example>
+  </Class>
+</IBusinessObjectDataSourceControl>
+
