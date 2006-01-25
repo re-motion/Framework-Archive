@@ -197,6 +197,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\Controls\BocDropDownMenu.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\Controls\BocEnumValue.xml"
                     BuildAction = "Content"
                 />
