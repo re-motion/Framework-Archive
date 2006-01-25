@@ -422,7 +422,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     if (! interim)
     {
       Value = value;
-      IsDirty = ! Object.Equals (value, Value);
+      IsDirty = false;
     }
   }
 

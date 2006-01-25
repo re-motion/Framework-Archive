@@ -167,7 +167,7 @@ public class BocEnumValueTest: BocTest
     
 
   [Test]
-  public void LoadValueBoundAndInterimTrue()
+  public void LoadValueAndInterimTrue()
   {
     _businessObject.EnumValue = TestEnum.Second;
     _bocEnumValue.DataSource = _dataSource;
@@ -181,7 +181,7 @@ public class BocEnumValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithEnum()
+  public void LoadValueAndInterimFalseWithEnum()
   {
     _businessObject.EnumValue = TestEnum.Second;
     _bocEnumValue.DataSource = _dataSource;

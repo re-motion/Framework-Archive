@@ -447,12 +447,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     if (! interim)
     {
       Value = value;
-      bool areEqual;
-      if (value is NaBoolean)
-        areEqual = ((NaBoolean) value) == NaBoolean.FromBoxedBoolean (Value);
-      else
-        areEqual = bool.Equals (value, Value);
-      IsDirty = ! areEqual;
+      IsDirty = false;
     }
   }
 

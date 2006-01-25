@@ -3255,7 +3255,7 @@ public class BocList:
       EndEditDetailsMode (false);
 
     Value = value;
-    IsDirty = ! Object.ReferenceEquals (Value, value);
+    IsDirty = false;
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>

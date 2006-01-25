@@ -134,7 +134,7 @@ public class BocTextValueTest: BocTest
     
 
   [Test]
-  public void LoadValueBoundAndInterimTrue()
+  public void LoadValueAndInterimTrue()
   {
     _businessObject.StringValue = "Foo Bar";
     _bocTextValue.DataSource = _dataSource;
@@ -148,7 +148,7 @@ public class BocTextValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithString()
+  public void LoadValueAndInterimFalseWithString()
   {
     _businessObject.StringValue = "Foo Bar";
     _bocTextValue.DataSource = _dataSource;
@@ -162,7 +162,7 @@ public class BocTextValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithNull()
+  public void LoadValueAndInterimFalseWithNull()
   {
     _businessObject.StringValue = null;
     _bocTextValue.DataSource = _dataSource;

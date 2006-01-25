@@ -95,7 +95,7 @@ public class BocDropDownMenuTest: BocTest
     
 
   [Test]
-  public void LoadValueBoundAndInterimTrueWithObject()
+  public void LoadValueAndInterimTrueWithObject()
   {
     _businessObject.ReferenceValue = new TypeWithReference();
     _bocDropDownMenu.DataSource = _dataSource;
@@ -107,7 +107,7 @@ public class BocDropDownMenuTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimTrueWithObjectAndNoProperty()
+  public void LoadValueAndInterimTrueWithObjectAndNoProperty()
   {
     _bocDropDownMenu.DataSource = _dataSource;
     _bocDropDownMenu.Value = null;
@@ -117,7 +117,7 @@ public class BocDropDownMenuTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimTrueWithNull()
+  public void LoadValueAndInterimTrueWithNull()
   {
     _businessObject.ReferenceValue = null;
     _bocDropDownMenu.DataSource = _dataSource;
@@ -129,7 +129,7 @@ public class BocDropDownMenuTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithObject()
+  public void LoadValueAndInterimFalseWithObject()
   {
     _businessObject.ReferenceValue = new TypeWithReference();
     _bocDropDownMenu.DataSource = _dataSource;
@@ -142,7 +142,7 @@ public class BocDropDownMenuTest: BocTest
 
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithObjectAndNoProperty()
+  public void LoadValueAndInterimFalseWithObjectAndNoProperty()
   {
     _bocDropDownMenu.DataSource = _dataSource;
     _bocDropDownMenu.Value = null;
@@ -152,7 +152,7 @@ public class BocDropDownMenuTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithNull()
+  public void LoadValueAndInterimFalseWithNull()
   {
     _businessObject.ReferenceValue = null;
     _bocDropDownMenu.DataSource = _dataSource;

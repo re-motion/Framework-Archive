@@ -394,8 +394,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     if (! interim)
     {
       Value = value;
-      bool areEqual = Enum.Equals (value, Value);
-      IsDirty = ! areEqual;
+      IsDirty = false;
     }
   }
 

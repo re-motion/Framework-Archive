@@ -134,7 +134,7 @@ public class BocMultilineTextValueTest: BocTest
     
 
   [Test]
-  public void LoadValueBoundAndInterimTrue()
+  public void LoadValueAndInterimTrue()
   {
     _businessObject.StringArray = new string[] {"Foo", "Bar"};
     _bocMultilineTextValue.DataSource = _dataSource;
@@ -148,7 +148,7 @@ public class BocMultilineTextValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithString()
+  public void LoadValueAndInterimFalseWithString()
   {
     _businessObject.StringArray = new string[] {"Foo", "Bar"};
     _bocMultilineTextValue.DataSource = _dataSource;
@@ -162,7 +162,7 @@ public class BocMultilineTextValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithNull()
+  public void LoadValueAndInterimFalseWithNull()
   {
     _businessObject.StringArray = null;
     _bocMultilineTextValue.DataSource = _dataSource;

@@ -95,7 +95,7 @@ public class BocListTest: BocTest
  
 
   [Test]
-  public void LoadValueBoundAndInterimTrueWithList()
+  public void LoadValueAndInterimTrueWithList()
   {
     _businessObject.ReferenceList = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
     _bocList.DataSource = _dataSource;
@@ -109,7 +109,7 @@ public class BocListTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimTrueWithNull()
+  public void LoadValueAndInterimTrueWithNull()
   {
     _businessObject.ReferenceList = null;
     _bocList.DataSource = _dataSource;
@@ -123,7 +123,7 @@ public class BocListTest: BocTest
   }   
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithList()
+  public void LoadValueAndInterimFalseWithList()
   {
     _businessObject.ReferenceList = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
     _bocList.DataSource = _dataSource;
@@ -137,7 +137,7 @@ public class BocListTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithNull()
+  public void LoadValueAndInterimFalseWithNull()
   {
     _businessObject.ReferenceList = null;
     _bocList.DataSource = _dataSource;

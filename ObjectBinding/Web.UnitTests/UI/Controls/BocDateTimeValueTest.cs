@@ -234,7 +234,7 @@ public class BocDateTimeValueTest: BocTest
 
 
   [Test]
-  public void LoadValueBoundAndInterimTrue()
+  public void LoadValueAndInterimTrue()
   {
     _businessObject.DateTimeValue = new DateTime (2006, 1, 1, 1, 1, 1);
     _bocDateTimeValue.DataSource = _dataSource;
@@ -248,7 +248,7 @@ public class BocDateTimeValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithDateTime()
+  public void LoadValueAndInterimFalseWithDateTime()
   {
     _businessObject.DateTimeValue = new DateTime (2006, 1, 1, 1, 1, 1);
     _bocDateTimeValue.DataSource = _dataSource;
@@ -262,7 +262,7 @@ public class BocDateTimeValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithValueNaDateTime()
+  public void LoadValueAndInterimFalseWithValueNaDateTime()
   {
     _businessObject.NaDateTimeValue = new NaDateTime (2006, 1, 1, 1, 1, 1);
     _bocDateTimeValue.DataSource = _dataSource;
@@ -277,7 +277,7 @@ public class BocDateTimeValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithValueNaDateTimeNull()
+  public void LoadValueAndInterimFalseWithValueNaDateTimeNull()
   {
     _businessObject.NaDateTimeValue = NaDateTime.Null;
     _bocDateTimeValue.DataSource = _dataSource;

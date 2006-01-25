@@ -886,7 +886,7 @@ public class BocReferenceValue:
     if (! interim)
     {
       Value = value;
-      IsDirty = value != Value;
+      IsDirty = false;
     }
   }
 

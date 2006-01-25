@@ -584,12 +584,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     if (! interim)
     {
       Value = value;
-      bool areEqual;
-      if (value is NaDateTime)
-        areEqual = ((NaDateTime) value) == NaDateTime.FromBoxedDateTime (Value);
-      else
-        areEqual = bool.Equals (value, Value);
-      IsDirty = ! areEqual;
+      IsDirty = false;
     }
   }
 

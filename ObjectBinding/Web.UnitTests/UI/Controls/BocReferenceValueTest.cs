@@ -241,7 +241,7 @@ public class BocReferenceValueTest: BocTest
     
 
   [Test]
-  public void LoadValueBoundAndInterimTrue()
+  public void LoadValueAndInterimTrue()
   {
     _businessObject.ReferenceValue = new TypeWithReference();
     _bocReferenceValue.DataSource = _dataSource;
@@ -255,7 +255,7 @@ public class BocReferenceValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithObject()
+  public void LoadValueAndInterimFalseWithObject()
   {
     _businessObject.ReferenceValue = new TypeWithReference();
     _bocReferenceValue.DataSource = _dataSource;
@@ -269,7 +269,7 @@ public class BocReferenceValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithNull()
+  public void LoadValueAndInterimFalseWithNull()
   {
     _businessObject.ReferenceValue = null;
     _bocReferenceValue.DataSource = _dataSource;

@@ -108,7 +108,7 @@ public class BocTreeViewTest: BocTest
     
 
   [Test]
-  public void LoadValueBoundAndInterimTrueWithObject()
+  public void LoadValueAndInterimTrueWithObject()
   {
     _bocTreeView.DataSource = _dataSource;
     _bocTreeView.Value = null;
@@ -121,7 +121,7 @@ public class BocTreeViewTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithObject()
+  public void LoadValueAndInterimFalseWithObject()
   {
     _bocTreeView.DataSource = _dataSource;
     _bocTreeView.Value = null;

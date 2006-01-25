@@ -156,7 +156,7 @@ public class BocBooleanValueTest: BocTest
 
 
   [Test]
-  public void LoadValueBoundAndInterimTrue()
+  public void LoadValueAndInterimTrue()
   {
     _businessObject.BooleanValue = true;
     _bocBooleanValue.DataSource = _dataSource;
@@ -170,7 +170,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithValueTrue()
+  public void LoadValueAndInterimFalseWithValueTrue()
   {
     _businessObject.BooleanValue = true;
     _bocBooleanValue.DataSource = _dataSource;
@@ -184,7 +184,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithValueFalse()
+  public void LoadValueAndInterimFalseWithValueFalse()
   {
     _businessObject.BooleanValue = false;
     _bocBooleanValue.DataSource = _dataSource;
@@ -198,7 +198,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithValueNaBooelanTrue()
+  public void LoadValueAndInterimFalseWithValueNaBooelanTrue()
   {
     _businessObject.NaBooleanValue = NaBoolean.True;
     _bocBooleanValue.DataSource = _dataSource;
@@ -213,7 +213,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithValueNaBooelanFalse()
+  public void LoadValueAndInterimFalseWithValueNaBooelanFalse()
   {
     _businessObject.NaBooleanValue = NaBoolean.False;
     _bocBooleanValue.DataSource = _dataSource;
@@ -228,7 +228,7 @@ public class BocBooleanValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueBoundAndInterimFalseWithValueNaBooelanNull()
+  public void LoadValueAndInterimFalseWithValueNaBooelanNull()
   {
     _businessObject.NaBooleanValue = NaBoolean.Null;
     _bocBooleanValue.DataSource = _dataSource;
