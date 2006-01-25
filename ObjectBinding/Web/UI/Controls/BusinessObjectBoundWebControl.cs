@@ -278,6 +278,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
   /// <param name="interim"> Specifies whether this is the initial loading, or an interim loading. </param>
+  /// <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
   public abstract void LoadValue (bool interim);
 
   /// <summary> Gets or sets the value provided by the <see cref="IBusinessObjectBoundControl"/>. </summary>
