@@ -49,6 +49,7 @@ public class WxeTransactedFunction: WxeTransactedFunctionBase
   /// <returns>A new WxeTransaction, if <see cref="TransactionMode"/> has a value of <b>CreateRoot</b>; otherwise <see langword="null"/>.</returns>
   protected override WxeTransactionBase CreateWxeTransaction ()
   {
+    // TODO: Extract factory method for creation of project specific WxeTransacions!
     if (_transactionMode == TransactionMode.CreateRoot)
       return new WxeTransaction (AutoCommit, true);
 
