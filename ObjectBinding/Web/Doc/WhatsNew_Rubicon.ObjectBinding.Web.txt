@@ -45,6 +45,13 @@
 - BocDateTimeValue
   * Bugfix: Wurde Value auf NaDateTime gesetzt, hat das zu einer CastException geführt.
   
+- BocList
+  * LoadValue: Neues Verhalten bei gebundenen BocListen: 
+      interim = false beendet Inline Editing und verwirft die Änderungen. 
+  * SaveValue: Neues Verhalten: 
+      Inline Editing wird nur beendet wenn die BocList gebunden ist.
+      EndEditDetailsMode(true) ist statt dessen bei unbebundenen BocListen zu verwenden.
+  
 1.3.28
 ======
 - BocDateTimeValue
