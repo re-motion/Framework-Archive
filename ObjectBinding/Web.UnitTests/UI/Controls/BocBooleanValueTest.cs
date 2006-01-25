@@ -244,87 +244,87 @@ public class BocBooleanValueTest: BocTest
 
 
   [Test]
-  public void LoadValueUnboundAndInterimTrue()
+  public void LoadUnboundValueAndInterimTrue()
   {
     bool value = true;
     _bocBooleanValue.Value = null;
     _bocBooleanValue.IsDirty = true;
 
-    _bocBooleanValue.LoadValue (value, true);
+    _bocBooleanValue.LoadUnboundValue (value, true);
     Assert.AreEqual (null, _bocBooleanValue.Value);
     Assert.IsTrue (_bocBooleanValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithValueTrue()
+  public void LoadUnboundValueAndInterimFalseWithValueTrue()
   {
     bool value = true;
     _bocBooleanValue.Value = null;
     _bocBooleanValue.IsDirty = true;
 
-    _bocBooleanValue.LoadValue (value, false);
+    _bocBooleanValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocBooleanValue.Value);
     Assert.IsFalse (_bocBooleanValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithValueFalse()
+  public void LoadUnboundValueAndInterimFalseWithValueFalse()
   {
     bool value = false;
     _bocBooleanValue.Value = null;
     _bocBooleanValue.IsDirty = true;
 
-    _bocBooleanValue.LoadValue (value, false);
+    _bocBooleanValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocBooleanValue.Value);
     Assert.IsFalse (_bocBooleanValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithValueNull()
+  public void LoadUnboundValueAndInterimFalseWithValueNull()
   {
     object value = null;
     _bocBooleanValue.Value = true;
     _bocBooleanValue.IsDirty = true;
 
-    _bocBooleanValue.LoadValue (value, false);
+    _bocBooleanValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocBooleanValue.Value);
     Assert.IsFalse (_bocBooleanValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanTrue()
+  public void LoadUnboundValueAndInterimFalseWithValueNaBooelanTrue()
   {
     NaBoolean value = NaBoolean.True;
     _bocBooleanValue.Value = null;
     _bocBooleanValue.IsDirty = true;
 
-    _bocBooleanValue.LoadValue (value, false);
+    _bocBooleanValue.LoadUnboundValue (value, false);
     NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocBooleanValue.Value);
     Assert.AreEqual (value, actual);
     Assert.IsFalse (_bocBooleanValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanFalse()
+  public void LoadUnboundValueAndInterimFalseWithValueNaBooelanFalse()
   {
     NaBoolean value = NaBoolean.False;
     _bocBooleanValue.Value = null;
     _bocBooleanValue.IsDirty = true;
 
-    _bocBooleanValue.LoadValue (value, false);
+    _bocBooleanValue.LoadUnboundValue (value, false);
     NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocBooleanValue.Value);
     Assert.AreEqual (value, actual);
     Assert.IsFalse (_bocBooleanValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithValueNaBooelanNull()
+  public void LoadUnboundValueAndInterimFalseWithValueNaBooelanNull()
   {
     NaBoolean value = NaBoolean.Null;
     _bocBooleanValue.Value = true;
     _bocBooleanValue.IsDirty = true;
 
-    _bocBooleanValue.LoadValue (value, false);
+    _bocBooleanValue.LoadUnboundValue (value, false);
     NaBoolean actual = NaBoolean.FromBoxedBoolean (_bocBooleanValue.Value);
     Assert.AreEqual (value, actual);
     Assert.IsFalse (_bocBooleanValue.IsDirty);
