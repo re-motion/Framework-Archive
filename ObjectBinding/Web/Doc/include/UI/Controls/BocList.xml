@@ -478,6 +478,58 @@
       
     </remarks>
   </Class>
+  <LoadValue>
+    <param name="interim"> Specifies whether this is the initial loading or an interim loading. </param>
+    <remarks>
+      <para>
+        Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/>. 
+      </para><para>
+        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para><para>
+        Invoking <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
+        <see cref="BocList"/> to abort the edit details mode and discard any changes.
+      </para><para>
+        Normally, <see cref="IsDirty"/> is <see langword="false"/> after invoking <see cref="LoadValue"/>. 
+        If <paramref name="interim"/> is <see langword="true"/> and a row is currently being edited, the state of 
+        <see cref="IsDirty"/> will also depend on whether the edited row is dirty.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
+  </LoadValue>
+  <LoadUnboundValue>
+    <param name="interim"> Specifies whether this is the initial loading or an interim loading. </param>
+    <remarks>
+      <para>
+        Invoking <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
+        <see cref="BocList"/> to abort the edit details mode and discard any changes.
+      </para><para>
+        Normally, <see cref="IsDirty"/> is <see langword="false"/> after invoking <see cref="LoadValue"/>. 
+        If <paramref name="interim"/> is <see langword="true"/> and a row is currently being edited, the state of 
+        <see cref="IsDirty"/> will also depend on whether the edited row is dirty.
+      </para>
+    </remarks>
+  </LoadUnboundValue>
+  <SaveValue>
+    <param name="interim"> Specifies whether this is the final saving or an interim saving. </param>
+    <remarks>
+      <para>
+        Saves the <see cref="Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> if the control's
+        <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
+      </para><para>
+        Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+      </para><para>
+        Invoking <see cref="SaveValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
+        <see cref="BocList"/> to end the edit details mode and save any changes made to the row.
+      </para><para>
+        Normally, <see cref="IsDirty"/> is <see langword="false"/> after invoking <see cref="SaveValue"/>. 
+        If <paramref name="interim"/> is <see langword="true"/> and a row is currently being edited, the state of 
+        <see cref="IsDirty"/> will also depend on whether the edited row is dirty.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
+  </SaveValue>
   <OnListItemCommandClick>
     <param name="column"> 
       The <see cref="BocCommandEnabledColumnDefinition"/> whose command was clicked. 
