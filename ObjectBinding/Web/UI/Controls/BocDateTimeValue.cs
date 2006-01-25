@@ -575,10 +575,10 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
       {
         DataSource.BusinessObject.SetProperty (Property, Value);
-        IsDirty = false;
         //  get_Value parses the internal representation of the date/time value
         //  set_Value updates the internal representation of the date/time value
         Value = Value;
+        IsDirty = false;
       }
     }
   }
