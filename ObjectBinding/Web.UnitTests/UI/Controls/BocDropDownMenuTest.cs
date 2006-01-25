@@ -164,42 +164,42 @@ public class BocDropDownMenuTest: BocTest
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimTrueWithObject()
+  public void LoadUnboundValueAndInterimTrueWithObject()
   {
     TypeWithReference value = new TypeWithReference();
     _bocDropDownMenu.Value = null;
 
-    _bocDropDownMenu.LoadValue (value, true);
+    _bocDropDownMenu.LoadUnboundValue (value, true);
     Assert.AreEqual (value, _bocDropDownMenu.Value);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimTrueWithNull()
+  public void LoadUnboundValueAndInterimTrueWithNull()
   {
     TypeWithReference value = null;
     _bocDropDownMenu.Value = new TypeWithReference();
 
-    _bocDropDownMenu.LoadValue (value, true);
+    _bocDropDownMenu.LoadUnboundValue (value, true);
     Assert.AreEqual (value, _bocDropDownMenu.Value);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithObject()
+  public void LoadUnboundValueAndInterimFalseWithObject()
   {
     TypeWithReference value = new TypeWithReference();
     _bocDropDownMenu.Value = null;
 
-    _bocDropDownMenu.LoadValue (value, false);
+    _bocDropDownMenu.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocDropDownMenu.Value);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithNull()
+  public void LoadUnboundValueAndInterimFalseWithNull()
   {
     TypeWithReference value = null;
     _bocDropDownMenu.Value = new TypeWithReference();
 
-    _bocDropDownMenu.LoadValue (value, false);
+    _bocDropDownMenu.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocDropDownMenu.Value);
   }
 }
