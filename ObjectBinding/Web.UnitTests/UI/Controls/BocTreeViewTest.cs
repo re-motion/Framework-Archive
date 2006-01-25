@@ -134,42 +134,42 @@ public class BocTreeViewTest: BocTest
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimTrueWithList()
+  public void LoadUnboundValueAndInterimTrueWithList()
   {
     TypeWithReference[] value = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
     _bocTreeView.Value = null;
 
-    _bocTreeView.LoadValue (value, true);
+    _bocTreeView.LoadUnboundValue (value, true);
     Assert.AreEqual (value, _bocTreeView.Value);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimTrueWithNull()
+  public void LoadUnboundValueAndInterimTrueWithNull()
   {
     TypeWithReference[] value = null;
     _bocTreeView.Value = new TypeWithReference[0];
 
-    _bocTreeView.LoadValue (value, true);
+    _bocTreeView.LoadUnboundValue (value, true);
     Assert.AreEqual (value, _bocTreeView.Value);
   }   
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithList()
+  public void LoadUnboundValueAndInterimFalseWithList()
   {
     TypeWithReference[] value = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
     _bocTreeView.Value = null;
 
-    _bocTreeView.LoadValue (value, false);
+    _bocTreeView.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocTreeView.Value);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithNull()
+  public void LoadUnboundValueAndInterimFalseWithNull()
   {
     TypeWithReference[] value = null;
     _bocTreeView.Value = new TypeWithReference[0];
 
-    _bocTreeView.LoadValue (value, false);
+    _bocTreeView.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocTreeView.Value);
   }   
 
