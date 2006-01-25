@@ -366,22 +366,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
 
-  public void LoadUnboundValue (object value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  protected virtual void LoadValueInternal (object value, bool interim)
-  {
-    if (! interim)
-    {
-      Value = value;
-      bool areEqual = Enum.Equals (value, Value);
-      IsDirty = ! areEqual;
-    }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
@@ -395,7 +380,26 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> The enumeration value or <see langword="null"/> to load or <see langword="null"/>. </param>
+  /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue (object value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+  protected virtual void LoadValueInternal (object value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      bool areEqual = Enum.Equals (value, Value);
+      IsDirty = ! areEqual;
+    }
+  }
+
+  /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocEnumValue.xml' path='BocEnumValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {

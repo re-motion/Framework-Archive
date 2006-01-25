@@ -538,21 +538,47 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
 
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadValue/*' />
+  public override void LoadValue (bool interim)
+  {
+    if (! interim)
+    {
+      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
+      {
+        object value = DataSource.BusinessObject.GetProperty (Property);
+        LoadValueInternal (value, interim);
+      }
+    }
+  }
+
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> 
+  ///   A boxed <see cref="DateTime"/> or <see cref="NaDateTime"/> value to load, or <see langword="null"/>. 
+  /// </param>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (object value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> The <see cref="DateTime"/> value to load. </param>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (DateTime value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> The <see cref="NaDateTime"/> value to load. </param>
+  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (NaDateTime value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
+  /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
   protected virtual void LoadValueInternal (object value, bool interim)
   {
     if (! interim)
@@ -567,21 +593,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadValue/*' />
-  public override void LoadValue (bool interim)
-  {
-    if (! interim)
-    {
-      if (Property != null && DataSource != null && DataSource.BusinessObject != null)
-      {
-        object value = DataSource.BusinessObject.GetProperty (Property);
-        LoadValueInternal (value, interim);
-      }
-    }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {

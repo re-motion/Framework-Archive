@@ -390,25 +390,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
     return new BusinessObjectPropertyTreeNodeInfo[] { new BusinessObjectPropertyTreeNodeInfo (Property) };
   }
 
-  
-  public void LoadUnboundValue (IBusinessObjectWithIdentity[] value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
 
-  public void LoadUnboundValue (IList value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  protected virtual void LoadValueInternal (object value, bool interim)
-  {
-    ValueImplementation = value;
-  }
-
-  /// <summary>
-  ///   Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/>.
-  /// </summary>
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
+  /// <include file='doc\include\Controls\BocTreeView.xml' path='BocTreeView/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (DataSource != null && DataSource.BusinessObject != null)
@@ -416,6 +400,34 @@ public class BocTreeView: BusinessObjectBoundWebControl
       IBusinessObjectWithIdentity value = (IBusinessObjectWithIdentity) DataSource.BusinessObject;
       LoadValueInternal (value, interim);
     }
+  }
+  
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> 
+  ///   The <see cref="Array"/> of objects implementing <see cref="IBusinessObjectWithIdentity"/> to load,
+  ///   or <see langword="null"/>. 
+  /// </param>
+  /// <include file='doc\include\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
+  public void LoadUnboundValue (IBusinessObjectWithIdentity[] value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> 
+  ///   The <see cref="IList"/> of objects implementing <see cref="IBusinessObjectWithIdentity"/> to load,
+  ///   or <see langword="null"/>. 
+  /// </param>
+  /// <include file='doc\include\Controls\BocTreeView.xml' path='BocTreeView/LoadUnboundValue/*' />
+  public void LoadUnboundValue (IList value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+  protected virtual void LoadValueInternal (object value, bool interim)
+  {
+    ValueImplementation = value;
   }
 
   /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>

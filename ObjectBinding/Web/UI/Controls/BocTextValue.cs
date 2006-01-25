@@ -359,36 +359,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   }
 
 
-  public void LoadUnboundValue (string value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  public void LoadUnboundValue (int value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  public void LoadUnboundValue (double value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  public void LoadUnboundValue (DateTime value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  protected virtual void LoadValueInternal (object value, bool interim)
-  {
-    if (! interim)
-    {
-      Value = value;
-      IsDirty = ! Object.Equals (value, Value);
-    }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
@@ -402,7 +373,60 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> 
+  ///   The boxed <see cref="Int32"/>, <see cref="Double"/>, or <see cref="DateTime"/> value to load, 
+  ///   or <see langword="null"/>. 
+  /// </param>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue (object value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> A <see cref="String"/> to load or <see langword="null"/>. </param>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue (string value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> The <see cref="Int32"/> value to load. </param>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue (int value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> The <see cref="Double"/> value to load. </param>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue (double value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> The <see cref="DateTime"/> value to load. </param>
+  /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue (DateTime value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+  protected virtual void LoadValueInternal (object value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      IsDirty = ! Object.Equals (value, Value);
+    }
+  }
+
+  /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocTextValue.xml' path='BocTextValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {

@@ -855,21 +855,7 @@ public class BocReferenceValue:
   }
 
 
-  public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
-  {
-    if (! interim)
-    {
-      Value = value;
-      IsDirty = value != Value;
-    }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
@@ -884,7 +870,27 @@ public class BocReferenceValue:
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> 
+  ///   The object implementing <see cref="IBusinessObjectWithIdentity"/> to load, or <see langword="null"/>. 
+  /// </param>
+  /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+  protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      IsDirty = value != Value;
+    }
+  }
+
+  /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocReferenceValue.xml' path='BocReferenceValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {

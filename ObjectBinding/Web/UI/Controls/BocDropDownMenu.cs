@@ -170,22 +170,9 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     _dropDownMenu.RenderControl (writer);
   }
 
-  
-  public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
 
-  protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
-  {
-    Value = value;
-  }
-
-  /// <summary> Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/>. </summary>
-  /// <remarks> 
-  ///   If no <see cref="Property"/> is provided, the datasource's bound business object itself is used as the value.
-  /// </remarks>
-  /// <param name="interim"> Not used. </param>
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
+  /// <include file='doc\include\Controls\BocDropDownMenu.xml' path='BocDropDownMenu/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (DataSource != null && DataSource.BusinessObject != null)
@@ -197,6 +184,22 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
         value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
       LoadValueInternal (value, interim);
     }
+  }
+  
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> 
+  ///   The object implementing <see cref="IBusinessObjectWithIdentity"/> to load, or <see langword="null"/>. 
+  /// </param>
+  /// <include file='doc\include\Controls\BocDropDownMenu.xml' path='BocDropDownMenu/LoadUnboundValue/*' />
+  public void LoadUnboundValue (IBusinessObjectWithIdentity value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+  protected virtual void LoadValueInternal (IBusinessObjectWithIdentity value, bool interim)
+  {
+    Value = value;
   }
 
   /// <summary> Gets or sets the current value. </summary>

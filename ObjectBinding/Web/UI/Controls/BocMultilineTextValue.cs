@@ -345,21 +345,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
 
-  public void LoadUnboundValue (string[] value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  protected virtual void LoadValueInternal (string[] value, bool interim)
-  {
-    if (! interim)
-    {
-      Value = value;
-      IsDirty = false;
-    }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.LoadValue"/> method. </summary>
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
@@ -373,7 +359,25 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.SaveValue"/> method. </summary>
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> The <see cref="String"/> <see cref="Array"/> to load or <see langword="null"/>. </param>
+  /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadUnboundValue/*' />
+  public void LoadUnboundValue (string[] value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+  protected virtual void LoadValueInternal (string[] value, bool interim)
+  {
+    if (! interim)
+    {
+      Value = value;
+      IsDirty = false;
+    }
+  }
+
+  /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
   /// <include file='doc\include\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {

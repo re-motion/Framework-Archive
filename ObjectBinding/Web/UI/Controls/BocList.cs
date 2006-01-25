@@ -3215,22 +3215,8 @@ public class BocList:
     return values;
   }
 
-  public void LoadUnboundValue (IBusinessObject[] value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  public void LoadUnboundValue (IList value, bool interim)
-  {
-    LoadValueInternal (value, interim);
-  }
-
-  protected virtual void LoadValueInternal (IList value, bool interim)
-  {
-    Value = value;
-    IsDirty = ! Object.ReferenceEquals (Value, value);
-  }
-
+  /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null)
@@ -3240,23 +3226,47 @@ public class BocList:
     }
   }
 
-  /// <summary>
-  ///   Writes the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/> if <paramref name="interim"/> 
-  ///   is <see langword="false"/>.
-  /// </summary>
-  /// <param name="interim">
-  ///   <see langword="false"/> to write the <see cref="Value"/> into the 
-  ///   <see cref="BusinessObjectBoundWebControl.DataSource"/>.
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> 
+  ///   The <see cref="Array"/> of objects implementing <see cref="IBusinessObject"/> to load,
+  ///   or <see langword="null"/>. 
   /// </param>
-  /// <remarks> Resets the dirty state after the <see cref="Value"/> has been saved. </remarks>
-  public override void SaveValue (bool interim)
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
+  public void LoadUnboundValue (IBusinessObject[] value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
+  /// <param name="value"> 
+  ///   The <see cref="IList"/> of objects implementing <see cref="IBusinessObject"/> to load,
+  ///   or <see langword="null"/>. 
+  /// </param>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/LoadUnboundValue/*' />
+  public void LoadUnboundValue (IList value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  /// <summary> Performs the actual loading for <see cref="LoadValue"/> and <see cref="LoadUnboundValue"/>. </summary>
+  protected virtual void LoadValueInternal (IList value, bool interim)
   {
     if (! interim)
-      EndEditDetailsMode (true);
+      EndEditDetailsMode (false);
 
+    Value = value;
+    IsDirty = ! Object.ReferenceEquals (Value, value);
+  }
+
+  /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
+  /// <include file='doc\include\Controls\BocList.xml' path='BocList/LoadValue/*' />
+  public override void SaveValue (bool interim)
+  {
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
     {
+      if (! interim)
+        EndEditDetailsMode (true);
+
       DataSource.BusinessObject.SetProperty (Property, Value);
       IsDirty = false;
     }
