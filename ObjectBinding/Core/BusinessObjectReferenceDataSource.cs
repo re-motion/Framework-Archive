@@ -86,7 +86,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   A flag that is cleared when the <see cref="BusinessObject"/> is loaded from or saved to the
   ///   <see cref="ReferencedDataSource"/>.
   /// </summary>
-  private bool _isBusinessObjectChanged = false;
+  private bool _hasBusinessObjectChanged = false;
 
   /// <summary> 
   ///   Loads the <see cref="BusinessObject"/> from the <see cref="ReferencedDataSource"/> using 
@@ -105,7 +105,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
     if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null && ReferenceProperty != null)
     {
       BusinessObject = (IBusinessObject) ReferencedDataSource.BusinessObject.GetProperty (ReferenceProperty);
-      _isBusinessObjectChanged = false;
+      _hasBusinessObjectChanged = false;
       if (_businessObject == null && Mode == DataSourceMode.Edit && ReferenceProperty.CreateIfNull)
         BusinessObject = ReferenceProperty.Create (ReferencedDataSource.BusinessObject);     
     }
@@ -133,10 +133,10 @@ public abstract class BusinessObjectReferenceDataSourceBase:
     // if required, save value into "parent" data source
     if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null 
         && ReferenceProperty != null && ReferenceProperty.ReferenceClass != null 
-        && (_isBusinessObjectChanged || ReferenceProperty.ReferenceClass.RequiresWriteBack))
+        && (_hasBusinessObjectChanged || ReferenceProperty.ReferenceClass.RequiresWriteBack))
     {
       ReferencedDataSource.BusinessObject.SetProperty (ReferenceProperty, BusinessObject);
-      _isBusinessObjectChanged = false;
+      _hasBusinessObjectChanged = false;
     }
   }
 
@@ -144,9 +144,9 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   Gets a flag that is <see langword="true"/> if the <see cref="BusinessObject"/> has been set since the last
   ///   call to <see cref="SaveValue"/>.
   /// </summary>
-  public bool IsBusinessObjectChanged
+  public bool HasBusinessObjectChanged
   {
-    get { return _isBusinessObjectChanged; }
+    get { return _hasBusinessObjectChanged; }
   }
 
   /// <summary>
@@ -180,7 +180,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
     set
     {
       _businessObject = value; 
-      _isBusinessObjectChanged = true;
+      _hasBusinessObjectChanged = true;
     }
   }
 
