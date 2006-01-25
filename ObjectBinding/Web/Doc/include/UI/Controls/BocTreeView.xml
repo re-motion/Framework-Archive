@@ -38,5 +38,29 @@
       from the underlying object model.
     </exception>
   </Class>
+  <LoadValue>
+    <param name="interim"> Not used. </param>
+    <remarks>
+      <para>
+        The <see cref="BocTreeView"/> uses the <see cref="BusinessObjectBoundWebControl.DataSource"/>'s 
+        <see cref="BusinessObjectDataSourceControl.BusinessObject"/> as the root node.
+      </para><para>
+        Requires a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
+        a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
+        If a <see cref="Property"/> is provided, only the business objects accessed through this proeprty will 
+        be shown in the tree.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
+  </LoadValue>
+  <LoadUnboundValue>
+    <param name="interim"> Not used. </param>
+    <remarks>
+      <para>
+        The objects in <paramref name="value"/> will be used as the root nodes for the <see cref="BocTreeView"/>.
+      </para>
+    </remarks>
+    <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
+  </LoadUnboundValue>
 </BocTreeView>
 
