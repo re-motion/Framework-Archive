@@ -170,6 +170,12 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     _dropDownMenu.RenderControl (writer);
   }
 
+  
+  public virtual void LoadValue (IBusinessObjectWithIdentity value, bool interim)
+  {
+    Value = value;
+  }
+
   /// <summary> Loads the <see cref="Value"/> from the <see cref="BusinessObjectBoundWebControl.DataSource"/>. </summary>
   /// <remarks> 
   ///   If no <see cref="Property"/> is provided, the datasource's bound business object itself is used as the value.
@@ -179,10 +185,12 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   {
     if (DataSource != null && DataSource.BusinessObject != null)
     {
-      if (Property != null)
-        ValueImplementation = DataSource.BusinessObject.GetProperty (Property);
+      IBusinessObjectWithIdentity value;
+      if (Property == null)
+        value = (IBusinessObjectWithIdentity) DataSource.BusinessObject;
       else
-        ValueImplementation = DataSource.BusinessObject;
+        value = (IBusinessObjectWithIdentity) DataSource.BusinessObject.GetProperty (Property);
+      LoadValue (value, interim);
     }
   }
 
