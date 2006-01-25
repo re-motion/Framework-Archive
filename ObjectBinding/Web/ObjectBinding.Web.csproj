@@ -225,6 +225,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Globalization\BocBooleanValue.de.resx"
                     BuildAction = "EmbeddedResource"
                 />
