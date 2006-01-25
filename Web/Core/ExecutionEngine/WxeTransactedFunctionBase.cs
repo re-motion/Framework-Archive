@@ -34,6 +34,18 @@ public abstract class WxeTransactedFunctionBase: WxeFunction, IDeserializationCa
   /// </remarks>
   protected abstract WxeTransactionBase CreateWxeTransaction();
 
+  /// <summary> Gets the underlying <see cref="ITransaction"/>. </summary>
+  protected ITransaction Transaction
+  {
+    get
+    {
+      if (_wxeTransaction == null)
+        return null;
+      else
+        return _wxeTransaction.Transaction;
+    }
+  }
+
   public override void Execute (WxeContext context)
   {
     if (! ExecutionStarted)

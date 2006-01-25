@@ -153,7 +153,7 @@ public abstract class WxeTransactionBase: WxeStepList
     get { return (WxeTransactionBase) WxeStep.GetStepByType (ParentStep, typeof (WxeTransactionBase)); }
   }
 
-  /// <summary> Gets the encapsulated <see cref="ITransaction"/>. </summary>
+  /// <summary> Gets the underlying <see cref="ITransaction"/>. </summary>
   public ITransaction Transaction
   {
     get { return _transaction; } 
