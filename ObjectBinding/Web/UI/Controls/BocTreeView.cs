@@ -391,12 +391,12 @@ public class BocTreeView: BusinessObjectBoundWebControl
   }
 
   
-  public void LoadValue (IBusinessObjectWithIdentity[] value, bool interim)
+  public void LoadUnboundValue (IBusinessObjectWithIdentity[] value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
 
-  public void LoadValue (IList value, bool interim)
+  public void LoadUnboundValue (IList value, bool interim)
   {
     LoadValueInternal (value, interim);
   }
