@@ -402,7 +402,23 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     return values;
   }
 
-  public virtual void LoadValue (object value, bool interim)
+
+  public void LoadUnboundValue (object value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  public void LoadUnboundValue (bool value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  public void LoadUnboundValue (NaBoolean value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  protected virtual void LoadValueInternal (object value, bool interim)
   {
     if (! interim)
     {
@@ -425,7 +441,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         object value = DataSource.BusinessObject.GetProperty (Property);
-        LoadValue (value, interim);
+        LoadValueInternal (value, interim);
       }
     }
   }
