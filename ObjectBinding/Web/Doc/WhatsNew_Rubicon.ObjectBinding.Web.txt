@@ -1,4 +1,4 @@
-1.4.1
+1.4.3
 ======
 - Namespace geändert:
   * Rubicon.ObjectBinding.Web.Controls zu Rubicon.ObjectBinding.Web.UI.Controls
@@ -20,10 +20,11 @@
   * DirtyState überarbeitet:
     Bisheriges Verhalten: IsDirty war immer true, außer es wurde LoadValues aufgerufen.
     Neues Verhalten: 
-      Initialisiert: false
-      set Value: true
-      LoadValue: false, wenn der Wert im Control dem zugewiesenen Wert entspricht.
-      Durch Interaktion: true wenn sich durch UserInput (oder bei der BocList zB AddRow) der Wert von Value ändert.
+      Initialisiert: IsDirty = false
+      set Value: IsDirty = true
+      LoadValue/LoadUnboundValue: IsDirty = false, wenn der Wert im Control dem zugewiesenen Wert entspricht.
+      Durch Interaktion: IsDirty = true wenn sich durch UserInput (oder bei der BocList zB AddRow) der Wert von Value 
+        ändert.
 
       IsDirty wird gelöscht, sobald SaveValue aufgerufen wird und Value wieder in die DataSource zurückgeschrieben
       wird.
@@ -31,9 +32,9 @@
       Page.Unload aufgerufen und damit kann der neue IsDirty Zustand nicht mehr im ViewState perisistiert werden.
     
 - BOCs:
-  * LoadValue hat einen neuen Overload: LoadValue (object value, bool interim)
-    Verwendet um den Wert eines unbound BOCs zu setzen, analog zu LoadValue (bool interim), nur dass der Wert
-    übergeben werden muss, anstatt ihn von der DataSource zu laden.
+  * LoadUnboundValue: neue Methode
+    Verwendet um den Wert eines unbound BOCs zu setzen, analog zu LoadValue, nur dass der Wert übergeben werden muss, 
+    anstatt ihn von der DataSource zu laden.
   
 - BocBooleanValue
   * Bugfix: Wurde Value auf NaBoolean gesetzt, hat das zu einer CastException geführt.
