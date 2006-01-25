@@ -538,7 +538,22 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
 
-  public virtual void LoadValue (object value, bool interim)
+  public void LoadUnboundValue (object value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  public void LoadUnboundValue (DateTime value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  public void LoadUnboundValue (NaDateTime value, bool interim)
+  {
+    LoadValueInternal (value, interim);
+  }
+
+  protected virtual void LoadValueInternal (object value, bool interim)
   {
     if (! interim)
     {
@@ -561,7 +576,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
       if (Property != null && DataSource != null && DataSource.BusinessObject != null)
       {
         object value = DataSource.BusinessObject.GetProperty (Property);
-        LoadValue (value, interim);
+        LoadValueInternal (value, interim);
       }
     }
   }
