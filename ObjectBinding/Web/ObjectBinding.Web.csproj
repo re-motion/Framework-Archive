@@ -181,47 +181,47 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocBooleanValue.xml"
+                    RelPath = "Doc\include\UI\Controls\BocBooleanValue.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocCheckBox.xml"
+                    RelPath = "Doc\include\UI\Controls\BocCheckBox.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocDateTimeValue.xml"
+                    RelPath = "Doc\include\UI\Controls\BocDateTimeValue.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocDateTimeValueValidator.xml"
+                    RelPath = "Doc\include\UI\Controls\BocDateTimeValueValidator.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocDropDownMenu.xml"
+                    RelPath = "Doc\include\UI\Controls\BocDropDownMenu.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocEnumValue.xml"
+                    RelPath = "Doc\include\UI\Controls\BocEnumValue.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocList.xml"
+                    RelPath = "Doc\include\UI\Controls\BocList.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocMultilineTextValue.xml"
+                    RelPath = "Doc\include\UI\Controls\BocMultilineTextValue.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocReferenceValue.xml"
+                    RelPath = "Doc\include\UI\Controls\BocReferenceValue.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocTextValue.xml"
+                    RelPath = "Doc\include\UI\Controls\BocTextValue.xml"
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "Doc\include\Controls\BocTreeView.xml"
+                    RelPath = "Doc\include\UI\Controls\BocTreeView.xml"
                     BuildAction = "Content"
                 />
                 <File

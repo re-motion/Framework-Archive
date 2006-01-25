@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit a tri-state value (true, false, and undefined). </summary>
-/// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
+/// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/Class/*' />
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -142,7 +142,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
   ///   between postbacks.
   /// </summary>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
+  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     string newValue = PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID);
@@ -389,7 +389,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -404,7 +404,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> A boxed <see cref="Boolean"/> or <see cref="NaBoolean"/> value, or <see langword="null"/>. </param>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (object value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -412,7 +412,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="Boolean"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (bool value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -420,7 +420,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="NaBoolean"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (NaBoolean value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -442,7 +442,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/SaveValue/*' />
+  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -489,7 +489,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
-  /// <include file='doc\include\Controls\BocBooleanValue.xml' path='BocBooleanValue/CreateValidators/*' />
+  /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly || ! IsRequired)

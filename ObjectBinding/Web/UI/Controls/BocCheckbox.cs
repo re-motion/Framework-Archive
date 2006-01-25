@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit a boolean value (true or false). </summary>
-/// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/Class/*' />
+/// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/Class/*' />
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
@@ -130,7 +130,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed 
   ///   between postbacks.
   /// </summary>
-  /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/LoadPostData/*' />
+  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadPostData/*' />
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     if (! _isActive)
@@ -404,7 +404,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -419,7 +419,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> A boxed <see cref="Boolean"/> or <see cref="NaBoolean"/> value, or <see langword="null"/>. </param>
-  /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
   public void LoadUnboundValue (object value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -427,7 +427,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="Boolean"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
   public void LoadUnboundValue (bool value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -435,7 +435,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="NaBoolean"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/LoadUnboundValue/*' />
   public void LoadUnboundValue (NaBoolean value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -457,7 +457,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocCheckBox.xml' path='BocCheckBox/SaveValue/*' />
+  /// <include file='doc\include\UI\Controls\BocCheckBox.xml' path='BocCheckBox/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)

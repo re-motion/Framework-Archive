@@ -20,7 +20,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
 /// <summary> This control can be used to display or edit date/time values. </summary>
-/// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
+/// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/Class/*' />
 // TODO: see "Doc\Bugs and ToDos.txt"
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
@@ -172,7 +172,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   ///   Uses the <paramref name="postCollection"/> to determine whether the value of this control has been changed
   ///   between postbacks.
   /// </summary>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadPostData/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
     //  Date input field
@@ -539,7 +539,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
 
   /// <summary> Loads the <see cref="Value"/> from the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadValue/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadValue/*' />
   public override void LoadValue (bool interim)
   {
     if (! interim)
@@ -556,7 +556,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <param name="value"> 
   ///   A boxed <see cref="DateTime"/> or <see cref="NaDateTime"/> value to load, or <see langword="null"/>. 
   /// </param>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (object value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -564,7 +564,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="DateTime"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (DateTime value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -572,7 +572,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
   /// <summary> Populates the <see cref="Value"/> with the unbound <paramref name="value"/>. </summary>
   /// <param name="value"> The <see cref="NaDateTime"/> value to load. </param>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/LoadUnboundValue/*' />
   public void LoadUnboundValue (NaDateTime value, bool interim)
   {
     LoadValueInternal (value, interim);
@@ -594,7 +594,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/SaveValue/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/SaveValue/*' />
   public override void SaveValue (bool interim)
   {
     if (! interim)
@@ -631,7 +631,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   }
 
   /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CreateValidators/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
     if (IsReadOnly)
@@ -1216,7 +1216,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   ///   Gets the style that you want to apply to the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/> 
   ///   (edit mode) and the <see cref="Label"/> (read-only mode).
   /// </summary>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CommonStyle/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/CommonStyle/*' />
   [Category("Style")]
   [Description("The style that you want to apply to the date and the time TextBoxes (edit mode) and the Label (read-only mode).")]
   [NotifyParentProperty(true)]
@@ -1231,7 +1231,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   ///   Gets the style that you want to apply to both the <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/>
   ///   (edit mode) only.
   /// </summary>
-  /// <include file='doc\include\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/DateTimeTextBoxStyle/*' />
+  /// <include file='doc\include\UI\Controls\BocDateTimeValue.xml' path='BocDateTimeValue/DateTimeTextBoxStyle/*' />
   [Category("Style")]
   [Description("The style that you want to apply to both the date and the time TextBoxes (edit mode) only.")]
   [NotifyParentProperty(true)]
