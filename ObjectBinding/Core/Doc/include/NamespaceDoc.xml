@@ -129,6 +129,10 @@
         any number of invalid data exceptions thrown by the <see cref="T:Rubicon.ObjectBinding.IBusinessObject" />
         implementation
       </note>
+      <note>
+        Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+        documentation for an example of the <b>SaveValues Pattern</b>.
+      </note>
     </para>
     
     <h3 class="dtH3">Implementing a New Business Object Model</h3>
