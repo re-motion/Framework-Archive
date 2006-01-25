@@ -176,37 +176,37 @@ public class BocMultilineTextValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimTrue()
+  public void LoadUnboundValueAndInterimTrue()
   {
     string[] value = new string[] {"Foo", "Bar"};
     _bocMultilineTextValue.Value = null;
     _bocMultilineTextValue.IsDirty = true;
 
-    _bocMultilineTextValue.LoadValue (value, true);
+    _bocMultilineTextValue.LoadUnboundValue (value, true);
     Assert.AreEqual (null, _bocMultilineTextValue.Value);
     Assert.IsTrue (_bocMultilineTextValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithString()
+  public void LoadUnboundValueAndInterimFalseWithString()
   {
     string[] value = new string[] {"Foo", "Bar"};
     _bocMultilineTextValue.Value = null;
     _bocMultilineTextValue.IsDirty = true;
 
-    _bocMultilineTextValue.LoadValue (value, false);
+    _bocMultilineTextValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocMultilineTextValue.Value);
     Assert.IsFalse (_bocMultilineTextValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithNull()
+  public void LoadUnboundValueAndInterimFalseWithNull()
   {
     string[] value = null;
     _bocMultilineTextValue.Value = new string[] {"Foo", "Bar"};
     _bocMultilineTextValue.IsDirty = true;
 
-    _bocMultilineTextValue.LoadValue (value, false);
+    _bocMultilineTextValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocMultilineTextValue.Value);
     Assert.IsFalse (_bocMultilineTextValue.IsDirty);
   }

@@ -176,37 +176,37 @@ public class BocTextValueTest: BocTest
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimTrue()
+  public void LoadUnboundValueAndInterimTrue()
   {
     string value = "Foo Bar";
     _bocTextValue.Value = null;
     _bocTextValue.IsDirty = true;
 
-    _bocTextValue.LoadValue (value, true);
+    _bocTextValue.LoadUnboundValue (value, true);
     Assert.AreEqual (null, _bocTextValue.Value);
     Assert.IsTrue (_bocTextValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithString()
+  public void LoadUnboundValueAndInterimFalseWithString()
   {
     string value = "Foo Bar";
     _bocTextValue.Value = null;
     _bocTextValue.IsDirty = true;
 
-    _bocTextValue.LoadValue (value, false);
+    _bocTextValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocTextValue.Value);
     Assert.IsFalse (_bocTextValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithNull()
+  public void LoadUnboundValueAndInterimFalseWithNull()
   {
     string value = null;
     _bocTextValue.Value = "Foo Bar";
     _bocTextValue.IsDirty = true;
 
-    _bocTextValue.LoadValue (value, false);
+    _bocTextValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocTextValue.Value);
     Assert.IsFalse (_bocTextValue.IsDirty);
   }

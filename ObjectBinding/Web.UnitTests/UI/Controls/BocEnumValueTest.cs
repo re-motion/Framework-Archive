@@ -196,40 +196,40 @@ public class BocEnumValueTest: BocTest
 
 
   [Test]
-  public void LoadValueUnboundAndInterimTrue()
+  public void LoadUnboundValueAndInterimTrue()
   {
     TestEnum value = TestEnum.Second;
     _bocEnumValue.Property = _propertyEnumValue;
     _bocEnumValue.Value = null;
     _bocEnumValue.IsDirty = true;
 
-    _bocEnumValue.LoadValue (value, true);
+    _bocEnumValue.LoadUnboundValue (value, true);
     Assert.AreEqual (null, _bocEnumValue.Value);
     Assert.IsTrue (_bocEnumValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithEnum()
+  public void LoadUnboundValueAndInterimFalseWithEnum()
   {
     TestEnum value = TestEnum.Second;
     _bocEnumValue.Property = _propertyEnumValue;
     _bocEnumValue.Value = null;
     _bocEnumValue.IsDirty = true;
 
-    _bocEnumValue.LoadValue (value, false);
+    _bocEnumValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocEnumValue.Value);
     Assert.IsFalse (_bocEnumValue.IsDirty);
   }
 
   [Test]
-  public void LoadValueUnboundAndInterimFalseWithNull()
+  public void LoadUnboundValueAndInterimFalseWithNull()
   {
     object value = null;
     _bocEnumValue.Property = _propertyEnumValue;
     _bocEnumValue.Value = TestEnum.Second;
     _bocEnumValue.IsDirty = true;
 
-    _bocEnumValue.LoadValue (value, false);
+    _bocEnumValue.LoadUnboundValue (value, false);
     Assert.AreEqual (value, _bocEnumValue.Value);
     Assert.IsFalse (_bocEnumValue.IsDirty);
   }
