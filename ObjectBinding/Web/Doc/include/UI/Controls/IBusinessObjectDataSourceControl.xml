@@ -8,7 +8,44 @@
     </remarks>
     <example>
       <b>SaveValues-Pattern</b>
-      <code escaped="true">
+      This pattern assumes that you do not modify the contents of the controls bound to the datasource 
+      for the remainder of the current page life cycle after the save button has been clicked.
+      <code escaped="true" lang="C#">
+publci class EditForm : Page
+{
+  private bool isCurrentObjectSaved = false;
+  protected IBusinessObjectDataSourceControl CurrentObject;
+  protected Button SaveButton;
+  
+  // OnClick event handler for SaveButton
+  private void SaveButton_Click (object sender, EventArgs a)
+  {
+    bool isValid = DoValidation();
+    if (isValid)
+    {
+      bool interim = false;
+      CurrentObject.SaveValues (interim);    
+      isCurrentObjectSaved = true;
+    }
+  }
+  
+  private bool DoValidation()
+  {
+    bool isValid;
+    // Your validation logic here
+    return isValid;
+  }
+  
+  // OnUnload event handler for Page
+  private void Page_Unload (object sender, EventArgs a)
+  {
+    if (! isCurrentObjectSaved)
+    {
+      bool interim = true;
+      CurrentObject.SaveValues (interim);
+    }
+  }
+}
       </code>
     </example>
   </Class>
