@@ -12,7 +12,6 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 /// <summary> A collection of <see cref="BusinessObjectControlItem"/> objects. </summary>
 public abstract class BusinessObjectControlItemCollection : ControlItemCollection
 {
-  /// <summary> Initializes a new instance. </summary>
   public BusinessObjectControlItemCollection (IBusinessObjectBoundWebControl ownerControl, Type[] supportedTypes)
     : base ((Control) ownerControl, supportedTypes)
   {
