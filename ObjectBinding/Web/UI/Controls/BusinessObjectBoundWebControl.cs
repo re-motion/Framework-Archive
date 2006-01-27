@@ -203,7 +203,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     _binding = new BusinessObjectBinding (this);
   }
 
-  /// <summary> Overrides <see cref="Control.OnInit"/>. </summary>
   /// <remarks>
   ///   Calls <see cref="Control.EnsureChildControls"/> and the <see cref="BusinessObjectBinding.EnsureDataSource"/>
   ///   method.
@@ -215,7 +214,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     _binding.EnsureDataSource();
   }
 
-  /// <summary> Overrides <see cref="Control.OnLoad"/>. </summary>
   /// <remarks> Evaluates <see cref="HasValidBinding"/> to determine the control's visibility. </remarks>
   protected override void OnLoad (EventArgs e)
   {
@@ -257,7 +255,6 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     } 
   }
 
-  /// <summary> Overrides <see cref="Control.Visible"/>. </summary>
   /// <value> 
   ///   <para>
   ///     The <b>set accessor</b> passes the value to the base class's <b>Visible</b> property.
@@ -322,7 +319,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
       Enabled = false;
   }
 
-  /// <summary> Overrides <see cref="Control.Controls"/> and calls <see cref="Control.EnsureChildControls"/>. </summary>
+  /// <remarks> Calls <see cref="Control.EnsureChildControls"/>. </remarks>
   public override ControlCollection Controls
   {
     get
@@ -465,7 +462,8 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its ClientID.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
+  ///   <see cref="Control.ClientID"/>.
   /// </summary>
   /// <value> This instance for the default implementation. </value>
   [Browsable(false)]
@@ -475,7 +473,7 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
   }
 
   /// <summary>
-  ///   If <b>UseLabel</b> is <see langword="true"/>, it is valid to generate HTML &lt;label&gt; tags referencing 
+  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
   ///   <see cref="TargetControl"/>.
   /// </summary>
   /// <value>
@@ -495,13 +493,11 @@ public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObject
     get { return ControlHelper.IsDesignMode (this, Context); }
   }
 
-  /// <exclude/>
   bool ISmartControl.IsRequired 
   {
     get { return false; }
   }
 
-  /// <exclude/>
   BaseValidator[] ISmartControl.CreateValidators()
   {
     return new BaseValidator[0];

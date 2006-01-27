@@ -276,7 +276,6 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     return isValid;
   }
 
-  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState(object savedState)
   {
     object[] values = (object[]) savedState;
@@ -284,7 +283,6 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     _isDirty = (bool)  values[1];
   }
 
-  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
     object[] values = new object[2];
