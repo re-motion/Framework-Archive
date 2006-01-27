@@ -105,6 +105,10 @@
         The actual loading behavior depends on the value of the <b>interim</b> parameter passed during the 
         call of <b>LoadValues</b> and passed through to the <b>LoadValue</b> method.
       </note>
+      <note>
+        Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+        documentation for an example of the <b>LoadValues Pattern</b>.
+      </note>
     </para>
     
     <h4 class="dtH4">Saving the Business Object's Values</h4>
