@@ -12,7 +12,6 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [Editor (typeof (PropertyPathBindingCollectionEditor), typeof (UITypeEditor))]
 public class PropertyPathBindingCollection : BusinessObjectControlItemCollection
 {
-  /// <summary> Initializes a new instance. </summary>
   public PropertyPathBindingCollection (IBusinessObjectBoundWebControl ownerControl)
     : base (ownerControl, new Type[] {typeof (PropertyPathBinding)})
   {

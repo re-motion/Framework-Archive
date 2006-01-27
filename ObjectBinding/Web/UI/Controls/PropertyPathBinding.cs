@@ -46,21 +46,11 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
     PropertyPath = propertyPath;
   }
 
-  /// <summary> 
-  ///   Initializes a new instance of the <see cref="PropertyPathBinding"/> class with the
-  ///   string representation of the <see cref="BusinessObjectPropertyPath"/> managed by this 
-  ///   instance.
-  /// </summary>
-  /// <param name="propertyPathIdentifier">
-  ///   The <see cref="string"/> representing the <see cref="BusinessObjectPropertyPath"/> mananged 
-  ///   by this <see cref="PropertyPathBinding"/>.
-  /// </param>
   public PropertyPathBinding (string propertyPathIdentifier)
   {
     PropertyPathIdentifier = propertyPathIdentifier;
   }
 
-  /// <summary> Initializes a new instance of the <see cref="PropertyPathBinding"/> class.  </summary>
   public PropertyPathBinding()
   {
   }
