@@ -237,23 +237,27 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
     set { base.Property = (IBusinessObjectReferenceProperty) value; }
   }
 
-  /// <summary> Gets a value that indicates whether properties with the specified multiplicity are supported. </summary>
-  /// <returns> <see langword="true"/> if <paramref name="isList"/> is true. </returns>
+  /// <summary> The <see cref="BocDropDownMenu"/> supports only scalar properties. </summary>
+  /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="false"/>. </returns>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
   protected override bool SupportsPropertyMultiplicity (bool isList)
   {
     return ! isList;
   }
 
   /// <summary>
-  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
-  ///   implementations that can be bound to this control.
+  ///   The <see cref="BocDropDownMenu"/> supports properties of types <see cref="IBusinessObjectReferenceProperty"/>.
   /// </summary>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <summary>
+  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
+  ///   <see cref="TargetControl"/>.
+  /// </summary>
   /// <value> Returns always <see langword="true"/>. </value>
   public override bool UseLabel
   {
@@ -261,8 +265,8 @@ public class BocDropDownMenu : BusinessObjectBoundWebControl, IBocMenuItemContai
   }
 
   /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using its ClientID.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
+  ///   <see cref="Control.ClientID"/>.
   /// </summary>
   public override Control TargetControl 
   {

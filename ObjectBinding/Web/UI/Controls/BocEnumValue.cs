@@ -84,7 +84,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   // construction and disposing
 
-  /// <summary> Initializes a new instance of the <b>BocEnumValue</b> class. </summary>
 	public BocEnumValue()
 	{
     _commonStyle = new Style ();
@@ -96,7 +95,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
 	// methods and properties
 
-  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   /// <remarks>
   ///   If the <see cref="ListControl"/> could not be created from <see cref="ListControlStyle"/>,
   ///   the control is set to read-only.
@@ -119,20 +117,19 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   }
 
-  /// <summary> Overrides the <see cref="Control.OnInit"/> method. </summary>
   protected override void OnInit (EventArgs e)
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
   }
 
-  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
+  /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
-  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
+  /// <summary> Invokes the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
@@ -195,7 +192,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -243,12 +239,12 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
+  /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>
   protected override HtmlTextWriterTag TagKey
   {
     get { return HtmlTextWriterTag.Div; }
   }
 
-  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
@@ -291,7 +287,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     writer.AddStyleAttribute ("display", "inline");
   }
 
-  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
     EvaluateWaiConformity();
@@ -338,7 +333,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState (object savedState)
   {
     _isExecutingLoadViewState = true;
@@ -353,7 +347,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     _isExecutingLoadViewState = false;
   }
 
-  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
     object[] values = new object[3];
@@ -433,7 +426,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       ErrorMessage = resourceManager.GetString (key);
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
   /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
@@ -689,7 +682,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
+  /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
   protected override object ValueImplementation
   {
     get { return Value; }
@@ -764,14 +757,16 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <value> The <see cref="ListControl"/> if the control is in edit mode, otherwise the control itself. </value>
-  public override Control TargetControl 
-  {
-    get { return IsReadOnly ? (Control) this : ListControl; }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
+  /// <summary> 
+  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
+  ///   interface.
+  /// </summary>
+  /// <returns> 
+  ///   A <see cref="String"/> <see cref="Array"/> containing the <see cref="Control.ClientID"/> of the
+  ///   <see cref="ListControl"/> (or the radio buttons that make up the list), if the control is in edit mode, 
+  ///   or an empty array if the control is read-only.
+  /// </returns>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     if (IsReadOnly)
@@ -797,13 +792,28 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
+  /// <summary> The <see cref="BocEnumValue"/> supports only scalar properties. </summary>
+  /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="false"/>. </returns>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return ! isList;
+  }
+
+  /// <summary>
+  ///   The <see cref="BocEnumValue"/> supports properties of types <see cref="IBusinessObjectEnumerationProperty"/>
+  ///   and <see cref="IBusinessObjectBooleanProperty"/>.
+  /// </summary>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <summary>
+  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
+  ///   <see cref="TargetControl"/>.
+  /// </summary>
   /// <value> 
   ///   <see langword="false"/> if the <see cref="ListControlStyle"/>'s 
   ///   <see cref="Rubicon.ObjectBinding.Web.UI.Controls.ListControlStyle.ControlType"/> is set to 
@@ -820,7 +830,21 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  /// <summary>
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
+  ///   <see cref="Control.ClientID"/>.
+  /// </summary>
+  /// <value> The <see cref="ListControl"/> if the control is in edit mode, otherwise the control itself. </value>
+  public override Control TargetControl 
+  {
+    get { return IsReadOnly ? (Control) this : ListControl; }
+  }
+
+  /// <summary> Gets the ID of the element to receive the focus when the page is loaded. </summary>
+  /// <value>
+  ///   Returns the <see cref="Control.ClientID"/> of the <see cref="ListControl"/> if the control is in edit mode, 
+  ///   otherwise <see langword="null"/>. 
+  /// </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public string FocusID

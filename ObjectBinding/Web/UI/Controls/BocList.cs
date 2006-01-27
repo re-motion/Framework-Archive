@@ -372,7 +372,6 @@ public class BocList:
 
   // construction and disposing
 
-  /// <summary> Initializes a new instance of the <see cref="BocList"/> class. </summary>
 	public BocList()
 	{
     _availableViewsList = new DropDownList();
@@ -468,13 +467,13 @@ public class BocList:
       throw new ArgumentException ("Argument 'eventArgument' has unknown prefix: '" + eventArgument + "'.");
   }
 
-  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
+  /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
-  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
+  /// <summary> Invokes the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
@@ -1219,7 +1218,12 @@ public class BocList:
     }
   }
 
-  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
+  /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>
+  protected override HtmlTextWriterTag TagKey
+  {
+    get { return HtmlTextWriterTag.Div; }
+  }
+
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
@@ -1258,11 +1262,6 @@ public class BocList:
         cssClass += " " + CssClassDisabled;
       writer.AddAttribute(HtmlTextWriterAttribute.Class, cssClass);
     }
-  }
-
-  protected override HtmlTextWriterTag TagKey
-  {
-    get { return HtmlTextWriterTag.Div; }
   }
 
   protected void CalculateCurrentPage (bool evaluateGoTo)
@@ -1330,8 +1329,6 @@ public class BocList:
     }
   }
 
-  /// <summary> Overrides the parent's <c>RenderChontents</c> method. </summary>
-  /// <param name="writer"> The <see cref="HtmlTextWriter"/> object that receives the server control content. </param>
   protected override void RenderContents (HtmlTextWriter writer)
   {
     if (Page != null)
@@ -3368,7 +3365,6 @@ public class BocList:
       throw new InvalidOperationException ("No BocDropDownMenuColumnDefinition was found in the BocList '" + ID + "' but the RowMenuDisplay was set to manual.");
   }
 
-  /// <summary> Initializes the menus to be displayed in the <see cref="BocDropDownMenuColumnDefinition"/>. </summary>
   private void EnsureRowMenusInitialized()
   {
     if (_rowMenus != null)
@@ -5165,25 +5161,30 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its ClientID.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
+  ///   <see cref="Control.ClientID"/>.
   /// </summary>
   public override Control TargetControl 
   {
     get { return (Control) this; }
   }
 
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
-  /// <value> Always <see langword="true"/>. </value>
+  /// <summary>
+  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
+  ///   <see cref="TargetControl"/>.
+  /// </summary>
+  /// <value> Always <see langword="false"/>. </value>
   public override bool UseLabel
   {
-    get { return true; }
+    get { return false; }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> method. </summary>
+  /// <summary> Gets or sets the dirty flag. </summary>
   /// <value> 
   ///   Evaluates <see langword="true"/> if either the <see cref="BocList"/> or one of the edit mode controls is 
   ///   dirty.
   /// </value>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.IsDirty">BusinessObjectBoundModifiableWebControl.IsDirty</seealso>
   public override bool IsDirty
   {
     get
@@ -5208,7 +5209,14 @@ public class BocList:
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
+  /// <summary> 
+  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
+  ///   interface.
+  /// </summary>
+  /// <returns> 
+  ///   Returns the <see cref="Control.ClientID"/> values of the edit mode controls for the row currently being edited.
+  /// </returns>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     if (IsReadOnly)
@@ -5227,17 +5235,16 @@ public class BocList:
     return trackedIDsArray;
   }
 
-  /// <summary>
-  ///   Gets or sets the list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
-  ///   implementations that can be bound to this control.
-  /// </summary>
+  /// <summary> The <see cref="BocList"/> supports properties of type <see cref="IBusinessObjectReferenceProperty"/>. </summary>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Gets a value that indicates whether properties with the specified multiplicity are supported. </summary>
-  /// <returns> <see langword="true"/> if the multiplicity specified by <paramref name="isList"/> is supported. </returns>
+  /// <summary> The <see cref="BocList"/> supports only list properties. </summary>
+  /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="true"/>. </returns>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
   protected override bool SupportsPropertyMultiplicity (bool isList)
   {
     return isList;
