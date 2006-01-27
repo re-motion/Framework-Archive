@@ -56,7 +56,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
   }
 
   // methods and properties
-  /// <summary> Overrides the parent control's <c>CreateChildControls</c> method. </summary>
+
   protected override void CreateChildControls()
   {
     _treeView.ID = ID + "_Boc_TreeView";
@@ -172,7 +172,6 @@ public class BocTreeView: BusinessObjectBoundWebControl
       OnSelectionChanged (selectedNode);
   }
 
-  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     base.AddAttributesToRender (writer);
@@ -523,8 +522,9 @@ public class BocTreeView: BusinessObjectBoundWebControl
     return nodesViewState;
   }
 
-  /// <summary> Gets a value that indicates whether properties with the specified multiplicity are supported. </summary>
-  /// <returns> <see langword="true"/> if <paramref name="isList"/> is true. </returns>
+  /// <summary> The <see cref="BocTreeView"/> supports only list properties. </summary>
+  /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="true"/>. </returns>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
   protected override bool SupportsPropertyMultiplicity (bool isList)
   {
     return isList;
@@ -532,15 +532,18 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
 
   /// <summary>
-  ///   The list of<see cref="Type"/> objects for the <see cref="IBusinessObjectProperty"/> 
-  ///   implementations that can be bound to this control.
+  ///   The <see cref="BocTreeView"/> supports properties of types <see cref="IBusinessObjectReferenceProperty"/>.
   /// </summary>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <summary>
+  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
+  ///   <see cref="TargetControl"/>.
+  /// </summary>
   /// <value> Returns always <see langword="true"/>. </value>
   public override bool UseLabel
   {
@@ -548,8 +551,8 @@ public class BocTreeView: BusinessObjectBoundWebControl
   }
 
   /// <summary>
-  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; 
-  ///   using its ClientID.
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
+  ///   <see cref="Control.ClientID"/>.
   /// </summary>
   public override Control TargetControl 
   {
@@ -799,14 +802,12 @@ public class BocTreeNodeClickEventArgs: BocTreeNodeEventArgs
 {
   private string[] _path;
 
-  /// <summary> Initializes a new instance. </summary>
   public BocTreeNodeClickEventArgs (BusinessObjectTreeNode node, string[] path)
     : base (node)
   {
     _path = path;
   }
 
-  /// <summary> Initializes a new instance. </summary>
   public BocTreeNodeClickEventArgs (BusinessObjectPropertyTreeNode node, string[] path)
     : base (node)
   {
@@ -825,13 +826,11 @@ public delegate void BocTreeNodeEventHandler (object sender, BocTreeNodeEventArg
 /// <summary> Provides data for the events raised by a <see cref="BocTreeNode"/>. </summary>
 public class BocTreeNodeEventArgs: WebTreeNodeEventArgs
 {
-  /// <summary> Initializes a new instance. </summary>
   public BocTreeNodeEventArgs (BusinessObjectTreeNode node)
     : base (node)
   {
   }
 
-  /// <summary> Initializes a new instance. </summary>
   public BocTreeNodeEventArgs (BusinessObjectPropertyTreeNode node)
     : base (node)
   {

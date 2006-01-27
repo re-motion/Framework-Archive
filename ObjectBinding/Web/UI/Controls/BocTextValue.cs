@@ -82,7 +82,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   private string _errorMessage;
   private ArrayList _validators;
 
-  /// <summary> Initializes a new instance of the <b>BocTextValue</b> class. </summary>
 	public BocTextValue()
 	{
     _textBox = new TextBox();
@@ -90,7 +89,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     _validators = new ArrayList();
 	}
 
-  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   protected override void CreateChildControls()
   {
     _textBox.ID = ID + "_Boc_TextBox";
@@ -102,20 +100,19 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     Controls.Add (_label);
   }
 
-  /// <summary> Overrides the <see cref="Control.OnInit"/> method. </summary>
   protected override void OnInit(EventArgs e)
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
   }
 
-  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
+  /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
-  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
+  /// <summary> Invokes the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
@@ -166,7 +163,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -228,7 +224,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     string backUpStyleWidth = Style["width"];
@@ -283,7 +278,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
   }
 
-  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
     EvaluateWaiConformity();
@@ -335,7 +329,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState(object savedState)
   {
     object[] values = (object[]) savedState;
@@ -347,7 +340,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     _textBox.Text = _text;
   }
 
-  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
     object[] values = new object[4];
@@ -461,7 +453,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
       ErrorMessage = resourceManager.GetString (key);
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
   /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
@@ -729,7 +721,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
+  /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
  protected override object ValueImplementation
   {
     get { return Value; }
@@ -807,33 +799,64 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     set { _format = value; }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <remarks> Returns the <see cref="TextBox"/> if the control is in edit mode, otherwise the control itself. </remarks>
-  public override Control TargetControl
-  {
-    get { return IsReadOnly ? (Control) this : _textBox; }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
+  /// <summary> 
+  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
+  ///   interface.
+  /// </summary>
+  /// <returns> 
+  ///   A <see cref="String"/> <see cref="Array"/> containing the <see cref="Control.ClientID"/> of the
+  ///   <see cref="TextBox"/> if the control is in edit mode, or an empty array if the control is read-only.
+  /// </returns>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     return IsReadOnly ? new string[0] : new string[1] { _textBox.ClientID };
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
+  /// <summary> The <see cref="BocTextValue"/> supports only scalar properties. </summary>
+  /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="false"/>. </returns>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return ! isList;
+  }
+
+  /// <summary>
+  ///   The <see cref="BocTextValue"/> supports properties of types <see cref="IBusinessObjectStringProperty"/>,
+  ///   <see cref="IBusinessObjectDateProperty"/>, <see cref="IBusinessObjectDateProperty"/>, and 
+  ///   <see cref="IBusinessObjectNumericProperty"/>.
+  /// </summary>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <summary>
+  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
+  ///   <see cref="TargetControl"/>.
+  /// </summary>
   /// <value> Returns always <see langword="true"/>. </value>
   public override bool UseLabel
   {
     get { return true; }
   }
 
-  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  /// <summary>
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
+  ///   <see cref="Control.ClientID"/>.
+  /// </summary>
+  /// <value> Returns the <see cref="TextBox"/> if the control is in edit mode, otherwise the control itself. </value>
+  public override Control TargetControl
+  {
+    get { return IsReadOnly ? (Control) this : _textBox; }
+  }
+
+  /// <summary> Gets the ID of the element to receive the focus when the page is loaded. </summary>
+  /// <value>
+  ///   Returns the <see cref="Control.ClientID"/> of the <see cref="TextBox"/> if the control is in edit mode, 
+  ///   otherwise <see langword="null"/>. 
+  /// </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public string FocusID

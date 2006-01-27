@@ -127,7 +127,6 @@ public class BocReferenceValue:
 
   // construction and disposing
 
-  /// <summary> Initializes a new instance of the <b>BocReferenceValue</b> class. </summary>
 	public BocReferenceValue()
 	{
     _commonStyle = new Style();
@@ -153,7 +152,6 @@ public class BocReferenceValue:
     }
   }
 
-  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   /// <remarks>
   ///   If the <see cref="DropDownList"/> could not be created from <see cref="DropDownListStyle"/>,
   ///   the control is set to read-only.
@@ -178,7 +176,6 @@ public class BocReferenceValue:
     _optionsMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
   }
 
-  /// <summary> Overrides the <see cref="Control.OnLoad"/> method. </summary>
   /// <remarks> Populates the list. </remarks>
   protected override void OnLoad (EventArgs e)
   {
@@ -188,13 +185,13 @@ public class BocReferenceValue:
       EnsureBusinessObjectListPopulated();
   }
 
-  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
+  /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
-  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
+  /// <summary> Invokes the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
@@ -462,7 +459,6 @@ public class BocReferenceValue:
     }
   }
 
-  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -509,12 +505,12 @@ public class BocReferenceValue:
       PreRenderEditModeValue();
   }
 
+  /// <summary> Gets a <see cref="HtmlTextWriterTag.Div"/> as the <see cref="WebControl.TagKey"/>. </summary>
   protected override HtmlTextWriterTag TagKey
   {
     get { return HtmlTextWriterTag.Div; }
   }
 
-  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender (HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
@@ -557,7 +553,6 @@ public class BocReferenceValue:
     writer.AddStyleAttribute ("display", "inline");
   }
 
-  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents (HtmlTextWriter writer)
   {
     EvaluateWaiConformity();
@@ -831,7 +826,6 @@ public class BocReferenceValue:
     return isCommandEnabled;
   }
   
-  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState (object savedState)
   {
     object[] values = (object[]) savedState;
@@ -843,7 +837,6 @@ public class BocReferenceValue:
     //  Drop down list has enabled view state, selected value must not be restored
   }
 
-  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
     object[] values = new object[2];
@@ -910,7 +903,7 @@ public class BocReferenceValue:
     return GetResourceManager (typeof (ResourceIdentifier));
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.CreateValidators"/> method. </summary>
+  /// <summary> Creates the list of validators required for the current binding and property settings. </summary>
   /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/CreateValidators/*' />
   public override BaseValidator[] CreateValidators()
   {
@@ -1346,7 +1339,7 @@ public class BocReferenceValue:
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
+  /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
   /// <value> The value must be of type <see cref="IBusinessObjectWithIdentity"/>. </value>
   protected override object ValueImplementation
   {
@@ -1480,33 +1473,62 @@ public class BocReferenceValue:
 
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <value> The <see cref="DropDownList"/> if the control is in edit mode, otherwise the control itself. </value>
-  public override Control TargetControl 
-  {
-    get { return IsReadOnly ? (Control) this : _dropDownList; }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
+  /// <summary> 
+  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
+  ///   interface.
+  /// </summary>
+  /// <returns> 
+  ///   A <see cref="String"/> <see cref="Array"/> containing the <see cref="Control.ClientID"/> of the
+  ///   <see cref="DropDownList"/> if the control is in edit mode, or an empty array if the control is read-only.
+  /// </returns>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     return IsReadOnly ? new string[0] : new string[1] { _dropDownList.ClientID };
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
+  /// <summary> The <see cref="BocReferenceValue"/> supports only scalar properties. </summary>
+  /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="false"/>. </returns>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return ! isList;
+  }
+
+  /// <summary>
+  ///   The <see cref="BocReferenceValue"/> supports properties of types <see cref="IBusinessObjectReferenceProperty"/>.
+  /// </summary>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <summary>
+  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
+  ///   <see cref="TargetControl"/>.
+  /// </summary>
   /// <value> Always <see langword="false"/>. </value>
   public override bool UseLabel
   {
     get { return false; }
   }
 
-  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  /// <summary>
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
+  ///   <see cref="Control.ClientID"/>.
+  /// </summary>
+  /// <value> The <see cref="DropDownList"/> if the control is in edit mode, otherwise the control itself. </value>
+  public override Control TargetControl 
+  {
+    get { return IsReadOnly ? (Control) this : _dropDownList; }
+  }
+
+  /// <summary> Gets the ID of the element to receive the focus when the page is loaded. </summary>
+  /// <value>
+  ///   Returns the <see cref="Control.ClientID"/> of the <see cref="DropDownList"/> if the control is in edit mode, 
+  ///   otherwise <see langword="null"/>. 
+  /// </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public string FocusID
