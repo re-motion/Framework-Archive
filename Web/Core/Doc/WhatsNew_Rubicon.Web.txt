@@ -13,7 +13,9 @@
   Rubicon.Web.UI.IUserControl -> Rubicon.Web.UI.Controls.IUserControl
   Rubicon.Web.UI.IValidatableControl -> Rubicon.Web.UI.Controls.IValidatableControl
   
-- Klassen in der Legacy-DLL:
+- Klassen in der Rubicon.Web.Legacy.dll:
+  Rubicon.Web.UI.INavigablePage
+  
   Rubicon.Web.UI.MultiLingualPage
   Rubicon.Web.UI.MultiLingualUserControl
   Rubicon.Web.UI.NavigablePage
@@ -25,11 +27,12 @@
   Rubicon.Web.UI.Controls.DataDropDownList
   Rubicon.Web.UI.Controls.DateRangeValidator
   Rubicon.Web.UI.Controls.DefaultTextControl
-  Rubicon.Web.UI.Controls.EntryFormGrid
+  Rubicon.Web.UI.Controls.EntryFormGrid (und Anhang)
   Rubicon.Web.UI.Controls.ExtendedDropDownList
   Rubicon.Web.UI.Controls.Form
   Rubicon.Web.UI.Controls.PostBackHandler
   Rubicon.Web.UI.Controls.StandardButton
+  Rubicon.Web.UI.Controls.TabControl (und Anhang)
   Rubicon.Web.UI.Controls.TableControl
   Rubicon.Web.UI.Controls.ViewControl
   Rubicon.Web.UI.Controls.WebControls

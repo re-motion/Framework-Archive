@@ -86,9 +86,6 @@ public class ScriptUtility
   /// <param name="key"> 
   ///   The key identifying the registered script file. Must not be <see langword="null"/> or empty.
   /// </param>
-  /// <param name="key"> 
-  ///   The key identifying the registered script block. Must not be <see langword="null"/> or empty.
-  /// </param>
   /// <param name="javascript"> 
   ///   The client script that will be registered. Must not be <see langword="null"/> or empty. 
   /// </param>

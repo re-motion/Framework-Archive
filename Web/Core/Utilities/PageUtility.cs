@@ -301,7 +301,7 @@ public class PageUtility
   /// <returns> 
   ///   The <see cref="NameValueCollection"/> returned by 
   ///   <see cref="IWxePage.GetPostBackCollection">IWxePage.GetPostBackCollection</see> or the 
-  ///   <see cref="HttpRequest.Form"/> collection of the <see cref="Page.Request">, depending on whether or not the
+  ///   <see cref="HttpRequest.Form"/> collection of the <see cref="Page.Request"/>, depending on whether or not the
   ///   <paramref name="page"/> implements <see cref="IWxePage"/>.
   /// </returns>
   public static NameValueCollection GetRequestCollection (Page page)
