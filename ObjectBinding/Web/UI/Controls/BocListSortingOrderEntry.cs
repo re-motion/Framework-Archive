@@ -18,7 +18,6 @@ public class BocListSortingOrderEntry
   /// <summary> Represents a null <see cref="BocListSortingOrderEntry"/>. </summary>
   public static readonly BocListSortingOrderEntry Empty = new BocListSortingOrderEntry ();
 
-  /// <summary> Initializes a new instance. </summary>
   public BocListSortingOrderEntry (BocColumnDefinition column, SortingDirection direction)
   {
     ArgumentUtility.CheckNotNull ("column", column);
@@ -27,7 +26,6 @@ public class BocListSortingOrderEntry
     _direction = direction;
   }
 
-  /// <summary> Initializes a new instance. </summary>
   protected internal BocListSortingOrderEntry (int columnIndex, SortingDirection direction)
   {
     _columnIndex = columnIndex;
@@ -35,7 +33,6 @@ public class BocListSortingOrderEntry
     _direction = direction;
   }
 
-  /// <summary> Initializes the empty instance. </summary>
   private BocListSortingOrderEntry ()
   {
     _isEmpty = true;

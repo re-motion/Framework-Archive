@@ -13,7 +13,6 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [Editor (typeof (BocListViewCollectionEditor), typeof (UITypeEditor))]
 public class BocListViewCollection: BusinessObjectControlItemCollection
 {
-  /// <summary> Initializes a new instance. </summary>
   public BocListViewCollection (IBusinessObjectBoundWebControl ownerControl)
     : base (ownerControl, new Type[] {typeof (BocListView)})
   {

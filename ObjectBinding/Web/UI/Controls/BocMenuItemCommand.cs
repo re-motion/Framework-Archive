@@ -71,13 +71,11 @@ public class BocMenuItemCommand: BocCommand
   [Browsable (false)]
   public new WebMenuItemClickEventHandler Click;
 
-  /// <summary> Initializes an instance. </summary>
   public BocMenuItemCommand()
     : this (CommandType.Event)
   {
   }
 
-  /// <summary> Initializes an instance. </summary>
   public BocMenuItemCommand (CommandType defaultType)
     : base (defaultType)
   {

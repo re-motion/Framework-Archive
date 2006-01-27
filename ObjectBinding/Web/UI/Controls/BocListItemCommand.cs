@@ -106,13 +106,11 @@ public class BocListItemCommand: BocCommand
   private ListItemHrefCommandInfo _hrefCommand;
   private ListItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
-  /// <summary> Initializes an instance. </summary>
   public BocListItemCommand()
     : this (CommandType.None)
   {
   }
 
-  /// <summary> Initializes an instance. </summary>
   public BocListItemCommand (CommandType defaultType)
     : base (defaultType)
   {
@@ -289,7 +287,6 @@ public class BocListItemCommandClickEventArgs: BocCommandClickEventArgs
   private BocCommandEnabledColumnDefinition _column;
   private int _listIndex;
 
-  /// <summary> Initializes a new instance. </summary>
   public BocListItemCommandClickEventArgs (
       BocListItemCommand command,
       BocCommandEnabledColumnDefinition column, 

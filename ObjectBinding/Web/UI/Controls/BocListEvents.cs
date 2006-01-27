@@ -11,7 +11,6 @@ public class BocListSortingOrderChangeEventArgs: EventArgs
   private BocListSortingOrderEntry[] _oldSortingOrder;
   private BocListSortingOrderEntry[] _newSortingOrder;
 
-  /// <summary> Initializes a new instance. </summary>
   public BocListSortingOrderChangeEventArgs (
       BocListSortingOrderEntry[] oldSortingOrder, BocListSortingOrderEntry[] newSortingOrder)
   {
@@ -42,7 +41,6 @@ public class BocListItemEventArgs: EventArgs
   private int _listIndex;
   private IBusinessObject _businessObject;
 
-  /// <summary> Initializes a new instance. </summary>
   public BocListItemEventArgs (
       int listIndex, 
       IBusinessObject businessObject)
@@ -73,7 +71,6 @@ public class BocListRowEditModeEventArgs: BocListItemEventArgs
   private IBusinessObjectBoundModifiableControl[] _controls;
   private IBusinessObjectDataSource _dataSource;
 
-  /// <summary> Initializes a new instance. </summary>
   public BocListRowEditModeEventArgs (
       int listIndex, 
       IBusinessObject businessObject,
@@ -102,7 +99,6 @@ public class BocListDataRowRenderEventArgs: BocListItemEventArgs
 {
   private bool _isModifiableRow = true;
 
-  /// <summary> Initializes a new instance. </summary>
   public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject)
     : base (listIndex, businessObject)
   {
