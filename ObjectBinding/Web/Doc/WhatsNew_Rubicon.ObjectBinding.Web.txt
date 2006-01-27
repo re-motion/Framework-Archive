@@ -6,7 +6,7 @@
   * Best Practice für Migration der Projekte:
     1. Alle betroffenen Projekte auschecken
     2. Search & Replace auf alle Files durchführen um den alten Namespace durch den neuen zu ersetzen.
-       Funktioniert sowaohl für aspx/aspcx als auch für Code-Behind.
+       Funktioniert sowaohl für aspx/ascx- als auch für Code-Behind- und resx-Files.
      
 - BusinessObjectReferenceDataSourceControl
   * Das Verhalten von LoadValues und SaveValues überarbeitet: Jetzt das BusinessObject selbst nur gespeichert,
