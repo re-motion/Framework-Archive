@@ -177,6 +177,10 @@
       </tbody>
     </table>
     </div>
+    <note>
+      Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+      documentation for an examples of the <b>LoadValues</b> and the <b>SaveValues</b> patterns.
+    </note>
     
     <h3 class="dtH3">Miscellaneos Classes and Controls</h3>
     <div class="tablediv"> 
