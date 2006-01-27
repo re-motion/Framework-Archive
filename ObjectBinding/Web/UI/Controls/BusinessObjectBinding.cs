@@ -37,7 +37,6 @@ public class BusinessObjectBinding
   /// </summary>
   private bool _hasDesignModePropertyChanged = false;
 
-  /// <summary> Initializes a new instance of the <b>BusinessObjectBinding</b> class. </summary>
   public BusinessObjectBinding (IBusinessObjectBoundWebControl control)
   {
     _control = control;
