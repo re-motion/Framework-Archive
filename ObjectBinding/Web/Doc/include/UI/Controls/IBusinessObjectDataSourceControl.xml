@@ -33,7 +33,7 @@ publci class EditForm : Page
       This pattern assumes that you do not modify the contents of the controls bound to the datasource 
       for the remainder of the current page life cycle once the save button has been clicked.
       <code escaped="true" lang="C#">
-publci class EditForm : Page
+public class EditForm : Page
 {
   private bool isCurrentObjectSaved = false;
   protected IBusinessObjectDataSourceControl CurrentObject;
