@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Reflection;
 using Rubicon.Utilities;
@@ -55,9 +56,13 @@ public abstract class WxeStep
 
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
   /// <remarks> 
-  ///   Calls <see cref="M:Rubicon.Web.ExecutionEngine.WxeStep.Execute(Rubicon.Web.ExecutionEngine.WxeContext">WxeContext</see>,
+  ///   Invokes <see cref="M:Rubicon.Web.ExecutionEngine.WxeStep.Execute(Rubicon.Web.ExecutionEngine.WxeContext">WxeContext</see>,
   ///   passing the <see cref="WxeContext.Current"/> <see cref="WxeContext"/> as argument.
+  ///   <note>
+  ///     This method should only be invoked by the WXE infrastucture.
+  ///   </note>
   /// </remarks>
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public void Execute ()
   {
     Execute (WxeContext.Current);
@@ -65,7 +70,13 @@ public abstract class WxeStep
 
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
   /// <param name="context"> The <see cref="WxeContext"/> containing the information about the execution. </param>
-  /// <remarks> Override this method to implement your execution logic. </remarks>
+  /// <remarks> 
+  ///   Override this method to implement your execution logic. 
+  ///   <note>
+  ///     This method should only be invoked by the WXE infrastucture.
+  ///   </note>
+  /// </remarks>
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public abstract void Execute (WxeContext context);
 
   /// <summary> Gets the scope's variables collection. </summary>
@@ -84,6 +95,7 @@ public abstract class WxeStep
 
   /// <summary> Sets the parent step of this <see cref="WxeStep"/>. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/SetParentStep/*' />
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public void SetParentStep (WxeStep parentStep)
   {
     ArgumentUtility.CheckNotNull ("parentStep", parentStep);
@@ -147,6 +159,7 @@ public abstract class WxeStep
   
   /// <summary> Aborts the <b>WxeStep</b> by calling <see cref="AbortRecursive"/>. </summary>
   /// <include file='doc\include\ExecutionEngine\WxeStep.xml' path='WxeStep/Abort/*' />
+  [EditorBrowsable (EditorBrowsableState.Never)]
   public void Abort()
   {
     if (! _isAborted && ! _isAborting)

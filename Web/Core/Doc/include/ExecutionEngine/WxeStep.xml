@@ -18,7 +18,7 @@
     </remarks>
     <example>
       An advanced step, derived from <b>WxeStep</b>.
-<code>
+      <code escaped="true" lang="C#">
 [Serializable]
 public class WxeAdvancedStep: WxeStep
 {
@@ -33,10 +33,12 @@ public class WxeAdvancedStep: WxeStep
     // Your clean-up code, if necessary.
   }
 }
-</code>
-    An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a field set to the advanced 
-    step.
-<code>
+      </code>
+    </example>
+    <example>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a field set to the 
+      advanced step.
+      <code escaped="true" lang="C#">
 [Serializable]
 public class MyFunction: WxeFunction
 {
@@ -46,10 +48,12 @@ public class MyFunction: WxeFunction
   // Step 4
   ...
 }
-</code>    
-    An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a class derived from
-    <see cref="WxeStep"/>.
-<code>
+      </code>    
+    </example>
+    <example>
+      An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a class derived from
+      <see cref="WxeStep"/>.
+      <code escaped="true" lang="C#">
 [Serializable]
 public class MyFunction: WxeFunction
 {
@@ -74,7 +78,7 @@ public class MyFunction: WxeFunction
   // Step 4
   ...
 }
-</code>    
+      </code>    
     </example>
   </Class>
   <GetFunction>
@@ -136,6 +140,9 @@ public int Var1
     <param name="parentStep"> 
       The <see cref="WxeStep"/> to be set as this step's parent. Must not be <see langword="null"/>.
     </param>
+    <remarks>
+      This method should only be invoked by the WXE infrastucture.
+    </remarks>
   </SetParentStep>
   <RootFunction>
     <value> 
@@ -160,6 +167,9 @@ public int Var1
       A single <b>WxeStep</b> is usually not aborted. This method is normally called by aborting the 
       a <see cref="WxeFunctionState"/> and subsequently the contained <see cref="WxeFunction"/>, which is derived
       from <b>WxeStep</b>.
+      <note>
+        This method should only be invoked by the WXE infrastructure.
+      </note>
     </remarks>
   </Abort>
   <AbortRecursive>
