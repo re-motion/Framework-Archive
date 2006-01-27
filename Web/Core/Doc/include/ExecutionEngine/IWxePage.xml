@@ -79,44 +79,52 @@
     <seealso cref="WxePageStep"/>
     <example>
       Sample implementation of <see cref="Page.DeterminePostBackMode"/>.
-<code>
+      <code escaped="true" lang="C#">
 protected override NameValueCollection DeterminePostBackMode()
 {
   NameValueCollection result = this.m_wxeInfo.EnsurePostBackModeDetermined (Context);
   this.m_wxeInfo.Initialize (Context);
   return result;
 }
-</code>
+      </code>    
+    </example>
+    <example>
       Sample implementation of <see cref="Control.Dispose"/>.
-<code>
+      <code escaped="true" lang="C#">
 public override void Dispose()
 {
   base.Dispose ();
   this.m_wxeInfo.Dispose();
 }
-</code>
+      </code>    
+    </example>
+    <example>
       Sample implementation of <see cref="Control.OnPreRender"/>. 
-<code>
+      <code escaped="true" lang="C#">
 protected override void OnPreRender (EventArgs e)
 {
   this.m_wxeInfo.PreRender();
   base.OnPreRender (e);
 }
-</code>
+      </code>    
+    </example>
+    <example>
       Sample implementation of <see cref="Page.SavePageStateToPersistenceMedium"/>.
-<code>
+      <code escaped="true" lang="C#">
 public override void SavePageStateToPersistenceMedium (object viewState)
 {
   this.m_wxeInfo.SavePageStateToPersistenceMedium (viewState);
 }
-</code>
+      </code>    
+    </example>
+    <example>
       Sample implementation of <see cref="Page.LoadPageStateFromPersistenceMedium"/>.
-<code>
+      <code escaped="true" lang="C#">
 public override void LoadPageStateFromPersistenceMedium()
 {
   this.m_wxeInfo.LoadPageStateFromPersistenceMedium();
 }
-</code>
+      </code>
     </example>
   </Class>
   <ExecuteFunction>
