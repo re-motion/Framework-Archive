@@ -29,7 +29,6 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
   private Unit _width; 
   private string _cssClass;
 
-  /// <summary> Initializes a new instance of the <see cref="BocColumnDefinition"/> class. </summary>
   public BocColumnDefinition()
   {
     _columnTitle = string.Empty;
@@ -142,7 +141,6 @@ public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
   /// <summary> The <see cref="BocListItemCommand"/> rendered in this column. </summary>
   private SingleControlItemCollection _command;
 
-  /// <summary> Initializes a new instance of the <see cref="BocCommandEnabledColumnDefinition"/> class. </summary>
   public BocCommandEnabledColumnDefinition()
   {
     _command = new SingleControlItemCollection (new BocListItemCommand(), new Type[] {typeof (BocListItemCommand)});
@@ -221,7 +219,6 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   private string _text;
   private string _iconPath;
 
-  /// <summary> Initializes a new instance of the <see cref="BocCommandColumnDefinition"/> class. </summary>
   public BocCommandColumnDefinition()
   {
   }
@@ -295,7 +292,6 @@ public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinitio
 {
   private bool _enforceWidth;
 
-  /// <summary> Initializes a new instance of the <see cref="BocValueColumnDefinition"/> class. </summary>
   public BocValueColumnDefinition()
   {
   }
@@ -344,7 +340,6 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   private string _editDetailsControlType;
   private bool _isReadOnly;
 
-  /// <summary> Initializes a new instance of the <see cref="BocSimpleColumnDefinition"/> class. </summary>
   public BocSimpleColumnDefinition()
   {
     _formatString = string.Empty;
@@ -523,7 +518,6 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   /// </summary>
   private PropertyPathBindingCollection _propertyPathBindings;
 
-  /// <summary> Initializes a new instance of the <see cref="BocCompoundColumnDefinition"/> class. </summary>
   public BocCompoundColumnDefinition()
   {
     _propertyPathBindings = new PropertyPathBindingCollection (null);
@@ -616,7 +610,6 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   private IconInfo _cancelIcon;
   private BocEditDetailsColumnDefinitionShow _show = BocEditDetailsColumnDefinitionShow.EditMode;
 
-  /// <summary> Initializes a new instance of the <see cref="BocCommandColumnDefinition"/> class. </summary>
   public BocEditDetailsColumnDefinition()
   {
     _editIcon = new IconInfo();

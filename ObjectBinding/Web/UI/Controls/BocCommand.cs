@@ -92,13 +92,11 @@ public class BocCommand: Command
   private BocHrefCommandInfo _hrefCommand;
   private BocWxeFunctionCommandInfo _wxeFunctionCommand;
 
-  /// <summary> Initializes an instance. </summary>
   public BocCommand()
     : this (CommandType.None)
   {
   }
 
-  /// <summary> Initializes an instance. </summary>
   public BocCommand (CommandType defaultType)
     : base (defaultType)
   {
@@ -240,7 +238,6 @@ public class BocCommandClickEventArgs: CommandClickEventArgs
 {
   private IBusinessObject _businessObject;
 
-  /// <summary> Initializes a new instance. </summary>
   public BocCommandClickEventArgs (BocCommand command, IBusinessObject businessObject)
     : base (command)
   {

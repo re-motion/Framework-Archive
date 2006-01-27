@@ -12,7 +12,6 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [Editor (typeof (BocColumnDefinitionCollectionEditor), typeof (UITypeEditor))]
 public class BocColumnDefinitionCollection: BusinessObjectControlItemCollection
 {
-  /// <summary> Initializes a new instance. </summary>
   public BocColumnDefinitionCollection (IBusinessObjectBoundWebControl ownerControl)
     : base (ownerControl, new Type[] {typeof (BocColumnDefinition)})
   {

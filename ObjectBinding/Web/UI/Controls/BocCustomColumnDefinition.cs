@@ -23,7 +23,6 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   private bool _isSortable = false;
   private BocCustomColumnDefinitionMode _mode;
 
-  /// <summary> Initializes a new instance of the <see cref="BocCustomColumnDefinition"/> class. </summary>
   public BocCustomColumnDefinition()
   {
     _propertyPathBinding = new PropertyPathBinding();
@@ -196,7 +195,6 @@ public class BocCustomCellClickEventArgs: EventArgs
   private BocCustomColumnDefinition _column;
   private string _argument;
 
-  /// <summary> Initializes a new instance. </summary>
   public BocCustomCellClickEventArgs (
       BocCustomColumnDefinition column, 
       IBusinessObject businessObject,
