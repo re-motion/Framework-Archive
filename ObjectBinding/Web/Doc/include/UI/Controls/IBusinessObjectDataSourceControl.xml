@@ -7,9 +7,31 @@
       <b>IBusinessObjectDataSourceControl</b>.
     </remarks>
     <example>
-      <b>SaveValues-Pattern</b>
+      <b>LoadValues Pattern</b>
+      This pattern assumes that you do not change the business object after the form is loaded for the first time.
+      In case you do change the business object, you can no longer use IsPostback as the interim flag.
+      <code escaped="true" lang="C#">
+publci class EditForm : Page
+{
+  protected IBusinessObjectDataSourceControl CurrentObject;
+  
+  // OnLoad event handler for Page
+  private void Page_Load (object sender, EventArgs a)
+  {
+    // The business object displayed by this form.
+    IBusinessObject businessObject;
+    CurrentObject.BusinessObject = businessObject;
+    
+    bool interim = IsPostback;
+    CurrentObject.LoadValues (interim);
+  }
+}
+      </code>
+    </example>
+    <example>
+      <b>SaveValues Pattern</b>
       This pattern assumes that you do not modify the contents of the controls bound to the datasource 
-      for the remainder of the current page life cycle after the save button has been clicked.
+      for the remainder of the current page life cycle once the save button has been clicked.
       <code escaped="true" lang="C#">
 publci class EditForm : Page
 {

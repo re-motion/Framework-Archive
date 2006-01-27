@@ -39,7 +39,11 @@ public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IC
 ///     property. See the remarks section of the <see cref="IBusinessObjectDataSource"/> for details on implementing 
 ///     this property.
 ///   </para>
-/// </remarks>
+///   <note>
+///     Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+///     documentation for an examples of the <b>LoadValues</b> and the <b>SaveValues</b> patterns.
+///   </note>
+// </remarks>
 #if ! NET11
 [System.Web.UI.NonVisualControl]
 #endif
@@ -61,8 +65,12 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// <remarks> 
   ///   Executes the <see cref="IBusinessObjectDataSource.LoadValues"/> method of the encapsulated 
   ///   <see cref="IBusinessObjectDataSource"/>.
+  ///   <note>
+  ///     Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+  ///     remarks section for an example of the <b>LoadValues Pattern</b>.
+  ///   </note>
   /// </remarks>
-  public virtual void LoadValues(bool interim)
+  public virtual void LoadValues (bool interim)
   {
     GetDataSource().LoadValues (interim);
   }
@@ -75,6 +83,10 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   /// <remarks> 
   ///   Executes the <see cref="IBusinessObjectDataSource.SaveValues"/> method of the encapsulated 
   ///   <see cref="IBusinessObjectDataSource"/>.
+  ///   <note>
+  ///     Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
+  ///     remarks section for an example of the <b>SaveValues Pattern</b>.
+  ///   </note>
   /// </remarks>
   public virtual void SaveValues (bool interim)
   {

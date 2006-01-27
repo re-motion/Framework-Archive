@@ -210,5 +210,6 @@
       Generates a <see cref="CompareValidator"/> checking that the selected item is not the null-item if the 
       control is in edit mode and input is required.
     </remarks>
+    <seealso cref="BusinessObjectBoundModifiableWebControl.CreateValidators">BusinessObjectBoundModifiableWebControl.CreateValidators</seealso>
   </CreateValidators>
 </BocBooleanValue>
