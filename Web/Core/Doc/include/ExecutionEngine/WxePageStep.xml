@@ -67,7 +67,7 @@
     <example>
       An example where the 3rd step of the <see cref="WxeFunction"/> <b> MyFunction</b> is a <b>WxePageStep</b>
       dislaying a the ASPX page <c>MyWebForm.aspx</c>.
-<code>
+      <code escaped="true" lang="C#">
 [Serializable]
 public class MyFunction: WxeFunction
 {
@@ -77,7 +77,7 @@ public class MyFunction: WxeFunction
   // Step4
   ...
 }
-</code>    
+      </code>    
     </example>
   </Class>
   <Ctor>
