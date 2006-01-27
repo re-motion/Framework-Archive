@@ -87,7 +87,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   // construction and disposing
 
-  /// <summary> Initializes a new instance of the <b>BocCheckBox</b> type. </summary>
 	public BocCheckBox()
 	{
     _labelStyle = new Style();
@@ -98,7 +97,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   // methods and properties
 
-  /// <summary> Overrides the <see cref="Control.CreateChildControls"/> method. </summary>
   protected override void CreateChildControls()
   {
     _checkBox.ID = ID + "_Boc_CheckBox";
@@ -114,13 +112,13 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     Controls.Add (_label);
   }
 
-  /// <summary> Calls the <see cref="LoadPostData"/> method. </summary>
+  /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
     return LoadPostData (postDataKey, postCollection);
   }
 
-  /// <summary> Calls the <see cref="RaisePostDataChangedEvent"/> method. </summary>
+  /// <summary> Invokes the <see cref="RaisePostDataChangedEvent"/> method. </summary>
   void IPostBackDataHandler.RaisePostDataChangedEvent()
   {
     RaisePostDataChangedEvent();
@@ -175,7 +173,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
   }
 
-  /// <summary> Overrides the <see cref="Control.OnPreRender"/> method. </summary>
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -311,7 +308,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
   }
 
-  /// <summary> Overrides the <see cref="WebControl.AddAttributesToRender"/> method. </summary>
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
     bool isReadOnly = IsReadOnly;
@@ -361,7 +357,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
   }
 
-  /// <summary> Overrides the <see cref="WebControl.RenderContents"/> method. </summary>
   protected override void RenderContents(HtmlTextWriter writer)
   {
     EvaluateWaiConformity ();
@@ -378,7 +373,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
   }
 
-  /// <summary> Overrides the <see cref="Control.LoadViewState"/> method. </summary>
   protected override void LoadViewState (object savedState)
   {
     object[] values = (object[]) savedState;
@@ -390,7 +384,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     _checkBox.Checked = _value;
   }
 
-  /// <summary> Overrides the <see cref="Control.SaveViewState"/> method. </summary>
   protected override object SaveViewState()
   {
     object[] values = new object[3];
@@ -554,7 +547,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.ValueImplementation"/> property. </summary>
+  /// <summary> See <see cref="BusinessObjectBoundWebControl.Value"/> for details on this property. </summary>
   protected override object ValueImplementation
   {
     get { return Value; }
@@ -628,33 +621,62 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
 
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.TargetControl"/> property. </summary>
-  /// <value> The <see cref="HyperLink"/> if the control is in edit mode, otherwise the control itself. </value>
-  public override Control TargetControl 
-  {
-    get { return IsReadOnly ? (Control) this : _checkBox; }
-  }
-
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
+  /// <summary> 
+  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
+  ///   interface.
+  /// </summary>
+  /// <returns> 
+  ///   A <see cref="String"/> <see cref="Array"/> containing the <see cref="Control.ClientID"/> of the
+  ///   <see cref="CheckBox"/> if the control is in edit mode, or an empty array if the control is read-only.
+  /// </returns>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     return IsReadOnly ? new string[0] : new string[1] { _checkBox.ClientID };
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/> property. </summary>
+  /// <summary> The <see cref="BocCheckBox"/> supports only scalar properties. </summary>
+  /// <returns> <see langword="true"/> if <paramref name="isList"/> is <see langword="false"/>. </returns>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportsPropertyMultiplicity"/>
+  protected override bool SupportsPropertyMultiplicity (bool isList)
+  {
+    return ! isList;
+  }
+
+  /// <summary>
+  ///   The <see cref="BocCheckBox"/> supports properties of type <see cref="IBusinessObjectBooleanProperty"/>.
+  /// </summary>
+  /// <seealso cref="BusinessObjectBoundWebControl.SupportedPropertyInterfaces"/>
   protected override Type[] SupportedPropertyInterfaces
   {
     get { return s_supportedPropertyInterfaces; }
   }
 
-  /// <summary> Overrides <see cref="Rubicon.Web.UI.ISmartControl.UseLabel"/>. </summary>
+  /// <summary>
+  ///   Gets a flag that determines whether it is valid to generate HTML &lt;label&gt; tags referencing the
+  ///   <see cref="TargetControl"/>.
+  /// </summary>
   /// <value> Always <see langword="true"/>. </value>
   public override bool UseLabel
   {
     get { return true; }
   }
 
-  /// <summary> Implementation of the <see cref="IFocusableControl.FocusID"/>. </summary>
+  /// <summary>
+  ///   Gets the input control that can be referenced by HTML tags like &lt;label for=...&gt; using its 
+  ///   <see cref="Control.ClientID"/>.
+  /// </summary>
+  /// <value> The <see cref="HyperLink"/> if the control is in edit mode, otherwise the control itself. </value>
+  public override Control TargetControl 
+  {
+    get { return IsReadOnly ? (Control) this : _checkBox; }
+  }
+
+  /// <summary> Gets the ID of the element to receive the focus when the page is loaded. </summary>
+  /// <value>
+  ///   Returns the <see cref="Control.ClientID"/> of the <see cref="CheckBox"/> if the control is in edit mode, 
+  ///   otherwise <see langword="null"/>. 
+  /// </value>
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   [Browsable (false)]
   public string FocusID
