@@ -43,7 +43,7 @@ public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IC
 ///     Please refer to the <see cref="T:Rubicon.ObjectBinding.Web.UI.Controls.IBusinessObjectDataSourceControl" />'s
 ///     documentation for an examples of the <b>LoadValues</b> and the <b>SaveValues</b> patterns.
 ///   </note>
-// </remarks>
+/// </remarks>
 #if ! NET11
 [System.Web.UI.NonVisualControl]
 #endif
