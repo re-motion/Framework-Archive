@@ -131,11 +131,12 @@ public class BusinessObjectReferenceDataSourceControl:
     set { _internalDataSource.BusinessObject = (IBusinessObject) value; }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> method. </summary>
+  /// <summary> Gets or sets the dirty flag. </summary>
   /// <value> 
   ///   Evaluates <see langword="true"/> if either the <see cref="BusinessObjectReferenceDataSourceControl"/> or one 
   ///   of the bound controls is dirty.
   /// </value>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.IsDirty">BusinessObjectBoundModifiableWebControl.IsDirty</seealso>
   public override bool IsDirty
   {
     get
@@ -148,7 +149,12 @@ public class BusinessObjectReferenceDataSourceControl:
     }
   }
 
-  /// <summary> Overrides the <see cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs"/> method. </summary>
+  /// <summary> 
+  ///   Returns the <see cref="System.Web.UI.Control.ClientID"/> values of all controls whose value can be modified 
+  ///   in the user interface.
+  /// </summary>
+  /// <returns> An empty <see cref="String"/> <see cref="Array"/>. </returns>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     return new string[0];
