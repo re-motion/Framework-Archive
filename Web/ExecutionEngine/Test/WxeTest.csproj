@@ -155,6 +155,27 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ProfilingForm.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "ProfilingForm.aspx.cs"
+                    DependentUpon = "ProfilingForm.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ProfilingForm.aspx.resx"
+                    DependentUpon = "ProfilingForm.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ProfilingWxeFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "SampleWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
