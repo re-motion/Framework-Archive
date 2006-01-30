@@ -546,15 +546,13 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     return _wxePageInfo.EnsurePostBackModeDetermined (Context);
   }
 
-  /// <summary> Implementation of <see cref="ISmartPage.GetPostBackCollection"/>. </summary>
-  /// <returns> The value returned by <see cref="GetPostBackCollection"/>. </returns>
+  /// <summary> Gets the value returned by <see cref="GetPostBackCollection"/>. </summary>
   NameValueCollection ISmartPage.GetPostBackCollection ()
   {
     return GetPostBackCollection();
   }
 
 
-  /// <summary> Overrides <see cref="Page.SavePageStateToPersistenceMedium"/>. </summary>
   /// <remarks> Uses <see cref="WxePageInfo.SavePageStateToPersistenceMedium"/> to save the viewstate. </remarks>
   protected override void SavePageStateToPersistenceMedium (object viewState)
   {
@@ -565,7 +563,6 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
       base.SavePageStateToPersistenceMedium (viewState);
   }
 
-  /// <summary> Overrides <see cref="Page.LoadPageStateFromPersistenceMedium"/>. </summary>
   /// <remarks> Uses <see cref="WxePageInfo.LoadPageStateFromPersistenceMedium"/> to load the viewstate. </remarks>
   protected override object LoadPageStateFromPersistenceMedium()
   {
@@ -577,7 +574,6 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
 
-  /// <summary> Overrides <see cref="Control.OnPreRender"/>. </summary>
   /// <remarks> Invokes <see cref="WxePageInfo.PreRender"/> before calling the base-implementation. </remarks>
   protected override void OnPreRender (EventArgs e)
   {
@@ -678,8 +674,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     get { return _enableAbort != NaBooleanEnum.False; }
   }
 
-  /// <summary> Implementation of <see cref="IWxePage.IsAbortEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsAbortEnabled"/>. </value>
+  /// <summary> Gets the value returned by <see cref="IsAbortEnabled"/>. </summary>
   bool IWxePage.IsAbortEnabled
   {
     get { return IsAbortEnabled; }
@@ -739,8 +734,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     get { return _enableStatusMessages != NaBooleanEnum.False; }
   }
 
-  /// <summary> Implementation of <see cref="IWxePage.AreStatusMessagesEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="AreStatusMessagesEnabled"/>. </value>
+  /// <summary> Gets the value returned by <see cref="AreStatusMessagesEnabled"/>. </summary>
   bool IWxePage.AreStatusMessagesEnabled
   {
     get { return AreStatusMessagesEnabled; }
