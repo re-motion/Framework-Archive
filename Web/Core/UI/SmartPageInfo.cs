@@ -57,6 +57,7 @@ public class SmartPageInfo
   private AutoInitHashtable _clientSideEventHandlers = new AutoInitHashtable (typeof (NameValueCollection));
   private string _checkFormStateFunction;
   private Hashtable _trackedControls = new Hashtable();
+  private StringCollection _trackedControlsByID = new StringCollection();
 
   private ResourceManagerSet _cachedResourceManager;
 
@@ -86,13 +87,23 @@ public class SmartPageInfo
     eventHandlers[key] = function;
   }
 
-  public void RegisterForDirtyStateTracking (IModifiableControl control)
+
+  /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
+  public void RegisterControlForDirtyStateTracking (IModifiableControl control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
     _trackedControls[control] = control;
   }
 
+  /// <summary> Implements <see cref="ISmartPage.RegisterControlForClientSideDirtyStateTracking">ISmartPage.RegisterControlForClientSideDirtyStateTracking</see>. </summary>
+  public void RegisterControlForDirtyStateTracking (string clientID)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("clientID", clientID);
+    if (! _trackedControlsByID.Contains (clientID))
+      _trackedControlsByID.Add (clientID);
+  }
 
+  /// <summary> Implements <see cref="ISmartPage.EvaluateDirtyState">ISmartPage.EvaluateDirtyState</see>. </summary>
   public bool EvaluateDirtyState()
   {
     foreach (IModifiableControl control in _trackedControls.Values)
@@ -102,6 +113,7 @@ public class SmartPageInfo
     }
     return false;
   }
+
 
   public string CheckFormStateFunction
   {
@@ -374,6 +386,13 @@ public class SmartPageInfo
           script.Append ("'); \r\n");
         }
       }
+    }
+
+    foreach (string trackedID in _trackedControlsByID)
+    {
+      script.Append (trackedControlsArray).Append (".push ('");
+      script.Append (trackedID);
+      script.Append ("'); \r\n");
     }
   }
 
