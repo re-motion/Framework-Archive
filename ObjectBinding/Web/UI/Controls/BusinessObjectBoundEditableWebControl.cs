@@ -60,7 +60,7 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   {
     base.OnInit (e);
     if (Page is ISmartPage)
-      ((ISmartPage) Page).RegisterForDirtyStateTracking (this);
+      ((ISmartPage) Page).RegisterControlForDirtyStateTracking (this);
   }
 
   /// <summary> Gets or sets a flag that specifies whether the value of the control is required. </summary>

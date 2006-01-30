@@ -4,11 +4,11 @@
     <remarks>
       <h4 class="dtH4">Using an IWxePage</h4>
       <para>
-        A <see cref="Page"/> that implements <b>IWxePage</b> can be called by a <see cref="WxePageStep"/>. 
+        A <see cref="Page"/> that implements <see cref="IWxePage"/> can be called by a <see cref="WxePageStep"/>. 
         Please refer to the documentation of the <see cref="WxePageStep"/> for details on the execution life 
-        cycle outside the <b>IWxePage</b>'s scope.
+        cycle outside the <see cref="IWxePage"/>'s scope.
       </para><para>
-        To the application developer an <b>IWxePage</b> has the same look and feel as a normal ASP.NET Page. 
+        To the application developer an <see cref="IWxePage"/> has the same look and feel as a normal ASP.NET Page. 
         You can use controls on the page and use the <see cref="Page.IsPostBack"/> flag as you would on any other 
         ASP.NET page.
       </para><para>
