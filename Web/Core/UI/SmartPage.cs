@@ -45,10 +45,22 @@ public interface ISmartPage: IPage
   /// <summary> Gets the post back data for the page. </summary>
   NameValueCollection GetPostBackCollection ();
 
-  void RegisterForDirtyStateTracking (IModifiableControl control);
+  /// <summary>
+  ///   Registers a control implementing <see cref="IModifiableControl"/> for tracking of it's server- and client-side
+  ///   dirty state.
+  /// </summary>
+  /// <param name="control"> A control implementing <see cref="IModifiableControl"/> that will be tracked. </param>
+  void RegisterControlForDirtyStateTracking (IModifiableControl control);
+
+  /// <summary>
+  ///   Resgisters a <see cref="Control.ClientID"/> for the tracking of the controls client-side dirty state.
+  /// </summary>
+  /// <param name="clientID"> The ID of an HTML input/textarea/select element. </param>
+  void RegisterControlForClientSideDirtyStateTracking (string clientID);
 
   /// <summary> 
-  ///   Evaluates whether any control on the page has values that must be persisted before the user leaves the page. 
+  ///   Evaluates whether any control regsitered using <see cref="RegisterControlForDirtyStateTracking"/>
+  ///   has values that must be persisted before the user leaves the page. 
   /// </summary>
   /// <returns> <see langword="true"/> if the page is dirty (i.e. has unpersisted changes). </returns>
   bool EvaluateDirtyState();
@@ -133,7 +145,6 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   }
 
 
-  /// <summary> Implementation of <see cref="ISmartPage.CheckFormStateFunction"/>. </summary>
   string ISmartPage.CheckFormStateFunction
   {
     get { return _smartPageInfo.CheckFormStateFunction; }
@@ -168,9 +179,23 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     set { _smartPageInfo.StatusIsSubmittingMessage = value; }
   }
 
-  public void RegisterForDirtyStateTracking (IModifiableControl control)
+  /// <summary>
+  ///   Registers a control implementing <see cref="IModifiableControl"/> for tracking of it's server- and client-side
+  ///   dirty state.
+  /// </summary>
+  /// <param name="control"> A control implementing <see cref="IModifiableControl"/> that will be tracked.  </param>
+  public void RegisterControlForDirtyStateTracking (IModifiableControl control)
   {
-    _smartPageInfo.RegisterForDirtyStateTracking (control);
+    _smartPageInfo.RegisterControlForDirtyStateTracking (control);
+  }
+
+  /// <summary>
+  ///   Resiters a <see cref="Control.ClientID"/> for the tracking of the controls client-side dirty state.
+  /// </summary>
+  /// <param name="clientID"> The ID of an HTML input/textarea/select element. </param>
+  public void RegisterControlForClientSideDirtyStateTracking (string clientID)
+  {
+    _smartPageInfo.RegisterControlForDirtyStateTracking (clientID);
   }
 
   #endregion
@@ -285,13 +310,13 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     EnsureValidatableControlsInitialized();
   }
 
-  /// <summary> Makes sure that PostLoad is called on all controls that support <see cref="ISupportsPostLoadControl"/>. </summary>
+  /// <summary> Ensures that PostLoad is called on all controls that support <see cref="ISupportsPostLoadControl"/>. </summary>
   public void EnsurePostLoadInvoked ()
   {
     _postLoadInvoker.EnsurePostLoadInvoked();
   }
 
-  /// <summary> Makes sure that all validators are registered with their <see cref="IValidatableControl"/> controls. </summary>
+  /// <summary> Ensures that all validators are registered with their <see cref="IValidatableControl"/> controls. </summary>
   public void EnsureValidatableControlsInitialized ()
   {
     _validatableControlInitializer.EnsureValidatableControlsInitialized ();
@@ -307,7 +332,10 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     set { _isDirty = value; }
   }
 
-  /// <summary> Implementation of <see cref="ISmartPage.EvaluateDirtyState"/>. </summary>
+  /// <summary> 
+  ///   Evaluates whether any control regsitered using <see cref="RegisterControlForDirtyStateTracking"/>
+  ///   has values that must be persisted before the user leaves the page. 
+  /// </summary>
   /// <value> The value returned by <see cref="IsDirty"/>. </value>
   public virtual bool EvaluateDirtyState()
   {
@@ -326,8 +354,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     get { return ShowAbortConfirmation == ShowAbortConfirmation.OnlyIfDirty; }
   }
 
-  /// <summary> Implementation of <see cref="ISmartPage.IsDirtyStateTrackingEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsDirtyStateTrackingEnabled"/>. </value>
+  /// <summary> Gets the value returned by <see cref="IsDirtyStateTrackingEnabled"/>. </summary>
   bool ISmartPage.IsDirtyStateTrackingEnabled
   {
     get { return IsDirtyStateTrackingEnabled; }
@@ -367,8 +394,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     }
   }
 
-  /// <summary> Implementation of <see cref="ISmartPage.IsAbortConfirmationEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsAbortConfirmationEnabled"/>. </value>
+  /// <summary> Gets the value returned by <see cref="IsAbortConfirmationEnabled"/>. </summary>
   bool ISmartPage.IsAbortConfirmationEnabled
   {
     get { return IsAbortConfirmationEnabled; }
@@ -405,8 +431,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     get { return _enableStatusIsSubmittingMessage != NaBooleanEnum.False; }
   }
 
-  /// <summary> Implementation of <see cref="ISmartPage.IsStatusIsSubmittingMessageEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsStatusIsSubmittingMessageEnabled"/>. </value>
+  /// <summary> Gets the value returned by <see cref="IsStatusIsSubmittingMessageEnabled"/>. </summary>
   bool ISmartPage.IsStatusIsSubmittingMessageEnabled
   {
     get { return IsStatusIsSubmittingMessageEnabled; }
@@ -446,8 +471,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     }
   }
 
-  /// <summary> Implementation of <see cref="ISmartNavigablePage.IsSmartScrollingEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsSmartScrollingEnabled"/>. </value>
+  /// <summary> Gets the value returned by <see cref="IsSmartScrollingEnabled"/>. </summary>
   bool ISmartNavigablePage.IsSmartScrollingEnabled
   {
     get { return IsSmartScrollingEnabled; }
@@ -487,8 +511,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     }
   }
 
-  /// <summary> Implementation of <see cref="ISmartNavigablePage.IsSmartFocusingEnabled"/>. </summary>
-  /// <value> The value returned by <see cref="IsSmartFocusingEnabled"/>. </value>
+  /// <summary> Gets the value returned by <see cref="IsSmartFocusingEnabled"/>. </summary>
   bool ISmartNavigablePage.IsSmartFocusingEnabled
   {
     get { return IsSmartFocusingEnabled; }
