@@ -141,7 +141,7 @@ public int Var1
       The <see cref="WxeStep"/> to be set as this step's parent. Must not be <see langword="null"/>.
     </param>
     <remarks>
-      This method should only be invoked by the WXE infrastucture.
+      This method should only be invoked by the WXE infrastructure.
     </remarks>
   </SetParentStep>
   <RootFunction>

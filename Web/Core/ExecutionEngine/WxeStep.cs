@@ -54,12 +54,16 @@ public abstract class WxeStep
   [NonSerialized]
   private bool _isAborting = false;
 
+  /// <overloads>
+  /// <summary> Executes the <see cref="WxeStep"/>. </summary>
+  /// <remarks> This method should only be invoked by the WXE infrastructure. </remarks>
+  /// </overloads>
   /// <summary> Executes the <see cref="WxeStep"/>. </summary>
   /// <remarks> 
   ///   Invokes <see cref="M:Rubicon.Web.ExecutionEngine.WxeStep.Execute(Rubicon.Web.ExecutionEngine.WxeContext">WxeContext</see>,
   ///   passing the <see cref="WxeContext.Current"/> <see cref="WxeContext"/> as argument.
   ///   <note>
-  ///     This method should only be invoked by the WXE infrastucture.
+  ///     This method should only be invoked by the WXE infrastructure.
   ///   </note>
   /// </remarks>
   [EditorBrowsable (EditorBrowsableState.Never)]
@@ -73,7 +77,7 @@ public abstract class WxeStep
   /// <remarks> 
   ///   Override this method to implement your execution logic. 
   ///   <note>
-  ///     This method should only be invoked by the WXE infrastucture.
+  ///     This method should only be invoked by the WXE infrastructure.
   ///   </note>
   /// </remarks>
   [EditorBrowsable (EditorBrowsableState.Never)]
