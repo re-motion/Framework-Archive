@@ -6,6 +6,7 @@
     xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 		<add type="Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition" resource="session.wxe"/>
 		<add type="Rubicon.PageTransition.MultiplePostbackCatcherWxeFunction,Rubicon.PageTransition" resource="mpc.wxe"/>
+		<add type="Rubicon.PageTransition.ProfilingWxeFunction,Rubicon.PageTransition" resource="prof.wxe"/>
 		
 <!--
 		<add type="Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition" resource="sample.wxe"/>
