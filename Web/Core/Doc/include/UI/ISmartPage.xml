@@ -2,9 +2,26 @@
 <ISmartPage>
   <Class>
     <remarks>
-      <h4 class="dtH4">Usage Notes</h4>
+      <h4 class="dtH4">Dirty State Tracking</h4>
       <para>
-        If possible, use the <see cref="SmartPage"/> default implementation of the <b>ISmartPage</b> interface
+        The <see cref="ISmartPage"/> defines methods for server-side and client-side dirty state tracking.
+      </para><para>
+        Invoke <see cref="RegisterControlForDirtyStateTracking"/> to register a control for tracking that
+        implements the <see cref="IModifiableControl"/> interface. Business Object Controls automatically 
+        register when added to a page implementing <see cref="ISmartPage"/>.
+      </para><para>
+        Invoke <see cref="RegisterControlForClientSideDirtyStateTracking"/> if you wish to track the client-side
+        dirty state of a control not supporting <see cref="IModifiableControl"/>. In this case you must pass the
+        control's client-side ID. You also have to keep track of the control's server-side dirty state on your own.
+      </para><para>
+        <see cref="EvaluateDirtyState"/> will be used to determine whether any of the tracked controls is dirty.
+        The <see cref="SmartPage"/> also returns the value of its own <see cref="SmartPage.IsDirty"/> flag through
+        this method.
+      </para>       
+      
+      <h4 class="dtH4">General Usage Notes</h4>
+      <para>
+        If possible, use the <see cref="SmartPage"/> default implementation of the <see cref="ISmartPage"/> interface
         as base page in your project.
       </para>
       <note type="inotes">
@@ -12,10 +29,8 @@
         another class), use <see cref="SmartPageInfo"/> to implement all methods and properties.
       </note>
     </remarks>
-    <seealso cref="ISmartPage"/>
-    <seealso cref="Rubicon.Web.ExecutionEngine.WxePage"/>
-    <seealso cref="Rubicon.Web.ExecutionEngine.WxePageInfo"/>
-    <seealso cref="Rubicon.Web.ExecutionEngine.WxePageStep"/>
+    <seealso cref="SmartPage"/>
+    <seealso cref="SmartPageInfo"/>
   </Class>
   <RegisterClientSidePageEventHandler>
     <param name="pageEvent"> The type of event to register for. </param>
