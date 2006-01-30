@@ -300,7 +300,7 @@ public class PageUtility
   /// <param name="page"> The page to query for the request collection. Must not be <see langword="null"/>. </param>
   /// <returns> 
   ///   The <see cref="NameValueCollection"/> returned by 
-  ///   <see cref="IWxePage.GetPostBackCollection">IWxePage.GetPostBackCollection</see> or the 
+  ///   <see cref="ISmartPage.GetPostBackCollection">IWxePage.GetPostBackCollection</see> or the 
   ///   <see cref="HttpRequest.Form"/> collection of the <see cref="Page.Request"/>, depending on whether or not the
   ///   <paramref name="page"/> implements <see cref="IWxePage"/>.
   /// </returns>

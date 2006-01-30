@@ -39,6 +39,8 @@ public class ProfilingWxeFunction: WxeFunction
   WxeStep Step28 = new WxePageStep ("ProfilingForm.aspx");
   WxeStep Step29 = new WxePageStep ("ProfilingForm.aspx");
 
+  // Tracing: 100ms/start-end
+  // Profiling: 1sek/start-end
   void Step30()
   {
     _end = DateTime.Now;
