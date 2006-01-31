@@ -203,6 +203,7 @@ public class SmartPageInfo
       if (((Page) page).Master != null)
         page = ((Page) page).Master;
 #endif
+
       if (_htmlFormField != null) // Can only be null without an exception during design mode
         return (HtmlForm) _htmlFormField.GetValue (page);
       else

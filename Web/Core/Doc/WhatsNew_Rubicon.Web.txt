@@ -4,6 +4,10 @@
   * Bietet Dirty-State Handling.
   * EnableAbortConfirmation: Umgestellt zu ShowAbortConfirmation mit den Werten "Never", "Always", und "OnlyIfDirty".
     Defaultwert: "OnlyIfDirty". Bisher: "Undefined", was "Never" entsprochen hat.
+    Werden unbound BOCs verwendet, so sollte das Setzen von Value mittels LoadUnboundValue() durchgeführt werden.
+      Alternativ kann IsDirty manuell rückgesetzt werden. Andernfalls ist die Page zu Beginn bereits dirty und die 
+      AbortConfirmation Message wird angezeigt. zB: Suchseiten.
+      Als 3. Option kann ShowAbortConfirmation auf "Never" gesetzt werden.
     Für WXE Pages: benötigt man die AbortConfirmation als Schutz vor History-Back, so muss "Always" verwendet werden.
       Benötigt man ledigleich eine Sicherheitsabfrage für die Navigation mittels Links (Stichwort: NavigationTabs),
       oder beim Schließen des Fensters, so wird "OnlyIfDirty" empfohlen.
