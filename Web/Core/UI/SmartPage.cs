@@ -119,10 +119,14 @@ public interface ISmartPage: IPage
   HtmlForm HtmlForm { get; set; }
 }
 
+/// <summary> Defines the options for showing the abort confirmation dialog upon leaving the page. </summary>
 public enum ShowAbortConfirmation
 {
+  /// <summary> Disables the abort confirmation dialog. </summary>
   Never,
+  /// <summary> Always displays an abort confirmation dialog before leaving the page. </summary>
   Always,
+  /// <summary> Only displays an abort confirmation dialog when the page is dirty. </summary>
   OnlyIfDirty
 }
 
@@ -364,7 +368,9 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   ///   Gets or sets a value that determines whether to display a confirmation dialog before leaving the page. 
   /// </summary>
   /// <value> 
-  ///   <see cref="NaBooleanEnum.True"/> to display a confirmation dialog. 
+  ///   <see cref="ShowAbortConfirmation.Always"/> to always display a confirmation dialog before leaving the page. 
+  ///   <see cref="ShowAbortConfirmation.OnlyIfDirty"/> to display a confirmation dialog only when the page is dirty. 
+  ///   <see cref="ShowAbortConfirmation.Never"/> to disable the confirmation dialog. 
   ///   Defaults to <see cref="F:ShowAbortConfirmation.OnlyIfDirty"/>.
   /// </value>
   [Description("Determines whether to display a confirmation dialog before leaving the page.")]
