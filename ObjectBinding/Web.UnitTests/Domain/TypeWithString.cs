@@ -10,6 +10,8 @@ public class TypeWithString: ReflectionBusinessObject
 {
   private string _stringValue;
   private string[] _stringArray;
+  private string _firstValue;
+  private string _secondValue;
 
   public string StringValue
   {
@@ -21,6 +23,18 @@ public class TypeWithString: ReflectionBusinessObject
   {
     get { return _stringArray; }
     set { _stringArray = value; }
+  }
+
+  public string FirstValue
+  {
+    get { return _firstValue; }
+    set { _firstValue = value; }
+  }
+
+  public string SecondValue
+  {
+    get { return _secondValue; }
+    set { _secondValue = value; }
   }
 }
 
