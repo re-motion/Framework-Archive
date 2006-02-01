@@ -96,18 +96,18 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
   {
     get 
     {
-      if (OwnerControl == null)
-        throw new InvalidOperationException ("PropertyPath could not be resolved because the object is not part of an IBusinessObjectBoundControl.");
-
-      bool isDesignMode = Rubicon.Web.Utilities.ControlHelper.IsDesignMode (OwnerControl);
-      bool isDataSourceNull = DataSource == null;
-      bool isBusinessObjectClassNull = BusinessObjectClass == null;
-
-      if (isDesignMode && isBusinessObjectClassNull)
-          return null;
-
       if (! _isPopertyPathEvaluated)
       {
+        if (OwnerControl == null)
+          throw new InvalidOperationException ("PropertyPath could not be resolved because the object is not part of an IBusinessObjectBoundControl.");
+
+        bool isDesignMode = Rubicon.Web.Utilities.ControlHelper.IsDesignMode (OwnerControl);
+        bool isDataSourceNull = DataSource == null;
+        bool isBusinessObjectClassNull = BusinessObjectClass == null;
+
+        if (isDesignMode && isBusinessObjectClassNull)
+            return null;
+
         if (StringUtility.IsNullOrEmpty (_propertyPathIdentifier))
         {
           _propertyPath = null;
@@ -128,6 +128,7 @@ public class PropertyPathBinding: BusinessObjectControlItem, IBusinessObjectClas
     {
       _propertyPath = value; 
       _propertyPathIdentifier = (value == null) ? string.Empty : value.ToString();
+      _isPopertyPathEvaluated = true;
     }
   }
 
