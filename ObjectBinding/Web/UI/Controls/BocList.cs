@@ -39,8 +39,8 @@ public class BocList:
     BusinessObjectBoundModifiableWebControl, 
     IPostBackEventHandler, 
     IPostBackDataHandler, 
-    IComparer,
     IBocMenuItemContainer,
+    IBocListSortingOrderProvider,
     IResourceDispatchTarget
 {
   //  constants
@@ -313,7 +313,7 @@ public class BocList:
   ///   Contains <see cref="BocListSortingOrderEntry"/> objects in the order of the buttons pressed.
   /// </summary>
   private ArrayList _sortingOrder = new ArrayList();
-  private Pair[] _indexedRowsSorted = null;
+  private BocListRow[] _indexedRowsSorted = null;
 
   /// <summary> Determines whether to enable the selecting of the data rows. </summary>
   private RowSelection _selection = RowSelection.Undefined;
@@ -1205,10 +1205,10 @@ public class BocList:
 
     if (IsEditDetailsModeActive)
     {
-      Pair[] sortedRows = EnsureGotIndexedRowsSorted();
+      BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
       for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
       {
-        int originalRowIndex = (int) sortedRows[idxRows].First;
+        int originalRowIndex = sortedRows[idxRows].Index;
         if (_modifiableRowIndex.Value == originalRowIndex)
         {
           _currentRow = idxRows;
@@ -1919,20 +1919,15 @@ public class BocList:
       else
       {
         bool isOddRow = true;
-        Pair[] rows = EnsureGotIndexedRowsSorted();
+        BocListRow[] rows = EnsureGotIndexedRowsSorted();
 
         for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
             idxAbsoluteRows < rowCountWithOffset; 
             idxAbsoluteRows++, idxRelativeRows++)
         {
-          Pair rowPair = (Pair)rows[idxAbsoluteRows];
-          if (rowPair.Second == null)
-            throw new NullReferenceException ("Null item found in IList 'Value' of BocList " + ID + ".");
-          int originalRowIndex = (int) rowPair.First;
-          IBusinessObject businessObject = rowPair.Second as IBusinessObject;
-          if (businessObject == null)
-            throw new InvalidCastException ("List item " + originalRowIndex + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
-          RenderDataRow (writer, businessObject, idxRelativeRows, idxAbsoluteRows, originalRowIndex, isOddRow);
+          BocListRow row = rows[idxAbsoluteRows];
+          int originalRowIndex = row.Index;
+          RenderDataRow (writer, row.BusinessObject, idxRelativeRows, idxAbsoluteRows, originalRowIndex, isOddRow);
           isOddRow = !isOddRow;
         }
       }
@@ -3398,19 +3393,14 @@ public class BocList:
       rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
     }
 
-    Pair[] rows = EnsureGotIndexedRowsSorted();
+    BocListRow[] rows = EnsureGotIndexedRowsSorted();
 
     for (int idxAbsoluteRows = firstRow, idxRelativeRows = 0; 
         idxAbsoluteRows < rowCountWithOffset; 
         idxAbsoluteRows++, idxRelativeRows++)
     {
-      Pair rowPair = rows[idxAbsoluteRows];
-      if (rowPair.Second == null)
-        throw new NullReferenceException ("Null item found in IList 'Value' of BocList " + ID + ".");
-      int originalRowIndex = (int) rowPair.First;
-      IBusinessObject businessObject = rowPair.Second as IBusinessObject;
-      if (businessObject == null)
-        throw new InvalidCastException ("List item " + originalRowIndex + " in IList 'Value' of BocList " + ID + " is not of type IBusinessObject.");
+      BocListRow row = rows[idxAbsoluteRows];
+      int originalRowIndex = row.Index;
 
       DropDownMenu dropDownMenu = new DropDownMenu (this);
       dropDownMenu.ID = ID + "_RowMenu_" + originalRowIndex.ToString();
@@ -3418,10 +3408,10 @@ public class BocList:
       dropDownMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (RowMenu_WxeFunctionCommandClick);
 
       _rowMenusPlaceHolder.Controls.Add (dropDownMenu);
-      WebMenuItem[] menuItems = InitializeRowMenuItems (businessObject, originalRowIndex);
+      WebMenuItem[] menuItems = InitializeRowMenuItems (row.BusinessObject, originalRowIndex);
       dropDownMenu.MenuItems.AddRange (menuItems);
 
-      _rowMenus[idxRelativeRows] = new Triplet (businessObject, originalRowIndex, dropDownMenu);
+      _rowMenus[idxRelativeRows] = new Triplet (row.BusinessObject, originalRowIndex, dropDownMenu);
     }
   }
 
@@ -3612,7 +3602,7 @@ public class BocList:
       rowCountWithOffset = (rowCountWithOffset < Value.Count) ? rowCountWithOffset : Value.Count;
     }
 
-    Pair[] rows = EnsureGotIndexedRowsSorted();
+    BocListRow[] rows = EnsureGotIndexedRowsSorted();
 
     for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
     {
@@ -3635,10 +3625,8 @@ public class BocList:
             idxAbsoluteRows < rowCountWithOffset; 
             idxAbsoluteRows++, idxRelativeRows++)
         {
-          Pair rowPair = rows[idxAbsoluteRows];
-          if (rowPair.Second == null)
-            throw new NullReferenceException (string.Format ("Null item found in IList 'Value' of BocList '{0}'.", ID));
-          int originalRowIndex = (int) rowPair.First;
+          BocListRow row = rows[idxAbsoluteRows];
+          int originalRowIndex = row.Index;
 
           if (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
               && (   ModifiableRowIndex.IsNull 
@@ -3647,19 +3635,11 @@ public class BocList:
             continue;
           }
 
-          IBusinessObject businessObject = rowPair.Second as IBusinessObject;
-          if (businessObject == null)
-          {
-            throw new InvalidCastException (string.Format (
-                "List item {0} in IList 'Value' of BocList '{1}' is not of type IBusinessObject.",
-                originalRowIndex, ID));
-          }
-
           BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
           Control control = customColumn.CustomCell.CreateControlInternal (args);
           control.ID = ID + "_CustomColumnControl_" + idxColumns.ToString() + "_" + originalRowIndex.ToString();
           placeHolder.Controls.Add (control);
-          customColumnTriplets[idxRelativeRows] = new Triplet (businessObject, originalRowIndex, control);
+          customColumnTriplets[idxRelativeRows] = new Triplet (row.BusinessObject, originalRowIndex, control);
         }
       }
     }
@@ -4100,11 +4080,11 @@ public class BocList:
     if (! HasSortingKeys)
       return null;
 
-    Pair[] sortedRows = GetIndexedRows (true);
+    BocListRow[] sortedRows = GetIndexedRows (true);
 
     IBusinessObject[] sortedBusinessObjects = new IBusinessObject[sortedRows.Length];
     for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-      sortedBusinessObjects[idxRows] = (IBusinessObject)((Pair) sortedRows[idxRows]).Second;
+      sortedBusinessObjects[idxRows] =  sortedRows[idxRows].BusinessObject;
 
     return sortedBusinessObjects;
   }
@@ -4112,19 +4092,19 @@ public class BocList:
   /// <summary> Creates an array of indexed <see cref="IBusinessObject"/> instances, optionally sorted. </summary>
   /// <param name="sorted"> <see langword="true"/> to sort the rows before returning them. </param>
   /// <returns> Pair &lt;original index, IBusinessObject&gt; </returns>
-  protected Pair[] GetIndexedRows (bool sorted)
+  protected BocListRow[] GetIndexedRows (bool sorted)
   {
     int rowCount = IsEmptyList ? 0 : Value.Count;
     ArrayList rows = new ArrayList (rowCount);
     for (int idxRows = 0; idxRows < rowCount; idxRows++)
-      rows.Add (new Pair (idxRows, Value[idxRows]));
+      rows.Add (new BocListRow (this, idxRows, (IBusinessObject) Value[idxRows]));
 
     if (sorted)
-      rows.Sort (this);
-    return (Pair[]) rows.ToArray (typeof (Pair));
+      rows.Sort();
+    return (BocListRow[]) rows.ToArray (typeof (BocListRow));
   }
 
-  protected Pair[] EnsureGotIndexedRowsSorted()
+  protected BocListRow[] EnsureGotIndexedRowsSorted()
   {
     if (_indexedRowsSorted == null)
       _indexedRowsSorted = GetIndexedRows (true);
@@ -4154,233 +4134,6 @@ public class BocList:
         ResetRows();
     }
   }
-
-  /// <summary>
-  ///   Compares <paramref name="objectA"/> and <paramref name="objectB"/>.
-  /// </summary>
-  /// <param name="objectA"> 
-  ///   First <see cref="Pair"/> (&lt;int index, IBusniessObject object&gt;) to compare.
-  ///   Must not be <see langword="null"/>.
-  /// </param>
-  /// <param name="objectB"> 
-  ///   Second <see cref="Pair"/> (&lt;int index, IBusniessObject object&gt;) to compare.
-  ///   Must not be <see langword="null"/>.
-  /// </param>
-  /// <returns>
-  ///   <list type="table">
-  ///     <listheader>
-  ///       <term> Value </term>
-  ///       <description> Condition </description>
-  ///     </listheader>
-  ///     <item>
-  ///       <term> Less than zero </term>
-  ///       <description> <paramref name="objectA"/> is less than <paramref name="objectB"/>. </description>
-  ///     </item>
-  ///     <item>
-  ///       <term> Zero </term>
-  ///       <description> <paramref name="objectA"/> eqals <paramref name="objectB"/>. </description>
-  ///     </item>
-  ///     <item>
-  ///       <term> Greater than zero </term>
-  ///       <description> <paramref name="objectA"/> is greater than <paramref name="objectB"/>. </description>
-  ///     </item>
-  ///   </list>
-  /// </returns>
-  int IComparer.Compare (object objectA , object objectB)
-  {
-    ArgumentUtility.CheckNotNullAndType ("objectA", objectA, typeof (Pair));
-    ArgumentUtility.CheckNotNullAndType ("objectB", objectB, typeof (Pair));
-
-    Pair pairA = (Pair) objectA;
-    Pair pairB = (Pair) objectB;
-
-    ArgumentUtility.CheckNotNullAndType ("pairA.Second", pairA.Second, typeof (IBusinessObject));
-    ArgumentUtility.CheckNotNullAndType ("pairB.Second", pairB.Second, typeof (IBusinessObject));
-
-    IBusinessObject businessObjectA = (IBusinessObject) pairA.Second;
-    IBusinessObject businessObjectB = (IBusinessObject) pairB.Second;
-
-    for (int i = 0; i < _sortingOrder.Count; i++)
-    {
-      BocListSortingOrderEntry currentEntry = (BocListSortingOrderEntry) _sortingOrder[i];
-      if (currentEntry.Direction != SortingDirection.None)
-      {
-        BocColumnDefinition column = currentEntry.Column;
-        BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
-        BocCompoundColumnDefinition compoundColumn = column as BocCompoundColumnDefinition;
-        BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
-        
-        if (simpleColumn != null || customColumn != null)
-        {
-          BusinessObjectPropertyPath propertyPath;
-          string formatString = null;
-          if (simpleColumn != null)
-          {
-            propertyPath = simpleColumn.PropertyPath;
-            formatString = simpleColumn.FormatString;
-          }
-          else
-          {
-            propertyPath = customColumn.PropertyPath;
-          }
-          //  single value
-          int compareResult = 0;
-          if (currentEntry.Direction == SortingDirection.Ascending)
-            compareResult = ComparePropertyPathValues (propertyPath, businessObjectA, businessObjectB);
-          else
-            compareResult = ComparePropertyPathValues (propertyPath, businessObjectB, businessObjectA);
-          if (compareResult != 0)
-            return compareResult;
-
-          string stringValueA = null;
-          string stringValueB = null;
-          try
-          {
-            if (simpleColumn != null)
-              stringValueA = simpleColumn.GetStringValue (businessObjectA);
-            else
-              stringValueA = propertyPath.GetString (businessObjectA, "");
-          }
-          catch
-          {
-          }
-          try
-          {
-            if (simpleColumn != null)
-              stringValueB = simpleColumn.GetStringValue (businessObjectB);
-            else
-              stringValueB = propertyPath.GetString (businessObjectB, "");
-          }
-          catch
-          {
-          }
-          if (currentEntry.Direction == SortingDirection.Ascending)
-            compareResult = string.Compare (stringValueA, stringValueB);
-          else
-            compareResult = string.Compare (stringValueB, stringValueA);
-          if (compareResult != 0)
-            return compareResult;
-        }
-        else if (compoundColumn != null)
-        {
-          int compareResult = 0;
-          //  Compund column, list of values.
-          for (int idxBindings = 0; idxBindings < compoundColumn.PropertyPathBindings.Count; idxBindings++)
-          {
-            PropertyPathBinding propertyPathBinding = compoundColumn.PropertyPathBindings[idxBindings];
-            if (currentEntry.Direction == SortingDirection.Ascending)
-              compareResult = ComparePropertyPathValues (propertyPathBinding.PropertyPath, businessObjectA, businessObjectB);
-            else
-              compareResult = ComparePropertyPathValues (propertyPathBinding.PropertyPath, businessObjectB, businessObjectA);
-            if (compareResult != 0)
-              return compareResult;
-          }
-              
-          string stringValueA = null;
-          string stringValueB = null;
-          try
-          {
-            stringValueA = compoundColumn.GetStringValue (businessObjectA);
-          }
-          catch
-          {
-          }
-          try
-          {
-            stringValueB = compoundColumn.GetStringValue (businessObjectB);
-          }
-          catch
-          {
-          }
-          if (currentEntry.Direction == SortingDirection.Ascending)
-            compareResult = string.Compare (stringValueA, stringValueB);
-          else
-            compareResult = string.Compare (stringValueB, stringValueA);
-          if (compareResult != 0)
-            return compareResult;
-        }
-      } 
-    }
-    if (businessObjectA != null && businessObjectB != null)
-    {
-      int indexObjectA = (int) pairA.First;
-      int indexObjectB = (int) pairB.First;
-      return indexObjectA - indexObjectB;
-    }
-    return 0;
-  }
-
-  /// <summary>
-  ///   Compares the values of the <see cref="IBusinessObjectProperty"/> identified by <paramref name="propertyPath"/>
-  ///   for <paramref name="businessObjectA"/> and <paramref name="businessObjectB"/>.
-  /// </summary>
-  /// <remarks>
-  ///   Only compares values supporting <see cref="IComparable"/>. Returns 0 for other value types.
-  /// </remarks>
-  /// <param name="propertyPath">
-  ///   The <see cref="BusinessObjectPropertyPath"/> to be used for accessing the values.
-  /// </param>
-  /// <param name="businessObjectA"> 
-  ///   First <see cref="IBusinessObject"/> to compare. Must not be <see langword="null"/>.
-  /// </param>
-  /// <param name="businessObjectB"> 
-  ///   Second <see cref="IBusinessObject"/> to compare. Must not be <see langword="null"/>.
-  /// </param>
-  private int ComparePropertyPathValues (
-      BusinessObjectPropertyPath propertyPath, 
-      IBusinessObject businessObjectA, 
-      IBusinessObject businessObjectB)
-  {
-    object valueA = null;
-    object valueB = null;
-
-    try
-    {
-      valueA = propertyPath.GetValue (businessObjectA, false, true);
-    }
-    catch 
-    { 
-    }
-
-    try
-    {
-      valueB = propertyPath.GetValue (businessObjectB, false, true);
-    }
-    catch 
-    {
-    }
-
-    if (valueA == null && valueB == null)
-      return 0;
-    if (valueA == null)
-      return -1;
-    if (valueB == null)
-      return 1;
-
-    IList listA = valueA as IList;
-    IList listB = valueB as IList;
-    if (listA != null || listB != null)
-    {
-      if (listA == null || listB == null)
-        return 0;
-      if (listA.Count == 0 && listB.Count == 0)
-        return 0;
-      if (listA.Count == 0)
-        return -1;
-      if (listB.Count == 0)
-        return 1;
-      valueA = listA[0];
-      valueB = listB[0];
-    }
-
-    if (valueA is IComparable && valueB is IComparable)
-      return Comparer.Default.Compare (valueA, valueB);
-
-    return 0;
-    //Better leave the comparisson of non-ICompareables to the calling method. ToString is not always the right choice.
-    //return Comparer.Default.Compare (valueA.ToString(), valueB.ToString());
-  }
-
 
   /// <summary> Dispatches the resources passed in <paramref name="values"/> to the control's properties. </summary>
   /// <param name="values"> An <c>IDictonary</c>: &lt;string key, string value&gt;. </param>
@@ -4720,10 +4473,10 @@ public class BocList:
       }
 
       ResetRows();
-      Pair[] sortedRows = EnsureGotIndexedRowsSorted();
+      BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
       for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
       {
-        int originalRowIndex = (int) sortedRows[idxRows].First;
+        int originalRowIndex = sortedRows[idxRows].Index;
         if (_modifiableRowIndex.Value == originalRowIndex)
         {
           _currentRow = idxRows;
