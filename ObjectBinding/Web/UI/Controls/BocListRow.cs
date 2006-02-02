@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using log4net;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.Utilities;
@@ -15,6 +16,9 @@ public interface IBocListSortingOrderProvider
 
 public class BocListRow: IComparable
 {
+  /// <summary> The log4net logger. </summary>
+  private static readonly ILog s_log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
   private IBocListSortingOrderProvider _provider;
   private int _index;
   private IBusinessObject _businessObject;
@@ -257,8 +261,13 @@ public class BocListRow: IComparable
       {
         value = propertyPath.GetValue (BusinessObject, false, true);
       }
-      catch 
-      { 
+      catch (Exception e)
+      {
+        s_log.Error (string.Format ("Exception thrown while reading string value for property path '{0}' in row {1} of BocList.", propertyPath, _index), e);
+      }
+      catch
+      {
+        s_log.Error (string.Format ("Unmanaged exception thrown while reading string value for property path '{0}' in row {1} of BocList.", propertyPath, _index));
       }
       Values[propertyPath] = value;
     }
@@ -276,8 +285,13 @@ public class BocListRow: IComparable
       {
         value = column.GetStringValue (BusinessObject);
       }
+      catch (Exception e)
+      {
+        s_log.Error (string.Format ("Exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index), e);
+      }
       catch
       {
+        s_log.Error (string.Format ("Unmanaged exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index));
       }
       Values[column] = value;
     }
@@ -295,8 +309,13 @@ public class BocListRow: IComparable
       {
         value = column.PropertyPath.GetString (BusinessObject, string.Empty);
       }
+      catch (Exception e)
+      {
+        s_log.Error (string.Format ("Exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index), e);
+      }
       catch
       {
+        s_log.Error (string.Format ("Unmanaged exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index));
       }
       Values[column] = value;
     }
@@ -314,8 +333,13 @@ public class BocListRow: IComparable
       {
         value = column.GetStringValue (BusinessObject);
       }
+      catch (Exception e)
+      {
+        s_log.Error (string.Format ("Exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index), e);
+      }
       catch
       {
+        s_log.Error (string.Format ("Unmanaged exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index));
       }
       Values[column] = value;
     }
