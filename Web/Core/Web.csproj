@@ -1055,6 +1055,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Globalization\WebMultiLingualResourcesAttribute.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Utilities\ControlHelper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
