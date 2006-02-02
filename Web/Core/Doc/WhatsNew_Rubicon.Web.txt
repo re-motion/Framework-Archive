@@ -1,3 +1,9 @@
+1.4.6
+=====
+- Rubicon.Web.UI.Globalization.WebMultiLingualResourcesAttribute
+  * Spezialisierung des Rubicon.Globalization.MultiLingualResourcesAttribute, welche auf die Besonderheiten von
+    .net 2.0 eingeht. Seihe Dokumentation von WebMultiLingualResourcesAttribute für (Migrations-) Details.
+  
 1.4.1
 =====
 - Rubicon.Web.UI.SmartPage
