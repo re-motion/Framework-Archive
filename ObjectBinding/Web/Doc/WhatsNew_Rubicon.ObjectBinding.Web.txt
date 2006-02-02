@@ -1,3 +1,9 @@
+1.4.5
+=====
+- Boclist
+  * Sortierung mit Caching ausgestattet. Es wird jeder Wert nur noch 1x gelesen während der Sortierung.
+  * Sortierung: Exceptions beim Lesen der Werte werden nun gelogged.
+
 1.4.3
 ======
 - Namespace geändert:
