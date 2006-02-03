@@ -368,9 +368,9 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   ///   Gets or sets a value that determines whether to display a confirmation dialog before leaving the page. 
   /// </summary>
   /// <value> 
-  ///   <see cref="ShowAbortConfirmation.Always"/> to always display a confirmation dialog before leaving the page. 
-  ///   <see cref="ShowAbortConfirmation.OnlyIfDirty"/> to display a confirmation dialog only when the page is dirty. 
-  ///   <see cref="ShowAbortConfirmation.Never"/> to disable the confirmation dialog. 
+  ///   <see cref="F:ShowAbortConfirmation.Always"/> to always display a confirmation dialog before leaving the page. 
+  ///   <see cref="F:ShowAbortConfirmation.OnlyIfDirty"/> to display a confirmation dialog only when the page is dirty. 
+  ///   <see cref="F:ShowAbortConfirmation.Never"/> to disable the confirmation dialog. 
   ///   Defaults to <see cref="F:ShowAbortConfirmation.OnlyIfDirty"/>.
   /// </value>
   [Description("Determines whether to display a confirmation dialog before leaving the page.")]
