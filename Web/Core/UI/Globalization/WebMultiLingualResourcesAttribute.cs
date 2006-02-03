@@ -10,17 +10,17 @@ namespace Rubicon.Web.UI.Globalization
 
 /// <summary> Specifies the location of the resources used by a <see cref="Page"/> or <see cref="UserControl"/>. </summary>
 /// <remarks>
-///   The <see cref="WebMultiLingualResourcesAttribute"/> enhances the rebucion globalization system with support
-///   for the new compilation model introduced with ASP.NET 2.0.
+///   The <see cref="WebMultiLingualResourcesAttribute"/> enhances the <b>rubicon</b> globalization system with 
+///   support for the new compilation model introduced with ASP.NET 2.0.
 /// </remarks>
 /// <example>
 ///   <b>Specifying a resource for ASP.NET 1.1 Web Projects</b>
 ///   <para>
 ///     The following code snippet assumes a resource file named <c>MyForm.resx</c> is located within a folder named
 ///     <c>Globalization</c>, below the project root. The assembly name is <c>MyCompany.MyProject.Client.Web</c>.
-///     The resoruce file is set to be an embedded resource. 
+///     The resource file is set to be an embedded resource. 
 ///   </para><para>
-///     The <see cref="WebMultiLingualResourcesAttribute"/> is passed the resource's <b>Base Name</b>. It conists
+///     The <see cref="WebMultiLingualResourcesAttribute"/> is passed the resource's <b>Base Name</b>. It consists
 ///     of the assembly name, followed by a dot and the folder hierarchy below the project root, followed by a dot 
 ///     and the name of the neutral culture's resource file minus the extension.
 ///   </para>
@@ -64,11 +64,22 @@ namespace Rubicon.Web.UI.Globalization
 ///     assembly will be generated for the global resoruces. The <see cref="WebMultiLingualResourcesAttribute"/> 
 ///     uses the <b>System.Web.Compilation.BuildManager.GetType</b> method to resolve the resource.
 ///   </note>
+///     <b>Base Name</b> as <see cref="Type"/> version:
 ///   <code lang="C#">
 /// using System.Web.UI;
 /// using Rubicon.Web.UI.Globalization;
 /// 
 /// [WebMultiLingualResources (typeof (Resources.MyForm))]
+/// public class MyForm : Page
+/// {
+/// }
+///   </code>
+///     <b>Base Name</b> as <see cref="String"/> version:
+///   <code lang="C#">
+/// using System.Web.UI;
+/// using Rubicon.Web.UI.Globalization;
+/// 
+/// [WebMultiLingualResources ("Resources.MyForm")]
 /// public class MyForm : Page
 /// {
 /// }
@@ -87,8 +98,8 @@ namespace Rubicon.Web.UI.Globalization
 ///     <item>
 ///       Search and Replace any occurance of <see cref="MultiLingualResourcesAttribute"/> with
 ///       <see cref="WebMultiLingualResourcesAttribute"/>. (Necessary for projects implemented before the 
-///       <see cref="WebMultiLingualResourcesAttribute"/> has become available with verison 1.4 of the rubicon Commons
-///       library. 
+///       <see cref="WebMultiLingualResourcesAttribute"/> has become available with verison 1.4 of the
+///       <b>rubicon Commons</b> library. 
 ///     </item>
 ///     <item> 
 ///       Search and Replace any occurance of 
