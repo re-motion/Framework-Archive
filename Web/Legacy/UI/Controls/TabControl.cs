@@ -122,7 +122,7 @@ public class TabMenu: Control, ITabItem
   }
 }
 
-[MultiLingualResources ("Rubicon.Web.UI.Globalization.TabControl")] 
+[MultiLingualResources ("Rubicon.Web.Legacy.UI.Globalization.TabControl")] 
 [ParseChildren (true, "Tabs")]
 public class TabControl: Control, IPostBackEventHandler, IResourceDispatchTarget
 {
