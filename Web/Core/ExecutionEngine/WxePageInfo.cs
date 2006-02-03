@@ -410,7 +410,17 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// <value> <see langword="true"/> if the post back collection contains the <b>__EVENTTARGET</b> field. </value>
   protected bool UsesEventTarget
   {
-    get { return ! StringUtility.IsNullOrEmpty (_page.GetPostBackCollection()[ControlHelper.PostEventSourceID]); }
+    get 
+    {
+      NameValueCollection postBackCollection = _page.GetPostBackCollection();
+      if (postBackCollection == null)
+      {
+        if (_page.IsPostBack)
+          throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
+        return false;
+      }
+      return ! StringUtility.IsNullOrEmpty (postBackCollection[ControlHelper.PostEventSourceID]); 
+    }
   }
 
 
@@ -530,8 +540,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
     else if (UsesEventTarget)
     {
-      string eventTarget = _page.GetPostBackCollection()[ControlHelper.PostEventSourceID];
-      string eventArgument = _page.GetPostBackCollection()[ControlHelper.PostEventArgumentID];
+      NameValueCollection postBackCollection = _page.GetPostBackCollection();
+      if (postBackCollection == null)
+          throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
+      
+      string eventTarget = postBackCollection[ControlHelper.PostEventSourceID];
+      string eventArgument = postBackCollection[ControlHelper.PostEventArgumentID];
       return FormatDoPostBackClientScript (
           functionToken, _page.CurrentStep.PageToken, sender.ClientID, eventTarget, eventArgument);
     }
