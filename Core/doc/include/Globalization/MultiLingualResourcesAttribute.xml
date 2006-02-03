@@ -18,9 +18,6 @@
     <param name="definingType">
       The base type where the <c>MultiLingualResourcesAttribute</c> was defined.
     </param>
-    <param name="baseNames">
-      The root names of the resource containers matching the value of <c>resourceType</c>.
-    </param>
   </GetResourceManager>
   <GetResourceManagers>
     <remarks>
@@ -29,11 +26,11 @@
     <param name="assembly">
       The assembly containing the resources.
     </param>
-    <param name="baseNames">
-      The root names of the resource containers matching the value of <c>resourceType</c>.
+    <param name="resourceAttributes">
+      The <see cref="MultiLingualResourcesAttributes"/> specifying the the resource managers.
     </param>
     <returns>
-      A <c>ResourceManager</c> Array containing the type's resource containers.
+      A <b>ResourceManager</b> Array containing the type's resource containers.
     </returns>
   </GetResourceManagers>
   <GetResourceNameAndType>
@@ -43,10 +40,10 @@
       Required for hierarchical search.
     </param>
     <param name="definingType">
-      The base type where the <c>MultiLingualResourcesAttribute</c> was defined.
+      The base type where the <b>MultiLingualResourcesAttribute</b> was defined.
     </param>
-    <param name="baseNames">
-      The root names of the resource containers matching the value of <c>resourceType</c>.
+    <param name="resourceAttributes">
+      The <b>MultiLingualResourcesAttribute</b> instances associated with <paramref name="concreteType"/>.
     </param>
   </GetResourceNameAndType>
 </Class>
