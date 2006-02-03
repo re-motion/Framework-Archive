@@ -1,43 +1,102 @@
 using System;
 using System.Reflection;
 using System.Web.Compilation;
+using System.Web.UI;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Globalization
 {
 
+/// <summary> Specifies the location of the resources used by a <see cref="Page"/> or <see cref="UserControl"/>. </summary>
 /// <remarks>
-///   <para>
-///     net-1.1 rubicon globalization system: 
-///     <list type="bullet">
-///       <item> The resource files are located in the folder <c>Globalization</c>. </item>
-///       <item> BaseName: Page-Namespace.Globalization.NameOfTheResxFileWithoutExtension </item>
-///       <item> The <see cref="MultilingualResourcesAttribute"/> is used in web projects. </item>
-///     </list>
-///   </para>
-///   <para>
-///     net-2.0 rubicon globalization system: 
-///     <list type="bullet">
-///       <item> The resource files are located in the folder <c>App_GlobalResources</c>.</item>
-///       <item> BaseName: Resources.NameOfTheResxFileWithoutExtension </item>
-///       <item> The <see cref="WebMultilingualResourcesAttribute"/> is used in web projects. </item>
-///     </list>
-///   </para>
-///   <para>
-///     When a project is upgraded, the Wizzard adds the prefix <c>Globalization.</c> to the name of the resource 
-///     files and moves them into the <c>App_GlobalResources</c> folder. This prefix must be removed. The easiest 
-///     way to accomlish this, is by moving the resource files into the project's root folder prior to the upgrade.
-///   </para>
-///   <para>
-///     In addition, the namespace must be replaced with the namespace <c>Resources</c> when specified with the 
-///     <see cref="WebMultilingualResourcesAttribute"/>. This can be accomplished with a simple Search & Replace.
-///   </para>
-///   <para>
-///     For new projects, it is recommended to specify the <see cref="Type"/> of the resource, instead of its 
-///     base name (i.e. <c>typeof (Resources.NameOfTheResxFileWithoutExtension)</c>).
-///   </para>
+///   The <see cref="WebMultiLingualResourcesAttribute"/> enhances the rebucion globalization system with support
+///   for the new compilation model introduced with ASP.NET 2.0.
 /// </remarks>
+/// <example>
+///   <b>Specifying a resource for ASP.NET 1.1 Web Projects</b>
+///   <para>
+///     The following code snippet assumes a resource file named <c>MyForm.resx</c> is located within a folder named
+///     <c>Globalization</c>, below the project root. The assembly name is <c>MyCompany.MyProject.Client.Web</c>.
+///     The resoruce file is set to be an embedded resource. 
+///   </para><para>
+///     The <see cref="WebMultiLingualResourcesAttribute"/> is passed the resource's <b>Base Name</b>. It conists
+///     of the assembly name, followed by a dot and the folder hierarchy below the project root, followed by a dot 
+///     and the name of the neutral culture's resource file minus the extension.
+///   </para>
+///   <note>
+///     The naming convention for the <b>Base Name</b> is a result of following the rules described in this example. 
+///     It is possible to create resources with <b>Base Names</b> of an entirely different structure. As long as the
+///     resource is a part of the web page's assembly, the <see cref="WebMultiLingualResourcesAttribute"/> will
+///     be able to resolve the resource's <b>Base Names</b>.
+///   </note>
+///   <code lang="C#">
+/// using System.Web.UI;
+/// using Rubicon.Web.UI.Globalization;
+/// 
+/// namespace MyCompany.MyProject.Client.Web.UI
+/// {
+///   [WebMultiLingualResources ("MyCompany.MyProject.Client.Web.Globalization.MyForm")]
+///   public class MyForm : Page
+///   {
+///   }
+/// }
+///   </code>
+/// </example>
+/// 
+/// <example>
+///   <b>Specifying a resource for ASP.NET 2.0 Web Sites</b>
+///   <para>
+///     The following code snippet assumes a resource file named <c>MyForm.resx</c> is located within the special
+///     folder <c>App_GlobalResources</c> of an ASP.NET Web Site.
+///   </para><para>
+///     The <see cref="WebMultiLingualResourcesAttribute"/> is passed the <see cref="Type"/> of the resource. 
+///     In ASP.NET 2.0 applications, a type is generated for each global resource, and named after the resource's 
+///     <b>Base Name</b>. Passing the type name ensures compile time verification of the resource's existence.
+///     It is also possible to specify the <b>Base Name</b> as a string, but this is only recommended for upgrading 
+///     an existing ASP.NET 1.1 project, since it simplifies the Search and Replace process.
+///   </para><para>
+///     In ASP.NET 2.0, the <b>Base Name</b> of global resources consists of the prefix <c>Resources</c>, followed by 
+///     a dot, followed by the name of the neutral culture's resource file minus the extension.
+///   </para>
+///   <note>
+///     The naming convention for the <b>Base Name</b> is a result of the ASP.NET 2.0 compilation model. A separate
+///     assembly will be generated for the global resoruces. The <see cref="WebMultiLingualResourcesAttribute"/> 
+///     uses the <b>System.Web.Compilation.BuildManager.GetType</b> method to resolve the resource.
+///   </note>
+///   <code lang="C#">
+/// using System.Web.UI;
+/// using Rubicon.Web.UI.Globalization;
+/// 
+/// [WebMultiLingualResources (typeof (Resources.MyForm))]
+/// public class MyForm : Page
+/// {
+/// }
+///   </code>
+/// </example>
+/// 
+/// <example>
+///   <b>Upgrading an ASP.NET 1.1 Web Project</b>
+///   <list type="number">
+///     <item> 
+///       Move the resource files form the folder <c>Globalization</c> into the project's root folder. 
+///     </item>
+///     <item> 
+///       Upgrade the project. 
+///     </item>
+///     <item>
+///       Search and Replace any occurance of <see cref="MultiLingualResourcesAttribute"/> with
+///       <see cref="WebMultiLingualResourcesAttribute"/>. (Necessary for projects implemented before the 
+///       <see cref="WebMultiLingualResourcesAttribute"/> has become available with verison 1.4 of the rubicon Commons
+///       library. 
+///     </item>
+///     <item> 
+///       Search and Replace any occurance of 
+///       <c>[WebMultiLingualResourcesAttribute ("MyCompany.MyProject.Client.Web.Globalization.</c> 
+///       with <c>[WebMultiLingualResources ("Resources.</c>. 
+///     </item>
+///   </list>
+/// </example>
 public class WebMultiLingualResourcesAttribute : MultiLingualResourcesAttribute
 {
 
