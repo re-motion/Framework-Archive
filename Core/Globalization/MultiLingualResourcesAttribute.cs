@@ -101,7 +101,7 @@ public class MultiLingualResourcesAttribute: Attribute
   ///   in the class declaration of the type.
   /// </summary>
   /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/Common/*' />
-  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType" or @name="baseNames"]' />
+  /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManager/param[@name="objectType" or @name="includeHierarchy" or @name="definingType"]' />
   private static ResourceManagerSet GetResourceManager (
       Type objectType,
       bool includeHierarchy,
@@ -167,8 +167,8 @@ public class MultiLingualResourcesAttribute: Attribute
     return resourceManagerSet;
   }
   /// <summary>
-  ///   Returns an <c>ResourceManager</c> array for the resource containers
-  ///   specified by baseName.
+  ///   Returns an <b>ResourceManager</b> array for the resource containers specified through the 
+  ///   <paramref name="resourceAttributes"/>.
   /// </summary>
   /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceManagers/*' />
   private static ResourceManager[] GetResourceManagers (
@@ -328,8 +328,8 @@ public class MultiLingualResourcesAttribute: Attribute
   }
 
   /// <summary>
-  /// Finds the class where the <c>MultiLingualResourcesAttribute</c> was defined and returns
-  /// its type and the the names of the resource containers.
+  /// Finds the class where the <b>MultiLingualResourcesAttribute</b> was defined and returns
+  /// its type and all the <b>MultiLingualResourcesAttribute</b> instances.
   /// </summary>
   /// <include file='doc\include\Globalization\MultiLingualResourcesAttribute.xml' path='/Class/GetResourceNameAndType/*' />
   private static void GetResourceNameAndType (
