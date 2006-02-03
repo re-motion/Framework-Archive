@@ -316,7 +316,7 @@ public class EntryTitle: Control
 }
 
 [ParseChildren (false)]
-[MultiLingualResources ("Rubicon.Web.UI.Globalization.EntryFormGrid")] 
+[MultiLingualResources ("Rubicon.Web.Legacy.UI.Globalization.EntryFormGrid")] 
 public class EntryField: Control
 {
 	private string _label = String.Empty;
