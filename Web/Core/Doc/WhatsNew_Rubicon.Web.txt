@@ -1,3 +1,7 @@
+1.4.7
+=====
+- Rubicon.Web.ExecutionEngine.WxeFunction
+  * GetParameterDeclarations(): Tippfehler gefixed: GetParam_a_terDeclarations
 1.4.6
 =====
 - Rubicon.Web.UI.Globalization.WebMultiLingualResourcesAttribute
