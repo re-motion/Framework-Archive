@@ -10,6 +10,11 @@ namespace Rubicon.Utilities
 /// </summary>
 public sealed class ArrayUtility
 {
+  public static bool Contains (System.Array array, object value)
+  {
+    return Array.IndexOf (array, value) >= 0;
+  }
+
   public static bool IsNullOrEmpty (System.Array array)
   {
     return (array == null) || (array.Length == 0);
