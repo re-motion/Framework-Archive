@@ -1,3 +1,9 @@
+1.4.8
+=====
+
+- Rubicon.Utilities.ArrayUtility: Stellt neue Methode Contains zur Verfügung.
+
+
 1.3.21
 ======
 - Rubicon.ObjectBinding.IBusinessObjectInstanceEnumerationProperty
