@@ -521,7 +521,7 @@
       <nant buildfile="${project.dir}/${project.name}.build" target="build" />
 
       <if unless="${build.createdoc}" test="${property::exists('dummy')}">
-        <style style="file:///c:${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />
+        <advancedStyle style="file:///c:${global.dir}/xslt/xmldoc.xslt" in="${project.doc}" out="${project.builddir}/${project.output}.xml" />
       </if>
     </if>
   </target>
