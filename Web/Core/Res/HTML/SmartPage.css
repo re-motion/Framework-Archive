@@ -1,10 +1,10 @@
-#SmartPageStatusIsSubmittingMessage,
+#SmartPageStatusIsSubmittingMessage
 {
   background-color: White;
   z-index: 100;
 }
 
-#SmartPageStatusIsSubmittingMessage td,
+#SmartPageStatusIsSubmittingMessage td
 {
   background-color: White;
   border: solid 3pt Gray;
