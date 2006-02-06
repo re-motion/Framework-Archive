@@ -21,15 +21,22 @@ namespace Rubicon.Web.ExecutionEngine
 [Serializable]
 public abstract class WxeFunction: WxeStepList
 {
+  //  TODO: Remove in March
+  [Obsolete ("Use GetParameterDeclarations instead. (Typo in the method name.)")]
   public static WxeParameterDeclaration[] GetParamaterDeclarations (Type type)
+  {
+    return GetParameterDeclarations (type);
+  }
+  
+  public static WxeParameterDeclaration[] GetParameterDeclarations (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
     if (! typeof (WxeFunction).IsAssignableFrom (type)) throw new ArgumentException ("Type " + type.FullName + " is not derived from WxeFunction.", "type");
 
-    return WxeFunction.GetParamaterDeclarationsUnchecked (type);
+    return WxeFunction.GetParameterDeclarationsUnchecked (type);
   }
 
-  private static WxeParameterDeclaration[] GetParamaterDeclarationsUnchecked (Type type)
+  private static WxeParameterDeclaration[] GetParameterDeclarationsUnchecked (Type type)
   {
     WxeParameterDeclaration[] declarations = (WxeParameterDeclaration[]) s_parameterDeclarations[type];
     if (declarations == null)
@@ -350,7 +357,7 @@ public abstract class WxeFunction: WxeStepList
 
   public virtual WxeParameterDeclaration[] ParameterDeclarations
   {
-    get { return WxeFunction.GetParamaterDeclarations (this.GetType()); }
+    get { return WxeFunction.GetParameterDeclarations (this.GetType()); }
   }
 
   public override string ToString()
