@@ -27,7 +27,7 @@
       The assembly containing the resources.
     </param>
     <param name="resourceAttributes">
-      The <see cref="MultiLingualResourcesAttributes"/> specifying the the resource managers.
+      The <see cref="MultiLingualResourcesAttribute"/> instances specifying the the resource managers.
     </param>
     <returns>
       A <b>ResourceManager</b> Array containing the type's resource containers.
