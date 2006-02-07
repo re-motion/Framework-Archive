@@ -252,6 +252,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "Doc\include\UI\ISmartPage.xml"
                     BuildAction = "Content"
                 />
