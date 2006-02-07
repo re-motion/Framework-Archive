@@ -14,6 +14,8 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.Web.ExecutionEngine.UrlMapping
 {
 
+/// <summary> Contains the configuration data for the URL mapping system of the execution engine. </summary>
+/// <include file='doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml' path='UrlMappingConfiguration/Class/*' />
 [XmlType (UrlMappingConfiguration.ElementName, Namespace = UrlMappingConfiguration.SchemaUri)]
 public class UrlMappingConfiguration: ConfigurationBase
 {
