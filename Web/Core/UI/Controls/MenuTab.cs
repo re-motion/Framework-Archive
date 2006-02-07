@@ -12,8 +12,9 @@ namespace Rubicon.Web.UI.Controls
 
 public abstract class MenuTab: WebTab
 {
-  /// <summary> The command rendered for this menu item. </summary>
   private SingleControlItemCollection _command = null;
+  /// <summary> The command being rendered by this menu item. </summary>
+  private NavigationCommand _renderingCommand = null;
 
   protected MenuTab (string itemID, string text, IconInfo icon)
     : base (itemID, text, icon)
@@ -119,10 +120,11 @@ public abstract class MenuTab: WebTab
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("style", style);
 
-    if (isEnabled && Command != null && ! IsDisabled)
+    _renderingCommand = GetCommandToRender();
+    if (isEnabled && _renderingCommand != null && ! IsDisabled)
     {
       NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
-      Command.RenderBegin (
+      _renderingCommand.RenderBegin (
           writer, GetPostBackClientEvent(), new string[0], string.Empty, additionalUrlParameters, style);
     }
     else
@@ -135,10 +137,16 @@ public abstract class MenuTab: WebTab
   public override void RenderEndTagForCommand (HtmlTextWriter writer)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
-    if (Command != null)
-      Command.RenderEnd (writer);
+    if (_renderingCommand != null)
+      _renderingCommand.RenderEnd (writer);
     else
       writer.RenderEndTag();
+    _renderingCommand = null;
+  }
+
+  protected virtual NavigationCommand GetCommandToRender()
+  {
+    return Command;
   }
 
   public override void OnClick()
@@ -209,6 +217,25 @@ public class MainMenuTab: MenuTab
   {
     base.OnSelectionChanged ();
     TabbedMenu.RefreshSubMenuTabStrip ();
+  }
+
+  protected override NavigationCommand GetCommandToRender()
+  {
+    if (Command == null)
+      return null;
+
+    if (Command.Type == CommandType.None)
+    {
+      foreach (SubMenuTab subMenuTab in _subMenuTabs)
+      {
+        bool isTabActive = subMenuTab.IsVisible && ! subMenuTab.IsDisabled;
+        bool isCommandActive = subMenuTab.Command != null && subMenuTab.Command.Type != CommandType.None;
+        if (isTabActive && isCommandActive)
+          return subMenuTab.Command;
+      }
+    }
+
+    return Command;
   }
 }
 
