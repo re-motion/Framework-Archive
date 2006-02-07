@@ -8,6 +8,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 /// <summary>
 /// Creates a scope for a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
 /// </summary>
+/// <remarks>Derived classes can provide specific implementations of <see cref="ClientTransaction"/>s by overriding <see cref="CreateRootTransaction"/>.</remarks>
 [Serializable]
 public class WxeTransaction : WxeTransactionBase
 {
@@ -69,6 +70,7 @@ public class WxeTransaction : WxeTransactionBase
   /// Creates a new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> object.
   /// </summary>
   /// <returns>A new <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.</returns>
+  /// <remarks>Derived class should override this method to provide specific implemenations of <see cref="ClientTransaction"/>s.</remarks>
   protected override ITransaction CreateRootTransaction ()
   {
     return new ClientTransaction ();
