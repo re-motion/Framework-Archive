@@ -97,7 +97,7 @@ public class WxeContext
         if (fallbackOnCurrentUrl)
           path = httpContext.Request.Url.AbsolutePath;
         else
-          throw new WxeException (string.Format ("The WXE Function '{0}' has no mapping and no default WxeHandler URL has been defined in the configuration.", functionType.FullName));
+          throw new WxeException (string.Format ("No URL mapping has been defined for WXE Function '{0}', nor has default WxeHandler URL been specified in the application configuration (web.config).", functionType.FullName));
       }
       else
       {
