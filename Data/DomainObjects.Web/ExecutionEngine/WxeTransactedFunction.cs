@@ -19,7 +19,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 /// To change this behavior for a function you can overwrite this property.</para>
 /// </remarks>
 [Serializable]
-public class WxeTransactedFunction: WxeTransactedFunctionBase
+public class WxeTransactedFunction : WxeTransactedFunctionBase
 {
   private TransactionMode _transactionMode;
 
@@ -44,16 +44,27 @@ public class WxeTransactedFunction: WxeTransactedFunctionBase
   }
 
   /// <summary>
-  /// Creates a new <see cref="WxeTransaction"/> depending on the value of <see cref="TransactionMode"/>.
+  /// Creates a new <see cref="WxeTransaction"/> depending on the value of <see cref="TransactionMode"/>. 
+  /// Derived classes should not override this method. Use the overloaded version instead.
   /// </summary>
   /// <returns>A new WxeTransaction, if <see cref="TransactionMode"/> has a value of <b>CreateRoot</b>; otherwise <see langword="null"/>.</returns>
   protected override WxeTransactionBase CreateWxeTransaction ()
   {
-    // TODO: Extract factory method for creation of project specific WxeTransacions!
     if (_transactionMode == TransactionMode.CreateRoot)
-      return new WxeTransaction (AutoCommit, true);
+      return CreateWxeTransaction (AutoCommit, true);
 
     return null;
+  }
+
+  /// <summary>
+  /// Creates a new <see cref="WxeTransaction"/>. Derived classes should override this method to use their own <see cref="WxeTransaction"/>.
+  /// </summary>
+  /// <param name="autoCommit"><b>autoCommit</b> is forwarded to <see cref="WxeTransaction"/>'s constructor. For further information see <see cref="WxeTransaction"/>.</param>
+  /// <param name="forceRoot"><b>forceRoot</b> is forwarded to <see cref="WxeTransaction"/>'s constructor. For further information see <see cref="WxeTransaction"/>.</param>
+  /// <returns>A new WxeTransaction.</returns>
+  protected virtual WxeTransaction CreateWxeTransaction (bool autoCommit, bool forceRoot)
+  {
+    return new WxeTransaction (autoCommit, forceRoot);
   }
 
   /// <summary>
