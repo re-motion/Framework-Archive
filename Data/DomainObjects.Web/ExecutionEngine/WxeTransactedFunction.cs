@@ -32,6 +32,14 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   }
 
   /// <summary>
+  /// Gets a reference to the current <see cref="ClientTransaction"/>.
+  /// </summary>
+  public new ClientTransaction Transaction
+  {
+    get { return (ClientTransaction) base.Transaction; }
+  }
+
+  /// <summary>
   /// Creates a new <b>WxeTransactedFunction</b>
   /// </summary>
   /// <param name="transactionMode">A value indicating the behavior of the WxeTransactedFunction.</param>

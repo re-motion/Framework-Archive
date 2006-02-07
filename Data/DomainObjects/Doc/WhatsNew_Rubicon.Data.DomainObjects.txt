@@ -1,9 +1,17 @@
+1.4.10.0
+========
+
+- Rubicon.Data.DomainObjects.Web.ExecutionEngine.WxeTransactedFunction:
+  Neue public property "Transaction", die eine Referenz auf die aktuelle ClientTransaction zurückgibt.
+
+
 1.4.9.0
 =======
 
 - Rubicon.Data.DomainObjects.Web.ExecutionEngine.WxeTransactedFunction:
   Neue Factory-Method CreateWxeTransaction (bool, bool) für das Einhängen von 
   eigenen WxeTransactions und damit von eigenen projekt-spezifischen ClientTransactions.
+
 
 1.3.28.0
 ========
