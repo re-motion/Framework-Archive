@@ -171,6 +171,8 @@ public class TestTabbedForm : TestWxeBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
+    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
+    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
     this.Unload += new System.EventHandler(this.Page_Unload);
     this.Load += new System.EventHandler(this.Page_Load);
 

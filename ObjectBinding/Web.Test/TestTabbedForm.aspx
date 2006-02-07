@@ -1,7 +1,7 @@
-<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 <%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head><title>Test Tabbed Form</title>
@@ -43,7 +43,7 @@
 </SubMenuTabs>
 
 <persistedcommand>
-<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
+<rwc:NavigationCommand Type="None"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:MainMenuTab>
 <rwc:MainMenuTab Text="Tab 2" ItemID="Tab2">
@@ -66,7 +66,7 @@
 </SubMenuTabs>
 
 <persistedcommand>
-<rwc:NavigationCommand Type="Event"></rwc:NavigationCommand>
+<rwc:NavigationCommand Type="None"></rwc:NavigationCommand>
 </PersistedCommand>
 </rwc:MainMenuTab>
 <rwc:MainMenuTab Text="Tab 3" ItemID="Tab3" IsVisible="False">
@@ -97,6 +97,6 @@
  <rwc:tabview id="second" title="Second">
  </rwc:tabview>
 </Views>
-</rwc:tabbedmultiview></FORM>
+</rwc:tabbedmultiview></form>
   </body>
 </html>
