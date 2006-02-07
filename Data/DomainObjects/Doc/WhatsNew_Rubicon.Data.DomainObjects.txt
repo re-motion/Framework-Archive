@@ -1,5 +1,12 @@
-1.3.28.0
+1.4.9.0
 =======
+
+- Rubicon.Data.DomainObjects.Web.ExecutionEngine.WxeTransactedFunction:
+  Neue Factory-Method CreateWxeTransaction (bool, bool) für das Einhängen von 
+  eigenen WxeTransactions und damit von eigenen projekt-spezifischen ClientTransactions.
+
+1.3.28.0
+========
 
 - Rubicon.Data.DomainObjects.DomainObjectCollection:
   * Contains (DomainObject) ist jetzt obsolete. Analoge Funktinalität bietet ContainsObject (DomainObject). In den häufigsten Anwendungsfällen
