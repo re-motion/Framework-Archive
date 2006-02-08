@@ -382,18 +382,20 @@ public class SmartPageInfo
         string[] trackedIDs = control.GetTrackedClientIDs ();
         for (int i = 0; i < trackedIDs.Length; i++)
         {
-          script.Append (trackedControlsArray).Append (".push ('");
+          // IE 5.0.1 does not understand push
+          script.Append (trackedControlsArray).Append ("[").Append (trackedControlsArray).Append (".length] = '");
           script.Append (trackedIDs[i]);
-          script.Append ("'); \r\n");
+          script.Append ("'; \r\n");
         }
       }
     }
 
     foreach (string trackedID in _trackedControlsByID)
     {
-      script.Append (trackedControlsArray).Append (".push ('");
+      // IE 5.0.1 does not understand push
+      script.Append (trackedControlsArray).Append ("[").Append (trackedControlsArray).Append (".length] = '");
       script.Append (trackedID);
-      script.Append ("'); \r\n");
+      script.Append ("'; \r\n");
     }
   }
 
@@ -411,9 +413,10 @@ public class SmartPageInfo
 
       for (int i = 0; i < eventHandlers.Keys.Count; i++)
       {
-        script.Append (eventHandlersByEventArray).Append (".push ('");
+        // IE 5.0.1 does not understand push
+        script.Append (eventHandlersByEventArray).Append ("[").Append (eventHandlersByEventArray).Append (".length] = '");
         script.Append (eventHandlers.Get (i));
-        script.Append ("'); \r\n");
+        script.Append ("'; \r\n");
       }
 
       script.Append (eventHandlersArray).Append ("['");
