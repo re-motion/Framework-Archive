@@ -231,7 +231,9 @@ public class TabbedMenu: WebControl, IControl
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassStatusCell);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin status cell
     
-    if (! StringUtility.IsNullOrEmpty (_statusText))
+    if (StringUtility.IsNullOrEmpty (_statusText))
+      writer.Write ("&nbsp;");
+    else
       writer.Write (_statusText);
     
     writer.RenderEndTag(); // End status cell
