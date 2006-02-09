@@ -4,6 +4,9 @@
 - Rubicon.Data.DomainObjects.Web.ExecutionEngine.WxeTransactedFunction:
   Neue public property "Transaction", die eine Referenz auf die aktuelle ClientTransaction zurückgibt.
 
+- BREAKING CHANGE: Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode:
+  Umbenannt in WxeTransactionMode, damit es keinen Konflikt mehr mit Property TransactionMode auf WxeTransactedFunction gibt.
+
 
 1.4.9.0
 =======
