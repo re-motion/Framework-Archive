@@ -3283,11 +3283,15 @@ public class BocList:
     if (_allPropertyColumns != null)
       return _allPropertyColumns;
 
-    if (Property == null)
-      return new BocColumnDefinition[0];
 
-    IBusinessObjectProperty[] properties = 
-        ((IBusinessObjectReferenceProperty)Property).ReferenceClass.GetPropertyDefinitions();
+    IBusinessObjectProperty[] properties;
+    if (DataSource == null)
+      properties = new IBusinessObjectProperty[0];
+    if (Property == null)
+      properties = DataSource.BusinessObjectClass.GetPropertyDefinitions();
+    else
+      properties = ((IBusinessObjectReferenceProperty)Property).ReferenceClass.GetPropertyDefinitions();
+    
     _allPropertyColumns = new BocColumnDefinition[properties.Length];
     for (int i = 0; i < properties.Length; i++)
     {
