@@ -122,17 +122,17 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "ExecutionEngine\TransactionMode.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ExecutionEngine\WxeTransactedFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "ExecutionEngine\WxeTransaction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ExecutionEngine\WxeTransactionMode.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
