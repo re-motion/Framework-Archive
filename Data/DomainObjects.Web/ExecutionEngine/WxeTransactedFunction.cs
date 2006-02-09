@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 /// A <see cref="WxeFunction"/> that will always have a <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/>.
 /// </summary>
 /// <remarks>
-/// <para>A <b>WxeTransactedFunction</b> always creates a new <see cref="ClientTransaction"/>, unless <see cref="TransactionMode"/>.<b>None</b> 
+/// <para>A <b>WxeTransactedFunction</b> always creates a new <see cref="ClientTransaction"/>, unless <see cref="WxeTransactionMode"/>.<b>None</b> 
 /// is passed to the constructor.<br />
 /// Therefore you should not pass <see cref="DomainObject"/>s to a <b>WxeTransactedFunction</b> as parameters since it is not allowed to use a 
 /// <see cref="DomainObject"/> from one <see cref="ClientTransaction"/> in another <see cref="ClientTransaction"/>.<br />
@@ -21,13 +21,13 @@ namespace Rubicon.Data.DomainObjects.Web.ExecutionEngine
 [Serializable]
 public class WxeTransactedFunction : WxeTransactedFunctionBase
 {
-  private TransactionMode _transactionMode;
+  private WxeTransactionMode _transactionMode;
 
   /// <summary>
   /// Creates a new <b>WxeTransactedFunction</b> that has a new <see cref="ClientTransaction"/>.
   /// </summary>
   /// <param name="actualParameters">Parameters that are passed to the <see cref="WxeFunction"/>.</param>
-  public WxeTransactedFunction (params object[] actualParameters) : this (TransactionMode.CreateRoot, actualParameters)
+  public WxeTransactedFunction (params object[] actualParameters) : this (WxeTransactionMode.CreateRoot, actualParameters)
   {
   }
 
@@ -36,7 +36,7 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   /// </summary>
   /// <param name="transactionMode">A value indicating the behavior of the WxeTransactedFunction.</param>
   /// <param name="actualParameters">Parameters that are passed to the <see cref="WxeFunction"/>.</param>
-  public WxeTransactedFunction (TransactionMode transactionMode, params object[] actualParameters) : base (actualParameters)
+  public WxeTransactedFunction (WxeTransactionMode transactionMode, params object[] actualParameters) : base (actualParameters)
   {
     ArgumentUtility.CheckValidEnumValue (transactionMode, "transactionMode");
 
@@ -52,11 +52,11 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   }
 
   /// <summary>
-  /// Gets or sets the <see cref="TransactionMode"/> of the <see cref="WxeTransactedFunction"/>.
+  /// Gets or sets the <see cref="WxeTransactionMode"/> of the <see cref="WxeTransactedFunction"/>.
   /// </summary>
   /// <remarks>The property must not be set after execution of the function has started.</remarks>
   /// <exception cref="System.InvalidOperationException">An attempt to set the property is performed after execution of the function has started.</exception>
-  public TransactionMode TransactionMode
+  public WxeTransactionMode TransactionMode
   {
     get 
     { 
@@ -74,13 +74,13 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   }
 
   /// <summary>
-  /// Creates a new <see cref="WxeTransaction"/> depending on the value of <see cref="TransactionMode"/>. 
+  /// Creates a new <see cref="WxeTransaction"/> depending on the value of <see cref="WxeTransactionMode"/>. 
   /// Derived classes should not override this method. Use the overloaded version instead.
   /// </summary>
-  /// <returns>A new WxeTransaction, if <see cref="TransactionMode"/> has a value of <b>CreateRoot</b>; otherwise <see langword="null"/>.</returns>
+  /// <returns>A new WxeTransaction, if <see cref="WxeTransactionMode"/> has a value of <b>CreateRoot</b>; otherwise <see langword="null"/>.</returns>
   protected override WxeTransactionBase CreateWxeTransaction ()
   {
-    if (_transactionMode == TransactionMode.CreateRoot)
+    if (_transactionMode == WxeTransactionMode.CreateRoot)
       return CreateWxeTransaction (AutoCommit, true);
 
     return null;
