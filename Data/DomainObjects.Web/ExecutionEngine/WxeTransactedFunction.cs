@@ -32,14 +32,6 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   }
 
   /// <summary>
-  /// Gets a reference to the current <see cref="ClientTransaction"/>.
-  /// </summary>
-  public new ClientTransaction Transaction
-  {
-    get { return (ClientTransaction) base.Transaction; }
-  }
-
-  /// <summary>
   /// Creates a new <b>WxeTransactedFunction</b>
   /// </summary>
   /// <param name="transactionMode">A value indicating the behavior of the WxeTransactedFunction.</param>
@@ -49,6 +41,36 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
     ArgumentUtility.CheckValidEnumValue (transactionMode, "transactionMode");
 
     _transactionMode = transactionMode;
+  }
+
+  /// <summary>
+  /// Gets a reference to the current <see cref="ClientTransaction"/>.
+  /// </summary>
+  public new ClientTransaction Transaction
+  {
+    get { return (ClientTransaction) base.Transaction; }
+  }
+
+  /// <summary>
+  /// Gets or sets the <see cref="TransactionMode"/> of the <see cref="WxeTransactedFunction"/>.
+  /// </summary>
+  /// <remarks>The property must not be set after execution of the function has started.</remarks>
+  /// <exception cref="System.InvalidOperationException">An attempt to set the property is performed after execution of the function has started.</exception>
+  public TransactionMode TransactionMode
+  {
+    get 
+    { 
+      return _transactionMode; 
+    }
+    set 
+    {
+      ArgumentUtility.CheckValidEnumValue (value, "transactionMode");
+
+      if (ExecutionStarted)
+        throw new InvalidOperationException ("CreateTransactionMode must not be set after execution of this function has started.");
+
+      _transactionMode = value; 
+    }
   }
 
   /// <summary>
@@ -82,28 +104,6 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   protected virtual bool AutoCommit
   {
     get { return true; }
-  }
-
-  /// <summary>
-  /// Gets or sets the <see cref="TransactionMode"/> of the <see cref="WxeTransactedFunction"/>.
-  /// </summary>
-  /// <remarks>The property must not be set after execution of the function has started.</remarks>
-  /// <exception cref="System.InvalidOperationException">An attempt to set the property is performed after execution of the function has started.</exception>
-  public TransactionMode TransactionMode
-  {
-    get 
-    { 
-      return _transactionMode; 
-    }
-    set 
-    {
-      ArgumentUtility.CheckValidEnumValue (value, "transactionMode");
-
-      if (ExecutionStarted)
-        throw new InvalidOperationException ("CreateTransactionMode must not be set after execution of this function has started.");
-
-      _transactionMode = value; 
-    }
   }
 }
 }
