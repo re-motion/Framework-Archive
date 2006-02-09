@@ -20,11 +20,11 @@ runat="server">
 <h2>WXE-TransactionMode</h2>
 <TABLE id="Table1" cellSpacing="1" cellPadding="10" border="1">
   <TR>
-    <TD>TransactionMode = CreateNew:</TD>
+    <TD>WxeTransactionMode = CreateNew:</TD>
     <TD>
 <asp:Button id="WxeTransactedFunctionCreateNewButton" runat="server" Text="Run Test"></asp:Button></TD></TR>
   <TR>
-    <TD>TransactionMode = None:</TD>
+    <TD>WxeTransactionMode = None:</TD>
     <TD>
 <asp:Button id="WxeTransactedFunctionNoneButton" runat="server" Text="Run Test"></asp:Button></TD></TR></TABLE><BR>
 
