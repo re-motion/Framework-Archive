@@ -17,11 +17,11 @@ public class NoAutoCommitTestTransactedFunction : WxeTransactedFunction
   // static members and constants
 
   // member fields
-  private TransactionMode _transactionMode;
+  private WxeTransactionMode _transactionMode;
 
   // construction and disposing
 
-  public NoAutoCommitTestTransactedFunction (TransactionMode transactionMode, ObjectID objectWithAllDataTypes) 
+  public NoAutoCommitTestTransactedFunction (WxeTransactionMode transactionMode, ObjectID objectWithAllDataTypes) 
       : base (transactionMode, objectWithAllDataTypes)
   {
     _transactionMode = transactionMode;

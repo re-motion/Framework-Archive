@@ -19,7 +19,7 @@ public class CreateRootTestTransactedFunction : WxeTransactedFunction
   // construction and disposing
 
   public CreateRootTestTransactedFunction (ClientTransaction previousClientTransaction) 
-      : base (TransactionMode.CreateRoot, previousClientTransaction)
+      : base (WxeTransactionMode.CreateRoot, previousClientTransaction)
   {
   }
 

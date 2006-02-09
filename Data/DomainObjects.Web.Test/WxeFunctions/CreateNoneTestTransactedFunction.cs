@@ -19,7 +19,7 @@ public class CreateNoneTestTransactedFunction : WxeTransactedFunction
   // construction and disposing
 
   public CreateNoneTestTransactedFunction (ClientTransaction previousClientTransaction) 
-      : base (TransactionMode.None, previousClientTransaction)
+      : base (WxeTransactionMode.None, previousClientTransaction)
   {
   }
 

@@ -20,7 +20,7 @@ public class AutoCommitTestTransactedFunction : WxeTransactedFunction
 
   // construction and disposing
 
-  public AutoCommitTestTransactedFunction (TransactionMode transactionMode, ObjectID objectWithAllDataTypes) 
+  public AutoCommitTestTransactedFunction (WxeTransactionMode transactionMode, ObjectID objectWithAllDataTypes) 
       : base (transactionMode, objectWithAllDataTypes)
   {
   }
