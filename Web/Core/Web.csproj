@@ -107,6 +107,7 @@
                     Name = "Microsoft.Web.UI.WebControls"
                     AssemblyName = "Microsoft.Web.UI.WebControls"
                     HintPath = "..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
+                    Private = "True"
                 />
                 <Reference
                     Name = "log4net"
