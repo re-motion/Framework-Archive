@@ -105,8 +105,7 @@ public class WxeTestPage : WxePage
       RememberCurrentClientTransaction ();
       SetInt32Property (5, new ClientTransaction ());
 
-      ExecuteFunction (new AutoCommitTestTransactedFunction (
-          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
+      ExecuteFunction (new AutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
     else
     {
@@ -126,8 +125,7 @@ public class WxeTestPage : WxePage
       RememberCurrentClientTransaction ();
       SetInt32Property (5, new ClientTransaction ());
 
-      ExecuteFunction (new NoAutoCommitTestTransactedFunction (
-          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
+      ExecuteFunction (new NoAutoCommitTestTransactedFunction (WxeTransactionMode.CreateRoot, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
     else
     {
@@ -149,8 +147,7 @@ public class WxeTestPage : WxePage
 
       RememberCurrentClientTransaction ();
 
-      ExecuteFunction (new AutoCommitTestTransactedFunction (
-          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
+      ExecuteFunction (new AutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
     else
     {
@@ -175,8 +172,7 @@ public class WxeTestPage : WxePage
 
       RememberCurrentClientTransaction ();
 
-      ExecuteFunction (new NoAutoCommitTestTransactedFunction (
-          Rubicon.Data.DomainObjects.Web.ExecutionEngine.TransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
+      ExecuteFunction (new NoAutoCommitTestTransactedFunction (WxeTransactionMode.None, DomainObjectIDs.ObjectWithAllDataTypes1));
     }
     else
     {
