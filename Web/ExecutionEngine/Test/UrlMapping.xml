@@ -4,12 +4,24 @@
     xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
-		<add type="Rubicon.PageTransition.SessionWxeFunction,Rubicon.PageTransition" resource="session.wxe"/>
-		<add type="Rubicon.PageTransition.MultiplePostbackCatcherWxeFunction,Rubicon.PageTransition" resource="mpc.wxe"/>
-		<add type="Rubicon.PageTransition.ProfilingWxeFunction,Rubicon.PageTransition" resource="prof.wxe"/>
+		<add type="Rubicon.PageTransition::SessionWxeFunction" resource="session.wxe"/>	
+		<add type="Rubicon.PageTransition::MultiplePostbackCatcherWxeFunction, Rubicon.PageTransition" resource="mpc.wxe"/>
+		<add type="Rubicon.PageTransition::ProfilingWxeFunction" resource="prof.wxe"/>
 		
 <!--
 		<add type="Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition" resource="sample.wxe"/>
 		<add type="Rubicon.PageTransition.SampleWxeFunction,Rubicon.PageTransition" resource="sample_old.wxe"/>
+-->
+
+<!--
+		<add type="S8essionWxeFunction" resource="session.wxe1"/>
+		<add type="SessionWxeFunction+C8lass" resource="session.wxe2"/>
+		<add type="R8ubicon.PageTransition.S8essionWxeFunction+C8lass" resource="session.wxe3"/>
+		<add type="Rubicon.PageTransition.MultiplePostbackCatcherWxeFunction,Rubicon.PageTransition" resource="mpc.wxe1"/>
+		<add type="Rubicon.PageTransition.MultiplePostbackCatcherWxeFunction+Class, Rubicon.PageTransition" resource="mpc.wxe2"/>
+		<add type="MultiplePostbackCatcherWxeFunction, Rubicon.PageTransition" resource="mpc.wxe3"/>
+		<add type="P8ageTransition::P8rofilingWxeFunction" resource="prof.wxe1"/>
+		<add type="R8ubicon.PageTransition::P8rofilingWxeFunction" resource="prof.wxe2"/>
+		<add type="R8ubicon.PageTransition::P8rofilingWxeFunction+C8lass" resource="prof.wxe3"/>
 -->
 </urlMapping>
