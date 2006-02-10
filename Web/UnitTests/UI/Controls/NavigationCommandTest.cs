@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NUnit.Framework;
+using Rubicon.NullableValueTypes;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Web.UI.Controls;
@@ -120,6 +121,7 @@ public class NavigationCommandTest
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, wxeHandler);
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add ("Parameter1", _wxeFunctionParameter1Value);
+    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
     expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
 
@@ -143,6 +145,7 @@ public class NavigationCommandTest
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, resource);
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add ("Parameter1", parameter1);
+    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
 
     NavigationCommand command = new NavigationCommand ();
@@ -168,6 +171,7 @@ public class NavigationCommandTest
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, wxeHandler);
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add ("Parameter1", _wxeFunctionParameter1Value);
+    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
     expectedQueryString.Add (additionalUrlParameters);
     expectedQueryString.Add (WxeHandler.Parameters.WxeFunctionType, _functionTypeName);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
@@ -195,6 +199,7 @@ public class NavigationCommandTest
     string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, resource);
     NameValueCollection expectedQueryString = new NameValueCollection();
     expectedQueryString.Add ("Parameter1", parameter1);
+    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
     expectedQueryString.Add (additionalUrlParameters);
     expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
 
