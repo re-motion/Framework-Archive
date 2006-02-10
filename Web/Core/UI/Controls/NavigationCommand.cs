@@ -90,7 +90,7 @@ public class NavigationCommand: Command
     if (Type != CommandType.WxeFunction)
       throw new InvalidOperationException ("Call to ExecuteWxeFunction not allowed unless Type is set to CommandType.WxeFunction.");
 
-    Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
+    Type functionType = WebTypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
     WxeParameterDeclaration[] parameterDeclarations = WxeFunction.GetParameterDeclarations (functionType);
     object[] parameterValues = WxeFunction.ParseActualParameters (
         parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);   
