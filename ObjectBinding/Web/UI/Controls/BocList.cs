@@ -324,6 +324,7 @@ public class BocList:
   private Hashtable _selectorControlCheckedState = new Hashtable();
   private RowIndex _index = RowIndex.Undefined;
   private string _indexColumnTitle;
+  private NaInt32 _indexOffset = NaInt32.Null;
 
   /// <summary> Null, 0: show all objects, > 0: show n objects per page. </summary>
   private NaInt32 _pageSize = NaInt32.Null; 
@@ -2680,7 +2681,10 @@ public class BocList:
     {
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
     }
-    writer.Write (index + 1);
+    int renderedIndex = index + 1;
+    if (! _indexOffset.IsNull)
+      renderedIndex += _indexOffset.Value;
+    writer.Write (renderedIndex);
     writer.RenderEndTag();
   }
 
@@ -5499,7 +5503,7 @@ public class BocList:
   /// <value> 
   ///   <see langword="RowIndex.InitialOrder"/> to show the of the initial (unsorted) list and
   ///   <see langword="RowIndex.SortedOrder"/> to show the index based on the current sorting order. 
-  ///   Defaults to <see cref="RowIndex.Undefined"/>, is interpreted as <see langword="RowIndex.Disabled"/>.
+  ///   Defaults to <see cref="RowIndex.Undefined"/>, which is interpreted as <see langword="RowIndex.Disabled"/>.
   /// </value>
   /// <remarks> If row selection is enabled, the control displays an index in front of each row. </remarks>
   [Category ("Appearance")]
@@ -5515,6 +5519,18 @@ public class BocList:
   {
     get { return _index != RowIndex.Undefined && _index != RowIndex.Disabled; }
   }
+
+  /// <summary> Gets or sets the offset for the rendered index. </summary>
+  /// <value> Defaults to <see cref="NaInt32.Null"/>. </value>
+  [Category ("Appearance")]
+  [Description ("The offset for the rendered index.")]
+  [DefaultValue (typeof(NaInt32), "null")]
+  public NaInt32 IndexOffset
+  {
+    get { return _indexOffset; }
+    set { _indexOffset = value; }
+  }
+
 
   /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
   [Category ("Appearance")]
@@ -5904,10 +5920,10 @@ public enum RowSelection
 
 public enum RowIndex
 { 
-  Undefined = -1,
-  Disabled = 0,
-  InitialOrder = 1,
-  SortedOrder = 2
+  Undefined,
+  Disabled,
+  InitialOrder,
+  SortedOrder
 }
 
 public enum ListMenuLineBreaks
