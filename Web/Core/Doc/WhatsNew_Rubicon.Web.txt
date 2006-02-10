@@ -1,14 +1,22 @@
 1.4.10
 ======
+- ExecutionEngine
+  * WxeFunctions können nun auch in einem ASP.NET 2.0 Web Projekt definiert werden (App_Code Assembly).
+    In diesem Fall ist kein Assemblyname anzugeben.
+  
 - Rubicon.Web.ExecutionEngine.WxeHandler
   * WxeReturnToSelf: Neuer WXE Url Parameter, wenn er "True" ist, wird die Request-URl als Return URL verwendet.
-    Eine explizit angegebene ReturnUrl überschreibt diesen URL Parameter.
+    Eine explizit angegebene ReturnUrl überschreibt diesen URL Parameter.  
     
-- TabbedMenu
+- Rubicon.Web.UI.Controls.TabbedMenu
   * WxeFunctionCommand:
     Die WxeFunction wird neu gestartet, sobald sie zu Ende ist. (siehe Wxe Parameter: WxeReturnToSelf)
     Bei HrefCommands muss der URL Parameter manuell angegeben werden.
-      
+
+- Rubicon.Web.Utilities
+  * WebTypeUtility: Neue Klasse um Typen in WebProjekten aufzulösen. Berücksichtigt die Besonderheiten von ASP.NET 2.0,
+    Stichwort: App_Code Assembly.   
+          
 1.4.7
 =====
 - Rubicon.Web.ExecutionEngine.WxeFunction
