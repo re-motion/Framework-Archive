@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeFunctionGenerator", "WxeFunctionGenerator\WxeFunctionGenerator.csproj", "{6693589F-085C-4CB7-A28A-426F19C19E6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prereq", "prereq", "{8826A986-D354-47CE-8B13-44F2DC87BC63}"
+	ProjectSection(SolutionItems) = preProject
+		prereq\getcommons.cmd = prereq\getcommons.cmd
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 3
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Test\\Test.csproj
+		SccLocalPath1 = .
+		SccProjectFilePathRelativizedFromConnection1 = Test\\
+		SccProjectUniqueName2 = WxeFunctionGenerator\\WxeFunctionGenerator.csproj
+		SccLocalPath2 = .
+		SccProjectFilePathRelativizedFromConnection2 = WxeFunctionGenerator\\
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|.NET = Debug|.NET
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Release|.NET = Release|.NET
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|.NET.ActiveCfg = Release|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6693589F-085C-4CB7-A28A-426F19C19E6B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|.NET.ActiveCfg = Release|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
