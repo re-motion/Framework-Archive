@@ -50,6 +50,13 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     /// <summary> Denotes a special action to be executed. </summary>
     /// <remarks> See the <see cref="Actions"/> type for a list of supported arguments. </remarks>
     public static readonly string WxeAction = "WxeAction";
+    
+    /// <summary> Denotes whether to the function should restart after it has completed. </summary>
+    /// <remarks>   
+    ///   Only evaluated during initialization. Replaces the <see cref="WxeFunction.ReturnUrl"/> defined by the 
+    ///   function it self. Will be overruled by an explicitly specified <see cref="ReturnUrl"/>.
+    /// </remarks>
+    public static readonly string WxeReturnToSelf = "WxeReturnToSelf";
   }
 
   /// <summary> Denotes the arguments supported for the <see cref="Parameters.WxeAction"/> parameter. </summary>
@@ -227,9 +234,19 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     functionStates.Add (functionState);
 
     function.InitializeParameters (context.Request.QueryString);
+
     string returnUrlArg = context.Request.QueryString[Parameters.ReturnUrl];
+    string returnToSelfArg = context.Request.QueryString[Parameters.WxeReturnToSelf];
     if (! StringUtility.IsNullOrEmpty (returnUrlArg))
+    {
       function.ReturnUrl = returnUrlArg;
+    }
+    else if (! StringUtility.IsNullOrEmpty (returnToSelfArg))
+    {
+      NaBoolean returnToSelf = NaBoolean.Parse (returnToSelfArg);
+      if (returnToSelf.IsTrue)
+        function.ReturnUrl = context.Request.RawUrl;
+    }
 
     return functionState;
   }
