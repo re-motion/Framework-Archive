@@ -25,7 +25,7 @@
   </xs:element>
 
   <xs:complexType name="mappingEntry">
-    <xs:attribute name="type" type="m:dotNetType" use="required" />
+    <xs:attribute name="tpe" type="m:dotNetType" use="required" />
     <xs:attribute name="resource" type="m:requiredStringType" use="required" />
   </xs:complexType>
   
@@ -36,10 +36,22 @@
 		</xs:restriction>
 	</xs:simpleType>
 	
-	<xs:simpleType name="dotNetType">
-		<xs:restriction base="m:requiredStringType">
-			<xs:pattern value=".+,.+" />
-		</xs:restriction>				
+  <xs:simpleType name="dotNetType">
+    <xs:restriction base="m:requiredStringType">
+      <!--  Class, Assembly; Namespace.Class, Assembly; Namespace.Namespace.Class, Assembly; 
+            Class+Class, Assembly; Namespace.Class+Class, Assembly; Namespace.Namespace.Class+Class, Assembly
+            Class,Assembly; Namespace.Class,Assembly; Namespace.Namespace.Class,Assembly; 
+            Class+Class,Assembly; Namespace.Class+Class,Assembly; Namespace.Namespace.Class+Class,Assembly -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*),\s?([\p{L}\d]+\.)*([\p{L}\d]+)" />
+
+      <!--  Class; Namespace.Class; Namespace.Namespace.Class; 
+            Class+Class; Namespace.Class+Class; Namespace.Namespace.Class+Class -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
+
+      <!--  Namespace::Class; Namespace.Namespace::Class; 
+            Namespace::Class+Class; Namespace::Namespace.Class+Class -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*::)(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*)" />
+    </xs:restriction>				
 	</xs:simpleType>
 
 </xs:schema>
