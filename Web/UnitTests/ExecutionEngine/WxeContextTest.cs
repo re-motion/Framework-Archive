@@ -29,18 +29,18 @@ public class WxeContextTest
   [SetUp]
   public virtual void SetUp()
   {   
-    _functionType = typeof (TestFunction);
-    _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
-    _resource = "~/Test.wxe";
-
-    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, _resource));
-
     _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "Other.wxe", null);
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add (WxeHandler.Parameters.ReturnUrl, "/Root.wxe");
     HttpContextHelper.SetQueryString (_currentHttpContext, queryString);
     HttpContextHelper.SetCurrent (_currentHttpContext);
+
+    _functionType = typeof (TestFunction);
+    _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
+    _resource = "~/Test.wxe";
+
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, _resource));
 
     _currentWxeContext = new WxeContextMock (_currentHttpContext, UrlUtility.FormatQueryString (queryString));
     PrivateInvoke.InvokeNonPublicStaticMethod (typeof (WxeContext), "SetCurrent", _currentWxeContext);
