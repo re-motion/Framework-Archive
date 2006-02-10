@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
+#if ! NET11
 using System.Web.Compilation;
+#endif
 using System.Web.UI;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
