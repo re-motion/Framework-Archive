@@ -44,7 +44,7 @@ public class CommandTest
     HttpContextHelper.SetCurrent (_currentHttpContext);
 
     _functionType = typeof (ExecutionEngine.TestFunction);
-    _functionTypeName = _functionType.FullName + "," + _functionType.Assembly.GetName().Name;
+    _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
     _wxeFunctionParameters = "\"Value1\"";
 
     _toolTip = "This is a Tool Tip.";
