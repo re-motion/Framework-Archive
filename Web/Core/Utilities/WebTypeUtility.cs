@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 #if ! NET11
 using System.Web.Compilation;
 #endif
@@ -70,7 +71,11 @@ public sealed class WebTypeUtility
   public static bool IsCompiledType (Type type)
   {
     ArgumentUtility.CheckNotNull ("type", type);
-    foreach (Assembly assembly in BuildManager.CodeAssemblies)
+    IList codeAssemblies = BuildManager.CodeAssemblies;
+    if (codeAssemblies == null)
+      return false;
+
+    foreach (Assembly assembly in codeAssemblies)
     {
       if (assembly == type.Assembly)
         return true;
@@ -79,7 +84,7 @@ public sealed class WebTypeUtility
   }
 #endif
 
-  private WebTypeUtility()
+	private WebTypeUtility()
 	{
   }
 }
