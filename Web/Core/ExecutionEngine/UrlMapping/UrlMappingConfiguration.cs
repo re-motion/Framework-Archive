@@ -7,9 +7,10 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Reflection;
 using Rubicon.Utilities;
-using Rubicon.Xml;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.Utilities;
+using Rubicon.Xml;
 
 namespace Rubicon.Web.ExecutionEngine.UrlMapping
 {
@@ -126,7 +127,7 @@ public class UrlMappingEntry
     set
     {
       ArgumentUtility.CheckNotNullOrEmpty ("value", value);
-      FunctionType = TypeUtility.GetType (value, true, true);
+      FunctionType = WebTypeUtility.GetType (value, true, true);
     }
   }
 
@@ -251,7 +252,7 @@ public class UrlMappingCollection: CollectionBase
   {
     if (StringUtility.IsNullOrEmpty (typeName))
       return null;
-    Type type = TypeUtility.GetType (typeName, true, true);
+    Type type = WebTypeUtility.GetType (typeName, true, true);
     return FindResource (type);
   }
 
