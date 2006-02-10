@@ -38,7 +38,7 @@ namespace Rubicon.Web.ExecutionEngine
   /// Requires <see cref="WxeFunctionPageAttribute"/>.
   /// </summary>
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
-  public class WxePageParameter: Attribute
+  public class WxePageParameterAttribute: Attribute
   {
     private int _index;
     private string _name;
@@ -46,7 +46,7 @@ namespace Rubicon.Web.ExecutionEngine
     private bool _required;
     private WxeParameterDirection _direction;
 
-    public WxePageParameter (int index, string name, Type type, bool required, WxeParameterDirection direction)
+    public WxePageParameterAttribute (int index, string name, Type type, bool required, WxeParameterDirection direction)
     {
       _index = index;
       _name = name;
@@ -55,17 +55,17 @@ namespace Rubicon.Web.ExecutionEngine
       _direction = direction;
     }
 
-    public WxePageParameter (int index, string name, Type type)
+    public WxePageParameterAttribute (int index, string name, Type type)
       : this (index, name, type, false, WxeParameterDirection.In)
     {
     }
 
-    public WxePageParameter (int index, string name, Type type, WxeParameterDirection direction)
+    public WxePageParameterAttribute (int index, string name, Type type, WxeParameterDirection direction)
       : this (index, name, type, false, direction)
     {
     }
 
-    public WxePageParameter (int index, string name, Type type, bool required)
+    public WxePageParameterAttribute (int index, string name, Type type, bool required)
       : this (index, name, type, required, WxeParameterDirection.In)
     {
     }
