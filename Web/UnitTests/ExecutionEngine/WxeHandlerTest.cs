@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
+using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine.UrlMapping;
@@ -101,27 +102,9 @@ public class WxeHandlerTest: WxeTest
   }
 
   [Test]
-  public void CreateNewFunctionStateStateWithFunctionToken()
+  public void CreateNewFunctionStateState()
   {
-    WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (
-        CurrentHttpContext, _functionType);
-
-    Assert.IsNotNull (functionState);
-    Assert.IsNotNull (functionState.FunctionToken);
-    Assert.IsNotNull (functionState.Function);
-    Assert.AreEqual (_functionType, functionState.Function.GetType());
-    Assert.AreEqual (TestFunction.ReturnUrlValue, functionState.Function.ReturnUrl);
-
-    WxeFunctionState expiredFunctionState =
-        WxeFunctionStateCollection.Instance.GetItem (c_functionTokenForExpiredFunctionState);
-    Assert.IsNull (expiredFunctionState);
-  }
-
-  [Test]
-  public void CreateNewFunctionStateStateWithoutFunctionToken()
-  {
-    WxeFunctionState functionState = 
-        _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType);
+    WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType);
 
     Assert.IsNotNull (functionState);
     Assert.IsNotNull (functionState.FunctionToken);
@@ -212,7 +195,48 @@ public class WxeHandlerTest: WxeTest
     Assert.IsNull (expiredFunctionState);
   }
 
-	[Test]
+  [Test]
+  public void CreateNewFunctionStateStateWithReturnUrlAndReturnToReferrer()
+  {
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Set (WxeHandler.Parameters.ReturnUrl, _returnUrl);
+    queryString.Set (WxeHandler.Parameters.WxeReturnToReferrer, NaBoolean.True.ToString());
+    HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
+
+    WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType);
+
+    Assert.IsNotNull (functionState);
+    Assert.IsNotNull (functionState.FunctionToken);
+    Assert.IsNotNull (functionState.Function);
+    Assert.AreEqual (_functionType, functionState.Function.GetType());
+    Assert.AreEqual (_returnUrl, functionState.Function.ReturnUrl);
+  
+    WxeFunctionState expiredFunctionState =
+        WxeFunctionStateCollection.Instance.GetItem (c_functionTokenForExpiredFunctionState);
+    Assert.IsNull (expiredFunctionState);
+  }
+
+  [Test]
+  public void CreateNewFunctionStateStateWithReturnToReferrer()
+  {
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Set (WxeHandler.Parameters.WxeReturnToReferrer, "True");
+    HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
+
+    WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType);
+
+    Assert.IsNotNull (functionState);
+    Assert.IsNotNull (functionState.FunctionToken);
+    Assert.IsNotNull (functionState.Function);
+    Assert.AreEqual (_functionType, functionState.Function.GetType());
+    Assert.AreEqual (CurrentHttpContext.Request.RawUrl, functionState.Function.ReturnUrl);
+  
+    WxeFunctionState expiredFunctionState =
+        WxeFunctionStateCollection.Instance.GetItem (c_functionTokenForExpiredFunctionState);
+    Assert.IsNull (expiredFunctionState);
+  }
+
+  [Test]
   public void RetrieveExistingFunctionState()
   {
     DateTime timeBeforeRefresh = DateTime.Now;
