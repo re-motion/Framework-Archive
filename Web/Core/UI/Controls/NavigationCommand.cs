@@ -96,6 +96,7 @@ public class NavigationCommand: Command
         parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);   
     NameValueCollection queryString = 
         WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
+    queryString.Add (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
     queryString.Add (additionalUrlParameters);
     return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);
   }
