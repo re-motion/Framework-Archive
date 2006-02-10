@@ -42,7 +42,7 @@ public class NavigationCommandTest
     HttpContextHelper.SetCurrent (_currentHttpContext);
 
     _functionType = typeof (ExecutionEngine.TestFunction);
-    _functionTypeName = _functionType.FullName + "," + _functionType.Assembly.GetName().Name;
+    _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
     _wxeFunctionParameter1Value = "Value1";
     _wxeFunctionParameters = "\"Value1\"";
 
