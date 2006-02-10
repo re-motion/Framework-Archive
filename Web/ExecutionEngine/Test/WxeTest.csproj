@@ -261,22 +261,6 @@
                     DependentUpon = "WebForm1.aspx.cs"
                     BuildAction = "EmbeddedResource"
                 />
-                <File
-                    RelPath = "WxeAutoFunctionPage1.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WxeAutoFunctionPage1.aspx.cs"
-                    DependentUpon = "WxeAutoFunctionPage1.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WxeAutoFunctionPage1.aspx.resx"
-                    DependentUpon = "WxeAutoFunctionPage1.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
             </Include>
         </Files>
     </CSHARP>
