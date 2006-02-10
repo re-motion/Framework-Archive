@@ -2,21 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Drawing.Design;
+using Rubicon.Collections;
+using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
-using Rubicon.Web.UI;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.UI.Design;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.Web.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Globalization;
-using Rubicon.Collections;
 using Rubicon.Utilities;
+using Rubicon.Web.UI;
+using Rubicon.Web.UI.Controls;
+using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -65,6 +64,8 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
 ///   In order for the control to be visible, it requires a valid binding before <see cref="OnLoad"/> is called.
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundWebControl"/>
+// It is required to use a Designer from the same assambly as is the control (or the GAC etc), 
+// otherwise the VS 2003 Toolbox will have trouble loading the assembly.
 [Designer (typeof (BocDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
 {
