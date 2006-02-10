@@ -26,6 +26,7 @@ public class StartForm : System.Web.UI.Page
   protected Rubicon.Web.UI.Controls.WebButton Submit1Button;
   protected Rubicon.Web.UI.Controls.WebButton Button2Button;
   protected System.Web.UI.WebControls.TextBox TextBox1;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	#region Web Form Designer generated code
