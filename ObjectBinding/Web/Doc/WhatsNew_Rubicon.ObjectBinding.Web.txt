@@ -4,6 +4,8 @@
   * IndexOffset: Neue Property um für den angezeigten Index einen Offset anzugeben.
   * Bugfix: ShowAllProperties hat nicht funktioniert, wenn nur eine DataSource aber keine Property spezifiziert wurde.
   
+- VS Toolbox:
+  Bugfix: ab Version 1.3.28 konnte die ObjectBinding.Web Assembly nicht in die Toolbox geladen werden.
   
 1.4.5
 =====
