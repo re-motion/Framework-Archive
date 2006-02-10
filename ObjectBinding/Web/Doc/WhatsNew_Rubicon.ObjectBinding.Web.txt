@@ -1,3 +1,10 @@
+1.4.10
+======
+- BocList
+  * IndexOffset: Neue Property um für den angezeigten Index einen Offset anzugeben.
+  * Bugfix: ShowAllProperties hat nicht funktioniert, wenn nur eine DataSource aber keine Property spezifiziert wurde.
+  
+  
 1.4.5
 =====
 - Boclist
