@@ -306,7 +306,9 @@ public class CommandLineParser
       argument.AppendSynopsis(sb);
 
       // append closing square brackets after last optional argument
-      if (argument.IsOptional && nextArgument == null || ! nextArgument.IsOptional || ! nextArgument.IsPositional)
+      if (   nextArgument == null
+          || ! nextArgument.IsOptional 
+          || ! nextArgument.IsPositional)
       {
         for (int k = 0; k < openSquareBrackets; ++k)
           sb.Append ("]");
