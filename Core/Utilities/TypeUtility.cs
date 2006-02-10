@@ -38,6 +38,7 @@ public sealed class TypeUtility
   /// </summary>
   public static Type GetType (string abbreviatedTypeName)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
     return Type.GetType (ParseAbbreviatedTypeName (abbreviatedTypeName));
   }
 
@@ -46,6 +47,7 @@ public sealed class TypeUtility
   /// </summary>
   public static Type GetType (string abbreviatedTypeName, bool throwOnError)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
     return Type.GetType (ParseAbbreviatedTypeName (abbreviatedTypeName), throwOnError);
   }
 
@@ -54,6 +56,7 @@ public sealed class TypeUtility
   /// </summary>
   public static Type GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
     return Type.GetType (ParseAbbreviatedTypeName (abbreviatedTypeName), throwOnError, ignoreCase);
   }
 
