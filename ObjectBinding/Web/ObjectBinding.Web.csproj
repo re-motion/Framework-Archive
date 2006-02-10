@@ -600,6 +600,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Design\BocDesigner.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\BocListDesigner.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

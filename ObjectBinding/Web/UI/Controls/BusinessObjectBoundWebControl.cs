@@ -65,7 +65,7 @@ public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, IS
 ///   In order for the control to be visible, it requires a valid binding before <see cref="OnLoad"/> is called.
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundWebControl"/>
-[Designer (typeof (WebControlDesigner))]
+[Designer (typeof (BocDesigner))]
 public abstract class BusinessObjectBoundWebControl: WebControl, IBusinessObjectBoundWebControl
 {
   #region BusinessObjectBinding implementation
