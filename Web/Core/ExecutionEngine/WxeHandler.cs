@@ -205,7 +205,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
     try
     {
-      return TypeUtility.GetType (typeName, true, true);
+      return WebTypeUtility.GetType (typeName, true, true);
     }
     catch (TypeLoadException e)
     {
