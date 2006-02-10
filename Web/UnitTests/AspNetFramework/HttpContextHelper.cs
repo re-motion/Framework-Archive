@@ -47,6 +47,7 @@ public class HttpContextHelper
     Type virtualPathType = Type.GetType ("System.Web.VirtualPath, " + assemblyName, true);
     object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", c_appVirtualDir);
     PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", virtualPath);
+    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppId", "Rubicon.Web.UnitTests");
 #endif
     HttpContext context = new HttpContext (workerRequest);
     PrivateInvoke.SetNonPublicField (context.Request, "_httpMethod", httpMethod);
