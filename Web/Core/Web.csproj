@@ -331,6 +331,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeFunctionPage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeFunctionState.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
