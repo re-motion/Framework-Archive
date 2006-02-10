@@ -511,7 +511,7 @@ public class Command: IControlItem
     {
       string target = WxeFunctionCommand.Target;
       bool hasTarget = ! StringUtility.IsNullOrEmpty (target);
-      Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
+      Type functionType = WebTypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
       WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
 
       function.InitializeParameters (WxeFunctionCommand.Parameters, additionalWxeParameters);
@@ -554,7 +554,7 @@ public class Command: IControlItem
 
     string target = WxeFunctionCommand.Target;
     bool hasTarget = ! StringUtility.IsNullOrEmpty (target);
-    Type functionType = TypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
+    Type functionType = WebTypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
     WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
 
     function.InitializeParameters (WxeFunctionCommand.Parameters, additionalWxeParameters);
