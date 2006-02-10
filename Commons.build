@@ -57,6 +57,7 @@
   <!-- specify one or more of these targets before the main targets to initialize the correct configuration properties -->
 
   <target name="setFrameworkFlag">
+    <property name="net11" value="${nant.settings.currentframework == 'net-1.1'}" />
     <property name="net20" value="${nant.settings.currentframework == 'net-2.0'}" />
   </target>
   
