@@ -3,8 +3,11 @@
 - Rubicon.Web.ExecutionEngine.WxeHandler
   * WxeReturnToSelf: Neuer WXE Url Parameter, wenn er "True" ist, wird die Request-URl als Return URL verwendet.
     Eine explizit angegebene ReturnUrl überschreibt diesen URL Parameter.
-    TabbedMenu stellt sicher dass WxeReturnToSelf gesetzt ist, wenn ein WxeFunctionCommand verwendet wird. 
-      Bei HrefCommands muss der URL Parameter selbst angegeben werden.
+    
+- TabbedMenu
+  * WxeFunctionCommand:
+    Die WxeFunction wird neu gestartet, sobald sie zu Ende ist. (siehe Wxe Parameter: WxeReturnToSelf)
+    Bei HrefCommands muss der URL Parameter manuell angegeben werden.
       
 1.4.7
 =====
