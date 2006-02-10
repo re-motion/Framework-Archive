@@ -4,18 +4,18 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing.Design;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.Design;
 using System.Web.UI.WebControls;
-using System.Globalization;
-using Rubicon.Utilities;
-using Rubicon.ObjectBinding.Web.UI.Design;
-using Rubicon.Web.UI.Controls;
-using Rubicon.Web.Utilities;
+using Rubicon.Globalization;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
+using Rubicon.ObjectBinding.Web.UI.Design;
+using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
-using Rubicon.Globalization;
+using Rubicon.Web.UI.Controls;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -431,7 +431,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
     if (StringUtility.IsNullOrEmpty (_editDetailsControlType))
       return null;
     
-    Type type = TypeUtility.GetType (_editDetailsControlType, true, false);
+    Type type = WebTypeUtility.GetType (_editDetailsControlType, true, false);
     return (IBusinessObjectBoundModifiableWebControl) Activator.CreateInstance (type);
   }
 

@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Specialized;
-using System.Text;
-using System.Web;
-using System.Web.UI;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Reflection;
+using System.Text;
+using System.Web;
+using System.Web.UI;
 using Rubicon.Collections;
 using Rubicon.ObjectBinding.Web.UI.Design;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -248,7 +249,7 @@ public class BocListItemCommand: BocCommand
     {
       if (_commandState == null && ! StringUtility.IsNullOrEmpty (_commandStateType))
       {
-        Type type = TypeUtility.GetType (_commandStateType, true, false);
+        Type type = WebTypeUtility.GetType (_commandStateType, true, false);
         _commandState = (IBocListItemCommandState) Activator.CreateInstance (type, null);
       }
       return _commandState; 

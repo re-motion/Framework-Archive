@@ -44,7 +44,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
     {
       if (_customCell == null)
       {
-        Type type = TypeUtility.GetType (_customCellType, true, false);
+        Type type = WebTypeUtility.GetType (_customCellType, true, false);
         _customCell = (BocCustomColumnDefinitionCell) Activator.CreateInstance (type);
       }
       return _customCell; 
