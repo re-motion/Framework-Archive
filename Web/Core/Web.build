@@ -27,7 +27,7 @@
       <references failonempty="true">
         <include name="${project.builddir}/Rubicon.Core.dll" />
         <include name="${project.builddir}/log4net.dll" />
-        <include name="${project.builddir}/Microsoft.Web.UI.WebControls.dll" />
+        <include name="${project.builddir}/Microsoft.Web.UI.WebControls.dll" if="${net11}"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Drawing.dll"/>
