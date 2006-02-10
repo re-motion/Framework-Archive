@@ -2,6 +2,7 @@ using System;
 #if ! NET11
 using System.Web.Compilation;
 #endif
+using System.Reflection;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.Utilities
@@ -16,6 +17,7 @@ public sealed class WebTypeUtility
   /// </summary>
   public static Type GetType (string abbreviatedTypeName)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
     string typeName = TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName);
 #if NET11
     return TypeUtility.GetType (typeName);
@@ -30,6 +32,7 @@ public sealed class WebTypeUtility
   /// </summary>
   public static Type GetType (string abbreviatedTypeName, bool throwOnError)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
     string typeName = TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName);
 #if NET11
     return TypeUtility.GetType (typeName, throwOnError);
@@ -44,6 +47,7 @@ public sealed class WebTypeUtility
   /// </summary>
   public static Type GetType (string abbreviatedTypeName, bool throwOnError, bool ignoreCase)
   {
+    ArgumentUtility.CheckNotNullOrEmpty ("abbreviatedTypeName", abbreviatedTypeName);
     string typeName = TypeUtility.ParseAbbreviatedTypeName (abbreviatedTypeName);
 #if NET11
     return TypeUtility.GetType (typeName, throwOnError, ignoreCase);
@@ -52,8 +56,30 @@ public sealed class WebTypeUtility
 #endif
   }
 
+  public static string GetQualifiedName (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+#if ! NET11
+    if (IsCompiledType (type))
+      return type.FullName;
+#endif
+    return type.FullName + "," + type.Assembly.GetName().Name;
+  }
 
-	private WebTypeUtility()
+#if ! NET11
+  public static bool IsCompiledType (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+    foreach (Assembly assembly in BuildManager.CodeAssemblies)
+    {
+      if (assembly == type.Assembly)
+        return true;
+    }
+    return false;
+  }
+#endif
+
+  private WebTypeUtility()
 	{
   }
 }

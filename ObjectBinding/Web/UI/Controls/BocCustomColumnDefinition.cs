@@ -44,6 +44,8 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
     {
       if (_customCell == null)
       {
+        if (StringUtility.IsNullOrEmpty (_customCellType))
+          throw new InvalidOperationException (string.Format ("Neither a CustomCell nor a CustomCellType has been specified for BocCustomColumnDefinition '{0}' in BocList '{1}'.", ItemID, OwnerControl.ID));
         Type type = WebTypeUtility.GetType (_customCellType, true, false);
         _customCell = (BocCustomColumnDefinitionCell) Activator.CreateInstance (type);
       }

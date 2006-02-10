@@ -84,7 +84,7 @@ public class WxeContext
     UrlMapping.UrlMappingEntry mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
     if (mappingEntry == null)
     {
-      string functionTypeName = functionType.FullName + "," + functionType.Assembly.GetName().Name;
+      string functionTypeName = WebTypeUtility.GetQualifiedName (functionType);
       internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
     }
 
