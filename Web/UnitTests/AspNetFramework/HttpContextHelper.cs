@@ -19,9 +19,9 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
 /// </summary>
 public class HttpContextHelper
 {
-  public const string c_appVirtualDir = "/";
-  public const string c_appPhysicalDir = @"C:\";
-  public const string c_serverPath = "http://127.0.0.1";
+  public static readonly string s_appVirtualDir = "/";
+  public static readonly string s_appPhysicalDir = @"c:\";
+  public static readonly string s_serverPath = "http://127.0.0.1";
 
   public static void SetCurrent (HttpContext context)
   {
@@ -36,18 +36,20 @@ public class HttpContextHelper
 
 
     SimpleWorkerRequest workerRequest = 
-        new SimpleWorkerRequest (c_appVirtualDir, c_appPhysicalDir, page, query, new System.IO.StringWriter());
+        new SimpleWorkerRequest (s_appVirtualDir, s_appPhysicalDir, page, query, new System.IO.StringWriter());
 
     object httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
-    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppPath", c_appPhysicalDir);
+    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppPath", s_appPhysicalDir);
 #if NET11
-    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", c_appVirtualDir);
+    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", s_appVirtualDir);
 #else
     string assemblyName = typeof (HttpApplication).Assembly.FullName;
     Type virtualPathType = Type.GetType ("System.Web.VirtualPath, " + assemblyName, true);
-    object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", c_appVirtualDir);
+    object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", s_appVirtualDir);
     PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", virtualPath);
     PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppId", "Rubicon.Web.UnitTests");
+    Type buildManagerType = typeof (System.Web.Compilation.BuildManager);
+    PrivateInvoke.SetNonPublicStaticProperty (buildManagerType, "SkipTopLevelCompilationExceptions", true);
 #endif
     HttpContext context = new HttpContext (workerRequest);
     PrivateInvoke.SetNonPublicField (context.Request, "_httpMethod", httpMethod);
