@@ -196,11 +196,11 @@ public class WxeHandlerTest: WxeTest
   }
 
   [Test]
-  public void CreateNewFunctionStateStateWithReturnUrlAndReturnToReferrer()
+  public void CreateNewFunctionStateStateWithReturnUrlAndReturnToSelf()
   {
     NameValueCollection queryString = new NameValueCollection();
     queryString.Set (WxeHandler.Parameters.ReturnUrl, _returnUrl);
-    queryString.Set (WxeHandler.Parameters.WxeReturnToReferrer, NaBoolean.True.ToString());
+    queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
     HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType);
@@ -217,10 +217,10 @@ public class WxeHandlerTest: WxeTest
   }
 
   [Test]
-  public void CreateNewFunctionStateStateWithReturnToReferrer()
+  public void CreateNewFunctionStateStateWithReturnToSelf()
   {
     NameValueCollection queryString = new NameValueCollection();
-    queryString.Set (WxeHandler.Parameters.WxeReturnToReferrer, "True");
+    queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, "True");
     HttpContextHelper.SetQueryString (CurrentHttpContext, queryString);
 
     WxeFunctionState functionState = _wxeHandler.CreateNewFunctionState (CurrentHttpContext, _functionType);
