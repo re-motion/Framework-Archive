@@ -55,6 +55,9 @@
     <Content Include="AutoPage.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="CalledPage.aspx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Default.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -66,6 +69,13 @@
     </Compile>
     <Compile Include="AutoPage.aspx.designer.cs">
       <DependentUpon>AutoPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CalledPage.aspx.cs">
+      <DependentUpon>CalledPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CalledPage.aspx.designer.cs">
+      <DependentUpon>CalledPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
