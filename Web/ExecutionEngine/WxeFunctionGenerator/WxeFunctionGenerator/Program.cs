@@ -172,7 +172,7 @@ namespace WxeFunctionGenerator
         //// add Return (outPar1, outPar2, ...) method 
         //// -- removed (unneccessary, possibly confusing)
         //CodeMemberMethod returnParametersMethod = new CodeMemberMethod ();
-        //foreach (WxePageParameterAttribute parameterAttribute in type.GetCustomAttributes (typeof (WxePageParameterAttribute), false))
+        //foreach (WxePageParameterAttribute parameterAttribute in GetPageParameterAttributesOrdered (type))
         //{
         //  if (parameterAttribute.Direction != WxeParameterDirection.In)
         //  {
@@ -329,7 +329,8 @@ namespace WxeFunctionGenerator
       // ctor (<type1> inarg1, <type2> inarg2, ...): base (inarg1, inarg2, ...) {}
       CodeConstructor typedCtor = new CodeConstructor ();
       typedCtor.Attributes = MemberAttributes.Public;
-      foreach (WxePageParameterAttribute parameterAttribute in type.GetCustomAttributes (typeof (WxePageParameterAttribute), false))
+      WxePageParameterAttribute[] parameterAttributes = GetPageParameterAttributesOrdered (type);
+      foreach (WxePageParameterAttribute parameterAttribute in parameterAttributes)
       {
         if (parameterAttribute.Direction == WxeParameterDirection.Out)
           break;
@@ -342,6 +343,114 @@ namespace WxeFunctionGenerator
       }
       if (typedCtor.Parameters.Count > 0)
         functionClass.Members.Add (typedCtor);
+
+      // <returnType> Call (IWxePage page, <type> [ref|out] param1, <type> [ref|out] param2, ...)
+      CodeMemberMethod callMethod = new CodeMemberMethod ();
+      functionClass.Members.Add (callMethod);
+      callMethod.Name = "Call";
+      callMethod.Attributes = MemberAttributes.Static | MemberAttributes.Public;
+      callMethod.Parameters.Add (new CodeParameterDeclarationExpression (
+          new CodeTypeReference (typeof (IWxePage)), "currentPage"));
+      foreach (WxePageParameterAttribute parameterAttribute in parameterAttributes)
+      {
+        if (parameterAttribute.IsReturnValue)
+        {
+          callMethod.ReturnType = new CodeTypeReference (parameterAttribute.Type);
+        }
+        else
+        {
+          CodeParameterDeclarationExpression parameter = new CodeParameterDeclarationExpression (
+              new CodeTypeReference (parameterAttribute.Type),
+              parameterAttribute.Name);
+          callMethod.Parameters.Add (parameter);
+          if (parameterAttribute.Direction == WxeParameterDirection.InOut)
+            parameter.Direction = FieldDirection.Ref;
+          else if (parameterAttribute.Direction == WxeParameterDirection.Out)
+            parameter.Direction = FieldDirection.Out;
+        }
+      }
+      // <class>Function function;
+      CodeVariableDeclarationStatement functionVariable = new CodeVariableDeclarationStatement (
+          new CodeTypeReference (functionClass.Name), "function");
+      callMethod.Statements.Add (functionVariable);
+      // common variables
+      CodeArgumentReferenceExpression currentPage = new CodeArgumentReferenceExpression ("currentPage");
+      CodeVariableReferenceExpression function = new CodeVariableReferenceExpression ("function");
+      // if (! currentPage.IsReturningPostBack)
+      CodeConditionStatement ifNotIsReturningPostBack = new CodeConditionStatement ();
+      callMethod.Statements.Add (ifNotIsReturningPostBack);
+      ifNotIsReturningPostBack.Condition = new CodeBinaryOperatorExpression (
+          new CodePropertyReferenceExpression (currentPage, "IsReturningPostBack"),
+          CodeBinaryOperatorType.ValueEquality,
+          new CodePrimitiveExpression (false));
+      // { 
+      //   function = new <class>Function();
+      ifNotIsReturningPostBack.TrueStatements.Add (new CodeAssignStatement (
+          function, 
+          new CodeObjectCreateExpression (new CodeTypeReference (functionClass.Name))));
+      //   function.ParamN = ParamN;
+      foreach (WxePageParameterAttribute parameterAttribute in parameterAttributes)
+      {
+        if (parameterAttribute.Direction != WxeParameterDirection.Out)
+        {
+          ifNotIsReturningPostBack.TrueStatements.Add (new CodeAssignStatement (
+              new CodePropertyReferenceExpression (function, parameterAttribute.Name),
+              new CodeArgumentReferenceExpression (parameterAttribute.Name)));
+        }
+      }
+      //   currentPage.ExecuteFunction (function);
+      ifNotIsReturningPostBack.TrueStatements.Add (new CodeMethodInvokeExpression (
+          currentPage, "ExecuteFunction", 
+          new CodeExpression[] { new CodeVariableReferenceExpression ("function") } ));
+      //   throw new Exception ("(Unreachable code)"); 
+      ifNotIsReturningPostBack.TrueStatements.Add (new CodeThrowExceptionStatement (
+          new CodeObjectCreateExpression (new CodeTypeReference (typeof (Exception)),
+          new CodeExpression[] {
+            new CodePrimitiveExpression ("(Unreachable code)") })));
+      // } else {
+      //   function = (<class>Function) currentPage.ReturningFunction;
+      ifNotIsReturningPostBack.FalseStatements.Add (new CodeAssignStatement (
+          function,
+          new CodeCastExpression (
+              new CodeTypeReference (functionClass.Name),
+              new CodePropertyReferenceExpression (currentPage, "ReturningFunction"))));
+      //   ParamN = function.ParamN;
+      foreach (WxePageParameterAttribute parameterAttribute in parameterAttributes)
+      {
+        if (parameterAttribute.Direction != WxeParameterDirection.In && !parameterAttribute.IsReturnValue)
+        {
+          ifNotIsReturningPostBack.FalseStatements.Add (new CodeAssignStatement (
+              new CodeArgumentReferenceExpression (parameterAttribute.Name),
+              new CodePropertyReferenceExpression (function, parameterAttribute.Name)));
+        }
+        else if (parameterAttribute.IsReturnValue)
+        {
+          ifNotIsReturningPostBack.FalseStatements.Add (new CodeMethodReturnStatement (
+              new CodePropertyReferenceExpression (function, parameterAttribute.Name)));
+        }
+      }
+
+    }
+
+    static WxePageParameterAttribute[] GetPageParameterAttributesOrdered (Type type)
+    {
+      WxePageParameterAttribute[] attributes = 
+          (WxePageParameterAttribute[]) type.GetCustomAttributes (typeof (WxePageParameterAttribute), false);
+      int[] indices = new int[attributes.Length];
+      for (int i = 0; i < attributes.Length; ++i)
+      {
+        indices[i] = attributes[i].Index;
+      }
+      Array.Sort (indices, attributes);
+      for (int i = 0; i < attributes.Length - 1; ++i)
+      {
+        if (attributes[i].IsReturnValue)
+          throw new ApplicationException ("Class " + type.FullName + ": Only last WXE parameter can have IsReturnValue = true.");
+      }
+      WxePageParameterAttribute lastAttribute = attributes[attributes.Length - 1];
+      if (lastAttribute.IsReturnValue && lastAttribute.Direction != WxeParameterDirection.Out)
+        throw new ApplicationException ("Class " + type.FullName + ": Only WXE parameter with direction WxeParameterDirection.Out can have IsReturnValue = true.");
+      return attributes;
     }
   }
 }
