@@ -256,12 +256,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingSchemaTest.cs"
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingConfigurationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingTest.cs"
+                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingSchemaTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
