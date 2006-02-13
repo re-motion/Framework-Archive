@@ -136,7 +136,7 @@ public class NavigationCommandTest
   }
 
   [Test]
-  public void GetWxeFunctionPermanentUrlWithMappedFunctionType()
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByTypeName()
   {
     string resource = "~/Test.wxe";
     UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, resource));
@@ -156,6 +156,57 @@ public class NavigationCommandTest
 
     Assert.IsNotNull (url);
     Assert.AreEqual (expectedUrl, url);
+  }
+
+  [Test]
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeByMappingID()
+  {
+    string mappingID = "Test";
+    string resource = "~/Test.wxe";
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (mappingID, _functionType, resource));
+    string parameter1 = "Value1";
+    
+    string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, resource);
+    NameValueCollection expectedQueryString = new NameValueCollection();
+    expectedQueryString.Add ("Parameter1", parameter1);
+    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
+    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+
+    NavigationCommand command = new NavigationCommand ();
+    command.Type = CommandType.WxeFunction;
+    command.WxeFunctionCommand.MappingID = mappingID;
+    command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
+    string url = command.GetWxeFunctionPermanentUrl ();
+
+    Assert.IsNotNull (url);
+    Assert.AreEqual (expectedUrl, url);
+  }
+
+  [Test]
+  [ExpectedException (typeof (InvalidOperationException))]
+  public void GetWxeFunctionPermanentUrlWithMappedFunctionTypeAndInvalidTypeNameMappingIDCombination()
+  {
+    string mappingID = "Test";
+    string resource = "~/Test.wxe";
+    Type functionWithNestingType = typeof (ExecutionEngine.TestFunctionWithNesting);
+    string functionWithNestingTypeName = WebTypeUtility.GetQualifiedName (functionWithNestingType);
+    UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (mappingID, functionWithNestingType, resource));
+    string parameter1 = "Value1";
+    
+    string expectedUrl = UrlUtility.GetAbsoluteUrl (_currentHttpContext, resource);
+    NameValueCollection expectedQueryString = new NameValueCollection();
+    expectedQueryString.Add ("Parameter1", parameter1);
+    expectedQueryString.Add (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
+    expectedUrl += UrlUtility.FormatQueryString (expectedQueryString);
+
+    NavigationCommand command = new NavigationCommand ();
+    command.Type = CommandType.WxeFunction;
+    command.WxeFunctionCommand.MappingID = mappingID;
+    command.WxeFunctionCommand.TypeName = _functionTypeName;
+    command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
+    string url = command.GetWxeFunctionPermanentUrl ();
+
+    Assert.Fail();
   }
 
   [Test]
