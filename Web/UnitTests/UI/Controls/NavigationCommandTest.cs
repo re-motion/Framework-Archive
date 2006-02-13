@@ -93,7 +93,8 @@ public class NavigationCommandTest
     string expectedHref = _wxeFunctionCommand.GetWxeFunctionPermanentUrl (additionalUrlParameters);
     string expectedOnClick = _onClick;
 
-    _wxeFunctionCommand.RenderBegin (_writer, _postBackEvent, new string[0], _onClick, additionalUrlParameters, new Style());
+    _wxeFunctionCommand.RenderBegin (
+          _writer, _postBackEvent, new string[0], _onClick, additionalUrlParameters, false, new Style());
 
     Assert.IsNotNull (_writer.Tag, "Missing Tag");
     Assert.AreEqual (HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
