@@ -12,6 +12,7 @@ using Rubicon.Collections;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
 
@@ -115,6 +116,7 @@ public class Command: IControlItem
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class WxeFunctionCommandInfo
   {
+    private string _mappingID = string.Empty;
     private string _typeName = string.Empty;
     private string _parameters = string.Empty;
     private string _target = string.Empty;
@@ -139,7 +141,7 @@ public class Command: IControlItem
 
     /// <summary> 
     ///   Gets or sets the complete type name of the WxeFunction to call when the rendered 
-    ///   command is clicked. The type name is requried.
+    ///   command is clicked. Either the <see cref="TypeName"/> or the <see cref="MappingID"/> is required.
     /// </summary>
     /// <value> 
     ///   The complete type name of the WxeFunction to call when the rendered command is clicked. 
@@ -147,7 +149,7 @@ public class Command: IControlItem
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
-    [Description ("The complete type name (type, assembly) of the WxeFunction used for the command.")]
+    [Description ("The complete type name (type[, assembly]) of the WxeFunction used for the command.")]
     [DefaultValue("")]
     [NotifyParentProperty (true)]
     public virtual string TypeName
@@ -160,6 +162,32 @@ public class Command: IControlItem
       {
         _typeName = StringUtility.NullToEmpty (value); 
         _typeName = _typeName.Trim();
+      }
+    }
+
+    /// <summary> 
+    ///   Gets or sets the ID of the function as defined in the <see cref="UrlMappingEntry"/>.
+    ///   Either the <see cref="TypeName"/> or the <see cref="MappingID"/> is required.
+    /// </summary>
+    /// <value> 
+    ///   The <see cref="UrlMappingEntry.ID"/> associated with the WxeFunction to call when the rendered command 
+    ///   is clicked. The default value is <see cref="String.Empty"/>. 
+    /// </value>
+    [PersistenceMode (PersistenceMode.Attribute)]
+    [Category ("Behavior")]
+    [Description ("The Url-Mapping ID associated with the WxeFunction used for the command.")]
+    [DefaultValue("")]
+    [NotifyParentProperty (true)]
+    public string MappingID
+    {
+      get
+      {
+        return _mappingID; 
+      }
+      set
+      {
+        _mappingID = StringUtility.NullToEmpty (value); 
+        _mappingID = _mappingID.Trim();
       }
     }
 
@@ -207,6 +235,48 @@ public class Command: IControlItem
       set { _target = value; }
     }
 
+
+    public virtual WxeFunction InitializeFunction (NameObjectCollection additionalWxeParameters)
+    {
+      Type functionType = ResolveFunctionType();
+      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
+
+      function.InitializeParameters (_parameters, additionalWxeParameters);
+
+      return function;
+    }
+
+    public virtual Type ResolveFunctionType()
+    {
+      UrlMappingEntry mapping = UrlMappingConfiguration.Current.Mappings.FindByID (_mappingID);
+      
+      bool hasMapping = mapping != null;
+      bool hasTypeName = ! StringUtility.IsNullOrEmpty (_typeName);
+
+      Type functionType = null;
+      if (hasTypeName)
+        functionType = WebTypeUtility.GetType (_typeName, true, false);
+
+      if (hasMapping)
+      {
+        if (functionType == null)
+        {
+          functionType = mapping.FunctionType;
+        }
+        else if (mapping.FunctionType != functionType)
+        {
+          throw new InvalidOperationException (string.Format (
+              "The WxeFunctionCommand in has both a MappingID ('{0}') and a TypeName ('{1}') defined, but they resolve to different WxeFunctions.", 
+              _mappingID, _typeName));
+        }
+      }
+      else if (! hasTypeName)
+      {
+        throw new InvalidOperationException ("The WxeFunctionCommand has no valid MappingID or FunctionTypeName specified.");
+      }
+
+      return functionType;
+    }
   }
 
   private string _toolTip;
@@ -511,10 +581,7 @@ public class Command: IControlItem
     {
       string target = WxeFunctionCommand.Target;
       bool hasTarget = ! StringUtility.IsNullOrEmpty (target);
-      Type functionType = WebTypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
-      WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
-
-      function.InitializeParameters (WxeFunctionCommand.Parameters, additionalWxeParameters);
+      WxeFunction function = WxeFunctionCommand.InitializeFunction (additionalWxeParameters);
 
       if (hasTarget)
         wxePage.ExecuteFunctionExternal (function, target, null, false);
@@ -554,10 +621,7 @@ public class Command: IControlItem
 
     string target = WxeFunctionCommand.Target;
     bool hasTarget = ! StringUtility.IsNullOrEmpty (target);
-    Type functionType = WebTypeUtility.GetType (WxeFunctionCommand.TypeName, true, false);
-    WxeFunction function = (WxeFunction) Activator.CreateInstance (functionType);
-
-    function.InitializeParameters (WxeFunctionCommand.Parameters, additionalWxeParameters);
+    WxeFunction function = WxeFunctionCommand.InitializeFunction (additionalWxeParameters);
 
     if (hasTarget)
       WxeContext.ExecuteFunctionExternal (page, function, target, null, additionalUrlParameters);
@@ -565,7 +629,6 @@ public class Command: IControlItem
       WxeContext.ExecuteFunctionExternal (page, function, additionalUrlParameters);
   }
 
-  
   /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
   /// <value> One of the <see cref="CommandType"/> enumeration values. The default is <see cref="CommandType.None"/>. </value>
   [PersistenceMode (PersistenceMode.Attribute)]

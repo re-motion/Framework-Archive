@@ -1,3 +1,13 @@
+1.4.11
+======
+- UrlMapping
+  * Jedes Mapping kann mit einer optionalen ID versehen werden. 
+    Diese ID kann anschließend bei den Commands (TabbedMenu, BocList, etc) verwendet werden, um die Function anzugeben.
+
+- TabbedMenu
+  * WxeFunctionCommand.MappingID: Neue Property um statt des FunctionTypes lediglich die ID im UrlMapping angeben zu 
+    können. Werden sowohl MappingID und TypeName angeben, müssen diese die gleiche Function angeben.
+    
 1.4.10
 ======
 - ExecutionEngine
