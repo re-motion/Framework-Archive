@@ -631,6 +631,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UrlMapping.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "ViewPersonDetailsWxeFunction.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
