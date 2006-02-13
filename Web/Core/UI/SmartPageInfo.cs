@@ -58,6 +58,7 @@ public class SmartPageInfo
   private string _checkFormStateFunction;
   private Hashtable _trackedControls = new Hashtable();
   private StringCollection _trackedControlsByID = new StringCollection();
+  private Hashtable _navigationControls = new Hashtable();
 
   private ResourceManagerSet _cachedResourceManager;
 
@@ -508,6 +509,26 @@ public class SmartPageInfo
   {
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
     _smartFocusID = id;
+  }
+  public void RegisterNavigationControl (INavigationControl control)
+  {
+    ArgumentUtility.CheckNotNull ("control", control);
+    _navigationControls[control] = control;
+  }
+
+  public string AppendNavigationUrlParameters (string url)
+  {
+    NameValueCollection urlParameters = GetNavigationUrlParameters();
+    return UrlUtility.AddParameters (url, urlParameters);
+  }
+
+  public NameValueCollection GetNavigationUrlParameters()
+  {
+    NameValueCollection urlParameters = new NameValueCollection();
+    foreach (INavigationControl control in _navigationControls.Values)
+      urlParameters.Add (control.GetNavigationUrlParameters());
+    
+    return urlParameters;
   }
 }
 

@@ -96,7 +96,8 @@ public class CommandTest
         expectedHref, additionalUrlParameters.GetKey (0), additionalUrlParameters.Get (0));
     expectedHref = UrlUtility.GetAbsoluteUrl (_currentHttpContext, expectedHref);
     string expectedOnClick = _onClick;
-    _hrefCommand.RenderBegin (_writer, _postBackEvent, parameters, _onClick, additionalUrlParameters, new Style());
+    _hrefCommand.RenderBegin (
+        _writer, _postBackEvent, parameters, _onClick, additionalUrlParameters, true, new Style());
 
     Assert.IsNotNull (_writer.Tag, "Missing Tag");
     Assert.AreEqual (HtmlTextWriterTag.A, _writer.Tag, "Wrong Tag");
