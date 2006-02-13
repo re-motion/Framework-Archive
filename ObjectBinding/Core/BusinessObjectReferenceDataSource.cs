@@ -105,9 +105,9 @@ public abstract class BusinessObjectReferenceDataSourceBase:
     if (ReferencedDataSource != null && ReferencedDataSource.BusinessObject != null && ReferenceProperty != null)
     {
       BusinessObject = (IBusinessObject) ReferencedDataSource.BusinessObject.GetProperty (ReferenceProperty);
-      _hasBusinessObjectChanged = false;
       if (_businessObject == null && Mode == DataSourceMode.Edit && ReferenceProperty.CreateIfNull)
         BusinessObject = ReferenceProperty.Create (ReferencedDataSource.BusinessObject);     
+      _hasBusinessObjectChanged = false;
     }
 
     // load values into "child" controls
@@ -142,7 +142,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
 
   /// <summary> 
   ///   Gets a flag that is <see langword="true"/> if the <see cref="BusinessObject"/> has been set since the last
-  ///   call to <see cref="SaveValue"/>.
+  ///   call to <see cref="LoadValue"/> or <see cref="SaveValue"/>.
   /// </summary>
   public bool HasBusinessObjectChanged
   {
