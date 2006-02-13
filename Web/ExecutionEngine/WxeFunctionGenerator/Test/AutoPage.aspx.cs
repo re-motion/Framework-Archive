@@ -11,72 +11,135 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Test
 {
+
   [WxePageFunction ("AutoPage.aspx", typeof (WxeFunction))]
   [WxePageParameter (1, "InArg", typeof (string), true)]
   [WxePageParameter (2, "InOutArg", typeof (string), true, WxeParameterDirection.InOut)]
-  [WxePageParameter (3, "OutArg", typeof (string), WxeParameterDirection.Out)]
-  [WxePageVariable ("LocalVariable", typeof (string))]
-  public partial class AutoPage : WxePage
+  [WxePageParameter (3, "OutArg", typeof (string), WxeParameterDirection.Out, IsReturnValue = true)]
+  [WxePageVariable ("Suffix", typeof (string))]
+  public partial class AutoPage: WxePage
   {
-    // for ASP.NET 1.1
-    // new AutoPageVariables Variables { get { return ((AutoPageFunction) CurrentFunction).PageVariables; } }
+    //[WxeGenerateFunction("AutoPage.aspx")]
+    private string CallPage (string InArg, ref string InOutArg) 
+    {
+      throw new NotImplementedException ();
+    }
 
     protected void Page_Load (object sender, EventArgs e)
     {
       if (!IsPostBack)
       {
-        // use input parameters for control initialization
-
-        // for ASP.NET 2.0
         InArgField.Text = InArg;
-        InOutArgField.Text = InOutArg;
-
-        // for ASP.NET 1.1
-        //InArgField.Text = Variables.InArg;
-        //InOutArgField.Text = Variables.InOutArg;
+        Suffix = "'";
       }
     }
 
     protected void ExecSelfButton_Click (object sender, EventArgs e)
     {
-      string inOutParam = InOutArgField.Text + "'";
-      OutArgField.Text = AutoPageFunction.Call (this, InArgField.Text + "'", ref inOutParam);
+      string inOutParam = InOutArgField.Text + Suffix;
+      OutArgField.Text = AutoPageFunction.Call (this, InArgField.Text + Suffix, ref inOutParam);
       InOutArgField.Text = inOutParam;
+    }
 
-      if (!IsReturningPostBack)
-      {
-        // call function recursively
-        ExecuteFunction (new AutoPageFunction (
-            InArgField.Text + "'",
-            InOutArgField.Text + "'"));
-      }
-      else
-      {
-        // when call returns, use output parameters 
-        AutoPageFunction function = (AutoPageFunction) ReturningFunction;
-        OutArgField.Text = function.OutArg;
-        InOutArgField.Text = function.InOutArg;
-      }
+    protected void ExecCalledPageButton_Click (object sender, EventArgs e)
+    {
+      InArgField.Text = CalledPageFunction.Call (this, "hallo");
     }
 
     protected void ReturnButton_Click (object sender, EventArgs e)
     {
-      // set output parameters and return
-
-      // for ASP.NET 2.0
-      InOutArg = InOutArgField.Text + "'";
-      OutArg = OutArgField.Text + "'";
+      InOutArg = InOutArgField.Text + Suffix;
+      OutArg = OutArgField.Text + Suffix;
       Return ();
-
-      // obsolete
-      // Return (InOutArgField.Text + "'", OutArgField.Text + "'");
-
-      // for ASP.NET 1.1
-      //Variables.InOutArg = InOutArgField.Text + "'";
-      //Variables.OutArg = OutArgField.Text + "'";
-      //ExecuteNextStep ();
     }
   }
+
+
+  //[WxePageFunction ("AutoPage.aspx", typeof (WxeFunction))]
+  //[WxePageParameter (1, "InArg", typeof (string), true)]
+  //[WxePageParameter (2, "InOutArg", typeof (string), true, WxeParameterDirection.InOut)]
+  //[WxePageParameter (3, "OutArg", typeof (string), WxeParameterDirection.Out, IsReturnValue = true)]
+  //[WxePageVariable ("LocalVariable", typeof (string))]
+  //public partial class AutoPage : WxePage
+  //{
+  //  // for ASP.NET 1.1
+  //  // new AutoPageVariables Variables { get { return ((AutoPageFunction) CurrentFunction).PageVariables; } }
+
+  //  protected void Page_Load (object sender, EventArgs e)
+  //  {
+  //    if (!IsPostBack)
+  //    {
+  //      // use input parameters for control initialization
+
+  //      // for ASP.NET 2.0
+  //      InArgField.Text = InArg;
+  //      InOutArgField.Text = InOutArg;
+
+  //      // for ASP.NET 1.1
+  //      //InArgField.Text = Variables.InArg;
+  //      //InOutArgField.Text = Variables.InOutArg;
+  //    }
+  //  }
+
+  //  //public static string Call (IWxePage currentPage, string InArg, ref string InOutArg)
+  //  //{
+  //  //  AutoPageFunction function;
+  //  //  if (!currentPage.IsReturningPostBack)
+  //  //  {
+  //  //    function = new AutoPageFunction ();
+  //  //    function.InArg = InArg;
+  //  //    function.InOutArg = InOutArg;
+  //  //    currentPage.ExecuteFunction (function);
+  //  //    throw new Exception ("This code cannot be reached.");
+  //  //  }
+  //  //  else
+  //  //  {
+  //  //    function = (AutoPageFunction) currentPage.ReturningFunction;
+  //  //    InOutArg = function.InOutArg;
+  //  //    return function.OutArg;
+  //  //  }
+  //  //}
+
+  //  protected void ExecSelfButton_Click (object sender, EventArgs e)
+  //  {
+  //    string inOutParam = InOutArgField.Text + "'";
+  //    OutArgField.Text = AutoPageFunction.Call (this, InArgField.Text + "'", ref inOutParam);
+  //    InOutArgField.Text = inOutParam;
+
+  //    //if (!IsReturningPostBack)
+  //    //{
+  //    //  // call function recursively
+  //    //  ExecuteFunction (new AutoPageFunction (
+  //    //      InArgField.Text + "'",
+  //    //      InOutArgField.Text + "'"));
+  //    //}
+  //    //else
+  //    //{
+  //    //  // when call returns, use output parameters 
+  //    //  AutoPageFunction function = (AutoPageFunction) ReturningFunction;
+  //    //  OutArgField.Text = function.OutArg;
+  //    //  InOutArgField.Text = function.InOutArg;
+  //    //}
+  //  }
+
+  //  protected void ReturnButton_Click (object sender, EventArgs e)
+  //  {
+  //    // set output parameters and return
+
+  //    // for ASP.NET 2.0
+  //    InOutArg = InOutArgField.Text + "'";
+  //    OutArg = OutArgField.Text + "'";
+  //    Return ();
+
+  //    // obsolete
+  //    // Return (InOutArgField.Text + "'", OutArgField.Text + "'");
+
+  //    // for ASP.NET 1.1
+  //    //Variables.InOutArg = InOutArgField.Text + "'";
+  //    //Variables.OutArg = OutArgField.Text + "'";
+  //    //ExecuteNextStep ();
+  //  }
+  //}
 
   //internal struct AutoPageVariables
   //{

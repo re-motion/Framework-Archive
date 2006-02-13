@@ -37,8 +37,9 @@
         </table>
         <br />
     
-        <asp:Button ID="ExecSelfButton" runat="server" Text="Execute self" OnClick="ExecSelf_Click" />
-        <asp:Button ID="ReturnButton" runat="server" Text="Return" OnClick="Return_Click" />
+        <asp:Button ID="ExecSelfButton" runat="server" Text="Execute self" OnClick="ExecSelfButton_Click" />
+        <asp:Button ID="ExecCalledPageButton" runat="server" Text="Execute self" OnClick="ExecCalledPageButton_Click" />
+        <asp:Button ID="ReturnButton" runat="server" Text="Return" OnClick="ReturnButton_Click" />
         <asp:Button ID="NoOpButton" runat="server" Text="NoOp" />
 
     </div>
