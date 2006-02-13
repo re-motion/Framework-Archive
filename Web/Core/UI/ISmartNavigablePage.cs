@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI
@@ -30,6 +31,10 @@ public interface ISmartNavigablePage: IPage
   /// </param>
   /// <remarks> Must be called before PreRendering of the page it self (the last control in the PreRender Phase). </remarks>
   void SetFocus (string id);
+
+  void RegisterNavigationControl (INavigationControl control);
+  string AppendNavigationUrlParameters (string url);
+  NameValueCollection GetNavigationUrlParameters();
 }
 
 }
