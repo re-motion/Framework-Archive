@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="TestTabbedPersonJobsUserControl.ascx.cs" Inherits="OBWTest.TestTabbedPersonJobsUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
 
 
 <table id="FormGrid" runat="server">
@@ -15,12 +15,16 @@
   </tr>
   <tr>
     <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" selection="Multiple" >
-
 <fixedcolumns>
 <rubicon:BocEditDetailsColumnDefinition SaveText="Save" CancelText="Cancel" EditText="Edit"></rubicon:BocEditDetailsColumnDefinition>
 <rubicon:BocCommandColumnDefinition Text="Event">
 <persistedcommand>
 <rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
+</PersistedCommand>
+</rubicon:BocCommandColumnDefinition>
+<rubicon:BocCommandColumnDefinition ItemID="Href" Text="Href">
+<persistedcommand>
+<rubicon:BocListItemCommand Type="Href" HrefCommand-Href="Start.aspx"></rubicon:BocListItemCommand>
 </PersistedCommand>
 </rubicon:BocCommandColumnDefinition>
 <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="Title">
