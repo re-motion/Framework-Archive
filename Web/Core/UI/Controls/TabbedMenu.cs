@@ -16,17 +16,16 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
-public interface IWindowStateManager
+public interface INavigationControl: IControl
 {
-  object GetData (string key);
-  void SetData (string key, object value);
+  NameValueCollection GetNavigationUrlParameters();
 }
 
 /// <summary>
 ///   The <b>TabbedMenu</b> can be used to provide a navigation menu.
 /// </summary>
 [Designer (typeof (TabbedMenuDesigner))]
-public class TabbedMenu: WebControl, IControl
+public class TabbedMenu: WebControl, INavigationControl
 {
   // constants
   private const string c_styleFileUrl = "TabbedMenu.css";
@@ -73,6 +72,10 @@ public class TabbedMenu: WebControl, IControl
     _subMenuTabStrip.EnableViewState = false;
     _subMenuTabStrip.Click += new WebTabClickEventHandler (SubMenuTabStrip_Click);
 
+    if (Page is ISmartNavigablePage)
+    {
+      ((ISmartNavigablePage) Page).RegisterNavigationControl (this);
+    }
     LoadSelection ();
   }
 
@@ -370,6 +373,15 @@ public class TabbedMenu: WebControl, IControl
 
     string[] tabIDs = ConvertTabIDsToArray (SelectedMainMenuTab, SelectedSubMenuTab);
     windowStateManager.SetData (SelectionID, tabIDs);
+  }
+
+  NameValueCollection INavigationControl.GetNavigationUrlParameters()
+  {
+    if (_subMenuTabStrip.SelectedTab != null)
+      return GetUrlParameters (SelectedSubMenuTab);
+    else if (_mainMenuTabStrip.SelectedTab != null)
+      return GetUrlParameters (SelectedMainMenuTab);
+    return new NameValueCollection();
   }
 
   /// <summary> Gets the parameters required for selecting the <paramref name="menuTab"/>. </summary>
