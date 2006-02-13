@@ -38,6 +38,7 @@ namespace Test
     protected TextBox InArgField;
     protected TextBox InOutArgField;
     protected TextBox OutArgField;
-    protected Button ExecSelf;
+    protected Button ExecSelfButton;
+    protected Button ReturnButton;
   }
 }

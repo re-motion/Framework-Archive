@@ -37,7 +37,9 @@
         </table>
         <br />
     
-        <asp:Button ID="ExecSelf" runat="server" Text="Execute self" OnClick="ExecSelf_Click" />
+        <asp:Button ID="ExecSelfButton" runat="server" Text="Execute self" OnClick="ExecSelf_Click" />
+        <asp:Button ID="ReturnButton" runat="server" Text="Return" OnClick="Return_Click" />
+        <asp:Button ID="NoOpButton" runat="server" Text="NoOp" />
 
     </div>
     </form>
