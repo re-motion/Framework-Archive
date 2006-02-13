@@ -4,7 +4,7 @@
     <urlMapping_XmlElement left="86244" top="1000" width="5292" height="2963" selected="0" zOrder="2" index="0" expanded="1">
         <add_XmlElement left="86244" top="4471" width="5292" height="2963" selected="0" zOrder="3" index="0" expanded="0" />
     </urlMapping_XmlElement>
-    <mappingEntry_XmlComplexType left="92170" top="1000" width="5292" height="2963" selected="0" zOrder="-1" index="1" expanded="1" />
-    <requiredStringType_XmlSimpleType left="74392" top="1000" width="5292" height="2963" selected="0" zOrder="-1" index="2" expanded="1" />
-    <dotNetType_XmlSimpleType left="80318" top="1000" width="5292" height="2963" selected="0" zOrder="-1" index="3" expanded="1" />
+    <mappingEntry_XmlComplexType left="92170" top="1000" width="5292" height="2963" selected="0" zOrder="5" index="1" expanded="1" />
+    <requiredStringType_XmlSimpleType left="74392" top="1000" width="5292" height="2963" selected="0" zOrder="6" index="2" expanded="1" />
+    <dotNetType_XmlSimpleType left="80318" top="1000" width="5292" height="2963" selected="0" zOrder="7" index="3" expanded="1" />
 </XSDDesignerLayout>
