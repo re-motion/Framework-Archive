@@ -5,9 +5,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 		<add 
+		    id="First"
 		    type="Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping.FirstMappedFunction, Rubicon.Web.UnitTests"
 		    resource="First.wxe"/>
 		<add 
+		    id="Second"
 		    type="Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping.SecondMappedFunction, Rubicon.Web.UnitTests"
 		    resource="Second.wxe"/>
+		<add 
+		    type="Rubicon.Web.UnitTests.ExecutionEngine.UrlMapping.FirstMappedFunction, Rubicon.Web.UnitTests"
+		    resource="Primary.wxe"/>
 </urlMapping>

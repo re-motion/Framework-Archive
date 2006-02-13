@@ -12,4 +12,8 @@ public class SecondMappedFunction: WxeFunction
 {
 }
 
+public class UnmappedFunction: WxeFunction
+{
+}
+
 }
