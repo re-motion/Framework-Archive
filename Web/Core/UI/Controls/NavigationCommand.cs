@@ -46,6 +46,9 @@ public class NavigationCommand: Command
   ///   The <see cref="NameValueCollection"/> containing additional url parameters.
   ///   Must not be <see langword="null"/>.
   /// </param>
+  /// <param name="includeNavigationUrlParameters"> 
+  ///   <see langword="true"/> to include URL parameters provided by <see cref="ISmartNavigablePage"/>.
+  /// </param>
   /// <exception cref="InvalidOperationException">
   ///   <para>
   ///     Thrown if called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
@@ -61,7 +64,8 @@ public class NavigationCommand: Command
       HtmlTextWriter writer, 
       string postBackEvent,
       string onClick,
-      NameValueCollection additionalUrlParameters)
+      NameValueCollection additionalUrlParameters,
+      bool includeNavigationUrlParameters)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent); 
