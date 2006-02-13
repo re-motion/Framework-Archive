@@ -117,7 +117,7 @@ public abstract class WxeFunction: WxeStepList
     StringUtility.ParsedItem[] parsedItems = StringUtility.ParseSeparatedList (actualParameters, ',');
 
     if (parsedItems.Length > parameterDeclarations.Length)
-      throw new ApplicationException ("Number of actual parameters exceeds number of formal paramteres.");
+      throw new ApplicationException ("Number of actual parameters exceeds number of declared parameters.");
 
     ArrayList arguments = new ArrayList();
     for (int i = 0; i < parsedItems.Length; ++i)
