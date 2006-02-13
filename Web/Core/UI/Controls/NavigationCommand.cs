@@ -47,7 +47,15 @@ public class NavigationCommand: Command
   ///   Must not be <see langword="null"/>.
   /// </param>
   /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   <para>
+  ///     Thrown if called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   </para><para>
+  ///     Thrown if neither the <see cref="WxeFunctionCommandInfo.MappingID"/> nor the 
+  ///     <see cref="WxeFunctionCommandInfo.TypeName"/> are set.
+  ///   </para><para>
+  ///     Thrown if the <see cref="WxeFunctionCommandInfo.MappingID"/> and <see cref="WxeFunctionCommandInfo.TypeName"/>
+  ///     specify different functions.
+  ///   </para>
   /// </exception> 
   protected override void AddAttributesToRenderForWxeFunctionCommand (
       HtmlTextWriter writer, 
@@ -81,7 +89,15 @@ public class NavigationCommand: Command
   ///   Must not be <see langword="null"/>.
   /// </param>
   /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   <para>
+  ///     Thrown if called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   </para><para>
+  ///     Thrown if neither the <see cref="WxeFunctionCommandInfo.MappingID"/> nor the 
+  ///     <see cref="WxeFunctionCommandInfo.TypeName"/> are set.
+  ///   </para><para>
+  ///     Thrown if the <see cref="WxeFunctionCommandInfo.MappingID"/> and <see cref="WxeFunctionCommandInfo.TypeName"/>
+  ///     specify different functions.
+  ///   </para>
   /// </exception> 
   public virtual string GetWxeFunctionPermanentUrl (NameValueCollection additionalUrlParameters)
   {
@@ -105,7 +121,15 @@ public class NavigationCommand: Command
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="Command.WxeFunctionCommandInfo"/>.
   /// </summary>
   /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   <para>
+  ///     Thrown if called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   </para><para>
+  ///     Thrown if neither the <see cref="WxeFunctionCommandInfo.MappingID"/> nor the 
+  ///     <see cref="WxeFunctionCommandInfo.TypeName"/> are set.
+  ///   </para><para>
+  ///     Thrown if the <see cref="WxeFunctionCommandInfo.MappingID"/> and <see cref="WxeFunctionCommandInfo.TypeName"/>
+  ///     specify different functions.
+  ///   </para>
   /// </exception> 
   public string GetWxeFunctionPermanentUrl ()
   {

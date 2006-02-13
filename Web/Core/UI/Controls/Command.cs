@@ -568,7 +568,15 @@ public class Command: IControlItem
   ///   <see cref="WxeFunctionCommandInfo.Parameters"/> string and the function stack.
   /// </param>
   /// <exception cref="InvalidOperationException">
-  ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   <para>
+  ///     Thrown if called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
+  ///   </para><para>
+  ///     Thrown if neither the <see cref="WxeFunctionCommandInfo.MappingID"/> nor the 
+  ///     <see cref="WxeFunctionCommandInfo.TypeName"/> are set.
+  ///   </para><para>
+  ///     Thrown if the <see cref="WxeFunctionCommandInfo.MappingID"/> and <see cref="WxeFunctionCommandInfo.TypeName"/>
+  ///     specify different functions.
+  ///   </para>
   /// </exception> 
   public virtual void ExecuteWxeFunction (IWxePage wxePage, NameObjectCollection additionalWxeParameters)
   {
