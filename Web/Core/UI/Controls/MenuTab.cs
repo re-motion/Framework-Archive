@@ -125,7 +125,7 @@ public abstract class MenuTab: WebTab
     {
       NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
       _renderingCommand.RenderBegin (
-          writer, GetPostBackClientEvent(), new string[0], string.Empty, additionalUrlParameters, style);
+          writer, GetPostBackClientEvent(), new string[0], string.Empty, additionalUrlParameters, false, style);
     }
     else
     {
