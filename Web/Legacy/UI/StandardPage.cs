@@ -3,6 +3,7 @@ using System.IO;
 using System.Web.UI;
 
 using Rubicon.Web.Utilities;
+using System.Collections;
 
 namespace Rubicon.Web.UI
 {
@@ -139,55 +140,129 @@ public class StandardPage : NavigablePage
     return StandardPageUtility.GetWindowOpenJavascript (url, useScrollbars);
   }
 
-  protected override void SavePageStateToPersistenceMedium (object viewState)
+  protected override void SavePageStateToPersistenceMedium (object state)
   {
     if (SaveViewStateToSession)
     {
-      LosFormatter formatter = new LosFormatter();
-      StringWriter writer = new StringWriter ();
-      formatter.Serialize (writer, ((Triplet) viewState).Second);
-      SetSessionValue ("state.second", writer.ToString ());
-
-      writer = new StringWriter ();
-
-      formatter.Serialize (writer, ((Triplet) viewState).Third);
-      SetSessionValue ("state.third", writer.ToString ());
-
-      ((Triplet) viewState).Second = null;
-      ((Triplet) viewState).Third = null;
+#if NET11
+      SaveViewStateToSessionInternal ((Triplet) state);
+#else
+      Pair pair = (Pair) state;
+      SaveControlStateToSession ((IDictionary) pair.First);
+      SaveViewStateToSessionInternal ((Pair) pair.Second);
+#endif
     }
     
-    base.SavePageStateToPersistenceMedium (viewState);
+    base.SavePageStateToPersistenceMedium (state);
   }
 
   protected override object LoadPageStateFromPersistenceMedium ()
   {
     if (SaveViewStateToSession)
     {
-      Triplet viewState = (Triplet) base.LoadPageStateFromPersistenceMedium (); 
-      LosFormatter formatter = new LosFormatter ();
-
-      object obj= null;
-      obj = this.GetSessionValue("state.second", false); 
-
-      if (obj != null && obj.ToString() != string.Empty)
-        viewState.Second = formatter.Deserialize((string) obj);
-      else
-        viewState.Second = null;
-
-      obj = this.GetSessionValue("state.third", false);
-
-      if (obj != null && obj.ToString() != string.Empty)
-        viewState.Third = formatter.Deserialize ((string) obj);
-      else
-        viewState.Third = null;
-
-      return viewState;
+#if NET11
+      return LoadViewStateFromSession ();
+#else
+      IDictionary controlState = LoadControlStateFromSession ();
+      Pair viewState = LoadViewStateFromSession ();
+      return new Pair (controlState, viewState);
+#endif
     }
     else
     {
       return base.LoadPageStateFromPersistenceMedium ();
     }
   }
+
+#if NET11
+  private void SaveViewStateToSessionInternal (Triplet viewState)
+  {
+    LosFormatter formatter = new LosFormatter();
+    StringWriter writer = new StringWriter ();
+    formatter.Serialize (writer, viewState.Second);
+    SetSessionValue ("state.second", writer.ToString ());
+
+    writer = new StringWriter ();
+
+    formatter.Serialize (writer, viewState.Third);
+    SetSessionValue ("state.third", writer.ToString ());
+
+    viewState.Second = null;
+    viewState.Third = null;
+  }
+
+  private Triplet LoadViewStateFromSession ()
+  {
+    Triplet viewState = (Triplet) base.LoadPageStateFromPersistenceMedium (); 
+    LosFormatter formatter = new LosFormatter ();
+
+    object obj= null;
+    obj = this.GetSessionValue("state.second", false); 
+
+    if (obj != null && obj.ToString() != string.Empty)
+      viewState.Second = formatter.Deserialize((string) obj);
+    else
+      viewState.Second = null;
+
+    obj = this.GetSessionValue("state.third", false);
+
+    if (obj != null && obj.ToString() != string.Empty)
+      viewState.Third = formatter.Deserialize ((string) obj);
+    else
+      viewState.Third = null;
+
+    return viewState;
+  }
+#else
+  private void SaveViewStateToSessionInternal (Pair viewState)
+  {
+    LosFormatter formatter = new LosFormatter ();
+    StringWriter writer = new StringWriter ();
+    formatter.Serialize (writer, viewState.Second);
+    SetSessionValue ("viewState", writer.ToString ());
+
+    viewState.Second = null;
+  }
+
+  private void SaveControlStateToSession (IDictionary controlState)
+  {
+    LosFormatter formatter = new LosFormatter ();
+    StringWriter writer = new StringWriter ();
+    formatter.Serialize (writer, controlState);
+    SetSessionValue ("controlState", writer.ToString ());
+    controlState.Clear ();
+  }
+
+  private Pair LoadViewStateFromSession ()
+  {
+    Pair state = (Pair) base.LoadPageStateFromPersistenceMedium ();
+    Pair viewState = (Pair) state.Second;
+    LosFormatter formatter = new LosFormatter ();
+
+    object obj= null;
+    obj = this.GetSessionValue ("viewState", false);
+
+    if (obj != null && obj.ToString () != string.Empty)
+      viewState.Second = formatter.Deserialize ((string) obj);
+    else
+      viewState.Second = null;
+
+    return viewState;
+  }
+
+  private IDictionary LoadControlStateFromSession ()
+  {
+    IDictionary controlState = null;
+    LosFormatter formatter = new LosFormatter ();
+
+    object obj= null;
+    obj = this.GetSessionValue ("controlState", false);
+    if (obj != null && obj.ToString () != string.Empty)
+      controlState = (IDictionary) formatter.Deserialize ((string) obj);
+
+    return controlState;
+  }
+#endif
 }
+
 }
