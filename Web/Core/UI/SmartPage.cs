@@ -14,6 +14,12 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.UI
 {
 
+public interface IWindowStateManager
+{
+  object GetData (string key);
+  void SetData (string key, object value);
+}
+
 /// <summary> Specifies the client side events supported for registration by the <see cref="ISmartPage"/>. </summary>
 public enum SmartPageEvents
 {
@@ -228,6 +234,21 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   public void SetFocus (string id)
   {
     _smartPageInfo.SetFocus (id);
+  }
+
+  public void RegisterNavigationControl (INavigationControl control)
+  {
+    _smartPageInfo.RegisterNavigationControl (control);
+  }
+
+  public string AppendNavigationUrlParameters (string url)
+  {
+    return _smartPageInfo.AppendNavigationUrlParameters (url);
+  }
+
+  public NameValueCollection GetNavigationUrlParameters()
+  {
+    return _smartPageInfo.GetNavigationUrlParameters();
   }
 
   #endregion
