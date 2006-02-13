@@ -1,4 +1,4 @@
-1.4.11
+1.4.12
 ======
 - BocList, BocReferenceValue, BocDropDownMenu
   * WxeFunctionCommand.MappingID: Neue Property um statt des FunctionTypes lediglich die ID im UrlMapping angeben zu 

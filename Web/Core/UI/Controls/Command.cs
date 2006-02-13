@@ -337,6 +337,9 @@ public class Command: IControlItem
   ///   The <see cref="NameValueCollection"/> containing additional url parameters.
   ///   Must not be <see langword="null"/>.
   /// </param>
+  /// <param name="includeNavigationUrlParameters"> 
+  ///   <see langword="true"/> to include URL parameters provided by <see cref="ISmartNavigablePage"/>.
+  /// </param>
   /// <param name="style"> The style applied to the opening tag. </param>
   public virtual void RenderBegin (
       HtmlTextWriter writer, 
@@ -344,16 +347,18 @@ public class Command: IControlItem
       string[] parameters,
       string onClick,
       NameValueCollection additionalUrlParameters,
+      bool includeNavigationUrlParameters,
       Style style)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("style", style);
-
+      
     switch (_type)
     {
       case CommandType.Href:
       {
-        AddAttributesToRenderForHrefCommand (writer, parameters, onClick, additionalUrlParameters);
+        AddAttributesToRenderForHrefCommand (
+            writer, parameters, onClick, additionalUrlParameters, includeNavigationUrlParameters);
         break;
       }
       case CommandType.Event:
@@ -363,7 +368,8 @@ public class Command: IControlItem
       }
       case CommandType.WxeFunction:
       {
-        AddAttributesToRenderForWxeFunctionCommand (writer, postBackEvent, onClick, additionalUrlParameters);
+        AddAttributesToRenderForWxeFunctionCommand (
+            writer, postBackEvent, onClick, additionalUrlParameters, includeNavigationUrlParameters);
         break;
       }
       case CommandType.None:
@@ -391,7 +397,7 @@ public class Command: IControlItem
   /// </param>
   public void RenderBegin (HtmlTextWriter writer, string postBackEvent, string[] parameters, string onClick)
   {
-    RenderBegin (writer, postBackEvent, parameters, onClick, new NameValueCollection (0), new Style());
+    RenderBegin (writer, postBackEvent, parameters, onClick, new NameValueCollection (0), true, new Style());
   }
 
   /// <summary> Adds the attributes for the Href command to the anchor tag. </summary>
@@ -406,6 +412,10 @@ public class Command: IControlItem
   ///   The <see cref="NameValueCollection"/> containing additional url parameters.
   ///   Must not be <see langword="null"/>.
   /// </param>
+  /// <param name="includeNavigationUrlParameters"> 
+  ///   <see langword="true"/> to include URL parameters provided by <see cref="ISmartNavigablePage"/>.
+  ///   Defaults to <see langword="true"/>.
+  /// </param>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.Href"/>.
   /// </exception> 
@@ -413,7 +423,8 @@ public class Command: IControlItem
       HtmlTextWriter writer,
       string[] parameters, 
       string onClick,
-      NameValueCollection additionalUrlParameters)
+      NameValueCollection additionalUrlParameters,
+      bool includeNavigationUrlParameters)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("parameters", parameters);  
@@ -424,6 +435,19 @@ public class Command: IControlItem
     string href = HrefCommand.FormatHref (parameters);
     if (HttpContext.Current != null)
     {
+      if (includeNavigationUrlParameters)
+      {
+        ISmartNavigablePage page = null;
+        if (OwnerControl != null)
+          page = OwnerControl.Page as ISmartNavigablePage;
+
+        if (page != null)
+        {
+          additionalUrlParameters = new NameValueCollection (additionalUrlParameters);
+          NameValueCollection navigationUrlParameters = page.GetNavigationUrlParameters();
+          additionalUrlParameters.Add (navigationUrlParameters);
+        }
+      }
       href = UrlUtility.AddParameters (href, additionalUrlParameters);      
       href = UrlUtility.GetAbsoluteUrl (HttpContext.Current, href);
     }
@@ -480,6 +504,9 @@ public class Command: IControlItem
   ///   The <see cref="NameValueCollection"/> containing additional url parameters.
   ///   Must not be <see langword="null"/>.
   /// </param>
+  /// <param name="includeNavigationUrlParameters"> 
+  ///   <see langword="true"/> to include URL parameters provided by <see cref="ISmartNavigablePage"/>.
+  /// </param>
   /// <exception cref="InvalidOperationException">
   ///   If called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   /// </exception> 
@@ -487,11 +514,11 @@ public class Command: IControlItem
       HtmlTextWriter writer, 
       string postBackEvent,
       string onClick,
-      NameValueCollection additionalUrlParameters)
+      NameValueCollection additionalUrlParameters,
+      bool includeNavigationUrlParameters)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("postBackEvent", postBackEvent); 
-    ArgumentUtility.CheckNotNull ("additionalUrlParameters", additionalUrlParameters); 
     if (Type != CommandType.WxeFunction)
       throw new InvalidOperationException ("Call to AddAttributesToRenderForWxeFunctionCommand not allowed unless Type is set to CommandType.WxeFunction.");
        
