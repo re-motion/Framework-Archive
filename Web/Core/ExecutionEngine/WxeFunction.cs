@@ -10,6 +10,7 @@ using System.Web;
 using Rubicon.Collections;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
+using Rubicon.NullableValueTypes;
 using log4net;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -47,8 +48,8 @@ public abstract class WxeFunction: WxeStepList
         if (declarations == null)
         {
           PropertyInfo[] properties = type.GetProperties (BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-          ArrayList parameters = new ArrayList(); // ArrayList<WxeParameterDeclaration>
-          ArrayList numbers = new ArrayList(); // ArrayList<int>
+          ArrayList parameters = new ArrayList (properties.Length); // ArrayList<WxeParameterDeclaration>
+          ArrayList indices = new ArrayList (properties.Length); // ArrayList<int>
           foreach (PropertyInfo property in properties)
           {
             WxeParameterAttribute parameterAttribute = WxeParameterAttribute.GetAttribute (property);
@@ -56,12 +57,12 @@ public abstract class WxeFunction: WxeStepList
             {
               parameters.Add (new WxeParameterDeclaration (
                   property.Name, parameterAttribute.Required, parameterAttribute.Direction, property.PropertyType));
-              numbers.Add (parameterAttribute.Number);
+              indices.Add (parameterAttribute.Index);
             }
           }
 
           declarations = (WxeParameterDeclaration[]) parameters.ToArray (typeof (WxeParameterDeclaration));
-          int[] numberArray = (int[]) numbers.ToArray (typeof (int));
+          int[] numberArray = (int[]) indices.ToArray (typeof (int));
           Array.Sort (numberArray, declarations);
 
           s_parameterDeclarations.Add (type, declarations);
@@ -567,40 +568,59 @@ public abstract class WxeFunction: WxeStepList
 [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]
 public class WxeParameterAttribute: Attribute
 {
-  private int _number;
-  private bool _required;
+  private int _index;
+  private NaBoolean _required;
   private WxeParameterDirection _direction;
 
-  public WxeParameterAttribute (int number, WxeParameterDirection direction)
-    : this (number, false, direction)
+  public WxeParameterAttribute (int index, WxeParameterDirection direction)
+    : this (index, NaBoolean.Null, direction)
   {
   }
 
-  public WxeParameterAttribute (int number, bool required)
-    : this (number, required, WxeParameterDirection.In)
+  public WxeParameterAttribute (int index, bool required)
+    : this (index, new NaBoolean (required), WxeParameterDirection.In)
   {
   }
 
-  public WxeParameterAttribute (int number)
-    : this (number, false, WxeParameterDirection.In)
+  public WxeParameterAttribute (int index)
+    : this (index, NaBoolean.Null, WxeParameterDirection.In)
   {
   }
 
-  public WxeParameterAttribute (int number, bool required, WxeParameterDirection direction)
+  /// <summary>
+  /// Declares a property as WXE function parameter.
+  /// </summary>
+  /// <param name="index"> Index of the parameter within the function's parameter list. </param>
+  /// <param name="required"> Speficies whether this parameter must be specified (an not 
+  ///     be <see langword="null"/>). Default is <see langword="true"/> for value types
+  ///     and <see langword="false"/> for reference types. </param>
+  /// <param name="direction"> Declares the parameter as input or output parameter, or both. </param>
+  public WxeParameterAttribute (int index, bool required, WxeParameterDirection direction)
+    : this (index, new NaBoolean (required), direction)
   {
-    _number = number;
+  }
+
+  private  WxeParameterAttribute (int index, NaBoolean required, WxeParameterDirection direction)
+  {
+    _index = index;
     _required = required;
     _direction = direction;
   }
 
+  [Obsolete ("Use property \"Index\" instead")]
   public int Number
   {
-    get { return _number; }
+    get { return _index; }
+  }
+
+  public int Index
+  {
+    get { return _index; }
   }
 
   public bool Required
   {
-    get { return _required; }
+    get { return _required.Value; }
   }
 
   public WxeParameterDirection Direction
@@ -610,11 +630,15 @@ public class WxeParameterAttribute: Attribute
 
   public static WxeParameterAttribute GetAttribute (PropertyInfo property)
   {
+    ArgumentUtility.CheckNotNull ("property", property);
     WxeParameterAttribute[] attributes = (WxeParameterAttribute[]) property.GetCustomAttributes (typeof (WxeParameterAttribute), false);
     if (attributes == null || attributes.Length == 0)
       return null;
-    else
-      return attributes[0];
+
+    WxeParameterAttribute attribute = attributes[0];
+    if (attribute._required.IsNull)
+      attribute._required = property.PropertyType.IsValueType;
+    return attribute;
   }
 }
 

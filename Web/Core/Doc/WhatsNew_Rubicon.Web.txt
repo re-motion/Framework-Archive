@@ -1,5 +1,9 @@
-1.4.11
+1.4.12
 ======
+- WxeParameterAttribute
+  * Required: Bisher default = false. Neu: default = true für value type parameter, false für reference type parameter.
+  * Property Number heißt jetzt Index
+
 - UrlMapping
   * Jedes Mapping kann mit einer optionalen ID versehen werden. 
     Diese ID kann anschließend bei den Commands (TabbedMenu, BocList, etc) verwendet werden, um die Function anzugeben.
