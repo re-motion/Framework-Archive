@@ -122,6 +122,7 @@ public class UrlMappingEntry
   {
   }
 
+  /// <summary> An optional ID for the <see cref="UrlMappingEntry"/>. </summary>
   [XmlAttribute ("id")]
   public string ID
   {
