@@ -75,11 +75,11 @@
       <list type="bullet">
         <item>
           A <see cref="WxeFunction"/> of <see cref="Type"/> <c>MyNamespace.MyFirstFunction,MyAssembly</c> mapped to
-          the URLs <c>~/first.wxe</c> and <c>~/primary.wxe</c>.
+          the URLs <c>~/first.wxe</c> and <c>~/primary.wxe</c>. The first mapping also has an ID: <c>First</c>.
         </item>
         <item>
           A second <see cref="WxeFunction"/> of <see cref="Type"/> <c>MyNamespace.MySecondFunction,MyAssembly</c> 
-          mapped to the URL <c>~/second.wxe</c>.
+          mapped to the URL <c>~/second.wxe</c>. The second mapping also has an ID: <c>Second</c>.
         </item>
       </list>
       <code>
@@ -88,8 +88,8 @@
     xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd"&gt;
-  &lt;<see cref="UrlMappingEntry">add</see> <see cref="UrlMappingEntry.FunctionTypeName">type</see>="MyNamespace.MyFirstFunction,MyAssembly" <see cref="UrlMappingEntry.Resource">resource</see>="first.wxe"/&gt;
-  &lt;add type="MyNamespace.MySecondFunction,MyAssembly" resource="second.wxe"/&gt;
+  &lt;<see cref="UrlMappingEntry">add</see> <see cref="UrlMappingEntry.ID">id</see>="First" <see cref="UrlMappingEntry.FunctionTypeName">type</see>="MyNamespace.MyFirstFunction,MyAssembly" <see cref="UrlMappingEntry.Resource">resource</see>="first.wxe"/&gt;
+  &lt;add id="Second" type="MyNamespace.MySecondFunction,MyAssembly" resource="second.wxe"/&gt;
   &lt;add type="MyNamespace.MyFirstFunction,MyAssembly" resource="primary.wxe"/&gt;
 &lt;/urlMapping&gt;
 </code>
