@@ -2,6 +2,30 @@
 <SmartPage>
   <Class>
     <remarks>
+
+      <h4 class="dtH4">Standards Conformance</h4>
+      <list type="table">
+        <listheader>
+          <term>Standard</term>
+          <description>Conformance Information</description>
+        </listheader>
+        <item>
+          <term>HTML 4.01</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>XHTML 1.0</term>
+          <description>valid</description>
+        </item>
+        <item>
+          <term>WAI WCAG 1.0</term>
+          <description>
+            Dirty state tracking, displaying the abort confirmation dialog, concurrent postback prevention, 
+            and smart navigation require java-script but are not considered to be required for a usable page.
+          </description>
+        </item>        
+      </list>
+
       <h4 class="dtH4">Dirty State Tracking (specified in <see cref="ISmartPage"/>)</h4>
       <para>
         The <see cref="SmartPage"/> provides methods for server-side and client-side dirty state tracking.
@@ -64,7 +88,41 @@
           method instead of <see cref="Page.Validate">Page.Validate</see>.
         </item>
       </list>
+    
+      <h4 class="dtH4">Localization Support</h4>
+      <para>
+        The resources required by the <see cref="SmartPage"/> are defined by the 
+        <see cref="SmartPageInfo.ResourceIdentifier"/> enum. See the <b>ResourceIdentifier</b>'s documentation for 
+        details on localization.
+      </para><para>
+        The <see cref="SmartPage"/> supports resource dispatching to its properties through the 
+        <see cref="Rubicon.Web.UI.Globalization.ResourceDispatcher"/>.
+        Use the following resource identifiers for dispatching strings to the <see cref="SmartPage"/>
+        or use the <b>global resource identifier</b> syntax for setting the resource identifier in the propery.
+      </para>
+      <list type="table">
+        <listheader>
+          <term>Property</term>
+          <description>Resource Identifier</description>
+        </listheader>
+        <item>
+          <term> <see cref="AbortMessage"/> </term>
+          <description>
+            <para> &lt;SmartPage Resource ID&gt;:AbortMessage </para>
+            <para> e.g. auto:this:AbortMessage </para>
+          </description>
+        </item>
+        <item>
+          <term> <see cref="StatusIsSubmittingMessage"/> </term>
+          <description>
+            <para> &lt;SmartPage Resource ID&gt;:StatusIsSubmittingMessage </para>
+            <para> e.g. auto:this:StatusIsSubmittingMessage </para>
+          </description>
+        </item>
+      </list>
+      
     </remarks>
+    
     <seealso cref="ISmartPage"/>
   </Class>
   <RegisterClientSidePageEventHandler>
