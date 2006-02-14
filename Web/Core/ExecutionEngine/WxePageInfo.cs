@@ -723,7 +723,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="Rubicon.Web.UI.Controls.IWindowStateManager.GetData">Rubicon.Web.UI.Controls.IWindowStateManager.GetData</see>.
+  ///   Implements <see cref="Rubicon.Web.UI.IWindowStateManager.GetData">Rubicon.Web.UI.IWindowStateManager.GetData</see>.
   /// </summary>
   public object GetData (string key)
   {
@@ -732,7 +732,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
   /// <summary>
-  ///   Implements <see cref="Rubicon.Web.UI.Controls.IWindowStateManager.SetData">Rubicon.Web.UI.Controls.IWindowStateManager.SetData</see>.
+  ///   Implements <see cref="Rubicon.Web.UI.IWindowStateManager.SetData">Rubicon.Web.UI.IWindowStateManager.SetData</see>.
   /// </summary>
   public void SetData (string key, object value)
   {
