@@ -46,6 +46,12 @@ public class BocListRowTest
   private BocCompoundColumnDefinition _typeWithReferenceFirstValueFirstValueCompoundColumn;
   private BocCompoundColumnDefinition _typeWithReferenceFirstValueSecondValueCompoundColumn;
 
+  private BocCustomColumnDefinition _typeWithStringFirstValueCustomColumn;
+  private BocCustomColumnDefinition _typeWithStringSecondValueCustomColumn;
+
+  private BocCustomColumnDefinition _typeWithReferenceFirstValueCustomColumn;
+  private BocCustomColumnDefinition _typeWithReferenceSecondValueCustomColumn;
+
   [SetUp]
   public virtual void SetUp()
   {
@@ -94,6 +100,15 @@ public class BocListRowTest
     _typeWithStringFirstValueSecondValueCompoundColumn.PropertyPathBindings.Add (
         new PropertyPathBinding (_typeWithStringSecondValuePath));
     _typeWithStringFirstValueSecondValueCompoundColumn.FormatString = "{0}, {1}";
+
+
+    _typeWithStringFirstValueCustomColumn = new BocCustomColumnDefinition ();
+    _typeWithStringFirstValueCustomColumn.PropertyPath = _typeWithStringFirstValuePath;
+    _typeWithStringFirstValueCustomColumn.IsSortable = true;
+
+    _typeWithStringSecondValueCustomColumn = new BocCustomColumnDefinition ();
+    _typeWithStringSecondValueCustomColumn.PropertyPath = _typeWithStringSecondValuePath;
+    _typeWithStringSecondValueCustomColumn.IsSortable = true;
   }
 
   private void InititalizeReferenceValue()
@@ -138,412 +153,277 @@ public class BocListRowTest
     _typeWithReferenceFirstValueSecondValueCompoundColumn.PropertyPathBindings.Add (
         new PropertyPathBinding (_typeWithReferenceSecondValuePath));
     _typeWithReferenceFirstValueSecondValueCompoundColumn.FormatString = "{0}, {1}";
+
+
+    _typeWithReferenceFirstValueCustomColumn = new BocCustomColumnDefinition ();
+    _typeWithReferenceFirstValueCustomColumn.PropertyPath = _typeWithReferenceFirstValuePath;
+    _typeWithReferenceFirstValueCustomColumn.IsSortable = true;
+
+    _typeWithReferenceSecondValueCustomColumn = new BocCustomColumnDefinition ();
+    _typeWithReferenceSecondValueCustomColumn.PropertyPath = _typeWithReferenceSecondValuePath;
+    _typeWithReferenceSecondValueCustomColumn.IsSortable = true;
   }
 
 
   [Test]
   public void CompareRowsWithSimpleColumnHavingTypeWithStringAscending_A_A()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueSimpleColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringAB = new BocListRow (provider, 0, _stringValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringAB);
-    int compareResultRightLeft = rowWithTypeWithStringAB.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+    CompareEqualValuesAscending (_typeWithStringFirstValueSimpleColumn, _stringValueAA, _stringValueAB);
   }
 
   [Test]
   public void CompareRowsWithSimpleColumnHavingValueTypeWithStringDescending_A_A()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueSimpleColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringAB = new BocListRow (provider, 0, _stringValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringAB);
-    int compareResultRightLeft = rowWithTypeWithStringAB.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+    CompareEqualValuesDescending (_typeWithStringFirstValueSimpleColumn, _stringValueAA, _stringValueAB);
   }
 
   [Test]
   public void CompareRowsWithSimpleColumnHavingValueTypeWithStringAscending_A_B()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = 
-        new BocListSortingOrderEntryMock (_typeWithStringFirstValueSimpleColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringBA = new BocListRow (provider, 0, _stringValueBA);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringBA);
-    int compareResultRightLeft = rowWithTypeWithStringBA.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight < 0, "Left - Right <= zero.");
-    Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
+    CompareAscendingValuesAscending (_typeWithStringFirstValueSimpleColumn, _stringValueAA, _stringValueBA);
   }
 
   [Test]
   public void CompareRowsWithSimpleColumnHavingValueTypeWithStringDescending_A_B()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueSimpleColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringBA = new BocListRow (provider, 0, _stringValueBA);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringBA);
-    int compareResultRightLeft = rowWithTypeWithStringBA.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight > 0, "Right - Left >= zero.");
-    Assert.IsTrue (compareResultRightLeft < 0, "Left - Right <= zero.");
+    CompareAscendingValuesDescending (_typeWithStringFirstValueSimpleColumn, _stringValueAA, _stringValueBA);
   }
 
 
   [Test]
   public void CompareRowsWithSimpleColumnHavingTypeWithReferenceAscending_A_A()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueSimpleColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceAB = new BocListRow (provider, 0, _referenceValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceAB);
-    int compareResultRightLeft = rowWithTypeWithReferenceAB.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+    CompareEqualValuesAscending (_typeWithReferenceFirstValueSimpleColumn, _referenceValueAA, _referenceValueAB);
   }
 
   [Test]
   public void CompareRowsWithSimpleColumnHavingTypeWithReferenceDescending_A_A()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueSimpleColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceAB = new BocListRow (provider, 0, _referenceValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceAB);
-    int compareResultRightLeft = rowWithTypeWithReferenceAB.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+    CompareEqualValuesDescending (_typeWithReferenceFirstValueSimpleColumn, _referenceValueAA, _referenceValueAB);
   }
 
   [Test]
   public void CompareRowsWithSimpleColumnHavingTypeWithReferenceAscending_A_B()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueSimpleColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceBA = new BocListRow (provider, 0, _referenceValueBA);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceBA);
-    int compareResultRightLeft = rowWithTypeWithReferenceBA.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight < 0, "Left - Right <= zero.");
-    Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
+    CompareAscendingValuesAscending (_typeWithReferenceFirstValueSimpleColumn, _referenceValueAA, _referenceValueBA);
   }
 
   [Test]
   public void CompareRowsWithSimpleColumnHavingTypeWithReferenceDescending_A_B()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueSimpleColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceBA = new BocListRow (provider, 0, _referenceValueBA);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceBA);
-    int compareResultRightLeft = rowWithTypeWithReferenceBA.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight > 0, "Right - Left >= zero.");
-    Assert.IsTrue (compareResultRightLeft < 0, "Left - Right <= zero.");
+    CompareAscendingValuesDescending (_typeWithReferenceFirstValueSimpleColumn, _referenceValueAA, _referenceValueBA);
   }
 
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithStringAscending_AA_AA()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueFirstValueCompoundColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringAB = new BocListRow (provider, 0, _stringValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringAB);
-    int compareResultRightLeft = rowWithTypeWithStringAB.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+    CompareEqualValuesAscending (_typeWithStringFirstValueFirstValueCompoundColumn, _stringValueAA, _stringValueAB);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithStringDescending_AA_AA()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueFirstValueCompoundColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringAB = new BocListRow (provider, 0, _stringValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringAB);
-    int compareResultRightLeft = rowWithTypeWithStringAB.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+    CompareEqualValuesDescending (_typeWithStringFirstValueFirstValueCompoundColumn, _stringValueAA, _stringValueAB);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithStringAscending_AA_BA()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueSecondValueCompoundColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringBA = new BocListRow (provider, 0, _stringValueBA);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringBA);
-    int compareResultRightLeft = rowWithTypeWithStringBA.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight < 0, "Left - Right <= zero.");
-    Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
+    CompareAscendingValuesAscending (
+        _typeWithStringFirstValueSecondValueCompoundColumn, _stringValueAA, _stringValueBA);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithStringDescending_AA_BA()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueSecondValueCompoundColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringBA = new BocListRow (provider, 0, _stringValueBA);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringBA);
-    int compareResultRightLeft = rowWithTypeWithStringBA.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight > 0, "Right - Left >= zero.");
-    Assert.IsTrue (compareResultRightLeft < 0, "Left - Right <= zero.");
+    CompareAscendingValuesDescending (
+        _typeWithStringFirstValueSecondValueCompoundColumn, _stringValueAA, _stringValueBA);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithStringAscending_AA_AB()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueSecondValueCompoundColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringAB = new BocListRow (provider, 0, _stringValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringAB);
-    int compareResultRightLeft = rowWithTypeWithStringAB.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight < 0, "Left - Right <= zero.");
-    Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
+    CompareAscendingValuesAscending (
+        _typeWithStringFirstValueSecondValueCompoundColumn, _stringValueAA, _stringValueAB);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithStringDescending_AA_AB()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithStringFirstValueSecondValueCompoundColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithStringAA = new BocListRow (provider, 0, _stringValueAA);
-    BocListRow rowWithTypeWithStringAB = new BocListRow (provider, 0, _stringValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithStringAA.CompareTo (rowWithTypeWithStringAB);
-    int compareResultRightLeft = rowWithTypeWithStringAB.CompareTo (rowWithTypeWithStringAA);
-
-    Assert.IsTrue (compareResultLeftRight > 0, "Right - Left >= zero.");
-    Assert.IsTrue (compareResultRightLeft < 0, "Left - Right <= zero.");
+    CompareAscendingValuesDescending (
+        _typeWithStringFirstValueSecondValueCompoundColumn, _stringValueAA, _stringValueAB);
   }
 
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithReferenceAscending_AA_AA()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueFirstValueCompoundColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceAB = new BocListRow (provider, 0, _referenceValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceAB);
-    int compareResultRightLeft = rowWithTypeWithReferenceAB.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+    CompareEqualValuesAscending (
+        _typeWithReferenceFirstValueFirstValueCompoundColumn, _referenceValueAA, _referenceValueAB);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithReferenceDescending_AA_AA()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueFirstValueCompoundColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceAB = new BocListRow (provider, 0, _referenceValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceAB);
-    int compareResultRightLeft = rowWithTypeWithReferenceAB.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
-    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+    CompareEqualValuesDescending (
+        _typeWithReferenceFirstValueFirstValueCompoundColumn, _referenceValueAA, _referenceValueAB);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithReferenceAscending_AA_BA()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueSecondValueCompoundColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceBA = new BocListRow (provider, 0, _referenceValueBA);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceBA);
-    int compareResultRightLeft = rowWithTypeWithReferenceBA.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight < 0, "Left - Right <= zero.");
-    Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
+    CompareAscendingValuesAscending (
+        _typeWithReferenceFirstValueSecondValueCompoundColumn, _referenceValueAA, _referenceValueBA);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithReferenceDescending_AA_BA()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueSecondValueCompoundColumn, SortingDirection.Descending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceBA = new BocListRow (provider, 0, _referenceValueBA);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceBA);
-    int compareResultRightLeft = rowWithTypeWithReferenceBA.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight > 0, "Right - Left >= zero.");
-    Assert.IsTrue (compareResultRightLeft < 0, "Left - Right <= zero.");
+    CompareAscendingValuesDescending (
+        _typeWithReferenceFirstValueSecondValueCompoundColumn, _referenceValueAA, _referenceValueBA);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithReferenceAscending_AA_AB()
   {
-    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueSecondValueCompoundColumn, SortingDirection.Ascending);
-
-    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
-    provider.SetSortingOrder (sortingOrder);
-    
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceAB = new BocListRow (provider, 0, _referenceValueAB);
-
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceAB);
-    int compareResultRightLeft = rowWithTypeWithReferenceAB.CompareTo (rowWithTypeWithReferenceAA);
-
-    Assert.IsTrue (compareResultLeftRight < 0, "Left - Right <= zero.");
-    Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
+    CompareAscendingValuesAscending (
+        _typeWithReferenceFirstValueSecondValueCompoundColumn, _referenceValueAA, _referenceValueAB);
   }
 
   [Test]
   public void CompareRowsWithCompoundColumnHavingValueTypeWithReferenceDescending_AA_AB()
   {
+    CompareAscendingValuesDescending (
+        _typeWithReferenceFirstValueSecondValueCompoundColumn, _referenceValueAA, _referenceValueAB);
+  }
+
+
+  [Test]
+  public void CompareRowsWithCustomColumnHavingTypeWithStringAscending_A_A()
+  {
+    CompareEqualValuesAscending (_typeWithStringFirstValueCustomColumn, _stringValueAA, _stringValueAB);
+  }
+
+  [Test]
+  public void CompareRowsWithCustomColumnHavingValueTypeWithStringDescending_A_A()
+  {
+    CompareEqualValuesDescending (_typeWithStringFirstValueCustomColumn, _stringValueAA, _stringValueAB);
+  }
+
+  [Test]
+  public void CompareRowsWithCustomColumnHavingValueTypeWithStringAscending_A_B()
+  {
+    CompareAscendingValuesAscending (_typeWithStringFirstValueCustomColumn, _stringValueAA, _stringValueBA);
+  }
+
+  [Test]
+  public void CompareRowsWithCustomColumnHavingValueTypeWithStringDescending_A_B()
+  {
+    CompareAscendingValuesDescending (_typeWithStringFirstValueCustomColumn, _stringValueAA, _stringValueBA);
+  }
+
+
+  [Test]
+  public void CompareRowsWithCustomColumnHavingTypeWithReferenceAscending_A_A()
+  {
+    CompareEqualValuesAscending (_typeWithReferenceFirstValueCustomColumn, _referenceValueAA, _referenceValueAB);
+  }
+
+  [Test]
+  public void CompareRowsWithCustomColumnHavingTypeWithReferenceDescending_A_A()
+  {
+    CompareEqualValuesDescending (_typeWithReferenceFirstValueCustomColumn, _referenceValueAA, _referenceValueAB);
+  }
+
+  [Test]
+  public void CompareRowsWithCustomColumnHavingTypeWithReferenceAscending_A_B()
+  {
+    CompareAscendingValuesAscending (_typeWithReferenceFirstValueCustomColumn, _referenceValueAA, _referenceValueBA);
+  }
+
+  [Test]
+  public void CompareRowsWithCustomColumnHavingTypeWithReferenceDescending_A_B()
+  {
+    CompareAscendingValuesDescending (_typeWithReferenceFirstValueCustomColumn, _referenceValueAA, _referenceValueBA);
+  }
+
+
+  private void CompareEqualValuesAscending (
+      BocColumnDefinition column, ReflectionBusinessObject left, ReflectionBusinessObject right)
+  {
     BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
-    sortingOrder[0] = new BocListSortingOrderEntryMock (
-        _typeWithReferenceFirstValueSecondValueCompoundColumn, SortingDirection.Descending);
+    sortingOrder[0] = new BocListSortingOrderEntryMock (column, SortingDirection.Ascending);
 
     BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
     provider.SetSortingOrder (sortingOrder);
     
-    BocListRow rowWithTypeWithReferenceAA = new BocListRow (provider, 0, _referenceValueAA);
-    BocListRow rowWithTypeWithReferenceAB = new BocListRow (provider, 0, _referenceValueAB);
+    BocListRow rowLeft = new BocListRow (provider, 0, left);
+    BocListRow rowRight = new BocListRow (provider, 0, right);
 
-    int compareResultLeftRight = rowWithTypeWithReferenceAA.CompareTo (rowWithTypeWithReferenceAB);
-    int compareResultRightLeft = rowWithTypeWithReferenceAB.CompareTo (rowWithTypeWithReferenceAA);
+    int compareResultLeftRight = rowLeft.CompareTo (rowRight);
+    int compareResultRightLeft = rowRight.CompareTo (rowLeft);
+
+    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
+    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+  }
+
+  private void CompareEqualValuesDescending (
+      BocColumnDefinition column, ReflectionBusinessObject left, ReflectionBusinessObject right)
+  {
+    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
+    sortingOrder[0] = new BocListSortingOrderEntryMock (column, SortingDirection.Descending);
+
+    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
+    provider.SetSortingOrder (sortingOrder);
+    
+    BocListRow rowLeft = new BocListRow (provider, 0, left);
+    BocListRow rowRight = new BocListRow (provider, 0, right);
+
+    int compareResultLeftRight = rowLeft.CompareTo (rowRight);
+    int compareResultRightLeft = rowRight.CompareTo (rowLeft);
+
+    Assert.IsTrue (compareResultLeftRight == 0, "Left - Right != zero");
+    Assert.IsTrue (compareResultRightLeft == 0, "Right - Left != zero");
+  }
+
+  private void CompareAscendingValuesAscending (
+      BocColumnDefinition column, ReflectionBusinessObject left, ReflectionBusinessObject right)
+  {
+    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
+    sortingOrder[0] = new BocListSortingOrderEntryMock (column, SortingDirection.Ascending);
+
+    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
+    provider.SetSortingOrder (sortingOrder);
+    
+    BocListRow rowLeft = new BocListRow (provider, 0, left);
+    BocListRow rowRight = new BocListRow (provider, 0, right);
+
+    int compareResultLeftRight = rowLeft.CompareTo (rowRight);
+    int compareResultRightLeft = rowRight.CompareTo (rowLeft);
+
+    Assert.IsTrue (compareResultLeftRight < 0, "Left - Right <= zero.");
+    Assert.IsTrue (compareResultRightLeft > 0, "Right - Left >= zero.");
+  }
+
+  private void CompareAscendingValuesDescending (
+      BocColumnDefinition column, ReflectionBusinessObject left, ReflectionBusinessObject right)
+  {
+    BocListSortingOrderEntryMock[] sortingOrder = new BocListSortingOrderEntryMock[1];
+    sortingOrder[0] = new BocListSortingOrderEntryMock (column, SortingDirection.Descending);
+
+    BocListSortingOrderProviderMock provider = new BocListSortingOrderProviderMock();
+    provider.SetSortingOrder (sortingOrder);
+    
+    BocListRow rowLeft = new BocListRow (provider, 0, left);
+    BocListRow rowRight = new BocListRow (provider, 0, right);
+
+    int compareResultLeftRight = rowLeft.CompareTo (rowRight);
+    int compareResultRightLeft = rowRight.CompareTo (rowLeft);
 
     Assert.IsTrue (compareResultLeftRight > 0, "Right - Left >= zero.");
     Assert.IsTrue (compareResultRightLeft < 0, "Left - Right <= zero.");
   }
-
 }
 
 }
