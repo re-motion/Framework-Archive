@@ -850,4 +850,55 @@ public class BocDropDownMenuColumnDefinition: BocColumnDefinition
   }
 }
 
+/// <summary> A column definition that acts as a placeholder for inserting a column for each property. </summary>
+public class BocAllPropertiesPlacehoderColumnDefinition: BocColumnDefinition
+{
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public override string ItemID
+  {
+    get { return base.ItemID; }
+    set { base.ItemID = value; }
+  }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public override string ColumnTitle
+  {
+    get { return base.ColumnTitle; }
+    set { base.ColumnTitle = value; }
+  }
+
+  /// <summary> Gets or sets the combined width of the generated column definitions. </summary>
+  /// <value> A <see cref="Unit"/> providing the combined width of the generated columns when they are rendered. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Layout")]
+  [Description ("The width used for all generated property columns combined.")]
+  [DefaultValue(typeof (Unit), "")]
+  [NotifyParentProperty (true)]
+  public new Unit Width 
+  { 
+    get { return base.Width; } 
+    set { base.Width = value; }
+  }
+
+  /// <summary> Gets or sets the CSS-class of the generated column definitions. </summary>
+  /// <value> A <see cref="string"/> providing the CSS-class added to the class attribute when the columns are rendered. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [Category ("Layout")]
+  [Description ("The CSS-class of the generated columns' cells.")]
+  [DefaultValue((string) null)]
+  [NotifyParentProperty (true)]
+  public new string CssClass
+  {
+    get { return base.CssClass; }
+    set { base.CssClass = value; }
+  }
+  /// <summary> Gets the human readable name of this type. </summary>
+  protected override string DisplayedTypeName
+  {
+    get { return "AllPropertiesPlacehoderColumnDefinition"; }
+  }
+}
+
 }
