@@ -56,6 +56,9 @@ public class TestWxeBasePage:
 
   protected override void OnPreRender(EventArgs e)
   {
+    //  A call to the ResourceDispatcher to get have the automatic resources dispatched
+    ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
+
     base.OnPreRender (e);
 
     string key = GetType().FullName + "_Style";
@@ -72,8 +75,6 @@ public class TestWxeBasePage:
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, "Html/global.css");
     }
 
-    //  A call to the ResourceDispatcher to get have the automatic resources dispatched
-    ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
 
     LiteralControl stack = new LiteralControl();
 
