@@ -895,6 +895,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\SmartHyperLink.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\SmartLabel.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
