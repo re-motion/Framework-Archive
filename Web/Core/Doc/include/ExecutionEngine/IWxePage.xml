@@ -78,12 +78,23 @@
     <seealso cref="WxePageInfo"/>
     <seealso cref="WxePageStep"/>
     <example>
+      Sample implementation of the <b>Constructor</b>.
+      <code escaped="true" lang="C#">
+private WxePageInfo m_wxePageInfo;
+
+public void MyWxePage()
+{
+  this.m_wxePageInfo = new WxePageInfo;
+}
+      </code>    
+    </example>
+    <example>
       Sample implementation of <see cref="Page.DeterminePostBackMode"/>.
       <code escaped="true" lang="C#">
 protected override NameValueCollection DeterminePostBackMode()
 {
-  NameValueCollection result = this.m_wxeInfo.EnsurePostBackModeDetermined (Context);
-  this.m_wxeInfo.Initialize (Context);
+  NameValueCollection result = this.m_wxePageInfo.EnsurePostBackModeDetermined (Context);
+  this.m_wxePageInfo.Initialize (Context);
   return result;
 }
       </code>    
@@ -94,7 +105,7 @@ protected override NameValueCollection DeterminePostBackMode()
 public override void Dispose()
 {
   base.Dispose ();
-  this.m_wxeInfo.Dispose();
+  this.m_wxePageInfo.Dispose();
 }
       </code>    
     </example>
@@ -103,7 +114,7 @@ public override void Dispose()
       <code escaped="true" lang="C#">
 protected override void OnPreRender (EventArgs e)
 {
-  this.m_wxeInfo.PreRender();
+  this.m_wxePageInfo.PreRender();
   base.OnPreRender (e);
 }
       </code>    
@@ -113,7 +124,7 @@ protected override void OnPreRender (EventArgs e)
       <code escaped="true" lang="C#">
 public override void SavePageStateToPersistenceMedium (object viewState)
 {
-  this.m_wxeInfo.SavePageStateToPersistenceMedium (viewState);
+  this.m_wxePageInfo.SavePageStateToPersistenceMedium (viewState);
 }
       </code>    
     </example>
@@ -122,7 +133,7 @@ public override void SavePageStateToPersistenceMedium (object viewState)
       <code escaped="true" lang="C#">
 public override void LoadPageStateFromPersistenceMedium()
 {
-  this.m_wxeInfo.LoadPageStateFromPersistenceMedium();
+  this.m_wxePageInfo.LoadPageStateFromPersistenceMedium();
 }
       </code>
     </example>
