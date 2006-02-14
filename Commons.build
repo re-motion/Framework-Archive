@@ -590,6 +590,24 @@
 
   <!--======================= DOCUMENTATION =======================-->
 
+  <target name="preparedoc">
+    <property name="doc.core" value="${nant.project.basedir}/Core/Doc" />
+
+    <copy file="${doc.core}/include/GettingStartedTemplate.html"  
+          tofile="${doc.core}/include/GettingStarted.html" 
+          overwrite="true" />
+    <attrib readonly="false" file="${doc.core}/include/GettingStarted.html"/>
+    <replace>
+      <filterset>
+        <filter token="versionnumber" value="${build.version}" />
+      </filterset>
+      <fileset>
+        <include name="${doc.core}/include/GettingStarted.html" />
+      </fileset>
+    </replace>
+    <attrib readonly="true" file="${doc.core}/include/GettingStarted.html"/>
+  </target>
+
   <target name="doc-public" depends="setdocumentation,all">
     <property name="doc.suffix" value="" />
 
@@ -597,6 +615,9 @@
     <property name="doc.tempdir" value="${project.tempdir}/doc${doc.suffix}" />
     <mkdir dir="${doc.tempdir}"/>
     <mkdir dir="${doc.targetdir}"/>
+    
+    <call target="preparedoc" />
+
     <ndoc>
       <assemblies basedir="${project.builddir}" failonempty="true">
         <include name="Rubicon.Core.dll" />
@@ -661,6 +682,9 @@
     <property name="doc.tempdir" value="${project.tempdir}/doc${doc.suffix}" />
     <mkdir dir="${doc.tempdir}"/>
     <mkdir dir="${doc.targetdir}"/>
+    
+    <call target="preparedoc" />
+
     <ndoc>
       <assemblies basedir="${project.builddir}" failonempty="true">
         <include name="Rubicon.Core.dll" />
