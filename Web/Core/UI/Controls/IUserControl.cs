@@ -4,7 +4,7 @@ using System.Web.UI;
 using System.Web.SessionState;
 using System.Web.Caching;
 
-namespace Rubicon.Web.UI
+namespace Rubicon.Web.UI.Controls
 {
 
 public interface IUserControl: ITemplateControl, IAttributeAccessor, IUserControlDesignerAccessor

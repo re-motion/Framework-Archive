@@ -4,7 +4,7 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using Rubicon.NullableValueTypes;
 
-namespace Rubicon.Web.UI
+namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary>
