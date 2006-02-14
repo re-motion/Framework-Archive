@@ -22,7 +22,8 @@ public class BocColumnDefinitionCollectionEditor: AdvancedCollectionEditor
       typeof (BocCompoundColumnDefinition),
       typeof (BocEditDetailsColumnDefinition),
       typeof (BocCustomColumnDefinition),
-      typeof (BocDropDownMenuColumnDefinition)};
+      typeof (BocDropDownMenuColumnDefinition),
+      typeof (BocAllPropertiesPlacehoderColumnDefinition)};
   }
 }
 
