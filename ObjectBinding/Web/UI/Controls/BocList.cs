@@ -168,6 +168,7 @@ public class BocList:
     Cancel
   }
 
+  [ToolboxItem (false)]
   public class EditDetailsValidator: CustomValidator
   {
     BocList _owner;
@@ -262,6 +263,7 @@ public class BocList:
   private BocColumnDefinition[] _columnDefinitionsPostBackEventHandlingPhase = null;
   /// <summary> Contains the <see cref="BocColumnDefinition"/> objects during the rendering phase. </summary>
   private BocColumnDefinition[] _columnDefinitionsRenderPhase = null;
+  private bool _hasAppendedAllPropertyColumnDefinitions = false;
 
 
   /// <summary> Determines whether the options menu is shown. </summary>
@@ -3287,7 +3289,6 @@ public class BocList:
     if (_allPropertyColumns != null)
       return _allPropertyColumns;
 
-
     IBusinessObjectProperty[] properties;
     if (DataSource == null)
       properties = new IBusinessObjectProperty[0];
@@ -3858,31 +3859,18 @@ public class BocList:
   /// <returns> An array of <see cref="BocColumnDefinition"/> objects. </returns>
   private BocColumnDefinition[] GetColumnsInternal (bool isPostBackEventPhase)
   {
-    BocColumnDefinition[] allPropertyColumns = null;
+    _hasAppendedAllPropertyColumnDefinitions = false;
+
+    ArrayList columnDefinitionList = new ArrayList();
+    
+    AppendFixedColumns (columnDefinitionList);
     if (_showAllProperties)
-      allPropertyColumns = GetAllPropertyColumns();
-    else
-      allPropertyColumns = new BocColumnDefinition[0];
-
-    BocColumnDefinition[] selectedColumns = null;
-    EnsureSelectedViewIndexSet();
-    if (_selectedView != null)
-      selectedColumns = _selectedView.ColumnDefinitions.ToArray();
-    else
-      selectedColumns = new BocColumnDefinition[0];
-
-    BocDropDownMenuColumnDefinition dropDownMenuColumn = GetRowMenuColumn();
-    BocColumnDefinition[] dropDownMenuColumns = null;
-    if (dropDownMenuColumn != null)
-      dropDownMenuColumns = new BocColumnDefinition[1] {dropDownMenuColumn};
-    else
-      dropDownMenuColumns = new BocColumnDefinition[0];
-
-    BocColumnDefinition[] columnDefinitions = (BocColumnDefinition[]) ArrayUtility.Combine (
-      _fixedColumns.ToArray(),
-      allPropertyColumns,
-      selectedColumns,
-      dropDownMenuColumns);
+      EnsureAllPropertyColumnsDefinitionsAppended (null, columnDefinitionList);  
+    AppendRowMenuColumn (columnDefinitionList);
+    AppendSelectedViewColumns (columnDefinitionList);
+  
+    BocColumnDefinition[] columnDefinitions = 
+        (BocColumnDefinition[]) columnDefinitionList.ToArray (typeof (BocColumnDefinition));
 
     if (isPostBackEventPhase)
     {
@@ -3898,6 +3886,80 @@ public class BocList:
     CheckRowMenuColumns (columnDefinitions);
 
     return columnDefinitions;
+  }
+
+  private void AppendFixedColumns (ArrayList columnDefinitionList)
+  {
+    foreach (BocColumnDefinition columnDefinition in _fixedColumns)
+    {
+      if (columnDefinition is BocAllPropertiesPlacehoderColumnDefinition)
+      {
+        EnsureAllPropertyColumnsDefinitionsAppended (
+            (BocAllPropertiesPlacehoderColumnDefinition) columnDefinition, columnDefinitionList);
+      }
+      else
+      {
+        columnDefinitionList.Add (columnDefinition);
+      }
+    }
+  }
+
+  private void AppendRowMenuColumn (ArrayList columnDefinitionList)
+  {
+    BocDropDownMenuColumnDefinition dropDownMenuColumn = GetRowMenuColumn();
+    if (dropDownMenuColumn != null)
+      columnDefinitionList.Add (dropDownMenuColumn);
+  }
+
+  private void AppendSelectedViewColumns (ArrayList columnDefinitionList)
+  {
+    EnsureSelectedViewIndexSet();
+    if (_selectedView == null)
+      return;
+
+    foreach (BocColumnDefinition columnDefinition in _selectedView.ColumnDefinitions)
+    {
+      if (columnDefinition is BocAllPropertiesPlacehoderColumnDefinition)
+      {
+        EnsureAllPropertyColumnsDefinitionsAppended (
+            (BocAllPropertiesPlacehoderColumnDefinition) columnDefinition, columnDefinitionList);
+      }
+      else
+      {
+        columnDefinitionList.Add (columnDefinition);
+      }
+    }
+  }
+
+  private void EnsureAllPropertyColumnsDefinitionsAppended (
+      BocAllPropertiesPlacehoderColumnDefinition placeholderColumnDefinition, ArrayList columnDefinitionList)
+  {
+    if (_hasAppendedAllPropertyColumnDefinitions)
+      return;
+
+    BocColumnDefinition[] allPropertyColumnDefinitions = GetAllPropertyColumns();
+    Unit width = Unit.Empty;
+    string cssClass = string.Empty;
+
+    if (placeholderColumnDefinition != null)
+    {
+      if (! placeholderColumnDefinition.Width.IsEmpty)
+      {
+        double value = placeholderColumnDefinition.Width.Value / allPropertyColumnDefinitions.Length;
+        value = Math.Round (value, 1);
+        width = new Unit (value, placeholderColumnDefinition.Width.Type);
+      }
+      cssClass = placeholderColumnDefinition.CssClass;
+    }
+
+    foreach (BocColumnDefinition columnDefinition in allPropertyColumnDefinitions)
+    {
+      columnDefinition.CssClass = cssClass;
+      columnDefinition.Width = width;
+    }
+
+    columnDefinitionList.AddRange (allPropertyColumnDefinitions);
+    _hasAppendedAllPropertyColumnDefinitions = true;
   }
 
   private void RestoreSortingOrderColumns (ArrayList sortingOrder, BocColumnDefinition[] columnDefinitions)
