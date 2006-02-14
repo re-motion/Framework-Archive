@@ -61,4 +61,7 @@
     <data name="auto:ChildrenList:FixedColumns:LastName:ColumnTitle">
         <value>Nachname</value>
     </data>
+    <data name="auto:this:StatusIsCachedMessage">
+        <value>Seite ist gecached.</value>
+    </data>
 </root>
