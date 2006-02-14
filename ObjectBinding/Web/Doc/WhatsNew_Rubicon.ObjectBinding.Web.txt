@@ -1,3 +1,9 @@
+1.4.13
+======
+- BocList
+  * Bugfix: Wurde durch ShowAllProperties eine mehrwertige Reference Property in die Liste gehängt, so kam es beim
+    Inline-Editing zu einer Exception.
+    
 1.4.12
 ======
 - BocList, BocReferenceValue, BocDropDownMenu
