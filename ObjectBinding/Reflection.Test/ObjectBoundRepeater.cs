@@ -207,7 +207,7 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
     set { _repeaterInternal.IsDirty = value; }
   }
 
-  public virtual string[] GetTrackedClientIDs()
+  public string[] GetTrackedClientIDs()
   {
     return _repeaterInternal.GetTrackedClientIDs();
   }
@@ -429,7 +429,7 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
     set { _isDirty = value; }
   }
 
-  public virtual string[] GetTrackedClientIDsInternal()
+  protected virtual string[] GetTrackedClientIDsInternal()
   {
     return new string[0];
   }
