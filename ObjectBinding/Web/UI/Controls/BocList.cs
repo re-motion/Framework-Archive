@@ -4620,10 +4620,11 @@ public class BocList:
         continue;
 
       IBusinessObjectBoundModifiableWebControl control = CreateRowEditModeControl (simpleColumn, idxColumns);
-      control.DataSource = _rowEditModeDataSource;
-      _rowEditModeControls[idxColumns] = control;
       if (control != null)
       {
+        control.DataSource = _rowEditModeDataSource;
+        _rowEditModeControls[idxColumns] = control;
+
         control.ID = GetRowEditModeControlID (idxColumns);
         control.Property = simpleColumn.PropertyPath.LastProperty;
         _rowEditModeControlCollection.Add ((Control) control);
