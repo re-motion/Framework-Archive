@@ -4724,60 +4724,6 @@ public class BocList:
     _rowEditModeControlCollection.Clear();
   }
 
-//  protected bool IsBocTextValueSupported (IBusinessObjectProperty property)
-//  {
-//    if (! BocTextValue.IsPropertyMultiplicitySupported (property.IsList))
-//      return false;
-//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-//        property, 
-//        BocTextValue.GetSupportedPropertyInterfaces());
-//  }
-//
-//  protected bool IsBocMultilineTextValueSupported (IBusinessObjectProperty property)
-//  {
-//    if (! BocMultilineTextValue.IsPropertyMultiplicitySupported (property.IsList))
-//      return false;
-//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-//        property, 
-//        BocMultilineTextValue.GetSupportedPropertyInterfaces());
-//  }
-//
-//  protected bool IsBocBooleanValueSupported (IBusinessObjectProperty property)
-//  {
-//    if (! BocBooleanValue.IsPropertyMultiplicitySupported (property.IsList))
-//      return false;
-//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-//        property, 
-//        BocBooleanValue.GetSupportedPropertyInterfaces());
-//  }
-//
-//  protected bool IsBocEnumValueSupported (IBusinessObjectProperty property)
-//  {
-//    if (! BocEnumValue.IsPropertyMultiplicitySupported (property.IsList))
-//      return false;
-//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-//        property, 
-//        BocEnumValue.GetSupportedPropertyInterfaces());
-//  }
-//
-//  protected bool IsBocDateTimeValueSupported (IBusinessObjectProperty property)
-//  {
-//    if (! BocDateTimeValue.IsPropertyMultiplicitySupported (property.IsList))
-//      return false;
-//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-//        property, 
-//        BocDateTimeValue.GetSupportedPropertyInterfaces());
-//  }
-//
-//  protected bool IsBocReferenceValueSupported (IBusinessObjectProperty property)
-//  {
-//    if (! BocReferenceValue.IsPropertyMultiplicitySupported (property.IsList))
-//      return false;
-//    return BusinessObjectBoundWebControl.IsPropertyInterfaceSupported (
-//        property, 
-//        BocReferenceValue.GetSupportedPropertyInterfaces());
-//  }
-
   [Browsable (false)]
   public NaInt32 ModifiableRowIndex
   {
