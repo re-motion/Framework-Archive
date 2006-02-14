@@ -53,11 +53,11 @@ public class NavigationCommand: Command
   ///   <para>
   ///     Thrown if called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   ///   </para><para>
-  ///     Thrown if neither the <see cref="WxeFunctionCommandInfo.MappingID"/> nor the 
-  ///     <see cref="WxeFunctionCommandInfo.TypeName"/> are set.
+  ///     Thrown if neither the <see cref="Command.WxeFunctionCommandInfo.MappingID"/> nor the 
+  ///     <see cref="Command.WxeFunctionCommandInfo.TypeName"/> are set.
   ///   </para><para>
-  ///     Thrown if the <see cref="WxeFunctionCommandInfo.MappingID"/> and <see cref="WxeFunctionCommandInfo.TypeName"/>
-  ///     specify different functions.
+  ///     Thrown if the <see cref="Command.WxeFunctionCommandInfo.MappingID"/> and 
+  ///     <see cref="Command.WxeFunctionCommandInfo.TypeName"/> specify different functions.
   ///   </para>
   /// </exception> 
   protected override void AddAttributesToRenderForWxeFunctionCommand (
@@ -86,7 +86,8 @@ public class NavigationCommand: Command
   }
 
   /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="Command.WxeFunctionCommandInfo"/>.
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the 
+  ///   <see cref="Command.WxeFunctionCommandInfo"/>.
   /// </summary>
   /// <param name="additionalUrlParameters">
   ///   The <see cref="NameValueCollection"/> containing additional url parameters. 
@@ -96,11 +97,11 @@ public class NavigationCommand: Command
   ///   <para>
   ///     Thrown if called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   ///   </para><para>
-  ///     Thrown if neither the <see cref="WxeFunctionCommandInfo.MappingID"/> nor the 
-  ///     <see cref="WxeFunctionCommandInfo.TypeName"/> are set.
+  ///     Thrown if neither the <see cref="Command.WxeFunctionCommandInfo.MappingID"/> nor the 
+  ///     <see cref="Command.WxeFunctionCommandInfo.TypeName"/> are set.
   ///   </para><para>
-  ///     Thrown if the <see cref="WxeFunctionCommandInfo.MappingID"/> and <see cref="WxeFunctionCommandInfo.TypeName"/>
-  ///     specify different functions.
+  ///     Thrown if the <see cref="Command.WxeFunctionCommandInfo.MappingID"/> and 
+  ///     <see cref="Command.WxeFunctionCommandInfo.TypeName"/> specify different functions.
   ///   </para>
   /// </exception> 
   public virtual string GetWxeFunctionPermanentUrl (NameValueCollection additionalUrlParameters)
@@ -122,17 +123,18 @@ public class NavigationCommand: Command
   }
 
   /// <summary> 
-  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the <see cref="Command.WxeFunctionCommandInfo"/>.
+  ///   Gets the permanent URL for the <see cref="WxeFunction"/> defined by the 
+  ///   <see cref="Command.WxeFunctionCommandInfo"/>.
   /// </summary>
   /// <exception cref="InvalidOperationException">
   ///   <para>
   ///     Thrown if called while the <see cref="Type"/> is not set to <see cref="CommandType.WxeFunction"/>.
   ///   </para><para>
-  ///     Thrown if neither the <see cref="WxeFunctionCommandInfo.MappingID"/> nor the 
-  ///     <see cref="WxeFunctionCommandInfo.TypeName"/> are set.
+  ///     Thrown if neither the <see cref="Command.WxeFunctionCommandInfo.MappingID"/> nor the 
+  ///     <see cref="Command.WxeFunctionCommandInfo.TypeName"/> are set.
   ///   </para><para>
-  ///     Thrown if the <see cref="WxeFunctionCommandInfo.MappingID"/> and <see cref="WxeFunctionCommandInfo.TypeName"/>
-  ///     specify different functions.
+  ///     Thrown if the <see cref="Command.WxeFunctionCommandInfo.MappingID"/> and 
+  ///     <see cref="Command.WxeFunctionCommandInfo.TypeName"/> specify different functions.
   ///   </para>
   /// </exception> 
   public string GetWxeFunctionPermanentUrl ()
