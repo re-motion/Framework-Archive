@@ -845,6 +845,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\INavigationControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\ISmartControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

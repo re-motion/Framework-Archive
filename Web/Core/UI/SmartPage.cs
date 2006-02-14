@@ -236,16 +236,34 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
     _smartPageInfo.SetFocus (id);
   }
 
+  /// <summary> Registers a <see cref="INavigationControl"/> with the <see cref="ISmartNavigablePage"/>. </summary>
+  /// <param name="control"> The <see cref="INavigationControl"/> to register. Must not be <see langword="null"/>. </param>
   public void RegisterNavigationControl (INavigationControl control)
   {
     _smartPageInfo.RegisterNavigationControl (control);
   }
 
+  /// <summary> 
+  ///   Appends the URL parameters returned by <see cref="GetNavigationUrlParameters"/> to the <paramref name="url"/>.
+  /// </summary>
+  /// <param name="url"> A URL or a query string. Must not be <see langword="null"/>. </param>
+  /// <returns> 
+  ///   The <paramref name="url"/> appended with the URL parameters returned by 
+  ///   <see cref="GetNavigationUrlParameters"/>. 
+  /// </returns>
   public string AppendNavigationUrlParameters (string url)
   {
     return _smartPageInfo.AppendNavigationUrlParameters (url);
   }
 
+  /// <summary> 
+  ///   Evaluates the <see cref="INavigationControl.GetNavigationUrlParameters"/> methods of all controls registered
+  ///   using <see cref="RegisterNavigationControl"/>.
+  /// </summary>
+  /// <returns>
+  ///   A <see cref="NameValueCollection"/> containing the URL parameters required by this 
+  ///   <see cref="ISmartNavigablePage"/> to restore its navigation state when using hyperlinks.
+  /// </returns>
   public NameValueCollection GetNavigationUrlParameters()
   {
     return _smartPageInfo.GetNavigationUrlParameters();

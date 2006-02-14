@@ -510,18 +510,28 @@ public class SmartPageInfo
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
     _smartFocusID = id;
   }
+
+  /// <summary>
+  ///   Implements <see cref="Rubicon.Web.UI.ISmartNavigablePage.RegisterNavigationControl">ISmartNavigablePage.RegisterNavigationControl</see>.
+  /// </summary>
   public void RegisterNavigationControl (INavigationControl control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
     _navigationControls[control] = control;
   }
 
+  /// <summary>
+  ///   Implements <see cref="Rubicon.Web.UI.ISmartNavigablePage.AppendNavigationUrlParameters">ISmartNavigablePage.AppendNavigationUrlParameters</see>.
+  /// </summary>
   public string AppendNavigationUrlParameters (string url)
   {
     NameValueCollection urlParameters = GetNavigationUrlParameters();
     return UrlUtility.AddParameters (url, urlParameters);
   }
 
+  /// <summary>
+  ///   Implements <see cref="Rubicon.Web.UI.ISmartNavigablePage.GetNavigationUrlParameters">ISmartNavigablePage.GetNavigationUrlParameters</see>.
+  /// </summary>
   public NameValueCollection GetNavigationUrlParameters()
   {
     NameValueCollection urlParameters = new NameValueCollection();

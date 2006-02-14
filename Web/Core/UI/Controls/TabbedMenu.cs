@@ -16,11 +16,6 @@ using Rubicon.Web.UI.Globalization;
 namespace Rubicon.Web.UI.Controls
 {
 
-public interface INavigationControl: IControl
-{
-  NameValueCollection GetNavigationUrlParameters();
-}
-
 /// <summary>
 ///   The <b>TabbedMenu</b> can be used to provide a navigation menu.
 /// </summary>
@@ -375,6 +370,13 @@ public class TabbedMenu: WebControl, INavigationControl
     windowStateManager.SetData (SelectionID, tabIDs);
   }
 
+  /// <summary> 
+  ///   Provides the URL parameters containing the navigation information for this control (e.g. the selected tab).
+  /// </summary>
+  /// <returns> 
+  ///   A <see cref="NameValueCollection"/> containing the URL parameters required by this 
+  ///   <see cref="INavigationControl"/> to restore its navigation state when using hyperlinks.
+  /// </returns>
   NameValueCollection INavigationControl.GetNavigationUrlParameters()
   {
     if (_subMenuTabStrip.SelectedTab != null)
