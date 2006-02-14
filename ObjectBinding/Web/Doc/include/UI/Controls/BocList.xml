@@ -51,7 +51,7 @@
               Priority 2 checkpoint 13.1 is not met for links placed into value columns. The column's value is used 
               to identify the link's target.
             </para><para>
-              Interactive sorting requires java-script but is not considered to required for a usable page.
+              Interactive sorting requires java-script but is not considered to be required for a usable page.
             </para>
           </description>
         </item>        
