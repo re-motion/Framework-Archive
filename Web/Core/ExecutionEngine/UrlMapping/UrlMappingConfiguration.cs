@@ -140,10 +140,13 @@ public class UrlMappingEntry
   ///   The <see cref="Type"/> name of the <see cref="WxeFunction"/> identified by the <see cref="Resource"/>. 
   ///   Must not be <see langword="null"/> or empty. 
   /// </summary>
-  /// <value> 
-  ///   A valid type name as defined by the 
+  /// <value> A valid type name. </value>
+  /// <remarks>
+  ///   Valid type names include the classic .net syntax and typenames using the abbreviated form as defined by the
   ///   <see cref="TypeUtility.ParseAbbreviatedTypeName">TypeUtility.ParseAbbreviatedTypeName</see> method.
-  /// </value>
+  ///   In ASP.NET 2.0, it is possible to use functions located in the <b>App_Code</b> assembly by not specifying an
+  ///   assembly name.
+  /// </remarks>
   [XmlAttribute ("type")]
   public string FunctionTypeName
   {

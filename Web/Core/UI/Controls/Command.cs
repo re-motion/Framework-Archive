@@ -140,13 +140,19 @@ public class Command: IControlItem
     }
 
     /// <summary> 
-    ///   Gets or sets the complete type name of the WxeFunction to call when the rendered 
+    ///   Gets or sets the complete type name of the <see cref="WxeFunction"/> to call when the rendered 
     ///   command is clicked. Either the <see cref="TypeName"/> or the <see cref="MappingID"/> is required.
     /// </summary>
     /// <value> 
-    ///   The complete type name of the WxeFunction to call when the rendered command is clicked. 
+    ///   The complete type name of the <see cref="WxeFunction"/> to call when the rendered command is clicked. 
     ///   The default value is <see cref="String.Empty"/>. 
     /// </value>
+    /// <remarks>
+    ///   Valid type names include the classic .net syntax and typenames using the abbreviated form as defined by the
+    ///   <see cref="TypeUtility.ParseAbbreviatedTypeName">TypeUtility.ParseAbbreviatedTypeName</see> method.
+    ///   In ASP.NET 2.0, it is possible to use functions located in the <b>App_Code</b> assembly by not specifying an
+    ///   assembly name.
+    /// </remarks>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
     [Description ("The complete type name (type[, assembly]) of the WxeFunction used for the command.")]
@@ -170,8 +176,8 @@ public class Command: IControlItem
     ///   Either the <see cref="TypeName"/> or the <see cref="MappingID"/> is required.
     /// </summary>
     /// <value> 
-    ///   The <see cref="UrlMappingEntry.ID"/> associated with the WxeFunction to call when the rendered command 
-    ///   is clicked. The default value is <see cref="String.Empty"/>. 
+    ///   The <see cref="UrlMappingEntry.ID"/> associated with the <see cref="WxeFunction"/> to call when the 
+    ///   rendered command is clicked. The default value is <see cref="String.Empty"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
@@ -192,12 +198,12 @@ public class Command: IControlItem
     }
 
     /// <summary> 
-    ///   Gets or sets the comma separated list of parameters passed to the WxeFunction when the rendered 
-    ///   command is clicked.
+    ///   Gets or sets the comma separated list of parameters passed to the <see cref="WxeFunction"/> when the 
+    ///   rendered command is clicked.
     /// </summary>
     /// <value> 
-    ///   The comma separated list of parameters passed to the WxeFunction when the rendered command is clicked. 
-    ///   The default value is <see cref="String.Empty"/>. 
+    ///   The comma separated list of parameters passed to the <see cref="WxeFunction"/> when the rendered command 
+    ///   is clicked. The default value is <see cref="String.Empty"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
@@ -218,10 +224,11 @@ public class Command: IControlItem
     }
 
     /// <summary> 
-    ///   Gets or sets the target window or frame to open the Wxe Function when the rendered command is clicked.
+    ///   Gets or sets the target window or frame to open the <see cref="WxeFunction"/> when the rendered command is 
+    ///   clicked.
     /// </summary>
     /// <value> 
-    ///   The target window or frame to open the Wxe Function when the rendered command is clicked. 
+    ///   The target window or frame to open the Wxe <see cref="WxeFunction"/> when the rendered command is clicked. 
     ///   The default value is <see cref="String.Empty"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
