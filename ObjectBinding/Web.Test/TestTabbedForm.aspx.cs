@@ -30,6 +30,7 @@ public class TestTabbedForm : TestWxeBasePage
   protected Rubicon.Web.UI.Controls.ValidationStateViewer ValidationStateViewer;
   protected Rubicon.Web.UI.Controls.TabbedMultiView MultiView;
   private PlaceHolder _wxeControlsPlaceHolder;
+  protected Rubicon.Web.UI.Controls.SmartHyperLink SmartHyperLink1;
   private bool _currentObjectSaved = false;
 
   protected TestTabbedFormWxeFunction Function

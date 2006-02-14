@@ -1,3 +1,12 @@
+1.4.13
+======
+- SmartHyperLink
+  * Neues Control. Inkludiert die Navigation URL Parameter beim Rendering.
+
+- ISmartNavigablePage
+  * GetNavigationUrlParameters, AppendNavigationUrlParameters: Neue Methoden um die  Navigation URL Parameter 
+    abzufragen bzw an eine URL anzuhängen.
+  
 1.4.12
 ======
 - WxeParameterAttribute
