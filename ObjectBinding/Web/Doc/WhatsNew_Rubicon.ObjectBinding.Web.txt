@@ -1,3 +1,10 @@
+1.4.14
+======
+- Boclist
+  * BocAllPropertiesPlaceholderColumnDefinition: Neuer Column-Type der die Property ShowAllProperties ergänzt bzw
+    ersetzt. Wird diese Spalte in den FixedColumns oder in einem View hinterlegt, so werden an dieser Stelle alle
+    Property Columns generiert. Kommt die Splate mehrmals vor, so werden für die erste Spalte die Columns generiert.
+
 1.4.13
 ======
 - BocList
