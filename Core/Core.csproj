@@ -153,7 +153,7 @@
                     BuildAction = "Content"
                 />
                 <File
-                    RelPath = "doc\include\GettingStarted.html"
+                    RelPath = "doc\include\GettingStartedTemplate.html"
                     BuildAction = "Content"
                 />
                 <File
