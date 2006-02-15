@@ -655,9 +655,9 @@
           <property name="DocumentProtected" value="True" />
           <property name="DocumentPrivates" value="False" />
           <property name="DocumentEmptyNamespaces" value="False" />
-          <property name="IncludeAssemblyVersion" value="False" />
-          <property name="CopyrightText" value="${text.companyname}" />
+          <property name="CopyrightText" value="${text.copyright}" />
           <property name="CopyrightHref" value="${text.companyurl}" />
+          <property name="FooterHtml" value="&lt;p&gt;&lt;a href=&quot;${text.companyurl}&quot;&gt;${text.copyright}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Version: ${build.version}&lt;/p&gt;"/>
           <property name="RootPageTOCName" value="Getting Started" />
           <property name="RootPageFileName" value="${nant.project.basedir}/Core/Doc/include/GettingStarted.html" />
           <property name="RootPageContainsNamespaces" value="False" />
@@ -722,9 +722,9 @@
           <property name="DocumentProtected" value="True" />
           <property name="DocumentPrivates" value="True" />
           <property name="DocumentEmptyNamespaces" value="True" />
-          <property name="IncludeAssemblyVersion" value="True" />
-          <property name="CopyrightText" value="${text.companyname}" />
+          <property name="CopyrightText" value="${text.copyright}" />
           <property name="CopyrightHref" value="${text.companyurl}" />
+          <property name="FooterHtml" value="&lt;p&gt;&lt;a href=&quot;${text.companyurl}&quot;&gt;${text.copyright}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Version: ${build.version}&lt;/p&gt;"/>
           <property name="RootPageTOCName" value="Getting Started" />
           <property name="RootPageFileName" value="${nant.project.basedir}/Core/Doc/include/GettingStarted.html" />
           <property name="RootPageContainsNamespaces" value="False" />
