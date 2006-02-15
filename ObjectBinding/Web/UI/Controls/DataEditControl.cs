@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using Rubicon.ObjectBinding;
-using Rubicon.Web.UI;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
