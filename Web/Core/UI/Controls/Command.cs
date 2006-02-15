@@ -239,7 +239,11 @@ public class Command: IControlItem
     public string Target
     {
       get { return _target; }
-      set { _target = value; }
+      set
+      {
+        _target = StringUtility.NullToEmpty (value);
+        _target = _target.Trim();
+      }
     }
 
 
@@ -286,7 +290,7 @@ public class Command: IControlItem
     }
   }
 
-  private string _toolTip;
+  private string _toolTip = string.Empty;
   private CommandType _type;
   private CommandType _defaultType = CommandType.None;
   private CommandShow _show = CommandShow.Always;
@@ -687,10 +691,15 @@ public class Command: IControlItem
   [Category ("Appearance")]
   [Description ("The ToolTip/Title rendered in the anchor tag.")]
   [NotifyParentProperty (true)]
+    [DefaultValue("")]
   public string ToolTip
   {
     get { return _toolTip; }
-    set { _toolTip = value; }
+      set
+      {
+        _toolTip = StringUtility.NullToEmpty (value);
+        _toolTip = _toolTip.Trim();
+      }
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
