@@ -1,3 +1,9 @@
+1.4.16
+======
+- Boclist
+  * BugFix: BocCommandColumnDefintions ohne IconPath wurden unter .net 2.0 in Folge des VS 2005 Designers trotzdem mit
+    Icon gerendert.
+  
 1.4.14
 ======
 - Boclist

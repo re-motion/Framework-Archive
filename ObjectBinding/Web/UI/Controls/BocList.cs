@@ -2904,7 +2904,7 @@ public class BocList:
 
   private void RenderCommandColumnCell (HtmlTextWriter writer, BocCommandColumnDefinition column)
   {
-    if (column.IconPath != null)
+    if (! StringUtility.IsNullOrEmpty (column.IconPath))
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Src, column.IconPath);
       writer.AddStyleAttribute ("vertical-align", "middle");

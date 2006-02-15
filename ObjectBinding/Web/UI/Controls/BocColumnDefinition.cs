@@ -261,7 +261,7 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   public string IconPath 
   {
     get { return _iconPath; }
-    set { _iconPath = value; }
+    set { _iconPath = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets the human readable name of this type. </summary>
