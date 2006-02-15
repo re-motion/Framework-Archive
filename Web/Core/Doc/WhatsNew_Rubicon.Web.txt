@@ -1,3 +1,8 @@
+1.4.16
+======
+- Rubicon.Web.UI.Controls.Command, Rubicon.Web.UI.Controls.Command.WebMenuItem
+  * Optimierungen für VS 2005 Designer
+
 1.4.14
 ======
 - Namespace korrigiert: IControl, ITemplateControl, ISmartControl, IUserControl, IValidatableControl, ISupportsPostLoadControl
