@@ -130,8 +130,11 @@ public class ControlHelper
   /// </returns>
   public static bool IsDesignMode (Control control)
   {
-    return   (control.Site != null && control.Site.DesignMode)
-          || (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode);
+    if (control.Site != null && control.Site.DesignMode)
+      return true;
+    if (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode)
+      return true;
+    return false;
   }
 
   /// <summary>
@@ -167,8 +170,11 @@ public class ControlHelper
   /// </returns>
   public static bool IsDesignMode (IControl control)
   {
-    return   (control.Site != null && control.Site.DesignMode)
-          || (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode);
+    if (control.Site != null && control.Site.DesignMode)
+      return true;
+    if (control.Page != null && control.Page.Site != null && control.Page.Site.DesignMode)
+      return true;
+    return false;
   }
 
   public static Control FindControl (Control namingContainer, string controlID)
