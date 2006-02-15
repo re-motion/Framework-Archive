@@ -1706,10 +1706,10 @@ public class BocList:
     }
   }
 
-  private bool IsInternetExplorer55OrHigher()
+  protected virtual bool IsInternetExplorer55OrHigher()
   {
     if (IsDesignMode)
-      return false;
+      return true;
     
     bool isVersionGreaterOrEqual55 = 
             Context.Request.Browser.MajorVersion >= 6

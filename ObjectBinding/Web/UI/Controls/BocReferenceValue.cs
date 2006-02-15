@@ -1192,7 +1192,7 @@ public class BocReferenceValue:
   private bool IsInternetExplorer55OrHigher()
   {
     if (IsDesignMode)
-      return false;
+      return true;
     
     bool isVersionGreaterOrEqual55 = 
             Context.Request.Browser.MajorVersion >= 6
