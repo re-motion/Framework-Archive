@@ -1530,6 +1530,9 @@ public class BocList:
       if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
 
+      if (! IsInternetExplorer55OrHigher())
+        return false;
+
       bool showAvailableViewsList =    _showAvailableViewsList 
                                     && (   _availableViews.Count > 1
                                         || IsDesignMode);
@@ -1567,6 +1570,9 @@ public class BocList:
     get
     {
       if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
+        return false;
+
+      if (! IsInternetExplorer55OrHigher())
         return false;
 
       bool showListMenu =   ShowListMenu 
