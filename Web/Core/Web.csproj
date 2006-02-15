@@ -850,6 +850,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\ISupportsPostLoadControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\ITemplateControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
