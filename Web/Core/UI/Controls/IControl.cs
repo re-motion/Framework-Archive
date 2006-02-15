@@ -2,7 +2,7 @@ using System;
 using System.Web.UI;
 using System.ComponentModel;
 
-namespace Rubicon.Web.UI
+namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary>

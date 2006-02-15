@@ -4,6 +4,7 @@ using System.Web.UI;
 using System.Web.Caching;
 using System.Web.SessionState;
 using System.Security.Principal;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.Web.UI
 {
