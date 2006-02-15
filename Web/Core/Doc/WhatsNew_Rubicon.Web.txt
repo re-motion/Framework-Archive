@@ -1,7 +1,7 @@
 1.4.14
 ======
-- Namespace korrigiert: IContro, ITemplateControl, ISmartControl, IUserControl, IValidatableControl waren anders als in
-  Version 1.4.1 beschrieben noch nicht im Namespace Rubicon.Web.UI.Controls zu finden.
+- Namespace korrigiert: IControl, ITemplateControl, ISmartControl, IUserControl, IValidatableControl, ISupportsPostLoadControl
+  waren anders als in Version 1.4.1 beschrieben noch nicht im Namespace Rubicon.Web.UI.Controls zu finden.
 
 1.4.13
 ======
@@ -70,10 +70,13 @@
       oder beim Schließen des Fensters, so wird "OnlyIfDirty" empfohlen.
 
 - Namespace geändert:
+  Rubicon.Web.UI.IControl -> Rubicon.Web.UI.Controls.IControl
+  Rubicon.Web.UI.ITemplateControl -> Rubicon.Web.UI.Controls.ITemplateControl
   Rubicon.Web.UI.ISmartControl -> Rubicon.Web.UI.Controls.ISmartControl
   Rubicon.Web.UI.IUserControl -> Rubicon.Web.UI.Controls.IUserControl
   Rubicon.Web.UI.IValidatableControl -> Rubicon.Web.UI.Controls.IValidatableControl
-  
+  Rubicon.Web.UI.ISupportsPostLoadControl -> Rubicon.Web.UI.Controls.ISupportsPostLoadControl
+
 - Klassen in der Rubicon.Web.Legacy.dll:
   Rubicon.Web.UI.INavigablePage
   
