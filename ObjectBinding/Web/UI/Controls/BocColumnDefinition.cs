@@ -24,15 +24,13 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlItem
 {
-  private string _itemID;
-  private string _columnTitle;
-  private Unit _width; 
-  private string _cssClass;
+  private string _itemID = string.Empty;
+  private string _columnTitle = string.Empty;
+  private Unit _width = Unit.Empty; 
+  private string _cssClass = string.Empty;
 
   public BocColumnDefinition()
   {
-    _columnTitle = string.Empty;
-    _width = Unit.Empty;
   }
 
   public override string ToString()
@@ -59,7 +57,7 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
   public override string ItemID
   {
     get { return _itemID; }
-    set { _itemID = value; }
+    set { _itemID = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets the displayed value of the column title. </summary>
@@ -107,12 +105,12 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Layout")]
   [Description ("The CSS-class of the rendered column's cells.")]
-  [DefaultValue((string) null)]
+  [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string CssClass
   {
     get { return _cssClass; }
-    set { _cssClass = value; }
+    set { _cssClass = StringUtility.NullToEmpty (value); }
   }
 
 
@@ -216,8 +214,8 @@ public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
 /// <summary> A column definition containing no data, only the <see cref="BocListItemCommand"/>. </summary>
 public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
 {
-  private string _text;
-  private string _iconPath;
+  private string _text = string.Empty;
+  private string _iconPath = string.Empty;
 
   public BocCommandColumnDefinition()
   {
@@ -247,8 +245,8 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   [NotifyParentProperty (true)]
   public string Text
   {
-    get { return StringUtility.NullToEmpty (_text); }
-    set { _text = value; }
+    get { return _text; }
+    set { _text = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets or sets the image representing the command in the rendered page. </summary>
@@ -335,9 +333,9 @@ public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinitio
 /// </remarks>
 public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjectClassSource
 {
-  private string _formatString;
+  private string _formatString = string.Empty;
   private PropertyPathBinding _propertyPathBinding;
-  private string _editDetailsControlType;
+  private string _editDetailsControlType = string.Empty;
   private bool _isReadOnly;
 
   public BocSimpleColumnDefinition()
@@ -445,12 +443,12 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("The IBusinessObjectBoundModifiableWebControl to be used for editing the value of this column in edit details mode.")]
-  //  No default value
+  [DefaultValue ("")]
   [NotifyParentProperty (true)]
   public string EditDetailsControlType
   {
     get { return _editDetailsControlType; }
-    set { _editDetailsControlType = value; }
+    set { _editDetailsControlType = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary>
@@ -510,7 +508,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   ///   A format string describing how the values accessed through the 
   ///   <see cref="BusinessObjectPropertyPath"/> objects are merged by <see cref="GetStringValue"/>.
   /// </summary>
-  private string _formatString;
+  private string _formatString = string.Empty;
 
   /// <summary>
   ///   The collection of <see cref="PropertyPathBinding"/> objects used by
@@ -521,7 +519,6 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
   public BocCompoundColumnDefinition()
   {
     _propertyPathBindings = new PropertyPathBindingCollection (null);
-    _formatString = string.Empty;
   }
 
   /// <summary> Creates a string representation of the data displayed in this column. </summary>
@@ -602,11 +599,11 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 /// <summary> A column definition used for switching between edit mode and returning from it via save and cancel. </summary>
 public class BocEditDetailsColumnDefinition: BocColumnDefinition
 {
-  private string _editText;
+  private string _editText = string.Empty;
   private IconInfo _editIcon;
-  private string _saveText;
+  private string _saveText = string.Empty;
   private IconInfo _saveIcon;
-  private string _cancelText;
+  private string _cancelText = string.Empty;
   private IconInfo _cancelIcon;
   private BocEditDetailsColumnDefinitionShow _show = BocEditDetailsColumnDefinitionShow.EditMode;
 
@@ -644,8 +641,8 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   [NotifyParentProperty (true)]
   public string EditText
   {
-    get { return StringUtility.NullToEmpty (_editText); }
-    set { _editText = value; }
+    get { return _editText; }
+    set { _editText = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets or sets the image representing the edit command in the rendered page. </summary>
@@ -682,8 +679,8 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   [NotifyParentProperty (true)]
   public string SaveText
   {
-    get { return StringUtility.NullToEmpty (_saveText); }
-    set { _saveText = value; }
+    get { return _saveText; }
+    set { _saveText = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets or sets the image representing the save command in the rendered page. </summary>
@@ -719,8 +716,8 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   [NotifyParentProperty (true)]
   public string CancelText
   {
-    get { return StringUtility.NullToEmpty (_cancelText); }
-    set { _cancelText = value; }
+    get { return _cancelText; }
+    set { _cancelText = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> Gets or sets the image representing the cancel command in the rendered page. </summary>
@@ -792,7 +789,7 @@ public enum BocEditDetailsColumnDefinitionShow
 /// <summary> A column definition that renders a <see cref="DropDownMenu"/> in the cell. </summary>
 public class BocDropDownMenuColumnDefinition: BocColumnDefinition
 {
-  private string _menuTitleText;
+  private string _menuTitleText = string.Empty;
   private IconInfo _menuTitleIcon;
 
   public BocDropDownMenuColumnDefinition()
@@ -887,7 +884,7 @@ public class BocAllPropertiesPlacehoderColumnDefinition: BocColumnDefinition
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Layout")]
   [Description ("The CSS-class of the generated columns' cells.")]
-  [DefaultValue((string) null)]
+  [DefaultValue("")]
   [NotifyParentProperty (true)]
   public new string CssClass
   {
