@@ -599,6 +599,8 @@
     <attrib readonly="false" file="${doc.core}/include/GettingStarted.html"/>
     <replace>
       <filterset>
+        <filter token="companyurl" value="${text.companyurl}" />
+        <filter token="copyright" value="${text.copyright}" />
         <filter token="versionnumber" value="${build.version}" />
       </filterset>
       <fileset>
