@@ -21,11 +21,11 @@ public class WebMenuItem: IControlItem
         null, null, c_separator, null, null, WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
   }
 
-  private string _itemID = "";
-  private string _category = "";
-  private string _text = "";
-  private string _icon = "";
-  private string _disabledIcon = "";
+  private string _itemID = string.Empty;
+  private string _category = string.Empty;
+  private string _text = string.Empty;
+  private string _icon = string.Empty;
+  private string _disabledIcon = string.Empty;
   private WebMenuItemStyle _style = WebMenuItemStyle.IconAndText;
   private RequiredSelection _requiredSelection = RequiredSelection.Any;
   private bool _isDisabled = false;
@@ -49,11 +49,11 @@ public class WebMenuItem: IControlItem
       bool isDisabled,
       Command command)
   {
-    _itemID = itemID;
-    _category = category;
-    _text = text;
-    _icon = icon;
-    _disabledIcon = disabledIcon;
+    ItemID = itemID;
+    Category = category;
+    Text = text;
+    Icon = icon;
+    DisabledIcon = disabledIcon;
     _style = style;
     _requiredSelection = requiredSelection;
     _isDisabled = isDisabled;
@@ -126,7 +126,7 @@ public class WebMenuItem: IControlItem
   public virtual string ItemID
   {
     get { return _itemID; }
-    set { _itemID = value; }
+    set { _itemID = StringUtility.NullToEmpty (value); }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -137,7 +137,7 @@ public class WebMenuItem: IControlItem
   public virtual string Category
   {
     get { return _category; }
-    set { _category = value; }
+    set { _category = StringUtility.NullToEmpty (value); }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -148,7 +148,7 @@ public class WebMenuItem: IControlItem
   public virtual string Text
   {
     get { return _text; }
-    set { _text = value; }
+    set { _text = StringUtility.NullToEmpty (value); }
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -166,7 +166,7 @@ public class WebMenuItem: IControlItem
   public virtual string Icon
   {
     get { return _icon; }
-    set { _icon = value; }
+    set { _icon = StringUtility.NullToEmpty (value); }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -177,7 +177,7 @@ public class WebMenuItem: IControlItem
   public virtual string DisabledIcon
   {
     get { return _disabledIcon; }
-    set { _disabledIcon = value; }
+    set { _disabledIcon = StringUtility.NullToEmpty (value); }
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
