@@ -705,22 +705,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\IControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "UI\IPage.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
                     RelPath = "UI\ISmartNavigablePage.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\ITemplateControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -820,6 +810,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\IControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\IControlStateManager.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -851,6 +846,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\ISmartControl.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\ITemplateControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
