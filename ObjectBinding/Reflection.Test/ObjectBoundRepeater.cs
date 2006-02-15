@@ -220,7 +220,11 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
   [Browsable (false)]
   public bool HasValidBinding
   {
-    get { return _repeaterInternal.HasValidBinding; }
+    get
+    {
+      EnsureChildControls();
+      return _repeaterInternal.HasValidBinding; 
+    }
   }
 
   public override bool Visible
@@ -333,11 +337,21 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
   }
 
 
-  protected override void OnInit(EventArgs e)
+  protected override void CreateChildControls()
   {
-    base.OnInit (e);
+    base.CreateChildControls();
+
     _repeaterInternal.ID = ID + "_RepeaterInternal";
     Controls.Add (_repeaterInternal);
+  }
+
+  public override ControlCollection Controls
+  {
+    get
+    {
+      EnsureChildControls();
+      return base.Controls;
+    }
   }
 
 
@@ -474,6 +488,15 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
     values[1] = _isDirty;
     return values;
   }
+
+  protected override void Render(HtmlTextWriter writer)
+  {
+    if (IsDesignMode)
+      return;
+
+    base.Render (writer);
+  }
+
 }
 
 }
