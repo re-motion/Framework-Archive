@@ -33,7 +33,9 @@ function SmartScrolling_Restore (data)
   if (dataFields.length == 0)
     return;
   
-  var sseBody = SmartScrolling_Element.Parse (dataFields.shift());
+  var dataField = dataFields[0];
+  dataFields = dataFields.slice (1);
+  var sseBody = SmartScrolling_Element.Parse (dataField);
   window.document.body.scrollTop = sseBody.Top;
   window.document.body.scrollLeft = sseBody.Left;
   
@@ -53,7 +55,7 @@ function SmartScrolling_Backup (activeElement)
   {
     var sseBody = 
         new SmartScrolling_Element ('body', window.document.body.scrollTop, window.document.body.scrollLeft);
-    scrollElements.push (sseBody);
+    scrollElements[scrollElements.length] = sseBody;
   }
   scrollElements = scrollElements.concat (SmartScrolling_GetScrollPositions (window.document.body));
   
@@ -77,7 +79,7 @@ function SmartScrolling_GetScrollPositions (currentElement)
         && (currentElement.scrollTop != 0 || currentElement.scrollLeft != 0))
     {
       var sseCurrentElement = SmartScrolling_GetScrollPosition (currentElement);
-      scrollElements.push (sseCurrentElement);
+      scrollElements[scrollElements.length] = sseCurrentElement;
     }
     
     for (var i = 0; i < currentElement.childNodes.length; i++)
