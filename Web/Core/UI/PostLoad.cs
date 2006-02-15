@@ -1,7 +1,8 @@
 using System;
 using System.Web.UI;
+using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.Web.UI
+namespace Rubicon.Web.UI.Controls
 {
 
 /// <summary>
@@ -16,6 +17,11 @@ public interface ISupportsPostLoadControl: IControl
   /// </summary>
   void OnPostLoad();
 }
+
+}
+
+namespace Rubicon.Web.UI
+{
 
 /// <summary>
 ///   Calls <see cref="ISupportsPostLoadControl.OnPostLoad"/> on all controls that support the interface.
