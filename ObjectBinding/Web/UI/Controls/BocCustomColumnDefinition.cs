@@ -18,8 +18,8 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
 {
   private PropertyPathBinding _propertyPathBinding;
   private BocCustomColumnDefinitionCell _customCell;
-  private string _customCellType;
-  private string _customCellArgument;
+  private string _customCellType = string.Empty;
+  private string _customCellArgument = string.Empty;
   private bool _isSortable = false;
   private BocCustomColumnDefinitionMode _mode;
 
@@ -66,7 +66,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   public string CustomCellType
   {
     get { return _customCellType; }
-    set { _customCellType = value; }
+    set { _customCellType = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary> 
@@ -81,7 +81,7 @@ public class BocCustomColumnDefinition: BocColumnDefinition, IBusinessObjectClas
   public string CustomCellArgument
   {
     get { return _customCellArgument; }
-    set { _customCellArgument = value; }
+    set { _customCellArgument = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary>

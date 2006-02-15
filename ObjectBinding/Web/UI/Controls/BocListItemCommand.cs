@@ -103,7 +103,7 @@ public class BocListItemCommand: BocCommand
 
   public new BocListItemCommandClickEventHandler Click;
   private IBocListItemCommandState _commandState;
-  private string _commandStateType;
+  private string _commandStateType = string.Empty;
   private ListItemHrefCommandInfo _hrefCommand;
   private ListItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
@@ -272,7 +272,11 @@ public class BocListItemCommand: BocCommand
   public string CommandStateType
   {
     get { return _commandStateType; }
-    set { _commandStateType = value; }
+    set 
+    {
+      _commandStateType = StringUtility.NullToEmpty (value);
+      _commandStateType = _commandStateType.Trim ();
+    }
   }
 }
 
