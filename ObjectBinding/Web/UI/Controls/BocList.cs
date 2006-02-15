@@ -1347,24 +1347,24 @@ public class BocList:
         _pageCount = 1;
     }
  
-    bool isInternetExplorer501AndHigher = true;
-    bool isCss21Compatible = false;
-    if (! IsDesignMode)
-    {
-      bool isVersionGreaterOrEqual501 = 
-              Context.Request.Browser.MajorVersion >= 6
-          ||    Context.Request.Browser.MajorVersion == 5 
-              && Context.Request.Browser.MinorVersion >= 0.01;
-      isInternetExplorer501AndHigher = 
-          Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual501;
-      bool isOperaGreaterOrEqual7 = 
-             Context.Request.Browser.Browser == "Opera"
-          && Context.Request.Browser.MajorVersion >= 7;
-      bool isNetscapeCompatibleGreaterOrEqual5 = 
-             Context.Request.Browser.Browser == "Netscape"
-          && Context.Request.Browser.MajorVersion >= 5;
-      isCss21Compatible = isOperaGreaterOrEqual7 || isNetscapeCompatibleGreaterOrEqual5;
-    }
+    //    bool isInternetExplorer501AndHigher = true;
+    //    bool isCss21Compatible = false;
+    //    if (! IsDesignMode)
+    //    {
+    //      bool isVersionGreaterOrEqual501 = 
+    //              Context.Request.Browser.MajorVersion >= 6
+    //          ||    Context.Request.Browser.MajorVersion == 5 
+    //              && Context.Request.Browser.MinorVersion >= 0.01;
+    //      isInternetExplorer501AndHigher = 
+    //          Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual501;
+    //      bool isOperaGreaterOrEqual7 = 
+    //             Context.Request.Browser.Browser == "Opera"
+    //          && Context.Request.Browser.MajorVersion >= 7;
+    //      bool isNetscapeCompatibleGreaterOrEqual5 = 
+    //             Context.Request.Browser.Browser == "Netscape"
+    //          && Context.Request.Browser.MajorVersion >= 5;
+    //      isCss21Compatible = isOperaGreaterOrEqual7 || isNetscapeCompatibleGreaterOrEqual5;
+    //    }
 
     bool hasNavigator = _alwaysShowPageInfo || _pageCount > 1;
     bool isReadOnly = IsReadOnly;
@@ -1373,12 +1373,12 @@ public class BocList:
     if (! IsDesignMode && IsEmptyList && ! showForEmptyList)
       hasNavigator = false;
 
-    if (isInternetExplorer501AndHigher)
-      RenderContentsInternetExplorer501Compatible (writer, hasNavigator);
-    else if (isCss21Compatible && ! (writer is Html32TextWriter))
-      RenderContentsCss21Compatible (writer, hasNavigator);
-    else
-      RenderContentsLegacyBrowser (writer, hasNavigator);
+    //    if (isInternetExplorer501AndHigher)
+    //      RenderContentsInternetExplorer501Compatible (writer, hasNavigator);
+    //    else if (isCss21Compatible && ! (writer is Html32TextWriter))
+    //      RenderContentsCss21Compatible (writer, hasNavigator);
+    //    else
+    RenderContentsLegacyBrowser (writer, hasNavigator);
   }
 
   private void RenderContentsInternetExplorer501Compatible (HtmlTextWriter writer, bool hasNavigator)
@@ -1409,56 +1409,58 @@ public class BocList:
 
   private void RenderContentsCss21Compatible (HtmlTextWriter writer, bool hasNavigator)
   {
-    writer.AddStyleAttribute ("display", "table");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table
-    
-    writer.AddStyleAttribute ("display", "table-row");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
-
-    writer.AddStyleAttribute ("display", "table-cell"); 
-    writer.AddStyleAttribute ("vertical-align", "top");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
-    writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
-    RenderTableBlock (writer);
-    writer.RenderEndTag();  //  End table-cell
-
-    if (HasMenuBlock)
-    {
-      writer.AddStyleAttribute ("display", "table-row");
-      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
-
-      writer.AddStyleAttribute ("display", "table-cell");
-      writer.AddStyleAttribute ("vertical-align", "top");
-      string menuBlockWidth = c_defaultMenuBlockWidth;
-      if (! _menuBlockWidth.IsEmpty)
-        menuBlockWidth = _menuBlockWidth.ToString();
-      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);       
-      string menuBlockOffset = c_defaultMenuBlockOffset;
-      if (! _menuBlockOffset.IsEmpty)
-        menuBlockOffset = _menuBlockWidth.ToString();
-      writer.AddStyleAttribute ("padding-left", menuBlockOffset);
-      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-cell
-      RenderMenuBlock (writer);
-      writer.RenderEndTag();  //  End table-cell
-    }
-    writer.RenderEndTag();  //  End table-row
-
-    if (hasNavigator)
-    {
-      writer.AddStyleAttribute ("display", "table-row");
-      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
-
-      writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
-      RenderNavigator (writer);
-      writer.RenderEndTag();  //  End table-cell
-      writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
-      writer.RenderEndTag();  //  End table-cell
-
-      writer.RenderEndTag();  //  End table-row
-    }
-
-    writer.RenderEndTag();  //  End table
+    RenderContentsLegacyBrowser (writer, hasNavigator);
+    return;
+    //    writer.AddStyleAttribute ("display", "table");
+    //    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    //    writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table
+    //    
+    //    writer.AddStyleAttribute ("display", "table-row");
+    //    writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
+    //
+    //    writer.AddStyleAttribute ("display", "table-cell"); 
+    //    writer.AddStyleAttribute ("vertical-align", "top");
+    //    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "auto");
+    //    writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
+    //    RenderTableBlock (writer);
+    //    writer.RenderEndTag();  //  End table-cell
+    //
+    //    if (HasMenuBlock)
+    //    {
+    //      writer.AddStyleAttribute ("display", "table-row");
+    //      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
+    //
+    //      writer.AddStyleAttribute ("display", "table-cell");
+    //      writer.AddStyleAttribute ("vertical-align", "top");
+    //      string menuBlockWidth = c_defaultMenuBlockWidth;
+    //      if (! _menuBlockWidth.IsEmpty)
+    //        menuBlockWidth = _menuBlockWidth.ToString();
+    //      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, menuBlockWidth);       
+    //      string menuBlockOffset = c_defaultMenuBlockOffset;
+    //      if (! _menuBlockOffset.IsEmpty)
+    //        menuBlockOffset = _menuBlockWidth.ToString();
+    //      writer.AddStyleAttribute ("padding-left", menuBlockOffset);
+    //      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-cell
+    //      RenderMenuBlock (writer);
+    //      writer.RenderEndTag();  //  End table-cell
+    //    }
+    //    writer.RenderEndTag();  //  End table-row
+    //
+    //    if (hasNavigator)
+    //    {
+    //      writer.AddStyleAttribute ("display", "table-row");
+    //      writer.RenderBeginTag (HtmlTextWriterTag.Div);  //  Begin table-row
+    //
+    //      writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
+    //      RenderNavigator (writer);
+    //      writer.RenderEndTag();  //  End table-cell
+    //      writer.RenderBeginTag (HtmlTextWriterTag.Div); //  Begin table-cell
+    //      writer.RenderEndTag();  //  End table-cell
+    //
+    //      writer.RenderEndTag();  //  End table-row
+    //    }
+    //
+    //    writer.RenderEndTag();  //  End table
   }
 
   /// <remarks> Use display:table, display:table-row, ... for opera and mozilla/firefox </remarks>
@@ -1546,6 +1548,9 @@ public class BocList:
       if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
 
+      if (! IsInternetExplorer55OrHigher())
+        return false;
+
       bool showOptionsMenu =   ShowOptionsMenu 
                             && (   OptionsMenuItems.Count > 0
                                 || IsDesignMode);
@@ -1609,8 +1614,13 @@ public class BocList:
     }
     
     BocDropDownMenuColumnDefinition dropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
-    if (dropDownMenuColumn != null && WcagHelper.Instance.IsWaiConformanceLevelARequired())
+    if (dropDownMenuColumn != null)
+    {
+      if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
+      return IsInternetExplorer55OrHigher();
+    }
+
     
     return true;
   }
@@ -1688,6 +1698,21 @@ public class BocList:
         }
       }
     }
+  }
+
+  private bool IsInternetExplorer55OrHigher()
+  {
+    if (IsDesignMode)
+      return false;
+    
+    bool isVersionGreaterOrEqual55 = 
+            Context.Request.Browser.MajorVersion >= 6
+        ||    Context.Request.Browser.MajorVersion == 5 
+            && Context.Request.Browser.MinorVersion >= 0.5;
+    bool isInternetExplorer55AndHigher = 
+        Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual55;
+
+    return isInternetExplorer55AndHigher;
   }
 
   //  TODO: Move ListMenu the extra control "ContentMenu"
@@ -2204,7 +2229,7 @@ public class BocList:
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Th);
-      if (_selection == RowSelection.Multiple)
+      if (_selection == RowSelection.Multiple && IsInternetExplorer55OrHigher())
       {
         string selectorControlName = ID + c_titleRowSelectorControlIDSuffix;
         bool isChecked = (_selectorControlCheckedState[c_titleRowIndex] != null);
@@ -2463,7 +2488,7 @@ public class BocList:
 
     if (IsSelectionEnabled && ! IsEditDetailsModeActive)
     {
-      if (_hasClientScript)
+      if (_hasClientScript && IsInternetExplorer55OrHigher())
       {
         string isOddRowString = (isOddRow ? "true" : "false");
         string script = "BocList_OnRowClick ("
@@ -2781,7 +2806,7 @@ public class BocList:
 
     if (isEditedRow)
     {
-      if (! isReadOnly)
+      if (! isReadOnly && _hasClientScript)
       {
         argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Save;
         postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
@@ -2809,7 +2834,7 @@ public class BocList:
 
       writer.Write (" ");
 
-      if (! isReadOnly)
+      if (! isReadOnly && _hasClientScript)
       {
         argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Cancel;
         postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
@@ -2839,7 +2864,7 @@ public class BocList:
     {
       if (isModifiableRow)
       {
-        if (! isReadOnly)
+        if (! isReadOnly && _hasClientScript)
         {
           argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Edit;
           postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
@@ -2890,7 +2915,8 @@ public class BocList:
       return;
     }
 
-    writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+    if (_hasClientScript)
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
 
     dropDownMenu.Enabled = ! IsEditDetailsModeActive;
@@ -3073,7 +3099,7 @@ public class BocList:
 
       string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
       string postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
-      string onClick = c_onCommandClickScript;
+      string onClick = _hasClientScript ? c_onCommandClickScript : string.Empty;
       command.RenderBegin (writer, postBackEvent, onClick, originalRowIndex, objectID);
     }
 
@@ -3786,7 +3812,7 @@ public class BocList:
         || (   column.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
             && ! isEditedRow))
     {
-      string onClick = c_onCommandClickScript;
+      string onClick = _hasClientScript ? c_onCommandClickScript : string.Empty;
       BocCustomCellRenderArguments arguments = new BocCustomCellRenderArguments (
           this, businessObject, column, columnIndex, originalRowIndex, onClick);
       column.CustomCell.RenderInternal (writer, arguments);
@@ -3801,8 +3827,8 @@ public class BocList:
       }
       else
       {
-
-        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+        string onClick = _hasClientScript ? c_onCommandClickScript : string.Empty; 
+        writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onClick);
         writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
      
         Control control = (Control) customColumnTriplet.Third;
@@ -4354,32 +4380,7 @@ public class BocList:
 
     if (! ControlHelper.IsDesignMode (this, Context))
     {
-      if (EnableClientScript) 
-      {
-        bool isVersionGreaterOrEqual55 = 
-               Context.Request.Browser.MajorVersion >= 6
-            ||    Context.Request.Browser.MajorVersion == 5 
-               && Context.Request.Browser.MinorVersion >= 0.5;
-        bool isInternetExplorer55AndHigher = 
-            Context.Request.Browser.Browser == "IE" && isVersionGreaterOrEqual55;
-
-        _hasClientScript = isInternetExplorer55AndHigher;
-
-        // // The next set of checks involve looking at the capabilities of the
-        // // browser making the request.
-        // //
-        // // The DatePicker needs to verify whether the browser has EcmaScript (JavaScript)
-        // // version 1.2+, and whether the browser supports DHTML, and optionally,
-        // // DHTML behaviors.
-        //
-        // HttpBrowserCapabilities browserCaps = Page.Request.Browser;
-        // bool hasEcmaScript = (browserCaps.EcmaScriptVersion.CompareTo(new Version(1, 2)) >= 0);
-        // bool hasDOM = (browserCaps.MSDomVersion.Major >= 4);
-        // bool hasBehaviors = (browserCaps.MajorVersion > 5) ||
-        //                     ((browserCaps.MajorVersion == 5) && (browserCaps.MinorVersion >= .5));
-        //
-        // _hasClientScript = hasEcmaScript && hasDOM;
-      }
+      _hasClientScript = EnableClientScript;
     }
   }
 
