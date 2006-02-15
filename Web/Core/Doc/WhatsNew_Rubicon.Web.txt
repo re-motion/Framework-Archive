@@ -1,3 +1,8 @@
+1.4.14
+======
+- Namespace korrigiert: IContro, ITemplateControl, ISmartControl, IUserControl, IValidatableControl waren anders als in
+  Version 1.4.1 beschrieben noch nicht im Namespace Rubicon.Web.UI.Controls zu finden.
+
 1.4.13
 ======
 - SmartHyperLink
