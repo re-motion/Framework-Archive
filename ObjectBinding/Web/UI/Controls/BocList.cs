@@ -1972,7 +1972,7 @@ public class BocList:
       RenderTableClosingTag (writer);
     }
 
-    if (_hasClientScript && IsSelectionEnabled)
+    if (_hasClientScript && IsSelectionEnabled && IsInternetExplorer55OrHigher())
     {
       //  Render the init script for the client side selection handling
       int count = 0;
@@ -2477,7 +2477,7 @@ public class BocList:
     bool isChecked = (_selectorControlCheckedState[originalRowIndex] != null);
 
     string cssClassTableCell;
-    if (isChecked && _hasClientScript)
+    if (isChecked && _hasClientScript && IsInternetExplorer55OrHigher())
     {
       if (isOddRow)
         cssClassTableCell = CssClassDataCellOddSelected;
