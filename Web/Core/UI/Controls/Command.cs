@@ -65,7 +65,7 @@ public class Command: IControlItem
     /// <summary> Gets or sets the URL to link to when the rendered command is clicked. </summary>
     /// <value> 
     ///   The URL to link to when the rendered command is clicked. The default value is 
-    ///   <see cref="String.Empty"/>. 
+    ///   an empty <see cref="String"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
@@ -91,7 +91,7 @@ public class Command: IControlItem
     /// </summary>
     /// <value> 
     ///   The target window or frame to load the web page specified by <see cref="Href"/> when the rendered command
-    ///   is clicked.  The default value is <see cref="String.Empty"/>. 
+    ///   is clicked.  The default value is an empty <see cref="String"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
@@ -145,7 +145,7 @@ public class Command: IControlItem
     /// </summary>
     /// <value> 
     ///   The complete type name of the <see cref="WxeFunction"/> to call when the rendered command is clicked. 
-    ///   The default value is <see cref="String.Empty"/>. 
+    ///   The default value is an empty <see cref="String"/>. 
     /// </value>
     /// <remarks>
     ///   Valid type names include the classic .net syntax and typenames using the abbreviated form as defined by the
@@ -177,7 +177,7 @@ public class Command: IControlItem
     /// </summary>
     /// <value> 
     ///   The <see cref="UrlMappingEntry.ID"/> associated with the <see cref="WxeFunction"/> to call when the 
-    ///   rendered command is clicked. The default value is <see cref="String.Empty"/>. 
+    ///   rendered command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
@@ -203,7 +203,7 @@ public class Command: IControlItem
     /// </summary>
     /// <value> 
     ///   The comma separated list of parameters passed to the <see cref="WxeFunction"/> when the rendered command 
-    ///   is clicked. The default value is <see cref="String.Empty"/>. 
+    ///   is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
@@ -229,7 +229,7 @@ public class Command: IControlItem
     /// </summary>
     /// <value> 
     ///   The target window or frame to open the Wxe <see cref="WxeFunction"/> when the rendered command is clicked. 
-    ///   The default value is <see cref="String.Empty"/>. 
+    ///   The default value is an empty <see cref="String"/>. 
     /// </value>
     [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behaviour")]
