@@ -7,6 +7,8 @@ using System.IO;
 using System.Globalization;
 using Rubicon.ObjectBinding.Reflection;
 using Rubicon.Web;
+using Rubicon.Web.Configuration;
+
 namespace OBWTest 
 {
 public class Global : System.Web.HttpApplication // , IResourceUrlResolver
@@ -15,6 +17,7 @@ public class Global : System.Web.HttpApplication // , IResourceUrlResolver
 	/// Required designer variable.
 	/// </summary>
 	private System.ComponentModel.IContainer components = null;
+  private WaiConformanceLevel _waiConformanceLevelBackup;
 
 	public Global()
 	{
@@ -52,9 +55,18 @@ public class Global : System.Web.HttpApplication // , IResourceUrlResolver
 	{
 	}
 
+  protected void Application_PreRequestHandlerExecute (Object sender, EventArgs e)
+  {
+    _waiConformanceLevelBackup = WebConfiguration.Current.Wcag.ConformanceLevel;
+  }
+
+  protected void Application_PostRequestHandlerExecute (Object sender, EventArgs e)
+  {
+    WebConfiguration.Current.Wcag.ConformanceLevel = _waiConformanceLevelBackup;
+  }
+
 	protected void Application_EndRequest(Object sender, EventArgs e)
 	{
-
 	}
 
 	protected void Application_Error(Object sender, EventArgs e)
