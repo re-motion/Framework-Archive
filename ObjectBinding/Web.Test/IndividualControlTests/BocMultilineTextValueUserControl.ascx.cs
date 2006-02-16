@@ -96,10 +96,10 @@ public class BocMultilineTextValueUserControl : BaseUserControl
     SetDebugLabel (DisabledUnboundReadOnlyCVField, DisabledUnboundReadOnlyCVFieldValueLabel);
   }
 
-  private void SetDebugLabel (IBusinessObjectBoundWebControl control, Label label)
+  private void SetDebugLabel (BocMultilineTextValue control, Label label)
   {
    if (control.Value != null)
-      label.Text = control.Value.ToString();
+      label.Text = StringUtility.ConcatWithSeparator (control.Value, "<br>");
     else
       label.Text = "not set";
   }
