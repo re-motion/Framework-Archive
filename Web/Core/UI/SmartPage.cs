@@ -92,13 +92,13 @@ public interface ISmartPage: IPage
 
   /// <summary> Gets the message displayed when the user attempts to abort the WXE Function. </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
+  ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   string AbortMessage { get; }
 
   /// <summary> Gets the message displayed when the user attempts to submit while the page is already submitting. </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
+  ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   string StatusIsSubmittingMessage { get; }
 
@@ -163,7 +163,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
 
   /// <summary> Gets or sets the message displayed when the user attempts to leave the page. </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
+  ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user attempts to leave the page.")]
   [Category ("Appearance")]
@@ -178,7 +178,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   ///   Gets or sets the message displayed when the user attempts to submit while the page is already submitting. 
   /// </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
+  ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="SmartPageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user attempts to submit while the page is already submitting.")]
   [Category ("Appearance")]
