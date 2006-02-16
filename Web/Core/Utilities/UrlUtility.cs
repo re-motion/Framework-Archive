@@ -18,8 +18,9 @@ public class UrlUtility
   /// </summary>
   /// <param name="page">The requesting page.</param>
   /// <param name="relativeUrl">The relative URL.</param>
+  /// <param name="includeServer"><see langword="true"/> to include the server part. Defaults to <see langword="true"/>.</param>
   /// <returns>The absolute URL.</returns>
-  public static string GetAbsoluteUrl (Page page, string relativeUrl)
+  public static string GetAbsoluteUrl (Page page, string relativeUrl, bool includeServer)
   {
     if (relativeUrl.StartsWith ("http"))
     {
@@ -27,11 +28,28 @@ public class UrlUtility
     }
     else
     {
-      string serverPart = page.Request.Url.GetLeftPart (System.UriPartial.Authority);  
       string pathPart = page.ResolveUrl (relativeUrl);
-
-      return serverPart + pathPart;
+      if (includeServer)
+      {
+        string serverPart = page.Request.Url.GetLeftPart (System.UriPartial.Authority);  
+        return serverPart + pathPart;
+      }
+      else
+      {
+        return pathPart;
+      }
     }
+  }
+
+  /// <summary>
+  /// Makes a relative URL absolute.
+  /// </summary>
+  /// <param name="page">The requesting page.</param>
+  /// <param name="relativeUrl">The relative URL.</param>
+  /// <returns>The absolute URL.</returns>
+  public static string GetAbsoluteUrl (Page page, string relativeUrl)
+  {
+    return UrlUtility.GetAbsoluteUrl (page, relativeUrl, true);
   }
 
   /// <summary>
@@ -58,8 +76,9 @@ public class UrlUtility
   /// <summary> Makes a relative URL absolute. </summary>
   /// <param name="context"> The <see cref="HttpContext"/> to be used. Must not be <see langword="null"/>. </param>
   /// <param name="relativeUrl"> The relative URL. Must not be <see langword="null"/> or empty. </param>
+  /// <param name="includeServer"><see langword="true"/> to include the server part. Defaults to <see langword="true"/>.</param>
   /// <returns> The absolute URL. </returns>
-  public static string GetAbsoluteUrl (HttpContext context, string relativeUrl)
+  public static string GetAbsoluteUrl (HttpContext context, string relativeUrl, bool includeServer)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNullOrEmpty ("relativeUrl", relativeUrl);
@@ -70,11 +89,40 @@ public class UrlUtility
     }
     else
     {
-      string serverPart = context.Request.Url.GetLeftPart (System.UriPartial.Authority);  
       string pathPart = context.Response.ApplyAppPathModifier (relativeUrl);
-
-      return serverPart + pathPart;
+      if (includeServer)
+      {
+        string serverPart = context.Request.Url.GetLeftPart (System.UriPartial.Authority);  
+        return serverPart + pathPart;
+      }
+      else
+      {
+        return pathPart;
+      }
     }
+  }
+  
+  /// <summary> Makes a relative URL absolute. </summary>
+  /// <param name="context"> The <see cref="HttpContext"/> to be used. Must not be <see langword="null"/>. </param>
+  /// <param name="relativeUrl"> The relative URL. Must not be <see langword="null"/> or empty. </param>
+  /// <returns> The absolute URL. </returns>
+  public static string GetAbsoluteUrl (HttpContext context, string relativeUrl)
+  {
+    return UrlUtility.GetAbsoluteUrl (context, relativeUrl, true);
+  }
+
+  /// <summary> Resolves a URL. </summary>
+  /// <param name="url"> The URL. Must not be <see langword="null"/> or empty.</param>
+  /// <returns> The resolved URL. </returns>
+  public static string ResolveUrl (string url)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("url", url);
+    if (HttpContext.Current == null)
+      return url;
+    if (url.StartsWith ("/") || url.StartsWith ("~/"))
+      return UrlUtility.GetAbsoluteUrl (HttpContext.Current, url, false);
+    return url;
+
   }
 
   /// <summary>
