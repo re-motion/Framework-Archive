@@ -47,8 +47,9 @@ document.onkeydown = document.onkeypress = function (evt)
   }
 }
 </script>
-<p>Wxe-Enabled Tests for individual Business Object 
-Controls<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.SingleBocTestMainWxeFunction,OBWTest</A></p>
+<p>Wxe-Enabled Tests for individual Business Object Controls<br>
+<a href="IndividualControlTest.wxe?UserControl=BocListUserControl.ascx&WxeReturnToSelf=True&TabbedMenuSelection=IndividualControlTests,BocList">IndividualControlTest.wxe</a></p>
+
 <p>Wxe-Enabled Tests containing all the Business Object 
 Controls in a single Form or User Control<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest" >WxeHandler.ashx?WxeFunctionType=OBWTest.CompleteBocTestMainWxeFunction,OBWTest</A></p>
 <p>Wxe-Enabled Test for a Tabbed Form<br><A href="WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false" >WxeHandler.ashx?WxeFunctionType=OBWTest.TestTabbedFormWxeFunction,OBWTest&amp;ReadOnly=false</A></p>
@@ -62,8 +63,6 @@ href="javascript:OpenClientWindow ('ClientFormFrameset.htm');">OpenClientWindow
 ('ClientFormFrameset.htm')</a></p>
 <p>Design Test<br><a 
 href="WxeHandler.ashx?WxeFunctionType=OBWTest.Design.DesignTestFunction,OBWTest">WxeHandler.ashx?WxeFunctionType=OBWTest.Design.DesignTestFunction,OBWTest</a></p>
-<p>Wxe-Enabled Tests for individual Business Object Controls<br>
-<a href="IndividualControlTest.wxe?UserControl=BocListUserControl.ascx&WxeReturnToSelf=True&TabbedMenuSelection=IndividualControlTests,BocList">IndividualControlTest.wxe</a></p>
 </form>
   </body>
 </html>
