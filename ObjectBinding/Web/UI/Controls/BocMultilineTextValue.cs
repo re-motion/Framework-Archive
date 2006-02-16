@@ -506,7 +506,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   }
 
   /// <summary> Gets or sets the string representation of the current value. </summary>
-  /// <remarks> Uses <c>\r\n</c> or <c>\n</c> as separation characters. The default value is <see cref="String.Empty"/>. </remarks>
+  /// <remarks> Uses <c>\r\n</c> or <c>\n</c> as separation characters. The default value is an empty <see cref="String"/>. </remarks>
   [Description("The string representation of the current value.")]
   [Category("Data")]
   [DefaultValue ("")]
@@ -648,7 +648,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 
-  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("Validation message displayed if there is an error.")]
