@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Web;
 using System.Web.UI;
 using Rubicon.Utilities;
@@ -15,18 +16,21 @@ public class PageUtility
 {
   #region Obsolete UrlUtility
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Legacy implementation moved to StandardPageUtility in Rubicon.Web.Legacy.dll. New implementation moved to UrlUtility.AddParameter")]
   public static string AddUrlParameter (string url, string name, string value)
   {
     return UrlUtility.AddParameter (url, name, value);
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Legacy implementation moved to StandardPageUtility in Rubicon.Web.Legacy.dll. New implementation moved to UrlUtility.DeleteParameter.")]
   public static string DeleteUrlParameter (string url, string name)
   {
     return UrlUtility.DeleteParameter (url, name);
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Legacy implementation moved to StandardPageUtility in Rubicon.Web.Legacy.dll. New implementation moved to UrlUtility.GetParameter.")]
   public static string GetUrlParameter (string url, string name)
   {
@@ -37,18 +41,21 @@ public class PageUtility
 
   #region Obsolete ScriptUtility
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to ScriptUtility.")]
   public static string EscapeClientScript (string input)
   {
     return ScriptUtility.EscapeClientScript (input);
   }
  
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to ScriptUtility.")]
   public static void RegisterClientScriptBlock (Page page, string key, string javascript)
   {
     ScriptUtility.RegisterClientScriptBlock (page, key, javascript);
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to ScriptUtility.")]
   public static void RegisterStartupScriptBlock (Page page, string key, string javascript)
   {
@@ -59,11 +66,14 @@ public class PageUtility
 
   #region Obsolete StandardPageUtility
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public const string c_supressNavParam = "SupressNav";
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public const string c_supressNavValue = "true";
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public enum NavigationBar 
   {
@@ -72,144 +82,168 @@ public class PageUtility
     UseDefault
   };
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string RemoveHttps (Page page, string url)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetPhysicalHttpPageUrl (Page page, string relativeUrl)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetPhysicalPageUrl (Page page)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetPhysicalPageUrl (Page page, string relativeUrl)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static IDictionary GetCallParameters (Page page, bool requireParameters)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void DeleteOutdatedSessions (Page page)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }  
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static object GetSessionValue (Page page, string key, bool required)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void SetSessionValue (Page page, string key, object sessionValue)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void ClearSessionValue (Page page, string key)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static object GetSessionValue (Page page, string token, string key, bool required)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void SetSessionValue (Page page, string token, string key, object sessionValue)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void ClearSessionValue (Page page, string token, string key)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void ClearSession (Page page, string token)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetUniqueKey (Page page, string key)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetUniqueKey (string token, string key)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetUniqueToken ()
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string AddCleanupToken (Page page, string url)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string AddCleanupToken (object navigablePage, string url)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string AddParentToken (Page page, string url)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string AddActiveTabParameters (Page sourcePage, string url)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
   
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string AddPageToken (string url)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetToken (Page page)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetParentToken (Page page)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void CallPage (
       Page sourcePage, 
@@ -221,6 +255,7 @@ public class PageUtility
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void CallPage (
       Page sourcePage, 
@@ -233,36 +268,42 @@ public class PageUtility
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void NavigateTo (Page sourcePage, string url, bool returnToThisPage)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void RegisterWindowOpenJavascript (Page page)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static string GetWindowOpenJavascript (string url, bool useScrollbars)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void CloseBrowserWindow (Page page, bool refreshParent)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void RegisterOpenReportScript (Page page, string reportUrl)
   {
     throw new NotImplementedException ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.");
   }
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Moved to StandardPageUtility in Rubicon.Web.Legacy.dll.", true)]
   public static void RegisterOpenReportScript (Page page, string reportUrl, string scriptKey)
   {
@@ -271,6 +312,7 @@ public class PageUtility
 
   #endregion
 
+  [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Use Rubicon.Web.UI.HtmlHeadAppender.Current.RegisterJavaScriptInclude (key, scriptUrl) instead.")]
   public static void RegisterClientScriptInclude (Page page, string key, string scriptUrl)
   {
