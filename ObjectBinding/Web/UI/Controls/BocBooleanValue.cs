@@ -722,7 +722,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="true"/>. </summary>
   /// <value> 
-  ///   The text displayed for <see langword="true"/>. The default value is <see cref="String.Empty"/>.
+  ///   The text displayed for <see langword="true"/>. The default value is an empty <see cref="String"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("The description displayed when the checkbox is set to True.")]
@@ -736,7 +736,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="false"/>. </summary>
   /// <value> 
-  ///   The text displayed for <see langword="false"/>. The default value is <see cref="String.Empty"/>.
+  ///   The text displayed for <see langword="false"/>. The default value is an empty <see cref="String"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("The description displayed when the checkbox is set to False.")]
@@ -750,7 +750,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary> Gets or sets the description displayed when the checkbox is set to <see langword="null"/>. </summary>
   /// <value> 
-  ///   The text displayed for <see langword="null"/>. The default value is <see cref="String.Empty"/>.
+  ///   The text displayed for <see langword="null"/>. The default value is an empty <see cref="String"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("The description displayed when the checkbox is set to null.")]
@@ -764,7 +764,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 
-  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("Validation message displayed if there is an error.")]

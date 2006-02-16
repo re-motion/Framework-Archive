@@ -26,7 +26,7 @@ public class BocCommand: Command
 
     /// <summary> Gets or sets the URL to link to when the rendered command is clicked. </summary>
     /// <value> 
-    ///   The URL to link to when the rendered command is clicked. The default value is <see cref="String.Empty"/>. 
+    ///   The URL to link to when the rendered command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
     [Description ("The hyperlink reference of the command. Use {0} to insert the Business Object's ID.")]
     public override string Href 
@@ -76,7 +76,7 @@ public class BocCommand: Command
     /// </remarks>
     /// <value> 
     ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
-    ///   command is clicked. The default value is <see cref="String.Empty"/>. 
+    ///   command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
     [Description ("A comma separated list of parameters for the command. The following reference parameter are available: id, object, parent, parentproperty.")]
     public override string Parameters
