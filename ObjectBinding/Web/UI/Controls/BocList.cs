@@ -3119,7 +3119,8 @@ public class BocList:
 
   private void RenderIcon (HtmlTextWriter writer, IconInfo icon, Enum alternateTextID)
   {
-    writer.AddAttribute (HtmlTextWriterAttribute.Src, icon.Url);
+    string url = UrlUtility.ResolveUrl (icon.Url);
+    writer.AddAttribute (HtmlTextWriterAttribute.Src, url);
     if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
