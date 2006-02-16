@@ -45,9 +45,6 @@ public class StartForm : System.Web.UI.Page
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.Button1Button.Click += new System.EventHandler(this.Button1Button_Click);
-    this.Submit1Button.Click += new System.EventHandler(this.Submit1Button_Click);
-    this.Button2Button.Click += new System.EventHandler(this.Button2Button_Click);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -259,20 +256,6 @@ public class StartForm : System.Web.UI.Page
     Debug.WriteLine("");
   }
 
-  private void Button1Button_Click(object sender, System.EventArgs e)
-  {
-  
-  }
-
-  private void Submit1Button_Click(object sender, System.EventArgs e)
-  {
-  
-  }
-
-  private void Button2Button_Click(object sender, System.EventArgs e)
-  {
-  
-  }
 }
 
 [Serializable]

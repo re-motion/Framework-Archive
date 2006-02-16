@@ -62,13 +62,8 @@ href="javascript:OpenClientWindow ('ClientFormFrameset.htm');">OpenClientWindow
 ('ClientFormFrameset.htm')</a></p>
 <p>Design Test<br><a 
 href="WxeHandler.ashx?WxeFunctionType=OBWTest.Design.DesignTestFunction,OBWTest">WxeHandler.ashx?WxeFunctionType=OBWTest.Design.DesignTestFunction,OBWTest</a></p>
-<p>
-<asp:Button id="Button1" runat="server" Text="Button"></asp:Button></p><p>
-<rubicon:WebButton id="Button1Button" runat="server" Text="Button 1" UseSubmitBehavior="False"></rubicon:WebButton>
-</p><p>
-<rubicon:WebButton id="Submit1Button" runat="server" Text="Submit 1"></rubicon:WebButton>
-</p><p>
-<rubicon:WebButton id="Button2Button" runat="server" Text="Button 2" UseSubmitBehavior="False"></rubicon:WebButton><asp:TextBox id="TextBox1" runat="server"></asp:TextBox>
-</p></form>
+<p>Wxe-Enabled Tests for individual Business Object Controls<br>
+<a href="IndividualControlTest.wxe?UserControl=BocListUserControl.ascx&WxeReturnToSelf=True&TabbedMenuSelection=IndividualControlTests,BocList">IndividualControlTest.wxe</a></p>
+</form>
   </body>
 </html>
