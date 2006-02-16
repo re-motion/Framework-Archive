@@ -1,3 +1,10 @@
+1.4.17
+======
+- Boclist
+  * Bugfix Browser-Kompatibilität beim Zeilen-Selektieren wurde nach dem Postback die Hintergrundfarbe gesetzt, obwohl
+    dieses Feautere clientseitig deaktiviert war.
+  * Bug: Im IE 5.0.1 blockieren Javascript Postbacks in den Zeilen den MultiplePostBackCatcher der SmartPage/WxePage
+  
 1.4.16
 ======
 - Boclist
