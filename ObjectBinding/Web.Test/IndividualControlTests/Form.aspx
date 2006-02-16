@@ -16,12 +16,12 @@
 	
     <form id="Form" method="post" runat="server">
 <obwt:NavigationTabs id="NavigationTabs" runat="server"/>
-<p>
+<div>
 <rubicon:webbutton id=PostBackButton runat="server" Text="Post Back"/>
 <rubicon:webbutton id=SaveButton runat="server" Width="120px" Text="Save"/>
 <rubicon:webbutton id="SaveAndRestartButton" runat="server" Text="Save &amp; Restart" Width="120px"/>
 <rubicon:webbutton id="CancelButton" runat="server" Text="Cancel" Width="120px"/>
-</p>
+</div>
 <div><asp:placeholder id="UserControlPlaceHolder" runat="server"/></div>
 <div><asp:literal id="Stack" runat="server"/></div>
 <div 

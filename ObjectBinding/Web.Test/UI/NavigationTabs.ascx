@@ -1,5 +1,6 @@
-<%@ Control Language="c#" AutoEventWireup="false" Codebehind="NavigationTabs.ascx.cs" Inherits="OBWTest.UI.NavigationTabs" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Control Language="c#" AutoEventWireup="false" Codebehind="NavigationTabs.ascx.cs" Inherits="OBWTest.UI.NavigationTabs" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 
 <rubicon:TabbedMenu id="TabbedMenu" runat="server">
 <tabs>
@@ -43,7 +44,7 @@
 
 <rubicon:submenutab Text="BocReferenceValue" ItemID="BocReferenceValue">
 <persistedcommand>
-<rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocReferenceValueControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
+<rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocReferenceValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
 </PersistedCommand>
 </rubicon:submenutab>
 
@@ -59,4 +60,11 @@
 <rubicon:NavigationCommand Type="None"></rubicon:NavigationCommand>
 </PersistedCommand>
 </rubicon:MainMenuTab>
-</Tabs></rubicon:TabbedMenu>
+</Tabs>
+</rubicon:TabbedMenu>
+<div style="WIDTH: 100%;TEXT-ALIGN: right">
+WAI Conformance Level: 
+<obw:BocEnumValue id="WaiConformanceLevelField" runat="server">
+<listcontrolstyle autopostback="True" radiobuttonlistcellspacing="" radiobuttonlistcellpadding="">
+</ListControlStyle></obw:BocEnumValue>
+</div>

@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 using Rubicon.Utilities;
 
 using Rubicon.ObjectBinding;
+using Rubicon.Web.Configuration;
 using Rubicon.Web.ExecutionEngine;
 
 using OBRTest;

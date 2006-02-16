@@ -1,23 +1,37 @@
+using System;
+using System.Reflection;
+using System.Web.UI.WebControls;
+
+using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Reflection;
+using Rubicon.Web.Configuration;
+
 namespace OBWTest.UI
 {
-	using System;
-	using System.Data;
-	using System.Drawing;
-	using System.Web;
-	using System.Web.UI.WebControls;
-	using System.Web.UI.HtmlControls;
-
 	/// <summary>
 	///		Summary description for NavigationTabs.
 	/// </summary>
 	public class NavigationTabs : System.Web.UI.UserControl
 	{
+    protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue WaiConformanceLevelField;
     protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
 
 		private void Page_Load(object sender, System.EventArgs e)
 		{
-			// Put user code to initialize the page here
+      Type itemType = typeof (WcagConfiguration);
+      PropertyInfo propertyInfo = itemType.GetProperty ("ConformanceLevel");
+			ReflectionBusinessObjectEnumerationProperty property = 
+          new ReflectionBusinessObjectEnumerationProperty (propertyInfo, itemType, false);
+
+      WaiConformanceLevelField.Property = property;
+      WaiConformanceLevelField.LoadUnboundValue (WebConfiguration.Current.Wcag.ConformanceLevel, IsPostBack);
 		}
+
+    private void WaiConformanceLevelField_SelectionChanged(object sender, System.EventArgs e)
+    {
+      WebConfiguration.Current.Wcag.ConformanceLevel = (WaiConformanceLevel) WaiConformanceLevelField.Value;
+      WaiConformanceLevelField.IsDirty = false;
+    }
 
 		#region Web Form Designer generated code
 		override protected void OnInit(EventArgs e)
@@ -35,6 +49,7 @@ namespace OBWTest.UI
 		/// </summary>
 		private void InitializeComponent()
 		{
+      this.WaiConformanceLevelField.SelectionChanged += new System.EventHandler(this.WaiConformanceLevelField_SelectionChanged);
       this.Load += new System.EventHandler(this.Page_Load);
 
     }
