@@ -5792,7 +5792,7 @@ public class BocList:
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 
-  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("Validation message displayed if there is an error.")]
