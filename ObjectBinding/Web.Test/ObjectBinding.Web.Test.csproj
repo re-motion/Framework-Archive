@@ -730,6 +730,14 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "Globalization\IndividualControlTests.BocListUserControl.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Globalization\IndividualControlTests.BocReferenceValueUserControl.resx"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "Globalization\RMTest.de-at.resx"
                     BuildAction = "EmbeddedResource"
                 />
@@ -739,14 +747,6 @@
                 />
                 <File
                     RelPath = "Globalization\SingleBocTestBasePage.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\SingleBocTestListForm.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\SingleBocTestReferenceValueForm.resx"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
