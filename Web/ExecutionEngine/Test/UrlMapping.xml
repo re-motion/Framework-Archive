@@ -5,7 +5,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 		<add type="Rubicon.PageTransition::SessionWxeFunction" resource="session.wxe"/>	
-		<add type="Rubicon.PageTransition::MultiplePostbackCatcherWxeFunction, Rubicon.PageTransition" resource="mpc.wxe"/>
+		<add type="Rubicon.PageTransition.MultiplePostbackCatcherWxeFunction, Rubicon.PageTransition" resource="mpc.wxe"/>
 		<add type="Rubicon.PageTransition::ProfilingWxeFunction" resource="prof.wxe"/>
 		
 <!--
