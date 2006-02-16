@@ -407,7 +407,7 @@ function SmartPage_Context (
 	    {
         _isMsIEFormClicked = false;
 	      _isMsIEAspnetPostBack = false;
-        return null;
+        return void (0);
       }
       else
       {
@@ -423,11 +423,11 @@ function SmartPage_Context (
       if (! continueRequest)
         return false;
       else
-        return null;
+        return void (0);
     }
     else
     {
-      return null;
+      return void (0);
     }
   };
 
