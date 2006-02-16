@@ -174,7 +174,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
 
   /// <summary> Gets the message displayed when the user attempts to submit while the page is already aborting. </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
   /// </remarks>
   string StatusIsAbortingMessage { get; }
 
@@ -182,7 +182,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   ///   Gets the message displayed when the user returnes to a cached page that has already been submited or aborted. 
   /// </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
   /// </remarks>
   string StatusIsCachedMessage { get; }
 
@@ -464,7 +464,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   Gets or sets the message displayed when the user attempts to submit while the page is already aborting. 
   /// </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user attempts to submit while the page is already aborting.")]
   [Category ("Appearance")]
@@ -480,7 +480,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   or aborted. 
   /// </summary>
   /// <remarks> 
-  ///   In case of <see cref="String.Empty"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
+  ///   In case of an empty <see cref="String"/>, the text is read from the resources for <see cref="WxePageInfo"/>. 
   /// </remarks>
   [Description("The message displayed when the user returnes to a cached page that has already been submitted or aborted.")]
   [Category ("Appearance")]

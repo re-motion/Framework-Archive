@@ -630,7 +630,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///     <see cref="Int32"/>, <see cref="Double"/> or <see cref="DateTime"/>). If <see cref="ValueType"/> is not
   ///     set, the type is determined by the bound <see cref="BusinessObjectBoundWebControl.Property"/>.
   ///   </para><para>
-  ///     Returns <see langword="null"/> if <see cref="Text"/> is <see cref="String.Empty"/>.
+  ///     Returns <see langword="null"/> if <see cref="Text"/> is an empty <see cref="String"/>.
   ///   </para>
   /// </value>
   /// <remarks> The dirty state is reset when the value is set. </remarks>
@@ -730,8 +730,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Gets or sets the string representation of the current value. </summary>
   /// <value> 
-  ///   <see cref="String.Empty"/> if the control's value is <see langword="null"/> or empty. 
-  ///   The default value is <see cref="String.Empty"/>. 
+  ///   an empty <see cref="String"/> if the control's value is <see langword="null"/> or empty. 
+  ///   The default value is an empty <see cref="String"/>. 
   /// </value>
   [Description("Gets or sets the string representation of the current value.")]
   [Category("Data")]
@@ -784,7 +784,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Gets or sets the format string used to create the string value.  </summary>
   /// <value> 
   ///   A string passed to the <b>ToString</b> method of the object returned by <see cref="Value"/>.
-  ///   The default value is <see cref="String.Empty"/>. 
+  ///   The default value is an empty <see cref="String"/>. 
   /// </value>
   /// <remarks>
   ///   <see cref="IFormattable"/> is used to format the value using this string. The default is "d" for date-only
@@ -933,7 +933,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 
-  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("Validation message displayed if there is an error.")]
