@@ -15,7 +15,7 @@ using OBRTest;
 namespace OBWTest.IndividualControlTests
 {
 
-[WebMultiLingualResources ("OBWTest.Globalization.SingleBocTestReferenceValueForm")]
+[WebMultiLingualResources ("OBWTest.Globalization.IndividualControlTests.BocReferenceValueUserControl")]
 public class BocReferenceValueUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlGenericControl NonVisualControls;

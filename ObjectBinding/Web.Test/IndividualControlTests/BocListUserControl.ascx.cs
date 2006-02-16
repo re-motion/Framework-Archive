@@ -14,7 +14,7 @@ using OBRTest;
 namespace OBWTest.IndividualControlTests
 {
 
-[WebMultiLingualResources ("OBWTest.Globalization.SingleBocTestListForm")]
+[WebMultiLingualResources ("OBWTest.Globalization.IndividualControlTests.BocListUserControl")]
 public class BocListUserControl : BaseUserControl
 {
   protected System.Web.UI.HtmlControls.HtmlTable Table3;
