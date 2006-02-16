@@ -246,7 +246,7 @@ public class BocReferenceValue:
   }
 
   /// <summary> Called when the control caused a post back. </summary>
-  /// <param name="eventArgument"> <see cref="String.Empty"/>. </param>
+  /// <param name="eventArgument"> an empty <see cref="String"/>. </param>
   protected virtual void RaisePostBackEvent (string eventArgument)
   {
     HandleCommand();
@@ -1735,7 +1735,7 @@ public class BocReferenceValue:
   }
 
   /// <summary> The search expression used to populate the selection list in edit mode. </summary>
-  /// <value> A <see cref="String"/> with a valid search expression. The default value is <see cref="String.Empty"/>. </value>
+  /// <value> A <see cref="String"/> with a valid search expression. The default value is an empty <see cref="String"/>. </value>
   /// <remarks> A valid <see cref="Property"/> is required in order to populate the list using the search statement. </remarks>
   [Category ("Data")]
   [Description ("Set the search expression for populating the selection list.")]
@@ -1792,7 +1792,7 @@ public class BocReferenceValue:
 
   /// <summary> Gets or sets the text that is rendered as a label for the <see cref="OptionsMenu"/>. </summary>
   /// <value> 
-  ///   The text rendered as the <see cref="OptionsMenu"/>'s label. The default value is <see cref="String.Empty"/>. 
+  ///   The text rendered as the <see cref="OptionsMenu"/>'s label. The default value is an empty <see cref="String"/>. 
   /// </value>
   [Category ("Menu")]
   [Description ("The text that is rendered as a label for the options menu.")]
@@ -1859,7 +1859,7 @@ public class BocReferenceValue:
 
   /// <summary> Gets or sets the validation error message. </summary>
   /// <value> 
-  ///   The error message displayed when validation fails. The default value is <see cref="String.Empty"/>.
+  ///   The error message displayed when validation fails. The default value is an empty <see cref="String"/>.
   ///   In case of the default value, the text is read from the resources for this control.
   /// </value>
   [Description("Validation message displayed if there is an error.")]
