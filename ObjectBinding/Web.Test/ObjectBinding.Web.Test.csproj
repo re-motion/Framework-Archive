@@ -918,6 +918,197 @@
                     RelPath = "Images\OBRTest.Person.gif"
                     BuildAction = "Content"
                 />
+                <File
+                    RelPath = "IndividualControlTests\BaseUserControl.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocBooleanValueUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocBooleanValueUserControl.ascx.cs"
+                    DependentUpon = "BocBooleanValueUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocBooleanValueUserControl.ascx.resx"
+                    DependentUpon = "BocBooleanValueUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocCheckBoxUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocCheckBoxUserControl.ascx.cs"
+                    DependentUpon = "BocCheckBoxUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocCheckBoxUserControl.ascx.resx"
+                    DependentUpon = "BocCheckBoxUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocDateTimeValueUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocDateTimeValueUserControl.ascx.cs"
+                    DependentUpon = "BocDateTimeValueUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocDateTimeValueUserControl.ascx.resx"
+                    DependentUpon = "BocDateTimeValueUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocEnumValueUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocEnumValueUserControl.ascx.cs"
+                    DependentUpon = "BocEnumValueUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocEnumValueUserControl.ascx.resx"
+                    DependentUpon = "BocEnumValueUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocListUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocListUserControl.ascx.cs"
+                    DependentUpon = "BocListUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocListUserControl.ascx.resx"
+                    DependentUpon = "BocListUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocMultilineTextValueUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocMultilineTextValueUserControl.ascx.cs"
+                    DependentUpon = "BocMultilineTextValueUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocMultilineTextValueUserControl.ascx.resx"
+                    DependentUpon = "BocMultilineTextValueUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocReferenceValueUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocReferenceValueUserControl.ascx.cs"
+                    DependentUpon = "BocReferenceValueUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocReferenceValueUserControl.ascx.resx"
+                    DependentUpon = "BocReferenceValueUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocTextValueUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocTextValueUserControl.ascx.cs"
+                    DependentUpon = "BocTextValueUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocTextValueUserControl.ascx.resx"
+                    DependentUpon = "BocTextValueUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\EmptyUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\EmptyUserControl.ascx.cs"
+                    DependentUpon = "EmptyUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\EmptyUserControl.ascx.resx"
+                    DependentUpon = "EmptyUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\Form.aspx"
+                    SubType = "Form"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\Form.aspx.cs"
+                    DependentUpon = "Form.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\Form.aspx.resx"
+                    DependentUpon = "Form.aspx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "IndividualControlTests\TestBasePage.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\TestFunction.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\NavigationTabs.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\NavigationTabs.ascx.cs"
+                    DependentUpon = "NavigationTabs.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\NavigationTabs.ascx.resx"
+                    DependentUpon = "NavigationTabs.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
             </Include>
         </Files>
     </CSHARP>
