@@ -4,13 +4,14 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.Design;
 using System.Web.UI.WebControls;
-using System.Runtime.Serialization;
-using Rubicon.Utilities;
 using Rubicon.Globalization;
+using Rubicon.Utilities;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -169,7 +170,9 @@ public sealed class IconInfo
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
 
-    writer.AddAttribute (HtmlTextWriterAttribute.Src, _url);
+    string url = UrlUtility.ResolveUrl (_url);
+    writer.AddAttribute (HtmlTextWriterAttribute.Src, url);
+
     if (! _width.IsEmpty && ! _height.IsEmpty)
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Width, _width.ToString());
