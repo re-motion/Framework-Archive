@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Collections;
 using Rubicon.Utilities;
 using Rubicon.NullableValueTypes;
 
@@ -60,6 +61,12 @@ public abstract class CommandLineArgumentAttribute: Attribute
 
   public virtual void SetMember (MemberInfo fieldOrProperty)
   {
+  }
+
+  public virtual void AddArgument (CommandLineArgumentCollection argumentCollection, IDictionary dictionary, MemberInfo member)
+  {
+    argumentCollection.Add (this.Argument);
+    dictionary.Add (this.Argument, member);
   }
 }
 
@@ -125,6 +132,73 @@ public class CommandLineEnumArgumentAttribute: CommandLineArgumentAttribute
     if (! enumType.IsEnum)
       throw new ApplicationException (string.Format ("Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).FullName));
     ((CommandLineEnumArgument) Argument).EnumType = enumType;
+  }
+}
+
+[AttributeUsage (AttributeTargets.Field | AttributeTargets.Property, Inherited = false, AllowMultiple = false)]
+public class CommandLineModeArgumentAttribute: CommandLineArgumentAttribute
+{
+  private Type _enumType;
+
+  public CommandLineModeArgumentAttribute (bool isOptional)
+    : base (new CommandLineModeArgument (isOptional, null)) 
+  {
+  }
+
+  public new CommandLineModeArgument Argument 
+  {
+    get { return (CommandLineModeArgument) base.Argument; }
+  }
+
+  public override void SetMember (MemberInfo fieldOrProperty)
+  {
+    _enumType = ReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
+    if (! _enumType.IsEnum)
+      throw new ApplicationException (string.Format ("Attribute {0} can only be applied to enumeration fields or properties.", typeof (CommandLineEnumArgumentAttribute).FullName));
+
+    Argument.EnumType = _enumType;
+    Argument.CreateChildren();
+  }
+
+  public override void AddArgument (CommandLineArgumentCollection argumentCollection, IDictionary dictionary, MemberInfo member)
+  {
+    if (_enumType == null)
+      throw new InvalidOperationException ("SetMember must be called before AddArgument");
+
+    foreach (CommandLineModeFlagArgument flag in Argument.Parts)
+    {
+      argumentCollection.Add (flag);
+      dictionary.Add (flag, member);
+    }
+    argumentCollection.Add (Argument);
+  }
+}
+
+[AttributeUsage (AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+public class CommandLineModeAttribute: Attribute
+{
+  public static CommandLineModeAttribute GetAttribute (FieldInfo field)
+  {
+    return (CommandLineModeAttribute) ReflectionUtility.GetSingleAttribute (field, typeof (CommandLineModeAttribute), false, false);
+  }
+
+  private string _name;
+  private string _description;
+
+  public CommandLineModeAttribute (string name)
+  {
+    _name = name;
+  }
+
+  public string Name
+  {
+    get { return _name; }
+  }
+
+  public string Description
+  {
+    get { return _description; }
+    set { _description = value; }
   }
 }
 
