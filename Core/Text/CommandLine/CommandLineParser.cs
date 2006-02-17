@@ -19,7 +19,8 @@ public class CommandLineParser
   private char _separator = ':';
   private bool _incrementalNameValidation = true;
   private bool _isCaseSensitive = false;
-  
+  private string _argumentDeclarationPrefix = "/";
+
   // construction and disposal
 
   public CommandLineParser ()
@@ -53,6 +54,12 @@ public class CommandLineParser
   {
     get { return _isCaseSensitive; }
     set { _isCaseSensitive = value; }
+  }
+
+  public string ArgumentDeclarationPrefix
+  {
+    get { return _argumentDeclarationPrefix; }
+    set { _argumentDeclarationPrefix = value; }
   }
 
   /// <summary>
@@ -170,7 +177,7 @@ public class CommandLineParser
     for (int i = 0; i < args.Length; ++i)
     {
       string arg = args[i];
-      if (arg.StartsWith ("/"))
+      if (arg.StartsWith (_argumentDeclarationPrefix))
       {
         string name = null;
         string value = null;
@@ -295,30 +302,36 @@ public class CommandLineParser
       CommandLineArgument argument = Arguments[i];
       CommandLineArgument nextArgument = ((i + 1) < Arguments.Count) ? Arguments[i+1] : null;
 
-      // append opening square bracket
-      sb.Append (" ");
-      if (argument.IsOptional)
+      if (! (argument is ICommandLinePartArgument))
       {
-        sb.Append ("[");
-        ++ openSquareBrackets;
+        // append opening square bracket
+        sb.Append (" ");
+        if (argument.IsOptional)
+        {
+          sb.Append ("[");
+          ++ openSquareBrackets;
+        }
+
+        argument.AppendSynopsis(sb);
+
+        // append closing square brackets after last optional argument
+        if (   nextArgument == null
+            || ! nextArgument.IsOptional 
+            || ! nextArgument.IsPositional)
+        {
+          for (int k = 0; k < openSquareBrackets; ++k)
+            sb.Append ("]");
+          openSquareBrackets = 0;
+        }
       }
 
-      argument.AppendSynopsis(sb);
-
-      // append closing square brackets after last optional argument
-      if (   nextArgument == null
-          || ! nextArgument.IsOptional 
-          || ! nextArgument.IsPositional)
+      if (! (argument is CommandLineGroupArgument))
       {
-        for (int k = 0; k < openSquareBrackets; ++k)
-          sb.Append ("]");
-        openSquareBrackets = 0;
+        if (argument.Name != null)
+          maxLength = Math.Max (maxLength, argument.Name.Length + 1);
+        else if (argument.Placeholder != null)
+          maxLength = Math.Max (maxLength, argument.Placeholder.Length);
       }
-
-      if (argument.Name != null)
-        maxLength = Math.Max (maxLength, argument.Name.Length + 1);
-      else if (argument.Placeholder != null)
-        maxLength = Math.Max (maxLength, argument.Placeholder.Length);
     }
 
     // insert word breaks
@@ -330,9 +343,15 @@ public class CommandLineParser
     sb.Append ("\n");
     foreach (CommandLineArgument argument in Arguments)
     {
-      sb.AppendFormat ("\n  {0,-" + maxLength.ToString() + "}  ", 
-          (argument.Name != null) ? "/" + argument.Name : argument.Placeholder);
-      MonospaceTextFormat.AppendIndentedText (sb, maxLength + 4, maxWidth, argument.Description);
+      if (! (argument is CommandLineGroupArgument))
+      {
+        string name = argument.Placeholder;
+        if (argument.Name != null)
+          name = _argumentDeclarationPrefix + argument.Name;
+
+        sb.AppendFormat ("\n  {0,-" + maxLength.ToString() + "}  ", name);
+        MonospaceTextFormat.AppendIndentedText (sb, maxLength + 4, maxWidth, argument.Description);
+      }
     }
 
     return sb.ToString();
