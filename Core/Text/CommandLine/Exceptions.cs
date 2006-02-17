@@ -6,20 +6,23 @@ namespace Rubicon.Text.CommandLine
 
 internal abstract class FormatArgument
 {
-  private const string c_messageByName = "Argument \"/{0}\"";
+  private const string c_messageByName = "Argument \"{0}\"";
   private const string c_messageByPlaceholder = "Argument \"{0}\"";
   private const string c_messageByNumber = "Argument no. {0}";
   private const string c_messageUnknownArgument = "Unknown Argument";
+  private const string c_messageGroupArgument = "Argument group {0}";
 
   public static string Format (CommandLineArgument argument)
   {
-    if (argument.Name != null)
-      return string.Format (c_messageByName, argument.Name);
+    if (argument is CommandLineGroupArgument)
+      return string.Format (c_messageGroupArgument, argument.Placeholder);
+    else if (argument.Name != null)
+      return string.Format (c_messageByName, argument.Parser.ArgumentDeclarationPrefix + argument.Name);
     else if (argument.Placeholder != null)
       return string.Format (c_messageByPlaceholder, argument.Placeholder);
     else if (argument.Parser != null)
       return string.Format (c_messageByNumber, argument.Position + 1);
-    else 
+    else
       return c_messageUnknownArgument;
   }
 }
@@ -56,6 +59,13 @@ public abstract class CommandLineArgumentException: Exception
 [Serializable]
 public class InvalidCommandLineArgumentValueException: CommandLineArgumentException
 { 
+  private const string c_message = "Invalid argument value";
+
+	public InvalidCommandLineArgumentValueException (CommandLineArgument argument)
+    : this (argument, c_message)
+	{
+	}
+
 	public InvalidCommandLineArgumentValueException (CommandLineArgument argument, string message)
     : this (FormatArgument.Format (argument) + ": " + message)
 	{
@@ -130,6 +140,25 @@ public class MissingRequiredCommandLineParameterException: CommandLineArgumentEx
 	}
 
   protected MissingRequiredCommandLineParameterException (SerializationInfo info, StreamingContext context)
+    : base (info, context)
+  {
+  }
+}
+
+/// <summary>
+/// This exception is thrown if two or more conflictiong arguments are set.
+/// </summary>
+[Serializable]
+public class ConflictCommandLineParameterException: CommandLineArgumentException
+{
+  private const string c_message = "Conflicting Arguments: {0} and {1} cannot be used togehter.";
+ 
+	public ConflictCommandLineParameterException (CommandLineArgument argument1, CommandLineArgument argument2)
+    : base (string.Format (c_message, FormatArgument.Format (argument1), FormatArgument.Format (argument2)))
+	{
+	}
+
+  protected ConflictCommandLineParameterException (SerializationInfo info, StreamingContext context)
     : base (info, context)
   {
   }
