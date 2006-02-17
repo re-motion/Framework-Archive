@@ -142,7 +142,7 @@ public class WxePageStep: WxeStep
   {
     //  Use the Page's postback data
     context.PostBackCollection = null;
-    context.IsReturningPostBack = false;
+    context.SetIsReturningPostBack (false);
   }
 
   private void ProcessExecutedFunction (WxeContext context)
@@ -151,12 +151,12 @@ public class WxePageStep: WxeStep
     context.ReturningFunction = _function;
     _function = null;
 
-    context.IsPostBack = true;
+    context.SetIsPostBack (true);
 
     //  Provide the backed up postback data to the executing page
     context.PostBackCollection = _postBackCollection;
     _postBackCollection = null;
-    context.IsReturningPostBack = true;
+    context.SetIsReturningPostBack (true);
   }
 
   private void EnsureHasRedirectedToPermanentUrl (WxeContext context)
