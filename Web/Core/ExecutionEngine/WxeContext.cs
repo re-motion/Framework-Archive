@@ -228,6 +228,7 @@ public class WxeContext
   private HttpContext _httpContext;
   private bool _isPostBack = false;
   private bool _isReturningPostBack = false;
+  private bool _isOutOfSequencePostBack = false;
   private NameValueCollection _postBackCollection = null;
   private WxeFunction _returningFunction = null;
   private WxeFunctionState _functionState;
@@ -267,7 +268,12 @@ public class WxeContext
   public bool IsPostBack
   {
     get { return _isPostBack; }
-    set { _isPostBack = value; }
+  }
+
+  [EditorBrowsable (EditorBrowsableState.Advanced)]
+  public void SetIsPostBack (bool value)
+  {
+    _isPostBack = value;
   }
 
   /// <summary>
@@ -277,7 +283,27 @@ public class WxeContext
   public bool IsReturningPostBack 
   {
     get { return _isReturningPostBack; }
-    set { _isReturningPostBack = value; }
+  }
+
+  [EditorBrowsable (EditorBrowsableState.Advanced)]
+  public void SetIsReturningPostBack (bool value)
+  {
+    _isReturningPostBack = value;
+  }
+
+  /// <summary>
+  ///   Gets a flag that describes whether the current postback cycle was caused by resubmitting a page from the 
+  ///   client's cache.
+  /// </summary>
+  public bool IsOutOfSequencePostBack
+  {
+    get { return _isOutOfSequencePostBack; }
+  }
+
+  [EditorBrowsable (EditorBrowsableState.Advanced)]
+  public void SetIsOutOfSequencePostBack (bool value)
+  {
+    _isOutOfSequencePostBack = value;
   }
 
   /// <summary> Gets or sets the postback data for the page if it has executed a sub-function. </summary>
