@@ -47,7 +47,7 @@ public abstract class CommandLineArgument
     set { _name = (value != null && value.Length == 0) ? null : value; }
   }
 
-  public string Placeholder
+  public virtual string Placeholder
   {
     get { return _placeholder; }
     set { _placeholder = value; }
@@ -59,7 +59,7 @@ public abstract class CommandLineArgument
     set { _description = value; }
   }
 
-  public bool IsPositional
+  public virtual bool IsPositional
   {
     get { return _name == null; }
   }
