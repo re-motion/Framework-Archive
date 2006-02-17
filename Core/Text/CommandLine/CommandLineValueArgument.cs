@@ -22,7 +22,7 @@ public abstract class CommandLineValueArgument: CommandLineArgument
   {
     if (! IsPositional)
     {
-      sb.Append ("/");
+      sb.Append (Parser.ArgumentDeclarationPrefix);
       sb.Append (Name);
       if (this.Placeholder != null)
         sb.Append (Parser.Separator);
