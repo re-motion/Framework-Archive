@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Text;
 using System.Collections;
+using System.Collections.Specialized;
 using System.Reflection;
 using Rubicon.Utilities;
 using Rubicon.Text;
@@ -20,7 +21,7 @@ public class CommandLineClassParser: CommandLineParser
   public CommandLineClassParser (Type argumentClass)
   {
     _argumentClass = argumentClass;
-    _arguments = new System.Collections.Specialized.ListDictionary();
+    _arguments = new ListDictionary();
 
     foreach (MemberInfo member in argumentClass.GetMembers (BindingFlags.Public | BindingFlags.Instance))
     {
@@ -31,8 +32,7 @@ public class CommandLineClassParser: CommandLineParser
         if (argumentAttribute != null)
         {
           argumentAttribute.SetMember (member);
-          this.Arguments.Add (argumentAttribute.Argument);
-          _arguments.Add (argumentAttribute.Argument, member);
+          argumentAttribute.AddArgument (this.Arguments, _arguments, member);
         }
       }
     }
@@ -54,6 +54,9 @@ public class CommandLineClassParser: CommandLineParser
       MemberInfo fieldOrProperty = (MemberInfo) entry.Value;
       Type memberType = ReflectionUtility.GetFieldOrPropertyType (fieldOrProperty);
       object value = argument.ValueObject;
+      if (argument is ICommandLinePartArgument)
+        value = ((ICommandLinePartArgument)argument).Group.ValueObject;
+
       if (value is NaBoolean && memberType == typeof (bool))
       {
         NaBoolean naboolval = (NaBoolean) value;
@@ -61,13 +64,17 @@ public class CommandLineClassParser: CommandLineParser
           throw new ApplicationException (string.Format ("{0} {1}: Cannot convert Rubicon.NaBoolean.Null to System.Boolean. Use NaBoolean type for optional attributes without default values.", fieldOrProperty.MemberType, fieldOrProperty.Name));
         value = (bool) naboolval;
       }
-      try
+
+      if (value != null)
       {
-        ReflectionUtility.SetFieldOrPropertyValue (obj, fieldOrProperty, value);
-      }
-      catch (Exception e)
-      {
-        throw new ApplicationException (string.Format ("Error setting value of {0} {1}: {2}", fieldOrProperty.MemberType, fieldOrProperty.Name, e.Message), e);
+        try
+        {
+          ReflectionUtility.SetFieldOrPropertyValue (obj, fieldOrProperty, value);
+        }
+        catch (Exception e)
+        {
+          throw new ApplicationException (string.Format ("Error setting value of {0} {1}: {2}", fieldOrProperty.MemberType, fieldOrProperty.Name, e.Message), e);
+        }
       }
     }
     return obj;
