@@ -106,7 +106,7 @@ public class CommandLineEnumArgument: CommandLineValueArgument
   {
     if (! IsPositional)
     {
-      sb.Append ("/");
+      sb.Append (Parser.ArgumentDeclarationPrefix);
       sb.Append (Name);
       sb.Append (Parser.Separator);
     }
@@ -137,7 +137,13 @@ public class CommandLineEnumArgument: CommandLineValueArgument
 
   public override object ValueObject
   {
-    get { return Value; }
+    get 
+    {
+      if (HasValue)
+        return Value; 
+      else
+        return null;
+    }
   }
 
   public System.Enum Value
