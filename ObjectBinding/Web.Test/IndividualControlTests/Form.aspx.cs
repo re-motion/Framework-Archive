@@ -7,8 +7,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
+using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UI;
 using Rubicon.Web.UI.Globalization;
 
 namespace OBWTest.IndividualControlTests
@@ -46,8 +48,9 @@ public class IndividualControlTestForm : TestBasePage
 
   private void IndividualControlTestForm_Init (object sender, EventArgs e)
   {
-    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.True;
-    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.OnlyIfDirty;
+    this.EnableAbort = NaBooleanEnum.True;
+    this.EnableOutOfSequencePostBacks = NaBooleanEnum.True;
+    this.ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   }
 
   private void IndividualControlTestForm_Load (object sender, EventArgs e)

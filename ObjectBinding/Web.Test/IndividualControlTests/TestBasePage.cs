@@ -46,8 +46,8 @@ public class TestBasePage :
       {}
     }
 
-    base.OnInit (e);
     RegisterEventHandlers();
+    base.OnInit (e);
   }
 
   protected override void OnPreRender(EventArgs e)
