@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Text;
 using Rubicon.NullableValueTypes;
 
@@ -33,7 +34,7 @@ public class CommandLineFlagArgument: CommandLineArgument
     get { return _defaultValue; }
   }
 
-  protected internal override void SetStringValue (string   value)
+  protected internal override void SetStringValue (string value)
   {
     if (value == null) throw new ArgumentNullException ("value");
 
@@ -71,20 +72,20 @@ public class CommandLineFlagArgument: CommandLineArgument
 
   public override void AppendSynopsis (StringBuilder sb)
   {
-    if (IsOptional && _defaultValue == NaBoolean.False)
+    if (IsOptional && _defaultValue.IsFalse)
     {
-      sb.Append ("/");
+      sb.Append (Parser.ArgumentDeclarationPrefix);
       sb.Append (Name);
     }
-    else if (IsOptional && _defaultValue == NaBoolean.True)
+    else if (IsOptional && _defaultValue.IsTrue)
     {
-      sb.Append ("/");
+      sb.Append (Parser.ArgumentDeclarationPrefix);
       sb.Append (Name);
       sb.Append ("-");
     }
     else
     {
-      sb.Append ("/");
+      sb.Append (Parser.ArgumentDeclarationPrefix);
       sb.Append (Name);
       sb.Append ("+ | /");
       sb.Append (Name);
