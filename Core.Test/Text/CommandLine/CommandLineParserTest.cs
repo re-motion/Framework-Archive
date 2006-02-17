@@ -13,6 +13,14 @@ namespace Rubicon.Core.UnitTests.Text.CommandLine
 
 public enum IncrementalTestOptions { no, nor, normal, anything };
 public enum TestOption { yes, no, almost };
+public enum TestMode 
+{
+  [CommandLineMode ("m1", Description = "Primary mode")]
+  Mode1, 
+  [CommandLineMode ("m2", Description = "Secondary mode")]
+  Mode2 
+};
+
 
 [TestFixture]
 public class CommandLineParserTest
@@ -42,6 +50,11 @@ public class CommandLineParserTest
     argEnumOption = new CommandLineEnumArgument ("rep", true, typeof (TestOption));
     argEnumOption.Description = "replace target";
     parser.Arguments.Add (argEnumOption);
+
+    CommandLineModeArgument modeGroup = new CommandLineModeArgument (true, typeof (TestMode));
+    foreach (CommandLineModeFlagArgument flag in modeGroup.Parts)
+      parser.Arguments.Add (flag);
+    parser.Arguments.Add (modeGroup);
 
     return parser;
   }
@@ -172,6 +185,7 @@ public class CommandLineParserTest
     
     string expectedResult = 
         "app.exe [source-directory [destination-directory]] [/b-] [/rep:{yes|no|almost}]" 
+        + "\n[{/m1|/m2}]"
         + "\n"
         + "\n  source-directory       Directory to copy from" 
         + "\n  destination-directory  This is the directory to copy to. This is the directory" 
@@ -180,8 +194,9 @@ public class CommandLineParserTest
         + "\n                         to. This is the directory to copy to. This is the" 
         + "\n                         directory to copy to. This is the directory to copy to." 
         + "\n  /b                     binary copy on (+, default) or off (-)" 
-        + "\n  /rep                   replace target";
-
+        + "\n  /rep                   replace target"
+        + "\n  /m1                    Primary mode"
+        + "\n  /m2                    Secondary mode";
     Assert.AreEqual (expectedResult, synopsis);
   }
 
