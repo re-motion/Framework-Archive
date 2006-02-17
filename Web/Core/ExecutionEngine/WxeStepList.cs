@@ -61,7 +61,7 @@ public class WxeStepList: WxeStep
   {
     for (int i = _nextStep; i < _steps.Count; ++i)
     {
-      context.IsPostBack = (i == _lastExecutedStep);
+      context.SetIsPostBack (i == _lastExecutedStep);
       _lastExecutedStep = i;
       WxeStep currentStep = this[i];
       if (currentStep.IsAborted)
