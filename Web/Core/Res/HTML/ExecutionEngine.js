@@ -1,6 +1,7 @@
 // Requires: Utilities.js, SmartPage.js
 
 // The context contains all information required by the WXE page.
+// isCacheDetectionEnabled: true to detect whether the user is viewing a cached page.
 // refreshInterval: The refresh interfal in milli-seconds. zero to disable refreshing.
 // refreshUrl: The URL used to post the refresh request to. Must not be null if refreshInterval is greater than zero.
 // abortUrl: The URL used to post the abort request to. null to disable the abort request.
@@ -8,10 +9,12 @@
 //    null to disable the message.
 // statusIsCachedMessage: The message displayed when the user returns to a cached page. null to disable the message.
 function WxePage_Context (
+      isCacheDetectionEnabled,
       refreshInterval, refreshUrl, 
       abortUrl, 
       statusIsAbortingMessage, statusIsCachedMessage)
 {
+  ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isCacheDetectionEnabled', isCacheDetectionEnabled);
   ArgumentUtility.CheckNotNullAndTypeIsNumber ('refreshInterval', refreshInterval);
   ArgumentUtility.CheckTypeIsString ('refreshUrl', refreshUrl);
   ArgumentUtility.CheckTypeIsString ('abortUrl', abortUrl);
@@ -38,14 +41,19 @@ function WxePage_Context (
   // The message displayed when the user returns to a cached page. null to disable the message.
   var _statusIsCachedMessage = statusIsCachedMessage;
 
+  var _isCacheDetectionEnabled = isCacheDetectionEnabled;
+
   // Handles the page load event.
   this.OnLoad = function (hasSubmitted, isCached)
   {
     ArgumentUtility.CheckNotNullAndTypeIsBoolean ('hasSubmitted', hasSubmitted);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isCached', isCached);
 
-    if (hasSubmitted || isCached)
+    if (   _isCacheDetectionEnabled 
+        && (isCached || hasSubmitted))
+    {
       this.ShowStatusIsCachedMessage ();
+    }
   };
   
   // Handles the page abort event.
@@ -54,8 +62,8 @@ function WxePage_Context (
     ArgumentUtility.CheckNotNullAndTypeIsBoolean ('hasSubmitted', hasSubmitted);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isCached', isCached);
 
-    if (   (! isCached || hasSubmitted)
-        && _isAbortEnabled)
+    if (   _isAbortEnabled
+        && (_isCacheDetectionEnabled && (! isCached || hasSubmitted)))
     {
       SmartPage_Context.Instance.SendOutOfBandRequest (_abortUrl);
     }
@@ -76,7 +84,8 @@ function WxePage_Context (
     ArgumentUtility.CheckNotNullAndTypeIsBoolean ('hasUnloaded', hasUnloaded);
     ArgumentUtility.CheckNotNullAndTypeIsBoolean ('isCached', isCached);
 
-    if (hasSubmitted || isCached || hasUnloaded)
+    if (   _isCacheDetectionEnabled 
+        && (isCached || hasSubmitted || hasUnloaded))
     {
       this.ShowStatusIsCachedMessage();
       return false;
