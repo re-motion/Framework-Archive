@@ -150,9 +150,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     ArgumentUtility.CheckNotNull ("postBackCollection", postBackCollection);
 
+    WxeContext wxeContext = WxeContext.Current;
+
     int postBackID = int.Parse (postBackCollection[WxePageInfo.PostBackSequenceNumberID]);
-    if (postBackID != WxeContext.Current.PostBackID)
-      throw new WxePostbackOutOfSequenceException();
+    if (postBackID != wxeContext.PostBackID)
+    {
+      wxeContext.SetIsOutOfSequencePostBack (true);
+      if (! _page.AreOutOfSequencePostBacksEnabled)
+        throw new WxePostbackOutOfSequenceException();
+    }
 
     string returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
     if (! StringUtility.IsNullOrEmpty (returningToken))
@@ -161,15 +167,13 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       WxeFunctionState functionState = functionStates.GetItem (returningToken);
       if (functionState != null)
       {
-        WxeContext wxeContext = WxeContext.Current;
         wxeContext.ReturningFunction = functionState.Function;
-        wxeContext.IsReturningPostBack = true;
+        wxeContext.SetIsReturningPostBack (true);
         _returningFunctionState = functionState;
       }
     }
   }
 
-  
   public void PreRender ()
   {
     WxeContext wxeContext = WxeContext.Current;
@@ -271,10 +275,12 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     _page.RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "WxePage_OnUnload", "WxePage_OnUnload");
     _page.CheckFormStateFunction = "WxePage_CheckFormState";
 
+    string isCacheDetectionEnabled = _page.AreOutOfSequencePostBacksEnabled ? "false" : "true";
   
     StringBuilder initScript = new StringBuilder (500);
 
     initScript.Append ("WxePage_Context.Instance = new WxePage_Context (\r\n");
+    initScript.Append ("    ").Append (isCacheDetectionEnabled).Append (",\r\n");
     initScript.Append ("    ").Append (refreshIntervall).Append (",\r\n");
     initScript.Append ("    ").Append (refreshPath).Append (",\r\n");
     initScript.Append ("    ").Append (abortPath).Append (",\r\n");
@@ -623,6 +629,15 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     return WxeContext.Current.GetPermanentUrl (functionType, queryString);
   }
 
+  /// <summary> Implements <see cref="IWxePage.IsOutOfSequencePostBack">IWxePage.IsOutOfSequencePostBack</see>. </summary>
+  public bool IsOutOfSequencePostBack
+  {
+    get 
+    { 
+      WxeContext wxeContext = WxeContext.Current;
+      return ((wxeContext == null) ? false : wxeContext.IsOutOfSequencePostBack); 
+    }
+  }
 
   /// <summary> Implements <see cref="IWxePage.IsReturningPostBack">IWxePage.IsReturningPostBack</see>. </summary>
   public bool IsReturningPostBack
