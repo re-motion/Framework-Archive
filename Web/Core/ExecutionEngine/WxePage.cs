@@ -45,7 +45,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
@@ -53,7 +53,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender);
   
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml'
@@ -61,7 +61,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool usesEventTarget);
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
@@ -69,7 +69,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   void ExecuteFunctionNoRepost (WxeFunction function, Control sender, bool createPermaUrl, bool useParentPermaUrl);
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
@@ -79,7 +79,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
   
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
@@ -88,7 +88,7 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
       WxeFunction function, Control sender, bool usesEventTarget, bool createPermaUrl, bool useParentPermaUrl);
   
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\IWxePage.xml' 
@@ -154,17 +154,39 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
       WxeFunction function, string target, string features, Control sender, bool returningPostback, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters);
 
-  /// <summary> Gets a flag describing whether this post back has been triggered by returning from a WXE function. </summary>
+  /// <summary> Gets a flag describing whether this post-back has been triggered by returning from a WXE function. </summary>
   bool IsReturningPostBack { get; }
 
   /// <summary> Gets the WXE function that has been executed in the current page. </summary>
   WxeFunction ReturningFunction { get; }
 
   /// <summary>
-  ///   Gets or sets a flag that determines whether abort the session upon closing the window. 
+  ///   Gets a flag that determines whether to abort the session upon closing the window. 
   ///  </summary>
   /// <value> <see langword="true"/> to abort the session upon navigtion away from the page. </value>
+  /// <remarks> 
+  ///   <see cref="IsAbortEnabled"/> should return <see langword="false"/> if 
+  ///   <see cref="AreOutOfSequencePostBacksEnabled"/> evaluates <see langword="true"/>.
+  /// </remarks>
   bool IsAbortEnabled { get; }
+
+  /// <summary>
+  ///   Gets a flag that determines whether to allow out-of-sequence postbacks (i.e. post-backs from an already 
+  ///   submitted page because of the cache). 
+  ///  </summary>
+  /// <value> <see langword="true"/> to enable out of sequence post-backs. </value>
+  /// <remarks> 
+  ///   <see cref="IsAbortEnabled"/> should return <see langword="false"/> if
+  ///   <see cref="AreOutOfSequencePostBacksEnabled"/> evaluates <see langword="true"/>.
+  /// </remarks>
+  bool AreOutOfSequencePostBacksEnabled { get; }
+
+  /// <summary>
+  ///   Gets a flag that describes whether the current postback cycle was caused by resubmitting a page from the 
+  ///   client's cache.
+  /// </summary>
+  /// <value> <see langword="true"/> if the page has been re-submitted. </value>
+  bool IsOutOfSequencePostBack { get; }
 
   /// <summary> 
   ///   Gets a flag whether the status messages (i.e. is submitting, is aborting) will be displayed when the user
@@ -248,7 +270,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <remarks>
@@ -263,7 +285,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <remarks>
@@ -278,7 +300,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <remarks>
@@ -293,7 +315,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <remarks>
@@ -310,7 +332,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <remarks>
@@ -326,7 +348,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
 
   /// <summary>
-  ///   Executes the <paramref name="function"/> in the current window without triggering the current post back event 
+  ///   Executes the <paramref name="function"/> in the current window without triggering the current post-back event 
   ///   on returning.
   /// </summary>
   /// <remarks>
@@ -421,7 +443,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
         function, target, features, sender, returningPostback,  createPermaUrl, useParentPermaUrl, urlParameters);
   }
 
-  /// <summary> Gets a flag describing whether this post back has been triggered by returning from a WXE function. </summary>
+  /// <summary> Gets a flag describing whether this post-back has been triggered by returning from a WXE function. </summary>
   [Browsable (false)]
   public bool IsReturningPostBack
   {
@@ -515,6 +537,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   private WxePageInfo _wxePageInfo;
   private bool disposed;
+  private NaBooleanEnum _enableOutOfSequencePostBacks = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableAbort = NaBooleanEnum.Undefined;
   private NaBooleanEnum _enableStatusMessages = NaBooleanEnum.Undefined;
 
@@ -539,8 +562,8 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     return result;
   }
 
-  /// <summary> Gets the post back data for the page. </summary>
-  /// <remarks> Application developers should only rely on this collection for accessing the post back data. </remarks>
+  /// <summary> Gets the post-back data for the page. </summary>
+  /// <remarks> Application developers should only rely on this collection for accessing the post-back data. </remarks>
   public NameValueCollection GetPostBackCollection ()
   {
     return _wxePageInfo.EnsurePostBackModeDetermined (Context);
@@ -667,17 +690,68 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   /// <summary> Gets the evaluated value for the <see cref="EnableAbort"/> property. </summary>
   /// <value>
-  ///   <see langword="false"/> if <see cref="EnableAbort"/> is <see cref="NaBooleanEnum.False"/>. 
+  ///   <see langword="false"/> if <see cref="EnableAbort"/> is <see cref="NaBooleanEnum.False"/>
+  ///   or <see cref="AreOutOfSequencePostBacksEnabled"/> evaluates <see langword="true"/>.
   /// </value>
   protected virtual bool IsAbortEnabled
   {
-    get { return _enableAbort != NaBooleanEnum.False; }
+    get { return ! (AreOutOfSequencePostBacksEnabled || _enableAbort == NaBooleanEnum.False); }
   }
 
   /// <summary> Gets the value returned by <see cref="IsAbortEnabled"/>. </summary>
   bool IWxePage.IsAbortEnabled
   {
     get { return IsAbortEnabled; }
+  }
+
+  /// <summary>
+  ///   Gets a flag that determines whether to allow out-of-sequence postbacks (i.e. post-backs from an already 
+  ///   submitted page because of the cache). 
+  /// </summary>
+  /// <value> 
+  ///   <see cref="NaBooleanEnum.True"/> enable out of sequence post-backs.
+  ///   Defaults to <see cref="NaBooleanEnum.Undefined"/>, which is interpreted as <see cref="NaBooleanEnum.False"/>.
+  /// </value>
+  /// <remarks>
+  ///   <para>
+  ///     Use <see cref="AreOutOfSequencePostBacksEnabled"/> to evaluate this property.
+  ///   </para><para>
+  ///     Setting this flag disables the function abort and the abort confirmation message.
+  ///   </para>
+  /// </remarks>
+  [Description(  "The flag that determines whether to allow out-of-sequence postbacks (i.e. post-backs from an already "
+               + "submitted page because of the cache). Undefined is interpreted as false.")]
+  [Category ("Behavior")]
+  [DefaultValue (NaBooleanEnum.Undefined)]
+  public virtual NaBooleanEnum EnableOutOfSequencePostBacks
+  {
+    get { return _enableOutOfSequencePostBacks; }
+    set { _enableOutOfSequencePostBacks = value; }
+  }
+
+  /// <summary> Gets the evaluated value for the <see cref="EnableOutOfSequencePostBack"/> property. </summary>
+  /// <value>
+  ///   <see langword="true"/> if <see cref="EnableOutOfSequencePostBacks"/> is <see cref="NaBooleanEnum.True"/>. 
+  /// </value>
+  protected virtual bool AreOutOfSequencePostBacksEnabled
+  {
+    get { return _enableOutOfSequencePostBacks == NaBooleanEnum.True; }
+  }
+
+  /// <summary> Gets the value returned by <see cref="IsOutOfSequencePostBackEnabled"/>. </summary>
+  bool IWxePage.AreOutOfSequencePostBacksEnabled 
+  { 
+    get { return AreOutOfSequencePostBacksEnabled; }
+  }
+
+  /// <summary>
+  ///   Gets a flag that describes whether the current postback cycle was caused by resubmitting a page from the 
+  ///   client's cache.
+  /// </summary>
+  /// <value> <see langword="true"/> if the page has been re-submitted. </value>
+  public bool IsOutOfSequencePostBack 
+  { 
+    get { return _wxePageInfo.IsOutOfSequencePostBack; }
   }
 
   /// <summary> Gets the evaluated value for the <see cref="ShowAbortConfirmation"/> property. </summary>
