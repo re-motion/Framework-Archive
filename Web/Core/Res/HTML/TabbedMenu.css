@@ -130,7 +130,7 @@ html>body table.tabbedMainMenu span.tabStripTab,
 html>body table.tabbedMainMenu span.tabStripTabSelected,
 html>body table.tabbedMainMenu span.tabStripTabSeparator
 {
-  margin-bottom: 0;
+  margin-bottom: -0.1px;
 }
 /* End Non-IE Browsers hack\*/
 
