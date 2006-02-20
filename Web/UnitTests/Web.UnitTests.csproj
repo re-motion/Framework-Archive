@@ -216,6 +216,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxePageTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeParameterConverterMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
