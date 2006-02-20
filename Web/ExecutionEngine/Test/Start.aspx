@@ -26,6 +26,9 @@
       <p>
         <a href="mpc.wxe">Multiple Postback Catcher Test</a>
       </p>
+      <p>
+        <a href="redirected.wxe">redirected.wxe</a>
+      </p>
       <asp:Button id="ResetSessionButton" runat="server" Text="Reset Session"></asp:Button>
     </form>
   </body>
