@@ -1169,11 +1169,9 @@ public class BocList:
       if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
       {
         string script = string.Format (
-            "BocList_InitializeGlobals ('{0}', '{1}', '{2}', '{3}');",
-            CssClassDataCellOdd,
-            CssClassDataCellEven,
-            CssClassDataCellOddSelected,
-            CssClassDataCellEvenSelected);
+            "BocList_InitializeGlobals ('{0}', '{1}');",
+            CssClassDataRow,
+            CssClassDataRowSelected);
         ScriptUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
       }
     }
@@ -2476,38 +2474,33 @@ public class BocList:
     string selectorControlID = ClientID + c_dataRowSelectorControlIDSuffix + rowIndex.ToString();
     bool isChecked = (_selectorControlCheckedState[originalRowIndex] != null);
 
-    string cssClassTableCell;
+    string cssClassTableRow;
     if (isChecked && _hasClientScript && IsInternetExplorer55OrHigher())
-    {
-      if (isOddRow)
-        cssClassTableCell = CssClassDataCellOddSelected;
-      else
-        cssClassTableCell = CssClassDataCellEvenSelected;
-    }
+      cssClassTableRow = CssClassDataRowSelected;
     else
-    {
-      if (isOddRow)
-        cssClassTableCell = CssClassDataCellOdd;
-      else
-        cssClassTableCell = CssClassDataCellEven;
-    }
+      cssClassTableRow = CssClassDataRow;
+    
+    string cssClassTableCell;
+    if (isOddRow)
+      cssClassTableCell = CssClassDataCellOdd;
+    else
+      cssClassTableCell = CssClassDataCellEven;
 
     if (IsSelectionEnabled && ! IsEditDetailsModeActive)
     {
       if (_hasClientScript && IsInternetExplorer55OrHigher())
       {
-        string isOddRowString = (isOddRow ? "true" : "false");
         string script = "BocList_OnRowClick ("
             + "document.getElementById ('" + ClientID + "'), "
             + "this, "
-            + "document.getElementById ('" + selectorControlID + "'), "
-            + isOddRowString 
-            + ");";
+            + "document.getElementById ('" + selectorControlID + "'));";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, script);
         //  Disallow selecting text in the row.
         //  writer.AddAttribute ("onSelectStart", "return false");
       }
     }
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClassTableRow);
     writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
     if (IsIndexEnabled)
@@ -5860,6 +5853,16 @@ public class BocList:
   protected virtual string CssClassTitleCell
   { get { return "bocListTitleCell"; } }
 
+  /// <summary> Gets the CSS-Class applied to the cells in the <see cref="BocList"/>'s selected data. </summary>
+  /// <remarks> Class: <c>bocListDataRow</c> </remarks>
+  protected virtual string CssClassDataRow
+  { get { return "bocListDataRow"; } }
+
+  /// <summary> Gets the CSS-Class applied to the cells in the <see cref="BocList"/>'s selected data rows. </summary>
+  /// <remarks> Class: <c>bocListDataRowSelected</c> </remarks>
+  protected virtual string CssClassDataRowSelected
+  { get { return "bocListDataRowSelected"; } }
+
   /// <summary> Gets the CSS-Class applied to the cells in the <see cref="BocList"/>'s odd data rows. </summary>
   /// <remarks> Class: <c>bocListDataCellOdd</c> </remarks>
   protected virtual string CssClassDataCellOdd
@@ -5869,16 +5872,6 @@ public class BocList:
   /// <remarks> Class: <c>bocListDataCellEven</c> </remarks>
   protected virtual string CssClassDataCellEven
   { get { return "bocListDataCellEven"; } }
-
-  /// <summary> Gets the CSS-Class applied to the cells in the <see cref="BocList"/>'s odd data rows when the row is selected. </summary>
-  /// <remarks> Class: <c>bocListDataCellOddSelected</c> </remarks>
-  protected virtual string CssClassDataCellOddSelected
-  { get { return "bocListDataCellOddSelected"; } }
-
-  /// <summary> Gets the CSS-Class applied to the cells in the <see cref="BocList"/>'s even data rows when the row is selected. </summary>
-  /// <remarks> Class: <c>bocListDataCellEvenSelected</c> </remarks>
-  protected virtual string CssClassDataCellEvenSelected
-  { get { return "bocListDataCellEvenSelected"; } }
 
   /// <summary> Gets the CSS-Class applied to the cell in the <see cref="BocList"/>'s title row that contains the row index header. </summary>
   /// <remarks> Class: <c>bocListTitleCellIndex</c> </remarks>
