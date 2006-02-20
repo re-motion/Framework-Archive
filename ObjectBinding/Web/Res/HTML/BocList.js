@@ -1,10 +1,8 @@
 //  BocListe.js contains client side scripts used by BocList.
 
-//  The css classes used for odd and even rows in their selected and unselected state.
-var _bocList_TdOddClassName = '';
-var _bocList_TdEvenClassName = '';
-var _bocList_TdOddClassNameSelected = '';
-var _bocList_TdEvenClassNameSelected = '';
+//  The css classes used for rows in their selected and unselected state.
+var _bocList_TrClassName = '';
+var _bocList_TrClassNameSelected = '';
 
 //  Associative array: <BocList ID>, <BocList_SelectedRows>
 var _bocList_selectedRows = new Array();
@@ -49,25 +47,18 @@ function BocList_SelectedRows (selection)
   }
 }
 
-function BocList_RowBlock (row, selectorControl, isOdd)
+function BocList_RowBlock (row, selectorControl)
 {
   this.Row = row;
   this.SelectorControl = selectorControl;
-  this.IsOdd = isOdd;
 }
 
 //  Initializes the class names of the css classes used to format the table cells.
 //  Call this method once in a startup script.
-function BocList_InitializeGlobals (
-  tdOddClassName, 
-  tdEvenClassName, 
-  tdOddClassNameSelected,
-  tdEvenClassNameSelected)
+function BocList_InitializeGlobals (trClassName, trClassNameSelected)
 {
-  _bocList_TdOddClassName = tdOddClassName;
-  _bocList_TdEvenClassName = tdEvenClassName;
-  _bocList_TdOddClassNameSelected = tdOddClassNameSelected;
-  _bocList_TdEvenClassNameSelected = tdEvenClassNameSelected;
+  _bocList_TrClassName = trClassName;
+  _bocList_TrClassNameSelected = trClassNameSelected;
 }
 
 //  Initalizes an individual BocList's List. The initialization synchronizes the selection state 
@@ -83,7 +74,7 @@ function BocList_InitializeList (bocList, selectorControlPrefix, count, selectio
   if (   selectedRows.Selection != _bocList_rowSelectionUndefined
       && selectedRows.Selection != _bocList_rowSelectionDisabled)
   {
-    for (var i = 0, isOdd = true; i < count; i++, isOdd = !isOdd)
+    for (var i = 0; i < count; i++)
     {
       var selectorControlID = selectorControlPrefix + i;
       var selectorControl = document.getElementById (selectorControlID);
@@ -92,7 +83,7 @@ function BocList_InitializeList (bocList, selectorControlPrefix, count, selectio
       var row =  selectorControl.parentElement.parentElement;
       if (selectorControl.checked)      
       {
-        var rowBlock = new BocList_RowBlock (row, selectorControl, isOdd);
+        var rowBlock = new BocList_RowBlock (row, selectorControl);
         selectedRows.Rows[selectorControl.id] = rowBlock;
         selectedRows.Length++;
         
@@ -114,8 +105,7 @@ function BocList_InitializeList (bocList, selectorControlPrefix, count, selectio
 //  bocList: The BocList to which the row belongs.
 //  currentRow: The row that fired the click event.
 //  selectorControl: The selection selectorControl in this row.
-//  isOdd: True if it is an odd data row, otherwise false.
-function BocList_OnRowClick (bocList, currentRow, selectorControl, isOdd)
+function BocList_OnRowClick (bocList, currentRow, selectorControl)
 {
   if (_bocList_isCommandClick)
   {
@@ -129,9 +119,8 @@ function BocList_OnRowClick (bocList, currentRow, selectorControl, isOdd)
     return;
   }  
 
-  var currentRowBlock = new BocList_RowBlock (currentRow, selectorControl, isOdd);
+  var currentRowBlock = new BocList_RowBlock (currentRow, selectorControl);
   var selectedRows = _bocList_selectedRows[bocList.id];
-  var className; //  The css-class
   var isCtrlKeyPress = window.event.ctrlKey;
     
   if (   selectedRows.Selection == _bocList_rowSelectionUndefined
@@ -195,14 +184,7 @@ function BocList_SelectRow (bocList, rowBlock)
   selectedRows.Length++;
     
   // Select currentRow
-  var className;
-  if (rowBlock.IsOdd)
-    className = _bocList_TdOddClassNameSelected;
-  else
-    className = _bocList_TdEvenClassNameSelected;
-  for (var i = 0; i < rowBlock.Row.children.length; i++)
-    rowBlock.Row.children[i].className = className;
-
+  rowBlock.Row.className = _bocList_TrClassNameSelected;
   rowBlock.SelectorControl.checked = true;
 }
 
@@ -236,15 +218,8 @@ function BocList_UnselectRow (bocList, rowBlock)
   selectedRows.Rows[rowBlock.SelectorControl.id] = null;
   selectedRows.Length--;
     
-  // Select currentRow
-  var className;
-  if (rowBlock.IsOdd)
-    className = _bocList_TdOddClassName;
-  else
-    className = _bocList_TdEvenClassName;
-  for (var i = 0; i < rowBlock.Row.children.length; i++)
-    rowBlock.Row.children[i].className = className;
-  
+  // Unselect currentRow
+  rowBlock.Row.className = _bocList_TrClassName;
   rowBlock.SelectorControl.checked = false;
 }
 
@@ -263,14 +238,14 @@ function BocList_OnSelectAllSelectorControlClick (bocList, selectAllSelectorCont
   if (selectAllSelectorControl.checked)      
     selectedRows.Length = 0;
 
-  for (var i = 0, isOdd = true; i < count; i++, isOdd = !isOdd)
+  for (var i = 0; i < count; i++)
   {
     var selectorControlID = selectorControlPrefix + i;
     var selectorControl = document.getElementById (selectorControlID);
     if (selectorControl == null)
       continue;
     var row =  selectorControl.parentElement.parentElement;
-    var rowBlock = new BocList_RowBlock (row, selectorControl, isOdd);
+    var rowBlock = new BocList_RowBlock (row, selectorControl);
     if (selectAllSelectorControl.checked)      
       BocList_SelectRow (bocList, rowBlock)
     else
