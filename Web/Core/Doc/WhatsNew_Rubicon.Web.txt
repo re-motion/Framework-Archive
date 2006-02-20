@@ -6,9 +6,7 @@
   
 - Rubicon.Web.ExecutionEngine.WxePage
   * Unterstützung für Out-Of-Sequence Postbacks (d.h. Postbacks von bereits submittenen Seiten aus dem Browsercache):
-    Aktiviert mittels EnableOutOfSequencePostBacks = True
-    Aktivierte Out-Of-Sequence Postbacks dekativieren den FunctionAbort beim verlassen der Seite 
-        sowie die Abort-Confirmation
+    Aktiviert wenn sowohl EnableOutOfSequencePostBacks = True als auch EnableAbort = False gesetzt ist.
     IsOutOfSequencePostBack sollte in Postback-Eventhandlern, etc abgefragt werden, wenn eine Page Out-Of-Sequence 
         Postback Unterstützung bietet.
   

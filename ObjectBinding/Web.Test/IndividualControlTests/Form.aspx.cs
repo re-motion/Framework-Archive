@@ -48,7 +48,7 @@ public class IndividualControlTestForm : TestBasePage
 
   private void IndividualControlTestForm_Init (object sender, EventArgs e)
   {
-    this.EnableAbort = NaBooleanEnum.True;
+    this.EnableAbort = NaBooleanEnum.False;
     this.EnableOutOfSequencePostBacks = NaBooleanEnum.True;
     this.ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   }

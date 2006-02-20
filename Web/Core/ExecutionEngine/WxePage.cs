@@ -164,10 +164,6 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   ///   Gets a flag that determines whether to abort the session upon closing the window. 
   ///  </summary>
   /// <value> <see langword="true"/> to abort the session upon navigtion away from the page. </value>
-  /// <remarks> 
-  ///   <see cref="IsAbortEnabled"/> should return <see langword="false"/> if 
-  ///   <see cref="AreOutOfSequencePostBacksEnabled"/> evaluates <see langword="true"/>.
-  /// </remarks>
   bool IsAbortEnabled { get; }
 
   /// <summary>
@@ -176,8 +172,8 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   ///  </summary>
   /// <value> <see langword="true"/> to enable out of sequence post-backs. </value>
   /// <remarks> 
-  ///   <see cref="IsAbortEnabled"/> should return <see langword="false"/> if
-  ///   <see cref="AreOutOfSequencePostBacksEnabled"/> evaluates <see langword="true"/>.
+  ///   <see cref="AreOutOfSequencePostBacksEnabled"/> should only return <see langword="true"/> if 
+  ///   <see cref="IsAbortEnabled"/> evaluates <see langword="false"/>.
   /// </remarks>
   bool AreOutOfSequencePostBacksEnabled { get; }
 
@@ -690,12 +686,11 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   /// <summary> Gets the evaluated value for the <see cref="EnableAbort"/> property. </summary>
   /// <value>
-  ///   <see langword="false"/> if <see cref="EnableAbort"/> is <see cref="NaBooleanEnum.False"/>
-  ///   or <see cref="AreOutOfSequencePostBacksEnabled"/> evaluates <see langword="true"/>.
+  ///   <see langword="false"/> if <see cref="EnableAbort"/> is <see cref="NaBooleanEnum.False"/>.
   /// </value>
   protected virtual bool IsAbortEnabled
   {
-    get { return ! (AreOutOfSequencePostBacksEnabled || _enableAbort == NaBooleanEnum.False); }
+    get { return _enableAbort != NaBooleanEnum.False; }
   }
 
   /// <summary> Gets the value returned by <see cref="IsAbortEnabled"/>. </summary>
@@ -731,11 +726,12 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   /// <summary> Gets the evaluated value for the <see cref="EnableOutOfSequencePostBack"/> property. </summary>
   /// <value>
-  ///   <see langword="true"/> if <see cref="EnableOutOfSequencePostBacks"/> is <see cref="NaBooleanEnum.True"/>. 
+  ///   <see langword="true"/> if <see cref="EnableOutOfSequencePostBacks"/> is <see cref="NaBooleanEnum.True"/>
+  ///   and <see cref="IsAbortEnabled"/> evaluates <see langword="false"/>.
   /// </value>
   protected virtual bool AreOutOfSequencePostBacksEnabled
   {
-    get { return _enableOutOfSequencePostBacks == NaBooleanEnum.True; }
+    get { return _enableOutOfSequencePostBacks == NaBooleanEnum.True && ! IsAbortEnabled; }
   }
 
   /// <summary> Gets the value returned by <see cref="IsOutOfSequencePostBackEnabled"/>. </summary>
