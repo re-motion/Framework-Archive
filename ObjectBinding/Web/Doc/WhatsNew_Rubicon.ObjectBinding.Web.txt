@@ -1,3 +1,13 @@
+1.4.19
+======
+- BocList
+  * Bugfix: CSS-Klasse für die Index-Spalte wurde beim Selektieren gelöscht.
+  * CSS-Klassen angepasst (infolge des Bugfixes): 
+    td.bocListDataCellOdd -> tr.bocListDataRow td.bocListDataCellOdd
+    td.bocListDataCellEven -> tr.bocListDataRow td.bocListDataCellEven
+    td.bocListDataCellOddSelected -> tr.bocListDataRowSelected td.bocListDataCellOdd
+    td.bocListDataCellEvenSelected -> tr.bocListDataRowSelected td.bocListDataCellEven
+
 1.4.17
 ======
 - Boclist
