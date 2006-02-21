@@ -2145,8 +2145,7 @@ public class BocList:
     {
       writer.WriteBeginTag ("col");
       writer.Write (" style=\"");
-      //  1% would lead to automatic resizing if all widths don't add up to 100%
-      writer.WriteStyleAttribute ("width", Unit.Percentage(0).ToString());
+      writer.WriteStyleAttribute ("width", "0.5em");
       writer.Write ("\"");
       writer.Write (">");
     }
@@ -2155,8 +2154,7 @@ public class BocList:
     {
       writer.WriteBeginTag ("col");
       writer.Write (" style=\"");
-      //  1% would lead to automatic resizing if all widths don't add up to 100%
-      writer.WriteStyleAttribute ("width", Unit.Percentage(0).ToString());
+      writer.WriteStyleAttribute ("width", "0.5em");
       writer.Write ("\"");
       writer.Write (">");
     }
@@ -2177,8 +2175,7 @@ public class BocList:
         BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
         if (valueColumn != null && valueColumn.EnforceWidth && column.Width.Type != UnitType.Percentage)
         {
-          //  1% would lead to automatic resizing if all widths don't add up to 100%
-          width = Unit.Percentage(0).ToString();
+          width = "0.5em";
         }
         else
         {
