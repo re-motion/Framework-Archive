@@ -3,10 +3,12 @@
 table.tabbedMenu
 {
   width: 100%;
+  border-collapse: collapse;
 }
 
 td.tabbedMainMenuCell
 {
+  padding: 0;
 }
 
 td.tabbedSubMenuCell
@@ -27,28 +29,19 @@ td.tabbedMenuStatusCell
   white-space: nowrap;
 }
 
-/* Main Menu Tabstrip*/
-table.tabbedMainMenu div.tabStripTabsPane
+/* Main Menu Tabstrip */
+div.tabbedMainMenu span.tabStripTabWrapper
 {
-  border-bottom: none;
+  padding-top: 0.3em;
+  padding-right: 0.1em;
 }
 
-table.tabbedMainMenu div.tabStripTabsPane ul
+div.tabbedMainMenu span.tabStripTabSeparator
 {
+  display: none; /* magin-left must be set to 0 in the Non-IE browsers section for tabStripTab and tabStripTabSelected. */
 }
 
-table.tabbedMainMenu div.tabStripTabsPane ul li
-{
-  margin-top: 0.3em;
-  margin-right: 0.1em;
-}
-
-table.tabbedMainMenu span.tabStripTabSeparator
-{
-  display: none;	
-}
-
-table.tabbedMainMenu span.tabStripTab a
+div.tabbedMainMenu span.tabStripTab a
 {  
   border: none;
   background-color: #e1ecfc;
@@ -57,7 +50,7 @@ table.tabbedMainMenu span.tabStripTab a
   font-weight: bold;
 }
 
-table.tabbedMainMenu span.tabStripTab a:hover
+div.tabbedMainMenu span.tabStripTab a:hover
 {
 	background-color: #fee197;	
   color: Blue;
@@ -65,7 +58,7 @@ table.tabbedMainMenu span.tabStripTab a:hover
 	cursor: hand;
 }
 
-table.tabbedMainMenu span.tabStripTabSelected a
+div.tabbedMainMenu span.tabStripTabSelected a
 {
   border: none;
   background-color: #02537c;
@@ -74,7 +67,7 @@ table.tabbedMainMenu span.tabStripTabSelected a
   font-weight: bold;
 }
 
-table.tabbedMainMenu span.tabStripTabSelected a:hover
+div.tabbedMainMenu span.tabStripTabSelected a:hover
 {
   color: #fee197;
   text-decoration: underline;
@@ -82,8 +75,8 @@ table.tabbedMainMenu span.tabStripTabSelected a:hover
 	cursor: hand;
 }
 
-table.tabbedMainMenu span.tabStripTab.disabled a,
-table.tabbedMainMenu span.tabStripTab.disabled a:hover
+div.tabbedMainMenu span.tabStripTab.disabled a,
+div.tabbedMainMenu span.tabStripTab.disabled a:hover
 {
   color: Gray;
   background-color: #E8E8E8;
@@ -91,8 +84,8 @@ table.tabbedMainMenu span.tabStripTab.disabled a:hover
 }
 
 /* Top Left tab corner */
-table.tabbedMainMenu span.tabStripTab a span.topLeft,
-table.tabbedMainMenu span.tabStripTabSelected a span.topLeft
+div.tabbedMainMenu span.tabStripTab a span.topLeft,
+div.tabbedMainMenu span.tabStripTabSelected a span.topLeft
 {
   background-image: url(../Image/TabbedMainMenuTabTopLeftCorner.gif);
   background-repeat: no-repeat;
@@ -100,8 +93,8 @@ table.tabbedMainMenu span.tabStripTabSelected a span.topLeft
 }
 
 /* Top Right tab corner */
-table.tabbedMainMenu span.tabStripTab a span.topRight,
-table.tabbedMainMenu span.tabStripTabSelected a span.topRight
+div.tabbedMainMenu span.tabStripTab a span.topRight,
+div.tabbedMainMenu span.tabStripTabSelected a span.topRight
 {
   background-image: url(../Image/TabbedMainMenuTabTopRightCorner.gif);
   background-repeat: no-repeat;
@@ -109,8 +102,8 @@ table.tabbedMainMenu span.tabStripTabSelected a span.topRight
 }
 
 /* Content area of the tab */
-table.tabbedMainMenu span.tabStripTab a span.content,
-table.tabbedMainMenu span.tabStripTabSelected a span.content
+div.tabbedMainMenu span.tabStripTab a span.content,
+div.tabbedMainMenu span.tabStripTabSelected a span.content
 {
   padding-top: 0.3em;
   padding-bottom: 0.3em;
@@ -118,47 +111,42 @@ table.tabbedMainMenu span.tabStripTabSelected a span.content
   padding-right: 0.6em;
 }
 
-table.tabbedMainMenu span.tabStripTab,
-table.tabbedMainMenu span.tabStripTabSelected,
-table.tabbedMainMenu span.tabStripTabSeparator
+/* Non-IE Browsers hack \*/
+html>body div.tabbedMainMenu span.tabStripTabWrapper
 {
-  margin-bottom: -0.3em;
+  margin-bottom: -1px; /* Removes an offset between the main menu and the sub menu */
 }
 
-/* Non-IE Browsers hack \*/
-html>body table.tabbedMainMenu span.tabStripTab,
-html>body table.tabbedMainMenu span.tabStripTabSelected,
-html>body table.tabbedMainMenu span.tabStripTabSeparator
+html>body div.tabbedMainMenu span.tabStripTab,
+html>body div.tabbedMainMenu span.tabStripTabSelected
 {
-  margin-bottom: -0.1px;
+  margin-left: 0; /* No separator, no margin required. */
 }
 /* End Non-IE Browsers hack\*/
 
 
 /* Sub Menu Tabstrip */
-table.tabbedSubMenu div.tabStripTabsPane
+div.tabbedSubMenu div.tabStripTabsPane
 {
-  border-bottom: none;
 }
 
-table.tabbedSubMenu div.tabStripTabsPane.empty
+div.tabbedSubMenu div.tabStripTabsPane.empty
 {
-  padding-top: 0.5em;
-  padding-bottom: 0.3em;
+  padding-top: 0.4em; /* padding from tabStripTabWrapper, tabStripTab and content */
 }
 
-table.tabbedSubMenu div.tabStripTabsPane ul li
+div.tabbedSubMenu div.tabStripTabsPane span.tabStripTabWrapper
 {
-  margin-top: 0.2em;
+  padding-top: 0.1em;
 }
 
-table.tabbedSubMenu span.tabStripTabSeparator
+div.tabbedSubMenu span.tabStripTabSeparator
 {
-  display: none;
+  display: none;	/* magin-left must be set to 0 in the Non-IE browsers section for tabStripTab and tabStripTabSelected. */
 }
 
-table.tabbedSubMenu span.tabStripTab,
-table.tabbedSubMenu span.tabStripTabSelected
+div.tabbedSubMenu span.tabStripTab,
+div.tabbedSubMenu span.tabStripTabSelected
 {  
   border-right: solid 1px White;
 
@@ -168,15 +156,15 @@ table.tabbedSubMenu span.tabStripTabSelected
   padding-right: 0.2em;
 }
 
-table.tabbedSubMenu span.tabStripTab a
+div.tabbedSubMenu span.tabStripTab a
 {  
   border: none;
   background-color: #02537c;
   color: White;
 }
 
-table.tabbedSubMenu span.tabStripTab a:hover,
-table.tabbedSubMenu span.tabStripTabSelected a:hover
+div.tabbedSubMenu span.tabStripTab a:hover,
+div.tabbedSubMenu span.tabStripTabSelected a:hover
 {
 	background-color: #fee197;	
   color: Blue;
@@ -184,7 +172,7 @@ table.tabbedSubMenu span.tabStripTabSelected a:hover
 	cursor: hand;
 }
 
-table.tabbedSubMenu span.tabStripTabSelected a
+div.tabbedSubMenu span.tabStripTabSelected a
 {
   border: none;
   background-color: #02537c;
@@ -192,15 +180,15 @@ table.tabbedSubMenu span.tabStripTabSelected a
   text-decoration: underline;
 }
 
-table.tabbedSubMenu span.tabStripTab.disabled a,
-table.tabbedSubMenu span.tabStripTab.disabled a:hover
+div.tabbedSubMenu span.tabStripTab.disabled a,
+div.tabbedSubMenu span.tabStripTab.disabled a:hover
 {
   color: White;
   background-color: Transparent;
   cursor: default;
 }
 
-table.tabbedSubMenu span.tabStripTab.disabled img
+div.tabbedSubMenu span.tabStripTab.disabled img
 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(opacity=1),
           progid:DXImageTransform.Microsoft.BasicImage(grayscale=0);
@@ -208,8 +196,8 @@ table.tabbedSubMenu span.tabStripTab.disabled img
 }
 
 /* Content area of the tab */
-table.tabbedSubMenu span.tabStripTab a span.content,
-table.tabbedSubMenu span.tabStripTabSelected a span.content
+div.tabbedSubMenu span.tabStripTab a span.content,
+div.tabbedSubMenu span.tabStripTabSelected a span.content
 {
   padding-top: 0.1em;
   padding-bottom: 0.1em;
@@ -218,9 +206,15 @@ table.tabbedSubMenu span.tabStripTabSelected a span.content
 }
 
 /* Non-IE Browsers hack \*/
-html>body table.tabbedSubMenu div.tabStripTabsPane.empty
+html>body div.tabbedSubMenu div.tabStripTabsPane.empty
 {
-  padding-top: 0.4em;
-  padding-bottom: 0.2em;
+  padding-top: 1.8em;
 }
+
+html>body div.tabbedSubMenu span.tabStripTab,
+html>body div.tabbedSubMenu span.tabStripTabSelected
+{
+  margin-left: 0; /* No separator, no margin required. */
+}
+
 /* End Non-IE Browsers hack\*/
