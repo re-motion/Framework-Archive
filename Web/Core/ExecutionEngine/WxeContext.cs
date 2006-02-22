@@ -124,8 +124,7 @@ public class WxeContext
   }
 
   /// <summary> 
-  ///   Executes a <see cref="WxeFunction"/> in the current window from a <see cref="Page"/> not implementing 
-  ///   <see cref="IWxePage"/> by using a redirect.
+  ///   Executes a <see cref="WxeFunction"/> in the current window from any <see cref="Page"/> by using a redirect.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="urlParameters"]' />
   public static void ExecuteFunctionExternal (
@@ -135,8 +134,7 @@ public class WxeContext
   }
 
   /// <summary> 
-  ///   Executes a <see cref="WxeFunction"/> in the current window from a <see cref="Page"/> not implementing 
-  ///   <see cref="IWxePage"/> by using a redirect.
+  ///   Executes a <see cref="WxeFunction"/> in the current window from any <see cref="Page"/> by using a redirect.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="createPermaUrl" or @name="urlParameters"]' />
   public static void ExecuteFunctionExternal (
@@ -151,8 +149,8 @@ public class WxeContext
   }
 
   /// <summary> 
-  ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from a <see cref="Page"/> not 
-  ///   implementing <see cref="IWxePage"/> by using java script.
+  ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from any <see cref="Page"/> 
+  ///   by using java script.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="urlParameters"]' />
   public static void ExecuteFunctionExternal (
@@ -162,8 +160,8 @@ public class WxeContext
   }
   
   /// <summary> 
-  ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from a <see cref="Page"/> not 
-  ///   implementing <see cref="IWxePage"/> by using java script.
+  ///   Executes a <see cref="WxeFunction"/> in the specified window or frame from any <see cref="Page"/>  
+  ///   by using java script.
   /// </summary>
   /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="target" or @name="features" or @name="createPermaUrl" or @name="urlParameters"]' />
   public static void ExecuteFunctionExternal (
@@ -181,7 +179,7 @@ public class WxeContext
       openScript = string.Format ("window.open('{0}', '{1}', '{2}');", href, target, features);
     else
       openScript = string.Format ("window.open('{0}', '{1}');", href, target);
-    PageUtility.RegisterStartupScriptBlock (page, "WxeExecuteFunction", openScript);
+    ScriptUtility.RegisterStartupScriptBlock (page, "WxeExecuteFunction", openScript);
 
     function.ReturnUrl = "javascript:window.close();";
   }
