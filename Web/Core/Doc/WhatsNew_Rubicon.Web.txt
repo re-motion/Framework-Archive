@@ -1,3 +1,25 @@
+1.4.21
+======
+- Rubicon.Web.UI.Controls.WebTabStrip
+  * Rahmen von Tabelle auf DIV umgestellt. In im Projekt überschriebenen CSS-Klassen muss folgender Identifier 
+    geändert werden: 
+    table.tabStrip -> div.tabStrip
+
+- Rubicon.Web.UI.Controls.TabbedMultiView
+  * Rahmen des Tabstrips von Tabelle auf DIV umgestellt. In im Projekt überschriebenen CSS-Klassen muss folgender 
+    Identifier geändert werden:
+    table.tabbedMultiViewTabStrip -> div.tabbedMultiViewTabStrip
+  * Sämtliche Table-Formatierung in das CSS-File ausgelagert. Falls eine andere Klasse als die Standardklasse verwendet
+    wird, müssen die Formatierungen dort nachgetragen werden.  
+  
+- Rubicon.Web.UI.Controls.TabbedMenu
+  * Rahmen der Tabstrips von Tabelle auf DIV umgestellt. In im Projekt überschriebenen CSS-Klassen muss folgender 
+    Identifier geändert werden:
+    table.tabbedMainMenu -> div.tabbedMainMenu
+    table.tabbedSubMenu -> div.tabbedSubMenu
+  * Sämtliche Table-Formatierung in das CSS-File ausgelagert. Falls eine andere Klasse als die Standardklasse verwendet
+    wird, müssen die Formatierungen dort nachgetragen werden.  
+
 1.4.17
 ======
 - Rubicon.Web.ExecutionEngine.WxeContext
