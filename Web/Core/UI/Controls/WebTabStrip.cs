@@ -215,7 +215,7 @@ public class WebTabStrip :
 
   protected override HtmlTextWriterTag TagKey
   {
-    get { return HtmlTextWriterTag.Table; }
+    get { return HtmlTextWriterTag.Div; }
   }
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
@@ -224,8 +224,6 @@ public class WebTabStrip :
     
     if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
   }
 
   protected override void RenderContents (HtmlTextWriter writer)
@@ -243,12 +241,19 @@ public class WebTabStrip :
       tabs = GetDesignTimeTabs(); 
     }
 
-    RenderBeginTabsPane (writer);
-    for (int i = 0; i < tabs.Count; i++)
+    ArrayList visibleTabs = new ArrayList();
+    foreach (WebTab tab in tabs)
     {
-      WebTab tab = tabs[i];
       if (tab.EvaluateVisibile() || ControlHelper.IsDesignMode (this, Context))
-        RenderTab (writer, tab);
+        visibleTabs.Add (tab);
+    }
+
+    RenderBeginTabsPane (writer);
+    for (int i = 0; i < visibleTabs.Count; i++)
+    { 
+      bool isLast = i == (visibleTabs.Count - 1);
+      WebTab tab = (WebTab) visibleTabs[i];
+      RenderTab (writer, tab, isLast);
     }
     RenderEndTabsPane (writer);
   }
@@ -263,9 +268,6 @@ public class WebTabStrip :
 
   private void RenderBeginTabsPane (HtmlTextWriter writer)
   {
-    writer.RenderBeginTag (HtmlTextWriterTag.Tr); // Begin Table Row
-    writer.RenderBeginTag (HtmlTextWriterTag.Td); // Begin Table Cell
-
     bool isEmpty = Tabs.Count == 0;
 
     string cssClass = CssClassTabsPane;
@@ -281,8 +283,6 @@ public class WebTabStrip :
       writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
       writer.AddStyleAttribute ("display", "inline");
     }
-    if (isEmpty)
-      writer.Write ("&nbsp;");
     writer.RenderBeginTag (HtmlTextWriterTag.Ul); // Begin List
   }
 
@@ -290,11 +290,9 @@ public class WebTabStrip :
   {
     writer.RenderEndTag(); // End List
     writer.RenderEndTag(); // End Div
-    writer.RenderEndTag(); // End Table Cell
-    writer.RenderEndTag(); // End Table Row
   }
 
-  private void RenderTab (HtmlTextWriter writer, WebTab tab)
+  private void RenderTab (HtmlTextWriter writer, WebTab tab, bool isLast)
   {
     if (ControlHelper.IsDesignMode (this, Context))
     {
@@ -305,6 +303,9 @@ public class WebTabStrip :
 
     writer.RenderBeginTag (HtmlTextWriterTag.Li); // Begin list item
     
+    writer.AddAttribute (HtmlTextWriterAttribute.Class, "tabStripTabWrapper");
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab wrapper span
+
     RenderSeperator (writer);
 
     string cssClass;
@@ -364,6 +365,15 @@ public class WebTabStrip :
 
     writer.RenderEndTag(); // End tab span
 
+    writer.RenderEndTag(); // End tab wrapper span
+
+    if (isLast)
+    {
+      writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTabLast);
+      writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      writer.RenderEndTag();
+    }
+
     writer.RenderEndTag(); // End list item
     writer.WriteLine();
   }
@@ -373,7 +383,6 @@ public class WebTabStrip :
     writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassSeparator);
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
-    writer.Write ("&nbsp;");
     writer.RenderEndTag();
     writer.RenderEndTag();
   }
@@ -725,6 +734,15 @@ public class WebTabStrip :
   protected virtual string CssClassTabContent
   {
     get { return "content"; }
+  }
+
+  /// <summary> Gets the CSS-Class applied to a <c>span</c> intended for clearing the space after the last tab. </summary>
+  /// <remarks> 
+  ///   <para> Class: <c>last</c>. </para>
+  /// </remarks>
+  protected virtual string CssClassTabLast
+  {
+    get { return "last"; }
   }
   
   /// <summary> Gets the CSS-Class applied to a separator. </summary>
