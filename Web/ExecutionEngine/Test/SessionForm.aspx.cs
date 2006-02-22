@@ -43,6 +43,10 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionInNewWindowButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSessionFunctionWithPermanentUrlButton;
+  protected Rubicon.Web.UI.Controls.WebButton ContextOpenSampleFunctionButton;
+  protected Rubicon.Web.UI.Controls.WebButton ContextOpenSampleFunctionInNewWindowButton;
+  protected Rubicon.Web.UI.Controls.WebButton ContextOpenSampleFunctionWithPermanentUrlButton;
+  protected Rubicon.Web.UI.Controls.WebButton ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -105,8 +109,13 @@ public class SessionForm : WxePage
     this.OpenSessionFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlButton_Click);
     this.OpenSessionFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionInNewWindowButton_Click);
     this.OpenSessionFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlInNewWindowButton_Click);
-    this.Load += new System.EventHandler(this.Page_Load);
+    this.ContextOpenSampleFunctionButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionButton_Click);
+    this.ContextOpenSampleFunctionInNewWindowButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionInNewWindowButton_Click);
+    this.ContextOpenSampleFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionWithPermanentUrlButton_Click);
+    this.ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton_Click);
     this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
+    this.Load += new System.EventHandler(this.Page_Load);
+
   }
 	#endregion
 
@@ -205,7 +214,35 @@ public class SessionForm : WxePage
 
   private void PostBackButton_Click(object sender, System.EventArgs e)
   {
-      System.Threading.Thread.Sleep (10000);  
+    System.Threading.Thread.Sleep (10000);  
+  }
+
+  private void ContextOpenSampleFunctionButton_Click(object sender, System.EventArgs e)
+  {
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add ("Parameter", "Hello World!");
+    WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), queryString);
+  }
+
+  private void ContextOpenSampleFunctionInNewWindowButton_Click(object sender, System.EventArgs e)
+  {
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add ("Parameter", "Hello World!");
+    WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), "_blank", string.Empty, queryString);
+  }
+
+  private void ContextOpenSampleFunctionWithPermanentUrlButton_Click(object sender, System.EventArgs e)
+  {
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add ("Parameter", "Hello World!");
+    WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), true, queryString);
+  }
+
+  private void ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton_Click(object sender, System.EventArgs e)
+  {
+    NameValueCollection queryString = new NameValueCollection();
+    queryString.Add ("Parameter", "Hello World!");
+    WxeContext.ExecuteFunctionExternal (this, new SampleWxeFunction (), "_blank", string.Empty, true, queryString);
   }
 }
 
