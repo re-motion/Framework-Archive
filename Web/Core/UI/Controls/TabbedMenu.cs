@@ -155,8 +155,6 @@ public class TabbedMenu: WebControl, INavigationControl
       writer.AddStyleAttribute ("width", "100%");
     if (StringUtility.IsNullOrEmpty (CssClass) && StringUtility.IsNullOrEmpty (Attributes["class"]))
       writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBase);
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
   }
 
   /// <summary> Checks whether the control conforms to the required WAI level. </summary>
