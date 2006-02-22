@@ -75,11 +75,11 @@ public interface IDataEditControl: IControl
 /// <remarks>
 ///   This class must be inherited from, overwriting <see cref="DataSource"/>.
 /// </remarks>
-#if NET11
+//#if NET11
 public class DataEditUserControl: UserControl, IDataEditControl
-#else
-public abstract class DataEditUserControl: UserControl, IDataEditControl
-#endif
+//#else
+//public abstract class DataEditUserControl: UserControl, IDataEditControl
+//#endif
 {
   public IBusinessObject BusinessObject
   {
@@ -112,7 +112,7 @@ public abstract class DataEditUserControl: UserControl, IDataEditControl
     return DataSource.Validate();
   }
 
-#if NET11
+//#if NET11
   /// <summary>
   ///   Gets the control's data source. This method must be overridden in derived classes.
   /// </summary>
@@ -125,11 +125,11 @@ public abstract class DataEditUserControl: UserControl, IDataEditControl
   {
     get { throw new NotImplementedException ("Property DataSource must be overridden by derived classes to return a non-null value."); }
   }
-#else
-  /// <summary> Gets the control's data source. </summary>
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public abstract IBusinessObjectDataSourceControl DataSource { get; }
-#endif
+//#else
+//  /// <summary> Gets the control's data source. </summary>
+//  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+//  public abstract IBusinessObjectDataSourceControl DataSource { get; }
+//#endif
 }
 
 }
