@@ -347,8 +347,6 @@ public class TabbedMultiView: WebControl, IControl
       writer.AddStyleAttribute ("width", "100%");
       writer.AddStyleAttribute ("height", "75%");
     }
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, "0");
-    writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, "0");
   }
 
   protected override void RenderContents (HtmlTextWriter writer)
@@ -368,10 +366,9 @@ public class TabbedMultiView: WebControl, IControl
   {
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
     
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
+    writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTabStrip);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
 
-    _tabStrip.Style["width"] = "100%";
     _tabStrip.CssClass = CssClassTabStrip;
     _tabStrip.RenderControl (writer);
 
@@ -422,7 +419,8 @@ public class TabbedMultiView: WebControl, IControl
       return;
     
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
+    if (StringUtility.IsNullOrEmpty (_topControlsStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassTopControls);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
 
     _topControlsStyle.AddAttributesToRender (writer);
@@ -444,7 +442,8 @@ public class TabbedMultiView: WebControl, IControl
       return;
     
     writer.RenderBeginTag (HtmlTextWriterTag.Tr); // begin tr
-    writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "0%");
+    if (StringUtility.IsNullOrEmpty (_bottomControlsStyle.CssClass))
+      writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClassBottomControls);
     writer.RenderBeginTag (HtmlTextWriterTag.Td); // begin td
 
     _bottomControlsStyle.AddAttributesToRender (writer);
