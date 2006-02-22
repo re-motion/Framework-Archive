@@ -7,6 +7,7 @@ table.tabbedMultiView
   height: 100%;
   table-layout: fixed;
   border: none;
+  border-collapse: collapse;
 }
 
 /* Non-IE Browsers hack \*/
@@ -19,11 +20,12 @@ html>body table.tabbedMultiView
 /* Applied to the tabbed multi view's view.*/
 td.tabbedMultiViewActiveView
 {
+  padding: 0;
+  vertical-align: top; 
+  height: 100%;
 	border-left: solid 1px #005588;	
 	border-right: solid 1px #005588;	
 	border-bottom: solid 1px #005588;
-  vertical-align: top; 
-  height: 100%;
 }
 
 div.tabbedMultiViewActiveView
@@ -35,11 +37,6 @@ div.tabbedMultiViewActiveView
 }
 
 /* Non-IE Browsers hack \*/
-html>body td.tabbedMultiViewActiveView
-{
-	border-top: solid 1px #005588;	
-}
-
 html>body div.tabbedMultiViewActiveView
 {
   width: inherit;
@@ -48,6 +45,12 @@ html>body div.tabbedMultiViewActiveView
 
 
 /* Applied to the top section of the multi view. Height cannot be provided in percent. */
+td.tabbedMultiViewTopControls
+{
+  padding: 0;
+  height: 0%;
+}
+
 div.tabbedMultiViewTopControls
 {
   padding-bottom: 1em;
@@ -55,6 +58,12 @@ div.tabbedMultiViewTopControls
 
 
 /* Applied to the bottom section of the multi view. Height cannot be provided in percent. */
+td.tabbedMultiViewBottomControls
+{
+  padding: 0;
+  height: 0%;
+}
+
 div.tabbedMultiViewBottomControls
 {
   padding-top: 1em;
@@ -62,41 +71,53 @@ div.tabbedMultiViewBottomControls
 
 
 /* Tab Strip */
-table.tabbedMultiViewTabStrip div.tabStripTabsPane
+td.tabbedMultiViewTabStrip
+{
+  padding: 0;
+  height: 0%;
+}
+
+div.tabbedMultiViewTabStrip
+{
+  width: 100%;
+}
+
+div.tabbedMultiViewTabStrip div.tabStripTabsPane
 {
   border-bottom: solid 1px #005588;
 }
 
-table.tabbedMultiViewTabStrip div.tabStripTabsPane ul
+div.tabbedMultiViewTabStrip div.tabStripTabsPane ul
 {
-  margin-bottom: -1px;  
+  display: inline; /* IE-only value */
+  margin-bottom: -1px;  /* Moves the UL into the surrounding DIV. */
 }
 
-table.tabbedMultiViewTabStrip div.tabStripTabsPane ul li
+div.tabbedMultiViewTabStrip span.tabStripTabWrapper
 {
-  margin-top: 0.3em;
+  padding-top: 0.3em;
 }
 
-table.tabbedMultiViewTabStrip span.tabStripTabSeparator
+div.tabbedMultiViewTabStrip span.tabStripTabSeparator
 {
-  width: 1em;
+  width: 1em; /* Value must also be set in the Non-IE browsers section as left-margin of the tab. */
   border-bottom: solid 1px #005588;	
 }
 
-table.tabbedMultiViewTabStrip span.tabStripTab a
+div.tabbedMultiViewTabStrip span.tabStripTab a
 {
   border: none;
   background-color: #e1ecfc;
   color: Blue;
 }
 
-table.tabbedMultiViewTabStrip span.tabStripTab a:hover
+div.tabbedMultiViewTabStrip span.tabStripTab a:hover
 {
 	background-color: #fee197;	
   color: Blue;
 }
 
-table.tabbedMultiViewTabStrip span.tabStripTabSelected a
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a
 {
   border: none;
   background-color: White;
@@ -104,88 +125,76 @@ table.tabbedMultiViewTabStrip span.tabStripTabSelected a
 }
 
 /* Top tab border */
-table.tabbedMultiViewTabStrip span.tabStripTab a span.top,
-table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.top
+div.tabbedMultiViewTabStrip span.tabStripTab a span.top,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a span.top
 {  
   border-top: solid 1px #005588;	
 }
 
 /* Bottom tab border */
-table.tabbedMultiViewTabStrip span.tabStripTab a span.bottom
+div.tabbedMultiViewTabStrip span.tabStripTab a span.bottom
 {  
   border-bottom: solid 1px #005588;	
 }
 
 /* Bottom tab border selected */
-table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.bottom
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a span.bottom
 {
   border-bottom: solid 1px White;	
 }
 
 /* Left tab border */
-table.tabbedMultiViewTabStrip span.tabStripTab a span.left,
-table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.left
+div.tabbedMultiViewTabStrip span.tabStripTab a span.left,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a span.left
 {
   border-left: solid 1px #005588;
 }
 
 /* Right tab border */
-table.tabbedMultiViewTabStrip span.tabStripTab a span.right,
-table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.right
+div.tabbedMultiViewTabStrip span.tabStripTab a span.right,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a span.right
 {
   border-right: solid 1px #005588;
 }
 
 /* Content area of the tab */
-table.tabbedMultiViewTabStrip span.tabStripTab a span.content,
-table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.content
+div.tabbedMultiViewTabStrip span.tabStripTab a span.content,
+div.tabbedMultiViewTabStrip span.tabStripTabSelected a span.content
 {
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
+  padding-top: 0.1em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-bottom: 0.1em; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
   padding-left: 0.3em;
   padding-right: 0.3em;
 }
 
-table.tabbedMultiViewTabStrip span.tabStripTab,
-table.tabbedMultiViewTabStrip span.tabStripTabSelected,
-table.tabbedMultiViewTabStrip span.tabStripTabSeparator
-{
-  margin-bottom: -3px;
-}
-
 /* Non-IE Browsers hack \*/
-html>body table.tabbedMultiViewTabStrip
+html>body div.tabbedMultiViewTabStrip div.tabStripTabsPane ul
 {
-  margin-bottom: -2px;
+  display: block; /* Correction for Non-IE browsers. */
 }
 
-html>body table.tabbedMultiViewTabStrip div.tabStripTabsPane
-{
-  border-bottom: none;
+html>body div.tabbedMultiViewTabStrip span.tabStripTab,
+html>body div.tabbedMultiViewTabStrip span.tabStripTabSelected
+{  
+  margin-left: 1em;	/* Provides room for the separator. */
 }
 
-html>body table.tabbedMultiViewTabStrip div.tabStripTabsPane ul
+html>body div.tabbedMultiViewTabStrip span.tabStripTabWrapper
 {
-  margin-bottom: 0;
+  margin-bottom: -3px; /* The border-width and padding */
 }
 
-html>body table.tabbedMultiViewTabStrip span.tabStripTab,
-html>body table.tabbedMultiViewTabStrip span.tabStripTabSelected,
-html>body table.tabbedMultiViewTabStrip span.tabStripTabSeparator
+html>body div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
 {
-  margin-bottom: 1px;
+  margin-bottom: 1px; /* The width of the top-border of the tabs. */
+  padding-top: 0.1em; /* The padding used for the content span. */
+  padding-bottom: 0.1em; /* The padding used for the content span. */
 }
 
-html>body table.tabbedMultiViewTabStrip span.tabStripTab a span.Content,
-html>body table.tabbedMultiViewTabStrip span.tabStripTabSelected a span.Content
+html>body div.tabbedMultiViewTabStrip span.tabStripTab a span.Content,
+html>body div.tabbedMultiViewTabStrip span.tabStripTabSelected a span.Content,
+html>body div.tabbedMultiViewTabStrip span.tabStripTabSeparator span
 {
   height: 1.5em;
-}
-
-html>body table.tabbedMultiViewTabStrip span.tabStripTabSeparator span
-{
-  height: 1.5em;
-  padding-bottom: 0.3em;
-  display: block;
 }
 /* End Non-IE Browsers hack\*/
