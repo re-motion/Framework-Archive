@@ -1,7 +1,6 @@
 /* Applied to the tab strip itself.*/
-table.tabStrip
+div.tabStrip
 {
-  border: none;
 }
 
 div.tabStripTabsPane
@@ -16,11 +15,9 @@ div.tabStripTabsPane ul
 {
   margin: 0;  
   padding: 0;
-  
+
   list-style: none;
-  
   width: 100%; 
-  display: inline;
 }
 
 div.tabStripTabsPane ul li
@@ -28,9 +25,7 @@ div.tabStripTabsPane ul li
   padding: 0;
   margin: 0;
 
-  float: left;
-  display: block;
-  white-space: nowrap;
+  display: inline;
 }
 
 span.tabStripTab a
@@ -123,67 +118,78 @@ span.tabStripTabSelected a span.bottomRight
 
 
 /* Content area of the tab */
-span.tabStripTab a span.content,
-span.tabStripTabSelected a span.content
+div.tabStripTabsPane a span.content
 {
-  padding-top: 2pt;
-  padding-bottom: 2pt;
+  padding-top: 2pt; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
+  padding-bottom: 2pt; /* Value must also be set in the Non-IE browsers section as padding for the separator. */
   padding-left: 2pt;
   padding-right: 2pt;
-	vertical-align: middle;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
-span.tabStripTab,
-span.tabStripTabSelected,
-span.tabStripTabSeparator
+div.tabStripTabsPane ul span.tabStripTabWrapper
 {
-  display: block;
   float: left;
+  white-space: nowrap;
 }
 
-span.tabStripTab a,
-span.tabStripTabSelected a,
-span.top, 
-span.bottom,
-span.left, 
-span.right,
-span.topLeft, 
-span.bottomLeft,
-span.topRight, 
-span.bottomRight,
-span.content
+span.tabStripTabSeparator
 {
-  display: block;
+  width: 0.3em; /* Value must also be set in the Non-IE browsers section as left-margin of the tab. */
 }
 
-/* Commented backslash hack hides rule from IE5-Mac \*/
 span.tabStripTab,
 span.tabStripTabSelected,
 span.tabStripTabSeparator
 {
-  display: inline-block;
-  float: none;
+  display: inline-block; /* IE-only value */
 }
 
-/* End IE5-Mac hack */
+span.tabStripTabSeparator span,
+div.tabStripTabsPane a, 
+div.tabStripTabsPane span.top, 
+div.tabStripTabsPane span.bottom,
+div.tabStripTabsPane span.left, 
+div.tabStripTabsPane span.right,
+div.tabStripTabsPane span.topLeft, 
+div.tabStripTabsPane span.bottomLeft,
+div.tabStripTabsPane span.topRight, 
+div.tabStripTabsPane span.bottomRight,
+div.tabStripTabsPane span.content
+{
+  display: block;
+}
+
+div.tabStripTabsPane span.last
+{
+  display: block;
+  clear: left;
+}
 
 /* Non-IE Browsers hack \*/
-html>body div.tabStripTabsPane
-{
-  border-bottom: none;
-}
-
 html>body div.tabStripTabsPane ul
 {
   width: auto; 
-  display: block;
 }
 
 html>body span.tabStripTab,
-html>body span.tabStripTabSelected,
+html>body span.tabStripTabSelected
+{
+  display: block; /* Correction for Non-IE browsers. */
+  margin-left: 0.3em; /* Provides room for the separator. */
+}
+
 html>body span.tabStripTabSeparator
 {
-  display: block;
+  display: block; /* Correction for Non-IE browsers. */
   float: left;
 }
+
+html>body span.tabStripTabSeparator span
+{
+  padding-top: 0.1em; /* The padding used for the content span. */
+  padding-bottom: 0.1em; /* The padding used for the content span. */
+}
+
 /* End Non-IE Browsers hack\*/
