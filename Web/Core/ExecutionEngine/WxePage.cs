@@ -724,7 +724,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     set { _enableOutOfSequencePostBacks = value; }
   }
 
-  /// <summary> Gets the evaluated value for the <see cref="EnableOutOfSequencePostBack"/> property. </summary>
+  /// <summary> Gets the evaluated value for the <see cref="EnableOutOfSequencePostBacks"/> property. </summary>
   /// <value>
   ///   <see langword="true"/> if <see cref="EnableOutOfSequencePostBacks"/> is <see cref="NaBooleanEnum.True"/>
   ///   and <see cref="IsAbortEnabled"/> evaluates <see langword="false"/>.
@@ -734,7 +734,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     get { return _enableOutOfSequencePostBacks == NaBooleanEnum.True && ! IsAbortEnabled; }
   }
 
-  /// <summary> Gets the value returned by <see cref="IsOutOfSequencePostBackEnabled"/>. </summary>
+  /// <summary> Gets the value returned by <see cref="AreOutOfSequencePostBacksEnabled"/>. </summary>
   bool IWxePage.AreOutOfSequencePostBacksEnabled 
   { 
     get { return AreOutOfSequencePostBacksEnabled; }
