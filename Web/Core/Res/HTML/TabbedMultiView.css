@@ -1,6 +1,10 @@
 @import url("TabStrip.css");
 
-/*  A template for the TabbedMultiView's CssClass. Not included automatically. */
+/* Opera Bugfix*/
+table
+{
+}
+
 table.tabbedMultiView
 {
   width: 100%;
@@ -8,6 +12,7 @@ table.tabbedMultiView
   table-layout: fixed;
   border: none;
   border-collapse: collapse;
+  border-spacing: 0;  
 }
 
 /* Non-IE Browsers hack \*/
