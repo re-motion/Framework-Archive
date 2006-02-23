@@ -2472,7 +2472,7 @@ public class BocList:
     bool isChecked = (_selectorControlCheckedState[originalRowIndex] != null);
 
     string cssClassTableRow;
-    if (isChecked && _hasClientScript && IsInternetExplorer55OrHigher())
+    if (isChecked && AreDataRowsClickSensitive())
       cssClassTableRow = CssClassDataRowSelected;
     else
       cssClassTableRow = CssClassDataRow;
@@ -2485,7 +2485,7 @@ public class BocList:
 
     if (IsSelectionEnabled && ! IsEditDetailsModeActive)
     {
-      if (_hasClientScript && IsInternetExplorer55OrHigher())
+      if (AreDataRowsClickSensitive())
       {
         string script = "BocList_OnRowClick ("
             + "document.getElementById ('" + ClientID + "'), "
@@ -5547,6 +5547,13 @@ public class BocList:
   {
     get { return _indexColumnTitle; }
     set { _indexColumnTitle = value; }
+  }
+
+  protected bool AreDataRowsClickSensitive()
+  {
+    return    _hasClientScript 
+           && ! WcagHelper.Instance.IsWaiConformanceLevelARequired() 
+           && IsInternetExplorer55OrHigher();
   }
 
   /// <summary> The number of rows displayed per page. </summary>
