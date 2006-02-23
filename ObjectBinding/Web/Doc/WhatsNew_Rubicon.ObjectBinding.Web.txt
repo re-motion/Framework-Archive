@@ -1,3 +1,10 @@
+1.4.22
+======
+- BocList
+  * Für WAI-konforme Seiten sind die Zeilen nicht mehr Maus-Click sensitiv -> Selektierung nur über Checkboxen.
+  * Für WAI-konforme Seiten wird im Internet-Explorer 5.5+ beim Selektieren nicht mehr die bocListDataRowSelected 
+    Class zugewiesen.
+
 1.4.19
 ======
 - BocList
@@ -14,7 +21,8 @@
   * Bugfix Browser-Kompatibilität beim Zeilen-Selektieren wurde nach dem Postback die Hintergrundfarbe gesetzt, obwohl
     dieses Feautere clientseitig deaktiviert war.
   * Bug: Im IE 5.0.1 blockieren Javascript Postbacks in den Zeilen den MultiplePostBackCatcher der SmartPage/WxePage
-  * IM Internet-Explorer 5.5+ wird nun auch für WAI-konforme Seiten beim Selektieren die Hintergrundfarbe gesetzt.
+  * Im Internet-Explorer 5.5+ wird nun auch für WAI-konforme Seiten beim Selektieren die bocListDataRowSelected Class
+    zugewiesen.
   
 1.4.16
 ======
