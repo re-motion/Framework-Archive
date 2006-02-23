@@ -74,8 +74,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
   }
 
 
-  private const int c_httpRequestTimeout = 408;
-  private const int c_httpResourceNotFound = 404;
+  private const int c_httpInternalServerError = 500;
 
   private static ILog s_log = LogManager.GetLogger (typeof (WxeHandler));
 
@@ -277,7 +276,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       catch (HttpException)
       {
         s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
-        throw new HttpException (c_httpRequestTimeout, "Session timeout."); // TODO: display error message
+        throw new HttpException (c_httpInternalServerError, "Session timeout."); // TODO: display error message
       }
     }
 
@@ -294,7 +293,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       catch (HttpException)
       {
         s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
-        throw new HttpException (c_httpRequestTimeout, "Function Timeout."); // TODO: display error message
+        throw new HttpException (c_httpInternalServerError, "Function Timeout."); // TODO: display error message
       }
     }
 
