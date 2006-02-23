@@ -128,6 +128,12 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
       return _parent.ValidateInternal();
     }
 
+    protected override void LoadViewState(object savedState)
+    {
+      if (savedState != null)
+        base.LoadViewState (savedState);
+    }
+
   }
 
   #region BusinessObjectBoundModifiableWebControl implementation
