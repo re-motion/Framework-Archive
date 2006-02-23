@@ -155,8 +155,10 @@ td.bocListDataCellEven td.dropDownMenuHeadButton a
 }
 
 /*  Style applied to the anchor tags during hovering in BocList's selected odd and even data rows.  */
-td.bocListDataCellOdd a:hover,
-td.bocListDataCellEven a:hover
+tr.bocListDataRow td.bocListDataCellOdd a:hover,
+tr.bocListDataRow td.bocListDataCellEven a:hover,
+tr.bocListDataRowSelected td.bocListDataCellOdd a:hover,
+tr.bocListDataRowSelected td.bocListDataCellEven a:hover
 {
   color: Blue;
 	padding: 1px;
