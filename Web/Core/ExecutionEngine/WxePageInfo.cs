@@ -430,6 +430,54 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   }
 
 
+  public void ExecuteFunctionExternal (
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters, 
+      bool returnToCaller, NameValueCollection callerUrlParameters)
+  {
+    ArgumentUtility.CheckNotNull ("function", function);
+
+    WxeContext wxeContext = WxeContext.Current;
+
+    string functionToken = GetFunctionTokenForExternalFunction (function, returnToCaller);
+
+    string href;
+    if (createPermaUrl)
+    {
+      NameValueCollection internalUrlParameters;
+      if (urlParameters == null)
+        internalUrlParameters = function.SerializeParametersForQueryString();
+      else
+        internalUrlParameters = new NameValueCollection (urlParameters);
+
+      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+      href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
+    }
+    else
+    {
+      UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
+      string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
+      string queryString = null;
+      if (urlParameters != null)
+        queryString = UrlUtility.FormatQueryString (urlParameters);
+      href = wxeContext.GetPath (path, functionToken, queryString);
+    }
+
+    if (returnToCaller)
+    {
+      NameValueCollection internalCallerUrlParameters = new NameValueCollection();
+      internalCallerUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
+      
+      if (callerUrlParameters == null)
+        internalCallerUrlParameters.Add (CurrentFunction.SerializeParametersForQueryString());
+      else
+        internalCallerUrlParameters.Add (callerUrlParameters);
+
+      function.ReturnUrl = GetPermanentUrl (internalCallerUrlParameters);
+    }
+
+    PageUtility.Redirect (wxeContext.HttpContext.Response, href);
+  }
+
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean)</see>.
   /// </summary>
