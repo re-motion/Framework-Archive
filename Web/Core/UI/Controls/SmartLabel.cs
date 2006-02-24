@@ -116,7 +116,9 @@ public class SmartLabel: WebControl
   protected override void Render(HtmlTextWriter writer)
   {
     this.RenderBeginTag (writer);
-    writer.Write (GetText());
+    string text = GetText();
+    // Do not HTML encode
+    writer.Write (text);
     this.RenderEndTag (writer);
   }
 
