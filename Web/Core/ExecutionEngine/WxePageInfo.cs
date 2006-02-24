@@ -435,7 +435,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public void ExecuteFunctionExternal (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
-    ExecuteFunctionExternal (function, createPermaUrl, useParentPermaUrl, urlParameters, true, null);
+    ExecuteFunctionExternal (function, createPermaUrl, useParentPermaUrl, urlParameters, true, new NameValueCollection());
   }
 
   /// <summary>

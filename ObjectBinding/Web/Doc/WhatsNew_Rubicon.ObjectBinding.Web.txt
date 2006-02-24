@@ -3,9 +3,7 @@
 - BocList
   * string BocCommandColumn.IconPath auf IconIcon BocCommandColumn.Icon umgestellt.
     Statt IconPath ist nun Icon.Url zu setzen.
-    In ASPX/ASCX Seiten sollte IconPath durch Search & Replace ersetzt werden.
-    IconPath wird in einigen Wochen entfernt. Spätestens zu diesem Zeitpunkt darf IconPath nicht mehr im ASPX/ASCX 
-    vorkommen.
+    In ASPX/ASCX Seiten muss IconPath durch Search & Replace ersetzt werden.
   * BocEditDetailsColumnDefinition.EditIcon, SaveIcon, CancelIcon: null ist nicht mehr erlaubt.
     
 1.4.22
