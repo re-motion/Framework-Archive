@@ -1,5 +1,5 @@
-<%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.SessionForm" smartNavigation="False"%>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.SessionForm" smartNavigation="False"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
 <html>
   <head>
@@ -11,8 +11,8 @@
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
 -->
 <rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
-  </head>
 <!--<body MS_POSITIONING="FlowLayout">-->
+  </head>
 <body>
 <script language="javascript" type="text/javascript" >
 <!--
@@ -28,9 +28,10 @@
     <form id=Form method=post runat="server">
 <table style="WIDTH:100%; HEIGHT:100%">
 <tr>
-<td style="VERTICAL-ALIGN:top">
+<td >
     <p><asp:label id="FunctionTokenLabel" runat="server">Token</asp:label>, 
-    <asp:label id="PostBackIDLabel" runat="server">PostBackID</asp:label></p>
+    <asp:label id="PostBackIDLabel" runat="server">PostBackID</asp:label>,
+    <asp:label id="ViewStateTokenLabel" runat="server">ViewStateToken</asp:label></p>
     <rubicon:WebButton id="PostBackButton" runat="server" Text="PostBack"></rubicon:WebButton><rubicon:WebButton id="OpenSelfButton" runat="server" Text="Open Self"></rubicon:WebButton> 
     <asp:linkbutton id="LinkButton1" runat="server">LinkButton</asp:linkbutton>
     <a id="LinkButton2" href="#" onclick="__doPostBack('LinkButton1',''); return false;">LinkButton 2</a>

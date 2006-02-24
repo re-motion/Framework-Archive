@@ -51,6 +51,7 @@ public class SessionForm : WxePage
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionByRedirectButton;
   protected Rubicon.Web.UI.Controls.WebButton OpenSampleFunctionWithPermanentUrlByRedirectButton;
+  protected System.Web.UI.WebControls.Label ViewStateTokenLabel;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 
@@ -63,6 +64,7 @@ public class SessionForm : WxePage
     RegisterClientSidePageEventHandler (SmartPageEvents.OnUnload, "Page_Unload", "Page_Unload");
     FunctionTokenLabel.Text = "Token = " + WxeContext.Current.FunctionToken;
     PostBackIDLabel.Text = "PostBackID = " + WxeContext.Current.PostBackID.ToString();
+    ViewStateTokenLabel.Text = "ViewStateToken = " + _viewStateToken.ToLongDateString() + ", " + _viewStateToken.ToLongTimeString();
 
     CurrentFunctionPermaLink.NavigateUrl = GetPermanentUrl ();
     CurrentFunctionPermaLink.Text = CurrentFunctionPermaLink.NavigateUrl;
@@ -113,15 +115,40 @@ public class SessionForm : WxePage
     this.OpenSessionFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlButton_Click);
     this.OpenSessionFunctionInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionInNewWindowButton_Click);
     this.OpenSessionFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.OpenSessionFunctionWithPermanentUrlInNewWindowButton_Click);
+    this.OpenSampleFunctionByRedirectButton.Click += new System.EventHandler(this.OpenSampleFunctionByRedirectButton_Click);
     this.OpenSampleFunctionByRedirectDoNotReturnButton.Click += new System.EventHandler(this.OpenSampleFunctionByRedirectDoNotReturnButton_Click);
+    this.OpenSampleFunctionWithPermanentUrlByRedirectButton.Click += new System.EventHandler(this.OpenSampleFunctionWithPermanentUrlByRedirectButton_Click);
     this.OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton.Click += new System.EventHandler(this.OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton_Click);
+    this.ContextOpenSampleFunctionButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionButton_Click);
     this.ContextOpenSampleFunctionInNewWindowButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionInNewWindowButton_Click);
+    this.ContextOpenSampleFunctionWithPermanentUrlButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionWithPermanentUrlButton_Click);
     this.ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton.Click += new System.EventHandler(this.ContextOpenSampleFunctionWithPermanentUrlInNewWindowButton_Click);
     this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
+
+  private DateTime _viewStateToken = DateTime.MinValue;
+
+  protected override void LoadViewState(object savedState)
+  {
+    if (savedState is Pair)
+    {
+      Pair pair = (Pair) savedState;
+      base.LoadViewState (pair.First);
+      _viewStateToken = (DateTime) pair.Second;
+    }
+    else
+    {
+      base.LoadViewState (savedState);
+    }
+  }
+
+  protected override object SaveViewState()
+  {
+    return new Pair (base.SaveViewState (), DateTime.Now);
+  }
 
   private void PostBackButton_Click(object sender, System.EventArgs e)
   {
@@ -223,26 +250,38 @@ public class SessionForm : WxePage
 
   private void OpenSampleFunctionByRedirectButton_Click(object sender, System.EventArgs e)
   {
-    NameValueCollection queryString = new NameValueCollection();
-    queryString.Add ("Parameter", "Hello World!");
-    ExecuteFunctionExternal (new SampleWxeFunction (), false, true, queryString, true, null);
+     if (!IsReturningPostBack)
+     {
+       NameValueCollection queryString = new NameValueCollection();
+      queryString.Add ("Parameter", "Hello World!");
+      ExecuteFunctionExternal (new SampleWxeFunction (), false, true, queryString, true, null);
+     }
   }
 
   private void OpenSampleFunctionByRedirectDoNotReturnButton_Click(object sender, System.EventArgs e)
   {
-    NameValueCollection queryString = new NameValueCollection();
-    queryString.Add ("Parameter", "Hello World!");
-    ExecuteFunctionExternal (new SampleWxeFunction (), false, true, queryString, false, null);
+    if (!IsReturningPostBack)
+    {
+      NameValueCollection queryString = new NameValueCollection();
+      queryString.Add ("Parameter", "Hello World!");
+      ExecuteFunctionExternal (new SampleWxeFunction (), false, true, queryString, false, null);
+    }
   }
 
   private void OpenSampleFunctionWithPermanentUrlByRedirectButton_Click(object sender, System.EventArgs e)
   {
-    ExecuteFunctionExternal (new SampleWxeFunction (), true, true, null, true, null);
+    if (!IsReturningPostBack)
+    {
+      ExecuteFunctionExternal (new SampleWxeFunction (), true, true, null, true, null);
+    }
   }
 
   private void OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton_Click(object sender, System.EventArgs e)
   {
-    ExecuteFunctionExternal (new SampleWxeFunction (), true, true, null, false, null);
+    if (!IsReturningPostBack)
+    {
+      ExecuteFunctionExternal (new SampleWxeFunction (), true, true, null, false, null);
+    }
   }
 
   private void ContextOpenSampleFunctionButton_Click(object sender, System.EventArgs e)
