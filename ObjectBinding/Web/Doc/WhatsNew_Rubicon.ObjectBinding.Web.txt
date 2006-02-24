@@ -1,3 +1,13 @@
+1.4.23
+======
+- BocList
+  * string BocCommandColumn.IconPath auf IconIcon BocCommandColumn.Icon umgestellt.
+    Statt IconPath ist nun Icon.Url zu setzen.
+    In ASPX/ASCX Seiten sollte IconPath durch Search & Replace ersetzt werden.
+    IconPath wird in einigen Wochen entfernt. Spätestens zu diesem Zeitpunkt darf IconPath nicht mehr im ASPX/ASCX 
+    vorkommen.
+  * BocEditDetailsColumnDefinition.EditIcon, SaveIcon, CancelIcon: null ist nicht mehr erlaubt.
+    
 1.4.22
 ======
 - BocList
@@ -591,7 +601,7 @@
   * Bugfix (Designer): Zuweisung der DataSource für mehrere Controls hat eine Exceptions geworfen.
     
 - BocTextValue
-  * Bugfix: Invarient Culture / Englische Input Required Validation Message hat gefehlt.
+  * Bugfix: Invariant Culture / Englische Input Required Validation Message hat gefehlt.
   
 1.2.42
 ======
