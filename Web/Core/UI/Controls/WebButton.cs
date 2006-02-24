@@ -111,7 +111,7 @@ public class WebButton :
     if (Page != null)
       Page.VerifyRenderingInServerForm(this);
 
-    if (! _useSubmitBehavior) // System.Web.UI.WebControls.Button already adds a type=submit
+    if (! IsUseSubmitBehaviorEnabled) // System.Web.UI.WebControls.Button already adds a type=submit
       writer.AddAttribute(HtmlTextWriterAttribute.Type, "button");
 
     if (Page != null)
@@ -239,6 +239,11 @@ public class WebButton :
     {
       if (_useLegacyButton != NaBooleanEnum.True)
         WcagHelper.Instance.HandleError (1, this, "UseLegacyButton");
+#if NET11
+      if (! _useSubmitBehavior)
+        WcagHelper.Instance.HandleError (1, this, "UseSubmitBehavior");
+#endif
+
     }
   }
 
@@ -276,7 +281,7 @@ public class WebButton :
       if (hasIcon && hasText)
         writer.Write ("&nbsp;");
       if (hasText)
-        writer.Write (text);
+        writer.Write (text); // Do not HTML enocde
     }
   }
 
@@ -302,6 +307,11 @@ public class WebButton :
     get { return _useSubmitBehavior; }
     set { _useSubmitBehavior = value; }
   } 
+
+  protected bool IsUseSubmitBehaviorEnabled
+  {
+    get { return WcagHelper.Instance.IsWaiConformanceLevelARequired() || _useSubmitBehavior;}
+  }
 #endif
 
   /// <summary> Loads the resources into the control's properties. </summary>
