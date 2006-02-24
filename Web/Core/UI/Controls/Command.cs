@@ -672,7 +672,7 @@ public class Command: IControlItem
     if (hasTarget)
       WxeContext.ExecuteFunctionExternal (page, function, target, null, additionalUrlParameters);
     else
-      WxeContext.ExecuteFunctionExternal (page, function, additionalUrlParameters);
+      WxeContext.ExecuteFunctionExternal (page, function, additionalUrlParameters, true);
   }
 
   /// <summary> The <see cref="CommandType"/> represented by this instance of <see cref="Command"/>. </summary>
