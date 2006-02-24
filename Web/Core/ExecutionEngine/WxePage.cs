@@ -97,6 +97,10 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
       WxeFunction function, Control sender, bool usesEventTarget, 
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
 
+  void ExecuteFunctionExternal (
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
+      bool returningPostback, NameValueCollection callerUrlParameters);
+
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame.
@@ -359,6 +363,13 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   {
     _wxePageInfo.ExecuteFunctionNoRepost (
         function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, permaUrlParameters);
+  }
+
+  public void ExecuteFunctionExternal (
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters,
+      bool returningPostback, NameValueCollection callerUrlParameters)
+  {
+     _wxePageInfo.ExecuteFunctionExternal (function, createPermaUrl, useParentPermaUrl, urlParameters, returningPostback, callerUrlParameters);
   }
 
   /// <summary> 
