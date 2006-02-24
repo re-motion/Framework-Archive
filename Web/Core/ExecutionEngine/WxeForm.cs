@@ -94,11 +94,11 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
   protected override void RenderAttributes (HtmlTextWriter writer)
   {
     string action = WxeContext.Current.GetPath (WxeContext.Current.QueryString);
-    writer.WriteAttribute ("action", action);
+    writer.WriteAttribute ("action", action, true);
     Attributes.Remove ("action");
 
     // from HtmlForm
-    writer.WriteAttribute("name", this.Name);
+    //writer.WriteAttribute("name", this.Name);
     base.Attributes.Remove("name");
     writer.WriteAttribute("method", this.Method);
     base.Attributes.Remove("method");
