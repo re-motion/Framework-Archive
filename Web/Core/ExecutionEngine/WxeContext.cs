@@ -126,25 +126,26 @@ public class WxeContext
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> in the current window from any <see cref="Page"/> by using a redirect.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="urlParameters" or @name="returnToCaller"]' />
   public static void ExecuteFunctionExternal (
-      Page page, WxeFunction function, NameValueCollection urlParameters)
+      Page page, WxeFunction function, NameValueCollection urlParameters, bool returnToCaller)
   {
-    ExecuteFunctionExternal (page, function, false, urlParameters);
+    ExecuteFunctionExternal (page, function, false, urlParameters, returnToCaller);
   }
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> in the current window from any <see cref="Page"/> by using a redirect.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="createPermaUrl" or @name="urlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxeContext.xml' path='WxeContext/ExecuteFunctionExternal/param[@name="page" or @name="function" or @name="createPermaUrl" or @name="urlParameters" or @name="returnToCaller"]' />
   public static void ExecuteFunctionExternal (
-      Page page, WxeFunction function, bool createPermaUrl, NameValueCollection urlParameters)
+      Page page, WxeFunction function, bool createPermaUrl, NameValueCollection urlParameters, bool returnToCaller)
   {
     ArgumentUtility.CheckNotNull ("page", page);
     ArgumentUtility.CheckNotNull ("function", function);
 
     string href = GetExternalFunctionUrl (function, createPermaUrl, urlParameters);
-    function.ReturnUrl = page.Request.RawUrl;
+    if (returnToCaller)
+      function.ReturnUrl = page.Request.RawUrl;
     PageUtility.Redirect (HttpContext.Current.Response, href);
   }
 
@@ -446,7 +447,7 @@ public class WxeContext
     if (useParentPermanentUrl)
     {
       if (urlParameters[WxeHandler.Parameters.ReturnUrl] != null)
-        throw new ArgumentException ("The 'queryString' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", "queryString");
+        throw new ArgumentException ("The 'urlParameters' collection must not contain a 'ReturnUrl' parameter when creating a parent permanent URL.", "urlParameters");
 
       int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
 
