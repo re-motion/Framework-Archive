@@ -215,7 +215,7 @@ public abstract class BocCommandEnabledColumnDefinition: BocColumnDefinition
 public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
 {
   private string _text = string.Empty;
-  private string _iconPath = string.Empty;
+  private IconInfo _icon= new IconInfo();
 
   public BocCommandColumnDefinition()
   {
@@ -249,17 +249,51 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
     set { _text = StringUtility.NullToEmpty (value); }
   }
 
-  /// <summary> Gets or sets the image representing the command in the rendered page. </summary>
-  /// <value> An <see cref="Image"/> representing the command. </value>
+  /// <summary> 
+  ///   Gets or sets the image representing the  command in the rendered page. Must not be <see langword="null"/>. 
+  /// </summary>
+  /// <value> An <see cref="IconInfo"/> representing the command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
-  [Description ("The relative url to image representing the command in the rendered page.")]
-  [DefaultValue("")]
+  [Description ("The image representing the command in the rendered page.")]
   [NotifyParentProperty (true)]
+  public IconInfo Icon
+  {
+    get
+    { 
+      return _icon; 
+    }
+    set
+    { 
+      ArgumentUtility.CheckNotNull ("Icon", value);
+      _icon = value; 
+    }
+  }
+
+  private bool ShouldSerializeIcon()
+  {
+    return IconInfo.ShouldSerialize (_icon);
+  }
+
+  private void ResetIcon()
+  {
+    _icon.Reset();
+  }
+
+  [Browsable (false)]
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [DefaultValue ("")]
+  [Obsolete ("Use Icon.Url instead.", true)]
   public string IconPath 
   {
-    get { return _iconPath; }
-    set { _iconPath = StringUtility.NullToEmpty (value); }
+    get { return null; }
+    set
+    {
+      if (! StringUtility.IsNullOrEmpty (value) && StringUtility.IsNullOrEmpty (_icon.Url))
+        _icon.Url = value; 
+    }
   }
 
   /// <summary> Gets the human readable name of this type. </summary>
@@ -279,9 +313,7 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
     if (! StringUtility.IsNullOrEmpty (key))
       Text = resourceManager.GetString (key);
 
-    key = ResourceManagerUtility.GetGlobalResourceKey (IconPath);
-    if (! StringUtility.IsNullOrEmpty (key))
-      IconPath = resourceManager.GetString (key);
+    Icon.LoadResources (resourceManager);
   }
 }
 
@@ -600,18 +632,15 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 public class BocEditDetailsColumnDefinition: BocColumnDefinition
 {
   private string _editText = string.Empty;
-  private IconInfo _editIcon;
+  private IconInfo _editIcon = new IconInfo();
   private string _saveText = string.Empty;
-  private IconInfo _saveIcon;
+  private IconInfo _saveIcon = new IconInfo();
   private string _cancelText = string.Empty;
-  private IconInfo _cancelIcon;
+  private IconInfo _cancelIcon = new IconInfo();
   private BocEditDetailsColumnDefinitionShow _show = BocEditDetailsColumnDefinitionShow.EditMode;
 
   public BocEditDetailsColumnDefinition()
   {
-    _editIcon = new IconInfo();
-    _saveIcon = new IconInfo();
-    _cancelIcon = new IconInfo();
   }
 
   /// <summary>
@@ -645,18 +674,26 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
     set { _editText = StringUtility.NullToEmpty (value); }
   }
 
-  /// <summary> Gets or sets the image representing the edit command in the rendered page. </summary>
+  /// <summary>
+  ///  Gets or sets the image representing the edit command in the rendered page. Must not be <see langword="null"/>. 
+  /// </summary>
   /// <value> An <see cref="IconInfo"/> representing the edit command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
   [Description ("The image representing the edit command in the rendered page.")]
-  [DefaultValue("")]
   [NotifyParentProperty (true)]
   public IconInfo EditIcon
   {
-    get { return _editIcon; }
-    set { _editIcon = value; }
+    get 
+    { 
+      return _editIcon;
+    }
+    set 
+    { 
+      ArgumentUtility.CheckNotNull ("EditIcon", value);
+      _editIcon = value; 
+    }
   }
 
   private bool ShouldSerializeEditIcon()
@@ -683,18 +720,26 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
     set { _saveText = StringUtility.NullToEmpty (value); }
   }
 
-  /// <summary> Gets or sets the image representing the save command in the rendered page. </summary>
-  /// <value> An <see cref="Image"/> representing the save command. </value>
+  /// <summary> 
+  ///   Gets or sets the image representing the save command in the rendered page. Must not be <see langword="null"/>.
+  /// </summary>
+  /// <value> An <see cref="IconInfo"/> representing the save command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
   [Description ("The relative url to image representing the save command in the rendered page.")]
-  [DefaultValue("")]
   [NotifyParentProperty (true)]
   public IconInfo SaveIcon
   {
-    get { return _saveIcon; }
-    set { _saveIcon = value; }
+    get
+    { 
+      return _saveIcon;
+    }
+    set 
+    { 
+      ArgumentUtility.CheckNotNull ("SaveIcon", value);
+      _saveIcon = value;
+    }
   }
 
   private bool ShouldSerializeSaveIcon()
@@ -720,18 +765,26 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
     set { _cancelText = StringUtility.NullToEmpty (value); }
   }
 
-  /// <summary> Gets or sets the image representing the cancel command in the rendered page. </summary>
+  /// <summary> 
+  ///   Gets or sets the image representing the cancel command in the rendered page. Must not be <see langword="null"/>. 
+  /// </summary>
   /// <value> An <see cref="IconInfo"/> representing the cancel command. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
   [Description ("The image representing the cancel command in the rendered page.")]
-  [DefaultValue("")]
   [NotifyParentProperty (true)]
   public IconInfo CancelIcon
   {
-    get { return _cancelIcon; }
-    set { _cancelIcon = value; }
+    get 
+    { 
+      return _cancelIcon;
+    }
+    set 
+    {
+      ArgumentUtility.CheckNotNull ("CancelIcon", value);
+      _cancelIcon = value; 
+    }
   }
 
   private bool ShouldSerializeCancelIcon()
