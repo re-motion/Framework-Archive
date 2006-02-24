@@ -445,29 +445,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters, 
       bool returnToCaller, NameValueCollection callerUrlParameters)
   {
-    ArgumentUtility.CheckNotNull ("function", function);
-
-    WxeContext wxeContext = WxeContext.Current;
-
-    string functionToken = GetFunctionTokenForExternalFunction (function, returnToCaller);
-
-    string href = GetUrlForExternalFunction (
-        function, functionToken, createPermaUrl, useParentPermaUrl, urlParameters);
-
-    if (returnToCaller)
-    {
-      NameValueCollection internalCallerUrlParameters = new NameValueCollection();
-      internalCallerUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
-      
-      if (callerUrlParameters == null)
-        internalCallerUrlParameters.Add (CurrentFunction.SerializeParametersForQueryString());
-      else
-        internalCallerUrlParameters.Add (callerUrlParameters);
-
-      function.ReturnUrl = GetPermanentUrl (internalCallerUrlParameters);
-    }
-
-    PageUtility.Redirect (wxeContext.HttpContext.Response, href);
+    CurrentStep.ExecuteFunctionExternal (
+        _page, function, createPermaUrl, useParentPermaUrl, urlParameters, returnToCaller, callerUrlParameters);
   }
 
   /// <summary>
@@ -529,9 +508,9 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     WxeContext wxeContext = WxeContext.Current;
 
-    string functionToken = GetFunctionTokenForExternalFunction (function, returningPostback);
+    string functionToken = CurrentStep.GetFunctionTokenForExternalFunction (function, returningPostback);
 
-    string href = GetUrlForExternalFunction (
+    string href = CurrentStep.GetDestinationUrlForExternalFunction (
         function, functionToken, createPermaUrl, useParentPermaUrl, urlParameters);
 
     string openScript;
@@ -543,51 +522,6 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     function.ReturnUrl = 
         "javascript:" + GetClosingScriptForExternalFunction (functionToken, sender, returningPostback);
-  }
-
-  /// <summary> 
-  ///   Initalizes a new <see cref="WxeFunctionState"/> with the passed <paramref name="function"/> and returns
-  ///   the associated function token.
-  /// </summary>
-  private string GetFunctionTokenForExternalFunction (WxeFunction function, bool returningPostback)
-  {
-    bool enableCleanUp = ! returningPostback;
-    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
-    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
-    functionStates.Add (functionState);
-    return functionState.FunctionToken;
-  }
-
-  /// <summary> Gets the URL to be used for transfering to the external function. </summary>
-  private string GetUrlForExternalFunction (
-      WxeFunction function, string functionToken, 
-      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
-  {
-    WxeContext wxeContext = WxeContext.Current;
-
-    string href;
-    if (createPermaUrl)
-    {
-      NameValueCollection internalUrlParameters;
-      if (urlParameters == null)
-        internalUrlParameters = function.SerializeParametersForQueryString();
-      else
-        internalUrlParameters = new NameValueCollection (urlParameters);
-
-      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-      href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
-    }
-    else
-    {
-      UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
-      string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
-      string queryString = null;
-      if (urlParameters != null)
-        queryString = UrlUtility.FormatQueryString (urlParameters);
-      href = wxeContext.GetPath (path, functionToken, queryString);
-    }
-
-    return href;
   }
 
   /// <summary> Gets the client script to be used as the return URL for the window of the external function. </summary>
