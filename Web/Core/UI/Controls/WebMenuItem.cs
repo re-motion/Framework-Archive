@@ -142,7 +142,7 @@ public class WebMenuItem: IControlItem
 
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text displayed in this menu item. Use '-' for a separator menu item.")]
+  [Description ("The text displayed in this menu item. Use '-' for a separator menu item. The value will not be HTML encoded.")]
   [NotifyParentProperty (true)]
   [DefaultValue ("")]
   public virtual string Text
