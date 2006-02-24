@@ -180,12 +180,12 @@ public sealed class IconInfo
     }
     writer.AddStyleAttribute ("vertical-align", "middle");
     writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-    if (StringUtility.IsNullOrEmpty (_alternateText))
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, string.Empty);
-    else 
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, _alternateText);
+
+    writer.AddAttribute (HtmlTextWriterAttribute.Alt, StringUtility.NullToEmpty (_alternateText));
+    
     if (! StringUtility.IsNullOrEmpty (_toolTip))
       writer.AddAttribute (HtmlTextWriterAttribute.Title, _toolTip);
+
     writer.RenderBeginTag (HtmlTextWriterTag.Img);
     writer.RenderEndTag();
   }
