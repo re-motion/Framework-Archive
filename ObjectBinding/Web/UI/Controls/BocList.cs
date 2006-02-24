@@ -1645,12 +1645,17 @@ public class BocList:
       writer.AddStyleAttribute ("margin-bottom", menuBlockItemOffset);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassAvailableViewsListLabel);
+      
       writer.RenderBeginTag (HtmlTextWriterTag.Span);
+      string availableViewsListTitle;
       if (StringUtility.IsNullOrEmpty (_availableViewsListTitle))
-        writer.Write (GetResourceManager().GetString (ResourceIdentifier.AvailableViewsListTitle));
+        availableViewsListTitle = GetResourceManager().GetString (ResourceIdentifier.AvailableViewsListTitle);
       else
-        writer.Write (_availableViewsListTitle);
+        availableViewsListTitle = _availableViewsListTitle;
+      // Do not HTML encode.
+      writer.Write (availableViewsListTitle);
       writer.RenderEndTag();
+
       writer.Write (c_whiteSpace);
       if (IsDesignMode)
         _availableViewsList.Width = Unit.Point (c_designModeAvailableViewsListWidthInPoints);
@@ -1876,7 +1881,7 @@ public class BocList:
         writer.Write (c_whiteSpace);
     }
     if (showText)
-      writer.Write (menuItem.Text);
+      writer.Write (menuItem.Text); // Do not HTML encode.
     writer.RenderEndTag();
     writer.RenderEndTag();
   }
@@ -2009,7 +2014,9 @@ public class BocList:
     else
       pageInfo = _pageInfo;
 
-    writer.Write (pageInfo, _currentPage + 1, _pageCount);
+    string navigationText = string.Format (pageInfo, _currentPage + 1, _pageCount);
+    // Do not HTML encode.
+    writer.Write (navigationText);
 
     if (_hasClientScript)
     {
@@ -2221,6 +2228,7 @@ public class BocList:
         indexColumnTitle = GetResourceManager().GetString (ResourceIdentifier.IndexColumnTitle);
       else
         indexColumnTitle = _indexColumnTitle;
+      // Do not HTML encode.
       writer.Write (indexColumnTitle);
       writer.RenderEndTag();
       writer.RenderEndTag();
@@ -2824,7 +2832,7 @@ public class BocList:
         RenderIcon (writer, column.SaveIcon, ResourceIdentifier.EditDetailsSaveAlternateText);
       }
       if (hasSaveText)
-        writer.Write (column.SaveText);
+        writer.Write (column.SaveText); // Do not HTML encode.
 
       writer.RenderEndTag();
 
@@ -2852,7 +2860,7 @@ public class BocList:
         RenderIcon (writer, column.CancelIcon, ResourceIdentifier.EditDetailsCancelAlternateText);
       }
       if (hasCancelText)
-        writer.Write (column.CancelText);
+        writer.Write (column.CancelText); // Do not HTML encode.
 
       writer.RenderEndTag();
     }
@@ -2882,7 +2890,7 @@ public class BocList:
           RenderIcon (writer, column.EditIcon, ResourceIdentifier.EditDetailsEditAlternateText);
         }
         if (hasEditText)
-          writer.Write (column.EditText);
+          writer.Write (column.EditText); // Do not HTML encode
 
         writer.RenderEndTag();
       }
@@ -2929,8 +2937,8 @@ public class BocList:
     if (column.Icon.HasRenderingInformation)
       column.Icon.Render (writer);
 
-    if (column.Text != null)
-      writer.Write (column.Text);
+    if (! StringUtility.IsNullOrEmpty (column.Text))
+      writer.Write (column.Text); // Do not HTML encode
   }
 
   private void RenderValueColumnCellText (HtmlTextWriter writer, string contents) 
@@ -3046,7 +3054,7 @@ public class BocList:
         else
           writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditDetailsValidationMessage);
         writer.RenderBeginTag (HtmlTextWriterTag.Div);
-        writer.Write (validator.ErrorMessage);
+        writer.Write (validator.ErrorMessage); // Do not HTML encode.
         writer.RenderEndTag();
       }
     }
@@ -3143,6 +3151,7 @@ public class BocList:
       emptyListMessage = GetResourceManager().GetString (ResourceIdentifier.EmptyListMessage);
     else
       emptyListMessage = _emptyListMessage;
+    emptyListMessage = emptyListMessage; // Do not HTML encode
     writer.Write (emptyListMessage);
 
     writer.RenderEndTag();
@@ -5523,8 +5532,9 @@ public class BocList:
 
 
   /// <summary> Gets or sets the text that is displayed in the index column's title row. </summary>
+  /// <remarks> The value will not be HTML encoded. </remarks>
   [Category ("Appearance")]
-  [Description ("The text that is displayed in the index column's title row.")]
+  [Description ("The text that is displayed in the index column's title row. The value will not be HTML encoded.")]
   [DefaultValue (null)]
   public string IndexColumnTitle
   {
@@ -5585,9 +5595,9 @@ public class BocList:
   }
 
   /// <summary> Gets or sets the text providing the current page information to the user. </summary>
-  /// <remarks> Use {0} for the current page and {1} for the total page count. </remarks>
+  /// <remarks> Use {0} for the current page and {1} for the total page count. The value will not be HTML encoded. </remarks>
   [Category ("Appearance")]
-  [Description ("The text providing the current page information to the user. Use {0} for the current page and {1} for the total page count.")]
+  [Description ("The text providing the current page information to the user. Use {0} for the current page and {1} for the total page count. The value will not be HTML encoded.")]
   [DefaultValue (null)]
   public string PageInfo
   {
@@ -5596,8 +5606,9 @@ public class BocList:
   }
 
   /// <summary> Gets or sets the text rendered if the list is empty. </summary>
+  /// <remarks> The value will not be HTML encoded. </remarks>
   [Category ("Appearance")]
-  [Description ("The text if the list is empty.")]
+  [Description ("The text if the list is empty. The value will not be HTML encoded.")]
   [DefaultValue (null)]
   public string EmptyListMessage
   {
@@ -5741,8 +5752,9 @@ public class BocList:
   }
 
   /// <summary> Gets or sets the text that is rendered as a title for the drop list of additional columns. </summary>
+  /// <remarks> The value will not be HTML encoded. </remarks>
   [Category ("Menu")]
-  [Description ("The text that is rendered as a title for the list of available views.")]
+  [Description ("The text that is rendered as a title for the list of available views. The value will not be HTML encoded.")]
   [DefaultValue ("")]
   public string AvailableViewsListTitle
   {

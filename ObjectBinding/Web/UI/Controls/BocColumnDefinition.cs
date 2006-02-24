@@ -73,12 +73,12 @@ public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlIt
   /// <summary> Gets or sets the text displayed in the column title. </summary>
   /// <remarks>
   ///   Override this property to add validity checks to the set accessor.
-  ///   The get accessor should return the value verbatim.
+  ///   The get accessor should return the value verbatim. The value will be HTML encoded.
   /// </remarks>
   /// <value> A <see cref="string"/> representing the manually set title of this column. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The manually assigned value of the column title, can be empty.")]
+  [Description ("The manually assigned value of the column title, can be empty. The value will be HTML encoded.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public virtual string ColumnTitle
@@ -238,9 +238,10 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
 
   /// <summary> Gets or sets the text representing the command in the rendered page. </summary>
   /// <value> A <see cref="string"/> representing the command. </value>
+  /// <remarks> The value will not be HTML encoded. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text representing the command in the rendered page.")]
+  [Description ("The text representing the command in the rendered page. The value will not be HTML encoded.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string Text
@@ -663,9 +664,10 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
 
   /// <summary> Gets or sets the text representing the edit command in the rendered page. </summary>
   /// <value> A <see cref="string"/> representing the edit command. </value>
+  /// <remarks> The value will not be HTML encoded. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text representing the edit command in the rendered page.")]
+  [Description ("The text representing the edit command in the rendered page. The value will not be HTML encoded.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string EditText
@@ -709,9 +711,10 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
 
   /// <summary> Gets or sets the text representing the save command in the rendered page. </summary>
   /// <value> A <see cref="string"/> representing the save command. </value>
+  /// <remarks> The value will not be HTML encoded. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text representing the save command in the rendered page.")]
+  [Description ("The text representing the save command in the rendered page. The value will not be HTML encoded.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string SaveText
@@ -754,9 +757,10 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
 
   /// <summary> Gets or sets the text representing the cancel command in the rendered page. </summary>
   /// <value> A <see cref="string"/> representing the cancel command. </value>
+  /// <remarks> The value will not be HTML encoded. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text representing the cancel command in the rendered page.")]
+  [Description ("The text representing the cancel command in the rendered page. The value will not be HTML encoded.")]
   [DefaultValue("")]
   [NotifyParentProperty (true)]
   public string CancelText

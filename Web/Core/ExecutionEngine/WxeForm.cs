@@ -98,7 +98,7 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
     Attributes.Remove ("action");
 
     // from HtmlForm
-    //writer.WriteAttribute("name", this.Name);
+    writer.WriteAttribute("name", this.Name);
     base.Attributes.Remove("name");
     writer.WriteAttribute("method", this.Method);
     base.Attributes.Remove("method");
