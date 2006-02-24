@@ -16,12 +16,13 @@
 <body>
 <script language="javascript" type="text/javascript" >
 <!--
-  function Window_OnError(msg, url, linenumber)
+/*  function Window_OnError(msg, url, linenumber)
     {
      alert (msg + ',' + url + ',' + linenumber);
      document.write ('<p>' + msg + ',' + url + ',' + linenumber + '<\/p>');
     }
     window.onerror= Window_OnError;
+*/
 //-->
 </script>
     <form id=Form method=post runat="server">
@@ -50,10 +51,17 @@
 <rubicon:WebButton id="OpenSampleFunctionWithPermanentUrlButton" runat="server" Text="Open Sample Function with Permant URL"></rubicon:WebButton><br>
 <rubicon:WebButton id="OpenSampleFunctionInNewWindowButton" runat="server" Text="Open Sample Function in New Window"></rubicon:WebButton><br>
 <rubicon:WebButton id="OpenSampleFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Sample Function with Permanent URL in New Window"></rubicon:WebButton><br>
+
 <rubicon:WebButton id="OpenSessionFunctionButton" runat="server" Text="Open Session Function"></rubicon:WebButton><br>
 <rubicon:WebButton id="OpenSessionFunctionWithPermanentUrlButton" runat="server" Text="Open Session Function with Permanent URL"></rubicon:WebButton><br>
 <rubicon:WebButton id="OpenSessionFunctionInNewWindowButton" runat="server" Text="Open Session Function in New Window"></rubicon:WebButton><br>
 <rubicon:WebButton id="OpenSessionFunctionWithPermanentUrlInNewWindowButton" runat="server" Text="Open Session Function with Permanent URL in New Window"></rubicon:WebButton><br>
+
+<rubicon:webbutton id="OpenSampleFunctionByRedirectButton" runat="server" Text="Open Sample Function by Redirect"></rubicon:webbutton><br>
+<rubicon:webbutton id="OpenSampleFunctionByRedirectDoNotReturnButton" runat="server" Text="Open Sample Function by Redirect, do not return to Caller"></rubicon:webbutton><br>
+<rubicon:webbutton id="OpenSampleFunctionWithPermanentUrlByRedirectButton" runat="server" Text="Open Sample Function with Permanent URL by Redirect"></rubicon:webbutton><br>
+<rubicon:webbutton id="OpenSampleFunctionWithPermanentUrlByDoNotReturnRedirectButton" runat="server" Text="Open Sample Function with Permanent URL by Redirect, do not return to Caller"></rubicon:webbutton><br>
+
 <rubicon:WebButton id="ContextOpenSampleFunctionButton" runat="server" Text="WxeContext: Open Sample Function"></rubicon:WebButton><br>
 <rubicon:WebButton id="ContextOpenSampleFunctionInNewWindowButton" runat="server" Text="WxeContext: Open Sample Function in New Window"></rubicon:WebButton><br>
 <rubicon:WebButton id="ContextOpenSampleFunctionWithPermanentUrlButton" runat="server" Text="WxeContext: Open Sample Function with Permanent URL"></rubicon:WebButton><br>
