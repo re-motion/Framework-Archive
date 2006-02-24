@@ -7,6 +7,7 @@ using System.Reflection;
 using System.IO;
 using System.Runtime.Serialization;
 using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine.UrlMapping;
 using Rubicon.Web.Utilities;
 
 namespace Rubicon.Web.ExecutionEngine
@@ -24,12 +25,17 @@ public class WxePageStep: WxeStep
   private WxeFunction _function;
   private NameValueCollection _postBackCollection;
   private string _viewState;
-  private bool _isRedirectingToPermaUrlRequired = false;
+  private bool _isRedirectToPermanentUrlRequired = false;
   private bool _useParentPermaUrl = false;
   private NameValueCollection _permaUrlParameters;
-  private bool _isRedirected = false;
-  private bool _hasReturnedFromRedirect = false;
+  private bool _createPermaUrl = false;
+  private bool _returnToCaller = false;
+  private NameValueCollection _callerUrlParameters = null;
+  private bool _isRedirectedToPermanentUrl = false;
+  private bool _hasReturnedFromRedirectToPermanentUrl = false;
   private string _resumeUrl;
+  private bool _isExecuteFunctionExternalRequired = false;
+  private bool _isExternalFunctionInvoked = false;
 
   /// <summary> Initializes a new instance of the <b>WxePageStep</b> type. </summary>
   /// <include file='doc\include\ExecutionEngine\WxePageStep.xml' path='WxePageStep/Ctor/param[@name="page"]' />
@@ -111,17 +117,31 @@ public class WxePageStep: WxeStep
     }
     else
     {
-      //  This is the PageStep currently executing a sub-function
-      
-      EnsureHasRedirectedToPermanentUrl (context);
-      _function.Execute (context);
-      //  This point is only reached after the sub-function has completed execution.
+      if (! _isExecuteFunctionExternalRequired)
+      {
+        //  This is the PageStep currently executing a sub-function
+        
+        EnsureHasRedirectedToPermanentUrl (context);
+        _function.Execute (context);
+        //  This point is only reached after the sub-function has completed execution.
 
-      //  This is the PageStep after the sub-function has completed execution
-      
-      EnsureHasReturnedFromRedirectToPermanentUrl (context);
-      ProcessExecutedFunction (context);
-      CleanupAfterHavingReturnedFromRedirectToPermanentUrl();
+        //  This is the PageStep after the sub-function has completed execution
+        
+        EnsureHasReturnedFromRedirectToPermanentUrl (context);
+        ProcessExecutedFunction (context);
+        CleanupAfterHavingReturnedFromRedirectToPermanentUrl();
+      }
+      else
+      {
+        //  This is the PageStep currently executing an external function
+        EnsureExternalFunctionInvoked (context);
+        //  This point is only reached after the external function has been started.
+
+        //  This is the PageStep after the external function has completed execution 
+        //  or a postback to the executing page has been received
+        ProcessExecutedFunction (context);
+        CleanupAfterHavingInvokedExternalFunction();
+      }
     }
 
     try 
@@ -161,41 +181,128 @@ public class WxePageStep: WxeStep
 
   private void EnsureHasRedirectedToPermanentUrl (WxeContext context)
   {
-    if (_isRedirectingToPermaUrlRequired && ! _isRedirected)
+    if (_isRedirectToPermanentUrlRequired && ! _isRedirectedToPermanentUrl)
     {
-      NameValueCollection internalUrlParameters;
-      if (_permaUrlParameters == null)
-        internalUrlParameters = _function.SerializeParametersForQueryString();
-      else
-        internalUrlParameters = _permaUrlParameters;
-      
-      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
-
-      string destinationUrl = context.GetPermanentUrl (_function.GetType(), internalUrlParameters, _useParentPermaUrl);
+      string destinationUrl = GetDestinationPermanentUrl (context);
 
       _resumeUrl = context.GetResumePath();
-      _isRedirected = true;
+      _isRedirectedToPermanentUrl = true;
       PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
     }
   }
 
   private void EnsureHasReturnedFromRedirectToPermanentUrl (WxeContext context)
   {
-    if (_isRedirectingToPermaUrlRequired && _isRedirected && ! _hasReturnedFromRedirect)
+    if (_isRedirectToPermanentUrlRequired && _isRedirectedToPermanentUrl && ! _hasReturnedFromRedirectToPermanentUrl)
     {
-      _hasReturnedFromRedirect = true;        
+      _hasReturnedFromRedirectToPermanentUrl = true;        
       PageUtility.Redirect (context.HttpContext.Response, _resumeUrl);
     }
   }
 
   private void CleanupAfterHavingReturnedFromRedirectToPermanentUrl()
   {
-    if (_isRedirectingToPermaUrlRequired && _hasReturnedFromRedirect)
+    if (_isRedirectToPermanentUrlRequired && _hasReturnedFromRedirectToPermanentUrl)
     {
-      _isRedirectingToPermaUrlRequired = false;
-      _isRedirected = false;
-      _hasReturnedFromRedirect = false;
+      _isRedirectToPermanentUrlRequired = false;
+      _isRedirectedToPermanentUrl = false;
+      _hasReturnedFromRedirectToPermanentUrl = false;
     }
+  }
+
+  private string GetDestinationPermanentUrl (WxeContext context)
+  {
+    NameValueCollection internalUrlParameters;
+    if (_permaUrlParameters == null)
+      internalUrlParameters = _function.SerializeParametersForQueryString();
+    else
+      internalUrlParameters = _permaUrlParameters;
+    
+    internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
+
+    return context.GetPermanentUrl (_function.GetType(), internalUrlParameters, _useParentPermaUrl);
+  }
+
+  private void EnsureExternalFunctionInvoked (WxeContext context)
+  {
+    if (_isExecuteFunctionExternalRequired && ! _isExternalFunctionInvoked)
+    {
+      string functionToken = GetFunctionTokenForExternalFunction (_function, _returnToCaller);
+
+      string destinationUrl = GetDestinationUrlForExternalFunction (
+          _function, functionToken, _createPermaUrl, _useParentPermaUrl, _permaUrlParameters);
+
+      if (_returnToCaller)
+      {
+        NameValueCollection internalCallerUrlParameters = new NameValueCollection();
+        internalCallerUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
+        
+        if (_callerUrlParameters == null)
+          internalCallerUrlParameters.Add (ParentFunction.SerializeParametersForQueryString());
+        else
+          internalCallerUrlParameters.Add (_callerUrlParameters);
+
+        _function.ReturnUrl = context.GetPermanentUrl (ParentFunction.GetType(), internalCallerUrlParameters);
+      }
+
+      _isExternalFunctionInvoked = true;
+      PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
+    }
+  }
+
+  private void CleanupAfterHavingInvokedExternalFunction()
+  {
+    if (_isExecuteFunctionExternalRequired && _isExternalFunctionInvoked)
+    {
+      _isExecuteFunctionExternalRequired = false;
+      _isExternalFunctionInvoked = false;
+    }
+  }
+
+  /// <summary> 
+  ///   Initalizes a new <see cref="WxeFunctionState"/> with the passed <paramref name="function"/> and returns
+  ///   the associated function token.
+  /// </summary>
+  internal string GetFunctionTokenForExternalFunction (WxeFunction function, bool returnFromExecute)
+  {
+    bool enableCleanUp = ! returnFromExecute;
+    WxeFunctionState functionState = new WxeFunctionState (function, enableCleanUp);
+    WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
+    functionStates.Add (functionState);
+    return functionState.FunctionToken;
+  }
+
+
+  /// <summary> Gets the URL to be used for transfering to the external function. </summary>
+  internal string GetDestinationUrlForExternalFunction (
+      WxeFunction function, string functionToken, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+  {
+    WxeContext wxeContext = WxeContext.Current;
+
+    string href;
+    if (createPermaUrl)
+    {
+      NameValueCollection internalUrlParameters;
+      if (urlParameters == null)
+        internalUrlParameters = function.SerializeParametersForQueryString();
+      else
+        internalUrlParameters = new NameValueCollection (urlParameters);
+
+      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+      href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
+    }
+    else
+    {
+      UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
+      string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
+      string queryString = null;
+      if (urlParameters != null)
+        queryString = UrlUtility.FormatQueryString (urlParameters);
+      href = wxeContext.GetPath (path, functionToken, queryString);
+    }
+
+    return href;
   }
 
   /// <summary> Gets the currently executing <see cref="WxeStep"/>. </summary>
@@ -269,8 +376,43 @@ public class WxePageStep: WxeStep
       throw new InvalidOperationException ("Cannot execute function while another function executes.");
 
     _function = function; 
-    _function.SetParentStep (this);    
+    _function.SetParentStep (this);
+    _isRedirectToPermanentUrlRequired = createPermaUrl;
+    _useParentPermaUrl = useParentPermaUrl;
+    _permaUrlParameters = permaUrlParameters;
 
+    InvokeSaveAllState ((Page) page);
+
+    Execute();
+  }
+
+  internal void ExecuteFunctionExternal (
+      IWxePage page, WxeFunction function,
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
+      bool returnToCaller, NameValueCollection callerUrlParameters)
+  {
+    ArgumentUtility.CheckNotNull ("page", page);
+    ArgumentUtility.CheckNotNull ("function", function);
+
+    //  Back-up post back data of the executing page
+    _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
+
+    _isExecuteFunctionExternalRequired = true;
+    _isExternalFunctionInvoked = false;
+    _function = function; 
+    _createPermaUrl = createPermaUrl;
+    _useParentPermaUrl = useParentPermaUrl;
+    _permaUrlParameters = permaUrlParameters;
+    _returnToCaller = returnToCaller;
+    _callerUrlParameters = callerUrlParameters;
+
+    InvokeSaveAllState ((Page) page);
+
+    Execute();
+  }
+
+  private void InvokeSaveAllState (Page page)
+  {
     // page.SaveVieState()
     MethodInfo saveViewStateMethod;
 #if NET11    
@@ -279,11 +421,6 @@ public class WxePageStep: WxeStep
     saveViewStateMethod = typeof (Page).GetMethod ("SaveAllState", BindingFlags.Instance | BindingFlags.NonPublic);
 #endif
     saveViewStateMethod.Invoke (page, new object[0]); 
-
-    _isRedirectingToPermaUrlRequired = createPermaUrl;
-    _useParentPermaUrl = useParentPermaUrl;
-    _permaUrlParameters = permaUrlParameters;
-    Execute();
   }
 
   /// <summary> Gets the token for this page step. </summary>
