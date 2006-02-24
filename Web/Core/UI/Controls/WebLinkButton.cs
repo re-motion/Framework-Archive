@@ -11,9 +11,10 @@ namespace Rubicon.Web.UI.Controls
 /// <summary> A <c>LinkButton</c> using <c>&amp;</c> as access key prefix in <see cref="LinkButton.Text"/>. </summary>
 /// <include file='doc\include\UI\Controls\WebLinkButton.xml' path='WebLinkButton/Class/*' />
 [ToolboxData("<{0}:WebLinkButton runat=server></{0}:WebLinkButton>")]
+[ToolboxItem (false)]
 public class WebLinkButton : LinkButton
 {
-  private string _text;
+  private string _text = string.Empty;
 
   protected override void AddAttributesToRender(HtmlTextWriter writer)
   {
