@@ -213,7 +213,7 @@ public override void LoadPageStateFromPersistenceMedium()
       Must be derived from <see cref="WxeFunction"/>. 
     </param>
     <param name="queryString">
-      The <see cref="NameValueCollection"/> containing the query string arguments. Must not be <see langword="null"/>. 
+      The <see cref="StringDictionary"/> containing the query string arguments. Must not be <see langword="null"/>. 
     </param>
   </GetPermanentUrl>
 </IWxePage>

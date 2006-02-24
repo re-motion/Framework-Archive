@@ -35,7 +35,7 @@
       Must be derived from <see cref="WxeFunction"/>. Must not be <see langword="null"/>. 
     </param>
     <param name="urlParameters">
-      The <see cref="NameValueCollection"/> containing the url parameters used for the query string. 
+      The <see cref="StringDictionary"/> containing the url parameters used for the query string. 
       Must not be <see langword="null"/>. 
     </param>
     <param name="useParentPermanentUrl">
