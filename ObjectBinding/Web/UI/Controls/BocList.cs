@@ -2811,7 +2811,7 @@ public class BocList:
       }
       writer.RenderBeginTag (HtmlTextWriterTag.A);
 
-      bool hasSaveIcon = column.SaveIcon != null && ! StringUtility.IsNullOrEmpty (column.SaveIcon.Url);
+      bool hasSaveIcon = column.SaveIcon.HasRenderingInformation;
       bool hasSaveText = ! StringUtility.IsNullOrEmpty (column.SaveText);
 
       if (hasSaveIcon && hasSaveText)
@@ -2839,7 +2839,7 @@ public class BocList:
       }
       writer.RenderBeginTag (HtmlTextWriterTag.A);
 
-      bool hasCancelIcon = column.CancelIcon != null && ! StringUtility.IsNullOrEmpty (column.CancelIcon.Url);
+      bool hasCancelIcon = column.CancelIcon.HasRenderingInformation;
       bool hasCancelText = ! StringUtility.IsNullOrEmpty (column.CancelText);
 
       if (hasCancelIcon && hasCancelText)
@@ -2869,7 +2869,7 @@ public class BocList:
         }
         writer.RenderBeginTag (HtmlTextWriterTag.A);
 
-        bool hasEditIcon = column.EditIcon != null && ! StringUtility.IsNullOrEmpty (column.EditIcon.Url);
+        bool hasEditIcon = column.EditIcon.HasRenderingInformation;
         bool hasEditText = ! StringUtility.IsNullOrEmpty (column.EditText);
 
         if (hasEditIcon && hasEditText)
@@ -2926,14 +2926,8 @@ public class BocList:
 
   private void RenderCommandColumnCell (HtmlTextWriter writer, BocCommandColumnDefinition column)
   {
-    if (! StringUtility.IsNullOrEmpty (column.IconPath))
-    {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, column.IconPath);
-      writer.AddStyleAttribute ("vertical-align", "middle");
-      writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-      writer.RenderBeginTag (HtmlTextWriterTag.Img);
-      writer.RenderEndTag();
-    }
+    if (column.Icon.HasRenderingInformation)
+      column.Icon.Render (writer);
 
     if (column.Text != null)
       writer.Write (column.Text);
@@ -3109,28 +3103,17 @@ public class BocList:
 
   private void RenderIcon (HtmlTextWriter writer, IconInfo icon, Enum alternateTextID)
   {
-    string url = UrlUtility.ResolveUrl (icon.Url);
-    writer.AddAttribute (HtmlTextWriterAttribute.Src, url);
-    if (! icon.Width.IsEmpty && ! icon.Height.IsEmpty)
+    bool hasAlternateText = ! StringUtility.IsNullOrEmpty (icon.AlternateText);
+    if (! hasAlternateText)
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Width, icon.Width.ToString());
-      writer.AddAttribute (HtmlTextWriterAttribute.Height, icon.Height.ToString());
-    }
-    writer.AddStyleAttribute ("vertical-align", "middle");
-    writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
-    if (StringUtility.IsNullOrEmpty (icon.AlternateText))
-    {
-      string alternateText = string.Empty;
       if (alternateTextID != null)
-        alternateText = GetResourceManager().GetString (alternateTextID);
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, alternateText);
+        icon.AlternateText = GetResourceManager().GetString (alternateTextID);
     }
-    else 
-    {
-      writer.AddAttribute (HtmlTextWriterAttribute.Alt, icon.AlternateText);
-    }
-    writer.RenderBeginTag (HtmlTextWriterTag.Img);
-    writer.RenderEndTag();
+    
+    icon.Render (writer);
+
+    if (! hasAlternateText)
+      icon.AlternateText = string.Empty;
   }
 
   private void RenderEmptyListDataRow (HtmlTextWriter writer)
