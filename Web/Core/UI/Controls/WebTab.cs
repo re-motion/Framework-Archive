@@ -167,10 +167,10 @@ public class WebTab: IControlItem, IControlStateManager
   }
 
   /// <summary> Gets or sets the text displayed in this tab. </summary>
-  /// <remarks> Must not be <see langword="null"/> or emtpy. </remarks>
+  /// <remarks> Must not be <see langword="null"/> or emtpy. The value will not be HTML encoded. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Appearance")]
-  [Description ("The text displayed in this tab. Use '-' for a separator tab.")]
+  [Description ("The text displayed in this tab. Use '-' for a separator tab. The value will not be HTML encoded.")]
   //No Default value
   [NotifyParentProperty (true)]
   public virtual string Text
@@ -365,7 +365,7 @@ public class WebTab: IControlItem, IControlStateManager
     if (hasIcon && hasText)
       writer.Write ("&nbsp;");
     if (hasText)
-      writer.Write (_text);
+      writer.Write (_text); // Do not HTML encode
     if (!hasIcon && !hasText)
       writer.Write ("&nbsp;");
   }
