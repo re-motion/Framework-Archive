@@ -58,6 +58,7 @@ public class IndividualControlTestForm : TestBasePage
     LoadUserControl();
     PopulateDataSources();
     LoadValues (IsPostBack);
+    string test = GetPermanentUrl();
   }
 
   private void IndividualControlTestForm_PreRender(object sender, EventArgs e)
