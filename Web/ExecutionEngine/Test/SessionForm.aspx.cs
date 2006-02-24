@@ -65,7 +65,7 @@ public class SessionForm : WxePage
     NameValueCollection queryString = new NameValueCollection();
     queryString.Add ("Parameter", "Hello World!");
     SampleFunctionPermaLink.NavigateUrl = GetPermanentUrl (typeof (SampleWxeFunction), queryString);
-    SampleFunctionPermaLink.Text = SampleFunctionPermaLink.NavigateUrl;
+    SampleFunctionPermaLink.Text = HtmlUtility.HtmlEncode (SampleFunctionPermaLink.NavigateUrl);
   }
 
   protected override void OnPreRender (EventArgs e)

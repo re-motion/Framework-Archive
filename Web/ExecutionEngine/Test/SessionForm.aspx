@@ -1,24 +1,28 @@
 <%@ Page language="c#" Codebehind="SessionForm.aspx.cs" AutoEventWireup="false" Inherits="Rubicon.PageTransition.SessionForm" smartNavigation="False"%>
 <%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
 <html>
   <head>
     <title>ClientForm</title>
+<!--
 <meta content="Microsoft Visual Studio .NET 7.1" name=GENERATOR>
 <meta content=C# name=CODE_LANGUAGE>
 <meta content=JavaScript name=vs_defaultClientScript>
 <meta content=http://schemas.microsoft.com/intellisense/ie5 name=vs_targetSchema>
+-->
 <rubicon:htmlheadcontents id=HtmlHeadContents runat="server"></rubicon:htmlheadcontents>
   </head>
-<body MS_POSITIONING="FlowLayout">
-<script language="javascript">
-/*  function Window_OnError(msg, url, linenumber)
+<!--<body MS_POSITIONING="FlowLayout">-->
+<body>
+<script language="javascript" type="text/javascript" >
+<!--
+  function Window_OnError(msg, url, linenumber)
     {
      alert (msg + ',' + url + ',' + linenumber);
-     document.write ('<p>' + msg + ',' + url + ',' + linenumber + '</p>');
+     document.write ('<p>' + msg + ',' + url + ',' + linenumber + '<\/p>');
     }
     window.onerror= Window_OnError;
-*/
+//-->
 </script>
     <form id=Form method=post runat="server">
 <table style="WIDTH:100%; HEIGHT:100%">
@@ -63,8 +67,8 @@ Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLi
 </tr>
 </table>
 </form>
-    <script language="javascript">
-
+    <script language="javascript" type="text/javascript" >
+<!--
     function Page_Abort ()
     {
     }
@@ -104,6 +108,7 @@ Sample: <asp:HyperLink id="SampleFunctionPermaLink" runat="server"></asp:HyperLi
       window.moveTo (_left, _top);
       */
     }
+//-->    
     </script>
   </body>
 </html>
