@@ -152,12 +152,12 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     int functionTimeout = WebConfiguration.Current.ExecutionEngine.FunctionTimeout;
     if (functionTimeout > context.Session.Timeout)
-      throw new ApplicationException ("The FunctionTimeout setting in the configuration must not be greater than the session timeout.");
+      throw new WxeException ("The FunctionTimeout setting in the configuration must not be greater than the session timeout.");
     int refreshInterval = WebConfiguration.Current.ExecutionEngine.RefreshInterval;
     if (refreshInterval > 0)
     {
       if (refreshInterval >= functionTimeout)
-        throw new ApplicationException ("The RefreshInterval setting in the configuration must be less than the FunctionTimeout.");
+        throw new WxeException ("The RefreshInterval setting in the configuration must be less than the FunctionTimeout.");
     }
   }
 
@@ -192,7 +192,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     Type type = UrlMapping.UrlMappingConfiguration.Current.Mappings.FindType ("~/" + relativePath);
     if (type == null)
-      throw new HttpException (string.Format ("Could not map the path '{0}' to a WXE function.", absolutePath));
+      throw new WxeException (string.Format ("Could not map the path '{0}' to a WXE function.", absolutePath));
 
     return type;
   }
@@ -208,11 +208,11 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     }
     catch (TypeLoadException e)
     {
-      throw new HttpException (string.Format ("The function type '{0}' is invalid.", typeName), e);
+      throw new WxeException (string.Format ("The function type '{0}' is invalid.", typeName), e);
     }
     catch (System.IO.FileNotFoundException e)
     {
-      throw new HttpException (string.Format ("The function type '{0}' is invalid.", typeName), e);
+      throw new WxeException (string.Format ("The function type '{0}' is invalid.", typeName), e);
     } 
   }
 
@@ -267,16 +267,19 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
 
     if (! WxeFunctionStateCollection.HasInstance)
     {
-      try
-      {
-        if (isPostRequest || isPostBackAction)
-          throw new HttpException();
-        return CreateNewFunctionState (context, GetType (context));
-      }
-      catch (HttpException)
+      if (isPostRequest || isPostBackAction)
       {
         s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
-        throw new HttpException (c_httpInternalServerError, "Session timeout."); // TODO: display error message
+        throw new WxeTimeoutException ("Session timeout.", functionToken); // TODO: display error message
+      }
+      try
+      {
+        return CreateNewFunctionState (context, GetType (context));
+      }
+      catch (WxeException e)
+      {
+        s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The ASP.NET session has timed out.", functionToken));
+        throw new WxeTimeoutException ("Session timeout.", functionToken, e); // TODO: display error message
       }
     }
 
@@ -284,16 +287,19 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     WxeFunctionState functionState = functionStates.GetItem (functionToken);
     if (functionState == null || functionState.IsExpired)
     {
-      try
-      {
-        if (isPostRequest || isPostBackAction)
-          throw new HttpException ();
-        return CreateNewFunctionState (context, GetType (context));
-      }
-      catch (HttpException)
+      if (isPostRequest || isPostBackAction)
       {
         s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
-        throw new HttpException (c_httpInternalServerError, "Function Timeout."); // TODO: display error message
+        throw new WxeTimeoutException ("Function Timeout.", functionToken); // TODO: display error message
+      }
+      try
+      {
+        return CreateNewFunctionState (context, GetType (context));
+      }
+      catch (WxeException e)
+      {
+        s_log.Error (string.Format ("Error resuming WxeFunctionState {0}: The function state has timed out or was aborted.", functionToken));
+        throw new WxeTimeoutException ("Function Timeout.", functionToken, e); // TODO: display error message
       }
     }
 
@@ -319,7 +325,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
       functionState.Touch();
       functionStates.CleanUpExpired();
       if (functionState.Function == null)
-        throw new ApplicationException (string.Format ("Function missing in WxeFunctionState {0}.", functionState.FunctionToken));
+        throw new WxeException (string.Format ("Function missing in WxeFunctionState {0}.", functionState.FunctionToken));
       return functionState;
     }
   }
