@@ -145,13 +145,18 @@ public class ValidationStateViewer : WebControl, IControl
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassValidationNotice);
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
+      
+      string noticeText;
       if (StringUtility.IsNullOrEmpty (_noticeText))
       {
         IResourceManager resourceManager = GetResourceManager();
-        writer.WriteLine (resourceManager.GetString (ResourceIdentifier.NoticeText));
+        noticeText = resourceManager.GetString (ResourceIdentifier.NoticeText);
       }
       else
-        writer.WriteLine (_noticeText);
+        noticeText = _noticeText;
+        
+      // Do not HTML encode.
+      writer.WriteLine (noticeText);
       writer.RenderEndTag();
     }
   }
@@ -186,14 +191,20 @@ public class ValidationStateViewer : WebControl, IControl
           for (int idxErrorLabels = 0; idxErrorLabels < validationError.Labels.Count; idxErrorLabels++)
           {
             Control control = (Control) validationError.Labels[idxErrorLabels];
+            string text = string.Empty;
             if (control is SmartLabel)
-              writer.Write (((SmartLabel) control).GetText());
+              text = ((SmartLabel) control).GetText();
             else if (control is FormGridLabel)
-              writer.Write (((FormGridLabel) control).Text);
+              text = ((FormGridLabel) control).Text;
             else if (control is Label)
-              writer.Write (((Label) control).Text);
+              text = ((Label) control).Text;
             else if (control is LiteralControl)
-              writer.Write (((LiteralControl) control).Text);
+              text = ((LiteralControl) control).Text;
+
+            text = StringUtility.NullToEmpty (text);
+            // Do not HTML enocde.
+            writer.Write (text);
+
           }
           writer.RenderEndTag();
         }
