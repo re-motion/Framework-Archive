@@ -55,6 +55,6 @@
         <value>Unbekanntes Zeitformat.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocDateTimeValue.DataPickerButtonAlternateText">
-        <value>Kalender öffnen</value>
+        <value>Kalender &amp;ouml;ffnen</value>
     </data>
 </root>
