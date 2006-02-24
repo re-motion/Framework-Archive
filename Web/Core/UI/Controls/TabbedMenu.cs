@@ -230,7 +230,7 @@ public class TabbedMenu: WebControl, INavigationControl
     if (StringUtility.IsNullOrEmpty (_statusText))
       writer.Write ("&nbsp;");
     else
-      writer.Write (_statusText);
+      writer.Write (_statusText); // Do not HTML encode
     
     writer.RenderEndTag(); // End status cell
 
@@ -570,7 +570,10 @@ public class TabbedMenu: WebControl, INavigationControl
   }
 
   /// <summary> Gets or sets the text displayed in the status area. </summary>
-  [Description ("The text displayed in the status area.")]
+  /// <remarks>
+  ///   The value will not be HTML encoded.
+  /// </remarks>
+  [Description ("The text displayed in the status area. The value will not be HTML encoded.")]
   [DefaultValue ("")]
   public string StatusText
   {
