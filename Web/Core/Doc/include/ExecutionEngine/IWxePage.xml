@@ -191,12 +191,20 @@ public override void LoadPageStateFromPersistenceMedium()
       Defaults to <see langword="false"/>.
     </param>
     <param name="useParentPermaUrl">
-      <see langword="true"/> to add the parent function's perma-URL. 
+      <see langword="true"/> to add the executing function's perma-URL. 
       Defaults to <see langword="false"/>.
     </param>
     <param name="urlParameters">
       Provides the list of arguments for the URL's query string. Defaults to <see langword="null"/>, 
       which indicates that the <paramref name="function"/>'s current parameters should be used for the query string.
+    </param>
+    <param name="returnToCaller">
+      <see langword="true"/> to return to the executing function.
+      Defaults to <see langword="true"/>.
+    </param>
+    <param name="callerUrlParameters">
+      Provides the list of arguments for the return URL's query string. Defaults to <see langword="null"/>, 
+      which indicates that the executing function's current parameters should be used for the query string.
     </param>
   </ExecuteFunctionExternal>
   <GetPermanentUrl>
