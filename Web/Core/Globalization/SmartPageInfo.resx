@@ -43,6 +43,6 @@
         <value>Unsafed data will be lost if you continue.</value>
     </data>
     <data name="Rubicon.Web.UI.SmartPageInfo.StatusIsSubmittingMessage">
-        <value>&lt;p&gt;This page is being reloaded.&lt;/p&gt;&lt;p&gt;Please wait until the transmission has completed.&lt;/p&gt;</value>
+        <value>&lt;p&gt;This page is being reloaded.&lt;\/p&gt;&lt;p&gt;Please wait until the transmission has completed.&lt;\/p&gt;</value>
     </data>
 </root>
