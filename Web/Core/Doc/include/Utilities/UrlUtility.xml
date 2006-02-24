@@ -28,7 +28,7 @@
       It may be empty or end with a delimiter (<c>?</c>, <c>&amp;</c>).
     </param>
     <param name="queryStringCollection"> 
-      The <see cref="NameValueCollection"/> containing the name value pairs for the query string.
+      The list of name value pairs for the query string.
     </param>
     <param name="encoding"> 
       The <see cref="Encoding"/> used to encode the <paramref name="value"/>. Must not be <see langword="null"/>.
@@ -41,7 +41,7 @@
   </AddParameters>
   <FormatQueryString>
     <param name="queryStringCollection"> 
-      The <see cref="NameValueCollection"/> containing the name value pairs for the query string.
+      The list of name value pairs for the query string.
     </param>
     <param name="encoding"> 
       The <see cref="Encoding"/> used to encode the <paramref name="value"/>. Must not be <see langword="null"/>.
