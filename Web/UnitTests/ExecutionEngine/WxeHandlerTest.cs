@@ -118,7 +118,7 @@ public class WxeHandlerTest: WxeTest
   }
 
   [Test]
-  [ExpectedException (typeof (HttpException))]
+  [ExpectedException (typeof (WxeException))]
   public void GetFunctionTypeWithInvalidTypeName()
   {
     _wxeHandler.GetTypeByTypeName (_invalidFunctionTypeName);
@@ -146,7 +146,7 @@ public class WxeHandlerTest: WxeTest
   }
 
   [Test]
-  [ExpectedException (typeof (HttpException))]
+  [ExpectedException (typeof (WxeException))]
   public void GetFunctionTypeByPathWithoutMapping()
   {
     _wxeHandler.GetTypeByPath (@"/Test1.wxe");
@@ -256,7 +256,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (HttpException))]
+  [ExpectedException (typeof (WxeTimeoutException))]
   public void RetrieveMissingFunctionStateWithNoType()
   {
     NameValueCollection form = new NameValueCollection();
@@ -282,7 +282,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (HttpException))]
+  [ExpectedException (typeof (WxeTimeoutException))]
   public void RetrieveMissingFunctionStateWithTypeFromMappingAndGetRequestWithPostBackAction()
   {
     HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
@@ -297,7 +297,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (HttpException))]
+  [ExpectedException (typeof (WxeTimeoutException))]
   public void RetrieveMissingFunctionStateWithTypeFromMappingAndPostRequest()
   {
     HttpContext context = HttpContextHelper.CreateHttpContext ("POST", "Test.wxe", null);
@@ -328,7 +328,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (HttpException))]
+  [ExpectedException (typeof (WxeTimeoutException))]
   public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndGetRequestWithPostBackAction()
   {
     HttpContext context = HttpContextHelper.CreateHttpContext ("GET", "Test.wxe", null);
@@ -344,7 +344,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (HttpException))]
+  [ExpectedException (typeof (WxeTimeoutException))]
   public void RetrieveMissingFunctionStateWithTypeFromQueryStringAndPostRequest()
   {
     HttpContext context = HttpContextHelper.CreateHttpContext (
@@ -360,7 +360,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (ApplicationException))]
+  [ExpectedException (typeof (WxeException))]
   public void RetrieveFunctionStateWithMissingFunction()
   {
     _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
@@ -368,7 +368,7 @@ public class WxeHandlerTest: WxeTest
   }
 
 	[Test]
-  [ExpectedException (typeof (HttpException))]
+  [ExpectedException (typeof (WxeTimeoutException))]
   public void RetrieveExpiredFunctionState()
   {
     NameValueCollection form = new NameValueCollection();
