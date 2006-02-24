@@ -53,6 +53,16 @@ public class ScriptUtility
         }
         case '\\':
         {
+          if (idxChars > 0 && idxChars + 1 < input.Length)
+          {
+            char prevChar = input[idxChars - 1];
+            char nextChar = input[idxChars + 1];
+            if (prevChar == '<' && nextChar == '/')
+            {
+              output.Append (c);
+              break;
+            }
+          }
           output.Append (@"\\");
           break;
         }
