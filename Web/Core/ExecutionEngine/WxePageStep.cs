@@ -185,6 +185,7 @@ public class WxePageStep: WxeStep
     {
       string destinationUrl = GetDestinationPermanentUrl (context);
 
+      _permaUrlParameters = null;
       _resumeUrl = context.GetResumePath();
       _isRedirectedToPermanentUrl = true;
       PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
@@ -216,9 +217,9 @@ public class WxePageStep: WxeStep
     if (_permaUrlParameters == null)
       internalUrlParameters = _function.SerializeParametersForQueryString();
     else
-      internalUrlParameters = _permaUrlParameters;
+      internalUrlParameters = CollectionUtility.Clone (_permaUrlParameters);
     
-    internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
+    internalUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
 
     return context.GetPermanentUrl (_function.GetType(), internalUrlParameters, _useParentPermaUrl);
   }
@@ -234,17 +235,18 @@ public class WxePageStep: WxeStep
 
       if (_returnToCaller)
       {
-        NameValueCollection internalCallerUrlParameters = new NameValueCollection();
-        internalCallerUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
-        
+        NameValueCollection internalCallerUrlParameters;
         if (_callerUrlParameters == null)
-          internalCallerUrlParameters.Add (ParentFunction.SerializeParametersForQueryString());
+          internalCallerUrlParameters = ParentFunction.SerializeParametersForQueryString();
         else
-          internalCallerUrlParameters.Add (_callerUrlParameters);
+          internalCallerUrlParameters = CollectionUtility.Clone (_callerUrlParameters);
+        internalCallerUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
 
         _function.ReturnUrl = context.GetPermanentUrl (ParentFunction.GetType(), internalCallerUrlParameters);
       }
 
+      _permaUrlParameters = null;
+      _callerUrlParameters = null;
       _isExternalFunctionInvoked = true;
       PageUtility.Redirect (context.HttpContext.Response, destinationUrl);
     }
@@ -287,9 +289,9 @@ public class WxePageStep: WxeStep
       if (urlParameters == null)
         internalUrlParameters = function.SerializeParametersForQueryString();
       else
-        internalUrlParameters = new NameValueCollection (urlParameters);
+        internalUrlParameters = CollectionUtility.Clone (urlParameters);
+      internalUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, functionToken);
 
-      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
       href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
     }
     else

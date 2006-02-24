@@ -475,8 +475,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   }
   
   /// <summary> Gets the permanent URL for the current page using the specified <paramref name="queryString"/>. </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
-  ///     path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="queryString"]' />
   public string GetPermanentUrl (NameValueCollection queryString)
   {
     return _wxePageInfo.GetPermanentUrl (queryString);
@@ -486,8 +485,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   Gets the permanent URL for the <see cref="WxeFunction"/> of the specified <paramref name="functionType"/> 
   ///   and using the <paramref name="queryString"/>.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' 
-  ///     path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/GetPermanentUrl/param[@name="functionType" or @name="queryString"]' />
   public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
   {
     return _wxePageInfo.GetPermanentUrl (functionType, queryString);

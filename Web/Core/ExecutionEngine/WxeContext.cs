@@ -80,12 +80,12 @@ public class WxeContext
       throw new ArgumentException (string.Format ("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
     ArgumentUtility.CheckNotNull ("urlParameters", urlParameters);
 
-    NameValueCollection internalUrlParameters = new NameValueCollection (urlParameters);
+    NameValueCollection internalUrlParameters = CollectionUtility.Clone (urlParameters);
     UrlMapping.UrlMappingEntry mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
     if (mappingEntry == null)
     {
       string functionTypeName = WebTypeUtility.GetQualifiedName (functionType);
-      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
+      internalUrlParameters.Set (WxeHandler.Parameters.WxeFunctionType, functionTypeName);
     }
 
     string path;
@@ -196,13 +196,13 @@ public class WxeContext
       if (createPermaUrl)
         internalUrlParameters = function.SerializeParametersForQueryString();
       else
-        internalUrlParameters = new NameValueCollection (1);
+        internalUrlParameters = new NameValueCollection ();
     }
     else
     {
-      internalUrlParameters = new NameValueCollection (urlParameters);
+      internalUrlParameters = CollectionUtility.Clone (urlParameters);
     }
-    internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+    internalUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, functionToken);
     return WxeContext.GetPermanentUrl (HttpContext.Current, function.GetType(), internalUrlParameters);
   }
 

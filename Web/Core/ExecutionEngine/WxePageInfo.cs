@@ -597,23 +597,29 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   /// </summary>
   public string GetPermanentUrl ()
   {
-    return GetPermanentUrl (CurrentFunction.GetType(), CurrentFunction.SerializeParametersForQueryString());
+    NameValueCollection urlParameters = CurrentFunction.SerializeParametersForQueryString();
+    
+    ISmartNavigablePage smartNavigablePage = _page as ISmartNavigablePage;
+    if (smartNavigablePage != null)
+      CollectionUtility.Append (urlParameters, smartNavigablePage.GetNavigationUrlParameters());
+
+    return GetPermanentUrl (CurrentFunction.GetType(), urlParameters);
   }
   
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl(System.Collections.Specialized.NameValueCollection)">IWxePage.GetPermanentUrl(NameValueCollection)</see>.
   /// </summary>
-  public string GetPermanentUrl (NameValueCollection queryString)
+  public string GetPermanentUrl (NameValueCollection urlParameters)
   {
-    return GetPermanentUrl (CurrentFunction.GetType(), queryString);
+    return GetPermanentUrl (CurrentFunction.GetType(), urlParameters);
   }
   
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.GetPermanentUrl(System.Type,System.Collections.Specialized.NameValueCollection)">IWxePage.GetPermanentUrl(Type,NameValueCollection)</see>.
   /// </summary>
-  public string GetPermanentUrl (Type functionType, NameValueCollection queryString)
+  public string GetPermanentUrl (Type functionType, NameValueCollection urlParameters)
   {
-    return WxeContext.Current.GetPermanentUrl (functionType, queryString);
+    return WxeContext.Current.GetPermanentUrl (functionType, urlParameters);
   }
 
   /// <summary> Implements <see cref="IWxePage.IsOutOfSequencePostBack">IWxePage.IsOutOfSequencePostBack</see>. </summary>
