@@ -444,6 +444,9 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
     writer.RenderEndTag(); // End td
   }
 
+  /// <remarks>
+  ///   The value will not be HTML encoded.
+  /// </remarks>
   public string TitleText
   {
     get { return _titleText; }
