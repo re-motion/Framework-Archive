@@ -115,10 +115,12 @@ public class NavigationCommand: Command
     WxeParameterDeclaration[] parameterDeclarations = WxeFunction.GetParameterDeclarations (functionType);
     object[] parameterValues = WxeFunction.ParseActualParameters (
         parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);   
+    
     NameValueCollection queryString = 
         WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
-    queryString.Add (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
-    queryString.Add (additionalUrlParameters);
+    queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
+    CollectionUtility.Append (queryString, additionalUrlParameters);
+    
     return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);
   }
 
