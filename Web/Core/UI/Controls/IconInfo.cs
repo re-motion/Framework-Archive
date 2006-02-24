@@ -190,6 +190,13 @@ public sealed class IconInfo
     writer.RenderEndTag();
   }
 
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public bool HasRenderingInformation
+  {
+    get { return ! StringUtility.IsNullOrEmpty (_url); }
+  }
+
   public void Reset()
   {
     _url = string.Empty;
