@@ -421,6 +421,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ExecutionEngine\WxeTimeoutException.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ExecutionEngine\WxeTransactedFunctionBase.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
