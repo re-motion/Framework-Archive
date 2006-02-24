@@ -429,7 +429,18 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     }
   }
 
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,Boolean,Boolean,NameValueCollection)</see>.
+  /// </summary>
+  public void ExecuteFunctionExternal (
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+  {
+    ExecuteFunctionExternal (function, createPermaUrl, useParentPermaUrl, urlParameters, false, null);
+  }
 
+  /// <summary>
+  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternal(WxeFunction,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
+  /// </summary>
   public void ExecuteFunctionExternal (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters, 
       bool returnToCaller, NameValueCollection callerUrlParameters)
@@ -440,27 +451,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     string functionToken = GetFunctionTokenForExternalFunction (function, returnToCaller);
 
-    string href;
-    if (createPermaUrl)
-    {
-      NameValueCollection internalUrlParameters;
-      if (urlParameters == null)
-        internalUrlParameters = function.SerializeParametersForQueryString();
-      else
-        internalUrlParameters = new NameValueCollection (urlParameters);
-
-      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-      href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
-    }
-    else
-    {
-      UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
-      string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
-      string queryString = null;
-      if (urlParameters != null)
-        queryString = UrlUtility.FormatQueryString (urlParameters);
-      href = wxeContext.GetPath (path, functionToken, queryString);
-    }
+    string href = GetUrlForExternalFunction (
+        function, functionToken, createPermaUrl, useParentPermaUrl, urlParameters);
 
     if (returnToCaller)
     {
@@ -539,27 +531,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     string functionToken = GetFunctionTokenForExternalFunction (function, returningPostback);
 
-    string href;
-    if (createPermaUrl)
-    {
-      NameValueCollection internalUrlParameters;
-      if (urlParameters == null)
-        internalUrlParameters = function.SerializeParametersForQueryString();
-      else
-        internalUrlParameters = new NameValueCollection (urlParameters);
-
-      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
-      href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
-    }
-    else
-    {
-      UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
-      string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
-      string queryString = null;
-      if (urlParameters != null)
-        queryString = UrlUtility.FormatQueryString (urlParameters);
-      href = wxeContext.GetPath (path, functionToken, queryString);
-    }
+    string href = GetUrlForExternalFunction (
+        function, functionToken, createPermaUrl, useParentPermaUrl, urlParameters);
 
     string openScript;
     if (features != null)
@@ -583,6 +556,38 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     WxeFunctionStateCollection functionStates = WxeFunctionStateCollection.Instance;
     functionStates.Add (functionState);
     return functionState.FunctionToken;
+  }
+
+  /// <summary> Gets the URL to be used for transfering to the external function. </summary>
+  private string GetUrlForExternalFunction (
+      WxeFunction function, string functionToken, 
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+  {
+    WxeContext wxeContext = WxeContext.Current;
+
+    string href;
+    if (createPermaUrl)
+    {
+      NameValueCollection internalUrlParameters;
+      if (urlParameters == null)
+        internalUrlParameters = function.SerializeParametersForQueryString();
+      else
+        internalUrlParameters = new NameValueCollection (urlParameters);
+
+      internalUrlParameters.Add (WxeHandler.Parameters.WxeFunctionToken, functionToken);
+      href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
+    }
+    else
+    {
+      UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
+      string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
+      string queryString = null;
+      if (urlParameters != null)
+        queryString = UrlUtility.FormatQueryString (urlParameters);
+      href = wxeContext.GetPath (path, functionToken, queryString);
+    }
+
+    return href;
   }
 
   /// <summary> Gets the client script to be used as the return URL for the window of the external function. </summary>
