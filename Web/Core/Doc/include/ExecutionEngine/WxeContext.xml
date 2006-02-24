@@ -21,6 +21,10 @@
       which indicates that the only <paramref name="function"/>'s current parameters should be used for the 
       query string.
     </param>
+    <param name="returnToCaller">
+      <see langword="true"/> to return to the calling page (i.e. the <see cref="Page.Request"/>'s 
+      <see cref="HttpRequest.RawUrl"/> after the <paramref name="function"/> has completed.
+    </param>
   </ExecuteFunctionExternal>
   <GetPermanentUrl>
     <param name="httpContext"> 
