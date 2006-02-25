@@ -143,7 +143,7 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// <include file='doc\include\UI\Controls\BocBooleanValue.xml' path='BocBooleanValue/LoadPostData/*' />
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    string newValue = PageUtility.GetRequestCollectionItem (Page, _hiddenField.UniqueID);
+    string newValue = PageUtility.GetPostBackCollectionItem (Page, _hiddenField.UniqueID);
     NaBoolean newNaValue = NaBoolean.Null;
     if (newValue != null)
       newNaValue = NaBoolean.Parse (newValue);

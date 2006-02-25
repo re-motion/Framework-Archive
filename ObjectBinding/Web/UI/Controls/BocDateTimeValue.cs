@@ -174,7 +174,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   {
     //  Date input field
 
-    string newDateValue = PageUtility.GetRequestCollectionItem (Page, _dateTextBox.UniqueID);
+    string newDateValue = PageUtility.GetPostBackCollectionItem (Page, _dateTextBox.UniqueID);
     bool isDateChanged =   newDateValue != null 
                         && StringUtility.NullToEmpty (_internalDateValue) != newDateValue;
     if (isDateChanged)
@@ -192,7 +192,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
 
     //  Time input field
 
-    string newTimeValue = PageUtility.GetRequestCollectionItem (Page, _timeTextBox.UniqueID);
+    string newTimeValue = PageUtility.GetPostBackCollectionItem (Page, _timeTextBox.UniqueID);
     bool isTimeChanged =   newTimeValue != null 
                         && StringUtility.NullToEmpty (_internalTimeValue) != newTimeValue;
     if (isTimeChanged)

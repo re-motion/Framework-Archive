@@ -142,7 +142,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <include file='doc\include\UI\Controls\BocEnumValue.xml' path='BocEnumValue/LoadPostData/*' />
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    string newValue = PageUtility.GetRequestCollectionItem (Page, _listControl.UniqueID);
+    string newValue = PageUtility.GetPostBackCollectionItem (Page, _listControl.UniqueID);
     bool isDataChanged = false;
     if (newValue != null)
     {

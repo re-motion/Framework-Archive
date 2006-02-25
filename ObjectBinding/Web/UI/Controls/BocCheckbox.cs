@@ -134,7 +134,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     if (! _isActive)
       return false;
 
-    string newValue = PageUtility.GetRequestCollectionItem (Page, _checkBox.UniqueID);
+    string newValue = PageUtility.GetPostBackCollectionItem (Page, _checkBox.UniqueID);
     bool newBooleanValue = ! StringUtility.IsNullOrEmpty (newValue);
     bool isDataChanged = _value != newBooleanValue;
     if (isDataChanged)
