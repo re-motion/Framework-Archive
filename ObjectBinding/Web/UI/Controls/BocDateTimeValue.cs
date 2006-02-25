@@ -151,6 +151,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
+    if (! IsDesignMode)
+      Page.RegisterRequiresPostBack (this);
   }
 
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
@@ -215,7 +217,8 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnDateTimeChanged();
+    if (! IsReadOnly && Enabled)
+      OnDateTimeChanged();
   }
 
   /// <summary> Fires the <see cref="DateTimeChanged"/> event. </summary>
@@ -261,9 +264,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     base.OnPreRender (e);
 
     LoadResources (GetResourceManager());
-
-    if (! IsDesignMode && ! IsReadOnly)
-      Page.RegisterRequiresPostBack (this);
     
     bool isReadOnly = IsReadOnly;
 

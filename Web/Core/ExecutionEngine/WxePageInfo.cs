@@ -445,9 +445,71 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters, 
       bool returnToCaller, NameValueCollection callerUrlParameters)
   {
-    CurrentStep.ExecuteFunctionExternal (
-        _page, function, createPermaUrl, useParentPermaUrl, urlParameters, returnToCaller, callerUrlParameters);
+    _httpContext.Handler = WxeHandler;
+    try
+    {
+      CurrentStep.ExecuteFunctionExternal (
+          _page, function, createPermaUrl, useParentPermaUrl, urlParameters, returnToCaller, callerUrlParameters);
+    }
+    finally
+    {
+      _httpContext.Handler = _page;
+    }
   }
+
+  #region ExecuteFunctionExternalNoRepost
+//  /// <summary>
+//  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection)</see>.
+//  /// </summary>
+//  public void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender,
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+//  {
+//    ExecuteFunctionExternalNoRepost (function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters, true, null);
+//  }
+//
+//  /// <summary>
+//  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunctionControl,Boolean,Boolean,Boolean,NameValueCollection)</see>.
+//  /// </summary>
+//  public void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, bool usesEventTarget,
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+//  {
+//    ExecuteFunctionExternalNoRepost (function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters, true, null);
+//  }
+//
+//  /// <summary>
+//  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
+//  /// </summary>
+//  public void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender,
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters, 
+//      bool returnToCaller, NameValueCollection callerUrlParameters)
+//  {
+//    ExecuteFunctionExternalNoRepost (
+//        function, sender, UsesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters, returnToCaller, callerUrlParameters);
+//  }
+//
+//  /// <summary>
+//  ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternalNoRepost(Rubicon.Web.ExecutionEngine.WxeFunction,System.Web.UI.Control,System.Boolean,System.Boolean,System.Boolean,System.Collections.Specialized.NameValueCollection,System.Boolean,System.Collections.Specialized.NameValueCollection)">IWxePage.ExecuteFunctionExternalNoRepost(WxeFunction,Control,Boolean,Boolean,Boolean,NameValueCollection,Boolean,NameValueCollection)</see>.
+//  /// </summary>
+//  public void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, bool usesEventTarget,
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters, 
+//      bool returnToCaller, NameValueCollection callerUrlParameters)
+//  {
+//    _httpContext.Handler = WxeHandler;
+//    try
+//    {
+//      CurrentStep.ExecuteFunctionExternalNoRepost (
+//          _page, function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters, returnToCaller, callerUrlParameters);
+//    }
+//    finally
+//    {
+//      _httpContext.Handler = _page;
+//    }
+//  }
+  #endregion
 
   /// <summary>
   ///   Implements <see cref="M:Rubicon.Web.ExecutionEngine.IWxePage.ExecuteFunctionExternal(Rubicon.Web.ExecutionEngine.WxeFunction,System.String,System.Web.UI.Control,System.Boolean)">IWxePage.ExecuteFunctionExternal(WxeFunction,String,Control,Boolean)</see>.

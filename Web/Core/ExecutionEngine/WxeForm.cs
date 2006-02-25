@@ -51,6 +51,12 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
     return newForm;
   }
 
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    Page.RegisterRequiresPostBack (this);
+  }
+
   /// <summary> Calls the <see cref="OnLoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
@@ -88,7 +94,6 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
   protected override void OnPreRender (EventArgs e)
   {
     base.OnPreRender (e);
-    Page.RegisterRequiresPostBack (this);
   }
 
   protected override void RenderAttributes (HtmlTextWriter writer)

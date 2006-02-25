@@ -8,6 +8,9 @@
   * GetSelectedRows, GetSelectedBusinessObjects liefern nun die Zeilen in der Reihenfolge zurück wie sie in der
     Value-Collection stehen. Bisher: unbestimmte Reihenfolge.
     
+- BocControls:
+  * Bugfix: Im Falle eines Redirects vor der PreRender Pahse wurden beim nächsten Submit die Werte nicht eingelesen.
+  
 1.4.22
 ======
 - BocList

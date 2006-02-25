@@ -128,6 +128,7 @@ public class WxePageStep: WxeStep
         //  This is the PageStep after the sub-function has completed execution
         
         EnsureHasReturnedFromRedirectToPermanentUrl (context);
+
         ProcessExecutedFunction (context);
         CleanupAfterHavingReturnedFromRedirectToPermanentUrl();
       }
@@ -139,7 +140,7 @@ public class WxePageStep: WxeStep
 
         //  This is the PageStep after the external function has completed execution 
         //  or a postback to the executing page has been received
-        ProcessExecutedFunction (context);
+        ProcessExecutedExternalFunction (context);
         CleanupAfterHavingInvokedExternalFunction();
       }
     }
@@ -173,10 +174,38 @@ public class WxePageStep: WxeStep
 
     context.SetIsPostBack (true);
 
+    // Correct the PostBack-Sequence number
+    _postBackCollection[WxePageInfo.PostBackSequenceNumberID] = context.PostBackID.ToString();
+
     //  Provide the backed up postback data to the executing page
     context.PostBackCollection = _postBackCollection;
     _postBackCollection = null;
     context.SetIsReturningPostBack (true);
+  }
+
+  private void ProcessExecutedExternalFunction (WxeContext context)
+  {
+    //  Provide the executed sub-function to the executing page
+    context.ReturningFunction = _function;
+    _function = null;
+
+    context.SetIsPostBack (true);
+
+    bool isPostRequest = string.Compare (context.HttpContext.Request.HttpMethod, "POST", true) == 0;
+    if (isPostRequest)
+    {
+        // Use original postback data
+        context.PostBackCollection = null;
+    }
+    else
+    {
+      // Correct the PostBack-Sequence number
+      _postBackCollection[WxePageInfo.PostBackSequenceNumberID] = context.PostBackID.ToString();
+      //  Provide the backed up postback data to the executing page
+      context.PostBackCollection = _postBackCollection;
+      context.SetIsReturningPostBack (true);
+    }
+    _postBackCollection = null;
   }
 
   private void EnsureHasRedirectedToPermanentUrl (WxeContext context)
@@ -339,21 +368,25 @@ public class WxePageStep: WxeStep
     //  Back-up post back data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
 
-    //  Remove post back event source from the post back data
+    RemoveEventSource (_postBackCollection, sender, usesEventTarget);
+
+    InternalExecuteFunction (page, function, createPermaUrl, useParentPermaUrl, permaUrlParameters);
+  }
+
+  private void RemoveEventSource (NameValueCollection postBackCollection, Control sender, bool usesEventTarget)
+  {
     if (usesEventTarget)
     {
-      _postBackCollection.Remove (ControlHelper.PostEventSourceID);
-      _postBackCollection.Remove (ControlHelper.PostEventArgumentID );
+      postBackCollection.Remove (ControlHelper.PostEventSourceID);
+      postBackCollection.Remove (ControlHelper.PostEventArgumentID );
     }
     else
     {
       ArgumentUtility.CheckNotNull ("sender", sender);
       if (! (sender is IPostBackEventHandler || sender is IPostBackDataHandler))
         throw new ArgumentException ("The sender must implement either IPostBackEventHandler or IPostBackDataHandler. Provide the control that raised the post back event.");
-      _postBackCollection.Remove (sender.UniqueID);
+      postBackCollection.Remove (sender.UniqueID);
     }
-
-    InternalExecuteFunction (page, function, createPermaUrl, useParentPermaUrl, permaUrlParameters);
   }
 
   /// <summary> Executes the specified <see cref="WxeFunction"/>, then returns to this page. </summary>
@@ -384,12 +417,30 @@ public class WxePageStep: WxeStep
       bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
       bool returnToCaller, NameValueCollection callerUrlParameters)
   {
-    ArgumentUtility.CheckNotNull ("page", page);
-    ArgumentUtility.CheckNotNull ("function", function);
-
     //  Back-up post back data of the executing page
     _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
 
+    InternalExecuteFunctionExternal (page, function, createPermaUrl, useParentPermaUrl, permaUrlParameters, returnToCaller, callerUrlParameters);
+  }
+
+//  internal void ExecuteFunctionExternalNoRepost (
+//      IWxePage page, WxeFunction function, Control sender, bool usesEventTarget,
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
+//      bool returnToCaller, NameValueCollection callerUrlParameters)
+//  {
+//    //  Back-up post back data of the executing page
+//    _postBackCollection = new NameValueCollection (page.GetPostBackCollection());
+//
+//    RemoveEventSource (_postBackCollection, sender, usesEventTarget);
+//
+//    InternalExecuteFunctionExternal (page, function, createPermaUrl, useParentPermaUrl, permaUrlParameters, returnToCaller, callerUrlParameters);
+//  }
+
+  private void InternalExecuteFunctionExternal (
+      IWxePage page, WxeFunction function,
+      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
+      bool returnToCaller, NameValueCollection callerUrlParameters)
+  {
     _isExecuteFunctionExternalRequired = true;
     _isExternalFunctionInvoked = false;
     _function = function; 

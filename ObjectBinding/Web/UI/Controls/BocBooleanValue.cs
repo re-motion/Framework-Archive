@@ -124,6 +124,13 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     Controls.Add (_label);
   }
 
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    if (! IsDesignMode)
+      Page.RegisterRequiresPostBack (this);
+  }
+
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
@@ -159,7 +166,8 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnCheckedChanged();
+    if (! IsReadOnly && Enabled)
+      OnCheckedChanged();
   }
 
   /// <summary> Fires the <see cref="CheckedChanged"/> event. </summary>
@@ -183,9 +191,6 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
     EnsureChildControls();
     base.OnPreRender (e);
     
-    if (! IsDesignMode && ! IsReadOnly && Enabled)
-      Page.RegisterRequiresPostBack (this);
-
     bool isReadOnly = IsReadOnly;
 
     string trueIconUrl = ResourceUrlResolver.GetResourceUrl (

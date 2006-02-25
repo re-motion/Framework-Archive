@@ -121,6 +121,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
+    if (! IsDesignMode)
+      Page.RegisterRequiresPostBack (this);
   }
 
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
@@ -167,7 +169,8 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   protected virtual void RaisePostDataChangedEvent()
   {
     RefreshEnumListSelectedValue();
-    OnSelectionChanged();
+    if (! IsReadOnly && Enabled)
+      OnSelectionChanged();
   }
 
   /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
@@ -199,8 +202,6 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
 
     LoadResources (GetResourceManager());
 
-    if (! IsDesignMode && ! IsReadOnly && Enabled)
-      Page.RegisterRequiresPostBack (this);
     EnsureEnumListRefreshed (false);
     RefreshEnumListSelectedValue();
 

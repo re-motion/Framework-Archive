@@ -100,6 +100,14 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     Controls.Add (_label);
   }
 
+
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    if (! IsDesignMode)
+      Page.RegisterRequiresPostBack (this);
+  }
+
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
@@ -132,7 +140,8 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnTextChanged();
+    if (! IsReadOnly && Enabled)
+      OnTextChanged();
   }
 
   /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
@@ -163,9 +172,6 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
     base.OnPreRender (e);
     
     LoadResources (GetResourceManager());
-
-    if (! IsDesignMode && ! IsReadOnly && Enabled)
-      Page.RegisterRequiresPostBack (this);
     
     if (IsReadOnly)
     {

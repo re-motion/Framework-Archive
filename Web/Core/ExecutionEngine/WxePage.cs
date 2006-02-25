@@ -107,6 +107,50 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
       bool returnToCaller, NameValueCollection callerUrlParameters);
 
+  #region ExecuteFunctionExternalNoRepost
+//  /// <summary> 
+//  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+//  ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
+//  ///   new function.
+//  /// </summary>
+//  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternalNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+//  void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, 
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
+//
+//  /// <summary> 
+//  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+//  ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
+//  ///   new function.
+//  /// </summary>
+//  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternalNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+//  void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, bool usesEventTarget, 
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
+//
+//  /// <summary> 
+//  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+//  ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
+//  ///   new function.
+//  /// </summary>
+//  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternalNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters" or @name="returnToCaller" or @name="callerUrlParameters"]' />
+//  void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, 
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
+//      bool returnToCaller, NameValueCollection callerUrlParameters);
+//
+//  /// <summary> 
+//  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+//  ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
+//  ///   new function.
+//  /// </summary>
+//  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternalNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters" or @name="returnToCaller" or @name="callerUrlParameters"]' />
+//  void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, bool usesEventTarget, 
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
+//      bool returnToCaller, NameValueCollection callerUrlParameters);
+  #endregion
+
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   specified window or frame through javascript window.open(...).
@@ -383,6 +427,62 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   {
      _wxePageInfo.ExecuteFunctionExternal (function, createPermaUrl, useParentPermaUrl, urlParameters, returnToCaller, callerUrlParameters);
   }
+
+  #region ExecuteFunctionExternalNoRepost
+//  /// <summary> 
+//  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+//  ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
+//  ///   new function.
+//  /// </summary>
+//  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternalNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+//  public void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, 
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+//  {
+//     _wxePageInfo.ExecuteFunctionExternalNoRepost (function, sender, createPermaUrl, useParentPermaUrl, urlParameters);
+//  }
+//
+//  /// <summary> 
+//  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+//  ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
+//  ///   new function.
+//  /// </summary>
+//  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternalNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+//  public void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, bool usesEventTarget, 
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
+//  {
+//     _wxePageInfo.ExecuteFunctionExternalNoRepost (function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters);
+//  }
+//
+//  /// <summary> 
+//  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+//  ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
+//  ///   new function.
+//  /// </summary>
+//  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternalNoRepost/param[@name="function" or @name="sender" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters" or @name="returnToCaller" or @name="callerUrlParameters"]' />
+//  public void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, 
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters,
+//      bool returnToCaller, NameValueCollection callerUrlParameters)
+//  {
+//     _wxePageInfo.ExecuteFunctionExternalNoRepost (function, sender, createPermaUrl, useParentPermaUrl, urlParameters, returnToCaller, callerUrlParameters);
+//  }
+//
+//  /// <summary> 
+//  ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
+//  ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
+//  ///   new function.
+//  /// </summary>
+//  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternalNoRepost/param[@name="function" or @name="sender" or @name="usesEventTarget" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters" or @name="returnToCaller" or @name="callerUrlParameters"]' />
+//  public void ExecuteFunctionExternalNoRepost (
+//      WxeFunction function, Control sender, bool usesEventTarget, 
+//      bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters,
+//      bool returnToCaller, NameValueCollection callerUrlParameters)
+//  {
+//     _wxePageInfo.ExecuteFunctionExternalNoRepost (function, sender, usesEventTarget, createPermaUrl, useParentPermaUrl, urlParameters, returnToCaller, callerUrlParameters);
+//  }
+  #endregion
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 

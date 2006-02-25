@@ -112,6 +112,13 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
     Controls.Add (_label);
   }
 
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    if (! IsDesignMode)
+      Page.RegisterRequiresPostBack (this);
+  }
+
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
@@ -148,7 +155,8 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnCheckedChanged();
+    if (! IsReadOnly && Enabled)
+      OnCheckedChanged();
   }
 
   /// <summary> Fires the <see cref="CheckedChanged"/> event. </summary>
@@ -192,9 +200,6 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Pre-renders the child controls for edit mode. </summary>
   private void PreRenderEditMode()
   {
-    if (! IsDesignMode && Enabled)
-      Page.RegisterRequiresPostBack (this);
-
     string trueDescription = null;
     string falseDescription = null;
     string defaultTrueDescription = null;

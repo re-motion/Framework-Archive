@@ -149,6 +149,7 @@ public class BocReferenceValue:
     if (!IsDesignMode)
     {
       InitializeMenusItems();
+      Page.RegisterRequiresPostBack (this);
     }
   }
 
@@ -228,7 +229,8 @@ public class BocReferenceValue:
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnSelectionChanged();
+    if (! IsReadOnly && Enabled)
+      OnSelectionChanged();
   }
 
   /// <summary> Fires the <see cref="SelectionChanged"/> event. </summary>
@@ -463,9 +465,6 @@ public class BocReferenceValue:
   {
     EnsureChildControls();
     base.OnPreRender (e);
-
-    if (! IsDesignMode && ! IsReadOnly && Enabled)
-      Page.RegisterRequiresPostBack (this);
     
     if (! HtmlHeadAppender.Current.IsRegistered (s_scriptFileKey))
     {

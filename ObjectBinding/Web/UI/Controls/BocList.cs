@@ -424,6 +424,7 @@ public class BocList:
     if (!IsDesignMode)
     {
       InitializeMenusItems();
+      Page.RegisterRequiresPostBack (this);
     }
  }
 
@@ -1149,9 +1150,6 @@ public class BocList:
   {
     EnsureChildControls();
     base.OnPreRender (e);
-
-    if (! IsDesignMode && Enabled)
-      Page.RegisterRequiresPostBack (this);
 
     DetermineClientScriptLevel();
 

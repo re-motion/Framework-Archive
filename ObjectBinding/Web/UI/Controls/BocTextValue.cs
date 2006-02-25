@@ -104,6 +104,9 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   {
     base.OnInit (e);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
+
+    if (! IsDesignMode)
+      Page.RegisterRequiresPostBack (this);
   }
 
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
@@ -138,7 +141,8 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <summary> Called when the state of the control has changed between postbacks. </summary>
   protected virtual void RaisePostDataChangedEvent()
   {
-    OnTextChanged();
+    if (! IsReadOnly && Enabled)
+      OnTextChanged();
   }
 
   /// <summary> Fires the <see cref="TextChanged"/> event. </summary>
@@ -169,9 +173,6 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
     base.OnPreRender (e);
 
     LoadResources (GetResourceManager());
-
-    if (! IsDesignMode && ! IsReadOnly && Enabled)
-      Page.RegisterRequiresPostBack (this);
 
     if (IsReadOnly)
     {
