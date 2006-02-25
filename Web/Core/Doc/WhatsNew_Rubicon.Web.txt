@@ -1,3 +1,10 @@
+1.4.23
+======
+- Rubicon.Web.ExecutionEngine.WxeContext
+  * Property QueryString von Typ String auf Typ NameValueCollection geändert.
+    Mit der Methode Rubicon.Web.Utilities.FormatQueryString(...) kann die NameValueCollection in einen String 
+    konvertiert werden.
+    
 1.4.21
 ======
 - Rubicon.Web.UI.Controls.WebTabStrip
