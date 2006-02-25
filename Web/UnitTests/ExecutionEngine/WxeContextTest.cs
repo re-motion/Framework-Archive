@@ -42,7 +42,7 @@ public class WxeContextTest
 
     UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (_functionType, _resource));
 
-    _currentWxeContext = new WxeContextMock (_currentHttpContext, UrlUtility.FormatQueryString (queryString));
+    _currentWxeContext = new WxeContextMock (_currentHttpContext, queryString);
     PrivateInvoke.InvokeNonPublicStaticMethod (typeof (WxeContext), "SetCurrent", _currentWxeContext);
 
     WebConfigurationMock.Current = new Rubicon.Web.Configuration.WebConfiguration();
