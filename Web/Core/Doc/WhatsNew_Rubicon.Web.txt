@@ -4,7 +4,15 @@
   * Property QueryString von Typ String auf Typ NameValueCollection geändert.
     Mit der Methode Rubicon.Web.Utilities.FormatQueryString(...) kann die NameValueCollection in einen String 
     konvertiert werden.
-    
+
+- Rubicon.Web.ExecutionEngine.WxePage
+  * Neue Overloads für ExecuteFunctionExternal für externe FunctionCalls im selben Fenster via Redirect.
+    void ExecuteFunctionExternal (
+        WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
+    void ExecuteFunctionExternal (
+        WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
+        bool returnToCaller, NameValueCollection callerUrlParameters);
+  
 1.4.21
 ======
 - Rubicon.Web.UI.Controls.WebTabStrip

@@ -146,7 +146,7 @@ public class WxePageStep: WxeStep
 
     try 
     {
-      context.HttpContext.Server.Transfer (Page, context.IsPostBack);
+      context.HttpContext.Server.Transfer (Page + context.HttpContext.Request.Url.Query, context.IsPostBack);
     }
     catch (HttpException e)
     {

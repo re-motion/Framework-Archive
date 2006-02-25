@@ -10,7 +10,7 @@ public class WxeTimeoutException: WxeException
   private string _functionToken;
 
   public WxeTimeoutException (string message, string functionToken)
-    : base (message)
+    : this (message, functionToken, null)
   {
   }
 
