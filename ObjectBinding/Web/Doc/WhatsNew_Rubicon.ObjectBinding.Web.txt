@@ -5,6 +5,8 @@
     Statt IconPath ist nun Icon.Url zu setzen.
     In ASPX/ASCX Seiten muss IconPath durch Search & Replace ersetzt werden.
   * BocEditDetailsColumnDefinition.EditIcon, SaveIcon, CancelIcon: null ist nicht mehr erlaubt.
+  * GetSelectedRows, GetSelectedBusinessObjects liefern nun die Zeilen in der Reihenfolge zurück wie sie in der
+    Value-Collection stehen. Bisher: unbestimmte Reihenfolge.
     
 1.4.22
 ======
