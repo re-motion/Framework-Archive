@@ -533,7 +533,7 @@ public class BocList:
     if (_availableViews.Count > 0)
     {
       string newAvailableViewsListSelectedValue = 
-          PageUtility.GetRequestCollectionItem (Page, _availableViewsList.UniqueID);
+          PageUtility.GetPostBackCollectionItem (Page, _availableViewsList.UniqueID);
       SelectedViewIndex = int.Parse (newAvailableViewsListSelectedValue);
     }
   }
@@ -5170,7 +5170,7 @@ public class BocList:
     return selectedBusinessObjects;
   }
 
-  /// <summary> Gets indeces for the rows selected in the <see cref="BocList"/>. </summary>
+  /// <summary> Gets indices for the rows selected in the <see cref="BocList"/>. </summary>
   /// <returns> An array of <see cref="int"/> values. </returns>
   public int[] GetSelectedRows()
   {
@@ -5185,6 +5185,7 @@ public class BocList:
       if (isChecked)
         selectedRows.Add (rowIndex);
     }
+    selectedRows.Sort();
     return (int[]) selectedRows.ToArray (typeof (int));
   }
 
