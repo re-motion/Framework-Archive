@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
 using System.Web.SessionState;
@@ -21,7 +21,7 @@ public class WxeContextMock: WxeContext
   {
   }
 
-  public WxeContextMock (HttpContext context, string queryString)
+  public WxeContextMock (HttpContext context, NameValueCollection queryString)
     : base (context, new WxeFunctionState (new TestFunction (), false), queryString)
   {
   }
