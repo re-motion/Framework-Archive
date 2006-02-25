@@ -74,6 +74,13 @@ public class WebTabStrip :
   {
   }
 
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    if (! ControlHelper.IsDesignMode (this, Context))
+      Page.RegisterRequiresPostBack (this);
+  }
+
   bool IPostBackDataHandler.LoadPostData (string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
   {
     //  Is PostBack caused by this tab strip ?
@@ -191,9 +198,6 @@ public class WebTabStrip :
           this, Context, typeof (WebTabStrip), ResourceType.Html, "TabStrip.css");
       HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
     }
-
-   if (! ControlHelper.IsDesignMode ((IControl)this, Context) && Enabled)
-      Page.RegisterRequiresPostBack (this);
 
     EnsureTabsRestored();
     
