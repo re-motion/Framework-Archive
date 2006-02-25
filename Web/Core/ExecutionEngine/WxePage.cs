@@ -208,6 +208,8 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   /// </remarks>
   string StatusIsCachedMessage { get; }
 
+  /// <summary> Gets the permanent URL parameters the current page. </summary>
+  NameValueCollection GetPermanentUrlParameters();
 
   /// <summary> Gets the permanent URL for the current page. </summary>
   string GetPermanentUrl();
@@ -466,6 +468,12 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   public WxeFunction ReturningFunction
   {
     get { return _wxePageInfo.ReturningFunction; }
+  }
+
+  /// <summary> Gets the permanent URL parameters the current page. </summary>
+  public NameValueCollection GetPermanentUrlParameters()
+  {
+    return _wxePageInfo.GetPermanentUrlParameters();
   }
 
   /// <summary> Gets the permanent URL for the current page. </summary>

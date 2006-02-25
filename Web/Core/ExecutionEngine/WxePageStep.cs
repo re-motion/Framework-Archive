@@ -235,14 +235,8 @@ public class WxePageStep: WxeStep
 
       if (_returnToCaller)
       {
-        NameValueCollection internalCallerUrlParameters;
-        if (_callerUrlParameters == null)
-          internalCallerUrlParameters = ParentFunction.SerializeParametersForQueryString();
-        else
-          internalCallerUrlParameters = CollectionUtility.Clone (_callerUrlParameters);
-        internalCallerUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
-
-        _function.ReturnUrl = context.GetPermanentUrl (ParentFunction.GetType(), internalCallerUrlParameters);
+        _callerUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
+        _function.ReturnUrl = context.GetPermanentUrl (ParentFunction.GetType(), _callerUrlParameters);
       }
 
       _permaUrlParameters = null;
@@ -298,10 +292,7 @@ public class WxePageStep: WxeStep
     {
       UrlMappingEntry mappingEntry = UrlMappingConfiguration.Current.Mappings[function.GetType()];
       string path = (mappingEntry != null) ? mappingEntry.Resource : wxeContext.HttpContext.Request.Url.AbsolutePath;
-      string queryString = null;
-      if (urlParameters != null)
-        queryString = UrlUtility.FormatQueryString (urlParameters);
-      href = wxeContext.GetPath (path, functionToken, queryString);
+      href = wxeContext.GetPath (path, functionToken, urlParameters);
     }
 
     return href;
@@ -406,7 +397,14 @@ public class WxePageStep: WxeStep
     _useParentPermaUrl = useParentPermaUrl;
     _permaUrlParameters = permaUrlParameters;
     _returnToCaller = returnToCaller;
-    _callerUrlParameters = callerUrlParameters;
+    _callerUrlParameters = null;
+    if (_returnToCaller)
+    {
+      if (callerUrlParameters == null)
+        _callerUrlParameters = page.GetPermanentUrlParameters();
+      else
+        _callerUrlParameters = CollectionUtility.Clone (callerUrlParameters);
+    }
 
     InvokeSaveAllState ((Page) page);
 

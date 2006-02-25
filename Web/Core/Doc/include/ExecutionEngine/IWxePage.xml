@@ -204,7 +204,8 @@ public override void LoadPageStateFromPersistenceMedium()
     </param>
     <param name="callerUrlParameters">
       Provides the list of arguments for the return URL's query string. Defaults to <see langword="null"/>, 
-      which indicates that the executing function's current parameters should be used for the query string.
+      which indicates that the executing page's current parameters should be used for the query string.
+      Provide an emtpy <see cref="NameValueCollection"/> if your function does not support perma-urls.
     </param>
   </ExecuteFunctionExternal>
   <GetPermanentUrl>

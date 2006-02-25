@@ -324,7 +324,7 @@ public class TabbedMenu: WebControl, INavigationControl
     {
       string value;
       if (Page is IWxePage)
-        value = UrlUtility.GetParameter (WxeContext.Current.QueryString, SelectionID);
+        value = WxeContext.Current.QueryString[SelectionID];
       else
         value = Context.Request.QueryString[SelectionID];
       if (value != null)

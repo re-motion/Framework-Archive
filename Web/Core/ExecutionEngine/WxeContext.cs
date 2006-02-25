@@ -227,9 +227,9 @@ public class WxeContext
   private NameValueCollection _postBackCollection = null;
   private WxeFunction _returningFunction = null;
   private WxeFunctionState _functionState;
-  private string _queryString;
+  private NameValueCollection _queryString;
 
-  public WxeContext (HttpContext context, WxeFunctionState functionState, string queryString)
+  public WxeContext (HttpContext context, WxeFunctionState functionState, NameValueCollection queryString)
   {
     ArgumentUtility.CheckNotNull ("context", context);
     ArgumentUtility.CheckNotNull ("functionState", functionState);
@@ -237,17 +237,14 @@ public class WxeContext
     _httpContext = context;
     _functionState = functionState;
 
-    if (StringUtility.IsNullOrEmpty (queryString))
+    if (queryString == null)
     {
-      _queryString = string.Empty;
+      _queryString = new NameValueCollection();
     }
     else
     {
-      if (! queryString.StartsWith ("?"))
-        queryString = "?" + queryString;
-      queryString = UrlUtility.DeleteParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
-      if (queryString != "?")
-        _queryString = queryString;
+      _queryString = CollectionUtility.Clone (queryString);
+      _queryString.Remove (WxeHandler.Parameters.WxeFunctionToken);
     }
   }
 
@@ -339,7 +336,7 @@ public class WxeContext
     get { return _functionState.PostBackID; }
   }
 
-  public string QueryString
+  public NameValueCollection QueryString
   {
     get { return _queryString; }
   }
@@ -373,25 +370,22 @@ public class WxeContext
   }
 
   /// <summary> Gets the absolute path to the WXE handler used for the current function. </summary>
-  /// <param name="queryString"> An optional query string to be appended to the path. </param>
-  protected internal string GetPath (string queryString)
-  {
-    if (! StringUtility.IsNullOrEmpty (queryString) && ! queryString.StartsWith ("?"))
-      queryString = "?" + queryString;
-    
-    if (StringUtility.IsNullOrEmpty (queryString) || queryString == "?")
-      queryString = string.Empty;
-    
+  /// <param name="queryString"> An optional list of URL parameters to be appended to the path. </param>
+  protected internal string GetPath (NameValueCollection queryString)
+  { 
+    if (queryString == null)
+      queryString = new NameValueCollection();
+
     string path = WxeContext.Current.HttpContext.Response.ApplyAppPathModifier (_httpContext.Request.Url.AbsolutePath);
-    return path + queryString;
+    return UrlUtility.AddParameters (path, queryString);
   }
 
   /// <summary> Gets the absolute path that resumes the function with specified token. </summary>
   /// <param name="functionToken"> 
   ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
   /// </param>
-  /// <param name="queryString"> An optional query string to be appended to the path. </param>
-  protected internal string GetPath (string functionToken, string queryString)
+  /// <param name="queryString"> An optional list of URL parameters to be appended to the path. </param>
+  protected internal string GetPath (string functionToken, NameValueCollection queryString)
   {
     return GetPath (_httpContext.Request.Url.AbsolutePath, functionToken, queryString);
   }
@@ -401,8 +395,8 @@ public class WxeContext
   /// <param name="functionToken"> 
   ///   The function token of the function to resume. Must not be <see langword="null"/> or emtpy.
   /// </param>
-  /// <param name="queryString"> An optional query string to be appended to the <paramref name="path"/>. </param>
-  protected internal string GetPath (string path, string functionToken, string queryString)
+  /// <param name="queryString"> An optional list of URL parameters to be appended to the <paramref name="path"/>. </param>
+  protected internal string GetPath (string path, string functionToken, NameValueCollection queryString)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("path", path);
     ArgumentUtility.CheckNotNullOrEmpty ("functionToken", functionToken);
@@ -412,15 +406,15 @@ public class WxeContext
     if (path.IndexOf ("?") != -1)
       throw new ArgumentException ("The path must be provided without a query string. Use the query string parameter instead.", "path");
 
-    queryString = StringUtility.NullToEmpty (queryString);
-    if (! queryString.StartsWith ("?"))
-      queryString = "?" + queryString;
+    if (queryString == null)
+      queryString = new NameValueCollection();
+    else
+      queryString = CollectionUtility.Clone (queryString);
     
-    queryString = UrlUtility.DeleteParameter (queryString, WxeHandler.Parameters.WxeFunctionToken);
-    queryString = UrlUtility.AddParameter (queryString, WxeHandler.Parameters.WxeFunctionToken, functionToken);
+    queryString.Set (WxeHandler.Parameters.WxeFunctionToken, functionToken);
     
     path = response.ApplyAppPathModifier (path);
-    return path + queryString;
+    return UrlUtility.AddParameters (path, queryString);
   }
 
   /// <summary> 
@@ -451,13 +445,14 @@ public class WxeContext
 
       int maxLength = Configuration.WebConfiguration.Current.ExecutionEngine.MaximumUrlLength;
 
-      string currentFunctionUrl = _httpContext.Request.Url.AbsolutePath + _queryString;
+      string currentFunctionUrl = UrlUtility.AddParameters (_httpContext.Request.Url.AbsolutePath, _queryString);
       StringCollection parentPermanentUrls = ExtractReturnUrls (currentFunctionUrl);
 
       int count = GetMergeablePermanentUrlCount (permanentUrl, parentPermanentUrls, maxLength);
       string parentPermanentUrl = FormatParentPermanentUrl (parentPermanentUrls, count);
       
-      permanentUrl = UrlUtility.AddParameter (permanentUrl, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
+      if (! StringUtility.IsNullOrEmpty (parentPermanentUrl))
+        permanentUrl = UrlUtility.AddParameter (permanentUrl, WxeHandler.Parameters.ReturnUrl, parentPermanentUrl);
     }
     return permanentUrl;
   }

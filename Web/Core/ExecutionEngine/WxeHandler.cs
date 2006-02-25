@@ -357,9 +357,7 @@ public class WxeHandler: IHttpHandler, IRequiresSessionState
     if (functionState.IsAborted)
       throw new ArgumentException ("The function state " + functionState.FunctionToken + " is aborted.");
 
-    string queryString = context.Request.QueryString.ToString();
-
-    WxeContext wxeContext = new WxeContext (context, functionState, queryString); 
+    WxeContext wxeContext = new WxeContext (context, functionState, context.Request.QueryString); 
     WxeContext.SetCurrent (wxeContext);
 
     functionState.PostBackID++;
