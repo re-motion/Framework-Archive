@@ -346,13 +346,20 @@ public class PageUtility
   ///   <see cref="HttpRequest.Form"/> collection of the <see cref="Page.Request"/>, depending on whether or not the
   ///   <paramref name="page"/> implements <see cref="IWxePage"/>.
   /// </returns>
-  public static NameValueCollection GetRequestCollection (Page page)
+  public static NameValueCollection GetPostBackCollection (Page page)
   {
     IWxePage wxePage = page as IWxePage;
     if (wxePage != null)
       return wxePage.GetPostBackCollection ();
     else
       return page.Request.Form;
+  }
+
+  [Obsolete ("Use GetPostBackCollectioninstead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public static NameValueCollection GetRequestCollection (Page page)
+  {
+    return PageUtility.GetPostBackCollection (page);
   }
 
   /// <summary>
@@ -364,15 +371,22 @@ public class PageUtility
   /// <returns> 
   ///   The item identified by <paramref name="name"/> or <see langword="null"/> if the item could not be found. 
   /// </returns>
-  public static string GetRequestCollectionItem (Page page, string name)
+  public static string GetPostBackCollectionItem (Page page, string name)
   {
     ArgumentUtility.CheckNotNull ("page", page);
     ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-    NameValueCollection collection = GetRequestCollection (page);
+    NameValueCollection collection = PageUtility.GetPostBackCollection (page);
     if (collection == null)
       return null;
     return collection[name];
+  }
+
+  [Obsolete ("Use GetPostBackCollectionItem instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public static string GetRequestCollectionItem (Page page, string name)
+  {
+    return PageUtility.GetPostBackCollectionItem (page, name);
   }
 
   private PageUtility()
