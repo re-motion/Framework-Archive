@@ -125,7 +125,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   /// <include file='doc\include\UI\Controls\BocTextValue.xml' path='BocTextValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
-    string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
+    string newValue = PageUtility.GetPostBackCollectionItem (Page, _textBox.UniqueID);
     bool isDataChanged = newValue != null && StringUtility.NullToEmpty (_text) != newValue;
     if (isDataChanged)
     {

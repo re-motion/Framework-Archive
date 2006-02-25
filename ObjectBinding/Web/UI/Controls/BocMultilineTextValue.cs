@@ -119,7 +119,7 @@ public class BocMultilineTextValue: BusinessObjectBoundModifiableWebControl, IPo
   /// <include file='doc\include\UI\Controls\BocMultilineTextValue.xml' path='BocMultilineTextValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
-    string newValue = PageUtility.GetRequestCollectionItem (Page, _textBox.UniqueID);
+    string newValue = PageUtility.GetPostBackCollectionItem (Page, _textBox.UniqueID);
     bool isDataChanged = newValue != null && StringUtility.NullToEmpty (_internalValue) != newValue;
     if (isDataChanged)
     {

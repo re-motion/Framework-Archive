@@ -204,7 +204,7 @@ public class BocReferenceValue:
   /// <include file='doc\include\UI\Controls\BocReferenceValue.xml' path='BocReferenceValue/LoadPostData/*' />
   protected virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
   {
-    string newValue = PageUtility.GetRequestCollectionItem (Page, _dropDownList.UniqueID);
+    string newValue = PageUtility.GetPostBackCollectionItem (Page, _dropDownList.UniqueID);
     bool isDataChanged = false;
     if (newValue != null)
     {
