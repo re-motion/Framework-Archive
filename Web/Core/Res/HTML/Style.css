@@ -16,32 +16,32 @@ body, input, select, textarea
     The font-size relation between headings and body is maintained with the used percentages. */
 h1
 {
- font-size: 2em;
+  font-size: 200%;
 }
 
 h2
 {
- font-size: 1.5em;
+  font-size: 150%;
 }
 
 h3
 {
- font-size: 1.2em;
+  font-size: 125%;
 }
 
 h4
 {
- font-size: 1em;
+  font-size: 100%;
 }
 
 h5
 {
- font-size: 0.8em;
+  font-size: 80%;
 }
 
 h6
 {
- font-size: 0.6em;
+  font-size: 60%;
 }
 
 /*  All anchor elements on the page. */
