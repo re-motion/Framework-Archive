@@ -15,10 +15,10 @@ body
 td, 
 th
 {
-  font-size: 0.8em;
+  font-size: 80%;
   voice-family: "\"}\""; 
   voice-family:inherit;
-  font-size: 1em;
+  font-size: 100%;
 }
 
 /*  Catches for Opera 7 (5+?), Mozilla/Firefox. 
@@ -26,7 +26,7 @@ th
 html>body td,
 html>body th
 {
-  font-size: 1em;
+  font-size: 100%;
 }
 
 /*  Style applied to the title cell  */
@@ -34,27 +34,27 @@ html>body th
 td.formGridTitleCell,
 td.formGridSubTitleCell
 {
-  font-size: 1em;
+  font-size: 100%;
   voice-family: "\"}\""; 
   voice-family:inherit;
-  font-size: 1.25em;
+  font-size: 125%;
 }
 
 html>body td.formGridTitleCell
 {
-  font-size: 1.25em;
+  font-size: 125%;
 }
 
 /*  Style applied to the BocList's in-place menu  */
 td.contentMenuRow
 {
-  font-size: 0.64em;
+  font-size: 64%;
   voice-family: "\"}\""; 
   voice-family:inherit;
-  font-size: 0.8em;
+  font-size: 80%;
 }
 
 html>body td.contentMenuRow
 {
-  font-size: 0.8em;
+  font-size: 80%;
 }

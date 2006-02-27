@@ -11,7 +11,7 @@ body
 td, 
 th
 {
-  font-size: 1em;
+  font-size: 100%;
 }
 
 /*  Style applied to the title cell  */
@@ -20,12 +20,21 @@ th
 td.formGridTitleCell,
 td.formGridSubTitleCell
 {
-	font-size: 1.25em;
+	font-size: 125%;
 }
 
 /*  Style applied to the BocList's in-place menu  */
 /*  no inheritence from body */
 td.contentMenuRow
 {
-  font-size: 0.8em;
+  font-size: 80%;
+}
+
+/* No scaling without a reference value */
+input,
+textarea,
+select,
+button
+{
+  font-size: 100%;
 }

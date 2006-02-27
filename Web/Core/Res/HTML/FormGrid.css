@@ -13,7 +13,7 @@ td.formGridSubTitleCell
 {
 	font-weight: bold;
 	/*  no inheritence from body */
-	font-size: 1.25em;
+	font-size: 125%;
 
   padding: 2px 2px 2px 2px;
   border-style: solid;
