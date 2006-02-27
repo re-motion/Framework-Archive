@@ -93,18 +93,18 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
   ///   new function.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
   void ExecuteFunctionExternal (
-      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters);
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters);
 
   /// <summary> 
   ///   Executes a <see cref="WxeFunction"/> outside the current function's context (i.e. asynchron) using the 
   ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
   ///   new function.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters" or @name="returnToCaller" or @name="callerUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\IWxePage.xml' path='IWxePage/ExecuteFunctionExternal/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters" or @name="returnToCaller" or @name="callerUrlParameters"]' />
   void ExecuteFunctionExternal (
-      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection permaUrlParameters,
+      WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters,
       bool returnToCaller, NameValueCollection callerUrlParameters);
 
   #region ExecuteFunctionExternalNoRepost
@@ -408,7 +408,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
   ///   new function.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters"]' />
   public void ExecuteFunctionExternal (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters)
   {
@@ -420,7 +420,7 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
   ///   current window or frame. The execution engine uses a redirect request to transfer the execution to the 
   ///   new function.
   /// </summary>
-  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="permaUrlParameters" or @name="returnToCaller" or @name="callerUrlParameters"]' />
+  /// <include file='doc\include\ExecutionEngine\WxePage.xml' path='WxePage/ExecuteFunctionExternal/param[@name="function" or @name="createPermaUrl" or @name="useParentPermaUrl" or @name="urlParameters" or @name="returnToCaller" or @name="callerUrlParameters"]' />
   public void ExecuteFunctionExternal (
       WxeFunction function, bool createPermaUrl, bool useParentPermaUrl, NameValueCollection urlParameters,
       bool returnToCaller, NameValueCollection callerUrlParameters)
