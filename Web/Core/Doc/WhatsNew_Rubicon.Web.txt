@@ -1,3 +1,8 @@
+1.4.24
+======
+- Bugfix in den Styles: IE hatte beim Ändern der Schriftgröße Probleme:
+  Schriftgröße in Input-Elementen hat nicht mit-sklaliert.
+
 1.4.23
 ======
 - Rubicon.Web.ExecutionEngine.WxeContext
