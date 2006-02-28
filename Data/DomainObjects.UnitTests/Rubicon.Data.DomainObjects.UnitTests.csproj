@@ -279,6 +279,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Configuration\Mapping\ClassDefinitionCollectionWithUnresolvedTypeNamesTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\Mapping\ClassDefinitionTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
