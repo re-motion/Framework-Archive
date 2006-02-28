@@ -15,15 +15,22 @@ public class ClassDefinitionCollection : CommonCollection
 
   // member fields
 
-  private Hashtable _classIDs = new Hashtable ();
+  private Hashtable _types = new Hashtable ();
+  private bool _areResolvedTypeNamesRequired;
 
   // construction and disposing
 
-  public ClassDefinitionCollection ()
+  public ClassDefinitionCollection () : this (true)
   {
   }
 
+  public ClassDefinitionCollection (bool areResolvedTypeNamesRequired)
+  {
+    _areResolvedTypeNamesRequired = areResolvedTypeNamesRequired;
+  }
+
   // standard constructor for collections
+
   public ClassDefinitionCollection (ClassDefinitionCollection collection, bool makeCollectionReadOnly)  
   {
     ArgumentUtility.CheckNotNull ("collection", collection);
@@ -41,6 +48,12 @@ public class ClassDefinitionCollection : CommonCollection
   public ClassDefinition GetMandatory (Type classType)
   {
     ArgumentUtility.CheckNotNull ("classType", classType);
+
+    if (!_areResolvedTypeNamesRequired)
+    {
+      throw CreateInvalidOperationException (
+          "Collection allows only ClassDefinitions with resolved types and therefore GetMandatory(Type) cannot be used.");
+    }
 
     ClassDefinition classDefinition = this[classType];
     if (classDefinition == null)
@@ -60,25 +73,36 @@ public class ClassDefinitionCollection : CommonCollection
     return classDefinition;
   }
 
+  public bool AreResolvedTypeNamesRequired
+  {
+    get { return _areResolvedTypeNamesRequired; }
+  }
+
   #region Standard implementation for "add-only" collections
 
   public bool Contains (ClassDefinition classDefinition)
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
 
-    return BaseContains (classDefinition.ClassType, classDefinition);
+    return BaseContains (classDefinition.ID, classDefinition);
   }
 
   public bool Contains (Type classType)
   {
-    return BaseContainsKey (classType);
+    if (!_areResolvedTypeNamesRequired)
+    {
+      throw CreateInvalidOperationException (
+          "Collection allows only ClassDefinitions with resolved types and therefore Contains(Type) cannot be used.");
+    }
+
+    return _types.ContainsKey (classType);
   }
 
   public bool Contains (string classID)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
 
-    return _classIDs.Contains (classID);
+    return BaseContainsKey (classID);
   }
 
   public ClassDefinition this [int index]  
@@ -88,7 +112,16 @@ public class ClassDefinitionCollection : CommonCollection
 
   public ClassDefinition this [Type classType]  
   {
-    get { return (ClassDefinition) BaseGetObject (classType); }
+    get 
+    {
+      if (!_areResolvedTypeNamesRequired)
+      {
+        throw CreateInvalidOperationException (
+            "Collection allows only ClassDefinitions with resolved types and therefore this overload of the indexer cannot be used.");
+      }
+
+      return (ClassDefinition) _types[classType]; 
+    }
   }
 
   public ClassDefinition this [string classID]
@@ -97,7 +130,7 @@ public class ClassDefinitionCollection : CommonCollection
     {
       ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
 
-      return (ClassDefinition) _classIDs[classID];
+      return (ClassDefinition) BaseGetObject (classID);
     }
   }
 
@@ -105,11 +138,22 @@ public class ClassDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("value", value);
   
-    if (_classIDs.Contains (value.ID))
-      throw new ArgumentException (string.Format ("A ClassDefinition with ID '{0}' is already part of this collection.", value.ID), "value");
+    if (_areResolvedTypeNamesRequired)
+    {
+      if (value.ClassType == null)
+      {
+        throw CreateInvalidOperationException (
+            "Collection allows only ClassDefinitions with resolved types and therefore ClassDefinition '{0}' cannot be added.", value.ID);
+      }
 
-    int position = BaseAdd (value.ClassType, value);
-    _classIDs.Add (value.ID, value);
+      if (_types.Contains (value.ClassType))
+        throw new ArgumentException (string.Format ("A ClassDefinition with Type '{0}' is already part of this collection.", value.ClassType), "value");
+    }
+
+    int position = BaseAdd (value.ID, value);
+
+    if (_areResolvedTypeNamesRequired)
+      _types.Add (value.ClassType, value);
 
     return position;
   }
@@ -119,6 +163,11 @@ public class ClassDefinitionCollection : CommonCollection
   private MappingException CreateMappingException (string message, params object[] args)
   {
     return new MappingException (string.Format (message, args));
+  }
+
+  private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
+  {
+    return new InvalidOperationException (string.Format (message, args));
   }
 }
 }
