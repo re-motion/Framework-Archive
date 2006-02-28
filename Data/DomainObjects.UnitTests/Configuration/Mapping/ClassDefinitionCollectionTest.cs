@@ -30,7 +30,7 @@ public class ClassDefinitionCollectionTest
   [SetUp]
   public void SetUp ()
   {
-    _classDefinition = new ClassDefinition ("Order", "Order", typeof (Order), DatabaseTest.c_testDomainProviderID);
+    _classDefinition = new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
     _collection = new ClassDefinitionCollection ();
   }
 
@@ -81,8 +81,7 @@ public class ClassDefinitionCollectionTest
     _collection.Add (_classDefinition);
 
     ClassDefinition copy = new ClassDefinition (
-        _classDefinition.ID, _classDefinition.EntityName, _classDefinition.ClassType, 
-        _classDefinition.ID, _classDefinition.BaseClass);
+        _classDefinition.ID, _classDefinition.EntityName, _classDefinition.StorageProviderID, _classDefinition.ClassType, _classDefinition.BaseClass);
 
     Assert.IsFalse (_collection.Contains (copy));
   }
@@ -141,7 +140,7 @@ public class ClassDefinitionCollectionTest
     _collection.Add (_classDefinition);
     try
     {
-      _collection.Add (new ClassDefinition ("Order", "Order", typeof (Customer), DatabaseTest.c_testDomainProviderID));
+      _collection.Add (new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Customer)));
       Assert.Fail ("Expected an ArgumentException.");
     }
     catch (ArgumentException)

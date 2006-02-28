@@ -168,7 +168,7 @@ public class ClassDefinitionTest
   public void ClassTypeWithInvalidDerivation ()
   {
     ClassDefinition classDefinition = new ClassDefinition (
-        "Company", "Company", typeof (ClassNotDerivedFromDomainObject), "TestDomain"); 
+        "Company", "Company", "TestDomain", typeof (ClassNotDerivedFromDomainObject)); 
   }
 
   [Test]
@@ -178,7 +178,7 @@ public class ClassDefinitionTest
   public void ClassTypeDomainObject ()
   {
     ClassDefinition classDefinition = new ClassDefinition (
-        "Company", "Company", typeof (DomainObject), "TestDomain"); 
+        "Company", "Company", "TestDomain", typeof (DomainObject)); 
   }
 
   [Test]
@@ -187,10 +187,10 @@ public class ClassDefinitionTest
           "base class 'Company' must be equal.")]
   public void InvalidEntityNameOfBaseClass ()
   {
-    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
     ClassDefinition customerClass = new ClassDefinition (
-        "Customer", "Customer", typeof (Customer), "TestDomain", companyClass);    
+        "Customer", "Customer", "TestDomain", typeof (Customer), companyClass);    
   }
 
   [Test]
@@ -198,17 +198,17 @@ public class ClassDefinitionTest
       "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
   public void BaseClassWithDifferentStorageProvider ()
   {
-    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "Provider 1");
+    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "Provider 1", typeof (Company));
 
     ClassDefinition customerClass = new ClassDefinition (
-        "Customer", "Company", typeof (Customer), "Provider 2", companyClass);    
+        "Customer", "Company", "Provider 2", typeof (Customer), companyClass);    
   }
 
   [Test]
   [ExpectedException (typeof (MappingException), "Class 'Company' already contains the property 'Name'.")]
   public void AddDuplicateProperty ()
   {
-    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
     companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
     companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
@@ -218,11 +218,11 @@ public class ClassDefinitionTest
   [ExpectedException (typeof (MappingException), "Class 'Customer' already contains the property 'Name'.")]
   public void AddDuplicatePropertyBaseClass ()
   {
-    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
     companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     ClassDefinition customerClass = new ClassDefinition (
-        "Customer", "Company", typeof (Customer), "TestDomain", companyClass);    
+        "Customer", "Company", "TestDomain", typeof (Customer), companyClass);    
 
     customerClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
   }
@@ -231,14 +231,14 @@ public class ClassDefinitionTest
   [ExpectedException (typeof (MappingException), "Class 'Supplier' already contains the property 'Name'.")]
   public void AddDuplicatePropertyBaseOfBaseClass ()
   {
-    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
     companyClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
     ClassDefinition partnerClass = new ClassDefinition (
-        "Partner", "Company", typeof (Partner), "TestDomain", companyClass);    
+        "Partner", "Company", "TestDomain", typeof (Partner), companyClass);    
 
     ClassDefinition supplierClass = new ClassDefinition (
-        "Supplier", "Company", typeof (Supplier), "TestDomain", partnerClass);    
+        "Supplier", "Company", "TestDomain", typeof (Supplier), partnerClass);    
 
     supplierClass.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
   }
@@ -246,7 +246,7 @@ public class ClassDefinitionTest
   [Test]
   public void ConstructorWithoutBaseClass ()
   {
-    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
   }
 
   [Test]
@@ -602,7 +602,7 @@ public class ClassDefinitionTest
 
     // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
     // this test does not affect other tests through modifying the singleton instances.
-    ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
+    ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
     
     classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
     Assert.AreSame (classDefinition, propertyDefinition.ClassDefinition);
@@ -616,7 +616,7 @@ public class ClassDefinitionTest
 
     // Note: Never use a ClassDefinition of TestMappingConfiguration or MappingConfiguration here, to ensure
     // this test does not affect other tests through modifying the singleton instances.
-    ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
+    ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
     PropertyDefinitionCollectionEventReceiver receiver = new PropertyDefinitionCollectionEventReceiver (classDefinition.MyPropertyDefinitions, true);
     try
