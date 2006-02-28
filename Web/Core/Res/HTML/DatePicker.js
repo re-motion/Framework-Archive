@@ -179,7 +179,7 @@ function DatePicker_CloseDatePicker()
   }  
   window.parent._datePicker_currentDatePicker = null;
   var datePicker = window.parent.document.getElementById (document.getElementById ('DatePickerIDField').value);
-  datePicker.parentElement.removeChild (datePicker);
+  datePicker.parentNode.removeChild (datePicker);
 }
 
 //  Called by th event handler for the onclick event of the parent pages's document.
