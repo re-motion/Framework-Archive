@@ -1,3 +1,8 @@
+1.4.24
+======
+- BocList
+  * SelectAll Checkbox nun auch bei Non-IE Browsern verfügbar.
+  
 1.4.23
 ======
 - BocList

@@ -694,9 +694,9 @@ function SmartPage_Context (
   // and if javascript is used as the HREF.
   function IsJavaScriptAnchor (element)
   {
-    ArgumentUtility.CheckTypeIsObject ('element', element);
     if (element == null)
       return false;
+    ArgumentUtility.CheckTypeIsObject ('element', element);
 
     var tagName = element.tagName.toLowerCase();
     if (   tagName == 'a'
