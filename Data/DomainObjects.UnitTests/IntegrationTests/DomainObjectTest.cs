@@ -380,7 +380,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
     Employee employee = new Employee ();
 
     PropertyDefinition propertyDefinition = new PropertyDefinition (
-      "testproperty", "testproperty", "string", true, 10);
+      "testproperty", "testproperty", "string", true, 10, true);
     PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
     Assert.IsFalse (propertyValues.Contains ("testproperty"));
@@ -399,8 +399,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
   {
     Employee employee = new Employee ();
 
-    PropertyDefinition propertyDefinition = new PropertyDefinition (
-      "Name", "Name", "string", true, 10);
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("Name", "Name", "string", true, 10, true);
     PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
 
     Assert.IsTrue (propertyValues.Contains ("Name"));
