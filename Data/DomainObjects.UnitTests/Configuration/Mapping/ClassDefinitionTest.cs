@@ -20,6 +20,7 @@ public class ClassDefinitionTest
 
   private ClassDefinition _orderClass;
   private ClassDefinition _distributorClass;
+  private ClassDefinitionChecker _checker;
 
   // construction and disposing
 
@@ -34,6 +35,61 @@ public class ClassDefinitionTest
   {
     _orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
     _distributorClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)];
+
+    _checker = new ClassDefinitionChecker ();
+  }
+
+  [Test]
+  public void InitializeWithTypeName ()
+  {
+    ClassDefinition expected = new ClassDefinition ("Order", "OrderTable", "StorageProvider", typeof (Order));
+
+    ClassDefinition actual = new ClassDefinition (
+        "Order", "OrderTable", "StorageProvider", 
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests", true);
+
+    _checker.Check (expected, actual);
+  }
+
+  [Test]
+  [ExpectedException (typeof (MappingException))]
+  public void InitializeWithTypeNotDerivedFromDomainObject ()
+  {
+    new ClassDefinition ("Order", "OrderTable", "StorageProvider", this.GetType().AssemblyQualifiedName, true);
+  }
+
+  [Test]
+  public void InitializeWithTypeNameAndBaseClass ()
+  {
+    ClassDefinition expected = new ClassDefinition (
+        "SpecialDistributor", "Company", DatabaseTest.c_testDomainProviderID, 
+        typeof (Distributor), 
+        CreateDistributorClass ());
+
+    ClassDefinition actual = new ClassDefinition (
+        "SpecialDistributor", "Company", DatabaseTest.c_testDomainProviderID, 
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests", true,
+        CreateDistributorClass ());
+
+    _checker.Check (expected, actual);
+  }
+
+  [Test]
+  [ExpectedException (typeof (MappingException))]
+  public void IntializeWithTypeNameAndInvalidEntityName ()
+  {
+    new ClassDefinition (
+        "SpecialDistributor", "WrongEntityName", DatabaseTest.c_testDomainProviderID, 
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests", true,
+        CreateDistributorClass ());
+  }
+
+  [Test]
+  public void IntializeWithUnresolvedTypeName ()
+  {
+    ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingTypeName", false);
+    Assert.IsNull (actual.ClassType);
+    Assert.AreEqual ("UnexistingTypeName", actual.ClassTypeName);
   }
 
   [Test]
@@ -652,6 +708,11 @@ public class ClassDefinitionTest
     }
 
     return false;
+  }
+
+  private ClassDefinition CreateDistributorClass ()
+  {
+    return new ClassDefinition ("Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor));
   }
 }
 }

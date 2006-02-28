@@ -267,6 +267,18 @@ public class MappingTest : SerializationBaseTest
   }
 
   [Test]
+  [Ignore ("Reactivate test after ClassDefinitionCollection can handle unresolved type names.")]  
+  public void ClassDefinitionNotInMappingWithUnresolvedClassType ()
+  {
+    ClassDefinition classDefinition = new ClassDefinition ("Order", "OrderTable", "StorageProver", "UnexistingTypeName", false);
+    
+    ClassDefinition deserializedClassDefinition = (ClassDefinition) SerializeAndDeserialize (classDefinition);
+
+    Assert.IsFalse (object.ReferenceEquals (classDefinition, deserializedClassDefinition));
+    AreEqual (classDefinition, deserializedClassDefinition);
+  }
+
+  [Test]
   public void ClassDefinitionInMapping ()
   {
     // Note: Partner has a base class and several derived classes.
@@ -308,6 +320,7 @@ public class MappingTest : SerializationBaseTest
       Assert.IsNull (actual.BaseClass);
 
     Assert.AreEqual (expected.ClassType, actual.ClassType);
+    Assert.AreEqual (expected.ClassTypeName, actual.ClassTypeName);
     Assert.AreEqual (expected.EntityName, actual.EntityName);
     Assert.AreEqual (expected.StorageProviderID, actual.StorageProviderID);
 

@@ -19,6 +19,7 @@ public class ClassDefinition : ISerializable, IObjectReference
   private string _id;
   private string _entityName;
   private Type _classType;
+  private string _classTypeName;
   private string _storageProviderID;
   private ClassDefinition _baseClass;
   private ClassDefinitionCollection _derivedClasses;
@@ -30,6 +31,28 @@ public class ClassDefinition : ISerializable, IObjectReference
   private bool _isPartOfMappingConfiguration;
   
   // construction and disposing
+
+  public ClassDefinition (string id, string entityName, string storageProviderID, string classTypeName, bool resolveClassTypeName)
+      : this (id, entityName, storageProviderID, classTypeName, resolveClassTypeName, null)
+  {
+  }
+
+
+  public ClassDefinition (
+      string id, 
+      string entityName, 
+      string storageProviderID, 
+      string classTypeName, 
+      bool resolveClassTypeName, 
+      ClassDefinition baseClass)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("id", id);
+    ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
+    ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+    ArgumentUtility.CheckNotNullOrEmpty ("classTypeName", classTypeName);
+
+    Initialize (id, entityName, storageProviderID, null, classTypeName, resolveClassTypeName, baseClass);
+  }
 
   public ClassDefinition (string id, string entityName, string storageProviderID, Type classType)
       : this (id, entityName, storageProviderID, classType, null)
@@ -45,22 +68,47 @@ public class ClassDefinition : ISerializable, IObjectReference
   {
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
     ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
-    ArgumentUtility.CheckNotNull ("classType", classType);
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
-    CheckClassType (id, classType);
-    
-    if (baseClass != null)
-      CheckBaseClass (baseClass, id, entityName, storageProviderID);
+    ArgumentUtility.CheckNotNull ("classType", classType);
+
+    Initialize (id, entityName, storageProviderID, classType, null, false, baseClass);
+  }
+
+  private void Initialize (
+      string id, 
+      string entityName, 
+      string storageProviderID, 
+      Type classType, 
+      string classTypeName, 
+      bool resolveClassTypeName, 
+      ClassDefinition baseClass)
+  {
+    if (resolveClassTypeName)
+      classType = Type.GetType (classTypeName, true);
+
+    if (classType != null)
+    {
+      CheckClassType (id, classType);
+      classTypeName = classType.AssemblyQualifiedName;
+    }
 
     _id = id;
     _entityName = entityName;
     _classType = classType;
+    _classTypeName = classTypeName;
     _storageProviderID = storageProviderID;
-    PerformSetBaseClass (baseClass);
-
+    
     _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (), true);
     _propertyDefinitions = new PropertyDefinitionCollection (this);
     _relationDefinitions = new RelationDefinitionCollection ();
+
+    if (baseClass != null)
+    {
+      // Note: CheckBasePropertyDefinitions does not have to be called, because member _propertyDefinitions is
+      //       initialized to an empty collection during construction.
+      CheckBaseClass (baseClass, id, entityName, storageProviderID);
+      PerformSetBaseClass (baseClass);
+    }  
   }
 
   protected ClassDefinition (SerializationInfo info, StreamingContext context)
@@ -331,6 +379,11 @@ public class ClassDefinition : ISerializable, IObjectReference
     get { return _classType; }
   }
 
+  public string ClassTypeName
+  {
+    get { return _classTypeName; }
+  }
+
   public string StorageProviderID
   {
     get { return _storageProviderID; }
@@ -386,11 +439,17 @@ public class ClassDefinition : ISerializable, IObjectReference
   {
     ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
-    CheckBaseClass (baseClass, _id, _entityName, _storageProviderID);
-
     if (baseClass == this)
       throw CreateMappingException ("Class '{0}' cannot refer to itself as base class.", _id);
 
+    CheckBaseClass (baseClass, _id, _entityName, _storageProviderID);
+    CheckBasePropertyDefinitions (baseClass);
+
+    PerformSetBaseClass (baseClass);
+  }
+
+  private void CheckBasePropertyDefinitions (ClassDefinition baseClass)
+  {
     PropertyDefinitionCollection basePropertyDefinitions = baseClass.GetPropertyDefinitions ();
     foreach (PropertyDefinition propertyDefinition in _propertyDefinitions)
     {
@@ -408,16 +467,12 @@ public class ClassDefinition : ISerializable, IObjectReference
             propertyDefinition.PropertyName, this.ID, propertyDefinition.ColumnName);
       }
     }
-
-    PerformSetBaseClass (baseClass);
   }
 
   private void PerformSetBaseClass (ClassDefinition baseClass)
   {
     _baseClass = baseClass;
-
-    if (baseClass != null)
-      baseClass.AddDerivedClass (this);
+    _baseClass.AddDerivedClass (this);
   }
 
   private void AddDerivedClass (ClassDefinition derivedClass)
