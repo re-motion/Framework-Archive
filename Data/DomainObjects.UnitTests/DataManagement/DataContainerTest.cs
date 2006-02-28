@@ -174,7 +174,7 @@ public class DataContainerTest : ClientTransactionBaseTest
     DataContainer container = DataContainer.CreateNew (id);
 
     PropertyDefinition reportsToDefinition = new PropertyDefinition (
-        "ReportsTo", "ReportsTo", "string", true, new NaInt32 (100));
+        "ReportsTo", "ReportsTo", "string", true, new NaInt32 (100), true);
 
     container.PropertyValues.Add (new PropertyValue (reportsToDefinition, null));
 
