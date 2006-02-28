@@ -27,13 +27,12 @@ public class ConstructionOfRelationDefinitionTest
   [ExpectedException (typeof (MappingException), "Relation 'CustomerToOrder' cannot have two virtual end points.")]           
   public void TwoVirtualRelationEndPointDefinitions ()
   {
-    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", typeof (Customer), "TestDomain");
+    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
 
     VirtualRelationEndPointDefinition endPointDefinition1 = new VirtualRelationEndPointDefinition (
         customerDefinition, "Orders", true, CardinalityType.One, typeof (Order));
     
-    ClassDefinition orderDefinition = new ClassDefinition (
-        "Order", "Order", typeof (Order), "TestDomain");
+    ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
     VirtualRelationEndPointDefinition endPointDefinition2 = new VirtualRelationEndPointDefinition (
         orderDefinition, "Customer", true, CardinalityType.One, typeof (Customer));
@@ -46,22 +45,19 @@ public class ConstructionOfRelationDefinitionTest
   [ExpectedException (typeof (MappingException), "Relation 'CustomerToOrder' cannot have two non-virtual end points.")]           
   public void TwoRelationEndPointDefinitions ()
   {
-    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", typeof (Customer), "TestDomain");
+    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
     customerDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));  
 
     RelationEndPointDefinition endPointDefinition1 = new RelationEndPointDefinition (
         customerDefinition, "Order", false);
 
-    ClassDefinition orderDefinition = new ClassDefinition (
-        "Order", "Order", typeof (Order), "TestDomain");
+    ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
 
     orderDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", "objectID"));
 
-    RelationEndPointDefinition endPointDefinition2 = new RelationEndPointDefinition (
-        orderDefinition, "Customer", false);
+    RelationEndPointDefinition endPointDefinition2 = new RelationEndPointDefinition (orderDefinition, "Customer", false);
  
-    RelationDefinition relationDefinition = new RelationDefinition (
-        "CustomerToOrder", endPointDefinition1, endPointDefinition2);        
+    RelationDefinition relationDefinition = new RelationDefinition ("CustomerToOrder", endPointDefinition1, endPointDefinition2);        
   }
 }
 }
