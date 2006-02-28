@@ -283,7 +283,7 @@ public class ObjectIDTest
   [ExpectedException (typeof (MappingException))]
   public void InitializeWithUnknownClassDefinitionID ()
   {
-    ClassDefinition unknownDefinition = new ClassDefinition ("UnknownClass", "UnknownTable", typeof (Order), "TestDomain");
+    ClassDefinition unknownDefinition = new ClassDefinition ("UnknownClass", "UnknownTable", "TestDomain", typeof (Order));
     Guid value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
 
     ObjectID id = new ObjectID (unknownDefinition, value);
@@ -293,7 +293,7 @@ public class ObjectIDTest
   [ExpectedException (typeof (MappingException))]
   public void InitializeWithUnknownClassDefinitionType ()
   {
-    ClassDefinition unknownDefinition = new ClassDefinition ("Order", "Order", typeof (InvalidDomainObject), "TestDomain");
+    ClassDefinition unknownDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (InvalidDomainObject));
     Guid value = new Guid ("{5682F032-2F0B-494b-A31C-C97F02B89C36}");
 
     ObjectID id = new ObjectID (unknownDefinition, value);
@@ -319,7 +319,7 @@ public class ObjectIDTest
       + " do not refer to the same ClassDefinition in the mapping configuration.\r\nParameter name: classDefinition")]
   public void InitializeWithInvalidClassDefinition ()
   {
-    ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", typeof (Customer), "TestDomain");
+    ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Customer));
     ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
   }
 
@@ -328,7 +328,7 @@ public class ObjectIDTest
       "The provided ClassDefinition 'Order' is not the same reference as the ClassDefinition found in the mapping configuration.\r\nParameter name: classDefinition")]
   public void InitializeWithClassDefinitionNotPartOfMappingConfiguration ()
   {
-    ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
+    ClassDefinition invalidDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
     ObjectID id = new ObjectID (invalidDefinition, Guid.NewGuid ());
   }
 
