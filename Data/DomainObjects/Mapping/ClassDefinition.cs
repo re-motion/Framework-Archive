@@ -31,16 +31,16 @@ public class ClassDefinition : ISerializable, IObjectReference
   
   // construction and disposing
 
-  public ClassDefinition (string id, string entityName, Type classType, string storageProviderID)
-      : this (id, entityName, classType, storageProviderID, null)
+  public ClassDefinition (string id, string entityName, string storageProviderID, Type classType)
+      : this (id, entityName, storageProviderID, classType, null)
   {
   }
 
   public ClassDefinition (
       string id, 
       string entityName, 
-      Type classType, 
       string storageProviderID, 
+      Type classType, 
       ClassDefinition baseClass)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
