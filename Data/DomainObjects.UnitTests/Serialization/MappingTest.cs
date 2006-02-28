@@ -39,7 +39,7 @@ public class MappingTest : SerializationBaseTest
   public void PropertyDefinitionWithClassDefinition ()
   {
     PropertyDefinition propertyDefinition = new PropertyDefinition ("OrderNumber", "OrderNo", "int32", false);
-    ClassDefinition classDefinition = new ClassDefinition ("ClassID", "EntityName", typeof (Order), "TestDomain");
+    ClassDefinition classDefinition = new ClassDefinition ("ClassID", "EntityName", "TestDomain", typeof (Order));
     classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
 
     PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
@@ -78,7 +78,7 @@ public class MappingTest : SerializationBaseTest
   [Test]
   public void RelationEndPointDefinitionWithoutRelationDefinition ()
   {
-    ClassDefinition classDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", typeof (OrderTicket), "TestDomain"); 
+    ClassDefinition classDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket)); 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID", false));
     RelationEndPointDefinition endPointdefinition = new RelationEndPointDefinition (classDefinition, "Order", true);
 
@@ -91,8 +91,8 @@ public class MappingTest : SerializationBaseTest
   [Test]
   public void RelationEndPointDefinitionWithRelationDefinition ()
   {
-    ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
-    ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", typeof (OrderTicket), "TestDomain"); 
+    ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+    ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket)); 
     
     orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID", false));
 
@@ -122,7 +122,7 @@ public class MappingTest : SerializationBaseTest
   [Test]
   public void VirtualRelationEndPointDefinitionWithoutRelationDefinition ()
   {
-    ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain"); 
+    ClassDefinition classDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order)); 
 
     VirtualRelationEndPointDefinition endPointdefinition = new VirtualRelationEndPointDefinition (
         classDefinition, "OrderTicket", true, CardinalityType.One, typeof (Order));
@@ -136,8 +136,8 @@ public class MappingTest : SerializationBaseTest
   [Test]
   public void VirtualRelationEndPointDefinitionWithRelationDefinition ()
   {
-    ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
-    ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", typeof (OrderTicket), "TestDomain"); 
+    ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+    ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket)); 
     
     orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID", false));
 
@@ -167,7 +167,7 @@ public class MappingTest : SerializationBaseTest
   [Test]
   public void NullRelationEndPointDefinitionWithoutRelationDefinition ()
   {
-    ClassDefinition classDefinition = new ClassDefinition ("Client", "Client", typeof (Client), "TestDomain"); 
+    ClassDefinition classDefinition = new ClassDefinition ("Client", "Client", "TestDomain", typeof (Client)); 
 
     NullRelationEndPointDefinition endPointdefinition = new NullRelationEndPointDefinition (classDefinition);
 
@@ -180,8 +180,8 @@ public class MappingTest : SerializationBaseTest
   [Test]
   public void NullRelationEndPointDefinitionWithRelationDefinition ()
   {
-    ClassDefinition clientDefinition = new ClassDefinition ("Client", "Client", typeof (Client), "TestDomain");
-    ClassDefinition locationDefinition = new ClassDefinition ("Location", "Location", typeof (Location), "TestDomain"); 
+    ClassDefinition clientDefinition = new ClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
+    ClassDefinition locationDefinition = new ClassDefinition ("Location", "Location", "TestDomain", typeof (Location)); 
     
     locationDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", "objectID", false));
 
