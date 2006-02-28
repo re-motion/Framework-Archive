@@ -19,6 +19,8 @@ public class PropertyDefinition : ISerializable, IObjectReference
   private string _propertyName;
   private string _columnName;
   private TypeInfo _typeInfo;
+  private string _mappingType;
+  private bool _isNullable;
   private NaInt32 _maxLength;
   
   // Note: _mappingClassID is used only during the deserialization process. 
@@ -40,7 +42,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
       string columnName, 
       string mappingType, 
       bool isNullable)
-      : this (propertyName, columnName, mappingType, isNullable, NaInt32.Null)
+      : this (propertyName, columnName, mappingType, isNullable, NaInt32.Null, true)
   {
   }
 
@@ -49,7 +51,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
       string columnName, 
       string mappingType, 
       NaInt32 maxLength)
-      : this (propertyName, columnName, mappingType, false, maxLength)
+      : this (propertyName, columnName, mappingType, false, maxLength, true)
   {
   }
 
@@ -58,29 +60,36 @@ public class PropertyDefinition : ISerializable, IObjectReference
       string columnName, 
       string mappingType, 
       bool isNullable,
-      NaInt32 maxLength)
+      NaInt32 maxLength,
+      bool resolveMappingType)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
     ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
 
-    TypeInfo typeInfo = GetTypeInfo (mappingType, isNullable);
-
-    if (typeInfo.Type == typeof (string) && maxLength == NaInt32.Null)
+    if (resolveMappingType)
     {
-      throw CreateMappingException (
-          "Property '{0}' of type 'System.String' must have MaxLength defined.", propertyName);
-    }
+      TypeInfo typeInfo = GetTypeInfo (mappingType, isNullable);
 
-    if (typeInfo.Type != typeof (string) && typeInfo.Type != typeof (byte[]) && !maxLength.IsNull)
-    {
-      throw CreateMappingException (
-          "MaxLength parameter cannot be supplied with value of type '{0}'.", typeInfo.Type);
+      if (typeInfo.Type == typeof (string) && maxLength == NaInt32.Null)
+      {
+        throw CreateMappingException (
+            "Property '{0}' of type 'System.String' must have MaxLength defined.", propertyName);
+      }
+
+      if (typeInfo.Type != typeof (string) && typeInfo.Type != typeof (byte[]) && !maxLength.IsNull)
+      {
+        throw CreateMappingException (
+            "MaxLength parameter cannot be supplied with value of type '{0}'.", typeInfo.Type);
+      }
+
+      _typeInfo = typeInfo;
     }
 
     _propertyName = propertyName;
     _columnName = columnName;
-    _typeInfo = typeInfo;
+    _mappingType = mappingType;
+    _isNullable = isNullable;
     _maxLength = maxLength;
   }
 
@@ -102,7 +111,11 @@ public class PropertyDefinition : ISerializable, IObjectReference
       _columnName = info.GetString ("ColumnName");
 
       // GetTypeInfo must be used, to ensure enums are registered even object is deserialized into another process.
-      _typeInfo = GetTypeInfo (info.GetString ("MappingType"), info.GetBoolean ("IsNullable"));
+      _mappingType = info.GetString ("MappingType");
+      _isNullable = info.GetBoolean ("IsNullable");
+
+      if (info.GetBoolean ("HasTypeInfo"))
+        _typeInfo = GetTypeInfo (_mappingType, _isNullable);
       
       _maxLength = (NaInt32) info.GetValue ("MaxLength", typeof (NaInt32));
     }
@@ -151,17 +164,17 @@ public class PropertyDefinition : ISerializable, IObjectReference
 
   public Type PropertyType
   {
-    get { return _typeInfo.Type; }
+    get { return _typeInfo != null ? _typeInfo.Type : null; }
   }
 
   public string MappingType 
   {
-    get { return _typeInfo.MappingType; }
+    get { return _mappingType; }
   }
 
   public bool IsNullable
   {
-    get { return _typeInfo.IsNullable; }
+    get { return _isNullable; }
   }
 
   public NaInt32 MaxLength
@@ -171,7 +184,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
 
   public object DefaultValue 
   {
-    get { return _typeInfo.DefaultValue; }
+    get { return _typeInfo != null ? _typeInfo.DefaultValue : null; }
   }
 
   public void SetClassDefinition (ClassDefinition classDefinition)
@@ -214,8 +227,9 @@ public class PropertyDefinition : ISerializable, IObjectReference
     {
       info.AddValue ("ClassDefinition", _classDefinition);
       info.AddValue ("ColumnName", _columnName);
-      info.AddValue ("MappingType", _typeInfo.MappingType);
-      info.AddValue ("IsNullable", _typeInfo.IsNullable);
+      info.AddValue ("HasTypeInfo", _typeInfo != null);
+      info.AddValue ("MappingType", _mappingType);
+      info.AddValue ("IsNullable", _isNullable);
       info.AddValue ("MaxLength", _maxLength);
     }
   }
