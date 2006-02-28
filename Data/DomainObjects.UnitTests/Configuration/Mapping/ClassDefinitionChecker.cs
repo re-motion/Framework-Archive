@@ -21,38 +21,7 @@ public class ClassDefinitionChecker
 
   // methods and properties
 
-  public void Check (
-      ClassDefinitionCollection expectedDefinitions, 
-      ClassDefinitionCollection actualDefinitions)
-  {
-    Check (expectedDefinitions, actualDefinitions, true);
-  }
-
-  public void Check (
-      ClassDefinitionCollection expectedDefinitions, 
-      ClassDefinitionCollection actualDefinitions,
-      bool checkRelations)
-  {
-    Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count, 
-        string.Format ("Number of class definitions does not match. Expected: {0}, actual: {1}", 
-        expectedDefinitions.Count, actualDefinitions.Count));
-
-    foreach (ClassDefinition expectedDefinition in expectedDefinitions)
-    {
-      ClassDefinition actualDefinition = actualDefinitions[expectedDefinition.ClassType];
-      CheckClassDefinition (expectedDefinition, actualDefinition);
-      
-      if (checkRelations)
-      {
-        RelationDefinitionChecker relationDefinitionChecker = new RelationDefinitionChecker ();
-        relationDefinitionChecker.Check (expectedDefinition.MyRelationDefinitions, actualDefinition.MyRelationDefinitions);
-      }
-    }
-  }
-
-  private void CheckClassDefinition (
-      ClassDefinition expectedDefinition, 
-      ClassDefinition actualDefinition)
+  public void Check (ClassDefinition expectedDefinition, ClassDefinition actualDefinition)
   {
     Assert.AreEqual (expectedDefinition.ID, actualDefinition.ID, 
         string.Format ("IDs of class definitions do not match. Expected: {0}, actual: {1}", 
@@ -61,6 +30,10 @@ public class ClassDefinitionChecker
     Assert.AreEqual (expectedDefinition.ClassType, actualDefinition.ClassType, 
         string.Format ("ClassType of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
         expectedDefinition.ID, expectedDefinition.ClassType, actualDefinition.ClassType));
+
+    Assert.AreEqual (expectedDefinition.ClassTypeName, actualDefinition.ClassTypeName, 
+        string.Format ("ClassTypeName of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
+        expectedDefinition.ID, expectedDefinition.ClassTypeName, actualDefinition.ClassTypeName));
 
     Assert.AreEqual (expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID, 
         string.Format ("StorageProviderID of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
@@ -85,6 +58,30 @@ public class ClassDefinitionChecker
 
     CheckDerivedClasses (expectedDefinition.DerivedClasses, actualDefinition.DerivedClasses, expectedDefinition);
     CheckPropertyDefinitions (expectedDefinition.MyPropertyDefinitions, actualDefinition.MyPropertyDefinitions, expectedDefinition);
+  }
+
+  public void Check (ClassDefinitionCollection expectedDefinitions, ClassDefinitionCollection actualDefinitions)
+  {
+    Check (expectedDefinitions, actualDefinitions, true);
+  }
+
+  public void Check (ClassDefinitionCollection expectedDefinitions, ClassDefinitionCollection actualDefinitions, bool checkRelations)
+  {
+    Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count, 
+        string.Format ("Number of class definitions does not match. Expected: {0}, actual: {1}", 
+        expectedDefinitions.Count, actualDefinitions.Count));
+
+    foreach (ClassDefinition expectedDefinition in expectedDefinitions)
+    {
+      ClassDefinition actualDefinition = actualDefinitions[expectedDefinition.ClassType];
+      Check (expectedDefinition, actualDefinition);
+      
+      if (checkRelations)
+      {
+        RelationDefinitionChecker relationDefinitionChecker = new RelationDefinitionChecker ();
+        relationDefinitionChecker.Check (expectedDefinition.MyRelationDefinitions, actualDefinition.MyRelationDefinitions);
+      }
+    }
   }
 
   private void CheckDerivedClasses (
