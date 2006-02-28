@@ -86,10 +86,9 @@ public class ClassDefinitionLoader
     string entityName = classNode.SelectSingleNode (FormatXPath ("{0}:entity/@name"), _namespaceManager).InnerText;
     Type classType = LoaderUtility.GetType (classNode, FormatXPath ("{0}:type"), _namespaceManager);
 
-    string storageProviderID = classNode.SelectSingleNode (FormatXPath (
-        "{0}:storageProviderID"), _namespaceManager).InnerText;
+    string storageProviderID = classNode.SelectSingleNode (FormatXPath ("{0}:storageProviderID"), _namespaceManager).InnerText;
 
-    ClassDefinition classDefinition = new ClassDefinition (id, entityName, classType, storageProviderID);
+    ClassDefinition classDefinition = new ClassDefinition (id, entityName, storageProviderID, classType);
     FillPropertyDefinitions (classDefinition, classNode);
 
     return classDefinition;
