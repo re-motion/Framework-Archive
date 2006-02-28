@@ -32,7 +32,7 @@ public class ConstructionOfVirtualRelationEndPointDefinitionTest
           + " 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
   public void VirtualEndPointOfDomainObjectType ()
   {
-    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
     VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
         companyDefinition, "Dummy", false, CardinalityType.One, typeof (DomainObject));
@@ -41,7 +41,7 @@ public class ConstructionOfVirtualRelationEndPointDefinitionTest
   [Test]
   public void VirtualEndPointOfDomainObjectCollectionType ()
   {
-    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
     VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
         companyDefinition, "Dummy", false, CardinalityType.Many, typeof (DomainObjectCollection));
@@ -50,7 +50,7 @@ public class ConstructionOfVirtualRelationEndPointDefinitionTest
   [Test]
   public void VirtualEndPointOfOrderCollectionType ()
   {
-    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
     VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
         companyDefinition, "Dummy", false, CardinalityType.Many, typeof (OrderCollection));
@@ -62,7 +62,7 @@ public class ConstructionOfVirtualRelationEndPointDefinitionTest
       + " must be derived from 'Rubicon.Data.DomainObjects.DomainObject'.")]
   public void VirtualEndPointWithCardinalityOneAndWrongPropertyType ()
   {
-    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
     VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
         companyDefinition, "Dummy", false, CardinalityType.One, typeof (OrderCollection));
@@ -74,7 +74,7 @@ public class ConstructionOfVirtualRelationEndPointDefinitionTest
       + " must be or be derived from 'Rubicon.Data.DomainObjects.DomainObjectCollection'.")]
   public void VirtualEndPointWithCardinalityManyAndWrongPropertyType ()
   {
-    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", typeof (Company), "TestDomain");
+    ClassDefinition companyDefinition = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
 
     VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
         companyDefinition, "Dummy", false, CardinalityType.Many, typeof (Company));
@@ -83,7 +83,7 @@ public class ConstructionOfVirtualRelationEndPointDefinitionTest
   [Test]
   public void InitializeWithSortExpression ()
   {
-    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", typeof (Customer), "TestDomain");
+    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
 
     VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
         customerDefinition, "Orders", false, CardinalityType.Many, typeof (OrderCollection), "OrderNumber desc");
@@ -95,7 +95,7 @@ public class ConstructionOfVirtualRelationEndPointDefinitionTest
   [ExpectedException (typeof (MappingException), "Property 'Orders' of class 'Customer' must not specify a SortExpression, because cardinality is equal to 'one'.")]
   public void InitializeWithSortExpressionAndCardinalityOfOne ()
   {
-    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", typeof (Customer), "TestDomain");
+    ClassDefinition customerDefinition = new ClassDefinition ("Customer", "Customer", "TestDomain", typeof (Customer));
 
     VirtualRelationEndPointDefinition endPointDefinition = new VirtualRelationEndPointDefinition (
         customerDefinition, "Orders", false, CardinalityType.One, typeof (Order), "OrderNumber desc");
