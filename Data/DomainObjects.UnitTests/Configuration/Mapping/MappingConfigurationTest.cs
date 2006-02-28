@@ -92,8 +92,8 @@ public class MappingConfigurationTest
   [Test]
   public void ContainsRelationEndPointDefinitionNotInMapping ()
   {
-    ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", typeof (Order), "TestDomain");
-    ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", typeof (OrderTicket), "TestDomain"); 
+    ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
+    ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket)); 
     orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID", false));
 
     VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
