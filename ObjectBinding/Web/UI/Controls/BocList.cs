@@ -1973,7 +1973,7 @@ public class BocList:
       RenderTableClosingTag (writer);
     }
 
-    if (_hasClientScript && IsSelectionEnabled && IsInternetExplorer55OrHigher())
+    if (_hasClientScript && IsSelectionEnabled)
     {
       //  Render the init script for the client side selection handling
       int count = 0;
@@ -2236,7 +2236,7 @@ public class BocList:
     {
       writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassTitleCell);
       writer.RenderBeginTag (HtmlTextWriterTag.Th);
-      if (_selection == RowSelection.Multiple && IsInternetExplorer55OrHigher())
+      if (_selection == RowSelection.Multiple)
       {
         string selectorControlName = ID + c_titleRowSelectorControlIDSuffix;
         bool isChecked = (_selectorControlCheckedState[c_titleRowIndex] != null);
