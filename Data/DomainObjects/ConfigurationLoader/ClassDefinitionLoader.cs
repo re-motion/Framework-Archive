@@ -125,7 +125,7 @@ public class ClassDefinitionLoader
     if (maxLengthNode != null)
       maxLength = NaInt32.Parse (maxLengthNode.InnerText);
 
-    return new PropertyDefinition (propertyName, columnName, mappingType, isNullable, maxLength);
+    return new PropertyDefinition (propertyName, columnName, mappingType, isNullable, maxLength, true);
   }
 
   private PropertyDefinition GetRelationPropertyDefinition (ClassDefinition classDefinition, XmlNode propertyNode)

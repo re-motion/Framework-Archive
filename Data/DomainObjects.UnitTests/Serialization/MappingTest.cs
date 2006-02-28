@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 {
@@ -27,7 +28,7 @@ public class MappingTest : SerializationBaseTest
   [Test]
   public void PropertyDefinitionWithoutClassDefinition ()
   {
-    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "string", true, 100);
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "string", true, 100, true);
 
     PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
  
@@ -58,6 +59,24 @@ public class MappingTest : SerializationBaseTest
 
     PropertyDefinition deserializedOrderNumberDefinition = (PropertyDefinition) SerializeAndDeserialize (orderNumberDefinition);
     Assert.AreSame (orderNumberDefinition, deserializedOrderNumberDefinition);
+  }
+
+  [Test]
+  public void PropertyDefinitionWithUnresolvedNativeMappingType ()
+  {
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, NaInt32.Null, false);
+
+    PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
+    AreEqual (propertyDefinition, deserializedPropertyDefinition);
+  }
+
+  [Test]
+  public void PropertyDefinitionWithUnresolvedUnknownMappingType ()
+  {
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", true, NaInt32.Null, false);
+
+    PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
+    AreEqual (propertyDefinition, deserializedPropertyDefinition);
   }
 
   [Test]
@@ -267,7 +286,6 @@ public class MappingTest : SerializationBaseTest
   }
 
   [Test]
-  [Ignore ("Reactivate test after ClassDefinitionCollection can handle unresolved type names.")]  
   public void ClassDefinitionNotInMappingWithUnresolvedClassType ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("Order", "OrderTable", "StorageProver", "UnexistingTypeName", false);
