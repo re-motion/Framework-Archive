@@ -80,7 +80,7 @@ function BocList_InitializeList (bocList, selectorControlPrefix, count, selectio
       var selectorControl = document.getElementById (selectorControlID);
       if (selectorControl == null)
         continue;
-      var row =  selectorControl.parentElement.parentElement;
+      var row =  selectorControl.parentNode.parentNode;
       if (selectorControl.checked)      
       {
         var rowBlock = new BocList_RowBlock (row, selectorControl);
@@ -231,9 +231,9 @@ function BocList_UnselectRow (bocList, rowBlock)
 function BocList_OnSelectAllSelectorControlClick (bocList, selectAllSelectorControl, selectorControlPrefix, count)
 {
   var selectedRows = _bocList_selectedRows[bocList.id];
+
   if (selectedRows.Selection != _bocList_rowSelectionMultiple)
     return;
-
   //  BocList_SelectRow will increment the length, therefor initialize it to zero.
   if (selectAllSelectorControl.checked)      
     selectedRows.Length = 0;
@@ -244,7 +244,7 @@ function BocList_OnSelectAllSelectorControlClick (bocList, selectAllSelectorCont
     var selectorControl = document.getElementById (selectorControlID);
     if (selectorControl == null)
       continue;
-    var row =  selectorControl.parentElement.parentElement;
+    var row =  selectorControl.parentNode.parentNode;
     var rowBlock = new BocList_RowBlock (row, selectorControl);
     if (selectAllSelectorControl.checked)      
       BocList_SelectRow (bocList, rowBlock)
