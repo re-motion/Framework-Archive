@@ -715,7 +715,7 @@ function SmartPage_Context (
     }
     else
     {
-      return IsJavaScriptAnchor (element.parentElement);
+      return IsJavaScriptAnchor (element.parentNode);
     }
   };
 
