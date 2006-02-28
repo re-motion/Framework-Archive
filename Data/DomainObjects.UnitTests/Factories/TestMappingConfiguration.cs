@@ -115,7 +115,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateCompanyDefinition ()
   {
     ClassDefinition company = new ClassDefinition (
-        "Company", "Company", typeof (Company), DatabaseTest.c_testDomainProviderID);
+        "Company", "Company", DatabaseTest.c_testDomainProviderID, typeof (Company));
 
     company.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
     company.MyPropertyDefinitions.Add (new PropertyDefinition (
@@ -127,7 +127,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateCustomerDefinition (ClassDefinition baseClass)
   {
     ClassDefinition customer = new ClassDefinition (
-        "Customer", "Company", typeof (Customer), DatabaseTest.c_testDomainProviderID, baseClass);
+        "Customer", "Company", DatabaseTest.c_testDomainProviderID, typeof (Customer), baseClass);
     
     customer.MyPropertyDefinitions.Add (new PropertyDefinition ("CustomerSince", "CustomerSince", "dateTime", true));
 
@@ -143,7 +143,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreatePartnerDefinition (ClassDefinition baseClass)
   {
     ClassDefinition partner = new ClassDefinition (
-        "Partner", "Company", typeof (Partner), DatabaseTest.c_testDomainProviderID, baseClass);
+        "Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner), baseClass);
 
     partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", "objectID"));
     
@@ -153,7 +153,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateSupplierDefinition (ClassDefinition baseClass)
   {
     ClassDefinition supplier = new ClassDefinition (
-        "Supplier", "Company", typeof (Supplier), DatabaseTest.c_testDomainProviderID, baseClass);
+        "Supplier", "Company", DatabaseTest.c_testDomainProviderID, typeof (Supplier), baseClass);
 
     supplier.MyPropertyDefinitions.Add (new PropertyDefinition ("SupplierQuality", "SupplierQuality", "int32"));
     
@@ -163,7 +163,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateDistributorDefinition (ClassDefinition baseClass)
   {
     ClassDefinition distributor = new ClassDefinition (
-        "Distributor", "Company", typeof (Distributor), DatabaseTest.c_testDomainProviderID, baseClass);
+        "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), baseClass);
 
     distributor.MyPropertyDefinitions.Add (new PropertyDefinition ("NumberOfShops", "NumberOfShops", "int32"));
     
@@ -173,7 +173,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateOrderDefinition ()
   {
     ClassDefinition order = new ClassDefinition (
-        "Order", "Order", typeof (Order), DatabaseTest.c_testDomainProviderID);
+        "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
     
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", "int32"));
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("DeliveryDate", "DeliveryDate", "dateTime"));
@@ -186,7 +186,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateOfficialDefinition ()
   {
     ClassDefinition official = new ClassDefinition (
-        "Official", "Official", typeof (Official), DatabaseTest.c_unitTestStorageProviderStubID);
+        "Official", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (Official));
     
     official.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
@@ -196,13 +196,13 @@ public class TestMappingConfiguration
   private ClassDefinition CreateSpecialOfficialDefinition (ClassDefinition officialDefinition)
   {
     return new ClassDefinition (
-        "SpecialOfficial", "Official", typeof (SpecialOfficial), DatabaseTest.c_unitTestStorageProviderStubID, officialDefinition);
+        "SpecialOfficial", "Official", DatabaseTest.c_unitTestStorageProviderStubID, typeof (SpecialOfficial), officialDefinition);
   }
 
   private ClassDefinition CreateOrderTicketDefinition ()
   {
     ClassDefinition orderTicket = new ClassDefinition (
-        "OrderTicket", "OrderTicket", typeof (OrderTicket), DatabaseTest.c_testDomainProviderID);
+        "OrderTicket", "OrderTicket", DatabaseTest.c_testDomainProviderID, typeof (OrderTicket));
     
     orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", "string", 255));
     orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));
@@ -213,7 +213,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateOrderItemDefinition ()
   {
     ClassDefinition orderItem = new ClassDefinition (
-        "OrderItem", "OrderItem", typeof (OrderItem), DatabaseTest.c_testDomainProviderID);
+        "OrderItem", "OrderItem", DatabaseTest.c_testDomainProviderID, typeof (OrderItem));
     
     orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));
     orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Position", "Position", "int32"));
@@ -225,7 +225,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateCeoDefinition ()
   {
     ClassDefinition order = new ClassDefinition (
-        "Ceo", "Ceo", typeof (Ceo), DatabaseTest.c_testDomainProviderID);
+        "Ceo", "Ceo", DatabaseTest.c_testDomainProviderID, typeof (Ceo));
     
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", "objectID"));
@@ -236,7 +236,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreatePersonDefinition ()
   {
     ClassDefinition order = new ClassDefinition (
-        "Person", "Person", typeof (Person), DatabaseTest.c_testDomainProviderID);
+        "Person", "Person", DatabaseTest.c_testDomainProviderID, typeof (Person));
     
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
@@ -246,7 +246,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateClientDefinition ()
   {
     ClassDefinition clientClass = new ClassDefinition (
-        "Client", "Client", typeof (Client), DatabaseTest.c_testDomainProviderID);
+        "Client", "Client", DatabaseTest.c_testDomainProviderID, typeof (Client));
 
     clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", "objectID"));
 
@@ -256,7 +256,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateLocationDefinition ()
   {
     ClassDefinition location = new ClassDefinition (
-        "Location", "Location", typeof (Location), DatabaseTest.c_testDomainProviderID);
+        "Location", "Location", DatabaseTest.c_testDomainProviderID, typeof (Location));
     
     location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", "objectID"));
 
@@ -266,7 +266,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateFileSystemItemDefinition ()
   {
     ClassDefinition fileSystemItem = new ClassDefinition (
-        "FileSystemItem", "FileSystemItem", typeof (FileSystemItem), DatabaseTest.c_testDomainProviderID);
+        "FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem));
     
     fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", "objectID"));
 
@@ -276,7 +276,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateFolderDefinition (ClassDefinition baseClass)
   {
     ClassDefinition folder = new ClassDefinition (
-        "Folder", "FileSystemItem", typeof (Folder), DatabaseTest.c_testDomainProviderID, baseClass);
+        "Folder", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (Folder), baseClass);
     
     return folder;
   }
@@ -284,7 +284,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateFileDefinition (ClassDefinition baseClass)
   {
     ClassDefinition file = new ClassDefinition (
-        "File", "FileSystemItem", typeof (File), DatabaseTest.c_testDomainProviderID, baseClass);
+        "File", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (File), baseClass);
     
     return file;
   }
@@ -292,7 +292,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateClassWithAllDataTypesDefinition ()
   {
     ClassDefinition classWithAllDataTypes = new ClassDefinition (
-        "ClassWithAllDataTypes", "TableWithAllDataTypes", typeof (ClassWithAllDataTypes), DatabaseTest.c_testDomainProviderID);
+        "ClassWithAllDataTypes", "TableWithAllDataTypes", DatabaseTest.c_testDomainProviderID, typeof (ClassWithAllDataTypes));
     
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("BooleanProperty", "Boolean", "boolean"));
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("ByteProperty", "Byte", "byte"));
@@ -346,7 +346,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateClassWithGuidKeyDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithGuidKey", "TableWithGuidKey",
-        typeof (ClassWithGuidKey), DatabaseTest.c_testDomainProviderID);
+      DatabaseTest.c_testDomainProviderID, typeof (ClassWithGuidKey));
 
     return classDefinition;
   }
@@ -354,7 +354,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateClassWithInvalidKeyTypeDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithKeyOfInvalidType", "TableWithKeyOfInvalidType",
-        typeof (ClassWithKeyOfInvalidType), DatabaseTest.c_testDomainProviderID);
+      DatabaseTest.c_testDomainProviderID, typeof (ClassWithKeyOfInvalidType));
 
     return classDefinition;
   }
@@ -362,15 +362,15 @@ public class TestMappingConfiguration
   private ClassDefinition CreateClassWithoutIDPropertyDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutIDProperty", "TableWithoutIDColumn",
-        typeof (ClassWithoutIDProperty), DatabaseTest.c_testDomainProviderID);
+      DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutIDProperty));
 
     return classDefinition;
   }
 
   private ClassDefinition CreateClassWithoutClassIDPropertyDefinition ()
   {
-    ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutClassIDProperty", "TableWithoutClassIDColumn",
-        typeof (ClassWithoutClassIDProperty), DatabaseTest.c_testDomainProviderID);
+    ClassDefinition classDefinition = new ClassDefinition (
+        "ClassWithoutClassIDProperty", "TableWithoutClassIDColumn", DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutClassIDProperty));
 
     return classDefinition;
   }
@@ -378,7 +378,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateClassWithoutTimestampPropertyDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutTimestampProperty", "TableWithoutTimestampColumn",
-        typeof (ClassWithoutTimestampProperty), DatabaseTest.c_testDomainProviderID);
+        DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutTimestampProperty));
 
     return classDefinition;
   }
@@ -386,7 +386,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateClassWithValidRelationsDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassWithValidRelations", "TableWithValidRelations",
-        typeof (ClassWithValidRelations), DatabaseTest.c_testDomainProviderID);
+        DatabaseTest.c_testDomainProviderID, typeof (ClassWithValidRelations));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
         "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", "objectID"));
@@ -399,8 +399,8 @@ public class TestMappingConfiguration
 
   private ClassDefinition CreateClassWithInvalidRelationDefinition ()
   {
-    ClassDefinition classDefinition = new ClassDefinition ("ClassWithInvalidRelation", "TableWithInvalidRelation",
-        typeof (ClassWithInvalidRelation), DatabaseTest.c_testDomainProviderID);
+    ClassDefinition classDefinition = new ClassDefinition (
+        "ClassWithInvalidRelation", "TableWithInvalidRelation", DatabaseTest.c_testDomainProviderID, typeof (ClassWithInvalidRelation));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
         "ClassWithGuidKey", "TableWithGuidKeyID", "objectID"));
@@ -413,8 +413,8 @@ public class TestMappingConfiguration
     ClassDefinition classDefinition = new ClassDefinition (
         "ClassWithoutRelatedClassIDColumn", 
         "TableWithoutRelatedClassIDColumn",
-        typeof (ClassWithoutRelatedClassIDColumn), 
-        DatabaseTest.c_testDomainProviderID);
+        DatabaseTest.c_testDomainProviderID,
+        typeof (ClassWithoutRelatedClassIDColumn));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
         "Distributor", "DistributorID", "objectID"));
@@ -427,8 +427,8 @@ public class TestMappingConfiguration
     ClassDefinition classDefinition = new ClassDefinition (
         "ClassWithoutRelatedClassIDColumnAndDerivation", 
         "TableWithoutRelatedClassIDColumnAndDerivation",
-        typeof (ClassWithoutRelatedClassIDColumnAndDerivation), 
-        DatabaseTest.c_testDomainProviderID);
+        DatabaseTest.c_testDomainProviderID,
+        typeof (ClassWithoutRelatedClassIDColumnAndDerivation));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
         "Company", "CompanyID", "objectID"));
@@ -439,7 +439,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateIndustrialSectorDefinition ()
   {
     ClassDefinition industrialSector = new ClassDefinition (
-      "IndustrialSector", "IndustrialSector", typeof (IndustrialSector), DatabaseTest.c_testDomainProviderID);
+      "IndustrialSector", "IndustrialSector", DatabaseTest.c_testDomainProviderID, typeof (IndustrialSector));
     
     industrialSector.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
 
@@ -449,7 +449,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateEmployeeDefinition ()
   {
     ClassDefinition employee = new ClassDefinition (
-        "Employee", "Employee", typeof (Employee), DatabaseTest.c_testDomainProviderID);
+        "Employee", "Employee", DatabaseTest.c_testDomainProviderID, typeof (Employee));
     
     employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
     employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", "objectID"));
@@ -460,7 +460,7 @@ public class TestMappingConfiguration
   private ClassDefinition CreateComputerDefinition ()
   {
     ClassDefinition computer = new ClassDefinition (
-        "Computer", "Computer", typeof (Computer), DatabaseTest.c_testDomainProviderID);
+        "Computer", "Computer", DatabaseTest.c_testDomainProviderID, typeof (Computer));
     
     computer.MyPropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
     computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", "objectID"));
@@ -472,7 +472,7 @@ public class TestMappingConfiguration
   {
     ClassDefinition classDefinition = new ClassDefinition (
         "ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance", 
-        typeof (ClassWithRelatedClassIDColumnAndNoInheritance), DatabaseTest.c_testDomainProviderID);
+        DatabaseTest.c_testDomainProviderID, typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", "objectID"));
 
