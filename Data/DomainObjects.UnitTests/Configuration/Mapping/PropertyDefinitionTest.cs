@@ -24,6 +24,48 @@ public class PropertyDefinitionTest
   // methods and properties
 
   [Test]
+  public void InitializeWithMappingType ()
+  {
+    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, NaInt32.Null, true);
+    Assert.IsNull (actual.ClassDefinition);
+    Assert.AreEqual ("ColumnName", actual.ColumnName);
+    Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
+    Assert.IsTrue (actual.IsNullable);
+    Assert.AreEqual ("int32", actual.MappingType);
+    Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+    Assert.AreEqual ("PropertyName", actual.PropertyName);
+    Assert.AreEqual (typeof (NaInt32), actual.PropertyType);
+  }
+
+  [Test]
+  public void InitializeWithUnresolvedMappingType ()
+  {
+    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, NaInt32.Null, false);
+    Assert.IsNull (actual.ClassDefinition);
+    Assert.AreEqual ("ColumnName", actual.ColumnName);
+    Assert.IsNull (actual.DefaultValue);
+    Assert.IsTrue (actual.IsNullable);
+    Assert.AreEqual ("int32", actual.MappingType);
+    Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+    Assert.AreEqual ("PropertyName", actual.PropertyName);
+    Assert.IsNull (actual.PropertyType);
+  }
+
+  [Test]
+  public void InitializeWithUnresolvedUnknownMappingType ()
+  {
+    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", true, NaInt32.Null, false);
+    Assert.IsNull (actual.ClassDefinition);
+    Assert.AreEqual ("ColumnName", actual.ColumnName);
+    Assert.IsNull (actual.DefaultValue);
+    Assert.IsTrue (actual.IsNullable);
+    Assert.AreEqual ("UnknownMappingType", actual.MappingType);
+    Assert.AreEqual (NaInt32.Null, actual.MaxLength);
+    Assert.AreEqual ("PropertyName", actual.PropertyName);
+    Assert.IsNull (actual.PropertyType);
+  }
+
+  [Test]
   [ExpectedException (typeof (MappingException), 
       "Property 'PropertyName' of type 'System.String' must have MaxLength defined.")]     
   public void StringPropertyWithoutMaxLength ()
