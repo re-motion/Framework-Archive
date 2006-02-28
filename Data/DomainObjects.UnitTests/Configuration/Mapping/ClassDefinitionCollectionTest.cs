@@ -35,14 +35,68 @@ public class ClassDefinitionCollectionTest
   }
 
   [Test]
-  public void Add ()
+  public void Initialize ()
   {
+    Assert.IsTrue (_collection.AreResolvedTypeNamesRequired);
+  }
+
+  [Test]
+  public void AddWithResolvedTypeName ()
+  {
+    Assert.AreEqual (0, _collection.Count);
+
     _collection.Add (_classDefinition);
+    
     Assert.AreEqual (1, _collection.Count);
   }
 
   [Test]
-  public void ClassDefinitionIndexer ()
+  [ExpectedException (typeof (InvalidOperationException), 
+      "Collection allows only ClassDefinitions with resolved types and therefore ClassDefinition 'Order' cannot be added.")]
+  public void AddWithUnresolvedTypeName ()
+  {
+    ClassDefinition classDefinitionWithUnresolvedTypeName = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedTypeName", false);
+    _collection.Add (classDefinitionWithUnresolvedTypeName);
+  }
+
+  [Test]
+  public void AddTwiceWithSameType ()
+  {
+    _collection.Add (_classDefinition);
+
+    try
+    {
+      _collection.Add (new ClassDefinition ("OtherID", "OtherTable", DatabaseTest.c_testDomainProviderID, typeof (Order)));
+      Assert.Fail ("Expected an ArgumentException.");
+    }
+    catch (ArgumentException e)
+    {
+      Assert.AreEqual (
+          "A ClassDefinition with Type 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Order' is already part of this collection.\r\nParameter name: value", 
+          e.Message);
+
+      Assert.IsFalse (_collection.Contains ("OtherID"));
+    }
+  }
+
+  [Test]
+  public void AddTwiceWithSameClassID ()
+  {
+    _collection.Add (_classDefinition);
+    try
+    {
+      _collection.Add (new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Customer)));
+      Assert.Fail ("Expected an ArgumentException.");
+    }
+    catch (ArgumentException)
+    {
+      // Note: Do not check exception message here, because it's raised by the .NET Framework (Hashtable.Add).
+      Assert.IsFalse (_collection.Contains (typeof (Customer)));
+    }
+  }
+
+  [Test]
+  public void TypeIndexer ()
   {
     _collection.Add (_classDefinition);
     Assert.AreSame (_classDefinition, _collection[typeof (Order)]);  
@@ -132,21 +186,6 @@ public class ClassDefinitionCollectionTest
   {
     _collection.Add (_classDefinition);
     Assert.IsTrue (_collection.Contains (_classDefinition.ID));
-  }
-
-  [Test]
-  public void AddTwiceWithSameClassID ()
-  {
-    _collection.Add (_classDefinition);
-    try
-    {
-      _collection.Add (new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Customer)));
-      Assert.Fail ("Expected an ArgumentException.");
-    }
-    catch (ArgumentException)
-    {
-      Assert.IsFalse (_collection.Contains (typeof (Customer)));
-    }
   }
 }
 }

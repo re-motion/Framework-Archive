@@ -120,6 +120,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     {
       _entityName = info.GetString ("EntityName");
       _classType = (Type) info.GetValue ("ClassType", typeof (Type));
+      _classTypeName = info.GetString ("ClassTypeName");
       _storageProviderID = info.GetString ("StorageProviderID");
       _baseClass = (ClassDefinition) info.GetValue ("BaseClass", typeof (ClassDefinition));
       _derivedClasses = (ClassDefinitionCollection) info.GetValue ("DerivedClasses", typeof (ClassDefinitionCollection));
@@ -520,6 +521,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     {
       info.AddValue ("EntityName", _entityName);
       info.AddValue ("ClassType", _classType);
+      info.AddValue ("ClassTypeName", _classTypeName);
       info.AddValue ("StorageProviderID", _storageProviderID);
       info.AddValue ("BaseClass", _baseClass);
       info.AddValue ("DerivedClasses", _derivedClasses);
