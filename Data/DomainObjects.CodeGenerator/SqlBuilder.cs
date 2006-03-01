@@ -7,69 +7,35 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public class SqlBuilder : ConfigurationBasedBuilder
+
+public class SqlBuilder 
 {
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  private string _outputFile;
-
-  private IBuilder[] _builders;
-
-  // construction and disposing
-
-	public SqlBuilder (string outputFile, string xmlFilePath, string xmlSchemaFilePath, string assemblyPath) : base (xmlFilePath, xmlSchemaFilePath, assemblyPath)
+	public static void Build (string outputFile) 
 	{
     ArgumentUtility.CheckNotNullOrEmpty ("outputFile", outputFile);
-    
-    _outputFile = outputFile;
-
-    ArrayList builders = new ArrayList ();
 
     string[] storageProviderIDs = GetDistinctStorageProviderIDs ();
 
-    foreach (string storageProviderID in storageProviderIDs)
+    if (storageProviderIDs.Length == 1)
     {
-      string filename = _outputFile;
-      if (storageProviderIDs.Length > 1)
+      SqlFileBuilder.Build (outputFile, storageProviderIDs[0]);
+    }
+    else
+    {
+      foreach (string storageProviderID in storageProviderIDs)
       {
+        string filename = outputFile;
         if (filename.IndexOf (".") > -1)
           filename = filename.Insert (filename.LastIndexOf ("."), "_" + storageProviderID);
         else
           filename = filename + "_" + storageProviderID;
-      }
 
-      builders.Add (new SqlFileBuilder (filename, storageProviderID));
+        SqlFileBuilder.Build (filename, storageProviderID);
+      }
     }
-    _builders = (IBuilder[]) builders.ToArray (typeof (IBuilder));
 	}
 
-  protected override void Dispose (bool disposing)
-  {
-    if (!Disposed)
-    {
-      if (disposing)
-      {
-        foreach (IBuilder builder in _builders)
-          builder.Dispose ();
-        _builders = null;
-      }
-      Disposed = true;
-    }
-  }
-
-  // methods and properties
-
-  public override void Build ()
-  {
-    foreach (IBuilder builder in _builders)
-      builder.Build ();
-  }
-
-  private string[] GetDistinctStorageProviderIDs ()
+  private static string[] GetDistinctStorageProviderIDs ()
   {
     ArrayList storageProviderIDs = new ArrayList();
     foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
@@ -79,5 +45,10 @@ public class SqlBuilder : ConfigurationBasedBuilder
     }
     return (string[]) storageProviderIDs.ToArray (typeof (string));
   }
+
+  private SqlBuilder()
+  {
+  }
 }
+
 }
