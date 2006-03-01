@@ -321,7 +321,7 @@ public class MappingTest : SerializationBaseTest
   public void PropertyDefinitionWithEnumType ()
   {
     PropertyDefinition enumPropertyDefinition = 
-        TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["CustomerType"];
+        TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer").MyPropertyDefinitions["Type"];
 
     PropertyDefinition deserializedEnumPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (enumPropertyDefinition);
     
