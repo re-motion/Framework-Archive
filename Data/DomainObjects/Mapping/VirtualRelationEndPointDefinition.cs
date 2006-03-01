@@ -20,6 +20,7 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition, IS
   private CardinalityType _cardinality;
   private string _propertyName;
   private Type _propertyType;
+  private string _propertyTypeName;
   private string _sortExpression;
 
   // Note: _mappingClassID is used only during the deserialization process. 
@@ -51,13 +52,52 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition, IS
     ArgumentUtility.CheckValidEnumValue (cardinality, "cardinality");
     ArgumentUtility.CheckNotNull ("propertyType", propertyType);
 
-    CheckParameters (classDefinition, propertyName, isMandatory, cardinality, propertyType, sortExpression);
+    Initialize (classDefinition, propertyName, isMandatory, cardinality, propertyType, null, sortExpression);
+  }
+
+  public VirtualRelationEndPointDefinition (
+      ClassDefinition classDefinition, 
+      string propertyName, 
+      bool isMandatory,    
+      CardinalityType cardinality,
+      string propertyTypeName,
+      string sortExpression) 
+  {
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    ArgumentUtility.CheckValidEnumValue (cardinality, "cardinality");
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyTypeName", propertyTypeName);
+
+    Initialize (classDefinition, propertyName, isMandatory, cardinality, null, propertyTypeName, sortExpression);
+  }
+
+  private void Initialize (
+      ClassDefinition classDefinition, 
+      string propertyName, 
+      bool isMandatory,    
+      CardinalityType cardinality,
+      Type propertyType,
+      string propertyTypeName,
+      string sortExpression)
+  {
+    // TODO: Consider classDefinition.IsClassTypeResolved
+    if (propertyTypeName != null)
+      propertyType = Type.GetType (propertyTypeName, true);
+
+    if (propertyType != null)
+    {
+      CheckPropertyType (classDefinition, propertyName, cardinality, propertyType);
+      propertyTypeName = propertyType.AssemblyQualifiedName;
+    }
+
+    CheckSortExpression (classDefinition, propertyName, cardinality, sortExpression);
 
     _classDefinition = classDefinition;    
     _cardinality = cardinality;
     _isMandatory = isMandatory;
     _propertyName = propertyName;
     _propertyType = propertyType;
+    _propertyTypeName = propertyTypeName;
     _sortExpression = sortExpression;
   }
 
@@ -84,13 +124,11 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition, IS
     }
   }
 
-  private void CheckParameters (
+  private void CheckPropertyType (
       ClassDefinition classDefinition, 
       string propertyName, 
-      bool isMandatory,    
       CardinalityType cardinality,
-      Type propertyType,
-      string sortExpression)
+      Type propertyType)
   {
     if (propertyType != typeof (DomainObjectCollection)
         && !propertyType.IsSubclassOf (typeof (DomainObjectCollection))
@@ -116,13 +154,21 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition, IS
       throw CreateMappingException ("The property type of a virtual end point of a one-to-many relation"
           + " must be or be derived from 'Rubicon.Data.DomainObjects.DomainObjectCollection'.");
     }
+  }
 
+  private void CheckSortExpression (
+      ClassDefinition classDefinition, 
+      string propertyName, 
+      CardinalityType cardinality,
+      string sortExpression)
+  {
     if (cardinality == CardinalityType.One && sortExpression != null)
     {
       throw CreateMappingException (
           "Property '{0}' of class '{1}' must not specify a SortExpression, because cardinality is equal to 'one'.",
           propertyName, classDefinition.ID);
     }
+
   }
 
   // methods and properties
@@ -178,6 +224,16 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition, IS
   public Type PropertyType 
   { 
     get { return _propertyType; } 
+  }
+
+  public bool IsPropertyTypeResolved
+  {
+    get { return _propertyType != null; }
+  }
+
+  public string PropertyTypeName
+  {
+    get { return _propertyTypeName; }
   }
 
   public bool IsVirtual
