@@ -155,10 +155,10 @@ public class ClassDefinitionChecker
         expectedDefinition.PropertyName, classDefinition, 
         expectedDefinition.PropertyType, actualDefinition.PropertyType));
 
-    Assert.AreEqual (expectedDefinition.PropertyTypeName, actualDefinition.PropertyTypeName, 
+    Assert.AreEqual (expectedDefinition.MappingTypeName, actualDefinition.MappingTypeName, 
         string.Format ("PropertyTypeName of property definition '{0}' (class definition: '{1}') does not match. Expected: {2}, actual: {3}", 
         expectedDefinition.PropertyName, classDefinition, 
-        expectedDefinition.PropertyTypeName, actualDefinition.PropertyTypeName));
+        expectedDefinition.MappingTypeName, actualDefinition.MappingTypeName));
   }      
 }
 }

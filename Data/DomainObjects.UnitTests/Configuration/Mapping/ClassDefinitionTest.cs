@@ -301,6 +301,30 @@ public class ClassDefinitionTest
   }
 
   [Test]
+  [ExpectedException (typeof (InvalidOperationException), 
+      "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
+      + "because the PropertyDefinition's type is resolved and the ClassDefinition's type is not.")]
+  public void AddPropertyDefinitionWithResolvedTypeToClassDefinitionWithUnresolvedType ()
+  {
+    ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedTypeName", false);
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "string", false, 100, true);
+
+    classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+  }
+
+  [Test]
+  [ExpectedException (typeof (InvalidOperationException), 
+      "The PropertyDefinition 'PropertyName' cannot be added to ClassDefinition 'ClassID', "
+      + "because the ClassDefinition's type is resolved and the PropertyDefinition's type is not.")]
+  public void AddPropertyDefinitionWithUnresolvedTypeToClassDefinitionWithResolvedType ()
+  {
+    ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order));
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedTypeName", false, 100, false);
+
+    classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
+  }
+
+  [Test]
   public void ConstructorWithoutBaseClass ()
   {
     ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));

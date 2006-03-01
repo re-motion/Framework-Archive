@@ -6,7 +6,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
-// Note: All methods of this class are inheritance-aware. Property accessors are not.
 [Serializable]
 public class ClassDefinition : ISerializable, IObjectReference
 {
@@ -493,8 +492,29 @@ public class ClassDefinition : ISerializable, IObjectReference
     return new MappingException (string.Format (message, args));
   }
 
+  private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
+  {
+    return new InvalidOperationException (string.Format (message, args));
+  }
+
   internal void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)
   {
+    if (IsClassTypeResolved != args.PropertyDefinition.IsPropertyTypeResolved)
+    {
+      if (IsClassTypeResolved)
+      {
+        throw CreateInvalidOperationException ("The PropertyDefinition '{0}' cannot be added to ClassDefinition '{1}', "
+            + "because the ClassDefinition's type is resolved and the PropertyDefinition's type is not.", 
+            args.PropertyDefinition.PropertyName, _id);
+      }
+      else
+      {
+        throw CreateInvalidOperationException ("The PropertyDefinition '{0}' cannot be added to ClassDefinition '{1}', "
+            + "because the PropertyDefinition's type is resolved and the ClassDefinition's type is not.", 
+            args.PropertyDefinition.PropertyName, _id);
+      }
+    }
+    
     PropertyDefinitionCollection allPropertyDefinitions = GetPropertyDefinitions ();
     if (allPropertyDefinitions.Contains (args.PropertyDefinition.PropertyName))
     {

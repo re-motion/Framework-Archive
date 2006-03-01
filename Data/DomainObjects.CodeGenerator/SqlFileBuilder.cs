@@ -91,7 +91,7 @@ public class SqlFileBuilder
       s_sqlTypeMapping.Add ("int64", "bigint");
       s_sqlTypeMapping.Add ("single", "real");
       s_sqlTypeMapping.Add ("string", "nvarchar");
-      s_sqlTypeMapping.Add ("objectID", "uniqueidentifier");
+      s_sqlTypeMapping.Add (TypeInfo.ObjectIDMappingTypeName, "uniqueidentifier");
       s_sqlTypeMapping.Add ("binary", "image");
     }
 
@@ -294,10 +294,10 @@ public class SqlFileBuilder
       foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
       {
         string dataType;
-        if (propertyDefinition.PropertyTypeName == "objectID" && !HasOppositeClassSameStorageProviderID (classDefinition, propertyDefinition.PropertyName))
+        if (propertyDefinition.MappingTypeName == TypeInfo.ObjectIDMappingTypeName && !HasOppositeClassSameStorageProviderID (classDefinition, propertyDefinition.PropertyName))
           dataType = s_fullObjectIdDatabaseType;
         else
-          dataType = GetDBType (propertyDefinition.PropertyTypeName, propertyDefinition.PropertyType, propertyDefinition.MaxLength);
+          dataType = GetDBType (propertyDefinition.MappingTypeName, propertyDefinition.PropertyType, propertyDefinition.MaxLength);
 
         WriteColumn (propertyDefinition.ColumnName, dataType, allColumnsNullable || propertyDefinition.IsNullable);
 

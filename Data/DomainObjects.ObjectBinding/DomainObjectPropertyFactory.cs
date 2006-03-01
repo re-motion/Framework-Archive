@@ -40,7 +40,7 @@ public class DomainObjectPropertyFactory : ReflectionPropertyFactory
   protected override bool IsDateType (PropertyInfo propertyInfo)
   {
     PropertyDefinition propertyDefinition = _classDefinition.GetPropertyDefinition (propertyInfo.Name);
-    return propertyDefinition != null && propertyDefinition.PropertyTypeName == "date";
+    return propertyDefinition != null && propertyDefinition.MappingTypeName == "date";
   }
 
   protected override bool IsPropertyRequired (PropertyInfo propertyInfo)
