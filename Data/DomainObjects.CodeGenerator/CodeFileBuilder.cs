@@ -8,7 +8,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public abstract class CodeFileBuilder : FileBuilder
+
+public abstract class CodeFileBuilder: FileBuilder
 {
   // types
 
@@ -138,7 +139,7 @@ public abstract class CodeFileBuilder : FileBuilder
 
   // construction and disposing
 
-  protected CodeFileBuilder (string filename) : base (filename)
+  protected CodeFileBuilder (TextWriter writer) : base (writer)
 	{
   }
   
@@ -153,12 +154,11 @@ public abstract class CodeFileBuilder : FileBuilder
       return type.Name;
   }
 
-  protected override void CloseFile ()
+  protected override void FinishFile ()
   {
     if (_lastNamespaceWritten != string.Empty)
       EndNamespace ();
-
-    base.CloseFile ();
+    base.FinishFile();
   }
 
   protected void WriteComment (string comment)
