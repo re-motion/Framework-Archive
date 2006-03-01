@@ -46,7 +46,7 @@ public class TypeInfoTest
     Check (new TypeInfo (typeof (NaDouble), "double", true, NaDouble.Null), TypeInfo.GetInstance ("double", true));
     Check (new TypeInfo (typeof (NaSingle), "single", true, NaSingle.Null), TypeInfo.GetInstance ("single", true));
     Check (new TypeInfo (typeof (string), "string", true, null), TypeInfo.GetInstance ("string", true));
-    Check (new TypeInfo (typeof (ObjectID), "objectID", true, null), TypeInfo.GetInstance ("objectID", true));
+    Check (new TypeInfo (typeof (ObjectID), TypeInfo.ObjectIDMappingTypeName, true, null), TypeInfo.GetInstance (TypeInfo.ObjectIDMappingTypeName, true));
     Check (new TypeInfo (typeof (byte[]), "binary", true, null), TypeInfo.GetInstance ("binary", true));  
 
     Check (new TypeInfo (typeof (bool), "boolean", false, false), TypeInfo.GetInstance ("boolean", false));
@@ -61,7 +61,7 @@ public class TypeInfoTest
     Check (new TypeInfo (typeof (long), "int64", false, long.MinValue), TypeInfo.GetInstance ("int64", false));
     Check (new TypeInfo (typeof (float), "single", false, float.MinValue), TypeInfo.GetInstance ("single", false));
     Check (new TypeInfo (typeof (string), "string", false, string.Empty), TypeInfo.GetInstance ("string", false));
-    Check (new TypeInfo (typeof (ObjectID), "objectID", false, null), TypeInfo.GetInstance ("objectID", false));  
+    Check (new TypeInfo (typeof (ObjectID), TypeInfo.ObjectIDMappingTypeName, false, null), TypeInfo.GetInstance (TypeInfo.ObjectIDMappingTypeName, false));  
     Check (new TypeInfo (typeof (byte[]), "binary", false, new byte[0]), TypeInfo.GetInstance ("binary", false));  
   }
 
