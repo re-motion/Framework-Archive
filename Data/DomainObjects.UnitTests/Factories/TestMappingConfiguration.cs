@@ -119,7 +119,7 @@ public class TestMappingConfiguration
 
     company.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
     company.MyPropertyDefinitions.Add (new PropertyDefinition (
-        "IndustrialSector", "IndustrialSectorID", "objectID"));
+        "IndustrialSector", "IndustrialSectorID", TypeInfo.ObjectIDMappingTypeName));
     
     return company;
   }
@@ -145,7 +145,7 @@ public class TestMappingConfiguration
     ClassDefinition partner = new ClassDefinition (
         "Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner), baseClass);
 
-    partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", "objectID"));
+    partner.MyPropertyDefinitions.Add (new PropertyDefinition ("ContactPerson", "ContactPersonID", TypeInfo.ObjectIDMappingTypeName));
     
     return partner;
   }
@@ -177,8 +177,8 @@ public class TestMappingConfiguration
     
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("OrderNumber", "OrderNo", "int32"));
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("DeliveryDate", "DeliveryDate", "dateTime"));
-    order.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", "objectID"));
-    order.MyPropertyDefinitions.Add (new PropertyDefinition ("Official", "OfficialID", "objectID"));
+    order.MyPropertyDefinitions.Add (new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName));
+    order.MyPropertyDefinitions.Add (new PropertyDefinition ("Official", "OfficialID", TypeInfo.ObjectIDMappingTypeName));
 
     return order;
   }
@@ -205,7 +205,7 @@ public class TestMappingConfiguration
         "OrderTicket", "OrderTicket", DatabaseTest.c_testDomainProviderID, typeof (OrderTicket));
     
     orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("FileName", "FileName", "string", 255));
-    orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));
+    orderTicket.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
 
     return orderTicket;
   }
@@ -215,7 +215,7 @@ public class TestMappingConfiguration
     ClassDefinition orderItem = new ClassDefinition (
         "OrderItem", "OrderItem", DatabaseTest.c_testDomainProviderID, typeof (OrderItem));
     
-    orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID"));
+    orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName));
     orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Position", "Position", "int32"));
     orderItem.MyPropertyDefinitions.Add (new PropertyDefinition ("Product", "Product", "string", 100));
 
@@ -228,7 +228,7 @@ public class TestMappingConfiguration
         "Ceo", "Ceo", DatabaseTest.c_testDomainProviderID, typeof (Ceo));
     
     order.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-    order.MyPropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", "objectID"));
+    order.MyPropertyDefinitions.Add (new PropertyDefinition ("Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
 
     return order;
   }
@@ -248,7 +248,7 @@ public class TestMappingConfiguration
     ClassDefinition clientClass = new ClassDefinition (
         "Client", "Client", DatabaseTest.c_testDomainProviderID, typeof (Client));
 
-    clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", "objectID"));
+    clientClass.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentClient", "ParentClientID", TypeInfo.ObjectIDMappingTypeName));
 
     return clientClass;
   }
@@ -258,7 +258,7 @@ public class TestMappingConfiguration
     ClassDefinition location = new ClassDefinition (
         "Location", "Location", DatabaseTest.c_testDomainProviderID, typeof (Location));
     
-    location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", "objectID"));
+    location.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName));
 
     return location;
   }
@@ -268,7 +268,7 @@ public class TestMappingConfiguration
     ClassDefinition fileSystemItem = new ClassDefinition (
         "FileSystemItem", "FileSystemItem", DatabaseTest.c_testDomainProviderID, typeof (FileSystemItem));
     
-    fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", "objectID"));
+    fileSystemItem.MyPropertyDefinitions.Add (new PropertyDefinition ("ParentFolder", "ParentFolderID", TypeInfo.ObjectIDMappingTypeName));
 
     return fileSystemItem;
   }
@@ -389,10 +389,10 @@ public class TestMappingConfiguration
         DatabaseTest.c_testDomainProviderID, typeof (ClassWithValidRelations));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-        "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", "objectID"));
+        "ClassWithGuidKeyOptional", "TableWithGuidKeyOptionalID", TypeInfo.ObjectIDMappingTypeName));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-        "ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", "objectID"));
+        "ClassWithGuidKeyNonOptional", "TableWithGuidKeyNonOptionalID", TypeInfo.ObjectIDMappingTypeName));
 
     return classDefinition;
   }
@@ -403,7 +403,7 @@ public class TestMappingConfiguration
         "ClassWithInvalidRelation", "TableWithInvalidRelation", DatabaseTest.c_testDomainProviderID, typeof (ClassWithInvalidRelation));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-        "ClassWithGuidKey", "TableWithGuidKeyID", "objectID"));
+        "ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName));
 
     return classDefinition;
   }
@@ -417,7 +417,7 @@ public class TestMappingConfiguration
         typeof (ClassWithoutRelatedClassIDColumn));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-        "Distributor", "DistributorID", "objectID"));
+        "Distributor", "DistributorID", TypeInfo.ObjectIDMappingTypeName));
 
     return classDefinition;
   }
@@ -431,7 +431,7 @@ public class TestMappingConfiguration
         typeof (ClassWithoutRelatedClassIDColumnAndDerivation));
 
     classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
-        "Company", "CompanyID", "objectID"));
+        "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
 
     return classDefinition;
   }
@@ -452,7 +452,7 @@ public class TestMappingConfiguration
         "Employee", "Employee", DatabaseTest.c_testDomainProviderID, typeof (Employee));
     
     employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Name", "Name", "string", 100));
-    employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", "objectID"));
+    employee.MyPropertyDefinitions.Add (new PropertyDefinition ("Supervisor", "SupervisorID", TypeInfo.ObjectIDMappingTypeName));
 
     return employee;
   }
@@ -463,7 +463,7 @@ public class TestMappingConfiguration
         "Computer", "Computer", DatabaseTest.c_testDomainProviderID, typeof (Computer));
     
     computer.MyPropertyDefinitions.Add (new PropertyDefinition ("SerialNumber", "SerialNumber", "string", 20));
-    computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", "objectID"));
+    computer.MyPropertyDefinitions.Add (new PropertyDefinition ("Employee", "EmployeeID", TypeInfo.ObjectIDMappingTypeName));
 
     return computer;
   }
@@ -474,7 +474,7 @@ public class TestMappingConfiguration
         "ClassWithRelatedClassIDColumnAndNoInheritance", "TableWithRelatedClassIDColumnAndNoInheritance", 
         DatabaseTest.c_testDomainProviderID, typeof (ClassWithRelatedClassIDColumnAndNoInheritance));
 
-    classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", "objectID"));
+    classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("ClassWithGuidKey", "TableWithGuidKeyID", TypeInfo.ObjectIDMappingTypeName));
 
     return classDefinition;
   }

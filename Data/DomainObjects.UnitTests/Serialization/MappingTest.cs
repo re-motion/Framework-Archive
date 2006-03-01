@@ -98,7 +98,7 @@ public class MappingTest : SerializationBaseTest
   public void RelationEndPointDefinitionWithoutRelationDefinition ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket)); 
-    classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID", false));
+    classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
     RelationEndPointDefinition endPointdefinition = new RelationEndPointDefinition (classDefinition, "Order", true);
 
     RelationEndPointDefinition deserializedEndPointDefinition = (RelationEndPointDefinition) SerializeAndDeserialize (endPointdefinition);
@@ -113,7 +113,7 @@ public class MappingTest : SerializationBaseTest
     ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
     ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket)); 
     
-    orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID", false));
+    orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
     VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
         orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
@@ -158,7 +158,7 @@ public class MappingTest : SerializationBaseTest
     ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
     ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket)); 
     
-    orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID", false));
+    orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
     VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
         orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
@@ -202,7 +202,7 @@ public class MappingTest : SerializationBaseTest
     ClassDefinition clientDefinition = new ClassDefinition ("Client", "Client", "TestDomain", typeof (Client));
     ClassDefinition locationDefinition = new ClassDefinition ("Location", "Location", "TestDomain", typeof (Location)); 
     
-    locationDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", "objectID", false));
+    locationDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Client", "ClientID", TypeInfo.ObjectIDMappingTypeName, false));
 
     NullRelationEndPointDefinition clientEndPointDefinition = new NullRelationEndPointDefinition (clientDefinition);
     RelationEndPointDefinition locationEndPointDefinition = new RelationEndPointDefinition (locationDefinition, "Client", true);
@@ -395,7 +395,7 @@ public class MappingTest : SerializationBaseTest
     Assert.AreEqual (expected.ColumnName, actual.ColumnName);
     Assert.AreEqual (expected.DefaultValue, actual.DefaultValue);
     Assert.AreEqual (expected.IsNullable, actual.IsNullable);
-    Assert.AreEqual (expected.PropertyTypeName, actual.PropertyTypeName);
+    Assert.AreEqual (expected.MappingTypeName, actual.MappingTypeName);
     Assert.AreEqual (expected.MaxLength, actual.MaxLength);
     Assert.AreEqual (expected.PropertyName, actual.PropertyName);
     Assert.AreEqual (expected.PropertyType, actual.PropertyType);

@@ -143,7 +143,7 @@ public class ClassDefinitionLoader
     string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
     string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
 
-    return new PropertyDefinition (propertyName, columnName, "objectID", true);
+    return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, true);
   }
 
   private MappingException CreateMappingException (string message, params object[] args)

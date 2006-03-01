@@ -354,7 +354,7 @@ public class PropertyValueTest
   [ExpectedException (typeof (InvalidOperationException), "The relation property 'test' cannot be set directly.")]
   public void SetRelationPropertyDirectly ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", "objectID", true);
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", TypeInfo.ObjectIDMappingTypeName, true);
     PropertyValue propertyValue = new PropertyValue (definition, null);
 
     propertyValue.Value = DomainObjectIDs.Customer1;

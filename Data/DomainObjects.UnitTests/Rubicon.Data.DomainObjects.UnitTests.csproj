@@ -288,6 +288,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Configuration\Mapping\ClassDefinitionFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithResolvedTypeNamesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -339,6 +344,11 @@
                 />
                 <File
                     RelPath = "Configuration\Mapping\PropertyDefinitionCollectionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Mapping\PropertyDefinitionFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
