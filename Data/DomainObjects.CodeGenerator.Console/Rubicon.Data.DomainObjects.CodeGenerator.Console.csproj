@@ -88,6 +88,16 @@
                     AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.xml.dll"
                 />
+                <Reference
+                    Name = "Core"
+                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects"
+                    Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -95,6 +105,11 @@
                 <File
                     RelPath = "App.ico"
                     BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Arguments.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "AssemblyInfo.cs"
@@ -107,22 +122,7 @@
                     BuildAction = "None"
                 />
                 <File
-                    RelPath = "BuilderFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CommandLineArgumentsException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Main.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "OperationMode.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
