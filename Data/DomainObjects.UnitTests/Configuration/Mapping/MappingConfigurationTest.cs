@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
+using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
@@ -26,17 +27,40 @@ public class MappingConfigurationTest
   // methods and properties
 
   [Test]
-  public void InitializeWithFileNames ()
+  public void InitializeWithFileNamesAndResolveTypeNames ()
+  {
+    MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd", true);
+
+    string configurationFile = Path.GetFullPath (@"mappingWithMinimumData.xml");
+    string schemaFile = Path.GetFullPath (@"mapping.xsd");
+
+    Assert.AreEqual (configurationFile, configuration.ConfigurationFile);
+    Assert.AreEqual (schemaFile, configuration.SchemaFile);
+    Assert.IsTrue (configuration.ResolveTypeNames);
+  }
+
+  [Test]
+  public void InitializeWithLoaderAndResolveTypeNames ()
+  {
+    MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"mappingWithMinimumData.xml", @"mapping.xsd", true));
+    
+    string configurationFile = Path.GetFullPath (@"mappingWithMinimumData.xml");
+    string schemaFile = Path.GetFullPath (@"mapping.xsd");
+
+    Assert.AreEqual (configurationFile, configuration.ConfigurationFile);
+    Assert.AreEqual (schemaFile, configuration.SchemaFile);
+    Assert.IsTrue (configuration.ResolveTypeNames);
+  }
+
+  [Test]
+  public void SetCurrent ()
   {
     try
     {
-      MappingConfiguration.SetCurrent (new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd"));
+      MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"mappingWithMinimumData.xml", @"mapping.xsd", true));
+      MappingConfiguration.SetCurrent (configuration);
 
-      string configurationFile = Path.GetFullPath (@"mappingWithMinimumData.xml");
-      string schemaFile = Path.GetFullPath (@"mapping.xsd");
-
-      Assert.AreEqual (configurationFile, MappingConfiguration.Current.ConfigurationFile);
-      Assert.AreEqual (schemaFile, MappingConfiguration.Current.SchemaFile);
+      Assert.AreSame (configuration, MappingConfiguration.Current);
     }
     finally
     {
