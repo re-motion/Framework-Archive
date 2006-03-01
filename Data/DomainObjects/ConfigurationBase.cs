@@ -19,6 +19,7 @@ public class ConfigurationBase
   private string _applicationName;
   private string _configurationFile;
   private string _schemaFile;
+  private bool _resolveTypeNames;
 
   // construction and disposing
 
@@ -34,6 +35,7 @@ public class ConfigurationBase
     _applicationName = loader.GetApplicationName ();
     _configurationFile = loader.ConfigurationFile;
     _schemaFile = loader.SchemaFile;
+    _resolveTypeNames = loader.ResolveTypeNames;
   }
 
   // methods and properties
@@ -60,6 +62,12 @@ public class ConfigurationBase
   public string SchemaFile
   {
     get { return _schemaFile; }
+  }
+
+  // TODO: Doc
+  public bool ResolveTypeNames
+  {
+    get { return _resolveTypeNames; }
   }
 }
 }
