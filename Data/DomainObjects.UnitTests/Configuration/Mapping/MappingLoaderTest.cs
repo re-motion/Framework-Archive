@@ -12,7 +12,7 @@ using Rubicon.NullableValueTypes;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
 [TestFixture]
-public class LoaderTest
+public class MappingLoaderTest
 {
   // types
 
@@ -23,7 +23,7 @@ public class LoaderTest
 
   // construction and disposing
 
-  public LoaderTest ()
+  public MappingLoaderTest ()
   {
   }
 
@@ -176,37 +176,6 @@ public class LoaderTest
   public void MappingWithXmlException ()
   {
     MappingLoader loader = new MappingLoader (@"mappingWithXmlException.xml", @"mapping.xsd", true);
-  }
-
-
-  [Test]
-  public void ReadAndValidateStorageProviderFile ()
-  {
-    StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (
-        @"storageProviders.xml", 
-        @"storageProviders.xsd");
-
-    // expectation: no exception
-  }
-
-  [Test]
-  [ExpectedException (typeof (StorageProviderConfigurationException))]
-  public void StorageProvidersWithSchemaException ()
-  {
-    StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (
-        @"storageProvidersWithSchemaException.xml", 
-        @"storageProviders.xsd");
-  }
-
-  [Test]
-  [ExpectedException (typeof (StorageProviderConfigurationException), 
-      "Error while reading storage provider configuration:"
-      + " '<', hexadecimal value 0x3C, is an invalid attribute character. Line 10, position 3.")]
-  public void StorageProvidersWithXmlException ()
-  {
-    StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (
-        @"storageProvidersWithXmlException.xml", 
-        @"storageProviders.xsd");
   }
 
   [Test]
