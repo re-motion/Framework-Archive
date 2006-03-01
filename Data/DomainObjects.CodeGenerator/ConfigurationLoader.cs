@@ -256,7 +256,8 @@ public class ConfigurationLoader: IDisposable
 
     MappingConfiguration.SetCurrent (new MappingConfiguration (
         Path.Combine (xmlFilePath, MappingLoader.DefaultConfigurationFile), 
-        Path.Combine (xmlSchemaFilePath, MappingLoader.DefaultSchemaFile)));
+        Path.Combine (xmlSchemaFilePath, MappingLoader.DefaultSchemaFile),
+        true));
 
     StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (
         Path.Combine (xmlFilePath, StorageProviderConfigurationLoader.DefaultConfigurationFile), 

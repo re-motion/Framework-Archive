@@ -294,10 +294,10 @@ public class SqlFileBuilder
       foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
       {
         string dataType;
-        if (propertyDefinition.MappingType == "objectID" && !HasOppositeClassSameStorageProviderID (classDefinition, propertyDefinition.PropertyName))
+        if (propertyDefinition.PropertyTypeName == "objectID" && !HasOppositeClassSameStorageProviderID (classDefinition, propertyDefinition.PropertyName))
           dataType = s_fullObjectIdDatabaseType;
         else
-          dataType = GetDBType (propertyDefinition.MappingType, propertyDefinition.PropertyType, propertyDefinition.MaxLength);
+          dataType = GetDBType (propertyDefinition.PropertyTypeName, propertyDefinition.PropertyType, propertyDefinition.MaxLength);
 
         WriteColumn (propertyDefinition.ColumnName, dataType, allColumnsNullable || propertyDefinition.IsNullable);
 
