@@ -118,7 +118,7 @@ public class MappingConfigurationTest
   {
     ClassDefinition orderDefinition = new ClassDefinition ("Order", "Order", "TestDomain", typeof (Order));
     ClassDefinition orderTicketDefinition = new ClassDefinition ("OrderTicket", "OrderTicket", "TestDomain", typeof (OrderTicket)); 
-    orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", "objectID", false));
+    orderTicketDefinition.MyPropertyDefinitions.Add (new PropertyDefinition ("Order", "OrderID", TypeInfo.ObjectIDMappingTypeName, false));
 
     VirtualRelationEndPointDefinition orderEndPointDefinition = new VirtualRelationEndPointDefinition (
         orderDefinition, "OrderTicket", true, CardinalityType.One, typeof (OrderTicket));
@@ -151,11 +151,11 @@ public class MappingConfigurationTest
 
     PropertyDefinition int32Property = propertyDefinitions["Int32Property"];
     Assert.IsFalse (int32Property.IsPropertyTypeResolved);
-    Assert.AreEqual ("int32", int32Property.PropertyTypeName);
+    Assert.AreEqual ("int32", int32Property.MappingTypeName);
 
     PropertyDefinition enumProperty = propertyDefinitions["EnumProperty"];
     Assert.IsFalse (enumProperty.IsPropertyTypeResolved);
-    Assert.AreEqual ("UnknownClassType+EnumType, Rubicon.Data.DomainObjects.UnitTests", enumProperty.PropertyTypeName);
+    Assert.AreEqual ("UnknownClassType+EnumType, Rubicon.Data.DomainObjects.UnitTests", enumProperty.MappingTypeName);
 
     Assert.AreEqual (0, configuration.RelationDefinitions.Count);
   }

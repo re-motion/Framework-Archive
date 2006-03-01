@@ -62,11 +62,11 @@ public class ClassDefinitionLoaderWithUnresolvedTypeNamesTest
 
     PropertyDefinition int32Property = propertyDefinitions["Int32Property"];
     Assert.IsFalse (int32Property.IsPropertyTypeResolved);
-    Assert.AreEqual ("int32", int32Property.PropertyTypeName);
+    Assert.AreEqual ("int32", int32Property.MappingTypeName);
 
     PropertyDefinition enumProperty = propertyDefinitions["EnumProperty"];
     Assert.IsFalse (enumProperty.IsPropertyTypeResolved);
-    Assert.AreEqual ("UnknownClassType+EnumType, Rubicon.Data.DomainObjects.UnitTests", enumProperty.PropertyTypeName);
+    Assert.AreEqual ("UnknownClassType+EnumType, Rubicon.Data.DomainObjects.UnitTests", enumProperty.MappingTypeName);
   }
 }
 }

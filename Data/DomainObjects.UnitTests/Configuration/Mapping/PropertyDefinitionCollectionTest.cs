@@ -112,7 +112,7 @@ public class PropertyDefinitionCollectionTest
     _collection.Add (_propertyDefinition);
 
     PropertyDefinition copy = new PropertyDefinition (
-        _propertyDefinition.PropertyName, _propertyDefinition.ColumnName, _propertyDefinition.PropertyTypeName, 
+        _propertyDefinition.PropertyName, _propertyDefinition.ColumnName, _propertyDefinition.MappingTypeName, 
         _propertyDefinition.IsNullable, _propertyDefinition.MaxLength, true);
 
     Assert.IsFalse (_collection.Contains (copy));
