@@ -40,6 +40,21 @@ public class VirtualRelationEndPointDefinitionTest
   }
 
   [Test]
+  public void InitializeWithPropertyTypeName ()
+  {
+    VirtualRelationEndPointDefinition endPoint = new VirtualRelationEndPointDefinition (
+        ClassDefinitionFactory.CreateOrderDefinition (),
+        "VirtualEndPoint", true, CardinalityType.One, 
+        "Rubicon.Data.DomainObjects.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.UnitTests", null);
+
+    Assert.IsTrue (endPoint.IsPropertyTypeResolved);
+    Assert.AreSame (typeof (OrderItem), endPoint.PropertyType);
+    Assert.AreEqual (typeof(OrderItem).AssemblyQualifiedName, endPoint.PropertyTypeName);
+  }
+
+  // TODO: Write test for unresolved VirtualEndPointDefinition.
+
+  [Test]
   public void IsNull ()
   {
     Assert.IsNotNull (_customerEndPoint as INullableObject);
