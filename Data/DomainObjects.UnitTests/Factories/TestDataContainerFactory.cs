@@ -37,7 +37,7 @@ public class TestDataContainerFactory
     
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition.GetPropertyDefinition ("Name"), "Kunde 1"));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition.GetPropertyDefinition ("CustomerSince"), new NaDateTime (new DateTime (2000, 1, 1))));
-    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition.GetPropertyDefinition ("CustomerType"), Customer.CustomerType.Standard));
+    dataContainer.PropertyValues.Add (new PropertyValue (classDefinition.GetPropertyDefinition ("Type"), Customer.CustomerType.Standard));
     dataContainer.PropertyValues.Add (new PropertyValue (classDefinition.GetPropertyDefinition ("IndustrialSector"), DomainObjectIDs.IndustrialSector1));
 
     _clientTransactionMock.SetClientTransaction (dataContainer);
