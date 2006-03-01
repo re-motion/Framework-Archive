@@ -15,11 +15,18 @@ public sealed class LoaderUtility
 
   // static members and constants
 
+  public static Type GetType (string typeName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
+
+    return Type.GetType (typeName.Trim (), true);    
+  }
+
   public static Type GetType (XmlNode node)
   {
     ArgumentUtility.CheckNotNull ("node", node);
 
-    return Type.GetType (node.InnerText.Trim (), true);    
+    return GetType (node.InnerText);    
   }
 
   public static Type GetType (XmlNode node, string xPath, XmlNamespaceManager namespaceManager)
