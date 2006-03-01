@@ -40,6 +40,28 @@ public class RelationEndPointDefinitionTest
   }
 
   [Test]
+  public void InitializeWithUnresolvedPropertyType ()
+  {
+    RelationEndPointDefinition endPoint = new RelationEndPointDefinition (
+        ClassDefinitionFactory.CreateWithUnresolvedRelationProperty (), "PropertyName", true);
+
+    Assert.IsFalse (endPoint.IsPropertyTypeResolved);
+    Assert.IsNull (endPoint.PropertyType);
+    Assert.AreEqual (typeof(ObjectID).AssemblyQualifiedName, endPoint.PropertyTypeName);
+  }
+
+  [Test]
+  public void InitializeWithResolvedPropertyType ()
+  {
+    RelationEndPointDefinition endPoint = new RelationEndPointDefinition (
+        ClassDefinitionFactory.CreateOrderDefinitionWithResolvedCustomerProperty (), "Customer", true);
+
+    Assert.IsTrue (endPoint.IsPropertyTypeResolved);
+    Assert.AreSame (typeof (ObjectID), endPoint.PropertyType);
+    Assert.AreEqual (typeof(ObjectID).AssemblyQualifiedName, endPoint.PropertyTypeName);
+  }
+
+  [Test]
   public void IsNull ()
   {
     Assert.IsNotNull (_orderEndPoint as INullableObject);
