@@ -93,6 +93,11 @@
                     Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "Rubicon.Data.DomainObjects.ObjectBinding"
+                    Project = "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>
@@ -109,11 +114,6 @@
                 />
                 <File
                     RelPath = "CodeFileBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationBasedBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
