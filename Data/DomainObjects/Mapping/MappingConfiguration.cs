@@ -45,8 +45,8 @@ public class MappingConfiguration : ConfigurationBase
 
   // construction and disposing
 
-  public MappingConfiguration (string configurationFile, string schemaFile) 
-      : this (new MappingLoader (configurationFile, schemaFile))
+  public MappingConfiguration (string configurationFile, string schemaFile, bool resolveTypeNames) 
+      : this (new MappingLoader (configurationFile, schemaFile, resolveTypeNames))
   {
   }
 
