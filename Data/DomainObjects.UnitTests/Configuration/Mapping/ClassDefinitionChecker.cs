@@ -35,6 +35,10 @@ public class ClassDefinitionChecker
         string.Format ("ClassTypeName of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
         expectedDefinition.ID, expectedDefinition.ClassTypeName, actualDefinition.ClassTypeName));
 
+    Assert.AreEqual (expectedDefinition.IsClassTypeResolved, actualDefinition.IsClassTypeResolved, 
+        string.Format ("IsClassTypeResolved of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
+        expectedDefinition.ID, expectedDefinition.IsClassTypeResolved, actualDefinition.IsClassTypeResolved));
+
     Assert.AreEqual (expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID, 
         string.Format ("StorageProviderID of class definition '{0}' does not match. Expected: {1}, actual: {2}", 
         expectedDefinition.ID, expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID));
@@ -70,6 +74,10 @@ public class ClassDefinitionChecker
     Assert.AreEqual (expectedDefinitions.Count, actualDefinitions.Count, 
         string.Format ("Number of class definitions does not match. Expected: {0}, actual: {1}", 
         expectedDefinitions.Count, actualDefinitions.Count));
+
+    Assert.AreEqual (expectedDefinitions.AreResolvedTypeNamesRequired, actualDefinitions.AreResolvedTypeNamesRequired, 
+        string.Format ("AreResolvedTypeNamesRequired does not match. Expected: {0}, actual: {1}", 
+        expectedDefinitions.AreResolvedTypeNamesRequired, actualDefinitions.AreResolvedTypeNamesRequired));
 
     foreach (ClassDefinition expectedDefinition in expectedDefinitions)
     {

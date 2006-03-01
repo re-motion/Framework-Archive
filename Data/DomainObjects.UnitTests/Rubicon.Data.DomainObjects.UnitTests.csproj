@@ -309,12 +309,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Mapping\LoaderTest.cs"
+                    RelPath = "Configuration\Mapping\MappingConfigurationTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Mapping\MappingConfigurationTest.cs"
+                    RelPath = "Configuration\Mapping\MappingLoaderTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -355,6 +355,11 @@
                 />
                 <File
                     RelPath = "Configuration\Mapping\RelationEndPointDefinitionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Mapping\StorageProviderConfigurationLoaderTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
