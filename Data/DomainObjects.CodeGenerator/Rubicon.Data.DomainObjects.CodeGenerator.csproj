@@ -118,6 +118,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "ConfigurationLoader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ConstraintDefinition.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -148,11 +153,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "IBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "Rubicon.Data.DomainObjects.CodeGenerator.build"
                     BuildAction = "None"
                 />
@@ -163,11 +163,6 @@
                 />
                 <File
                     RelPath = "SqlFileBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StubsBuilder.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
