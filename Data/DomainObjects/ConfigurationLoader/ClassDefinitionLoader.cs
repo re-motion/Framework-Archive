@@ -19,10 +19,11 @@ public class ClassDefinitionLoader
   private XmlDocument _document;
   private XmlNodeList _classNodeList;
   private ConfigurationNamespaceManager _namespaceManager;
+  private bool _resolveTypeNames;
 
   // construction and disposing
 
-  public ClassDefinitionLoader (XmlDocument document, ConfigurationNamespaceManager namespaceManager)
+  public ClassDefinitionLoader (XmlDocument document, ConfigurationNamespaceManager namespaceManager, bool resolveTypeNames)
   {
     ArgumentUtility.CheckNotNull ("document", document);
     ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
@@ -36,9 +37,15 @@ public class ClassDefinitionLoader
     _document = document;
     _classNodeList = classNodeList;
     _namespaceManager = namespaceManager;
+    _resolveTypeNames = resolveTypeNames;
   }
 
   // methods and properties
+
+  public bool ResolveTypeNames
+  {
+    get { return _resolveTypeNames; }
+  }
 
   private string FormatXPath (string xPath)
   {
@@ -47,7 +54,7 @@ public class ClassDefinitionLoader
 
   public ClassDefinitionCollection GetClassDefinitions ()
   {
-    ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection ();
+    ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection (_resolveTypeNames);
 
     foreach (XmlNode classNode in _classNodeList)
     {
@@ -82,13 +89,16 @@ public class ClassDefinitionLoader
   private ClassDefinition GetClassDefinition (XmlNode classNode)
   {
     string id = classNode.SelectSingleNode ("@id", _namespaceManager).InnerText;
-
     string entityName = classNode.SelectSingleNode (FormatXPath ("{0}:entity/@name"), _namespaceManager).InnerText;
-    Type classType = LoaderUtility.GetType (classNode, FormatXPath ("{0}:type"), _namespaceManager);
-
     string storageProviderID = classNode.SelectSingleNode (FormatXPath ("{0}:storageProviderID"), _namespaceManager).InnerText;
+    string classTypeName = classNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText;
 
-    ClassDefinition classDefinition = new ClassDefinition (id, entityName, storageProviderID, classType);
+    ClassDefinition classDefinition;
+    if (_resolveTypeNames)
+      classDefinition = new ClassDefinition (id, entityName, storageProviderID, LoaderUtility.GetType (classTypeName));
+    else
+      classDefinition = new ClassDefinition (id, entityName, storageProviderID, classTypeName, _resolveTypeNames);
+
     FillPropertyDefinitions (classDefinition, classNode);
 
     return classDefinition;
@@ -125,7 +135,7 @@ public class ClassDefinitionLoader
     if (maxLengthNode != null)
       maxLength = NaInt32.Parse (maxLengthNode.InnerText);
 
-    return new PropertyDefinition (propertyName, columnName, mappingType, isNullable, maxLength, true);
+    return new PropertyDefinition (propertyName, columnName, mappingType, isNullable, maxLength, _resolveTypeNames);
   }
 
   private PropertyDefinition GetRelationPropertyDefinition (ClassDefinition classDefinition, XmlNode propertyNode)
