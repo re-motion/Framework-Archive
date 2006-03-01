@@ -61,7 +61,7 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     try
     {
       mappingFile = GetMappingFilePath (projectPath);
-      MappingLoader mappingLoader = new MappingLoader (mappingFile, GetMappingSchemaPath (projectPath));
+      MappingLoader mappingLoader = new MappingLoader (mappingFile, GetMappingSchemaPath (projectPath), true);
       MappingConfiguration.SetCurrent (new MappingConfiguration (mappingLoader));
     }
     catch (Exception e)
