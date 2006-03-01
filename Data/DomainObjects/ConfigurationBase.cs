@@ -24,11 +24,11 @@ public class ConfigurationBase
   // construction and disposing
 
   /// <summary>
-  /// Initializes a new instance of the <b>ConfigurationBase</b> class from the specified <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.BaseLoader"/>.
+  /// Initializes a new instance of the <b>ConfigurationBase</b> class from the specified <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.BaseFileLoader"/>.
   /// </summary>
-  /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.BaseLoader"/> to be used for reading the configuration. Must not be <see langword="null"/>.</param>
+  /// <param name="loader">The <see cref="Rubicon.Data.DomainObjects.ConfigurationLoader.BaseFileLoader"/> to be used for reading the configuration. Must not be <see langword="null"/>.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="loader"/> is <see langword="null"/>.</exception>
-  protected ConfigurationBase (BaseLoader loader)
+  protected ConfigurationBase (BaseFileLoader loader)
   {
     ArgumentUtility.CheckNotNull ("loader", loader);
 

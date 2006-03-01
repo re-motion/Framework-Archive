@@ -10,7 +10,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
-public class MappingLoader : BaseLoader
+public class MappingLoader : BaseFileLoader
 {
   // types
 

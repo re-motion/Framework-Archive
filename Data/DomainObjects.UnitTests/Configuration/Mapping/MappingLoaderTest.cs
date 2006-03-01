@@ -49,7 +49,7 @@ public class MappingLoaderTest
   [Test]
   public void InitializeBaseLoaderWithResolveTypeNames ()
   {
-    Assert.IsTrue (((BaseLoader) _loader).ResolveTypeNames);
+    Assert.IsTrue (((BaseFileLoader) _loader).ResolveTypeNames);
   }
 
   [Test]

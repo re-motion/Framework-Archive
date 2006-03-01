@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
-public class BaseLoader
+public class BaseFileLoader
 {
   // types
 
@@ -23,7 +23,7 @@ public class BaseLoader
 
   // construction and disposing
 
-  protected BaseLoader ()
+  protected BaseFileLoader ()
   {
   }
 

@@ -24,14 +24,14 @@ public class PropertyDefinitionTest
   // methods and properties
 
   [Test]
-  public void InitializeWithMappingType ()
+  public void InitializeWithPropertyTypeName ()
   {
     PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, NaInt32.Null, true);
     Assert.IsNull (actual.ClassDefinition);
     Assert.AreEqual ("ColumnName", actual.ColumnName);
     Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
     Assert.IsTrue (actual.IsNullable);
-    Assert.AreEqual ("int32", actual.MappingType);
+    Assert.AreEqual ("int32", actual.PropertyTypeName);
     Assert.AreEqual (NaInt32.Null, actual.MaxLength);
     Assert.AreEqual ("PropertyName", actual.PropertyName);
     Assert.AreEqual (typeof (NaInt32), actual.PropertyType);
@@ -39,14 +39,14 @@ public class PropertyDefinitionTest
   }
 
   [Test]
-  public void InitializeWithUnresolvedMappingType ()
+  public void InitializeWithUnresolvedPropertyTypeName ()
   {
     PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, NaInt32.Null, false);
     Assert.IsNull (actual.ClassDefinition);
     Assert.AreEqual ("ColumnName", actual.ColumnName);
     Assert.IsNull (actual.DefaultValue);
     Assert.IsTrue (actual.IsNullable);
-    Assert.AreEqual ("int32", actual.MappingType);
+    Assert.AreEqual ("int32", actual.PropertyTypeName);
     Assert.AreEqual (NaInt32.Null, actual.MaxLength);
     Assert.AreEqual ("PropertyName", actual.PropertyName);
     Assert.IsNull (actual.PropertyType);
@@ -54,14 +54,14 @@ public class PropertyDefinitionTest
   }
 
   [Test]
-  public void InitializeWithUnresolvedUnknownMappingType ()
+  public void InitializeWithUnresolvedUnknownPropertyTypeName ()
   {
-    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", true, NaInt32.Null, false);
+    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyTypeName", true, NaInt32.Null, false);
     Assert.IsNull (actual.ClassDefinition);
     Assert.AreEqual ("ColumnName", actual.ColumnName);
     Assert.IsNull (actual.DefaultValue);
     Assert.IsTrue (actual.IsNullable);
-    Assert.AreEqual ("UnknownMappingType", actual.MappingType);
+    Assert.AreEqual ("UnknownPropertyTypeName", actual.PropertyTypeName);
     Assert.AreEqual (NaInt32.Null, actual.MaxLength);
     Assert.AreEqual ("PropertyName", actual.PropertyName);
     Assert.IsNull (actual.PropertyType);
@@ -85,19 +85,19 @@ public class PropertyDefinitionTest
   }
 
   [Test]
-  public void MappingType ()
+  public void PropertyTypeName ()
   {
     PropertyDefinition definition = new PropertyDefinition ("test", "test", "date");
  
     Assert.AreEqual (typeof (DateTime), definition.PropertyType);
-    Assert.AreEqual ("date", definition.MappingType);
+    Assert.AreEqual ("date", definition.PropertyTypeName);
   }
 
   [Test]
   [ExpectedException (typeof (MappingException))]
-  public void InvalidMappingType ()
+  public void InvalidPropertyTypeName ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", "InvalidMappingType");
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "InvalidPropertyTypeName");
   }
 }
 }

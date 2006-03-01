@@ -19,7 +19,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
   private string _propertyName;
   private string _columnName;
   private TypeInfo _typeInfo;
-  private string _mappingType;
+  private string _propertyTypeName;
   private bool _isNullable;
   private NaInt32 _maxLength;
   
@@ -32,44 +32,44 @@ public class PropertyDefinition : ISerializable, IObjectReference
   public PropertyDefinition (
       string propertyName, 
       string columnName, 
-      string mappingType)
-      : this (propertyName, columnName, mappingType, false)
+      string propertyTypeName)
+      : this (propertyName, columnName, propertyTypeName, false)
   {
   }
 
   public PropertyDefinition (
       string propertyName, 
       string columnName, 
-      string mappingType, 
+      string propertyTypeName, 
       bool isNullable)
-      : this (propertyName, columnName, mappingType, isNullable, NaInt32.Null, true)
+      : this (propertyName, columnName, propertyTypeName, isNullable, NaInt32.Null, true)
   {
   }
 
   public PropertyDefinition (
       string propertyName, 
       string columnName, 
-      string mappingType, 
+      string propertyTypeName, 
       NaInt32 maxLength)
-      : this (propertyName, columnName, mappingType, false, maxLength, true)
+      : this (propertyName, columnName, propertyTypeName, false, maxLength, true)
   {
   }
 
   public PropertyDefinition (
       string propertyName, 
       string columnName, 
-      string mappingType, 
+      string propertyTypeName, 
       bool isNullable,
       NaInt32 maxLength,
-      bool resolveMappingType)
+      bool resolvePropertyTypeName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
-    ArgumentUtility.CheckNotNullOrEmpty ("mappingType", mappingType);
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyTypeName", propertyTypeName);
 
-    if (resolveMappingType)
+    if (resolvePropertyTypeName)
     {
-      TypeInfo typeInfo = GetTypeInfo (mappingType, isNullable);
+      TypeInfo typeInfo = GetTypeInfo (propertyTypeName, isNullable);
 
       if (typeInfo.Type == typeof (string) && maxLength == NaInt32.Null)
       {
@@ -88,7 +88,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
 
     _propertyName = propertyName;
     _columnName = columnName;
-    _mappingType = mappingType;
+    _propertyTypeName = propertyTypeName;
     _isNullable = isNullable;
     _maxLength = maxLength;
   }
@@ -111,36 +111,36 @@ public class PropertyDefinition : ISerializable, IObjectReference
       _columnName = info.GetString ("ColumnName");
 
       // GetTypeInfo must be used, to ensure enums are registered even object is deserialized into another process.
-      _mappingType = info.GetString ("MappingType");
+      _propertyTypeName = info.GetString ("PropertyTypeName");
       _isNullable = info.GetBoolean ("IsNullable");
 
       if (info.GetBoolean ("HasTypeInfo"))
-        _typeInfo = GetTypeInfo (_mappingType, _isNullable);
+        _typeInfo = GetTypeInfo (_propertyTypeName, _isNullable);
       
       _maxLength = (NaInt32) info.GetValue ("MaxLength", typeof (NaInt32));
     }
   }
 
-  private TypeInfo GetTypeInfo (string mappingType, bool isNullable)
+  private TypeInfo GetTypeInfo (string propertyTypeName, bool isNullable)
   {
-    TypeInfo typeInfo = TypeInfo.GetInstance (mappingType, isNullable);
+    TypeInfo typeInfo = TypeInfo.GetInstance (propertyTypeName, isNullable);
 
     if (typeInfo != null)
       return typeInfo;
 
-    Type type = Type.GetType (mappingType, false);
+    Type type = Type.GetType (propertyTypeName, false);
     if (type != null && type.IsEnum)
     {
-      TypeInfo enumTypeInfo = new TypeInfo (type, mappingType, isNullable, TypeInfo.GetDefaultEnumValue (type));
+      TypeInfo enumTypeInfo = new TypeInfo (type, propertyTypeName, isNullable, TypeInfo.GetDefaultEnumValue (type));
       TypeInfo.AddInstance (enumTypeInfo);
       return enumTypeInfo;
     }
     
     string message;
     if (isNullable)
-      message = string.Format ("Cannot map nullable type '{0}'.", mappingType);
+      message = string.Format ("Cannot map nullable type '{0}'.", propertyTypeName);
     else
-      message = string.Format ("Cannot map not-nullable type '{0}'.", mappingType);
+      message = string.Format ("Cannot map not-nullable type '{0}'.", propertyTypeName);
 
     throw CreateMappingException (message);
   }
@@ -172,9 +172,9 @@ public class PropertyDefinition : ISerializable, IObjectReference
     get { return (_typeInfo != null); }
   }
 
-  public string MappingType 
+  public string PropertyTypeName 
   {
-    get { return _mappingType; }
+    get { return _propertyTypeName; }
   }
 
   public bool IsNullable
@@ -233,7 +233,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
       info.AddValue ("ClassDefinition", _classDefinition);
       info.AddValue ("ColumnName", _columnName);
       info.AddValue ("HasTypeInfo", _typeInfo != null);
-      info.AddValue ("MappingType", _mappingType);
+      info.AddValue ("PropertyTypeName", _propertyTypeName);
       info.AddValue ("IsNullable", _isNullable);
       info.AddValue ("MaxLength", _maxLength);
     }

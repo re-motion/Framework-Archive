@@ -62,7 +62,7 @@ public class MappingTest : SerializationBaseTest
   }
 
   [Test]
-  public void PropertyDefinitionWithUnresolvedNativeMappingType ()
+  public void PropertyDefinitionWithUnresolvedNativePropertyTypeName ()
   {
     PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, NaInt32.Null, false);
 
@@ -71,9 +71,9 @@ public class MappingTest : SerializationBaseTest
   }
 
   [Test]
-  public void PropertyDefinitionWithUnresolvedUnknownMappingType ()
+  public void PropertyDefinitionWithUnresolvedUnknownPropertyTypeName ()
   {
-    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", true, NaInt32.Null, false);
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyTypeName", true, NaInt32.Null, false);
 
     PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
     AreEqual (propertyDefinition, deserializedPropertyDefinition);
@@ -395,7 +395,7 @@ public class MappingTest : SerializationBaseTest
     Assert.AreEqual (expected.ColumnName, actual.ColumnName);
     Assert.AreEqual (expected.DefaultValue, actual.DefaultValue);
     Assert.AreEqual (expected.IsNullable, actual.IsNullable);
-    Assert.AreEqual (expected.MappingType, actual.MappingType);
+    Assert.AreEqual (expected.PropertyTypeName, actual.PropertyTypeName);
     Assert.AreEqual (expected.MaxLength, actual.MaxLength);
     Assert.AreEqual (expected.PropertyName, actual.PropertyName);
     Assert.AreEqual (expected.PropertyType, actual.PropertyType);

@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
-public class QueryConfigurationLoader : BaseLoader
+public class QueryConfigurationLoader : BaseFileLoader
 {
   // types
 
