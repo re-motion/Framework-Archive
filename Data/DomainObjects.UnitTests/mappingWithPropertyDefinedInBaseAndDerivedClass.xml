@@ -32,7 +32,7 @@
 					<column>CustomerSince</column>
 					<nullable>true</nullable>					
 				</property>
-				<property name="CustomerType">
+				<property name="Type">
 					<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests</type>
 					<column>CustomerType</column>
 				</property>
