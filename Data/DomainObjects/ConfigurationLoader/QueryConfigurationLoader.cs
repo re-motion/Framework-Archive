@@ -32,6 +32,7 @@ public class QueryConfigurationLoader : BaseLoader
 
   // construction and disposing
 
+  //TODO: resolve parameter
   public QueryConfigurationLoader (string configurationFile, string schemaFile)
   {
     try
@@ -39,6 +40,7 @@ public class QueryConfigurationLoader : BaseLoader
       base.Initialize (
           configurationFile, 
           schemaFile, 
+          true,
           new PrefixNamespace[] {PrefixNamespace.QueryConfigurationNamespace}, 
           PrefixNamespace.QueryConfigurationNamespace);
     }

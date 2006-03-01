@@ -31,6 +31,7 @@ public class StorageProviderConfigurationLoader : BaseLoader
 
   // construction and disposing
 
+  //TODO: resolve parameter
   public StorageProviderConfigurationLoader (string configurationFile, string schemaFile)
   {
     try
@@ -38,6 +39,7 @@ public class StorageProviderConfigurationLoader : BaseLoader
       base.Initialize (
           configurationFile, 
           schemaFile, 
+          true,
           new PrefixNamespace[] {PrefixNamespace.StorageProviderConfigurationNamespace}, 
           PrefixNamespace.StorageProviderConfigurationNamespace);
     }

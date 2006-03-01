@@ -26,20 +26,22 @@ public class MappingLoader : BaseLoader
   {
     return new MappingLoader (
         LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
-        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, DefaultSchemaFile));
+        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, DefaultSchemaFile),
+        true);
   }
 
   // member fields
 
   // construction and disposing
 
-  public MappingLoader (string configurationFile, string schemaFile)
+  public MappingLoader (string configurationFile, string schemaFile, bool resolveTypeNames)
   {
     try
     {
       base.Initialize (
           configurationFile, 
           schemaFile, 
+          resolveTypeNames,
           new PrefixNamespace[] {PrefixNamespace.MappingNamespace}, 
           PrefixNamespace.MappingNamespace);
     }
