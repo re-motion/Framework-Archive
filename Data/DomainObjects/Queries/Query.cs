@@ -88,7 +88,7 @@ public class Query : IQuery
   /// Gets the <see cref="Configuration.QueryDefinition.ID"/> of the associated <see cref="Configuration.QueryDefinition"/>.
   /// </summary>
   [Obsolete ("Use property ID instead.", true)]
-  // TODO: Remove this property after 1.3.2006.
+  // TODO: Remove this property after 1.6.2006.
   public string QueryID
   {
     get { return _definition.ID; }

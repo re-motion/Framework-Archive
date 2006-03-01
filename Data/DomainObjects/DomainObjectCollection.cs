@@ -379,7 +379,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   [Obsolete ("Use Contains (ObjectID) to determine if the DomainObjectCollection contains a DomainObject with the specified ID or use"
       + " ContainsObject (DomainObject) to determine if the DomainObjectCollection contains a reference to the specified DomainObject."
       + " Note: In most scenarios Contains (ObjectID) should be used.", true)]
-  // TODO: Remove this method after 01.03.2006
+  // TODO: Remove this method after 01.06.2006
   public bool Contains (DomainObject domainObject)
   {
     return ContainsObject (domainObject);
