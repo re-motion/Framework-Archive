@@ -54,8 +54,8 @@ public class Customer : Company
 
   public CustomerType Type
   {
-    get { return (CustomerType) DataContainer["CustomerType"]; }
-    set { DataContainer.SetValue ("CustomerType", value); }
+    get { return (CustomerType) DataContainer["Type"]; }
+    set { DataContainer.SetValue ("Type", value); }
   }
 
   public OrderCollection Orders 
