@@ -64,7 +64,9 @@ public class ConfigurationBase
     get { return _schemaFile; }
   }
 
-  // TODO: Doc
+  /// <summary>
+  /// Gets a flag whether type names in the configuration file should be resolved to their corresponding .NET <see cref="Type"/>.
+  /// </summary>
   public bool ResolveTypeNames
   {
     get { return _resolveTypeNames; }
