@@ -167,6 +167,11 @@ public class PropertyDefinition : ISerializable, IObjectReference
     get { return _typeInfo != null ? _typeInfo.Type : null; }
   }
 
+  public bool IsPropertyTypeResolved
+  {
+    get { return (_typeInfo != null); }
+  }
+
   public string MappingType 
   {
     get { return _mappingType; }

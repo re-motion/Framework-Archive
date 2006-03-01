@@ -59,7 +59,7 @@ public class MappingLoader : BaseLoader
 
   public ClassDefinitionCollection GetClassDefinitions ()
   {
-    ClassDefinitionLoader classDefinitionLoader = new ClassDefinitionLoader (Document, NamespaceManager);        
+    ClassDefinitionLoader classDefinitionLoader = new ClassDefinitionLoader (Document, NamespaceManager, ResolveTypeNames);        
     return classDefinitionLoader.GetClassDefinitions ();
   }
 

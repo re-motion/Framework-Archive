@@ -385,6 +385,11 @@ public class ClassDefinition : ISerializable, IObjectReference
     get { return _classTypeName; }
   }
 
+  public bool IsClassTypeResolved
+  {
+    get { return (_classType != null); }
+  }
+
   public string StorageProviderID
   {
     get { return _storageProviderID; }

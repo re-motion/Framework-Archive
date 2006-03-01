@@ -38,22 +38,18 @@ public class MappingLoaderTest
   [Test]
   public void InitializeWithResolveTypeNames ()
   {
-    MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd", true);
-
     string configurationFile = Path.GetFullPath (@"mapping.xml");
     string schemaFile = Path.GetFullPath (@"mapping.xsd");
 
-    Assert.AreEqual (configurationFile, loader.ConfigurationFile);
-    Assert.AreEqual (schemaFile, loader.SchemaFile);
-    Assert.IsTrue (loader.ResolveTypeNames);
+    Assert.AreEqual (configurationFile, _loader.ConfigurationFile);
+    Assert.AreEqual (schemaFile, _loader.SchemaFile);
+    Assert.IsTrue (_loader.ResolveTypeNames);
   }
 
   [Test]
   public void InitializeBaseLoaderWithResolveTypeNames ()
   {
-    MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd", true);
-
-    Assert.IsTrue (((BaseLoader) loader).ResolveTypeNames);
+    Assert.IsTrue (((BaseLoader) _loader).ResolveTypeNames);
   }
 
   [Test]

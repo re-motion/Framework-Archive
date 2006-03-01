@@ -131,7 +131,34 @@ public class MappingConfigurationTest
         orderTicketEndPointdefinition);
 
     Assert.IsFalse (MappingConfiguration.Current.Contains (orderEndPointDefinition));
+  }
 
+  [Test]
+  public void MappingWithUnresolvedTypeNames ()
+  {
+    MappingConfiguration configuration = new MappingConfiguration (
+        new MappingLoader (@"mappingWithUnresolvedTypes.xml", @"mapping.xsd", false));
+
+    Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypeNamesRequired);
+    Assert.AreEqual (1, configuration.ClassDefinitions.Count);
+    
+    ClassDefinition classDefinition = configuration.ClassDefinitions.GetMandatory ("ClassWithUnresolvedTypes");
+    Assert.IsFalse (classDefinition.IsClassTypeResolved);
+    Assert.AreEqual ("UnknownClassType, Rubicon.Data.DomainObjects.UnitTests", classDefinition.ClassTypeName);
+
+    PropertyDefinitionCollection propertyDefinitions = classDefinition.GetPropertyDefinitions();
+    Assert.AreEqual (2, propertyDefinitions.Count);
+
+    PropertyDefinition int32Property = propertyDefinitions["Int32Property"];
+    Assert.IsFalse (int32Property.IsPropertyTypeResolved);
+    Assert.AreEqual ("int32", int32Property.MappingType);
+
+    PropertyDefinition enumProperty = propertyDefinitions["EnumProperty"];
+    Assert.IsFalse (enumProperty.IsPropertyTypeResolved);
+    Assert.AreEqual ("UnknownClassType+EnumType, Rubicon.Data.DomainObjects.UnitTests", enumProperty.MappingType);
+
+    Assert.AreEqual (0, configuration.RelationDefinitions.Count);
   }
 }
+
 }
