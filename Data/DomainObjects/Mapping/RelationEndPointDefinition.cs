@@ -39,7 +39,7 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition, ISerializ
           classDefinition.ID, propertyName);
     }
 
-    if (propertyDefinition.PropertyType != typeof (ObjectID))
+    if (propertyDefinition.MappingTypeName != TypeInfo.ObjectIDMappingTypeName)
     {
       throw CreateMappingException (
           "Relation definition error: Property '{0}' of class '{1}' is of type '{2}',"
@@ -126,6 +126,17 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition, ISerializ
   public Type PropertyType
   {
     get { return _propertyDefinition.PropertyType; }
+  }
+
+  public bool IsPropertyTypeResolved
+  {
+    get { return PropertyType != null; }
+  }
+
+  public string PropertyTypeName
+  {
+    // TODO: Other classes return the AssemblyQualifiedName only if type is resolved => Use "objectID" instead, if type is unresolved?
+    get { return typeof(ObjectID).AssemblyQualifiedName; }
   }
 
   public bool IsVirtual
