@@ -133,7 +133,7 @@ public class TestMappingConfiguration
 
     customer.MyPropertyDefinitions.Add (
         new PropertyDefinition (
-            "CustomerType", 
+            "Type", 
             "CustomerType", 
             "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.UnitTests"));
 
