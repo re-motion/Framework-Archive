@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.Mapping;
@@ -31,7 +32,28 @@ public class LoaderTest
   [SetUp]
   public void Setup ()
   {
-    _loader = new MappingLoader (@"mapping.xml", @"mapping.xsd");
+    _loader = new MappingLoader (@"mapping.xml", @"mapping.xsd", true);
+  }
+
+  [Test]
+  public void InitializeWithResolveTypeNames ()
+  {
+    MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd", true);
+
+    string configurationFile = Path.GetFullPath (@"mapping.xml");
+    string schemaFile = Path.GetFullPath (@"mapping.xsd");
+
+    Assert.AreEqual (configurationFile, loader.ConfigurationFile);
+    Assert.AreEqual (schemaFile, loader.SchemaFile);
+    Assert.IsTrue (loader.ResolveTypeNames);
+  }
+
+  [Test]
+  public void InitializeBaseLoaderWithResolveTypeNames ()
+  {
+    MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd", true);
+
+    Assert.IsTrue (((BaseLoader) loader).ResolveTypeNames);
   }
 
   [Test]
@@ -59,9 +81,7 @@ public class LoaderTest
   [Test]
   public void ReadAndValidateMappingFile ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mapping.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd", true);
 
     // expectation: no exception
   }
@@ -70,9 +90,7 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException), "Class 'Company' cannot refer to itself as base class.")]
   public void MappingWithInvalidBaseClass ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithInvalidDerivation.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithInvalidDerivation.xml", @"mapping.xsd", true);
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -83,9 +101,7 @@ public class LoaderTest
           "base class 'Company' must be equal.")]
   public void MappingWithDerivationAndInvalidEntityName ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithDerivationAndInvalidEntityName.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithDerivationAndInvalidEntityName.xml", @"mapping.xsd", true);
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -95,9 +111,7 @@ public class LoaderTest
       "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
   public void MappingWithInvalidDerivationAcrossStorageProviders ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithInvalidDerivationAcrossStorageProviders.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithInvalidDerivationAcrossStorageProviders.xml", @"mapping.xsd", true);
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -108,9 +122,7 @@ public class LoaderTest
         + " because the property 'Name' is defined in both classes.")]
   public void MappingWithPropertyDefinedInBaseAndDerivedClass ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithPropertyDefinedInBaseAndDerivedClass.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithPropertyDefinedInBaseAndDerivedClass.xml", @"mapping.xsd", true);
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -121,9 +133,7 @@ public class LoaderTest
         + " because the property 'Name' is defined in both classes.")]
   public void MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml", @"mapping.xsd", true);
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -131,9 +141,7 @@ public class LoaderTest
   [Test]
   public void MappingWithMinimumData ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithMinimumData.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithMinimumData.xml", @"mapping.xsd", true);
     
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
     RelationDefinitionCollection relationDefinitions = loader.GetRelationDefinitions (classDefinitions);
@@ -149,9 +157,7 @@ public class LoaderTest
       "Class 'Customer' refers to non-existing base class 'NonExistingClass'.")]
   public void MappingWithNonExistingBaseClass ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithNonExistingBaseClass.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithNonExistingBaseClass.xml", @"mapping.xsd", true);
   
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
   }
@@ -160,9 +166,7 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException))]
   public void MappingWithSchemaException ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithSchemaException.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithSchemaException.xml", @"mapping.xsd", true);
   }
 
   [Test]
@@ -171,9 +175,7 @@ public class LoaderTest
      + " '<', hexadecimal value 0x3C, is an invalid attribute character. Line 10, position 4.")]
   public void MappingWithXmlException ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithXmlException.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithXmlException.xml", @"mapping.xsd", true);
   }
 
 
@@ -213,9 +215,7 @@ public class LoaderTest
       + " Element 'collectionType' is only valid for relation properties with cardinality equal to 'many'.")]
   public void MappingWithCollectionTypeAndOneToOneRelation ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithCollectionTypeAndOneToOneRelation.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithCollectionTypeAndOneToOneRelation.xml", @"mapping.xsd", true);
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   }
@@ -224,9 +224,7 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException))]
   public void MappingWithDuplicateColumnName ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithDuplicateColumnName.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithDuplicateColumnName.xml", @"mapping.xsd", true);
   
     loader.GetClassDefinitions ();
   }
@@ -235,9 +233,7 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException))]
   public void MappingWithDuplicateColumnNameAndRelationProperty ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithDuplicateColumnNameAndRelationProperty.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithDuplicateColumnNameAndRelationProperty.xml", @"mapping.xsd", true);
   
     loader.GetClassDefinitions ();
   }
@@ -247,9 +243,7 @@ public class LoaderTest
       "The relation 'CustomerToOrder' is not correctly defined. For relations with only one relation property the relation property must define the opposite class.")]
   public void MappingWithOnlyOneEndPoint ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithOnlyOneEndPoint.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithOnlyOneEndPoint.xml", @"mapping.xsd", true);
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
@@ -258,9 +252,7 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException), "Property 'Order' of relation 'OrderToOrderTicket' defines a column and a cardinality equal to 'many', which is not valid.")]
   public void MappingWithColumnAndCardinalityMany ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithColumnAndCardinalityMany.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithColumnAndCardinalityMany.xml", @"mapping.xsd", true);
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
@@ -269,9 +261,7 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException), "Both property names of relation 'OrderToOrderTicket' are 'OrderTicket', which is not valid.")]
   public void MappingWithRelationAndIdenticalPropertyNames ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithRelationAndIdenticalPropertyNames.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithRelationAndIdenticalPropertyNames.xml", @"mapping.xsd", true);
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
@@ -280,9 +270,7 @@ public class LoaderTest
   [ExpectedException (typeof (MappingException), "Property 'SpecialCustomer' of class 'SpecialOrder' inherits a property which already defines the column 'CustomerID'.")]
   public void MappingWithDerivationAndDuplicateColumnName ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithDerivationAndDuplicateColumnName.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithDerivationAndDuplicateColumnName.xml", @"mapping.xsd", true);
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
@@ -290,7 +278,7 @@ public class LoaderTest
   [Test]
   public void GetApplicationName ()
   {
-    MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mapping.xml", @"mapping.xsd", true);
     Assert.AreEqual ("UnitTests", loader.GetApplicationName ());
   }
 
@@ -300,9 +288,7 @@ public class LoaderTest
       + " have an opposite class defined.")]
   public void MappingWithMoreThanTwoEndPoints ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithMoreThanTwoEndPoints.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithMoreThanTwoEndPoints.xml", @"mapping.xsd", true);
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
@@ -312,9 +298,7 @@ public class LoaderTest
       "The relation 'CustomerToOrder' is not correctly defined. A relation property with a cardinality of 'many' cannot define an opposite class.")]
   public void MappingWithOppositeClassAndCardinalityMany ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithOppositeClassAndCardinalityMany.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithOppositeClassAndCardinalityMany.xml", @"mapping.xsd", true);
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
@@ -324,9 +308,7 @@ public class LoaderTest
       "The relation 'CustomerToOrder' is not correctly defined. Because the relation is bidirectional the relation property 'Customer' must not define its opposite class.")]
   public void MappingWithOppositeClassAndTwoRelationProperties ()
   {
-    MappingLoader loader = new MappingLoader (
-        @"mappingWithOppositeClassAndTwoRelationProperties.xml", 
-        @"mapping.xsd");
+    MappingLoader loader = new MappingLoader (@"mappingWithOppositeClassAndTwoRelationProperties.xml", @"mapping.xsd", true);
   
     loader.GetRelationDefinitions (loader.GetClassDefinitions ());
   } 
