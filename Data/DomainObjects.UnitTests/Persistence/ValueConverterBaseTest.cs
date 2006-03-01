@@ -35,21 +35,21 @@ public class ValueConverterBaseTest
   [Test]
   [ExpectedException (typeof (ConverterException), 
       "Enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType'"
-      + " does not define the value 'InvalidEnumValue', property 'CustomerType'.")]
+      + " does not define the value 'InvalidEnumValue', property 'Type'.")]
   public void GetInvalidEnumValue ()
   {
     ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-    PropertyDefinition enumProperty = customerDefinition["CustomerType"];
+    PropertyDefinition enumProperty = customerDefinition["Type"];
 
     _converterMock.GetEnumValue (enumProperty, "InvalidEnumValue");    
   }
 
   [Test]
-  [ExpectedException (typeof (ConverterException), "Invalid null value for not-nullable property 'CustomerType' encountered. Class: 'Customer'.")]
+  [ExpectedException (typeof (ConverterException), "Invalid null value for not-nullable property 'Type' encountered. Class: 'Customer'.")]
   public void GetNullValueForEnum ()
   {
     ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-    PropertyDefinition enumProperty = customerDefinition["CustomerType"];
+    PropertyDefinition enumProperty = customerDefinition["Type"];
 
     _converterMock.GetValue (customerDefinition, enumProperty, null);
   }

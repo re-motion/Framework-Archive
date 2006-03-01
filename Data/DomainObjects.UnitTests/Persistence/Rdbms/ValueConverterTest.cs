@@ -62,11 +62,11 @@ public class ValueConverterTest : DatabaseTest
   }
 
   [Test]
-  [ExpectedException (typeof (ConverterException), "Invalid null value for not-nullable property 'CustomerType' encountered. Class: 'Customer'.")]
+  [ExpectedException (typeof (ConverterException), "Invalid null value for not-nullable property 'Type' encountered. Class: 'Customer'.")]
   public void GetNullValueForEnum ()
   {
     ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-    PropertyDefinition enumProperty = customerDefinition["CustomerType"];
+    PropertyDefinition enumProperty = customerDefinition["Type"];
 
     _converter.GetValue (customerDefinition, enumProperty, DBNull.Value);
   }
