@@ -5,68 +5,16 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-public abstract class FileBuilder : IBuilder
+
+public abstract class FileBuilder
 {
-  // types
+  private TextWriter _writer = null;
 
-  // static members and constants
-
-  // member fields
-
-  private bool _disposed = false;
-  private string _fileName = null;
-  private StreamWriter _writer;
-
-  // construction and disposing
-
-  protected FileBuilder (string fileName)
+  protected FileBuilder (TextWriter writer)
   {
-    ArgumentUtility.CheckNotNull ("fileName", fileName);
+    ArgumentUtility.CheckNotNull ("writer", writer);
 
-    _fileName = fileName;
-  }
-
-  ~FileBuilder ()      
-  {
-    Dispose (false);
-  }
-
-  public void Dispose ()
-  {
-    Dispose(true);
-    GC.SuppressFinalize (this);
-  }
-
-  protected virtual void Dispose (bool disposing)
-  {
-    if(!_disposed)
-    {
-      if(disposing)
-      {
-        _writer.Close ();
-        _writer = null;
-      }
-    }
-    _disposed = true;         
-  }
-
-  // methods and properties
-
-  protected string FileName
-  {
-    get { return _fileName; }
-    set { _fileName = value;}
-  }
-
-  protected void OpenFile ()
-  {
-    if (_fileName != null)
-      _writer = new StreamWriter (_fileName);
-  }
-
-  protected virtual void CloseFile ()
-  {
-    _writer.Close ();
+    _writer = writer;
   }
 
   protected void Write (string text)
@@ -79,6 +27,11 @@ public abstract class FileBuilder : IBuilder
     Write (Environment.NewLine);
   }
 
+  protected virtual void FinishFile()
+  {
+    _writer.Flush();
+  }
+
   public string ReplaceTag (string original, string tag, string value)
   {
     string newString = original.Replace (tag, value);
@@ -86,11 +39,5 @@ public abstract class FileBuilder : IBuilder
       throw new ApplicationException (string.Format ("ReplaceTag did not replace tag '{0}' with '{1}' in string '{2}'. Tag was not found.", tag, value, original));
     return newString;
   }
-
-  #region IBuilder Members
-
-  public abstract void Build ();
-
-  #endregion
 }
 }
