@@ -1,75 +1,66 @@
 using System;
+using System.IO;
+using System.Collections;
 using System.Reflection;
+using Rubicon.Text.CommandLine;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 {
+
 class MainClass
 {
-  // types
-
-  // static members and constants
-
-	[STAThread]
-	static void Main(string[] args)
+	static int Main(string[] args)
 	{
-    BuilderFactory builderFactory;
+    Arguments arguments;
+    CommandLineClassParser parser = new CommandLineClassParser (typeof (Arguments));
     try
     {
-      builderFactory = new BuilderFactory (args);
+      arguments = (Arguments) parser.Parse (args);
     }
-    catch (Exception ex)
+    catch (CommandLineArgumentException e)
     {
-      PrintException (ex, true);
-      BuilderFactory.PrintHelp ();
-      return;
-    }
-
-    if (builderFactory.IsOperationModeSet (OperationMode.Help))
-    {
-      BuilderFactory.PrintHelp ();
-      return;
+      System.Console.WriteLine (e.Message);
+      System.Console.WriteLine ("Usage:");
+      System.Console.WriteLine (parser.GetAsciiSynopsis (System.Environment.GetCommandLineArgs()[0], 79));
+      return 1;
     }
 
     try
     {
-      IBuilder[] builders = builderFactory.GetBuilders ();
-      foreach (IBuilder builder in builders)
-        builder.Build ();
-    }
-    catch (Exception ex)
-    {
-      PrintException (ex);
-    }
-	}
-
-  private static void PrintException (Exception ex)
-  {
-    PrintException (ex, false);
-  }
-
-  private static void PrintException (Exception ex, bool hideStackTrace)
-  {
-      while (ex != null)
+      using (new ConfigurationLoader (arguments.ConfigDirectory, arguments.SchemaDirectory))
       {
-        System.Console.Error.WriteLine ("");
-        System.Console.Error.WriteLine ("Exception: " + ex.GetType ().Name);
-        System.Console.Error.WriteLine (ex.Message);
-        System.Console.Error.WriteLine ("");
-        if (!hideStackTrace)
+        if ((arguments.Mode & OperationMode.Sql) != 0)
         {
-          System.Console.Error.WriteLine (ex.StackTrace);
-          System.Console.Error.WriteLine ("");
+          SqlBuilder.Build (arguments.SqlOutput);
         }
 
-        ex = ex.InnerException;
+        if ((arguments.Mode & OperationMode.DomainModel) != 0)
+        {
+          DomainModelBuilder.Build (
+              arguments.ClassOutput, 
+              arguments.DomainObjectBaseClass, arguments.DomainObjectCollectionBaseClass, 
+              arguments.Serializable);
+        }
       }
+    }
+    catch (Exception e)
+    {
+      if (arguments.Verbose)
+      {
+        System.Console.Error.WriteLine ("Execution aborted. Exception stack:");
+        for (; e != null; e = e.InnerException)
+        {
+          System.Console.Error.WriteLine ("{0}: {1}\n{2}", e.GetType().FullName, e.Message, e.StackTrace);
+        }
+      }
+      else
+      {
+        System.Console.Error.WriteLine ("Execution aborted: {0}", e.Message);
+      }
+      return 1;
+    }
+    return 0;
   }
-
-  // member fields
-
-  // construction and disposing
-
-  // methods and properties
-
 }
+
 }
