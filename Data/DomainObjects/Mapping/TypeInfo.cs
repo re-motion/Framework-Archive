@@ -13,6 +13,8 @@ public class TypeInfo
 
   // static members and constants
 
+  public const string ObjectIDMappingTypeName = "objectID";
+
   private static readonly Hashtable s_mappingTypes;
 
   public static void AddInstance (TypeInfo typeInfo)
@@ -109,7 +111,7 @@ public class TypeInfo
     allTypeInfos[9] = new TypeInfo (typeof (NaInt64), "int64", true, NaInt64.Null);
     allTypeInfos[10] = new TypeInfo (typeof (NaSingle), "single", true, NaSingle.Null);
     allTypeInfos[11] = new TypeInfo (typeof (string), "string", true, null);
-    allTypeInfos[12] = new TypeInfo (typeof (ObjectID), "objectID", true, null);
+    allTypeInfos[12] = new TypeInfo (typeof (ObjectID), TypeInfo.ObjectIDMappingTypeName, true, null);
     allTypeInfos[13] = new TypeInfo (typeof (byte[]), "binary", true, null);
 
     allTypeInfos[14] = new TypeInfo (typeof (bool), "boolean", false, false);
@@ -126,7 +128,7 @@ public class TypeInfo
     allTypeInfos[23] = new TypeInfo (typeof (long), "int64", false, long.MinValue);
     allTypeInfos[24] = new TypeInfo (typeof (float), "single", false, float.MinValue);
     allTypeInfos[25] = new TypeInfo (typeof (string), "string", false, string.Empty);
-    allTypeInfos[26] = new TypeInfo (typeof (ObjectID), "objectID", false, null);
+    allTypeInfos[26] = new TypeInfo (typeof (ObjectID), TypeInfo.ObjectIDMappingTypeName, false, null);
     allTypeInfos[27] = new TypeInfo (typeof (byte[]), "binary", false, new byte[0]);
 
     return allTypeInfos;
