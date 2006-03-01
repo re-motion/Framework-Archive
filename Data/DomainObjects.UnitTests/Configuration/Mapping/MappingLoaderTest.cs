@@ -66,6 +66,15 @@ public class MappingLoaderTest
   }
 
   [Test]
+  public void LoadWithUnresolvedTypeNames ()
+  {
+    MappingLoader loader = new MappingLoader ("mappingWithUnresolvedTypes.xml", "mapping.xsd", false);
+
+    ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
+    Assert.IsFalse (classDefinitions.AreResolvedTypeNamesRequired);
+  }
+
+  [Test]
   public void LoadingOfRelations ()
   {
     ClassDefinitionCollection actualClassDefinitions = _loader.GetClassDefinitions ();

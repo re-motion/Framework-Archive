@@ -90,6 +90,7 @@ public class ClassDefinitionTest
     ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingTypeName", false);
     Assert.IsNull (actual.ClassType);
     Assert.AreEqual ("UnexistingTypeName", actual.ClassTypeName);
+    Assert.IsFalse (actual.IsClassTypeResolved);
   }
 
   [Test]

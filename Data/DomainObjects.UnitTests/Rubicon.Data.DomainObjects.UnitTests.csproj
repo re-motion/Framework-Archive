@@ -218,6 +218,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithUnresolvedTypes.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithXmlException.xml"
                     BuildAction = "Content"
                 />
@@ -280,6 +284,16 @@
                 />
                 <File
                     RelPath = "Configuration\Mapping\ClassDefinitionCollectionWithUnresolvedTypeNamesTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithResolvedTypeNamesTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithUnresolvedTypeNamesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

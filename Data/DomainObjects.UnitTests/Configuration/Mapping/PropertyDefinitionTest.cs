@@ -35,6 +35,7 @@ public class PropertyDefinitionTest
     Assert.AreEqual (NaInt32.Null, actual.MaxLength);
     Assert.AreEqual ("PropertyName", actual.PropertyName);
     Assert.AreEqual (typeof (NaInt32), actual.PropertyType);
+    Assert.IsTrue (actual.IsPropertyTypeResolved);
   }
 
   [Test]
@@ -49,6 +50,7 @@ public class PropertyDefinitionTest
     Assert.AreEqual (NaInt32.Null, actual.MaxLength);
     Assert.AreEqual ("PropertyName", actual.PropertyName);
     Assert.IsNull (actual.PropertyType);
+    Assert.IsFalse (actual.IsPropertyTypeResolved);
   }
 
   [Test]
@@ -63,6 +65,7 @@ public class PropertyDefinitionTest
     Assert.AreEqual (NaInt32.Null, actual.MaxLength);
     Assert.AreEqual ("PropertyName", actual.PropertyName);
     Assert.IsNull (actual.PropertyType);
+    Assert.IsFalse (actual.IsPropertyTypeResolved);
   }
 
   [Test]
