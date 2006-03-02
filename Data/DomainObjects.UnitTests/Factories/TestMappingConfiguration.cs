@@ -326,7 +326,7 @@ public class TestMappingConfiguration
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt64Property", "NaInt64", "int64", true));
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaSingleProperty", "NaSingle", "single", true));
 
-    classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringWithNullValueProperty", "StringWithNullValue", "string", true, 100, true));
+    classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringWithNullValueProperty", "StringWithNullValue", "string", true, true, 100));
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaBooleanWithNullValueProperty", "NaBooleanWithNullValue", "boolean", true));
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaByteWithNullValueProperty", "NaByteWithNullValue", "byte", true));
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaDateWithNullValueProperty", "NaDateWithNullValue", "date", true));
@@ -338,7 +338,7 @@ public class TestMappingConfiguration
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt32WithNullValueProperty", "NaInt32WithNullValue", "int32", true));
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaInt64WithNullValueProperty", "NaInt64WithNullValue", "int64", true));
     classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaSingleWithNullValueProperty", "NaSingleWithNullValue", "single", true));
-    classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NullableBinaryProperty", "NullableBinary", "binary", true, 1000000, true));
+    classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NullableBinaryProperty", "NullableBinary", "binary", true, true, 1000000));
 
     return classWithAllDataTypes;
   }

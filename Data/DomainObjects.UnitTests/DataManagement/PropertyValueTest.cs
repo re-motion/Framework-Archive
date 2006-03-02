@@ -290,7 +290,7 @@ public class PropertyValueTest
   [ExpectedException (typeof (InvalidOperationException), "Property 'test' does not allow null values.")]
   public void SetNotNullableStringToNull ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", false, new NaInt32 (10), true);
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "string", true, false, new NaInt32 (10));
     PropertyValue propertyValue = new PropertyValue (definition, string.Empty);
 
     propertyValue.Value = null;
@@ -345,7 +345,7 @@ public class PropertyValueTest
   [ExpectedException (typeof (ValueTooLongException), "Value for property 'test' is too large. Maximum size: 1000000.")]
   public void SetBinaryLargerThanMaxLength ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", true, 1000000, true);
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "binary", true, true, 1000000);
     PropertyValue propertyValue = new PropertyValue (definition, new byte[0]);
     propertyValue.Value = ResourceManager.GetImageLarger1MB ();
   }
@@ -382,7 +382,7 @@ public class PropertyValueTest
     if (mappingType == "string")
       maxLength = new NaInt32 (100);
 
-    return new PropertyDefinition (name, name, mappingType, isNullable, maxLength, true);
+    return new PropertyDefinition (name, name, mappingType, true, isNullable, maxLength);
   }
 
   private PropertyValue CreatePropertyValue (string name, string mappingType, bool isNullable, object value)
