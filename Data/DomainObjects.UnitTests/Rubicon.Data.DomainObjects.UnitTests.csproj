@@ -214,6 +214,10 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "mappingWithResolvedTypes.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mappingWithSchemaException.xml"
                     BuildAction = "Content"
                 />
@@ -364,6 +368,16 @@
                 />
                 <File
                     RelPath = "Configuration\Mapping\RelationDefinitionCollectionTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Mapping\RelationDefinitionLoaderWithResolvedTypeNamesTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Configuration\Mapping\RelationDefinitionLoaderWithUnresolvedTypeNamesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
