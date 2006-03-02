@@ -49,9 +49,6 @@ public class BocCheckBoxUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
-    Load += new EventHandler(BocCheckBoxUserControl_Load);
-    PreRender += new EventHandler(BocCheckBoxUserControl_PreRender);
-
     this.DeceasedField.CheckedChanged += new System.EventHandler(this.DeceasedField_CheckedChanged);
     this.DeceasedTestSetNullButton.Click += new System.EventHandler(this.DeceasedTestSetNullButton_Click);
     this.DeceasedTestToggleValueButton.Click += new System.EventHandler(this.DeceasedTestToggleValueButton_Click);
@@ -64,8 +61,10 @@ public class BocCheckBoxUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
-  private void BocCheckBoxUserControl_Load(object sender, EventArgs e)
+  override protected void OnLoad (EventArgs e)
   {
+    base.OnLoad (e);
+
     Person person = (Person) CurrentObject.BusinessObject;
 
     UnboundDeceasedField.Property = (Rubicon.ObjectBinding.IBusinessObjectBooleanProperty) person.GetBusinessObjectProperty("Deceased");
@@ -84,8 +83,10 @@ public class BocCheckBoxUserControl : BaseUserControl
     }
   }
 
-  private void BocCheckBoxUserControl_PreRender(object sender, EventArgs e)
+  override protected void OnPreRender (EventArgs e)
   {
+    base.OnPreRender (e);
+
     SetDebugLabel (DeceasedField, DeceasedFieldValueLabel);
     SetDebugLabel (ReadOnlyDeceasedField, ReadOnlyDeceasedFieldValueLabel);
     SetDebugLabel (UnboundDeceasedField, UnboundDeceasedFieldValueLabel);

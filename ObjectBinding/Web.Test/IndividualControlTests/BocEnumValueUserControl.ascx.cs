@@ -67,9 +67,6 @@ public class BocEnumValueUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
-    Load += new EventHandler (BocEnumValueUserControl_Load);
-    PreRender += new EventHandler (BocEnumValueUserControl_PreRender);
-
     this.GenderField.SelectionChanged += new System.EventHandler(this.GenderField_SelectionChanged);
     this.GenderTestSetNullButton.Click += new System.EventHandler(this.GenderTestSetNullButton_Click);
     this.GenderTestSetDisabledGenderButton.Click += new System.EventHandler(this.GenderTestSetDisabledGenderButton_Click);
@@ -83,8 +80,10 @@ public class BocEnumValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
-  private void BocEnumValueUserControl_Load(object sender, EventArgs e)
+  override protected void OnLoad (EventArgs e)
   {
+    base.OnLoad (e);
+
     Person person = (Person) CurrentObject.BusinessObject;
 
     GenderField.LoadUnboundValue (null, IsPostBack);
@@ -113,8 +112,10 @@ public class BocEnumValueUserControl : BaseUserControl
     }
   }
 
-  private void BocEnumValueUserControl_PreRender(object sender, EventArgs e)
+  override protected void OnPreRender (EventArgs e)
   {
+    base.OnPreRender (e);
+
     SetDebugLabel (GenderField, GenderFieldValueLabel);
     SetDebugLabel (ReadOnlyGenderField, ReadOnlyGenderFieldValueLabel);
     SetDebugLabel (MarriageStatusField, MarriageStatusFieldValueLabel);

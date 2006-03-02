@@ -63,9 +63,6 @@ public class BocDateTimeValueUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
-    Load += new EventHandler(BocDateTimeValueUserControl_Load);
-    PreRender += new EventHandler(BocDateTimeValueUserControl_PreRender);
-
     this.BirthdayField.DateTimeChanged += new System.EventHandler(this.BirthdayField_DateTimeChanged);
     this.BirthdayTestSetNullButton.Click += new System.EventHandler(this.BirthdayTestSetNullButton_Click);
     this.BirthdayTestSetNewValueButton.Click += new System.EventHandler(this.BirthdayTestSetNewValueButton_Click);
@@ -78,8 +75,10 @@ public class BocDateTimeValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
-  private void BocDateTimeValueUserControl_Load(object sender, EventArgs e)
+  override protected void OnLoad (EventArgs e)
   {
+    base.OnLoad (e);
+
     Person person = (Person) CurrentObject.BusinessObject;
 
     UnboundBirthdayField.Property = (Rubicon.ObjectBinding.IBusinessObjectDateTimeProperty) person.GetBusinessObjectProperty("DateOfBirth");
@@ -107,8 +106,10 @@ public class BocDateTimeValueUserControl : BaseUserControl
     }
   }
 
-  private void BocDateTimeValueUserControl_PreRender(object sender, EventArgs e)
+  override protected void OnPreRender (EventArgs e)
   {
+    base.OnPreRender (e);
+
     SetDebugLabel (BirthdayField, BirthdayFieldValueLabel);
     SetDebugLabel (ReadOnlyBirthdayField, ReadOnlyBirthdayFieldValueLabel);
     SetDebugLabel (UnboundBirthdayField, UnboundBirthdayFieldValueLabel);
