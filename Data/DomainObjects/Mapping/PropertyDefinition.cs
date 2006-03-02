@@ -42,7 +42,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
       string columnName, 
       string mappingTypeName, 
       bool isNullable)
-      : this (propertyName, columnName, mappingTypeName, isNullable, NaInt32.Null, true)
+      : this (propertyName, columnName, mappingTypeName, true, isNullable, NaInt32.Null)
   {
   }
 
@@ -51,7 +51,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
       string columnName, 
       string mappingTypeName, 
       NaInt32 maxLength)
-      : this (propertyName, columnName, mappingTypeName, false, maxLength, true)
+      : this (propertyName, columnName, mappingTypeName, true, false, maxLength)
   {
   }
 
@@ -59,9 +59,9 @@ public class PropertyDefinition : ISerializable, IObjectReference
       string propertyName, 
       string columnName, 
       string mappingTypeName, 
+      bool resolveMappingTypeName,
       bool isNullable,
-      NaInt32 maxLength,
-      bool resolveMappingTypeName)
+      NaInt32 maxLength)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);

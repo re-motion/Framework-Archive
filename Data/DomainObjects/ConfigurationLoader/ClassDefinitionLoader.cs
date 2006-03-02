@@ -135,7 +135,7 @@ public class ClassDefinitionLoader
     if (maxLengthNode != null)
       maxLength = NaInt32.Parse (maxLengthNode.InnerText);
 
-    return new PropertyDefinition (propertyName, columnName, mappingType, isNullable, maxLength, _resolveTypeNames);
+    return new PropertyDefinition (propertyName, columnName, mappingType, _resolveTypeNames, isNullable, maxLength);
   }
 
   private PropertyDefinition GetRelationPropertyDefinition (ClassDefinition classDefinition, XmlNode propertyNode)
@@ -143,7 +143,7 @@ public class ClassDefinitionLoader
     string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
     string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
 
-    return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, true, NaInt32.Null, _resolveTypeNames);
+    return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, _resolveTypeNames, true, NaInt32.Null);
   }
 
   private MappingException CreateMappingException (string message, params object[] args)
