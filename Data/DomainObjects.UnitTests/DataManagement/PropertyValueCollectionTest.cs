@@ -181,7 +181,7 @@ public class PropertyValueCollectionTest
     if (mappingType == "string")
       maxLength = new NaInt32 (100);
 
-    PropertyDefinition definition = new PropertyDefinition (name, name, mappingType, isNullable, maxLength, true);
+    PropertyDefinition definition = new PropertyDefinition (name, name, mappingType, true, isNullable, maxLength);
     return new PropertyValue (definition, value);
   }
 }
