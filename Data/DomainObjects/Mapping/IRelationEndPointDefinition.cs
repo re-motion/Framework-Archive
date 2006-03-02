@@ -10,6 +10,8 @@ public interface IRelationEndPointDefinition : INullableObject
   ClassDefinition ClassDefinition { get; }
   string PropertyName { get; }
   Type PropertyType { get; }
+  bool IsPropertyTypeResolved { get; }
+  string PropertyTypeName { get; }
   bool IsMandatory { get; }
   CardinalityType Cardinality { get; }
   bool IsVirtual { get; }

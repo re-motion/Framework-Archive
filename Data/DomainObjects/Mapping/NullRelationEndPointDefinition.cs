@@ -80,6 +80,16 @@ public class NullRelationEndPointDefinition : IRelationEndPointDefinition, ISeri
     get { return null; }
   }
 
+  public bool IsPropertyTypeResolved
+  {
+    get { return _classDefinition.IsClassTypeResolved; }
+  }
+
+  public string PropertyTypeName
+  {
+    get { return null; }
+  }
+
   public bool IsMandatory
   {
     get { return false;}
