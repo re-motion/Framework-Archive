@@ -80,8 +80,7 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition, IS
       string propertyTypeName,
       string sortExpression)
   {
-    // TODO: Consider classDefinition.IsClassTypeResolved
-    if (propertyTypeName != null)
+    if (classDefinition.IsClassTypeResolved && propertyTypeName != null)
       propertyType = Type.GetType (propertyTypeName, true);
 
     if (propertyType != null)

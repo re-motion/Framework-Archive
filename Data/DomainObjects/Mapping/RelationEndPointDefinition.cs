@@ -135,8 +135,13 @@ public class RelationEndPointDefinition : IRelationEndPointDefinition, ISerializ
 
   public string PropertyTypeName
   {
-    // TODO: Other classes return the AssemblyQualifiedName only if type is resolved => Use "objectID" instead, if type is unresolved?
-    get { return typeof(ObjectID).AssemblyQualifiedName; }
+    get 
+    {
+      if (IsPropertyTypeResolved)
+        return typeof(ObjectID).AssemblyQualifiedName; 
+      else
+        return TypeUtility.GetPartialAssemblyQualifiedName (typeof (ObjectID));
+    }
   }
 
   public bool IsVirtual
