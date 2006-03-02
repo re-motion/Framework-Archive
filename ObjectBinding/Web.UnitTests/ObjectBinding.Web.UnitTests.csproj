@@ -176,6 +176,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\BaseBocListRowTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\BocBooleanValueMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -231,7 +236,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\BocListRowTest.cs"
+                    RelPath = "UI\Controls\BocListRowCompareReferenceValuesTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\BocListRowsCompareStringValuesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
