@@ -31,7 +31,6 @@ public class StorageProviderConfigurationLoader : BaseFileLoader
 
   // construction and disposing
 
-  //TODO: resolve parameter
   public StorageProviderConfigurationLoader (string configurationFile, string schemaFile)
   {
     try
