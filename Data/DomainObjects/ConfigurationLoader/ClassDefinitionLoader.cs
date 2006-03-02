@@ -91,7 +91,7 @@ public class ClassDefinitionLoader
     string id = classNode.SelectSingleNode ("@id", _namespaceManager).InnerText;
     string entityName = classNode.SelectSingleNode (FormatXPath ("{0}:entity/@name"), _namespaceManager).InnerText;
     string storageProviderID = classNode.SelectSingleNode (FormatXPath ("{0}:storageProviderID"), _namespaceManager).InnerText;
-    string classTypeName = classNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText;
+    string classTypeName = classNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText.Trim ();
 
     ClassDefinition classDefinition;
     if (_resolveTypeNames)
@@ -123,7 +123,7 @@ public class ClassDefinitionLoader
   {
     string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
     string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
-    string mappingType = propertyNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText;
+    string mappingType = propertyNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText.Trim ();
 
     bool isNullable = false;
     XmlNode isNullableNode = propertyNode.SelectSingleNode (FormatXPath ("{0}:nullable"), _namespaceManager);
@@ -143,7 +143,7 @@ public class ClassDefinitionLoader
     string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
     string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
 
-    return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, true);
+    return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, true, NaInt32.Null, _resolveTypeNames);
   }
 
   private MappingException CreateMappingException (string message, params object[] args)
