@@ -56,9 +56,6 @@ public class BocTextValueUserControl : BaseUserControl
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
-
-    Load += new EventHandler (BocTextValueUserControl_Load);
-    PreRender += new EventHandler(BocTextValueUserControl_PreRender);
  
     this.FirstNameField.TextChanged += new System.EventHandler(this.FirstNameField_TextChanged);
     this.FirstNameTestSetNullButton.Click += new System.EventHandler(this.FirstNameTestSetNullButton_Click);
@@ -92,8 +89,10 @@ public class BocTextValueUserControl : BaseUserControl
   }
   #endregion
 
-  private void BocTextValueUserControl_Load(object sender, EventArgs e)
+  override protected void OnLoad (EventArgs e)
   {
+    base.OnLoad (e);
+
     Person person = (Person) CurrentObject.BusinessObject;
 
     UnboundFirstNameField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("FirstName");
@@ -112,8 +111,10 @@ public class BocTextValueUserControl : BaseUserControl
     }
   }
 
-  private void BocTextValueUserControl_PreRender(object sender, EventArgs e)
+  override protected void OnPreRender (EventArgs e)
   {
+    base.OnPreRender (e);
+
     SetDebugLabel (FirstNameField, FirstNameFieldValueLabel);
     SetDebugLabel (ReadOnlyFirstNameField, ReadOnlyFirstNameFieldValueLabel);
     SetDebugLabel (UnboundFirstNameField, UnboundFirstNameFieldValueLabel);
