@@ -60,7 +60,14 @@ public sealed class TypeUtility
     return Type.GetType (ParseAbbreviatedTypeName (abbreviatedTypeName), throwOnError, ignoreCase);
   }
 
-	private TypeUtility()
+  public static string GetPartialAssemblyQualifiedName (Type type)
+  {
+    ArgumentUtility.CheckNotNull ("type", type);
+
+    return type.FullName + ", " + type.Assembly.GetName().Name;
+  }
+
+  private TypeUtility()
 	{
 	}
 }
