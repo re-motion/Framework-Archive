@@ -45,24 +45,21 @@ public class BocReferenceValueUserControl : BaseUserControl
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNullButton;
   protected Rubicon.Web.UI.Controls.WebButton ReadOnlyPartnerTestSetNewItemButton;
   protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+  protected System.Web.UI.WebControls.Label PartnerCommandClickLabel;
   protected Rubicon.ObjectBinding.Reflection.ReflectionBusinessObjectDataSourceControl CurrentObject;
 
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
 
-    Init += new EventHandler(BocReferenceValueControl_Init);
-    Load += new EventHandler (BocReferenceValueControl_Load);
-    PreRender += new EventHandler(BocReferenceValueControl_PreRender);
-
-    this.PartnerField.MenuItemClick += new Rubicon.Web.UI.Controls.WebMenuItemClickEventHandler(this.PartnerField_MenuItemClick);
-    this.PartnerField.SelectionChanged += new System.EventHandler(this.PartnerField_SelectionChanged);
-    this.ReadOnlyPartnerField.CommandClick += new Rubicon.ObjectBinding.Web.UI.Controls.BocCommandClickEventHandler(this.ReadOnlyPartnerField_CommandClick);
-    this.PartnerTestSetNullButton.Click += new System.EventHandler(this.PartnerTestSetNullButton_Click);
-    this.PartnerTestSetNewItemButton.Click += new System.EventHandler(this.PartnerTestSetNewItemButton_Click);
-    this.ReadOnlyPartnerTestSetNullButton.Click += new System.EventHandler(this.ReadOnlyPartnerTestSetNullButton_Click);
-    this.ReadOnlyPartnerTestSetNewItemButton.Click += new System.EventHandler(this.ReadOnlyPartnerTestSetNewItemButton_Click);
-
+    PartnerField.CommandClick += new BocCommandClickEventHandler (PartnerField_CommandClick);
+    PartnerField.MenuItemClick += new WebMenuItemClickEventHandler (PartnerField_MenuItemClick);
+    PartnerField.SelectionChanged += new EventHandler (PartnerField_SelectionChanged);
+    ReadOnlyPartnerField.CommandClick += new BocCommandClickEventHandler (ReadOnlyPartnerField_CommandClick);
+    PartnerTestSetNullButton.Click += new EventHandler (PartnerTestSetNullButton_Click);
+    PartnerTestSetNewItemButton.Click += new EventHandler (PartnerTestSetNewItemButton_Click);
+    ReadOnlyPartnerTestSetNullButton.Click += new EventHandler (ReadOnlyPartnerTestSetNullButton_Click);
+    ReadOnlyPartnerTestSetNewItemButton.Click += new EventHandler (ReadOnlyPartnerTestSetNewItemButton_Click);
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -70,8 +67,12 @@ public class BocReferenceValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
-  private void BocReferenceValueControl_Init(object sender, EventArgs e)
-  {
+	override protected void OnInit(EventArgs e)
+	{
+		InitializeComponent();
+
+    base.OnInit (e);
+
     WebMenuItem menuItem = new WebMenuItem();
     menuItem.ItemID = "webmenuitem";
     menuItem.Text = "webmenuitem";
@@ -146,8 +147,10 @@ public class BocReferenceValueUserControl : BaseUserControl
     referenceValue.OptionsMenuItems.Add (menuItem);
   }
 
-  private void BocReferenceValueControl_Load(object sender, EventArgs e)
+  override protected void OnLoad (EventArgs e)
   {
+    base.OnLoad (e);
+
     Person person = (Person) CurrentObject.BusinessObject;
 
     if (! IsPostBack)
@@ -174,8 +177,10 @@ public class BocReferenceValueUserControl : BaseUserControl
     }
   }
 
-  private void BocReferenceValueControl_PreRender(object sender, EventArgs e)
+  override protected void OnPreRender (EventArgs e)
   {
+    base.OnPreRender (e);
+
     SetDebugLabel (PartnerField, PartnerFieldValueLabel);
     SetDebugLabel (ReadOnlyPartnerField, ReadOnlyPartnerFieldValueLabel);
     SetDebugLabel (UnboundPartnerField, UnboundPartnerFieldValueLabel);
@@ -222,6 +227,11 @@ public class BocReferenceValueUserControl : BaseUserControl
     ReadOnlyPartnerField.Value = person;
   }
 
+  private void PartnerField_CommandClick(object sender, BocCommandClickEventArgs e)
+  {
+    PartnerCommandClickLabel.Text = "PartnerField clicked";
+  }
+
   private void PartnerField_SelectionChanged(object sender, System.EventArgs e)
   {
     if (PartnerField.Value != null)
@@ -237,19 +247,10 @@ public class BocReferenceValueUserControl : BaseUserControl
 
   private void ReadOnlyPartnerField_CommandClick(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocCommandClickEventArgs e)
   {
-  
+    PartnerCommandClickLabel.Text = "ReadOnlyPartnerField clicked";
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
-	}
-	
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
