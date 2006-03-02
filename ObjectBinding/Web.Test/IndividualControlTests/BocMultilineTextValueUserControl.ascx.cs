@@ -48,9 +48,6 @@ public class BocMultilineTextValueUserControl : BaseUserControl
   protected override void RegisterEventHandlers ()
   {
     base.RegisterEventHandlers();
-
-    Load += new EventHandler(BocMultilineTextValueUserControl_Load);
-    PreRender += new EventHandler(BocMultilineTextValueUserControl_PreRender);
  
     this.CVField.TextChanged += new System.EventHandler(this.CVField_TextChanged);
     this.CVTestSetNullButton.Click += new System.EventHandler(this.CVTestSetNullButton_Click);
@@ -64,8 +61,10 @@ public class BocMultilineTextValueUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
-  private void BocMultilineTextValueUserControl_Load(object sender, EventArgs e)
+  override protected void OnLoad (EventArgs e)
   {
+    base.OnLoad (e);
+
     Person person = (Person) CurrentObject.BusinessObject;
 
     UnboundCVField.Property = (Rubicon.ObjectBinding.IBusinessObjectStringProperty) person.GetBusinessObjectProperty("CV");
@@ -84,8 +83,10 @@ public class BocMultilineTextValueUserControl : BaseUserControl
     }
   }
 
-  private void BocMultilineTextValueUserControl_PreRender(object sender, EventArgs e)
+  override protected void OnPreRender (EventArgs e)
   {
+    base.OnPreRender (e);
+
     SetDebugLabel (CVField, CVFieldValueLabel);
     SetDebugLabel (ReadOnlyCVField, ReadOnlyCVFieldValueLabel);
     SetDebugLabel (UnboundCVField, UnboundCVFieldValueLabel);

@@ -40,9 +40,6 @@ public class BocListUserControl : BaseUserControl
   {
     base.RegisterEventHandlers();
 
-    Init += new EventHandler(BocListUserControl_Init);
-    Load += new EventHandler (BocListUserControl_Load);
-
     ChildrenListAddAndEditButton.Click += new EventHandler(AddAndEditButton_Click);
     ChildrenListEndEditModeButton.Click += new EventHandler(ChildrenListEndEditModeButton_Click);
     
@@ -63,9 +60,11 @@ public class BocListUserControl : BaseUserControl
     get { return CurrentObject; }
   }
 
-  private void BocListUserControl_Init(object sender, EventArgs e)
-  {
-   InitializeMenuItems();
+	override protected void OnInit(EventArgs e)
+	{
+		InitializeComponent();
+    base.OnInit (e);
+    InitializeMenuItems();
   }
 
   private void InitializeMenuItems()
@@ -215,8 +214,10 @@ public class BocListUserControl : BaseUserControl
     ChildrenList.OptionsMenuItems.Add (menuItem);
   }
 
-  private void BocListUserControl_Load (object sender, EventArgs e)
+  override protected void OnLoad (EventArgs e)
   {
+    base.OnLoad (e);
+
     IBusinessObjectProperty dateOfBirth = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("DateOfBirth");
     IBusinessObjectProperty dateOfDeath = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("DateOfDeath");
     IBusinessObjectProperty height = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Height");
@@ -343,16 +344,7 @@ public class BocListUserControl : BaseUserControl
   
   }
 
-	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
-	}
-	
+	#region Web Form Designer generated code	
 	/// <summary>
 	///		Required method for Designer support - do not modify
 	///		the contents of this method with the code editor.
