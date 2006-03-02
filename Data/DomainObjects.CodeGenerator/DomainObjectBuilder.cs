@@ -51,7 +51,7 @@ public class DomainObjectBuilder
     {
     }
 
-    public void Build (ClassDefinition classDefinition, string baseClass, bool serializableAttribute)
+    public void Build (ClassDefinition classDefinition, string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
     {
       _classDefinition = classDefinition;
       Type type = classDefinition.ClassType;
@@ -60,6 +60,9 @@ public class DomainObjectBuilder
 
       if (serializableAttribute)
         WriteSerializableAttribute ();
+
+      if (multiLingualResourcesAttribute)
+        WriteMultiLingualResourcesAttribute (type.Namespace + ".Globalization." + type.Name);
 
       if (classDefinition.BaseClass == null)
         BeginClass (type.Name, baseClass);
@@ -253,24 +256,28 @@ public class DomainObjectBuilder
 
   public const string DefaultBaseClass = "BindableDomainObject";
 
-  public static void Build (string filename, ClassDefinition classDefinition, string baseClass, bool serializableAttribute)
+  public static void Build (
+      string filename, ClassDefinition classDefinition, 
+      string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
 
     using (TextWriter writer = new StreamWriter (filename))
     {
-      Build (writer, classDefinition, baseClass, serializableAttribute);
+      Build (writer, classDefinition, baseClass, serializableAttribute, multiLingualResourcesAttribute);
     }
   }
 
-  public static void Build (TextWriter writer, ClassDefinition classDefinition, string baseClass, bool serializableAttribute)
+  public static void Build (
+      TextWriter writer, ClassDefinition classDefinition, 
+      string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
   {
     ArgumentUtility.CheckNotNull ("stream", writer);
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNull ("baseClass", baseClass);
 
     Builder builder = new Builder (writer);
-    builder.Build (classDefinition, baseClass, serializableAttribute);
+    builder.Build (classDefinition, baseClass, serializableAttribute, multiLingualResourcesAttribute);
   }
 
   private DomainObjectBuilder()

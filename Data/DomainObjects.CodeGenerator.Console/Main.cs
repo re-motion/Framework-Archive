@@ -39,7 +39,8 @@ class MainClass
           DomainModelBuilder.Build (
               arguments.ClassOutput, 
               arguments.DomainObjectBaseClass, arguments.DomainObjectCollectionBaseClass, 
-              arguments.Serializable);
+              arguments.Serializable,
+              arguments.MultiLingualResources);
         }
       }
     }

@@ -16,7 +16,8 @@ public class DomainModelBuilder
       string outputFolder,
       string domainObjectBaseClass, 
       string domainObjectCollectionBaseClass,
-      bool serializableAttribute)    
+      bool serializableAttribute,
+      bool multiLingualResourcesAttribute)    
 	{
     ArgumentUtility.CheckNotNull ("outputFolder", outputFolder);
 
@@ -24,7 +25,7 @@ public class DomainModelBuilder
     {
       DomainObjectBuilder.Build (
           GetFileName (outputFolder, classDefinition.ClassType), 
-          classDefinition, domainObjectBaseClass, serializableAttribute);
+          classDefinition, domainObjectBaseClass, serializableAttribute, multiLingualResourcesAttribute);
 
       foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions ())
       {

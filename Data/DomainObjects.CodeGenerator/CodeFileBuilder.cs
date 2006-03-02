@@ -50,6 +50,7 @@ public abstract class CodeFileBuilder: FileBuilder
   protected static readonly string s_enumTag = "%enumname%";
   protected static readonly string s_propertytypeTag = "%propertytype%";
   protected static readonly string s_propertynameTag = "%propertyname%";
+  protected static readonly string s_resourcesTag = "%resources%";
 
   #endregion
 
@@ -63,9 +64,12 @@ public abstract class CodeFileBuilder: FileBuilder
       + "using Rubicon.Data.DomainObjects;" + Environment.NewLine 
       + "using Rubicon.Data.DomainObjects.ObjectBinding;" + Environment.NewLine 
       + "using Rubicon.NullableValueTypes;" + Environment.NewLine 
+      + "using Rubicon.Globalization;" + Environment.NewLine 
       + Environment.NewLine;
   private static readonly string s_serializableAttribute = 
       "[Serializable]" + Environment.NewLine;
+  private static readonly string s_multilingualResourcesAttribute = 
+      "[MultiLingualResources(\"%resources%\")]" + Environment.NewLine;
 
   private static readonly string s_namespaceHeader = 
       "namespace %namespace%" + Environment.NewLine
@@ -201,6 +205,11 @@ public abstract class CodeFileBuilder: FileBuilder
   protected void WriteSerializableAttribute ()
   {
     Write (s_serializableAttribute);
+  }
+
+  protected void WriteMultiLingualResourcesAttribute (string resources)
+  {
+    Write (ReplaceTag (s_multilingualResourcesAttribute, s_resourcesTag, resources));
   }
 
   protected void BeginClass (string className, string baseClassName)

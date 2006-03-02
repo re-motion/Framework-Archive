@@ -57,6 +57,9 @@ public class Arguments
   [CommandLineFlagArgument ("serializable", false, Description = "Assign the [Serializable] attribute to classes (default: false).")]
   public bool Serializable;
 
+  [CommandLineFlagArgument ("multilingualResources", false, Description = "Assign the [MultiLingualResources] attribute to classes (default: false).")]
+  public bool MultiLingualResources;
+
   [CommandLineFlagArgument ("verbose", false,
       Description = "Verbose output")]
   public bool Verbose;
