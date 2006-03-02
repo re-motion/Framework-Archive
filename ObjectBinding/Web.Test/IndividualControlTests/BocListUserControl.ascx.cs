@@ -223,6 +223,7 @@ public class BocListUserControl : BaseUserControl
     IBusinessObjectProperty height = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Height");
     IBusinessObjectProperty gender = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Gender");
     IBusinessObjectProperty cv = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("CV");
+    IBusinessObjectProperty income = CurrentObject.BusinessObjectClass.GetPropertyDefinition ("Income");
 
 
     //  Additional columns, in-code generated
@@ -248,6 +249,9 @@ public class BocListUserControl : BaseUserControl
     BocSimpleColumnDefinition cvColumnDefinition = new BocSimpleColumnDefinition();
     cvColumnDefinition.PropertyPath = cv.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{cv});
 
+    BocSimpleColumnDefinition incomeColumnDefinition = new BocSimpleColumnDefinition();
+    incomeColumnDefinition.PropertyPath = cv.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{income});
+
     BocListView datesView = new BocListView();
     datesView.Title = "Dates";
     datesView.ColumnDefinitions.AddRange (
@@ -263,10 +267,16 @@ public class BocListUserControl : BaseUserControl
     cvView.ColumnDefinitions.AddRange (
         new BocColumnDefinition[] {cvColumnDefinition});
 
+    BocListView incomeView = new BocListView();
+    incomeView.Title = "Income";
+    incomeView.ColumnDefinitions.AddRange (
+        new BocColumnDefinition[] {incomeColumnDefinition});
+
     ChildrenList.AvailableViews.AddRange (new BocListView[] {
       datesView,
       statsView,
-      cvView});
+      cvView,
+      incomeView});
 
     if (! IsPostBack)
       ChildrenList.SelectedView = datesView;
