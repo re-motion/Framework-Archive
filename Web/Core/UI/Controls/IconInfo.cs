@@ -115,7 +115,9 @@ public sealed class IconInfo
   {
   }
 
-  //[Editor(typeof(ImageUrlEditor), typeof(UITypeEditor))]
+#if ! NET11
+  [Editor (typeof (ImageUrlEditor), typeof (UITypeEditor))]
+#endif
   [PersistenceMode (PersistenceMode.Attribute)]
   [DefaultValue ("")]
   [NotifyParentProperty (true)]
