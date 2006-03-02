@@ -42,7 +42,7 @@ public class Person: ReflectionBusinessObject
   private string _lastName;
   private DateTime _dateOfBirth;
   private int _height;
-  private NaInt32 _income = 1;
+  private NaSingle _income = 1000.50f;
   private Gender _gender;
   private MarriageStatus _marriageStatus;
   private DateTime _dateOfDeath;
@@ -81,7 +81,7 @@ public class Person: ReflectionBusinessObject
   }
 
   [XmlElement]
-  public NaInt32 Income
+  public NaSingle Income
   {
     get { return _income; }
     set { _income = value; }
