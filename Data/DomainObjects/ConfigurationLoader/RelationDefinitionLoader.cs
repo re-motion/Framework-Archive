@@ -37,11 +37,6 @@ public class RelationDefinitionLoader
 
   // methods and properties
 
-  private string FormatXPath (string xPath)
-  {
-    return _namespaceManager.FormatXPath (xPath, PrefixNamespace.MappingNamespace.Uri);
-  }
-
   public RelationDefinitionCollection GetRelationDefinitions ()
   {
     CheckEndPoints ();
@@ -54,6 +49,16 @@ public class RelationDefinitionLoader
     }
     
     return relationDefinitions;
+  }
+
+  public bool ResolveTypeNames
+  {
+    get { return _classDefinitions.AreResolvedTypeNamesRequired; }
+  }
+
+  private string FormatXPath (string xPath)
+  {
+    return _namespaceManager.FormatXPath (xPath, PrefixNamespace.MappingNamespace.Uri);
   }
 
   private void CheckEndPoints ()
@@ -183,11 +188,10 @@ public class RelationDefinitionLoader
     CardinalityType cardinality = GetCardinality (relationPropertyNode);
     if (isVirtualEndPoint)
     {
-      Type propertyType = GetTypeFromVirtualRelationPropertyNode (relationDefinitionID, propertyName, relationPropertyNode, cardinality);
+      string propertyTypeName = GetTypeNameFromVirtualRelationPropertyNode (relationDefinitionID, propertyName, relationPropertyNode, cardinality);
       string sortExpression = GetSortExpression (relationPropertyNode);
 
-      return new VirtualRelationEndPointDefinition (
-          classDefinition, propertyName, isMandatory, cardinality, propertyType, sortExpression);
+      return new VirtualRelationEndPointDefinition (classDefinition, propertyName, isMandatory, cardinality, propertyTypeName, sortExpression);
     }
     else
     {
@@ -217,7 +221,7 @@ public class RelationDefinitionLoader
     return propertyNodeOrRelationPropertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
   }
 
-  private Type GetTypeFromVirtualRelationPropertyNode (string relationDefinitionID, string propertyName, XmlNode relationPropertyNode, CardinalityType cardinality)
+  private string GetTypeNameFromVirtualRelationPropertyNode (string relationDefinitionID, string propertyName, XmlNode relationPropertyNode, CardinalityType cardinality)
   {
     XmlNode typeNode = relationPropertyNode.SelectSingleNode (FormatXPath ("{0}:collectionType"), _namespaceManager);
 
@@ -232,15 +236,15 @@ public class RelationDefinitionLoader
       }
       else
       {
-        return LoaderUtility.GetType (typeNode);
+        return typeNode.InnerText.Trim ();
       }
     }
     else
     {
       if (cardinality == CardinalityType.One)
-        return GetOppositeClassType (relationDefinitionID, propertyName);
+        return GetOppositeClassTypeName (relationDefinitionID, propertyName);
       else
-        return typeof (DomainObjectCollection);
+        return TypeUtility.GetPartialAssemblyQualifiedName (typeof (DomainObjectCollection));
     }
   }
 
@@ -259,12 +263,12 @@ public class RelationDefinitionLoader
     return oppositeRelationPropertyNode;
   }
 
-  private Type GetOppositeClassType (string relationDefinitionID, string propertyName)
+  private string GetOppositeClassTypeName (string relationDefinitionID, string propertyName)
   {
     XmlNode oppositeRelationPropertyNode = GetOppositeRelationPropertyNode (relationDefinitionID, propertyName);
     XmlNode typeNode = oppositeRelationPropertyNode.SelectSingleNode (FormatXPath ("../../{0}:type"), _namespaceManager);
     
-    return LoaderUtility.GetType (typeNode);
+    return typeNode.InnerText.Trim ();
   }
 
   private CardinalityType GetCardinality (XmlNode relationPropertyNode)
