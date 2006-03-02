@@ -52,7 +52,18 @@ public class VirtualRelationEndPointDefinitionTest
     Assert.AreEqual (typeof(OrderItem).AssemblyQualifiedName, endPoint.PropertyTypeName);
   }
 
-  // TODO: Write test for unresolved VirtualEndPointDefinition.
+  [Test]
+  public void InitializeWithUnresolvedPropertyTypeName ()
+  {
+    VirtualRelationEndPointDefinition endPoint = new VirtualRelationEndPointDefinition (
+        ClassDefinitionFactory.CreateWithUnresolvedRelationProperty (),
+        "VirtualEndPoint", true, CardinalityType.One, 
+        "UnresolvedTypeName", null);
+
+    Assert.IsFalse (endPoint.IsPropertyTypeResolved);
+    Assert.IsNull (endPoint.PropertyType);
+    Assert.AreEqual ("UnresolvedTypeName", endPoint.PropertyTypeName);
+  }
 
   [Test]
   public void IsNull ()

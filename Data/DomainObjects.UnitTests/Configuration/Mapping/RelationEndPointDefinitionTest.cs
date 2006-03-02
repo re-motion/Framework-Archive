@@ -47,7 +47,7 @@ public class RelationEndPointDefinitionTest
 
     Assert.IsFalse (endPoint.IsPropertyTypeResolved);
     Assert.IsNull (endPoint.PropertyType);
-    Assert.AreEqual (typeof(ObjectID).AssemblyQualifiedName, endPoint.PropertyTypeName);
+    Assert.AreEqual ("Rubicon.Data.DomainObjects.ObjectID, Rubicon.Data.DomainObjects", endPoint.PropertyTypeName);
   }
 
   [Test]
@@ -59,6 +59,18 @@ public class RelationEndPointDefinitionTest
     Assert.IsTrue (endPoint.IsPropertyTypeResolved);
     Assert.AreSame (typeof (ObjectID), endPoint.PropertyType);
     Assert.AreEqual (typeof(ObjectID).AssemblyQualifiedName, endPoint.PropertyTypeName);
+  }
+
+  [Test]
+  public void IRelationEndPointDefinitionWithUnresolvedTypeName ()
+  {
+    IRelationEndPointDefinition endPoint = new RelationEndPointDefinition (
+        ClassDefinitionFactory.CreateWithUnresolvedRelationProperty (), "PropertyName", true);
+
+    Assert.IsFalse (endPoint.IsPropertyTypeResolved);
+    Assert.IsNull (endPoint.PropertyType);
+    Assert.AreEqual ("Rubicon.Data.DomainObjects.ObjectID, Rubicon.Data.DomainObjects", endPoint.PropertyTypeName);
+
   }
 
   [Test]
