@@ -134,12 +134,52 @@ public class MappingConfigurationTest
   }
 
   [Test]
-  public void MappingWithUnresolvedTypeNames ()
+  public void MappingWithUnresolvedTypes ()
   {
     MappingConfiguration configuration = new MappingConfiguration (
         new MappingLoader (@"mappingWithUnresolvedTypes.xml", @"mapping.xsd", false));
 
     Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypeNamesRequired);
+  }
+
+  [Test]
+  public void EntireMappingWithUnresolvedTypes ()
+  {
+    MappingConfiguration configuration = new MappingConfiguration (
+        new MappingLoader (@"entireMappingWithUnresolvedTypes.xml", @"mapping.xsd", false));
+
+    Assert.IsFalse (configuration.ResolveTypeNames);
+    Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypeNamesRequired);
+
+    foreach (ClassDefinition classDefinition in configuration.ClassDefinitions)
+    {
+      string classMessage = "Class: " + classDefinition.ID;
+      Assert.IsNull (classDefinition.ClassType, classMessage);
+      Assert.IsNotNull (classDefinition.ClassTypeName, classMessage);
+      Assert.IsFalse (classDefinition.IsClassTypeResolved, classMessage);
+
+      foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+      {
+        string propertyMessage = classMessage + ", Property: " + propertyDefinition.PropertyName;
+        Assert.IsNull (propertyDefinition.PropertyType, propertyMessage);
+        Assert.IsNotNull (propertyDefinition.MappingTypeName, propertyMessage);
+        Assert.IsFalse (propertyDefinition.IsPropertyTypeResolved, propertyMessage);
+      }
+    }
+
+    foreach (RelationDefinition relationDefinition in configuration.RelationDefinitions)
+    {
+      foreach (IRelationEndPointDefinition endPoint in relationDefinition.EndPointDefinitions)
+      {
+        string endPointMessage = "Relation: " + relationDefinition.ID + ", PropertyName: " + endPoint.PropertyName;
+        Assert.IsNull (endPoint.PropertyType, endPointMessage);
+
+        if (!endPoint.IsNull)
+          Assert.IsNotNull (endPoint.PropertyTypeName, endPointMessage);
+
+        Assert.IsFalse (endPoint.IsPropertyTypeResolved, endPointMessage);
+      }
+    }
   }
 }
 }

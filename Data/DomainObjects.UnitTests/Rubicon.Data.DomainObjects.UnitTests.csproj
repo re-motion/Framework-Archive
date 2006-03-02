@@ -138,6 +138,10 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "entireMappingWithUnresolvedTypes.xml"
+                    BuildAction = "Content"
+                />
+                <File
                     RelPath = "mapping.xml"
                     BuildAction = "Content"
                 />
