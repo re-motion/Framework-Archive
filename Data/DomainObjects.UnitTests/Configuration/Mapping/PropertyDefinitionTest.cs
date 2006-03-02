@@ -26,7 +26,7 @@ public class PropertyDefinitionTest
   [Test]
   public void InitializeWithPropertyTypeName ()
   {
-    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, NaInt32.Null, true);
+    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, true, NaInt32.Null);
     Assert.IsNull (actual.ClassDefinition);
     Assert.AreEqual ("ColumnName", actual.ColumnName);
     Assert.AreEqual (NaInt32.Null, actual.DefaultValue);
@@ -41,7 +41,7 @@ public class PropertyDefinitionTest
   [Test]
   public void InitializeWithUnresolvedPropertyTypeName ()
   {
-    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, NaInt32.Null, false);
+    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, NaInt32.Null);
     Assert.IsNull (actual.ClassDefinition);
     Assert.AreEqual ("ColumnName", actual.ColumnName);
     Assert.IsNull (actual.DefaultValue);
@@ -56,7 +56,7 @@ public class PropertyDefinitionTest
   [Test]
   public void InitializeWithUnresolvedUnknownPropertyTypeName ()
   {
-    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingTypeName", true, NaInt32.Null, false);
+    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingTypeName", false, true, NaInt32.Null);
     Assert.IsNull (actual.ClassDefinition);
     Assert.AreEqual ("ColumnName", actual.ColumnName);
     Assert.IsNull (actual.DefaultValue);

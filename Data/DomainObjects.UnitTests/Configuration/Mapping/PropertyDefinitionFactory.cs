@@ -13,12 +13,12 @@ public sealed class PropertyDefinitionFactory
 
   public static PropertyDefinition CreateCustomerDefinition ()
   {
-    return new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, false, NaInt32.Null, true);
+    return new PropertyDefinition ("Customer", "CustomerID", TypeInfo.ObjectIDMappingTypeName, true, false, NaInt32.Null);
   }
 
   public static PropertyDefinition CreateWithUnresolvedRelationPropertyType ()
   {
-    return new PropertyDefinition ("PropertyName", "ColumnName", TypeInfo.ObjectIDMappingTypeName, false, NaInt32.Null, false);
+    return new PropertyDefinition ("PropertyName", "ColumnName", TypeInfo.ObjectIDMappingTypeName, false, false, NaInt32.Null);
   }
 
   // member fields

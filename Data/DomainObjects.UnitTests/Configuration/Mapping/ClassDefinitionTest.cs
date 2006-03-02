@@ -307,7 +307,7 @@ public class ClassDefinitionTest
   public void AddPropertyDefinitionWithResolvedTypeToClassDefinitionWithUnresolvedType ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedTypeName", false);
-    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "string", false, 100, true);
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "string", true, false, 100);
 
     classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
   }
@@ -319,7 +319,7 @@ public class ClassDefinitionTest
   public void AddPropertyDefinitionWithUnresolvedTypeToClassDefinitionWithResolvedType ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order));
-    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedTypeName", false, 100, false);
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedTypeName", false, false, 100);
 
     classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
   }
