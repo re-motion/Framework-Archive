@@ -35,34 +35,37 @@ public class IndividualControlTestForm : TestBasePage
   protected override void RegisterEventHandlers()
   {
     base.RegisterEventHandlers ();
-    
-    Init += new EventHandler (IndividualControlTestForm_Init);
-    Load += new EventHandler (IndividualControlTestForm_Load);
-    PreRender += new EventHandler (IndividualControlTestForm_PreRender);
-    Unload += new EventHandler (IndividualControlTestForm_Unload);
 
     SaveButton.Click += new EventHandler (SaveButton_Click);
     SaveAndRestartButton.Click += new EventHandler (SaveAndRestartButton_Click);
     CancelButton.Click += new EventHandler (CancelButton_Click);
   }
 
-  private void IndividualControlTestForm_Init (object sender, EventArgs e)
+  override protected void OnInit (EventArgs e)
   {
+		InitializeComponent();
+
+    base.OnInit (e);
+    
     this.EnableAbort = NaBooleanEnum.False;
     this.EnableOutOfSequencePostBacks = NaBooleanEnum.True;
     this.ShowAbortConfirmation = ShowAbortConfirmation.OnlyIfDirty;
   }
 
-  private void IndividualControlTestForm_Load (object sender, EventArgs e)
+  override protected void OnLoad (EventArgs e)
   {
+    base.OnLoad (e);
+
     LoadUserControl();
     PopulateDataSources();
     LoadValues (IsPostBack);
     string test = GetPermanentUrl();
   }
 
-  private void IndividualControlTestForm_PreRender(object sender, EventArgs e)
+  override protected void OnPreRender (EventArgs e)
   {
+    base.OnPreRender (e);
+
     System.Text.StringBuilder sb = new System.Text.StringBuilder();
     sb.Append ("<b>Stack:</b><br>");
     for (WxeStep step = CurrentStep; step != null; step = step.ParentStep)
@@ -70,15 +73,17 @@ public class IndividualControlTestForm : TestBasePage
     Stack.Text = sb.ToString();
   }
 
-  private void IndividualControlTestForm_Unload(object sender, EventArgs e)
+  override protected void OnUnload (EventArgs e)
   {
+    base.OnUnload (e);
+
     if (! _isCurrentObjectSaved)
     {
       SaveValues (true);
     }
   }
 
-  private void SaveButton_Click(object sender, EventArgs e)
+  private void SaveButton_Click (object sender, EventArgs e)
   {
     bool isValid = ValidateDataSources();
     if (isValid)
@@ -141,15 +146,6 @@ public class IndividualControlTestForm : TestBasePage
   }
 
 	#region Web Form Designer generated code
-	override protected void OnInit(EventArgs e)
-	{
-		//
-		// CODEGEN: This call is required by the ASP.NET Web Form Designer.
-		//
-		InitializeComponent();
-		base.OnInit(e);
-	}
-	
 	/// <summary>
 	/// Required method for Designer support - do not modify
 	/// the contents of this method with the code editor.
