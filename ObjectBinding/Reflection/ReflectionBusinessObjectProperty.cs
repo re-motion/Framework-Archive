@@ -38,6 +38,8 @@ public class ReflectionBusinessObjectProperty: IBusinessObjectProperty
       return new ReflectionBusinessObjectStringProperty (propertyInfo, itemType, isList);
     else if (itemType == typeof (int))
       return new ReflectionBusinessObjectInt32Property (propertyInfo, itemType, isList, isNullableType);
+    else if (itemType == typeof (double))
+      return new ReflectionBusinessObjectDoubleProperty (propertyInfo, itemType, isList, isNullableType);
     else if (itemType == typeof (bool))
       return new ReflectionBusinessObjectBooleanProperty (propertyInfo, itemType, isList, isNullableType);
     else if (itemType == typeof (DateTime))
@@ -194,6 +196,35 @@ public class ReflectionBusinessObjectInt32Property: ReflectionBusinessObjectNull
   {
     if (! IsList && IsNullableType)
       return NaInt32.FromBoxedInt32 (publicValue);
+    else
+      return publicValue;
+  }
+}
+
+public class ReflectionBusinessObjectDoubleProperty: ReflectionBusinessObjectNullableProperty, IBusinessObjectDoubleProperty
+{
+  public ReflectionBusinessObjectDoubleProperty (PropertyInfo propertyInfo, Type itemType, bool isList, bool isNullable)
+    : base (propertyInfo, itemType, isList, isNullable)
+  {
+  }
+
+  public bool AllowNegative
+  {
+    get { return true; }
+  }
+
+  protected internal override object FromInternalType (object internalValue)
+  {
+    if (! IsList && IsNullableType)
+      return NaDouble.ToBoxedDouble ((NaDouble)internalValue);
+    else
+      return internalValue;
+  }
+
+  protected internal override object ToInternalType (object publicValue)
+  {
+    if (! IsList && IsNullableType)
+      return NaDouble.FromBoxedDouble (publicValue);
     else
       return publicValue;
   }
