@@ -3,6 +3,9 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Data.SqlTypes;
 using System.Globalization;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Xml.Schema;
 
 namespace Rubicon.NullableValueTypes
 {
@@ -14,7 +17,7 @@ namespace Rubicon.NullableValueTypes
 [Serializable]
 [NaBasicType (typeof(Double))]
 [TypeConverter (typeof (NaDoubleConverter))]
-public struct NaDouble: INaNullable, IComparable, IFormattable
+public struct NaDouble: INaNullable, IComparable, IFormattable, IXmlSerializable
 {
   #region member fields
 
@@ -39,6 +42,38 @@ public struct NaDouble: INaNullable, IComparable, IFormattable
   {
     _value = 0d;
     _isNotNull = ! isNull;
+  }
+
+  #endregion
+
+  #region serialization
+
+  static XmlSchema s_schema = null;
+  
+  XmlSchema IXmlSerializable.GetSchema()
+  {
+    if (s_schema == null)
+    {
+      lock (typeof (NaDouble))
+      {
+        if (s_schema == null)
+          s_schema = NaTypeUtility.CreateXmlSchema (typeof(NaDouble).Name, "double");
+      }
+    }
+    return s_schema;
+  }
+
+  void IXmlSerializable.ReadXml (XmlReader reader)
+  {
+    string strValue = NaTypeUtility.ReadXml (reader);
+    _isNotNull = strValue != null;
+    if (strValue != null)
+      _value = XmlConvert.ToDouble (strValue);
+  }
+
+  void IXmlSerializable.WriteXml (XmlWriter writer)
+  {
+    NaTypeUtility.WriteXml (writer, IsNull ? null : XmlConvert.ToString (_value));
   }
 
   #endregion
