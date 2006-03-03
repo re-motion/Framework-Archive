@@ -8,28 +8,17 @@ namespace Rubicon.Utilities
 {
 
 /// <summary>
-///   Utility classes for <see cref="ICollection"/>
+///   Utility class for <see cref="NameValueCollection"/>
 /// </summary>
-public class CollectionUtility
+public sealed class NameValueCollectionUtility
 {
-  /// <summary>
-  ///   Merges two collections. If a key occurs in both collections, the value of the second collections is taken.
-  /// </summary>
-  public static NameValueCollection Merge (NameValueCollection first, NameValueCollection second)
+  // types
+
+  // static members and constants
+  
+  public static NameValueCollection Clone (NameValueCollection collection)
   {
-    if (first == null && second == null)
-      return null;
-    else if (first == null)
-      return CollectionUtility.Clone (second);
-    if (second == null)
-      return CollectionUtility.Clone (first);
-
-    NameValueCollection result = CollectionUtility.Clone (first);
-
-    for (int i = 0; i < second.Count; i++)
-      first.Set (second.GetKey(i), second.Get(i));
-
-    return result;
+    return new NameValueCollection (collection);
   }
 
   /// <summary>
@@ -48,20 +37,31 @@ public class CollectionUtility
     }
   }
 
-  public static NameValueCollection Clone (NameValueCollection collection)
+  /// <summary>
+  ///   Merges two collections. If a key occurs in both collections, the value of the second collections is taken.
+  /// </summary>
+  public static NameValueCollection Merge (NameValueCollection first, NameValueCollection second)
   {
-    ArgumentUtility.CheckNotNull ("collection", collection);
-    
-    NameValueCollection result = new NameValueCollection();
-      for (int i = 0; i < collection.Count; i++)
-        result.Add (collection.GetKey(i), collection.Get(i));
+    if (first == null && second == null)
+      return null;
+    else if (first != null && second == null)
+      return Clone (first);
+    else if (first == null && second != null)
+      return Clone (second);
 
+    NameValueCollection result = Clone (first);
+    Append (result, second);
     return result;
   }
 
-  private CollectionUtility()
-	{
-	}
+  // member fields
+
+  // construction and disposing
+
+  private NameValueCollectionUtility()
+  {}
+
+  // methods and properties
 }
 
 }

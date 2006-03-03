@@ -80,7 +80,7 @@ public class WxeContext
       throw new ArgumentException (string.Format ("The functionType '{0}' must be derived from WxeFunction.", functionType), "functionType");
     ArgumentUtility.CheckNotNull ("urlParameters", urlParameters);
 
-    NameValueCollection internalUrlParameters = CollectionUtility.Clone (urlParameters);
+    NameValueCollection internalUrlParameters = NameValueCollectionUtility.Clone (urlParameters);
     UrlMapping.UrlMappingEntry mappingEntry = UrlMapping.UrlMappingConfiguration.Current.Mappings[functionType];
     if (mappingEntry == null)
     {
@@ -200,7 +200,7 @@ public class WxeContext
     }
     else
     {
-      internalUrlParameters = CollectionUtility.Clone (urlParameters);
+      internalUrlParameters = NameValueCollectionUtility.Clone (urlParameters);
     }
     internalUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, functionToken);
     return WxeContext.GetPermanentUrl (HttpContext.Current, function.GetType(), internalUrlParameters);
@@ -243,7 +243,7 @@ public class WxeContext
     }
     else
     {
-      _queryString = CollectionUtility.Clone (queryString);
+      _queryString = NameValueCollectionUtility.Clone (queryString);
       _queryString.Remove (WxeHandler.Parameters.WxeFunctionToken);
     }
   }
@@ -409,7 +409,7 @@ public class WxeContext
     if (queryString == null)
       queryString = new NameValueCollection();
     else
-      queryString = CollectionUtility.Clone (queryString);
+      queryString = NameValueCollectionUtility.Clone (queryString);
     
     queryString.Set (WxeHandler.Parameters.WxeFunctionToken, functionToken);
     
