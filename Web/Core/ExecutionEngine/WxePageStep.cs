@@ -246,7 +246,7 @@ public class WxePageStep: WxeStep
     if (_permaUrlParameters == null)
       internalUrlParameters = _function.SerializeParametersForQueryString();
     else
-      internalUrlParameters = CollectionUtility.Clone (_permaUrlParameters);
+      internalUrlParameters = NameValueCollectionUtility.Clone (_permaUrlParameters);
     
     internalUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, context.FunctionToken);
 
@@ -312,7 +312,7 @@ public class WxePageStep: WxeStep
       if (urlParameters == null)
         internalUrlParameters = function.SerializeParametersForQueryString();
       else
-        internalUrlParameters = CollectionUtility.Clone (urlParameters);
+        internalUrlParameters = NameValueCollectionUtility.Clone (urlParameters);
       internalUrlParameters.Set (WxeHandler.Parameters.WxeFunctionToken, functionToken);
 
       href = wxeContext.GetPermanentUrl (function.GetType(), internalUrlParameters, useParentPermaUrl);
@@ -454,7 +454,7 @@ public class WxePageStep: WxeStep
       if (callerUrlParameters == null)
         _callerUrlParameters = page.GetPermanentUrlParameters();
       else
-        _callerUrlParameters = CollectionUtility.Clone (callerUrlParameters);
+        _callerUrlParameters = NameValueCollectionUtility.Clone (callerUrlParameters);
     }
 
     InvokeSaveAllState ((Page) page);

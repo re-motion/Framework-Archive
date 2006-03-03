@@ -662,7 +662,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     
     ISmartNavigablePage smartNavigablePage = _page as ISmartNavigablePage;
     if (smartNavigablePage != null)
-      CollectionUtility.Append (urlParameters, smartNavigablePage.GetNavigationUrlParameters());
+      NameValueCollectionUtility.Append (urlParameters, smartNavigablePage.GetNavigationUrlParameters());
 
     return urlParameters;
   }
