@@ -1,6 +1,6 @@
 1.4.23
 ======
-- Rubicon.Utilitis.CollectionUtility
+- Rubicon.Utilitis.NameValueCollectionUtility
   * Stellt Marge, Append und Clone für NameValueCollections bereit.
   
 1.4.8

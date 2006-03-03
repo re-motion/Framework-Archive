@@ -119,7 +119,7 @@ public class NavigationCommand: Command
     NameValueCollection queryString = 
         WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
     queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
-    CollectionUtility.Append (queryString, additionalUrlParameters);
+    NameValueCollectionUtility.Append (queryString, additionalUrlParameters);
     
     return WxeContext.GetPermanentUrl (HttpContext.Current, functionType, queryString);
   }

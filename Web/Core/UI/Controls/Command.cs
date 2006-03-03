@@ -454,8 +454,8 @@ public class Command: IControlItem
 
         if (page != null)
         {
-          additionalUrlParameters = CollectionUtility.Clone (additionalUrlParameters);
-          CollectionUtility.Append (additionalUrlParameters, page.GetNavigationUrlParameters());
+          additionalUrlParameters = NameValueCollectionUtility.Clone (additionalUrlParameters);
+          NameValueCollectionUtility.Append (additionalUrlParameters, page.GetNavigationUrlParameters());
         }
       }
       href = UrlUtility.AddParameters (href, additionalUrlParameters);      

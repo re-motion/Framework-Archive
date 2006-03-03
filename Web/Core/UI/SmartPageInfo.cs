@@ -536,7 +536,7 @@ public class SmartPageInfo
   {
     NameValueCollection urlParameters = new NameValueCollection();
     foreach (INavigationControl control in _navigationControls.Values)
-       CollectionUtility.Append (urlParameters, control.GetNavigationUrlParameters());
+       NameValueCollectionUtility.Append (urlParameters, control.GetNavigationUrlParameters());
     
     return urlParameters;
   }
