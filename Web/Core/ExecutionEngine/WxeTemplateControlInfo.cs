@@ -41,11 +41,15 @@ public class WxeTemplateControlInfo
     {
       IWxePage wxePage = _control.Page as IWxePage;
       if (wxePage == null)
-        throw new InvalidOperationException (string.Format ("'{0}' can only be added to an IWxePage.", _control.GetType().FullName));
+        throw new InvalidOperationException (string.Format ("'{0}' can only be added to a Page implementing the IWxePage interface.", _control.GetType().FullName));
       _wxeHandler = wxePage.WxeHandler;
     }
     if (_wxeHandler == null)
-      throw new HttpException ("No current WxeHandler found.");
+    {
+      throw new HttpException (string.Format ("No current WxeHandler found. Most likely cause of the exception: "
+          + "The page '{0}' has been called directly instead of using a WXE Handler to invoke the associated WXE Function.", 
+          _control.Page.GetType()));
+    }
 
     _currentStep = _wxeHandler.RootFunction.ExecutingStep as WxePageStep;
     _currentFunction = WxeStep.GetFunction (_currentStep);
