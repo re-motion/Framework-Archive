@@ -1,0 +1,122 @@
+using System;
+using System.Web.UI;
+
+using NUnit.Framework;
+
+using Rubicon.Utilities;
+
+namespace Rubicon.Web.UnitTests.UI.Controls
+{
+
+[TestFixture]
+public class ControlInvokerTest
+{
+  // types
+
+  // static members and constants
+
+  // member fields
+
+  private Control _parent;
+  private Control _child;
+  
+  private ControlInvoker _invoker;
+  private string _events;
+
+  // construction and disposing
+
+  public ControlInvokerTest ()
+  {
+  }
+
+  // methods and properties
+
+  [SetUp]
+  public void SetUp()
+  {
+    _parent = new Control();
+    _parent.ID = "Parent";
+    _parent.Init += new EventHandler (Control_Init);
+    _parent.Load += new EventHandler (Control_Load);
+    _parent.PreRender += new EventHandler (Control_PreRender);
+
+    _child = new Control();
+    _child.ID = "Child";
+    _child.Init += new EventHandler (Control_Init);
+    _child.Load += new EventHandler (Control_Load);
+    _child.PreRender += new EventHandler (Control_PreRender);
+
+    _parent.Controls.Add (_child);
+
+    _invoker = new ControlInvoker (_parent);
+
+    _events = string.Empty;
+  }
+
+  [TearDown]
+  public void TearDown()
+  {
+    _parent.Init -= new EventHandler (Control_Init);
+    _parent.Load -= new EventHandler (Control_Load);
+    _parent.PreRender -= new EventHandler (Control_PreRender);
+    
+    _child.Init -= new EventHandler (Control_Init);
+    _child.Load -= new EventHandler (Control_Load);
+    _child.PreRender -= new EventHandler (Control_PreRender);
+  }
+
+  [Test]
+  public void Initialize ()
+  {
+    Assert.AreSame (_invoker.Control, _parent);
+  }
+
+  [Test]
+  public void InitRecursive ()
+  {
+    _invoker.InitRecursive ();
+
+    Assert.AreEqual ("Child Init, Parent Init", _events);
+  }
+
+  [Test]
+  public void LoadRecursive ()
+  {
+    _invoker.LoadRecursive ();
+
+    Assert.AreEqual ("Parent Load, Child Load", _events);
+  }
+
+  [Test]
+  public void PreRenderRecursive ()
+  {
+    _invoker.PreRenderRecursive ();
+
+    Assert.AreEqual ("Parent PreRender, Child PreRender", _events);
+  }
+
+  private void Control_Init (object sender, EventArgs e)
+  {
+    _events = AppendEvents ((Control) sender, _events, "Init");
+  }
+
+  private void Control_Load (object sender, EventArgs e)
+  {
+    _events = AppendEvents ((Control) sender, _events, "Load");
+  }
+
+  private void Control_PreRender (object sender, EventArgs e)
+  {
+    _events = AppendEvents ((Control) sender, _events, "PreRender");
+  }
+
+  private string AppendEvents (Control control, string events, string eventName)
+  {
+    events = StringUtility.NullToEmpty (events);
+    if (events.Length > 0)
+      events += ", ";
+
+    return events + control.ID + " " + eventName;
+  }
+}
+}
