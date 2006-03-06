@@ -305,6 +305,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\ControlInvoker.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\ControlInvokerTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\EmailAddressValidatorMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
