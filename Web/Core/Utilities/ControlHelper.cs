@@ -208,11 +208,9 @@ public class ControlHelper
     {
       ISite site = control.Site;
 
-      //EnvDTE._DTE environment = (EnvDTE._DTE) site.GetService (typeof (EnvDTE._DTE));
-      MethodInfo getServiceMethod = site.GetType().GetMethod ("GetService");
+      //EnvDTE._DTE environment = (EnvDTE._DTE) ((IServiceProvider)site).GetService (typeof (EnvDTE._DTE));
       Type _DTEType = Type.GetType ("EnvDTE._DTE, EnvDTE");
-      object[] arguments = new object[] { _DTEType };
-      object environment = getServiceMethod.Invoke (site, arguments);
+      object environment = ((IServiceProvider)site).GetService (_DTEType);
 
       if (environment != null)
       {
@@ -224,11 +222,8 @@ public class ControlHelper
         ////project.Properties uses a 1-based index
         //foreach (EnvDTE.Property property in project.Properties)
         object properties = project.GetType().InvokeMember ("Properties", BindingFlags.GetProperty, null, project, null);
-        IEnumerator propertiesEnumerator = (IEnumerator) properties.GetType().InvokeMember ("GetEnumerator", BindingFlags.InvokeMethod, null, properties, null);
-        while (propertiesEnumerator.MoveNext())
+        foreach (object property in (IEnumerable)properties)
         {
-          object property = propertiesEnumerator.Current;
-
           //if (property.Name == propertyName)
           string projectPropertyName = (string) property.GetType().InvokeMember ("Name", BindingFlags.GetProperty, null, property, null);
           if (projectPropertyName == propertyName)
