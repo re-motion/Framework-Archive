@@ -53,7 +53,7 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
 
   private void SetDesignTimeMapping ()
   {
-    string projectPath = (string) ControlHelper.GetDesignTimePropertyValue (this, "ActiveFileSharePath");
+    string projectPath = GetProjectPath();
     if (projectPath == null)
       return;
 
@@ -69,6 +69,18 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
       string message = string.Format ("Error while reading mapping configuration from file '{0}'.", mappingFile);
       _designTimeMappingException = new ApplicationException (message, e);
     }
+  }
+
+  private string GetProjectPath ()
+  {
+    string projectPath = (string)ControlHelper.GetDesignTimePropertyValue (this, "ActiveFileSharePath");
+
+#if !NET11
+    if (projectPath == null)
+      projectPath = (string)ControlHelper.GetDesignTimePropertyValue (this, "FullPath");
+#endif
+
+    return projectPath;
   }
 
   internal ApplicationException GetDesignTimeException ()
