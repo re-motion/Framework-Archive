@@ -36,20 +36,20 @@ public class MappingLoaderTest
   }
 
   [Test]
-  public void InitializeWithResolveTypeNames ()
+  public void InitializeWithResolveTypes ()
   {
     string configurationFile = Path.GetFullPath (@"mapping.xml");
     string schemaFile = Path.GetFullPath (@"mapping.xsd");
 
     Assert.AreEqual (configurationFile, _loader.ConfigurationFile);
     Assert.AreEqual (schemaFile, _loader.SchemaFile);
-    Assert.IsTrue (_loader.ResolveTypeNames);
+    Assert.IsTrue (_loader.ResolveTypes);
   }
 
   [Test]
-  public void InitializeBaseLoaderWithResolveTypeNames ()
+  public void InitializeBaseLoaderWithResolveTypes ()
   {
-    Assert.IsTrue (((BaseFileLoader) _loader).ResolveTypeNames);
+    Assert.IsTrue (((BaseFileLoader) _loader).ResolveTypes);
   }
 
   [Test]
@@ -67,7 +67,7 @@ public class MappingLoaderTest
     MappingLoader loader = new MappingLoader ("mappingWithUnresolvedTypes.xml", "mapping.xsd", false);
 
     ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions();
-    Assert.IsFalse (classDefinitions.AreResolvedTypeNamesRequired);
+    Assert.IsFalse (classDefinitions.AreResolvedTypesRequired);
   }
 
   [Test]
