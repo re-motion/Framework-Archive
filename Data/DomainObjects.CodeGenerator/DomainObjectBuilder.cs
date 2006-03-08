@@ -42,7 +42,7 @@ public class DomainObjectBuilder
 
     private static readonly string s_relationPropertyCardinalityManyGetStatement = 
         "    get { return (%propertytype%) GetRelatedObjects (\"%propertyname%\"); }" + Environment.NewLine;
-
+    private static readonly string s_relationPropertyCardinalityManySetStatement = "    set { }";
     #endregion
 
     private ClassDefinition _classDefinition;
@@ -218,7 +218,7 @@ public class DomainObjectBuilder
     
     private void WriteRelationPropertyCardinalityMany (string propertyName, Type propertyType)
     {
-      WriteProperty (propertyName, GetTypeName (propertyType), s_relationPropertyCardinalityManyGetStatement, null);
+      WriteProperty (propertyName, GetTypeName (propertyType), s_relationPropertyCardinalityManyGetStatement, s_relationPropertyCardinalityManySetStatement);
     }
 
     private void WriteProperty (string propertyName, string propertyTypeName, string getTemplate, string setTemplate)
