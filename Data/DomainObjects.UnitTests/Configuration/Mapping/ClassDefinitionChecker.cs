@@ -75,9 +75,9 @@ public class ClassDefinitionChecker
         string.Format ("Number of class definitions does not match. Expected: {0}, actual: {1}", 
         expectedDefinitions.Count, actualDefinitions.Count));
 
-    Assert.AreEqual (expectedDefinitions.AreResolvedTypeNamesRequired, actualDefinitions.AreResolvedTypeNamesRequired, 
-        string.Format ("AreResolvedTypeNamesRequired does not match. Expected: {0}, actual: {1}", 
-        expectedDefinitions.AreResolvedTypeNamesRequired, actualDefinitions.AreResolvedTypeNamesRequired));
+    Assert.AreEqual (expectedDefinitions.AreResolvedTypesRequired, actualDefinitions.AreResolvedTypesRequired, 
+        string.Format ("AreResolvedTypesRequired does not match. Expected: {0}, actual: {1}", 
+        expectedDefinitions.AreResolvedTypesRequired, actualDefinitions.AreResolvedTypesRequired));
 
     foreach (ClassDefinition expectedDefinition in expectedDefinitions)
     {
