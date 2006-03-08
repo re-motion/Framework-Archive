@@ -301,12 +301,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithResolvedTypeNamesTest.cs"
+                    RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithResolvedTypesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithUnresolvedTypeNamesTest.cs"
+                    RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithUnresolvedTypesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -376,12 +376,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Mapping\RelationDefinitionLoaderWithResolvedTypeNamesTest.cs"
+                    RelPath = "Configuration\Mapping\RelationDefinitionLoaderWithResolvedTypesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Configuration\Mapping\RelationDefinitionLoaderWithUnresolvedTypeNamesTest.cs"
+                    RelPath = "Configuration\Mapping\RelationDefinitionLoaderWithUnresolvedTypesTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
