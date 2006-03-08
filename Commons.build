@@ -250,7 +250,7 @@
     <call target="build" />
   </target>
 
-  <target name="DevelopmentCore" depends="initialize">
+  <target name="DevelopmentCore" depends="Core, initialize">
     <property name="project.name" value="Development.Core" />
     <property name="project.dir" value="Development/Core" />
     <property name="project.output" value="Rubicon.Development" />
@@ -370,7 +370,7 @@
     </nunit2>
   </target>
 
-  <target name="DevelopmentCoreTest" depends="Core, DevelopmentCore">
+  <target name="DevelopmentCoreTest" depends="DevelopmentCore">
     <property name="project.name" value="Development.Core.Test" />
     <property name="project.dir" value="Development/Core.Test" />
     <property name="project.output" value="Rubicon.Development.UnitTests" />
