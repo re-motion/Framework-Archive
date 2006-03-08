@@ -2572,13 +2572,11 @@ public class BocList:
       BocListDataRowRenderEventArgs dataRowRenderEventArgs)
   {
     bool isReadOnly = IsReadOnly;
-    RowEditingController rowEditingController = null;
-    bool isEditedRow = IsEditDetailsModeActive && ModifiableRowIndex.Value == originalRowIndex;
-    if (isEditedRow)
-      rowEditingController = _rowEditModeController;
-    else if (IsListEditModeActive)
-      rowEditingController = _rowEditingControllers[originalRowIndex];
-    bool hasEditModeControl = rowEditingController != null && rowEditingController.HasEditControl (columnIndex);
+    bool isEditedRow = ! ModifiableRowIndex.IsNull && ModifiableRowIndex.Value == originalRowIndex;
+    bool hasEditModeControl =    isEditedRow
+                              && _rowEditModeControls != null 
+                              && _rowEditModeControls.Length > 0 
+                              && _rowEditModeControls[columnIndex] != null;
 
     BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
@@ -2604,8 +2602,9 @@ public class BocList:
       if (valueColumn != null && ! hasEditModeControl)
         valueColumnText = valueColumn.GetStringValue (businessObject);
 
-      bool showEditModeControl =   hasEditModeControl 
-                                && ! rowEditingController.GetEditControl (columnIndex).IsReadOnly;
+      bool showEditModeControl =   simpleColumn != null 
+                                && hasEditModeControl 
+                                && ! _rowEditModeControls[columnIndex].IsReadOnly;
 
       bool enforceWidth = 
              valueColumn != null 
@@ -2619,9 +2618,8 @@ public class BocList:
         writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
         writer.AddStyleAttribute ("overflow", "hidden");
         writer.AddStyleAttribute ("white-space", "nowrap");
-        writer.AddStyleAttribute ("display", "block");
         writer.AddAttribute (HtmlTextWriterAttribute.Title, valueColumnText);
-        writer.RenderBeginTag (HtmlTextWriterTag.Span);
+        writer.RenderBeginTag (HtmlTextWriterTag.Div);
       }
 
       //  Render the command
@@ -2649,7 +2647,7 @@ public class BocList:
       else if (simpleColumn != null)
       {
         if (showEditModeControl)
-          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex, rowEditingController);
+          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex);
         else
           RenderValueColumnCellText (writer, valueColumnText);
       }
@@ -2664,7 +2662,7 @@ public class BocList:
         writer.RenderEndTag(); // End Span
 
       if (enforceWidth)
-        writer.RenderEndTag(); // End Span
+        writer.RenderEndTag(); // End Div
     }
     else if (editDetailsColumn != null)
     {
