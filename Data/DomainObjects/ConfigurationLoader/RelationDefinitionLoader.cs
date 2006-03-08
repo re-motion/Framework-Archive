@@ -51,9 +51,9 @@ public class RelationDefinitionLoader
     return relationDefinitions;
   }
 
-  public bool ResolveTypeNames
+  public bool ResolveTypes
   {
-    get { return _classDefinitions.AreResolvedTypeNamesRequired; }
+    get { return _classDefinitions.AreResolvedTypesRequired; }
   }
 
   private string FormatXPath (string xPath)
