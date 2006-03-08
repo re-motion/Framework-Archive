@@ -34,14 +34,14 @@ public class MappingLoader : BaseFileLoader
 
   // construction and disposing
 
-  public MappingLoader (string configurationFile, string schemaFile, bool resolveTypeNames)
+  public MappingLoader (string configurationFile, string schemaFile, bool resolveTypes)
   {
     try
     {
       base.Initialize (
           configurationFile, 
           schemaFile, 
-          resolveTypeNames,
+          resolveTypes,
           new PrefixNamespace[] {PrefixNamespace.MappingNamespace}, 
           PrefixNamespace.MappingNamespace);
     }
@@ -59,7 +59,7 @@ public class MappingLoader : BaseFileLoader
 
   public ClassDefinitionCollection GetClassDefinitions ()
   {
-    ClassDefinitionLoader classDefinitionLoader = new ClassDefinitionLoader (Document, NamespaceManager, ResolveTypeNames);        
+    ClassDefinitionLoader classDefinitionLoader = new ClassDefinitionLoader (Document, NamespaceManager, ResolveTypes);        
     return classDefinitionLoader.GetClassDefinitions ();
   }
 
