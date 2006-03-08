@@ -26,7 +26,7 @@ public sealed class ClassDefinitionFactory
 
   public static ClassDefinition CreateWithUnresolvedClassType ()
   {
-    return new ClassDefinition ("ClassID", "Entity", "StorageProviderID", "UnresolvedTypeName", false);
+    return new ClassDefinition ("ClassID", "Entity", "StorageProviderID", "UnresolvedType", false);
   }
 
   public static ClassDefinition CreateWithUnresolvedRelationProperty ()

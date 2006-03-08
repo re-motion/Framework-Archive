@@ -59,7 +59,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
       string propertyName, 
       string columnName, 
       string mappingTypeName, 
-      bool resolveMappingTypeName,
+      bool resolveMappingType,
       bool isNullable,
       NaInt32 maxLength)
   {
@@ -67,7 +67,7 @@ public class PropertyDefinition : ISerializable, IObjectReference
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
     ArgumentUtility.CheckNotNullOrEmpty ("mappingTypeName", mappingTypeName);
 
-    if (resolveMappingTypeName)
+    if (resolveMappingType)
     {
       TypeInfo typeInfo = GetTypeInfo (mappingTypeName, isNullable);
 
