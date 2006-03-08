@@ -21,7 +21,7 @@
       </sources>
       <references failonempty="true">
         <include asis="true" name="System.dll"/>
-        <include asis="true" name="System.Data.dll"/>
+        <include name="${project.builddir}/Rubicon.Core.dll" />
       </references>
     </csc>
         
