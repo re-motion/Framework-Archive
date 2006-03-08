@@ -1,9 +1,18 @@
+1.4.26.0
+========
+
+- Rubicon.Data.DomainObjects.Mapping.MappingConfiguration:
+  Hat einen neuen Konstruktor-Parameter resolveTypes. Wird dieser auf false gesetzt, wird das gesamte Mapping geladen,
+  aber keine .NET-Typen aufgelöst. Dieses Feature ist vor allem für Codegeneratoren sinnvoll, die für das Generieren
+  die MappingConfiguration nutzen. Die Supporter-Klassen in den Namespaces Rubicon.Data.DomainObjects.Mapping und 
+  Rubicon.Data.DomainObjects.ConfigurationLoader wurden ebenfalls entsprechend angepasst.
+
+
 1.4.25.0
 ========
 
 - Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl:
-  In der .NET 2.0-Version wird jetzt auch der Designer für Web-Projekte und Web-Sites von Visual Studio 2005 unterstützt. Ein Bug
-  hat vorher verhindert, dass die Mapping-Files zur Design-Time gefunden wurden.
+  Im Build für .NET 2.0 wird jetzt auch der Designer für Web-Projekte und Web-Sites von Visual Studio 2005 korrekt unterstützt. 
 
 
 1.4.10.0
