@@ -1,3 +1,11 @@
+1.4.25.0
+========
+
+- Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl:
+  In der .NET 2.0-Version wird jetzt auch der Designer für Web-Projekte und Web-Sites von Visual Studio 2005 unterstützt. Ein Bug
+  hat vorher verhindert, dass die Mapping-Files zur Design-Time gefunden wurden.
+
+
 1.4.10.0
 ========
 
