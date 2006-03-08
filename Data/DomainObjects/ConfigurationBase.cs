@@ -19,7 +19,7 @@ public class ConfigurationBase
   private string _applicationName;
   private string _configurationFile;
   private string _schemaFile;
-  private bool _resolveTypeNames;
+  private bool _resolveTypes;
 
   // construction and disposing
 
@@ -35,7 +35,7 @@ public class ConfigurationBase
     _applicationName = loader.GetApplicationName ();
     _configurationFile = loader.ConfigurationFile;
     _schemaFile = loader.SchemaFile;
-    _resolveTypeNames = loader.ResolveTypeNames;
+    _resolveTypes = loader.ResolveTypes;
   }
 
   // methods and properties
@@ -67,9 +67,9 @@ public class ConfigurationBase
   /// <summary>
   /// Gets a flag whether type names in the configuration file should be resolved to their corresponding .NET <see cref="Type"/>.
   /// </summary>
-  public bool ResolveTypeNames
+  public bool ResolveTypes
   {
-    get { return _resolveTypeNames; }
+    get { return _resolveTypes; }
   }
 }
 }

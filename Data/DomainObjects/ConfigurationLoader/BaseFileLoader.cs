@@ -19,7 +19,7 @@ public class BaseFileLoader
   private ConfigurationNamespaceManager _namespaceManager;
   private string _configurationFile;
   private string _schemaFile;
-  private bool _resolveTypeNames;
+  private bool _resolveTypes;
 
   // construction and disposing
 
@@ -30,7 +30,7 @@ public class BaseFileLoader
   protected void Initialize (
       string configurationFile, 
       string schemaFile, 
-      bool resolveTypeNames,
+      bool resolveTypes,
       PrefixNamespace[] namespaces, 
       PrefixNamespace schemaNamespace)
   {
@@ -44,7 +44,7 @@ public class BaseFileLoader
 
     _configurationFile = Path.GetFullPath (configurationFile);
     _schemaFile = Path.GetFullPath (schemaFile);
-    _resolveTypeNames = resolveTypeNames;
+    _resolveTypes = resolveTypes;
 
     _document = LoadConfigurationFile (_configurationFile, _schemaFile, schemaNamespace.Uri);
     _namespaceManager = new ConfigurationNamespaceManager (_document, namespaces);
@@ -97,9 +97,9 @@ public class BaseFileLoader
     get { return _schemaFile; }
   }
 
-  public bool ResolveTypeNames
+  public bool ResolveTypes
   {
-    get { return _resolveTypeNames; }
+    get { return _resolveTypes; }
   }
 
   protected XmlDocument Document
