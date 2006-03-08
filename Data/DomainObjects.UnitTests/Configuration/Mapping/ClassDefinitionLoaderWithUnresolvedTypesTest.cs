@@ -10,7 +10,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
 
 [TestFixture]
-public class ClassDefinitionLoaderWithUnresolvedTypeNamesTest
+public class ClassDefinitionLoaderWithUnresolvedTypesTest
 {
   // types
 
@@ -22,7 +22,7 @@ public class ClassDefinitionLoaderWithUnresolvedTypeNamesTest
 
   // construction and disposing
 
-  public ClassDefinitionLoaderWithUnresolvedTypeNamesTest ()
+  public ClassDefinitionLoaderWithUnresolvedTypesTest ()
   {
   }
 
@@ -47,7 +47,7 @@ public class ClassDefinitionLoaderWithUnresolvedTypeNamesTest
   }
   
   [Test]
-  public void MappingWithUnresolvedTypeNames ()
+  public void MappingWithUnresolvedTypes ()
   {
     ClassDefinitionCollection classDefinitions = _loader.GetClassDefinitions ();
 
