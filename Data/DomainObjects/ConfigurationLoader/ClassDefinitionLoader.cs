@@ -19,11 +19,11 @@ public class ClassDefinitionLoader
   private XmlDocument _document;
   private XmlNodeList _classNodeList;
   private ConfigurationNamespaceManager _namespaceManager;
-  private bool _resolveTypeNames;
+  private bool _resolveTypes;
 
   // construction and disposing
 
-  public ClassDefinitionLoader (XmlDocument document, ConfigurationNamespaceManager namespaceManager, bool resolveTypeNames)
+  public ClassDefinitionLoader (XmlDocument document, ConfigurationNamespaceManager namespaceManager, bool resolveTypes)
   {
     ArgumentUtility.CheckNotNull ("document", document);
     ArgumentUtility.CheckNotNull ("namespaceManager", namespaceManager);
@@ -37,14 +37,14 @@ public class ClassDefinitionLoader
     _document = document;
     _classNodeList = classNodeList;
     _namespaceManager = namespaceManager;
-    _resolveTypeNames = resolveTypeNames;
+    _resolveTypes = resolveTypes;
   }
 
   // methods and properties
 
-  public bool ResolveTypeNames
+  public bool ResolveTypes
   {
-    get { return _resolveTypeNames; }
+    get { return _resolveTypes; }
   }
 
   private string FormatXPath (string xPath)
@@ -54,7 +54,7 @@ public class ClassDefinitionLoader
 
   public ClassDefinitionCollection GetClassDefinitions ()
   {
-    ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection (_resolveTypeNames);
+    ClassDefinitionCollection classDefinitions = new ClassDefinitionCollection (_resolveTypes);
 
     foreach (XmlNode classNode in _classNodeList)
     {
@@ -94,10 +94,10 @@ public class ClassDefinitionLoader
     string classTypeName = classNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText.Trim ();
 
     ClassDefinition classDefinition;
-    if (_resolveTypeNames)
+    if (_resolveTypes)
       classDefinition = new ClassDefinition (id, entityName, storageProviderID, LoaderUtility.GetType (classTypeName));
     else
-      classDefinition = new ClassDefinition (id, entityName, storageProviderID, classTypeName, _resolveTypeNames);
+      classDefinition = new ClassDefinition (id, entityName, storageProviderID, classTypeName, _resolveTypes);
 
     FillPropertyDefinitions (classDefinition, classNode);
 
@@ -135,7 +135,7 @@ public class ClassDefinitionLoader
     if (maxLengthNode != null)
       maxLength = NaInt32.Parse (maxLengthNode.InnerText);
 
-    return new PropertyDefinition (propertyName, columnName, mappingType, _resolveTypeNames, isNullable, maxLength);
+    return new PropertyDefinition (propertyName, columnName, mappingType, _resolveTypes, isNullable, maxLength);
   }
 
   private PropertyDefinition GetRelationPropertyDefinition (ClassDefinition classDefinition, XmlNode propertyNode)
@@ -143,7 +143,7 @@ public class ClassDefinitionLoader
     string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
     string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
 
-    return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, _resolveTypeNames, true, NaInt32.Null);
+    return new PropertyDefinition (propertyName, columnName, TypeInfo.ObjectIDMappingTypeName, _resolveTypes, true, NaInt32.Null);
   }
 
   private MappingException CreateMappingException (string message, params object[] args)
