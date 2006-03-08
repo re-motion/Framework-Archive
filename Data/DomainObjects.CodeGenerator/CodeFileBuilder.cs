@@ -50,11 +50,14 @@ public abstract class CodeFileBuilder: FileBuilder
   protected static readonly string s_enumTag = "%enumname%";
   protected static readonly string s_propertytypeTag = "%propertytype%";
   protected static readonly string s_propertynameTag = "%propertyname%";
-  protected static readonly string s_resourcesTag = "%resources%";
+  //protected static readonly string s_resourcesTag = "%resources%";
+  protected static readonly string s_typeNameTag = "%typename%";
 
   #endregion
 
   #region Templates
+
+  private static readonly string s_indentation = "  ";
 
   private static readonly string s_comment =
       "  // %comment%" + Environment.NewLine;
@@ -69,7 +72,9 @@ public abstract class CodeFileBuilder: FileBuilder
   private static readonly string s_serializableAttribute = 
       "[Serializable]" + Environment.NewLine;
   private static readonly string s_multilingualResourcesAttribute = 
-      "[MultiLingualResources(\"%resources%\")]" + Environment.NewLine;
+      "[MultiLingualResources(\"%namespace%.Globalization.%typename%\")]" + Environment.NewLine;
+  private static readonly string s_enumDescriptionResourceAttribute = 
+      "[EnumDescriptionResource(\"%namespace%.Globalization.%typename%\")]" + Environment.NewLine;
 
   private static readonly string s_namespaceHeader = 
       "namespace %namespace%" + Environment.NewLine
@@ -165,6 +170,12 @@ public abstract class CodeFileBuilder: FileBuilder
     base.FinishFile();
   }
 
+  protected void WriteIndentation (int indentations)
+  {
+    for (int i = 0; i < indentations; ++i)
+      Write (s_indentation);
+  }
+
   protected void WriteComment (string comment)
   {
     string commentLine = s_comment;
@@ -207,9 +218,21 @@ public abstract class CodeFileBuilder: FileBuilder
     Write (s_serializableAttribute);
   }
 
-  protected void WriteMultiLingualResourcesAttribute (string resources)
+  protected void WriteMultiLingualResourcesAttribute (Type type)
   {
-    Write (ReplaceTag (s_multilingualResourcesAttribute, s_resourcesTag, resources));
+    string attributeString = s_multilingualResourcesAttribute;
+    attributeString = ReplaceTag (attributeString, s_typeNameTag, type.Name);
+    attributeString = ReplaceTag (attributeString, s_namespaceTag, type.Namespace);
+    Write (attributeString);
+  }
+
+  protected void WriteEnumDescriptionResourceAttribute (Type type)
+  {
+    // TODO: modify type name if nested
+    string attributeString = s_enumDescriptionResourceAttribute;
+    attributeString = ReplaceTag (attributeString, s_typeNameTag, type.Name);
+    attributeString = ReplaceTag (attributeString, s_namespaceTag, type.Namespace);
+    Write (attributeString);
   }
 
   protected void BeginClass (string className, string baseClassName)
@@ -311,6 +334,16 @@ public abstract class CodeFileBuilder: FileBuilder
   protected void WriteEnum (string enumName)
   {
     Write (ReplaceTag (s_enum, s_enumTag, enumName));
+  }
+
+  protected void WriteNestedEnum (Type enumType, bool enumDescriptionResourceAttribute)
+  {
+    if (enumDescriptionResourceAttribute)
+    {
+      WriteIndentation (1);
+      WriteEnumDescriptionResourceAttribute (enumType);
+    }
+    Write (ReplaceTag (s_nestedEnum, s_enumTag, enumType.Name));
   }
 
   protected void WriteNestedEnum (string enumName)
