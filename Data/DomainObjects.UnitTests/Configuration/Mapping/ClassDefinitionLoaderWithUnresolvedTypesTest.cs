@@ -43,7 +43,7 @@ public class ClassDefinitionLoaderWithUnresolvedTypeNamesTest
   [Test]
   public void Initialize ()
   {
-    Assert.IsFalse (_loader.ResolveTypeNames);
+    Assert.IsFalse (_loader.ResolveTypes);
   }
   
   [Test]
@@ -51,7 +51,7 @@ public class ClassDefinitionLoaderWithUnresolvedTypeNamesTest
   {
     ClassDefinitionCollection classDefinitions = _loader.GetClassDefinitions ();
 
-    Assert.IsFalse (classDefinitions.AreResolvedTypeNamesRequired);
+    Assert.IsFalse (classDefinitions.AreResolvedTypesRequired);
     Assert.AreEqual (4, classDefinitions.Count);
     
     ClassDefinition classDefinition = classDefinitions.GetMandatory ("Customer");

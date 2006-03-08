@@ -27,7 +27,20 @@ public class MappingConfigurationTest
   // methods and properties
 
   [Test]
-  public void InitializeWithFileNamesAndResolveTypeNames ()
+  public void InitializeWithFileNamesOnly ()
+  {
+    MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd");
+
+    string configurationFile = Path.GetFullPath (@"mappingWithMinimumData.xml");
+    string schemaFile = Path.GetFullPath (@"mapping.xsd");
+
+    Assert.AreEqual (configurationFile, configuration.ConfigurationFile);
+    Assert.AreEqual (schemaFile, configuration.SchemaFile);
+    Assert.IsTrue (configuration.ResolveTypes);    
+  }
+
+  [Test]
+  public void InitializeWithFileNamesAndResolveTypes ()
   {
     MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd", true);
 
@@ -36,11 +49,11 @@ public class MappingConfigurationTest
 
     Assert.AreEqual (configurationFile, configuration.ConfigurationFile);
     Assert.AreEqual (schemaFile, configuration.SchemaFile);
-    Assert.IsTrue (configuration.ResolveTypeNames);
+    Assert.IsTrue (configuration.ResolveTypes);
   }
 
   [Test]
-  public void InitializeWithLoaderAndResolveTypeNames ()
+  public void InitializeWithLoaderAndResolveTypes ()
   {
     MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"mappingWithMinimumData.xml", @"mapping.xsd", true));
     
@@ -49,7 +62,7 @@ public class MappingConfigurationTest
 
     Assert.AreEqual (configurationFile, configuration.ConfigurationFile);
     Assert.AreEqual (schemaFile, configuration.SchemaFile);
-    Assert.IsTrue (configuration.ResolveTypeNames);
+    Assert.IsTrue (configuration.ResolveTypes);
   }
 
   [Test]
@@ -139,7 +152,7 @@ public class MappingConfigurationTest
     MappingConfiguration configuration = new MappingConfiguration (
         new MappingLoader (@"mappingWithUnresolvedTypes.xml", @"mapping.xsd", false));
 
-    Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypeNamesRequired);
+    Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);
   }
 
   [Test]
@@ -148,8 +161,8 @@ public class MappingConfigurationTest
     MappingConfiguration configuration = new MappingConfiguration (
         new MappingLoader (@"entireMappingWithUnresolvedTypes.xml", @"mapping.xsd", false));
 
-    Assert.IsFalse (configuration.ResolveTypeNames);
-    Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypeNamesRequired);
+    Assert.IsFalse (configuration.ResolveTypes);
+    Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);
 
     foreach (ClassDefinition classDefinition in configuration.ClassDefinitions)
     {
