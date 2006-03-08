@@ -16,7 +16,7 @@ public class ClassDefinitionCollection : CommonCollection
   // member fields
 
   private Hashtable _types = new Hashtable ();
-  private bool _areResolvedTypeNamesRequired;
+  private bool _areResolvedTypesRequired;
 
   // construction and disposing
 
@@ -24,9 +24,9 @@ public class ClassDefinitionCollection : CommonCollection
   {
   }
 
-  public ClassDefinitionCollection (bool areResolvedTypeNamesRequired)
+  public ClassDefinitionCollection (bool areResolvedTypesRequired)
   {
-    _areResolvedTypeNamesRequired = areResolvedTypeNamesRequired;
+    _areResolvedTypesRequired = areResolvedTypesRequired;
   }
 
   // standard constructor for collections
@@ -49,7 +49,7 @@ public class ClassDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("classType", classType);
 
-    if (!_areResolvedTypeNamesRequired)
+    if (!_areResolvedTypesRequired)
     {
       throw CreateInvalidOperationException (
           "Collection allows only ClassDefinitions with resolved types and therefore GetMandatory(Type) cannot be used.");
@@ -73,9 +73,9 @@ public class ClassDefinitionCollection : CommonCollection
     return classDefinition;
   }
 
-  public bool AreResolvedTypeNamesRequired
+  public bool AreResolvedTypesRequired
   {
-    get { return _areResolvedTypeNamesRequired; }
+    get { return _areResolvedTypesRequired; }
   }
 
   #region Standard implementation for "add-only" collections
@@ -89,7 +89,7 @@ public class ClassDefinitionCollection : CommonCollection
 
   public bool Contains (Type classType)
   {
-    if (!_areResolvedTypeNamesRequired)
+    if (!_areResolvedTypesRequired)
     {
       throw CreateInvalidOperationException (
           "Collection allows only ClassDefinitions with resolved types and therefore Contains(Type) cannot be used.");
@@ -114,7 +114,7 @@ public class ClassDefinitionCollection : CommonCollection
   {
     get 
     {
-      if (!_areResolvedTypeNamesRequired)
+      if (!_areResolvedTypesRequired)
       {
         throw CreateInvalidOperationException (
             "Collection allows only ClassDefinitions with resolved types and therefore this overload of the indexer cannot be used.");
@@ -138,7 +138,7 @@ public class ClassDefinitionCollection : CommonCollection
   {
     ArgumentUtility.CheckNotNull ("value", value);
   
-    if (_areResolvedTypeNamesRequired)
+    if (_areResolvedTypesRequired)
     {
       if (value.ClassType == null)
       {
@@ -152,7 +152,7 @@ public class ClassDefinitionCollection : CommonCollection
 
     int position = BaseAdd (value.ID, value);
 
-    if (_areResolvedTypeNamesRequired)
+    if (_areResolvedTypesRequired)
       _types.Add (value.ClassType, value);
 
     return position;
