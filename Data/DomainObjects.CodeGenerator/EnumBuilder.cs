@@ -13,32 +13,36 @@ public class EnumBuilder
     {
     }
 
-    public void Build (Type type)
+    public void Build (Type type, bool enumDescriptionResourceAttribute)
     {
       BeginNamespace (type.Namespace);
+
+      if (enumDescriptionResourceAttribute)
+        WriteEnumDescriptionResourceAttribute (type);
+
       WriteEnum (type.Name);
       EndNamespace ();
       FinishFile ();
     }
   }
 
-  public static void Build (string filename, Type type)
+  public static void Build (string filename, Type type, bool enumDescriptionResourceAttribute)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
 
     using (TextWriter writer = new StreamWriter (filename))
     {
-      Build (writer, type);
+      Build (writer, type, enumDescriptionResourceAttribute);
     }
   }
 
-  public static void Build (TextWriter writer, Type type)
+  public static void Build (TextWriter writer, Type type, bool enumDescriptionResourceAttribute)
   {
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("type", type);
 
     Builder builder = new Builder (writer);
-    builder.Build (type);
+    builder.Build (type, enumDescriptionResourceAttribute);
   }
 
   private EnumBuilder()

@@ -59,9 +59,9 @@ public class DomainObjectCollectionBuilder
       WriteComment ("types");
       WriteLine ();
 
-      //Write nested types (enums)
-      foreach (PropertyDefinition propertyDefinition in GetEnumPropertyDefinitionsWithNestedType (type))
-        WriteNestedEnum (propertyDefinition.PropertyType.Name);
+//      //Write nested types (enums)
+//      foreach (PropertyDefinition propertyDefinition in GetEnumPropertyDefinitionsWithNestedType (type))
+//        WriteNestedEnum (propertyDefinition.PropertyType.Name);
 
       // static members and constants
       WriteComment ("static members and constants");
