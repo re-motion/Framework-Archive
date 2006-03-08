@@ -42,7 +42,7 @@ public class ClassDefinitionLoaderWithResolvedTypeNamesTest
   [Test]
   public void Initialize ()
   {
-    Assert.IsTrue (_loader.ResolveTypeNames);
+    Assert.IsTrue (_loader.ResolveTypes);
   }
 }
 }

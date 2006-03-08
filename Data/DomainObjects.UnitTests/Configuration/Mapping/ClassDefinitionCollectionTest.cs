@@ -37,11 +37,11 @@ public class ClassDefinitionCollectionTest
   [Test]
   public void Initialize ()
   {
-    Assert.IsTrue (_collection.AreResolvedTypeNamesRequired);
+    Assert.IsTrue (_collection.AreResolvedTypesRequired);
   }
 
   [Test]
-  public void AddWithResolvedTypeName ()
+  public void AddWithResolvedType ()
   {
     Assert.AreEqual (0, _collection.Count);
 
@@ -53,10 +53,10 @@ public class ClassDefinitionCollectionTest
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
       "Collection allows only ClassDefinitions with resolved types and therefore ClassDefinition 'Order' cannot be added.")]
-  public void AddWithUnresolvedTypeName ()
+  public void AddWithUnresolvedType ()
   {
-    ClassDefinition classDefinitionWithUnresolvedTypeName = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedTypeName", false);
-    _collection.Add (classDefinitionWithUnresolvedTypeName);
+    ClassDefinition classDefinitionWithUnresolvedType = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
+    _collection.Add (classDefinitionWithUnresolvedType);
   }
 
   [Test]

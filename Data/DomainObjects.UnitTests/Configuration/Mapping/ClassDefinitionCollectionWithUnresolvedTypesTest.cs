@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
 [TestFixture]
-public class ClassDefinitionCollectionWithUnresolvedTypeNamesTest
+public class ClassDefinitionCollectionWithUnresolvedTypesTest
 {
   // types
 
@@ -16,11 +16,11 @@ public class ClassDefinitionCollectionWithUnresolvedTypeNamesTest
   // member fields
 
   private ClassDefinitionCollection _collection;
-  private ClassDefinition _classDefinitionWithUnresolvedTypeName;
+  private ClassDefinition _classDefinitionWithUnresolvedType;
 
   // construction and disposing
 
-  public ClassDefinitionCollectionWithUnresolvedTypeNamesTest ()
+  public ClassDefinitionCollectionWithUnresolvedTypesTest ()
   {
   }
 
@@ -30,14 +30,14 @@ public class ClassDefinitionCollectionWithUnresolvedTypeNamesTest
   public void SetUp ()
   {
     _collection = new ClassDefinitionCollection (false);
-    _classDefinitionWithUnresolvedTypeName = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedTypeName", false);
+    _classDefinitionWithUnresolvedType = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
   }
 
   
   [Test]
-  public void InitializeWithUnresolvedTypeNames ()
+  public void InitializeWithUnresolvedTypes ()
   {
-    Assert.IsFalse (_collection.AreResolvedTypeNamesRequired);
+    Assert.IsFalse (_collection.AreResolvedTypesRequired);
   }
 
   [Test]
@@ -66,7 +66,7 @@ public class ClassDefinitionCollectionWithUnresolvedTypeNamesTest
 
 
   [Test]
-  public void AddWithResolvedTypeName ()
+  public void AddWithResolvedType ()
   {
     Assert.AreEqual (0, _collection.Count);
 
@@ -77,11 +77,11 @@ public class ClassDefinitionCollectionWithUnresolvedTypeNamesTest
   }
 
   [Test]
-  public void AddWithUnresolvedTypeName ()
+  public void AddWithUnresolvedType ()
   {
     Assert.AreEqual (0, _collection.Count);
 
-    _collection.Add (_classDefinitionWithUnresolvedTypeName);
+    _collection.Add (_classDefinitionWithUnresolvedType);
 
     Assert.AreEqual (1, _collection.Count);
   }
