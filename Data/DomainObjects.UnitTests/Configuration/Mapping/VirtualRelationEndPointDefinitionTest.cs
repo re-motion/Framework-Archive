@@ -40,7 +40,7 @@ public class VirtualRelationEndPointDefinitionTest
   }
 
   [Test]
-  public void InitializeWithPropertyTypeName ()
+  public void InitializeWithPropertyType ()
   {
     VirtualRelationEndPointDefinition endPoint = new VirtualRelationEndPointDefinition (
         ClassDefinitionFactory.CreateOrderDefinition (),
@@ -53,16 +53,16 @@ public class VirtualRelationEndPointDefinitionTest
   }
 
   [Test]
-  public void InitializeWithUnresolvedPropertyTypeName ()
+  public void InitializeWithUnresolvedPropertyType ()
   {
     VirtualRelationEndPointDefinition endPoint = new VirtualRelationEndPointDefinition (
         ClassDefinitionFactory.CreateWithUnresolvedRelationProperty (),
         "VirtualEndPoint", true, CardinalityType.One, 
-        "UnresolvedTypeName", null);
+        "UnresolvedType", null);
 
     Assert.IsFalse (endPoint.IsPropertyTypeResolved);
     Assert.IsNull (endPoint.PropertyType);
-    Assert.AreEqual ("UnresolvedTypeName", endPoint.PropertyTypeName);
+    Assert.AreEqual ("UnresolvedType", endPoint.PropertyTypeName);
   }
 
   [Test]

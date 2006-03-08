@@ -62,7 +62,7 @@ public class RelationEndPointDefinitionTest
   }
 
   [Test]
-  public void IRelationEndPointDefinitionWithUnresolvedTypeName ()
+  public void IRelationEndPointDefinitionWithUnresolvedType ()
   {
     IRelationEndPointDefinition endPoint = new RelationEndPointDefinition (
         ClassDefinitionFactory.CreateWithUnresolvedRelationProperty (), "PropertyName", true);
