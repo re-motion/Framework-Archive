@@ -1,3 +1,9 @@
+1.4.26
+======
+- BocList
+  * Bugfix: EnforceWidth hat im Internet Explorer unter Umständen dazu geführt, dass der Content nicht angezeigt 
+    wurde.
+
 1.4.24
 ======
 - BocList
@@ -6,9 +12,9 @@
 1.4.23
 ======
 - BocList
-  * string BocCommandColumn.IconPath auf IconIcon BocCommandColumn.Icon umgestellt.
+  * string BocCommandColumn.IconPath auf IconInfo BocCommandColumn.Icon umgestellt.
     Statt IconPath ist nun Icon.Url zu setzen.
-    In ASPX/ASCX Seiten muss IconPath durch Search & Replace ersetzt werden.
+    In ASPX/ASCX Seiten muss IconPath durch Search & Replace (Icon-Url) ersetzt werden.
   * BocEditDetailsColumnDefinition.EditIcon, SaveIcon, CancelIcon: null ist nicht mehr erlaubt.
   * GetSelectedRows, GetSelectedBusinessObjects liefern nun die Zeilen in der Reihenfolge zurück wie sie in der
     Value-Collection stehen. Bisher: unbestimmte Reihenfolge.
