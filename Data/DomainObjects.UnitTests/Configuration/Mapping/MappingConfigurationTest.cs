@@ -187,7 +187,9 @@ public class MappingConfigurationTest
         string endPointMessage = "Relation: " + relationDefinition.ID + ", PropertyName: " + endPoint.PropertyName;
         Assert.IsNull (endPoint.PropertyType, endPointMessage);
 
-        if (!endPoint.IsNull)
+        if (endPoint.IsNull)
+          Assert.IsNull (endPoint.PropertyTypeName, endPointMessage);
+        else
           Assert.IsNotNull (endPoint.PropertyTypeName, endPointMessage);
 
         Assert.IsFalse (endPoint.IsPropertyTypeResolved, endPointMessage);
