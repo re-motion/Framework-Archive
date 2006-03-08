@@ -11,7 +11,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
 
 [TestFixture]
-public class RelationDefinitionLoaderWithUnresolvedTypeNamesTest
+public class RelationDefinitionLoaderWithUnresolvedTypesTest
 {
   // types
 
@@ -24,7 +24,7 @@ public class RelationDefinitionLoaderWithUnresolvedTypeNamesTest
 
   // construction and disposing
 
-  public RelationDefinitionLoaderWithUnresolvedTypeNamesTest ()
+  public RelationDefinitionLoaderWithUnresolvedTypesTest ()
   {
   }
 
