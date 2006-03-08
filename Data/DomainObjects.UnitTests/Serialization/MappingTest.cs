@@ -62,7 +62,7 @@ public class MappingTest : SerializationBaseTest
   }
 
   [Test]
-  public void PropertyDefinitionWithUnresolvedNativePropertyTypeName ()
+  public void PropertyDefinitionWithUnresolvedNativePropertyType ()
   {
     PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, NaInt32.Null);
 
@@ -71,9 +71,9 @@ public class MappingTest : SerializationBaseTest
   }
 
   [Test]
-  public void PropertyDefinitionWithUnresolvedUnknownPropertyTypeName ()
+  public void PropertyDefinitionWithUnresolvedUnknownPropertyType ()
   {
-    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyTypeName", false, true, NaInt32.Null);
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownPropertyType", false, true, NaInt32.Null);
 
     PropertyDefinition deserializedPropertyDefinition = (PropertyDefinition) SerializeAndDeserialize (propertyDefinition);
     AreEqual (propertyDefinition, deserializedPropertyDefinition);
@@ -288,7 +288,7 @@ public class MappingTest : SerializationBaseTest
   [Test]
   public void ClassDefinitionNotInMappingWithUnresolvedClassType ()
   {
-    ClassDefinition classDefinition = new ClassDefinition ("Order", "OrderTable", "StorageProver", "UnexistingTypeName", false);
+    ClassDefinition classDefinition = new ClassDefinition ("Order", "OrderTable", "StorageProver", "UnexistingType", false);
     
     ClassDefinition deserializedClassDefinition = (ClassDefinition) SerializeAndDeserialize (classDefinition);
 
