@@ -49,7 +49,7 @@ public class DomainModelBuilder
         if (propertyDefinition.PropertyType.IsEnum && propertyDefinition.PropertyType.DeclaringType == null)
         {
           EnumBuilder.Build (
-              GetFileName (outputFolder, propertyDefinition.PropertyType), propertyDefinition.PropertyType);
+              GetFileName (outputFolder, propertyDefinition.PropertyType), propertyDefinition.PropertyType, multiLingualResourcesAttribute);
         }
       }
     }

@@ -62,7 +62,7 @@ public class DomainObjectBuilder
         WriteSerializableAttribute ();
 
       if (multiLingualResourcesAttribute)
-        WriteMultiLingualResourcesAttribute (type.Namespace + ".Globalization." + type.Name);
+        WriteMultiLingualResourcesAttribute (type);
 
       if (classDefinition.BaseClass == null)
         BeginClass (type.Name, baseClass);
@@ -75,7 +75,7 @@ public class DomainObjectBuilder
 
       //Write nested types (enums)
       foreach (PropertyDefinition propertyDefinition in GetEnumPropertyDefinitionsWithNestedType (type))
-        WriteNestedEnum (propertyDefinition.PropertyType.Name);
+        WriteNestedEnum (propertyDefinition.PropertyType, multiLingualResourcesAttribute);
 
       // static members and constants
       WriteComment ("static members and constants");
