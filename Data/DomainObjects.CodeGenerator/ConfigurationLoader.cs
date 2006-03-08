@@ -26,13 +26,13 @@ public class ConfigurationLoader: IDisposable
 {
   // types
   
-  private class Builder: CodeFileBuilder
+  private class StubBuilder: CodeFileBuilder
   {
     private XmlDocument _mappingDocument;
     private XmlNamespaceManager _namespaceManager;
     private Regex _typeRegex = new Regex (@"^(?<namespacename>\w+(\.\w+)*)\.(?<typename>\w+)(\+(?<membername>\w*))?, (?<assemblyname>(\w+\.)*\w+)$");
 
-    public Builder (TextWriter writer): base (writer)
+    public StubBuilder (TextWriter writer): base (writer)
     {
     }
 
@@ -218,8 +218,8 @@ public class ConfigurationLoader: IDisposable
     MemoryStream stream = new MemoryStream ();
     TextWriter writer = new StreamWriter (stream);
 
-    Builder builder = new Builder (writer);
-    builder.Build (xmlFilePath);
+    StubBuilder stubBuilder = new StubBuilder (writer);
+    stubBuilder.Build (xmlFilePath);
 
     stream.Seek (0, SeekOrigin.Begin);
     StreamReader reader = new StreamReader (stream);
