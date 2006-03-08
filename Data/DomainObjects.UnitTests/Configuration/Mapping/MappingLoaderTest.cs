@@ -62,7 +62,7 @@ public class MappingLoaderTest
   }
 
   [Test]
-  public void LoadWithUnresolvedTypeNames ()
+  public void LoadWithUnresolvedTypes ()
   {
     MappingLoader loader = new MappingLoader ("mappingWithUnresolvedTypes.xml", "mapping.xsd", false);
 
