@@ -24,7 +24,7 @@ public class PropertyDefinitionTest
   // methods and properties
 
   [Test]
-  public void InitializeWithPropertyTypeName ()
+  public void InitializeWithResolvedPropertyType ()
   {
     PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", true, true, NaInt32.Null);
     Assert.IsNull (actual.ClassDefinition);
@@ -39,7 +39,7 @@ public class PropertyDefinitionTest
   }
 
   [Test]
-  public void InitializeWithUnresolvedPropertyTypeName ()
+  public void InitializeWithUnresolvedPropertyType ()
   {
     PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "int32", false, true, NaInt32.Null);
     Assert.IsNull (actual.ClassDefinition);
@@ -54,14 +54,14 @@ public class PropertyDefinitionTest
   }
 
   [Test]
-  public void InitializeWithUnresolvedUnknownPropertyTypeName ()
+  public void InitializeWithUnresolvedUnknownPropertyType ()
   {
-    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingTypeName", false, true, NaInt32.Null);
+    PropertyDefinition actual = new PropertyDefinition ("PropertyName", "ColumnName", "UnknownMappingType", false, true, NaInt32.Null);
     Assert.IsNull (actual.ClassDefinition);
     Assert.AreEqual ("ColumnName", actual.ColumnName);
     Assert.IsNull (actual.DefaultValue);
     Assert.IsTrue (actual.IsNullable);
-    Assert.AreEqual ("UnknownMappingTypeName", actual.MappingTypeName);
+    Assert.AreEqual ("UnknownMappingType", actual.MappingTypeName);
     Assert.AreEqual (NaInt32.Null, actual.MaxLength);
     Assert.AreEqual ("PropertyName", actual.PropertyName);
     Assert.IsNull (actual.PropertyType);
@@ -95,9 +95,9 @@ public class PropertyDefinitionTest
 
   [Test]
   [ExpectedException (typeof (MappingException))]
-  public void InvalidMappingTypeName ()
+  public void InvalidMappingType ()
   {
-    PropertyDefinition definition = new PropertyDefinition ("test", "test", "InvalidMappingTypeName");
+    PropertyDefinition definition = new PropertyDefinition ("test", "test", "InvalidMappingType");
   }
 }
 }
