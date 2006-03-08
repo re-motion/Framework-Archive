@@ -41,7 +41,7 @@ public class RelationDefinitionLoaderWithUnresolvedTypeNamesTest
   
     ClassDefinitionLoader classLoader = new ClassDefinitionLoader (mappingDocument, namespaceManager, false);
     _classDefintions = classLoader.GetClassDefinitions ();
-    Assert.IsFalse (_classDefintions.AreResolvedTypeNamesRequired);
+    Assert.IsFalse (_classDefintions.AreResolvedTypesRequired);
 
     _loader = new RelationDefinitionLoader (mappingDocument, namespaceManager, _classDefintions);
   }
@@ -49,7 +49,7 @@ public class RelationDefinitionLoaderWithUnresolvedTypeNamesTest
   [Test]
   public void Initialize ()
   {
-    Assert.AreEqual (_classDefintions.AreResolvedTypeNamesRequired, _loader.ResolveTypeNames);
+    Assert.AreEqual (_classDefintions.AreResolvedTypesRequired, _loader.ResolveTypes);
   }
 
   [Test]
