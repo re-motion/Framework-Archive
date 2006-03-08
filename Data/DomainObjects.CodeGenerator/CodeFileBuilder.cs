@@ -68,6 +68,7 @@ public abstract class CodeFileBuilder: FileBuilder
       + "using Rubicon.Data.DomainObjects.ObjectBinding;" + Environment.NewLine 
       + "using Rubicon.NullableValueTypes;" + Environment.NewLine 
       + "using Rubicon.Globalization;" + Environment.NewLine 
+      + "using Rubicon.Utilities;" + Environment.NewLine 
       + Environment.NewLine;
   private static readonly string s_serializableAttribute = 
       "[Serializable]" + Environment.NewLine;
