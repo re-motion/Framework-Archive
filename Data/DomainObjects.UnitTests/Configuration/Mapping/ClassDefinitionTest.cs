@@ -87,9 +87,9 @@ public class ClassDefinitionTest
   [Test]
   public void IntializeWithUnresolvedTypeName ()
   {
-    ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingTypeName", false);
+    ClassDefinition actual = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnexistingType", false);
     Assert.IsNull (actual.ClassType);
-    Assert.AreEqual ("UnexistingTypeName", actual.ClassTypeName);
+    Assert.AreEqual ("UnexistingType", actual.ClassTypeName);
     Assert.IsFalse (actual.IsClassTypeResolved);
   }
 
@@ -306,7 +306,7 @@ public class ClassDefinitionTest
       + "because the PropertyDefinition's type is resolved and the ClassDefinition's type is not.")]
   public void AddPropertyDefinitionWithResolvedTypeToClassDefinitionWithUnresolvedType ()
   {
-    ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedTypeName", false);
+    ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", "UnresolvedType", false);
     PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "string", true, false, 100);
 
     classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
@@ -319,7 +319,7 @@ public class ClassDefinitionTest
   public void AddPropertyDefinitionWithUnresolvedTypeToClassDefinitionWithResolvedType ()
   {
     ClassDefinition classDefinition = new ClassDefinition ("ClassID", "Entity", "StorageProvider", typeof (Order));
-    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedTypeName", false, false, 100);
+    PropertyDefinition propertyDefinition = new PropertyDefinition ("PropertyName", "ColumnName", "UnresolvedType", false, false, 100);
 
     classDefinition.MyPropertyDefinitions.Add (propertyDefinition);
   }
