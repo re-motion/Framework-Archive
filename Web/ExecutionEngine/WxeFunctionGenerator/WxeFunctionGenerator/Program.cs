@@ -27,7 +27,7 @@ namespace WxeFunctionGenerator
         Placeholder = "outputfile")]
     public string OutputFile;
 
-    [CommandLineStringArgument ("language", true, 
+    [CommandLineEnumArgument ("language", true, 
         Description = "Language (default is CSharp)",
         Placeholder = "{CSharp|VB}")]
     public Language Language = Language.CSharp;
@@ -48,9 +48,11 @@ namespace WxeFunctionGenerator
       {
         arguments = (Arguments) parser.Parse (args);
       }
-      catch (CommandLineArgumentException)
+      catch (CommandLineArgumentException e)
       {
         string appName = System.IO.Path.GetFileName (System.Environment.GetCommandLineArgs ()[0]);
+        Console.Error.WriteLine ("rubicon WXE function generator");
+        Console.Error.Write (e.Message);
         Console.Error.WriteLine ("Usage: " + parser.GetAsciiSynopsis (appName, 79));
         return 1;
       }

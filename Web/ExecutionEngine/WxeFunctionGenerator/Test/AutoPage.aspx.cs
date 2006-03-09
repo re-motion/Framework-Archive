@@ -12,6 +12,8 @@ using Rubicon.Web.ExecutionEngine;
 namespace Test
 {
 
+  //...
+
   [WxePageFunction ("AutoPage.aspx", typeof (WxeFunction))]
   [WxePageParameter (1, "InArg", typeof (string), true)]
   [WxePageParameter (2, "InOutArg", typeof (string), true, WxeParameterDirection.InOut)]
@@ -20,6 +22,7 @@ namespace Test
   public partial class AutoPage: WxePage
   {
     //[WxeGenerateFunction("AutoPage.aspx")]
+    //[WxePageVariable ("Suffix", typeof (string))]
     private string CallPage (string InArg, ref string InOutArg) 
     {
       throw new NotImplementedException ();
