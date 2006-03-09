@@ -650,9 +650,6 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
     }
     validators[0] = dateTimeValueValidator;
 
-    //  No validation that only enabled enum values get selected and saved.
-    //  This behaviour mimics the Fabasoft enum behaviour
-
     _validators.AddRange (validators);
     return validators;
   }
