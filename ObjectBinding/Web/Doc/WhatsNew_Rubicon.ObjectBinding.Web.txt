@@ -1,3 +1,9 @@
+
+1.4.33
+======
+- BocList
+  * BugFix: BocCommandColumnDefintions wurde die obsolete Property IconPath im Designer als Empty String persistiert.
+
 1.4.26
 ======
 - BocList
