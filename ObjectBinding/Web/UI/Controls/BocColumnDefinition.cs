@@ -289,7 +289,7 @@ public class BocCommandColumnDefinition: BocCommandEnabledColumnDefinition
   [Obsolete ("Use Icon.Url instead.", true)]
   public string IconPath 
   {
-    get { return null; }
+    get { return string.Empty; }
     set
     {
       if (! StringUtility.IsNullOrEmpty (value) && StringUtility.IsNullOrEmpty (_icon.Url))
