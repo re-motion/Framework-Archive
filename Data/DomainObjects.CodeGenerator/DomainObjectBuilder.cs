@@ -42,7 +42,7 @@ public class DomainObjectBuilder
 
     private static readonly string s_relationPropertyCardinalityManyGetStatement = 
         "    get { return (%propertytype%) GetRelatedObjects (\"%propertyname%\"); }" + Environment.NewLine;
-    private static readonly string s_relationPropertyCardinalityManySetStatement = "    set { }";
+    private static readonly string s_relationPropertyCardinalityManySetStatement = "    set { } // marks property %propertyname% as modifiable" + Environment.NewLine;
     #endregion
 
     private ClassDefinition _classDefinition;
