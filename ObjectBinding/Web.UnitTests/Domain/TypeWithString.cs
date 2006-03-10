@@ -13,6 +13,16 @@ public class TypeWithString: ReflectionBusinessObject
   private string _firstValue;
   private string _secondValue;
 
+  public TypeWithString ()
+  {
+  }
+
+  public TypeWithString (string firstValue, string secondValue)
+  {
+    _firstValue = firstValue;
+    _secondValue = secondValue;
+  }
+
   public string StringValue
   {
     get { return _stringValue; }
