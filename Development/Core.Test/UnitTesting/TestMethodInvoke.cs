@@ -49,10 +49,15 @@ namespace Rubicon.Development.UnitTests.UnitTesting
     }
   }
 
+  public class DerivedType : TypeWithMethods
+  {
+  }
+
   [TestFixture]
 	public class TestMethodInvoke
 	{
     TypeWithMethods _twm = new TypeWithMethods();
+    DerivedType _dt = new DerivedType();
 
     [Test]
     public void TestInvoke()
@@ -63,6 +68,13 @@ namespace Rubicon.Development.UnitTests.UnitTesting
       Assert.AreEqual ("f string",             PrivateInvoke.InvokePublicMethod (_twm, "f", "test"));
       Assert.AreEqual ("f StringBuilder",      PrivateInvoke.InvokePublicMethod (_twm, "f", new StringBuilder()));
       Assert.AreEqual ("f int StringBuilder",  PrivateInvoke.InvokeNonPublicMethod (_twm, "f", 1, new StringBuilder()));
+
+      Assert.AreEqual ("f",                    PrivateInvoke.InvokePublicMethod (_dt, "f"));
+      Assert.AreEqual ("f int",                PrivateInvoke.InvokePublicMethod (_dt, "f", 1));
+      Assert.AreEqual ("f int string",         PrivateInvoke.InvokePublicMethod (_dt, "f", 1, null));
+      Assert.AreEqual ("f string",             PrivateInvoke.InvokePublicMethod (_dt, "f", "test"));
+      Assert.AreEqual ("f StringBuilder",      PrivateInvoke.InvokePublicMethod (_dt, "f", new StringBuilder()));
+      Assert.AreEqual ("f int StringBuilder",  PrivateInvoke.InvokeNonPublicMethod (_dt, typeof (TypeWithMethods), "f", 1, new StringBuilder()));
     }
 
     [Test]
