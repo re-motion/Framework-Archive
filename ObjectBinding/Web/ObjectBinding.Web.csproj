@@ -590,6 +590,31 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditDetailsValidator.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeController.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRow.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRowControlFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRowDataSourceFactory.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Design\BocColumnDefinitionCollectionEditor.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
