@@ -74,7 +74,7 @@ public class TestTabbedPersonDetailsUserControl :
     menuItem.ItemID = "Copy";
     menuItem.Text = "Copy";
     menuItem.Category = "Edit";
-    menuItem.Icon = "Images/CopyItem.gif";
+    menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
     PartnerField.OptionsMenuItems.Add (menuItem);
@@ -98,8 +98,8 @@ public class TestTabbedPersonDetailsUserControl :
     menuItem.ItemID = "Delete";
     menuItem.Text = "Delete";
     menuItem.Category = "Edit";
-    menuItem.Icon = "Images/DeleteItem.gif";
-    menuItem.DisabledIcon = "Images/DeleteItemDisabled.gif";
+    menuItem.Icon.Url = "Images/DeleteItem.gif";
+    menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
