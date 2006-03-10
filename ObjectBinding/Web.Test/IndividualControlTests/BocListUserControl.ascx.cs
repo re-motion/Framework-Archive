@@ -43,16 +43,18 @@ public class BocListUserControl : BaseUserControl
     ChildrenListAddAndEditButton.Click += new EventHandler(AddAndEditButton_Click);
     ChildrenListEndEditModeButton.Click += new EventHandler(ChildrenListEndEditModeButton_Click);
     
-    ChildrenList.ListItemCommandClick += new Rubicon.ObjectBinding.Web.UI.Controls.BocListItemCommandClickEventHandler(this.ChildrenList_ListItemCommandClick);
-    ChildrenList.MenuItemClick += new Rubicon.Web.UI.Controls.WebMenuItemClickEventHandler(this.ChildrenList_MenuItemClick);
+    ChildrenList.ListItemCommandClick += new BocListItemCommandClickEventHandler (ChildrenList_ListItemCommandClick);
+    ChildrenList.MenuItemClick += new WebMenuItemClickEventHandler (ChildrenList_MenuItemClick);
     
-    ChildrenList.DataRowRender += new Rubicon.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventHandler(this.ChildrenList_DataRowRender);
+    ChildrenList.DataRowRender += new BocListDataRowRenderEventHandler(ChildrenList_DataRowRender);
     
-    ChildrenList.SavingEditedRow += new Rubicon.ObjectBinding.Web.UI.Controls.BocListRowEditModeEventHandler(this.ChildrenList_SavingEditedRow);
-    ChildrenList.EditedRowSaved += new Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventHandler(this.ChildrenList_EditedRowSaved);
-    
-    ChildrenList.SortingOrderChanging += new Rubicon.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventHandler(this.ChildrenList_SortingOrderChanging);
-    ChildrenList.SortingOrderChanged += new Rubicon.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventHandler(this.ChildrenList_SortingOrderChanged);
+    ChildrenList.ModifiedRowCanceling += new BocListModifiableRowEventHandler (ChildrenList_ModifiedRowCanceling);
+    ChildrenList.ModifiedRowCanceled += new BocListItemEventHandler (ChildrenList_ModifiedRowCanceled);
+    ChildrenList.ModifiedRowSaving += new BocListModifiableRowEventHandler (ChildrenList_ModifiedRowSaving);
+    ChildrenList.ModifiedRowSaved += new BocListItemEventHandler (ChildrenList_ModifiedRowSaved);
+
+    ChildrenList.SortingOrderChanging += new BocListSortingOrderChangeEventHandler (ChildrenList_SortingOrderChanging);
+    ChildrenList.SortingOrderChanged += new BocListSortingOrderChangeEventHandler (ChildrenList_SortingOrderChanged);
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -136,8 +138,8 @@ public class BocListUserControl : BaseUserControl
     menuItem.ItemID = "Delete";
     menuItem.Text = "Delete";
     menuItem.Category = "Edit";
-    menuItem.Icon = "Images/DeleteItem.gif";
-    menuItem.DisabledIcon = "Images/DeleteItemDisabled.gif";
+    menuItem.Icon.Url = "Images/DeleteItem.gif";
+    menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
@@ -146,7 +148,7 @@ public class BocListUserControl : BaseUserControl
     menuItem = new BocMenuItem();
     menuItem.ItemID = "Copy";
     menuItem.Category = "Edit";
-    menuItem.Icon = "Images/CopyItem.gif";
+    menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.ExactlyOne;
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.ListMenuItems.Add (menuItem);
@@ -165,7 +167,7 @@ public class BocListUserControl : BaseUserControl
     menuItem.ItemID = "Copy";
     menuItem.Text = "Copy";
     menuItem.Category = "Edit";
-    menuItem.Icon = "Images/CopyItem.gif";
+    menuItem.Icon.Url = "Images/CopyItem.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Command.Type = CommandType.Event;
     ChildrenList.OptionsMenuItems.Add (menuItem);
@@ -196,8 +198,8 @@ public class BocListUserControl : BaseUserControl
     menuItem.ItemID = "Delete";
     menuItem.Text = "Delete";
     menuItem.Category = "Edit";
-    menuItem.Icon = "Images/DeleteItem.gif";
-    menuItem.DisabledIcon = "Images/DeleteItemDisabled.gif";
+    menuItem.Icon.Url = "Images/DeleteItem.gif";
+    menuItem.DisabledIcon.Url = "Images/DeleteItemDisabled.gif";
     menuItem.RequiredSelection = RequiredSelection.OneOrMore;
     menuItem.Style = WebMenuItemStyle.Icon;
     menuItem.Command.Type = CommandType.Event;
@@ -281,13 +283,6 @@ public class BocListUserControl : BaseUserControl
     if (! IsPostBack)
       ChildrenList.SelectedView = datesView;
 
-    CurrentObject.LoadValues (IsPostBack);
-    if (CurrentObject.BusinessObject is Person)
-    {
-      Person person = (Person) CurrentObject.BusinessObject;
-      AllColumnsList.LoadUnboundValue (person.Children, IsPostBack);
-    }
-
     if (!IsPostBack)
     {
       ChildrenList.SetSortingOrder (
@@ -297,6 +292,17 @@ public class BocListUserControl : BaseUserControl
     if (IsPostBack)
     {
 //      BocListSortingOrderEntry[] sortingOrder = ChildrenList.GetSortingOrder();
+    }
+  }
+
+  public override void LoadValues(bool interim)
+  {
+    base.LoadValues (interim);
+
+    if (CurrentObject.BusinessObject is Person)
+    {
+      Person person = (Person) CurrentObject.BusinessObject;
+      //AllColumnsList.LoadUnboundValue (person.Children, IsPostBack);
     }
   }
 
@@ -334,14 +340,20 @@ public class BocListUserControl : BaseUserControl
       e.IsModifiableRow = false;
   }
 
-  private void ChildrenList_SavingEditedRow(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListRowEditModeEventArgs e)
+  private void ChildrenList_ModifiedRowCanceling(object sender, BocListModifiableRowEventArgs e)
   {
-  
   }
 
-  private void ChildrenList_EditedRowSaved(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
+  private void ChildrenList_ModifiedRowCanceled(object sender, BocListItemEventArgs e)
   {
-  
+  }
+
+  private void ChildrenList_ModifiedRowSaving(object sender, BocListModifiableRowEventArgs e)
+  {
+  }
+
+  private void ChildrenList_ModifiedRowSaved(object sender, BocListItemEventArgs e)
+  {
   }
 
   private void ChildrenList_SortingOrderChanging(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListSortingOrderChangeEventArgs e)
@@ -361,7 +373,6 @@ public class BocListUserControl : BaseUserControl
 	/// </summary>
 	private void InitializeComponent()
 	{
-
   }
   #endregion
 }
