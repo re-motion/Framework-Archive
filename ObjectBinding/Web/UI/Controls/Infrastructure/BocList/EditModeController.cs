@@ -629,12 +629,10 @@ public class EditModeController : PlaceHolder
       }
       _modifiableRows = (ModifiableRow[]) ListUtility.Remove (
           _modifiableRows, controllers, (CreateListMethod) null, true);
+      RefreshIDs();
     }
 
     _owner.RemoveRowsInternal (businessObjects);
-
-    if (IsListEditModeActive)
-      RefreshIDs();
   }
 
   /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
@@ -663,12 +661,10 @@ public class EditModeController : PlaceHolder
         _modifiableRows = (ModifiableRow[]) ListUtility.Remove (
             _modifiableRows, controller, (CreateListMethod) null, true);
       }
+      RefreshIDs();
     }
 
     _owner.RemoveRowInternal (businessObject);
-
-    if (IsListEditModeActive)
-      RefreshIDs();
   }
 
   private void RefreshIDs()
