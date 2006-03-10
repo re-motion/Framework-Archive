@@ -863,6 +863,22 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "IndividualControlTests\BocListAsGridUserControl.ascx"
+                    SubType = "UserControl"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocListAsGridUserControl.ascx.cs"
+                    DependentUpon = "BocListAsGridUserControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IndividualControlTests\BocListAsGridUserControl.ascx.resx"
+                    DependentUpon = "BocListAsGridUserControl.ascx.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "IndividualControlTests\BocListUserControl.ascx"
                     SubType = "UserControl"
                     BuildAction = "Content"
