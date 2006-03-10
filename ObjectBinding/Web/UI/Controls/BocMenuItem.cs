@@ -23,12 +23,41 @@ public interface IBocMenuItemContainer
 [TypeConverter (typeof (ExpandableObjectConverter))]
 public class BocMenuItem: WebMenuItem
 {
+  [Obsolete ("Use BocMenuItem (string, string, string, IconInfo, IconInfo, RequiredSelection, bool, Command")]
   public BocMenuItem (
       string id, 
       string category, 
       string text, 
       string icon, 
       string disabledIcon, 
+      RequiredSelection requiredSelection,
+      bool isDisabled,
+      BocMenuItemCommand command)
+    : this (id, category, text, new IconInfo (icon), new IconInfo (disabledIcon), WebMenuItemStyle.IconAndText, requiredSelection, isDisabled, command)
+  {
+  }
+
+  [Obsolete ("Use BocMenuItem (string, string, string, IconInfo, IconInfo, WebMenuItemStyle, RequiredSelection, bool, Command")]
+  public BocMenuItem (
+      string id, 
+      string category, 
+      string text, 
+      string icon, 
+      string disabledIcon, 
+      WebMenuItemStyle style,
+      RequiredSelection requiredSelection,
+      bool isDisabled,
+      BocMenuItemCommand command)
+    : this (id, category, text, new IconInfo (icon), new IconInfo (disabledIcon), style, requiredSelection, isDisabled, command)
+  {
+  }
+
+  public BocMenuItem (
+      string id, 
+      string category, 
+      string text, 
+      IconInfo icon, 
+      IconInfo disabledIcon, 
       RequiredSelection requiredSelection,
       bool isDisabled,
       BocMenuItemCommand command)
@@ -40,8 +69,8 @@ public class BocMenuItem: WebMenuItem
       string id, 
       string category, 
       string text, 
-      string icon, 
-      string disabledIcon, 
+      IconInfo icon, 
+      IconInfo disabledIcon, 
       WebMenuItemStyle style,
       RequiredSelection requiredSelection,
       bool isDisabled,
@@ -52,7 +81,7 @@ public class BocMenuItem: WebMenuItem
 
   public BocMenuItem ()
     : this (
-        null, null, null, null, null, 
+        null, null, null, new IconInfo(), new IconInfo(), 
         WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, new BocMenuItemCommand())
   {
   }
