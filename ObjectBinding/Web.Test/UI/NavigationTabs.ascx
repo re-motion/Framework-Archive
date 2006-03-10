@@ -36,6 +36,12 @@
 </PersistedCommand>
 </rubicon:submenutab>
 
+<rubicon:submenutab Text="BocList as Grid" ItemID="BocListAsGrid">
+<persistedcommand>
+<rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocListAsGridUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
+</PersistedCommand>
+</rubicon:submenutab>
+
 <rubicon:submenutab Text="BocMultilineTextValue" ItemID="BocMultilineTextValue">
 <persistedcommand>
 <rubicon:navigationcommand Type="WxeFunction" WxeFunctionCommand-Parameters="&quot;BocMultilineTextValueUserControl.ascx&quot;" WxeFunctionCommand-MappingID="IndividualControlTest"></rubicon:navigationcommand>
