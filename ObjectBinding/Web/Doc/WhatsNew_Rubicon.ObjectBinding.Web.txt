@@ -1,4 +1,27 @@
+1.4.34
+======
+- BocList
+  * Bugfix: EditDetailsMode: Wurde der Read-Only Zustand durch das Objektmodell bestimmt, anstatt durch das 
+    IsReadOnly Flag der SimpleValueColumn, so wurde kein Wert gerendert.
+  
+- BocList, BocReferenceValue
+  * string MenuItem.Icon auf IconInfo MenuItem.Icon umgestellt.
+    Statt Icon ist nun Icon.Url zu setzen.
+    In ASPX/ASCX Seiten muss Icon durch Search & Replace (Icon-Url) ersetzt werden.
+  * string MenuItem.DisabledIcon auf IconInfo MenuItem.DisabledIcon umgestellt.
+    Statt DisabledIcon ist nun DisabledIcon.Url zu setzen.
+    In ASPX/ASCX Seiten muss Icon durch Search & Replace (DisabledIcon-Url) ersetzt werden.
 
+- BOCs mit Editmode:
+  * DirtyState überarbeitet: (siehe auch 1.4.3)
+    Initialisiert: IsDirty = false
+    set Value: IsDirty = true
+    LoadValue/LoadUnboundValue: IsDirty = false, wenn der Wert mit interim=false geladen wird.
+    Durch Interaktion: IsDirty = true wenn sich durch UserInput (oder bei der BocList zB AddRow) der Wert von Value 
+      ändert.
+    IsDirty wird gelöscht, sobald SaveValue(interim=false) aufgerufen wird und damit der Value wieder in die 
+      DataSource zurückgeschrieben wird.
+    
 1.4.33
 ======
 - BocList
@@ -141,6 +164,8 @@
       wird.
       Für die BocList gilt das auch bei SaveValue(interim=true). Im Regelfall wird SaveValue(interim=true) im 
       Page.Unload aufgerufen und damit kann der neue IsDirty Zustand nicht mehr im ViewState perisistiert werden.
+      
+      Überarbeitet in 1.4.34: Nur bei interim=false wird das DirtyFlag gelöscht.
     
 - BOCs:
   * LoadUnboundValue: neue Methode
