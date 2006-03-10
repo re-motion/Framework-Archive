@@ -231,6 +231,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\BocListManageRowsInListEditModeTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\BocListManageRowsInUnboundListTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\BocListMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -312,6 +322,21 @@
                 />
                 <File
                     RelPath = "UI\Controls\BocTreeViewTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeControllerTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRowControlFactoryTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRowDataSourceFactoryTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
