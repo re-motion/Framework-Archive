@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
+using Rubicon.ObjectBinding.Reflection;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.ObjectBinding.Web.UnitTests.Domain;
 using Rubicon.Web.Configuration;
@@ -31,6 +32,8 @@ public class BocListTest: BocTest
   public override void SetUp()
   {
     base.SetUp();
+    Invoker.InitRecursive();
+
     _bocList = new BocListMock();
     _bocList.ID = "BocList";
     NamingContainer.Controls.Add (_bocList);
@@ -105,7 +108,7 @@ public class BocListTest: BocTest
 
     _bocList.LoadValue (true);
     Assert.AreEqual (_businessObject.ReferenceList, _bocList.Value);
-    Assert.IsFalse (_bocList.IsDirty);
+    Assert.IsTrue (_bocList.IsDirty);
   }
 
   [Test]
@@ -119,7 +122,7 @@ public class BocListTest: BocTest
 
     _bocList.LoadValue (true);
     Assert.AreEqual (_businessObject.ReferenceList, _bocList.Value);
-    Assert.IsFalse (_bocList.IsDirty);
+    Assert.IsTrue (_bocList.IsDirty);
   }   
 
   [Test]
@@ -160,7 +163,7 @@ public class BocListTest: BocTest
 
     _bocList.LoadUnboundValue (value, true);
     Assert.AreEqual (value, _bocList.Value);
-    Assert.IsFalse (_bocList.IsDirty);
+    Assert.IsTrue (_bocList.IsDirty);
   }
 
   [Test]
@@ -173,7 +176,7 @@ public class BocListTest: BocTest
 
     _bocList.LoadUnboundValue (value, true);
     Assert.AreEqual (value, _bocList.Value);
-    Assert.IsFalse (_bocList.IsDirty);
+    Assert.IsTrue (_bocList.IsDirty);
   }   
 
   [Test]
