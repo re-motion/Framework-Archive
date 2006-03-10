@@ -4,6 +4,27 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
+#region Obsolete
+
+[Obsolete ("Use BocListModifiableRowEventHandler instead.", true)]
+public delegate void BocListRowEditModeEventHandler (object sender, BocListRowEditModeEventArgs e);
+
+[Obsolete ("Use BocListModifiableRowEventArgs instead.", true)]
+public class BocListRowEditModeEventArgs: BocListModifiableRowEventArgs
+{
+  public BocListRowEditModeEventArgs (
+      int listIndex, 
+      IBusinessObject businessObject,
+      IBusinessObjectDataSource dataSource,
+      IBusinessObjectBoundModifiableWebControl[] controls)
+    : base (listIndex, businessObject, dataSource, controls)
+  {
+    throw new NotImplementedException ("Obsolete");
+  }
+}
+
+#endregion
+
 public delegate void BocListSortingOrderChangeEventHandler (object sender, BocListSortingOrderChangeEventArgs e);
 
 public class BocListSortingOrderChangeEventArgs: EventArgs
@@ -64,14 +85,14 @@ public class BocListItemEventArgs: EventArgs
   }
 }
 
-public delegate void BocListRowEditModeEventHandler (object sender, BocListRowEditModeEventArgs e);
+public delegate void BocListModifiableRowEventHandler (object sender, BocListModifiableRowEventArgs e);
 
-public class BocListRowEditModeEventArgs: BocListItemEventArgs
+public class BocListModifiableRowEventArgs : BocListItemEventArgs
 {
   private IBusinessObjectBoundModifiableControl[] _controls;
   private IBusinessObjectDataSource _dataSource;
 
-  public BocListRowEditModeEventArgs (
+  public BocListModifiableRowEventArgs (
       int listIndex, 
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
