@@ -663,6 +663,7 @@
           <property name="RootPageTOCName" value="Getting Started" />
           <property name="RootPageFileName" value="${nant.project.basedir}/Core/Doc/include/GettingStarted.html" />
           <property name="RootPageContainsNamespaces" value="False" />
+          <property name="IncludeDefaultThreadSafety" value="False" />
         </documenter>
       </documenters>
       <summaries>
@@ -730,6 +731,7 @@
           <property name="RootPageTOCName" value="Getting Started" />
           <property name="RootPageFileName" value="${nant.project.basedir}/Core/Doc/include/GettingStarted.html" />
           <property name="RootPageContainsNamespaces" value="False" />
+          <property name="IncludeDefaultThreadSafety" value="False" />
         </documenter>
       </documenters>
       <summaries>
