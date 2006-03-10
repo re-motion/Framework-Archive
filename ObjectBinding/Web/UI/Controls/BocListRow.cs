@@ -147,6 +147,12 @@ public class BocListRow: IComparable
     IBusinessObject businessObjectB = row.BusinessObject;
 
     BusinessObjectPropertyPath propertyPath = simpleColumn.PropertyPath;
+    if (propertyPath == null) 
+    {
+      throw new InvalidOperationException (string.Format (
+          "Cannot compare rows for columns not having a property path. BocList: '{0}', Column: {1}", 
+          entry.Column.OwnerControl.ID, entry.ColumnIndex));
+    }
 
     int compareResult = 0;
     if (entry.Direction == SortingDirection.Ascending)
@@ -172,6 +178,12 @@ public class BocListRow: IComparable
     IBusinessObject businessObjectB = row.BusinessObject;
 
     BusinessObjectPropertyPath propertyPath = customColumn.PropertyPath;
+    if (propertyPath == null) 
+    {
+      throw new InvalidOperationException (string.Format (
+          "Cannot compare rows for columns not having a property path. BocList: '{0}', Column: {1}", 
+          entry.Column.OwnerControl.ID, entry.ColumnIndex));
+    }
 
     int compareResult = 0;
     if (entry.Direction == SortingDirection.Ascending)
@@ -200,10 +212,18 @@ public class BocListRow: IComparable
     for (int idxBindings = 0; idxBindings < compoundColumn.PropertyPathBindings.Count; idxBindings++)
     {
       PropertyPathBinding propertyPathBinding = compoundColumn.PropertyPathBindings[idxBindings];
+      BusinessObjectPropertyPath propertyPath = propertyPathBinding.PropertyPath;
+      if (propertyPath == null) 
+      {
+        throw new InvalidOperationException (string.Format (
+            "Cannot compare rows for columns not having a property path. BocList: '{0}', Column: {1}", 
+            entry.Column.OwnerControl.ID, entry.ColumnIndex));
+      }
+
       if (entry.Direction == SortingDirection.Ascending)
-        compareResult = ComparePropertyPathValues (propertyPathBinding.PropertyPath, this, row);
+        compareResult = ComparePropertyPathValues (propertyPath, this, row);
       else if (entry.Direction == SortingDirection.Descending)
-        compareResult = ComparePropertyPathValues (propertyPathBinding.PropertyPath, row, this);
+        compareResult = ComparePropertyPathValues (propertyPath, row, this);
       
       if (compareResult != 0)
         return compareResult;
