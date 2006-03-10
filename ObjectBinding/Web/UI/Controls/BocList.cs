@@ -504,8 +504,7 @@ public class BocList:
     _optionsMenu.EventCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_EventCommandClick);
     _optionsMenu.WxeFunctionCommandClick += new WebMenuItemClickEventHandler (OptionsMenu_WxeFunctionCommandClick);
 
-    _availableViews.CollectionChanged +=
-        new CollectionChangeEventHandler(AvailableViews_CollectionChanged);
+    _availableViews.CollectionChanged += new CollectionChangeEventHandler(AvailableViews_CollectionChanged);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
     if (!IsDesignMode)
