@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Diagnostics;
 
+using Rubicon.Utilities;
+
 namespace Rubicon.Development.UnitTesting
 {
 
@@ -90,32 +92,41 @@ public sealed class PrivateInvoke
 
   public static object InvokeNonPublicStaticMethod (Type type, string methodName, params object[] arguments)
   {
-    if (type == null) throw new ArgumentNullException ("target");
-    if (methodName == null) throw new ArgumentNullException ("methodName");
+    ArgumentUtility.CheckNotNull ("type", type);
+    ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
     return InvokeMethodInternal (null, type, BindingFlags.Static | BindingFlags.NonPublic, methodName, arguments);
   }
 
   public static object InvokePublicStaticMethod (Type type, string methodName, params object[] arguments)
   {
-    if (type == null) throw new ArgumentNullException ("target");
-    if (methodName == null) throw new ArgumentNullException ("methodName");
+    ArgumentUtility.CheckNotNull ("type", type);
+    ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
     return InvokeMethodInternal (null, type, BindingFlags.Static | BindingFlags.Public, methodName, arguments);
   }
 
   public static object InvokeNonPublicMethod (object target, string methodName, params object[] arguments)
   {
-    if (target == null) throw new ArgumentNullException ("target");
-    if (methodName == null) throw new ArgumentNullException ("methodName");
+    ArgumentUtility.CheckNotNull ("target", target);
 
-    return InvokeMethodInternal (target, target.GetType(), BindingFlags.Instance | BindingFlags.NonPublic, methodName, arguments);
+    return InvokeNonPublicMethod (target, target.GetType(), methodName, arguments);
+  }
+
+  public static object InvokeNonPublicMethod (object target, Type definingType, string methodName, params object[] arguments)
+  {
+    ArgumentUtility.CheckNotNull ("target", target);
+    ArgumentUtility.CheckNotNull ("definingType", definingType);
+    ArgumentUtility.CheckType ("target", target, definingType);
+    ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+
+    return InvokeMethodInternal (target, definingType, BindingFlags.Instance | BindingFlags.NonPublic, methodName, arguments);
   }
 
   public static object InvokePublicMethod (object target, string methodName, params object[] arguments)
   {
-    if (target == null) throw new ArgumentNullException ("target");
-    if (methodName == null) throw new ArgumentNullException ("methodName");
+    ArgumentUtility.CheckNotNull ("target", target);
+    ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
     return InvokeMethodInternal (target, target.GetType(), BindingFlags.Instance | BindingFlags.Public, methodName, arguments);
   }
