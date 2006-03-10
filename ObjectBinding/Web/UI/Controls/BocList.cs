@@ -9,19 +9,22 @@ using System.ComponentModel.Design;
 using System.Reflection;
 using System.Text;
 using System.Drawing.Design;
+
 using log4net;
+
+using Rubicon.Collections;
+using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
-using Rubicon.Utilities;
-using Rubicon.Web.Utilities;
+using Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList;
 using Rubicon.ObjectBinding.Web.UI.Design;
+using Rubicon.Utilities;
 using Rubicon.Web;
-using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
-using Rubicon.Collections;
-using Rubicon.Globalization;
+using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -43,6 +46,136 @@ public class BocList:
     IBocListSortingOrderProvider,
     IResourceDispatchTarget
 {
+  #region Obsolete Stuff
+
+  [Obsolete ("Use OnModifiedRowSaving instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  protected virtual void OnRowEditModeSaving (
+    int index,
+    IBusinessObject businessObject,
+    IBusinessObjectDataSource dataSource,
+    IBusinessObjectBoundModifiableWebControl[] controls)
+  {
+    OnModifiedRowSaving (index, businessObject, dataSource, controls);
+  }
+
+  [Obsolete ("Use OnModifiedRowSaved instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  protected virtual void OnRowEditModeSaved (int index, IBusinessObject businessObject)
+  {
+    OnModifiedRowSaved (index, businessObject);
+  }
+
+  [Obsolete ("Use OnModifiedRowCanceling instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  protected virtual void OnRowEditModeCanceling (
+    int index,
+    IBusinessObject businessObject,
+    IBusinessObjectDataSource dataSource,
+    IBusinessObjectBoundModifiableWebControl[] controls)
+  {
+    OnModifiedRowCanceling (index, businessObject, dataSource, controls);
+  }
+
+  [Obsolete ("Use OnModifiedRowCanceled instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  protected virtual void OnRowEditModeCanceled (int index, IBusinessObject businessObject)
+  {
+    OnModifiedRowCanceled (index, businessObject);
+  }
+
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use ModifiedRowSaving instead.", true)]
+  public event BocListRowEditModeEventHandler SavingEditedRow
+  {
+    add { throw new NotImplementedException ("Obsolete"); }
+    remove { throw new NotImplementedException ("Obsolete"); }
+  }
+
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use ModifiedRowSaved instead.")]
+  public event BocListItemEventHandler EditedRowSaved
+  {
+    add { ModifiedRowSaved += value; }
+    remove { ModifiedRowSaved -= value; }
+  }
+
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use ModifiedRowCanceling instead.", true)]
+  public event BocListRowEditModeEventHandler CancelingEditDetailsMode
+  {
+    add { throw new NotImplementedException ("Obsolete"); }
+    remove { throw new NotImplementedException ("Obsolete"); }
+  }
+
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use ModifiedRowCanceled instead.")]
+  public event BocListItemEventHandler EditDetailsModeCanceled
+  {
+    add { ModifiedRowCanceled += value; }
+    remove { ModifiedRowCanceled -= value; }
+  }
+
+  [Obsolete ("Use ValidateModifiableRows instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public bool ValiadateModifiableRow()
+  {
+    return ValidateModifiableRows();
+  }
+
+  [Obsolete ("Use ValidateModifiableRows instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public bool ValidateModifiableRow()
+  {
+    return ValidateModifiableRows();
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use ShowEditModeRequiredMarkers instead.", true)]
+  public bool ShowEditDetailsRequiredMarkers
+  {
+    get { throw new NotImplementedException(); }
+    set { throw new NotImplementedException(); }
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use ShowEditModeValidationMarkers instead.", true)]
+  public bool ShowEditDetailsValidationMarkers
+  {
+    get { throw new NotImplementedException(); }
+    set { throw new NotImplementedException(); }
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use DisableEditModeValidationMessages instead.", true)]
+  public bool DisableEditDetailsValidationMessages
+  {
+    get { throw new NotImplementedException(); }
+    set { throw new NotImplementedException(); }
+  }
+
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use EnableEditModeValidator instead.", true)]
+  public bool EnableEditDetailsValidator
+  {
+    get { throw new NotImplementedException(); }
+    set { throw new NotImplementedException(); }
+  }
+
+  #endregion
+
   //  constants
   private const string c_dataRowHiddenFieldIDSuffix = "_Boc_HiddenField_";
   private const string c_dataRowSelectorControlIDSuffix = "_Boc_SelectorControl_";
@@ -115,7 +248,7 @@ public class BocList:
   /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocList")]
-  protected enum ResourceIdentifier
+  protected internal enum ResourceIdentifier
   {
     EmptyListMessage,
     PageInfo,
@@ -168,38 +301,6 @@ public class BocList:
     Cancel
   }
 
-  [ToolboxItem (false)]
-  public class EditDetailsValidator: CustomValidator
-  {
-    BocList _owner;
-    protected internal EditDetailsValidator (BocList owner)
-    {
-      _owner = owner;
-    }
-
-    protected override bool EvaluateIsValid()
-    {
-      return _owner.ValidateModifiableRow();
-    }
-
-    protected override bool ControlPropertiesValid()
-    {
-      string controlToValidate = ControlToValidate;
-      if (StringUtility.IsNullOrEmpty (controlToValidate))
-        return base.ControlPropertiesValid();
-      else
-      {
-        BocList bocList = NamingContainer.FindControl (controlToValidate) as BocList;
-        if (bocList == null)
-        {
-          CheckControlValidationProperty (controlToValidate, null);
-          return false;
-        }
-      }
-      return true;
-    }
-  }
-
   // static members
   private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
       typeof (IBusinessObjectReferenceProperty) };
@@ -214,10 +315,10 @@ public class BocList:
   private static readonly object s_sortingOrderChangingEvent = new object();
   private static readonly object s_sortingOrderChangedEvent = new object();
 
-  private static readonly object s_editDetailsModeSavingEvent = new object();
-  private static readonly object s_editDetailsModeSavedEvent = new object();
-  private static readonly object s_editDetailsModeCancelingEvent = new object();
-  private static readonly object s_editDetailsModeCanceledEvent = new object();
+  private static readonly object s_modifiedRowSavingEvent = new object();
+  private static readonly object s_modifiedRowSavedEvent = new object();
+  private static readonly object s_modifiedRowCancelingEvent = new object();
+  private static readonly object s_modifiedRowCanceledEvent = new object();
 
   private static readonly object s_dataRowRenderEvent = new object();
 
@@ -249,8 +350,6 @@ public class BocList:
 
   /// <summary> The <see cref="IList"/> displayed by the <see cref="BocList"/>. </summary>
   private IList _value = null;
-
-  private NaInt32 _modifiableRowIndex = NaInt32.Null;
 
   /// <summary> The user independent column definitions. </summary>
   private BocColumnDefinitionCollection _fixedColumns;
@@ -356,19 +455,7 @@ public class BocList:
   /// <summary> Determines whether the client script will be rendered. </summary>
   private bool _hasClientScript = false;
 
-  private PlaceHolder _rowEditModeControlsPlaceHolder;
-  private ControlCollection _rowEditModeControlCollection;
-  private IBusinessObjectReferenceDataSource _rowEditModeDataSource;
-  private IBusinessObjectBoundModifiableWebControl[] _rowEditModeControls;
-  private bool _isRowEditModeRestored = false;
-  private bool _isRowEditModeValidatorsRestored = false;
-  /// <summary> &lt;column index&gt;&lt;validator index&gt; </summary>
-  private BaseValidator[][] _rowEditModeValidators;
-  private bool _enableEditDetailsValidator = true;
-  private bool _showEditDetailsRequiredMarkers = true;
-  private bool _showEditDetailsValidationMarkers = false;
-  private bool _disableEditDetailsValidationMessages = false;
-  private bool _isEditNewRow = false;
+  private EditModeController _editModeController;
 
   private string _errorMessage;
   private ArrayList _validators;
@@ -378,7 +465,7 @@ public class BocList:
 	public BocList()
 	{
     _availableViewsList = new DropDownList();
-    _rowEditModeControlsPlaceHolder = new PlaceHolder();
+    _editModeController = new EditModeController (this);
     _optionsMenu = new DropDownMenu (this);
     _listMenuItems = new WebMenuItemCollection (this);
     _rowMenusPlaceHolder = new PlaceHolder();
@@ -401,8 +488,8 @@ public class BocList:
     _availableViewsList.AutoPostBack = true;
     Controls.Add (_availableViewsList);
 
-    Controls.Add (_rowEditModeControlsPlaceHolder);
-    _rowEditModeControlCollection = _rowEditModeControlsPlaceHolder.Controls;
+    _editModeController.ID = ID + "_EditModeController";
+    Controls.Add (_editModeController);
 
     Controls.Add (_rowMenusPlaceHolder);
     Controls.Add (_customColumnsPlaceHolder);
@@ -437,7 +524,7 @@ public class BocList:
     else
       EnsureColumnsForPreviousLifeCycleGot();
     
-    EnsureRowEditModeRestored();
+    EnsureEditModeRestored();
     EnsureRowMenusInitialized();
     RestoreCustomColumns();
   }
@@ -1065,30 +1152,12 @@ public class BocList:
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()
   {
-    if (IsReadOnly || ! IsEditDetailsModeActive || ! _enableEditDetailsValidator)
+    if (IsReadOnly)
       return new BaseValidator[0];
 
-    BaseValidator[] validators = new BaseValidator[1];
-
-    BocList.EditDetailsValidator editDetailsValidator = new BocList.EditDetailsValidator (this);
-    editDetailsValidator.ID = ID + "_ValidatorEditDetails";
-    editDetailsValidator.ControlToValidate = ID;
-    if (StringUtility.IsNullOrEmpty (_errorMessage))
-    {
-      IResourceManager resourceManager = GetResourceManager();
-      editDetailsValidator.ErrorMessage = 
-          resourceManager.GetString (ResourceIdentifier.EditDetailsErrorMessage);
-    }
-    else
-    {
-      editDetailsValidator.ErrorMessage = _errorMessage;
-    }
-    validators[0] = editDetailsValidator;
-
-    //  No validation that only enabled enum values get selected and saved.
-    //  This behaviour mimics the Fabasoft enum behaviour
-
+    BaseValidator[] validators = _editModeController.CreateValidators (GetResourceManager()); 
     _validators.AddRange (validators);
+
     return validators;
   }
 
@@ -1185,7 +1254,7 @@ public class BocList:
 
     BocColumnDefinition[] columns = EnsureColumnsGot (true);
 
-    EnsureRowEditModeValidatorsRestored();
+    EnsureEditModeValidatorsRestored();
     
     LoadResources (GetResourceManager());
 
@@ -1208,7 +1277,7 @@ public class BocList:
       for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
       {
         int originalRowIndex = sortedRows[idxRows].Index;
-        if (_modifiableRowIndex.Value == originalRowIndex)
+        if (ModifiableRowIndex.Value == originalRowIndex)
         {
           _currentRow = idxRows;
           break;
@@ -1582,7 +1651,7 @@ public class BocList:
     }
   }
 
-  protected bool IsEmptyList
+  protected internal bool IsEmptyList
   {
     get { return Value == null || Value.Count == 0; }
   }
@@ -1613,6 +1682,8 @@ public class BocList:
       {
         return false;
       }
+      if (IsListEditModeActive)
+        return false;
     }
     
     BocDropDownMenuColumnDefinition dropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
@@ -1657,7 +1728,7 @@ public class BocList:
       writer.Write (c_whiteSpace);
       if (IsDesignMode)
         _availableViewsList.Width = Unit.Point (c_designModeAvailableViewsListWidthInPoints);
-      _availableViewsList.Enabled = ! IsEditDetailsModeActive;
+      _availableViewsList.Enabled = ! IsEditDetailsModeActive && ! IsListEditModeActive;
       _availableViewsList.CssClass = CssClassAvailableViewsListDropDownList;
       _availableViewsList.RenderControl (writer);
       writer.RenderEndTag();
@@ -1839,14 +1910,16 @@ public class BocList:
     bool showIcon = menuItem.Style == WebMenuItemStyle.Icon ||  menuItem.Style == WebMenuItemStyle.IconAndText;
     bool showText = menuItem.Style == WebMenuItemStyle.Text ||  menuItem.Style == WebMenuItemStyle.IconAndText;
     string icon = "null";
-    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
-      icon =  "'" + menuItem.Icon + "'";
+    if (showIcon && menuItem.Icon.HasRenderingInformation)
+      icon =  "'" + UrlUtility.ResolveUrl (menuItem.Icon.Url) + "'";
     string disabledIcon = "null";
-    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.DisabledIcon))
-      disabledIcon =  "'" + menuItem.DisabledIcon + "'";
+    if (showIcon && menuItem.DisabledIcon.HasRenderingInformation)
+      disabledIcon =  "'" + UrlUtility.ResolveUrl (menuItem.DisabledIcon.Url) + "'";
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
 
-    bool isDisabled = menuItem.EvaluateDisabled() || IsEditDetailsModeActive || ! isCommandEnabled;
+    bool isDisabled = menuItem.EvaluateDisabled() 
+        || IsEditDetailsModeActive 
+        || ! isCommandEnabled;
     stringBuilder.AppendFormat (
         "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
         menuID + "_" + menuItemIndex.ToString(), 
@@ -1868,9 +1941,9 @@ public class BocList:
     writer.AddAttribute (HtmlTextWriterAttribute.Id, menuID + "_" + index.ToString());
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
-    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
+    if (showIcon && menuItem.Icon.HasRenderingInformation)
     {
-      writer.AddAttribute (HtmlTextWriterAttribute.Src, menuItem.Icon);
+      writer.AddAttribute (HtmlTextWriterAttribute.Src, UrlUtility.ResolveUrl (menuItem.Icon.Url));
       writer.AddStyleAttribute ("vertical-align", "middle");
       writer.AddStyleAttribute (HtmlTextWriterStyle.BorderStyle, "none");
       writer.RenderBeginTag (HtmlTextWriterTag.Img);
@@ -2301,21 +2374,11 @@ public class BocList:
 
   private void RenderTitleCellMarkers (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex)
   {
-    if (IsEditDetailsModeActive && column is BocSimpleColumnDefinition)
-    {
-      if (   _rowEditModeControls[columnIndex] != null
-          && _showEditDetailsRequiredMarkers
-          && _rowEditModeControls[columnIndex].IsRequired)
-      {
-        Image requriedFieldMarker = GetRequiredMarker();
-        requriedFieldMarker.RenderControl (writer);
-        writer.Write (c_whiteSpace);
-      }
-    }
+    _editModeController.RenderTitleCellMarkers (writer, column, columnIndex);
   }
 
   /// <summary> Builds the input required marker. </summary>
-  protected virtual Image GetRequiredMarker()
+  protected internal virtual Image GetRequiredMarker()
   {
     Image requiredIcon = new Image();
     requiredIcon.ImageUrl = ResourceUrlResolver.GetResourceUrl (
@@ -2330,11 +2393,11 @@ public class BocList:
   }
 
   /// <summary> Builds the validation error marker. </summary>
-  protected virtual Image GetValidationErrorMarker()
+  public virtual Image GetValidationErrorMarker()
   {
     Image validationErrorIcon = new Image();
     validationErrorIcon.ImageUrl = ResourceUrlResolver.GetResourceUrl (
-        this, Context, typeof (BocList), ResourceType.Image, c_editDetailsValidationErrorIcon);
+        this, Context, typeof (ModifiableRow), ResourceType.Image, c_editDetailsValidationErrorIcon);
 
     IResourceManager resourceManager = GetResourceManager();
     validationErrorIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
@@ -2426,7 +2489,7 @@ public class BocList:
     
     if (hasSortingCommand)
     {
-      if (! IsEditDetailsModeActive && _hasClientScript)
+      if (! IsEditDetailsModeActive && ! IsListEditModeActive && _hasClientScript)
       {
         string argument = c_sortCommandPrefix + columnIndex.ToString();
         string postBackEvent = Page.GetPostBackClientEvent (this, argument);
@@ -2572,11 +2635,13 @@ public class BocList:
       BocListDataRowRenderEventArgs dataRowRenderEventArgs)
   {
     bool isReadOnly = IsReadOnly;
-    bool isEditedRow = ! ModifiableRowIndex.IsNull && ModifiableRowIndex.Value == originalRowIndex;
-    bool hasEditModeControl =    isEditedRow
-                              && _rowEditModeControls != null 
-                              && _rowEditModeControls.Length > 0 
-                              && _rowEditModeControls[columnIndex] != null;
+    ModifiableRow rowEditingController = null;
+    bool isEditedRow = IsEditDetailsModeActive && ModifiableRowIndex.Value == originalRowIndex;
+    if (isEditedRow)
+      rowEditingController = _editModeController._modifiableRow;
+    else if (IsListEditModeActive)
+      rowEditingController = _editModeController._modifiableRows[originalRowIndex];
+    bool hasEditModeControl = rowEditingController != null && rowEditingController.HasEditControl (columnIndex);
 
     BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
@@ -2598,13 +2663,13 @@ public class BocList:
       BocSimpleColumnDefinition simpleColumn = column as BocSimpleColumnDefinition;
       BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
 
+      bool showEditModeControl =   hasEditModeControl 
+                                && ! rowEditingController.GetEditControl (columnIndex).IsReadOnly;
+      
       string valueColumnText = null;
-      if (valueColumn != null && ! hasEditModeControl)
+      if (valueColumn != null && ! showEditModeControl)
         valueColumnText = valueColumn.GetStringValue (businessObject);
 
-      bool showEditModeControl =   simpleColumn != null 
-                                && hasEditModeControl 
-                                && ! _rowEditModeControls[columnIndex].IsReadOnly;
 
       bool enforceWidth = 
              valueColumn != null 
@@ -2648,7 +2713,7 @@ public class BocList:
       else if (simpleColumn != null)
       {
         if (showEditModeControl)
-          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex);
+          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex, rowEditingController);
         else
           RenderValueColumnCellText (writer, valueColumnText);
       }
@@ -2920,7 +2985,7 @@ public class BocList:
 
     if (_hasClientScript)
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
-    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin div
 
     dropDownMenu.Enabled = ! IsEditDetailsModeActive;
 
@@ -2928,7 +2993,7 @@ public class BocList:
     dropDownMenu.TitleIcon = column.MenuTitleIcon;
     dropDownMenu.RenderControl (writer);
     
-    writer.RenderEndTag(); // End span
+    writer.RenderEndTag(); // End div
   }
 
   private void RenderCommandColumnCell (HtmlTextWriter writer, BocCommandColumnDefinition column)
@@ -2947,12 +3012,13 @@ public class BocList:
       contents = c_whiteSpace;
     writer.Write (contents);
   }
- 
+
   private void RenderSimpleColumnCellEditModeControl (
       HtmlTextWriter writer, 
       BocSimpleColumnDefinition column,
       IBusinessObject businessObject,
-      int columnIndex) 
+      int columnIndex, 
+      ModifiableRow controller) 
   {
     EditDetailsValidator editDetailsValidator = null;
     for (int i = 0; i < _validators.Count; i++)
@@ -2961,104 +3027,20 @@ public class BocList:
       if (validator is EditDetailsValidator)
         editDetailsValidator = (EditDetailsValidator) validator;
     }
-    BaseValidator[] validators = _rowEditModeValidators[columnIndex];
 
-    IBusinessObjectBoundModifiableWebControl editModeControl = _rowEditModeControls[columnIndex];
+    if (_hasClientScript)
+      writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
+    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin div
     
-    CssStyleCollection editModeControlStyle = null;
-    bool isEditModeControlWidthEmpty = true;
-    if (editModeControl is WebControl)
-    {
-      editModeControlStyle = ((WebControl) editModeControl).Style;
-      isEditModeControlWidthEmpty = ((WebControl) editModeControl).Width.IsEmpty;
-    }
-    else if (editModeControl is System.Web.UI.HtmlControls.HtmlControl)
-    {
-      editModeControlStyle = ((System.Web.UI.HtmlControls.HtmlControl) editModeControl).Style;
-    }
-    if (editModeControlStyle != null)
-    {
-      bool enforceWidth = 
-             column.EnforceWidth 
-          && ! column.Width.IsEmpty
-          && column.Width.Type != UnitType.Percentage;
-
-      if (enforceWidth)
-        editModeControlStyle["width"] = column.Width.ToString();
-      else if (StringUtility.IsNullOrEmpty (editModeControlStyle["width"]) && isEditModeControlWidthEmpty)
-        editModeControlStyle["width"] = "100%";
-      if (StringUtility.IsNullOrEmpty (editModeControlStyle["vertical-align"]))
-        editModeControlStyle["vertical-align"] = "middle";
-    }
+    controller.RenderSimpleColumnCellEditModeControl (
+        writer, column, businessObject, columnIndex,
+        editDetailsValidator, 
+        _editModeController.ShowEditModeValidationMarkers, 
+        _editModeController.DisableEditModeValidationMessages);
     
-    if (_showEditDetailsValidationMarkers)
-    {
-      bool isCellValid = true;
-      Image validationErrorMarker = GetValidationErrorMarker();
-      
-      for (int i = 0; i < validators.Length; i++)
-      {
-        BaseValidator validator = (BaseValidator) validators[i];
-        isCellValid &= validator.IsValid;
-        if (! validator.IsValid)
-        {
-          if (StringUtility.IsNullOrEmpty (validationErrorMarker.ToolTip))
-          {
-            validationErrorMarker.ToolTip = validator.ErrorMessage;
-          }
-          else
-          {
-            validationErrorMarker.ToolTip += "\r\n";
-            validationErrorMarker.ToolTip += validator.ErrorMessage;
-          }
-        }
-      }
-      if (! isCellValid)
-      {
-        validationErrorMarker.RenderControl (writer);
-        writer.Write (c_whiteSpace);
-
-        if (editModeControlStyle != null)
-          editModeControlStyle["width"] = "80%";
-      }
-    }
-
-    editModeControl.RenderControl (writer);
-
-    for (int i = 0; i < validators.Length; i++)
-    {
-      BaseValidator validator = (BaseValidator) validators[i];
-      if (   editDetailsValidator == null 
-          || _disableEditDetailsValidationMessages)
-      {
-        validator.Display = ValidatorDisplay.None;
-        validator.EnableClientScript = false;
-      }
-      else
-      {
-        validator.Display = editDetailsValidator.Display;
-        validator.EnableClientScript = editDetailsValidator.EnableClientScript;
-      }
-
-      writer.RenderBeginTag (HtmlTextWriterTag.Div);
-      validator.RenderControl (writer);
-      writer.RenderEndTag();
-
-      if (   ! validator.IsValid 
-          && validator.Display == ValidatorDisplay.None
-          && ! _disableEditDetailsValidationMessages)
-      {
-        if (! StringUtility.IsNullOrEmpty (validator.CssClass))
-          writer.AddAttribute (HtmlTextWriterAttribute.Class, validator.CssClass);
-        else
-          writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditDetailsValidationMessage);
-        writer.RenderBeginTag (HtmlTextWriterTag.Div);
-        writer.Write (validator.ErrorMessage); // Do not HTML encode.
-        writer.RenderEndTag();
-      }
-    }
+    writer.RenderEndTag(); // End div
   }
-
+ 
   private bool RenderBeginTagDataCellCommand (
       HtmlTextWriter writer, 
       BocCommandEnabledColumnDefinition column,
@@ -3204,25 +3186,21 @@ public class BocList:
     _availableViewsListSelectedValue = (string) values[2];
     _currentRow = (int) values[3];
     _sortingOrder = (ArrayList) values[4];
-    _modifiableRowIndex = (NaInt32) values[5];
-    _isEditNewRow = (bool) values[6];
-    _selectorControlCheckedState = (Hashtable) values[7];
+    _selectorControlCheckedState = (Hashtable) values[5];
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
   /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[8];
+    object[] values = new object[6];
 
     values[0] = base.SaveViewState();
     values[1] = _selectedViewIndex;
     values[2] = _availableViewsListSelectedValue;
     values[3] = _currentRow;
     values[4] = _sortingOrder;
-    values[5] = _modifiableRowIndex;
-    values[6] = _isEditNewRow;
-    values[7] = _selectorControlCheckedState;
+    values[5] = _selectorControlCheckedState;
 
     return values;
   }
@@ -3264,10 +3242,20 @@ public class BocList:
   protected virtual void LoadValueInternal (IList value, bool interim)
   {
     if (! interim)
-      EndEditDetailsMode (false);
+    {
+      if (IsEditDetailsModeActive)
+        EndEditDetailsMode (false);
+      else if (IsListEditModeActive)
+        EndListEditMode (false);
+    }
 
+    bool isDirtyBackUp = base.IsDirty;
     Value = value;
-    IsDirty = false;
+
+    if (interim)
+      IsDirty = isDirtyBackUp;
+    else
+      IsDirty = false;
   }
 
   /// <summary> Saves the <see cref="Value"/> into the bound <see cref="IBusinessObject"/>. </summary>
@@ -3277,10 +3265,17 @@ public class BocList:
     if (Property != null && DataSource != null && DataSource.BusinessObject != null && ! IsReadOnly)
     {
       if (! interim)
-        EndEditDetailsMode (true);
+      {
+        if (IsEditDetailsModeActive)
+          EndEditDetailsMode (true);
+        else if (IsListEditModeActive)
+          EndListEditMode (true);
+      }
 
       DataSource.BusinessObject.SetProperty (Property, Value);
-      IsDirty = false;
+      
+      if (! interim)
+        IsDirty = false;
     }
   }
 
@@ -4378,6 +4373,11 @@ public class BocList:
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
     Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
+
+    if (Value == null)
+      return;
+
+    _editModeController.AddRows (businessObjects, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
   }
 
   /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
@@ -4389,29 +4389,26 @@ public class BocList:
 
     if (Value == null)
       return -1;
-    else
-      return Value.Count - 1;
+
+    int index = Value.Count - 1;
+    
+    _editModeController.AddRow (index, businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+
+    return index;
   }
 
   /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
   /// <remarks> Sets the dirty state. </remarks>
   public void RemoveRows (IBusinessObject[] businessObjects)
   {
+    _editModeController.RemoveRows (businessObjects);
+  }
+
+  internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
+  {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
     if (Value == null)
       return;
-
-    if (_isEditNewRow && IsEditDetailsModeActive)
-    {
-      foreach (IBusinessObject businessObject in businessObjects)
-      {
-        if (businessObject == Value[ModifiableRowIndex.Value])
-        {
-          _isEditNewRow = false;
-          break;
-        }
-      }
-    }
 
     Value = ListUtility.Remove (Value, businessObjects, Property, false);
   }
@@ -4420,16 +4417,14 @@ public class BocList:
   /// <remarks> Sets the dirty state. </remarks>
   public void RemoveRow (IBusinessObject businessObject)
   {
+    _editModeController.RemoveRow (businessObject);
+  }
+
+  internal void RemoveRowInternal (IBusinessObject businessObject)
+  {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     if (Value == null)
       return;
-
-    if (   _isEditNewRow 
-        && IsEditDetailsModeActive
-        && businessObject == Value[ModifiableRowIndex.Value])
-    {
-      _isEditNewRow = false;
-    }
 
     Value = ListUtility.Remove (Value, businessObject, Property, false);
   }
@@ -4465,88 +4460,30 @@ public class BocList:
   /// <param name="index"></param>
   public void SwitchRowIntoEditMode (int index)
   {
-    if (index < 0) throw new ArgumentOutOfRangeException ("index");
-    if (IsEmptyList) throw new ArgumentOutOfRangeException ("index");
-    if (index >= Value.Count) throw new ArgumentOutOfRangeException ("index");
-
-    EnsureRowEditModeRestored();
-
-    if (IsEditDetailsModeActive)
-      EndEditDetailsMode (true);
-    if (IsReadOnly || IsEditDetailsModeActive)
-      return;
-
-    _modifiableRowIndex = index;
-    CreateRowEditModeControls (EnsureColumnsGot());
-    _rowEditModeDataSource.LoadValues (false);
+    _editModeController.SwitchRowIntoEditMode (index, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
   }
 
   public void EndEditDetailsMode (bool saveChanges)
   {
-    EnsureRowEditModeRestored();
+    _editModeController.EndEditDetailsMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
+  }
 
-    if (! IsEditDetailsModeActive)
-      return;
-
+  internal void EndEditDetailsModeCleanUp ()
+  {
     if (! IsReadOnly)
     {
-      if (saveChanges)
-      {
-        OnRowEditModeSaving (
-            ModifiableRowIndex.Value, 
-            (IBusinessObject) Value[ModifiableRowIndex.Value],
-            _rowEditModeDataSource,
-            _rowEditModeControls);
-        
-        bool isValid = ValidateModifiableRow();
-        if (! isValid)
-          return;
-
-        if (! base.IsDirty)
-        {
-          base.IsDirty = this.IsDirty;
-        }
-
-        _rowEditModeDataSource.SaveValues (false);
-
-        OnRowEditModeSaved (ModifiableRowIndex.Value, (IBusinessObject) Value[ModifiableRowIndex.Value]);
-      }
-      else
-      {
-        OnRowEditModeCanceling (
-            ModifiableRowIndex.Value, 
-            (IBusinessObject) Value[ModifiableRowIndex.Value], 
-            _rowEditModeDataSource, 
-            _rowEditModeControls);
-        
-        if (_isEditNewRow)
-        {
-          IBusinessObject editedBusinessObject = (IBusinessObject) Value[ModifiableRowIndex.Value];
-          RemoveRow (ModifiableRowIndex.Value);
-          OnRowEditModeCanceled (-1, editedBusinessObject);
-        }
-        else
-        {
-          OnRowEditModeCanceled (ModifiableRowIndex.Value, (IBusinessObject) Value[ModifiableRowIndex.Value]);
-        }
-      }
-
       ResetRows();
       BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
       for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
       {
         int originalRowIndex = sortedRows[idxRows].Index;
-        if (_modifiableRowIndex.Value == originalRowIndex)
+        if (_editModeController.ModifiableRowIndex.Value == originalRowIndex)
         {
           _currentRow = idxRows;
           break;
         }
       }
     }
-
-    RemoveEditModeControls();
-    _modifiableRowIndex = NaInt32.Null;
-    _isEditNewRow = false;
   }
 
   /// <remarks>
@@ -4555,47 +4492,26 @@ public class BocList:
   /// <param name="businessObject"></param>
   public bool AddAndEditRow (IBusinessObject businessObject)
   {
-    EnsureRowEditModeRestored();
-
-    if (IsEditDetailsModeActive)
-      EndEditDetailsMode (true);
-    if (IsReadOnly || IsEditDetailsModeActive)
-      return false;
-
-    int index = AddRow (businessObject);
-    if (index < 0)
-      return false;
-
-    SwitchRowIntoEditMode (index);
-    if (IsEditDetailsModeActive)
-    {
-      _isEditNewRow = true;
-      return true;
-    }
-    else
-    {
-      RemoveRow (businessObject);
-      return false;
-    }
+    return _editModeController.AddAndEditRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
   }
 
-  protected virtual void OnRowEditModeSaving (
+  protected internal virtual void OnModifiedRowSaving (
     int index,
     IBusinessObject businessObject,
     IBusinessObjectDataSource dataSource,
     IBusinessObjectBoundModifiableWebControl[] controls)
   {
-    BocListRowEditModeEventHandler handler = (BocListRowEditModeEventHandler) Events[s_editDetailsModeSavingEvent];
+    BocListModifiableRowEventHandler handler = (BocListModifiableRowEventHandler) Events[s_modifiedRowSavingEvent];
     if (handler != null)
     {
-      BocListRowEditModeEventArgs e = new BocListRowEditModeEventArgs (index, businessObject, dataSource, controls);
+      BocListModifiableRowEventArgs e = new BocListModifiableRowEventArgs (index, businessObject, dataSource, controls);
       handler (this, e);
     }
   }
 
-  protected virtual void OnRowEditModeSaved (int index, IBusinessObject businessObject)
+  protected internal virtual void OnModifiedRowSaved (int index, IBusinessObject businessObject)
   {
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editDetailsModeSavedEvent];
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiedRowSavedEvent];
     if (handler != null)
     {
       BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
@@ -4603,23 +4519,23 @@ public class BocList:
     }
   }
 
-  protected virtual void OnRowEditModeCanceling (
+  protected internal virtual void OnModifiedRowCanceling (
     int index,
     IBusinessObject businessObject,
     IBusinessObjectDataSource dataSource,
     IBusinessObjectBoundModifiableWebControl[] controls)
   {
-    BocListRowEditModeEventHandler handler = (BocListRowEditModeEventHandler) Events[s_editDetailsModeCancelingEvent];
+    BocListModifiableRowEventHandler handler = (BocListModifiableRowEventHandler) Events[s_modifiedRowCancelingEvent];
     if (handler != null)
     {
-      BocListRowEditModeEventArgs e = new BocListRowEditModeEventArgs (index, businessObject, dataSource, controls);
+      BocListModifiableRowEventArgs e = new BocListModifiableRowEventArgs (index, businessObject, dataSource, controls);
       handler (this, e);
     }
   }
 
-  protected virtual void OnRowEditModeCanceled (int index, IBusinessObject businessObject)
+  protected internal virtual void OnModifiedRowCanceled (int index, IBusinessObject businessObject)
   {
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editDetailsModeCanceledEvent];
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiedRowCanceledEvent];
     if (handler != null)
     {
       BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
@@ -4627,158 +4543,22 @@ public class BocList:
     }
   }
 
-  private void EnsureRowEditModeRestored()
+
+
+  public bool ValidateModifiableRows()
   {
-    if (_isRowEditModeRestored)
-      return;
-    _isRowEditModeRestored = true;
-    if (! IsEditDetailsModeActive)
-      return;
-
-    CreateRowEditModeControls (EnsureColumnsForPreviousLifeCycleGot());
-  }
-
-  private void CreateRowEditModeControls (BocColumnDefinition[] columns)
-  {
-    EnsureChildControls();
-
-    if (! IsEditDetailsModeActive)
-      return;
-
-    if (Value == null)
-    {
-      throw new InvalidOperationException (string.Format (
-          "Row edit mode cannot be restored: The BocList '{0}' does not have a Value.", ID));
-    }
-
-    if (_modifiableRowIndex.Value >= Value.Count)
-    {
-      _modifiableRowIndex = NaInt32.Null;
-      return;
-    }
-    _rowEditModeDataSource = CreateRowEditModeDataSource ((IBusinessObject) Value[_modifiableRowIndex.Value]);
-    _rowEditModeControls = new IBusinessObjectBoundModifiableWebControl[columns.Length];
-    _rowEditModeValidators = new BaseValidator[columns.Length][];
-
-    for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
-    {
-      BocSimpleColumnDefinition simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
-      if (simpleColumn == null)
-        continue;
-      if (simpleColumn.IsReadOnly)
-        continue;
-      if (simpleColumn.PropertyPath.Properties.Length > 1)
-        continue;
-
-      IBusinessObjectBoundModifiableWebControl control = CreateRowEditModeControl (simpleColumn, idxColumns);
-      if (control != null)
-      {
-        control.DataSource = _rowEditModeDataSource;
-        _rowEditModeControls[idxColumns] = control;
-
-        control.ID = GetRowEditModeControlID (idxColumns);
-        control.Property = simpleColumn.PropertyPath.LastProperty;
-        _rowEditModeControlCollection.Add ((Control) control);
-        _rowEditModeValidators[idxColumns] = control.CreateValidators();
-      }
-    }    
-  }
-
-  /// <remarks>
-  ///   Validators must be added to the controls collection after LoadPostData is complete.
-  ///   If not, invalid validators will know that they are invalid without first calling validate.
-  ///   the <see cref="FormGridManager"/> also generates the validators after the <c>OnLoad</c> or when
-  ///   <see cref="FormGridManager.Validate"/> is called. Therefor the behaviors of the <c>BocList</c>
-  ///   and the <c>FormGridManager</c> match.
-  /// </remarks>
-  private void EnsureRowEditModeValidatorsRestored()
-  {
-    if (_isRowEditModeValidatorsRestored)
-      return;
-    _isRowEditModeValidatorsRestored = true;
-    if (! IsEditDetailsModeActive)
-      return;
-    if (_rowEditModeValidators == null)
-      return;
-
-    for (int idxColumns = 0; idxColumns < _rowEditModeValidators.Length; idxColumns++)
-    {
-      BaseValidator[] columnValidators = _rowEditModeValidators[idxColumns];
-      if (columnValidators == null)
-        continue;
-      for (int idxValidators = 0; idxValidators < columnValidators.Length; idxValidators++)
-        _rowEditModeControlCollection.Add (columnValidators[idxValidators]);
-    }
-  }
-
-  [Obsolete ("Use ValidateModifiableRow instead.")]
-  public bool ValiadateModifiableRow()
-  {
-    return ValidateModifiableRow();
-  }
-
-  public bool ValidateModifiableRow()
-  {
-    EnsureRowEditModeValidatorsRestored();
-
     bool isValid = true;
-    if (_rowEditModeValidators == null)
-      return isValid;
-    for (int idxColumns = 0; idxColumns < _rowEditModeValidators.Length; idxColumns++)
-    {
-      BaseValidator[] columnValidators = _rowEditModeValidators[idxColumns];
-      if (columnValidators == null)
-        continue;
-      for (int idxValidators = 0; idxValidators < columnValidators.Length; idxValidators++)
-      {
-        BaseValidator validator = columnValidators[idxValidators];
-        validator.Validate();
-        isValid &= validator.IsValid;
-      }
-    }
-    if (isValid)
-      isValid &= ValidateCustomColumns();
+
+    isValid &= _editModeController.ValidateModifiableRows();
+    isValid &= ValidateCustomColumns();
+    
     return isValid;
-  }
-
-  protected virtual IBusinessObjectReferenceDataSource CreateRowEditModeDataSource (IBusinessObject businessObject)
-  {
-    IBusinessObjectReferenceDataSource dataSource = new BusinessObjectReferenceDataSource();
-    dataSource.BusinessObject = businessObject;
-    return dataSource;
-  }
-
-  protected virtual IBusinessObjectBoundModifiableWebControl CreateRowEditModeControl (
-    BocSimpleColumnDefinition column,
-    int columnIndex)
-  {
-    IBusinessObjectBoundModifiableWebControl control = column.CreateEditDetailsControl();
-    IBusinessObjectProperty property = column.PropertyPath.LastProperty;
-
-    if (control == null)
-    {
-      control = (IBusinessObjectBoundModifiableWebControl) ControlFactory.CreateControl (
-          property, ControlFactory.EditMode.InlineEdit);
-      if (control == null)
-        return null;
-    }
-    return control;
-  }
-
-  protected string GetRowEditModeControlID (int columnIndex)
-  {
-    return ID + "_RowEditControl_" + columnIndex.ToString();
-  }
-
-  private void RemoveEditModeControls()
-  {
-    _rowEditModeControlCollection.Clear();
   }
 
   [Browsable (false)]
   public NaInt32 ModifiableRowIndex
   {
-    get { return _modifiableRowIndex; }
+    get { return _editModeController.ModifiableRowIndex; }
   }
 
   /// <remarks>
@@ -4788,34 +4568,34 @@ public class BocList:
   [Browsable (false)]
   public bool IsEditDetailsModeActive
   {
-    get { return ! _modifiableRowIndex.IsNull; } 
+    get { return _editModeController.IsEditDetailsModeActive; } 
   }
 
   [Description ("Set false to hide the asterisks in the title row for columns having edit details control.")]
   [Category ("Edit Details")]
   [DefaultValue (true)]
-  public bool ShowEditDetailsRequiredMarkers
+  public bool ShowEditModeRequiredMarkers
   {
-    get { return _showEditDetailsRequiredMarkers; }
-    set { _showEditDetailsRequiredMarkers = value; }
+    get { return _editModeController.ShowEditModeRequiredMarkers; }
+    set { _editModeController.ShowEditModeRequiredMarkers = value; }
   }
 
   [Description ("Set true to show an exclamation mark in front of each control with an validation error.")]
   [Category ("Edit Details")]
   [DefaultValue (false)]
-  public bool ShowEditDetailsValidationMarkers
+  public bool ShowEditModeValidationMarkers
   {
-    get { return _showEditDetailsValidationMarkers; }
-    set { _showEditDetailsValidationMarkers = value; }
+    get { return _editModeController.ShowEditModeValidationMarkers; }
+    set { _editModeController.ShowEditModeValidationMarkers = value; }
   }
 
   [Description ("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")]
   [Category ("Edit Details")]
   [DefaultValue (false)]
-  public bool DisableEditDetailsValidationMessages
+  public bool DisableEditModeValidationMessages
   {
-    get { return _disableEditDetailsValidationMessages; }
-    set { _disableEditDetailsValidationMessages = value; }
+    get { return _editModeController.DisableEditModeValidationMessages; }
+    set { _editModeController.DisableEditModeValidationMessages = value; }
   }
 
   /// <summary> Gets or sets a flag that enables the <see cref="EditDetailsValidator"/>. </summary>
@@ -4826,46 +4606,101 @@ public class BocList:
   [Description("Enables the EditDetailsValidator.")]
   [Category ("Edit Details")]
   [DefaultValue(true)]
-  public bool EnableEditDetailsValidator
+  public bool EnableEditModeValidator
   {
-    get { return _enableEditDetailsValidator; }
-    set { _enableEditDetailsValidator = value; }
+    get { return _editModeController.EnableEditModeValidator; }
+    set { _editModeController.EnableEditModeValidator = value; }
   }
 
   /// <summary> Is raised when the currently edited row is being saved. </summary>
   [Category ("Action")]
   [Description ("Occurs when the currently edited row is being saved.")]
-  public event BocListRowEditModeEventHandler SavingEditedRow
+  public event BocListModifiableRowEventHandler ModifiedRowSaving
   {
-    add { Events.AddHandler (s_editDetailsModeSavingEvent, value); }
-    remove { Events.RemoveHandler (s_editDetailsModeSavingEvent, value); }
+    add { Events.AddHandler (s_modifiedRowSavingEvent, value); }
+    remove { Events.RemoveHandler (s_modifiedRowSavingEvent, value); }
   }
 
   /// <summary> Is raised when the previously edited row has been saved. </summary>
   [Category ("Action")]
   [Description ("Occurs when the previously edited row has been saved.")]
-  public event BocListItemEventHandler EditedRowSaved
+  public event BocListItemEventHandler ModifiedRowSaved
   {
-    add { Events.AddHandler (s_editDetailsModeSavedEvent, value); }
-    remove { Events.RemoveHandler (s_editDetailsModeSavedEvent, value); }
+    add { Events.AddHandler (s_modifiedRowSavedEvent, value); }
+    remove { Events.RemoveHandler (s_modifiedRowSavedEvent, value); }
   }
 
   /// <summary> Is raised when the currently edited row's edit mode is being canceled. </summary>
   [Category ("Action")]
   [Description ("Occurs when the currently edited row's edit mode is being canceled.")]
-  public event BocListRowEditModeEventHandler CancelingEditDetailsMode
+  public event BocListModifiableRowEventHandler ModifiedRowCanceling
   {
-    add { Events.AddHandler (s_editDetailsModeCancelingEvent, value); }
-    remove { Events.RemoveHandler (s_editDetailsModeCancelingEvent, value); }
+    add { Events.AddHandler (s_modifiedRowCancelingEvent, value); }
+    remove { Events.RemoveHandler (s_modifiedRowCancelingEvent, value); }
   }
 
   /// <summary> Is raised when the saving of the previously edited row has been canceled. </summary>
   [Category ("Action")]
   [Description ("Occurs when the saving of the previously edited row has been canceled.")]
-  public event BocListItemEventHandler EditDetailsModeCanceled
+  public event BocListItemEventHandler ModifiedRowCanceled
   {
-    add { Events.AddHandler (s_editDetailsModeCanceledEvent, value); }
-    remove { Events.RemoveHandler (s_editDetailsModeCanceledEvent, value); }
+    add { Events.AddHandler (s_modifiedRowCanceledEvent, value); }
+    remove { Events.RemoveHandler (s_modifiedRowCanceledEvent, value); }
+  }
+
+
+  /// <remarks>
+  ///   Queried where the rendering depends on whether the list is in edit mode. 
+  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
+  /// </remarks>
+  [Browsable (false)]
+  public bool IsListEditModeActive
+  {
+    get { return _editModeController.IsListEditModeActive; } 
+  }
+
+  public void SwitchListIntoEditMode ()
+  {
+    if (IsPagingEnabled) 
+    {
+      throw new InvalidOperationException (string.Format (
+          "Cannot switch BocList '{0}' in to List Edit Mode: Paging Enabled.", ID));
+    }
+
+    _editModeController.SwitchListIntoEditMode (EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+  }
+
+  public void EndListEditMode (bool saveChanges)
+  {
+    _editModeController.EndListEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
+  }
+
+  internal void EndListEditModeCleanUp ()
+  {
+    if (! IsReadOnly)
+    {
+      ResetRows();
+//    BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
+//    for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+//    {
+//      int originalRowIndex = sortedRows[idxRows].Index;
+//      if (_modifiableRowIndex.Value == originalRowIndex)
+//      {
+//        _currentRow = idxRows;
+//        break;
+//      }
+//    }
+    }
+  }
+
+  private void EnsureEditModeRestored ()
+  {
+    _editModeController.EnsureRestored (EnsureColumnsForPreviousLifeCycleGot());
+  }
+
+  private void EnsureEditModeValidatorsRestored()
+  {
+    _editModeController.EnsureValidatorsRestored();
   }
 
   /// <summary> Is raised when a data row is rendered. </summary>
@@ -4951,16 +4786,7 @@ public class BocList:
       if (base.IsDirty)
         return true;
       
-      if (_rowEditModeControls != null)
-      {
-        for (int i = 0; i < _rowEditModeControls.Length; i++)
-        {
-          IBusinessObjectBoundModifiableWebControl control = _rowEditModeControls[i];
-          if (control != null && control.IsDirty)
-            return true;
-        }
-      }
-      return false;
+      return _editModeController.IsDirty();
     }
     set
     {
@@ -4980,18 +4806,8 @@ public class BocList:
   {
     if (IsReadOnly)
       return new string[0];
-    if (! IsEditDetailsModeActive)
-      return new string[0];
-
-    StringCollection trackedIDs = new StringCollection();
-    foreach (IBusinessObjectBoundModifiableWebControl control in _rowEditModeControls)
-    {
-      if (control != null)
-        trackedIDs.AddRange (control.GetTrackedClientIDs());
-    }
-    string[] trackedIDsArray = new string[trackedIDs.Count];
-    trackedIDs.CopyTo (trackedIDsArray, 0);
-    return trackedIDsArray;
+    else
+      return _editModeController.GetTrackedClientIDs();
   }
 
   /// <summary> The <see cref="BocList"/> supports properties of type <see cref="IBusinessObjectReferenceProperty"/>. </summary>
@@ -5105,7 +4921,7 @@ public class BocList:
         throw new ArgumentOutOfRangeException ("value");
       }
 
-      if (   IsEditDetailsModeActive
+      if (   (IsEditDetailsModeActive || IsListEditModeActive)
           && _isSelectedViewIndexSet
           && _selectedViewIndex != value)
       {
@@ -5205,23 +5021,10 @@ public class BocList:
     if (Value == null)
       throw new InvalidOperationException (string.Format ("The BocList '{0}' does not have a Value.", ID));
 
-    try
-    {
-      ArrayList selectedRows = new ArrayList (selectedObjects.Count);
-      for (int i = 0; i < selectedObjects.Count; i++)
-      {
-        IBusinessObject selectedObject = (IBusinessObject) selectedObjects[i];
-        int index = Value.IndexOf (selectedObject);
-        if (index != -1)
-          selectedRows.Add (index);
-      }
-      SetSelectedRows ((int[]) selectedRows.ToArray (typeof (int)));
-    }
-    catch (NotSupportedException)
-    {
-    }
+    SetSelectedRows (ListUtility.IndicesOf (Value, selectedObjects, false));
   }
 
+  
   /// <summary> Sets indices for the rows selected in the <see cref="BocList"/>. </summary>
   /// <param name="selectedRows"> An array of <see cref="int"/> values. </param>
   /// <exception cref="InvalidOperationException"> Thrown if the number of rows do not match the <see cref="Selection"/> mode.</exception>
@@ -5906,15 +5709,6 @@ public class BocList:
   /// <remarks> Class: <c>bocListAvailableViewsListLabel</c> </remarks>
   protected virtual string CssClassAvailableViewsListLabel
   { get { return "bocListAvailableViewsListLabel"; } }
-  
-  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit details validation messages. </summary>
-  /// <remarks>
-  ///   <para> Class: <c>bocListEditDetailsValidationMessage</c> </para>
-  ///   <para> Only applied if the <see cref="EditDetailsValidator"/> has no CSS-class of its own. </para>
-  ///   </remarks>
-  protected virtual string CssClassEditDetailsValidationMessage
-  { get { return "bocListEditDetailsValidationMessage"; } }
-  
   #endregion
 }
 
