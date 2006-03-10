@@ -490,9 +490,10 @@
         Invoking <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
         <see cref="BocList"/> to abort the edit details mode and discard any changes.
       </para><para>
-        Normally, <see cref="IsDirty"/> is <see langword="false"/> after invoking <see cref="LoadValue"/>. 
-        If <paramref name="interim"/> is <see langword="true"/> and a row is currently being edited, the state of 
-        <see cref="IsDirty"/> will also depend on whether the edited row is dirty.
+        <see cref="IsDirty"/> will be <see langword="false"/> after invoking <see cref="LoadValue"/> with 
+        <paramref name="interim"/> <see langword="false"/>. If <paramref name="interim"/> is <see langword="true"/> 
+        and a row is currently being edited, the state of <see cref="IsDirty"/> will also depend on whether the 
+        edited row is dirty.
       </para>
     </remarks>
     <seealso cref="IBusinessObjectBoundControl.LoadValue">IBusinessObjectBoundControl.LoadValue</seealso>
@@ -504,9 +505,10 @@
         Invoking <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
         <see cref="BocList"/> to abort the edit details mode and discard any changes.
       </para><para>
-        Normally, <see cref="IsDirty"/> is <see langword="false"/> after invoking <see cref="LoadValue"/>. 
-        If <paramref name="interim"/> is <see langword="true"/> and a row is currently being edited, the state of 
-        <see cref="IsDirty"/> will also depend on whether the edited row is dirty.
+        <see cref="IsDirty"/> will be <see langword="false"/> after invoking <see cref="LoadUnboundValue"/> with 
+        <paramref name="interim"/> <see langword="false"/>. If <paramref name="interim"/> is <see langword="true"/> 
+        and a row is currently being edited, the state of <see cref="IsDirty"/> will also depend on whether the 
+        edited row is dirty.
       </para>
     </remarks>
   </LoadUnboundValue>
@@ -523,9 +525,10 @@
         Invoking <see cref="SaveValue"/> with <paramref name="interim"/> <see langword="false"/> will cause the
         <see cref="BocList"/> to end the edit details mode and save any changes made to the row.
       </para><para>
-        Normally, <see cref="IsDirty"/> is <see langword="false"/> after invoking <see cref="SaveValue"/>. 
-        If <paramref name="interim"/> is <see langword="true"/> and a row is currently being edited, the state of 
-        <see cref="IsDirty"/> will also depend on whether the edited row is dirty.
+        <see cref="IsDirty"/> will be <see langword="false"/> after invoking <see cref="SaveValue"/> with 
+        <paramref name="interim"/> <see langword="false"/>. If <paramref name="interim"/> is <see langword="true"/> 
+        and a row is currently being edited, the state of <see cref="IsDirty"/> will also depend on whether the 
+        edited row is dirty.
       </para>
     </remarks>
     <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
