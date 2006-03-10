@@ -18,6 +18,7 @@ public class BocTest
 {
   private WcagHelperMock _wcagHelperMock;
   private NamingContainerMock _namingContainer;
+  private ControlInvoker _invoker;
 
   public BocTest()
   {
@@ -31,6 +32,8 @@ public class BocTest
 
     _namingContainer = new NamingContainerMock();
     _namingContainer.ID = "NamingContainer";
+
+    _invoker = new ControlInvoker (_namingContainer);
   }
 
   [TearDown]
@@ -46,6 +49,11 @@ public class BocTest
   public NamingContainerMock NamingContainer
   {
     get { return _namingContainer; }
+  }
+
+  public ControlInvoker Invoker
+  {
+    get { return _invoker; }
   }
 }
 
