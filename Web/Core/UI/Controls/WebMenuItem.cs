@@ -18,14 +18,14 @@ public class WebMenuItem: IControlItem
   public static WebMenuItem GetSeparator()
   {
     return new WebMenuItem (
-        null, null, c_separator, null, null, WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
+        null, null, c_separator, new IconInfo(), new IconInfo(), WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, null);
   }
 
   private string _itemID = string.Empty;
   private string _category = string.Empty;
   private string _text = string.Empty;
-  private string _icon = string.Empty;
-  private string _disabledIcon = string.Empty;
+  private IconInfo _icon;
+  private IconInfo _disabledIcon;
   private WebMenuItemStyle _style = WebMenuItemStyle.IconAndText;
   private RequiredSelection _requiredSelection = RequiredSelection.Any;
   private bool _isDisabled = false;
@@ -42,8 +42,8 @@ public class WebMenuItem: IControlItem
       string itemID, 
       string category, 
       string text, 
-      string icon, 
-      string disabledIcon, 
+      IconInfo icon, 
+      IconInfo disabledIcon, 
       WebMenuItemStyle style,
       RequiredSelection requiredSelection, 
       bool isDisabled,
@@ -65,9 +65,19 @@ public class WebMenuItem: IControlItem
       Command.Click += _commandClick;
   }
 
+  [Obsolete ("Use WebMenuItem (string, string, string, IconInfo, IconInfo, WebMenuItemStyle, RequiredSelection, bool, Command")]
+  public WebMenuItem (string itemID, string category, string text, 
+      string iconUrl, string disabledIconUrl, 
+      WebMenuItemStyle style, RequiredSelection requiredSelection,  bool isDisabled, Command command)
+      : this (itemID, category, text, 
+          new IconInfo (iconUrl), new IconInfo (disabledIconUrl), 
+          style, requiredSelection, isDisabled, command)
+  {
+  }
+
   public WebMenuItem ()
     : this (
-        null, null, null, null, null, 
+        null, null, null, new IconInfo(), new IconInfo(), 
         WebMenuItemStyle.IconAndText, RequiredSelection.Any, false, new Command (CommandType.Event))
   {
   }
@@ -158,26 +168,68 @@ public class WebMenuItem: IControlItem
     get { return _text == c_separator; }
   }
 
+  /// <summary> 
+  ///   Gets or sets the image representing the menu item in the rendered page. Must not be <see langword="null"/>. 
+  /// </summary>
+  /// <value> An <see cref="IconInfo"/> representing the menu item. </value>
   [PersistenceMode (PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
   [Category ("Appearance")]
-  [Description ("The URL of the icon displayed in this menu item.")]
+  [Description ("The image representing the menu item in the rendered page.")]
   [NotifyParentProperty (true)]
-  [DefaultValue ("")]
-  public virtual string Icon
+  public IconInfo Icon
   {
-    get { return _icon; }
-    set { _icon = StringUtility.NullToEmpty (value); }
+    get
+    { 
+      return _icon; 
+    }
+    set
+    { 
+      ArgumentUtility.CheckNotNull ("Icon", value);
+      _icon = value; 
+    }
   }
 
-  [PersistenceMode (PersistenceMode.Attribute)]
-  [Category ("Appearance")]
-  [Description ("The URL of the icon displayed in this menu item when it is disabled. if it is not provided, the Icon's URL will be used.")]
-  [NotifyParentProperty (true)]
-  [DefaultValue ("")]
-  public virtual string DisabledIcon
+  private bool ShouldSerializeIcon()
   {
-    get { return _disabledIcon; }
-    set { _disabledIcon = StringUtility.NullToEmpty (value); }
+    return IconInfo.ShouldSerialize (_icon);
+  }
+
+  private void ResetIcon()
+  {
+    _icon.Reset();
+  }
+
+  /// <summary> 
+  ///   Gets or sets the image representing the disabled menu item in the rendered page. Must not be <see langword="null"/>. 
+  /// </summary>
+  /// <value> An <see cref="IconInfo"/> representing the disabled menu item. </value>
+  [PersistenceMode (PersistenceMode.Attribute)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+  [Category ("Appearance")]
+  [Description ("The image representing the disabled menu item in the rendered page.")]
+  [NotifyParentProperty (true)]
+  public IconInfo DisabledIcon
+  {
+    get
+    { 
+      return _disabledIcon; 
+    }
+    set
+    { 
+      ArgumentUtility.CheckNotNull ("DisabledIcon", value);
+      _disabledIcon = value; 
+    }
+  }
+
+  private bool ShouldSerializeDisabledIcon()
+  {
+    return IconInfo.ShouldSerialize (_disabledIcon);
+  }
+
+  private void ResetDisabledIcon()
+  {
+    _disabledIcon.Reset();
   }
 
   [PersistenceMode (PersistenceMode.Attribute)]
@@ -340,13 +392,8 @@ public class WebMenuItem: IControlItem
     if (! StringUtility.IsNullOrEmpty (key))
       Text = resourceManager.GetString (key);
 
-    key = ResourceManagerUtility.GetGlobalResourceKey (Icon);
-    if (! StringUtility.IsNullOrEmpty (key))
-      Icon = resourceManager.GetString (key);
-
-    key = ResourceManagerUtility.GetGlobalResourceKey (DisabledIcon);
-    if (! StringUtility.IsNullOrEmpty (key))
-      DisabledIcon = resourceManager.GetString (key);
+    Icon.LoadResources (resourceManager);
+    DisabledIcon.LoadResources (resourceManager);
 
     if (Command != null)
       Command.LoadResources (resourceManager);

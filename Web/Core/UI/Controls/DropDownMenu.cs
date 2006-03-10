@@ -240,11 +240,11 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
     bool showIcon = menuItem.Style == WebMenuItemStyle.Icon ||  menuItem.Style == WebMenuItemStyle.IconAndText;
     bool showText = menuItem.Style == WebMenuItemStyle.Text ||  menuItem.Style == WebMenuItemStyle.IconAndText;
     string icon = "null";
-    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.Icon))
-      icon =  "'" + menuItem.Icon + "'";
+    if (showIcon && menuItem.Icon.HasRenderingInformation)
+      icon =  "'" + UrlUtility.ResolveUrl (menuItem.Icon.Url) + "'";
     string disabledIcon = "null";
-    if (showIcon && ! StringUtility.IsNullOrEmpty (menuItem.DisabledIcon))
-      disabledIcon =  "'" + menuItem.DisabledIcon + "'";
+    if (showIcon && menuItem.DisabledIcon.HasRenderingInformation)
+      disabledIcon =  "'" + UrlUtility.ResolveUrl (menuItem.DisabledIcon.Url) + "'";
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
     
     bool isDisabled = menuItem.EvaluateDisabled() || ! isCommandEnabled;
