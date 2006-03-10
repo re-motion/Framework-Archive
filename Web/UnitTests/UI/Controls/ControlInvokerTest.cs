@@ -1,5 +1,6 @@
 using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 using NUnit.Framework;
 
@@ -17,10 +18,15 @@ public class ControlInvokerTest
 
   // member fields
 
-  private Control _parent;
-  private Control _child;
+  private PlaceHolder _parent;
+  private Literal _child;
+
+  private PlaceHolder _parentAfterPostBack;
+  private Literal _childAfterPostBack;
   
   private ControlInvoker _invoker;
+  private ControlInvoker _invokerAfterPostBack;
+
   private string _events;
 
   // construction and disposing
@@ -34,13 +40,13 @@ public class ControlInvokerTest
   [SetUp]
   public void SetUp()
   {
-    _parent = new Control();
+    _parent = new PlaceHolder();
     _parent.ID = "Parent";
     _parent.Init += new EventHandler (Control_Init);
     _parent.Load += new EventHandler (Control_Load);
     _parent.PreRender += new EventHandler (Control_PreRender);
 
-    _child = new Control();
+    _child = new Literal();
     _child.ID = "Child";
     _child.Init += new EventHandler (Control_Init);
     _child.Load += new EventHandler (Control_Load);
@@ -49,6 +55,22 @@ public class ControlInvokerTest
     _parent.Controls.Add (_child);
 
     _invoker = new ControlInvoker (_parent);
+
+    _parentAfterPostBack = new PlaceHolder();
+    _parentAfterPostBack.ID = "Parent";
+    _parentAfterPostBack.Init += new EventHandler (Control_Init);
+    _parentAfterPostBack.Load += new EventHandler (Control_Load);
+    _parentAfterPostBack.PreRender += new EventHandler (Control_PreRender);
+
+    _childAfterPostBack = new Literal();
+    _childAfterPostBack.ID = "Child";
+    _childAfterPostBack.Init += new EventHandler (Control_Init);
+    _childAfterPostBack.Load += new EventHandler (Control_Load);
+    _childAfterPostBack.PreRender += new EventHandler (Control_PreRender);
+
+    _parentAfterPostBack.Controls.Add (_childAfterPostBack);
+
+    _invokerAfterPostBack = new ControlInvoker (_parentAfterPostBack);
 
     _events = string.Empty;
   }
@@ -77,6 +99,23 @@ public class ControlInvokerTest
     _invoker.InitRecursive ();
 
     Assert.AreEqual ("Child Init, Parent Init", _events);
+  }
+
+  [Test]
+  [Ignore ("LoadViewStateRecursive requires a posted back Page.")]
+  public void TestViewState ()
+  {
+    _invoker.InitRecursive();
+    _invoker.LoadRecursive();
+    _child.Text = "Foo Bar";
+    _invoker.PreRenderRecursive();
+
+    object viewState = _invoker.SaveViewStateRecursive ();
+
+    _invokerAfterPostBack.InitRecursive();
+    Assert.AreEqual (string.Empty, _childAfterPostBack.Text);
+    _invokerAfterPostBack.LoadViewStateRecursive (viewState);
+    Assert.AreEqual ("Foo Bar", _childAfterPostBack.Text);
   }
 
   [Test]
