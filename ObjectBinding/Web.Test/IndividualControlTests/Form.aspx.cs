@@ -36,6 +36,7 @@ public class IndividualControlTestForm : TestBasePage
   {
     base.RegisterEventHandlers ();
 
+    PostBackButton.Click += new EventHandler (PostBackButton_Click);
     SaveButton.Click += new EventHandler (SaveButton_Click);
     SaveAndRestartButton.Click += new EventHandler (SaveAndRestartButton_Click);
     CancelButton.Click += new EventHandler (CancelButton_Click);
@@ -83,6 +84,16 @@ public class IndividualControlTestForm : TestBasePage
     }
   }
 
+  protected override void LoadViewState(object savedState)
+  {
+    base.LoadViewState (savedState);
+  }
+
+  private void PostBackButton_Click(object sender, System.EventArgs e)
+  {
+  
+  }
+
   private void SaveButton_Click (object sender, EventArgs e)
   {
     bool isValid = ValidateDataSources();
@@ -114,6 +125,7 @@ public class IndividualControlTestForm : TestBasePage
     _dataEditControl = (IDataEditControl) LoadControl (CurrentFunction.UserControl);
     if (_dataEditControl == null)
       throw new InvalidOperationException (string.Format ("IDataEditControl '{0}' could not be loaded.", CurrentFunction.UserControl));
+    _dataEditControl.ID = "DataEditControl";
     UserControlPlaceHolder.Controls.Add ((Control) _dataEditControl);
   }
 
@@ -152,7 +164,6 @@ public class IndividualControlTestForm : TestBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-
   }
   #endregion
 }
