@@ -332,6 +332,14 @@ public class ModifiableRow : PlaceHolder, INamingContainer
       return false;
   }
 
+  public bool IsRequired (int columnIndex)
+  {
+    if (HasEditControl (columnIndex))
+      return GetEditControl (columnIndex).IsRequired;
+    else
+      return false;
+  }
+
   public IBusinessObjectBoundModifiableWebControl[] GetEditControlsAsArray()
   {
     return (IBusinessObjectBoundModifiableWebControl[]) _rowEditModeControls.Clone ();

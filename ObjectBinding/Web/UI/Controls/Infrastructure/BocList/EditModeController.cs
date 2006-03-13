@@ -34,12 +34,9 @@ public class EditModeController : PlaceHolder
   private NaInt32 _modifiableRowIndex = NaInt32.Null;
   private bool _isEditNewRow = false;
   
-  private bool _isListEditModeRestored;
-  private bool _isRowEditModeRestored = false;
+  private bool _isEditModeRestored = false;
   
-  internal ModifiableRow _modifiableRow;
-  internal ModifiableRow[] _modifiableRows;
-  private PlaceHolder _modifiableRowsPlaceHolders;
+  internal ModifiableRow[] _rows;
 
   private bool _enableEditModeValidator = true;
   private bool _showEditModeRequiredMarkers = true;
@@ -62,54 +59,6 @@ public class EditModeController : PlaceHolder
     get { return _owner; }
   }
 
-  protected override void OnInit(EventArgs e)
-  {
-    base.OnInit (e);
-    EnsureChildControls();
-  }
-
-  protected override void CreateChildControls()
-  {
-    Controls.Clear();
-
-    _modifiableRowsPlaceHolders = new PlaceHolder();
-    Controls.Add (_modifiableRowsPlaceHolders);
-    
-    _modifiableRow = new ModifiableRow (_owner);
-    _modifiableRow.ID = ID + "_Row";
-    Controls.Add (_modifiableRow);
-  }
-
-  public void RenderTitleCellMarkers (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex)
-  {
-    bool isRequired = false;
-    if (   IsEditDetailsModeActive
-        && _showEditModeRequiredMarkers 
-        && _modifiableRow.HasEditControl (columnIndex)
-        && _modifiableRow.GetEditControl (columnIndex).IsRequired)
-    {
-      isRequired = true;
-    }
-    else if (IsListEditModeActive)
-    {
-      for (int i = 0; i < _modifiableRows.Length; i++)
-      {
-        if (   _modifiableRows[i].HasEditControl (columnIndex)
-            && _modifiableRows[i].GetEditControl (columnIndex).IsRequired)
-        {
-          isRequired = true;
-          break;
-        }
-      }
-    }
-    if (isRequired)
-    {
-      Image requriedFieldMarker = _owner.GetRequiredMarker();
-      requriedFieldMarker.RenderControl (writer);
-      writer.Write (c_whiteSpace);
-    }
-  }
-
   /// <summary>
   ///   Saves changes to previous edited row and starts editing for the new row.
   /// </summary>
@@ -130,100 +79,54 @@ public class EditModeController : PlaceHolder
     if (_owner.IsEmptyList) throw new ArgumentOutOfRangeException ("index");
     if (index >= _owner.Value.Count) throw new ArgumentOutOfRangeException ("index");
 
-    EnsureListEditModeRestored (oldColumns);
-    if (IsListEditModeActive)
-      _owner.EndListEditMode (true);
+    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNull ("columns", columns);
 
-    EnsureRowEditModeRestored (oldColumns);
-    if (IsEditDetailsModeActive)
-      _owner.EndEditDetailsMode (true);
+    RestoreAndEndEditMode (oldColumns);
     
     if (_owner.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
       return;
 
     _modifiableRowIndex = index;
-    CreateRowEditModeControls (columns);
-    _modifiableRow.GetDataSource().LoadValues (false);
+    CreateEditModeControls (columns);
+    LoadValues (false);
   }
 
-  public void EndEditDetailsMode (bool saveChanges, BocColumnDefinition[] oldColumns)
+  public void SwitchListIntoEditMode (BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
-    EnsureRowEditModeRestored (oldColumns);
+    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNull ("columns", columns);
 
-    if (! IsEditDetailsModeActive)
+    RestoreAndEndEditMode (oldColumns);
+
+    if (_owner.IsReadOnly || IsEditDetailsModeActive || IsListEditModeActive)
       return;
 
-    if (! _owner.IsReadOnly)
-    {
-      if (saveChanges)
-      {
-        _owner.OnModifiedRowSaving (
-            ModifiableRowIndex.Value, 
-            (IBusinessObject) _owner.Value[ModifiableRowIndex.Value],
-            _modifiableRow.GetDataSource(),
-            _modifiableRow.GetEditControlsAsArray());
-        
-        bool isValid = _owner.ValidateModifiableRows();
-        if (! isValid)
-          return;
-
-        _owner.IsDirty = IsDirty();
-
-        _modifiableRow.GetDataSource().SaveValues (false);
-
-        _owner.OnModifiedRowSaved (ModifiableRowIndex.Value, (IBusinessObject) _owner.Value[ModifiableRowIndex.Value]);
-      }
-      else
-      {
-        _owner.OnModifiedRowCanceling (
-            ModifiableRowIndex.Value, 
-            (IBusinessObject) _owner.Value[ModifiableRowIndex.Value], 
-            _modifiableRow.GetDataSource(), 
-            _modifiableRow.GetEditControlsAsArray());
-        
-        if (_isEditNewRow)
-        {
-          IBusinessObject editedBusinessObject = (IBusinessObject) _owner.Value[ModifiableRowIndex.Value];
-          _owner.RemoveRow (ModifiableRowIndex.Value);
-          _owner.OnModifiedRowCanceled (-1, editedBusinessObject);
-        }
-        else
-        {
-          _owner.OnModifiedRowCanceled (ModifiableRowIndex.Value, (IBusinessObject) _owner.Value[ModifiableRowIndex.Value]);
-        }
-      }
-
-      _owner.EndEditDetailsModeCleanUp();
-    }
-
-    RemoveEditModeControls();
-    _modifiableRowIndex = NaInt32.Null;
-    _isEditNewRow = false;
+    _isListEditModeActive = true;
+    CreateEditModeControls (columns);
+    LoadValues (false);
   }
-
-
+  
   /// <remarks>
   ///   If already in row edit mode and the previous row cannot be saved, the new row will not be added to the list.
   /// </remarks>
   /// <param name="businessObject"></param>
   public bool AddAndEditRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
-    EnsureListEditModeRestored (oldColumns);
-    if (IsListEditModeActive)
-      _owner.EndListEditMode (true);
+    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNull ("columns", columns);
 
-    EnsureRowEditModeRestored (oldColumns);
-    if (IsEditDetailsModeActive)
-      _owner.EndEditDetailsMode (true);
+    RestoreAndEndEditMode (oldColumns);
 
     if (_owner.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
       return false;
 
-    int index = _owner.AddRow (businessObject);
+    int index = AddRow (businessObject, oldColumns, columns);
     if (index < 0)
       return false;
 
     SwitchRowIntoEditMode (index, oldColumns, columns);
+    
     if (IsEditDetailsModeActive)
     {
       _isEditNewRow = true;
@@ -236,134 +139,340 @@ public class EditModeController : PlaceHolder
     }
   }
 
-  private void CreateRowEditModeControls (BocColumnDefinition[] columns)
+  private void RestoreAndEndEditMode (BocColumnDefinition[] oldColumns)
+  {
+    EnsureEditModeRestored (oldColumns);
+
+    if (IsEditDetailsModeActive)
+      EndEditDetailsMode (true, oldColumns);
+    else if (IsListEditModeActive)
+      EndListEditMode (true, oldColumns);
+  }
+
+  public void EndEditDetailsMode (bool saveChanges, BocColumnDefinition[] oldColumns)
+  {
+    EnsureEditModeRestored (oldColumns);
+
+    if (! IsEditDetailsModeActive)
+      return;
+
+    if (! _owner.IsReadOnly)
+    {
+      int index = _modifiableRowIndex.Value;
+      IBusinessObject value = (IBusinessObject) _owner.Value[index];
+
+      if (saveChanges)
+      {
+        _owner.OnModifiedRowSaving (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
+        
+        bool isValid = Validate();
+        if (! isValid)
+          return;
+
+        _owner.IsDirty = IsDirty();
+
+        _rows[0].GetDataSource().SaveValues (false);
+        _owner.OnModifiedRowSaved (index, value);
+      }
+      else
+      {
+        _owner.OnModifiedRowCanceling (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
+        
+        if (_isEditNewRow)
+        {
+          _owner.RemoveRow (index);
+          _owner.OnModifiedRowCanceled (-1, value);
+        }
+        else
+        {
+          _owner.OnModifiedRowCanceled (index, value);
+        }
+      }
+
+      _owner.EndEditDetailsModeCleanUp();
+    }
+
+    RemoveEditModeControls();
+    _modifiableRowIndex = NaInt32.Null;
+    _isEditNewRow = false;
+  }
+
+  public void EndListEditMode (bool saveChanges, BocColumnDefinition[] oldColumns)
+  {
+    EnsureEditModeRestored (oldColumns);
+
+    if (! IsListEditModeActive)
+      return;
+
+    if (! _owner.IsReadOnly)
+    {
+      IBusinessObject[] values = (IBusinessObject[]) ArrayUtility.Convert (_owner.Value, typeof (IBusinessObject));
+
+      if (saveChanges)
+      {
+        for (int i = 0; i < _rows.Length; i++)
+          _owner.OnModifiedRowSaving (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
+
+        bool isValid = Validate();
+        if (! isValid)
+          return;
+
+        _owner.IsDirty = IsDirty();
+
+        for (int i = 0; i < _rows.Length; i++)
+        {
+          _rows[i].GetDataSource().SaveValues (false);
+          _owner.OnModifiedRowSaved (i, values[i]);
+        }
+      }
+      else
+      {
+        for (int i = 0; i < _rows.Length; i++)
+          _owner.OnModifiedRowCanceling (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
+
+        //if (_isEditNewRow)
+        //{
+        //  IBusinessObject editedBusinessObject = values[_modifiableRowIndex.Value];
+        //  RemoveRow (_modifiableRowIndex.Value);
+        //  OnRowEditModeCanceled (-1, editedBusinessObject);
+        //}
+        //else
+        //{
+        for (int i = 0; i < _rows.Length; i++)
+          _owner.OnModifiedRowCanceled (i, values[i]);
+        //}
+      }
+
+      _owner.EndListEditModeCleanUp();
+    }
+
+    RemoveEditModeControls();
+    _isListEditModeActive = false;
+  }
+
+
+  private void CreateEditModeControls (BocColumnDefinition[] columns)
+  {
+    if (IsEditDetailsModeActive || IsListEditModeActive)
+    {
+      if (_owner.Value == null)
+      {
+        throw new InvalidOperationException (string.Format (
+            "Cannot initialize edit mode: The BocList '{0}' does not have a Value.", _owner.ID));
+      }
+
+      if (IsEditDetailsModeActive)
+      {
+        if (_modifiableRowIndex.Value < _owner.Value.Count)
+        {
+          IBusinessObject value = (IBusinessObject) _owner.Value[_modifiableRowIndex.Value];
+          PopulateModifiableRows (new IBusinessObject[] {value}, columns);
+        }
+        else
+        {
+          _modifiableRowIndex = NaInt32.Null;
+        }
+      }
+      else if (IsListEditModeActive)
+      {
+        PopulateModifiableRows (_owner.Value, columns);
+      }
+    }
+  }
+
+  private void PopulateModifiableRows (IList values, BocColumnDefinition[] columns)
   {
     EnsureChildControls();
 
-    if (! IsEditDetailsModeActive)
-      return;
+    _rows = new ModifiableRow[values.Count];
+    Controls.Clear();
 
-    if (_owner.Value == null)
+    for (int i = 0; i < values.Count; i++)
     {
-      throw new InvalidOperationException (string.Format (
-          "Row edit mode cannot be restored: The BocList '{0}' does not have a Value.", ID));
+      ModifiableRow row = CreateModifiableRow (i, (IBusinessObject) values[i], columns);
+
+      _rows[i] = row;
+      Controls.Add (row);
     }
-
-    if (_modifiableRowIndex.Value >= _owner.Value.Count)
-    {
-      _modifiableRowIndex = NaInt32.Null;
-      return;
-    }
-
-    _modifiableRow.CreateControls (columns, (IBusinessObject) _owner.Value[_modifiableRowIndex.Value]);
   }
 
-  /// <remarks>
-  ///   Validators must be added to the controls collection after LoadPostData is complete.
-  ///   If not, invalid validators will know that they are invalid without first calling validate.
-  ///   the <see cref="FormGridManager"/> also generates the validators after the <c>OnLoad</c> or when
-  ///   <see cref="FormGridManager.Validate"/> is called. Therefor the behaviors of the <c>BocList</c>
-  ///   and the <c>FormGridManager</c> match.
-  /// </remarks>
-  private void EnsureRowEditModeValidatorsRestored()
+  private ModifiableRow CreateModifiableRow (int rowIndex, IBusinessObject value, BocColumnDefinition[] columns)
   {
-    if (! IsEditDetailsModeActive)
-      return;
+    ModifiableRow row = new ModifiableRow (_owner);
+    row.ID = ID + "_Row" + rowIndex.ToString();
+    row.CreateControls (columns, value);
 
-    _modifiableRow.EnsureValidatorsRestored();
+    return row;
   }
 
-  private void EnsureRowEditModeRestored (BocColumnDefinition[] oldColumns)
+  private void LoadValues (bool interim)
   {
-    if (_isRowEditModeRestored)
-      return;
-    _isRowEditModeRestored = true;
-    if (! IsEditDetailsModeActive)
-      return;
-
-    CreateRowEditModeControls (oldColumns);
+    for (int i = 0; i < _rows.Length; i++)
+      _rows[i].GetDataSource().LoadValues (interim);
   }
 
-  public bool ValidateModifiableRows()
+  internal void EnsureEditModeRestored (BocColumnDefinition[] oldColumns)
   {
-    bool isValid = true;
+    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
 
-    EnsureValidatorsRestored();
+    if (_isEditModeRestored)
+      return;
+    _isEditModeRestored = true;
 
-    if (IsEditDetailsModeActive)
-      isValid = _modifiableRow.Validate();
-    else if (IsListEditModeActive)
-      isValid &= ValidateListEditModeRows();
-
-    return isValid;
+    CreateEditModeControls (oldColumns);
   }
 
   private void RemoveEditModeControls()
   {
-    _modifiableRow.RemoveControls();
+    for (int i = 0; i < _rows.Length; i++)
+      _rows[i].RemoveControls();
   }
 
-  public bool IsDirty()
+
+  /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public void AddRows (IBusinessObject[] businessObjects, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
-    if (IsEditDetailsModeActive)
+    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNull ("columns", columns);
+
+    _owner.AddRowsInternal (businessObjects);
+
+    if (_owner.Value != null)
     {
-      return _modifiableRow.IsDirty();
-    }
-    else if (IsListEditModeActive)
-    {
-      for (int i = 0; i < _modifiableRows.Length; i++)
+      EnsureEditModeRestored (oldColumns);
+      if (IsListEditModeActive)
       {
-        if (_modifiableRows[i].IsDirty())
-          return true;
+        int startIndex = _owner.Value.Count - businessObjects.Length;
+        ArrayList newRows = new ArrayList (businessObjects.Length);
+        for (int i = startIndex; i < _owner.Value.Count; i++)
+        {
+          ModifiableRow newRow = CreateModifiableRow (i, (IBusinessObject) _owner.Value[i], columns);
+          newRow.GetDataSource().LoadValues (false);
+          Controls.Add (newRow);
+          newRows.Add (newRow);
+        }
+        _rows = (ModifiableRow[]) ListUtility.AddRange (_rows, newRows, (CreateListMethod) null, true, true);
       }
-      return false;
-    }
-    else
-    {
-      return false;
     }
   }
 
-  /// <summary> 
-  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
-  ///   interface.
-  /// </summary>
-  /// <returns> 
-  ///   Returns the <see cref="Control.ClientID"/> values of the edit mode controls for the row currently being edited.
-  /// </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
-  public string[] GetTrackedClientIDs()
+  /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public int AddRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
-    if (IsEditDetailsModeActive)
-    {
-      return _modifiableRow.GetTrackedClientIDs();
-    }
-    else if (IsListEditModeActive)
-    {
-      StringCollection trackedIDs = new StringCollection();
-      for (int i = 0; i < _modifiableRows.Length; i++)
-        trackedIDs.AddRange (_modifiableRows[i].GetTrackedClientIDs());
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNull ("columns", columns);
+  
+    int index = _owner.AddRowInternal (businessObject);
 
-      string[] trackedIDsArray = new string[trackedIDs.Count];
-      trackedIDs.CopyTo (trackedIDsArray, 0);
-      return trackedIDsArray;
-    }
-    else
+    if (index != -1)
     {
-      return new string[0];
+      EnsureEditModeRestored (oldColumns);
+      if (IsListEditModeActive)
+      {
+        ModifiableRow newRow = CreateModifiableRow (index, businessObject, columns);
+        newRow.GetDataSource().LoadValues (false);
+        Controls.Add (newRow);
+        _rows = (ModifiableRow[]) ListUtility.AddRange (_rows, newRow, (CreateListMethod) null, true, true);
+      }
+    }
+
+    return index;
+  }
+
+  /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public void RemoveRows (IBusinessObject[] businessObjects)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+
+    if (_owner.Value != null)
+    {
+      if (IsEditDetailsModeActive)
+      {
+        if (_isEditNewRow)
+        {
+          foreach (IBusinessObject businessObject in businessObjects)
+          {
+            if (businessObject == _owner.Value[_modifiableRowIndex.Value])
+            {
+              _isEditNewRow = false;
+              break;
+            }
+          }
+        }
+      }
+      else if (IsListEditModeActive)
+      {
+        int[] indices = ListUtility.IndicesOf (_owner.Value, businessObjects, false);
+        ArrayList rows = new ArrayList (indices.Length);
+        foreach (int index in indices)
+        {
+          ModifiableRow row = _rows[index];
+          Controls.Remove (row);
+          row.RemoveControls();
+          rows.Add (row);
+        }
+        _rows = (ModifiableRow[]) ListUtility.Remove (_rows, rows, (CreateListMethod) null, true);
+        RefreshIDs();
+      }
+    }
+
+    _owner.RemoveRowsInternal (businessObjects);
+  }
+
+  /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public void RemoveRow (IBusinessObject businessObject)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    
+    if (_owner.Value != null)
+    {
+      if (IsEditDetailsModeActive)
+      {
+        if (_isEditNewRow && businessObject == _owner.Value[_modifiableRowIndex.Value])
+          _isEditNewRow = false;
+      }  
+      else if (IsListEditModeActive)
+      {
+        int index = ListUtility.IndexOf (_owner.Value, businessObject);
+        if (index != -1)
+        {
+          ModifiableRow row = _rows[index];
+          Controls.Remove (row);
+          row.RemoveControls();
+          _rows = (ModifiableRow[]) ListUtility.Remove (_rows, row, (CreateListMethod) null, true);
+        }
+        RefreshIDs();
+      }
+    }
+
+    _owner.RemoveRowInternal (businessObject);
+  }
+
+  private void RefreshIDs()
+  {
+    for (int i = 0; i < Controls.Count; i++)
+    {
+      ModifiableRow row = (ModifiableRow) Controls[i];
+      string newID = ID + "_Row" + i.ToString();
+      if (row.ID != newID)
+        row.ID = newID;
     }
   }
 
-  internal void EnsureRestored (BocColumnDefinition[] oldColumns)
-  {
-    EnsureRowEditModeRestored (oldColumns);
-    EnsureListEditModeRestored (oldColumns);
-  }
 
-  internal void EnsureValidatorsRestored()
+  /// <remarks>
+  ///   Queried where the rendering depends on whether the list is in edit mode. 
+  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
+  /// </remarks>
+  public bool IsEditDetailsModeActive
   {
-    EnsureRowEditModeValidatorsRestored();
-    EnsureListEditModeValidatorsRestored();
+    get { return ! _modifiableRowIndex.IsNull; } 
   }
 
   /// <remarks>
@@ -375,321 +484,10 @@ public class EditModeController : PlaceHolder
     get { return _isListEditModeActive; } 
   }
 
-  public void SwitchListIntoEditMode (BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
-  {
-    EnsureRowEditModeRestored (oldColumns);
-    if (IsEditDetailsModeActive)
-      _owner.EndEditDetailsMode (true);
-
-    EnsureListEditModeRestored (oldColumns);
-    if (IsListEditModeActive)
-      _owner.EndListEditMode (true);
-
-    if (_owner.IsReadOnly || IsEditDetailsModeActive || IsListEditModeActive)
-      return;
-
-    _isListEditModeActive = true;
-    CreateListEditModeControls (columns);
-    for (int i = 0; i < _modifiableRows.Length; i++)
-      _modifiableRows[i].GetDataSource().LoadValues (false);
-  }
-
-  public void EndListEditMode (bool saveChanges, BocColumnDefinition[] oldColumns)
-  {
-    EnsureListEditModeRestored (oldColumns);
-
-    if (! IsListEditModeActive)
-      return;
-
-    if (! _owner.IsReadOnly)
-    {
-      if (saveChanges)
-      {
-        for (int i = 0; i < _modifiableRows.Length; i++)
-        {
-          _owner.OnModifiedRowSaving (
-              i, 
-              (IBusinessObject) _owner.Value[i], 
-              _modifiableRows[i].GetDataSource(), 
-              _modifiableRows[i].GetEditControlsAsArray());
-        }
-
-        bool isValid = _owner.ValidateModifiableRows();
-        if (! isValid)
-          return;
-
-        _owner.IsDirty = IsDirty();
-
-        for (int i = 0; i < _modifiableRows.Length; i++)
-        {
-          _modifiableRows[i].GetDataSource().SaveValues (false);
-          _owner.OnModifiedRowSaved (i, (IBusinessObject) _owner.Value[i]);
-        }
-      }
-      else
-      {
-        for (int i = 0; i < _modifiableRows.Length; i++)
-        {
-          _owner.OnModifiedRowCanceling (
-              i, 
-              (IBusinessObject) _owner.Value[i], 
-              _modifiableRows[i].GetDataSource(), 
-              _modifiableRows[i].GetEditControlsAsArray());
-        }
-
-        //if (_isEditNewRow)
-        //{
-        //  IBusinessObject editedBusinessObject = (IBusinessObject) Value[ModifiableRowIndex.Value];
-        //  RemoveRow (ModifiableRowIndex.Value);
-        //  OnRowEditModeCanceled (-1, editedBusinessObject);
-        //}
-        //else
-        //{
-        for (int i = 0; i < _modifiableRows.Length; i++)
-          _owner.OnModifiedRowCanceled (i, (IBusinessObject) _owner.Value[i]);
-        //}
-      }
-
-      _owner.EndListEditModeCleanUp();
-    }
-
-    RemoveListEditModeControls();
-    _isListEditModeActive = false;
-  }
-  
-  private void CreateListEditModeControls (BocColumnDefinition[] columns)
-  {
-    EnsureChildControls();
-
-    if (! IsListEditModeActive)
-      return;
-
-    if (_owner.Value == null)
-    {
-      throw new InvalidOperationException (string.Format (
-          "List edit mode cannot be restored: The BocList '{0}' does not have a Value.", ID));
-    }
-
-    _modifiableRows = new ModifiableRow[_owner.Value.Count];
-    _modifiableRowsPlaceHolders.Controls.Clear();
-
-    for (int i = 0; i < _owner.Value.Count; i++)
-    {
-      ModifiableRow controller = CreateModifiableRow (i, columns);
-
-      _modifiableRows[i] = controller;
-      _modifiableRowsPlaceHolders.Controls.Add (controller);
-    }
-  }
-
-  private ModifiableRow CreateModifiableRow (int rowIndex, BocColumnDefinition[] columns)
-  {
-    ModifiableRow controller = new ModifiableRow (_owner);
-    controller.ID = ID + "_ModifiableRow_" + rowIndex.ToString();
-    controller.CreateControls (columns, (IBusinessObject) _owner.Value[rowIndex]);
-
-    return controller;
-  }
-
-  internal void EnsureListEditModeRestored (BocColumnDefinition[] oldColumns)
-  {
-    if (_isListEditModeRestored)
-      return;
-    _isListEditModeRestored = true;
-    if (! IsListEditModeActive)
-      return;
-
-    CreateListEditModeControls (oldColumns);
-  }
-
-  private void EnsureListEditModeValidatorsRestored ()
-  {
-    if (! IsListEditModeActive)
-      return;
-
-    for (int i = 0; i < _modifiableRows.Length; i++)
-      _modifiableRows[i].EnsureValidatorsRestored();
-  }
-
-  private bool ValidateListEditModeRows ()
-  {
-    EnsureListEditModeValidatorsRestored();
-
-    bool isValid = true;
-    for (int i = 0; i < _modifiableRows.Length; i++)
-      isValid &= _modifiableRows[i].Validate();
-    return isValid;
- }
-
-  private void RemoveListEditModeControls()
-  {
-    for (int i = 0; i < _modifiableRows.Length; i++)
-      _modifiableRows[i].RemoveControls();
-  }
-
-  /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
-  /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
-  protected override void LoadViewState(object savedState)
-  {
-    object[] values = (object[]) savedState;
-    
-    base.LoadViewState (values[0]);
-    _isListEditModeActive = (bool) values[1];
-    _modifiableRowIndex = (NaInt32) values[2];
-    _isEditNewRow = (bool) values[3];
-  }
-
-  /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
-  /// <returns> Returns the server control's current view state. </returns>
-  protected override object SaveViewState()
-  {
-    object[] values = new object[4];
-
-    values[0] = base.SaveViewState();
-    values[1] = _isListEditModeActive;
-    values[2] = _modifiableRowIndex;
-    values[3] = _isEditNewRow;
-
-    return values;
-  }
-
-  /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  public void AddRows (IBusinessObject[] businessObjects, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
-  {
-    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-
-    if (_owner.Value == null)
-      return;
-
-    EnsureListEditModeRestored (oldColumns);
-    if (IsListEditModeActive)
-    {
-      int startIndex = _owner.Value.Count - businessObjects.Length;
-      ArrayList controllers = new ArrayList (businessObjects.Length);
-      for (int i = startIndex; i < _owner.Value.Count; i++)
-      {
-        ModifiableRow controller = CreateModifiableRow (i, columns);
-        controller.GetDataSource().LoadValues (false);
-        _modifiableRowsPlaceHolders.Controls.Add (controller);
-        controllers.Add (controller);
-      }
-      _modifiableRows = (ModifiableRow[]) ListUtility.AddRange (
-          _modifiableRows, controllers, (CreateListMethod) null, true, true);
-    }
-  }
-
-  /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  internal void AddRow (int index, IBusinessObject businessObject, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
-  {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    
-    EnsureListEditModeRestored (oldColumns);
-    if (IsListEditModeActive)
-    {
-      ModifiableRow controller = CreateModifiableRow (index, columns);
-      controller.GetDataSource().LoadValues (false);
-      _modifiableRowsPlaceHolders.Controls.Add (controller);
-      _modifiableRows = (ModifiableRow[]) ListUtility.AddRange (
-          _modifiableRows, controller, (CreateListMethod) null, true, true);
-    }
-  }
-
-  /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  public void RemoveRows (IBusinessObject[] businessObjects)
-  {
-    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-    if (_owner.Value == null)
-      return;
-
-    if (_isEditNewRow && IsEditDetailsModeActive)
-    {
-      foreach (IBusinessObject businessObject in businessObjects)
-      {
-        if (businessObject == _owner.Value[ModifiableRowIndex.Value])
-        {
-          _isEditNewRow = false;
-          break;
-        }
-      }
-    }
-    
-    if (IsListEditModeActive)
-    {
-      int[] indices = ListUtility.IndicesOf (_owner.Value, businessObjects, false);
-      ArrayList controllers = new ArrayList (indices.Length);
-      foreach (int index in indices)
-      {
-        ModifiableRow controller = _modifiableRows[index];
-        _modifiableRowsPlaceHolders.Controls.Remove (controller);
-        controller.RemoveControls();
-        controllers.Add (controller);
-      }
-      _modifiableRows = (ModifiableRow[]) ListUtility.Remove (
-          _modifiableRows, controllers, (CreateListMethod) null, true);
-      RefreshIDs();
-    }
-
-    _owner.RemoveRowsInternal (businessObjects);
-  }
-
-  /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  public void RemoveRow (IBusinessObject businessObject)
-  {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    if (_owner.Value == null)
-      return;
-
-    if (   _isEditNewRow 
-        && IsEditDetailsModeActive
-        && businessObject == _owner.Value[ModifiableRowIndex.Value])
-    {
-      _isEditNewRow = false;
-    }
-    
-    if (IsListEditModeActive)
-    {
-      int index = ListUtility.IndexOf (_owner.Value, businessObject);
-      if (index != -1)
-      {
-        ModifiableRow controller = _modifiableRows[index];
-        _modifiableRowsPlaceHolders.Controls.Remove (controller);
-        controller.RemoveControls();
-        _modifiableRows = (ModifiableRow[]) ListUtility.Remove (
-            _modifiableRows, controller, (CreateListMethod) null, true);
-      }
-      RefreshIDs();
-    }
-
-    _owner.RemoveRowInternal (businessObject);
-  }
-
-  private void RefreshIDs()
-  {
-    for (int i = 0; i < _modifiableRowsPlaceHolders.Controls.Count; i++)
-    {
-      ModifiableRow row = (ModifiableRow) _modifiableRowsPlaceHolders.Controls[i];
-      string newID = ID + "_ModifiableRow_" + i.ToString();
-      if (row.ID != newID)
-        row.ID = newID;
-    }
-  }
 
   public NaInt32 ModifiableRowIndex
   {
     get { return _modifiableRowIndex; }
-  }
-
-  /// <remarks>
-  ///   Queried where the rendering depends on whether the list is in edit mode. 
-  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
-  /// </remarks>
-  public bool IsEditDetailsModeActive
-  {
-    get { return ! _modifiableRowIndex.IsNull; } 
   }
 
   public bool ShowEditModeRequiredMarkers
@@ -715,6 +513,7 @@ public class EditModeController : PlaceHolder
     get { return _enableEditModeValidator; }
     set { _enableEditModeValidator = value; }
   }
+
 
   /// <summary>
   ///   Generates a <see cref="BocList.EditDetailsValidator"/>.
@@ -742,6 +541,132 @@ public class EditModeController : PlaceHolder
     validators[0] = editDetailsValidator;
 
     return validators;
+  }
+
+  /// <remarks>
+  ///   Validators must be added to the controls collection after LoadPostData is complete.
+  ///   If not, invalid validators will know that they are invalid without first calling validate.
+  ///   the <see cref="FormGridManager"/> also generates the validators after the <c>OnLoad</c> or when
+  ///   <see cref="FormGridManager.Validate"/> is called. Therefor the behaviors of the <c>BocList</c>
+  ///   and the <c>FormGridManager</c> match.
+  /// </remarks>
+  internal void EnsureValidatorsRestored()
+  {
+    if (IsEditDetailsModeActive || IsListEditModeActive)
+    {
+      for (int i = 0; i < _rows.Length; i++)
+        _rows[i].EnsureValidatorsRestored();
+    }
+  }
+
+  public bool Validate()
+  {
+    EnsureValidatorsRestored();
+
+    bool isValid = true;
+    
+    if (IsEditDetailsModeActive || IsListEditModeActive)
+    {
+      for (int i = 0; i < _rows.Length; i++)
+        isValid &= _rows[i].Validate();
+    
+      isValid &= _owner.ValidateModifiableRowsInternal();
+    }
+
+    return isValid;
+  }
+
+  
+  public void RenderTitleCellMarkers (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex)
+  {
+    if (_showEditModeRequiredMarkers && IsRequired (columnIndex))
+    {
+      Image requriedFieldMarker = _owner.GetRequiredMarker();
+      requriedFieldMarker.RenderControl (writer);
+      writer.Write (c_whiteSpace);
+    }
+  }
+
+  public bool IsRequired (int columnIndex)
+  {
+    if (IsEditDetailsModeActive || IsListEditModeActive)
+    {
+      for (int i = 0; i < _rows.Length; i++)
+      {
+        if (_rows[i].IsRequired (columnIndex))
+          return true;
+      }
+    }
+
+    return false;
+  }
+
+  
+  public bool IsDirty()
+  {
+    if (IsEditDetailsModeActive || IsListEditModeActive)
+    {
+      for (int i = 0; i < _rows.Length; i++)
+      {
+        if (_rows[i].IsDirty())
+          return true;
+      }
+    }
+
+    return false;
+  }
+
+  /// <summary> 
+  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
+  ///   interface.
+  /// </summary>
+  /// <returns> 
+  ///   Returns the <see cref="Control.ClientID"/> values of the edit mode controls for the row currently being edited.
+  /// </returns>
+  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  public string[] GetTrackedClientIDs()
+  {
+    if (IsEditDetailsModeActive || IsListEditModeActive)
+    {
+      StringCollection trackedIDs = new StringCollection();
+      for (int i = 0; i < _rows.Length; i++)
+        trackedIDs.AddRange (_rows[i].GetTrackedClientIDs());
+
+      string[] trackedIDsArray = new string[trackedIDs.Count];
+      trackedIDs.CopyTo (trackedIDsArray, 0);
+      return trackedIDsArray;
+    }
+    else
+    {
+      return new string[0];
+    }
+  }
+
+
+  /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
+  /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
+  protected override void LoadViewState(object savedState)
+  {
+    object[] values = (object[]) savedState;
+    
+    base.LoadViewState (values[0]);
+    _isListEditModeActive = (bool) values[1];
+    _modifiableRowIndex = (NaInt32) values[2];
+    _isEditNewRow = (bool) values[3];
+  }
+
+  /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
+  /// <returns> Returns the server control's current view state. </returns>
+  protected override object SaveViewState()
+  {
+    object[] values = new object[4];
+
+    values[0] = base.SaveViewState();
+    values[1] = _isListEditModeActive;
+    values[2] = _modifiableRowIndex;
+    values[3] = _isEditNewRow;
+
+    return values;
   }
 }
 

@@ -146,6 +146,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "Domain\TypeWithAllDataTypes.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Domain\TypeWithBoolean.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -341,7 +346,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\RowEditingControllerTest.cs"
+                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRowTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

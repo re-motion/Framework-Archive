@@ -2634,13 +2634,13 @@ public class BocList:
       BocListDataRowRenderEventArgs dataRowRenderEventArgs)
   {
     bool isReadOnly = IsReadOnly;
-    ModifiableRow rowEditingController = null;
+    ModifiableRow modifiableRow = null;
     bool isEditedRow = IsEditDetailsModeActive && ModifiableRowIndex.Value == originalRowIndex;
     if (isEditedRow)
-      rowEditingController = _editModeController._modifiableRow;
+      modifiableRow = _editModeController._rows[0];
     else if (IsListEditModeActive)
-      rowEditingController = _editModeController._modifiableRows[originalRowIndex];
-    bool hasEditModeControl = rowEditingController != null && rowEditingController.HasEditControl (columnIndex);
+      modifiableRow = _editModeController._rows[originalRowIndex];
+    bool hasEditModeControl = modifiableRow != null && modifiableRow.HasEditControl (columnIndex);
 
     BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
@@ -2663,7 +2663,7 @@ public class BocList:
       BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
 
       bool showEditModeControl =   hasEditModeControl 
-                                && ! rowEditingController.GetEditControl (columnIndex).IsReadOnly;
+                                && ! modifiableRow.GetEditControl (columnIndex).IsReadOnly;
       
       string valueColumnText = null;
       if (valueColumn != null && ! showEditModeControl)
@@ -2712,7 +2712,7 @@ public class BocList:
       else if (simpleColumn != null)
       {
         if (showEditModeControl)
-          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex, rowEditingController);
+          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex, modifiableRow);
         else
           RenderValueColumnCellText (writer, valueColumnText);
       }
@@ -3017,7 +3017,7 @@ public class BocList:
       BocSimpleColumnDefinition column,
       IBusinessObject businessObject,
       int columnIndex, 
-      ModifiableRow controller) 
+      ModifiableRow modifiableRow) 
   {
     EditDetailsValidator editDetailsValidator = null;
     for (int i = 0; i < _validators.Count; i++)
@@ -3031,7 +3031,7 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin div
     
-    controller.RenderSimpleColumnCellEditModeControl (
+    modifiableRow.RenderSimpleColumnCellEditModeControl (
         writer, column, businessObject, columnIndex,
         editDetailsValidator, 
         _editModeController.ShowEditModeValidationMarkers, 
@@ -4370,30 +4370,33 @@ public class BocList:
   /// <remarks> Sets the dirty state. </remarks>
   public void AddRows (IBusinessObject[] businessObjects)
   {
-    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-    Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
-
-    if (Value == null)
-      return;
-
     _editModeController.AddRows (businessObjects, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+  }
+
+  internal void AddRowsInternal (IBusinessObject[] businessObjects)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+
+    Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
   }
 
   /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
   /// <remarks> Sets the dirty state. </remarks>
   public int AddRow (IBusinessObject businessObject)
   {
+    return _editModeController.AddRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+  }
+
+  internal int AddRowInternal (IBusinessObject businessObject)
+  {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    
     Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
 
     if (Value == null)
       return -1;
-
-    int index = Value.Count - 1;
-    
-    _editModeController.AddRow (index, businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
-
-    return index;
+    else
+      return Value.Count - 1;
   }
 
   /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
@@ -4406,10 +4409,9 @@ public class BocList:
   internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-    if (Value == null)
-      return;
-
-    Value = ListUtility.Remove (Value, businessObjects, Property, false);
+    
+    if (Value != null)
+      Value = ListUtility.Remove (Value, businessObjects, Property, false);
   }
 
   /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
@@ -4422,10 +4424,9 @@ public class BocList:
   internal void RemoveRowInternal (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    if (Value == null)
-      return;
-
-    Value = ListUtility.Remove (Value, businessObject, Property, false);
+    
+    if (Value != null)
+      Value = ListUtility.Remove (Value, businessObject, Property, false);
   }
 
   /// <summary> 
@@ -4546,12 +4547,12 @@ public class BocList:
 
   public bool ValidateModifiableRows()
   {
-    bool isValid = true;
+    return _editModeController.Validate();
+  }
 
-    isValid &= _editModeController.ValidateModifiableRows();
-    isValid &= ValidateCustomColumns();
-    
-    return isValid;
+  internal bool ValidateModifiableRowsInternal()
+  {
+    return ValidateCustomColumns();
   }
 
   [Browsable (false)]
@@ -4694,7 +4695,7 @@ public class BocList:
 
   private void EnsureEditModeRestored ()
   {
-    _editModeController.EnsureRestored (EnsureColumnsForPreviousLifeCycleGot());
+    _editModeController.EnsureEditModeRestored (EnsureColumnsForPreviousLifeCycleGot());
   }
 
   private void EnsureEditModeValidatorsRestored()
