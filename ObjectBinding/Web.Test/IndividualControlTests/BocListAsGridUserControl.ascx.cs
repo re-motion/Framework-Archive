@@ -186,6 +186,8 @@ public class BocListAsGridUserControl : BaseUserControl
 
     SwitchToEditModeButton.Enabled = ! ChildrenList.IsListEditModeActive;
     EndEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
+    EndEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
+    CancelEditModeButton.Enabled = ChildrenList.IsListEditModeActive;
   }
 
   private void SwitchToEditModeButton_Click(object sender, EventArgs e)

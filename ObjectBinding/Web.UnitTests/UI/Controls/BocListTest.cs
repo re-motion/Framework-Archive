@@ -98,7 +98,7 @@ public class BocListTest: BocTest
  
 
   [Test]
-  public void LoadValueAndInterimTrueWithList()
+  public void LoadValueAndInterimTrueWithListAndDirty()
   {
     _businessObject.ReferenceList = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
     _bocList.DataSource = _dataSource;
@@ -107,12 +107,12 @@ public class BocListTest: BocTest
     _bocList.IsDirty = true;
 
     _bocList.LoadValue (true);
-    Assert.AreEqual (_businessObject.ReferenceList, _bocList.Value);
+    Assert.AreSame (_businessObject.ReferenceList, _bocList.Value);
     Assert.IsTrue (_bocList.IsDirty);
   }
 
   [Test]
-  public void LoadValueAndInterimTrueWithNull()
+  public void LoadValueAndInterimTrueWithNullAndDirty()
   {
     _businessObject.ReferenceList = null;
     _bocList.DataSource = _dataSource;
@@ -121,12 +121,40 @@ public class BocListTest: BocTest
     _bocList.IsDirty = true;
 
     _bocList.LoadValue (true);
-    Assert.AreEqual (_businessObject.ReferenceList, _bocList.Value);
+    Assert.AreSame (_businessObject.ReferenceList, _bocList.Value);
     Assert.IsTrue (_bocList.IsDirty);
   }   
 
   [Test]
-  public void LoadValueAndInterimFalseWithList()
+  public void LoadValueAndInterimTrueWithListAndNotDirty()
+  {
+    _businessObject.ReferenceList = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
+    _bocList.DataSource = _dataSource;
+    _bocList.Property = _propertyReferenceList;
+    _bocList.Value = null;
+    _bocList.IsDirty = false;
+
+    _bocList.LoadValue (true);
+    Assert.AreSame (_businessObject.ReferenceList, _bocList.Value);
+    Assert.IsFalse (_bocList.IsDirty);
+  }
+
+  [Test]
+  public void LoadValueAndInterimTrueWithNullAndNotDirty()
+  {
+    _businessObject.ReferenceList = null;
+    _bocList.DataSource = _dataSource;
+    _bocList.Property = _propertyReferenceList;
+    _bocList.Value = new TypeWithReference[0];
+    _bocList.IsDirty = false;
+
+    _bocList.LoadValue (true);
+    Assert.AreSame (_businessObject.ReferenceList, _bocList.Value);
+    Assert.IsFalse (_bocList.IsDirty);
+  }   
+
+  [Test]
+  public void LoadValueAndInterimFalseWithListAndDirty()
   {
     _businessObject.ReferenceList = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
     _bocList.DataSource = _dataSource;
@@ -135,12 +163,12 @@ public class BocListTest: BocTest
     _bocList.IsDirty = true;
 
     _bocList.LoadValue (false);
-    Assert.AreEqual (_businessObject.ReferenceList, _bocList.Value);
+    Assert.AreSame (_businessObject.ReferenceList, _bocList.Value);
     Assert.IsFalse (_bocList.IsDirty);
   }
 
   [Test]
-  public void LoadValueAndInterimFalseWithNull()
+  public void LoadValueAndInterimFalseWithNullAndDirty()
   {
     _businessObject.ReferenceList = null;
     _bocList.DataSource = _dataSource;
@@ -149,12 +177,12 @@ public class BocListTest: BocTest
     _bocList.IsDirty = true;
 
     _bocList.LoadValue (false);
-    Assert.AreEqual (_businessObject.ReferenceList, _bocList.Value);
+    Assert.AreSame (_businessObject.ReferenceList, _bocList.Value);
     Assert.IsFalse (_bocList.IsDirty);
   }   
 
   [Test]
-  public void LoadUnboundValueAndInterimTrueWithList()
+  public void LoadUnboundValueAndInterimTrueWithListAndDirty()
   {
     TypeWithReference[] value = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
     _bocList.DataSource = _dataSource;
@@ -162,12 +190,12 @@ public class BocListTest: BocTest
     _bocList.IsDirty = true;
 
     _bocList.LoadUnboundValue (value, true);
-    Assert.AreEqual (value, _bocList.Value);
+    Assert.AreSame (value, _bocList.Value);
     Assert.IsTrue (_bocList.IsDirty);
   }
 
   [Test]
-  public void LoadUnboundValueAndInterimTrueWithNull()
+  public void LoadUnboundValueAndInterimTrueWithNullAndDirty()
   {
     TypeWithReference[] value = null;
     _bocList.DataSource = _dataSource;
@@ -175,12 +203,38 @@ public class BocListTest: BocTest
     _bocList.IsDirty = true;
 
     _bocList.LoadUnboundValue (value, true);
-    Assert.AreEqual (value, _bocList.Value);
+    Assert.AreSame (value, _bocList.Value);
     Assert.IsTrue (_bocList.IsDirty);
   }   
 
   [Test]
-  public void LoadUnboundValueAndInterimFalseWithList()
+  public void LoadUnboundValueAndInterimTrueWithListAndNotDirty()
+  {
+    TypeWithReference[] value = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
+    _bocList.DataSource = _dataSource;
+    _bocList.Value = null;
+    _bocList.IsDirty = false;
+
+    _bocList.LoadUnboundValue (value, true);
+    Assert.AreSame (value, _bocList.Value);
+    Assert.IsFalse (_bocList.IsDirty);
+  }
+
+  [Test]
+  public void LoadUnboundValueAndInterimTrueWithNullAndNotDirty()
+  {
+    TypeWithReference[] value = null;
+    _bocList.DataSource = _dataSource;
+    _bocList.Value = new TypeWithReference[0];
+    _bocList.IsDirty = false;
+
+    _bocList.LoadUnboundValue (value, true);
+    Assert.AreSame (value, _bocList.Value);
+    Assert.IsFalse (_bocList.IsDirty);
+  }   
+
+  [Test]
+  public void LoadUnboundValueAndInterimFalseWithListAndDirty()
   {
     TypeWithReference[] value = new TypeWithReference[] {new TypeWithReference(), new TypeWithReference()};
     _bocList.DataSource = _dataSource;
@@ -188,12 +242,12 @@ public class BocListTest: BocTest
     _bocList.IsDirty = true;
 
     _bocList.LoadUnboundValue (value, false);
-    Assert.AreEqual (value, _bocList.Value);
+    Assert.AreSame (value, _bocList.Value);
     Assert.IsFalse (_bocList.IsDirty);
   }
 
   [Test]
-  public void LoadUnboundValueAndInterimFalseWithNull()
+  public void LoadUnboundValueAndInterimFalseWithNullAndDirty()
   {
     TypeWithReference[] value = null;
     _bocList.DataSource = _dataSource;
@@ -201,7 +255,7 @@ public class BocListTest: BocTest
     _bocList.IsDirty = true;
 
     _bocList.LoadUnboundValue (value, false);
-    Assert.AreEqual (value, _bocList.Value);
+    Assert.AreSame (value, _bocList.Value);
     Assert.IsFalse (_bocList.IsDirty);
   }   
 }
