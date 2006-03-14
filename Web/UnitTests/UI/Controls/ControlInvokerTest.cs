@@ -8,8 +8,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Web.UnitTests.UI.Controls
 {
-
+//TODO: Remore ignore after nant for .net 2.0 is available.
 [TestFixture]
+#if ! NET11
+[Ignore ("Only runs with .net 2.0 unit a pure .net 2.0 nant is available.")]
+#endif
 public class ControlInvokerTest
 {
   // types
