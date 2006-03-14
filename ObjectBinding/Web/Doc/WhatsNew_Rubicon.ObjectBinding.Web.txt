@@ -27,13 +27,21 @@
 - BocList
   * Bugfix: EditDetailsMode: Wurde der Read-Only Zustand durch das Objektmodell bestimmt, anstatt durch das 
     IsReadOnly Flag der SimpleValueColumn, so wurde kein Wert gerendert.
+  * CreateRowEditModeControl() und CreateRowEditModeDataSource() gibt es nicht mehr.
+    Statt dessen gibt es nun die Methoden GetEditModeControlFactory() bzw GetEditModeDataSourceFactory().
+    Die bisherige Logik von CreateRowEditModeControl() bzw CreateRowEditModeDataSource() ist in der jeweiligen 
+    Create() Methode der Factory zu implementieren.
+    Es besteht alternativ auch die Möglichkeit, im OnInit-Event der Page die Factories zu setzen und damit nicht von
+    der BocList ableiten zu müssen.
   
 - BocList, BocReferenceValue
   * string MenuItem.Icon auf IconInfo MenuItem.Icon umgestellt.
     Statt Icon ist nun Icon.Url zu setzen.
+    Icon selbst darf nicht null gesetzt werden.
     In ASPX/ASCX Seiten muss Icon durch Search & Replace (Icon-Url) ersetzt werden.
   * string MenuItem.DisabledIcon auf IconInfo MenuItem.DisabledIcon umgestellt.
     Statt DisabledIcon ist nun DisabledIcon.Url zu setzen.
+    DisabledIcon selbst darf nicht null gesetzt werden.
     In ASPX/ASCX Seiten muss Icon durch Search & Replace (DisabledIcon-Url) ersetzt werden.
 
 - BOCs mit Editmode:

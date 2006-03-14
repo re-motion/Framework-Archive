@@ -509,6 +509,11 @@ public class BocList:
     _availableViews.CollectionChanged += new CollectionChangeEventHandler(AvailableViews_CollectionChanged);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
+    if (EditModeDataSourceFactory == null)
+      EditModeDataSourceFactory = GetEditModeDataSourceFactory();
+    if (EditModeControlFactory == null)
+      EditModeControlFactory = GetEditModeControlFactory();
+
     if (!IsDesignMode)
     {
       InitializeMenusItems();
@@ -4448,6 +4453,15 @@ public class BocList:
     RemoveRow ((IBusinessObject) Value[index]);
   }
 
+  protected virtual ModifiableRowDataSourceFactory GetEditModeDataSourceFactory()
+  {
+    return null;
+  }
+
+  protected virtual ModifiableRowControlFactory GetEditModeControlFactory()
+  {
+    return null;
+  }
 
   /// <summary>
   ///   Saves changes to previous edited row and starts editing for the new row.
