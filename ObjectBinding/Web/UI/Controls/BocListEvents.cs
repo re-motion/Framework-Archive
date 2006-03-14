@@ -6,11 +6,11 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
 #region Obsolete
 
-[Obsolete ("Use BocListModifiableRowEventHandler instead.", true)]
+[Obsolete ("Use BocListModifiableRowChangesEventHandler instead.", true)]
 public delegate void BocListRowEditModeEventHandler (object sender, BocListRowEditModeEventArgs e);
 
-[Obsolete ("Use BocListModifiableRowEventArgs instead.", true)]
-public class BocListRowEditModeEventArgs: BocListModifiableRowEventArgs
+[Obsolete ("Use BocListModifiableRowChangesEventArgs instead.", true)]
+public class BocListRowEditModeEventArgs: BocListModifiableRowChangesEventArgs
 {
   public BocListRowEditModeEventArgs (
       int listIndex, 
@@ -85,14 +85,14 @@ public class BocListItemEventArgs: EventArgs
   }
 }
 
-public delegate void BocListModifiableRowEventHandler (object sender, BocListModifiableRowEventArgs e);
+public delegate void BocListModifiableRowChangesEventHandler (object sender, BocListModifiableRowChangesEventArgs e);
 
-public class BocListModifiableRowEventArgs : BocListItemEventArgs
+public class BocListModifiableRowChangesEventArgs : BocListItemEventArgs
 {
   private IBusinessObjectBoundModifiableControl[] _controls;
   private IBusinessObjectDataSource _dataSource;
 
-  public BocListModifiableRowEventArgs (
+  public BocListModifiableRowChangesEventArgs (
       int listIndex, 
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,

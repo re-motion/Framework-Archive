@@ -163,7 +163,7 @@ public class EditModeController : PlaceHolder
 
       if (saveChanges)
       {
-        _owner.OnModifiedRowSaving (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
+        _owner.OnModifiableRowChangesSaving (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
         
         bool isValid = Validate();
         if (! isValid)
@@ -172,20 +172,20 @@ public class EditModeController : PlaceHolder
         _owner.IsDirty = IsDirty();
 
         _rows[0].GetDataSource().SaveValues (false);
-        _owner.OnModifiedRowSaved (index, value);
+        _owner.OnModifiableRowChangesSaved (index, value);
       }
       else
       {
-        _owner.OnModifiedRowCanceling (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
+        _owner.OnModifiableRowChangesCanceling (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
         
         if (_isEditNewRow)
         {
           _owner.RemoveRow (index);
-          _owner.OnModifiedRowCanceled (-1, value);
+          _owner.OnModifiableRowChangesCanceled (-1, value);
         }
         else
         {
-          _owner.OnModifiedRowCanceled (index, value);
+          _owner.OnModifiableRowChangesCanceled (index, value);
         }
       }
 
@@ -211,7 +211,7 @@ public class EditModeController : PlaceHolder
       if (saveChanges)
       {
         for (int i = 0; i < _rows.Length; i++)
-          _owner.OnModifiedRowSaving (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
+          _owner.OnModifiableRowChangesSaving (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
 
         bool isValid = Validate();
         if (! isValid)
@@ -222,13 +222,13 @@ public class EditModeController : PlaceHolder
         for (int i = 0; i < _rows.Length; i++)
         {
           _rows[i].GetDataSource().SaveValues (false);
-          _owner.OnModifiedRowSaved (i, values[i]);
+          _owner.OnModifiableRowChangesSaved (i, values[i]);
         }
       }
       else
       {
         for (int i = 0; i < _rows.Length; i++)
-          _owner.OnModifiedRowCanceling (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
+          _owner.OnModifiableRowChangesCanceling (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
 
         //if (_isEditNewRow)
         //{
@@ -239,7 +239,7 @@ public class EditModeController : PlaceHolder
         //else
         //{
         for (int i = 0; i < _rows.Length; i++)
-          _owner.OnModifiedRowCanceled (i, values[i]);
+          _owner.OnModifiableRowChangesCanceled (i, values[i]);
         //}
       }
 
@@ -300,6 +300,12 @@ public class EditModeController : PlaceHolder
   {
     ModifiableRow row = new ModifiableRow (_owner);
     row.ID = ID + "_Row" + rowIndex.ToString();
+
+    if (_owner.EditModeDataSourceFactory != null)
+      row.DataSourceFactory = _owner.EditModeDataSourceFactory;
+    if (_owner.EditModeControlFactory != null)
+      row.ControlFactory = _owner.EditModeControlFactory;
+
     row.CreateControls (columns, value);
 
     return row;

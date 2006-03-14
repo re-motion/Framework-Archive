@@ -98,7 +98,7 @@ public class ModifiableRowTest
   {
     Assert.AreSame (_bocList, _modifiableRow.Owner);
     Assert.IsNull (_modifiableRow.DataSourceFactory);
-    Assert.IsNull (_modifiableRow.EditControlFactory);
+    Assert.IsNull (_modifiableRow.ControlFactory);
   }
 
   [Test]
@@ -115,7 +115,7 @@ public class ModifiableRowTest
     Assert.IsTrue (_modifiableRow.HasValidators());
 
     Assert.IsNotNull (_modifiableRow.DataSourceFactory);
-    Assert.IsNotNull (_modifiableRow.EditControlFactory);
+    Assert.IsNotNull (_modifiableRow.ControlFactory);
 
     IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
     Assert.IsNotNull (dataSource);
@@ -145,7 +145,7 @@ public class ModifiableRowTest
     Assert.IsTrue (_modifiableRow.HasValidators());
 
     Assert.IsNotNull (_modifiableRow.DataSourceFactory);
-    Assert.IsNotNull (_modifiableRow.EditControlFactory);
+    Assert.IsNotNull (_modifiableRow.ControlFactory);
 
     IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
     Assert.IsNotNull (dataSource);

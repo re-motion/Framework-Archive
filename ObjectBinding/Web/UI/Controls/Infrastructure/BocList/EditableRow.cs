@@ -29,7 +29,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
   private Controls.BocList _owner;
 
   private ModifiableRowDataSourceFactory _dataSourceFactory;
-  private ModifiableRowControlFactory _editControlFactory;
+  private ModifiableRowControlFactory _controlFactory;
   
   private IBusinessObjectReferenceDataSource _dataSource;
 
@@ -68,16 +68,16 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     }
   }
 
-  public ModifiableRowControlFactory EditControlFactory
+  public ModifiableRowControlFactory ControlFactory
   {
     get 
     {
-      return _editControlFactory; 
+      return _controlFactory; 
     }
     set 
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      _editControlFactory = value; 
+      _controlFactory = value; 
     }
   }
 
@@ -99,7 +99,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
 
       if (IsColumnModifiable (simpleColumn))
       {
-        IBusinessObjectBoundModifiableWebControl control = _editControlFactory.Create (simpleColumn, idxColumns);
+        IBusinessObjectBoundModifiableWebControl control = _controlFactory.Create (simpleColumn, idxColumns);
 
         if (control != null)
         {
@@ -118,8 +118,8 @@ public class ModifiableRow : PlaceHolder, INamingContainer
   {
     if (_dataSourceFactory == null)
       _dataSourceFactory = new ModifiableRowDataSourceFactory ();
-    if (_editControlFactory == null)
-      _editControlFactory = new ModifiableRowControlFactory ();
+    if (_controlFactory == null)
+      _controlFactory = new ModifiableRowControlFactory ();
   }
 
   protected void CreatePlaceHolders (BocColumnDefinition[] columns)

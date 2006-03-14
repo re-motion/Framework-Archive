@@ -56,10 +56,10 @@ public class BocListAsGridUserControl : BaseUserControl
     
     ChildrenList.DataRowRender += new Rubicon.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventHandler(this.ChildrenList_DataRowRender);
 
-    ChildrenList.ModifiedRowCanceling += new BocListModifiableRowEventHandler (ChildrenList_ModifiedRowCanceling);
-    ChildrenList.ModifiedRowCanceled += new BocListItemEventHandler (ChildrenList_ModifiedRowCanceled);
-    ChildrenList.ModifiedRowSaving += new BocListModifiableRowEventHandler (ChildrenList_ModifiedRowSaving);
-    ChildrenList.ModifiedRowSaved += new BocListItemEventHandler (ChildrenList_ModifiedRowSaved);
+    ChildrenList.ModifiableRowChangesCanceling += new BocListModifiableRowChangesEventHandler (ChildrenList_ModifiableRowChangesCanceling);
+    ChildrenList.ModifiableRowChangesCanceled += new BocListItemEventHandler (ChildrenList_ModifiableRowChangesCanceled);
+    ChildrenList.ModifiableRowChangesSaving += new BocListModifiableRowChangesEventHandler (ChildrenList_ModifiableRowChangesSaving);
+    ChildrenList.ModifiableRowChangesSaved += new BocListItemEventHandler (ChildrenList_ModifiableRowChangesSaved);
   }
 
   public override IBusinessObjectDataSourceControl DataSource
@@ -251,19 +251,19 @@ public class BocListAsGridUserControl : BaseUserControl
       e.IsModifiableRow = false;
   }
 
-  private void ChildrenList_ModifiedRowCanceling(object sender, BocListModifiableRowEventArgs e)
+  private void ChildrenList_ModifiableRowChangesCanceling(object sender, BocListModifiableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_ModifiedRowCanceled(object sender, BocListItemEventArgs e)
+  private void ChildrenList_ModifiableRowChangesCanceled(object sender, BocListItemEventArgs e)
   {
   }
 
-  private void ChildrenList_ModifiedRowSaving(object sender, BocListModifiableRowEventArgs e)
+  private void ChildrenList_ModifiableRowChangesSaving(object sender, BocListModifiableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_ModifiedRowSaved(object sender, BocListItemEventArgs e)
+  private void ChildrenList_ModifiableRowChangesSaved(object sender, BocListItemEventArgs e)
   {
   }
 

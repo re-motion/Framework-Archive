@@ -48,7 +48,7 @@ public class BocList:
 {
   #region Obsolete Stuff
 
-  [Obsolete ("Use OnModifiedRowSaving instead.")]
+  [Obsolete ("Use OnModifiableRowChangesSaving instead.")]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeSaving (
     int index,
@@ -56,17 +56,17 @@ public class BocList:
     IBusinessObjectDataSource dataSource,
     IBusinessObjectBoundModifiableWebControl[] controls)
   {
-    OnModifiedRowSaving (index, businessObject, dataSource, controls);
+    OnModifiableRowChangesSaving (index, businessObject, dataSource, controls);
   }
 
-  [Obsolete ("Use OnModifiedRowSaved instead.")]
+  [Obsolete ("Use OnModifiableRowChangesSaved instead.")]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeSaved (int index, IBusinessObject businessObject)
   {
-    OnModifiedRowSaved (index, businessObject);
+    OnModifiableRowChangesSaved (index, businessObject);
   }
 
-  [Obsolete ("Use OnModifiedRowCanceling instead.")]
+  [Obsolete ("Use OnModifiableRowChangesCanceling instead.")]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeCanceling (
     int index,
@@ -74,19 +74,19 @@ public class BocList:
     IBusinessObjectDataSource dataSource,
     IBusinessObjectBoundModifiableWebControl[] controls)
   {
-    OnModifiedRowCanceling (index, businessObject, dataSource, controls);
+    OnModifiableRowChangesCanceling (index, businessObject, dataSource, controls);
   }
 
-  [Obsolete ("Use OnModifiedRowCanceled instead.")]
+  [Obsolete ("Use OnModifiableRowChangesCanceled instead.")]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeCanceled (int index, IBusinessObject businessObject)
   {
-    OnModifiedRowCanceled (index, businessObject);
+    OnModifiableRowChangesCanceled (index, businessObject);
   }
 
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  [Obsolete ("Use ModifiedRowSaving instead.", true)]
+  [Obsolete ("Use ModifiableRowChangesSaving instead.", true)]
   public event BocListRowEditModeEventHandler SavingEditedRow
   {
     add { throw new NotImplementedException ("Obsolete"); }
@@ -95,16 +95,16 @@ public class BocList:
 
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  [Obsolete ("Use ModifiedRowSaved instead.")]
+  [Obsolete ("Use ModifiableRowChangesSaved instead.")]
   public event BocListItemEventHandler EditedRowSaved
   {
-    add { ModifiedRowSaved += value; }
-    remove { ModifiedRowSaved -= value; }
+    add { ModifiableRowChangesSaved += value; }
+    remove { ModifiableRowChangesSaved -= value; }
   }
 
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  [Obsolete ("Use ModifiedRowCanceling instead.", true)]
+  [Obsolete ("Use ModifiableRowChangesCanceling instead.", true)]
   public event BocListRowEditModeEventHandler CancelingEditDetailsMode
   {
     add { throw new NotImplementedException ("Obsolete"); }
@@ -113,11 +113,11 @@ public class BocList:
 
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  [Obsolete ("Use ModifiedRowCanceled instead.")]
+  [Obsolete ("Use ModifiableRowChangesCanceled instead.")]
   public event BocListItemEventHandler EditDetailsModeCanceled
   {
-    add { ModifiedRowCanceled += value; }
-    remove { ModifiedRowCanceled -= value; }
+    add { ModifiableRowChangesCanceled += value; }
+    remove { ModifiableRowChangesCanceled -= value; }
   }
 
   [Obsolete ("Use ValidateModifiableRows instead.")]
@@ -315,10 +315,10 @@ public class BocList:
   private static readonly object s_sortingOrderChangingEvent = new object();
   private static readonly object s_sortingOrderChangedEvent = new object();
 
-  private static readonly object s_modifiedRowSavingEvent = new object();
-  private static readonly object s_modifiedRowSavedEvent = new object();
-  private static readonly object s_modifiedRowCancelingEvent = new object();
-  private static readonly object s_modifiedRowCanceledEvent = new object();
+  private static readonly object s_modifiableRowChangesSavingEvent = new object();
+  private static readonly object s_modifiableRowChangesSavedEvent = new object();
+  private static readonly object s_modifiableRowChangesCancelingEvent = new object();
+  private static readonly object s_modifiableRowChangesCanceledEvent = new object();
 
   private static readonly object s_dataRowRenderEvent = new object();
 
@@ -456,6 +456,8 @@ public class BocList:
   private bool _hasClientScript = false;
 
   private EditModeController _editModeController;
+  private ModifiableRowDataSourceFactory _editModeDataSourceFactory;
+  private ModifiableRowControlFactory _editModeControlFactory;
 
   private string _errorMessage;
   private ArrayList _validators;
@@ -4495,23 +4497,23 @@ public class BocList:
     return _editModeController.AddAndEditRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
   }
 
-  protected internal virtual void OnModifiedRowSaving (
-    int index,
-    IBusinessObject businessObject,
-    IBusinessObjectDataSource dataSource,
-    IBusinessObjectBoundModifiableWebControl[] controls)
+  protected internal virtual void OnModifiableRowChangesSaving (
+      int index,
+      IBusinessObject businessObject,
+      IBusinessObjectDataSource dataSource,
+      IBusinessObjectBoundModifiableWebControl[] controls)
   {
-    BocListModifiableRowEventHandler handler = (BocListModifiableRowEventHandler) Events[s_modifiedRowSavingEvent];
+    BocListModifiableRowChangesEventHandler handler = (BocListModifiableRowChangesEventHandler) Events[s_modifiableRowChangesSavingEvent];
     if (handler != null)
     {
-      BocListModifiableRowEventArgs e = new BocListModifiableRowEventArgs (index, businessObject, dataSource, controls);
+      BocListModifiableRowChangesEventArgs e = new BocListModifiableRowChangesEventArgs (index, businessObject, dataSource, controls);
       handler (this, e);
     }
   }
 
-  protected internal virtual void OnModifiedRowSaved (int index, IBusinessObject businessObject)
+  protected internal virtual void OnModifiableRowChangesSaved (int index, IBusinessObject businessObject)
   {
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiedRowSavedEvent];
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiableRowChangesSavedEvent];
     if (handler != null)
     {
       BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
@@ -4519,23 +4521,23 @@ public class BocList:
     }
   }
 
-  protected internal virtual void OnModifiedRowCanceling (
-    int index,
-    IBusinessObject businessObject,
-    IBusinessObjectDataSource dataSource,
-    IBusinessObjectBoundModifiableWebControl[] controls)
+  protected internal virtual void OnModifiableRowChangesCanceling (
+      int index,
+      IBusinessObject businessObject,
+      IBusinessObjectDataSource dataSource,
+      IBusinessObjectBoundModifiableWebControl[] controls)
   {
-    BocListModifiableRowEventHandler handler = (BocListModifiableRowEventHandler) Events[s_modifiedRowCancelingEvent];
+    BocListModifiableRowChangesEventHandler handler = (BocListModifiableRowChangesEventHandler) Events[s_modifiableRowChangesCancelingEvent];
     if (handler != null)
     {
-      BocListModifiableRowEventArgs e = new BocListModifiableRowEventArgs (index, businessObject, dataSource, controls);
+      BocListModifiableRowChangesEventArgs e = new BocListModifiableRowChangesEventArgs (index, businessObject, dataSource, controls);
       handler (this, e);
     }
   }
 
-  protected internal virtual void OnModifiedRowCanceled (int index, IBusinessObject businessObject)
+  protected internal virtual void OnModifiableRowChangesCanceled (int index, IBusinessObject businessObject)
   {
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiedRowCanceledEvent];
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiableRowChangesCanceledEvent];
     if (handler != null)
     {
       BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
@@ -4612,42 +4614,58 @@ public class BocList:
     set { _editModeController.EnableEditModeValidator = value; }
   }
 
-  /// <summary> Is raised when the currently edited row is being saved. </summary>
+  /// <summary> Is raised before the modified row is saved. </summary>
   [Category ("Action")]
-  [Description ("Occurs when the currently edited row is being saved.")]
-  public event BocListModifiableRowEventHandler ModifiedRowSaving
+  [Description ("Is raised before the modified row is saved.")]
+  public event BocListModifiableRowChangesEventHandler ModifiableRowChangesSaving
   {
-    add { Events.AddHandler (s_modifiedRowSavingEvent, value); }
-    remove { Events.RemoveHandler (s_modifiedRowSavingEvent, value); }
+    add { Events.AddHandler (s_modifiableRowChangesSavingEvent, value); }
+    remove { Events.RemoveHandler (s_modifiableRowChangesSavingEvent, value); }
   }
 
-  /// <summary> Is raised when the previously edited row has been saved. </summary>
+  /// <summary> Is raised after the modified row's changes have been saved. </summary>
   [Category ("Action")]
-  [Description ("Occurs when the previously edited row has been saved.")]
-  public event BocListItemEventHandler ModifiedRowSaved
+  [Description ("Is raised after the modified row's changes have been saved.")]
+  public event BocListItemEventHandler ModifiableRowChangesSaved
   {
-    add { Events.AddHandler (s_modifiedRowSavedEvent, value); }
-    remove { Events.RemoveHandler (s_modifiedRowSavedEvent, value); }
+    add { Events.AddHandler (s_modifiableRowChangesSavedEvent, value); }
+    remove { Events.RemoveHandler (s_modifiableRowChangesSavedEvent, value); }
   }
 
-  /// <summary> Is raised when the currently edited row's edit mode is being canceled. </summary>
+  /// <summary> Is raised before the modified row's changes are canceled. </summary>
   [Category ("Action")]
-  [Description ("Occurs when the currently edited row's edit mode is being canceled.")]
-  public event BocListModifiableRowEventHandler ModifiedRowCanceling
+  [Description ("Is raised before the modified row's changes are canceled.")]
+  public event BocListModifiableRowChangesEventHandler ModifiableRowChangesCanceling
   {
-    add { Events.AddHandler (s_modifiedRowCancelingEvent, value); }
-    remove { Events.RemoveHandler (s_modifiedRowCancelingEvent, value); }
+    add { Events.AddHandler (s_modifiableRowChangesCancelingEvent, value); }
+    remove { Events.RemoveHandler (s_modifiableRowChangesCancelingEvent, value); }
   }
 
-  /// <summary> Is raised when the saving of the previously edited row has been canceled. </summary>
+  /// <summary> Is raised after the modified row's changes have been canceled. </summary>
   [Category ("Action")]
-  [Description ("Occurs when the saving of the previously edited row has been canceled.")]
-  public event BocListItemEventHandler ModifiedRowCanceled
+  [Description ("Is raised after the modified row's changes have been canceled.")]
+  public event BocListItemEventHandler ModifiableRowChangesCanceled
   {
-    add { Events.AddHandler (s_modifiedRowCanceledEvent, value); }
-    remove { Events.RemoveHandler (s_modifiedRowCanceledEvent, value); }
+    add { Events.AddHandler (s_modifiableRowChangesCanceledEvent, value); }
+    remove { Events.RemoveHandler (s_modifiableRowChangesCanceledEvent, value); }
   }
 
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public ModifiableRowDataSourceFactory EditModeDataSourceFactory
+  {
+    get { return _editModeDataSourceFactory; }
+    set { _editModeDataSourceFactory = value; }
+  }
+
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public ModifiableRowControlFactory EditModeControlFactory
+  {
+    get { return _editModeControlFactory; }
+    set { _editModeControlFactory = value; }
+  }
 
   /// <remarks>
   ///   Queried where the rendering depends on whether the list is in edit mode. 
