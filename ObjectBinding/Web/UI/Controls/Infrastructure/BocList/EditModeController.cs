@@ -206,7 +206,12 @@ public class EditModeController : PlaceHolder
 
     if (! _owner.IsReadOnly)
     {
-      IBusinessObject[] values = (IBusinessObject[]) ArrayUtility.Convert (_owner.Value, typeof (IBusinessObject));
+      //TODO: Change back once CommonCollection can work with empty lists.
+      IBusinessObject[] values;
+      if (_owner.Value.Count > 0)
+        values = (IBusinessObject[]) ArrayUtility.Convert (_owner.Value, typeof (IBusinessObject));
+      else
+        values = new IBusinessObject[0];
 
       if (saveChanges)
       {
