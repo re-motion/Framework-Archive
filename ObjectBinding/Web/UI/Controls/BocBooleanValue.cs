@@ -134,7 +134,10 @@ public class BocBooleanValue: BusinessObjectBoundModifiableWebControl, IPostBack
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    return LoadPostData (postDataKey, postCollection);
+    if (HasBeenRenderedInPreviousLifecycle)
+      return LoadPostData (postDataKey, postCollection);
+    else
+      return false;
   }
 
   /// <summary> Invokes the <see cref="RaisePostDataChangedEvent"/> method. </summary>
