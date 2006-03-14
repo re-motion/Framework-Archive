@@ -8,6 +8,7 @@ using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UnitTests.Configuration;
 using Rubicon.Web.UnitTests.UI;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.UnitTests.AspNetFramework;
 
 namespace Rubicon.Web.UnitTests.UI.Controls
 {
@@ -30,6 +31,8 @@ public class WebControlTest
   [TearDown]
   public virtual void TearDown()
   {
+    WcagHelper.SetInstance (new WcagHelperMock ());
+    HttpContextHelper.SetCurrent (null);
   }
 
   protected WcagHelperMock WcagHelperMock
