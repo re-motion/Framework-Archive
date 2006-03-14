@@ -147,7 +147,17 @@ public class WxePageStep: WxeStep
 
     try 
     {
-      context.HttpContext.Server.Transfer (Page + context.HttpContext.Request.Url.Query, context.IsPostBack);
+      string url = Page;
+      string queryString = context.HttpContext.Request.Url.Query;
+      if (! StringUtility.IsNullOrEmpty (queryString))
+      {
+        queryString = queryString.Replace (":", HttpUtility.UrlEncode (":"));
+        if (url.IndexOf ('?') == -1)
+          url = url + queryString;
+        else
+          url = url + "&" + queryString.Substring (1);
+      }
+      context.HttpContext.Server.Transfer (url, context.IsPostBack);
     }
     catch (HttpException e)
     {
