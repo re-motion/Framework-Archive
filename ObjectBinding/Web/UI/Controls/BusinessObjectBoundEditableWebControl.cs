@@ -55,6 +55,8 @@ public abstract class BusinessObjectBoundModifiableWebControl:
   private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
   private TypedArrayList _validators;
   private bool _isDirty = false;
+  private bool _hasBeenRenderedInPreviousLifecycle = false;
+  private bool _isRenderedInCurrentLifecycle = false;
 
   protected override void OnInit (EventArgs e)
   {
@@ -276,18 +278,31 @@ public abstract class BusinessObjectBoundModifiableWebControl:
     return isValid;
   }
 
+  protected override void OnPreRender(EventArgs e)
+  {
+    base.OnPreRender (e);
+    _isRenderedInCurrentLifecycle = true;
+  }
+
+  protected bool HasBeenRenderedInPreviousLifecycle
+  {
+    get { return _hasBeenRenderedInPreviousLifecycle; }
+  }
+
   protected override void LoadViewState(object savedState)
   {
     object[] values = (object[]) savedState;
     base.LoadViewState (values[0]);
     _isDirty = (bool)  values[1];
+    _hasBeenRenderedInPreviousLifecycle = (bool)  values[2];
   }
 
   protected override object SaveViewState()
   {
-    object[] values = new object[2];
+    object[] values = new object[3];
     values[0] = base.SaveViewState();
     values[1] = _isDirty;
+    values[2] = _isRenderedInCurrentLifecycle;
     return values;
   }
 }
