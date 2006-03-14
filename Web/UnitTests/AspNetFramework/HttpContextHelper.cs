@@ -25,7 +25,6 @@ public class HttpContextHelper
 
   public static void SetCurrent (HttpContext context)
   {
-    ArgumentUtility.CheckNotNull ("context", context);
     HttpContext.Current = context;
   }
 
