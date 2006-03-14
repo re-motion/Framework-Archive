@@ -52,7 +52,7 @@
         <value>In der gerade bearbeiteten Zeile sind Fehler aufgetreten.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle">
-        <value>Eingabe ben&amp;ouml;tigt in der gerade bearbeiteten Zeile.</value>
+        <value>Eingabe benötigt in der gerade bearbeiteten Zeile.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage">
         <value>Keine Daten vorhanden.</value>
@@ -67,10 +67,10 @@
         <value>Zeile bearbeiten.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsSaveAlternateText">
-        <value>&amp;Auml;nderungen an der Zeile übernehmen.</value>
+        <value>Änderungen an der Zeile übernehmen.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsCancelAlternateText">
-        <value>&amp;Auml;nderungen an der Zeile verwerfen.</value>
+        <value>Änderungen an der Zeile verwerfen.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToFirstAlternateText">
         <value>Zur ersten Seite gehen.</value>
@@ -79,7 +79,7 @@
         <value>Zur letzten Seite gehen.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToNextAlternateText">
-        <value>Zur n&amp;auml;chsten Seite gehen</value>
+        <value>Zur nächsten Seite gehen</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToPreviousAlternateText">
         <value>Zur vorherigen Seite gehen.</value>
