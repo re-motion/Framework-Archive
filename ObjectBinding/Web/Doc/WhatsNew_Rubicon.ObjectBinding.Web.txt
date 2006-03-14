@@ -1,3 +1,21 @@
+1.4.35
+======
+- BocEnumValue
+  * Bugfix: ValidationMessage in Deutsch wurde nicht korrekt HTML-encoded -> Umlaute wurden 2x encoded gerendert.
+    Aufgetreten mit 1.4.23.
+
+- BocReferenceValue
+  * Bugfix: ValidationMessage in Deutsch wurde nicht korrekt HTML-encoded -> Umlaute wurden 2x encoded gerendert.
+    Aufgetreten mit 1.4.23.
+
+- BocDateTimeValue
+  * Bugfix: AlternateText für füt den DatePickerButton in Deutsch wurde nicht korrekt HTML-encoded 
+    -> Umlaute wurden 2x encoded gerendert. Aufgetreten mit 1.4.23.
+    
+- BocList
+  * BugFix: EditDetails Buttons AlternateText, Required-Icon und Weiter-Button AlternateText Deutsch wurde nicht 
+    korrekt HTML-encoded -> Umlaute wurden 2x encoded gerendert. Aufgetreten mit 1.4.23.
+    
 1.4.34
 ======
 - BocList
