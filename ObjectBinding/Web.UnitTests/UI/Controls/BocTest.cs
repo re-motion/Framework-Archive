@@ -13,6 +13,7 @@ using Rubicon.Web.UnitTests.Configuration;
 using Rubicon.Web.UnitTests.UI;
 using Rubicon.Web.UnitTests.UI.Controls;
 using Rubicon.Web.Utilities;
+using Rubicon.Web.UnitTests.AspNetFramework;
 
 namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls
 {
