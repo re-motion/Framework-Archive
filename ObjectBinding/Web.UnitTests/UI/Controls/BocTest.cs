@@ -46,6 +46,8 @@ public class BocTest
   [TearDown]
   public virtual void TearDown()
   {
+    WcagHelper.SetInstance (new WcagHelperMock ());
+    HttpContextHelper.SetCurrent (null);
   }
 
   protected WcagHelperMock WcagHelperMock
