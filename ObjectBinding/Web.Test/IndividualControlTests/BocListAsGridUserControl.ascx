@@ -1,8 +1,8 @@
-<%@ Register TagPrefix="obrt" Namespace="OBRTest" Assembly="OBRTest" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocListAsGridUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocListAsGridUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
+<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obrt" Namespace="OBRTest" Assembly="OBRTest" %>
 <table id=FormGrid width="80%" runat="server">
   <tr>
     <td colSpan=2><obw:boctextvalue id=FirstNameField runat="server" PropertyIdentifier="FirstName" ReadOnly="True" datasourcecontrol="CurrentObject"></obw:boctextvalue>&nbsp;<obw:boctextvalue id=LastNameField runat="server" PropertyIdentifier="LastName" ReadOnly="True" datasourcecontrol="CurrentObject"></obw:boctextvalue></td></tr>
@@ -10,7 +10,7 @@
     <td></td>
     <td></td></tr>
   <tr>
-    <td colSpan=2><obrt:testboclist id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="0" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple" errormessage="test">
+    <td colSpan=2><obrt:testboclist id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="0" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple" errormessage="test" showeditmodevalidationmarkers="True">
 <fixedcolumns>
 <obw:BocEditDetailsColumnDefinition ItemID="EditDetails" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></obw:BocEditDetailsColumnDefinition>
 <obw:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
@@ -23,12 +23,12 @@
 <obw:BocListItemCommand Type="Href" HrefCommand-Href="edit.aspx?ID={1}&amp;Index={0}"></obw:BocListItemCommand>
 </PersistedCommand>
 </obw:BocCommandColumnDefinition>
-<obw:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName">
+<obw:BocSimpleColumnDefinition ItemID="LastName" PropertyPathIdentifier="LastName" EnforceWidth="True" Width="5em">
 <persistedcommand>
 <obw:BocListItemCommand WxeFunctionCommand-Parameters="id" WxeFunctionCommand-TypeName="OBWTest.ViewPersonDetailsWxeFunction,OBWTest" Type="WxeFunction"></obw:BocListItemCommand>
 </PersistedCommand>
 </obw:BocSimpleColumnDefinition>
-<obw:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" ColumnTitle="Name">
+<obw:BocCompoundColumnDefinition ItemID="Name" FormatString="{0}, {1}" EnforceWidth="True" Width="3em" ColumnTitle="Name">
 <propertypathbindings>
 <obw:PropertyPathBinding PropertyPathIdentifier="LastName"></obw:PropertyPathBinding>
 <obw:PropertyPathBinding PropertyPathIdentifier="FirstName"></obw:PropertyPathBinding>
@@ -38,7 +38,7 @@
 <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
 </PersistedCommand>
 </obw:BocCompoundColumnDefinition>
-<obw:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" EnforceWidth="True" Width="4em" ColumnTitle="Partner">
+<obw:BocSimpleColumnDefinition PropertyPathIdentifier="Partner" Width="7em" ColumnTitle="Partner">
 <persistedcommand>
 <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
 </PersistedCommand>
