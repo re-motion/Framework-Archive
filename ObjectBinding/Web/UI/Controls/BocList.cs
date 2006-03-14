@@ -562,7 +562,10 @@ public class BocList:
   /// <summary> Invokes the <see cref="LoadPostData"/> method. </summary>
   bool IPostBackDataHandler.LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    return LoadPostData (postDataKey, postCollection);
+    if (HasBeenRenderedInPreviousLifecycle)
+      return LoadPostData (postDataKey, postCollection);
+    else
+      return false;
   }
 
   /// <summary> Invokes the <see cref="RaisePostDataChangedEvent"/> method. </summary>
@@ -3031,7 +3034,7 @@ public class BocList:
 
     if (_hasClientScript)
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
-    writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin div
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
     
     modifiableRow.RenderSimpleColumnCellEditModeControl (
         writer, column, businessObject, columnIndex,
@@ -3039,7 +3042,7 @@ public class BocList:
         _editModeController.ShowEditModeValidationMarkers, 
         _editModeController.DisableEditModeValidationMessages);
     
-    writer.RenderEndTag(); // End div
+    writer.RenderEndTag(); // End span
   }
  
   private bool RenderBeginTagDataCellCommand (
