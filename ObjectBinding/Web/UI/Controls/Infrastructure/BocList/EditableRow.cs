@@ -360,7 +360,6 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     ControlCollection validators = GetValidators (columnIndex);
 
     IBusinessObjectBoundModifiableWebControl editModeControl = _rowEditModeControls[columnIndex];
-    
     CssStyleCollection editModeControlStyle = null;
     bool isEditModeControlWidthEmpty = true;
     if (editModeControl is WebControl)
@@ -372,21 +371,26 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     {
       editModeControlStyle = ((System.Web.UI.HtmlControls.HtmlControl) editModeControl).Style;
     }
+
     if (editModeControlStyle != null)
     {
-      bool enforceWidth = 
-             column.EnforceWidth 
-          && ! column.Width.IsEmpty
-          && column.Width.Type != UnitType.Percentage;
-
-      if (enforceWidth)
-        editModeControlStyle["width"] = column.Width.ToString();
-      else if (StringUtility.IsNullOrEmpty (editModeControlStyle["width"]) && isEditModeControlWidthEmpty)
+      if (StringUtility.IsNullOrEmpty (editModeControlStyle["width"]) && isEditModeControlWidthEmpty)
         editModeControlStyle["width"] = "100%";
       if (StringUtility.IsNullOrEmpty (editModeControlStyle["vertical-align"]))
         editModeControlStyle["vertical-align"] = "middle";
-    }
+    }        
+
+    bool enforceWidth = column.EnforceWidth 
+        && ! column.Width.IsEmpty
+        && column.Width.Type != UnitType.Percentage;
     
+    if (enforceWidth)
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, column.Width.ToString());
+    else
+      writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    writer.AddStyleAttribute ("display", "block");
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Span Container
+
     if (showEditDetailsValidationMarkers)
     {
       bool isCellValid = true;
@@ -411,15 +415,20 @@ public class ModifiableRow : PlaceHolder, INamingContainer
       }
       if (! isCellValid)
       {
+        validationErrorMarker.Style["float"] = "left";
         validationErrorMarker.RenderControl (writer);
-        writer.Write (c_whiteSpace);
 
-        if (editModeControlStyle != null)
-          editModeControlStyle["width"] = "80%";
+        writer.AddStyleAttribute ("margin-left", "20px");
       }
     }
 
+    writer.AddStyleAttribute (HtmlTextWriterStyle.Width, "100%");
+    writer.AddStyleAttribute ("display", "block");
+    writer.RenderBeginTag (HtmlTextWriterTag.Span); // Span Control
+
     editModeControl.RenderControl (writer);
+
+    writer.RenderEndTag(); // Span Control
 
     for (int i = 0; i < validators.Count; i++)
     {
@@ -453,6 +462,8 @@ public class ModifiableRow : PlaceHolder, INamingContainer
         writer.RenderEndTag();
       }
     }
+
+    writer.RenderEndTag(); // Span Container
   }
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit details validation messages. </summary>
