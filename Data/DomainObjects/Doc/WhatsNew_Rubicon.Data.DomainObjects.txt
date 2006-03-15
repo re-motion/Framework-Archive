@@ -1,3 +1,10 @@
+1.4.37.0
+========
+
+- Rubicon.Data.DomainObject.CommonCollection.CopyTo:
+  Lieferte eine ArgumentException, wenn man versucht hat, eine leere Collection in ein leeres Array zu kopieren => Behoben.
+  
+
 1.4.26.0
 ========
 
