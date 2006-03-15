@@ -145,7 +145,6 @@ public class WxeParameterConverterTest
     WxeVariableReference varRef = new WxeVariableReference (c_param);
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredInt32InParameter);
     converter.ConvertVarRefToString (varRef, null);
-    Assert.Fail();
   }
 
   [Test]
@@ -157,7 +156,6 @@ public class WxeParameterConverterTest
     _callerParameters.Add (c_param, value);
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredInt32InParameter);
     converter.ConvertVarRefToString (varRef, _callerParameters);
-    Assert.Fail();
   }
 
   [Test]
@@ -195,7 +193,6 @@ public class WxeParameterConverterTest
   {
     WxeParameterConverterMock converter = new WxeParameterConverterMock (_requiredOutParameter);
     converter.CheckForRequiredOutParameter();
-    Assert.Fail();
   }
 
 
