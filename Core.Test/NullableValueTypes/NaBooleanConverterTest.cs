@@ -73,10 +73,7 @@ public class NaBooleanConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToBooleanWithNull()
   {
-    Type destinationType = typeof (bool);
-
-    _converter.ConvertTo (null, null, NaBoolean.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, null, NaBoolean.Null, typeof (bool));
   }
 
   [Test]
@@ -109,7 +106,6 @@ public class NaBooleanConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (null, null, NaBoolean.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]

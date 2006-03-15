@@ -387,10 +387,7 @@ public class BidirectionalStringConverterTest
   [ExpectedException (typeof (ParseException))]
   public void ConvertToInt32WithNull()
   {
-    Type destinationType = typeof (int);
-
-    _converter.ConvertTo (null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, typeof (int));
   }
 
   [Test]

@@ -129,7 +129,6 @@ public class NaSingleConverterTest
   public void ConvertFromStringEnUsWithCultureDeAt()
   {
     object value = _converter.ConvertFrom (null, _cultureDeAt, "100,001.1");
-    Assert.Fail();
   }
 
   [Test]
@@ -137,7 +136,6 @@ public class NaSingleConverterTest
   public void ConvertFromStringDeAtWithCultureEnUs()
   {
     object value = _converter.ConvertFrom (null, _cultureEnUs, "100.001,1");
-    Assert.Fail();
   }
 
   [Test]
@@ -170,10 +168,7 @@ public class NaSingleConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToSingleWithNull()
   {
-    Type destinationType = typeof (float);
-
-    _converter.ConvertTo (null, null, NaSingle.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, null, NaSingle.Null, typeof (float));
   }
 
   [Test]
@@ -211,7 +206,6 @@ public class NaSingleConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (null, null, NaSingle.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]

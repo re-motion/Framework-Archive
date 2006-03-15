@@ -79,10 +79,7 @@ public class NaByteConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToByteWithNull()
   {
-    Type destinationType = typeof (byte);
-
-    _converter.ConvertTo (null, null, NaByte.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, null, NaByte.Null,  typeof (byte));
   }
 
   [Test]
@@ -117,7 +114,6 @@ public class NaByteConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (null, null, NaByte.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]

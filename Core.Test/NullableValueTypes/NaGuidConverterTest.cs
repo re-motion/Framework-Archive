@@ -79,10 +79,7 @@ public class NaGuidConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToGuidWithNull()
   {
-    Type destinationType = typeof (Guid);
-
-    _converter.ConvertTo (null, null, NaGuid.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, null, NaGuid.Null, typeof (Guid));
   }
 
   [Test]
@@ -115,7 +112,6 @@ public class NaGuidConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (null, null, NaGuid.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]

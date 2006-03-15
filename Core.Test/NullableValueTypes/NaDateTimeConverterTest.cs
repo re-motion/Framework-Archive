@@ -114,7 +114,6 @@ public class NaDateTimeConverterTest
   public void ConvertFromStringEnUsWithCultureDeAt()
   {
     _converter.ConvertFrom (null, _cultureDeAt, _dateTimeStringEnUs);
-    Assert.Fail();
   }
 
   [Test]
@@ -122,7 +121,6 @@ public class NaDateTimeConverterTest
   public void ConvertFromStringDeAtWithCultureEnUs()
   {
     _converter.ConvertFrom (null, _cultureEnUs, _dateTimeStringDeAt);
-    Assert.Fail();
   }
 
   [Test]
@@ -150,10 +148,7 @@ public class NaDateTimeConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToDateTimeWithNull()
   {
-    Type destinationType = typeof (DateTime);
-
-    _converter.ConvertTo (NaDateTime.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (NaDateTime.Null, typeof (DateTime));
   }
 
   [Test]
@@ -186,7 +181,6 @@ public class NaDateTimeConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (NaDateTime.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]

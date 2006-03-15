@@ -82,10 +82,7 @@ public class NaInt32ConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToInt32WithNull()
   {
-    Type destinationType = typeof (int);
-
-    _converter.ConvertTo (null, null, NaInt32.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, null, NaInt32.Null, typeof (int));
   }
 
   [Test]
@@ -121,7 +118,6 @@ public class NaInt32ConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (null, null, NaInt32.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]

@@ -82,10 +82,7 @@ public class NaInt64ConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToInt64WithNull()
   {
-    Type destinationType = typeof (long);
-
-    _converter.ConvertTo (null, null, NaInt64.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, null, NaInt64.Null, typeof (long));
   }
 
   [Test]
@@ -121,7 +118,6 @@ public class NaInt64ConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (null, null, NaInt64.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]

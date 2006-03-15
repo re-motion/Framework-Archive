@@ -82,10 +82,7 @@ public class NaInt16ConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToInt16WithNull()
   {
-    Type destinationType = typeof (short);
-
-    _converter.ConvertTo (null, null, NaInt16.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, null, NaInt16.Null, typeof (short));
   }
 
   [Test]
@@ -121,7 +118,6 @@ public class NaInt16ConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (null, null, NaInt16.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]

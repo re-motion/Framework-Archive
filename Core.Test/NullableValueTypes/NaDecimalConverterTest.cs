@@ -129,7 +129,6 @@ public class NaDecimalConverterTest
   public void ConvertFromStringEnUsWithCultureDeAt()
   {
     object value = _converter.ConvertFrom (null, _cultureDeAt, "100,001.1");
-    Assert.Fail();
   }
 
   [Test]
@@ -137,7 +136,6 @@ public class NaDecimalConverterTest
   public void ConvertFromStringDeAtWithCultureEnUs()
   {
     object value = _converter.ConvertFrom (null, _cultureEnUs, "100.001,1");
-    Assert.Fail();
   }
 
   [Test]
@@ -170,10 +168,7 @@ public class NaDecimalConverterTest
   [ExpectedException (typeof (NaNullValueException))]
   public void ConvertToDecimalWithNull()
   {
-    Type destinationType = typeof (decimal);
-
-    _converter.ConvertTo (null, null, NaDecimal.Null, destinationType);
-    Assert.Fail();
+    _converter.ConvertTo (null, null, NaDecimal.Null, typeof (decimal));
   }
 
   [Test]
@@ -211,7 +206,6 @@ public class NaDecimalConverterTest
   public void ConvertToDBNull()
   {
     _converter.ConvertTo (null, null, NaDecimal.Null, typeof (DBNull));
-    Assert.Fail();
   }
 
   [Test]
