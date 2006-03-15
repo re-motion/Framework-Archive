@@ -141,7 +141,6 @@ public class StringUtilityTest
   public void GetParseMethodForObjectWithException()
   {
     StringUtilityMock.GetParseMethod (_object, true);
-    Assert.Fail();
   }
 
   [Test]
@@ -188,7 +187,6 @@ public class StringUtilityTest
   {
     Thread.CurrentThread.CurrentCulture = _cultureEnUs;
     StringUtility.Parse (_double, "4,321.123", _cultureDeAt);
-    Assert.Fail();
   }
 
   [Test]
@@ -207,7 +205,6 @@ public class StringUtilityTest
   {
     Thread.CurrentThread.CurrentCulture = _cultureDeAt;
     StringUtility.Parse (_double, "4.321,123", _cultureEnUs);
-    Assert.Fail();
   }
 
   [Test]
@@ -302,7 +299,6 @@ public class StringUtilityTest
   public void ParseArrayOfDoubleArrays()
   {
     StringUtility.Parse (typeof (double[][]), "1,2,3", null);
-    Assert.Fail();
   }
 
   [Test]
