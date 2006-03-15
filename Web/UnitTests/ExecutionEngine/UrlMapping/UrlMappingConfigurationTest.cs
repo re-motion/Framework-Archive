@@ -64,7 +64,6 @@ public class UrlMappingConfigurationTest
   public void LoadMappingFromFileWithInvalidFilename()
   {
     UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\InvalidFilename.xml");
-    Assert.Fail();
   }
 
   [Test]
