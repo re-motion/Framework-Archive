@@ -390,9 +390,8 @@ public class WebTabCollectionTest: WebControlTest
     _tabStrip.Tabs.Add (_tab1);
     _tab1.IsVisible = false;
     _tab1.IsSelected = true;
-
-    Assert.Fail(); 
   }
+
   [Test]
   public void HideFirstTabWithTabBeingSelected()
   {
@@ -472,9 +471,8 @@ public class WebTabCollectionTest: WebControlTest
     _tabStrip.Tabs.Add (_tab1);
     _tab1.IsDisabled = true;
     _tab1.IsSelected = true;
-
-    Assert.Fail(); 
   }
+
   [Test]
   public void DisableFirstTabWithTabBeingSelected()
   {
