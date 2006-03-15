@@ -126,7 +126,6 @@ public class WxeContextTest
     queryString.Add (parameterName, parameterValue);
 
     WxeContext.GetPermanentUrl (_currentHttpContext,_functionType, queryString);
-    Assert.Fail();
   }
 
 	[Test]
@@ -136,7 +135,6 @@ public class WxeContextTest
     WebConfigurationMock.Current = null;
     Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
     WxeContext.GetPermanentUrl (_currentHttpContext, _functionType, new NameValueCollection());
-    Assert.Fail();
   }
 
 	[Test]
@@ -179,7 +177,6 @@ public class WxeContextTest
     queryString.Add (parameterName, parameterValue);
 
     _currentWxeContext.GetPermanentUrl (_functionType, queryString, false);
-    Assert.Fail();
   }
 
   [Test]
@@ -266,7 +263,6 @@ public class WxeContextTest
     queryString.Add (WxeHandler.Parameters.ReturnUrl, "");
     
     _currentWxeContext.GetPermanentUrl (_functionType, queryString, true);
-    Assert.Fail();
   }
 }
 
