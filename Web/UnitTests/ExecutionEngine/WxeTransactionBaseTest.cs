@@ -151,7 +151,6 @@ public class WxeTransactionBaseTest: WxeTest
   {
     TestTransaction.Current = new TestTransaction();
     ITransaction transaction = _childWxeTransaction.CreateTransaction();
-    Assert.Fail();
   }
 
   [Test]
