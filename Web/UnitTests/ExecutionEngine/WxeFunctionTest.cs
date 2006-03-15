@@ -89,8 +89,6 @@ public class WxeFunctionTest: WxeTest
 
     TestFunctionWithSerializableParameters function = new TestFunctionWithSerializableParameters ();
     function.InitializeParameters (context.Request.Params);
-
-    Assert.Fail();
   }
 
   [Test]
