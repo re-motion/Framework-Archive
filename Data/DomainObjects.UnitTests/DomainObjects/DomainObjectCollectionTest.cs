@@ -575,6 +575,37 @@ public class DomainObjectCollectionTest : ClientTransactionBaseTest
   }
 
   [Test]
+  public void CopyToEmptyArrayWithEmptyCollection ()
+  {
+    DomainObjectCollection emptyCollection = new DomainObjectCollection ();
+    DomainObject[] array = new DomainObject[0];
+
+    emptyCollection.CopyTo (array, 0);
+
+    // expectation: no exception
+  }
+
+  [Test]
+  public void CopyToNonEmptyArrayWithEmptyCollection ()
+  {
+    DomainObjectCollection emptyCollection = new DomainObjectCollection ();
+    DomainObject[] array = new DomainObject[1];
+
+    emptyCollection.CopyTo (array, 0);
+
+    Assert.IsNull (array[0]);
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentException), "The number of items in the source collection is greater than the available space from index to the end of the destination array.\r\nParameter name: index")]
+  public void CopyToArraySmallerThanCollection ()
+  {
+    DomainObject[] array = new DomainObject[_collection.Count - 1];
+
+    _collection.CopyTo (array, 0);
+  }
+
+  [Test]
   public void CopyToArrayWithIndex ()
   {
     Order order = Order.GetObject (DomainObjectIDs.Order1);
