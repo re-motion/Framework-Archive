@@ -176,7 +176,6 @@ public class TypeConversionServicesTest
   public void ConvertFromObjectToNaInt32()
   {
     _services.Convert (_object, _naInt32, new object());
-    Assert.Fail();
   }
 
   [Test]
@@ -184,7 +183,6 @@ public class TypeConversionServicesTest
   public void ConvertFromNaInt32ToObject()
   {
     _services.Convert (_naInt32, _object, new NaInt32 (1));
-    Assert.Fail();
   }
 
   [Test]
@@ -192,7 +190,6 @@ public class TypeConversionServicesTest
   public void ConvertFromInt32ToObject()
   {
     _services.Convert (_int32, _object, 1);
-    Assert.Fail();
   }
 
   [Test]
@@ -200,7 +197,6 @@ public class TypeConversionServicesTest
   public void ConvertFromObjectToInt32()
   {
     _services.Convert (_object, _naInt32, new object());
-    Assert.Fail();
   }
 
   [Test]
@@ -262,7 +258,6 @@ public class TypeConversionServicesTest
   public void ConvertFromStringToInt32WithEmpty()
   {
     _services.Convert (_string, _int32, "");
-    Assert.Fail();
   }
 
 
@@ -310,7 +305,6 @@ public class TypeConversionServicesTest
   public void ConvertFromInt32EnumToStringWithDBNull()
   {
     _services.Convert (_int32Enum, _string, DBNull.Value);
-    Assert.Fail();
   }
 
   [Test]
@@ -318,7 +312,6 @@ public class TypeConversionServicesTest
   public void ConvertFromStringToInt32EnumWithEmpty()
   {
     _services.Convert (_string, _int32Enum, "");
-    Assert.Fail();
   }
 
   [Test]
@@ -326,7 +319,6 @@ public class TypeConversionServicesTest
   public void ConvertFromInt32ToInt32EnumWithNull()
   {
     _services.Convert (_int32, _int32Enum, null);
-    Assert.Fail();
   }
 
 
