@@ -96,7 +96,7 @@ public class ModifiableRowTest
   [Test]
   public void Initialize ()
   {
-    Assert.AreSame (_bocList, _modifiableRow.Owner);
+    Assert.AreSame (_bocList, _modifiableRow.OwnerControl);
     Assert.IsNull (_modifiableRow.DataSourceFactory);
     Assert.IsNull (_modifiableRow.ControlFactory);
   }

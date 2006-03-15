@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,7 +21,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 {
 
 [TestFixture]
-public class EditModeControllerTest : BocTest
+public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
 {
   // types
 
@@ -28,300 +29,310 @@ public class EditModeControllerTest : BocTest
 
   // member fields
 
-  private Rubicon.ObjectBinding.Web.UI.Controls.BocList _bocList;
-  private EditModeController _controller;
-  private ControlInvoker _invoker;
-
-  private TypeWithAllDataTypes[] _values;
-  private TypeWithAllDataTypes[] _newValues;
-
-  private ReflectionBusinessObjectClass _class;
-
-  private BusinessObjectPropertyPath _stringValuePath;
-  private BusinessObjectPropertyPath _int32ValuePath;
-
-  private BocColumnDefinition[] _columns;
-  private BocSimpleColumnDefinition _stringValueSimpleColumn;
-  private BocSimpleColumnDefinition _int32ValueSimpleColumn;
-
   // construction and disposing
 
-  public EditModeControllerTest ()
+  public EditModeControllerInListEditModeTest ()
   {
   }
 
   // methods and properties
 
-  [SetUp]
-  public override void SetUp ()
-  {
-    base.SetUp();
-
-    _values = new TypeWithAllDataTypes[5];
-    _values[0] = new TypeWithAllDataTypes ("A", 0);
-    _values[1] = new TypeWithAllDataTypes ("B", 1);
-    _values[2] = new TypeWithAllDataTypes ("C", 2);
-    _values[3] = new TypeWithAllDataTypes ("D", 3);
-    _values[4] = new TypeWithAllDataTypes ("E", 4);
-
-    _newValues = new TypeWithAllDataTypes[2];
-    _newValues[0] = new TypeWithAllDataTypes ("G", 5);
-    _newValues[1] = new TypeWithAllDataTypes ("H", 6);
-
-    _class = new ReflectionBusinessObjectClass (typeof (TypeWithAllDataTypes));
-
-    _stringValuePath = BusinessObjectPropertyPath.Parse (_class, "StringValue");
-    _int32ValuePath = BusinessObjectPropertyPath.Parse (_class, "Int32Value");
-
-    _stringValueSimpleColumn = new BocSimpleColumnDefinition ();
-    _stringValueSimpleColumn.PropertyPath = _stringValuePath;
-
-    _int32ValueSimpleColumn = new BocSimpleColumnDefinition ();
-    _int32ValueSimpleColumn.PropertyPath = _int32ValuePath;
-
-    _columns = new BocColumnDefinition[2];
-    _columns[0] = _stringValueSimpleColumn;
-    _columns[1] = _int32ValueSimpleColumn;
-
-    _bocList = new Rubicon.ObjectBinding.Web.UI.Controls.BocList ();
-    _bocList.ID = "BocList";
-    NamingContainer.Controls.Add (_bocList);
-
-    _controller = new EditModeController (_bocList);
-    _controller.ID = "Controller";
-    NamingContainer.Controls.Add (_controller);
-
-    _invoker = new ControlInvoker (_controller);
-
-    _bocList.FixedColumns.AddRange (_columns);
-    _bocList.LoadUnboundValue (_values, false);
-  }
-
-  [Test]
-  public void Initialize ()
-  {
-    Assert.AreSame (_bocList, _controller.Owner);
-    Assert.IsFalse (_controller.IsEditDetailsModeActive);
-    Assert.IsFalse (_controller.IsListEditModeActive);
-  }
-
-  [Test]
-  public void InitRecursive()
-  {
-    _invoker.InitRecursive();
-
-    Assert.AreEqual (0, _controller.Controls.Count);
-  }
-
-  [Test]
-  public void SwitchRowIntoEditMode ()
-  {
-    _invoker.InitRecursive();
-    _controller.SwitchRowIntoEditMode (2, _columns, _columns);
-     
-    Assert.IsTrue (_controller.IsEditDetailsModeActive);
-    Assert.AreEqual (2, _controller.ModifiableRowIndex.Value);
-    
-    Assert.AreEqual (1, _controller.Controls.Count);
-    Assert.IsTrue (_controller.Controls[0] is ModifiableRow);
-
-    ModifiableRow row = (ModifiableRow) _controller.Controls[0];
-    Assert.AreEqual ("Controller_Row0", row.ID);
-  }
-
   [Test]
   public void SwitchListIntoEditMode ()
   {
-    _invoker.InitRecursive();
-    _controller.SwitchListIntoEditMode (_columns, _columns);
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
      
-    Assert.IsTrue (_controller.IsListEditModeActive);
+    Assert.IsTrue (Controller.IsListEditModeActive);
 
-    Assert.AreEqual (5, _controller.Controls.Count);
-    for (int i = 0; i < _controller.Controls.Count; i++)
-    {
-      Assert.IsTrue (_controller.Controls[i] is ModifiableRow, "Row: {0}", i);
-      ModifiableRow row = (ModifiableRow) _controller.Controls[i];
-      Assert.AreEqual (string.Format ("Controller_Row{0}", i), row.ID);
-    }
+    Assert.AreEqual (5, Controller.Controls.Count);
+    string idFormat = "Controller_Row{0}";
+    Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
+    Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
+    Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
+    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+    Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[4].ID);
+
+    Assert.AreEqual (0, ActualEvents.Count);
   }
 
   [Test]
-  public void ValidateDuringEditDetailsModeWithValidValues ()
+  public void SwitchListIntoEditModeWithValueEmpty ()
   {
-    _invoker.InitRecursive();
-    _controller.SwitchRowIntoEditMode (2, _columns, _columns);
-    
-    ModifiableRow row = (ModifiableRow) _controller.Controls[0];
-    
-    Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
-        (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
-    stringValueField.TextBox.Text = "New Value";
-    
-    Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue int32ValueField = 
-        (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (1);
-    int32ValueField.TextBox.Text = "1";
+    Invoker.InitRecursive();
+    BocList.LoadUnboundValue (new IBusinessObject[0], false);
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (0, Controller.Controls.Count);
 
-    Assert.IsTrue (_controller.Validate());
+    Assert.AreEqual (0, ActualEvents.Count);
   }
 
   [Test]
-  public void ValidateDuringEditDetailsModeWithInvalidValues ()
+  [ExpectedException (typeof (InvalidOperationException), 
+      "Cannot initialize list edit mode: The BocList 'BocList' does not have a Value.")]
+  public void SwitchListIntoEditModeWithValueNull ()
   {
-    _invoker.InitRecursive();
-    _controller.SwitchRowIntoEditMode (2, _columns, _columns);
+    Invoker.InitRecursive();
+    BocList.LoadUnboundValue (null, false);
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+  }
+
+
+  [Test]
+  public void EndListEditModeAndSaveChanges ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesSavingEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (4, Values[4]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (4, Values[4]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
     
-    ModifiableRow row = (ModifiableRow) _controller.Controls[0];
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "100");
+    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "200");
+    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "300");
+    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "400");
+    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "500");
+    Controller.EndListEditMode (true, Columns);
+
+    CheckEvents (expectedEvents, ActualEvents);
     
-    Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
-        (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
-    stringValueField.TextBox.Text = "New Value";
+    Assert.IsFalse (Controller.IsListEditModeActive);
+
+    CheckValues (Values[0], "New Value A", 100);
+    CheckValues (Values[1], "New Value B", 200);
+    CheckValues (Values[2], "New Value C", 300);
+    CheckValues (Values[3], "New Value D", 400);
+    CheckValues (Values[4], "New Value E", 500);
+  }
+
+  [Test]
+  public void EndListEditModeAndDiscardChanges ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesCancelingEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesCancelingEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesCancelingEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesCancelingEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesCancelingEventMessage (4, Values[4]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (4, Values[4]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
     
-    Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue int32ValueField = 
-        (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (1);
-    int32ValueField.TextBox.Text = "";
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "100");
+    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "200");
+    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "300");
+    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "400");
+    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "500");
+    Controller.EndListEditMode (false, Columns);
 
-    Assert.IsFalse (_controller.Validate());
-  }
-
-  [Test]
-  public void ValidateDuringListEditModeWithValidValues ()
-  {
-    _invoker.InitRecursive();
-    _controller.SwitchListIntoEditMode (_columns, _columns);
-
-    for (int i = 0; i < _controller.Controls.Count; i++)
-    {
-      ModifiableRow row = (ModifiableRow) _controller.Controls[i];
-      
-      Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
-          (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
-      stringValueField.TextBox.Text = "New Value";
-      
-      Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue int32ValueField = 
-          (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (1);
-      int32ValueField.TextBox.Text = i.ToString();
-    }
-
-    Assert.IsTrue (_controller.Validate());
-  }
-
-  [Test]
-  public void ValidateDuringListEditModeWithInvalidValues ()
-  {
-    _invoker.InitRecursive();
-    _controller.SwitchListIntoEditMode (_columns, _columns);
-
-    for (int i = 0; i < _controller.Controls.Count; i++)
-    {
-      ModifiableRow row = (ModifiableRow) _controller.Controls[2];
-      
-      Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
-          (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
-      stringValueField.TextBox.Text = "New Value";
-      
-      Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue int32ValueField = 
-          (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (1);
-      int32ValueField.TextBox.Text = "";
-    }
-
-    Assert.IsFalse (_controller.Validate());
-  }
-
-  [Test]
-  public void ValidateWithoutEditMode ()
-  {
-    _invoker.InitRecursive();
-    _invoker.LoadRecursive();
-
-    Assert.IsTrue (_controller.Validate());
-  }
-
-  [Test]
-  public void IsRequiredDuringEditDetailsMode ()
-  {
-    _controller.SwitchRowIntoEditMode (2, _columns, _columns);
+    CheckEvents (expectedEvents, ActualEvents);
     
-    Assert.IsTrue (_controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsListEditModeActive);
 
-    Assert.IsFalse (_controller.IsRequired (0));
-    Assert.IsTrue (_controller.IsRequired (1));
+    CheckValues (Values[0], "A", 1);
+    CheckValues (Values[1], "B", 2);
+    CheckValues (Values[2], "C", 3);
+    CheckValues (Values[3], "D", 4);
+    CheckValues (Values[4], "E", 5);
+  }
+
+
+  [Test]
+  public void AddRows ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
+
+    Controller.AddRows (NewValues, Columns, Columns);
+    
+    Assert.AreEqual (7, Controller.OwnerControl.Value.Count);
+    Assert.AreSame (NewValues[0], Controller.OwnerControl.Value[5]);
+    Assert.AreSame (NewValues[1], Controller.OwnerControl.Value[6]);
+
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (7, Controller.Controls.Count);
+    string idFormat = "Controller_Row{0}";
+    Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
+    Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
+    Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
+    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+    Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[4].ID);
+    Assert.AreEqual (string.Format (idFormat, 5), Controller.Controls[5].ID);
+    Assert.AreEqual (string.Format (idFormat, 6), Controller.Controls[6].ID);
+
+    Assert.AreEqual (0, ActualEvents.Count);
   }
 
   [Test]
-  public void IsRequiredDuringListEditMode ()
+  public void AddRow ()
   {
-    _invoker.InitRecursive();
-    _controller.SwitchListIntoEditMode (_columns, _columns);
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
+
+    Assert.AreEqual (5, Controller.AddRow (NewValues[0], Columns, Columns));
+    
+    Assert.AreEqual (6, Controller.OwnerControl.Value.Count);
+    Assert.AreSame (NewValues[0], Controller.OwnerControl.Value[5]);
+
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (6, Controller.Controls.Count);
+    string idFormat = "Controller_Row{0}";
+    Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
+    Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
+    Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
+    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+    Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[4].ID);
+    Assert.AreEqual (string.Format (idFormat, 5), Controller.Controls[5].ID);
+
+    Assert.AreEqual (0, ActualEvents.Count);
+  }
+
+
+  [Test]
+  public void RemoveRow ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
+
+    Controller.RemoveRow (Values[2], Columns);
+  
+    Assert.AreEqual (4, Controller.OwnerControl.Value.Count);
+    Assert.AreSame (Values[0], Controller.OwnerControl.Value[0]);
+    Assert.AreSame (Values[1], Controller.OwnerControl.Value[1]);
+    Assert.AreSame (Values[3], Controller.OwnerControl.Value[2]);
+    Assert.AreSame (Values[4], Controller.OwnerControl.Value[3]);
+
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (4, Controller.Controls.Count);
+    string idFormat = "Controller_Row{0}";
+    Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
+    Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
+    Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
+    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+
+    Assert.AreEqual (0, ActualEvents.Count);
+  }
+
+  [Test]
+  public void RemoveRows ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
+
+    Controller.RemoveRow (Values[2], Columns);
+  
+    Assert.AreEqual (4, Controller.OwnerControl.Value.Count);
+    Assert.AreSame (Values[0], Controller.OwnerControl.Value[0]);
+    Assert.AreSame (Values[1], Controller.OwnerControl.Value[1]);
+    Assert.AreSame (Values[3], Controller.OwnerControl.Value[2]);
+    Assert.AreSame (Values[4], Controller.OwnerControl.Value[3]);
+
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    Assert.AreEqual (4, Controller.Controls.Count);
+    string idFormat = "Controller_Row{0}";
+    Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
+    Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
+    Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
+    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+
+    Assert.AreEqual (0, ActualEvents.Count);
+  }
+
+
+  [Test]
+  public void ValidateWithValidValues ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "100");
+    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "200");
+    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "300");
+    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "400");
+    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "500");
+
+    Assert.IsTrue (Controller.Validate());
+  }
+
+  [Test]
+  public void ValidateWithInvalidValues ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "");
+    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "");
+    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "");
+    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "");
+    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "");
+
+    Assert.IsFalse (Controller.Validate());
+  }
+
+
+  [Test]
+  public void IsRequired ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
    
-    Assert.IsTrue (_controller.IsListEditModeActive);
+    Assert.IsTrue (Controller.IsListEditModeActive);
 
-    Assert.IsFalse (_controller.IsRequired (0));
-    Assert.IsTrue (_controller.IsRequired (1));
+    Assert.IsFalse (Controller.IsRequired (0));
+    Assert.IsTrue (Controller.IsRequired (1));
   }
 
   [Test]
-  public void IsRequiredWithoutEditMode ()
+  public void IsDirty ()
   {
-    _invoker.InitRecursive();
-    Assert.IsFalse (_controller.IsRequired (0));
-    Assert.IsFalse (_controller.IsRequired (1));
-  }
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
 
-  [Test]
-  public void IsDirtyDuringEditDetailsMode ()
-  {
-    _invoker.InitRecursive();
-    _controller.SwitchRowIntoEditMode (2, _columns, _columns);
-    
-    ModifiableRow row = (ModifiableRow) _controller.Controls[0];
+    ModifiableRow row = (ModifiableRow) Controller.Controls[2];
     Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
         (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
     stringValueField.Value = "New Value";
 
-    Assert.IsTrue (_controller.IsDirty());
+    Assert.IsTrue (Controller.IsDirty());
   }
 
   [Test]
-  public void IsDirtyDuringListEditMode ()
+  public void GetTrackedIDs ()
   {
-    _invoker.InitRecursive();
-    _controller.SwitchListIntoEditMode (_columns, _columns);
-
-    ModifiableRow row = (ModifiableRow) _controller.Controls[2];
-    Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
-        (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
-    stringValueField.Value = "New Value";
-
-    Assert.IsTrue (_controller.IsDirty());
-  }
-
-  [Test]
-  public void IsDirtyWithoutEditMode ()
-  {
-    _invoker.InitRecursive();
-    Assert.IsFalse (_controller.IsDirty());
-  }
-
-  [Test]
-  public void GetTrackedIDsDuringEditDetailsMode ()
-  {
-    _invoker.InitRecursive();
-    _controller.SwitchRowIntoEditMode (2, _columns, _columns);
-
-    string id = "NamingContainer_Controller_Row{0}_{1}_Boc_TextBox";
-    string[] trackedIDs = new string[2];
-    trackedIDs[0] = string.Format (id, 0, 0);
-    trackedIDs[1] = string.Format (id, 0, 1);
-
-    Assert.AreEqual (trackedIDs, _controller.GetTrackedClientIDs());
-  }
-
-  [Test]
-  public void GetTrackedIDsDuringListEditMode ()
-  {
-    _invoker.InitRecursive();
-    _controller.SwitchListIntoEditMode (_columns, _columns);
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
 
     string id = "NamingContainer_Controller_Row{0}_{1}_Boc_TextBox";
     string[] trackedIDs = new string[10];
@@ -331,16 +342,9 @@ public class EditModeControllerTest : BocTest
       trackedIDs[2 * i + 1] = string.Format (id, i, 1);
     }
 
-    Assert.AreEqual (trackedIDs, _controller.GetTrackedClientIDs());
+    Assert.AreEqual (trackedIDs, Controller.GetTrackedClientIDs());
   }
 
-  [Test]
-  public void GetTrackedIDsWithoutEditMode ()
-  {
-    _invoker.InitRecursive();
-
-    Assert.AreEqual (new string[0], _controller.GetTrackedClientIDs());
-  }
 }
 
 }
