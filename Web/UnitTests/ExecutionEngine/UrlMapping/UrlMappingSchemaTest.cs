@@ -33,40 +33,35 @@ public class UrlMappingSchemaTest
   [ExpectedException (typeof (XmlSchemaException))]
   public void LoadMappingWithMissingPath()
   {
-    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingPath.xml");
-    Assert.Fail();
+    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingPath.xml");
   }
 
   [Test]
   [ExpectedException (typeof (Exception))]
   public void LoadMappingWithEmptyPath()
   {
-    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml");
-    Assert.Fail();
+    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyPath.xml");
   }
 
   [Test]
   [ExpectedException (typeof (XmlSchemaException))]
   public void LoadMappingWithMissingFunctionType()
   {
-    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml");
-    Assert.Fail();
+    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithMissingFunctionType.xml");
   }
 
   [Test]
   [ExpectedException (typeof (Exception))]
   public void LoadMappingWithEmptyFunctionType()
   {
-    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml");
-    Assert.Fail();
+    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithEmptyFunctionType.xml");
   }
 
   [Test]
   [ExpectedException (typeof (Exception))]
   public void LoadMappingWithFunctionTypeHavingNoAssembly()
   {
-    UrlMappingConfiguration mapping = UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml");
-    Assert.Fail();
+    UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml");
   }
 }
 
