@@ -205,9 +205,7 @@ public class NavigationCommandTest
     command.WxeFunctionCommand.MappingID = mappingID;
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
-    string url = command.GetWxeFunctionPermanentUrl ();
-
-    Assert.Fail();
+    command.GetWxeFunctionPermanentUrl ();
   }
 
   [Test]
@@ -277,7 +275,7 @@ public class NavigationCommandTest
     command.WxeFunctionCommand.TypeName = _functionTypeName;
     command.WxeFunctionCommand.Parameters = "\"" + parameter1 + "\"";
     command.GetWxeFunctionPermanentUrl ();
+  }
+}
 
-    Assert.Fail();
-  }}
 }
