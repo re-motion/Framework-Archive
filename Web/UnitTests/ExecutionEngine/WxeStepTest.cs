@@ -181,7 +181,6 @@ public class WxeStepTest: WxeTest
   public void SetParentStepNull()
   {
     _standAloneStep.SetParentStep (null);
-    Assert.Fail();
   }
 
   [Test]
