@@ -1,3 +1,12 @@
+1.4.36
+======
+  * CreateRowEditModeControl() und CreateRowEditModeDataSource() gibt es nicht mehr.
+    Statt dessen gibt es nun die Methoden CreateEditModeControlFactory() bzw CreateEditModeDataSourceFactory().
+    Die bisherige Logik von CreateRowEditModeControl() bzw CreateRowEditModeDataSource() ist in der jeweiligen 
+    Create() Methode der Factory zu implementieren.
+    Es besteht alternativ auch die Möglichkeit, im OnInit-Event der Page die Factories zu setzen und damit nicht von
+    der BocList ableiten zu müssen.
+
 1.4.35
 ======
 - BocEnumValue
@@ -27,12 +36,6 @@
 - BocList
   * Bugfix: EditDetailsMode: Wurde der Read-Only Zustand durch das Objektmodell bestimmt, anstatt durch das 
     IsReadOnly Flag der SimpleValueColumn, so wurde kein Wert gerendert.
-  * CreateRowEditModeControl() und CreateRowEditModeDataSource() gibt es nicht mehr.
-    Statt dessen gibt es nun die Methoden CreateEditModeControlFactory() bzw CreateEditModeDataSourceFactory().
-    Die bisherige Logik von CreateRowEditModeControl() bzw CreateRowEditModeDataSource() ist in der jeweiligen 
-    Create() Methode der Factory zu implementieren.
-    Es besteht alternativ auch die Möglichkeit, im OnInit-Event der Page die Factories zu setzen und damit nicht von
-    der BocList ableiten zu müssen.
   
 - BocList, BocReferenceValue
   * string MenuItem.Icon auf IconInfo MenuItem.Icon umgestellt.
