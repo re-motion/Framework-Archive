@@ -122,8 +122,6 @@ public class WxeHandlerTest: WxeTest
   public void GetFunctionTypeWithInvalidTypeName()
   {
     _wxeHandler.GetTypeByTypeName (_invalidFunctionTypeName);
-
-    Assert.Fail();
   }
 
   [Test]
@@ -150,7 +148,6 @@ public class WxeHandlerTest: WxeTest
   public void GetFunctionTypeByPathWithoutMapping()
   {
     _wxeHandler.GetTypeByPath (@"/Test1.wxe");
-    Assert.Fail();
   }
 
   [Test]
@@ -264,7 +261,6 @@ public class WxeHandlerTest: WxeTest
     HttpContextHelper.SetForm (CurrentHttpContext, form);
 
     _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForMissingFunctionState);
-    Assert.Fail();
   }
 
 	[Test]
@@ -293,7 +289,6 @@ public class WxeHandlerTest: WxeTest
     UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (typeof (TestFunction), "~/Test.wxe"));
 
     _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
-    Assert.Fail();
   }
 
 	[Test]
@@ -308,7 +303,6 @@ public class WxeHandlerTest: WxeTest
     UrlMappingConfiguration.Current.Mappings.Add (new UrlMappingEntry (typeof (TestFunction), "~/Test.wxe"));
 
     _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
-    Assert.Fail();
   }
 
 	[Test]
@@ -340,7 +334,6 @@ public class WxeHandlerTest: WxeTest
     Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
 
     _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
-    Assert.Fail();
   }
 
 	[Test]
@@ -356,7 +349,6 @@ public class WxeHandlerTest: WxeTest
     Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
 
     _wxeHandler.ResumeExistingFunctionState (context, c_functionTokenForMissingFunctionState);
-    Assert.Fail();
   }
 
 	[Test]
@@ -364,7 +356,6 @@ public class WxeHandlerTest: WxeTest
   public void RetrieveFunctionStateWithMissingFunction()
   {
     _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForFunctionStateWithMissingFunction);
-    Assert.Fail();
   }
 
 	[Test]
@@ -376,7 +367,6 @@ public class WxeHandlerTest: WxeTest
     HttpContextHelper.SetForm (CurrentHttpContext, form);
 
     _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForExpiredFunctionState);
-    Assert.Fail();
   }
 
 	[Test]
@@ -388,7 +378,6 @@ public class WxeHandlerTest: WxeTest
     HttpContextHelper.SetForm (CurrentHttpContext, form);
 
     _wxeHandler.ResumeExistingFunctionState (CurrentHttpContext, c_functionTokenForAbortedFunctionState);
-    Assert.Fail();
   }
 
 	[Test]
@@ -501,7 +490,6 @@ public class WxeHandlerTest: WxeTest
   public void ExecuteAbortedFunctionState()
   {
     _wxeHandler.ExecuteFunctionState (CurrentHttpContext, _functionStateAborted, true);
-    Assert.Fail();
   }
 
   [Test]
@@ -526,7 +514,6 @@ public class WxeHandlerTest: WxeTest
   {
     TestFunction function = (TestFunction) _functionStateAborted.Function;
     _wxeHandler.ExecuteFunction (function, CurrentWxeContext, true);
-    Assert.Fail();
   }
 }
 
