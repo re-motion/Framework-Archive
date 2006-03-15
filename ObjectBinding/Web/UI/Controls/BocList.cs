@@ -509,11 +509,6 @@ public class BocList:
     _availableViews.CollectionChanged += new CollectionChangeEventHandler(AvailableViews_CollectionChanged);
     Binding.BindingChanged += new EventHandler (Binding_BindingChanged);
 
-    if (EditModeDataSourceFactory == null)
-      EditModeDataSourceFactory = GetEditModeDataSourceFactory();
-    if (EditModeControlFactory == null)
-      EditModeControlFactory = GetEditModeControlFactory();
-
     if (!IsDesignMode)
     {
       InitializeMenusItems();
@@ -4453,14 +4448,32 @@ public class BocList:
     RemoveRow ((IBusinessObject) Value[index]);
   }
 
-  protected virtual ModifiableRowDataSourceFactory GetEditModeDataSourceFactory()
+  protected virtual ModifiableRowDataSourceFactory CreateEditModeDataSourceFactory()
   {
     return null;
   }
 
-  protected virtual ModifiableRowControlFactory GetEditModeControlFactory()
+  protected virtual ModifiableRowControlFactory CreateEditModeControlFactory()
   {
     return null;
+  }
+
+  [EditorBrowsable (EditorBrowsableState.Advanced)]
+  public ModifiableRowDataSourceFactory GetEditModeDataSourceFactory()
+  {
+    if (EditModeDataSourceFactory == null)
+      return CreateEditModeDataSourceFactory();
+    else
+      return EditModeDataSourceFactory;
+  }
+
+  [EditorBrowsable (EditorBrowsableState.Advanced)]
+  public ModifiableRowControlFactory GetEditModeControlFactory()
+  {
+    if (EditModeControlFactory == null)
+      return CreateEditModeControlFactory();
+    else
+      return EditModeControlFactory;
   }
 
   /// <summary>

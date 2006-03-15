@@ -28,7 +28,7 @@
   * Bugfix: EditDetailsMode: Wurde der Read-Only Zustand durch das Objektmodell bestimmt, anstatt durch das 
     IsReadOnly Flag der SimpleValueColumn, so wurde kein Wert gerendert.
   * CreateRowEditModeControl() und CreateRowEditModeDataSource() gibt es nicht mehr.
-    Statt dessen gibt es nun die Methoden GetEditModeControlFactory() bzw GetEditModeDataSourceFactory().
+    Statt dessen gibt es nun die Methoden CreateEditModeControlFactory() bzw CreateEditModeDataSourceFactory().
     Die bisherige Logik von CreateRowEditModeControl() bzw CreateRowEditModeDataSource() ist in der jeweiligen 
     Create() Methode der Factory zu implementieren.
     Es besteht alternativ auch die Möglichkeit, im OnInit-Event der Page die Factories zu setzen und damit nicht von

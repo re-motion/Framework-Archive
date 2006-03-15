@@ -306,10 +306,13 @@ public class EditModeController : PlaceHolder
     ModifiableRow row = new ModifiableRow (_owner);
     row.ID = ID + "_Row" + rowIndex.ToString();
 
-    if (_owner.EditModeDataSourceFactory != null)
-      row.DataSourceFactory = _owner.EditModeDataSourceFactory;
-    if (_owner.EditModeControlFactory != null)
-      row.ControlFactory = _owner.EditModeControlFactory;
+    ModifiableRowDataSourceFactory dataSourceFactory = _owner.GetEditModeDataSourceFactory();
+    if (dataSourceFactory != null)
+      row.DataSourceFactory = dataSourceFactory;
+
+    ModifiableRowControlFactory controlFactory = _owner.GetEditModeControlFactory();
+    if (controlFactory != null)
+      row.ControlFactory = controlFactory;
 
     row.CreateControls (columns, value);
 
