@@ -38,7 +38,7 @@ public sealed class NullResourceManager: IResourceManager
 
   string IResourceManager.Name
   {
-    get { return "Rubicon.Globalization.EmptyResourceManager"; }
+    get { return "Rubicon.Globalization.NullResourceManager"; }
   }
 }
 
