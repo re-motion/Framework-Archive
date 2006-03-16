@@ -143,16 +143,14 @@ public class EditModeController : PlaceHolder
 
     SwitchRowIntoEditMode (index, oldColumns, columns);
     
-    if (IsEditDetailsModeActive)
+    if (! IsEditDetailsModeActive)
     {
-      _isEditNewRow = true;
-      return true;
+      throw new InvalidOperationException (string.Format (
+          "BocList '{0}': Could not switch newly added row into edit mode.", 
+          OwnerControl.ID));
     }
-    else
-    {
-      RemoveRow (businessObject, oldColumns);
-      return false;
-    }
+    _isEditNewRow = true;
+    return true;
   }
 
   private void RestoreAndEndEditMode (BocColumnDefinition[] oldColumns)
@@ -167,10 +165,10 @@ public class EditModeController : PlaceHolder
 
   public void EndEditDetailsMode (bool saveChanges, BocColumnDefinition[] oldColumns)
   {
-    EnsureEditModeRestored (oldColumns);
-
     if (! IsEditDetailsModeActive)
       return;
+
+    EnsureEditModeRestored (oldColumns);
 
     if (! _ownerControl.IsReadOnly)
     {
@@ -215,10 +213,10 @@ public class EditModeController : PlaceHolder
 
   public void EndListEditMode (bool saveChanges, BocColumnDefinition[] oldColumns)
   {
-    EnsureEditModeRestored (oldColumns);
-
     if (! IsListEditModeActive)
       return;
+
+    EnsureEditModeRestored (oldColumns);
 
     if (! _ownerControl.IsReadOnly)
     {
@@ -512,6 +510,8 @@ public class EditModeController : PlaceHolder
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public BaseValidator[] CreateValidators (IResourceManager resourceManager)
   {
+    ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
+
     if (! (IsListEditModeActive || IsEditDetailsModeActive) || ! _enableEditModeValidator)
       return new BaseValidator[0];
 
@@ -522,8 +522,16 @@ public class EditModeController : PlaceHolder
     editDetailsValidator.ControlToValidate = ID;
     if (StringUtility.IsNullOrEmpty (_ownerControl.ErrorMessage))
     {
-      editDetailsValidator.ErrorMessage = 
-          resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.EditDetailsErrorMessage);
+      if (IsEditDetailsModeActive)
+      {
+        editDetailsValidator.ErrorMessage = 
+            resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.EditDetailsErrorMessage);
+      }
+      else if (IsListEditModeActive)
+      {
+        editDetailsValidator.ErrorMessage = 
+            resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.ListEditModeErrorMessage);
+     }
     }
     else
     {

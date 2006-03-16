@@ -248,13 +248,14 @@ public class BocList:
   /// </remarks>
   [ResourceIdentifiers]
   [MultiLingualResources ("Rubicon.ObjectBinding.Web.Globalization.BocList")]
-  protected internal enum ResourceIdentifier
+  public enum ResourceIdentifier
   {
     EmptyListMessage,
     PageInfo,
     OptionsTitle,
     AvailableViewsListTitle,
     EditDetailsErrorMessage,
+    ListEditModeErrorMessage,
     /// <summary>The alternate text for the required icon.</summary>
     RequiredFieldAlternateText,
     /// <summary>The tool tip text for the required icon.</summary>
