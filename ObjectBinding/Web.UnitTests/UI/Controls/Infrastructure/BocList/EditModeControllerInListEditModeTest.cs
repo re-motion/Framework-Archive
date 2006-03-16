@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 
 using NUnit.Framework;
 
+using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
@@ -34,6 +35,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
   public EditModeControllerInListEditModeTest ()
   {
   }
+
 
   // methods and properties
 
@@ -79,9 +81,130 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Controller.SwitchListIntoEditMode (Columns, Columns);
   }
 
+  [Test]
+  public void SwitchListIntoEditModeWhileListEditModeIsActiveWithValidValues ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesSavingEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (4, Values[4]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (4, Values[4]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "100");
+    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "200");
+    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "300");
+    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "400");
+    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "500");
+
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    CheckEvents (expectedEvents, ActualEvents);
+
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    
+    CheckValues (Values[0], "New Value A", 100);
+    CheckValues (Values[1], "New Value B", 200);
+    CheckValues (Values[2], "New Value C", 300);
+    CheckValues (Values[3], "New Value D", 400);
+    CheckValues (Values[4], "New Value E", 500);
+  }
 
   [Test]
-  public void EndListEditModeAndSaveChanges ()
+  public void SwitchListIntoEditModeWhileListEditModeIsActiveWithInvalidValues ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesSavingEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (4, Values[4]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "");
+    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "");
+    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "");
+    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "");
+    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "");
+
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    CheckEvents (expectedEvents, ActualEvents);
+
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    
+    CheckValues (Values[0], "A", 1);
+    CheckValues (Values[1], "B", 2);
+    CheckValues (Values[2], "C", 3);
+    CheckValues (Values[3], "D", 4);
+    CheckValues (Values[4], "E", 5);
+  }
+
+  [Test]
+  public void SwitchListIntoEditModeWhileEditDetailsModeIsActiveWithValidValues ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesSavedEventMessage (2, Values[2]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchRowIntoEditMode (2, Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+    
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value C", "300");
+
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    CheckEvents (expectedEvents, ActualEvents);
+
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    
+    CheckValues (Values[2], "New Value C", 300);
+  }
+
+  [Test]
+  public void SwitchListIntoEditModeWhileEditDetailsModeIsActiveWithInvalidValues ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchRowIntoEditMode (2, Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+    
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value C", "");
+
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    CheckEvents (expectedEvents, ActualEvents);
+
+    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+    
+    CheckValues (Values[2], "C", 3);
+  }
+    
+
+  [Test]
+  public void EndListEditModeAndSaveChangesWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (0, Values[0]));
@@ -119,7 +242,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
   }
 
   [Test]
-  public void EndListEditModeAndDiscardChanges ()
+  public void EndListEditModeAndDiscardChangesWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesCancelingEventMessage (0, Values[0]));
@@ -154,6 +277,104 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     CheckValues (Values[2], "C", 3);
     CheckValues (Values[3], "D", 4);
     CheckValues (Values[4], "E", 5);
+  }
+
+  [Test]
+  public void EndListEditModeAndSaveChangesWithInvalidValues ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesSavingEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesSavingEventMessage (4, Values[4]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "");
+    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "");
+    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "");
+    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "");
+    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "");
+    Controller.EndListEditMode (true, Columns);
+
+    CheckEvents (expectedEvents, ActualEvents);
+    
+    Assert.IsTrue (Controller.IsListEditModeActive);
+
+    CheckValues (Values[0], "A", 1);
+    CheckValues (Values[1], "B", 2);
+    CheckValues (Values[2], "C", 3);
+    CheckValues (Values[3], "D", 4);
+    CheckValues (Values[4], "E", 5);
+  }
+
+  [Test]
+  public void EndListEditModeAndDiscardChangesWithInvalidValues ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesCancelingEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesCancelingEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesCancelingEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesCancelingEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesCancelingEventMessage (4, Values[4]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (0, Values[0]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (1, Values[1]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (3, Values[3]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (4, Values[4]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "");
+    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "");
+    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "");
+    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "");
+    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "");
+    Controller.EndListEditMode (false, Columns);
+
+    CheckEvents (expectedEvents, ActualEvents);
+    
+    Assert.IsFalse (Controller.IsListEditModeActive);
+
+    CheckValues (Values[0], "A", 1);
+    CheckValues (Values[1], "B", 2);
+    CheckValues (Values[2], "C", 3);
+    CheckValues (Values[3], "D", 4);
+    CheckValues (Values[4], "E", 5);
+  }
+
+  [Test]
+  public void EndListEditModeWithoutBeingActive ()
+  {
+    Invoker.InitRecursive();
+     
+    Assert.IsFalse (Controller.IsListEditModeActive);
+    
+    Controller.EndListEditMode (true, Columns);
+
+    Assert.IsFalse (Controller.IsListEditModeActive);
+    Assert.AreEqual (0, ActualEvents.Count);
+  }
+
+  [Test]
+  public void EndListEditModeWithoutBeingActiveAndValueNull ()
+  {
+    Invoker.InitRecursive();
+    Controller.OwnerControl.LoadUnboundValue (null, false);
+     
+    Assert.IsFalse (Controller.IsListEditModeActive);
+    
+    Controller.EndListEditMode (true, Columns);
+
+    Assert.IsFalse (Controller.IsListEditModeActive);
+    Assert.AreEqual (0, ActualEvents.Count);
   }
 
 
@@ -272,6 +493,42 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
 
 
   [Test]
+  public void CreateValidators ()
+  {
+    IResourceManager resourceManager = (IResourceManager) NullResourceManager.Instance;
+    
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+    
+    Assert.IsTrue (Controller.IsListEditModeActive);
+
+    BaseValidator[] validators = Controller.CreateValidators (resourceManager);
+    
+    Assert.IsNotNull (validators);
+    Assert.AreEqual (1, validators.Length);
+    Assert.IsTrue (validators[0] is EditDetailsValidator);
+    Assert.AreEqual (resourceManager.GetString (BocList.ResourceIdentifier.ListEditModeErrorMessage), validators[0].ErrorMessage);
+  }
+
+  [Test]
+  public void CreateValidatorsWithErrorMessageFromOwnerControl ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+    Controller.OwnerControl.ErrorMessage = "Foo Bar";
+    
+    Assert.IsTrue (Controller.IsListEditModeActive);
+
+    BaseValidator[] validators = Controller.CreateValidators (NullResourceManager.Instance);
+    
+    Assert.IsNotNull (validators);
+    Assert.AreEqual (1, validators.Length);
+    Assert.IsTrue (validators[0] is EditDetailsValidator);
+    Assert.AreEqual ("Foo Bar", validators[0].ErrorMessage);
+  }
+
+
+  [Test]
   public void ValidateWithValidValues ()
   {
     Invoker.InitRecursive();
@@ -345,6 +602,23 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Assert.AreEqual (trackedIDs, Controller.GetTrackedClientIDs());
   }
 
+
+  [Test]
+  public void SaveAndLoadViewState ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+    Assert.IsTrue (Controller.IsListEditModeActive);
+
+    object viewState = ControllerInvoker.SaveViewState();
+    Assert.IsNotNull (viewState);
+
+    Controller.EndListEditMode (false, Columns);
+    Assert.IsFalse (Controller.IsListEditModeActive);
+
+    ControllerInvoker.LoadViewState (viewState);
+    Assert.IsTrue (Controller.IsListEditModeActive);
+  }
 }
 
 }

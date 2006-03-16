@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 
 using NUnit.Framework;
 
+using Rubicon.Globalization;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
@@ -54,6 +55,17 @@ public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
   }
 
   [Test]
+  public void CreateValidators ()
+  {
+    Invoker.InitRecursive();
+
+    BaseValidator[] validators = Controller.CreateValidators (NullResourceManager.Instance);
+    
+    Assert.IsNotNull (validators);
+    Assert.AreEqual (0, validators.Length);
+  }
+
+  [Test]
   public void Validate ()
   {
     Invoker.InitRecursive();
@@ -83,6 +95,16 @@ public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
     Invoker.InitRecursive();
 
     Assert.AreEqual (new string[0], Controller.GetTrackedClientIDs());
+  }
+
+  [Test]
+  public void SaveAndLoadViewState ()
+  {
+    Invoker.InitRecursive();
+
+    object viewState = ControllerInvoker.SaveViewState();
+    Assert.IsNotNull (viewState);
+    ControllerInvoker.LoadViewState (viewState);
   }
 }
 
