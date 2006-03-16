@@ -331,7 +331,22 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeControllerTest.cs"
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeControllerInEditDetailsModeTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeControllerInListEditModeTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeControllerTestBase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeControllerWithoutEditModeTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

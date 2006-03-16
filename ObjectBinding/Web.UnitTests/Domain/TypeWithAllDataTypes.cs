@@ -32,6 +32,11 @@ public class TypeWithAllDataTypes: ReflectionBusinessObject
     get { return _int32Value; }
     set { _int32Value = value; }
   }
+
+  public override string ToString()
+  {
+    return ID.ToString();
+  }
 }
 
 }
