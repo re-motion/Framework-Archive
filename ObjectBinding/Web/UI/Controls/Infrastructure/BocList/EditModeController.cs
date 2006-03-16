@@ -24,11 +24,16 @@ public class EditModeController : PlaceHolder
 
   // static members and constants
 
+  private static readonly object s_modifiableRowChangesSavingEvent = new object();
+  private static readonly object s_modifiableRowChangesSavedEvent = new object();
+  private static readonly object s_modifiableRowChangesCancelingEvent = new object();
+  private static readonly object s_modifiableRowChangesCanceledEvent = new object();
+
   private const string c_whiteSpace = "&nbsp;";
 
   // member fields
 
-  private Controls.BocList _owner;
+  private Controls.BocList _ownerControl;
 
   private bool _isListEditModeActive;
   private NaInt32 _modifiableRowIndex = NaInt32.Null;
@@ -45,18 +50,18 @@ public class EditModeController : PlaceHolder
 
   // construction and disposing
 
-  public EditModeController (Controls.BocList owner)
+  public EditModeController (Controls.BocList ownerControl)
   {
-    ArgumentUtility.CheckNotNull ("owner", owner);
+    ArgumentUtility.CheckNotNull ("ownerControl", ownerControl);
 
-    _owner = owner;
+    _ownerControl = ownerControl;
   }
 
   // methods and properties
 
-  public Controls.BocList Owner
+  public Controls.BocList OwnerControl
   {
-    get { return _owner; }
+    get { return _ownerControl; }
   }
 
   /// <summary>
@@ -75,16 +80,21 @@ public class EditModeController : PlaceHolder
   /// <param name="index"></param>
   public void SwitchRowIntoEditMode (int index, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
-    if (index < 0) throw new ArgumentOutOfRangeException ("index");
-    if (_owner.IsEmptyList) throw new ArgumentOutOfRangeException ("index");
-    if (index >= _owner.Value.Count) throw new ArgumentOutOfRangeException ("index");
-
     ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
     ArgumentUtility.CheckNotNull ("columns", columns);
 
+    if (_ownerControl.Value == null)
+    {
+      throw new InvalidOperationException (string.Format (
+          "Cannot initialize edit details mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
+    }
+
+    if (index < 0) throw new ArgumentOutOfRangeException ("index");
+    if (index >= _ownerControl.Value.Count) throw new ArgumentOutOfRangeException ("index");
+
     RestoreAndEndEditMode (oldColumns);
     
-    if (_owner.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
+    if (_ownerControl.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
       return;
 
     _modifiableRowIndex = index;
@@ -97,9 +107,15 @@ public class EditModeController : PlaceHolder
     ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
     ArgumentUtility.CheckNotNull ("columns", columns);
 
+    if (_ownerControl.Value == null)
+    {
+      throw new InvalidOperationException (string.Format (
+          "Cannot initialize list edit mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
+    }
+
     RestoreAndEndEditMode (oldColumns);
 
-    if (_owner.IsReadOnly || IsEditDetailsModeActive || IsListEditModeActive)
+    if (_ownerControl.IsReadOnly || IsEditDetailsModeActive || IsListEditModeActive)
       return;
 
     _isListEditModeActive = true;
@@ -118,7 +134,7 @@ public class EditModeController : PlaceHolder
 
     RestoreAndEndEditMode (oldColumns);
 
-    if (_owner.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
+    if (_ownerControl.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
       return false;
 
     int index = AddRow (businessObject, oldColumns, columns);
@@ -134,7 +150,7 @@ public class EditModeController : PlaceHolder
     }
     else
     {
-      RemoveRow (businessObject);
+      RemoveRow (businessObject, oldColumns);
       return false;
     }
   }
@@ -156,40 +172,40 @@ public class EditModeController : PlaceHolder
     if (! IsEditDetailsModeActive)
       return;
 
-    if (! _owner.IsReadOnly)
+    if (! _ownerControl.IsReadOnly)
     {
       int index = _modifiableRowIndex.Value;
-      IBusinessObject value = (IBusinessObject) _owner.Value[index];
+      IBusinessObject value = (IBusinessObject) _ownerControl.Value[index];
 
       if (saveChanges)
       {
-        _owner.OnModifiableRowChangesSaving (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
+        OnModifiableRowChangesSaving (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
         
         bool isValid = Validate();
         if (! isValid)
           return;
 
-        _owner.IsDirty = IsDirty();
+        _ownerControl.IsDirty = IsDirty();
 
         _rows[0].GetDataSource().SaveValues (false);
-        _owner.OnModifiableRowChangesSaved (index, value);
+        OnModifiableRowChangesSaved (index, value);
       }
       else
       {
-        _owner.OnModifiableRowChangesCanceling (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
+        OnModifiableRowChangesCanceling (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
         
         if (_isEditNewRow)
         {
-          _owner.RemoveRow (index);
-          _owner.OnModifiableRowChangesCanceled (-1, value);
+          _ownerControl.RemoveRowInternal (value);
+          OnModifiableRowChangesCanceled (-1, value);
         }
         else
         {
-          _owner.OnModifiableRowChangesCanceled (index, value);
+          OnModifiableRowChangesCanceled (index, value);
         }
       }
 
-      _owner.EndEditDetailsModeCleanUp();
+      _ownerControl.EndEditDetailsModeCleanUp (_modifiableRowIndex.Value);
     }
 
     RemoveEditModeControls();
@@ -204,36 +220,32 @@ public class EditModeController : PlaceHolder
     if (! IsListEditModeActive)
       return;
 
-    if (! _owner.IsReadOnly)
+    if (! _ownerControl.IsReadOnly)
     {
-      //TODO: Change back once CommonCollection can work with empty lists.
-      IBusinessObject[] values;
-      if (_owner.Value.Count > 0)
-        values = (IBusinessObject[]) ArrayUtility.Convert (_owner.Value, typeof (IBusinessObject));
-      else
-        values = new IBusinessObject[0];
+      IBusinessObject[] values = 
+          (IBusinessObject[]) ArrayUtility.Convert (_ownerControl.Value, typeof (IBusinessObject));
 
       if (saveChanges)
       {
         for (int i = 0; i < _rows.Length; i++)
-          _owner.OnModifiableRowChangesSaving (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
+          OnModifiableRowChangesSaving (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
 
         bool isValid = Validate();
         if (! isValid)
           return;
 
-        _owner.IsDirty = IsDirty();
+        _ownerControl.IsDirty = IsDirty();
 
         for (int i = 0; i < _rows.Length; i++)
-        {
           _rows[i].GetDataSource().SaveValues (false);
-          _owner.OnModifiableRowChangesSaved (i, values[i]);
-        }
+
+        for (int i = 0; i < _rows.Length; i++)
+          OnModifiableRowChangesSaved (i, values[i]);
       }
       else
       {
         for (int i = 0; i < _rows.Length; i++)
-          _owner.OnModifiableRowChangesCanceling (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
+          OnModifiableRowChangesCanceling (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
 
         //if (_isEditNewRow)
         //{
@@ -244,11 +256,11 @@ public class EditModeController : PlaceHolder
         //else
         //{
         for (int i = 0; i < _rows.Length; i++)
-          _owner.OnModifiableRowChangesCanceled (i, values[i]);
+          OnModifiableRowChangesCanceled (i, values[i]);
         //}
       }
 
-      _owner.EndListEditModeCleanUp();
+      _ownerControl.EndListEditModeCleanUp();
     }
 
     RemoveEditModeControls();
@@ -258,30 +270,14 @@ public class EditModeController : PlaceHolder
 
   private void CreateEditModeControls (BocColumnDefinition[] columns)
   {
-    if (IsEditDetailsModeActive || IsListEditModeActive)
+    if (IsEditDetailsModeActive)
     {
-      if (_owner.Value == null)
-      {
-        throw new InvalidOperationException (string.Format (
-            "Cannot initialize edit mode: The BocList '{0}' does not have a Value.", _owner.ID));
-      }
-
-      if (IsEditDetailsModeActive)
-      {
-        if (_modifiableRowIndex.Value < _owner.Value.Count)
-        {
-          IBusinessObject value = (IBusinessObject) _owner.Value[_modifiableRowIndex.Value];
-          PopulateModifiableRows (new IBusinessObject[] {value}, columns);
-        }
-        else
-        {
-          _modifiableRowIndex = NaInt32.Null;
-        }
-      }
-      else if (IsListEditModeActive)
-      {
-        PopulateModifiableRows (_owner.Value, columns);
-      }
+      IBusinessObject value = (IBusinessObject) _ownerControl.Value[_modifiableRowIndex.Value];
+      PopulateModifiableRows (new IBusinessObject[] {value}, columns);
+    }
+    else if (IsListEditModeActive)
+    {
+      PopulateModifiableRows (_ownerControl.Value, columns);
     }
   }
 
@@ -303,14 +299,14 @@ public class EditModeController : PlaceHolder
 
   private ModifiableRow CreateModifiableRow (int rowIndex, IBusinessObject value, BocColumnDefinition[] columns)
   {
-    ModifiableRow row = new ModifiableRow (_owner);
+    ModifiableRow row = new ModifiableRow (_ownerControl);
     row.ID = ID + "_Row" + rowIndex.ToString();
 
-    ModifiableRowDataSourceFactory dataSourceFactory = _owner.GetEditModeDataSourceFactory();
+    ModifiableRowDataSourceFactory dataSourceFactory = _ownerControl.GetEditModeDataSourceFactory();
     if (dataSourceFactory != null)
       row.DataSourceFactory = dataSourceFactory;
 
-    ModifiableRowControlFactory controlFactory = _owner.GetEditModeControlFactory();
+    ModifiableRowControlFactory controlFactory = _ownerControl.GetEditModeControlFactory();
     if (controlFactory != null)
       row.ControlFactory = controlFactory;
 
@@ -325,13 +321,25 @@ public class EditModeController : PlaceHolder
       _rows[i].GetDataSource().LoadValues (interim);
   }
 
-  internal void EnsureEditModeRestored (BocColumnDefinition[] oldColumns)
+  public void EnsureEditModeRestored (BocColumnDefinition[] oldColumns)
   {
     ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
 
     if (_isEditModeRestored)
       return;
     _isEditModeRestored = true;
+
+    if (_ownerControl.Value == null)
+    {
+      throw new InvalidOperationException (string.Format (
+          "Cannot restore edit mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
+    }
+    if (IsEditDetailsModeActive && _modifiableRowIndex.Value >= _ownerControl.Value.Count)
+    {
+      throw new InvalidOperationException (string.Format ("Cannot restore edit details mode: "
+          + "The Value collection of the BocList '{0}' no longer contains the previously modified row.", 
+          _ownerControl.ID));
+    }
 
     CreateEditModeControls (oldColumns);
   }
@@ -348,21 +356,20 @@ public class EditModeController : PlaceHolder
   public void AddRows (IBusinessObject[] businessObjects, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
     ArgumentUtility.CheckNotNull ("columns", columns);
 
-    _owner.AddRowsInternal (businessObjects);
+    _ownerControl.AddRowsInternal (businessObjects);
 
-    if (_owner.Value != null)
+    if (_ownerControl.Value != null)
     {
       EnsureEditModeRestored (oldColumns);
       if (IsListEditModeActive)
       {
-        int startIndex = _owner.Value.Count - businessObjects.Length;
+        int startIndex = _ownerControl.Value.Count - businessObjects.Length;
         ArrayList newRows = new ArrayList (businessObjects.Length);
-        for (int i = startIndex; i < _owner.Value.Count; i++)
+        for (int i = startIndex; i < _ownerControl.Value.Count; i++)
         {
-          ModifiableRow newRow = CreateModifiableRow (i, (IBusinessObject) _owner.Value[i], columns);
+          ModifiableRow newRow = CreateModifiableRow (i, (IBusinessObject) _ownerControl.Value[i], columns);
           newRow.GetDataSource().LoadValues (false);
           Controls.Add (newRow);
           newRows.Add (newRow);
@@ -377,10 +384,9 @@ public class EditModeController : PlaceHolder
   public int AddRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
     ArgumentUtility.CheckNotNull ("columns", columns);
   
-    int index = _owner.AddRowInternal (businessObject);
+    int index = _ownerControl.AddRowInternal (businessObject);
 
     if (index != -1)
     {
@@ -403,25 +409,18 @@ public class EditModeController : PlaceHolder
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
 
-    if (_owner.Value != null)
+    if (_ownerControl.Value != null)
     {
       if (IsEditDetailsModeActive)
       {
-        if (_isEditNewRow)
-        {
-          foreach (IBusinessObject businessObject in businessObjects)
-          {
-            if (businessObject == _owner.Value[_modifiableRowIndex.Value])
-            {
-              _isEditNewRow = false;
-              break;
-            }
-          }
-        }
+        throw new InvalidOperationException (string.Format (
+            "Cannot remove rows while the BocList '{0}' is in edit details mode. "
+            + "Call EndEditDetailsMode() before removing the rows.",
+            _ownerControl.ID));
       }
       else if (IsListEditModeActive)
       {
-        int[] indices = ListUtility.IndicesOf (_owner.Value, businessObjects, false);
+        int[] indices = ListUtility.IndicesOf (_ownerControl.Value, businessObjects, false);
         ArrayList rows = new ArrayList (indices.Length);
         foreach (int index in indices)
         {
@@ -435,25 +434,28 @@ public class EditModeController : PlaceHolder
       }
     }
 
-    _owner.RemoveRowsInternal (businessObjects);
+    _ownerControl.RemoveRowsInternal (businessObjects);
   }
 
   /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
   /// <remarks> Sets the dirty state. </remarks>
-  public void RemoveRow (IBusinessObject businessObject)
+  public void RemoveRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
     
-    if (_owner.Value != null)
+    if (_ownerControl.Value != null)
     {
       if (IsEditDetailsModeActive)
       {
-        if (_isEditNewRow && businessObject == _owner.Value[_modifiableRowIndex.Value])
-          _isEditNewRow = false;
+        throw new InvalidOperationException (string.Format (
+          "Cannot remove a row while the BocList '{0}' is in edit details mode. "
+          + "Call EndEditDetailsMode() before removing the row.",
+          _ownerControl.ID));
       }  
       else if (IsListEditModeActive)
       {
-        int index = ListUtility.IndexOf (_owner.Value, businessObject);
+        int index = ListUtility.IndexOf (_ownerControl.Value, businessObject);
         if (index != -1)
         {
           ModifiableRow row = _rows[index];
@@ -465,7 +467,7 @@ public class EditModeController : PlaceHolder
       }
     }
 
-    _owner.RemoveRowInternal (businessObject);
+    _ownerControl.RemoveRowInternal (businessObject);
   }
 
   private void RefreshIDs()
@@ -498,34 +500,9 @@ public class EditModeController : PlaceHolder
     get { return _isListEditModeActive; } 
   }
 
-
   public NaInt32 ModifiableRowIndex
   {
     get { return _modifiableRowIndex; }
-  }
-
-  public bool ShowEditModeRequiredMarkers
-  {
-    get { return _showEditModeRequiredMarkers; }
-    set { _showEditModeRequiredMarkers = value; }
-  }
-
-  public bool ShowEditModeValidationMarkers
-  {
-    get { return _showEditModeValidationMarkers; }
-    set { _showEditModeValidationMarkers = value; }
-  }
-
-  public bool DisableEditModeValidationMessages
-  {
-    get { return _disableEditModeValidationMessages; }
-    set { _disableEditModeValidationMessages = value; }
-  }
-
-  public bool EnableEditModeValidator
-  {
-    get { return _enableEditModeValidator; }
-    set { _enableEditModeValidator = value; }
   }
 
 
@@ -540,17 +517,17 @@ public class EditModeController : PlaceHolder
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    EditDetailsValidator editDetailsValidator = new EditDetailsValidator (_owner);
+    EditDetailsValidator editDetailsValidator = new EditDetailsValidator (_ownerControl);
     editDetailsValidator.ID = ID + "_ValidatorEditDetails";
     editDetailsValidator.ControlToValidate = ID;
-    if (StringUtility.IsNullOrEmpty (_owner.ErrorMessage))
+    if (StringUtility.IsNullOrEmpty (_ownerControl.ErrorMessage))
     {
       editDetailsValidator.ErrorMessage = 
           resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.EditDetailsErrorMessage);
     }
     else
     {
-      editDetailsValidator.ErrorMessage = _owner.ErrorMessage;
+      editDetailsValidator.ErrorMessage = _ownerControl.ErrorMessage;
     }
     validators[0] = editDetailsValidator;
 
@@ -564,7 +541,7 @@ public class EditModeController : PlaceHolder
   ///   <see cref="FormGridManager.Validate"/> is called. Therefor the behaviors of the <c>BocList</c>
   ///   and the <c>FormGridManager</c> match.
   /// </remarks>
-  internal void EnsureValidatorsRestored()
+  public void EnsureValidatorsRestored()
   {
     if (IsEditDetailsModeActive || IsListEditModeActive)
     {
@@ -584,7 +561,7 @@ public class EditModeController : PlaceHolder
       for (int i = 0; i < _rows.Length; i++)
         isValid &= _rows[i].Validate();
     
-      isValid &= _owner.ValidateModifiableRowsInternal();
+      isValid &= _ownerControl.ValidateModifiableRowsInternal();
     }
 
     return isValid;
@@ -595,7 +572,7 @@ public class EditModeController : PlaceHolder
   {
     if (_showEditModeRequiredMarkers && IsRequired (columnIndex))
     {
-      Image requriedFieldMarker = _owner.GetRequiredMarker();
+      Image requriedFieldMarker = _ownerControl.GetRequiredMarker();
       requriedFieldMarker.RenderControl (writer);
       writer.Write (c_whiteSpace);
     }
@@ -681,6 +658,113 @@ public class EditModeController : PlaceHolder
     values[3] = _isEditNewRow;
 
     return values;
+  }
+
+
+  protected virtual void OnModifiableRowChangesSaving (
+      int index,
+      IBusinessObject businessObject,
+      IBusinessObjectDataSource dataSource,
+      IBusinessObjectBoundModifiableWebControl[] controls)
+  {
+    BocListModifiableRowChangesEventHandler handler = 
+        (BocListModifiableRowChangesEventHandler) Events[s_modifiableRowChangesSavingEvent];
+    if (handler != null)
+    {
+      BocListModifiableRowChangesEventArgs e = 
+          new BocListModifiableRowChangesEventArgs (index, businessObject, dataSource, controls);
+      handler (_ownerControl, e);
+    }
+  }
+
+  protected virtual void OnModifiableRowChangesSaved (int index, IBusinessObject businessObject)
+  {
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiableRowChangesSavedEvent];
+    if (handler != null)
+    {
+      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
+      handler (_ownerControl, e);
+    }
+  }
+
+  protected virtual void OnModifiableRowChangesCanceling (
+      int index,
+      IBusinessObject businessObject,
+      IBusinessObjectDataSource dataSource,
+      IBusinessObjectBoundModifiableWebControl[] controls)
+  {
+    BocListModifiableRowChangesEventHandler handler = 
+        (BocListModifiableRowChangesEventHandler) Events[s_modifiableRowChangesCancelingEvent];
+    if (handler != null)
+    {
+      BocListModifiableRowChangesEventArgs e = 
+          new BocListModifiableRowChangesEventArgs (index, businessObject, dataSource, controls);
+      handler (_ownerControl, e);
+    }
+  }
+
+  protected virtual void OnModifiableRowChangesCanceled (int index, IBusinessObject businessObject)
+  {
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiableRowChangesCanceledEvent];
+    if (handler != null)
+    {
+      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
+      handler (_ownerControl, e);
+    }
+  }
+
+  
+  /// <summary> Is raised before the modified row is saved. </summary>
+  public event BocListModifiableRowChangesEventHandler ModifiableRowChangesSaving
+  {
+    add { Events.AddHandler (s_modifiableRowChangesSavingEvent, value); }
+    remove { Events.RemoveHandler (s_modifiableRowChangesSavingEvent, value); }
+  }
+
+  /// <summary> Is raised after the modified row's changes have been saved. </summary>
+  public event BocListItemEventHandler ModifiableRowChangesSaved
+  {
+    add { Events.AddHandler (s_modifiableRowChangesSavedEvent, value); }
+    remove { Events.RemoveHandler (s_modifiableRowChangesSavedEvent, value); }
+  }
+
+  /// <summary> Is raised before the modified row's changes are canceled. </summary>
+  public event BocListModifiableRowChangesEventHandler ModifiableRowChangesCanceling
+  {
+    add { Events.AddHandler (s_modifiableRowChangesCancelingEvent, value); }
+    remove { Events.RemoveHandler (s_modifiableRowChangesCancelingEvent, value); }
+  }
+
+  /// <summary> Is raised after the modified row's changes have been canceled. </summary>
+  public event BocListItemEventHandler ModifiableRowChangesCanceled
+  {
+    add { Events.AddHandler (s_modifiableRowChangesCanceledEvent, value); }
+    remove { Events.RemoveHandler (s_modifiableRowChangesCanceledEvent, value); }
+  }
+
+
+  public bool ShowEditModeRequiredMarkers
+  {
+    get { return _showEditModeRequiredMarkers; }
+    set { _showEditModeRequiredMarkers = value; }
+  }
+
+  public bool ShowEditModeValidationMarkers
+  {
+    get { return _showEditModeValidationMarkers; }
+    set { _showEditModeValidationMarkers = value; }
+  }
+
+  public bool DisableEditModeValidationMessages
+  {
+    get { return _disableEditModeValidationMessages; }
+    set { _disableEditModeValidationMessages = value; }
+  }
+
+  public bool EnableEditModeValidator
+  {
+    get { return _enableEditModeValidator; }
+    set { _enableEditModeValidator = value; }
   }
 }
 

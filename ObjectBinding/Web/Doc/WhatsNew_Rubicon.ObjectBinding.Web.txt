@@ -1,11 +1,18 @@
 1.4.36
 ======
+- BocList
   * CreateRowEditModeControl() und CreateRowEditModeDataSource() gibt es nicht mehr.
     Statt dessen gibt es nun die Methoden CreateEditModeControlFactory() bzw CreateEditModeDataSourceFactory().
     Die bisherige Logik von CreateRowEditModeControl() bzw CreateRowEditModeDataSource() ist in der jeweiligen 
     Create() Methode der Factory zu implementieren.
     Es besteht alternativ auch die Möglichkeit, im OnInit-Event der Page die Factories zu setzen und damit nicht von
     der BocList ableiten zu müssen.
+  * Bugfix: RemoveRow hat bei aktivem EditDetailsMode diesen nicht sauber beendet.
+    RemoveRow wurde nur korrekt durchgeführt, wenn der EditDetailsMode zuerst beendet wurde.
+  * RemoveRow und RemoveRows: Neues Verhalten: Wird versucht, eine Zeile zu entfernen während die Liste im 
+    EditDetailsMode ist, wird InvalidOpterationException geworfen.
+  * Restoring row edit mode: Neues Verhalten: Sind nach dem PostBack weniger Zeilen in der Liste laut 
+    ModifiableRowIndex notwendig wären, wird eine InvalidOpterationException geworfen.
 
 1.4.35
 ======

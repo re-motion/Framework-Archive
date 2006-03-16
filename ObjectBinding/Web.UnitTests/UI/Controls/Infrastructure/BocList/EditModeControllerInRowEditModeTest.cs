@@ -107,6 +107,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   {
   }
 
+  
   [Test]
   public void AddAndEditRow ()
   {
@@ -145,8 +146,9 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   {
   }
 
+  
   [Test]
-  public void EndEditDetailsModeAndSaveChanges ()
+  public void EndEditDetailsModeAndSaveChangesWithValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
@@ -170,7 +172,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void EndEditDetailsModeAndDiscardChanges ()
+  public void EndEditDetailsModeAndDiscardChangesWithValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesCancelingEventMessage (2, Values[2]));
@@ -194,7 +196,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void EndEditDetailsModeWithNewRowAndSaveChanges ()
+  public void EndEditDetailsModeWithNewRowAndSaveChangesWithValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (5, NewValues[0]));
@@ -219,7 +221,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void EndEditDetailsModeWithNewRowAndDiscardChanges ()
+  public void EndEditDetailsModeWithNewRowAndDiscardChangesWithValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesCancelingEventMessage (5, NewValues[0]));
@@ -241,6 +243,53 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
     CheckValues (NewValues[0], "F", 6);
+  }
+
+  [Test]
+  public void EndEditDetailsModeAndSaveChangesWithInvalidValues ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchRowIntoEditMode (2, Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+    
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value C", "");
+    Controller.EndEditDetailsMode (true, Columns);
+
+    CheckEvents (expectedEvents, ActualEvents);
+    
+    Assert.IsTrue(Controller.IsEditDetailsModeActive);
+    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+
+    CheckValues (Values[2], "C", 3);
+  }
+
+  [Test]
+  public void EndEditDetailsModeAndDiscardChangesWithInvalidValues ()
+  {
+    StringCollection expectedEvents = new StringCollection();
+    expectedEvents.Add (FormatChangesCancelingEventMessage (2, Values[2]));
+    expectedEvents.Add (FormatChangesCanceledEventMessage (2, Values[2]));
+
+    Invoker.InitRecursive();
+    Controller.SwitchRowIntoEditMode (2, Columns, Columns);
+     
+    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+    
+    SetValues ((ModifiableRow) Controller.Controls[0], "New Value C", "");
+    Controller.EndEditDetailsMode (false, Columns);
+
+    CheckEvents (expectedEvents, ActualEvents);
+    
+    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.ModifiableRowIndex.IsNull);
+
+    CheckValues (Values[2], "C", 3);
   }
 
 
