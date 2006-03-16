@@ -26,7 +26,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
 
   // member fields
 
-  private Controls.BocList _owner;
+  private Controls.BocList _ownerControl;
 
   private ModifiableRowDataSourceFactory _dataSourceFactory;
   private ModifiableRowControlFactory _controlFactory;
@@ -41,18 +41,18 @@ public class ModifiableRow : PlaceHolder, INamingContainer
 
   // construction and disposing
 
-  public ModifiableRow (Controls.BocList owner)
+  public ModifiableRow (Controls.BocList ownerControl)
   {
-    ArgumentUtility.CheckNotNull ("owner", owner);
+    ArgumentUtility.CheckNotNull ("ownerControl", ownerControl);
 
-    _owner = owner;
+    _ownerControl = ownerControl;
   }
 
   // methods and properties
 
-  public Controls.BocList Owner
+  public Controls.BocList OwnerControl
   {
-    get { return _owner; }
+    get { return _ownerControl; }
   }
 
   public ModifiableRowDataSourceFactory DataSourceFactory
@@ -394,7 +394,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     if (showEditDetailsValidationMarkers)
     {
       bool isCellValid = true;
-      Image validationErrorMarker = _owner.GetValidationErrorMarker();
+      Image validationErrorMarker = _ownerControl.GetValidationErrorMarker();
       
       for (int i = 0; i < validators.Count; i++)
       {
