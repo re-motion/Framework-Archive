@@ -56,6 +56,16 @@ public class ControlInvoker
   {
     return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveViewStateRecursive", new object[0]);
   }
+
+  public void LoadViewState (object viewState)
+  {
+    PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "LoadViewState", new object[] { viewState });
+  }
+
+  public object SaveViewState ()
+  {
+    return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveViewState", new object[0]);
+  }
 }
 
 }
