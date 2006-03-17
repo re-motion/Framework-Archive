@@ -56,6 +56,13 @@ public class ModifiableRowControlFactoryTest
     Assert.IsNotNull (control);
     Assert.IsTrue (control is BocTextValue);
   }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentOutOfRangeException))]
+  public void CreateWithNegativeIndex ()
+  {
+    _factory.Create (_stringValueColumn, -1);
+  }
 }
 
 }

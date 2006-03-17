@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
+
 public class ModifiableRowControlFactory
 {
   // types
@@ -29,18 +30,15 @@ public class ModifiableRowControlFactory
     if (columnIndex < 0) throw new ArgumentOutOfRangeException ("columnIndex");
 
     IBusinessObjectBoundModifiableWebControl control = column.CreateEditDetailsControl();
-    IBusinessObjectProperty property = column.PropertyPath.LastProperty;
 
     if (control == null)
     {
       control = (IBusinessObjectBoundModifiableWebControl) ControlFactory.CreateControl (
-          property, ControlFactory.EditMode.InlineEdit);
-      if (control == null)
-        return null;
+          column.PropertyPath.LastProperty, ControlFactory.EditMode.InlineEdit);
     }
 
     return control;
   }
-
 }
+
 }
