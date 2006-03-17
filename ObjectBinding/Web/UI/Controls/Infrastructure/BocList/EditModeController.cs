@@ -24,11 +24,6 @@ public class EditModeController : PlaceHolder
 
   // static members and constants
 
-  private static readonly object s_modifiableRowChangesSavingEvent = new object();
-  private static readonly object s_modifiableRowChangesSavedEvent = new object();
-  private static readonly object s_modifiableRowChangesCancelingEvent = new object();
-  private static readonly object s_modifiableRowChangesCanceledEvent = new object();
-
   private const string c_whiteSpace = "&nbsp;";
 
   // member fields
@@ -646,12 +641,19 @@ public class EditModeController : PlaceHolder
   /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
   protected override void LoadViewState(object savedState)
   {
-    object[] values = (object[]) savedState;
-    
-    base.LoadViewState (values[0]);
-    _isListEditModeActive = (bool) values[1];
-    _modifiableRowIndex = (NaInt32) values[2];
-    _isEditNewRow = (bool) values[3];
+    if (savedState == null)
+    {
+      base.LoadViewState (null);
+    }
+    else
+    {
+      object[] values = (object[]) savedState;
+      
+      base.LoadViewState (values[0]);
+      _isListEditModeActive = (bool) values[1];
+      _modifiableRowIndex = (NaInt32) values[2];
+      _isEditNewRow = (bool) values[3];
+    }
   }
 
   /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
@@ -675,24 +677,18 @@ public class EditModeController : PlaceHolder
       IBusinessObjectDataSource dataSource,
       IBusinessObjectBoundModifiableWebControl[] controls)
   {
-    BocListModifiableRowChangesEventHandler handler = 
-        (BocListModifiableRowChangesEventHandler) Events[s_modifiableRowChangesSavingEvent];
-    if (handler != null)
-    {
-      BocListModifiableRowChangesEventArgs e = 
-          new BocListModifiableRowChangesEventArgs (index, businessObject, dataSource, controls);
-      handler (_ownerControl, e);
-    }
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    ArgumentUtility.CheckNotNull ("dataSource", dataSource);
+    ArgumentUtility.CheckNotNull ("controls", controls);
+
+    _ownerControl.OnModifiableRowChangesSaving (index, businessObject, dataSource, controls);
   }
 
   protected virtual void OnModifiableRowChangesSaved (int index, IBusinessObject businessObject)
   {
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiableRowChangesSavedEvent];
-    if (handler != null)
-    {
-      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
-      handler (_ownerControl, e);
-    }
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+
+    _ownerControl.OnModifiableRowChangesSaved (index, businessObject);
   }
 
   protected virtual void OnModifiableRowChangesCanceling (
@@ -701,53 +697,18 @@ public class EditModeController : PlaceHolder
       IBusinessObjectDataSource dataSource,
       IBusinessObjectBoundModifiableWebControl[] controls)
   {
-    BocListModifiableRowChangesEventHandler handler = 
-        (BocListModifiableRowChangesEventHandler) Events[s_modifiableRowChangesCancelingEvent];
-    if (handler != null)
-    {
-      BocListModifiableRowChangesEventArgs e = 
-          new BocListModifiableRowChangesEventArgs (index, businessObject, dataSource, controls);
-      handler (_ownerControl, e);
-    }
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    ArgumentUtility.CheckNotNull ("dataSource", dataSource);
+    ArgumentUtility.CheckNotNull ("controls", controls);
+
+    _ownerControl.OnModifiableRowChangesCanceling (index, businessObject, dataSource, controls);
   }
 
   protected virtual void OnModifiableRowChangesCanceled (int index, IBusinessObject businessObject)
   {
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiableRowChangesCanceledEvent];
-    if (handler != null)
-    {
-      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
-      handler (_ownerControl, e);
-    }
-  }
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
-  
-  /// <summary> Is raised before the modified row is saved. </summary>
-  public event BocListModifiableRowChangesEventHandler ModifiableRowChangesSaving
-  {
-    add { Events.AddHandler (s_modifiableRowChangesSavingEvent, value); }
-    remove { Events.RemoveHandler (s_modifiableRowChangesSavingEvent, value); }
-  }
-
-  /// <summary> Is raised after the modified row's changes have been saved. </summary>
-  public event BocListItemEventHandler ModifiableRowChangesSaved
-  {
-    add { Events.AddHandler (s_modifiableRowChangesSavedEvent, value); }
-    remove { Events.RemoveHandler (s_modifiableRowChangesSavedEvent, value); }
-  }
-
-  /// <summary> Is raised before the modified row's changes are canceled. </summary>
-  public event BocListModifiableRowChangesEventHandler ModifiableRowChangesCanceling
-  {
-    add { Events.AddHandler (s_modifiableRowChangesCancelingEvent, value); }
-    remove { Events.RemoveHandler (s_modifiableRowChangesCancelingEvent, value); }
-  }
-
-  /// <summary> Is raised after the modified row's changes have been canceled. </summary>
-  public event BocListItemEventHandler ModifiableRowChangesCanceled
-  {
-    add { Events.AddHandler (s_modifiableRowChangesCanceledEvent, value); }
-    remove { Events.RemoveHandler (s_modifiableRowChangesCanceledEvent, value); }
+    _ownerControl.OnModifiableRowChangesCanceled (index, businessObject);
   }
 
 

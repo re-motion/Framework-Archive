@@ -633,6 +633,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Controller.EnsureEditModeRestored (Columns);
   }
 
+
   [Test]
   public void AddRows ()
   {

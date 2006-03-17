@@ -98,10 +98,10 @@ public class EditModeControllerTestBase : BocTest
     
     _controllerInvoker = new ControlInvoker (_controller);
 
-    Controller.ModifiableRowChangesCanceled += new BocListItemEventHandler (Controller_ModifiableRowChangesCanceled);
-    Controller.ModifiableRowChangesCanceling += new BocListModifiableRowChangesEventHandler( Controller_ModifiableRowChangesCanceling);
-    Controller.ModifiableRowChangesSaved += new BocListItemEventHandler (Controller_ModifiableRowChangesSaved);
-    Controller.ModifiableRowChangesSaving += new BocListModifiableRowChangesEventHandler (Controller_ModifiableRowChangesSaving);
+    _bocList.ModifiableRowChangesCanceled += new BocListItemEventHandler (Boclist_ModifiableRowChangesCanceled);
+    _bocList.ModifiableRowChangesCanceling += new BocListModifiableRowChangesEventHandler (Boclist_ModifiableRowChangesCanceling);
+    _bocList.ModifiableRowChangesSaved += new BocListItemEventHandler (Boclist_ModifiableRowChangesSaved);
+    _bocList.ModifiableRowChangesSaving += new BocListModifiableRowChangesEventHandler (Boclist_ModifiableRowChangesSaving);
 
     _bocList.FixedColumns.AddRange (_columns);
     _bocList.LoadUnboundValue (_values, false);
@@ -202,22 +202,22 @@ public class EditModeControllerTestBase : BocTest
     return string.Format ("{0}: {1}, {2}", eventName, index, businessObject.ToString());
   }
 
-  private void Controller_ModifiableRowChangesCanceled (object sender, BocListItemEventArgs e)
+  private void Boclist_ModifiableRowChangesCanceled (object sender, BocListItemEventArgs e)
   {
     _actualEvents.Add (FormatChangesCanceledEventMessage (e.ListIndex, e.BusinessObject));
   }
 
-  private void Controller_ModifiableRowChangesCanceling (object sender, BocListModifiableRowChangesEventArgs e)
+  private void Boclist_ModifiableRowChangesCanceling (object sender, BocListModifiableRowChangesEventArgs e)
   {
     _actualEvents.Add (FormatChangesCancelingEventMessage (e.ListIndex, e.BusinessObject));
   }
 
-  private void Controller_ModifiableRowChangesSaved (object sender, BocListItemEventArgs e)
+  private void Boclist_ModifiableRowChangesSaved (object sender, BocListItemEventArgs e)
   {
     _actualEvents.Add (FormatChangesSavedEventMessage (e.ListIndex, e.BusinessObject));
   }
 
-  private void Controller_ModifiableRowChangesSaving (object sender, BocListModifiableRowChangesEventArgs e)
+  private void Boclist_ModifiableRowChangesSaving (object sender, BocListModifiableRowChangesEventArgs e)
   {
     _actualEvents.Add (FormatChangesSavingEventMessage (e.ListIndex, e.BusinessObject));
   }

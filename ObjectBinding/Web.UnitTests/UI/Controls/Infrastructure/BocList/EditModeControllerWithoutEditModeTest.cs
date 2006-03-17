@@ -106,6 +106,17 @@ public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
     Assert.IsNotNull (viewState);
     ControllerInvoker.LoadViewState (viewState);
   }
+
+  [Test]
+  public void LoadViewStateWithNull ()
+  {
+    Invoker.InitRecursive();
+
+    ControllerInvoker.LoadViewState (null);
+
+    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsListEditModeActive);
+  }
 }
 
 }
