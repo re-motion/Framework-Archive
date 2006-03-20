@@ -331,6 +331,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditableRowControlFactoryTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditableRowDataSourceFactoryTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditableRowTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\Infrastructure\BocList\EditModeControllerInEditDetailsModeTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -347,21 +362,6 @@
                 />
                 <File
                     RelPath = "UI\Controls\Infrastructure\BocList\EditModeControllerWithoutEditModeTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRowControlFactoryTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRowDataSourceFactoryTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\ModifiableRowTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

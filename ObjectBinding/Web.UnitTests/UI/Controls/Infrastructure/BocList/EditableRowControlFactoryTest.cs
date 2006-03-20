@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 {
 
 [TestFixture]
-public class ModifiableRowControlFactoryTest
+public class EditableRowControlFactoryTest
 {
   // types
 
@@ -25,11 +25,11 @@ public class ModifiableRowControlFactoryTest
   private BusinessObjectPropertyPath _stringValuePropertyPath;
   private BocSimpleColumnDefinition _stringValueColumn;
 
-  private ModifiableRowControlFactory _factory;
+  private EditableRowControlFactory _factory;
 
   // construction and disposing
 
-  public ModifiableRowControlFactoryTest ()
+  public EditableRowControlFactoryTest ()
   {
   }
 
@@ -45,7 +45,7 @@ public class ModifiableRowControlFactoryTest
     _stringValueColumn = new BocSimpleColumnDefinition ();
     _stringValueColumn.PropertyPath = _stringValuePropertyPath;
 
-    _factory = new ModifiableRowControlFactory();
+    _factory = new EditableRowControlFactory();
   }
 
   [Test]

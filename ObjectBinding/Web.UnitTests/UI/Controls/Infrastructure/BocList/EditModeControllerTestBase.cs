@@ -98,10 +98,10 @@ public class EditModeControllerTestBase : BocTest
     
     _controllerInvoker = new ControlInvoker (_controller);
 
-    _bocList.ModifiableRowChangesCanceled += new BocListItemEventHandler (Boclist_ModifiableRowChangesCanceled);
-    _bocList.ModifiableRowChangesCanceling += new BocListModifiableRowChangesEventHandler (Boclist_ModifiableRowChangesCanceling);
-    _bocList.ModifiableRowChangesSaved += new BocListItemEventHandler (Boclist_ModifiableRowChangesSaved);
-    _bocList.ModifiableRowChangesSaving += new BocListModifiableRowChangesEventHandler (Boclist_ModifiableRowChangesSaving);
+    _bocList.EditableRowChangesCanceled += new BocListItemEventHandler (Boclist_EditableRowChangesCanceled);
+    _bocList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler (Boclist_EditableRowChangesCanceling);
+    _bocList.EditableRowChangesSaved += new BocListItemEventHandler (Boclist_EditableRowChangesSaved);
+    _bocList.EditableRowChangesSaving += new BocListEditableRowChangesEventHandler (Boclist_EditableRowChangesSaving);
 
     _bocList.FixedColumns.AddRange (_columns);
     _bocList.LoadUnboundValue (_values, false);
@@ -142,7 +142,7 @@ public class EditModeControllerTestBase : BocTest
     get { return _columns; }
   }
 
-  protected void SetValues (ModifiableRow row, string stringValue, string int32Value)
+  protected void SetValues (EditableRow row, string stringValue, string int32Value)
   {
     ArgumentUtility.CheckNotNull ("row", row);
 
@@ -202,34 +202,34 @@ public class EditModeControllerTestBase : BocTest
     return string.Format ("{0}: {1}, {2}", eventName, index, businessObject.ToString());
   }
 
-  private void Boclist_ModifiableRowChangesCanceled (object sender, BocListItemEventArgs e)
+  private void Boclist_EditableRowChangesCanceled (object sender, BocListItemEventArgs e)
   {
     _actualEvents.Add (FormatChangesCanceledEventMessage (e.ListIndex, e.BusinessObject));
   }
 
-  private void Boclist_ModifiableRowChangesCanceling (object sender, BocListModifiableRowChangesEventArgs e)
+  private void Boclist_EditableRowChangesCanceling (object sender, BocListEditableRowChangesEventArgs e)
   {
     _actualEvents.Add (FormatChangesCancelingEventMessage (e.ListIndex, e.BusinessObject));
   }
 
-  private void Boclist_ModifiableRowChangesSaved (object sender, BocListItemEventArgs e)
+  private void Boclist_EditableRowChangesSaved (object sender, BocListItemEventArgs e)
   {
     _actualEvents.Add (FormatChangesSavedEventMessage (e.ListIndex, e.BusinessObject));
   }
 
-  private void Boclist_ModifiableRowChangesSaving (object sender, BocListModifiableRowChangesEventArgs e)
+  private void Boclist_EditableRowChangesSaving (object sender, BocListEditableRowChangesEventArgs e)
   {
     _actualEvents.Add (FormatChangesSavingEventMessage (e.ListIndex, e.BusinessObject));
   }
 
   protected object CreateViewState (
-      object baseViewState, bool isListEditModeActive, NaInt32 modifiableRowIndex, bool isEditNewRow)
+      object baseViewState, bool isListEditModeActive, NaInt32 editableRowIndex, bool isEditNewRow)
   {
     object[] values = new object[4];
 
     values[0] = baseViewState;
     values[1] = isListEditModeActive;
-    values[2] = modifiableRowIndex;
+    values[2] = editableRowIndex;
     values[3] = isEditNewRow;
 
     return values;

@@ -101,11 +101,11 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
      
     Assert.IsTrue (Controller.IsListEditModeActive);
     
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "100");
-    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "200");
-    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "300");
-    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "400");
-    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "500");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value A", "100");
+    SetValues ((EditableRow) Controller.Controls[1], "New Value B", "200");
+    SetValues ((EditableRow) Controller.Controls[2], "New Value C", "300");
+    SetValues ((EditableRow) Controller.Controls[3], "New Value D", "400");
+    SetValues ((EditableRow) Controller.Controls[4], "New Value E", "500");
 
     Controller.SwitchListIntoEditMode (Columns, Columns);
      
@@ -135,11 +135,11 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
      
     Assert.IsTrue (Controller.IsListEditModeActive);
     
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "");
-    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "");
-    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "");
-    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "");
-    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value A", "");
+    SetValues ((EditableRow) Controller.Controls[1], "New Value B", "");
+    SetValues ((EditableRow) Controller.Controls[2], "New Value C", "");
+    SetValues ((EditableRow) Controller.Controls[3], "New Value D", "");
+    SetValues ((EditableRow) Controller.Controls[4], "New Value E", "");
 
     Controller.SwitchListIntoEditMode (Columns, Columns);
      
@@ -165,9 +165,9 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
     Assert.IsTrue (Controller.IsEditDetailsModeActive);
-    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+    Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value C", "300");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value C", "300");
 
     Controller.SwitchListIntoEditMode (Columns, Columns);
      
@@ -188,16 +188,16 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
     Assert.IsTrue (Controller.IsEditDetailsModeActive);
-    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+    Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value C", "");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value C", "");
 
     Controller.SwitchListIntoEditMode (Columns, Columns);
      
     CheckEvents (expectedEvents, ActualEvents);
 
     Assert.IsTrue (Controller.IsEditDetailsModeActive);
-    Assert.AreEqual (2, Controller.ModifiableRowIndex.Value);
+    Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     CheckValues (Values[2], "C", 3);
   }
@@ -223,11 +223,11 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
      
     Assert.IsTrue (Controller.IsListEditModeActive);
     
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "100");
-    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "200");
-    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "300");
-    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "400");
-    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "500");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value A", "100");
+    SetValues ((EditableRow) Controller.Controls[1], "New Value B", "200");
+    SetValues ((EditableRow) Controller.Controls[2], "New Value C", "300");
+    SetValues ((EditableRow) Controller.Controls[3], "New Value D", "400");
+    SetValues ((EditableRow) Controller.Controls[4], "New Value E", "500");
     Controller.EndListEditMode (true, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
@@ -261,11 +261,11 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
      
     Assert.IsTrue (Controller.IsListEditModeActive);
     
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "100");
-    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "200");
-    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "300");
-    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "400");
-    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "500");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value A", "100");
+    SetValues ((EditableRow) Controller.Controls[1], "New Value B", "200");
+    SetValues ((EditableRow) Controller.Controls[2], "New Value C", "300");
+    SetValues ((EditableRow) Controller.Controls[3], "New Value D", "400");
+    SetValues ((EditableRow) Controller.Controls[4], "New Value E", "500");
     Controller.EndListEditMode (false, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
@@ -294,11 +294,11 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
      
     Assert.IsTrue (Controller.IsListEditModeActive);
     
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "");
-    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "");
-    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "");
-    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "");
-    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value A", "");
+    SetValues ((EditableRow) Controller.Controls[1], "New Value B", "");
+    SetValues ((EditableRow) Controller.Controls[2], "New Value C", "");
+    SetValues ((EditableRow) Controller.Controls[3], "New Value D", "");
+    SetValues ((EditableRow) Controller.Controls[4], "New Value E", "");
     Controller.EndListEditMode (true, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
@@ -332,11 +332,11 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
      
     Assert.IsTrue (Controller.IsListEditModeActive);
     
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "");
-    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "");
-    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "");
-    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "");
-    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value A", "");
+    SetValues ((EditableRow) Controller.Controls[1], "New Value B", "");
+    SetValues ((EditableRow) Controller.Controls[2], "New Value C", "");
+    SetValues ((EditableRow) Controller.Controls[3], "New Value D", "");
+    SetValues ((EditableRow) Controller.Controls[4], "New Value E", "");
     Controller.EndListEditMode (false, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
@@ -534,11 +534,11 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Invoker.InitRecursive();
     Controller.SwitchListIntoEditMode (Columns, Columns);
 
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "100");
-    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "200");
-    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "300");
-    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "400");
-    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "500");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value A", "100");
+    SetValues ((EditableRow) Controller.Controls[1], "New Value B", "200");
+    SetValues ((EditableRow) Controller.Controls[2], "New Value C", "300");
+    SetValues ((EditableRow) Controller.Controls[3], "New Value D", "400");
+    SetValues ((EditableRow) Controller.Controls[4], "New Value E", "500");
 
     Assert.IsTrue (Controller.Validate());
   }
@@ -549,11 +549,11 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Invoker.InitRecursive();
     Controller.SwitchListIntoEditMode (Columns, Columns);
 
-    SetValues ((ModifiableRow) Controller.Controls[0], "New Value A", "");
-    SetValues ((ModifiableRow) Controller.Controls[1], "New Value B", "");
-    SetValues ((ModifiableRow) Controller.Controls[2], "New Value C", "");
-    SetValues ((ModifiableRow) Controller.Controls[3], "New Value D", "");
-    SetValues ((ModifiableRow) Controller.Controls[4], "New Value E", "");
+    SetValues ((EditableRow) Controller.Controls[0], "New Value A", "");
+    SetValues ((EditableRow) Controller.Controls[1], "New Value B", "");
+    SetValues ((EditableRow) Controller.Controls[2], "New Value C", "");
+    SetValues ((EditableRow) Controller.Controls[3], "New Value D", "");
+    SetValues ((EditableRow) Controller.Controls[4], "New Value E", "");
 
     Assert.IsFalse (Controller.Validate());
   }
@@ -577,7 +577,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Invoker.InitRecursive();
     Controller.SwitchListIntoEditMode (Columns, Columns);
 
-    ModifiableRow row = (ModifiableRow) Controller.Controls[2];
+    EditableRow row = (EditableRow) Controller.Controls[2];
     Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue stringValueField = 
         (Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue) row.GetEditControl (0);
     stringValueField.Value = "New Value";
