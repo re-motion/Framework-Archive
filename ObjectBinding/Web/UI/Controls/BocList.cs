@@ -48,7 +48,15 @@ public class BocList:
 {
   #region Obsolete Stuff
 
-  [Obsolete ("Use ModifiableRowChangesSaving event instead.", true)]
+  [Browsable (false)]
+  [Obsolete ("Use EditableRowIndex instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public NaInt32 ModifiableRowIndex
+  {
+    get { return EditableRowIndex; }
+  }
+
+  [Obsolete ("Use EditableRowChangesSaving event instead.", true)]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeSaving (
     int index,
@@ -59,14 +67,14 @@ public class BocList:
     throw new NotImplementedException ();
   }
 
-  [Obsolete ("Use ModifiableRowChangesSaved event instead.", true)]
+  [Obsolete ("Use EditableRowChangesSaved event instead.", true)]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeSaved (int index, IBusinessObject businessObject)
   {
     throw new NotImplementedException ();
   }
 
-  [Obsolete ("Use ModifiableRowChangesCanceling event instead.", true)]
+  [Obsolete ("Use EditableRowChangesCanceling event instead.", true)]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeCanceling (
     int index,
@@ -77,7 +85,7 @@ public class BocList:
     throw new NotImplementedException ();
   }
 
-  [Obsolete ("Use ModifiableRowChangesCanceled event instead.", true)]
+  [Obsolete ("Use EditableRowChangesCanceled event instead.", true)]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeCanceled (int index, IBusinessObject businessObject)
   {
@@ -86,7 +94,7 @@ public class BocList:
 
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  [Obsolete ("Use ModifiableRowChangesSaving instead.", true)]
+  [Obsolete ("Use EditableRowChangesSaving instead.", true)]
   public event BocListRowEditModeEventHandler SavingEditedRow
   {
     add { throw new NotImplementedException ("Obsolete"); }
@@ -95,7 +103,7 @@ public class BocList:
 
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  [Obsolete ("Use ModifiableRowChangesSaved instead.", true)]
+  [Obsolete ("Use EditableRowChangesSaved instead.", true)]
   public event BocListItemEventHandler EditedRowSaved
   {
     add { throw new NotImplementedException ("Obsolete"); }
@@ -104,7 +112,7 @@ public class BocList:
 
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  [Obsolete ("Use ModifiableRowChangesCanceling instead.", true)]
+  [Obsolete ("Use EditableRowChangesCanceling instead.", true)]
   public event BocListRowEditModeEventHandler CancelingEditDetailsMode
   {
     add { throw new NotImplementedException ("Obsolete"); }
@@ -113,25 +121,25 @@ public class BocList:
 
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
-  [Obsolete ("Use ModifiableRowChangesCanceled instead.", true)]
+  [Obsolete ("Use EditableRowChangesCanceled instead.", true)]
   public event BocListItemEventHandler EditDetailsModeCanceled
   {
     add { throw new NotImplementedException ("Obsolete"); }
     remove { throw new NotImplementedException ("Obsolete"); }
   }
 
-  [Obsolete ("Use ValidateModifiableRows instead.")]
+  [Obsolete ("Use ValidateEditableRows instead.")]
   [EditorBrowsable (EditorBrowsableState.Never)]
   public bool ValiadateModifiableRow()
   {
-    return ValidateModifiableRows();
+    return ValidateEditableRows();
   }
 
-  [Obsolete ("Use ValidateModifiableRows instead.")]
+  [Obsolete ("Use ValidateEditableRows instead.")]
   [EditorBrowsable (EditorBrowsableState.Never)]
   public bool ValidateModifiableRow()
   {
-    return ValidateModifiableRows();
+    return ValidateEditableRows();
   }
 
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
@@ -254,8 +262,6 @@ public class BocList:
     PageInfo,
     OptionsTitle,
     AvailableViewsListTitle,
-    EditDetailsErrorMessage,
-    ListEditModeErrorMessage,
     /// <summary>The alternate text for the required icon.</summary>
     RequiredFieldAlternateText,
     /// <summary>The tool tip text for the required icon.</summary>
@@ -266,9 +272,11 @@ public class BocList:
     SortAscendingAlternateText,
     /// <summary> The alternate text for the sort descending button. </summary>
     SortDescendingAlternateText,
-    EditDetailsEditAlternateText,
-    EditDetailsSaveAlternateText,
-    EditDetailsCancelAlternateText,
+    RowEditModeErrorMessage,
+    ListEditModeErrorMessage,
+    RowEditModeEditAlternateText,
+    RowEditModeSaveAlternateText,
+    RowEditModeCancelAlternateText,
     GoToFirstAlternateText,
     GoToLastAlternateText,
     GoToNextAlternateText,
@@ -318,10 +326,10 @@ public class BocList:
 
   private static readonly object s_dataRowRenderEvent = new object();
 
-  private static readonly object s_modifiableRowChangesSavingEvent = new object();
-  private static readonly object s_modifiableRowChangesSavedEvent = new object();
-  private static readonly object s_modifiableRowChangesCancelingEvent = new object();
-  private static readonly object s_modifiableRowChangesCanceledEvent = new object();
+  private static readonly object s_editableRowChangesSavingEvent = new object();
+  private static readonly object s_editableRowChangesSavedEvent = new object();
+  private static readonly object s_editableRowChangesCancelingEvent = new object();
+  private static readonly object s_editableRowChangesCanceledEvent = new object();
 
   private static readonly string s_scriptFileKey = typeof (BocList).FullName + "_Script";
   private static readonly string s_startUpScriptKey = typeof (BocList).FullName+ "_Startup";
@@ -457,8 +465,8 @@ public class BocList:
   private bool _hasClientScript = false;
 
   private EditModeController _editModeController;
-  private ModifiableRowDataSourceFactory _editModeDataSourceFactory;
-  private ModifiableRowControlFactory _editModeControlFactory;
+  private EditableRowDataSourceFactory _editModeDataSourceFactory;
+  private EditableRowControlFactory _editModeControlFactory;
 
   private string _errorMessage;
   private ArrayList _validators;
@@ -1282,7 +1290,7 @@ public class BocList:
       for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
       {
         int originalRowIndex = sortedRows[idxRows].Index;
-        if (ModifiableRowIndex.Value == originalRowIndex)
+        if (EditableRowIndex.Value == originalRowIndex)
         {
           _currentRow = idxRows;
           break;
@@ -2402,7 +2410,7 @@ public class BocList:
   {
     Image validationErrorIcon = new Image();
     validationErrorIcon.ImageUrl = ResourceUrlResolver.GetResourceUrl (
-        this, Context, typeof (ModifiableRow), ResourceType.Image, c_editDetailsValidationErrorIcon);
+        this, Context, typeof (EditableRow), ResourceType.Image, c_editDetailsValidationErrorIcon);
 
     IResourceManager resourceManager = GetResourceManager();
     validationErrorIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
@@ -2640,13 +2648,13 @@ public class BocList:
       BocListDataRowRenderEventArgs dataRowRenderEventArgs)
   {
     bool isReadOnly = IsReadOnly;
-    ModifiableRow modifiableRow = null;
-    bool isEditedRow = IsEditDetailsModeActive && ModifiableRowIndex.Value == originalRowIndex;
+    EditableRow editableRow = null;
+    bool isEditedRow = IsEditDetailsModeActive && EditableRowIndex.Value == originalRowIndex;
     if (isEditedRow)
-      modifiableRow = _editModeController._rows[0];
+      editableRow = _editModeController._rows[0];
     else if (IsListEditModeActive)
-      modifiableRow = _editModeController._rows[originalRowIndex];
-    bool hasEditModeControl = modifiableRow != null && modifiableRow.HasEditControl (columnIndex);
+      editableRow = _editModeController._rows[originalRowIndex];
+    bool hasEditModeControl = editableRow != null && editableRow.HasEditControl (columnIndex);
 
     BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
     BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
@@ -2669,7 +2677,7 @@ public class BocList:
       BocValueColumnDefinition valueColumn = column as BocValueColumnDefinition;
 
       bool showEditModeControl =   hasEditModeControl 
-                                && ! modifiableRow.GetEditControl (columnIndex).IsReadOnly;
+                                && ! editableRow.GetEditControl (columnIndex).IsReadOnly;
       
       string valueColumnText = null;
       if (valueColumn != null && ! showEditModeControl)
@@ -2718,7 +2726,7 @@ public class BocList:
       else if (simpleColumn != null)
       {
         if (showEditModeControl)
-          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex, modifiableRow);
+          RenderSimpleColumnCellEditModeControl (writer, simpleColumn, businessObject, columnIndex, editableRow);
         else
           RenderValueColumnCellText (writer, valueColumnText);
       }
@@ -2741,7 +2749,7 @@ public class BocList:
           writer, 
           editDetailsColumn, 
           isEditedRow, 
-          dataRowRenderEventArgs.IsModifiableRow, 
+          dataRowRenderEventArgs.IsEditableRow, 
           originalRowIndex);
     }
     else if (dropDownMenuColumn != null)
@@ -2870,7 +2878,7 @@ public class BocList:
       HtmlTextWriter writer, 
       BocEditDetailsColumnDefinition column,
       bool isEditedRow,
-      bool isModifiableRow,
+      bool isEditableRow,
       int originalRowIndex)
   {
     bool isReadOnly = IsReadOnly;
@@ -2898,7 +2906,7 @@ public class BocList:
       }
       else if (hasSaveIcon)
       {
-        RenderIcon (writer, column.SaveIcon, ResourceIdentifier.EditDetailsSaveAlternateText);
+        RenderIcon (writer, column.SaveIcon, ResourceIdentifier.RowEditModeSaveAlternateText);
       }
       if (hasSaveText)
         writer.Write (column.SaveText); // Do not HTML encode.
@@ -2926,7 +2934,7 @@ public class BocList:
       }
       else if (hasCancelIcon)
       {
-        RenderIcon (writer, column.CancelIcon, ResourceIdentifier.EditDetailsCancelAlternateText);
+        RenderIcon (writer, column.CancelIcon, ResourceIdentifier.RowEditModeCancelAlternateText);
       }
       if (hasCancelText)
         writer.Write (column.CancelText); // Do not HTML encode.
@@ -2935,7 +2943,7 @@ public class BocList:
     }
     else
     {
-      if (isModifiableRow)
+      if (isEditableRow)
       {
         if (! isReadOnly && _hasClientScript)
         {
@@ -2956,7 +2964,7 @@ public class BocList:
         }
         else if (hasEditIcon)
         {
-          RenderIcon (writer, column.EditIcon, ResourceIdentifier.EditDetailsEditAlternateText);
+          RenderIcon (writer, column.EditIcon, ResourceIdentifier.RowEditModeEditAlternateText);
         }
         if (hasEditText)
           writer.Write (column.EditText); // Do not HTML encode
@@ -3023,7 +3031,7 @@ public class BocList:
       BocSimpleColumnDefinition column,
       IBusinessObject businessObject,
       int columnIndex, 
-      ModifiableRow modifiableRow) 
+      EditableRow editableRow) 
   {
     EditDetailsValidator editDetailsValidator = null;
     for (int i = 0; i < _validators.Count; i++)
@@ -3037,7 +3045,7 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin span
     
-    modifiableRow.RenderSimpleColumnCellEditModeControl (
+    editableRow.RenderSimpleColumnCellEditModeControl (
         writer, column, businessObject, columnIndex,
         editDetailsValidator, 
         _editModeController.ShowEditModeValidationMarkers, 
@@ -3652,8 +3660,8 @@ public class BocList:
           int originalRowIndex = row.Index;
 
           if (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
-              && (   ModifiableRowIndex.IsNull 
-                  || ModifiableRowIndex.Value != originalRowIndex))
+              && (   EditableRowIndex.IsNull 
+                  || EditableRowIndex.Value != originalRowIndex))
           {
             continue;
           }
@@ -3712,8 +3720,8 @@ public class BocList:
           {
             int originalRowIndex = (int) customColumnTriplet.Second;
             if (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
-                && (   ModifiableRowIndex.IsNull 
-                    || ModifiableRowIndex.Value != originalRowIndex))
+                && (   EditableRowIndex.IsNull 
+                    || EditableRowIndex.Value != originalRowIndex))
             {
               continue;
             }
@@ -3752,7 +3760,7 @@ public class BocList:
           if (customColumnTriplet != null)
           {
             int originalRowIndex = (int) customColumnTriplet.Second;
-            if (ModifiableRowIndex.Value == originalRowIndex)
+            if (EditableRowIndex.Value == originalRowIndex)
             {
               IBusinessObject businessObject = (IBusinessObject) customColumnTriplet.First;
               Control control = (Control) customColumnTriplet.Third;
@@ -4449,18 +4457,18 @@ public class BocList:
     RemoveRow ((IBusinessObject) Value[index]);
   }
 
-  protected virtual ModifiableRowDataSourceFactory CreateEditModeDataSourceFactory()
+  protected virtual EditableRowDataSourceFactory CreateEditModeDataSourceFactory()
   {
-    return new ModifiableRowDataSourceFactory();
+    return new EditableRowDataSourceFactory();
   }
 
-  protected virtual ModifiableRowControlFactory CreateEditModeControlFactory()
+  protected virtual EditableRowControlFactory CreateEditModeControlFactory()
   {
-    return new ModifiableRowControlFactory();
+    return new EditableRowControlFactory();
   }
 
   [EditorBrowsable (EditorBrowsableState.Advanced)]
-  public ModifiableRowDataSourceFactory GetEditModeDataSourceFactory()
+  public EditableRowDataSourceFactory GetEditModeDataSourceFactory()
   {
     if (EditModeDataSourceFactory == null)
       return CreateEditModeDataSourceFactory();
@@ -4469,7 +4477,7 @@ public class BocList:
   }
 
   [EditorBrowsable (EditorBrowsableState.Advanced)]
-  public ModifiableRowControlFactory GetEditModeControlFactory()
+  public EditableRowControlFactory GetEditModeControlFactory()
   {
     if (EditModeControlFactory == null)
       return CreateEditModeControlFactory();
@@ -4529,20 +4537,20 @@ public class BocList:
   }
 
 
-  public bool ValidateModifiableRows()
+  public bool ValidateEditableRows()
   {
     return _editModeController.Validate();
   }
 
-  internal bool ValidateModifiableRowsInternal()
+  internal bool ValidateEditableRowsInternal()
   {
     return ValidateCustomColumns();
   }
 
   [Browsable (false)]
-  public NaInt32 ModifiableRowIndex
+  public NaInt32 EditableRowIndex
   {
-    get { return _editModeController.ModifiableRowIndex; }
+    get { return _editModeController.EditableRowIndex; }
   }
 
   /// <remarks>
@@ -4596,7 +4604,7 @@ public class BocList:
     set { _editModeController.EnableEditModeValidator = value; }
   }
 
-  protected internal virtual void OnModifiableRowChangesSaving (
+  protected internal virtual void OnEditableRowChangesSaving (
       int index,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
@@ -4606,21 +4614,21 @@ public class BocList:
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);
     ArgumentUtility.CheckNotNull ("controls", controls);
 
-    BocListModifiableRowChangesEventHandler handler = 
-        (BocListModifiableRowChangesEventHandler) Events[s_modifiableRowChangesSavingEvent];
+    BocListEditableRowChangesEventHandler handler = 
+        (BocListEditableRowChangesEventHandler) Events[s_editableRowChangesSavingEvent];
     if (handler != null)
     {
-      BocListModifiableRowChangesEventArgs e = 
-          new BocListModifiableRowChangesEventArgs (index, businessObject, dataSource, controls);
+      BocListEditableRowChangesEventArgs e = 
+          new BocListEditableRowChangesEventArgs (index, businessObject, dataSource, controls);
       handler (this, e);
     }
   }
 
-  protected internal virtual void OnModifiableRowChangesSaved (int index, IBusinessObject businessObject)
+  protected internal virtual void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiableRowChangesSavedEvent];
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editableRowChangesSavedEvent];
     if (handler != null)
     {
       BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
@@ -4628,7 +4636,7 @@ public class BocList:
     }
   }
 
-  protected internal virtual void OnModifiableRowChangesCanceling (
+  protected internal virtual void OnEditableRowChangesCanceling (
       int index,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
@@ -4638,21 +4646,21 @@ public class BocList:
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);
     ArgumentUtility.CheckNotNull ("controls", controls);
 
-    BocListModifiableRowChangesEventHandler handler = 
-        (BocListModifiableRowChangesEventHandler) Events[s_modifiableRowChangesCancelingEvent];
+    BocListEditableRowChangesEventHandler handler = 
+        (BocListEditableRowChangesEventHandler) Events[s_editableRowChangesCancelingEvent];
     if (handler != null)
     {
-      BocListModifiableRowChangesEventArgs e = 
-          new BocListModifiableRowChangesEventArgs (index, businessObject, dataSource, controls);
+      BocListEditableRowChangesEventArgs e = 
+          new BocListEditableRowChangesEventArgs (index, businessObject, dataSource, controls);
       handler (this, e);
     }
   }
 
-  protected internal virtual void OnModifiableRowChangesCanceled (int index, IBusinessObject businessObject)
+  protected internal virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_modifiableRowChangesCanceledEvent];
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editableRowChangesCanceledEvent];
     if (handler != null)
     {
       BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
@@ -4663,42 +4671,42 @@ public class BocList:
   /// <summary> Is raised before the modified row is saved. </summary>
   [Category ("Action")]
   [Description ("Is raised before the modified row is saved.")]
-  public event BocListModifiableRowChangesEventHandler ModifiableRowChangesSaving
+  public event BocListEditableRowChangesEventHandler EditableRowChangesSaving
   {
-    add { Events.AddHandler (s_modifiableRowChangesSavingEvent, value); }
-    remove { Events.RemoveHandler (s_modifiableRowChangesSavingEvent, value); }
+    add { Events.AddHandler (s_editableRowChangesSavingEvent, value); }
+    remove { Events.RemoveHandler (s_editableRowChangesSavingEvent, value); }
   }
 
   /// <summary> Is raised after the modified row's changes have been saved. </summary>
   [Category ("Action")]
   [Description ("Is raised after the modified row's changes have been saved.")]
-  public event BocListItemEventHandler ModifiableRowChangesSaved
+  public event BocListItemEventHandler EditableRowChangesSaved
   {
-    add { Events.AddHandler (s_modifiableRowChangesSavedEvent, value); }
-    remove { Events.RemoveHandler (s_modifiableRowChangesSavedEvent, value); }
+    add { Events.AddHandler (s_editableRowChangesSavedEvent, value); }
+    remove { Events.RemoveHandler (s_editableRowChangesSavedEvent, value); }
   }
 
   /// <summary> Is raised before the modified row's changes are canceled. </summary>
   [Category ("Action")]
   [Description ("Is raised before the modified row's changes are canceled.")]
-  public event BocListModifiableRowChangesEventHandler ModifiableRowChangesCanceling
+  public event BocListEditableRowChangesEventHandler EditableRowChangesCanceling
   {
-    add { Events.AddHandler (s_modifiableRowChangesCancelingEvent, value); }
-    remove { Events.RemoveHandler (s_modifiableRowChangesCancelingEvent, value); }
+    add { Events.AddHandler (s_editableRowChangesCancelingEvent, value); }
+    remove { Events.RemoveHandler (s_editableRowChangesCancelingEvent, value); }
   }
 
   /// <summary> Is raised after the modified row's changes have been canceled. </summary>
   [Category ("Action")]
   [Description ("Is raised after the modified row's changes have been canceled.")]
-  public event BocListItemEventHandler ModifiableRowChangesCanceled
+  public event BocListItemEventHandler EditableRowChangesCanceled
   {
-    add { Events.AddHandler (s_modifiableRowChangesCanceledEvent, value); }
-    remove { Events.RemoveHandler (s_modifiableRowChangesCanceledEvent, value); }
+    add { Events.AddHandler (s_editableRowChangesCanceledEvent, value); }
+    remove { Events.RemoveHandler (s_editableRowChangesCanceledEvent, value); }
   }
 
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public ModifiableRowDataSourceFactory EditModeDataSourceFactory
+  public EditableRowDataSourceFactory EditModeDataSourceFactory
   {
     get { return _editModeDataSourceFactory; }
     set { _editModeDataSourceFactory = value; }
@@ -4706,7 +4714,7 @@ public class BocList:
 
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public ModifiableRowControlFactory EditModeControlFactory
+  public EditableRowControlFactory EditModeControlFactory
   {
     get { return _editModeControlFactory; }
     set { _editModeControlFactory = value; }
@@ -4747,7 +4755,7 @@ public class BocList:
 //    for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
 //    {
 //      int originalRowIndex = sortedRows[idxRows].Index;
-//      if (_modifiableRowIndex.Value == originalRowIndex)
+//      if (_editableRowIndex.Value == originalRowIndex)
 //      {
 //        _currentRow = idxRows;
 //        break;
