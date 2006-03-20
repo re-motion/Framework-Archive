@@ -89,14 +89,14 @@ public class EditableRow : PlaceHolder, INamingContainer
     if (_dataSourceFactory == null)
     {
       throw new InvalidOperationException (string.Format (
-          "BocList '{0}': No EditableRowDataSourceFactory has been assigned to the EditableRow prior to invoking CreateControls().", 
+          "BocList '{0}': DataSourceFactory has not been set prior to invoking CreateControls().", 
           _ownerControl.ID));
     }
 
     if (_controlFactory == null)
     {
       throw new InvalidOperationException (string.Format (
-          "BocList '{0}': No EditableRowControlFactory has been assigned to the EditableRow prior to invoking CreateControls().", 
+          "BocList '{0}': ControlFactory has not been set prior to invoking CreateControls().", 
           _ownerControl.ID));
     }
 

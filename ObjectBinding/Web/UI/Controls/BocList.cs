@@ -465,8 +465,8 @@ public class BocList:
   private bool _hasClientScript = false;
 
   private EditModeController _editModeController;
-  private EditableRowDataSourceFactory _editModeDataSourceFactory;
-  private EditableRowControlFactory _editModeControlFactory;
+  private EditableRowDataSourceFactory _editModeDataSourceFactory = new EditableRowDataSourceFactory();
+  private EditableRowControlFactory _editModeControlFactory = new EditableRowControlFactory();
 
   private string _errorMessage;
   private ArrayList _validators;
@@ -4457,34 +4457,6 @@ public class BocList:
     RemoveRow ((IBusinessObject) Value[index]);
   }
 
-  protected virtual EditableRowDataSourceFactory CreateEditModeDataSourceFactory()
-  {
-    return new EditableRowDataSourceFactory();
-  }
-
-  protected virtual EditableRowControlFactory CreateEditModeControlFactory()
-  {
-    return new EditableRowControlFactory();
-  }
-
-  [EditorBrowsable (EditorBrowsableState.Advanced)]
-  public EditableRowDataSourceFactory GetEditModeDataSourceFactory()
-  {
-    if (EditModeDataSourceFactory == null)
-      return CreateEditModeDataSourceFactory();
-    else
-      return EditModeDataSourceFactory;
-  }
-
-  [EditorBrowsable (EditorBrowsableState.Advanced)]
-  public EditableRowControlFactory GetEditModeControlFactory()
-  {
-    if (EditModeControlFactory == null)
-      return CreateEditModeControlFactory();
-    else
-      return EditModeControlFactory;
-  }
-
   /// <summary>
   ///   Saves changes to previous edited row and starts editing for the new row.
   /// </summary>
@@ -4708,16 +4680,30 @@ public class BocList:
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public EditableRowDataSourceFactory EditModeDataSourceFactory
   {
-    get { return _editModeDataSourceFactory; }
-    set { _editModeDataSourceFactory = value; }
+    get 
+    {
+      return _editModeDataSourceFactory; 
+    }
+    set 
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      _editModeDataSourceFactory = value; 
+    }
   }
 
   [Browsable (false)]
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public EditableRowControlFactory EditModeControlFactory
   {
-    get { return _editModeControlFactory; }
-    set { _editModeControlFactory = value; }
+    get
+    {
+      return _editModeControlFactory; 
+    }
+    set 
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      _editModeControlFactory = value; 
+    }
   }
 
   /// <remarks>

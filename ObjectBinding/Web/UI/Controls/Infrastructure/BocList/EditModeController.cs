@@ -295,13 +295,8 @@ public class EditModeController : PlaceHolder
     EditableRow row = new EditableRow (_ownerControl);
     row.ID = ID + "_Row" + rowIndex.ToString();
 
-    EditableRowDataSourceFactory dataSourceFactory = _ownerControl.GetEditModeDataSourceFactory();
-    if (dataSourceFactory != null)
-      row.DataSourceFactory = dataSourceFactory;
-
-    EditableRowControlFactory controlFactory = _ownerControl.GetEditModeControlFactory();
-    if (controlFactory != null)
-      row.ControlFactory = controlFactory;
+    row.DataSourceFactory = _ownerControl.EditModeDataSourceFactory;
+    row.ControlFactory = _ownerControl.EditModeControlFactory;
 
     row.CreateControls (columns, value);
 
