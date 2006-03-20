@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using Rubicon.Utilities;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
@@ -6,11 +7,11 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
 #region Obsolete
 
-[Obsolete ("Use BocListModifiableRowChangesEventHandler instead.", true)]
+[Obsolete ("Use BocListEditableRowChangesEventHandler instead.", true)]
 public delegate void BocListRowEditModeEventHandler (object sender, BocListRowEditModeEventArgs e);
 
-[Obsolete ("Use BocListModifiableRowChangesEventArgs instead.", true)]
-public class BocListRowEditModeEventArgs: BocListModifiableRowChangesEventArgs
+[Obsolete ("Use BocListEditableRowChangesEventArgs instead.", true)]
+public class BocListRowEditModeEventArgs: BocListEditableRowChangesEventArgs
 {
   public BocListRowEditModeEventArgs (
       int listIndex, 
@@ -85,14 +86,14 @@ public class BocListItemEventArgs: EventArgs
   }
 }
 
-public delegate void BocListModifiableRowChangesEventHandler (object sender, BocListModifiableRowChangesEventArgs e);
+public delegate void BocListEditableRowChangesEventHandler (object sender, BocListEditableRowChangesEventArgs e);
 
-public class BocListModifiableRowChangesEventArgs : BocListItemEventArgs
+public class BocListEditableRowChangesEventArgs : BocListItemEventArgs
 {
   private IBusinessObjectBoundModifiableControl[] _controls;
   private IBusinessObjectDataSource _dataSource;
 
-  public BocListModifiableRowChangesEventArgs (
+  public BocListEditableRowChangesEventArgs (
       int listIndex, 
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
@@ -118,17 +119,29 @@ public delegate void BocListDataRowRenderEventHandler (object sender, BocListDat
 
 public class BocListDataRowRenderEventArgs: BocListItemEventArgs
 {
-  private bool _isModifiableRow = true;
+  #region Obsolete
+  
+  [Obsolete ("Use IsEditableRow instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public bool IsModifiableRow
+  {
+    get { return IsEditableRow; }
+    set { IsEditableRow = value; }
+  }
+
+  #endregion
+
+  private bool _isEditableRow = true;
 
   public BocListDataRowRenderEventArgs (int listIndex, IBusinessObject businessObject)
     : base (listIndex, businessObject)
   {
   }
 
-  public bool IsModifiableRow
+  public bool IsEditableRow
   {
-    get { return _isModifiableRow; }
-    set { _isModifiableRow = value; }
+    get { return _isEditableRow; }
+    set { _isEditableRow = value; }
   }
 }
 
