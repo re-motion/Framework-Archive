@@ -13,7 +13,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 {
 
 [TestFixture]
-public class ModifiableRowDataSourceFactoryTest
+public class EditableRowDataSourceFactoryTest
 {
   // types
 
@@ -22,11 +22,11 @@ public class ModifiableRowDataSourceFactoryTest
   // member fields
 
   private TypeWithString _value;
-  private ModifiableRowDataSourceFactory _factory;
+  private EditableRowDataSourceFactory _factory;
 
   // construction and disposing
 
-  public ModifiableRowDataSourceFactoryTest ()
+  public EditableRowDataSourceFactoryTest ()
   {
   }
 
@@ -37,7 +37,7 @@ public class ModifiableRowDataSourceFactoryTest
   {
     _value = new TypeWithString ();
 
-    _factory = new ModifiableRowDataSourceFactory ();
+    _factory = new EditableRowDataSourceFactory ();
   }
 
   [Test]
