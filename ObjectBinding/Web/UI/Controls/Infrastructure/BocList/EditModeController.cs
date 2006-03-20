@@ -31,12 +31,12 @@ public class EditModeController : PlaceHolder
   private Controls.BocList _ownerControl;
 
   private bool _isListEditModeActive;
-  private NaInt32 _modifiableRowIndex = NaInt32.Null;
+  private NaInt32 _editableRowIndex = NaInt32.Null;
   private bool _isEditNewRow = false;
   
   private bool _isEditModeRestored = false;
   
-  internal ModifiableRow[] _rows;
+  internal EditableRow[] _rows;
 
   private bool _enableEditModeValidator = true;
   private bool _showEditModeRequiredMarkers = true;
@@ -92,7 +92,7 @@ public class EditModeController : PlaceHolder
     if (_ownerControl.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
       return;
 
-    _modifiableRowIndex = index;
+    _editableRowIndex = index;
     CreateEditModeControls (columns);
     LoadValues (false);
   }
@@ -167,12 +167,12 @@ public class EditModeController : PlaceHolder
 
     if (! _ownerControl.IsReadOnly)
     {
-      int index = _modifiableRowIndex.Value;
+      int index = _editableRowIndex.Value;
       IBusinessObject value = (IBusinessObject) _ownerControl.Value[index];
 
       if (saveChanges)
       {
-        OnModifiableRowChangesSaving (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
+        OnEditableRowChangesSaving (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
         
         bool isValid = Validate();
         if (! isValid)
@@ -181,28 +181,28 @@ public class EditModeController : PlaceHolder
         _ownerControl.IsDirty = IsDirty();
 
         _rows[0].GetDataSource().SaveValues (false);
-        OnModifiableRowChangesSaved (index, value);
+        OnEditableRowChangesSaved (index, value);
       }
       else
       {
-        OnModifiableRowChangesCanceling (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
+        OnEditableRowChangesCanceling (index, value, _rows[0].GetDataSource(), _rows[0].GetEditControlsAsArray());
         
         if (_isEditNewRow)
         {
           _ownerControl.RemoveRowInternal (value);
-          OnModifiableRowChangesCanceled (-1, value);
+          OnEditableRowChangesCanceled (-1, value);
         }
         else
         {
-          OnModifiableRowChangesCanceled (index, value);
+          OnEditableRowChangesCanceled (index, value);
         }
       }
 
-      _ownerControl.EndEditDetailsModeCleanUp (_modifiableRowIndex.Value);
+      _ownerControl.EndEditDetailsModeCleanUp (_editableRowIndex.Value);
     }
 
     RemoveEditModeControls();
-    _modifiableRowIndex = NaInt32.Null;
+    _editableRowIndex = NaInt32.Null;
     _isEditNewRow = false;
   }
 
@@ -221,7 +221,7 @@ public class EditModeController : PlaceHolder
       if (saveChanges)
       {
         for (int i = 0; i < _rows.Length; i++)
-          OnModifiableRowChangesSaving (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
+          OnEditableRowChangesSaving (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
 
         bool isValid = Validate();
         if (! isValid)
@@ -233,23 +233,23 @@ public class EditModeController : PlaceHolder
           _rows[i].GetDataSource().SaveValues (false);
 
         for (int i = 0; i < _rows.Length; i++)
-          OnModifiableRowChangesSaved (i, values[i]);
+          OnEditableRowChangesSaved (i, values[i]);
       }
       else
       {
         for (int i = 0; i < _rows.Length; i++)
-          OnModifiableRowChangesCanceling (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
+          OnEditableRowChangesCanceling (i, values[i], _rows[i].GetDataSource(), _rows[i].GetEditControlsAsArray());
 
         //if (_isEditNewRow)
         //{
-        //  IBusinessObject editedBusinessObject = values[_modifiableRowIndex.Value];
-        //  RemoveRow (_modifiableRowIndex.Value);
+        //  IBusinessObject editedBusinessObject = values[_editableRowIndex.Value];
+        //  RemoveRow (_editableRowIndex.Value);
         //  OnRowEditModeCanceled (-1, editedBusinessObject);
         //}
         //else
         //{
         for (int i = 0; i < _rows.Length; i++)
-          OnModifiableRowChangesCanceled (i, values[i]);
+          OnEditableRowChangesCanceled (i, values[i]);
         //}
       }
 
@@ -265,41 +265,41 @@ public class EditModeController : PlaceHolder
   {
     if (IsEditDetailsModeActive)
     {
-      IBusinessObject value = (IBusinessObject) _ownerControl.Value[_modifiableRowIndex.Value];
-      PopulateModifiableRows (new IBusinessObject[] {value}, columns);
+      IBusinessObject value = (IBusinessObject) _ownerControl.Value[_editableRowIndex.Value];
+      PopulateEditableRows (new IBusinessObject[] {value}, columns);
     }
     else if (IsListEditModeActive)
     {
-      PopulateModifiableRows (_ownerControl.Value, columns);
+      PopulateEditableRows (_ownerControl.Value, columns);
     }
   }
 
-  private void PopulateModifiableRows (IList values, BocColumnDefinition[] columns)
+  private void PopulateEditableRows (IList values, BocColumnDefinition[] columns)
   {
     EnsureChildControls();
 
-    _rows = new ModifiableRow[values.Count];
+    _rows = new EditableRow[values.Count];
     Controls.Clear();
 
     for (int i = 0; i < values.Count; i++)
     {
-      ModifiableRow row = CreateModifiableRow (i, (IBusinessObject) values[i], columns);
+      EditableRow row = CreateEditableRow (i, (IBusinessObject) values[i], columns);
 
       _rows[i] = row;
       Controls.Add (row);
     }
   }
 
-  private ModifiableRow CreateModifiableRow (int rowIndex, IBusinessObject value, BocColumnDefinition[] columns)
+  private EditableRow CreateEditableRow (int rowIndex, IBusinessObject value, BocColumnDefinition[] columns)
   {
-    ModifiableRow row = new ModifiableRow (_ownerControl);
+    EditableRow row = new EditableRow (_ownerControl);
     row.ID = ID + "_Row" + rowIndex.ToString();
 
-    ModifiableRowDataSourceFactory dataSourceFactory = _ownerControl.GetEditModeDataSourceFactory();
+    EditableRowDataSourceFactory dataSourceFactory = _ownerControl.GetEditModeDataSourceFactory();
     if (dataSourceFactory != null)
       row.DataSourceFactory = dataSourceFactory;
 
-    ModifiableRowControlFactory controlFactory = _ownerControl.GetEditModeControlFactory();
+    EditableRowControlFactory controlFactory = _ownerControl.GetEditModeControlFactory();
     if (controlFactory != null)
       row.ControlFactory = controlFactory;
 
@@ -329,7 +329,7 @@ public class EditModeController : PlaceHolder
         throw new InvalidOperationException (string.Format (
             "Cannot restore edit mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
       }
-      if (IsEditDetailsModeActive && _modifiableRowIndex.Value >= _ownerControl.Value.Count)
+      if (IsEditDetailsModeActive && _editableRowIndex.Value >= _ownerControl.Value.Count)
       {
         throw new InvalidOperationException (string.Format ("Cannot restore edit details mode: "
             + "The Value collection of the BocList '{0}' no longer contains the previously modified row.", 
@@ -365,12 +365,12 @@ public class EditModeController : PlaceHolder
         ArrayList newRows = new ArrayList (businessObjects.Length);
         for (int i = startIndex; i < _ownerControl.Value.Count; i++)
         {
-          ModifiableRow newRow = CreateModifiableRow (i, (IBusinessObject) _ownerControl.Value[i], columns);
+          EditableRow newRow = CreateEditableRow (i, (IBusinessObject) _ownerControl.Value[i], columns);
           newRow.GetDataSource().LoadValues (false);
           Controls.Add (newRow);
           newRows.Add (newRow);
         }
-        _rows = (ModifiableRow[]) ListUtility.AddRange (_rows, newRows, (CreateListMethod) null, true, true);
+        _rows = (EditableRow[]) ListUtility.AddRange (_rows, newRows, (CreateListMethod) null, true, true);
       }
     }
   }
@@ -389,10 +389,10 @@ public class EditModeController : PlaceHolder
       EnsureEditModeRestored (oldColumns);
       if (IsListEditModeActive)
       {
-        ModifiableRow newRow = CreateModifiableRow (index, businessObject, columns);
+        EditableRow newRow = CreateEditableRow (index, businessObject, columns);
         newRow.GetDataSource().LoadValues (false);
         Controls.Add (newRow);
-        _rows = (ModifiableRow[]) ListUtility.AddRange (_rows, newRow, (CreateListMethod) null, true, true);
+        _rows = (EditableRow[]) ListUtility.AddRange (_rows, newRow, (CreateListMethod) null, true, true);
       }
     }
 
@@ -420,12 +420,12 @@ public class EditModeController : PlaceHolder
         ArrayList rows = new ArrayList (indices.Length);
         foreach (int index in indices)
         {
-          ModifiableRow row = _rows[index];
+          EditableRow row = _rows[index];
           Controls.Remove (row);
           row.RemoveControls();
           rows.Add (row);
         }
-        _rows = (ModifiableRow[]) ListUtility.Remove (_rows, rows, (CreateListMethod) null, true);
+        _rows = (EditableRow[]) ListUtility.Remove (_rows, rows, (CreateListMethod) null, true);
         RefreshIDs();
       }
     }
@@ -454,10 +454,10 @@ public class EditModeController : PlaceHolder
         int index = ListUtility.IndexOf (_ownerControl.Value, businessObject);
         if (index != -1)
         {
-          ModifiableRow row = _rows[index];
+          EditableRow row = _rows[index];
           Controls.Remove (row);
           row.RemoveControls();
-          _rows = (ModifiableRow[]) ListUtility.Remove (_rows, row, (CreateListMethod) null, true);
+          _rows = (EditableRow[]) ListUtility.Remove (_rows, row, (CreateListMethod) null, true);
         }
         RefreshIDs();
       }
@@ -470,7 +470,7 @@ public class EditModeController : PlaceHolder
   {
     for (int i = 0; i < Controls.Count; i++)
     {
-      ModifiableRow row = (ModifiableRow) Controls[i];
+      EditableRow row = (EditableRow) Controls[i];
       string newID = ID + "_Row" + i.ToString();
       if (row.ID != newID)
         row.ID = newID;
@@ -484,7 +484,7 @@ public class EditModeController : PlaceHolder
   /// </remarks>
   public bool IsEditDetailsModeActive
   {
-    get { return ! _modifiableRowIndex.IsNull; } 
+    get { return ! _editableRowIndex.IsNull; } 
   }
 
   /// <remarks>
@@ -496,9 +496,9 @@ public class EditModeController : PlaceHolder
     get { return _isListEditModeActive; } 
   }
 
-  public NaInt32 ModifiableRowIndex
+  public NaInt32 EditableRowIndex
   {
-    get { return _modifiableRowIndex; }
+    get { return _editableRowIndex; }
   }
 
 
@@ -523,7 +523,7 @@ public class EditModeController : PlaceHolder
       if (IsEditDetailsModeActive)
       {
         editDetailsValidator.ErrorMessage = 
-            resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.EditDetailsErrorMessage);
+            resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.RowEditModeErrorMessage);
       }
       else if (IsListEditModeActive)
       {
@@ -567,7 +567,7 @@ public class EditModeController : PlaceHolder
       for (int i = 0; i < _rows.Length; i++)
         isValid &= _rows[i].Validate();
     
-      isValid &= _ownerControl.ValidateModifiableRowsInternal();
+      isValid &= _ownerControl.ValidateEditableRowsInternal();
     }
 
     return isValid;
@@ -654,7 +654,7 @@ public class EditModeController : PlaceHolder
       
       base.LoadViewState (values[0]);
       _isListEditModeActive = (bool) values[1];
-      _modifiableRowIndex = (NaInt32) values[2];
+      _editableRowIndex = (NaInt32) values[2];
       _isEditNewRow = (bool) values[3];
     }
   }
@@ -667,14 +667,14 @@ public class EditModeController : PlaceHolder
 
     values[0] = base.SaveViewState();
     values[1] = _isListEditModeActive;
-    values[2] = _modifiableRowIndex;
+    values[2] = _editableRowIndex;
     values[3] = _isEditNewRow;
 
     return values;
   }
 
 
-  protected virtual void OnModifiableRowChangesSaving (
+  protected virtual void OnEditableRowChangesSaving (
       int index,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
@@ -684,17 +684,17 @@ public class EditModeController : PlaceHolder
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);
     ArgumentUtility.CheckNotNull ("controls", controls);
 
-    _ownerControl.OnModifiableRowChangesSaving (index, businessObject, dataSource, controls);
+    _ownerControl.OnEditableRowChangesSaving (index, businessObject, dataSource, controls);
   }
 
-  protected virtual void OnModifiableRowChangesSaved (int index, IBusinessObject businessObject)
+  protected virtual void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
-    _ownerControl.OnModifiableRowChangesSaved (index, businessObject);
+    _ownerControl.OnEditableRowChangesSaved (index, businessObject);
   }
 
-  protected virtual void OnModifiableRowChangesCanceling (
+  protected virtual void OnEditableRowChangesCanceling (
       int index,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
@@ -704,14 +704,14 @@ public class EditModeController : PlaceHolder
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);
     ArgumentUtility.CheckNotNull ("controls", controls);
 
-    _ownerControl.OnModifiableRowChangesCanceling (index, businessObject, dataSource, controls);
+    _ownerControl.OnEditableRowChangesCanceling (index, businessObject, dataSource, controls);
   }
 
-  protected virtual void OnModifiableRowChangesCanceled (int index, IBusinessObject businessObject)
+  protected virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
 
-    _ownerControl.OnModifiableRowChangesCanceled (index, businessObject);
+    _ownerControl.OnEditableRowChangesCanceled (index, businessObject);
   }
 
 
