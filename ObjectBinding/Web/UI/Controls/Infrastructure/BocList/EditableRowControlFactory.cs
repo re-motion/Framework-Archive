@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
 
-public class ModifiableRowControlFactory
+public class EditableRowControlFactory
 {
   // types
 
@@ -18,7 +18,7 @@ public class ModifiableRowControlFactory
 
   // construction and disposing
 
-  public ModifiableRowControlFactory ()
+  public EditableRowControlFactory ()
   {
   }
 

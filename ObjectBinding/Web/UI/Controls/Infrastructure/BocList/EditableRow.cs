@@ -16,7 +16,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
 
 [ToolboxItem (false)]
-public class ModifiableRow : PlaceHolder, INamingContainer
+public class EditableRow : PlaceHolder, INamingContainer
 {
   // types
 
@@ -28,8 +28,8 @@ public class ModifiableRow : PlaceHolder, INamingContainer
 
   private Controls.BocList _ownerControl;
 
-  private ModifiableRowDataSourceFactory _dataSourceFactory;
-  private ModifiableRowControlFactory _controlFactory;
+  private EditableRowDataSourceFactory _dataSourceFactory;
+  private EditableRowControlFactory _controlFactory;
   
   private IBusinessObjectReferenceDataSource _dataSource;
 
@@ -41,7 +41,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
 
   // construction and disposing
 
-  public ModifiableRow (Controls.BocList ownerControl)
+  public EditableRow (Controls.BocList ownerControl)
   {
     ArgumentUtility.CheckNotNull ("ownerControl", ownerControl);
 
@@ -55,7 +55,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     get { return _ownerControl; }
   }
 
-  public ModifiableRowDataSourceFactory DataSourceFactory
+  public EditableRowDataSourceFactory DataSourceFactory
   {
     get 
     {
@@ -68,7 +68,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     }
   }
 
-  public ModifiableRowControlFactory ControlFactory
+  public EditableRowControlFactory ControlFactory
   {
     get 
     {
@@ -89,14 +89,14 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     if (_dataSourceFactory == null)
     {
       throw new InvalidOperationException (string.Format (
-          "BocList '{0}': No ModifiableRowDataSourceFactory has been assigned to the ModifiableRow prior to invoking CreateControls().", 
+          "BocList '{0}': No EditableRowDataSourceFactory has been assigned to the EditableRow prior to invoking CreateControls().", 
           _ownerControl.ID));
     }
 
     if (_controlFactory == null)
     {
       throw new InvalidOperationException (string.Format (
-          "BocList '{0}': No ModifiableRowControlFactory has been assigned to the ModifiableRow prior to invoking CreateControls().", 
+          "BocList '{0}': No EditableRowControlFactory has been assigned to the EditableRow prior to invoking CreateControls().", 
           _ownerControl.ID));
     }
 
@@ -110,7 +110,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     {
       BocSimpleColumnDefinition simpleColumn = columns[idxColumns] as BocSimpleColumnDefinition;
 
-      if (IsColumnModifiable (simpleColumn))
+      if (IsColumnEditable (simpleColumn))
       {
         IBusinessObjectBoundModifiableWebControl control = _controlFactory.Create (simpleColumn, idxColumns);
 
@@ -145,7 +145,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     }
   }
 
-  protected bool IsColumnModifiable (BocSimpleColumnDefinition column)
+  protected bool IsColumnEditable (BocSimpleColumnDefinition column)
   {
     if (column == null)
       return false;
