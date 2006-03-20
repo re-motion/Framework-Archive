@@ -48,7 +48,7 @@
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.AvailableViewsListTitle">
         <value>Ansicht</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsErrorMessage">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage">
         <value>In der gerade bearbeiteten Zeile sind Fehler aufgetreten.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle">
@@ -63,13 +63,13 @@
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EmptyListMessage.SortDescendingAlternateText">
         <value>Absteigend sortiert.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsEditAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowEditModeEditAlternateText">
         <value>Zeile bearbeiten.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsSaveAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowEditModeSaveAlternateText">
         <value>Änderungen an der Zeile übernehmen.</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsCancelAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCancelAlternateText">
         <value>Änderungen an der Zeile verwerfen.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToFirstAlternateText">
