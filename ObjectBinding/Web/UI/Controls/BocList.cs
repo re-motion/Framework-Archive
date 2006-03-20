@@ -4451,12 +4451,12 @@ public class BocList:
 
   protected virtual ModifiableRowDataSourceFactory CreateEditModeDataSourceFactory()
   {
-    return null;
+    return new ModifiableRowDataSourceFactory();
   }
 
   protected virtual ModifiableRowControlFactory CreateEditModeControlFactory()
   {
-    return null;
+    return new ModifiableRowControlFactory();
   }
 
   [EditorBrowsable (EditorBrowsableState.Advanced)]

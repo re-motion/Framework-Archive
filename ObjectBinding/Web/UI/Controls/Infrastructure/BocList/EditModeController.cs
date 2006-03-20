@@ -322,19 +322,22 @@ public class EditModeController : PlaceHolder
       return;
     _isEditModeRestored = true;
 
-    if (_ownerControl.Value == null)
+    if (IsEditDetailsModeActive || IsListEditModeActive)
     {
-      throw new InvalidOperationException (string.Format (
-          "Cannot restore edit mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
-    }
-    if (IsEditDetailsModeActive && _modifiableRowIndex.Value >= _ownerControl.Value.Count)
-    {
-      throw new InvalidOperationException (string.Format ("Cannot restore edit details mode: "
-          + "The Value collection of the BocList '{0}' no longer contains the previously modified row.", 
-          _ownerControl.ID));
-    }
+      if (_ownerControl.Value == null)
+      {
+        throw new InvalidOperationException (string.Format (
+            "Cannot restore edit mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
+      }
+      if (IsEditDetailsModeActive && _modifiableRowIndex.Value >= _ownerControl.Value.Count)
+      {
+        throw new InvalidOperationException (string.Format ("Cannot restore edit details mode: "
+            + "The Value collection of the BocList '{0}' no longer contains the previously modified row.", 
+            _ownerControl.ID));
+      }
 
-    CreateEditModeControls (oldColumns);
+      CreateEditModeControls (oldColumns);
+    }
   }
 
   private void RemoveEditModeControls()

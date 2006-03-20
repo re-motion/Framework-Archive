@@ -86,11 +86,24 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
     ArgumentUtility.CheckNotNull ("value", value);
 
-    EnsureFactories();
+    if (_dataSourceFactory == null)
+    {
+      throw new InvalidOperationException (string.Format (
+          "BocList '{0}': No ModifiableRowDataSourceFactory has been assigned to the ModifiableRow prior to invoking CreateControls().", 
+          _ownerControl.ID));
+    }
+
+    if (_controlFactory == null)
+    {
+      throw new InvalidOperationException (string.Format (
+          "BocList '{0}': No ModifiableRowControlFactory has been assigned to the ModifiableRow prior to invoking CreateControls().", 
+          _ownerControl.ID));
+    }
 
     CreatePlaceHolders (columns);
 
     _dataSource = _dataSourceFactory.Create (value);
+
     _rowEditModeControls = new IBusinessObjectBoundModifiableWebControl[columns.Length];
 
     for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
@@ -105,21 +118,14 @@ public class ModifiableRow : PlaceHolder, INamingContainer
         {
           control.ID = idxColumns.ToString();
           control.DataSource = _dataSource;
-          control.Property = simpleColumn.PropertyPath.LastProperty;
+          control.Property = simpleColumn.PropertyPath.Properties[0];
           SetEditControl (idxColumns, control);
 
           _rowEditModeControls[idxColumns] = control;
         }
       }
-    }    
-  }
-
-  protected void EnsureFactories ()
-  {
-    if (_dataSourceFactory == null)
-      _dataSourceFactory = new ModifiableRowDataSourceFactory ();
-    if (_controlFactory == null)
-      _controlFactory = new ModifiableRowControlFactory ();
+    }  
+    _isRowEditModeValidatorsRestored = false;
   }
 
   protected void CreatePlaceHolders (BocColumnDefinition[] columns)
@@ -167,8 +173,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     ArgumentUtility.CheckNotNullAndType ("control", control, typeof (Control));
 
     ControlCollection cellControls = GetEditControls (index);
-    if (cellControls.Count > 0)
-      cellControls.Clear();
+    cellControls.Clear();
     cellControls.Add ((Control) control);
   }
 
@@ -181,8 +186,15 @@ public class ModifiableRow : PlaceHolder, INamingContainer
 
   public IBusinessObjectBoundModifiableWebControl GetEditControl (int columnIndex)
   {
-    ControlCollection controls = GetEditControls (columnIndex);
-    return (IBusinessObjectBoundModifiableWebControl) controls[0];
+    if (HasEditControl (columnIndex))
+    {
+      ControlCollection controls = GetEditControls (columnIndex);
+      return (IBusinessObjectBoundModifiableWebControl) controls[0];
+    }
+    else
+    {
+      return null;
+    }
   }
 
   public bool HasEditControls ()
@@ -210,8 +222,11 @@ public class ModifiableRow : PlaceHolder, INamingContainer
   public ControlCollection GetValidators (int columnIndex)
   {
     if (columnIndex < 0 || columnIndex >= _validatorControls.Controls.Count) throw new ArgumentOutOfRangeException ("columnIndex");
-
-    return _validatorControls.Controls[columnIndex].Controls;
+    
+    if (HasEditControl (columnIndex))
+      return _validatorControls.Controls[columnIndex].Controls;
+    else
+      return null;
   }
 
   public bool HasValidators ()
@@ -222,7 +237,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
   public bool HasValidators (int columnIndex)
   {
     if (HasValidators())
-      return GetValidators (columnIndex).Count > 0;
+      return HasEditControl (columnIndex);
     else
       return false;
   }
@@ -239,6 +254,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     if (_isRowEditModeValidatorsRestored)
       return;
     _isRowEditModeValidatorsRestored = true;
+
     if (! HasEditControls())
       return;
 
@@ -246,7 +262,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
       CreateValidators (i);
   }
 
-  public void CreateValidators (int columnIndex)
+  protected void CreateValidators (int columnIndex)
   {
     if (HasEditControl (columnIndex))
     {
@@ -270,7 +286,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     return isValid;
   }
 
-  public bool Validate (int columnIndex)
+  protected bool Validate (int columnIndex)
   {
     bool isValid = true;
 
@@ -303,7 +319,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     return trackedIDsArray;
   }
 
-  public string[] GetTrackedClientIDs (int columnIndex)
+  protected string[] GetTrackedClientIDs (int columnIndex)
   {
     if (HasEditControl (columnIndex))
       return GetEditControl (columnIndex).GetTrackedClientIDs();
@@ -324,7 +340,7 @@ public class ModifiableRow : PlaceHolder, INamingContainer
     return false;
   }
   
-  public bool IsDirty (int columnIndex)
+  protected bool IsDirty (int columnIndex)
   {
     if (HasEditControl (columnIndex))
       return GetEditControl (columnIndex).IsDirty;

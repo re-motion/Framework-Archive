@@ -117,6 +117,28 @@ public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
     Assert.IsFalse (Controller.IsEditDetailsModeActive);
     Assert.IsFalse (Controller.IsListEditModeActive);
   }
+
+  [Test]
+  public void EnsureEditModeRestored ()
+  {
+    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+
+    Controller.EnsureEditModeRestored (Columns);
+    
+    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+  }
+
+  [Test]
+  public void EnsureEditModeRestoredWithValueNull ()
+  {
+    Controller.OwnerControl.LoadUnboundValue (null, false);    
+   
+    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+
+    Controller.EnsureEditModeRestored (Columns);
+    
+    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+  }
 }
 
 }
