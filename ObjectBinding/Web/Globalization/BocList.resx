@@ -48,7 +48,7 @@
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.AvailableViewsListTitle">
         <value>View</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsErrorMessage">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowEditModeErrorMessage">
         <value>Errors have been found in the row currently being edited.</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RequiredFieldTitle">
@@ -69,13 +69,13 @@
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.SortDescendingAlternateText">
         <value>Sorted Descending</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsEditAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowEditModeEditAlternateText">
         <value>Edit Row</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsSaveAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowEditModeSaveAlternateText">
         <value>Save Changes to Row</value>
     </data>
-    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.EditDetailsCancelAlternateText">
+    <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.RowEditModeCancelAlternateText">
         <value>Discard Changes to Row</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.GoToFirstAlternateText">
