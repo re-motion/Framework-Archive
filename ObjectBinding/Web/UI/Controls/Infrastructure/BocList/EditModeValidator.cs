@@ -29,7 +29,7 @@ public class EditDetailsValidator : CustomValidator
 
   protected override bool EvaluateIsValid()
   {
-    return _owner.ValidateModifiableRows();
+    return _owner.ValidateEditableRows();
   }
 
   protected override bool ControlPropertiesValid()
