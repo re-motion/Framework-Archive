@@ -327,11 +327,11 @@
         editing, you can also use the <see cref="SwitchRowIntoEditMode"/> and <see cref="EndEditDetailsMode"/> methods
         to start and end the details editing mode.
       </para><para>
-        You can query the row row currently being edited through the <see cref="ModifiableRowIndex"/> property. Use the
+        You can query the row row currently being edited through the <see cref="EditableRowIndex"/> property. Use the
         <see cref="IsEditDetailsModeActive"/> flag to determine whether the <b>BocList</b> is currently in edit details
         mode.
       </para><para>
-        If you must validate the row being edited, you can call the <see cref="ValiadateModifiableRow"/> method. If
+        If you must validate the row being edited, you can call the <see cref="ValiadateEditableRow"/> method. If
         you use the <b>BocList</b> inside a <see cref="FormGridManager"/>, the edit details mode validators are 
         integrated into the form grid validation. The validators are also validated if you execute the 
         <see cref="EndEditDetailsMode"/> method or click <b>Save</b> in the edit details column.
