@@ -20,7 +20,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 {
 
 [TestFixture]
-public class ModifiableRowTest : BocTest
+public class EditableRowTest : BocTest
 {
   // types
 
@@ -29,7 +29,7 @@ public class ModifiableRowTest : BocTest
   // member fields
   
   private Rubicon.ObjectBinding.Web.UI.Controls.BocList _bocList;
-  private ModifiableRow _modifiableRow;
+  private EditableRow _editableRow;
 
   private TypeWithAllDataTypes _value01;
 
@@ -48,7 +48,7 @@ public class ModifiableRowTest : BocTest
 
   // construction and disposing
 
-  public ModifiableRowTest ()
+  public EditableRowTest ()
   {
   }
 
@@ -63,9 +63,9 @@ public class ModifiableRowTest : BocTest
     _bocList.ID = "BocList";
     NamingContainer.Controls.Add (_bocList);
 
-    _modifiableRow = new ModifiableRow (_bocList);
-    _modifiableRow.ID = "Row";
-    NamingContainer.Controls.Add (_modifiableRow);
+    _editableRow = new EditableRow (_bocList);
+    _editableRow.ID = "Row";
+    NamingContainer.Controls.Add (_editableRow);
 
     _value01 = new TypeWithAllDataTypes();
     _value01.StringValue = "A";
@@ -102,9 +102,9 @@ public class ModifiableRowTest : BocTest
   [Test]
   public void Initialize ()
   {
-    Assert.AreSame (_bocList, _modifiableRow.OwnerControl);
-    Assert.IsNull (_modifiableRow.DataSourceFactory);
-    Assert.IsNull (_modifiableRow.ControlFactory);
+    Assert.AreSame (_bocList, _editableRow.OwnerControl);
+    Assert.IsNull (_editableRow.DataSourceFactory);
+    Assert.IsNull (_editableRow.ControlFactory);
   }
 
 
@@ -113,21 +113,21 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    Assert.IsFalse (_modifiableRow.HasEditControls());
-    Assert.IsFalse (_modifiableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasEditControls());
+    Assert.IsFalse (_editableRow.HasValidators());
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
-    _modifiableRow.CreateControls (new BocColumnDefinition[0], _value01);
+    _editableRow.CreateControls (new BocColumnDefinition[0], _value01);
 
-    Assert.IsTrue (_modifiableRow.HasEditControls());
-    Assert.IsTrue (_modifiableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasEditControls());
+    Assert.IsTrue (_editableRow.HasValidators());
 
-    Assert.IsNotNull (_modifiableRow.DataSourceFactory);
-    Assert.IsNotNull (_modifiableRow.ControlFactory);
+    Assert.IsNotNull (_editableRow.DataSourceFactory);
+    Assert.IsNotNull (_editableRow.ControlFactory);
 
-    IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     Assert.IsNotNull (dataSource);
     Assert.AreSame (_value01, dataSource.BusinessObject);
   }
@@ -137,12 +137,12 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    Assert.IsFalse (_modifiableRow.HasEditControls());
-    Assert.IsFalse (_modifiableRow.HasValidators());
-    Assert.IsFalse (_modifiableRow.HasEditControl (0));
+    Assert.IsFalse (_editableRow.HasEditControls());
+    Assert.IsFalse (_editableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasEditControl (0));
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[7];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
@@ -153,32 +153,32 @@ public class ModifiableRowTest : BocTest
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    Assert.IsTrue (_modifiableRow.HasEditControls());
-    Assert.IsTrue (_modifiableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasEditControls());
+    Assert.IsTrue (_editableRow.HasValidators());
 
-    Assert.IsNotNull (_modifiableRow.DataSourceFactory);
-    Assert.IsNotNull (_modifiableRow.ControlFactory);
+    Assert.IsNotNull (_editableRow.DataSourceFactory);
+    Assert.IsNotNull (_editableRow.ControlFactory);
 
-    IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     Assert.IsNotNull (dataSource);
     Assert.AreSame (_value01, dataSource.BusinessObject);
 
-    Assert.IsTrue (_modifiableRow.HasEditControl (0));
-    Assert.IsFalse (_modifiableRow.HasEditControl (1));
-    Assert.IsFalse (_modifiableRow.HasEditControl (2));
-    Assert.IsFalse (_modifiableRow.HasEditControl (3));
-    Assert.IsFalse (_modifiableRow.HasEditControl (4));
-    Assert.IsFalse (_modifiableRow.HasEditControl (5));
-    Assert.IsTrue (_modifiableRow.HasEditControl (6));
+    Assert.IsTrue (_editableRow.HasEditControl (0));
+    Assert.IsFalse (_editableRow.HasEditControl (1));
+    Assert.IsFalse (_editableRow.HasEditControl (2));
+    Assert.IsFalse (_editableRow.HasEditControl (3));
+    Assert.IsFalse (_editableRow.HasEditControl (4));
+    Assert.IsFalse (_editableRow.HasEditControl (5));
+    Assert.IsTrue (_editableRow.HasEditControl (6));
 
-    IBusinessObjectBoundModifiableWebControl textBoxFirstValue = _modifiableRow.GetEditControl (0);
+    IBusinessObjectBoundModifiableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
     Assert.IsTrue (textBoxFirstValue is BocTextValue);
     Assert.AreSame (dataSource, textBoxFirstValue.DataSource);
     Assert.AreSame (_typeWithAllDataTypesStringValuePath.LastProperty, textBoxFirstValue.Property);
 
-    IBusinessObjectBoundModifiableWebControl textBoxSecondValue = _modifiableRow.GetEditControl (6);
+    IBusinessObjectBoundModifiableWebControl textBoxSecondValue = _editableRow.GetEditControl (6);
     Assert.IsTrue (textBoxSecondValue is BocTextValue);
     Assert.AreSame (dataSource, textBoxSecondValue.DataSource);
     Assert.AreSame (_typeWithAllDataTypesInt32ValuePath.LastProperty, textBoxSecondValue.Property);
@@ -186,22 +186,22 @@ public class ModifiableRowTest : BocTest
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "BocList 'BocList': No ModifiableRowDataSourceFactory has been assigned to the ModifiableRow prior to invoking CreateControls().")]
+      "BocList 'BocList': No EditableRowDataSourceFactory has been assigned to the EditableRow prior to invoking CreateControls().")]
   public void CreateControlsDataSourceFactoryNull ()
   {
     Invoker.InitRecursive();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
-    _modifiableRow.CreateControls (new BocColumnDefinition[0], _value01);
+    _editableRow.ControlFactory = new EditableRowControlFactory();
+    _editableRow.CreateControls (new BocColumnDefinition[0], _value01);
   }
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "BocList 'BocList': No ModifiableRowControlFactory has been assigned to the ModifiableRow prior to invoking CreateControls().")]
+      "BocList 'BocList': No EditableRowControlFactory has been assigned to the EditableRow prior to invoking CreateControls().")]
   public void CreateControlsControlFactoryNull ()
   {
     Invoker.InitRecursive();
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.CreateControls (new BocColumnDefinition[0], _value01);
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.CreateControls (new BocColumnDefinition[0], _value01);
   }
 
   [Test]
@@ -209,10 +209,10 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    Assert.IsFalse (_modifiableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasValidators());
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[7];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
@@ -223,24 +223,24 @@ public class ModifiableRowTest : BocTest
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored();
 
-    Assert.IsTrue (_modifiableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasValidators());
 
-    Assert.IsTrue (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
-    Assert.IsFalse (_modifiableRow.HasValidators (2));
-    Assert.IsFalse (_modifiableRow.HasValidators (3));
-    Assert.IsFalse (_modifiableRow.HasValidators (4));
-    Assert.IsFalse (_modifiableRow.HasValidators (5));
-    Assert.IsTrue (_modifiableRow.HasValidators (6));
+    Assert.IsTrue (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
+    Assert.IsFalse (_editableRow.HasValidators (2));
+    Assert.IsFalse (_editableRow.HasValidators (3));
+    Assert.IsFalse (_editableRow.HasValidators (4));
+    Assert.IsFalse (_editableRow.HasValidators (5));
+    Assert.IsTrue (_editableRow.HasValidators (6));
 
-    ControlCollection validators0 = _modifiableRow.GetValidators (0);
+    ControlCollection validators0 = _editableRow.GetValidators (0);
     Assert.IsNotNull (validators0);
     Assert.AreEqual (0, validators0.Count);
 
-    ControlCollection validators6 = _modifiableRow.GetValidators (6);
+    ControlCollection validators6 = _editableRow.GetValidators (6);
     Assert.IsNotNull (validators6);
     Assert.AreEqual (2, validators6.Count);
     Assert.IsTrue (validators6[0] is RequiredFieldValidator);
@@ -252,14 +252,14 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    Assert.IsFalse (_modifiableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasValidators());
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.EnsureValidatorsRestored();
 
-    Assert.IsFalse (_modifiableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasValidators());
 
     BocColumnDefinition[] columns = new BocColumnDefinition[7];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
@@ -270,24 +270,24 @@ public class ModifiableRowTest : BocTest
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored();
 
-    Assert.IsTrue (_modifiableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasValidators());
 
-    Assert.IsTrue (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
-    Assert.IsFalse (_modifiableRow.HasValidators (2));
-    Assert.IsFalse (_modifiableRow.HasValidators (3));
-    Assert.IsFalse (_modifiableRow.HasValidators (4));
-    Assert.IsFalse (_modifiableRow.HasValidators (5));
-    Assert.IsTrue (_modifiableRow.HasValidators (6));
+    Assert.IsTrue (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
+    Assert.IsFalse (_editableRow.HasValidators (2));
+    Assert.IsFalse (_editableRow.HasValidators (3));
+    Assert.IsFalse (_editableRow.HasValidators (4));
+    Assert.IsFalse (_editableRow.HasValidators (5));
+    Assert.IsTrue (_editableRow.HasValidators (6));
  
-    ControlCollection validators0 = _modifiableRow.GetValidators (0);
+    ControlCollection validators0 = _editableRow.GetValidators (0);
     Assert.IsNotNull (validators0);
     Assert.AreEqual (0, validators0.Count);
 
-    ControlCollection validators6 = _modifiableRow.GetValidators (6);
+    ControlCollection validators6 = _editableRow.GetValidators (6);
     Assert.IsNotNull (validators6);
     Assert.AreEqual (2, validators6.Count);
     Assert.IsTrue (validators6[0] is RequiredFieldValidator);
@@ -297,29 +297,29 @@ public class ModifiableRowTest : BocTest
   [Test]
   public void ControlInit ()
   {
-    Assert.IsFalse (_modifiableRow.HasControls());
-    Assert.IsFalse (_modifiableRow.HasEditControls());
-    Assert.IsFalse (_modifiableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasControls());
+    Assert.IsFalse (_editableRow.HasEditControls());
+    Assert.IsFalse (_editableRow.HasValidators());
 
     Invoker.InitRecursive ();
 
-    Assert.IsFalse (_modifiableRow.HasControls());
-    Assert.IsFalse (_modifiableRow.HasEditControls());
-    Assert.IsFalse (_modifiableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasControls());
+    Assert.IsFalse (_editableRow.HasEditControls());
+    Assert.IsFalse (_editableRow.HasValidators());
   }
 
   [Test]
   public void ControlLoad ()
   {
-    Assert.IsFalse (_modifiableRow.HasControls());
-    Assert.IsFalse (_modifiableRow.HasEditControls());
-    Assert.IsFalse (_modifiableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasControls());
+    Assert.IsFalse (_editableRow.HasEditControls());
+    Assert.IsFalse (_editableRow.HasValidators());
 
     Invoker.LoadRecursive ();
 
-    Assert.IsFalse (_modifiableRow.HasControls());
-    Assert.IsFalse (_modifiableRow.HasEditControls());
-    Assert.IsFalse (_modifiableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasControls());
+    Assert.IsFalse (_editableRow.HasEditControls());
+    Assert.IsFalse (_editableRow.HasValidators());
   }
 
   [Test]
@@ -327,20 +327,20 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
 
-    BocTextValue textBoxStringValue = (BocTextValue) _modifiableRow.GetEditControl (0);
-    BocTextValue textBoxInt32Value = (BocTextValue) _modifiableRow.GetEditControl (1);
+    BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl (0);
+    BocTextValue textBoxInt32Value = (BocTextValue) _editableRow.GetEditControl (1);
 
     Assert.AreEqual ("A", textBoxStringValue.Value);
     Assert.AreEqual (1, textBoxInt32Value.Value);
@@ -351,20 +351,20 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
 
-    BocTextValue textBoxStringValue = (BocTextValue) _modifiableRow.GetEditControl (0);
-    BocTextValue textBoxInt32Value = (BocTextValue) _modifiableRow.GetEditControl (1);
+    BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl (0);
+    BocTextValue textBoxInt32Value = (BocTextValue) _editableRow.GetEditControl (1);
 
     Assert.AreEqual ("A", textBoxStringValue.Value);
     Assert.AreEqual (1, textBoxInt32Value.Value);
@@ -384,22 +384,22 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    Assert.IsFalse (_modifiableRow.HasEditControls());
-    Assert.IsFalse (_modifiableRow.HasEditControl (0));
-    Assert.IsFalse (_modifiableRow.HasEditControl (1));
+    Assert.IsFalse (_editableRow.HasEditControls());
+    Assert.IsFalse (_editableRow.HasEditControl (0));
+    Assert.IsFalse (_editableRow.HasEditControl (1));
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    Assert.IsTrue (_modifiableRow.HasEditControls());
-    Assert.IsTrue (_modifiableRow.HasEditControl (0));
-    Assert.IsFalse (_modifiableRow.HasEditControl (1));
+    Assert.IsTrue (_editableRow.HasEditControls());
+    Assert.IsTrue (_editableRow.HasEditControl (0));
+    Assert.IsFalse (_editableRow.HasEditControl (1));
   }
 
   [Test]
@@ -408,16 +408,16 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    _modifiableRow.HasEditControl (-1);
+    _editableRow.HasEditControl (-1);
   }
 
   [Test]
@@ -426,16 +426,16 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    _modifiableRow.HasEditControl (3);
+    _editableRow.HasEditControl (3);
   }
 
 
@@ -444,28 +444,28 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    Assert.IsFalse (_modifiableRow.HasEditControls());
-    Assert.IsFalse (_modifiableRow.HasEditControl (0));
-    Assert.IsFalse (_modifiableRow.HasEditControl (0));
+    Assert.IsFalse (_editableRow.HasEditControls());
+    Assert.IsFalse (_editableRow.HasEditControl (0));
+    Assert.IsFalse (_editableRow.HasEditControl (0));
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    Assert.IsTrue (_modifiableRow.HasEditControls());
-    Assert.IsTrue (_modifiableRow.HasEditControl (0));
-    Assert.IsFalse (_modifiableRow.HasEditControl (1));
+    Assert.IsTrue (_editableRow.HasEditControls());
+    Assert.IsTrue (_editableRow.HasEditControl (0));
+    Assert.IsFalse (_editableRow.HasEditControl (1));
     
-    IBusinessObjectBoundModifiableWebControl control = _modifiableRow.GetEditControl (0);
+    IBusinessObjectBoundModifiableWebControl control = _editableRow.GetEditControl (0);
     Assert.IsNotNull (control);
     Assert.IsTrue (control is BocTextValue);
 
-    Assert.IsNull (_modifiableRow.GetEditControl (1));
+    Assert.IsNull (_editableRow.GetEditControl (1));
   }
 
   [Test]
@@ -474,16 +474,16 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    _modifiableRow.HasEditControl (-1);
+    _editableRow.HasEditControl (-1);
   }
 
   [Test]
@@ -492,16 +492,16 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    _modifiableRow.HasEditControl (3);
+    _editableRow.HasEditControl (3);
   }
 
 
@@ -510,28 +510,28 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    Assert.IsFalse (_modifiableRow.HasValidators());
-    Assert.IsFalse (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsFalse (_editableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    Assert.IsTrue (_modifiableRow.HasValidators());
-    Assert.IsTrue (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsTrue (_editableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
 
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.EnsureValidatorsRestored();
 
-    Assert.IsTrue (_modifiableRow.HasValidators());
-    Assert.IsTrue (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsTrue (_editableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
   }
 
   [Test]
@@ -539,34 +539,34 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    Assert.IsFalse (_modifiableRow.HasValidators());
-    Assert.IsFalse (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsFalse (_editableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.EnsureValidatorsRestored();
 
-    Assert.IsFalse (_modifiableRow.HasValidators());
-    Assert.IsFalse (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsFalse (_editableRow.HasValidators());
+    Assert.IsFalse (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    Assert.IsTrue (_modifiableRow.HasValidators());
-    Assert.IsTrue (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsTrue (_editableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
 
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.EnsureValidatorsRestored();
 
-    Assert.IsTrue (_modifiableRow.HasValidators());
-    Assert.IsTrue (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsTrue (_editableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
   }
 
   [Test]
@@ -575,17 +575,17 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored();
 
-    _modifiableRow.HasValidators (-1);
+    _editableRow.HasValidators (-1);
   }
 
   [Test]
@@ -594,17 +594,17 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored();
 
-    _modifiableRow.HasValidators (3);
+    _editableRow.HasValidators (3);
   }
 
 
@@ -613,27 +613,27 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored();
 
-    Assert.IsTrue (_modifiableRow.HasValidators());
-    Assert.IsTrue (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsTrue (_editableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
 
-    ControlCollection validators = _modifiableRow.GetValidators (0);
+    ControlCollection validators = _editableRow.GetValidators (0);
     Assert.IsNotNull (validators);
     Assert.AreEqual (2, validators.Count);
     Assert.IsTrue (validators[0] is RequiredFieldValidator);
     Assert.IsTrue (validators[1] is NumericValidator);
 
-    Assert.IsNull (_modifiableRow.GetValidators (1));
+    Assert.IsNull (_editableRow.GetValidators (1));
   }
 
   [Test]
@@ -641,29 +641,29 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.EnsureValidatorsRestored();
     
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored();
 
-    Assert.IsTrue (_modifiableRow.HasValidators());
-    Assert.IsTrue (_modifiableRow.HasValidators (0));
-    Assert.IsFalse (_modifiableRow.HasValidators (1));
+    Assert.IsTrue (_editableRow.HasValidators());
+    Assert.IsTrue (_editableRow.HasValidators (0));
+    Assert.IsFalse (_editableRow.HasValidators (1));
 
-    ControlCollection validators = _modifiableRow.GetValidators (0);
+    ControlCollection validators = _editableRow.GetValidators (0);
     Assert.IsNotNull (validators);
     Assert.AreEqual (2, validators.Count);
     Assert.IsTrue (validators[0] is RequiredFieldValidator);
     Assert.IsTrue (validators[1] is NumericValidator);
 
-    Assert.IsNull (_modifiableRow.GetValidators (1));
+    Assert.IsNull (_editableRow.GetValidators (1));
   }
 
   [Test]
@@ -672,17 +672,17 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored();
 
-    _modifiableRow.GetValidators (-1);
+    _editableRow.GetValidators (-1);
   }
 
   [Test]
@@ -691,17 +691,17 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[2];
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored();
 
-    _modifiableRow.GetValidators (3);
+    _editableRow.GetValidators (3);
   }
   
 
@@ -710,19 +710,19 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[3];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    Assert.IsFalse (_modifiableRow.IsRequired (0));
-    Assert.IsTrue (_modifiableRow.IsRequired (1));
-    Assert.IsFalse (_modifiableRow.IsRequired (2));
+    Assert.IsFalse (_editableRow.IsRequired (0));
+    Assert.IsTrue (_editableRow.IsRequired (1));
+    Assert.IsFalse (_editableRow.IsRequired (2));
   }
 
   
@@ -731,25 +731,25 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[3];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
 
-    Assert.IsFalse (_modifiableRow.IsDirty ());
+    Assert.IsFalse (_editableRow.IsDirty ());
 
-    BocTextValue textBoxStringValue = (BocTextValue) _modifiableRow.GetEditControl (0);
+    BocTextValue textBoxStringValue = (BocTextValue) _editableRow.GetEditControl (0);
     textBoxStringValue.Value = "a";
 
-    Assert.IsTrue (_modifiableRow.IsDirty());
+    Assert.IsTrue (_editableRow.IsDirty());
   }
 
   [Test]
@@ -757,17 +757,17 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[3];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (columns, _value01);
 
-    IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
 
     string id = "NamingContainer_Row_{0}_Boc_TextBox";
@@ -775,7 +775,7 @@ public class ModifiableRowTest : BocTest
     trackedIDs[0] = string.Format (id, 0);
     trackedIDs[1] = string.Format (id, 1);
 
-    Assert.AreEqual (trackedIDs, _modifiableRow.GetTrackedClientIDs());
+    Assert.AreEqual (trackedIDs, _editableRow.GetTrackedClientIDs());
   }
 
 
@@ -784,23 +784,23 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[3];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored ();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored ();
 
-    IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
     
-    SetValues (_modifiableRow, "A", "300");
+    SetValues (_editableRow, "A", "300");
 
-    Assert.IsTrue (_modifiableRow.Validate());
+    Assert.IsTrue (_editableRow.Validate());
   }
 
   [Test]
@@ -808,27 +808,27 @@ public class ModifiableRowTest : BocTest
   {
     Invoker.InitRecursive();
 
-    _modifiableRow.DataSourceFactory = new ModifiableRowDataSourceFactory();
-    _modifiableRow.ControlFactory = new ModifiableRowControlFactory();
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
 
     BocColumnDefinition[] columns = new BocColumnDefinition[3];
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _modifiableRow.CreateControls (columns, _value01);
-    _modifiableRow.EnsureValidatorsRestored ();
+    _editableRow.CreateControls (columns, _value01);
+    _editableRow.EnsureValidatorsRestored ();
 
-    IBusinessObjectReferenceDataSource dataSource = _modifiableRow.GetDataSource();
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
     
-    SetValues (_modifiableRow, "A", "");
+    SetValues (_editableRow, "A", "");
 
-    Assert.IsFalse (_modifiableRow.Validate());
+    Assert.IsFalse (_editableRow.Validate());
   }
 
 
-  private void SetValues (ModifiableRow row, string stringValue, string int32Value)
+  private void SetValues (EditableRow row, string stringValue, string int32Value)
   {
     ArgumentUtility.CheckNotNull ("row", row);
 
