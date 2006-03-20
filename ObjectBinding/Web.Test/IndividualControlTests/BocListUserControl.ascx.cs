@@ -48,10 +48,10 @@ public class BocListUserControl : BaseUserControl
     
     ChildrenList.DataRowRender += new BocListDataRowRenderEventHandler(ChildrenList_DataRowRender);
     
-    ChildrenList.ModifiableRowChangesCanceling += new BocListModifiableRowChangesEventHandler (ChildrenList_ModifiableRowChangesCanceling);
-    ChildrenList.ModifiableRowChangesCanceled += new BocListItemEventHandler (ChildrenList_ModifiableRowChangesCanceled);
-    ChildrenList.ModifiableRowChangesSaving += new BocListModifiableRowChangesEventHandler (ChildrenList_ModifiableRowChangesSaving);
-    ChildrenList.ModifiableRowChangesSaved += new BocListItemEventHandler (ChildrenList_ModifiableRowChangesSaved);
+    ChildrenList.EditableRowChangesCanceling += new BocListEditableRowChangesEventHandler (ChildrenList_EditableRowChangesCanceling);
+    ChildrenList.EditableRowChangesCanceled += new BocListItemEventHandler (ChildrenList_EditableRowChangesCanceled);
+    ChildrenList.EditableRowChangesSaving += new BocListEditableRowChangesEventHandler (ChildrenList_EditableRowChangesSaving);
+    ChildrenList.EditableRowChangesSaved += new BocListItemEventHandler (ChildrenList_EditableRowChangesSaved);
 
     ChildrenList.SortingOrderChanging += new BocListSortingOrderChangeEventHandler (ChildrenList_SortingOrderChanging);
     ChildrenList.SortingOrderChanged += new BocListSortingOrderChangeEventHandler (ChildrenList_SortingOrderChanged);
@@ -337,22 +337,22 @@ public class BocListUserControl : BaseUserControl
   private void ChildrenList_DataRowRender(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListDataRowRenderEventArgs e)
   {
     if (e.ListIndex == 3)
-      e.IsModifiableRow = false;
+      e.IsEditableRow = false;
   }
 
-  private void ChildrenList_ModifiableRowChangesCanceling(object sender, BocListModifiableRowChangesEventArgs e)
+  private void ChildrenList_EditableRowChangesCanceling(object sender, BocListEditableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_ModifiableRowChangesCanceled(object sender, BocListItemEventArgs e)
+  private void ChildrenList_EditableRowChangesCanceled(object sender, BocListItemEventArgs e)
   {
   }
 
-  private void ChildrenList_ModifiableRowChangesSaving(object sender, BocListModifiableRowChangesEventArgs e)
+  private void ChildrenList_EditableRowChangesSaving(object sender, BocListEditableRowChangesEventArgs e)
   {
   }
 
-  private void ChildrenList_ModifiableRowChangesSaved(object sender, BocListItemEventArgs e)
+  private void ChildrenList_EditableRowChangesSaved(object sender, BocListItemEventArgs e)
   {
   }
 
