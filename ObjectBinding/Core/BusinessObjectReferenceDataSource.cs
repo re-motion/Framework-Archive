@@ -21,7 +21,7 @@ namespace Rubicon.ObjectBinding
 ///     <note type="inotes">
 ///       The <b>IBusinessObjectReferenceDataSource</b> is usually implemented as a cross between the
 ///       <see cref="IBusinessObjectDataSource"/> from which this interface is inherited and an 
-///       <see cref="IBusinessObjectBoundControl"/> or <see cref="IBusinessObjectBoundModifiableControl"/>.
+///       <see cref="IBusinessObjectBoundControl"/> or <see cref="IBusinessObjectBoundEditableControl"/>.
 ///     </note>
 ///   </para>
 ///   <para>
@@ -69,7 +69,7 @@ public interface IBusinessObjectReferenceDataSource: IBusinessObjectDataSource
 /// </summary>
 /// <remarks>
 ///   Only members with functionality common to all implementations of <see cref="IBusinessObjectReferenceDataSource"/> 
-///   have been implemented. The actual implementation of the <see cref="IBusinessObjectBoundModifiableControl"/> 
+///   have been implemented. The actual implementation of the <see cref="IBusinessObjectBoundEditableControl"/> 
 ///   interface is left to the child class. 
 /// </remarks>
 /// <seealso cref="IBusinessObjectReferenceDataSource"/>
@@ -124,7 +124,7 @@ public abstract class BusinessObjectReferenceDataSourceBase:
   ///   For details on <b>SaveValue</b>, 
   ///   see <see cref="IBusinessObjectDataSource.SaveValues">IBusinessObjectDataSource.SaveValues</see>.
   /// </remarks>
-  /// <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
+  /// <seealso cref="IBusinessObjectBoundEditableControl.SaveValue">IBusinessObjectBoundEditableControl.SaveValue</seealso>
   public void SaveValue (bool interim)
   {
     // save values from "child" controls
@@ -234,10 +234,10 @@ public abstract class BusinessObjectReferenceDataSourceBase:
 ///   </note>
 /// </remarks>
 /// <seealso cref="IBusinessObjectReferenceDataSource"/>
-/// <seealso cref="IBusinessObjectBoundModifiableControl"/>
+/// <seealso cref="IBusinessObjectBoundEditableControl"/>
 public class BusinessObjectReferenceDataSource: 
     BusinessObjectReferenceDataSourceBase, 
-    IBusinessObjectBoundModifiableControl
+    IBusinessObjectBoundEditableControl
 {
   private IBusinessObjectDataSource _dataSource;
   private string _propertyIdentifier;
@@ -374,7 +374,7 @@ public class BusinessObjectReferenceDataSource:
   }
 
   /// <summary> Returns always <see langword="false"/>. </summary>
-  bool IBusinessObjectBoundModifiableControl.IsReadOnly
+  bool IBusinessObjectBoundEditableControl.IsReadOnly
   {
     get { return false; }
   }
