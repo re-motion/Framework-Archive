@@ -22,9 +22,9 @@ using Rubicon.Web.Utilities;
 
 namespace OBRTest
 {
-public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebControl
+public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundEditableWebControl
 {
-  protected class ObjectBoundRepeaterInternal: BusinessObjectBoundModifiableWebControl
+  protected class ObjectBoundRepeaterInternal: BusinessObjectBoundEditableWebControl
   {
     private static readonly Type[] s_supportedPropertyInterfaces = new Type[] { 
         typeof (IBusinessObjectReferenceProperty) };
@@ -136,7 +136,7 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundModifiableWebCon
 
   }
 
-  #region BusinessObjectBoundModifiableWebControl implementation
+  #region BusinessObjectBoundEditableWebControl implementation
 
   [Browsable(false)]
   public BusinessObjectBinding Binding
