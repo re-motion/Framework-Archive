@@ -379,6 +379,38 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
 
 
   [Test]
+  public void EnsureEditModeRestored ()
+  {
+    string idFormat = "Controller_Row{0}";
+
+    EditableRowIDProvider provider = new EditableRowIDProvider (idFormat);
+    
+    Assert.AreEqual (string.Format (idFormat, 0), provider.GetNextID());
+    Assert.AreEqual (string.Format (idFormat, 1), provider.GetNextID());
+    Assert.AreEqual (string.Format (idFormat, 2), provider.GetNextID());
+    Assert.AreEqual (string.Format (idFormat, 3), provider.GetNextID());
+    Assert.AreEqual (string.Format (idFormat, 4), provider.GetNextID());
+    Assert.AreEqual (string.Format (idFormat, 5), provider.GetNextID());
+
+    provider.ExcludeID (string.Format (idFormat, 2));
+    provider.ExcludeID (string.Format (idFormat, 5));
+
+    Assert.IsFalse (Controller.IsListEditModeActive);
+    ControllerInvoker.LoadViewState (CreateViewState (null, true, NaInt32.Null, false, provider));
+    Assert.IsTrue (Controller.IsListEditModeActive);
+    
+    Controller.EnsureEditModeRestored (Columns);
+    Assert.IsTrue (Controller.IsListEditModeActive);
+  
+    Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
+    Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
+    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[2].ID);
+    Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[3].ID);
+    Assert.AreEqual (string.Format (idFormat, 6), Controller.Controls[4].ID);
+  }
+
+
+  [Test]
   public void AddRows ()
   {
     Invoker.InitRecursive();
@@ -444,7 +476,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Assert.IsTrue (Controller.IsListEditModeActive);
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
 
-    Controller.RemoveRow (Values[2], Columns);
+    Controller.RemoveRow (Values[2]);
   
     Assert.AreEqual (4, Controller.OwnerControl.Value.Count);
     Assert.AreSame (Values[0], Controller.OwnerControl.Value[0]);
@@ -457,8 +489,8 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     string idFormat = "Controller_Row{0}";
     Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
     Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
-    Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
-    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[2].ID);
+    Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[3].ID);
 
     Assert.AreEqual (0, ActualEvents.Count);
   }
@@ -472,7 +504,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Assert.IsTrue (Controller.IsListEditModeActive);
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
 
-    Controller.RemoveRow (Values[2], Columns);
+    Controller.RemoveRows (new IBusinessObject[] {Values[2]});
   
     Assert.AreEqual (4, Controller.OwnerControl.Value.Count);
     Assert.AreSame (Values[0], Controller.OwnerControl.Value[0]);
@@ -485,8 +517,8 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     string idFormat = "Controller_Row{0}";
     Assert.AreEqual (string.Format (idFormat, 0), Controller.Controls[0].ID);
     Assert.AreEqual (string.Format (idFormat, 1), Controller.Controls[1].ID);
-    Assert.AreEqual (string.Format (idFormat, 2), Controller.Controls[2].ID);
-    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[3].ID);
+    Assert.AreEqual (string.Format (idFormat, 3), Controller.Controls[2].ID);
+    Assert.AreEqual (string.Format (idFormat, 4), Controller.Controls[3].ID);
 
     Assert.AreEqual (0, ActualEvents.Count);
   }

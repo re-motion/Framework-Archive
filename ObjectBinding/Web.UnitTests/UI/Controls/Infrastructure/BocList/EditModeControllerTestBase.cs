@@ -223,14 +223,16 @@ public class EditModeControllerTestBase : BocTest
   }
 
   protected object CreateViewState (
-      object baseViewState, bool isListEditModeActive, NaInt32 editableRowIndex, bool isEditNewRow)
+      object baseViewState,
+      bool isListEditModeActive, NaInt32 editableRowIndex, bool isEditNewRow, EditableRowIDProvider rowIDProvider)
   {
-    object[] values = new object[4];
+    object[] values = new object[5];
 
     values[0] = baseViewState;
     values[1] = isListEditModeActive;
     values[2] = editableRowIndex;
     values[3] = isEditNewRow;
+    values[4] = rowIDProvider;
 
     return values;
   }

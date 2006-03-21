@@ -601,7 +601,8 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   public void EnsureEditModeRestored ()
   {
     Assert.IsFalse (Controller.IsEditDetailsModeActive);
-    ControllerInvoker.LoadViewState (CreateViewState (null, false, 2, false));
+    ControllerInvoker.LoadViewState (
+        CreateViewState (null, false, 2, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
     Assert.IsTrue (Controller.IsEditDetailsModeActive);
     
     Controller.EnsureEditModeRestored (Columns);
@@ -614,7 +615,8 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   public void EnsureEditModeRestoredWithInvalidRowIndex ()
   {
     Assert.IsFalse (Controller.IsEditDetailsModeActive);
-    ControllerInvoker.LoadViewState (CreateViewState (null, false, 6, false));
+    ControllerInvoker.LoadViewState (
+        CreateViewState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
     Assert.IsTrue (Controller.IsEditDetailsModeActive);
  
     Controller.EnsureEditModeRestored (Columns);
@@ -626,7 +628,8 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   public void EnsureEditModeRestoredWithValueNull ()
   {
     Assert.IsFalse (Controller.IsEditDetailsModeActive);
-    ControllerInvoker.LoadViewState (CreateViewState (null, false, 6, false));
+    ControllerInvoker.LoadViewState (
+        CreateViewState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
     Assert.IsTrue (Controller.IsEditDetailsModeActive);
     Controller.OwnerControl.LoadUnboundValue (null, false);
 
@@ -703,7 +706,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
 
-    Controller.RemoveRow (Values[2], Columns);
+    Controller.RemoveRow (Values[2]);
   }
 
   
