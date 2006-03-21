@@ -78,7 +78,7 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
 
   /// <summary> 
   ///   Saves the values of the <see cref="BusinessObject"/> from all bound controls implementing
-  ///   <see cref="IBusinessObjectBoundModifiableControl"/>.
+  ///   <see cref="IBusinessObjectBoundEditableControl"/>.
   /// </summary>
   /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
   /// <remarks> 
