@@ -1176,7 +1176,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Generates a <see cref="BocList.EditModeValidator"/>.
+  ///   Generates a <see cref="EditModeValidator"/>.
   /// </summary>
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()

@@ -119,7 +119,7 @@ public class EditableRowTest : BocTest
     _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
     _editableRow.ControlFactory = new EditableRowControlFactory();
 
-    _editableRow.CreateControls (new BocColumnDefinition[0], _value01);
+    _editableRow.CreateControls (_value01, new BocColumnDefinition[0]);
 
     Assert.IsTrue (_editableRow.HasEditControls());
     Assert.IsTrue (_editableRow.HasValidators());
@@ -153,7 +153,7 @@ public class EditableRowTest : BocTest
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     Assert.IsTrue (_editableRow.HasEditControls());
     Assert.IsTrue (_editableRow.HasValidators());
@@ -191,7 +191,7 @@ public class EditableRowTest : BocTest
   {
     Invoker.InitRecursive();
     _editableRow.ControlFactory = new EditableRowControlFactory();
-    _editableRow.CreateControls (new BocColumnDefinition[0], _value01);
+    _editableRow.CreateControls (_value01, new BocColumnDefinition[0]);
   }
 
   [Test]
@@ -201,7 +201,7 @@ public class EditableRowTest : BocTest
   {
     Invoker.InitRecursive();
     _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
-    _editableRow.CreateControls (new BocColumnDefinition[0], _value01);
+    _editableRow.CreateControls (_value01, new BocColumnDefinition[0]);
   }
 
   [Test]
@@ -223,7 +223,7 @@ public class EditableRowTest : BocTest
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored();
 
     Assert.IsTrue (_editableRow.HasValidators());
@@ -270,7 +270,7 @@ public class EditableRowTest : BocTest
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored();
 
     Assert.IsTrue (_editableRow.HasValidators());
@@ -334,7 +334,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
@@ -358,7 +358,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
@@ -395,7 +395,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     Assert.IsTrue (_editableRow.HasEditControls());
     Assert.IsTrue (_editableRow.HasEditControl (0));
@@ -415,7 +415,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     _editableRow.HasEditControl (-1);
   }
@@ -433,7 +433,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     _editableRow.HasEditControl (3);
   }
@@ -455,7 +455,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     Assert.IsTrue (_editableRow.HasEditControls());
     Assert.IsTrue (_editableRow.HasEditControl (0));
@@ -481,7 +481,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     _editableRow.HasEditControl (-1);
   }
@@ -499,7 +499,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     _editableRow.HasEditControl (3);
   }
@@ -521,7 +521,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     Assert.IsTrue (_editableRow.HasValidators());
     Assert.IsTrue (_editableRow.HasValidators (0));
@@ -556,7 +556,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     Assert.IsTrue (_editableRow.HasValidators());
     Assert.IsTrue (_editableRow.HasValidators (0));
@@ -582,7 +582,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored();
 
     _editableRow.HasValidators (-1);
@@ -601,7 +601,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored();
 
     _editableRow.HasValidators (3);
@@ -620,7 +620,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored();
 
     Assert.IsTrue (_editableRow.HasValidators());
@@ -650,7 +650,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored();
 
     Assert.IsTrue (_editableRow.HasValidators());
@@ -679,7 +679,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored();
 
     _editableRow.GetValidators (-1);
@@ -698,7 +698,7 @@ public class EditableRowTest : BocTest
     columns[0] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[1] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored();
 
     _editableRow.GetValidators (3);
@@ -718,7 +718,7 @@ public class EditableRowTest : BocTest
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     Assert.IsFalse (_editableRow.IsRequired (0));
     Assert.IsTrue (_editableRow.IsRequired (1));
@@ -739,7 +739,7 @@ public class EditableRowTest : BocTest
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
@@ -765,7 +765,7 @@ public class EditableRowTest : BocTest
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
 
     IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
     dataSource.LoadValues (false);
@@ -792,7 +792,7 @@ public class EditableRowTest : BocTest
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored ();
 
     IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
@@ -816,7 +816,7 @@ public class EditableRowTest : BocTest
     columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
     columns[2] = _commandColumn;
 
-    _editableRow.CreateControls (columns, _value01);
+    _editableRow.CreateControls (_value01, columns);
     _editableRow.EnsureValidatorsRestored ();
 
     IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();

@@ -60,20 +60,6 @@ public class EditModeController : PlaceHolder
     get { return _ownerControl; }
   }
 
-  /// <summary>
-  ///   Saves changes to previous edited row and starts editing for the new row.
-  /// </summary>
-  /// <remarks> 
-  ///   <para>
-  ///     Once the list is in edit mode, it is important not to change to index of the edited 
-  ///     <see cref="IBusinessObject"/> in <see cref="Value"/>. Otherwise the wrong object would be edited.
-  ///     Use <see cref="IsRowEditModeActive"/> to programatically check whether it is save to insert a row.
-  ///   </para><para>
-  ///     While the list is in edit mode, all commands and menus for this list are disabled with the exception of
-  ///     those rendered in the <see cref="BocRowEditModeColumnDefinition"/> column.
-  ///   </para>
-  /// </remarks>
-  /// <param name="index"></param>
   public void SwitchRowIntoEditMode (int index, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("oldColumns", oldColumns);
@@ -121,10 +107,6 @@ public class EditModeController : PlaceHolder
     LoadValues (false);
   }
   
-  /// <remarks>
-  ///   If already in row edit mode and the previous row cannot be saved, the new row will not be added to the list.
-  /// </remarks>
-  /// <param name="businessObject"></param>
   public bool AddAndEditRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("oldColumns", oldColumns);
@@ -349,8 +331,6 @@ public class EditModeController : PlaceHolder
   }
 
 
-  /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
   public void AddRows (IBusinessObject[] businessObjects, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
@@ -377,8 +357,6 @@ public class EditModeController : PlaceHolder
     }
   }
 
-  /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
   public int AddRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
@@ -401,8 +379,6 @@ public class EditModeController : PlaceHolder
     return index;
   }
 
-  /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
   public void RemoveRows (IBusinessObject[] businessObjects)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
@@ -435,8 +411,6 @@ public class EditModeController : PlaceHolder
     _ownerControl.RemoveRowsInternal (businessObjects);
   }
 
-  /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
   public void RemoveRow (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
@@ -468,19 +442,11 @@ public class EditModeController : PlaceHolder
   }
 
 
-  /// <remarks>
-  ///   Queried where the rendering depends on whether the list is in edit mode. 
-  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
-  /// </remarks>
   public bool IsRowEditModeActive
   {
     get { return ! _editableRowIndex.IsNull; } 
   }
 
-  /// <remarks>
-  ///   Queried where the rendering depends on whether the list is in edit mode. 
-  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
-  /// </remarks>
   public bool IsListEditModeActive
   {
     get { return _isListEditModeActive; } 
@@ -492,10 +458,6 @@ public class EditModeController : PlaceHolder
   }
 
 
-  /// <summary>
-  ///   Generates a <see cref="BocList.EditModeValidator"/>.
-  /// </summary>
-  /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public BaseValidator[] CreateValidators (IResourceManager resourceManager)
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
@@ -533,9 +495,6 @@ public class EditModeController : PlaceHolder
   /// <remarks>
   ///   Validators must be added to the controls collection after LoadPostData is complete.
   ///   If not, invalid validators will know that they are invalid without first calling validate.
-  ///   the <see cref="FormGridManager"/> also generates the validators after the <c>OnLoad</c> or when
-  ///   <see cref="FormGridManager.Validate"/> is called. Therefor the behaviors of the <c>BocList</c>
-  ///   and the <c>FormGridManager</c> match.
   /// </remarks>
   public void EnsureValidatorsRestored()
   {
@@ -603,14 +562,6 @@ public class EditModeController : PlaceHolder
     return false;
   }
 
-  /// <summary> 
-  ///   Returns the <see cref="Control.ClientID"/> values of all controls whose value can be modified in the user 
-  ///   interface.
-  /// </summary>
-  /// <returns> 
-  ///   Returns the <see cref="Control.ClientID"/> values of the edit mode controls for the row currently being edited.
-  /// </returns>
-  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public string[] GetTrackedClientIDs()
   {
     if (IsRowEditModeActive || IsListEditModeActive)
@@ -630,8 +581,6 @@ public class EditModeController : PlaceHolder
   }
 
 
-  /// <summary> Calls the parent's <c>LoadViewState</c> method and restores this control's specific data. </summary>
-  /// <param name="savedState"> An <see cref="Object"/> that represents the control state to be restored. </param>
   protected override void LoadViewState(object savedState)
   {
     if (savedState == null)
@@ -650,8 +599,6 @@ public class EditModeController : PlaceHolder
     }
   }
 
-  /// <summary> Calls the parent's <c>SaveViewState</c> method and saves this control's specific data. </summary>
-  /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
     object[] values = new object[5];

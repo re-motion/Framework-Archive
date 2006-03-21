@@ -183,7 +183,7 @@ public class BocMenuItemCommand: BocCommand
   }
 
   /// <summary>
-  ///   The <see cref="MenuItemHrefFunctionCommandInfo"/> used when rendering the command the command as a hyperlink.
+  ///   The <see cref="MenuItemHrefCommandInfo"/> used when rendering the command the command as a hyperlink.
   /// </summary>
   /// <remarks> Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>. </remarks>
   /// <value> A <see cref="MenuItemHrefCommandInfo"/> object. </value>

@@ -245,9 +245,6 @@ public class EditableRow : PlaceHolder, INamingContainer
   /// <remarks>
   ///   Validators must be added to the controls collection after LoadPostData is complete.
   ///   If not, invalid validators will know that they are invalid without first calling validate.
-  ///   the <see cref="FormGridManager"/> also generates the validators after the <c>OnLoad</c> or when
-  ///   <see cref="FormGridManager.Validate"/> is called. Therefor the behaviors of the <c>BocList</c>
-  ///   and the <c>FormGridManager</c> match.
   /// </remarks>
   public void EnsureValidatorsRestored()
   {

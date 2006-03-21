@@ -330,7 +330,7 @@
         You can query the row row currently being edited through the <see cref="EditableRowIndex"/> property. Use the
         <see cref="IsRowEditModeActive"/> flag to determine whether the <b>BocList</b> is currently in row edit mode.
       </para><para>
-        If you must validate the row being edited, you can call the <see cref="ValiadateEditableRow"/> method. If
+        If you must validate the row being edited, you can call the <see cref="ValidateEditableRows"/> method. If
         you use the <b>BocList</b> inside a <see cref="FormGridManager"/>, the row edit mode validators are 
         integrated into the form grid validation. The validators are also validated if you execute the 
         <see cref="EndRowEditMode"/> method or click <b>Save</b> in the row edit mode column.
