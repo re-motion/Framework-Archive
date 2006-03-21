@@ -164,7 +164,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "300");
@@ -187,7 +187,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "");
@@ -196,7 +196,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     CheckValues (Values[2], "C", 3);

@@ -61,7 +61,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     Assert.AreEqual (1, Controller.Controls.Count);
@@ -109,7 +109,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (1, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (1, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value B", "200");
@@ -118,7 +118,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     CheckValues (Values[1], "New Value B", 200);
@@ -133,7 +133,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (1, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (1, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value B", "");
@@ -142,7 +142,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (1, Controller.EditableRowIndex.Value);
     
     CheckValues (Values[1], "B", 2);
@@ -158,7 +158,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "300");
@@ -167,7 +167,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     CheckValues (Values[2], "New Value C", 300);
@@ -182,7 +182,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "");
@@ -191,7 +191,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     CheckValues (Values[2], "C", 3);
@@ -227,7 +227,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     CheckValues (Values[0], "New Value A", 100);
@@ -280,7 +280,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
     Assert.IsTrue (Controller.AddAndEditRow (NewValues[0], Columns, Columns));
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (5, Controller.EditableRowIndex.Value);
     Assert.AreEqual (6, Controller.OwnerControl.Value.Count);
     Assert.AreSame (NewValues[0], Controller.OwnerControl.Value[5]);
@@ -304,7 +304,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "300");
@@ -313,7 +313,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (5, Controller.EditableRowIndex.Value);
     Assert.AreEqual (6, Controller.OwnerControl.Value.Count);
     Assert.AreSame (NewValues[0], Controller.OwnerControl.Value[5]);
@@ -330,7 +330,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "");
@@ -339,7 +339,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
     
@@ -376,7 +376,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
      
     CheckEvents (expectedEvents, ActualEvents);
 
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (5, Controller.EditableRowIndex.Value);
     Assert.AreEqual (6, Controller.OwnerControl.Value.Count);
     Assert.AreSame (NewValues[0], Controller.OwnerControl.Value[5]);
@@ -425,7 +425,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
   
   [Test]
-  public void EndEditDetailsModeAndSaveChangesWithValidValues ()
+  public void EndRowEditModeAndSaveChangesWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
@@ -434,22 +434,22 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "300");
-    Controller.EndEditDetailsMode (true, Columns);
+    Controller.EndRowEditMode (true, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
     
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsTrue (Controller.EditableRowIndex.IsNull);
 
     CheckValues (Values[2], "New Value C", 300);
   }
 
   [Test]
-  public void EndEditDetailsModeAndDiscardChangesWithValidValues ()
+  public void EndRowEditModeAndDiscardChangesWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesCancelingEventMessage (2, Values[2]));
@@ -458,22 +458,22 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "300");
-    Controller.EndEditDetailsMode (false, Columns);
+    Controller.EndRowEditMode (false, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
     
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsTrue (Controller.EditableRowIndex.IsNull);
 
     CheckValues (Values[2], "C", 3);
   }
 
   [Test]
-  public void EndEditDetailsModeWithNewRowAndSaveChangesWithValidValues ()
+  public void EndRowEditModeWithNewRowAndSaveChangesWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (5, NewValues[0]));
@@ -482,15 +482,15 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();    
     Controller.AddAndEditRow (NewValues[0], Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (5, Controller.EditableRowIndex.Value);
 
     SetValues ((EditableRow) Controller.Controls[0], "New Value F", "600");
-    Controller.EndEditDetailsMode (true, Columns);
+    Controller.EndRowEditMode (true, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
     
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsTrue (Controller.EditableRowIndex.IsNull);
 
     Assert.AreEqual (6, Controller.OwnerControl.Value.Count);
@@ -498,7 +498,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void EndEditDetailsModeWithNewRowAndDiscardChangesWithValidValues ()
+  public void EndRowEditModeWithNewRowAndDiscardChangesWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesCancelingEventMessage (5, NewValues[0]));
@@ -507,15 +507,15 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.AddAndEditRow (NewValues[0], Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (5, Controller.EditableRowIndex.Value);
 
     SetValues ((EditableRow) Controller.Controls[0], "New Value F", "600");
-    Controller.EndEditDetailsMode (false, Columns);
+    Controller.EndRowEditMode (false, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
     
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsTrue (Controller.EditableRowIndex.IsNull);
 
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
@@ -523,7 +523,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void EndEditDetailsModeAndSaveChangesWithInvalidValues ()
+  public void EndRowEditModeAndSaveChangesWithInvalidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
@@ -531,22 +531,22 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "");
-    Controller.EndEditDetailsMode (true, Columns);
+    Controller.EndRowEditMode (true, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
     
-    Assert.IsTrue(Controller.IsEditDetailsModeActive);
+    Assert.IsTrue(Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
 
     CheckValues (Values[2], "C", 3);
   }
 
   [Test]
-  public void EndEditDetailsModeAndDiscardChangesWithInvalidValues ()
+  public void EndRowEditModeAndDiscardChangesWithInvalidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesCancelingEventMessage (2, Values[2]));
@@ -555,44 +555,44 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "");
-    Controller.EndEditDetailsMode (false, Columns);
+    Controller.EndRowEditMode (false, Columns);
 
     CheckEvents (expectedEvents, ActualEvents);
     
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsTrue (Controller.EditableRowIndex.IsNull);
 
     CheckValues (Values[2], "C", 3);
   }
 
   [Test]
-  public void EndEditDetailsModeWithoutBeingActive ()
+  public void EndRowEditModeWithoutBeingActive ()
   {
     Invoker.InitRecursive();
      
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     
-    Controller.EndEditDetailsMode (true, Columns);
+    Controller.EndRowEditMode (true, Columns);
 
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.AreEqual (0, ActualEvents.Count);
   }
 
   [Test]
-  public void EndEditDetailsModeWithoutBeingActiveAndValueNull ()
+  public void EndRowEditModeWithoutBeingActiveAndValueNull ()
   {
     Invoker.InitRecursive();
     Controller.OwnerControl.LoadUnboundValue (null, false);
      
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     
-    Controller.EndEditDetailsMode (true, Columns);
+    Controller.EndRowEditMode (true, Columns);
 
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.AreEqual (0, ActualEvents.Count);
   }
 
@@ -600,13 +600,13 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   [Test]
   public void EnsureEditModeRestored ()
   {
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     ControllerInvoker.LoadViewState (
         CreateViewState (null, false, 2, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     
     Controller.EnsureEditModeRestored (Columns);
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
   }
 
   [Test]
@@ -614,10 +614,10 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
       "Cannot restore edit details mode: The Value collection of the BocList 'BocList' no longer contains the previously modified row.")]
   public void EnsureEditModeRestoredWithInvalidRowIndex ()
   {
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     ControllerInvoker.LoadViewState (
         CreateViewState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
  
     Controller.EnsureEditModeRestored (Columns);
   }
@@ -627,10 +627,10 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
       "Cannot restore edit mode: The BocList 'BocList' does not have a Value.")]
   public void EnsureEditModeRestoredWithValueNull ()
   {
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     ControllerInvoker.LoadViewState (
         CreateViewState (null, false, 6, false, new EditableRowIDProvider (Controller.ID + "_Row{0}")));
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Controller.OwnerControl.LoadUnboundValue (null, false);
 
     Controller.EnsureEditModeRestored (Columns);
@@ -643,7 +643,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
 
@@ -652,7 +652,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Assert.AreEqual (7, Controller.OwnerControl.Value.Count);
     Assert.AreSame (NewValues[0], Controller.OwnerControl.Value[5]);
     Assert.AreSame (NewValues[1], Controller.OwnerControl.Value[6]);
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
 
     Assert.AreEqual (0, ActualEvents.Count);
@@ -664,7 +664,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
 
@@ -672,7 +672,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     
     Assert.AreEqual (6, Controller.OwnerControl.Value.Count);
     Assert.AreSame (NewValues[0], Controller.OwnerControl.Value[5]);
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
 
     Assert.AreEqual (0, ActualEvents.Count);
@@ -681,13 +681,13 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException),
-      "Cannot remove rows while the BocList 'BocList' is in edit details mode. Call EndEditDetailsMode() before removing the rows.")]
+      "Cannot remove rows while the BocList 'BocList' is in edit details mode. Call EndRowEditMode() before removing the rows.")]
   public void RemoveRows ()
   {
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
 
@@ -696,13 +696,13 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException),
-      "Cannot remove a row while the BocList 'BocList' is in edit details mode. Call EndEditDetailsMode() before removing the row.")]
+      "Cannot remove a row while the BocList 'BocList' is in edit details mode. Call EndRowEditMode() before removing the row.")]
   public void RemoveRow ()
   {
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
      
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
     Assert.AreEqual (5, Controller.OwnerControl.Value.Count);
 
@@ -718,7 +718,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
     
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
 
     BaseValidator[] validators = Controller.CreateValidators (resourceManager);
@@ -736,7 +736,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
     Controller.OwnerControl.ErrorMessage = "Foo Bar";
     
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
 
     BaseValidator[] validators = Controller.CreateValidators (NullResourceManager.Instance);
@@ -754,7 +754,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
     
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
 
     SetValues ((EditableRow) Controller.Controls[0], "New Value C", "300");
@@ -779,7 +779,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   {
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
     
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
 
     Assert.IsFalse (Controller.IsRequired (0));
     Assert.IsTrue (Controller.IsRequired (1));
@@ -819,18 +819,18 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   {
     Invoker.InitRecursive();
     Controller.SwitchRowIntoEditMode (2, Columns, Columns);
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
 
     object viewState = ControllerInvoker.SaveViewState();
     Assert.IsNotNull (viewState);
 
-    Controller.EndEditDetailsMode (false, Columns);
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Controller.EndRowEditMode (false, Columns);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsTrue (Controller.EditableRowIndex.IsNull);
 
     ControllerInvoker.LoadViewState (viewState);
-    Assert.IsTrue (Controller.IsEditDetailsModeActive);
+    Assert.IsTrue (Controller.IsRowEditModeActive);
     Assert.AreEqual (2, Controller.EditableRowIndex.Value);
   }
 }

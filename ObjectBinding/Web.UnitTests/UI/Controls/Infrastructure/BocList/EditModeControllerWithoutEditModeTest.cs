@@ -42,7 +42,7 @@ public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
   public void Initialize ()
   {
     Assert.AreSame (BocList, Controller.OwnerControl);
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsFalse (Controller.IsListEditModeActive);
   }
 
@@ -114,18 +114,18 @@ public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
 
     ControllerInvoker.LoadViewState (null);
 
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
     Assert.IsFalse (Controller.IsListEditModeActive);
   }
 
   [Test]
   public void EnsureEditModeRestored ()
   {
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
 
     Controller.EnsureEditModeRestored (Columns);
     
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
   }
 
   [Test]
@@ -133,11 +133,11 @@ public class EditModeControllerWithoutEditModeTest : EditModeControllerTestBase
   {
     Controller.OwnerControl.LoadUnboundValue (null, false);    
    
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
 
     Controller.EnsureEditModeRestored (Columns);
     
-    Assert.IsFalse (Controller.IsEditDetailsModeActive);
+    Assert.IsFalse (Controller.IsRowEditModeActive);
   }
 }
 

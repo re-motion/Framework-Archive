@@ -2,6 +2,8 @@
 ======
 - BocList
   * ModifiableRowIndex zu EditableRowIndex umbenannt.
+  * EndEditDetailsMode zu EndRowEditMode umbenannt.
+  * IsEditDetailsModeActive zu IsRowEditModeActive umbenannt.
   * BocListDataRowRenderEventArgs.IsModifiableRow zu IsEditableRow umbenannt.
   * Rubicon.ObjectBinding.Web.Controls.BocList.EditDetailsErrorMessage zu
     Rubicon.ObjectBinding.Web.Controls.BocList.RowEditModeErrorMessage umbenannt. 

@@ -67,7 +67,7 @@ public class EditModeController : PlaceHolder
   ///   <para>
   ///     Once the list is in edit mode, it is important not to change to index of the edited 
   ///     <see cref="IBusinessObject"/> in <see cref="Value"/>. Otherwise the wrong object would be edited.
-  ///     Use <see cref="IsEditDetailsModeActive"/> to programatically check whether it is save to insert a row.
+  ///     Use <see cref="IsRowEditModeActive"/> to programatically check whether it is save to insert a row.
   ///   </para><para>
   ///     While the list is in edit mode, all commands and menus for this list are disabled with the exception of
   ///     those rendered in the <see cref="BocEditDetailsColumnDefinition"/> column.
@@ -90,7 +90,7 @@ public class EditModeController : PlaceHolder
 
     RestoreAndEndEditMode (oldColumns);
     
-    if (_ownerControl.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
+    if (_ownerControl.IsReadOnly || IsListEditModeActive || IsRowEditModeActive)
       return;
 
     _editableRowIndex = index;
@@ -112,7 +112,7 @@ public class EditModeController : PlaceHolder
 
     RestoreAndEndEditMode (oldColumns);
 
-    if (_ownerControl.IsReadOnly || IsEditDetailsModeActive || IsListEditModeActive)
+    if (_ownerControl.IsReadOnly || IsRowEditModeActive || IsListEditModeActive)
       return;
 
     _isListEditModeActive = true;
@@ -132,7 +132,7 @@ public class EditModeController : PlaceHolder
 
     RestoreAndEndEditMode (oldColumns);
 
-    if (_ownerControl.IsReadOnly || IsListEditModeActive || IsEditDetailsModeActive)
+    if (_ownerControl.IsReadOnly || IsListEditModeActive || IsRowEditModeActive)
       return false;
 
     int index = AddRow (businessObject, oldColumns, columns);
@@ -141,7 +141,7 @@ public class EditModeController : PlaceHolder
 
     SwitchRowIntoEditMode (index, oldColumns, columns);
     
-    if (! IsEditDetailsModeActive)
+    if (! IsRowEditModeActive)
     {
       throw new InvalidOperationException (string.Format (
           "BocList '{0}': Could not switch newly added row into edit mode.", 
@@ -155,15 +155,15 @@ public class EditModeController : PlaceHolder
   {
     EnsureEditModeRestored (oldColumns);
 
-    if (IsEditDetailsModeActive)
-      EndEditDetailsMode (true, oldColumns);
+    if (IsRowEditModeActive)
+      EndRowEditMode (true, oldColumns);
     else if (IsListEditModeActive)
       EndListEditMode (true, oldColumns);
   }
 
-  public void EndEditDetailsMode (bool saveChanges, BocColumnDefinition[] oldColumns)
+  public void EndRowEditMode (bool saveChanges, BocColumnDefinition[] oldColumns)
   {
-    if (! IsEditDetailsModeActive)
+    if (! IsRowEditModeActive)
       return;
 
     EnsureEditModeRestored (oldColumns);
@@ -268,7 +268,7 @@ public class EditModeController : PlaceHolder
 
   private void CreateEditModeControls (BocColumnDefinition[] columns)
   {
-    if (IsEditDetailsModeActive)
+    if (IsRowEditModeActive)
     {
       IBusinessObject value = (IBusinessObject) _ownerControl.Value[_editableRowIndex.Value];
       PopulateEditableRows (new IBusinessObject[] {value}, columns);
@@ -322,14 +322,14 @@ public class EditModeController : PlaceHolder
       return;
     _isEditModeRestored = true;
 
-    if (IsEditDetailsModeActive || IsListEditModeActive)
+    if (IsRowEditModeActive || IsListEditModeActive)
     {
       if (_ownerControl.Value == null)
       {
         throw new InvalidOperationException (string.Format (
             "Cannot restore edit mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
       }
-      if (IsEditDetailsModeActive && _editableRowIndex.Value >= _ownerControl.Value.Count)
+      if (IsRowEditModeActive && _editableRowIndex.Value >= _ownerControl.Value.Count)
       {
         throw new InvalidOperationException (string.Format ("Cannot restore edit details mode: "
             + "The Value collection of the BocList '{0}' no longer contains the previously modified row.", 
@@ -409,7 +409,7 @@ public class EditModeController : PlaceHolder
 
     if (_ownerControl.Value != null)
     {
-      if (IsEditDetailsModeActive)
+      if (IsRowEditModeActive)
       {
         throw new InvalidOperationException (string.Format (
             "Cannot remove rows while the BocList '{0}' is in edit details mode. "
@@ -443,7 +443,7 @@ public class EditModeController : PlaceHolder
     
     if (_ownerControl.Value != null)
     {
-      if (IsEditDetailsModeActive)
+      if (IsRowEditModeActive)
       {
         throw new InvalidOperationException (string.Format (
           "Cannot remove a row while the BocList '{0}' is in edit details mode. "
@@ -472,7 +472,7 @@ public class EditModeController : PlaceHolder
   ///   Queried where the rendering depends on whether the list is in edit mode. 
   ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
   /// </remarks>
-  public bool IsEditDetailsModeActive
+  public bool IsRowEditModeActive
   {
     get { return ! _editableRowIndex.IsNull; } 
   }
@@ -500,7 +500,7 @@ public class EditModeController : PlaceHolder
   {
     ArgumentUtility.CheckNotNull ("resourceManager", resourceManager);
 
-    if (! (IsListEditModeActive || IsEditDetailsModeActive) || ! _enableEditModeValidator)
+    if (! (IsListEditModeActive || IsRowEditModeActive) || ! _enableEditModeValidator)
       return new BaseValidator[0];
 
     BaseValidator[] validators = new BaseValidator[1];
@@ -510,7 +510,7 @@ public class EditModeController : PlaceHolder
     editDetailsValidator.ControlToValidate = ID;
     if (StringUtility.IsNullOrEmpty (_ownerControl.ErrorMessage))
     {
-      if (IsEditDetailsModeActive)
+      if (IsRowEditModeActive)
       {
         editDetailsValidator.ErrorMessage = 
             resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.RowEditModeErrorMessage);
@@ -539,7 +539,7 @@ public class EditModeController : PlaceHolder
   /// </remarks>
   public void EnsureValidatorsRestored()
   {
-    if (IsEditDetailsModeActive || IsListEditModeActive)
+    if (IsRowEditModeActive || IsListEditModeActive)
     {
       for (int i = 0; i < _rows.Length; i++)
         _rows[i].EnsureValidatorsRestored();
@@ -552,7 +552,7 @@ public class EditModeController : PlaceHolder
 
     bool isValid = true;
     
-    if (IsEditDetailsModeActive || IsListEditModeActive)
+    if (IsRowEditModeActive || IsListEditModeActive)
     {
       for (int i = 0; i < _rows.Length; i++)
         isValid &= _rows[i].Validate();
@@ -576,7 +576,7 @@ public class EditModeController : PlaceHolder
 
   public bool IsRequired (int columnIndex)
   {
-    if (IsEditDetailsModeActive || IsListEditModeActive)
+    if (IsRowEditModeActive || IsListEditModeActive)
     {
       for (int i = 0; i < _rows.Length; i++)
       {
@@ -591,7 +591,7 @@ public class EditModeController : PlaceHolder
   
   public bool IsDirty()
   {
-    if (IsEditDetailsModeActive || IsListEditModeActive)
+    if (IsRowEditModeActive || IsListEditModeActive)
     {
       for (int i = 0; i < _rows.Length; i++)
       {
@@ -613,7 +613,7 @@ public class EditModeController : PlaceHolder
   /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
   public string[] GetTrackedClientIDs()
   {
-    if (IsEditDetailsModeActive || IsListEditModeActive)
+    if (IsRowEditModeActive || IsListEditModeActive)
     {
       StringCollection trackedIDs = new StringCollection();
       for (int i = 0; i < _rows.Length; i++)

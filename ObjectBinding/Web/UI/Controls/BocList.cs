@@ -56,6 +56,22 @@ public class BocList:
     get { return EditableRowIndex; }
   }
 
+  [Browsable (false)]
+  [Obsolete ("Use EndEditDetailsMode instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public void EndEditDetailsMode (bool saveChanges)
+  {
+    EndRowEditMode (saveChanges);
+  }
+
+  [Browsable (false)]
+  [Obsolete ("Use IsEditDetailsModeActive instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public bool IsEditDetailsModeActive
+  {
+    get { return IsRowEditModeActive; } 
+  }
+
   [Obsolete ("Use EditableRowChangesSaving event instead.", true)]
   [EditorBrowsable (EditorBrowsableState.Never)]
   protected virtual void OnRowEditModeSaving (
@@ -589,7 +605,7 @@ public class BocList:
   /// </summary>
   protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
   {
-    if (IsEditDetailsModeActive)
+    if (IsRowEditModeActive)
       return false;
 
     string dataRowSelectorControlFilter = ClientID + c_dataRowSelectorControlIDSuffix;
@@ -879,12 +895,12 @@ public class BocList:
       }
       case EditDetailsCommand.Save:
       {
-        EndEditDetailsMode (true);
+        EndRowEditMode (true);
         break;
       }
       case EditDetailsCommand.Cancel:
       {
-        EndEditDetailsMode (false);
+        EndRowEditMode (false);
         break;
       }
       default:
@@ -1284,7 +1300,7 @@ public class BocList:
       PreRenderCustomColumns();
     }
 
-    if (IsEditDetailsModeActive)
+    if (IsRowEditModeActive)
     {
       BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
       for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
@@ -1741,7 +1757,7 @@ public class BocList:
       writer.Write (c_whiteSpace);
       if (IsDesignMode)
         _availableViewsList.Width = Unit.Point (c_designModeAvailableViewsListWidthInPoints);
-      _availableViewsList.Enabled = ! IsEditDetailsModeActive && ! IsListEditModeActive;
+      _availableViewsList.Enabled = ! IsRowEditModeActive && ! IsListEditModeActive;
       _availableViewsList.CssClass = CssClassAvailableViewsListDropDownList;
       _availableViewsList.RenderControl (writer);
       writer.RenderEndTag();
@@ -1754,7 +1770,7 @@ public class BocList:
       else
         _optionsMenu.TitleText = _optionsTitle;
       _optionsMenu.Style.Add ("margin-bottom", menuBlockItemOffset);
-      _optionsMenu.Enabled = ! IsEditDetailsModeActive;
+      _optionsMenu.Enabled = ! IsRowEditModeActive;
       _optionsMenu.IsReadOnly = IsReadOnly;
       _optionsMenu.RenderControl (writer);
     }
@@ -1931,7 +1947,7 @@ public class BocList:
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
 
     bool isDisabled = menuItem.EvaluateDisabled() 
-        || IsEditDetailsModeActive 
+        || IsRowEditModeActive 
         || ! isCommandEnabled;
     stringBuilder.AppendFormat (
         "\t\tnew ContentMenu_MenuItemInfo ('{0}', '{1}', {2}, {3}, {4}, {5}, {6}, {7}, {8})",
@@ -2108,12 +2124,12 @@ public class BocList:
       
       string imageUrl = null;
       //  Move to first page button
-      if (isFirstPage || IsEditDetailsModeActive)
+      if (isFirstPage || IsRowEditModeActive)
         imageUrl = c_goToFirstInactiveIcon;
       else
         imageUrl = c_goToFirstIcon;
       imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-      if (isFirstPage || IsEditDetailsModeActive)
+      if (isFirstPage || IsRowEditModeActive)
       {
         RenderIcon (writer, new IconInfo (imageUrl), null);
       }
@@ -2131,12 +2147,12 @@ public class BocList:
       writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
       //  Move to previous page button
-      if (isFirstPage || IsEditDetailsModeActive)
+      if (isFirstPage || IsRowEditModeActive)
         imageUrl = c_goToPreviousInactiveIcon;
       else
         imageUrl = c_goToPreviousIcon;      
       imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-      if (isFirstPage || IsEditDetailsModeActive)
+      if (isFirstPage || IsRowEditModeActive)
       {
         RenderIcon (writer, new IconInfo (imageUrl), null);
       }
@@ -2154,12 +2170,12 @@ public class BocList:
       writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
       //  Move to next page button
-      if (isLastPage || IsEditDetailsModeActive)
+      if (isLastPage || IsRowEditModeActive)
         imageUrl = c_goToNextInactiveIcon;
       else
         imageUrl = c_goToNextIcon;      
       imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-      if (isLastPage || IsEditDetailsModeActive)
+      if (isLastPage || IsRowEditModeActive)
       {
         RenderIcon (writer, new IconInfo (imageUrl), null);
       }
@@ -2177,12 +2193,12 @@ public class BocList:
       writer.Write (c_whiteSpace + c_whiteSpace + c_whiteSpace);
 
       //  Move to last page button
-      if (isLastPage || IsEditDetailsModeActive)
+      if (isLastPage || IsRowEditModeActive)
         imageUrl = c_goToLastInactiveIcon;
       else
         imageUrl = c_goToLastIcon;     
       imageUrl = ResourceUrlResolver.GetResourceUrl (this, Context, typeof (BocList), ResourceType.Image, imageUrl);
-      if (isLastPage || IsEditDetailsModeActive)
+      if (isLastPage || IsRowEditModeActive)
       {
         RenderIcon (writer, new IconInfo (imageUrl), null);
       }
@@ -2502,7 +2518,7 @@ public class BocList:
     
     if (hasSortingCommand)
     {
-      if (! IsEditDetailsModeActive && ! IsListEditModeActive && _hasClientScript)
+      if (! IsRowEditModeActive && ! IsListEditModeActive && _hasClientScript)
       {
         string argument = c_sortCommandPrefix + columnIndex.ToString();
         string postBackEvent = Page.GetPostBackClientEvent (this, argument);
@@ -2565,7 +2581,7 @@ public class BocList:
     else
       cssClassTableCell = CssClassDataCellEven;
 
-    if (IsSelectionEnabled && ! IsEditDetailsModeActive)
+    if (IsSelectionEnabled && ! IsRowEditModeActive)
     {
       if (AreDataRowsClickSensitive())
       {
@@ -2649,7 +2665,7 @@ public class BocList:
   {
     bool isReadOnly = IsReadOnly;
     EditableRow editableRow = null;
-    bool isEditedRow = IsEditDetailsModeActive && EditableRowIndex.Value == originalRowIndex;
+    bool isEditedRow = IsRowEditModeActive && EditableRowIndex.Value == originalRowIndex;
     if (isEditedRow)
       editableRow = _editModeController._rows[0];
     else if (IsListEditModeActive)
@@ -2829,7 +2845,7 @@ public class BocList:
     writer.AddAttribute (HtmlTextWriterAttribute.Value, value);
     if (isChecked)
       writer.AddAttribute (HtmlTextWriterAttribute.Checked, "checked");    
-    if (IsEditDetailsModeActive)
+    if (IsRowEditModeActive)
       writer.AddAttribute (HtmlTextWriterAttribute.Disabled, "true");
     if (isSelectAllSelectorControl)
     {
@@ -3000,7 +3016,7 @@ public class BocList:
       writer.AddAttribute (HtmlTextWriterAttribute.Onclick, c_onCommandClickScript);
     writer.RenderBeginTag (HtmlTextWriterTag.Div); // Begin div
 
-    dropDownMenu.Enabled = ! IsEditDetailsModeActive;
+    dropDownMenu.Enabled = ! IsRowEditModeActive;
 
     dropDownMenu.TitleText = column.MenuTitleText;
     dropDownMenu.TitleIcon = column.MenuTitleIcon;
@@ -3072,7 +3088,7 @@ public class BocList:
                     || ! isReadOnly && command.Show == CommandShow.EditMode;
     if (   isActive
         && command.Type != CommandType.None
-        && ! IsEditDetailsModeActive
+        && ! IsRowEditModeActive
         && (   command.CommandState == null
             || command.CommandState.IsEnabled (this, businessObject, column)))
     {
@@ -3172,7 +3188,7 @@ public class BocList:
   /// <returns></returns>
   public string GetCustomCellPostBackClientEvent (int columnIndex, int listIndex, string customCellArgument)
   {
-    if (IsEditDetailsModeActive)
+    if (IsRowEditModeActive)
       return "return false;";
     string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
     return Page.GetPostBackClientEvent (this, postBackArgument) + ";";
@@ -3256,8 +3272,8 @@ public class BocList:
   {
     if (! interim)
     {
-      if (IsEditDetailsModeActive)
-        EndEditDetailsMode (false);
+      if (IsRowEditModeActive)
+        EndRowEditMode (false);
       else if (IsListEditModeActive)
         EndListEditMode (false);
     }
@@ -3279,8 +3295,8 @@ public class BocList:
     {
       if (! interim)
       {
-        if (IsEditDetailsModeActive)
-          EndEditDetailsMode (true);
+        if (IsRowEditModeActive)
+          EndRowEditMode (true);
         else if (IsListEditModeActive)
           EndListEditMode (true);
       }
@@ -3686,7 +3702,7 @@ public class BocList:
       if (   customColumn != null
           && (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlsInAllRows
               || (   customColumn.Mode == BocCustomColumnDefinitionMode.ControlInEditedRow
-                  && IsEditDetailsModeActive)))
+                  && IsRowEditModeActive)))
 
       {
         BocCustomCellArguments args = new BocCustomCellArguments (this, customColumn);
@@ -3742,7 +3758,7 @@ public class BocList:
     if (_customColumns == null)
       return true;
 
-    if (! IsEditDetailsModeActive)
+    if (! IsRowEditModeActive)
       return true;
 
     bool isValid = true;
@@ -4464,7 +4480,7 @@ public class BocList:
   ///   <para>
   ///     Once the list is in edit mode, it is important not to change to index of the edited 
   ///     <see cref="IBusinessObject"/> in <see cref="Value"/>. Otherwise the wrong object would be edited.
-  ///     Use <see cref="IsEditDetailsModeActive"/> to programatically check whether it is save to insert a row.
+  ///     Use <see cref="IsRowEditModeActive"/> to programatically check whether it is save to insert a row.
   ///   </para><para>
   ///     While the list is in edit mode, all commands and menus for this list are disabled with the exception of
   ///     those rendered in the <see cref="BocEditDetailsColumnDefinition"/> column.
@@ -4476,9 +4492,9 @@ public class BocList:
     _editModeController.SwitchRowIntoEditMode (index, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
   }
 
-  public void EndEditDetailsMode (bool saveChanges)
+  public void EndRowEditMode (bool saveChanges)
   {
-    _editModeController.EndEditDetailsMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
+    _editModeController.EndRowEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
   }
 
   internal void EndEditDetailsModeCleanUp (int modifiedRowIndex)
@@ -4530,9 +4546,9 @@ public class BocList:
   ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
   /// </remarks>
   [Browsable (false)]
-  public bool IsEditDetailsModeActive
+  public bool IsRowEditModeActive
   {
-    get { return _editModeController.IsEditDetailsModeActive; } 
+    get { return _editModeController.IsRowEditModeActive; } 
   }
 
   [Description ("Set false to hide the asterisks in the title row for columns having edit details control.")]
@@ -4978,7 +4994,7 @@ public class BocList:
         throw new ArgumentOutOfRangeException ("value");
       }
 
-      if (   (IsEditDetailsModeActive || IsListEditModeActive)
+      if (   (IsRowEditModeActive || IsListEditModeActive)
           && _isSelectedViewIndexSet
           && _selectedViewIndex != value)
       {
