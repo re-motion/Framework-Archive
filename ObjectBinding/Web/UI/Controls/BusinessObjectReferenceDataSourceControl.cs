@@ -65,7 +65,7 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
 #endif
 [Designer (typeof (BocDataSourceDesigner))]
 public class BusinessObjectReferenceDataSourceControl: 
-    BusinessObjectBoundModifiableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource
+    BusinessObjectBoundEditableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource
 {
   private class InternalBusinessObjectReferenceDataSource: BusinessObjectReferenceDataSourceBase
   {
@@ -96,9 +96,9 @@ public class BusinessObjectReferenceDataSourceControl:
         
         foreach (IBusinessObjectBoundControl control in BoundControls)
         {
-          IBusinessObjectBoundModifiableWebControl modifiableControl = 
-              control as IBusinessObjectBoundModifiableWebControl;
-          if (modifiableControl != null && modifiableControl.IsDirty)
+          IBusinessObjectBoundEditableWebControl editableControl = 
+              control as IBusinessObjectBoundEditableWebControl;
+          if (editableControl != null && editableControl.IsDirty)
             return true;
         }
         return false;
@@ -136,7 +136,7 @@ public class BusinessObjectReferenceDataSourceControl:
   ///   Evaluates <see langword="true"/> if either the <see cref="BusinessObjectReferenceDataSourceControl"/> or one 
   ///   of the bound controls is dirty.
   /// </value>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.IsDirty">BusinessObjectBoundModifiableWebControl.IsDirty</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.IsDirty">BusinessObjectBoundEditableWebControl.IsDirty</seealso>
   public override bool IsDirty
   {
     get
@@ -154,7 +154,7 @@ public class BusinessObjectReferenceDataSourceControl:
   ///   in the user interface.
   /// </summary>
   /// <returns> An empty <see cref="String"/> <see cref="Array"/>. </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     return new string[0];
@@ -184,7 +184,7 @@ public class BusinessObjectReferenceDataSourceControl:
   /// </summary>
   /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
   /// <remarks> 
-  ///   Actual saving only occurs if <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> evaluates 
+  ///   Actual saving only occurs if <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/> evaluates 
   ///   <see langword="false"/>. 
   /// </remarks>
   public override void SaveValue (bool interim) // inherited from control interface
@@ -195,11 +195,11 @@ public class BusinessObjectReferenceDataSourceControl:
 
   /// <summary> 
   ///   Saves the values of the <see cref="BusinessObject"/> from all bound controls implementing
-  ///   <see cref="IBusinessObjectBoundModifiableControl"/>.
+  ///   <see cref="IBusinessObjectBoundEditableControl"/>.
   /// </summary>
   /// <param name="interim"> Spefifies whether this is the final saving, or an interim saving. </param>
   /// <remarks>
-  ///   Actual saving only occurs if <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> evaluates 
+  ///   Actual saving only occurs if <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/> evaluates 
   ///  <see langword="false"/>. 
   /// </remarks>
   public virtual void SaveValues (bool interim) // inherited data source interface
@@ -355,15 +355,15 @@ public class BusinessObjectReferenceDataSourceControl:
 }
 
 
-/* public class BusinessObjectReferenceDataSourceControl: BusinessObjectDataSourceControl, IBusinessObjectBoundModifiableControl
+/* public class BusinessObjectReferenceDataSourceControl: BusinessObjectDataSourceControl, IBusinessObjectBoundEditableControl
 {
   private BusinessObjectReferenceDataSource _dataSource;
-  private IBusinessObjectBoundModifiableControl _control;
+  private IBusinessObjectBoundEditableControl _control;
 
   public BusinessObjectReferenceDataSourceControl()
   {
     _dataSource = new BusinessObjectReferenceDataSource();
-    _control = (IBusinessObjectBoundModifiableControl) _dataSource;
+    _control = (IBusinessObjectBoundEditableControl) _dataSource;
   }
 
   protected override IBusinessObjectDataSource GetDataSource()
@@ -436,7 +436,7 @@ public class BusinessObjectReferenceDataSourceControl:
     _control.LoadValue (interim);
   }
 
-  void IBusinessObjectBoundModifiableControl.SaveValue (bool interim)
+  void IBusinessObjectBoundEditableControl.SaveValue (bool interim)
   {
     _control.SaveValue (interim);
   }
