@@ -80,16 +80,6 @@ public class BocTreeViewTest: BocTest
     Assert.IsNull (WcagHelperMock.Property);
   }
 
-  
-  // EditDetailsMode currently not testable
-  //  [Test]
-  //  public void GetTrackedClientIDsInEditMode()
-  //  {
-  //    _bocTreeView.ReadOnly = NaBoolean.False;
-  //    string[] actual = _bocTreeView.GetTrackedClientIDs();
-  //    Assert.IsNotNull (actual);
-  //    Assert.Ignore("Not implemented.");
-  //  }
 
   [Test]
   public void SetValueToList()
