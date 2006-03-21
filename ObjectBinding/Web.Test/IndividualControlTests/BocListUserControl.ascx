@@ -131,7 +131,7 @@
 </OptionsMenuItems>
 
 <fixedcolumns>
-<obw:BocRowEditModeColumnDefinition ItemID="EditDetails" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
+<obw:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
 <obw:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
 <obw:BocListItemCommand Type="Event" CommandStateType="OBRTest::PersonListItemCommandState" ToolTip="An Event Command"></obw:BocListItemCommand>
@@ -188,7 +188,7 @@
     <td colSpan=2><obw:boclist id=AllColumnsList runat="server" datasourcecontrol="EmptyDataSourceControl">
 <fixedcolumns>
 <obw:BocAllPropertiesPlacehoderColumnDefinition CssClass="test" Width="80%"></obw:BocAllPropertiesPlacehoderColumnDefinition>
-<obw:BocRowEditModeColumnDefinition ItemID="EditDetails" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
+<obw:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
 </FixedColumns>
 </obw:boclist></td></tr>--%>
 </table>

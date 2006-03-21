@@ -482,7 +482,7 @@ public class EditableRow : PlaceHolder, INamingContainer
     writer.RenderEndTag(); // Span Container
   }
 
-  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit details validation messages. </summary>
+  /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit mode validation messages. </summary>
   /// <remarks>
   ///   <para> Class: <c>bocListEditModeValidationMessage</c> </para>
   ///   <para> Only applied if the <see cref="EditModeValidator"/> has no CSS-class of its own. </para>

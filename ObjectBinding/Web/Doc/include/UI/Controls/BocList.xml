@@ -138,12 +138,12 @@
           </description>
         </item>
         <item>
-          <term> <see cref="BocEditDetailsColumnDefinition"/> </term>
+          <term> <see cref="BocRowEditModeColumnDefinition"/> </term>
           <description>
             <para>
               Used to display predefined commands for switching a row into editing mode and back to read-only mode.
             </para><para>
-              See the <see href="#EditDetails">Inline Editing</see> section for details.
+              See the <see href="#RowEditMode">Inline Editing</see> section for details.
             </para>
             </description>
         </item>
@@ -312,47 +312,47 @@
         acts as label for the selection check-boxes or radio-buttons.
       </para>
       
-      <h4 class="dtH4"><a name="EditDetails">Details Editing Mode (Inline Editing)</a></h4><!-- HTML Help requires separate anchor tag for target -->   
+      <h4 class="dtH4"><a name="RowEditMode">Row Edit Mode (Inline Editing)</a></h4><!-- HTML Help requires separate anchor tag for target -->   
       <para>
         Through the use of inline editing it is possible to modify the business objects in the individual rows, 
         one row at a time. Inline editing is supported for columns of the <see cref="BocSimpleColumnDefinition"/> type
-        with a univalent <see cref="BusinessObjectPropertyPath"/>. During details editing mode the <b>BocList</b> disables
-        paging, row selection, reordering the list, all the menus and the commands rendered for the columns.
+        with a univalent <see cref="BusinessObjectPropertyPath"/>. During row edit mode the <b>BocList</b> 
+        disables paging, row selection, reordering the list, all the menus and the commands rendered for the columns.
         <note>
           If you use a <see cref="BocCustomColumnDefinition"/>, you must take care of disabling any commands
           in this column.
         </note>
       </para><para>
-        Aside from provding a <see cref="BocEditDetailsColumnDefinition"/> for automatic management of the inline 
-        editing, you can also use the <see cref="SwitchRowIntoEditMode"/> and <see cref="EndEditDetailsMode"/> methods
-        to start and end the details editing mode.
+        Aside from provding a <see cref="BocRowEditModeColumnDefinition"/> for automatic management of the inline 
+        editing, you can also use the <see cref="SwitchRowIntoEditMode"/> and <see cref="EndRowEditMode"/> methods
+        to start and end the row edit mode.
       </para><para>
         You can query the row row currently being edited through the <see cref="EditableRowIndex"/> property. Use the
-        <see cref="IsEditDetailsModeActive"/> flag to determine whether the <b>BocList</b> is currently in edit details
-        mode.
+        <see cref="IsRowEditModeActive"/> flag to determine whether the <b>BocList</b> is currently in row edit mode.
       </para><para>
         If you must validate the row being edited, you can call the <see cref="ValiadateEditableRow"/> method. If
-        you use the <b>BocList</b> inside a <see cref="FormGridManager"/>, the edit details mode validators are 
+        you use the <b>BocList</b> inside a <see cref="FormGridManager"/>, the row edit mode validators are 
         integrated into the form grid validation. The validators are also validated if you execute the 
-        <see cref="EndEditDetailsMode"/> method or click <b>Save</b> in the edit details column.
+        <see cref="EndRowEditMode"/> method or click <b>Save</b> in the row edit mode column.
       </para><para>
-        You can register for the before and after save and change events using the <see cref="SavingEditedRow"/>,
-        <see cref="EditedRowSaved"/>, <see cref="CancelingEditDetailsMode"/>, and <see cref="EditDetailsModeCanceled"/>
-        event sources.
+        You can register for the before and after save and change events using the <see cref="EditableRowChangesSaving"/>,
+        <see cref="EditableRowChangesSaved"/>, <see cref="EditableRowChangesCanceling"/>, and 
+        <see cref="EditableRowChangesCanceled"/> event sources.
       </para><para>
         You can  add a new business object to the list of values, and start editing immediatly by calling
         <see cref="AddAndEditRow"/>. When a business object is added in this way, canceling inline editing will once
         again remove the business object from the list. It is the responsibility of the caller to handle the disposing
-        of the discarded business object, for instance by registering for the <see cref="EditDetailsModeCanceled"/>
+        of the discarded business object, for instance by registering for the <see cref="EditableRowChangesCanceled"/>
         event.
       </para><para>
         The following properties allow additonal customization of the details editing mode:
-        <see cref="ShowEditDetailsRequiredMarkers"/>, <see cref="ShowEditDetailsValidationMarkers"/>,
-        <see cref="DisableEditDetailsValidationMessages"/>, and <see cref="EnableEditDetailsValidator"/>.
+        <see cref="ShowEditModeRequiredMarkers"/>, <see cref="ShowEditModeValidationMarkers"/>,
+        <see cref="DisableEditModeValidationMessages"/>, and <see cref="EnableEditModeValidator"/>.
       </para>
-      <note type="inheritinfo">
-        If you need to control the creation of the details editing mode controls, you can override the 
-        <see cref="CreateRowEditModeDataSource"/> and <see cref="CreateRowEditModeControl"/> methods.
+      <note>
+        If you need to control the creation of the details editing mode controls, you can set the 
+        <see cref="EditModeControlFactory"/> and <see cref="EditModeControlFactory"/> properties either during 
+        initialization of derived list, or during the init phase of the page.
       </note>
 
       <h4 class="dtH4">Localization Support</h4>
