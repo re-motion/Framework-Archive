@@ -681,7 +681,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException),
-      "Cannot remove rows while the BocList 'BocList' is in edit details mode. Call EndRowEditMode() before removing the rows.")]
+      "Cannot remove rows while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the rows.")]
   public void RemoveRows ()
   {
     Invoker.InitRecursive();
@@ -696,7 +696,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException),
-      "Cannot remove a row while the BocList 'BocList' is in edit details mode. Call EndRowEditMode() before removing the row.")]
+      "Cannot remove a row while the BocList 'BocList' is in row edit mode. Call EndEditMode() before removing the row.")]
   public void RemoveRow ()
   {
     Invoker.InitRecursive();

@@ -412,8 +412,8 @@ public class EditModeController : PlaceHolder
       if (IsRowEditModeActive)
       {
         throw new InvalidOperationException (string.Format (
-            "Cannot remove rows while the BocList '{0}' is in edit details mode. "
-            + "Call EndEditDetailsMode() before removing the rows.",
+            "Cannot remove rows while the BocList '{0}' is in row edit mode. "
+            + "Call EndEditMode() before removing the rows.",
             _ownerControl.ID));
       }
       else if (IsListEditModeActive)
@@ -446,8 +446,8 @@ public class EditModeController : PlaceHolder
       if (IsRowEditModeActive)
       {
         throw new InvalidOperationException (string.Format (
-          "Cannot remove a row while the BocList '{0}' is in edit details mode. "
-          + "Call EndEditDetailsMode() before removing the row.",
+          "Cannot remove a row while the BocList '{0}' is in row edit mode. "
+          + "Call EndEditMode() before removing the row.",
           _ownerControl.ID));
       }  
       else if (IsListEditModeActive)

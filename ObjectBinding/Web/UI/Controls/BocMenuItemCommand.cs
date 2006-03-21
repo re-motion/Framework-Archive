@@ -11,6 +11,27 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 
 public class BocMenuItemCommand: BocCommand
 {
+  /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
+  [TypeConverter (typeof (ExpandableObjectConverter))]
+  public class MenuItemHrefCommandInfo: BocCommand.BocHrefCommandInfo
+  {
+    /// <summary> Initalizes a new instance </summary>
+    public MenuItemHrefCommandInfo()
+    {
+    }
+
+    /// <summary> Gets or sets the URL to link to when the rendered command is clicked. </summary>
+    /// <value> 
+    ///   The URL to link to when the rendered command is clicked. The default value is an empty <see cref="String"/>. 
+    /// </value>
+    [Description ("The hyperlink reference of the command.")]
+    public override string Href 
+    {
+      get { return base.Href; }
+      set { base.Href = value; }
+    }
+  }
+
   /// <summary> Wraps the properties required for calling a WxeFunction. </summary>
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class MenuItemWxeFunctionCommandInfo: BocCommand.BocWxeFunctionCommandInfo
@@ -66,6 +87,7 @@ public class BocMenuItemCommand: BocCommand
   }
 
   private bool _hasClickFired = false;
+  private MenuItemHrefCommandInfo _hrefCommand;
   private MenuItemWxeFunctionCommandInfo _wxeFunctionCommand;
 
   [Browsable (false)]
@@ -79,6 +101,7 @@ public class BocMenuItemCommand: BocCommand
   public BocMenuItemCommand (CommandType defaultType)
     : base (defaultType)
   {
+    _hrefCommand = new MenuItemHrefCommandInfo();
     _wxeFunctionCommand = new MenuItemWxeFunctionCommandInfo();
   }
 
@@ -157,6 +180,17 @@ public class BocMenuItemCommand: BocCommand
     }
 
     return parameters;
+  }
+
+  /// <summary>
+  ///   The <see cref="MenuItemHrefFunctionCommandInfo"/> used when rendering the command the command as a hyperlink.
+  /// </summary>
+  /// <remarks> Only interpreted if <see cref="Type"/> is set to <see cref="CommandType.Href"/>. </remarks>
+  /// <value> A <see cref="MenuItemHrefCommandInfo"/> object. </value>
+  public override HrefCommandInfo HrefCommand
+  {
+    get { return _hrefCommand; }
+    set { _hrefCommand = (MenuItemHrefCommandInfo) value; }
   }
 
   /// <summary>
