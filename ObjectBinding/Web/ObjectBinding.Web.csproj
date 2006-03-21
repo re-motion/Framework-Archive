@@ -540,7 +540,7 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\BusinessObjectBoundModifiableWebControl.cs"
+                    RelPath = "UI\Controls\BusinessObjectBoundEditableWebControl.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
