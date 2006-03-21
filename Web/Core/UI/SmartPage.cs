@@ -52,11 +52,11 @@ public interface ISmartPage: IPage
   NameValueCollection GetPostBackCollection ();
 
   /// <summary>
-  ///   Registers a control implementing <see cref="IModifiableControl"/> for tracking of it's server- and client-side
+  ///   Registers a control implementing <see cref="IEditableControl"/> for tracking of it's server- and client-side
   ///   dirty state.
   /// </summary>
-  /// <param name="control"> A control implementing <see cref="IModifiableControl"/> that will be tracked. </param>
-  void RegisterControlForDirtyStateTracking (IModifiableControl control);
+  /// <param name="control"> A control implementing <see cref="IEditableControl"/> that will be tracked. </param>
+  void RegisterControlForDirtyStateTracking (IEditableControl control);
 
   /// <summary>
   ///   Resgisters a <see cref="Control.ClientID"/> for the tracking of the controls client-side dirty state.
@@ -190,11 +190,11 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   }
 
   /// <summary>
-  ///   Registers a control implementing <see cref="IModifiableControl"/> for tracking of it's server- and client-side
+  ///   Registers a control implementing <see cref="IEditableControl"/> for tracking of it's server- and client-side
   ///   dirty state.
   /// </summary>
-  /// <param name="control"> A control implementing <see cref="IModifiableControl"/> that will be tracked.  </param>
-  public void RegisterControlForDirtyStateTracking (IModifiableControl control)
+  /// <param name="control"> A control implementing <see cref="IEditableControl"/> that will be tracked.  </param>
+  public void RegisterControlForDirtyStateTracking (IEditableControl control)
   {
     _smartPageInfo.RegisterControlForDirtyStateTracking (control);
   }
