@@ -539,7 +539,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Assert.IsNotNull (validators);
     Assert.AreEqual (1, validators.Length);
     Assert.IsTrue (validators[0] is EditModeValidator);
-    Assert.AreEqual (resourceManager.GetString (BocList.ResourceIdentifier.ListEditModeErrorMessage), validators[0].ErrorMessage);
+    Assert.AreEqual (resourceManager.GetString (Rubicon.ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier.ListEditModeErrorMessage), validators[0].ErrorMessage);
   }
 
   [Test]
