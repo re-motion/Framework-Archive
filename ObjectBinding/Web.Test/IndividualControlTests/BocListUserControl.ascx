@@ -16,7 +16,7 @@
   <tr>
     <td colSpan=2><obrt:testboclist id=ChildrenList runat="server" datasourcecontrol="CurrentObject" propertyidentifier="Children" alwaysshowpageinfo="True" listmenulinebreaks="BetweenGroups" pagesize="4" indexoffset="100" RowMenuDisplay="Manual" ShowEmptyListMessage="True" enableselection="True" Index="InitialOrder" Selection="Multiple">
 <fixedcolumns>
-<obw:BocEditDetailsColumnDefinition ItemID="EditDetails" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></obw:BocEditDetailsColumnDefinition>
+<obw:BocRowEditModeColumnDefinition ItemID="EditRow" SaveText="Save" CancelText="Cancel" Width="2em" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
 <obw:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
 <obw:BocListItemCommand Type="Event" CommandStateType="OBRTest::PersonListItemCommandState" ToolTip="An Event Command"></obw:BocListItemCommand>
@@ -131,7 +131,7 @@
 </OptionsMenuItems>
 
 <fixedcolumns>
-<obw:BocEditDetailsColumnDefinition ItemID="EditDetails" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocEditDetailsColumnDefinition>
+<obw:BocRowEditModeColumnDefinition ItemID="EditDetails" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
 <obw:BocCommandColumnDefinition ItemID="E1" Text="E 1" ColumnTitle="Cmd">
 <persistedcommand>
 <obw:BocListItemCommand Type="Event" CommandStateType="OBRTest::PersonListItemCommandState" ToolTip="An Event Command"></obw:BocListItemCommand>
@@ -188,7 +188,7 @@
     <td colSpan=2><obw:boclist id=AllColumnsList runat="server" datasourcecontrol="EmptyDataSourceControl">
 <fixedcolumns>
 <obw:BocAllPropertiesPlacehoderColumnDefinition CssClass="test" Width="80%"></obw:BocAllPropertiesPlacehoderColumnDefinition>
-<obw:BocEditDetailsColumnDefinition ItemID="EditDetails" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocEditDetailsColumnDefinition>
+<obw:BocRowEditModeColumnDefinition ItemID="EditDetails" SaveText="Save" CancelText="Cancel" EditText="Edit"></obw:BocRowEditModeColumnDefinition>
 </FixedColumns>
 </obw:boclist></td></tr>--%>
 </table>
