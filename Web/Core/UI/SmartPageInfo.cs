@@ -90,7 +90,7 @@ public class SmartPageInfo
 
 
   /// <summary> Implements <see cref="ISmartPage.RegisterControlForDirtyStateTracking">ISmartPage.RegisterClientSidePageEventHandler</see>. </summary>
-  public void RegisterControlForDirtyStateTracking (IModifiableControl control)
+  public void RegisterControlForDirtyStateTracking (IEditableControl control)
   {
     ArgumentUtility.CheckNotNull ("control", control);
     _trackedControls[control] = control;
@@ -107,7 +107,7 @@ public class SmartPageInfo
   /// <summary> Implements <see cref="ISmartPage.EvaluateDirtyState">ISmartPage.EvaluateDirtyState</see>. </summary>
   public bool EvaluateDirtyState()
   {
-    foreach (IModifiableControl control in _trackedControls.Values)
+    foreach (IEditableControl control in _trackedControls.Values)
     {
       if (control.IsDirty)
         return true;
@@ -376,7 +376,7 @@ public class SmartPageInfo
 
   private void FormatPopulateTrackedControlsArrayClientScript (StringBuilder script, string trackedControlsArray)
   {
-    foreach (IModifiableControl control in _trackedControls.Values)
+    foreach (IEditableControl control in _trackedControls.Values)
     {
       if (control.Visible)
       {
