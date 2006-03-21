@@ -20,7 +20,7 @@ public class BocColumnDefinitionCollectionEditor: AdvancedCollectionEditor
       typeof (BocSimpleColumnDefinition), 
       typeof (BocCommandColumnDefinition),
       typeof (BocCompoundColumnDefinition),
-      typeof (BocEditDetailsColumnDefinition),
+      typeof (BocRowEditModeColumnDefinition),
       typeof (BocCustomColumnDefinition),
       typeof (BocDropDownMenuColumnDefinition),
       typeof (BocAllPropertiesPlacehoderColumnDefinition)};
