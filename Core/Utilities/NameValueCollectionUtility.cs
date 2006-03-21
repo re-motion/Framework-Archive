@@ -26,6 +26,7 @@ public sealed class NameValueCollectionUtility
   ///   dictionaries is taken.
   /// </summary>
   /// <param name="first"> Must not be <see langword="null"/>. </param>
+  /// <param name="second"> Must not be <see langword="null"/>. </param>
   public static void Append (NameValueCollection first, NameValueCollection second)
   {
     ArgumentUtility.CheckNotNull ("first", first);
