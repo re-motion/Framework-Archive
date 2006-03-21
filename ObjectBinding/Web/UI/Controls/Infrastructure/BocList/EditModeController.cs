@@ -610,7 +610,7 @@ public class EditModeController : PlaceHolder
   /// <returns> 
   ///   Returns the <see cref="Control.ClientID"/> values of the edit mode controls for the row currently being edited.
   /// </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public string[] GetTrackedClientIDs()
   {
     if (IsRowEditModeActive || IsListEditModeActive)
@@ -670,7 +670,7 @@ public class EditModeController : PlaceHolder
       int index,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundModifiableWebControl[] controls)
+      IBusinessObjectBoundEditableWebControl[] controls)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);
@@ -690,7 +690,7 @@ public class EditModeController : PlaceHolder
       int index,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundModifiableWebControl[] controls)
+      IBusinessObjectBoundEditableWebControl[] controls)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);

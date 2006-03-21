@@ -24,16 +24,16 @@ public class EditableRowControlFactory
 
   // methods and properties
 
-  public virtual IBusinessObjectBoundModifiableWebControl Create (BocSimpleColumnDefinition column, int columnIndex)
+  public virtual IBusinessObjectBoundEditableWebControl Create (BocSimpleColumnDefinition column, int columnIndex)
   {
     ArgumentUtility.CheckNotNull ("column", column);
     if (columnIndex < 0) throw new ArgumentOutOfRangeException ("columnIndex");
 
-    IBusinessObjectBoundModifiableWebControl control = column.CreateEditDetailsControl();
+    IBusinessObjectBoundEditableWebControl control = column.CreateEditDetailsControl();
 
     if (control == null)
     {
-      control = (IBusinessObjectBoundModifiableWebControl) ControlFactory.CreateControl (
+      control = (IBusinessObjectBoundEditableWebControl) ControlFactory.CreateControl (
           column.PropertyPath.LastProperty, ControlFactory.EditMode.InlineEdit);
     }
 

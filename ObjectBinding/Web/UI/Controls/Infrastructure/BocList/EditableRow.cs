@@ -37,7 +37,7 @@ public class EditableRow : PlaceHolder, INamingContainer
   private PlaceHolder _validatorControls = null;
 
   private bool _isRowEditModeValidatorsRestored = false;
-  private IBusinessObjectBoundModifiableWebControl[] _rowEditModeControls;
+  private IBusinessObjectBoundEditableWebControl[] _rowEditModeControls;
 
   // construction and disposing
 
@@ -104,7 +104,7 @@ public class EditableRow : PlaceHolder, INamingContainer
 
     _dataSource = _dataSourceFactory.Create (value);
 
-    _rowEditModeControls = new IBusinessObjectBoundModifiableWebControl[columns.Length];
+    _rowEditModeControls = new IBusinessObjectBoundEditableWebControl[columns.Length];
 
     for (int idxColumns = 0; idxColumns < columns.Length; idxColumns++)
     {
@@ -112,7 +112,7 @@ public class EditableRow : PlaceHolder, INamingContainer
 
       if (IsColumnEditable (simpleColumn))
       {
-        IBusinessObjectBoundModifiableWebControl control = _controlFactory.Create (simpleColumn, idxColumns);
+        IBusinessObjectBoundEditableWebControl control = _controlFactory.Create (simpleColumn, idxColumns);
 
         if (control != null)
         {
@@ -168,7 +168,7 @@ public class EditableRow : PlaceHolder, INamingContainer
     return _dataSource;
   }
 
-  protected void SetEditControl (int index, IBusinessObjectBoundModifiableWebControl control)
+  protected void SetEditControl (int index, IBusinessObjectBoundEditableWebControl control)
   {
     ArgumentUtility.CheckNotNullAndType ("control", control, typeof (Control));
 
@@ -184,12 +184,12 @@ public class EditableRow : PlaceHolder, INamingContainer
     return _editControls.Controls[columnIndex].Controls;
   }
 
-  public IBusinessObjectBoundModifiableWebControl GetEditControl (int columnIndex)
+  public IBusinessObjectBoundEditableWebControl GetEditControl (int columnIndex)
   {
     if (HasEditControl (columnIndex))
     {
       ControlCollection controls = GetEditControls (columnIndex);
-      return (IBusinessObjectBoundModifiableWebControl) controls[0];
+      return (IBusinessObjectBoundEditableWebControl) controls[0];
     }
     else
     {
@@ -266,7 +266,7 @@ public class EditableRow : PlaceHolder, INamingContainer
   {
     if (HasEditControl (columnIndex))
     {
-      IBusinessObjectBoundModifiableWebControl editControl = GetEditControl (columnIndex);
+      IBusinessObjectBoundEditableWebControl editControl = GetEditControl (columnIndex);
       BaseValidator[] validators = editControl.CreateValidators();
       if (validators != null)
         AddToValidators (columnIndex, validators);
@@ -356,9 +356,9 @@ public class EditableRow : PlaceHolder, INamingContainer
       return false;
   }
 
-  public IBusinessObjectBoundModifiableWebControl[] GetEditControlsAsArray()
+  public IBusinessObjectBoundEditableWebControl[] GetEditControlsAsArray()
   {
-    return (IBusinessObjectBoundModifiableWebControl[]) _rowEditModeControls.Clone ();
+    return (IBusinessObjectBoundEditableWebControl[]) _rowEditModeControls.Clone ();
   }
 
   public void RenderSimpleColumnCellEditModeControl (
@@ -375,7 +375,7 @@ public class EditableRow : PlaceHolder, INamingContainer
   
     ControlCollection validators = GetValidators (columnIndex);
 
-    IBusinessObjectBoundModifiableWebControl editModeControl = _rowEditModeControls[columnIndex];
+    IBusinessObjectBoundEditableWebControl editModeControl = _rowEditModeControls[columnIndex];
     CssStyleCollection editModeControlStyle = null;
     bool isEditModeControlWidthEmpty = true;
     if (editModeControl is WebControl)
