@@ -1,3 +1,8 @@
+1.4.37
+======
+- DropDownMenu
+  * Commands vom Typ Href haben Target nicht ausgewertet.
+  
 1.3.36
 ======
 - Rubicon.Web.ExecutionEngine.WxePageStep
