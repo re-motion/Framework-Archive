@@ -23,7 +23,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [ValidationProperty ("Text")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
+public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataHandler, IFocusableControl
 {
   //  constants
 
@@ -811,7 +811,7 @@ public class BocTextValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///   A <see cref="String"/> <see cref="Array"/> containing the <see cref="Control.ClientID"/> of the
   ///   <see cref="TextBox"/> if the control is in edit mode, or an empty array if the control is read-only.
   /// </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     return IsReadOnly ? new string[0] : new string[1] { _textBox.ClientID };

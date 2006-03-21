@@ -30,7 +30,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [ToolboxItemFilter("System.Web.UI")]
 [Designer (typeof (BocReferenceValueDesigner))]
 public class BocReferenceValue: 
-    BusinessObjectBoundModifiableWebControl, 
+    BusinessObjectBoundEditableWebControl, 
     IPostBackEventHandler, 
     IPostBackDataHandler,
     IBocMenuItemContainer,
@@ -1499,7 +1499,7 @@ public class BocReferenceValue:
   ///   A <see cref="String"/> <see cref="Array"/> containing the <see cref="Control.ClientID"/> of the
   ///   <see cref="DropDownList"/> if the control is in edit mode, or an empty array if the control is read-only.
   /// </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     return IsReadOnly ? new string[0] : new string[1] { _dropDownList.ClientID };

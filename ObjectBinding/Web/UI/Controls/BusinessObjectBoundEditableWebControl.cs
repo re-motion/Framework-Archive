@@ -24,32 +24,32 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 /// </summary>
 /// <remarks>
 ///   <para>
-///     See <see cref="IBusinessObjectBoundModifiableControl.SaveValue"/> for a description of the data binding 
+///     See <see cref="IBusinessObjectBoundEditableControl.SaveValue"/> for a description of the data binding 
 ///     process.
 ///   </para><para>
-///     See <see cref="BusinessObjectBoundModifiableWebControl"/> for the <see langword="abstract"/> default 
+///     See <see cref="BusinessObjectBoundEditableWebControl"/> for the <see langword="abstract"/> default 
 ///     implementation.
 ///   </para>
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundWebControl"/>
-/// <seealso cref="IBusinessObjectBoundModifiableControl"/>
+/// <seealso cref="IBusinessObjectBoundEditableControl"/>
 /// <seealso cref="IValidatableControl"/>
 /// <seealso cref="IBusinessObjectDataSourceControl"/>
-public interface IBusinessObjectBoundModifiableWebControl:
+public interface IBusinessObjectBoundEditableWebControl:
   IBusinessObjectBoundWebControl, 
-  IBusinessObjectBoundModifiableControl, 
+  IBusinessObjectBoundEditableControl, 
   IValidatableControl, 
-  IModifiableControl
+  IEditableControl
 {
 }
 
 /// <summary>
-///   <b>BusinessObjectBoundModifiableWebControl</b> is the <see langword="abstract"/> default implementation of 
-///   <see cref="IBusinessObjectBoundModifiableWebControl"/>.
+///   <b>BusinessObjectBoundEditableWebControl</b> is the <see langword="abstract"/> default implementation of 
+///   <see cref="IBusinessObjectBoundEditableWebControl"/>.
 /// </summary>
-/// <seealso cref="IBusinessObjectBoundModifiableWebControl"/>
-public abstract class BusinessObjectBoundModifiableWebControl:
-    BusinessObjectBoundWebControl, IBusinessObjectBoundModifiableWebControl
+/// <seealso cref="IBusinessObjectBoundEditableWebControl"/>
+public abstract class BusinessObjectBoundEditableWebControl:
+    BusinessObjectBoundWebControl, IBusinessObjectBoundEditableWebControl
 {
   private NaBooleanEnum _required = NaBooleanEnum.Undefined;
   private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
