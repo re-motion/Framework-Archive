@@ -16,7 +16,7 @@
   <tr>
     <td colspan="2"><rubicon:boclist id="ListField" runat="server" propertyidentifier="Jobs" datasourcecontrol="ReflectionBusinessObjectDataSourceControl" showsortingorder="True" enableselection="True" alwaysshowpageinfo="True" selection="Multiple" >
 <fixedcolumns>
-<rubicon:BocEditDetailsColumnDefinition SaveText="Save" CancelText="Cancel" EditText="Edit"></rubicon:BocEditDetailsColumnDefinition>
+<rubicon:BocRowEditModeColumnDefinition SaveText="Save" CancelText="Cancel" EditText="Edit"></rubicon:BocRowEditModeColumnDefinition>
 <rubicon:BocCommandColumnDefinition Text="Event">
 <persistedcommand>
 <rubicon:BocListItemCommand Type="Event"></rubicon:BocListItemCommand>
