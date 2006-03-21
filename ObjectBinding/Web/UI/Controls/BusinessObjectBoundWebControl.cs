@@ -34,7 +34,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundControl"/>
 /// <seealso cref="ISmartControl"/>
-/// <seealso cref="IBusinessObjectBoundModifiableWebControl"/>
+/// <seealso cref="IBusinessObjectBoundEditableWebControl"/>
 /// <seealso cref="IBusinessObjectDataSourceControl"/>
 public interface IBusinessObjectBoundWebControl: IBusinessObjectBoundControl, ISmartControl, IControlWithDesignTimeSupport
 {
