@@ -45,6 +45,9 @@ public class EditableRowIDProviderTest
   public void ExcludeIDZero ()
   {
     _provider.ExcludeID ("Row0");
+
+    Assert.AreEqual (new string[] {"Row0"}, _provider.GetExcludedIDs());
+
     Assert.AreEqual ("Row1", _provider.GetNextID());
     Assert.AreEqual ("Row2", _provider.GetNextID());
   }
@@ -53,6 +56,9 @@ public class EditableRowIDProviderTest
   public void ExcludeIDOne ()
   {
     _provider.ExcludeID ("Row1");
+
+    Assert.AreEqual (new string[] {"Row1"}, _provider.GetExcludedIDs());
+
     Assert.AreEqual ("Row0", _provider.GetNextID());
     Assert.AreEqual ("Row2", _provider.GetNextID());
   }
@@ -70,6 +76,8 @@ public class EditableRowIDProviderTest
     _provider.ExcludeID ("Row6");
     _provider.ExcludeID ("Row7");
     Assert.AreEqual ("Row8", _provider.GetNextID());
+
+    Assert.AreEqual (new string[] {"Row1", "Row3", "Row6", "Row7"}, _provider.GetExcludedIDs());
   }
 
   [Test]

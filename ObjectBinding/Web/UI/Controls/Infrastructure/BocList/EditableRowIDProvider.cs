@@ -54,6 +54,14 @@ public class EditableRowIDProvider
   {
     _nextID = 0;
   }
+
+  public string[] GetExcludedIDs ()
+  {
+    string[] ids = new string[_excludedIDs.Count];
+    _excludedIDs.CopyTo (ids, 0);
+    
+    return ids;
+  }
 }
 
 }

@@ -651,6 +651,58 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     ControllerInvoker.LoadViewState (viewState);
     Assert.IsTrue (Controller.IsListEditModeActive);
   }
+
+  [Test]
+  public void SaveAndLoadViewStateAfterRemovingSingleRow ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+    Controller.RemoveRow (Values[2]);
+    Assert.IsTrue (Controller.IsListEditModeActive);
+
+    object viewState = ControllerInvoker.SaveViewState();
+    Assert.IsNotNull (viewState);
+    Assert.IsTrue (viewState is Object[]);
+    object[] values = (object[]) viewState;
+    Assert.AreEqual (5, values.Length);
+
+    Assert.IsNotNull (values[4]);
+    Assert.IsTrue (values[4] is EditableRowIDProvider);
+    EditableRowIDProvider provider = (EditableRowIDProvider) values[4];
+    Assert.AreEqual (new string[] {"Controller_Row2"}, provider.GetExcludedIDs());
+
+    Controller.EndListEditMode (false, Columns);
+    Assert.IsFalse (Controller.IsListEditModeActive);
+
+    ControllerInvoker.LoadViewState (viewState);
+    Assert.IsTrue (Controller.IsListEditModeActive);
+  }
+
+  [Test]
+  public void SaveAndLoadViewStateAfterRemovingMultipleRow ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchListIntoEditMode (Columns, Columns);
+    Controller.RemoveRows (new IBusinessObject[] {Values[2], Values[3]});
+    Assert.IsTrue (Controller.IsListEditModeActive);
+
+    object viewState = ControllerInvoker.SaveViewState();
+    Assert.IsNotNull (viewState);
+    Assert.IsTrue (viewState is Object[]);
+    object[] values = (object[]) viewState;
+    Assert.AreEqual (5, values.Length);
+
+    Assert.IsNotNull (values[4]);
+    Assert.IsTrue (values[4] is EditableRowIDProvider);
+    EditableRowIDProvider provider = (EditableRowIDProvider) values[4];
+    Assert.AreEqual (new string[] {"Controller_Row2", "Controller_Row3"}, provider.GetExcludedIDs());
+
+    Controller.EndListEditMode (false, Columns);
+    Assert.IsFalse (Controller.IsListEditModeActive);
+
+    ControllerInvoker.LoadViewState (viewState);
+    Assert.IsTrue (Controller.IsListEditModeActive);
+  }
 }
 
 }

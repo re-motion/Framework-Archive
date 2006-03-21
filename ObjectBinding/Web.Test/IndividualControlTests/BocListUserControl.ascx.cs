@@ -314,7 +314,7 @@ public class BocListUserControl : BaseUserControl
 
   private void ChildrenListEndEditModeButton_Click(object sender, System.EventArgs e)
   {
-    ChildrenList.EndEditDetailsMode(true);
+    ChildrenList.EndRowEditMode (true);
   }
 
   private void ChildrenList_ListItemCommandClick(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemCommandClickEventArgs e)
