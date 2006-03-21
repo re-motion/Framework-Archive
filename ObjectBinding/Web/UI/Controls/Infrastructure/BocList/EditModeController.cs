@@ -70,7 +70,7 @@ public class EditModeController : PlaceHolder
   ///     Use <see cref="IsRowEditModeActive"/> to programatically check whether it is save to insert a row.
   ///   </para><para>
   ///     While the list is in edit mode, all commands and menus for this list are disabled with the exception of
-  ///     those rendered in the <see cref="BocEditDetailsColumnDefinition"/> column.
+  ///     those rendered in the <see cref="BocRowEditModeColumnDefinition"/> column.
   ///   </para>
   /// </remarks>
   /// <param name="index"></param>
@@ -82,7 +82,7 @@ public class EditModeController : PlaceHolder
     if (_ownerControl.Value == null)
     {
       throw new InvalidOperationException (string.Format (
-          "Cannot initialize edit details mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
+          "Cannot initialize row edit mode: The BocList '{0}' does not have a Value.", _ownerControl.ID));
     }
 
     if (index < 0) throw new ArgumentOutOfRangeException ("index");
@@ -201,7 +201,7 @@ public class EditModeController : PlaceHolder
         }
       }
 
-      _ownerControl.EndEditDetailsModeCleanUp (_editableRowIndex.Value);
+      _ownerControl.EndRowEditModeCleanUp (_editableRowIndex.Value);
     }
 
     RemoveEditModeControls();
@@ -331,8 +331,8 @@ public class EditModeController : PlaceHolder
       }
       if (IsRowEditModeActive && _editableRowIndex.Value >= _ownerControl.Value.Count)
       {
-        throw new InvalidOperationException (string.Format ("Cannot restore edit details mode: "
-            + "The Value collection of the BocList '{0}' no longer contains the previously modified row.", 
+        throw new InvalidOperationException (string.Format ("Cannot restore row edit mode: "
+            + "The Value collection of the BocList '{0}' no longer contains the previously edited row.", 
             _ownerControl.ID));
       }
 
@@ -506,7 +506,7 @@ public class EditModeController : PlaceHolder
     BaseValidator[] validators = new BaseValidator[1];
 
     EditModeValidator editModeValidator = new EditModeValidator (_ownerControl);
-    editModeValidator.ID = ID + "_ValidatorEditDetails";
+    editModeValidator.ID = ID + "_ValidatorEditMode";
     editModeValidator.ControlToValidate = ID;
     if (StringUtility.IsNullOrEmpty (_ownerControl.ErrorMessage))
     {

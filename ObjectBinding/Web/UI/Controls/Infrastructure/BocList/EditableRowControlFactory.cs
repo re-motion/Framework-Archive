@@ -29,7 +29,7 @@ public class EditableRowControlFactory
     ArgumentUtility.CheckNotNull ("column", column);
     if (columnIndex < 0) throw new ArgumentOutOfRangeException ("columnIndex");
 
-    IBusinessObjectBoundEditableWebControl control = column.CreateEditDetailsControl();
+    IBusinessObjectBoundEditableWebControl control = column.CreateEditModeControl();
 
     if (control == null)
     {

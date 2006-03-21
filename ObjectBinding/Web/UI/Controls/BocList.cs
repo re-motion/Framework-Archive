@@ -216,9 +216,9 @@ public class BocList:
   /// <summary> Prefix applied to the post back argument of the custom columns. </summary>
   private const string c_customCellEventPrefix = "CustomCell=";
 
-  private const string c_eventEditDetailsPrefix = "EditDetails=";
-  private const string c_editDetailsRequiredFieldIcon = "RequiredField.gif";
-  private const string c_editDetailsValidationErrorIcon = "ValidationError.gif";
+  private const string c_eventRowEditModePrefix = "RowEditMode=";
+  private const string c_rowEditModeRequiredFieldIcon = "RequiredField.gif";
+  private const string c_rowEditModeValidationErrorIcon = "ValidationError.gif";
 
   private const string c_sortAscendingIcon = "SortAscending.gif";
   private const string c_sortDescendingIcon = "SortDescending.gif";
@@ -319,7 +319,7 @@ public class BocList:
     Next
   }
 
-  private enum EditDetailsCommand
+  private enum RowEditModeCommand
   {
     Edit,
     Save,
@@ -576,8 +576,8 @@ public class BocList:
       HandleResorting (eventArgument.Substring (c_sortCommandPrefix.Length));
     else if (eventArgument.StartsWith (c_customCellEventPrefix))
       HandleCustomCellEvent (eventArgument.Substring (c_customCellEventPrefix.Length));
-    else if (eventArgument.StartsWith (c_eventEditDetailsPrefix))
-      HandleEditDetailsEvent (eventArgument.Substring (c_eventEditDetailsPrefix.Length));
+    else if (eventArgument.StartsWith (c_eventRowEditModePrefix))
+      HandleRowEditModeEvent (eventArgument.Substring (c_eventRowEditModePrefix.Length));
     else if (eventArgument.StartsWith (c_goToCommandPrefix))
       HandleGoToEvent (eventArgument.Substring (c_goToCommandPrefix.Length));
     else
@@ -837,9 +837,9 @@ public class BocList:
     OnCustomCellClick (column, (IBusinessObject) Value[listIndex], customCellArgument);
   }
 
-  /// <summary> Handles post back events raised by an edit details event. </summary>
+  /// <summary> Handles post back events raised by an row edit mode event. </summary>
   /// <param name="eventArgument"> &lt;list-index&gt;,&lt;command&gt; </param>
-  private void HandleEditDetailsEvent (string eventArgument)
+  private void HandleRowEditModeEvent (string eventArgument)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("eventArgument", eventArgument);
 
@@ -861,13 +861,13 @@ public class BocList:
     }
 
     //  Second part: command
-    EditDetailsCommand command;
+    RowEditModeCommand command;
     eventArgumentParts[1] = eventArgumentParts[1].Trim();
     try 
     {
       if (eventArgumentParts[1].Length == 0)
         throw new FormatException();
-      command = (EditDetailsCommand) Enum.Parse (typeof (EditDetailsCommand), eventArgumentParts[1]);
+      command = (RowEditModeCommand) Enum.Parse (typeof (RowEditModeCommand), eventArgumentParts[1]);
     }
     catch (FormatException)
     {
@@ -883,7 +883,7 @@ public class BocList:
 
     switch (command)
     {
-      case EditDetailsCommand.Edit:
+      case RowEditModeCommand.Edit:
       {
         if (listIndex >= Value.Count)
         {
@@ -893,12 +893,12 @@ public class BocList:
         SwitchRowIntoEditMode (listIndex);
         break;
       }
-      case EditDetailsCommand.Save:
+      case RowEditModeCommand.Save:
       {
         EndRowEditMode (true);
         break;
       }
-      case EditDetailsCommand.Cancel:
+      case RowEditModeCommand.Cancel:
       {
         EndRowEditMode (false);
         break;
@@ -1214,7 +1214,7 @@ public class BocList:
 
       for (int i = 0; i < columns.Length; i++)
       {
-        if (columns[i] is BocEditDetailsColumnDefinition)
+        if (columns[i] is BocRowEditModeColumnDefinition)
           WcagHelper.Instance.HandleError (1, this, string.Format ("Columns[{0}]", i));
 
         BocCommandEnabledColumnDefinition commandColumn = columns[i] as BocCommandEnabledColumnDefinition;
@@ -1701,12 +1701,12 @@ public class BocList:
       }
     }
 
-    BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
-    if (editDetailsColumn != null)
+    BocRowEditModeColumnDefinition rowEditModeColumn = column as BocRowEditModeColumnDefinition;
+    if (rowEditModeColumn != null)
     {
       if (WcagHelper.Instance.IsWaiConformanceLevelARequired())
         return false;
-      if (   editDetailsColumn.Show == BocEditDetailsColumnDefinitionShow.EditMode 
+      if (   rowEditModeColumn.Show == BocRowEditColumnDefinitionShow.EditMode 
           && isReadOnly)
       {
         return false;
@@ -2367,7 +2367,7 @@ public class BocList:
     for (int idxColumns = 0; idxColumns < renderColumns.Length; idxColumns++)
     {
       BocColumnDefinition column = renderColumns[idxColumns];
-      BocEditDetailsColumnDefinition editDetailsColumn = renderColumns[idxColumns] as BocEditDetailsColumnDefinition;
+      BocRowEditModeColumnDefinition rowEditModeColumn = renderColumns[idxColumns] as BocRowEditModeColumnDefinition;
 
       if (! IsColumnVisible (column))
         continue;
@@ -2411,7 +2411,7 @@ public class BocList:
   {
     Image requiredIcon = new Image();
     requiredIcon.ImageUrl = ResourceUrlResolver.GetResourceUrl (
-        this, Context, typeof (BocList), ResourceType.Image, c_editDetailsRequiredFieldIcon);
+        this, Context, typeof (BocList), ResourceType.Image, c_rowEditModeRequiredFieldIcon);
 
     IResourceManager resourceManager = GetResourceManager();
     requiredIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.RequiredFieldAlternateText);
@@ -2426,7 +2426,7 @@ public class BocList:
   {
     Image validationErrorIcon = new Image();
     validationErrorIcon.ImageUrl = ResourceUrlResolver.GetResourceUrl (
-        this, Context, typeof (EditableRow), ResourceType.Image, c_editDetailsValidationErrorIcon);
+        this, Context, typeof (EditableRow), ResourceType.Image, c_rowEditModeValidationErrorIcon);
 
     IResourceManager resourceManager = GetResourceManager();
     validationErrorIcon.AlternateText = resourceManager.GetString (ResourceIdentifier.ValidationErrorInfoAlternateText);
@@ -2673,7 +2673,7 @@ public class BocList:
     bool hasEditModeControl = editableRow != null && editableRow.HasEditControl (columnIndex);
 
     BocCommandEnabledColumnDefinition commandEnabledColumn = column as BocCommandEnabledColumnDefinition;
-    BocEditDetailsColumnDefinition editDetailsColumn = column as BocEditDetailsColumnDefinition;
+    BocRowEditModeColumnDefinition rowEditModeColumn = column as BocRowEditModeColumnDefinition;
     BocDropDownMenuColumnDefinition dropDownMenuColumn = column as BocDropDownMenuColumnDefinition;
     BocCustomColumnDefinition customColumn = column as BocCustomColumnDefinition;
 
@@ -2759,11 +2759,11 @@ public class BocList:
       if (enforceWidth)
         writer.RenderEndTag(); // End Span
     }
-    else if (editDetailsColumn != null)
+    else if (rowEditModeColumn != null)
     {
-      RenderEditDetailsColumnCell (
+      RenderRowEditModeColumnCell (
           writer, 
-          editDetailsColumn, 
+          rowEditModeColumn, 
           isEditedRow, 
           dataRowRenderEventArgs.IsEditableRow, 
           originalRowIndex);
@@ -2890,9 +2890,9 @@ public class BocList:
     }
   }
 
-  private void RenderEditDetailsColumnCell (
+  private void RenderRowEditModeColumnCell (
       HtmlTextWriter writer, 
-      BocEditDetailsColumnDefinition column,
+      BocRowEditModeColumnDefinition column,
       bool isEditedRow,
       bool isEditableRow,
       int originalRowIndex)
@@ -2905,7 +2905,7 @@ public class BocList:
     {
       if (! isReadOnly && _hasClientScript)
       {
-        argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Save;
+        argument = c_eventRowEditModePrefix + originalRowIndex + "," + RowEditModeCommand.Save;
         postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
@@ -2933,7 +2933,7 @@ public class BocList:
 
       if (! isReadOnly && _hasClientScript)
       {
-        argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Cancel;
+        argument = c_eventRowEditModePrefix + originalRowIndex + "," + RowEditModeCommand.Cancel;
         postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
@@ -2963,7 +2963,7 @@ public class BocList:
       {
         if (! isReadOnly && _hasClientScript)
         {
-          argument = c_eventEditDetailsPrefix + originalRowIndex + "," + EditDetailsCommand.Edit;
+          argument = c_eventRowEditModePrefix + originalRowIndex + "," + RowEditModeCommand.Edit;
           postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
           writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
           writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
@@ -4483,7 +4483,7 @@ public class BocList:
   ///     Use <see cref="IsRowEditModeActive"/> to programatically check whether it is save to insert a row.
   ///   </para><para>
   ///     While the list is in edit mode, all commands and menus for this list are disabled with the exception of
-  ///     those rendered in the <see cref="BocEditDetailsColumnDefinition"/> column.
+  ///     those rendered in the <see cref="BocRowEditModeColumnDefinition"/> column.
   ///   </para>
   /// </remarks>
   /// <param name="index"></param>
@@ -4497,7 +4497,7 @@ public class BocList:
     _editModeController.EndRowEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
   }
 
-  internal void EndEditDetailsModeCleanUp (int modifiedRowIndex)
+  internal void EndRowEditModeCleanUp (int modifiedRowIndex)
   {
     if (! IsReadOnly)
     {
@@ -4552,7 +4552,7 @@ public class BocList:
   }
 
   [Description ("Set false to hide the asterisks in the title row for columns having edit details control.")]
-  [Category ("Edit Details")]
+  [Category ("Edit Mode")]
   [DefaultValue (true)]
   public bool ShowEditModeRequiredMarkers
   {
@@ -4561,7 +4561,7 @@ public class BocList:
   }
 
   [Description ("Set true to show an exclamation mark in front of each control with an validation error.")]
-  [Category ("Edit Details")]
+  [Category ("Edit Mode")]
   [DefaultValue (false)]
   public bool ShowEditModeValidationMarkers
   {
@@ -4570,7 +4570,7 @@ public class BocList:
   }
 
   [Description ("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")]
-  [Category ("Edit Details")]
+  [Category ("Edit Mode")]
   [DefaultValue (false)]
   public bool DisableEditModeValidationMessages
   {
@@ -4584,7 +4584,7 @@ public class BocList:
   ///   <see cref="CreateValidators"/>.
   /// </remarks>
   [Description("Enables the EditModeValidator.")]
-  [Category ("Edit Details")]
+  [Category ("Edit Mode")]
   [DefaultValue(true)]
   public bool EnableEditModeValidator
   {
@@ -4656,36 +4656,36 @@ public class BocList:
     }
   }
 
-  /// <summary> Is raised before the modified row is saved. </summary>
+  /// <summary> Is raised before the changes to the editable row are saved. </summary>
   [Category ("Action")]
-  [Description ("Is raised before the modified row is saved.")]
+  [Description ("Is raised before the changes to the editable row are saved.")]
   public event BocListEditableRowChangesEventHandler EditableRowChangesSaving
   {
     add { Events.AddHandler (s_editableRowChangesSavingEvent, value); }
     remove { Events.RemoveHandler (s_editableRowChangesSavingEvent, value); }
   }
 
-  /// <summary> Is raised after the modified row's changes have been saved. </summary>
+  /// <summary> Is raised after the changes to the editable row have been saved. </summary>
   [Category ("Action")]
-  [Description ("Is raised after the modified row's changes have been saved.")]
+  [Description ("Is raised after the changes to the editable row have been saved.")]
   public event BocListItemEventHandler EditableRowChangesSaved
   {
     add { Events.AddHandler (s_editableRowChangesSavedEvent, value); }
     remove { Events.RemoveHandler (s_editableRowChangesSavedEvent, value); }
   }
 
-  /// <summary> Is raised before the modified row's changes are canceled. </summary>
+  /// <summary> Is raised before the changes to the editable row are canceled. </summary>
   [Category ("Action")]
-  [Description ("Is raised before the modified row's changes are canceled.")]
+  [Description ("Is raised before the changes to the editable row are canceled.")]
   public event BocListEditableRowChangesEventHandler EditableRowChangesCanceling
   {
     add { Events.AddHandler (s_editableRowChangesCancelingEvent, value); }
     remove { Events.RemoveHandler (s_editableRowChangesCancelingEvent, value); }
   }
 
-  /// <summary> Is raised after the modified row's changes have been canceled. </summary>
+  /// <summary> Is raised after the changes to the editable row have been canceled. </summary>
   [Category ("Action")]
-  [Description ("Is raised after the modified row's changes have been canceled.")]
+  [Description ("Is raised after the changes to the editable row have been canceled.")]
   public event BocListItemEventHandler EditableRowChangesCanceled
   {
     add { Events.AddHandler (s_editableRowChangesCanceledEvent, value); }

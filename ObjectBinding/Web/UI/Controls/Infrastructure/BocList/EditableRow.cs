@@ -367,8 +367,8 @@ public class EditableRow : PlaceHolder, INamingContainer
       IBusinessObject businessObject,
       int columnIndex,
       EditModeValidator editModeValidator,
-      bool showEditDetailsValidationMarkers,
-      bool disableEditDetailsValidationMessages) 
+      bool showEditModeValidationMarkers,
+      bool disableEditModeValidationMessages) 
   {
     if (! HasEditControl (columnIndex))
       return;
@@ -407,7 +407,7 @@ public class EditableRow : PlaceHolder, INamingContainer
     writer.AddStyleAttribute ("display", "block");
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Span Container
 
-    if (showEditDetailsValidationMarkers)
+    if (showEditModeValidationMarkers)
     {
       bool isCellValid = true;
       Image validationErrorMarker = _ownerControl.GetValidationErrorMarker();
@@ -450,7 +450,7 @@ public class EditableRow : PlaceHolder, INamingContainer
     {
       BaseValidator validator = (BaseValidator) validators[i];
       if (   editModeValidator == null 
-          || disableEditDetailsValidationMessages)
+          || disableEditModeValidationMessages)
       {
         validator.Display = ValidatorDisplay.None;
         validator.EnableClientScript = false;
@@ -467,12 +467,12 @@ public class EditableRow : PlaceHolder, INamingContainer
 
       if (   ! validator.IsValid 
           && validator.Display == ValidatorDisplay.None
-          && ! disableEditDetailsValidationMessages)
+          && ! disableEditModeValidationMessages)
       {
         if (! StringUtility.IsNullOrEmpty (validator.CssClass))
           writer.AddAttribute (HtmlTextWriterAttribute.Class, validator.CssClass);
         else
-          writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditDetailsValidationMessage);
+          writer.AddAttribute (HtmlTextWriterAttribute.Class, CssClassEditModeValidationMessage);
         writer.RenderBeginTag (HtmlTextWriterTag.Div);
         writer.Write (validator.ErrorMessage); // Do not HTML encode.
         writer.RenderEndTag();
@@ -484,11 +484,11 @@ public class EditableRow : PlaceHolder, INamingContainer
 
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit details validation messages. </summary>
   /// <remarks>
-  ///   <para> Class: <c>bocListEditDetailsValidationMessage</c> </para>
+  ///   <para> Class: <c>bocListEditModeValidationMessage</c> </para>
   ///   <para> Only applied if the <see cref="EditModeValidator"/> has no CSS-class of its own. </para>
   ///   </remarks>
-  protected virtual string CssClassEditDetailsValidationMessage
-  { get { return "bocListEditDetailsValidationMessage"; } }
+  protected virtual string CssClassEditModeValidationMessage
+  { get { return "bocListEditModeValidationMessage"; } }
   
 }
 
