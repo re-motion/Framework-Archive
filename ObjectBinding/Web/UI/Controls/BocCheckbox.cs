@@ -26,7 +26,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
+public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHandler, IFocusableControl
 {
 	// constants
 
@@ -527,7 +527,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   /// <summary> Gets or sets the current value. </summary>
   /// <value> 
   ///   The boolean value currently displayed. If <see langword="null"/> is assigned, <see cref="GetDefaultValue"/>
-  ///   is evaluated to get the value. The <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> flag is set 
+  ///   is evaluated to get the value. The <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> flag is set 
   ///   in this case.
   /// </value>
   /// <remarks> The dirty state is reset when the value is set. </remarks>
@@ -637,7 +637,7 @@ public class BocCheckBox: BusinessObjectBoundModifiableWebControl, IPostBackData
   ///   A <see cref="String"/> <see cref="Array"/> containing the <see cref="Control.ClientID"/> of the
   ///   <see cref="CheckBox"/> if the control is in edit mode, or an empty array if the control is read-only.
   /// </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     return IsReadOnly ? new string[0] : new string[1] { _checkBox.ClientID };
