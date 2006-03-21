@@ -327,7 +327,7 @@ public abstract class BocCustomColumnDefinitionCell
     OnValidate (arguments);
   }
 
-  /// <summary> Override this method to process the validation of the editable custom cell during details editing mode. </summary>
+  /// <summary> Override this method to process the validation of the editable custom cell during edit mode. </summary>
   /// <param name="arguments"> The <see cref="BocCustomCellValidationArguments"/>. </param>
   protected virtual void OnValidate (BocCustomCellValidationArguments arguments)
   {
