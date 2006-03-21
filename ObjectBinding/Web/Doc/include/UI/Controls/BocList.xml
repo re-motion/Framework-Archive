@@ -517,7 +517,7 @@
     <remarks>
       <para>
         Saves the <see cref="Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> if the control's
-        <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
+        <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
       </para><para>
         Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
         a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
@@ -531,7 +531,7 @@
         edited row is dirty.
       </para>
     </remarks>
-    <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
+    <seealso cref="IBusinessObjectBoundEditableControl.SaveValue">IBusinessObjectBoundEditableControl.SaveValue</seealso>
   </SaveValue>
   <OnListItemCommandClick>
     <param name="column"> 
