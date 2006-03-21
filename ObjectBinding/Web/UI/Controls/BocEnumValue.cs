@@ -23,7 +23,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [ValidationProperty ("Value")]
 [DefaultEvent ("SelectionChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
+public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataHandler, IFocusableControl
 {
 	// constants
 
@@ -770,7 +770,7 @@ public class BocEnumValue: BusinessObjectBoundModifiableWebControl, IPostBackDat
   ///   <see cref="ListControl"/> (or the radio buttons that make up the list), if the control is in edit mode, 
   ///   or an empty array if the control is read-only.
   /// </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     if (IsReadOnly)

@@ -25,7 +25,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [ValidationProperty ("ValidationValue")]
 [DefaultEvent ("TextChanged")]
 [ToolboxItemFilter("System.Web.UI")]
-public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBackDataHandler, IFocusableControl
+public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackDataHandler, IFocusableControl
 {
   //  constants
 
@@ -1159,7 +1159,7 @@ public class BocDateTimeValue: BusinessObjectBoundModifiableWebControl, IPostBac
   ///   <see cref="DateTextBox"/> and the <see cref="TimeTextBox"/> if the control is in edit mode, or an empty array 
   ///   if the control is read-only.
   /// </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     if (IsReadOnly)
