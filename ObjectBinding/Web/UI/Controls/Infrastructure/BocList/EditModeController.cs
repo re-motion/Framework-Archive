@@ -285,7 +285,7 @@ public class EditModeController : PlaceHolder
     row.DataSourceFactory = _ownerControl.EditModeDataSourceFactory;
     row.ControlFactory = _ownerControl.EditModeControlFactory;
 
-    row.CreateControls (columns, value);
+    row.CreateControls (value, columns);
 
     return row;
   }

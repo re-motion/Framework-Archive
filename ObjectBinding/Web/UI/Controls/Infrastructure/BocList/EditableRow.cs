@@ -81,10 +81,10 @@ public class EditableRow : PlaceHolder, INamingContainer
     }
   }
 
-  public virtual void CreateControls (BocColumnDefinition[] columns, IBusinessObject value)
+  public virtual void CreateControls (IBusinessObject value, BocColumnDefinition[] columns)
   {
-    ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
     ArgumentUtility.CheckNotNull ("value", value);
+    ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
     if (_dataSourceFactory == null)
     {
