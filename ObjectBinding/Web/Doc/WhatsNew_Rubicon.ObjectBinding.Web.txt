@@ -23,6 +23,9 @@
   * Restoring row edit mode: Neues Verhalten: Sind nach dem PostBack weniger Zeilen in der Liste laut 
     ModifiableRowIndex notwendig wären, wird eine InvalidOpterationException geworfen.
 
+- BocReferenceValue, BocList
+  * OptionsMenu: Commands vom Typ Href haben Target nicht ausgewertet.
+  
 1.4.35
 ======
 - BocEnumValue
