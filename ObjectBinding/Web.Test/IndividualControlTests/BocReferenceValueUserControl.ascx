@@ -1,8 +1,8 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
-<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obrt" Namespace="OBRTest" Assembly="OBRTest" %>
 <%@ Control Language="c#" AutoEventWireup="false" Codebehind="BocReferenceValueUserControl.ascx.cs" Inherits="OBWTest.IndividualControlTests.BocReferenceValueUserControl" TargetSchema="http://schemas.microsoft.com/intellisense/ie5"%>
+<%@ Register TagPrefix="obrt" Namespace="OBRTest" Assembly="OBRTest" %>
+<%@ Register TagPrefix="rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obw" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <div style="BORDER-RIGHT: black thin solid; BORDER-TOP: black thin solid; BORDER-LEFT: black thin solid; BORDER-BOTTOM: black thin solid; BACKGROUND-COLOR: #ffff99" runat="server" visible="false" ID="NonVisualControls">
 <rubicon:formgridmanager id=FormGridManager runat="server"/><obr:reflectionbusinessobjectdatasourcecontrol id=CurrentObject runat="server" typename="OBRTest.Person, OBRTest"/></div>
 <table id=FormGrid runat="server">
@@ -12,12 +12,25 @@
   <tr>
     <td></td>
     <td><obw:bocreferencevalue id=PartnerField runat="server" readonly="False" datasourcecontrol="CurrentObject" propertyidentifier="Partner" select="*" width="100%">
-<labelstyle cssclass="class">
-</LabelStyle>
-
 <persistedcommand>
-<obw:boccommand Type="Event"></obw:boccommand>
-</PersistedCommand></obw:bocreferencevalue></td>
+<obw:BocCommand Type="Event"></obw:BocCommand>
+</PersistedCommand>
+
+<optionsmenuitems>
+<obw:BocMenuItem Text="intern">
+<persistedcommand>
+<obw:BocMenuItemCommand Type="Href" HrefCommand-Href="~/startForm.aspx"></obw:BocMenuItemCommand>
+</PersistedCommand>
+</obw:BocMenuItem>
+<obw:BocMenuItem Text="extern">
+<persistedcommand>
+<obw:BocMenuItemCommand Type="Href" HrefCommand-Target="_blank" HrefCommand-Href="~/startForm.aspx"></obw:BocMenuItemCommand>
+</PersistedCommand>
+</obw:BocMenuItem>
+</OptionsMenuItems>
+
+<labelstyle cssclass="class">
+</LabelStyle></obw:bocreferencevalue></td>
     <td>bound</td>
     <td style="WIDTH: 20%"><asp:label id=PartnerFieldValueLabel runat="server" enableviewstate="False">#</asp:label></td></tr>
   <tr>
