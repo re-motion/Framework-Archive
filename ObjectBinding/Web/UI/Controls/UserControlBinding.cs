@@ -11,7 +11,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 /// <summary>
 /// Control that allows a User Control to be bound to a business object data source and property.
 /// </summary>
-public class UserControlBinding: BusinessObjectBoundModifiableWebControl
+public class UserControlBinding: BusinessObjectBoundEditableWebControl
 {
   private string _userControlPath = string.Empty;
   private IDataEditControl _userControl = null;
@@ -109,8 +109,8 @@ public class UserControlBinding: BusinessObjectBoundModifiableWebControl
       for (int i = 0; i < _userControl.DataSource.BoundControls.Length; i++)
       {
         IBusinessObjectBoundControl control = _userControl.DataSource.BoundControls[i];
-        BusinessObjectBoundModifiableWebControl modifiableControl = control as BusinessObjectBoundModifiableWebControl;
-        if (modifiableControl != null && modifiableControl.IsDirty)
+        BusinessObjectBoundEditableWebControl editableControl = control as BusinessObjectBoundEditableWebControl;
+        if (editableControl != null && editableControl.IsDirty)
           return true;
       }
       return false;
