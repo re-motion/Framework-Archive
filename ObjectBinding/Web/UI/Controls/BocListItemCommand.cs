@@ -92,7 +92,7 @@ public class BocListItemCommand: BocCommand
     ///   The comma separated list of parameters passed to the WxeFunction when the rendered 
     ///   command is clicked. The default value is an empty <see cref="String"/>. 
     /// </value>
-    [Description ("A comma separated list of parameters for the command. The following reference parameter are available: index, id, object, parent, parentproperty.")]
+    [Description ("A comma separated list of parameters for the command. The following reference parameters are available: index, id, object, parent, parentproperty.")]
     public override string Parameters
     {
       get { return base.Parameters; }
