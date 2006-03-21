@@ -60,7 +60,7 @@ public class BocListTest: BocTest
   public void GetTrackedClientIDsInEditModeWithoutEditDetailsModeActive()
   {
     _bocList.ReadOnly = NaBoolean.False;
-    Assert.IsFalse (_bocList.IsEditDetailsModeActive);
+    Assert.IsFalse (_bocList.IsRowEditModeActive);
     string[] actual = _bocList.GetTrackedClientIDs();
     Assert.IsNotNull (actual);
     Assert.AreEqual (0, actual.Length);
