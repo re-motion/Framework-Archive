@@ -13,7 +13,7 @@
     </para><para>
       The business object data binding connects an <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> with an
       <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundControl" />. If the control also implements
-      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundModifiableControl" />, this connection is two way, 
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundEditableControl" />, this connection is two way, 
       allowing both read and write access to the bound object.
     </para>
     
@@ -123,7 +123,7 @@
       </note>
       When the data source's <b>SaveValues</b> method is exeucted, it loops through all controls bound to this 
       data source, calling the <b>SaveValue</b> method for each
-      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundModifiableControl" /> found in the collection.
+      <see cref="T:Rubicon.ObjectBinding.IBusinessObjectBoundEditableControl" /> found in the collection.
       <b>SaveValue</b> then uses the <see cref="P:Rubicon.ObjectBinding.IBusinessObjectBoundControl.Property" /> 
       configured earlier to write the control's current value back into the 
       <see cref="T:Rubicon.ObjectBinding.IBusinessObject" /> connected to its data source. 
