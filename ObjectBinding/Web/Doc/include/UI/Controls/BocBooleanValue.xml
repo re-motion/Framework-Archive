@@ -143,7 +143,7 @@
   <LoadPostData>
     <remarks>
       <para>
-        Sets the new value and the <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> flag if the value has
+        Sets the new value and the <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> flag if the value has
         changed.
       </para><para>
         Evaluates the value of the <see cref="HiddenField"/>.
@@ -170,7 +170,7 @@
         Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
         a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
       </para><para>
-        <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> is <see langword="false"/> after invoking
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> is <see langword="false"/> after invoking
         <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/>.
       </para>
     </remarks>
@@ -183,7 +183,7 @@
         Populates the <see cref="Value"/> with the provided <paramref name="value"/> if <paramref name="interim"/> 
         is <see langword="false"/>. 
       </para><para>
-        <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> is <see langword="false"/> after invoking
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> is <see langword="false"/> after invoking
         <see cref="LoadValue"/> with <paramref name="interim"/> <see langword="false"/>.
       </para>
     </remarks>
@@ -194,22 +194,22 @@
       <para>
         Saves the <see cref="Value"/> into the <see cref="BusinessObjectBoundWebControl.DataSource"/> 
         if <paramref name="interim"/> is <see langword="false"/> and the control's 
-        <see cref="BusinessObjectBoundModifiableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
+        <see cref="BusinessObjectBoundEditableWebControl.IsReadOnly"/> property evaluates <see langword="false"/>. 
       </para><para>
         Requires a <see cref="Property"/>, a <see cref="BusinessObjectBoundWebControl.DataSource"/> and 
         a <see cref="BusinessObjectDataSourceControl.BusinessObject">DataSource.BusinessObject</see>.
       </para><para>
-        <see cref="BusinessObjectBoundModifiableWebControl.IsDirty"/> will be <see langword="false"/> after invoking
+        <see cref="BusinessObjectBoundEditableWebControl.IsDirty"/> will be <see langword="false"/> after invoking
         <see cref="SaveValue"/> with <paramref name="interim"/> <see langword="false"/>.
       </para>
     </remarks>
-    <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
+    <seealso cref="IBusinessObjectBoundEditableControl.SaveValue">IBusinessObjectBoundEditableControl.SaveValue</seealso>
   </SaveValue>
   <CreateValidators>
     <remarks>
       Generates a <see cref="CompareValidator"/> checking that the selected item is not the null-item if the 
       control is in edit mode and input is required.
     </remarks>
-    <seealso cref="BusinessObjectBoundModifiableWebControl.CreateValidators">BusinessObjectBoundModifiableWebControl.CreateValidators</seealso>
+    <seealso cref="BusinessObjectBoundEditableWebControl.CreateValidators">BusinessObjectBoundEditableWebControl.CreateValidators</seealso>
   </CreateValidators>
 </BocBooleanValue>
