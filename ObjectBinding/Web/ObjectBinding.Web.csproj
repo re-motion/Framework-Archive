@@ -605,6 +605,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditableRowIDProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\Infrastructure\BocList\EditDetailsValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

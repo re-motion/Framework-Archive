@@ -37,6 +37,7 @@ public class EditModeController : PlaceHolder
   private bool _isEditModeRestored = false;
   
   internal EditableRow[] _rows;
+  private EditableRowIDProvider _rowIDProvider;
 
   private bool _enableEditModeValidator = true;
   private bool _showEditModeRequiredMarkers = true;
@@ -75,8 +76,8 @@ public class EditModeController : PlaceHolder
   /// <param name="index"></param>
   public void SwitchRowIntoEditMode (int index, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
-    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
-    ArgumentUtility.CheckNotNull ("columns", columns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
     if (_ownerControl.Value == null)
     {
@@ -93,14 +94,15 @@ public class EditModeController : PlaceHolder
       return;
 
     _editableRowIndex = index;
+    _rowIDProvider = new EditableRowIDProvider (ID + "_Row{0}");
     CreateEditModeControls (columns);
     LoadValues (false);
   }
 
   public void SwitchListIntoEditMode (BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
-    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
-    ArgumentUtility.CheckNotNull ("columns", columns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
     if (_ownerControl.Value == null)
     {
@@ -114,6 +116,7 @@ public class EditModeController : PlaceHolder
       return;
 
     _isListEditModeActive = true;
+    _rowIDProvider = new EditableRowIDProvider (ID + "_Row{0}");
     CreateEditModeControls (columns);
     LoadValues (false);
   }
@@ -124,8 +127,8 @@ public class EditModeController : PlaceHolder
   /// <param name="businessObject"></param>
   public bool AddAndEditRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
-    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
-    ArgumentUtility.CheckNotNull ("columns", columns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
     RestoreAndEndEditMode (oldColumns);
 
@@ -204,6 +207,7 @@ public class EditModeController : PlaceHolder
     RemoveEditModeControls();
     _editableRowIndex = NaInt32.Null;
     _isEditNewRow = false;
+    _rowIDProvider = null;
   }
 
   public void EndListEditMode (bool saveChanges, BocColumnDefinition[] oldColumns)
@@ -258,6 +262,7 @@ public class EditModeController : PlaceHolder
 
     RemoveEditModeControls();
     _isListEditModeActive = false;
+    _rowIDProvider = null;
   }
 
 
@@ -283,17 +288,17 @@ public class EditModeController : PlaceHolder
 
     for (int i = 0; i < values.Count; i++)
     {
-      EditableRow row = CreateEditableRow (i, (IBusinessObject) values[i], columns);
+      EditableRow row = CreateEditableRow ((IBusinessObject) values[i], columns);
 
       _rows[i] = row;
       Controls.Add (row);
     }
   }
 
-  private EditableRow CreateEditableRow (int rowIndex, IBusinessObject value, BocColumnDefinition[] columns)
+  private EditableRow CreateEditableRow (IBusinessObject value, BocColumnDefinition[] columns)
   {
     EditableRow row = new EditableRow (_ownerControl);
-    row.ID = ID + "_Row" + rowIndex.ToString();
+    row.ID = _rowIDProvider.GetNextID();
 
     row.DataSourceFactory = _ownerControl.EditModeDataSourceFactory;
     row.ControlFactory = _ownerControl.EditModeControlFactory;
@@ -311,7 +316,7 @@ public class EditModeController : PlaceHolder
 
   public void EnsureEditModeRestored (BocColumnDefinition[] oldColumns)
   {
-    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("oldColumns", oldColumns);
 
     if (_isEditModeRestored)
       return;
@@ -331,6 +336,8 @@ public class EditModeController : PlaceHolder
             _ownerControl.ID));
       }
 
+      _rowIDProvider.Reset();
+
       CreateEditModeControls (oldColumns);
     }
   }
@@ -347,7 +354,7 @@ public class EditModeController : PlaceHolder
   public void AddRows (IBusinessObject[] businessObjects, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-    ArgumentUtility.CheckNotNull ("columns", columns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
 
     _ownerControl.AddRowsInternal (businessObjects);
 
@@ -360,7 +367,7 @@ public class EditModeController : PlaceHolder
         ArrayList newRows = new ArrayList (businessObjects.Length);
         for (int i = startIndex; i < _ownerControl.Value.Count; i++)
         {
-          EditableRow newRow = CreateEditableRow (i, (IBusinessObject) _ownerControl.Value[i], columns);
+          EditableRow newRow = CreateEditableRow ((IBusinessObject) _ownerControl.Value[i], columns);
           newRow.GetDataSource().LoadValues (false);
           Controls.Add (newRow);
           newRows.Add (newRow);
@@ -375,7 +382,7 @@ public class EditModeController : PlaceHolder
   public int AddRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns, BocColumnDefinition[] columns)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    ArgumentUtility.CheckNotNull ("columns", columns);
+    ArgumentUtility.CheckNotNullOrItemsNull ("columns", columns);
   
     int index = _ownerControl.AddRowInternal (businessObject);
 
@@ -384,7 +391,7 @@ public class EditModeController : PlaceHolder
       EnsureEditModeRestored (oldColumns);
       if (IsListEditModeActive)
       {
-        EditableRow newRow = CreateEditableRow (index, businessObject, columns);
+        EditableRow newRow = CreateEditableRow (businessObject, columns);
         newRow.GetDataSource().LoadValues (false);
         Controls.Add (newRow);
         _rows = (EditableRow[]) ListUtility.AddRange (_rows, newRow, (CreateListMethod) null, true, true);
@@ -418,10 +425,10 @@ public class EditModeController : PlaceHolder
           EditableRow row = _rows[index];
           Controls.Remove (row);
           row.RemoveControls();
+          _rowIDProvider.ExcludeID (row.ID);
           rows.Add (row);
         }
         _rows = (EditableRow[]) ListUtility.Remove (_rows, rows, (CreateListMethod) null, true);
-        RefreshIDs();
       }
     }
 
@@ -430,10 +437,9 @@ public class EditModeController : PlaceHolder
 
   /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
   /// <remarks> Sets the dirty state. </remarks>
-  public void RemoveRow (IBusinessObject businessObject, BocColumnDefinition[] oldColumns)
+  public void RemoveRow (IBusinessObject businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    ArgumentUtility.CheckNotNull ("oldColumns", oldColumns);
     
     if (_ownerControl.Value != null)
     {
@@ -452,24 +458,13 @@ public class EditModeController : PlaceHolder
           EditableRow row = _rows[index];
           Controls.Remove (row);
           row.RemoveControls();
+          _rowIDProvider.ExcludeID (row.ID);
           _rows = (EditableRow[]) ListUtility.Remove (_rows, row, (CreateListMethod) null, true);
         }
-        RefreshIDs();
       }
     }
 
     _ownerControl.RemoveRowInternal (businessObject);
-  }
-
-  private void RefreshIDs()
-  {
-    for (int i = 0; i < Controls.Count; i++)
-    {
-      EditableRow row = (EditableRow) Controls[i];
-      string newID = ID + "_Row" + i.ToString();
-      if (row.ID != newID)
-        row.ID = newID;
-    }
   }
 
 
@@ -651,6 +646,7 @@ public class EditModeController : PlaceHolder
       _isListEditModeActive = (bool) values[1];
       _editableRowIndex = (NaInt32) values[2];
       _isEditNewRow = (bool) values[3];
+      _rowIDProvider = (EditableRowIDProvider) values[4];
     }
   }
 
@@ -658,12 +654,13 @@ public class EditModeController : PlaceHolder
   /// <returns> Returns the server control's current view state. </returns>
   protected override object SaveViewState()
   {
-    object[] values = new object[4];
+    object[] values = new object[5];
 
     values[0] = base.SaveViewState();
     values[1] = _isListEditModeActive;
     values[2] = _editableRowIndex;
     values[3] = _isEditNewRow;
+    values[4] = _rowIDProvider;
 
     return values;
   }

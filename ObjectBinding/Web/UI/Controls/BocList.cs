@@ -4432,7 +4432,7 @@ public class BocList:
   /// <remarks> Sets the dirty state. </remarks>
   public void RemoveRow (IBusinessObject businessObject)
   {
-    _editModeController.RemoveRow (businessObject, EnsureColumnsForPreviousLifeCycleGot());
+    _editModeController.RemoveRow (businessObject);
   }
 
   internal void RemoveRowInternal (IBusinessObject businessObject)
