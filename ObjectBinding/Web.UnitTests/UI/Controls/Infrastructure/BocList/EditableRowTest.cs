@@ -173,12 +173,12 @@ public class EditableRowTest : BocTest
     Assert.IsFalse (_editableRow.HasEditControl (5));
     Assert.IsTrue (_editableRow.HasEditControl (6));
 
-    IBusinessObjectBoundModifiableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
+    IBusinessObjectBoundEditableWebControl textBoxFirstValue = _editableRow.GetEditControl (0);
     Assert.IsTrue (textBoxFirstValue is BocTextValue);
     Assert.AreSame (dataSource, textBoxFirstValue.DataSource);
     Assert.AreSame (_typeWithAllDataTypesStringValuePath.LastProperty, textBoxFirstValue.Property);
 
-    IBusinessObjectBoundModifiableWebControl textBoxSecondValue = _editableRow.GetEditControl (6);
+    IBusinessObjectBoundEditableWebControl textBoxSecondValue = _editableRow.GetEditControl (6);
     Assert.IsTrue (textBoxSecondValue is BocTextValue);
     Assert.AreSame (dataSource, textBoxSecondValue.DataSource);
     Assert.AreSame (_typeWithAllDataTypesInt32ValuePath.LastProperty, textBoxSecondValue.Property);
@@ -461,7 +461,7 @@ public class EditableRowTest : BocTest
     Assert.IsTrue (_editableRow.HasEditControl (0));
     Assert.IsFalse (_editableRow.HasEditControl (1));
     
-    IBusinessObjectBoundModifiableWebControl control = _editableRow.GetEditControl (0);
+    IBusinessObjectBoundEditableWebControl control = _editableRow.GetEditControl (0);
     Assert.IsNotNull (control);
     Assert.IsTrue (control is BocTextValue);
 

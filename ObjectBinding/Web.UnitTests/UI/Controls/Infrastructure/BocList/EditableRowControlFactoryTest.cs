@@ -51,7 +51,7 @@ public class EditableRowControlFactoryTest
   [Test]
   public void CreateWithStringProperty ()
   {
-    IBusinessObjectBoundModifiableWebControl control = _factory.Create (_stringValueColumn, 0);
+    IBusinessObjectBoundEditableWebControl control = _factory.Create (_stringValueColumn, 0);
 
     Assert.IsNotNull (control);
     Assert.IsTrue (control is BocTextValue);

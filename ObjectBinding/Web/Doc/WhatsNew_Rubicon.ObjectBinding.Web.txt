@@ -25,7 +25,10 @@
 
 - BocReferenceValue, BocList
   * OptionsMenu: Commands vom Typ Href haben Target nicht ausgewertet.
-  
+
+- IBusinessObjectBoundModifiableWebControl umbenannt zu IBusinessObjectBoundEditableWebControl 
+- BusinessObjectBoundModifiableWebControl umbenannt zu BusinessObjectBoundEditableWebControl 
+
 1.4.35
 ======
 - BocEnumValue
