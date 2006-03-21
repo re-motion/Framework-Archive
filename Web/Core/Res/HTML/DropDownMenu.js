@@ -277,7 +277,14 @@ function DropDownMenu_CreateTextItem (popUpDocument, item, itemInfo, selectionCo
     }
     else
     {
-      item.setAttribute ('javascript', 'window.location = \'' + itemInfo.Href + '\';');
+      var href = itemInfo.Href;
+      var target;
+      if (itemInfo.Target != null && itemInfo.Target.length > 0)
+        target = itemInfo.Target;
+      else
+        target = '_self';
+      item.setAttribute ('javascript', 'window.open (\'' + href + '\', \'' + target + '\');');
+      //item.setAttribute ('javascript', 'window.location = \'' + itemInfo.Href + '\';');
     }
     item.onclick = function ()
         { 
