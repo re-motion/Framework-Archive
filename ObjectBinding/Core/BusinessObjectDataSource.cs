@@ -40,7 +40,7 @@ public enum DataSourceMode
 ///   </para>
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundControl"/>
-/// <seealso cref="IBusinessObjectBoundModifiableControl"/>
+/// <seealso cref="IBusinessObjectBoundEditableControl"/>
 public interface IBusinessObjectDataSource
 {
   /// <summary> Gets or sets the current <see cref="DataSourceMode"/>. </summary>
@@ -87,15 +87,15 @@ public interface IBusinessObjectDataSource
 
   /// <summary> 
   ///   Saves the values of the <see cref="BusinessObject"/> from all bound controls implementing
-  ///   <see cref="IBusinessObjectBoundModifiableControl"/>.
+  ///   <see cref="IBusinessObjectBoundEditableControl"/>.
   /// </summary>
   /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
   /// <remarks>
   ///   On final saves, all values must be saved. (It is assumed that invalid values were already identified using 
-  ///   validators.) On interim saves, each <see cref="IBusinessObjectBoundModifiableControl"/> decides whether it 
+  ///   validators.) On interim saves, each <see cref="IBusinessObjectBoundEditableControl"/> decides whether it 
   ///   saves its values into the <see cref="BusinessObject"/> or uses an alternate mechanism (e.g. view state).
   /// </remarks>
-  /// <seealso cref="IBusinessObjectBoundModifiableControl.SaveValue">IBusinessObjectBoundModifiableControl.SaveValue</seealso>
+  /// <seealso cref="IBusinessObjectBoundEditableControl.SaveValue">IBusinessObjectBoundEditableControl.SaveValue</seealso>
   void SaveValues (bool interim);
 
   /// <summary>
@@ -206,7 +206,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
 
   /// <summary> 
   ///   Saves the values of the <see cref="BusinessObject"/> from all bound controls implementing
-  ///   <see cref="IBusinessObjectBoundModifiableControl"/>.
+  ///   <see cref="IBusinessObjectBoundEditableControl"/>.
   /// </summary>
   /// <param name="interim"> Specifies whether this is the final saving, or an interim saving. </param>
   public void SaveValues (bool interim)
@@ -215,7 +215,7 @@ public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSo
     {
       for (int i = 0; i < _boundControls.Count; i++)
       {
-        IBusinessObjectBoundModifiableControl writeableControl = _boundControls[i] as IBusinessObjectBoundModifiableControl;
+        IBusinessObjectBoundEditableControl writeableControl = _boundControls[i] as IBusinessObjectBoundEditableControl;
         if (writeableControl != null)
         {
           if (writeableControl.HasValidBinding)
