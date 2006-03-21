@@ -247,11 +247,11 @@ public class BocListWcagTest: BocTest
 
 
 	[Test]
-  public void EvaluateWaiConformityDebugLevelAWithEditDetailsColumn()
+  public void EvaluateWaiConformityDebugLevelAWithRowEditModeColumn()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetDebugExceptionLevelA();
-    BocEditDetailsColumnDefinition editDetailsColumn = new BocEditDetailsColumnDefinition();
-    _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {editDetailsColumn});
+    BocRowEditModeColumnDefinition rowEditModeColumn = new BocRowEditModeColumnDefinition();
+    _bocList.EvaluateWaiConformity (new BocColumnDefinition[1] {rowEditModeColumn});
 
     Assert.IsTrue (WcagHelperMock.HasError);
     Assert.AreEqual (1, WcagHelperMock.Priority);
@@ -260,19 +260,19 @@ public class BocListWcagTest: BocTest
   }
 
   [Test]
-  public void IsEditDetailsColumnInvisibleWithWcagOverride()
+  public void IsRowEditModeColumnInvisibleWithWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelA();
-    BocEditDetailsColumnDefinition editDetailsColumn = new BocEditDetailsColumnDefinition();
-    Assert.IsFalse (_bocList.IsColumnVisible (editDetailsColumn));
+    BocRowEditModeColumnDefinition rowEditModeColumn = new BocRowEditModeColumnDefinition();
+    Assert.IsFalse (_bocList.IsColumnVisible (rowEditModeColumn));
   }
 
   [Test]
-  public void IsEditDetailsColumnVisibleWithoutWcagOverride()
+  public void IsRowEditModeColumnVisibleWithoutWcagOverride()
   {
     WebConfigurationMock.Current = WebConfigurationFactory.GetLevelUndefined();
-    BocEditDetailsColumnDefinition editDetailsColumn = new BocEditDetailsColumnDefinition();
-    Assert.IsTrue (_bocList.IsColumnVisible (editDetailsColumn));
+    BocRowEditModeColumnDefinition rowEditModeColumn = new BocRowEditModeColumnDefinition();
+    Assert.IsTrue (_bocList.IsColumnVisible (rowEditModeColumn));
   }
 
 
