@@ -14,7 +14,7 @@ namespace Rubicon.ObjectBinding
 ///     information on the data binding process.
 ///   </para>
 /// </remarks>
-/// <seealso cref="IBusinessObjectBoundModifiableControl"/>
+/// <seealso cref="IBusinessObjectBoundEditableControl"/>
 /// <seealso cref="IBusinessObjectDataSource"/>
 public interface IBusinessObjectBoundControl: IComponent
 {
@@ -95,7 +95,7 @@ public interface IBusinessObjectBoundControl: IComponent
 /// </remarks>
 /// <seealso cref="IBusinessObjectBoundControl"/>
 /// <seealso cref="IBusinessObjectDataSource"/>
-public interface IBusinessObjectBoundModifiableControl: IBusinessObjectBoundControl
+public interface IBusinessObjectBoundEditableControl: IBusinessObjectBoundControl
 {
   /// <summary>
   ///   Saves the <see cref="IBusinessObjectBoundControl.Value"/> back into the bound <see cref="IBusinessObject"/>.
