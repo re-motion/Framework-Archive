@@ -9,7 +9,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls.Infrastructure.BocList
 {
 
 [ToolboxItem (false)]
-public class EditDetailsValidator : CustomValidator
+public class EditModeValidator : CustomValidator
 {
   // types
 
@@ -20,7 +20,7 @@ public class EditDetailsValidator : CustomValidator
 
   // construction and disposing
 
-  public EditDetailsValidator (Controls.BocList owner)
+  public EditModeValidator (Controls.BocList owner)
   {
     _owner = owner;
   }

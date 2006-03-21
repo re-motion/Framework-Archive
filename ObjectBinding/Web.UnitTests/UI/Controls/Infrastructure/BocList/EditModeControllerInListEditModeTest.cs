@@ -538,7 +538,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     
     Assert.IsNotNull (validators);
     Assert.AreEqual (1, validators.Length);
-    Assert.IsTrue (validators[0] is EditDetailsValidator);
+    Assert.IsTrue (validators[0] is EditModeValidator);
     Assert.AreEqual (resourceManager.GetString (BocList.ResourceIdentifier.ListEditModeErrorMessage), validators[0].ErrorMessage);
   }
 
@@ -555,7 +555,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     
     Assert.IsNotNull (validators);
     Assert.AreEqual (1, validators.Length);
-    Assert.IsTrue (validators[0] is EditDetailsValidator);
+    Assert.IsTrue (validators[0] is EditModeValidator);
     Assert.AreEqual ("Foo Bar", validators[0].ErrorMessage);
   }
 

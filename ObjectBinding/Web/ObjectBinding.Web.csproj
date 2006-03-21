@@ -610,12 +610,12 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditDetailsValidator.cs"
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeController.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeController.cs"
+                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

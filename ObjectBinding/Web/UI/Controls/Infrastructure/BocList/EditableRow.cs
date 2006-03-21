@@ -366,7 +366,7 @@ public class EditableRow : PlaceHolder, INamingContainer
       BocSimpleColumnDefinition column,
       IBusinessObject businessObject,
       int columnIndex,
-      EditDetailsValidator editDetailsValidator,
+      EditModeValidator editModeValidator,
       bool showEditDetailsValidationMarkers,
       bool disableEditDetailsValidationMessages) 
   {
@@ -449,7 +449,7 @@ public class EditableRow : PlaceHolder, INamingContainer
     for (int i = 0; i < validators.Count; i++)
     {
       BaseValidator validator = (BaseValidator) validators[i];
-      if (   editDetailsValidator == null 
+      if (   editModeValidator == null 
           || disableEditDetailsValidationMessages)
       {
         validator.Display = ValidatorDisplay.None;
@@ -457,8 +457,8 @@ public class EditableRow : PlaceHolder, INamingContainer
       }
       else
       {
-        validator.Display = editDetailsValidator.Display;
-        validator.EnableClientScript = editDetailsValidator.EnableClientScript;
+        validator.Display = editModeValidator.Display;
+        validator.EnableClientScript = editModeValidator.EnableClientScript;
       }
 
       writer.RenderBeginTag (HtmlTextWriterTag.Div);
@@ -485,7 +485,7 @@ public class EditableRow : PlaceHolder, INamingContainer
   /// <summary> Gets the CSS-Class applied to the <see cref="BocList"/>'s edit details validation messages. </summary>
   /// <remarks>
   ///   <para> Class: <c>bocListEditDetailsValidationMessage</c> </para>
-  ///   <para> Only applied if the <see cref="EditDetailsValidator"/> has no CSS-class of its own. </para>
+  ///   <para> Only applied if the <see cref="EditModeValidator"/> has no CSS-class of its own. </para>
   ///   </remarks>
   protected virtual string CssClassEditDetailsValidationMessage
   { get { return "bocListEditDetailsValidationMessage"; } }

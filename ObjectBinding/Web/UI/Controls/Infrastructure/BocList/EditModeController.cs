@@ -493,7 +493,7 @@ public class EditModeController : PlaceHolder
 
 
   /// <summary>
-  ///   Generates a <see cref="BocList.EditDetailsValidator"/>.
+  ///   Generates a <see cref="BocList.EditModeValidator"/>.
   /// </summary>
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public BaseValidator[] CreateValidators (IResourceManager resourceManager)
@@ -505,27 +505,27 @@ public class EditModeController : PlaceHolder
 
     BaseValidator[] validators = new BaseValidator[1];
 
-    EditDetailsValidator editDetailsValidator = new EditDetailsValidator (_ownerControl);
-    editDetailsValidator.ID = ID + "_ValidatorEditDetails";
-    editDetailsValidator.ControlToValidate = ID;
+    EditModeValidator editModeValidator = new EditModeValidator (_ownerControl);
+    editModeValidator.ID = ID + "_ValidatorEditDetails";
+    editModeValidator.ControlToValidate = ID;
     if (StringUtility.IsNullOrEmpty (_ownerControl.ErrorMessage))
     {
       if (IsRowEditModeActive)
       {
-        editDetailsValidator.ErrorMessage = 
+        editModeValidator.ErrorMessage = 
             resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.RowEditModeErrorMessage);
       }
       else if (IsListEditModeActive)
       {
-        editDetailsValidator.ErrorMessage = 
+        editModeValidator.ErrorMessage = 
             resourceManager.GetString (UI.Controls.BocList.ResourceIdentifier.ListEditModeErrorMessage);
      }
     }
     else
     {
-      editDetailsValidator.ErrorMessage = _ownerControl.ErrorMessage;
+      editModeValidator.ErrorMessage = _ownerControl.ErrorMessage;
     }
-    validators[0] = editDetailsValidator;
+    validators[0] = editModeValidator;
 
     return validators;
   }

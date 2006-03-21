@@ -1176,7 +1176,7 @@ public class BocList:
   }
 
   /// <summary>
-  ///   Generates a <see cref="BocList.EditDetailsValidator"/>.
+  ///   Generates a <see cref="BocList.EditModeValidator"/>.
   /// </summary>
   /// <returns> Returns a list of <see cref="BaseValidator"/> objects. </returns>
   public override BaseValidator[] CreateValidators()
@@ -3049,12 +3049,12 @@ public class BocList:
       int columnIndex, 
       EditableRow editableRow) 
   {
-    EditDetailsValidator editDetailsValidator = null;
+    EditModeValidator editModeValidator = null;
     for (int i = 0; i < _validators.Count; i++)
     {
       BaseValidator validator = (BaseValidator) _validators[i];
-      if (validator is EditDetailsValidator)
-        editDetailsValidator = (EditDetailsValidator) validator;
+      if (validator is EditModeValidator)
+        editModeValidator = (EditModeValidator) validator;
     }
 
     if (_hasClientScript)
@@ -3063,7 +3063,7 @@ public class BocList:
     
     editableRow.RenderSimpleColumnCellEditModeControl (
         writer, column, businessObject, columnIndex,
-        editDetailsValidator, 
+        editModeValidator, 
         _editModeController.ShowEditModeValidationMarkers, 
         _editModeController.DisableEditModeValidationMessages);
     
@@ -4578,12 +4578,12 @@ public class BocList:
     set { _editModeController.DisableEditModeValidationMessages = value; }
   }
 
-  /// <summary> Gets or sets a flag that enables the <see cref="EditDetailsValidator"/>. </summary>
+  /// <summary> Gets or sets a flag that enables the <see cref="EditModeValidator"/>. </summary>
   /// <remarks> 
-  ///   <see langword="false"/> to prevent the <see cref="EditDetailsValidator"/> from being created by
+  ///   <see langword="false"/> to prevent the <see cref="EditModeValidator"/> from being created by
   ///   <see cref="CreateValidators"/>.
   /// </remarks>
-  [Description("Enables the EditDetailsValidator.")]
+  [Description("Enables the EditModeValidator.")]
   [Category ("Edit Details")]
   [DefaultValue(true)]
   public bool EnableEditModeValidator

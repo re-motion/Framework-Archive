@@ -725,7 +725,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     
     Assert.IsNotNull (validators);
     Assert.AreEqual (1, validators.Length);
-    Assert.IsTrue (validators[0] is EditDetailsValidator);
+    Assert.IsTrue (validators[0] is EditModeValidator);
     Assert.AreEqual (resourceManager.GetString (BocList.ResourceIdentifier.RowEditModeErrorMessage), validators[0].ErrorMessage);
   }
 
@@ -743,7 +743,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
     
     Assert.IsNotNull (validators);
     Assert.AreEqual (1, validators.Length);
-    Assert.IsTrue (validators[0] is EditDetailsValidator);
+    Assert.IsTrue (validators[0] is EditModeValidator);
     Assert.AreEqual ("Foo Bar", validators[0].ErrorMessage);
   }
 
