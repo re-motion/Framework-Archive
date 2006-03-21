@@ -420,8 +420,7 @@ public class EditModeController : PlaceHolder
       if (IsRowEditModeActive)
       {
         throw new InvalidOperationException (string.Format (
-          "Cannot remove a row while the BocList '{0}' is in row edit mode. "
-          + "Call EndEditMode() before removing the row.",
+          "Cannot remove a row while the BocList '{0}' is in row edit mode. Call EndEditMode() before removing the row.",
           _ownerControl.ID));
       }  
       else if (IsListEditModeActive)
@@ -525,6 +524,9 @@ public class EditModeController : PlaceHolder
   
   public void RenderTitleCellMarkers (HtmlTextWriter writer, BocColumnDefinition column, int columnIndex)
   {
+    ArgumentUtility.CheckNotNull ("writer", writer);
+    ArgumentUtility.CheckNotNull ("column", column);
+    
     if (_showEditModeRequiredMarkers && IsRequired (columnIndex))
     {
       Image requriedFieldMarker = _ownerControl.GetRequiredMarker();

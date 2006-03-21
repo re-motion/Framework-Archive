@@ -4396,386 +4396,6 @@ public class BocList:
     }
   }
 
-  /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  public void AddRows (IBusinessObject[] businessObjects)
-  {
-    _editModeController.AddRows (businessObjects, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
-  }
-
-  internal void AddRowsInternal (IBusinessObject[] businessObjects)
-  {
-    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-
-    Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
-  }
-
-  /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  public int AddRow (IBusinessObject businessObject)
-  {
-    return _editModeController.AddRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
-  }
-
-  internal int AddRowInternal (IBusinessObject businessObject)
-  {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    
-    Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
-
-    if (Value == null)
-      return -1;
-    else
-      return Value.Count - 1;
-  }
-
-  /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  public void RemoveRows (IBusinessObject[] businessObjects)
-  {
-    _editModeController.RemoveRows (businessObjects);
-  }
-
-  internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
-  {
-    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
-    
-    if (Value != null)
-      Value = ListUtility.Remove (Value, businessObjects, Property, false);
-  }
-
-  /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  public void RemoveRow (IBusinessObject businessObject)
-  {
-    _editModeController.RemoveRow (businessObject);
-  }
-
-  internal void RemoveRowInternal (IBusinessObject businessObject)
-  {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    
-    if (Value != null)
-      Value = ListUtility.Remove (Value, businessObject, Property, false);
-  }
-
-  /// <summary> 
-  ///   Removes the <see cref="IBusinessObject"/> at the specifed <paramref name="index"/> from the 
-  ///   <see cref="Value"/> collection. 
-  /// </summary>
-  /// <remarks> Sets the dirty state. </remarks>
-  public void RemoveRow (int index)
-  {
-    if (Value == null)
-      return;
-    if (index > Value.Count) throw new ArgumentOutOfRangeException ("index");
-
-    RemoveRow ((IBusinessObject) Value[index]);
-  }
-
-  /// <summary>
-  ///   Saves changes to previous edited row and starts editing for the new row.
-  /// </summary>
-  /// <remarks> 
-  ///   <para>
-  ///     Once the list is in edit mode, it is important not to change to index of the edited 
-  ///     <see cref="IBusinessObject"/> in <see cref="Value"/>. Otherwise the wrong object would be edited.
-  ///     Use <see cref="IsRowEditModeActive"/> to programatically check whether it is save to insert a row.
-  ///   </para><para>
-  ///     While the list is in edit mode, all commands and menus for this list are disabled with the exception of
-  ///     those rendered in the <see cref="BocRowEditModeColumnDefinition"/> column.
-  ///   </para>
-  /// </remarks>
-  /// <param name="index"></param>
-  public void SwitchRowIntoEditMode (int index)
-  {
-    _editModeController.SwitchRowIntoEditMode (index, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
-  }
-
-  public void EndRowEditMode (bool saveChanges)
-  {
-    _editModeController.EndRowEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
-  }
-
-  internal void EndRowEditModeCleanUp (int modifiedRowIndex)
-  {
-    if (! IsReadOnly)
-    {
-      ResetRows();
-      BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
-      for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-      {
-        int originalRowIndex = sortedRows[idxRows].Index;
-        if (modifiedRowIndex == originalRowIndex)
-        {
-          _currentRow = idxRows;
-          break;
-        }
-      }
-    }
-  }
-
-  /// <remarks>
-  ///   If already in row edit mode and the previous row cannot be saved, the new row will not be added to the list.
-  /// </remarks>
-  /// <param name="businessObject"></param>
-  public bool AddAndEditRow (IBusinessObject businessObject)
-  {
-    return _editModeController.AddAndEditRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
-  }
-
-
-  public bool ValidateEditableRows()
-  {
-    return _editModeController.Validate();
-  }
-
-  internal bool ValidateEditableRowsInternal()
-  {
-    return ValidateCustomColumns();
-  }
-
-  [Browsable (false)]
-  public NaInt32 EditableRowIndex
-  {
-    get { return _editModeController.EditableRowIndex; }
-  }
-
-  /// <remarks>
-  ///   Queried where the rendering depends on whether the list is in edit mode. 
-  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
-  /// </remarks>
-  [Browsable (false)]
-  public bool IsRowEditModeActive
-  {
-    get { return _editModeController.IsRowEditModeActive; } 
-  }
-
-  [Description ("Set false to hide the asterisks in the title row for columns having edit details control.")]
-  [Category ("Edit Mode")]
-  [DefaultValue (true)]
-  public bool ShowEditModeRequiredMarkers
-  {
-    get { return _editModeController.ShowEditModeRequiredMarkers; }
-    set { _editModeController.ShowEditModeRequiredMarkers = value; }
-  }
-
-  [Description ("Set true to show an exclamation mark in front of each control with an validation error.")]
-  [Category ("Edit Mode")]
-  [DefaultValue (false)]
-  public bool ShowEditModeValidationMarkers
-  {
-    get { return _editModeController.ShowEditModeValidationMarkers; }
-    set { _editModeController.ShowEditModeValidationMarkers = value; }
-  }
-
-  [Description ("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")]
-  [Category ("Edit Mode")]
-  [DefaultValue (false)]
-  public bool DisableEditModeValidationMessages
-  {
-    get { return _editModeController.DisableEditModeValidationMessages; }
-    set { _editModeController.DisableEditModeValidationMessages = value; }
-  }
-
-  /// <summary> Gets or sets a flag that enables the <see cref="EditModeValidator"/>. </summary>
-  /// <remarks> 
-  ///   <see langword="false"/> to prevent the <see cref="EditModeValidator"/> from being created by
-  ///   <see cref="CreateValidators"/>.
-  /// </remarks>
-  [Description("Enables the EditModeValidator.")]
-  [Category ("Edit Mode")]
-  [DefaultValue(true)]
-  public bool EnableEditModeValidator
-  {
-    get { return _editModeController.EnableEditModeValidator; }
-    set { _editModeController.EnableEditModeValidator = value; }
-  }
-
-  protected internal virtual void OnEditableRowChangesSaving (
-      int index,
-      IBusinessObject businessObject,
-      IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundEditableWebControl[] controls)
-  {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    ArgumentUtility.CheckNotNull ("dataSource", dataSource);
-    ArgumentUtility.CheckNotNull ("controls", controls);
-
-    BocListEditableRowChangesEventHandler handler = 
-        (BocListEditableRowChangesEventHandler) Events[s_editableRowChangesSavingEvent];
-    if (handler != null)
-    {
-      BocListEditableRowChangesEventArgs e = 
-          new BocListEditableRowChangesEventArgs (index, businessObject, dataSource, controls);
-      handler (this, e);
-    }
-  }
-
-  protected internal virtual void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
-  {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editableRowChangesSavedEvent];
-    if (handler != null)
-    {
-      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
-      handler (this, e);
-    }
-  }
-
-  protected internal virtual void OnEditableRowChangesCanceling (
-      int index,
-      IBusinessObject businessObject,
-      IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundEditableWebControl[] controls)
-  {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    ArgumentUtility.CheckNotNull ("dataSource", dataSource);
-    ArgumentUtility.CheckNotNull ("controls", controls);
-
-    BocListEditableRowChangesEventHandler handler = 
-        (BocListEditableRowChangesEventHandler) Events[s_editableRowChangesCancelingEvent];
-    if (handler != null)
-    {
-      BocListEditableRowChangesEventArgs e = 
-          new BocListEditableRowChangesEventArgs (index, businessObject, dataSource, controls);
-      handler (this, e);
-    }
-  }
-
-  protected internal virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
-  {
-    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-
-    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editableRowChangesCanceledEvent];
-    if (handler != null)
-    {
-      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
-      handler (this, e);
-    }
-  }
-
-  /// <summary> Is raised before the changes to the editable row are saved. </summary>
-  [Category ("Action")]
-  [Description ("Is raised before the changes to the editable row are saved.")]
-  public event BocListEditableRowChangesEventHandler EditableRowChangesSaving
-  {
-    add { Events.AddHandler (s_editableRowChangesSavingEvent, value); }
-    remove { Events.RemoveHandler (s_editableRowChangesSavingEvent, value); }
-  }
-
-  /// <summary> Is raised after the changes to the editable row have been saved. </summary>
-  [Category ("Action")]
-  [Description ("Is raised after the changes to the editable row have been saved.")]
-  public event BocListItemEventHandler EditableRowChangesSaved
-  {
-    add { Events.AddHandler (s_editableRowChangesSavedEvent, value); }
-    remove { Events.RemoveHandler (s_editableRowChangesSavedEvent, value); }
-  }
-
-  /// <summary> Is raised before the changes to the editable row are canceled. </summary>
-  [Category ("Action")]
-  [Description ("Is raised before the changes to the editable row are canceled.")]
-  public event BocListEditableRowChangesEventHandler EditableRowChangesCanceling
-  {
-    add { Events.AddHandler (s_editableRowChangesCancelingEvent, value); }
-    remove { Events.RemoveHandler (s_editableRowChangesCancelingEvent, value); }
-  }
-
-  /// <summary> Is raised after the changes to the editable row have been canceled. </summary>
-  [Category ("Action")]
-  [Description ("Is raised after the changes to the editable row have been canceled.")]
-  public event BocListItemEventHandler EditableRowChangesCanceled
-  {
-    add { Events.AddHandler (s_editableRowChangesCanceledEvent, value); }
-    remove { Events.RemoveHandler (s_editableRowChangesCanceledEvent, value); }
-  }
-
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public EditableRowDataSourceFactory EditModeDataSourceFactory
-  {
-    get 
-    {
-      return _editModeDataSourceFactory; 
-    }
-    set 
-    {
-      ArgumentUtility.CheckNotNull ("value", value);
-      _editModeDataSourceFactory = value; 
-    }
-  }
-
-  [Browsable (false)]
-  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-  public EditableRowControlFactory EditModeControlFactory
-  {
-    get
-    {
-      return _editModeControlFactory; 
-    }
-    set 
-    {
-      ArgumentUtility.CheckNotNull ("value", value);
-      _editModeControlFactory = value; 
-    }
-  }
-
-  /// <remarks>
-  ///   Queried where the rendering depends on whether the list is in edit mode. 
-  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
-  /// </remarks>
-  [Browsable (false)]
-  public bool IsListEditModeActive
-  {
-    get { return _editModeController.IsListEditModeActive; } 
-  }
-
-  public void SwitchListIntoEditMode ()
-  {
-    if (IsPagingEnabled) 
-    {
-      throw new InvalidOperationException (string.Format (
-          "Cannot switch BocList '{0}' in to List Edit Mode: Paging Enabled.", ID));
-    }
-
-    _editModeController.SwitchListIntoEditMode (EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
-  }
-
-  public void EndListEditMode (bool saveChanges)
-  {
-    _editModeController.EndListEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
-  }
-
-  internal void EndListEditModeCleanUp ()
-  {
-    if (! IsReadOnly)
-    {
-      ResetRows();
-//    BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
-//    for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
-//    {
-//      int originalRowIndex = sortedRows[idxRows].Index;
-//      if (_editableRowIndex.Value == originalRowIndex)
-//      {
-//        _currentRow = idxRows;
-//        break;
-//      }
-//    }
-    }
-  }
-
-  private void EnsureEditModeRestored ()
-  {
-    _editModeController.EnsureEditModeRestored (EnsureColumnsForPreviousLifeCycleGot());
-  }
-
-  private void EnsureEditModeValidatorsRestored()
-  {
-    _editModeController.EnsureValidatorsRestored();
-  }
-
   /// <summary> Is raised when a data row is rendered. </summary>
   [Category ("Action")]
   [Description ("Occurs when a data row is rendered.")]
@@ -5126,6 +4746,435 @@ public class BocList:
     }
   }
 
+
+  /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public void AddRows (IBusinessObject[] businessObjects)
+  {
+    _editModeController.AddRows (businessObjects, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+  }
+
+  internal void AddRowsInternal (IBusinessObject[] businessObjects)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+
+    Value = ListUtility.AddRange (Value, businessObjects, Property, false, true);
+  }
+
+  /// <summary> Adds the <paramref name="businessObject"/> to the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public int AddRow (IBusinessObject businessObject)
+  {
+    return _editModeController.AddRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+  }
+
+  internal int AddRowInternal (IBusinessObject businessObject)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    
+    Value = ListUtility.AddRange (Value, businessObject, Property, false, true);
+
+    if (Value == null)
+      return -1;
+    else
+      return Value.Count - 1;
+  }
+
+  /// <summary> Removes the <paramref name="businessObjects"/> from the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public void RemoveRows (IBusinessObject[] businessObjects)
+  {
+    _editModeController.RemoveRows (businessObjects);
+  }
+
+  internal void RemoveRowsInternal (IBusinessObject[] businessObjects)
+  {
+    ArgumentUtility.CheckNotNullOrItemsNull ("businessObjects", businessObjects);
+    
+    if (Value != null)
+      Value = ListUtility.Remove (Value, businessObjects, Property, false);
+  }
+
+  /// <summary> Removes the <paramref name="businessObject"/> from the <see cref="Value"/> collection. </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public void RemoveRow (IBusinessObject businessObject)
+  {
+    _editModeController.RemoveRow (businessObject);
+  }
+
+  /// <summary> 
+  ///   Removes the <see cref="IBusinessObject"/> at the specifed <paramref name="index"/> from the 
+  ///   <see cref="Value"/> collection. 
+  /// </summary>
+  /// <remarks> Sets the dirty state. </remarks>
+  public void RemoveRow (int index)
+  {
+    if (Value == null)
+      return;
+    if (index > Value.Count) throw new ArgumentOutOfRangeException ("index");
+
+    RemoveRow ((IBusinessObject) Value[index]);
+  }
+
+  internal void RemoveRowInternal (IBusinessObject businessObject)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    
+    if (Value != null)
+      Value = ListUtility.Remove (Value, businessObject, Property, false);
+  }
+
+  /// <summary>
+  ///   Saves changes to previous edited row and starts editing for the specified row.
+  /// </summary>
+  /// <remarks> 
+  ///   <para>
+  ///     Once the list is in edit mode, it is important not to change to index of the edited 
+  ///     <see cref="IBusinessObject"/> in <see cref="Value"/>. Otherwise the wrong object would be edited.
+  ///     Use <see cref="IsRowEditModeActive"/> to programatically check whether it is save to insert a row.
+  ///     It is always save to add a row using the <see cref="AddRow"/> and <see cref="AddRows"/> methods.
+  ///   </para><para>
+  ///     While the list is in row edit mode, all commands and menus for this list are disabled with the exception
+  ///     of those rendered in the <see cref="BocRowEditModeColumnDefinition"/> column.
+  ///   </para>
+  /// </remarks>
+  /// <param name="index"> The index of the row to be edited. </param>
+  public void SwitchRowIntoEditMode (int index)
+  {
+    _editModeController.SwitchRowIntoEditMode (index, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+  }
+
+  /// <summary>
+  ///   Saves changes to the edited row rows and (re-)starts editing for the entire list.
+  /// </summary>
+  /// <remarks> 
+  ///   <para>
+  ///     Once the list is in edit mode, it is important not to change to order of the objects in <see cref="Value"/>. 
+  ///     Otherwise the wrong objects would be edited. Use <see cref="IsListEditModeActive"/> to programatically check 
+  ///     whether it is save to insert a row.
+  ///   </para>
+  /// </remarks>
+  public void SwitchListIntoEditMode ()
+  {
+    if (IsPagingEnabled) 
+    {
+      throw new InvalidOperationException (string.Format (
+          "Cannot switch BocList '{0}' in to List Edit Mode: Paging Enabled.", ID));
+    }
+
+    _editModeController.SwitchListIntoEditMode (EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+  }
+
+  /// <summary> 
+  ///   Ends the current edit mode, appends the <paramref name="businessObject"/> to the list and switches the new
+  ///   row into edit mode.
+  /// </summary>
+  /// <remarks>
+  ///   If already in row edit mode and the previous row cannot be saved, the new row will not be added to the list.
+  /// </remarks>
+  /// <param name="businessObject"> The <see cref="IBusinessObject"/> to add. Must not be <see langword="null"/>. </param>
+  public bool AddAndEditRow (IBusinessObject businessObject)
+  {
+    return _editModeController.AddAndEditRow (businessObject, EnsureColumnsForPreviousLifeCycleGot(), EnsureColumnsGot());
+  }
+
+  /// <summary>
+  ///   Ends the current edit mode and optionally validates and saves the changes made during edit mode.
+  /// </summary>
+  /// <remarks> 
+  ///   If <paramref name="saveChanges"/> is <see langword="true"/>, the edit mode will only be ended once the 
+  ///   validation has been successful.
+  /// </remarks>
+  /// <param name="saveChanges"> 
+  ///   <see langword="true"/> to validate and save the changes, <see cref="false"/> to discard them.
+  /// </param>
+  public void EndRowEditMode (bool saveChanges)
+  {
+    _editModeController.EndRowEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
+  }
+
+  internal void EndRowEditModeCleanUp (int modifiedRowIndex)
+  {
+    if (! IsReadOnly)
+    {
+      ResetRows();
+      BocListRow[] sortedRows = EnsureGotIndexedRowsSorted();
+      for (int idxRows = 0; idxRows < sortedRows.Length; idxRows++)
+      {
+        int originalRowIndex = sortedRows[idxRows].Index;
+        if (modifiedRowIndex == originalRowIndex)
+        {
+          _currentRow = idxRows;
+          break;
+        }
+      }
+    }
+  }
+
+  /// <summary>
+  ///   Ends the current edit mode and optionally validates and saves the changes made during edit mode.
+  /// </summary>
+  /// <remarks> 
+  ///   If <paramref name="saveChanges"/> is <see langword="true"/>, the edit mode will only be ended once the 
+  ///   validation has been successful.
+  /// </remarks>
+  /// <param name="saveChanges"> 
+  ///   <see langword="true"/> to validate and save the changes, <see cref="false"/> to discard them.
+  /// </param>
+  public void EndListEditMode (bool saveChanges)
+  {
+    _editModeController.EndListEditMode (saveChanges, EnsureColumnsForPreviousLifeCycleGot());
+  }
+
+  internal void EndListEditModeCleanUp ()
+  {
+    if (! IsReadOnly)
+    {
+      ResetRows();
+    }
+  }
+
+  private void EnsureEditModeRestored ()
+  {
+    _editModeController.EnsureEditModeRestored (EnsureColumnsForPreviousLifeCycleGot());
+  }
+
+  private void EnsureEditModeValidatorsRestored()
+  {
+    _editModeController.EnsureValidatorsRestored();
+  }
+
+  /// <summary> Explicitly validates the changes made to the edit mode. </summary>
+  /// <returns> <see cref="true"/> if the rows contain only valid values. </returns>
+  public bool ValidateEditableRows()
+  {
+    return _editModeController.Validate();
+  }
+
+  internal bool ValidateEditableRowsInternal()
+  {
+    return ValidateCustomColumns();
+  }
+
+  /// <summary> Gets a flag that determines wheter the <see cref="BocList"/> is n row edit mode. </summary>
+  /// <remarks>
+  ///   Queried where the rendering depends on whether the list is in edit mode. 
+  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
+  /// </remarks>
+  [Browsable (false)]
+  public bool IsRowEditModeActive
+  {
+    get { return _editModeController.IsRowEditModeActive; } 
+  }
+
+  /// <summary> Gets a flag that determines wheter the <see cref="BocList"/> is n row edit mode. </summary>
+  /// <remarks>
+  ///   Queried where the rendering depends on whether the list is in edit mode. 
+  ///   Affected code: sorting buttons, additional columns list, paging buttons, selected column definition set index
+  /// </remarks>
+  [Browsable (false)]
+  public bool IsListEditModeActive
+  {
+    get { return _editModeController.IsListEditModeActive; } 
+  }
+
+  /// <summary> Gets the index of the currently modified row. </summary>
+  [Browsable (false)]
+  public NaInt32 EditableRowIndex
+  {
+    get { return _editModeController.EditableRowIndex; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to show the asterisks in the title row for columns having 
+  ///   edit mode controls.
+  /// </summary>
+  [Description ("Set false to hide the asterisks in the title row for columns having edit mode control.")]
+  [Category ("Edit Mode")]
+  [DefaultValue (true)]
+  public bool ShowEditModeRequiredMarkers
+  {
+    get { return _editModeController.ShowEditModeRequiredMarkers; }
+    set { _editModeController.ShowEditModeRequiredMarkers = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to show an exclamation mark in front of each control with 
+  ///   an validation error.
+  /// </summary>
+  [Description ("Set true to show an exclamation mark in front of each control with an validation error.")]
+  [Category ("Edit Mode")]
+  [DefaultValue (false)]
+  public bool ShowEditModeValidationMarkers
+  {
+    get { return _editModeController.ShowEditModeValidationMarkers; }
+    set { _editModeController.ShowEditModeValidationMarkers = value; }
+  }
+
+  /// <summary>
+  ///   Gets or sets a flag that determines whether to render validation messages and client side validators.
+  /// </summary>
+  [Description ("Set true to prevent the validation messages from being rendered. This also disables any client side validation in the edited row.")]
+  [Category ("Edit Mode")]
+  [DefaultValue (false)]
+  public bool DisableEditModeValidationMessages
+  {
+    get { return _editModeController.DisableEditModeValidationMessages; }
+    set { _editModeController.DisableEditModeValidationMessages = value; }
+  }
+
+  /// <summary> Gets or sets a flag that enables the <see cref="EditModeValidator"/>. </summary>
+  /// <remarks> 
+  ///   <see langword="false"/> to prevent the <see cref="EditModeValidator"/> from being created by
+  ///   <see cref="CreateValidators"/>.
+  /// </remarks>
+  [Description("Enables the EditModeValidator.")]
+  [Category ("Edit Mode")]
+  [DefaultValue(true)]
+  public bool EnableEditModeValidator
+  {
+    get { return _editModeController.EnableEditModeValidator; }
+    set { _editModeController.EnableEditModeValidator = value; }
+  }
+
+  /// <summary> Is raised before the changes to the editable row are saved. </summary>
+  [Category ("Action")]
+  [Description ("Is raised before the changes to the editable row are saved.")]
+  public event BocListEditableRowChangesEventHandler EditableRowChangesSaving
+  {
+    add { Events.AddHandler (s_editableRowChangesSavingEvent, value); }
+    remove { Events.RemoveHandler (s_editableRowChangesSavingEvent, value); }
+  }
+
+  /// <summary> Is raised after the changes to the editable row have been saved. </summary>
+  [Category ("Action")]
+  [Description ("Is raised after the changes to the editable row have been saved.")]
+  public event BocListItemEventHandler EditableRowChangesSaved
+  {
+    add { Events.AddHandler (s_editableRowChangesSavedEvent, value); }
+    remove { Events.RemoveHandler (s_editableRowChangesSavedEvent, value); }
+  }
+
+  /// <summary> Is raised before the changes to the editable row are canceled. </summary>
+  [Category ("Action")]
+  [Description ("Is raised before the changes to the editable row are canceled.")]
+  public event BocListEditableRowChangesEventHandler EditableRowChangesCanceling
+  {
+    add { Events.AddHandler (s_editableRowChangesCancelingEvent, value); }
+    remove { Events.RemoveHandler (s_editableRowChangesCancelingEvent, value); }
+  }
+
+  /// <summary> Is raised after the changes to the editable row have been canceled. </summary>
+  [Category ("Action")]
+  [Description ("Is raised after the changes to the editable row have been canceled.")]
+  public event BocListItemEventHandler EditableRowChangesCanceled
+  {
+    add { Events.AddHandler (s_editableRowChangesCanceledEvent, value); }
+    remove { Events.RemoveHandler (s_editableRowChangesCanceledEvent, value); }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the <see cref="EditableRowDataSourceFactory"/> used to create the data souce for the edit mode
+  ///   controls.
+  /// </summary>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public EditableRowDataSourceFactory EditModeDataSourceFactory
+  {
+    get 
+    {
+      return _editModeDataSourceFactory; 
+    }
+    set 
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      _editModeDataSourceFactory = value; 
+    }
+  }
+
+  /// <summary> 
+  ///   Gets or sets the <see cref="EditableRowControlFactory"/> used to create the controls for the edit mode.
+  /// </summary>
+  [Browsable (false)]
+  [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+  public EditableRowControlFactory EditModeControlFactory
+  {
+    get 
+    {
+      return _editModeControlFactory; 
+    }
+    set 
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      _editModeControlFactory = value; 
+    }
+  }
+
+  protected internal virtual void OnEditableRowChangesSaving (
+      int index,
+      IBusinessObject businessObject,
+      IBusinessObjectDataSource dataSource,
+      IBusinessObjectBoundEditableWebControl[] controls)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    ArgumentUtility.CheckNotNull ("dataSource", dataSource);
+    ArgumentUtility.CheckNotNull ("controls", controls);
+
+    BocListEditableRowChangesEventHandler handler = 
+        (BocListEditableRowChangesEventHandler) Events[s_editableRowChangesSavingEvent];
+    if (handler != null)
+    {
+      BocListEditableRowChangesEventArgs e = 
+          new BocListEditableRowChangesEventArgs (index, businessObject, dataSource, controls);
+      handler (this, e);
+    }
+  }
+
+  protected internal virtual void OnEditableRowChangesSaved (int index, IBusinessObject businessObject)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editableRowChangesSavedEvent];
+    if (handler != null)
+    {
+      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
+      handler (this, e);
+    }
+  }
+
+  protected internal virtual void OnEditableRowChangesCanceling (
+      int index,
+      IBusinessObject businessObject,
+      IBusinessObjectDataSource dataSource,
+      IBusinessObjectBoundEditableWebControl[] controls)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    ArgumentUtility.CheckNotNull ("dataSource", dataSource);
+    ArgumentUtility.CheckNotNull ("controls", controls);
+
+    BocListEditableRowChangesEventHandler handler = 
+        (BocListEditableRowChangesEventHandler) Events[s_editableRowChangesCancelingEvent];
+    if (handler != null)
+    {
+      BocListEditableRowChangesEventArgs e = 
+          new BocListEditableRowChangesEventArgs (index, businessObject, dataSource, controls);
+      handler (this, e);
+    }
+  }
+
+  protected internal virtual void OnEditableRowChangesCanceled (int index, IBusinessObject businessObject)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+
+    BocListItemEventHandler handler = (BocListItemEventHandler) Events[s_editableRowChangesCanceledEvent];
+    if (handler != null)
+    {
+      BocListItemEventArgs e = new BocListItemEventArgs (index, businessObject);
+      handler (this, e);
+    }
+  }
+
+  
   /// <summary> Adds the <paramref name="businessObjects"/> to the <see cref="Value"/> collection. </summary>
   /// <remarks> Sets the dirty state. </remarks>
   protected virtual void InsertBusinessObjects (IBusinessObject[] businessObjects)

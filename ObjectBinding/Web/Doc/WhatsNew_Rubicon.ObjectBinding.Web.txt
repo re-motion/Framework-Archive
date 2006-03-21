@@ -1,6 +1,7 @@
 1.4.37
 ======
 - BocList
+  * BocList verfügt nun neben dem Row-Edit-Mode auch über einen List-Edit-Mode.
   * BocSimpleColumnDefinition
     EditDetailsControlType zu EditModeControlType umbenannt.
     In ASPX/ASCX Seiten muss EditDetailsControlType durch Search & Replace ersetzt werden.
