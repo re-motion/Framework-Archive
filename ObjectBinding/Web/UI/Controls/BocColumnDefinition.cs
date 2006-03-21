@@ -454,20 +454,20 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   }
 
   /// <summary> 
-  ///   Returns the <see cref="IBusinessObjectBoundModifiableWebControl"/> to be used for editing this column in 
+  ///   Returns the <see cref="IBusinessObjectBoundEditableWebControl"/> to be used for editing this column in 
   ///   edit details mode.
   /// </summary>
-  public IBusinessObjectBoundModifiableWebControl CreateEditDetailsControl()
+  public IBusinessObjectBoundEditableWebControl CreateEditDetailsControl()
   {
     if (StringUtility.IsNullOrEmpty (_editDetailsControlType))
       return null;
     
     Type type = WebTypeUtility.GetType (_editDetailsControlType, true, false);
-    return (IBusinessObjectBoundModifiableWebControl) Activator.CreateInstance (type);
+    return (IBusinessObjectBoundEditableWebControl) Activator.CreateInstance (type);
   }
 
   /// <summary>
-  ///   Gets or sets the type of the <see cref="IBusinessObjectBoundModifiableWebControl"/> to be instantiated 
+  ///   Gets or sets the type of the <see cref="IBusinessObjectBoundEditableWebControl"/> to be instantiated 
   ///   for editing the value of this column in edit details mode.
   /// </summary>
   /// <remarks>
@@ -475,7 +475,7 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
-  [Description ("The IBusinessObjectBoundModifiableWebControl to be used for editing the value of this column in edit details mode.")]
+  [Description ("The IBusinessObjectBoundEditableWebControl to be used for editing the value of this column in edit details mode.")]
   [DefaultValue ("")]
   [NotifyParentProperty (true)]
   public string EditDetailsControlType
