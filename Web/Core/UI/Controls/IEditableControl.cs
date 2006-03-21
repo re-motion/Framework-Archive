@@ -3,7 +3,7 @@ using System;
 namespace Rubicon.Web.UI.Controls
 {
 
-public interface IModifiableControl: IControl
+public interface IEditableControl: IControl
 {
   /// <summary>
   ///   Specifies whether the value of the control has been changed on the Client since the last load/save operation.
