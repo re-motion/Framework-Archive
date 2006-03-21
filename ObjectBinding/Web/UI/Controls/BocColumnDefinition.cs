@@ -20,6 +20,13 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
 
+  #region Obsolete
+  [Obsolete ("Use BocRowEditModeColumnDefinition instead", true)]
+  public abstract class BocEditDetailsColumnDefinition : BocRowEditModeColumnDefinition
+  {
+  }
+
+  #endregion
 /// <summary> A BocColumnDefinition defines how to display a column of a list. </summary>
 [Editor (typeof(ExpandableObjectConverter), typeof(UITypeEditor))]
 public abstract class BocColumnDefinition: BusinessObjectControlItem, IControlItem
@@ -366,9 +373,20 @@ public abstract class BocValueColumnDefinition: BocCommandEnabledColumnDefinitio
 /// </remarks>
 public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjectClassSource
 {
+  #region Obsolete
+  [Browsable (false)]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Obsolete ("Use EditModeControlType instead.", true)]
+  public string EditDetailsControlType
+  {
+    get { return EditModeControlType; }
+    set { EditModeControlType = value; }
+  }
+  #endregion
+
   private string _formatString = string.Empty;
   private PropertyPathBinding _propertyPathBinding;
-  private string _editDetailsControlType = string.Empty;
+  private string _editModeControlType = string.Empty;
   private bool _isReadOnly;
 
   public BocSimpleColumnDefinition()
@@ -454,44 +472,43 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   }
 
   /// <summary> 
-  ///   Returns the <see cref="IBusinessObjectBoundEditableWebControl"/> to be used for editing this column in 
-  ///   edit details mode.
+  ///   Returns the <see cref="IBusinessObjectBoundEditableWebControl"/> to be used for editing this column during 
+  ///   edit mode.
   /// </summary>
-  public IBusinessObjectBoundEditableWebControl CreateEditDetailsControl()
+  public IBusinessObjectBoundEditableWebControl CreateEditModeControl()
   {
-    if (StringUtility.IsNullOrEmpty (_editDetailsControlType))
+    if (StringUtility.IsNullOrEmpty (_editModeControlType))
       return null;
     
-    Type type = WebTypeUtility.GetType (_editDetailsControlType, true, false);
+    Type type = WebTypeUtility.GetType (_editModeControlType, true, false);
     return (IBusinessObjectBoundEditableWebControl) Activator.CreateInstance (type);
   }
 
   /// <summary>
   ///   Gets or sets the type of the <see cref="IBusinessObjectBoundEditableWebControl"/> to be instantiated 
-  ///   for editing the value of this column in edit details mode.
+  ///   for editing the value of this column during edit mode.
   /// </summary>
   /// <remarks>
   ///    Optionally uses the abbreviated type name as defined in <see cref="TypeUtility.ParseAbbreviatedTypeName"/>. 
   /// </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
-  [Description ("The IBusinessObjectBoundEditableWebControl to be used for editing the value of this column in edit details mode.")]
+  [Description ("The IBusinessObjectBoundEditableWebControl to be used for editing the value of this column during edit mode.")]
   [DefaultValue ("")]
   [NotifyParentProperty (true)]
-  public string EditDetailsControlType
+  public string EditModeControlType
   {
-    get { return _editDetailsControlType; }
-    set { _editDetailsControlType = StringUtility.NullToEmpty (value); }
+    get { return _editModeControlType; }
+    set { _editModeControlType = StringUtility.NullToEmpty (value); }
   }
 
   /// <summary>
-  ///   Gets or sets a flag that determines whether the displayed value can be edited if the row is in details editing
-  ///   mode.
+  ///   Gets or sets a flag that determines whether the displayed value can be edited if the row is in edit mode.
   /// </summary>
   /// <remarks> It is only possible to explicitly disable the editing of the value. </remarks>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
-  [Description ("A flag that determines whether the displayed value can be edited if the row is in details editing mode.")]
+  [Description ("A flag that determines whether the displayed value can be edited if the row is in edit mode.")]
   [DefaultValue (false)]
   [NotifyParentProperty (true)]
   public bool IsReadOnly
@@ -630,7 +647,7 @@ public class BocCompoundColumnDefinition: BocValueColumnDefinition
 }
 
 /// <summary> A column definition used for switching between edit mode and returning from it via save and cancel. </summary>
-public class BocEditDetailsColumnDefinition: BocColumnDefinition
+public class BocRowEditModeColumnDefinition: BocColumnDefinition
 {
   private string _editText = string.Empty;
   private IconInfo _editIcon = new IconInfo();
@@ -638,9 +655,9 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   private IconInfo _saveIcon = new IconInfo();
   private string _cancelText = string.Empty;
   private IconInfo _cancelIcon = new IconInfo();
-  private BocEditDetailsColumnDefinitionShow _show = BocEditDetailsColumnDefinitionShow.EditMode;
+  private BocRowEditColumnDefinitionShow _show = BocRowEditColumnDefinitionShow.EditMode;
 
-  public BocEditDetailsColumnDefinition()
+  public BocRowEditModeColumnDefinition()
   {
   }
 
@@ -648,15 +665,15 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   ///   Determines when the column is shown to the user in regard of the <see cref="BocList"/>'s read-only setting.
   /// </summary>
   /// <value> 
-  ///   One of the <see cref="BocEditDetailsColumnDefinitionShow"/> enumeration values. 
-  ///   The default is <see cref="BocEditDetailsColumnDefinitionShow.EditMode"/>.
+  ///   One of the <see cref="BocRowEditColumnDefinitionShow"/> enumeration values. 
+  ///   The default is <see cref="BocRowEditColumnDefinitionShow.EditMode"/>.
   /// </value>
   [PersistenceMode (PersistenceMode.Attribute)]
   [Category ("Behavior")]
   [Description ("Determines when to show the column to the user in regard to the BocList's read-only setting.")]
-  [DefaultValue (BocEditDetailsColumnDefinitionShow.EditMode)]
+  [DefaultValue (BocRowEditColumnDefinitionShow.EditMode)]
   [NotifyParentProperty (true)]
-  public BocEditDetailsColumnDefinitionShow Show
+  public BocRowEditColumnDefinitionShow Show
   {
     get { return _show; }
     set { _show = value; }
@@ -804,7 +821,7 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   /// <summary> Gets the human readable name of this type. </summary>
   protected override string DisplayedTypeName
   {
-    get { return "EditDetailsColumnDefinition"; }
+    get { return "RowEditModeColumnDefinition"; }
   }
   public override void LoadResources (IResourceManager resourceManager)
   {
@@ -834,12 +851,12 @@ public class BocEditDetailsColumnDefinition: BocColumnDefinition
   }
 }
 
-/// <summary> Defines when the <see cref="BocEditDetailsColumnDefinition"/> will be shown in the <see cref="BocList"/>. </summary>
-public enum BocEditDetailsColumnDefinitionShow
+/// <summary> Defines when the <see cref="BocRowEditModeColumnDefinition"/> will be shown in the <see cref="BocList"/>. </summary>
+public enum BocRowEditColumnDefinitionShow
 {
   /// <summary> The column is always shown, but inactive if the <see cref="BocList"/> is read-only. </summary>
   Always,
-  /// <summary> The column is only shown if the <see cref="BocList"/> is in eidt-mode. </summary>
+  /// <summary> The column is only shown if the <see cref="BocList"/> is in edit-mode. </summary>
   EditMode
 }
 

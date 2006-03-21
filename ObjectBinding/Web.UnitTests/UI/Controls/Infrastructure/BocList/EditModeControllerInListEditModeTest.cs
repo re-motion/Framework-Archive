@@ -155,7 +155,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
   }
 
   [Test]
-  public void SwitchListIntoEditModeWhileEditDetailsModeIsActiveWithValidValues ()
+  public void SwitchListIntoEditModeWhileRowEditModeIsActiveWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
@@ -179,7 +179,7 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
   }
 
   [Test]
-  public void SwitchListIntoEditModeWhileEditDetailsModeIsActiveWithInvalidValues ()
+  public void SwitchListIntoEditModeWhileRowEditModeIsActiveWithInvalidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));

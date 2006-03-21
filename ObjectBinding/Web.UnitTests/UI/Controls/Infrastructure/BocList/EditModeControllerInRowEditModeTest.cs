@@ -22,7 +22,7 @@ namespace Rubicon.ObjectBinding.Web.UnitTests.UI.Controls.Infrastructure.BocList
 {
 
 [TestFixture]
-public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBase
+public class EditModeControllerInRowEditModeTest : EditModeControllerTestBase
 {
   // types
 
@@ -33,7 +33,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
   // construction and disposing
 
-  public EditModeControllerInEditDetailsModeTest ()
+  public EditModeControllerInRowEditModeTest ()
   {
   }
 
@@ -75,7 +75,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "Cannot initialize edit details mode: The BocList 'BocList' does not have a Value.")]
+      "Cannot initialize row edit mode: The BocList 'BocList' does not have a Value.")]
   public void SwitchRowIntoEditModeWithValueNull ()
   {
     Invoker.InitRecursive();
@@ -100,7 +100,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void SwitchRowIntoEditModeWhileEditDetailsModeIsActiveOnOtherRowWithValidValues ()
+  public void SwitchRowIntoEditModeWhileRowEditModeIsActiveOnOtherRowWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (1, Values[1]));
@@ -125,7 +125,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void SwitchRowIntoEditModeWhileEditDetailsModeIsActiveOnOtherRowWithInvalidValues ()
+  public void SwitchRowIntoEditModeWhileRowEditModeIsActiveOnOtherRowWithInvalidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (1, Values[1]));
@@ -149,7 +149,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
   
   [Test]
-  public void SwitchRowIntoEditModeWhileEditDetailsModeIsActiveOnThisRowWithValidValues ()
+  public void SwitchRowIntoEditModeWhileRowEditModeIsActiveOnThisRowWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
@@ -174,7 +174,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void SwitchRowIntoEditModeWhileEditDetailsModeIsActiveOnThisRowWithInvalidValues ()
+  public void SwitchRowIntoEditModeWhileRowEditModeIsActiveOnThisRowWithInvalidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
@@ -295,7 +295,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
 
   [Test]
-  public void AddAndEditRowWhileEditDetailsModeIsActiveWithValidValues ()
+  public void AddAndEditRowWhileRowEditModeIsActiveWithValidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
@@ -322,7 +322,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
   }
   
   [Test]
-  public void AddAndEditRowWhileEditDetailsModeIsActiveWithInvalidValues ()
+  public void AddAndEditRowWhileRowEditModeIsActiveWithInvalidValues ()
   {
     StringCollection expectedEvents = new StringCollection();
     expectedEvents.Add (FormatChangesSavingEventMessage (2, Values[2]));
@@ -611,7 +611,7 @@ public class EditModeControllerInEditDetailsModeTest : EditModeControllerTestBas
 
   [Test]
   [ExpectedException (typeof (InvalidOperationException), 
-      "Cannot restore edit details mode: The Value collection of the BocList 'BocList' no longer contains the previously modified row.")]
+      "Cannot restore row edit mode: The Value collection of the BocList 'BocList' no longer contains the previously edited row.")]
   public void EnsureEditModeRestoredWithInvalidRowIndex ()
   {
     Assert.IsFalse (Controller.IsRowEditModeActive);

@@ -1,6 +1,11 @@
 1.4.37
 ======
 - BocList
+  * BocSimpleColumnDefinition
+    EditDetailsControlType zu EditModeControlType umbenannt.
+    In ASPX/ASCX Seiten muss EditDetailsControlType durch Search & Replace ersetzt werden.
+  * BocEditDetailsColumnDefinition zu BocRowEditModeColumnDefinition umbenannt.
+    In ASPX/ASCX Seiten muss BocEditDetailsColumnDefinition durch Search & Replace ersetzt werden.
   * ModifiableRowIndex zu EditableRowIndex umbenannt.
   * EndEditDetailsMode zu EndRowEditMode umbenannt.
   * IsEditDetailsModeActive zu IsRowEditModeActive umbenannt.
@@ -22,6 +27,7 @@
     EditDetailsMode ist, wird InvalidOpterationException geworfen.
   * Restoring row edit mode: Neues Verhalten: Sind nach dem PostBack weniger Zeilen in der Liste laut 
     ModifiableRowIndex notwendig wären, wird eine InvalidOpterationException geworfen.
+  * CSS-Klasse bocListEditDetailsValidationMessage zu bocListEditModeValidationMessage umbenannt.
 
 - BocReferenceValue, BocList
   * OptionsMenu: Commands vom Typ Href haben Target nicht ausgewertet.
@@ -63,11 +69,11 @@
   * string MenuItem.Icon auf IconInfo MenuItem.Icon umgestellt.
     Statt Icon ist nun Icon.Url zu setzen.
     Icon selbst darf nicht null gesetzt werden.
-    In ASPX/ASCX Seiten muss Icon durch Search & Replace (Icon-Url) ersetzt werden.
+    In ASPX/ASCX Seiten muss Icon durch Search & Replace (Icon= -> Icon-Url=) ersetzt werden.
   * string MenuItem.DisabledIcon auf IconInfo MenuItem.DisabledIcon umgestellt.
     Statt DisabledIcon ist nun DisabledIcon.Url zu setzen.
     DisabledIcon selbst darf nicht null gesetzt werden.
-    In ASPX/ASCX Seiten muss Icon durch Search & Replace (DisabledIcon-Url) ersetzt werden.
+    In ASPX/ASCX Seiten muss Icon durch Search & Replace (DisabledIcon= -> DisabledIcon-Url=) ersetzt werden.
 
 - BOCs mit Editmode:
   * DirtyState überarbeitet: (siehe auch 1.4.3)

@@ -43,7 +43,7 @@ public class EditableRowTest : BocTest
   private BocCompoundColumnDefinition _typeWithAllDataTypesStringValueFirstValueCompoundColumn;
   private BocCustomColumnDefinition _typeWithAllDataTypesStringValueCustomColumn;
   private BocCommandColumnDefinition _commandColumn;
-  private BocEditDetailsColumnDefinition _editDetailsColumn;
+  private BocRowEditModeColumnDefinition _rowEditModeColumn;
   private BocDropDownMenuColumnDefinition _dropDownMenuColumn;
 
   // construction and disposing
@@ -94,7 +94,7 @@ public class EditableRowTest : BocTest
     _typeWithAllDataTypesStringValueCustomColumn.IsSortable = true;
 
     _commandColumn = new BocCommandColumnDefinition ();
-    _editDetailsColumn = new BocEditDetailsColumnDefinition ();
+    _rowEditModeColumn = new BocRowEditModeColumnDefinition ();
     _dropDownMenuColumn = new BocDropDownMenuColumnDefinition ();
   }
 
@@ -149,7 +149,7 @@ public class EditableRowTest : BocTest
     columns[1] = _typeWithAllDataTypesStringValueFirstValueCompoundColumn;
     columns[2] = _typeWithAllDataTypesStringValueCustomColumn;
     columns[3] = _commandColumn;
-    columns[4] = _editDetailsColumn;
+    columns[4] = _rowEditModeColumn;
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
@@ -219,7 +219,7 @@ public class EditableRowTest : BocTest
     columns[1] = _typeWithAllDataTypesStringValueFirstValueCompoundColumn;
     columns[2] = _typeWithAllDataTypesStringValueCustomColumn;
     columns[3] = _commandColumn;
-    columns[4] = _editDetailsColumn;
+    columns[4] = _rowEditModeColumn;
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
@@ -266,7 +266,7 @@ public class EditableRowTest : BocTest
     columns[1] = _typeWithAllDataTypesStringValueFirstValueCompoundColumn;
     columns[2] = _typeWithAllDataTypesStringValueCustomColumn;
     columns[3] = _commandColumn;
-    columns[4] = _editDetailsColumn;
+    columns[4] = _rowEditModeColumn;
     columns[5] = _dropDownMenuColumn;
     columns[6] = _typeWithAllDataTypesInt32ValueSimpleColumn;
 
