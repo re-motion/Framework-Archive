@@ -31,11 +31,11 @@
         The <see cref="SmartPage"/> provides methods for server-side and client-side dirty state tracking.
       </para><para>
         Invoke <see cref="RegisterControlForDirtyStateTracking"/> to register a control for tracking that
-        implements the <see cref="IModifiableControl"/> interface. Business Object Controls automatically 
+        implements the <see cref="IEditableControl"/> interface. Business Object Controls automatically 
         register when added to a page implementing <see cref="ISmartPage"/>.
       </para><para>
         Invoke <see cref="RegisterControlForClientSideDirtyStateTracking"/> if you wish to track the client-side
-        dirty state of a control not supporting <see cref="IModifiableControl"/>. In this case you must pass the
+        dirty state of a control not supporting <see cref="IEditableControl"/>. In this case you must pass the
         control's client-side ID. You also have to keep track of the control's server-side dirty state on your own.
       </para><para>
         <see cref="EvaluateDirtyState"/> should be used to determine whether any of the tracked controls is dirty.
