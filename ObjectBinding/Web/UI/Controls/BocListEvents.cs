@@ -17,7 +17,7 @@ public class BocListRowEditModeEventArgs: BocListEditableRowChangesEventArgs
       int listIndex, 
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundModifiableWebControl[] controls)
+      IBusinessObjectBoundEditableWebControl[] controls)
     : base (listIndex, businessObject, dataSource, controls)
   {
     throw new NotImplementedException ("Obsolete");
@@ -90,14 +90,14 @@ public delegate void BocListEditableRowChangesEventHandler (object sender, BocLi
 
 public class BocListEditableRowChangesEventArgs : BocListItemEventArgs
 {
-  private IBusinessObjectBoundModifiableControl[] _controls;
+  private IBusinessObjectBoundEditableControl[] _controls;
   private IBusinessObjectDataSource _dataSource;
 
   public BocListEditableRowChangesEventArgs (
       int listIndex, 
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundModifiableWebControl[] controls)
+      IBusinessObjectBoundEditableWebControl[] controls)
     : base (listIndex, businessObject)
   {
     _dataSource = dataSource;
@@ -109,7 +109,7 @@ public class BocListEditableRowChangesEventArgs : BocListItemEventArgs
     get { return _dataSource; }
   }
 
-  public IBusinessObjectBoundModifiableControl[] Controls
+  public IBusinessObjectBoundEditableControl[] Controls
   {
     get { return _controls; }
   }

@@ -39,7 +39,7 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 [DefaultEvent ("CommandClick")]
 [ToolboxItemFilter("System.Web.UI")]
 public class BocList:
-    BusinessObjectBoundModifiableWebControl, 
+    BusinessObjectBoundEditableWebControl, 
     IPostBackEventHandler, 
     IPostBackDataHandler, 
     IBocMenuItemContainer,
@@ -78,7 +78,7 @@ public class BocList:
     int index,
     IBusinessObject businessObject,
     IBusinessObjectDataSource dataSource,
-    IBusinessObjectBoundModifiableWebControl[] controls)
+    IBusinessObjectBoundEditableWebControl[] controls)
   {
     throw new NotImplementedException ();
   }
@@ -96,7 +96,7 @@ public class BocList:
     int index,
     IBusinessObject businessObject,
     IBusinessObjectDataSource dataSource,
-    IBusinessObjectBoundModifiableWebControl[] controls)
+    IBusinessObjectBoundEditableWebControl[] controls)
   {
     throw new NotImplementedException ();
   }
@@ -4596,7 +4596,7 @@ public class BocList:
       int index,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundModifiableWebControl[] controls)
+      IBusinessObjectBoundEditableWebControl[] controls)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);
@@ -4628,7 +4628,7 @@ public class BocList:
       int index,
       IBusinessObject businessObject,
       IBusinessObjectDataSource dataSource,
-      IBusinessObjectBoundModifiableWebControl[] controls)
+      IBusinessObjectBoundEditableWebControl[] controls)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
     ArgumentUtility.CheckNotNull ("dataSource", dataSource);
@@ -4851,7 +4851,7 @@ public class BocList:
   ///   Evaluates <see langword="true"/> if either the <see cref="BocList"/> or one of the edit mode controls is 
   ///   dirty.
   /// </value>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.IsDirty">BusinessObjectBoundModifiableWebControl.IsDirty</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.IsDirty">BusinessObjectBoundEditableWebControl.IsDirty</seealso>
   public override bool IsDirty
   {
     get
@@ -4874,7 +4874,7 @@ public class BocList:
   /// <returns> 
   ///   Returns the <see cref="Control.ClientID"/> values of the edit mode controls for the row currently being edited.
   /// </returns>
-  /// <seealso cref="BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs">BusinessObjectBoundModifiableWebControl.GetTrackedClientIDs</seealso>
+  /// <seealso cref="BusinessObjectBoundEditableWebControl.GetTrackedClientIDs">BusinessObjectBoundEditableWebControl.GetTrackedClientIDs</seealso>
   public override string[] GetTrackedClientIDs()
   {
     if (IsReadOnly)
