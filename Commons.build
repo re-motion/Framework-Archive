@@ -29,7 +29,7 @@
   </target>
 
   <target name="initNoConfig">
-    <buildversion versionfile="build/buildversion.xml" increment="false" />
+    <buildversion versionfile="${solution.basedir}/build/buildversion.xml" increment="false" />
     <echo message="new version is ${build.version.noconfig}"/>
     <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" />
     <if test="${property::exists('build.local')}">
@@ -100,7 +100,7 @@
   <!--======================= VERSION =======================-->
 
   <target name="incversion">
-    <buildversion versionfile="build/buildversion.xml" increment="true" />
+    <buildversion versionfile="${solution.basedir}/build/buildversion.xml" increment="true" />
     <echo message="new version is ${build.version.noconfig}"/>
   </target>
 
@@ -118,12 +118,37 @@
     </exec>
   </target>
 
-  <!--======================= LABEL =======================-->
+  <!--======================= SVN Command =======================
+  <target name="SvnCommandline">
+    <if test="${not property::exists('svn.dir')}" >
+      <property name="svn.dir" value="." />
+    </if>
+    <exec program="svn.exe" commandline="${svn.command} -I- -Ybuild,buildpw" basedir="C:\Program Files\Subversion\bin"
+                                     workingdir="${svn.dir}" >
+    </exec>
+  </target>-->
+
+  <!--======================= LABEL =======================
   <target name="label">
     <buildversion versionfile="build/buildversion.xml" increment="false" />
     <echo message="labeling with ${build.version.noconfig}"/>
     <property name="SS.command" value="Label $/libraries/commons -L${build.version.noconfig}" />
     <call target="SSCommandline" />
+  </target>-->
+
+  <!--======================= startnewversion =======================-->
+  <target name="startnewversion" >
+    <!--
+    <property name="SS.dir" value="${solution.basedir}\build" />
+    <property name="SS.command" value="Checkout $/libraries/Commons/build/buildversion.xml" />
+    <call target="SSCommandline" />
+    -->
+    <call target="incversion" />
+    <!--
+    <property name="SS.command" value="Checkin $/libraries/Commons/build/buildversion.xml" />
+    <call target="SSCommandline" />
+    <call target="label" />
+    -->
   </target>
 
   <!--======================= CheckZip =======================-->
@@ -141,28 +166,28 @@
     <copy file="${sourcezipfile.name}" todir="${ToDir}" />  
   </target>
 
-  <!--======================= GetAll =======================-->
+  <!--======================= GetAll =======================
   <target name="getall" >
     <foreach item="String" in="Core Core.Test Data Development ObjectBinding prereq Web" delim=" " property="local.project" >
       <do>
-        <mkdir dir="${dir.development}\libraries\Commons\${local.project}" />
-        <exec program="cmd" commandline="/C del *.* /S /Q /F > NUL" workingdir="${dir.development}\libraries\Commons\${local.project}" />
-        <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${dir.development}\libraries\Commons\${local.project}" />
+        <mkdir dir="${solution.basedir}\${local.project}" />
+        <exec program="cmd" commandline="/C del *.* /S /Q /F > NUL" workingdir="${solution.basedir}\${local.project}" />
+        <exec program="cmd" commandline="/C for /d %d in (*) do rmdir /S /Q %d > NUL" workingdir="${solution.basedir}\${local.project}" />
         <echo message="Get ${local.project}" />
         <property name="SS.command" value="Get $/libraries/Commons/${local.project} -R" />
-        <property name="SS.dir" value="${dir.development}\libraries\Commons\${local.project}" />
+        <property name="SS.dir" value="${solution.basedir}\${local.project}" />
         <call target="SSCommandline" />
       </do>
     </foreach>
 
-    <mkdir dir="${dir.development}\libraries\Commons\build" />
-    <property name="SS.dir" value="${dir.development}\libraries\Commons\build" />
+    <mkdir dir="${solution.basedir}\build" />
+    <property name="SS.dir" value="${solution.basedir}\build" />
     <property name="SS.command" value="Get $/libraries/Commons/build/properties.include.xml" />
     <call target="SSCommandline" />
     <property name="SS.command" value="Get $/libraries/Commons/build/buildversion.xml" />
     <call target="SSCommandline" />
 
-  </target>
+  </target>-->
 
   <!--======================= BuildNoDoc =======================-->
   <target name="buildnodoc" >
@@ -176,17 +201,6 @@
     <call target="setrelease" />
     <call target="all" />
     <call target="alltests" />
-  </target>
-
-  <!--======================= startnewversion =======================-->
-  <target name="startnewversion" >
-    <property name="SS.dir" value="${dir.development}\libraries\Commons\build" />
-    <property name="SS.command" value="Checkout $/libraries/Commons/build/buildversion.xml" />
-    <call target="SSCommandline" />
-    <call target="incversion" />
-    <property name="SS.command" value="Checkin $/libraries/Commons/build/buildversion.xml" />
-    <call target="SSCommandline" />
-    <call target="label" />
   </target>
 
   <!--======================= VS.NET =======================-->
@@ -412,11 +426,11 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
     <exec program="osql.exe" 
-          commandline="-S ${sql.instance} -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\CreateDB.sql"
+          commandline="-S ${sql.instance} -E -i ${solution.basedir}\Data\DomainObjects.UnitTests\Database\CreateDB.sql"
           basedir="${sql.dir}">
     </exec>
     <exec program="osql.exe" 
-          commandline="-S ${sql.instance} -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.UnitTests\Database\setupDB.sql"
+          commandline="-S ${sql.instance} -E -i ${solution.basedir}\Data\DomainObjects.UnitTests\Database\setupDB.sql"
           basedir="${sql.dir}">
     </exec>
     <copy todir="${tests.builddir}" overwrite="true">
@@ -447,11 +461,11 @@
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.extension" value="dll" />
     <exec program="osql.exe" 
-          commandline="-S ${sql.instance} -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\CreateDB.sql"
+          commandline="-S ${sql.instance} -E -i ${solution.basedir}\Data\DomainObjects.ObjectBinding.UnitTests\Database\CreateDB.sql"
           basedir="${sql.dir}">
     </exec>
     <exec program="osql.exe" 
-          commandline="-S ${sql.instance} -E -i ${dir.development}\libraries\Commons\Data\DomainObjects.ObjectBinding.UnitTests\Database\setupDB.sql"
+          commandline="-S ${sql.instance} -E -i ${solution.basedir}\Data\DomainObjects.ObjectBinding.UnitTests\Database\setupDB.sql"
           basedir="${sql.dir}">
     </exec>
     <copy todir="${tests.builddir}" overwrite="true">
@@ -551,7 +565,9 @@
 
   <target name="prepareassemblyinfo">
     <copy file="${project.basedir}/AssemblyInfoTemplate.cs"  tofile="${project.basedir}/AssemblyInfo.cs" overwrite="true" />
+    <!--
     <attrib readonly="false" file="${project.basedir}/AssemblyInfo.cs"/>
+    -->
     <replace>
       <filterset>
         <filter token="keyfile" value="${build.keyfile}" />
@@ -565,7 +581,9 @@
         <include name="${project.basedir}/AssemblyInfo.cs" />
       </fileset>
     </replace>
+    <!--
     <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
+    -->
   </target>
 
   <target name="vsassemblyinfo" description="prepare assembly info for VS.NET">
