@@ -195,7 +195,7 @@
       <arg line="${repository}" />
       <arg line="http://at-vie-svn/svn/libraries/Commons/tags/${build.version.noconfig}" />
       <arg line="--revision ${revision}" />
-      <arg line="--message &lt;Tagging build version ${build.version.noconfig}&gt;" />
+      <arg line="--message &quot;Tagging build version ${build.version.noconfig}&quot;" />
     </exec>
   </target>
   
