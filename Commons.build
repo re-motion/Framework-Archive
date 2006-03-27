@@ -189,7 +189,7 @@
 
   </target>-->
 
-  <target name="tag" description="Creates a Tag with the current version number">
+  <target name="tag" depends="initNoConfig" description="Creates a Tag with the current version number">
     <exec program="svn.exe" basedir="C:\Program Files\Subversion\bin">
       <arg line="copy" />
       <arg line="${repository}" />
