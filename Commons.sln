@@ -19,15 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "Object
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "http://localhost/dev/libraries/commons/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj", "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
-	ProjectSection(ProjectDependencies) = postProject
-		{FDCCDB1E-0962-41DA-99A1-2DB390C48748} = {FDCCDB1E-0962-41DA-99A1-2DB390C48748}
-		{07113F20-C57A-4FB1-9E87-2BBE912F527B} = {07113F20-C57A-4FB1-9E87-2BBE912F527B}
-		{DF8BA786-9679-4879-8757-16AE2709D83A} = {DF8BA786-9679-4879-8757-16AE2709D83A}
-		{390FBB93-A757-47A7-B769-A64A7465FF84} = {390FBB93-A757-47A7-B769-A64A7465FF84}
-		{2AA369EC-A4E7-4D75-9101-EFA90E902625} = {2AA369EC-A4E7-4D75-9101-EFA90E902625}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prereq", "prereq\prereq.csproj", "{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -48,7 +39,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Core\Web.csproj"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "http://localhost/dev/libraries/commons/web/ExecutionEngine/Test/WxeTest.csproj", "{72F82AB0-C96F-43C5-935B-ABB085107DD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "http://localhost/dev/libraries/commons/trunk/web/ExecutionEngine/Test/WxeTest.csproj", "{72F82AB0-C96F-43C5-935B-ABB085107DD4}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -65,6 +56,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Legacy", "Web\Legacy\Web.Legacy.csproj", "{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "http://localhost/dev/libraries/commons/trunk/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj", "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -94,10 +89,6 @@ Global
 		{390FBB93-A757-47A7-B769-A64A7465FF84}.Debug.Build.0 = Debug|.NET
 		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release.ActiveCfg = Release|.NET
 		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release.Build.0 = Release|.NET
-		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.ActiveCfg = Debug|.NET
-		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.Build.0 = Debug|.NET
-		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.ActiveCfg = Release|.NET
-		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.Build.0 = Release|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Debug.ActiveCfg = Debug|.NET
 		{31F08C2C-B54C-4F76-9B9F-656BC36A2A06}.Release.ActiveCfg = Release|.NET
 		{B719A305-0493-4C72-88FE-9A2FC6964578}.Debug.ActiveCfg = Debug|.NET
@@ -136,6 +127,10 @@ Global
 		{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}.Debug.Build.0 = Debug|.NET
 		{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}.Release.ActiveCfg = Release|.NET
 		{AD73FAE3-4B87-4640-BDE6-1B7EC7DEB451}.Release.Build.0 = Release|.NET
+		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.ActiveCfg = Debug|.NET
+		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.Build.0 = Debug|.NET
+		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.ActiveCfg = Release|.NET
+		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd
