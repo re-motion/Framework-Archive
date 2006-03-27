@@ -189,6 +189,16 @@
 
   </target>-->
 
+  <target name="tag" description="Creates a Tag with the current version number">
+    <exec program="svn.exe" basedir="C:\Program Files\Subversion\bin">
+      <args line="copy" />
+      <args line="${repository}" />
+      <args line="http://at-vie-svn/svn/libraries/Commons/tags/${build.version.noconfig}" />
+      <args line="--revision ${revision}" />
+      <args line="--message &lt;Tagging build version ${build.version.noconfig}&gt;" />
+    </exec>
+  </target>
+  
   <!--======================= BuildNoDoc =======================-->
   <target name="buildnodoc" >
   <!--
