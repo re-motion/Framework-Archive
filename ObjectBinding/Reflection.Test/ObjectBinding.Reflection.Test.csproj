@@ -4,10 +4,6 @@
         ProductVersion = "7.10.3077"
         SchemaVersion = "2.0"
         ProjectGuid = "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
-        SccProjectName = "SAK"
-        SccLocalPath = "SAK"
-        SccAuxPath = "SAK"
-        SccProvider = "SAK"
     >
         <Build>
             <Settings
@@ -115,12 +111,12 @@
                 />
                 <Reference
                     Name = "system.design"
-                    AssemblyName = "system.design"
+                    AssemblyName = "System.Design"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.design.dll"
                 />
                 <Reference
                     Name = "system.drawing"
-                    AssemblyName = "system.drawing"
+                    AssemblyName = "System.Drawing"
                     HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
                 />
             </References>

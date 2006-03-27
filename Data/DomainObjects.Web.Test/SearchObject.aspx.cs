@@ -10,9 +10,8 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 
 using Rubicon.Data.DomainObjects.Web.Test.Domain;
-using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
-using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Data.DomainObjects.Web.Test.WxeFunctions;
 
 namespace Rubicon.Data.DomainObjects.Web.Test
 {
@@ -63,9 +62,9 @@ public class SearchObjectPage : WxePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.SearchButton.Click += new System.EventHandler (SearchButton_Click);
-    this.ResultList.ModifiableRowChangesSaved += new BocListItemEventHandler (ResultList_ModifiableRowChangesSaved);
-    this.Load += new System.EventHandler (Page_Load);
+    this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
+    this.ResultList.EditedRowSaved += new Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventHandler(this.ResultList_EditedRowSaved);
+    this.Load += new System.EventHandler(this.Page_Load);
 
   }
 	#endregion
@@ -82,7 +81,7 @@ public class SearchObjectPage : WxePage
     }
   }
 
-  private void ResultList_ModifiableRowChangesSaved (object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
+  private void ResultList_EditedRowSaved(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
   {
     ClientTransaction.Current.Commit ();
   }
