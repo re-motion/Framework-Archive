@@ -189,7 +189,7 @@
 
   </target>-->
 
-  <target name="createtag" depends="initNoConfig checktag" description="Creates a Tag with the current version number.">
+  <target name="createtag" depends="initNoConfig" description="Creates a Tag with the current version number.">
     <exec program="svn.exe" basedir="C:\Program Files\Subversion\bin">
       <arg line="copy" />
       <arg line="${repository}" />
@@ -206,11 +206,8 @@
       <arg line="--message &quot;Removing tag for build version ${build.version.noconfig}&quot;" />
     </exec>
   </target>
-
-  <target name="checktag" depends="initNoConfig" description="Checks if there is already a Tag for the current version number.">
-  </target>
   
-    <!--======================= BuildNoDoc =======================-->
+  <!--======================= BuildNoDoc =======================-->
   <target name="buildnodoc" >
   <!--
     <call target="clean" />
