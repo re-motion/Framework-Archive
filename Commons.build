@@ -200,7 +200,7 @@
   </target>
 
   <target name="deletetag" depends="initNoConfig" description="Deletes an existing Tag with the current version number.">
-    <exec program="svn.exe" basedir="C:\Program Files\Subversion\bin">
+    <exec program="svn.exe" basedir="C:\Program Files\Subversion\bin" failonerror="false">
       <arg line="remove" />
       <arg line="http://at-vie-svn/svn/libraries/Commons/tags/${build.version.noconfig}" />
       <arg line="--message &quot;Removing tag for build version ${build.version.noconfig}&quot;" />
