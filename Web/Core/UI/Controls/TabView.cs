@@ -34,6 +34,7 @@ public class TabView : System.Web.UI.WebControls.View
   // fields
   private string _title;
   private IconInfo _icon;
+  private bool _isEnsured = false;
 
   // construction and destruction
   public TabView()
@@ -42,6 +43,45 @@ public class TabView : System.Web.UI.WebControls.View
   }
 
   // methods and properties
+
+  public void Ensure ()
+  {
+    if (_isEnsured)
+      return;
+
+    _isEnsured = true;
+  }
+
+  public override ControlCollection Controls
+  {
+    get
+    {
+      if (ControlHelper.IsDesignMode (this))
+        return base.Controls;
+      else if (ParentMultiView == null || ! ParentMultiView.EnableLazyLoading)
+        return base.Controls;
+      else if (! _isEnsured)
+        return new EmptyControlCollection (this);
+      else if (Active)
+        return base.Controls;
+      else
+        return new EmptyControlCollection (this);
+    }
+  }
+
+  public ControlCollection RealControls
+  {
+    get { return base.Controls; }
+  }
+
+  internal TabbedMultiView.MultiView ParentMultiView
+  {
+    get 
+    {
+       return (TabbedMultiView.MultiView) Parent;
+    }
+  }
+
   internal void OnInsert (TabbedMultiView.MultiView multiView)
   {
 #if NET11
@@ -88,16 +128,21 @@ public class TabView : System.Web.UI.WebControls.View
   }
 
 #if NET11
-    protected override Microsoft.Web.UI.WebControls.RenderPathID RenderPath
-    {
-      get 
-      { 
-    	  if (this.IsDesignMode)
-		      return Microsoft.Web.UI.WebControls.RenderPathID.DesignerPath;
-        else
-	  	    return Microsoft.Web.UI.WebControls.RenderPathID.DownLevelPath;
-      }
+  protected override Microsoft.Web.UI.WebControls.RenderPathID RenderPath
+  {
+    get 
+    { 
+    	if (this.IsDesignMode)
+		    return Microsoft.Web.UI.WebControls.RenderPathID.DesignerPath;
+      else
+	  	  return Microsoft.Web.UI.WebControls.RenderPathID.DownLevelPath;
     }
+  }
+
+  public bool Active
+  {
+    get { return Selected; }
+  }
 #endif
 
 }

@@ -33,8 +33,10 @@ public class TabbedMultiView: WebControl, IControl
 #endif
   {
 #if NET11
-    bool _isLoadViewStateComplete = false;
+    private bool _isLoadViewStateComplete = false;
 #endif
+    
+    private bool _enableLazyLoading = false;
 
     protected internal MultiView ()
     {
@@ -63,6 +65,12 @@ public class TabbedMultiView: WebControl, IControl
     protected new TabbedMultiView Parent
     {
       get { return (TabbedMultiView) base.Parent; }
+    }
+
+    public bool EnableLazyLoading
+    {
+      get { return _enableLazyLoading; }
+      set { _enableLazyLoading = value; }
     }
 
 #if NET11
@@ -504,6 +512,13 @@ public class TabbedMultiView: WebControl, IControl
       EnsureChildControls();
       return _multiViewInternal; 
     }
+  }
+
+  [DefaultValue (false)]
+  public bool EnableLazyLoading
+  {
+    get { return _multiViewInternal.EnableLazyLoading; }
+    set { _multiViewInternal.EnableLazyLoading = value; }
   }
 
   [Category ("Style")]

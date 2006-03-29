@@ -98,7 +98,6 @@ public class TestTabbedForm : TestWxeBasePage
     view.ID = id+ "_View";
     view.Title = title;
     view.Icon = icon;
-    MultiView.Views.Add (view);
 
     UserControl control = (UserControl) this.LoadControl (path);
     control.ID = Rubicon.Text.IdentifierGenerator.HtmlStyle.GetValidIdentifier (System.IO.Path.GetFileNameWithoutExtension (path));
@@ -108,6 +107,7 @@ public class TestTabbedForm : TestWxeBasePage
     //  formPageControl.FormPageObject = formPage;
 
     view.Controls.Add (control);
+    MultiView.Views.Add (view);
 
     IDataEditControl dataEditControl = control as IDataEditControl;
     if (dataEditControl != null)

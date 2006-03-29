@@ -85,7 +85,7 @@
 </PersistedCommand>
 </rwc:MainMenuTab>
 </Tabs>
-</rwc:tabbedmenu><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
+</rwc:tabbedmenu><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView" enablelazyloading="True">
 <topcontrols>
 <system.web.ui.htmlcontrols.htmlgenericcontrol>Test Tabbed Form</System.Web.UI.HtmlControls.HtmlGenericControl>
 <rwc:ValidationStateViewer ID="ValidationStateViewer"></rwc:ValidationStateViewer>
