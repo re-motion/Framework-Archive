@@ -710,7 +710,8 @@ function SmartPage_Context (
              || tagName == 'td'
              || tagName == 'table'
              || tagName == 'form'
-             || tagName == 'body')
+             || tagName == 'body'
+             || tagName == 'html')
     {
       return false;
     }
