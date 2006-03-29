@@ -336,6 +336,9 @@ public class SmartPageInfo
 
     ScriptUtility.RegisterClientScriptBlock ((Page) _page, "smartPageInitialize", initScript.ToString());
     ScriptUtility.RegisterStartupScriptBlock ((Page) _page, "smartPageStartUp", "SmartPage_OnStartUp();");
+
+    // Ensure the __doPostBack function on the rendered page
+    _page.GetPostBackEventReference ((Page) _page);
   }
 
   private string GetAbortMessage ()
