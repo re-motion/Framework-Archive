@@ -1,7 +1,7 @@
 1.4.48
 ======
 - BocList
-  * Bugfix: VS 2005: SimpleColumnDefinition.EditDetailsControlType wurde im Designer persistiert, was zu einem Fehler beim Seitenaufbau führte.
+  * Bugfix: SimpleColumnDefinition.EditDetailsControlType wurde im Designer persistiert, was zu einem Fehler beim Seitenaufbau führte.
     Work Around: BocList nicht im Designer bearbeiten ohne anschließend EditDetailsControlTyp="" per Search & Replace zu löschen.
     
 1.4.37
