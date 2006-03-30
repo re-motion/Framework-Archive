@@ -377,10 +377,18 @@ public class BocSimpleColumnDefinition: BocValueColumnDefinition, IBusinessObjec
   [Browsable (false)]
   [EditorBrowsable (EditorBrowsableState.Never)]
   [Obsolete ("Use EditModeControlType instead.", true)]
+  [DefaultValue ("")]
   public string EditDetailsControlType
   {
-    get { return EditModeControlType; }
-    set { EditModeControlType = value; }
+    get 
+    {
+      return string.Empty; 
+    }
+    set
+    {
+      if (! StringUtility.IsNullOrEmpty (value) && StringUtility.IsNullOrEmpty (EditModeControlType))
+        EditModeControlType = value; 
+    }
   }
   #endregion
 
