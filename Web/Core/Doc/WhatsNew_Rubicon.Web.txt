@@ -1,10 +1,5 @@
 1.4.48
 ======
-- TabbedMultiView 
-  * unterstützt LazyLoading (Aktiviert via EnableLazyLoading)
-  * Bei aktivem LazyLoading müssen Controls programmatisch in den TabView eingehängt werden, 
-    bevor der TabView in den TabbedMultiView hinzugefügt wird, da sosnt eine Exception geworfen wird.
-  
 - WxePage, SmartPage
   * Bugfix: Auf Seiten ohne BusinessObjectControls, Rubicon WebButtons, etc kam es zu einem Javascriptfehler (__doPostBack not found).
   * Bugfix: Auf Seiten die Refreshed, etc wurden, ohne dass ein Element zuvor den Fokus bekommen hatte, gab es einen Javascriptfehler.
