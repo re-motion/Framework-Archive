@@ -871,6 +871,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "UI\Controls\LazyContainer.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\Controls\LengthValidator.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
