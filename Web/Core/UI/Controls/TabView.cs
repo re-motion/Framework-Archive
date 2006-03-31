@@ -35,7 +35,6 @@ namespace Rubicon.Web.UI.Controls
     // fields
     private string _title;
     private IconInfo _icon;
-    private bool _isEnsured = false;
 
     // construction and destruction
     public TabView()

@@ -291,6 +291,11 @@
                     BuildAction = "Content"
                 />
                 <File
+                    RelPath = "UI\SiteMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "UI\WcagHelperMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -317,6 +322,11 @@
                 />
                 <File
                     RelPath = "UI\Controls\EmailAddressValidatorTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Controls\LazyContainerTest.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

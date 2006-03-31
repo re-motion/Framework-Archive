@@ -48,12 +48,12 @@ namespace PageTransition
 
 		protected void Application_Error(Object sender, EventArgs e)
 		{
-      string appPath = Request.ApplicationPath;
-
-      if (!appPath.EndsWith ("/"))
-        appPath += "/";
-
-      Server.Transfer (appPath + "Start.aspx");
+//      string appPath = Request.ApplicationPath;
+//
+//      if (!appPath.EndsWith ("/"))
+//        appPath += "/";
+//
+//      Server.Transfer (appPath + "Start.aspx");
 		}
 
 		protected void Session_End(Object sender, EventArgs e)

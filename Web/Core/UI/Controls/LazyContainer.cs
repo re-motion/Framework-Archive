@@ -11,13 +11,16 @@ namespace Rubicon.Web.UI.Controls
 
   [ToolboxItem (false)]
   [DefaultProperty ("RealControls")]
-  internal class LazyContainer : PlaceHolder
+  public class LazyContainer : PlaceHolder
   {
     // types
 
     // static members and constants
 
     // member fields
+
+    private bool _isEnsured;
+    private EmptyControlCollection _emptyControlCollection;
 
     // construction and disposing
 
@@ -29,26 +32,25 @@ namespace Rubicon.Web.UI.Controls
 
     public void Ensure ()
     {
-//      if (_isEnsured)
-//        return;
-//
-//      _isEnsured = true;
+      if (_isEnsured)
+        return;
+
+      _isEnsured = true;
     }
 
     public override ControlCollection Controls
     {
       get
       {
-//        if (ControlHelper.IsDesignMode (this))
+        if (_isEnsured)
+        {
           return base.Controls;
-//        else if (ParentMultiView == null || ! ParentMultiView.EnableLazyLoading)
-//          return base.Controls;
-//        else if (! _isEnsured)
-//          return new EmptyControlCollection (this);
-//        else if (Active)
-//          return base.Controls;
-//        else
-//          return new EmptyControlCollection (this);
+        }
+        else
+        {
+          _emptyControlCollection = new EmptyControlCollection (this);
+          return _emptyControlCollection;          
+        }
       }
     }
 
@@ -58,11 +60,11 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
-        EnsureContentPlaceHolderCreated ();
+        return base.Controls;
+//        EnsureContentPlaceHolderCreated ();
 //        if (_contentPlaceHolder != null)
 //          return _contentPlaceHolder.Controls; 
 //        else
-          return base.Controls;
       }
     }
 

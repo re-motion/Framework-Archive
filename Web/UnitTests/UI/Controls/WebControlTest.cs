@@ -1,4 +1,6 @@
 using System;
+using System.Web.UI;
+
 using NUnit.Framework;
 using Rubicon.Development.UnitTesting;
 using Rubicon.NullableValueTypes;
@@ -13,32 +15,58 @@ using Rubicon.Web.UnitTests.AspNetFramework;
 namespace Rubicon.Web.UnitTests.UI.Controls
 {
 
-public class WebControlTest
-{
-  private WcagHelperMock _wcagHelperMock;
+  public class WebControlTest
+  {
+    private WcagHelperMock _wcagHelperMock;
+    private Page _page;
+    private NamingContainerMock _namingContainer;
+    private ControlInvoker _namingContainerInvoker;
 
-  public WebControlTest()
-  {
-  }
-  
-  [SetUp]
-  public virtual void SetUp()
-  {
-    _wcagHelperMock = new WcagHelperMock();
-    WcagHelper.SetInstance (_wcagHelperMock);
-  }
+    public WebControlTest ()
+    {
+    }
+    
+    [SetUp]
+    public virtual void SetUp ()
+    {
+      _wcagHelperMock = new WcagHelperMock();
+      WcagHelper.SetInstance (_wcagHelperMock);
 
-  [TearDown]
-  public virtual void TearDown()
-  {
-    WcagHelper.SetInstance (new WcagHelperMock ());
-    HttpContextHelper.SetCurrent (null);
-  }
+      _page = new Page();
 
-  protected WcagHelperMock WcagHelperMock
-  {
-    get { return _wcagHelperMock; }
+      _namingContainer = new NamingContainerMock();
+      _namingContainer.ID = "NamingContainer";
+      _page.Controls.Add (_namingContainer);
+
+      _namingContainerInvoker = new ControlInvoker (_namingContainer);
+    }
+
+    [TearDown]
+    public virtual void TearDown ()
+    {
+      WcagHelper.SetInstance (new WcagHelperMock ());
+      HttpContextHelper.SetCurrent (null);
+    }
+
+    protected WcagHelperMock WcagHelperMock
+    {
+      get { return _wcagHelperMock; }
+    }
+
+    public Page Page
+    {
+      get { return _page; }
+    }
+
+    public NamingContainerMock NamingContainer
+    {
+      get { return _namingContainer; }
+    }
+
+    public ControlInvoker NamingContainerInvoker
+    {
+      get { return _namingContainerInvoker; }
+    }
   }
-}
 
 }

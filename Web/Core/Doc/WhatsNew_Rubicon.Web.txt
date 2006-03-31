@@ -1,3 +1,10 @@
+1.4.51
+======
+- TabbedMultiView 
+  * unterstützt LazyLoading (Aktiviert via EnableLazyLoading)
+  * Bei aktivem LazyLoading müssen Controls programmatisch in den TabView eingehängt werden, 
+    bevor der TabView in den TabbedMultiView hinzugefügt wird, da sosnt eine Exception geworfen wird.
+  
 1.4.48
 ======
 - WxePage, SmartPage
