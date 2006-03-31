@@ -74,6 +74,21 @@
                     Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                    HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                    HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
+                />
+                <Reference
+                    Name = "nunit.framework"
+                    AssemblyName = "nunit.framework"
+                    HintPath = "..\..\prereq\Assemblies\nunit.framework.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -93,6 +108,11 @@
                 />
                 <File
                     RelPath = "UnitTesting\PrivateInvoke.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UnitTesting\StringCollectionChecker.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

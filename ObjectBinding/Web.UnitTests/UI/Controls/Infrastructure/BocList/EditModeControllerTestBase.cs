@@ -5,6 +5,7 @@ using System.Web.UI.WebControls;
 
 using NUnit.Framework;
 
+using Rubicon.Development.UnitTesting;
 using Rubicon.NullableValueTypes;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Reflection;
@@ -28,6 +29,7 @@ public class EditModeControllerTestBase : BocTest
 
   // member fields
 
+  private StringCollectionChecker _stringCollectionChecker;
   private StringCollection _actualEvents;
 
   private Rubicon.ObjectBinding.Web.UI.Controls.BocList _bocList;
@@ -60,6 +62,7 @@ public class EditModeControllerTestBase : BocTest
   {
     base.SetUp();
 
+    _stringCollectionChecker = new StringCollectionChecker();
     _actualEvents = new StringCollection();
 
     _values = new TypeWithAllDataTypes[5];
@@ -165,16 +168,7 @@ public class EditModeControllerTestBase : BocTest
 
   protected void CheckEvents (StringCollection expected, StringCollection actual)
   {
-    ArgumentUtility.CheckNotNull ("expected", expected);
-    ArgumentUtility.CheckNotNull ("actual", actual);
-
-    string[] expectedArray = new string[expected.Count];
-    expected.CopyTo (expectedArray, 0);
-
-    string[] actualArray = new string[actual.Count];
-    actual.CopyTo (actualArray, 0);
-
-    Assert.AreEqual (expectedArray, actualArray);
+    _stringCollectionChecker.AreEqual (expected, actual);
   }
 
   protected string FormatChangesCanceledEventMessage (int index, IBusinessObject businessObject)

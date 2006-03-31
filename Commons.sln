@@ -39,10 +39,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Core\Web.csproj"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "http://localhost/dev/libraries/commons/trunk/web/ExecutionEngine/Test/WxeTest.csproj", "{72F82AB0-C96F-43C5-935B-ABB085107DD4}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Reflection.Test", "ObjectBinding\Reflection.Test\ObjectBinding.Reflection.Test.csproj", "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -60,6 +56,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Legacy", "Web\Legacy\We
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.Test", "http://localhost/dev/libraries/commons/trunk/ObjectBinding/Web.Test/ObjectBinding.Web.Test.csproj", "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WxeTest", "http://localhost/dev/libraries/commons/trunk/web/ExecutionEngine/Test/WxeTest.csproj", "{0B5318E7-4878-402A-8CF8-6BFFC47F571D}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -107,10 +107,6 @@ Global
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Debug.Build.0 = Debug|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.ActiveCfg = Release|.NET
 		{DF8BA786-9679-4879-8757-16AE2709D83A}.Release.Build.0 = Release|.NET
-		{72F82AB0-C96F-43C5-935B-ABB085107DD4}.Debug.ActiveCfg = Debug|.NET
-		{72F82AB0-C96F-43C5-935B-ABB085107DD4}.Debug.Build.0 = Debug|.NET
-		{72F82AB0-C96F-43C5-935B-ABB085107DD4}.Release.ActiveCfg = Release|.NET
-		{72F82AB0-C96F-43C5-935B-ABB085107DD4}.Release.Build.0 = Release|.NET
 		{5F1B88F7-FAFB-45C2-A357-333245870A6B}.Debug.ActiveCfg = Debug|.NET
 		{5F1B88F7-FAFB-45C2-A357-333245870A6B}.Debug.Build.0 = Debug|.NET
 		{5F1B88F7-FAFB-45C2-A357-333245870A6B}.Release.ActiveCfg = Release|.NET
@@ -131,6 +127,10 @@ Global
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Debug.Build.0 = Debug|.NET
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.ActiveCfg = Release|.NET
 		{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}.Release.Build.0 = Release|.NET
+		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Debug.ActiveCfg = Debug|.NET
+		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Debug.Build.0 = Debug|.NET
+		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Release.ActiveCfg = Release|.NET
+		{0B5318E7-4878-402A-8CF8-6BFFC47F571D}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		buildall.cmd = buildall.cmd

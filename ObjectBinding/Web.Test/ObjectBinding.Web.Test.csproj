@@ -883,7 +883,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocListUserControl.ascx.cs"
                     DependentUpon = "BocListUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
