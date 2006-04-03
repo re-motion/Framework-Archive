@@ -247,6 +247,8 @@ public class ControlHelper
   /// <param name="viewState"> The view state object used for restoring. </param>
   public static void LoadViewStateRecursive (Control target, object viewState)
   {
+    ArgumentUtility.CheckNotNull ("target", target);
+
     const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
                                     | BindingFlags.Instance 
                                     | BindingFlags.NonPublic
@@ -254,12 +256,7 @@ public class ControlHelper
 
     //  HACK: Reflection on internal void Control.LoadViewStateRecursive (object)
     //  internal void System.Web.UI.Control.LoadViewStateRecursive (object)
-    typeof (Control).InvokeMember (
-      "LoadViewStateRecursive",
-      bindingFlags,
-      null,
-      target,
-      new object[] {viewState});
+    typeof (Control).InvokeMember ("LoadViewStateRecursive", bindingFlags, null, target, new object[] {viewState});
   }
 
   /// <summary> Encapsulates the invokation of <see cref="Control"/>'s SaveViewStateRecursive method. </summary>
@@ -267,6 +264,8 @@ public class ControlHelper
   /// <returns> The view state object for <paramref name="target"/>. </returns>
   public static object SaveViewStateRecursive (Control target)
   {
+    ArgumentUtility.CheckNotNull ("target", target);
+
     const BindingFlags bindingFlags = BindingFlags.DeclaredOnly 
                                     | BindingFlags.Instance 
                                     | BindingFlags.NonPublic
@@ -274,12 +273,7 @@ public class ControlHelper
 
     //  HACK: Reflection on internal object Control.SaveViewStateRecursive()
     //  internal object System.Web.UI.Control.LoadViewStateRecursive()
-    object viewState = typeof (Control).InvokeMember (
-        "SaveViewStateRecursive",
-        bindingFlags,
-        null,
-        target,
-        new object[] {});
+    object viewState = typeof (Control).InvokeMember ("SaveViewStateRecursive", bindingFlags, null, target, new object[0]);
 
     return viewState;
   }

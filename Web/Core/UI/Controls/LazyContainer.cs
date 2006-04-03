@@ -10,8 +10,9 @@ namespace Rubicon.Web.UI.Controls
 {
 
   [ToolboxItem (false)]
-  [DefaultProperty ("RealControls")]
-  public class LazyContainer : PlaceHolder
+  [PersistChildren (true)]
+  [ParseChildren (true, "RealControls")]
+  public class LazyContainer : Control
   {
     // types
 
@@ -21,6 +22,11 @@ namespace Rubicon.Web.UI.Controls
 
     private bool _isEnsured;
     private EmptyControlCollection _emptyControlCollection;
+    private PlaceHolder _placeHolder;
+    private object _recursiveViewState;
+    private bool _isSavingViewStateRecursive;
+    private bool _isLoadingViewStateRecursive;
+    private bool _isLazyLoadingEnabled;
 
     // construction and disposing
 
@@ -36,19 +42,31 @@ namespace Rubicon.Web.UI.Controls
         return;
 
       _isEnsured = true;
+      EnsurePlaceHolderCreated ();
+      Controls.Add (_placeHolder);
+    }
+
+    public bool IsLazyLoadingEnabled
+    {
+      get { return _isLazyLoadingEnabled; }
+      set { _isLazyLoadingEnabled = value; }
     }
 
     public override ControlCollection Controls
     {
       get
       {
+        if (! _isLazyLoadingEnabled)
+          Ensure ();
+
         if (_isEnsured)
         {
           return base.Controls;
         }
         else
         {
-          _emptyControlCollection = new EmptyControlCollection (this);
+          if (_emptyControlCollection == null)
+            _emptyControlCollection = new EmptyControlCollection (this);
           return _emptyControlCollection;          
         }
       }
@@ -56,30 +74,59 @@ namespace Rubicon.Web.UI.Controls
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
     [PersistenceMode (PersistenceMode.InnerProperty)]
+    [Browsable (false)]
     public ControlCollection RealControls
     {
       get
       {
-        return base.Controls;
-//        EnsureContentPlaceHolderCreated ();
-//        if (_contentPlaceHolder != null)
-//          return _contentPlaceHolder.Controls; 
-//        else
+        EnsurePlaceHolderCreated ();
+        return _placeHolder.Controls; 
       }
     }
 
-    private void EnsureContentPlaceHolderCreated ()
+    private void EnsurePlaceHolderCreated ()
     {
-//      if (_isContentPlaceHolderCreated)
-//        return;
-//
-//      _isContentPlaceHolderCreated = true;
-//      _contentPlaceHolder = CreateContentPlaceHolder ();
+      if (_placeHolder == null)
+        _placeHolder = new PlaceHolder ();
     }
 
-    protected virtual PlaceHolder CreateContentPlaceHolder ()
+    protected override void LoadViewState (object savedState)
     {
-      return new PlaceHolder ();
+      if (_isLoadingViewStateRecursive)
+        return;
+
+      if (savedState != null)
+      {
+        Pair values = (Pair) savedState;
+        base.LoadViewState (values.First);
+        _recursiveViewState = values.Second;
+
+        if (_isLazyLoadingEnabled)
+        {
+          _isLoadingViewStateRecursive = true;
+          ControlHelper.LoadViewStateRecursive (this, _recursiveViewState);
+          _isLoadingViewStateRecursive = false;
+        }
+      }
+    }
+
+    protected override object SaveViewState ()
+    {
+      if (_isSavingViewStateRecursive)
+        return null;
+
+      if (_isLazyLoadingEnabled && _isEnsured)
+      {
+        _isSavingViewStateRecursive = true;
+        _recursiveViewState = ControlHelper.SaveViewStateRecursive (this);
+        _isSavingViewStateRecursive = false;
+      }
+
+      Pair values = new Pair ();
+      values.First = base.SaveViewState ();
+      values.Second = _recursiveViewState;
+
+      return values;
     }
   }
 

@@ -122,6 +122,11 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "AspNetFramework\ControlMock.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "AspNetFramework\HtmlTextWriterSingleTagMock.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

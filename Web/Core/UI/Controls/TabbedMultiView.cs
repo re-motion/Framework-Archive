@@ -36,8 +36,6 @@ public class TabbedMultiView: WebControl, IControl
     private bool _isLoadViewStateComplete = false;
 #endif
     
-    private bool _enableLazyLoading = false;
-
     protected internal MultiView ()
     {
     }
@@ -45,6 +43,16 @@ public class TabbedMultiView: WebControl, IControl
     protected override ControlCollection CreateControlCollection()
     {
       return new TabViewCollection (this);
+    }
+
+    protected override void AddedControl (Control control, int index)
+    {
+      ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TabView));
+      
+      TabView tabView = (TabView) control;
+      tabView.IsLazyLoadingEnabled = Parent.EnableLazyLoading;
+
+      base.AddedControl (control, index);
     }
 
     internal void OnTabViewInserted (TabView view)
@@ -67,11 +75,6 @@ public class TabbedMultiView: WebControl, IControl
       get { return (TabbedMultiView) base.Parent; }
     }
 
-    public bool EnableLazyLoading
-    {
-      get { return _enableLazyLoading; }
-      set { _enableLazyLoading = value; }
-    }
 
 #if NET11
     protected override void LoadViewState(object savedState)
@@ -189,6 +192,7 @@ public class TabbedMultiView: WebControl, IControl
 
 
   // fields
+  private bool _enableLazyLoading = false;
   private WebTabStrip _tabStrip;
   private TabbedMultiView.MultiView _multiViewInternal;
   private PlaceHolder _topControl;
@@ -517,8 +521,8 @@ public class TabbedMultiView: WebControl, IControl
   [DefaultValue (false)]
   public bool EnableLazyLoading
   {
-    get { return _multiViewInternal.EnableLazyLoading; }
-    set { _multiViewInternal.EnableLazyLoading = value; }
+      get { return _enableLazyLoading; }
+      set { _enableLazyLoading = value; }
   }
 
   [Category ("Style")]

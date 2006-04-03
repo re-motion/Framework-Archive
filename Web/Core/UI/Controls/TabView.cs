@@ -12,8 +12,8 @@ using Rubicon.Web.UI.Globalization;
 
 namespace Rubicon.Web.UI.Controls
 {
-
-  [DefaultProperty ("RealControls")]
+  [PersistChildren (true)]
+  [ParseChildren (true, "LazyControls")]
   [ToolboxData("<{0}:TabView runat=\"server\"></{0}:TabView>")]
 #if NET11
   [CLSCompliant (false)]
@@ -27,31 +27,55 @@ namespace Rubicon.Web.UI.Controls
     // statics
 
     // types
-    protected override void AddedControl(Control control, int index)
-    {
-      base.AddedControl (control, index);
-    }
 
     // fields
+
     private string _title;
     private IconInfo _icon;
+    private LazyContainer _lazyContainer;
 
     // construction and destruction
+    
     public TabView()
     {
       _icon = new IconInfo();
+      _lazyContainer = new LazyContainer ();
     }
 
     // methods and properties
 
+    protected override void CreateChildControls()
+    {
+      base.CreateChildControls ();
+
+      _lazyContainer.ID = "LazyContainer";
+      Controls.Add (_lazyContainer);
+    }
+
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
     [PersistenceMode (PersistenceMode.InnerProperty)]
-    public ControlCollection RealControls
+    public ControlCollection LazyControls
     {
       get
       {
-        return base.Controls;
+        EnsureChildControls ();
+        return _lazyContainer.RealControls;
       }
+    }
+
+    public void EnsureLazyControls ()
+    {
+      EnsureChildControls ();
+      _lazyContainer.Ensure();
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    [Browsable (false)]
+    public bool IsLazyLoadingEnabled
+    {
+      get { return _lazyContainer.IsLazyLoadingEnabled; }
+      set { _lazyContainer.IsLazyLoadingEnabled = value; }
     }
 
     internal TabbedMultiView.MultiView ParentMultiView
