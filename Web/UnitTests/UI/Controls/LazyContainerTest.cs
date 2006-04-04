@@ -5,7 +5,6 @@ using System.Web.UI.WebControls;
 
 using NUnit.Framework;
 
-using Rubicon.Development.UnitTesting;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UnitTests.AspNetFramework;
@@ -243,7 +242,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
     {
       NamingContainerInvoker.InitRecursive ();
 
-      _lazyContainerInvoker.LoadViewState (new Pair (null, new object()));
+      _lazyContainerInvoker.LoadViewState (new Pair (null, null));
     }
     
     [Test]

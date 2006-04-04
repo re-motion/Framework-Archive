@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 
 using NUnit.Framework;
 
-namespace Rubicon.Development.UnitTesting
+namespace Rubicon.Web.UnitTests
 {
 
   public class StringCollectionChecker

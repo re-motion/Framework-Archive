@@ -84,11 +84,6 @@
                     AssemblyName = "System.Xml"
                     HintPath = "..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
-                <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\prereq\Assemblies\nunit.framework.dll"
-                />
             </References>
         </Build>
         <Files>
@@ -108,11 +103,6 @@
                 />
                 <File
                     RelPath = "UnitTesting\PrivateInvoke.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UnitTesting\StringCollectionChecker.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

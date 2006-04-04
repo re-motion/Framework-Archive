@@ -118,6 +118,16 @@
                     BuildAction = "None"
                 />
                 <File
+                    RelPath = "StringCollectionChecker.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "StringCollectionCheckerTest.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Web.UnitTests.build"
                     BuildAction = "None"
                 />

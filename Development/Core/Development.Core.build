@@ -21,7 +21,6 @@
       </sources>
       <references failonempty="true">
         <include name="${project.builddir}/Rubicon.Core.dll" />
-        <include name="${project.builddir}/nunit.framework.dll" />
         <include asis="true" name="System.dll"/>
       </references>
     </csc>

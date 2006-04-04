@@ -550,7 +550,6 @@
       <call target="prepareassemblyinfo" />
 
       <copy todir="${project.builddir}" file="${prereq.assemblies}/log4net.dll" overwrite="true"/>
-      <copy todir="${project.builddir}" file="${prereq.assemblies}/nunit.framework.dll" overwrite="true"/>
 
       <nant buildfile="${project.dir}/${project.name}.build" target="build" />
 
