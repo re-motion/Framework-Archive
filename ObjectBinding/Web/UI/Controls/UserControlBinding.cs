@@ -126,7 +126,6 @@ public class UserControlBinding: BusinessObjectBoundEditableWebControl
     return new string[0];
   }
 
-
   protected override void Render (HtmlTextWriter writer)
   {
     if (ControlHelper.IsDesignMode (this, Context))
@@ -155,6 +154,11 @@ public class UserControlBinding: BusinessObjectBoundEditableWebControl
   public override void RegisterValidator (BaseValidator validator)
   {
     throw new NotSupportedException();
+  }
+
+  public override void PrepareValidation()
+  {
+    _userControl.PrepareValidation ();
   }
 
   public override bool Validate()

@@ -261,6 +261,10 @@ public abstract class BusinessObjectBoundEditableWebControl:
     _validators.Add (validator);
   }
 
+  public virtual void PrepareValidation ()
+  {
+  }
+
   /// <summary> Calls <see cref="BaseValidator.Validate"/> on all registered validators. </summary>
   /// <returns> <see langword="true"/>, if all validators validated. </returns>
   public virtual bool Validate()

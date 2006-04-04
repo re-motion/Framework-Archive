@@ -59,9 +59,10 @@ public interface IDataEditControl: IControl
   /// </remarks>
   DataSourceMode Mode { get; set; }
 
-  /// <summary>
-  ///   Validates all bound controls and displays error hints if the validation failed.
-  /// </summary>
+  /// <summary> Prepares all bound controls for validation. </summary>
+  void PrepareValidation ();
+
+  /// <summary> Validates all bound controls and displays error hints if the validation failed. /// </summary>
   /// <returns> True if validation succeeded, false if validation failed. </returns>
   bool Validate ();
 
@@ -105,6 +106,11 @@ public class DataEditUserControl: UserControl, IDataEditControl
   {
     get { return DataSource.Mode; } 
     set { DataSource.Mode = value; }
+  }
+
+  public virtual void PrepareValidation()
+  {
+    DataSource.PrepareValidation();
   }
 
   public virtual bool Validate()

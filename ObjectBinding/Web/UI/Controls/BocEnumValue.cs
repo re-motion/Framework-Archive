@@ -198,6 +198,20 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     }
   }
 
+  public override void PrepareValidation ()
+  {
+    base.PrepareValidation();
+
+    if (! IsReadOnly)
+      SetEditModeValue ();
+  }
+
+  private void SetEditModeValue ()
+  {
+    EnsureEnumListRefreshed (false);
+    RefreshEnumListSelectedValue ();
+  }
+
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -205,8 +219,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
 
     LoadResources (GetResourceManager());
 
-    EnsureEnumListRefreshed (false);
-    RefreshEnumListSelectedValue();
+    SetEditModeValue ();
 
     if (IsReadOnly)
     {

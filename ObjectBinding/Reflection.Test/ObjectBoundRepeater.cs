@@ -218,6 +218,11 @@ public class ObjectBoundRepeater: Repeater, IBusinessObjectBoundEditableWebContr
     return _repeaterInternal.GetTrackedClientIDs();
   }
 
+  public void PrepareValidation ()
+  {
+    _repeaterInternal.PrepareValidation();
+  }
+
   public bool Validate()
   {
     return _repeaterInternal.Validate();

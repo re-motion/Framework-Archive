@@ -48,8 +48,19 @@ namespace Rubicon.Web.UI.Controls
     {
       base.CreateChildControls ();
 
-      _lazyContainer.ID = "LazyContainer";
-      Controls.Add (_lazyContainer);
+      _lazyContainer.ID = ID + "_LazyContainer";
+      base.Controls.Add (_lazyContainer);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    [Obsolete ("Use LazyControls instead")]
+    public override ControlCollection Controls
+    {
+      get 
+      {
+        EnsureChildControls ();
+        return base.Controls; 
+      }
     }
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]

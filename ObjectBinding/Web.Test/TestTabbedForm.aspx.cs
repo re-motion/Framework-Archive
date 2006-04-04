@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -106,19 +107,43 @@ public class TestTabbedForm : TestWxeBasePage
     //if (formPageControl != null)
     //  formPageControl.FormPageObject = formPage;
 
-    view.Controls.Add (control);
+    view.LazyControls.Add (control);
     MultiView.Views.Add (view);
 
     IDataEditControl dataEditControl = control as IDataEditControl;
     if (dataEditControl != null)
+      dataEditControl.Load += new EventHandler(DataEditControl_Load);
+
+    return dataEditControl;
+  }
+
+  private void DataEditControl_Load (object sender, EventArgs e)
+  {
+    IDataEditControl dataEditControl = (IDataEditControl) sender;
+    dataEditControl.BusinessObject = Function.Object;
+    dataEditControl.LoadValues (IsPostBackAfterEnsure (dataEditControl.ID));
+    dataEditControl.Mode = Function.ReadOnly ? DataSourceMode.Read : DataSourceMode.Edit;
+  }
+
+  private bool IsPostBackAfterEnsure (string id)
+  {
+    const string key = "EnsuredPostBacks";
+    StringCollection ensuredPostBacks = (StringCollection) ViewState[key];
+    if (ensuredPostBacks == null)
     {
-      dataEditControl.BusinessObject = Function.Object;
-      dataEditControl.LoadValues (IsPostBack);
-      dataEditControl.Mode = Function.ReadOnly ? DataSourceMode.Read : DataSourceMode.Edit;
-      return dataEditControl;
+      ensuredPostBacks = new StringCollection();
+      ViewState[key] = ensuredPostBacks;
     }
 
-    return null;
+    if (ensuredPostBacks.Contains (id))
+    {
+      return true;
+    }
+    else
+    {
+      ensuredPostBacks.Add (id);
+      return false;
+    }
   }
 
 	override protected void OnInit(EventArgs e)
@@ -196,6 +221,13 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void SaveButton_Click(object sender, System.EventArgs e)
   {
+    MultiView.EnsureAllLazyLoadedViews();
+    PrepareValidation();
+
+    // prepare validation for all tabs
+    foreach (IDataEditControl control in _dataEditControls)
+      control.PrepareValidation();
+
     // validate all tabs
     foreach (IDataEditControl control in _dataEditControls)
     {
@@ -213,12 +245,16 @@ public class TestTabbedForm : TestWxeBasePage
 
   private void ValidateButton_Click(object sender, System.EventArgs e)
   {
+    MultiView.EnsureAllLazyLoadedViews();
+
     foreach (UserControl control in _dataEditControls)
     {
-      Rubicon.Web.UI.Controls.FormGridManager formGridManager = 
-          control.FindControl("FormGridManager") as Rubicon.Web.UI.Controls.FormGridManager;
+      FormGridManager formGridManager = control.FindControl("FormGridManager") as FormGridManager;
       if (formGridManager != null)
+      {
+        formGridManager.PrepareValidation();
         formGridManager.Validate();
+      }
     }
   }
 
@@ -231,7 +267,6 @@ public class TestTabbedForm : TestWxeBasePage
   {
     get { return _wxeControlsPlaceHolder.Controls; }
   }
-
 }
 
 }

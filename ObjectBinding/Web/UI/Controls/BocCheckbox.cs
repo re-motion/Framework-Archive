@@ -184,6 +184,19 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
     }
   }
 
+  public override void PrepareValidation ()
+  {
+    base.PrepareValidation();
+
+    if (! IsReadOnly)
+      SetEditModeValue ();
+  }
+
+  private void SetEditModeValue ()
+  {
+    _checkBox.Checked = _value;
+  }
+
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -266,7 +279,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
       _label.Attributes.Add ("onclick", labelScript);
     }
 
-    _checkBox.Checked = _value;
+    SetEditModeValue ();
     _checkBox.Disabled = ! Enabled;
     
     if (IsDescriptionEnabled)

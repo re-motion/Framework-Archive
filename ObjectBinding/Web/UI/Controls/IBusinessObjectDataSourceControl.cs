@@ -19,6 +19,9 @@ namespace Rubicon.ObjectBinding.Web.UI.Controls
 /// <include file='doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml' path='IBusinessObjectDataSourceControl/Class/*' />
 public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IControl
 {
+  /// <summary> Prepares all bound controls implementing <see cref="IValidatableControl"/> for validation. </summary>
+  void PrepareValidation ();
+
   /// <summary> Validates all bound controls implementing <see cref="IValidatableControl"/>. </summary>
   /// <returns> <see langword="true"/> if no validation errors where found. </returns>
   bool Validate ();
@@ -214,6 +217,18 @@ public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectD
   public IBusinessObjectBoundControl[] BoundControls
   {
     get { return GetDataSource().BoundControls; }
+  }
+
+  /// <summary> Prepares all bound controls implementing <see cref="IValidatableControl"/> for validation. </summary>
+  public void PrepareValidation()
+  {
+    for (int i = 0; i < BoundControls.Length; i++)
+    {
+      IBusinessObjectBoundControl control = BoundControls[i];
+      IValidatableControl validateableControl = control as IValidatableControl;
+      if (validateableControl != null)
+        validateableControl.PrepareValidation();
+    }
   }
 
   /// <summary> Validates all bound controls implementing <see cref="IValidatableControl"/>. </summary>

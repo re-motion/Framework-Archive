@@ -192,7 +192,9 @@ public class TabbedMultiView: WebControl, IControl
 
 
   // fields
+
   private bool _enableLazyLoading = false;
+  private bool _isInitialized = false;
   private WebTabStrip _tabStrip;
   private TabbedMultiView.MultiView _multiViewInternal;
   private PlaceHolder _topControl;
@@ -215,6 +217,7 @@ public class TabbedMultiView: WebControl, IControl
   }
 
   // methods and properties
+
   private void CreateControls()
   {
     _tabStrip = new WebTabStrip (this);
@@ -237,6 +240,20 @@ public class TabbedMultiView: WebControl, IControl
 
     _bottomControl.ID = ID + "_BottomControl";
     Controls.Add (_bottomControl);
+  }
+
+  protected override void OnInit(EventArgs e)
+  {
+    base.OnInit (e);
+    _isInitialized = true;
+  }
+
+  protected override void OnLoad(EventArgs e)
+  {
+    base.OnLoad (e);
+    TabView view = (TabView) MultiViewInternal.GetActiveView();
+    if (view != null)
+      view.EnsureLazyControls ();
   }
 
   private void OnTabViewInserted (TabView view)
@@ -321,12 +338,10 @@ public class TabbedMultiView: WebControl, IControl
 #endif
   public TabView GetActiveView()
   {
-    return (TabView) MultiViewInternal.GetActiveView();
-  }
-
-  protected override void LoadViewState(object savedState)
-  {
-    base.LoadViewState (savedState);
+    TabView view = (TabView) MultiViewInternal.GetActiveView();
+    if (view != null && _isInitialized)
+      view.EnsureLazyControls ();
+    return view;
   }
 
   protected override HtmlTextWriterTag TagKey
@@ -518,12 +533,22 @@ public class TabbedMultiView: WebControl, IControl
     }
   }
 
+  public void EnsureAllLazyLoadedViews ()
+  {
+    foreach (TabView view in Views)
+      view.EnsureLazyControls();
+  }
+
+#if NET11
+  [Category ("Behavior")]
+  [Description ("Enables the lazy (i.e. On-Demand) loading of the individual tabs.")]
   [DefaultValue (false)]
   public bool EnableLazyLoading
   {
-      get { return _enableLazyLoading; }
-      set { _enableLazyLoading = value; }
+    get { return _enableLazyLoading; }
+    set { _enableLazyLoading = value; }
   }
+#endif
 
   [Category ("Style")]
   [Description ("The style that you want to apply to the active view.")]

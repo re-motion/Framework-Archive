@@ -1027,6 +1027,15 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   
   // methods and properties
 
+  /// <summary> Prepares all all <c>FormGrid</c> objects managed by this <c>FormGridManager</c> for validation. </summary>
+  public void PrepareValidation()
+  {
+    EnsureTransformationStep (TransformationStep.PostLoadTransformationCompleted);
+
+    foreach (FormGrid formGrid in _formGrids.Values)
+      PrepareValidationForFormGrid (formGrid);
+  }
+
   /// <summary> Validates all <c>FormGrid</c> objects managed by this <c>FormGridManager</c>. </summary>
   /// <include file='doc\include\UI\Controls\FormGridManager.xml' path='FormGridManager/Validate/*' />
   public bool Validate()
@@ -1498,6 +1507,38 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     }
 
     return (FormGridRow[])formGridRows.ToArray(typeof(FormGridRow));
+  }
+
+  private void PrepareValidationForFormGrid (FormGrid formGrid)
+  {
+    for (int i = 0; i < formGrid.Rows.Count; i++)
+    {
+      FormGridRow formGridRow = (FormGridRow) formGrid.Rows[i];
+      if (formGridRow.Type != FormGridRowType.DataRow)
+        continue;
+
+      PrepareValidationForDataRow (formGridRow);
+    }
+  }
+
+  protected void PrepareValidationForDataRow (FormGridRow dataRow)
+  {
+    ArgumentUtility.CheckNotNull ("dataRow", dataRow);
+    CheckFormGridRowType ("dataRow", dataRow, FormGridRowType.DataRow);
+    if (dataRow.ControlsCell == null)
+      return;
+
+    for (int i = 0; i < dataRow.ControlsCell.Controls.Count; i++)
+    {
+      IValidatableControl control = dataRow.ControlsCell.Controls[i] as IValidatableControl;
+
+      //  Only for IValidatableControl
+      if (control == null)
+        continue;
+
+      //  Prepare Validate
+      control.PrepareValidation();
+    }
   }
 
   /// <summary> Validates all <see cref="BaseValidator"/> objects in the <see cref="FormGrid"/>. </summary>

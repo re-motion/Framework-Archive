@@ -170,6 +170,19 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     }
   }
 
+  public override void PrepareValidation ()
+  {
+    base.PrepareValidation();
+
+    if (! IsReadOnly)
+      SetEditModeValue ();
+  }
+
+  private void SetEditModeValue ()
+  {
+    _textBox.Text = _text;
+  }
+
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -216,7 +229,7 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
     }
     else
     {
-      _textBox.Text = _text;
+      SetEditModeValue();
 
       _textBox.ReadOnly = ! Enabled;
       _textBox.Width = Unit.Empty;
@@ -654,13 +667,14 @@ public class BocTextValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
       if (StringUtility.IsNullOrEmpty (text))
         return null;
 
-      if (_actualValueType == BocTextValueType.Integer)
+      BocTextValueType valueType = ActualValueType;
+      if (valueType == BocTextValueType.Integer)
         return int.Parse (text);
-      else if (_actualValueType == BocTextValueType.Double)
+      else if (valueType == BocTextValueType.Double)
         return double.Parse (text);
-      else if (_actualValueType == BocTextValueType.Date)
+      else if (valueType == BocTextValueType.Date)
         return DateTime.Parse (text).Date; 
-      else if (_actualValueType == BocTextValueType.DateTime)
+      else if (valueType == BocTextValueType.DateTime)
         return DateTime.Parse (text); 
       else
         return (string) text;

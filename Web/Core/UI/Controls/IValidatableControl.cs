@@ -27,6 +27,8 @@ public interface IValidatableControl: IControl
   /// </summary>
   /// <returns> True, if all validators validated. </returns>
   bool Validate ();
+
+  void PrepareValidation ();
 }
 
 /// <summary>
@@ -96,7 +98,7 @@ public class ValidatableControlInitializer
   {
     if (! _initialized)
     {
-      InitializeValidatableControls (_page);
+      ValidatableControlInitializer.InitializeValidatableControls (_page);
       _initialized = true;
     }
   }

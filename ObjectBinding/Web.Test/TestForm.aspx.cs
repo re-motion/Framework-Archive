@@ -27,12 +27,9 @@ namespace OBWTest
 public class TestForm : Page
 {
   protected System.Web.UI.WebControls.Button PostBackButton;
+  protected Rubicon.Web.UI.Controls.LazyContainer LazyContainer;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
-  protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager1;
-  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue BocTextValue1;
-  protected Rubicon.Web.UI.Controls.SmartLabel SmartLabel1;
-  protected System.Web.UI.WebControls.TextBox TextBox1;
-  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
 
 	#region Web Form Designer generated code
 
@@ -54,6 +51,19 @@ public class TestForm : Page
 
   }
 	#endregion
+
+  protected override void OnLoad(EventArgs e)
+  {
+    base.OnLoad (e);
+
+    if (! IsPostBack)
+      TextField.Text = "Foo Bar";
+  
+    bool ensure = true;
+    if (ensure)
+      LazyContainer.Ensure();
+  }
+
 
 }
 

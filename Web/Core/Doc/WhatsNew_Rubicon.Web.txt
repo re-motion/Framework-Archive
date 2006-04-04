@@ -2,9 +2,14 @@
 ======
 - TabbedMultiView 
   * unterstützt LazyLoading (Aktiviert via EnableLazyLoading)
+    Derzeit nur .net 1.1
   * Bei aktivem LazyLoading müssen Controls programmatisch in den TabView eingehängt werden, 
     bevor der TabView in den TabbedMultiView hinzugefügt wird, da sosnt eine Exception geworfen wird.
-  
+  * Aktiviert mittels Property EnableLazyLoading
+  * Bevor validiert wird, müssen die Tabs Ensured werden:
+    MultiView.EnsureAllLazyLoadedViews();
+    Zusätzlich muss entweder auf die FormGridManager oder auf die IDataEditControls die PrepareValidation() Methode aufgerufen werden.
+
 1.4.48
 ======
 - WxePage, SmartPage

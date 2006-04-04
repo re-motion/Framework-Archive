@@ -169,6 +169,19 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
     }
   }
 
+  public override void PrepareValidation ()
+  {
+    base.PrepareValidation();
+
+    if (! IsReadOnly)
+      SetEditModeValue ();
+  }
+
+  private void SetEditModeValue ()
+  {
+    _textBox.Text = Text;
+  }
+
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -208,7 +221,7 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
     }
     else
     {
-      _textBox.Text = Text;
+      SetEditModeValue ();
 
       _textBox.ReadOnly = ! Enabled;
       _textBox.Width = Unit.Empty;

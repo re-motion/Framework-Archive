@@ -464,6 +464,49 @@ public class BocReferenceValue:
     }
   }
 
+  public override void PrepareValidation ()
+  {
+    base.PrepareValidation();
+
+    if (! IsReadOnly)
+      SetEditModeValue ();
+  }
+
+  private void SetEditModeValue ()
+  {
+    bool isNullItem = InternalValue == null;
+
+    if (isNullItem || ! IsRequired)
+    {
+      //  No null item in the list?
+      if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
+        _dropDownList.Items.Insert (0, CreateNullItem());
+    }
+
+    //  Check if null item is to be selected
+    if (isNullItem)
+    {
+      _dropDownList.SelectedValue = c_nullIdentifier;
+    }
+    else
+    {
+      if (_dropDownList.Items.FindByValue (InternalValue) != null)
+      {
+        _dropDownList.SelectedValue = InternalValue;
+      }
+      else if (Value != null)
+      {
+        //  Item not yet in the list but is a valid item.
+        IBusinessObjectWithIdentity businessObject = Value;
+
+        ListItem item = new ListItem (GetDisplayName (businessObject), businessObject.UniqueIdentifier);
+        _dropDownList.Items.Add (item);
+
+        _dropDownList.SelectedValue = InternalValue;
+      }
+    }
+  }
+
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -1052,7 +1095,6 @@ public class BocReferenceValue:
     BocDropDownMenu.HideMenuItems (OptionsMenuItems, _hiddenMenuItems);
   }
 
-  /// <summary> Prerenders the <see cref="Label"/>. </summary>
   private void PreRenderReadOnlyValue()
   {
     string text;
@@ -1081,40 +1123,9 @@ public class BocReferenceValue:
     _label.ApplyStyle (_labelStyle);
   }
 
-  /// <summary> Prerenders the <see cref="DropDownList"/>. </summary>
   private void PreRenderEditModeValue()
   {
-    bool isNullItem = InternalValue == null;
-
-    if (isNullItem || ! IsRequired)
-    {
-      //  No null item in the list?
-      if (_dropDownList.Items.FindByValue (c_nullIdentifier) == null)
-        _dropDownList.Items.Insert (0, CreateNullItem());
-    }
-
-    //  Check if null item is to be selected
-    if (isNullItem)
-    {
-      _dropDownList.SelectedValue = c_nullIdentifier;
-    }
-    else
-    {
-      if (_dropDownList.Items.FindByValue (InternalValue) != null)
-      {
-        _dropDownList.SelectedValue = InternalValue;
-      }
-      else if (Value != null)
-      {
-        //  Item not yet in the list but is a valid item.
-        IBusinessObjectWithIdentity businessObject = Value;
-
-        ListItem item = new ListItem (GetDisplayName (businessObject), businessObject.UniqueIdentifier);
-        _dropDownList.Items.Add (item);
-
-        _dropDownList.SelectedValue = InternalValue;
-      }
-    }
+    SetEditModeValue ();
 
     _dropDownList.Enabled = Enabled;
     _dropDownList.Height = Unit.Empty;
@@ -1123,7 +1134,6 @@ public class BocReferenceValue:
     _dropDownListStyle.ApplyStyle (_dropDownList);
   }
 
-  /// <summary> Prerenders the <see cref="Icon"/>. </summary>
   private void PreRenderIcon()
   {
     _icon.Visible = false;
@@ -1162,7 +1172,6 @@ public class BocReferenceValue:
     }
   }
 
-  /// <summary> Prerenders the <see cref="OptionsMenu"/>. </summary>
   private void PreRenderOptionsMenu()
   {
     _optionsMenu.Enabled = Enabled;

@@ -55,49 +55,12 @@ public class TestTabbedPersonJobsUserControl :
 		InitializeComponent();
 		base.OnInit(e);
 
-    FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
-
-    BocTextValue incomeField = new BocTextValue();
-    incomeField.ID = "IncomeField";
-    incomeField.DataSource = ReflectionBusinessObjectDataSourceControl;
-    incomeField.PropertyIdentifier = "Income";
-    _incomeField = incomeField;
-
-    //  A new row
-    newRows.Add (new FormGridRowInfo(
-        incomeField, 
-        FormGridRowInfo.RowType.ControlInRowWithLabel, 
-        MultilineTextField.ID, 
-        FormGridRowInfo.RowPosition.AfterRowWithID));
-
-    IBusinessObjectProperty endDate = 
-      ListField.Property.ReferenceClass.GetPropertyDefinition ("EndDate");
-
-
-    //  Additional columns, in-code generated
-
-    BocSimpleColumnDefinition endDateColumnDefinition = new BocSimpleColumnDefinition();
-    endDateColumnDefinition.ColumnTitle = "EndDate";
-    endDateColumnDefinition.PropertyPath = endDate.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{endDate});
-
-    BocListView emptyView = new BocListView();
-    emptyView.Title = "Empty";
-    emptyView.ColumnDefinitions.AddRange (
-        new BocColumnDefinition[] {});
-
-    BocListView datesView = new BocListView();
-    datesView.Title = "Dates";
-    datesView.ColumnDefinitions.AddRange (
-          new BocColumnDefinition[] {endDateColumnDefinition});
-
-    ListField.AvailableViews.AddRange (new BocListView[] {
-      emptyView, 
-      datesView});
-
-    InitalizeListFieldMenuItems();
+    PrepareAdditonalRows ();
+    InitalizeListFieldMenuItems ();
+    InitializeListFieldViews ();
   }
 	
-  private void InitalizeListFieldMenuItems()
+  private void InitalizeListFieldMenuItems ()
   {
     BocMenuItem menuItem = null;
 
@@ -180,6 +143,45 @@ public class TestTabbedPersonJobsUserControl :
     menuItem.Command.Type = CommandType.Event;
     ListField.OptionsMenuItems.Add (menuItem);
   }
+
+  private void InitializeListFieldViews ()
+  {
+    IBusinessObjectProperty endDate = ListField.Property.ReferenceClass.GetPropertyDefinition ("EndDate");
+    
+    BocSimpleColumnDefinition endDateColumnDefinition = new BocSimpleColumnDefinition();
+    endDateColumnDefinition.ColumnTitle = "EndDate";
+    endDateColumnDefinition.PropertyPath = endDate.BusinessObjectProvider.CreatePropertyPath (new IBusinessObjectProperty[]{endDate});
+
+    BocListView emptyView = new BocListView();
+    emptyView.Title = "Empty";
+    emptyView.ColumnDefinitions.AddRange (new BocColumnDefinition[] {});
+
+    BocListView datesView = new BocListView();
+    datesView.Title = "Dates";
+    datesView.ColumnDefinitions.AddRange (new BocColumnDefinition[] {endDateColumnDefinition});
+
+    ListField.AvailableViews.AddRange (new BocListView[] {emptyView, datesView});
+  }
+
+  private void PrepareAdditonalRows ()
+  {
+    FormGridRowInfoCollection newRows = (FormGridRowInfoCollection)_listOfFormGridRowInfos[FormGrid];
+
+    BocTextValue incomeField = new BocTextValue();
+    incomeField.ID = "IncomeField";
+    incomeField.DataSource = ReflectionBusinessObjectDataSourceControl;
+    incomeField.PropertyIdentifier = "Income";
+    _incomeField = incomeField;
+
+    //  A new row
+    newRows.Add (new FormGridRowInfo(
+        incomeField, 
+        FormGridRowInfo.RowType.ControlInRowWithLabel, 
+        MultilineTextField.ID, 
+        FormGridRowInfo.RowPosition.AfterRowWithID));
+
+  }
+
 	#region Web Form Designer generated code
 
 	/// <summary>

@@ -85,7 +85,7 @@
 </PersistedCommand>
 </rwc:MainMenuTab>
 </Tabs>
-</rwc:tabbedmenu><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView" enablelazyloading="True">
+</rwc:tabbedmenu><rwc:tabbedmultiview id=MultiView runat="server" EnableLazyLoading="True" cssclass="tabbedMultiView">
 <topcontrols>
 <system.web.ui.htmlcontrols.htmlgenericcontrol>Test Tabbed Form</System.Web.UI.HtmlControls.HtmlGenericControl>
 <rwc:ValidationStateViewer ID="ValidationStateViewer"></rwc:ValidationStateViewer>
@@ -97,6 +97,6 @@
  <rwc:tabview id="second" title="Second">
  </rwc:tabview>
 </Views>
-</rwc:tabbedmultiview><rwc:SmartHyperLink id="SmartHyperLink1" runat="server" NavigateUrl="~/Start.aspx">test</rwc:SmartHyperLink></form>
+</rwc:tabbedmultiview><rwc:smarthyperlink id=SmartHyperLink1 runat="server" NavigateUrl="~/Start.aspx">test</rwc:smarthyperlink></FORM>
   </body>
 </html>

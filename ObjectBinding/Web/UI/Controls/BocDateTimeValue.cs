@@ -261,6 +261,31 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
     }
   }
 
+  public override void PrepareValidation ()
+  {
+    base.PrepareValidation();
+
+    if (! IsReadOnly)
+    {
+      SetEditModeDateValue ();
+      SetEditModeTimeValue ();
+    }
+  }
+
+  private void SetEditModeDateValue ()
+  {
+    if (ProvideMaxLength)
+      _dateTextBox.MaxLength = GetDateMaxLength();
+    _dateTextBox.Text = InternalDateValue;
+  }
+
+  private void SetEditModeTimeValue ()
+  {
+    if (ProvideMaxLength)
+      _timeTextBox.MaxLength = GetTimeMaxLength();
+    _timeTextBox.Text = InternalTimeValue;
+  }
+
   protected override void OnPreRender (EventArgs e)
   {
     EnsureChildControls();
@@ -696,9 +721,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   /// <summary> Prerenders the <see cref="DateTextBox"/>. </summary>
   private void PreRenderEditModeValueDate()
   {
-    if (ProvideMaxLength)
-      _dateTextBox.MaxLength = GetDateMaxLength();
-    _dateTextBox.Text = InternalDateValue;
+    SetEditModeDateValue ();
     _dateTextBox.ReadOnly = ! Enabled;
     _dateTextBox.Width = Unit.Empty;
     _dateTextBox.Height = Unit.Empty;
@@ -710,9 +733,7 @@ public class BocDateTimeValue: BusinessObjectBoundEditableWebControl, IPostBackD
   /// <summary> Prerenders the <see cref="TimeTextBox"/>. </summary>
   private void PreRenderEditModeValueTime()
   {
-    if (ProvideMaxLength)
-      _timeTextBox.MaxLength = GetTimeMaxLength();
-    _timeTextBox.Text = InternalTimeValue;
+    SetEditModeTimeValue ();
     _timeTextBox.ReadOnly = ! Enabled;
     _timeTextBox.Height = Unit.Empty;
     _timeTextBox.Width = Unit.Empty;

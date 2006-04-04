@@ -157,7 +157,7 @@
                 <File
                     RelPath = "ClientForm.aspx.cs"
                     DependentUpon = "ClientForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -197,7 +197,7 @@
                 <File
                     RelPath = "CompleteBocTestForm.aspx.cs"
                     DependentUpon = "CompleteBocTestForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -232,7 +232,7 @@
                 <File
                     RelPath = "CompleteBocTestUserControlForm.aspx.cs"
                     DependentUpon = "CompleteBocTestUserControlForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -299,7 +299,7 @@
                 <File
                     RelPath = "PersonDetailsForm.aspx.cs"
                     DependentUpon = "PersonDetailsForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -314,7 +314,7 @@
                 <File
                     RelPath = "PersonsForm.aspx.cs"
                     DependentUpon = "PersonsForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -330,7 +330,7 @@
                 <File
                     RelPath = "RepeaterTest.aspx.cs"
                     DependentUpon = "RepeaterTest.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -361,7 +361,7 @@
                 />
                 <File
                     RelPath = "SingleBocTestWxeBasePage.cs"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -437,7 +437,7 @@
                 <File
                     RelPath = "TestTabbedForm.aspx.cs"
                     DependentUpon = "TestTabbedForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -458,7 +458,7 @@
                 <File
                     RelPath = "TestTabbedPersonDetailsUserControl.ascx.cs"
                     DependentUpon = "TestTabbedPersonDetailsUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -473,7 +473,7 @@
                 <File
                     RelPath = "TestTabbedPersonJobsUserControl.ascx.cs"
                     DependentUpon = "TestTabbedPersonJobsUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -499,7 +499,7 @@
                 />
                 <File
                     RelPath = "TestWxeBasePage.cs"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -576,7 +576,7 @@
                 <File
                     RelPath = "WebUserControl1.ascx.cs"
                     DependentUpon = "WebUserControl1.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -595,7 +595,7 @@
                 <File
                     RelPath = "Design\DesignTestBooleanValueForm.aspx.cs"
                     DependentUpon = "DesignTestBooleanValueForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -610,7 +610,7 @@
                 <File
                     RelPath = "Design\DesignTestCheckBoxForm.aspx.cs"
                     DependentUpon = "DesignTestCheckBoxForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -625,7 +625,7 @@
                 <File
                     RelPath = "Design\DesignTestDateTimeValueForm.aspx.cs"
                     DependentUpon = "DesignTestDateTimeValueForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -640,7 +640,7 @@
                 <File
                     RelPath = "Design\DesignTestDateValueForm.aspx.cs"
                     DependentUpon = "DesignTestDateValueForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -655,7 +655,7 @@
                 <File
                     RelPath = "Design\DesignTestEnumValueForm.aspx.cs"
                     DependentUpon = "DesignTestEnumValueForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -675,7 +675,7 @@
                 <File
                     RelPath = "Design\DesignTestMultilineTextValueForm.aspx.cs"
                     DependentUpon = "DesignTestMultilineTextValueForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -690,7 +690,7 @@
                 <File
                     RelPath = "Design\DesignTestTextValueForm.aspx.cs"
                     DependentUpon = "DesignTestTextValueForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -705,7 +705,7 @@
                 <File
                     RelPath = "Design\DesignTestTreeViewForm.aspx.cs"
                     DependentUpon = "DesignTestTreeViewForm.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -715,7 +715,7 @@
                 />
                 <File
                     RelPath = "Design\DesignTestWxeBasePage.cs"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -792,7 +792,7 @@
                 />
                 <File
                     RelPath = "IndividualControlTests\BaseUserControl.cs"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -803,7 +803,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocBooleanValueUserControl.ascx.cs"
                     DependentUpon = "BocBooleanValueUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -819,7 +819,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocCheckBoxUserControl.ascx.cs"
                     DependentUpon = "BocCheckBoxUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -835,7 +835,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocDateTimeValueUserControl.ascx.cs"
                     DependentUpon = "BocDateTimeValueUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -851,7 +851,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocEnumValueUserControl.ascx.cs"
                     DependentUpon = "BocEnumValueUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -867,7 +867,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocListAsGridUserControl.ascx.cs"
                     DependentUpon = "BocListAsGridUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -899,7 +899,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocMultilineTextValueUserControl.ascx.cs"
                     DependentUpon = "BocMultilineTextValueUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -915,7 +915,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocReferenceValueUserControl.ascx.cs"
                     DependentUpon = "BocReferenceValueUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -931,7 +931,7 @@
                 <File
                     RelPath = "IndividualControlTests\BocTextValueUserControl.ascx.cs"
                     DependentUpon = "BocTextValueUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -947,7 +947,7 @@
                 <File
                     RelPath = "IndividualControlTests\EmptyUserControl.ascx.cs"
                     DependentUpon = "EmptyUserControl.ascx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -963,7 +963,7 @@
                 <File
                     RelPath = "IndividualControlTests\Form.aspx.cs"
                     DependentUpon = "Form.aspx"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File
@@ -973,7 +973,7 @@
                 />
                 <File
                     RelPath = "IndividualControlTests\TestBasePage.cs"
-                    SubType = "Code"
+                    SubType = "ASPXCodeBehind"
                     BuildAction = "Compile"
                 />
                 <File

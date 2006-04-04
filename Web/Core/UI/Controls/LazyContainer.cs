@@ -26,7 +26,7 @@ namespace Rubicon.Web.UI.Controls
     private object _recursiveViewState;
     private bool _isSavingViewStateRecursive;
     private bool _isLoadingViewStateRecursive;
-    private bool _isLazyLoadingEnabled;
+    private bool _isLazyLoadingEnabled = true;
 
     // construction and disposing
 
@@ -72,8 +72,6 @@ namespace Rubicon.Web.UI.Controls
       }
     }
 
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
-    [PersistenceMode (PersistenceMode.InnerProperty)]
     [Browsable (false)]
     public ControlCollection RealControls
     {
