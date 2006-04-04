@@ -539,16 +539,20 @@ public class TabbedMultiView: WebControl, IControl
       view.EnsureLazyControls();
   }
 
-#if NET11
   [Category ("Behavior")]
   [Description ("Enables the lazy (i.e. On-Demand) loading of the individual tabs.")]
   [DefaultValue (false)]
+#if ! NET11
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  [Browsable (false)]
+#endif
   public bool EnableLazyLoading
   {
     get { return _enableLazyLoading; }
+#if NET11
     set { _enableLazyLoading = value; }
-  }
 #endif
+  }
 
   [Category ("Style")]
   [Description ("The style that you want to apply to the active view.")]

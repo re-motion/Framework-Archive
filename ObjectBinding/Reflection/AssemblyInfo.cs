@@ -1,9 +1,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Web.UI;
-
-[assembly: TagPrefix ("Rubicon.ObjectBinding.Reflection", "obr")]
 
 //
 // General Information about an assembly is controlled through the following 
@@ -12,10 +9,10 @@ using System.Web.UI;
 //
 [assembly: AssemblyTitle("Rubicon BusinessObjects Reflection Sample Library")]
 [assembly: AssemblyDescription("A sample library that uses Reflection to provide BusinessObjects functionality for .NET types.")]
-[assembly: AssemblyConfiguration("VS.NET build")]
+[assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: release")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
 [assembly: AssemblyProduct("Rubicon .NET Commons")]
-[assembly: AssemblyCopyright("(c) 2003 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyCopyright("(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
@@ -30,7 +27,7 @@ using System.Web.UI;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.2.29.110")]
+[assembly: AssemblyVersion("1.4.44.201")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -58,5 +55,5 @@ using System.Web.UI;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\build\global\rubicon.snk")]
 [assembly: AssemblyKeyName("")]
