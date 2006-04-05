@@ -270,6 +270,24 @@ public class EditableRow : PlaceHolder, INamingContainer
     }
   }
 
+  public void PrepareValidation ()
+  {
+    if (! HasEditControls())
+      return;
+
+    for (int i = 0; i < _editControls.Controls.Count; i++)
+      PrepareValidation (i);
+  }
+
+  protected void PrepareValidation (int columnIndex)
+  {
+    if (HasEditControl (columnIndex))
+    {
+      IBusinessObjectBoundEditableWebControl editControl = GetEditControl (columnIndex);
+      editControl.PrepareValidation ();
+    }
+  }
+
   public bool Validate ()
   {
     bool isValid = true;

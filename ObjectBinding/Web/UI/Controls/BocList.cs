@@ -1244,6 +1244,13 @@ public class BocList:
     ResetRowMenus();
   }
 
+  public override void PrepareValidation()
+  {
+    base.PrepareValidation ();
+
+    _editModeController.PrepareValidation ();
+  }
+
   protected override void OnPreRender(EventArgs e)
   {
     EnsureChildControls();

@@ -504,6 +504,15 @@ public class EditModeController : PlaceHolder
     }
   }
 
+  public void PrepareValidation ()
+  {
+    if (IsRowEditModeActive || IsListEditModeActive)
+    {
+      for (int i = 0; i < _rows.Length; i++)
+        _rows[i].PrepareValidation();
+    }
+  }
+
   public bool Validate()
   {
     EnsureValidatorsRestored();
