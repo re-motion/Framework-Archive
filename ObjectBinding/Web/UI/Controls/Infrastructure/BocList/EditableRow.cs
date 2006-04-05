@@ -388,7 +388,6 @@ public class EditableRow : PlaceHolder, INamingContainer
     ArgumentUtility.CheckNotNull ("writer", writer);
     ArgumentUtility.CheckNotNull ("column", column);
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    ArgumentUtility.CheckNotNull ("editModeValidator", editModeValidator);
 
     if (! HasEditControl (columnIndex))
       return;
