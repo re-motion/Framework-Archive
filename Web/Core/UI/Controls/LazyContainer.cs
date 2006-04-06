@@ -56,10 +56,7 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
-        if (! _isLazyLoadingEnabled)
-          Ensure ();
-
-        if (_isEnsured)
+       if (_isEnsured)
         {
           return base.Controls;
         }

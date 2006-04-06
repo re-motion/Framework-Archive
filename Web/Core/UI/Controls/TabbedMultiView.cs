@@ -51,6 +51,8 @@ public class TabbedMultiView: WebControl, IControl
       
       TabView tabView = (TabView) control;
       tabView.IsLazyLoadingEnabled = Parent.EnableLazyLoading;
+      if (! Parent.EnableLazyLoading)
+        tabView.EnsureLazyControls();
 
       base.AddedControl (control, index);
     }

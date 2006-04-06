@@ -1,7 +1,7 @@
-<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
-<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
 <%@ Page language="c#" Codebehind="TestTabbedForm.aspx.cs" AutoEventWireup="false" Inherits="OBWTest.TestTabbedForm"%>
+<%@ Register TagPrefix="obc" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" Assembly="Rubicon.ObjectBinding.Web" %>
+<%@ Register TagPrefix="rwc" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
+<%@ Register TagPrefix="obr" Namespace="Rubicon.ObjectBinding.Reflection" Assembly="Rubicon.ObjectBinding.Reflection" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
   <head><title>Test Tabbed Form</title>
@@ -85,7 +85,7 @@
 </PersistedCommand>
 </rwc:MainMenuTab>
 </Tabs>
-</rwc:tabbedmenu><rwc:tabbedmultiview id=MultiView runat="server" EnableLazyLoading="True" cssclass="tabbedMultiView">
+</rwc:tabbedmenu><rwc:tabbedmultiview id=MultiView runat="server" cssclass="tabbedMultiView">
 <topcontrols>
 <system.web.ui.htmlcontrols.htmlgenericcontrol>Test Tabbed Form</System.Web.UI.HtmlControls.HtmlGenericControl>
 <rwc:ValidationStateViewer ID="ValidationStateViewer"></rwc:ValidationStateViewer>
@@ -97,6 +97,6 @@
  <rwc:tabview id="second" title="Second">
  </rwc:tabview>
 </Views>
-</rwc:tabbedmultiview><rwc:smarthyperlink id=SmartHyperLink1 runat="server" NavigateUrl="~/Start.aspx">test</rwc:smarthyperlink></FORM>
+</rwc:tabbedmultiview><rwc:smarthyperlink id=SmartHyperLink1 runat="server" NavigateUrl="~/Start.aspx">test</rwc:smarthyperlink></form>
   </body>
 </html>
