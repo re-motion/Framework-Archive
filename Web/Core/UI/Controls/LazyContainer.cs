@@ -56,7 +56,10 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
-       if (_isEnsured)
+        if (ControlHelper.IsDesignMode (this))
+          Ensure();
+
+        if (_isEnsured)
         {
           return base.Controls;
         }
@@ -75,6 +78,10 @@ namespace Rubicon.Web.UI.Controls
       get
       {
         EnsurePlaceHolderCreated ();
+
+        if (ControlHelper.IsDesignMode (this))
+          Ensure();
+
         return _placeHolder.Controls; 
       }
     }
@@ -83,6 +90,14 @@ namespace Rubicon.Web.UI.Controls
     {
       if (_placeHolder == null)
         _placeHolder = new PlaceHolder ();
+    }
+
+    protected override void OnInit(EventArgs e)
+    {
+      base.OnInit (e);
+
+      if (ControlHelper.IsDesignMode (this))
+        Ensure();
     }
 
     protected override void LoadViewState (object savedState)
