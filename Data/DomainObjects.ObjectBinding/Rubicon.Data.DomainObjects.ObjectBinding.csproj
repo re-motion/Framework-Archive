@@ -4,11 +4,7 @@
         ProductVersion = "7.10.3077"
         SchemaVersion = "2.0"
         ProjectGuid = "{D06C0145-A94A-48AE-B186-BC3C8E8F3650}"
-        SccProjectName = "SAK"
-        SccLocalPath = "SAK"
-        SccAuxPath = "SAK"
-        SccProvider = "SAK"
-    >
+     >
         <Build>
             <Settings
                 ApplicationIcon = ""
