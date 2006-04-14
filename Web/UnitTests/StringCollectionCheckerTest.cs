@@ -76,7 +76,7 @@ namespace Rubicon.Web.UnitTests.UnitTests
       }
       catch (AssertionException e)
       {
-        if (e.Message != "\r\n\tArray lengths are both 1.\r\n\tArrays differ at index 0.\r\n\t\r\n\tString lengths are both 1.\r\n\tStrings differ at index 0.\r\n\t\r\n\texpected:<\"A\">\r\n\t but was:<\"B\">\r\n\t-----------^\r\n\t")
+        if (e.Message != "\r\nArray lengths are both 1.\r\nArrays differ at index 0.\r\n\tString lengths are both 1.\r\n\tStrings differ at index 0.\r\n\texpected: <\"A\">\r\n\t but was: <\"B\">\r\n\t------------^")
           throw;
       }
     }
