@@ -147,6 +147,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "AspNetFramework\PageMock.cs"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "Configuration\WebConfigurationFactory.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

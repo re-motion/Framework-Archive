@@ -18,21 +18,30 @@ namespace Rubicon.Web.UnitTests.UI.Controls
   public class WebControlTest
   {
     private WcagHelperMock _wcagHelperMock;
-    private Page _page;
+    private PageMock _page;
     private NamingContainerMock _namingContainer;
     private ControlInvoker _namingContainerInvoker;
 
     public WebControlTest ()
     {
     }
-    
+
     [SetUp]
     public virtual void SetUp ()
     {
       _wcagHelperMock = new WcagHelperMock();
       WcagHelper.SetInstance (_wcagHelperMock);
+      SetUpContext ();
+      SetUpPage ();
+    }
 
-      _page = new Page();
+    protected virtual void SetUpContext ()
+    {
+    }
+
+    protected virtual void SetUpPage ()
+    {
+      _page = new PageMock ();
 
       _namingContainer = new NamingContainerMock();
       _namingContainer.ID = "NamingContainer";
@@ -44,8 +53,18 @@ namespace Rubicon.Web.UnitTests.UI.Controls
     [TearDown]
     public virtual void TearDown ()
     {
+      TearDownPage ();
+      TearDownContext ();
       WcagHelper.SetInstance (new WcagHelperMock ());
+    }
+
+    protected virtual void TearDownContext ()
+    {
       HttpContextHelper.SetCurrent (null);
+    }
+
+    protected virtual void TearDownPage ()
+    {
     }
 
     protected WcagHelperMock WcagHelperMock
@@ -53,7 +72,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls
       get { return _wcagHelperMock; }
     }
 
-    public Page Page
+    public PageMock Page
     {
       get { return _page; }
     }

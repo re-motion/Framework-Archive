@@ -26,10 +26,9 @@ public class WebTabCollectionTest: WebControlTest
   {
   }
   
-  [SetUp]
-  public override void SetUp()
+  protected override void SetUpPage()
   {
-    base.SetUp();
+    base.SetUpPage();
     _tabStrip = new WebTabStrip();
     _tab0 = new WebTab ("Tab0", "Tab 0");
     _tab1 = new WebTab ("Tab1", "Tab 1");

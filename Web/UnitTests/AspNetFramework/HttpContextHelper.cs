@@ -55,6 +55,9 @@ public class HttpContextHelper
 
     HttpSessionState sessionState = CreateSession();
     SetSession (context, sessionState);
+
+    context.Request.Browser = new HttpBrowserCapabilities ();
+
     return context;
 	}
 

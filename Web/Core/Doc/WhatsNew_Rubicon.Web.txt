@@ -1,7 +1,12 @@
+1.4.54
+======
+- TabbedMultiView
+  * Unterstützt LazyLoading unter ASP.NET 2.0
+  
 1.4.53
 ======
 - TabbedMultiView
-  * Bugfix: TabbedMultiView hat nihct korrekt funktioniert, wenn LazyLoading abgeschaltet war.
+  * Bugfix: TabbedMultiView hat nicht korrekt funktioniert, wenn LazyLoading abgeschaltet war.
   
 1.4.51
 ======

@@ -179,6 +179,10 @@ namespace Rubicon.Web.UI.Controls
     {
       return new EmptyControlCollection (this);
     }
+
+    protected override void CreateChildControls ()
+    {
+    }
   }
 
 }

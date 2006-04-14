@@ -66,6 +66,16 @@ public class ControlInvoker
   {
     return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveViewState", new object[0]);
   }
+
+  public object SaveControlState ()
+  {
+    return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveControlState", new object[0]);
+  }
+
+  public object SaveControlStateInternal ()
+  {
+    return PrivateInvoke.InvokeNonPublicMethod (_control, typeof (Control), "SaveControlStateInternal", new object[0]);
+  }
 }
 
 }

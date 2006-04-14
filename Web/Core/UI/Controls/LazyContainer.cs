@@ -1,18 +1,22 @@
 using System;
+using System.Collections;
 using System.ComponentModel;
+using System.Reflection;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
+#if ! NET11
+using System.Collections.Generic;
+#endif
 
 namespace Rubicon.Web.UI.Controls
 {
 
-  [ToolboxItem (false)]
   [PersistChildren (true)]
   [ParseChildren (true, "RealControls")]
-  public class LazyContainer : Control
+  public class LazyContainer : Control, INamingContainer
   {
     // types
 
@@ -23,6 +27,10 @@ namespace Rubicon.Web.UI.Controls
     private bool _isEnsured;
     private EmptyControlCollection _emptyControlCollection;
     private PlaceHolder _placeHolder;
+#if ! NET11
+    Dictionary<string, object> _childControlStatesBackUp;
+    private bool _hasControlStateLoaded;
+#endif
     private object _recursiveViewState;
     private bool _isSavingViewStateRecursive;
     private bool _isLoadingViewStateRecursive;
@@ -42,6 +50,15 @@ namespace Rubicon.Web.UI.Controls
         return;
 
       _isEnsured = true;
+#if ! NET11
+      if (_isLazyLoadingEnabled)
+      {        
+        if (!_hasControlStateLoaded && Page != null && Page.IsPostBack)
+          throw new InvalidOperationException (string.Format ("Cannot ensure LazyContainer '{0}' before its state has been loaded.", ID));
+
+        RestoreChildControlState ();
+      }
+#endif
       EnsurePlaceHolderCreated ();
       Controls.Add (_placeHolder);
     }
@@ -56,8 +73,7 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
-        if (ControlHelper.IsDesignMode (this))
-          Ensure();
+        EnsureChildControls ();
 
         if (_isEnsured)
         {
@@ -67,7 +83,7 @@ namespace Rubicon.Web.UI.Controls
         {
           if (_emptyControlCollection == null)
             _emptyControlCollection = new EmptyControlCollection (this);
-          return _emptyControlCollection;          
+          return _emptyControlCollection;
         }
       }
     }
@@ -77,12 +93,10 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
+        EnsureChildControls ();
+
         EnsurePlaceHolderCreated ();
-
-        if (ControlHelper.IsDesignMode (this))
-          Ensure();
-
-        return _placeHolder.Controls; 
+        return _placeHolder.Controls;
       }
     }
 
@@ -92,12 +106,20 @@ namespace Rubicon.Web.UI.Controls
         _placeHolder = new PlaceHolder ();
     }
 
-    protected override void OnInit(EventArgs e)
+    protected override void CreateChildControls ()
+    {
+      if (! _isLazyLoadingEnabled || ControlHelper.IsDesignMode (this))
+        Ensure ();
+    }
+
+    protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
+      EnsureChildControls ();
 
-      if (ControlHelper.IsDesignMode (this))
-        Ensure();
+#if ! NET11
+      Page.RegisterRequiresControlState (this);
+#endif
     }
 
     protected override void LoadViewState (object savedState)
@@ -138,6 +160,74 @@ namespace Rubicon.Web.UI.Controls
 
       return values;
     }
+
+#if ! NET11
+
+    protected override void LoadControlState (object savedState)
+    {
+      ArgumentUtility.CheckNotNullAndType ("savedState", savedState, typeof (Triplet));
+
+      Triplet values = (Triplet) savedState;
+      base.LoadControlState (savedState);
+      bool hasChildControlStatesBackUp = (bool) values.Second;
+
+      if (hasChildControlStatesBackUp)
+        _childControlStatesBackUp = (Dictionary<string, object>) values.Third;
+      else if (_isLazyLoadingEnabled)
+        BackUpChildControlState ();
+
+      _hasControlStateLoaded = true;
+    }
+
+    private void RestoreChildControlState ()
+    {
+      if (_childControlStatesBackUp == null)
+        return;
+
+      PageStatePersister pageStatePersister = ControlHelper.GetPageStatePersister (Page);
+      IDictionary childControlStates = (IDictionary) pageStatePersister.ControlState;
+
+      foreach (string key in _childControlStatesBackUp.Keys)
+      {
+        if (!childControlStates.Contains (key))
+          childControlStates.Add (key, _childControlStatesBackUp[key]);
+      }
+        
+      _childControlStatesBackUp = null;
+    }
+
+    private void BackUpChildControlState ()
+    {
+      _childControlStatesBackUp = new Dictionary<string, object> ();
+
+      PageStatePersister pageStatePersister = ControlHelper.GetPageStatePersister (Page);
+      IDictionary controlStates = (IDictionary) pageStatePersister.ControlState;
+      foreach (string key in controlStates.Keys)
+      {
+        if (key.StartsWith (UniqueID) && key != UniqueID)
+          _childControlStatesBackUp.Add (key, controlStates[key]);
+      }
+
+      if (_childControlStatesBackUp.Count == 0)
+        _childControlStatesBackUp = null;
+    }
+
+    protected override object SaveControlState ()
+    {
+      bool hasChildControlStatesBackUp = _isLazyLoadingEnabled && !_isEnsured;
+
+      Triplet values = new Triplet ();
+      values.First = base.SaveControlState ();
+      values.Second = hasChildControlStatesBackUp;
+      if (hasChildControlStatesBackUp)
+        values.Third = _childControlStatesBackUp;
+      else
+        values.Third = null;
+
+      return values;
+    }
+
+#endif
   }
 
 }

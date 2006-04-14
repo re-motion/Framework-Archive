@@ -1,18 +1,17 @@
 using System;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using NUnit.Framework;
 
 using Rubicon.Utilities;
+using Rubicon.Web.UnitTests.AspNetFramework;
 
 namespace Rubicon.Web.UnitTests.UI.Controls
 {
-//TODO: Remore ignore after nant for .net 2.0 is available.
+
 [TestFixture]
-#if ! NET11
-[Ignore ("Only runs with .net 2.0 unit a pure .net 2.0 nant is available.")]
-#endif
 public class ControlInvokerTest
 {
   // types
@@ -21,6 +20,7 @@ public class ControlInvokerTest
 
   // member fields
 
+  private HttpContext _currentHttpContext;
   private PlaceHolder _parent;
   private Literal _child;
 
@@ -43,6 +43,9 @@ public class ControlInvokerTest
   [SetUp]
   public void SetUp()
   {
+    _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
+    HttpContextHelper.SetCurrent (_currentHttpContext);
+
     _parent = new PlaceHolder();
     _parent.ID = "Parent";
     _parent.Init += new EventHandler (Control_Init);
@@ -88,6 +91,8 @@ public class ControlInvokerTest
     _child.Init -= new EventHandler (Control_Init);
     _child.Load -= new EventHandler (Control_Load);
     _child.PreRender -= new EventHandler (Control_PreRender);
+
+    HttpContextHelper.SetCurrent (null);
   }
 
   [Test]
@@ -161,4 +166,5 @@ public class ControlInvokerTest
     return events + control.ID + " " + eventName;
   }
 }
+
 }

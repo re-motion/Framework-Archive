@@ -14,10 +14,9 @@ public class WebButtonTest: WebControlTest
 {
   private WebButtonMock _webButton;
 
-  [SetUp]
-  public override void SetUp()
+  protected override void SetUpPage()
   {
-    base.SetUp();
+    base.SetUpPage();
     _webButton = new WebButtonMock();
     _webButton.ID = "WebButton";
   }

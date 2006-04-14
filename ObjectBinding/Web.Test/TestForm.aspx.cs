@@ -29,6 +29,11 @@ public class TestForm : Page
   protected System.Web.UI.WebControls.Button PostBackButton;
   protected Rubicon.Web.UI.Controls.LazyContainer LazyContainer;
   protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue TextField;
+  protected System.Web.UI.WebControls.TextBox TextBox1;
+  protected System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+  protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+  protected Rubicon.Web.UI.Controls.FormGridManager fgm;
+  protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue field;
   protected Rubicon.Web.UI.Controls.HtmlHeadContents HtmlHeadContents;
 
 	#region Web Form Designer generated code
@@ -48,6 +53,7 @@ public class TestForm : Page
 	/// </summary>
 	private void InitializeComponent()
 	{
+    this.PostBackButton.Click += new System.EventHandler(this.PostBackButton_Click);
 
   }
 	#endregion
@@ -62,6 +68,16 @@ public class TestForm : Page
     bool ensure = true;
     if (ensure)
       LazyContainer.Ensure();
+  }
+
+  public override void Validate()
+  {
+    base.Validate ();
+  }
+
+  private void PostBackButton_Click(object sender, System.EventArgs e)
+  {
+  
   }
 
 

@@ -34,14 +34,18 @@ public class TabbedMenuTest: WebControlTest
   private SubMenuTab _subMenuTab22;
   private SubMenuTab _subMenuTab23;
 
-  [SetUp]
-  public override void SetUp()
+  protected override void SetUpContext ()
   {
-    base.SetUp();
+    base.SetUpContext ();
     
     _currentHttpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
     _currentHttpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
     HttpContextHelper.SetCurrent (_currentHttpContext);
+  }
+
+  protected override void SetUpPage()
+  {
+    base.SetUpPage();
 
     _tabbedMenu = new TabbedMenuMock();
     _tabbedMenu.ID = "TabbedMenu";

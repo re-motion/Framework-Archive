@@ -39,8 +39,10 @@ public class TestTabbedForm : TestWxeBasePage
     get { return (TestTabbedFormWxeFunction) CurrentFunction; }
   }
 
-	private void Page_Load(object sender, System.EventArgs e)
-	{
+  protected override void OnLoad(EventArgs e)
+  {
+    base.OnLoad (e);
+
     // add tabs 
     AddTab ("1", "Test Tab 1", null);
     AddTab ("2", "Test Tab 2 foo bar", null);
@@ -197,16 +199,14 @@ public class TestTabbedForm : TestWxeBasePage
 	/// </summary>
 	private void InitializeComponent()
 	{    
-    this.EnableAbort = Rubicon.NullableValueTypes.NaBooleanEnum.False;
-    this.ShowAbortConfirmation = Rubicon.Web.UI.ShowAbortConfirmation.Always;
-    this.Unload += new System.EventHandler(this.Page_Unload);
-    this.Load += new System.EventHandler(this.Page_Load);
-
+    MultiView.ActiveViewChanged += new EventHandler(MultiView_ActiveViewChanged);
   }
 	#endregion
 
-  private void Page_Unload (object sender, System.EventArgs e)
+  protected override void OnUnload(EventArgs e)
   {
+    base.OnUnload (e);
+
     if (_currentObjectSaved)
       return;
 
