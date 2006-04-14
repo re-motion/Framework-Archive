@@ -590,6 +590,30 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     Assert.IsFalse (Controller.Validate());
   }
 
+  
+  [Test]
+  public void PrepareValidation ()
+  {
+    Invoker.InitRecursive();
+    Controller.SwitchRowIntoEditMode (2, Columns, Columns);
+
+    for (int i = 0; i < Controller.Controls.Count; i++)
+    {
+      EditableRow editableRow = (EditableRow) Controller.Controls[i];
+
+      BocTextValue stringValueField = (BocTextValue) editableRow.GetEditControl (0);
+      BocTextValue int32ValueField = (BocTextValue) editableRow.GetEditControl (1);
+      
+      Assert.AreEqual (string.Empty, stringValueField.TextBox.Text, "Row {0}", i);
+      Assert.AreEqual (string.Empty, int32ValueField.TextBox.Text, "Row {0}", i);
+
+      Controller.PrepareValidation();
+      
+      Assert.AreEqual (stringValueField.Text, stringValueField.TextBox.Text, "Row {0}", i);
+      Assert.AreEqual (int32ValueField.Text, int32ValueField.TextBox.Text, "Row {0}", i);
+    }
+  }
+
 
   [Test]
   public void IsRequired ()

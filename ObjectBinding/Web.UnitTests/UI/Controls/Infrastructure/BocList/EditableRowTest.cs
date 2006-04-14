@@ -828,10 +828,40 @@ public class EditableRowTest : BocTest
   }
 
 
+  [Test]
+  public void PrepareValidation ()
+  {
+    Invoker.InitRecursive();
+
+    _editableRow.DataSourceFactory = new EditableRowDataSourceFactory();
+    _editableRow.ControlFactory = new EditableRowControlFactory();
+
+    BocColumnDefinition[] columns = new BocColumnDefinition[3];
+    columns[0] = _typeWithAllDataTypesStringValueSimpleColumn;
+    columns[1] = _typeWithAllDataTypesInt32ValueSimpleColumn;
+    columns[2] = _commandColumn;
+
+    _editableRow.CreateControls (_value01, columns);
+    _editableRow.EnsureValidatorsRestored ();
+
+    IBusinessObjectReferenceDataSource dataSource = _editableRow.GetDataSource();
+    dataSource.LoadValues (false);
+
+    BocTextValue stringValueField = (BocTextValue) _editableRow.GetEditControl (0);
+    BocTextValue int32ValueField = (BocTextValue) _editableRow.GetEditControl (1);
+    
+    Assert.AreEqual (string.Empty, stringValueField.TextBox.Text);
+    Assert.AreEqual (string.Empty, int32ValueField.TextBox.Text);
+
+    _editableRow.PrepareValidation();
+    
+    Assert.AreEqual (stringValueField.Text, stringValueField.TextBox.Text);
+    Assert.AreEqual (int32ValueField.Text, int32ValueField.TextBox.Text);
+  }
+
+
   private void SetValues (EditableRow row, string stringValue, string int32Value)
   {
-    ArgumentUtility.CheckNotNull ("row", row);
-
     BocTextValue stringValueField = (BocTextValue) row.GetEditControl (0);
     stringValueField.TextBox.Text = stringValue;
     stringValueField.Text = stringValue;
