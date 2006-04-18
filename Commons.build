@@ -7,9 +7,12 @@
   <target name="doc" depends="doc-public,doc-internal" />
   <target name="deploy" depends="cleantemp,zip,sourcezip,getcurrent" />
 
-  <include buildfile="build/properties.include.xml" verbose="true"/>
+  <include buildfile="build/properties.include.xml" verbose="true" />
+  <include buildfile="build/Commons.Doc.net-1.1.include.xml" verbose="true" if="${nant.settings.currentframework == 'net-1.1'}"/>
+  <include buildfile="build/Commons.Doc.include.xml" verbose="true" unless="${nant.settings.currentframework == 'net-1.1'}"/>
 
-  <property name="doc.sdkdocversion" value="SDK_v1_1" />
+  <property name="doc.sdkdocversion" value="SDK_v1_1" if="${nant.settings.currentframework == 'net-1.1'}" />
+  <property name="doc.sdkdocversion" value="SDK_v2_0" if="${nant.settings.currentframework == 'net-2.0'}" />
   <property name="dir.development" value="\development" overwrite="false"/>
   <property name="global.dir" value="${dir.development}\global"/>
   <property name="solution.basedir" value="${nant.project.basedir}" />
@@ -622,164 +625,6 @@
       </fileset>
     </replace>
     <attrib readonly="true" file="${project.basedir}/AssemblyInfo.cs"/>
-  </target>
-
-  <!--======================= DOCUMENTATION =======================-->
-
-  <target name="preparedoc">
-    <property name="doc.core" value="${nant.project.basedir}/Core/Doc" />
-
-    <copy file="${doc.core}/include/GettingStartedTemplate.html"  
-          tofile="${doc.core}/include/GettingStarted.html" 
-          overwrite="true" />
-    <attrib readonly="false" file="${doc.core}/include/GettingStarted.html"/>
-    <replace>
-      <filterset>
-        <filter token="companyurl" value="${text.companyurl}" />
-        <filter token="copyright" value="${text.copyright}" />
-        <filter token="versionnumber" value="${build.version}" />
-      </filterset>
-      <fileset>
-        <include name="${doc.core}/include/GettingStarted.html" />
-      </fileset>
-    </replace>
-    <attrib readonly="true" file="${doc.core}/include/GettingStarted.html"/>
-  </target>
-
-  <target name="doc-public" depends="setdocumentation,all">
-    <property name="doc.suffix" value="" />
-
-    <property name="doc.filebase" value="${text.productshortname}${doc.suffix}" />
-    <property name="doc.tempdir" value="${project.tempdir}/doc${doc.suffix}" />
-    <mkdir dir="${doc.tempdir}"/>
-    <mkdir dir="${doc.targetdir}"/>
-    
-    <call target="preparedoc" />
-
-    <ndoc>
-      <assemblies basedir="${project.builddir}" failonempty="true">
-        <include name="Rubicon.Core.dll" />
-        <include name="Rubicon.Development.dll" />
-        <include name="Rubicon.Development.CodeDom.dll" />
-        <include name="Rubicon.Data.DomainObjects.dll" />
-        <include name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
-        <include name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
-        <include name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
-        <include name="Rubicon.Data.DomainObjects.Web.dll" />
-        <include name="Rubicon.Web.dll" />
-        <include name="Rubicon.Web.Legacy.dll" />
-        <include name="Rubicon.ObjectBinding.dll" />
-        <include name="Rubicon.ObjectBinding.Web.dll" />
-        <include name="Rubicon.ObjectBinding.Reflection.dll" />
-      </assemblies>
-      <documenters>
-        <documenter name="MSDN">
-          <property name="OutputDirectory" value="${doc.tempdir}" />
-          <property name="LinkToSdkDocVersion" value="${doc.sdkdocversion}" />
-          <property name="HtmlHelpName" value="${doc.filebase}" />
-          <property name="HtmlHelpCompilerFilename" value="hhc.exe" />
-          <property name="IncludeFavorites" value="False" />
-          <property name="Title" value="${text.productname}" />
-          <property name="SplitTOCs" value="False" />
-          <property name="DefaulTOC" value="" />
-          <property name="BinaryTOC" value="True" />
-          <property name="ShowVisualBasic" value="True" />
-          <property name="ShowMissingSummaries" value="False" />
-          <property name="ShowMissingRemarks" value="False" />
-          <property name="ShowMissingParams" value="False" />
-          <property name="ShowMissingReturns" value="False" />
-          <property name="ShowMissingValues" value="False" />
-          <property name="DocumentInternals" value="False" />
-          <property name="DocumentProtected" value="True" />
-          <property name="DocumentPrivates" value="False" />
-          <property name="DocumentEmptyNamespaces" value="False" />
-          <property name="CopyrightText" value="${text.copyright}" />
-          <property name="CopyrightHref" value="${text.companyurl}" />
-          <property name="FooterHtml" value="&lt;p&gt;&lt;a href=&quot;${text.companyurl}&quot;&gt;${text.copyright}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Version: ${build.version}&lt;/p&gt;"/>
-          <property name="RootPageTOCName" value="Getting Started" />
-          <property name="RootPageFileName" value="${nant.project.basedir}/Core/Doc/include/GettingStarted.html" />
-          <property name="RootPageContainsNamespaces" value="False" />
-          <property name="IncludeDefaultThreadSafety" value="False" />
-        </documenter>
-      </documenters>
-      <summaries>
-        <include name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/Web/Legacy/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
-      </summaries>
-    </ndoc>
-    <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
-  </target>
-
-  <target name="doc-internal" depends="setdocumentation,all">
-    <property name="doc.suffix" value="Internal" />
-
-    <property name="doc.filebase" value="${text.productshortname}${doc.suffix}" />
-    <property name="doc.tempdir" value="${project.tempdir}/doc${doc.suffix}" />
-    <mkdir dir="${doc.tempdir}"/>
-    <mkdir dir="${doc.targetdir}"/>
-    
-    <call target="preparedoc" />
-
-    <ndoc>
-      <assemblies basedir="${project.builddir}" failonempty="true">
-        <include name="Rubicon.Core.dll" />
-        <include name="Rubicon.Development.dll" />
-        <include name="Rubicon.Development.CodeDom.dll" />
-        <include name="Rubicon.Data.DomainObjects.dll" />
-        <include name="Rubicon.Data.DomainObjects.ObjectBinding.dll" />
-        <include name="Rubicon.Data.DomainObjects.ObjectBinding.Web.dll" />
-        <include name="Rubicon.Data.DomainObjects.CodeGenerator.dll" />
-        <include name="Rubicon.Data.DomainObjects.Web.dll" />
-        <include name="Rubicon.Web.dll" />
-        <include name="Rubicon.Web.Legacy.dll" />
-        <include name="Rubicon.ObjectBinding.dll" />
-        <include name="Rubicon.ObjectBinding.Web.dll" />
-        <include name="Rubicon.ObjectBinding.Reflection.dll" />
-      </assemblies>
-      <documenters>
-        <documenter name="MSDN">
-          <property name="OutputDirectory" value="${doc.tempdir}" />
-          <property name="LinkToSdkDocVersion" value="${doc.sdkdocversion}" />
-          <property name="HtmlHelpName" value="${doc.filebase}" />
-          <property name="HtmlHelpCompilerFilename" value="hhc.exe" />
-          <property name="IncludeFavorites" value="False" />
-          <property name="Title" value="${text.productname} Internal" />
-          <property name="SplitTOCs" value="False" />
-          <property name="DefaulTOC" value="" />
-          <property name="BinaryTOC" value="True" />
-          <property name="ShowVisualBasic" value="False" />
-          <property name="ShowMissingSummaries" value="True" />
-          <property name="ShowMissingRemarks" value="True" />
-          <property name="ShowMissingParams" value="True" />
-          <property name="ShowMissingReturns" value="True" />
-          <property name="ShowMissingValues" value="True" />
-          <property name="DocumentInternals" value="True" />
-          <property name="DocumentProtected" value="True" />
-          <property name="DocumentPrivates" value="True" />
-          <property name="DocumentEmptyNamespaces" value="True" />
-          <property name="CopyrightText" value="${text.copyright}" />
-          <property name="CopyrightHref" value="${text.companyurl}" />
-          <property name="FooterHtml" value="&lt;p&gt;&lt;a href=&quot;${text.companyurl}&quot;&gt;${text.copyright}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Version: ${build.version}&lt;/p&gt;"/>
-          <property name="RootPageTOCName" value="Getting Started" />
-          <property name="RootPageFileName" value="${nant.project.basedir}/Core/Doc/include/GettingStarted.html" />
-          <property name="RootPageContainsNamespaces" value="False" />
-          <property name="IncludeDefaultThreadSafety" value="False" />
-        </documenter>
-      </documenters>
-      <summaries>
-        <include name="${nant.project.basedir}/Core/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/Web/Core/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/Web/Legacy/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/ObjectBinding/Core/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/ObjectBinding/Web/Doc/include/NamespaceDoc.xml"/>
-        <include name="${nant.project.basedir}/Data/DomainObjects/Doc/include/NamespaceDoc.xml"/>
-      </summaries>
-    </ndoc>
-    <copy file="${doc.tempdir}/${doc.filebase}.chm" todir="${doc.targetdir}" />
   </target>
 
   <!--======================= CLEANING =======================-->
