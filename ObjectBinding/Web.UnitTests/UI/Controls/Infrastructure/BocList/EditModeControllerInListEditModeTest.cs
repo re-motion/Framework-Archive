@@ -538,7 +538,8 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     
     Assert.IsNotNull (validators);
     Assert.AreEqual (1, validators.Length);
-    Assert.IsTrue (validators[0] is EditModeValidator);
+    Assert.IsInstanceOfType (typeof (EditModeValidator), validators[0]);
+    Assert.AreEqual (BocList.ID, validators[0].ControlToValidate);
     Assert.AreEqual (resourceManager.GetString (Rubicon.ObjectBinding.Web.UI.Controls.BocList.ResourceIdentifier.ListEditModeErrorMessage), validators[0].ErrorMessage);
   }
 
@@ -555,7 +556,8 @@ public class EditModeControllerInListEditModeTest : EditModeControllerTestBase
     
     Assert.IsNotNull (validators);
     Assert.AreEqual (1, validators.Length);
-    Assert.IsTrue (validators[0] is EditModeValidator);
+    Assert.IsInstanceOfType (typeof (EditModeValidator), validators[0]);
+    Assert.AreEqual (BocList.ID, validators[0].ControlToValidate);
     Assert.AreEqual ("Foo Bar", validators[0].ErrorMessage);
   }
 

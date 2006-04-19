@@ -468,7 +468,7 @@ public class EditModeController : PlaceHolder
 
     EditModeValidator editModeValidator = new EditModeValidator (_ownerControl);
     editModeValidator.ID = ID + "_ValidatorEditMode";
-    editModeValidator.ControlToValidate = ID;
+    editModeValidator.ControlToValidate = _ownerControl.ID;
     if (StringUtility.IsNullOrEmpty (_ownerControl.ErrorMessage))
     {
       if (IsRowEditModeActive)
