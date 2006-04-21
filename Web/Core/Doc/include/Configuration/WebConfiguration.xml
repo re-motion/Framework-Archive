@@ -6,8 +6,9 @@
         Use this class's <see cref="Current"/> property to read the configuration settings from your code. 
       </para><para>
         Place a copy of the <c>WebConfiguration.xsd</c> schema file into Visual Studio's xml schema directory
-        (<c>C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Packages\schemas\xml</c>) to provide
-        IntelliSense for the <c>web.config</c>.
+        (<c>%ProgramFiles%\Microsoft Visual Studio .NET 2003\Common7\Packages\schemas\xml</c> for Visual Studio 2003 and 
+        (<c>%ProgramFiles%\Microsoft Visual Studio 8\XML\Schemas</c> for Visual Studio 2005 respectivly) to provide IntelliSense for the 
+        <c>web.config</c>.
       </para>
     </remarks>
     <seealso cref="IConfigurationSectionHandler"/>
