@@ -137,6 +137,7 @@ Global
 		build\buildversion.xml = build\buildversion.xml
 		Commons.build = Commons.build
 		build\Commons.Doc.net-1.1.include.xml = build\Commons.Doc.net-1.1.include.xml
+		build\Commons.include.xml = build\Commons.include.xml
 		localbuild.cmd = localbuild.cmd
 		build\properties.include.xml = build\properties.include.xml
 	EndGlobalSection

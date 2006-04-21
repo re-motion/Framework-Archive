@@ -4,15 +4,15 @@
   <target name="build" description="perform a build">
 
     <csc  target="library" 
-          output="${project.builddir}/${project.output}.${project.extension}" 
+          output="${build.outputdir}/${project.output}.${project.extension}" 
           unsafe="true" 
           doc="${project.doc}" 
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
         <warning number="1591" /> <!-- missing XML comment -->
-        <warning number="0612" if="${net20}" /> <!-- no obsolete warning for net2.0-->
-        <warning number="0618" if="${net20}" /> <!-- no obsolete warning for net2.0-->
+        <warning number="0612" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
+        <warning number="0618" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
@@ -27,7 +27,7 @@
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${project.builddir}/log4net.dll" />
+        <include name="${build.outputdir}/log4net.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
       </references>
