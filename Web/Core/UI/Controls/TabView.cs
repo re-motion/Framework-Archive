@@ -14,7 +14,7 @@ namespace Rubicon.Web.UI.Controls
 {
   [PersistChildren (true)]
   [ParseChildren (true, "LazyControls")]
-  [ToolboxData("<{0}:TabView runat=\"server\"></{0}:TabView>")]
+  [ToolboxData ("<{0}:TabView runat=\"server\"></{0}:TabView>")]
 #if NET11
   [CLSCompliant (false)]
   public class TabView : Microsoft.Web.UI.WebControls.PageView
@@ -23,9 +23,9 @@ namespace Rubicon.Web.UI.Controls
 #endif
   {
     //  constants
-
+    
     // statics
-
+    
     // types
 
     // fields
@@ -35,16 +35,16 @@ namespace Rubicon.Web.UI.Controls
     private LazyContainer _lazyContainer;
 
     // construction and destruction
-    
-    public TabView()
+
+    public TabView ()
     {
-      _icon = new IconInfo();
+      _icon = new IconInfo ();
       _lazyContainer = new LazyContainer ();
     }
 
     // methods and properties
 
-    protected override void CreateChildControls()
+    protected override void CreateChildControls ()
     {
       base.CreateChildControls ();
 
@@ -56,10 +56,10 @@ namespace Rubicon.Web.UI.Controls
     [Obsolete ("Use LazyControls instead")]
     public override ControlCollection Controls
     {
-      get 
+      get
       {
         EnsureChildControls ();
-        return base.Controls; 
+        return base.Controls;
       }
     }
 
@@ -77,7 +77,7 @@ namespace Rubicon.Web.UI.Controls
     public void EnsureLazyControls ()
     {
       EnsureChildControls ();
-      _lazyContainer.Ensure();
+      _lazyContainer.Ensure ();
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
@@ -91,7 +91,7 @@ namespace Rubicon.Web.UI.Controls
 
     internal TabbedMultiView.MultiView ParentMultiView
     {
-      get 
+      get
       {
         return (TabbedMultiView.MultiView) Parent;
       }
@@ -132,14 +132,14 @@ namespace Rubicon.Web.UI.Controls
       set { _icon = value; }
     }
 
-    private bool ShouldSerializeIcon()
+    private bool ShouldSerializeIcon ()
     {
       return IconInfo.ShouldSerialize (_icon);
     }
 
-    private void ResetIcon()
+    private void ResetIcon ()
     {
-      _icon.Reset();
+      _icon.Reset ();
     }
 
 #if NET11
@@ -153,10 +153,33 @@ namespace Rubicon.Web.UI.Controls
 	  	    return Microsoft.Web.UI.WebControls.RenderPathID.DownLevelPath;
       }
     }
+#else
+    private bool _overrideVisible = false;
+    private bool _isVisible = true;
 
-    public bool Active
+    internal void OverrideVisible ()
     {
-      get { return Selected; }
+      bool isActive = ParentMultiView.GetActiveView () == this;
+      if (Visible != isActive)
+      {
+        _overrideVisible = true;
+        Visible = isActive;
+        _overrideVisible = false;
+      }
+    }
+
+    public override bool Visible
+    {
+      get
+      {
+        return _isVisible;
+      }
+      set
+      {
+        if (!_overrideVisible)
+          throw new InvalidOperationException ("Cannot explicitly set the visibility of a TabView.");
+        _isVisible = value;
+      }
     }
 #endif
 
@@ -167,15 +190,15 @@ namespace Rubicon.Web.UI.Controls
   [CLSCompliant (false)]
 #endif
   [ToolboxItem (false)]
-  public class EmptyTabView: TabView
+  public class EmptyTabView : TabView
   {
-    public EmptyTabView()
+    public EmptyTabView ()
     {
       Title = "&nbsp;";
       ID = null;
     }
 
-    protected override ControlCollection CreateControlCollection()
+    protected override ControlCollection CreateControlCollection ()
     {
       return new EmptyControlCollection (this);
     }
