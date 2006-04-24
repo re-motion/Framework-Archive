@@ -14,7 +14,7 @@ div.bocListTable
 {
 }
 
-/* Style applied to the div surrounding the BocList's table when the list is read-only. */
+/*  Style applied to the div surrounding the BocList's table when the list is read-only. */
 .bocList.readOnly div.bocListTable
 {
 }
