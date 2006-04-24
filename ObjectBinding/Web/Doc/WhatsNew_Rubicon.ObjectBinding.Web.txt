@@ -1,3 +1,8 @@
+1.4.56
+======
+- BocList
+  * Bugfix: CSS-Klasse bocListEditModeValidationMessage ist noch als bocListEditDetailsValidationMessage in den Resourcen aufgeschienen.
+  
 1.4.48
 ======
 - BocList

@@ -200,7 +200,7 @@ span.bocListAvailableViewsListLabel
 }
 
 /*  Style applied to the validation messages, applied if the EditDetailsValidator has no style it self.  */
-div.bocListEditDetailsValidationMessage
+div.bocListEditModeValidationMessage
 {
 	color: Red;
 }
