@@ -97,6 +97,6 @@
         <value>Optionen</value>
     </data>
     <data name="Rubicon.ObjectBinding.Web.UI.Controls.BocList.ListEditModeErrorMessage">
-        <value>In zumimdest einer Zeile ist ein Fehler aufgetreten.</value>
+        <value>In zumindest einer Zeile ist ein Fehler aufgetreten.</value>
     </data>
 </root>
