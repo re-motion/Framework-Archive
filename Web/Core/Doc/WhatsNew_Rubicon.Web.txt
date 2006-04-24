@@ -1,3 +1,8 @@
+1.5.55
+======
+- TabbedMultiView 
+  * Bugfix: Visibility in ASP.NET 2.0 unterschied sich von ASP.NET 1.1 -> FormGridManager und Validation haben nicht korrekt funktioniert.
+  
 1.4.54
 ======
 - TabbedMultiView
