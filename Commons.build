@@ -15,14 +15,13 @@
   <property name="dir.development" value="\development" overwrite="false"/>
   <property name="global.dir" value="${dir.development}\global"/>
   <property name="solution.basedir" value="${project::get-base-directory()}" />
+  <property name ="solution.projects" 
+      value="Core, Core.Test, Data, Development, ObjectBinding, prereq, Web/Core, Web/Legacy, Web/UnitTests, Web/ExecutionEngine/Test"/>
   <property name="prereq.assemblies" value="${solution.basedir}\prereq\assemblies" />
   <property name="project.basedir" value="${solution.basedir}/${project.dir}" dynamic="true" />
-  <!-- project.builddir -->
   <property name="build.outputdir" value="${build.basedir}/${nant.settings.currentframework}/bin/${project.config}" dynamic="true" />
   <property name="build.temp.basedir" value="${build.basedir}/temp" dynamic="true" />
-  <!-- project.tempdir -->
   <property name="build.temp.outputdir" value="${build.temp.basedir}/${nant.settings.currentframework}/${project.config}" dynamic="true" />
-  <!-- tests.builddir -->
   <property name="build.test.outputdir" value="${build.temp.basedir}/${nant.settings.currentframework}/tests/${project.config}" dynamic="true" />
   <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
   <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" dynamic="true" />
