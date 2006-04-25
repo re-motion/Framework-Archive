@@ -1,3 +1,8 @@
+1.4.56
+======
+- Rubicon.Utilities.SeparatedStringBuilder nach Rubicon.Text verschoben.
+- Rubicon.Text.SimpleParser entfernt. (Hatte keine Funktionalität).
+
 1.4.54
 ======
 - Upgrade auf NUnit 2.2.7

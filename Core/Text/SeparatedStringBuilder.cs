@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Rubicon.Utilities
+namespace Text
 {
 
 /// <summary>
