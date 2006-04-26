@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Text
+namespace Rubicon.Text
 {
 
 /// <summary>
