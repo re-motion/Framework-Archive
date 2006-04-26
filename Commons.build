@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="nant-schema" name="Rubicon.Commons">
 
-  <target name="debug" depends="setdebug, all" />
-  <target name="release" depends="setrelease, all" />
-  <target name="resources" depends="setresources, all" />
-  <target name="doc" depends="doc-public, doc-internal" />
-  <target name="deploy" depends="cleantemp, zip, sourcezip, getcurrent" />
-
   <include buildfile="build/properties.include.xml" verbose="true" />
   <include buildfile="build/Commons.include.xml" verbose="true" />
   <include buildfile="build/Commons.Doc.net-1.1.include.xml" verbose="true" if="${nant.settings.currentframework == 'net-1.1'}" />
@@ -26,9 +20,11 @@
   <property name="build.keyfile" value="${global.dir}\rubicon.snk" />
   <property name="doc.targetdir" value="${build.basedir}/${nant.settings.currentframework}/doc" dynamic="true" />
 
-  <property name="sql.dir" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn" overwrite="false" />
+  <property name="sql.exe" value="C:\Program Files\Microsoft SQL Server\90\Tools\Binn\osql.exe" overwrite="false" />
   <property name="sql.instance" value="localhost" overwrite="false" />
 
+  <property name="svn.exe" value="C:\Program Files\Subversion\bin\svn.exe" overwrite="false"/>
+  
   <property name="doc.sdkdocversion" value="SDK_v1_1" if="${nant.settings.currentframework == 'net-1.1'}" />
   <property name="doc.sdkdocversion" value="SDK_v2_0" if="${nant.settings.currentframework == 'net-2.0'}" />
 
@@ -38,7 +34,7 @@
 
   <target name="init-build-version">
     <buildversion versionfile="${solution.basedir}/build/buildversion.xml" increment="false" />
-    <echo message="new version is ${build.version.noconfig}"/>
+    <echo message="current version is ${build.version.noconfig}"/>
 
     <property name="build.basedir" value="${solution.basedir}/build/${build.version.noconfig}" unless="${property::exists('build.local')}" />
     <property name="build.basedir" value="${solution.basedir}/build/Current" if="${property::exists('build.local')}" />
@@ -47,10 +43,12 @@
   <!--======================= CONFIGURATION  =======================-->
   <!-- specify one or more of these targets before the main targets to initialize the correct configuration properties -->
 
-  <target name="setdebug">
-    <property name="build.compile-binaries" value="true" />
-    <property name="build.copyresources" value="false" />
-    <property name="build.createdoc" value="false" />
+  <target name="set-debug">
+    <property name="build.step.get-sourcefiles" value="false" />
+    <property name="build.step.compile-binaries" value="true" />
+    <property name="build.step.copy-resources" value="false" />
+    <property name="build.step.create-doc" value="false" />
+    <property name="build.step.run-tests" value="true" />
     <property name="project.config" value="debug" />
     <property name="build.debug" value="true" />
     <property name="build.csc.define" value="DEBUG;TRACE;"/>
@@ -58,10 +56,12 @@
     <call target="init-build-version" />
   </target>
 
-  <target name="setrelease">
-    <property name="build.compile-binaries" value="true" />
-    <property name="build.copyresources" value="false" />
-    <property name="build.createdoc" value="false" />
+  <target name="set-release">
+    <property name="build.step.get-sourcefiles" value="false" />
+    <property name="build.step.compile-binaries" value="true" />
+    <property name="build.step.copy-resources" value="false" />
+    <property name="build.step.create-doc" value="false" />
+    <property name="build.step.run-tests" value="true" />
     <property name="project.config" value="release" />
     <property name="build.debug" value="false" />
     <property name="build.csc.define" value="TRACE;"/>
@@ -69,19 +69,34 @@
     <call target="init-build-version" />
   </target>
 
-  <target name="setresources">
-    <property name="build.compile-binaries" value="false" />
-    <property name="build.copyresources" value="true" />
-    <property name="build.createdoc" value="false" />
+  <target name="set-resources">
+    <property name="build.step.get-sourcefiles" value="false" />
+    <property name="build.step.compile-binaries" value="false" />
+    <property name="build.step.copy-resources" value="true" />
+    <property name="build.step.create-doc" value="false" />
+    <property name="build.step.run-tests" value="false" />
     <property name="project.config" value="documentation" />
     <property name="build.debug" value="false" />
     <call target="init-build-version" />
   </target>
 
-  <target name="setdocumentation">
-    <property name="build.compile-binaries" value="true" />
-    <property name="build.copyresources" value="false" />
-    <property name="build.createdoc" value="true" />
+  <target name="set-sourcefiles">
+    <property name="build.step.get-sourcefiles" value="true" />
+    <property name="build.step.compile-binaries" value="false" />
+    <property name="build.step.copy-resources" value="false" />
+    <property name="build.step.create-doc" value="false" />
+    <property name="build.step.run-tests" value="false" />
+    <property name="project.config" value="documentation" />
+    <property name="build.debug" value="false" />
+    <call target="init-build-version" />
+  </target>
+
+  <target name="set-documentation">
+    <property name="build.step.get-sourcefiles" value="false" />
+    <property name="build.step.compile-binaries" value="true" />
+    <property name="build.step.copy-resources" value="false" />
+    <property name="build.step.create-doc" value="true" />
+    <property name="build.step.run-tests" value="false" />
     <property name="project.config" value="documentation" />
     <property name="build.debug" value="false" />
     <property name="build.csc.define" value="TRACE;"/>
@@ -96,34 +111,76 @@
     <echo message="new version is ${build.version.noconfig}"/>
   </target>
 
+  <!--======================= PROJECT GROUPS =======================-->
 
-  <!--======================= BuildNoDoc =======================-->
-  <target name="buildnodoc" >
+  <target name="sourcefiles">
+    <call target="set-sourcefiles" />
+    <call target="all" />
+    <call target="all-test" />
+  </target>
+
+  <target name="debug">
+    <call target="set-debug" />
+    <call target="all" />
+    <call target="all-test" />
+  </target>
+
+  <target name="release">
+    <call target="set-release" />
+    <call target="all" />
+    <call target="all-test" />
+  </target>
+
+  <target name="resources">
+    <call target="set-resources" />
+    <call target="all" />
+    <call target="all-test" />
+  </target>
+
+  <target name="doc">
+    <call target="doc-public" />
+    <call target="doc-internal" />
+  </target>
+
+  <target name="deploy">
+    <call target="cleantemp" />
+    <call target="zip" cascade="false" />
+    <call target="sourcezip" cascade="false" />
+    <call target="getcurrent" cascade="false" />
+  </target>
+
+  <target name="build-no-doc" >
     <!--
     <call target="clean" />
     -->
-    <call target="setresources" />
-    <call target="all" />
-
-    <call target="setdebug" />
-    <call target="all" />
-    <call target="alltests" />
-
-    <call target="setrelease" />
-    <call target="all" />
-    <call target="alltests" />
+    <call target="resources" />
+    <call target="debug" />
+    <call target="release" />
   </target>
 
-  <!--======================= PROJECTS =======================-->
-
-  <target name="all" depends="Core, Development.Core, Development.CodeDom, Web, Web.Legacy, ObjectBinding, ObjectBinding.Web, 
+  <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, Web.Legacy, ObjectBinding, ObjectBinding.Web, 
       ObjectBinding.Reflection, Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, 
       Data.DomainObjects.Web">
     <echo message="Target has executed."/>
   </target>
 
-  <target name="forCooNet" depends="Core, Development.Core, Development.CodeDom, Web, Web.Legacy, ObjectBinding, ObjectBinding.Web">
+  <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, Data.DomainObjects.UnitTests, 
+      Data.DomainObjects.ObjectBinding.UnitTests">
     <echo message="Target has executed."/>
+  </target>
+
+  <target name="forCooNet" depends="prereq, Core, Development.Core, Development.CodeDom, Web, Web.Legacy, ObjectBinding, ObjectBinding.Web">
+    <echo message="Target has executed."/>
+  </target>
+
+  <!--======================= PROJECTS =======================-->
+
+  <target name="prereq">
+    <property name="project.name" value="prereq" />
+    <property name="project.dir" value="prereq" />
+    <property name="project.output" value="" />
+    <property name="project.extension" value="" />
+    <call target="execute-buildstep" if="${build.step.get-sourcefiles}" />
   </target>
 
   <target name="Core">
@@ -131,7 +188,7 @@
     <property name="project.dir" value="Core" />
     <property name="project.output" value="Rubicon.Core" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Development.Core" depends="Core">
@@ -139,7 +196,7 @@
     <property name="project.dir" value="Development/Core" />
     <property name="project.output" value="Rubicon.Development" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Development.CodeDom" depends="Core">
@@ -147,7 +204,7 @@
     <property name="project.dir" value="Development/CodeDom" />
     <property name="project.output" value="Rubicon.Development.CodeDom" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Data.DomainObjects" depends="Core">
@@ -155,7 +212,7 @@
     <property name="project.dir" value="Data/DomainObjects" />
     <property name="project.output" value="Rubicon.Data.DomainObjects" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Data.DomainObjects.CodeGenerator" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
@@ -163,7 +220,7 @@
     <property name="project.dir" value="Data/DomainObjects.CodeGenerator" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Data.DomainObjects.CodeGenerator.Console" depends="Core, Data.DomainObjects, Data.DomainObjects.CodeGenerator">
@@ -171,7 +228,7 @@
     <property name="project.dir" value="Data/DomainObjects.CodeGenerator.Console" />
     <property name="project.output" value="DOGen" />
     <property name="project.extension" value="exe" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Data.DomainObjects.ObjectBinding" depends="Core, Data.DomainObjects, ObjectBinding">
@@ -179,7 +236,7 @@
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Data.DomainObjects.ObjectBinding.Web" 
@@ -188,7 +245,7 @@
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding.Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.Web" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Data.DomainObjects.Web" depends="Core, Data.DomainObjects, Web">
@@ -196,7 +253,7 @@
     <property name="project.dir" value="Data/DomainObjects.Web" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.Web" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Web" depends="Core">
@@ -204,7 +261,7 @@
     <property name="project.dir" value="Web/Core" />
     <property name="project.output" value="Rubicon.Web" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="Web.Legacy" depends="Core, Web">
@@ -212,7 +269,7 @@
     <property name="project.dir" value="Web/Legacy" />
     <property name="project.output" value="Rubicon.Web.Legacy" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="ObjectBinding" depends="Core">
@@ -220,7 +277,7 @@
     <property name="project.dir" value="ObjectBinding/Core" />
     <property name="project.output" value="Rubicon.ObjectBinding" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="ObjectBinding.Web" depends="Core, ObjectBinding, Web">
@@ -228,7 +285,7 @@
     <property name="project.dir" value="ObjectBinding/Web" />
     <property name="project.output" value="Rubicon.ObjectBinding.Web" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <target name="ObjectBinding.Reflection" depends="Core, ObjectBinding, ObjectBinding.Web, Web">
@@ -236,29 +293,28 @@
     <property name="project.dir" value="ObjectBinding/Reflection" />
     <property name="project.output" value="Rubicon.ObjectBinding.Reflection" />
     <property name="project.extension" value="dll" />
-    <call target="build" />
+    <call target="execute-buildstep" />
   </target>
 
   <!--======================= UNIT TESTS =======================-->
 
-  <target name="alltests" depends="CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, Data.DomainObjects.UnitTests,
-    Data.DomainObjects.ObjectBinding.UnitTests">
-    <echo message="Target has executed." />
-  </target>
-
   <target name="CoreTest">
     <call target="Core" cascade="false"/>
     <call target="Development.Core" cascade="false"/>
-  
+
     <property name="project.name" value="Core.Test" />
     <property name="project.dir" value="Core.Test" />
     <property name="project.output" value="Rubicon.Core.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-    <nunit2>
-      <formatter type="Plain" />
-      <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-    </nunit2>
+
+    <if test="${build.step.run-tests}">
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+    </if>
   </target>
 
   <target name="Development.CoreTest">
@@ -269,10 +325,14 @@
     <property name="project.output" value="Rubicon.Development.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-    <nunit2>
-      <formatter type="Plain" />
-      <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-    </nunit2>
+
+    <if test="${build.step.run-tests}">
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+    </if>
   </target>
 
   <target name="Web.UnitTests">
@@ -285,10 +345,14 @@
     <property name="project.output" value="Rubicon.Web.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-    <nunit2>
-      <formatter type="Plain" />
-      <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-    </nunit2>
+
+    <if test="${build.step.run-tests}">
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+    </if>
   </target>
 
   <target name="ObjectBinding.Web.UnitTests">
@@ -304,10 +368,14 @@
     <property name="project.output" value="Rubicon.ObjectBinding.Web.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
-    <nunit2>
-      <formatter type="Plain" />
-      <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-    </nunit2>
+
+    <if test="${build.step.run-tests}">
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+    </if>
   </target>
 
   <target name="Data.DomainObjects.UnitTests">
@@ -318,29 +386,36 @@
     <property name="project.dir" value="Data/DomainObjects.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.UnitTests" />
     <property name="project.extension" value="dll" />
-    <exec program="osql.exe" basedir="${sql.dir}">
-      <arg line="-S ${sql.instance}" />
-      <arg value="-E" />
-      <arg value="-n" />
-      <arg line="-i ${project.basedir}\Database\CreateDB.sql" />
-    </exec>
-    <exec program="osql.exe" basedir="${sql.dir}">
-      <arg line="-S ${sql.instance}" />
-      <arg value="-E" />
-      <arg value="-n" />
-      <arg line="-i ${project.basedir}\Database\setupDB.sql" />
-    </exec>
-    <copy todir="${build.test.outputdir}" overwrite="true" flatten="true">
-      <fileset >
-        <include name="${project.dir}/Database/*.sql" />
-        <include name="${project.dir}/*.xml" />
-      </fileset>
-    </copy>
     <call target="buildtest" />
-    <nunit2>
-      <formatter type="Plain" />
-      <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-    </nunit2>
+
+    <if test="${build.step.run-tests}">
+
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${project.basedir}\Database\CreateDB.sql" />
+      </exec>
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${project.basedir}\Database\setupDB.sql" />
+      </exec>
+      <copy todir="${build.test.outputdir}" overwrite="true" flatten="true">
+        <fileset >
+          <include name="${project.dir}/Database/*.sql" />
+          <include name="${project.dir}/*.xml" />
+        </fileset>
+      </copy>
+
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+      
+    </if>
   </target>
 
   <target name="Data.DomainObjects.ObjectBinding.UnitTests">
@@ -353,93 +428,36 @@
     <property name="project.dir" value="Data/DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.output" value="Rubicon.Data.DomainObjects.ObjectBinding.UnitTests" />
     <property name="project.extension" value="dll" />
-    <exec program="osql.exe" basedir="${sql.dir}">
-      <arg line="-S ${sql.instance}" />
-      <arg value="-E" />
-      <arg value="-n" />
-      <arg line="-i ${project.basedir}\Database\CreateDB.sql" />
-    </exec>
-    <exec program="osql.exe" basedir="${sql.dir}">
-      <arg line="-S ${sql.instance}" />
-      <arg value="-E" />
-      <arg value="-n" />
-      <arg line="-i ${project.basedir}\Database\setupDB.sql" />
-    </exec>
-    <copy todir="${build.test.outputdir}" overwrite="true" flatten="true">
-      <fileset >
-        <include name="${project.dir}/Database/*.sql" />
-        <include name="${project.dir}/*.xml" />
-      </fileset>
-    </copy>
     <call target="buildtest" />
-    <nunit2>
-      <formatter type="Plain" />
-      <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
-    </nunit2>
-  </target>
 
-  <!--======================= CLEANING =======================-->
+    <if test="${build.step.run-tests}">
+    
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${project.basedir}\Database\CreateDB.sql" />
+      </exec>
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${project.basedir}\Database\setupDB.sql" />
+      </exec>
+      <copy todir="${build.test.outputdir}" overwrite="true" flatten="true">
+        <fileset >
+          <include name="${project.dir}/Database/*.sql" />
+          <include name="${project.dir}/*.xml" />
+        </fileset>
+      </copy>
 
-  <target name="cleantemp" depends="setdocumentation">
-    <delete dir="${build.temp.basedir}" failonerror="false" />
-  </target>
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
 
-  <target name="clean" depends="setdocumentation">
-    <delete dir="${build.basedir}" failonerror="false" />
-  </target>
-
-  <target name="zipfilename" depends="setdocumentation">
-    <property name="zipfile.filename" value="RubiconCommons_${build.version.noconfig}.zip" />
-    <property name="zipfile.name" value="${build.basedir}/${zipfile.filename}" />
-    <property name="sourcezipfile.filename" value="RubiconCommons_SourceCode_${build.version.noconfig}.zip" />
-    <property name="sourcezipfile.name" value="${build.basedir}/${sourcezipfile.filename}" />
-    <echo message="Zipfile is ${zipfile.name}"/>
-    <echo message="SourceZipfile is ${sourcezipfile.name}"/>
-  </target>
-
-  <target name="zip" depends="zipfilename">
-    <delete file="${zipfile.name}" />
-    <zip zipfile="${zipfile.name}">
-      <fileset basedir="${build.basedir}">
-        <include name="**/*" />
-        <exclude name="${sourcezipfile.name}" />
-        <exclude name="*/bin/documentation/**/*" />
-        <exclude name="${build.temp.basedir}" />
-      </fileset>
-    </zip>
-  </target>
-
-  <target name="sourcezip" depends="zipfilename">
-    <delete file="${sourcezipfile.name}" failonerror="false" />
-    <zip zipfile="${sourcezipfile.name}">
-      <fileset basedir="${solution.basedir}">
-        <include name="Core/**/*" />
-        <include name="Core.Test/**/*" />
-        <include name="Development/**/*" />
-        <include name="Data/**/*" />
-        <include name="ObjectBinding/**/*" />
-        <include name="Web/**/*" />
-        <include name="build/*.xml" />
-        <exclude name="**/obj/**/*.*" />
-        <exclude name="**/bin/**/*.*" />
-        <exclude name="**/*.zip" />
-        <exclude name="**/*.dll" />
-        <exclude name="**/*.exe" />
-        <exclude name="**/*.pdb" />
-      </fileset>
-    </zip>
-  </target>
-
-  <target name="getcurrent" depends="init-build-version">
-    <property name="local.currentdir" value="${solution.basedir}/build/Current" />
-
-    <delete dir="${local.currentdir}" failonerror="false" />
-
-    <copy todir="${local.currentdir}" overwrite="true">
-      <fileset basedir="${build.basedir}">
-        <include name="**/*" />
-      </fileset>
-    </copy>
+    </if>
   </target>
 
 </project>
