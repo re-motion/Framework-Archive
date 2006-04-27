@@ -101,13 +101,6 @@
     <call target="init-build-version" />
   </target>
 
-  <!--======================= VERSION =======================-->
-
-  <target name="incversion">
-    <buildversion versionfile="${solution.basedir}/build/buildversion.xml" increment="true" />
-    <echo message="new version is ${build.version.noconfig}"/>
-  </target>
-
   <!--======================= PROJECT GROUPS =======================-->
 
   <target name="sourcefiles">
