@@ -2,6 +2,8 @@
 ======
 - BocList
   * Bugfix: CSS-Klasse bocListEditModeValidationMessage ist noch als bocListEditDetailsValidationMessage in den Resourcen aufgeschienen.
+- BocDateTimeValue
+  * Bugfix: DatePicker Postitionierung auf gescrollten Seiten hat nicht korrekt gearbeitet. Aufgetreten mit 1.4.21.
   
 1.4.48
 ======
