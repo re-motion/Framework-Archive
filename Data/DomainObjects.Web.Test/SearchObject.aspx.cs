@@ -63,7 +63,7 @@ public class SearchObjectPage : WxePage
 	private void InitializeComponent()
 	{    
     this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
-    this.ResultList.EditedRowSaved += new Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventHandler(this.ResultList_EditedRowSaved);
+    this.ResultList.EditableRowChangesSaved += new Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventHandler (ResultList_EditableRowChangesSaved);
     this.Load += new System.EventHandler(this.Page_Load);
 
   }
@@ -81,7 +81,7 @@ public class SearchObjectPage : WxePage
     }
   }
 
-  private void ResultList_EditedRowSaved(object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
+  private void ResultList_EditableRowChangesSaved (object sender, Rubicon.ObjectBinding.Web.UI.Controls.BocListItemEventArgs e)
   {
     ClientTransaction.Current.Commit ();
   }

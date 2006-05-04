@@ -1,1004 +1,495 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Web"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = ""
-                AssemblyKeyContainerName = ""
-                AssemblyName = "OBWTest"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = ""
-                RootNamespace = "OBWTest"
-                RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "false"
-                    OutputPath = "bin\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "bin\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
-                />
-                <Reference
-                    Name = "System.Drawing"
-                    AssemblyName = "System.Drawing"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.Web"
-                    AssemblyName = "System.Web"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Web.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
-                    Name = "System.Windows.Forms"
-                    AssemblyName = "System.Windows.Forms"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
-                />
-                <Reference
-                    Name = "System.Design"
-                    AssemblyName = "System.Design"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Design.dll"
-                />
-                <Reference
-                    Name = "log4net"
-                    AssemblyName = "log4net"
-                    HintPath = "..\Web\bin\Debug\log4net.dll"
-                />
-                <Reference
-                    Name = "Core"
-                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "ObjectBinding"
-                    Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "ObjectBinding.Reflection"
-                    Project = "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "ObjectBinding.Web"
-                    Project = "{390FBB93-A757-47A7-B769-A64A7465FF84}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "Microsoft.Web.UI.WebControls"
-                    AssemblyName = "Microsoft.Web.UI.WebControls"
-                    HintPath = "..\..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
-                    Private = "True"
-                />
-                <Reference
-                    Name = "ObjectBinding.Reflection.Test"
-                    Project = "{5F1B88F7-FAFB-45C2-A357-333245870A6B}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "Web"
-                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ClientForm.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "ClientForm.aspx.cs"
-                    DependentUpon = "ClientForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ClientForm.aspx.resx"
-                    DependentUpon = "ClientForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "ClientFormExpired.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "ClientFormExpired.aspx.cs"
-                    DependentUpon = "ClientFormExpired.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ClientFormExpired.aspx.resx"
-                    DependentUpon = "ClientFormExpired.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "ClientFormFrameset.htm"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "ClientFormWxeFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CompleteBocTestForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "CompleteBocTestForm.aspx.cs"
-                    DependentUpon = "CompleteBocTestForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CompleteBocTestForm.aspx.resx"
-                    DependentUpon = "CompleteBocTestForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "CompleteBocTestMainWxeFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CompleteBocTestUserControl.ascx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "CompleteBocTestUserControl.ascx.cs"
-                    DependentUpon = "CompleteBocTestUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CompleteBocTestUserControl.ascx.resx"
-                    DependentUpon = "CompleteBocTestUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "CompleteBocTestUserControlForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "CompleteBocTestUserControlForm.aspx.cs"
-                    DependentUpon = "CompleteBocTestUserControlForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CompleteBocTestUserControlForm.aspx.resx"
-                    DependentUpon = "CompleteBocTestUserControlForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Frameset.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Frameset.aspx.cs"
-                    DependentUpon = "Frameset.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Frameset.aspx.resx"
-                    DependentUpon = "Frameset.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Global.asax"
-                    SubType = "Component"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Global.asax.cs"
-                    DependentUpon = "Global.asax"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Global.asax.resx"
-                    DependentUpon = "Global.asax.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "LeftFrame.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "LeftFrame.aspx.cs"
-                    DependentUpon = "LeftFrame.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "LeftFrame.aspx.resx"
-                    DependentUpon = "LeftFrame.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "MainWindow.htm"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "PersonDetailsForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "PersonDetailsForm.aspx.cs"
-                    DependentUpon = "PersonDetailsForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PersonDetailsForm.aspx.resx"
-                    DependentUpon = "PersonDetailsForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "PersonsForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "PersonsForm.aspx.cs"
-                    DependentUpon = "PersonsForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PersonsForm.aspx.resx"
-                    DependentUpon = "PersonsForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "RepeaterTest.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "RepeaterTest.aspx.cs"
-                    DependentUpon = "RepeaterTest.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "RepeaterTest.aspx.resx"
-                    DependentUpon = "RepeaterTest.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "RightFrame.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "RightFrame.aspx.cs"
-                    DependentUpon = "RightFrame.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "RightFrame.aspx.resx"
-                    DependentUpon = "RightFrame.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "SingleBocTestBasePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "SingleBocTestWxeBasePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "SingleColumnFormGridsForm.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "SingleColumnFormGridsForm.aspx.cs"
-                    DependentUpon = "SingleColumnFormGridsForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "SingleColumnFormGridsForm.aspx.resx"
-                    DependentUpon = "SingleColumnFormGridsForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "SingleTestTreeView.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "SingleTestTreeView.aspx.cs"
-                    DependentUpon = "SingleTestTreeView.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "SingleTestTreeView.aspx.resx"
-                    DependentUpon = "SingleTestTreeView.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "StartForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "StartForm.aspx.cs"
-                    DependentUpon = "StartForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StartForm.aspx.resx"
-                    DependentUpon = "StartForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TestForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "TestForm.aspx.cs"
-                    DependentUpon = "TestForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestForm.aspx.resx"
-                    DependentUpon = "TestForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TestPage.htm"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "TestTabbedForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "TestTabbedForm.aspx.cs"
-                    DependentUpon = "TestTabbedForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestTabbedForm.aspx.resx"
-                    DependentUpon = "TestTabbedForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TestTabbedFormWxeFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestTabbedPersonDetailsUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "TestTabbedPersonDetailsUserControl.ascx.cs"
-                    DependentUpon = "TestTabbedPersonDetailsUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestTabbedPersonDetailsUserControl.ascx.resx"
-                    DependentUpon = "TestTabbedPersonDetailsUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TestTabbedPersonJobsUserControl.ascx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "TestTabbedPersonJobsUserControl.ascx.cs"
-                    DependentUpon = "TestTabbedPersonJobsUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestTabbedPersonJobsUserControl.ascx.resx"
-                    DependentUpon = "TestTabbedPersonJobsUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TestUserControlBinding.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "TestUserControlBinding.aspx.cs"
-                    DependentUpon = "TestUserControlBinding.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestUserControlBinding.aspx.resx"
-                    DependentUpon = "TestUserControlBinding.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TestWxeBasePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UrlMapping.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "ViewPersonDetailsWxeFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ViewPersonsWxeFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Web.config"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WebForm1.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WebForm1.aspx.cs"
-                    DependentUpon = "WebForm1.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WebForm1.aspx.resx"
-                    DependentUpon = "WebForm1.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WebForm2.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WebForm2.aspx.cs"
-                    DependentUpon = "WebForm2.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WebForm2.aspx.resx"
-                    DependentUpon = "WebForm2.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WebForm3.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WebForm3.aspx.cs"
-                    DependentUpon = "WebForm3.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WebForm3.aspx.resx"
-                    DependentUpon = "WebForm3.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WebUserControl1.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "WebUserControl1.ascx.cs"
-                    DependentUpon = "WebUserControl1.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WebUserControl1.ascx.resx"
-                    DependentUpon = "WebUserControl1.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "WxeLauncher.ashx"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Design\DesignTestBooleanValueForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Design\DesignTestBooleanValueForm.aspx.cs"
-                    DependentUpon = "DesignTestBooleanValueForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestBooleanValueForm.aspx.resx"
-                    DependentUpon = "DesignTestBooleanValueForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Design\DesignTestCheckBoxForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Design\DesignTestCheckBoxForm.aspx.cs"
-                    DependentUpon = "DesignTestCheckBoxForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestCheckBoxForm.aspx.resx"
-                    DependentUpon = "DesignTestCheckBoxForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Design\DesignTestDateTimeValueForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Design\DesignTestDateTimeValueForm.aspx.cs"
-                    DependentUpon = "DesignTestDateTimeValueForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestDateTimeValueForm.aspx.resx"
-                    DependentUpon = "DesignTestDateTimeValueForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Design\DesignTestDateValueForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Design\DesignTestDateValueForm.aspx.cs"
-                    DependentUpon = "DesignTestDateValueForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestDateValueForm.aspx.resx"
-                    DependentUpon = "DesignTestDateValueForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Design\DesignTestEnumValueForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Design\DesignTestEnumValueForm.aspx.cs"
-                    DependentUpon = "DesignTestEnumValueForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestEnumValueForm.aspx.resx"
-                    DependentUpon = "DesignTestEnumValueForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Design\DesignTestFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestMultilineTextValueForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Design\DesignTestMultilineTextValueForm.aspx.cs"
-                    DependentUpon = "DesignTestMultilineTextValueForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestMultilineTextValueForm.aspx.resx"
-                    DependentUpon = "DesignTestMultilineTextValueForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Design\DesignTestTextValueForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Design\DesignTestTextValueForm.aspx.cs"
-                    DependentUpon = "DesignTestTextValueForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestTextValueForm.aspx.resx"
-                    DependentUpon = "DesignTestTextValueForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Design\DesignTestTreeViewForm.aspx"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Design\DesignTestTreeViewForm.aspx.cs"
-                    DependentUpon = "DesignTestTreeViewForm.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Design\DesignTestTreeViewForm.aspx.resx"
-                    DependentUpon = "DesignTestTreeViewForm.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Design\DesignTestWxeBasePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Doc\Detecting Browser unload events, SmartNavigation.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\Sending Keep Alive requests.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Globalization\IndividualControlTests.BocListUserControl.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\IndividualControlTests.BocReferenceValueUserControl.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\RMTest.de-at.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\RMTest.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\SingleBocTestBasePage.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\TestBasePage.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Html\design.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Html\global.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\CopyItem.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\CopyItemDisabled.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\DeleteItem.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\DeleteItemDisabled.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\EditItem.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\NullIcon.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\OBRTest.Job.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Images\OBRTest.Person.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BaseUserControl.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocBooleanValueUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocBooleanValueUserControl.ascx.cs"
-                    DependentUpon = "BocBooleanValueUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocBooleanValueUserControl.ascx.resx"
-                    DependentUpon = "BocBooleanValueUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocCheckBoxUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocCheckBoxUserControl.ascx.cs"
-                    DependentUpon = "BocCheckBoxUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocCheckBoxUserControl.ascx.resx"
-                    DependentUpon = "BocCheckBoxUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocDateTimeValueUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocDateTimeValueUserControl.ascx.cs"
-                    DependentUpon = "BocDateTimeValueUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocDateTimeValueUserControl.ascx.resx"
-                    DependentUpon = "BocDateTimeValueUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocEnumValueUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocEnumValueUserControl.ascx.cs"
-                    DependentUpon = "BocEnumValueUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocEnumValueUserControl.ascx.resx"
-                    DependentUpon = "BocEnumValueUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocListAsGridUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocListAsGridUserControl.ascx.cs"
-                    DependentUpon = "BocListAsGridUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocListAsGridUserControl.ascx.resx"
-                    DependentUpon = "BocListAsGridUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocListUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocListUserControl.ascx.cs"
-                    DependentUpon = "BocListUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocListUserControl.ascx.resx"
-                    DependentUpon = "BocListUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocMultilineTextValueUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocMultilineTextValueUserControl.ascx.cs"
-                    DependentUpon = "BocMultilineTextValueUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocMultilineTextValueUserControl.ascx.resx"
-                    DependentUpon = "BocMultilineTextValueUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocReferenceValueUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocReferenceValueUserControl.ascx.cs"
-                    DependentUpon = "BocReferenceValueUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocReferenceValueUserControl.ascx.resx"
-                    DependentUpon = "BocReferenceValueUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocTextValueUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocTextValueUserControl.ascx.cs"
-                    DependentUpon = "BocTextValueUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\BocTextValueUserControl.ascx.resx"
-                    DependentUpon = "BocTextValueUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\EmptyUserControl.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\EmptyUserControl.ascx.cs"
-                    DependentUpon = "EmptyUserControl.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\EmptyUserControl.ascx.resx"
-                    DependentUpon = "EmptyUserControl.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\Form.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "IndividualControlTests\Form.aspx.cs"
-                    DependentUpon = "Form.aspx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\Form.aspx.resx"
-                    DependentUpon = "Form.aspx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "IndividualControlTests\TestBasePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IndividualControlTests\TestFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\NavigationTabs.ascx"
-                    SubType = "UserControl"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "UI\NavigationTabs.ascx.cs"
-                    DependentUpon = "NavigationTabs.ascx"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\NavigationTabs.ascx.resx"
-                    DependentUpon = "NavigationTabs.ascx.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
-
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FE98ED8D-E645-4E11-9431-FA5EE8ED7C86}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>OBWTest</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OBWTest</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <Name>log4net</Name>
+      <HintPath>..\Web\bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.UI.WebControls">
+      <Name>Microsoft.Web.UI.WebControls</Name>
+      <HintPath>..\..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Design">
+      <Name>System.Design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Name>Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\ObjectBinding.csproj">
+      <Name>ObjectBinding</Name>
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Reflection\ObjectBinding.Reflection.csproj">
+      <Name>ObjectBinding.Reflection</Name>
+      <Project>{07113F20-C57A-4FB1-9E87-2BBE912F527B}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Reflection.Test\ObjectBinding.Reflection.Test.csproj">
+      <Name>ObjectBinding.Reflection.Test</Name>
+      <Project>{5F1B88F7-FAFB-45C2-A357-333245870A6B}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Web\ObjectBinding.Web.csproj">
+      <Name>ObjectBinding.Web</Name>
+      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.csproj">
+      <Name>Web</Name>
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientForm.aspx.cs">
+      <DependentUpon>ClientForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClientFormExpired.aspx.cs">
+      <DependentUpon>ClientFormExpired.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ClientFormWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CompleteBocTestForm.aspx.cs">
+      <DependentUpon>CompleteBocTestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CompleteBocTestMainWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CompleteBocTestUserControl.ascx.cs">
+      <DependentUpon>CompleteBocTestUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CompleteBocTestUserControlForm.aspx.cs">
+      <DependentUpon>CompleteBocTestUserControlForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestBooleanValueForm.aspx.cs">
+      <DependentUpon>DesignTestBooleanValueForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestCheckBoxForm.aspx.cs">
+      <DependentUpon>DesignTestCheckBoxForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestDateTimeValueForm.aspx.cs">
+      <DependentUpon>DesignTestDateTimeValueForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestDateValueForm.aspx.cs">
+      <DependentUpon>DesignTestDateValueForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestEnumValueForm.aspx.cs">
+      <DependentUpon>DesignTestEnumValueForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestMultilineTextValueForm.aspx.cs">
+      <DependentUpon>DesignTestMultilineTextValueForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestTextValueForm.aspx.cs">
+      <DependentUpon>DesignTestTextValueForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestTreeViewForm.aspx.cs">
+      <DependentUpon>DesignTestTreeViewForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Design\DesignTestWxeBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Frameset.aspx.cs">
+      <DependentUpon>Frameset.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BaseUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocBooleanValueUserControl.ascx.cs">
+      <DependentUpon>BocBooleanValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocCheckBoxUserControl.ascx.cs">
+      <DependentUpon>BocCheckBoxUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocDateTimeValueUserControl.ascx.cs">
+      <DependentUpon>BocDateTimeValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocEnumValueUserControl.ascx.cs">
+      <DependentUpon>BocEnumValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocListAsGridUserControl.ascx.cs">
+      <DependentUpon>BocListAsGridUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocListUserControl.ascx.cs">
+      <DependentUpon>BocListUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocMultilineTextValueUserControl.ascx.cs">
+      <DependentUpon>BocMultilineTextValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocReferenceValueUserControl.ascx.cs">
+      <DependentUpon>BocReferenceValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\BocTextValueUserControl.ascx.cs">
+      <DependentUpon>BocTextValueUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\EmptyUserControl.ascx.cs">
+      <DependentUpon>EmptyUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\Form.aspx.cs">
+      <DependentUpon>Form.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\TestBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IndividualControlTests\TestFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LeftFrame.aspx.cs">
+      <DependentUpon>LeftFrame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PersonDetailsForm.aspx.cs">
+      <DependentUpon>PersonDetailsForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PersonsForm.aspx.cs">
+      <DependentUpon>PersonsForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RepeaterTest.aspx.cs">
+      <DependentUpon>RepeaterTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="RightFrame.aspx.cs">
+      <DependentUpon>RightFrame.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SingleBocTestBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SingleBocTestWxeBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SingleColumnFormGridsForm.aspx.cs">
+      <DependentUpon>SingleColumnFormGridsForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SingleTestTreeView.aspx.cs">
+      <DependentUpon>SingleTestTreeView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StartForm.aspx.cs">
+      <DependentUpon>StartForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestForm.aspx.cs">
+      <DependentUpon>TestForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestTabbedForm.aspx.cs">
+      <DependentUpon>TestTabbedForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestTabbedFormWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestTabbedPersonDetailsUserControl.ascx.cs">
+      <DependentUpon>TestTabbedPersonDetailsUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestTabbedPersonJobsUserControl.ascx.cs">
+      <DependentUpon>TestTabbedPersonJobsUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestUserControlBinding.aspx.cs">
+      <DependentUpon>TestUserControlBinding.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestWxeBasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\NavigationTabs.ascx.cs">
+      <DependentUpon>NavigationTabs.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewPersonDetailsWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewPersonsWxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm3.aspx.cs">
+      <DependentUpon>WebForm3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebUserControl1.ascx.cs">
+      <DependentUpon>WebUserControl1.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Content Include="ClientForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ClientFormExpired.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="ClientFormFrameset.htm" />
+    <Content Include="CompleteBocTestForm.aspx" />
+    <Content Include="CompleteBocTestUserControl.ascx" />
+    <Content Include="CompleteBocTestUserControlForm.aspx" />
+    <Content Include="Design\DesignTestBooleanValueForm.aspx" />
+    <Content Include="Design\DesignTestCheckBoxForm.aspx" />
+    <Content Include="Design\DesignTestDateTimeValueForm.aspx" />
+    <Content Include="Design\DesignTestDateValueForm.aspx" />
+    <Content Include="Design\DesignTestEnumValueForm.aspx" />
+    <Content Include="Design\DesignTestMultilineTextValueForm.aspx" />
+    <Content Include="Design\DesignTestTextValueForm.aspx" />
+    <Content Include="Design\DesignTestTreeViewForm.aspx" />
+    <Content Include="Doc\Detecting Browser unload events, SmartNavigation.txt" />
+    <Content Include="Doc\Sending Keep Alive requests.txt" />
+    <Content Include="Frameset.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="Global.asax">
+      <SubType>Component</SubType>
+    </Content>
+    <Content Include="Html\design.css" />
+    <Content Include="Html\global.css" />
+    <Content Include="Images\CopyItem.gif" />
+    <Content Include="Images\CopyItemDisabled.gif" />
+    <Content Include="Images\DeleteItem.gif" />
+    <Content Include="Images\DeleteItemDisabled.gif" />
+    <Content Include="Images\EditItem.gif" />
+    <Content Include="Images\NullIcon.gif" />
+    <Content Include="Images\OBRTest.Job.gif" />
+    <Content Include="Images\OBRTest.Person.gif" />
+    <Content Include="IndividualControlTests\BocBooleanValueUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocCheckBoxUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocDateTimeValueUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocEnumValueUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocListAsGridUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocListUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocMultilineTextValueUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocReferenceValueUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\BocTextValueUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\EmptyUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="IndividualControlTests\Form.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="LeftFrame.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="MainWindow.htm" />
+    <Content Include="PersonDetailsForm.aspx" />
+    <Content Include="PersonsForm.aspx" />
+    <Content Include="RepeaterTest.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="RightFrame.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="SingleColumnFormGridsForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="SingleTestTreeView.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="StartForm.aspx" />
+    <Content Include="TestForm.aspx" />
+    <Content Include="TestPage.htm" />
+    <Content Include="TestTabbedForm.aspx" />
+    <Content Include="TestTabbedPersonDetailsUserControl.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="TestTabbedPersonJobsUserControl.ascx" />
+    <Content Include="TestUserControlBinding.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="UI\NavigationTabs.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <Content Include="UrlMapping.xml" />
+    <Content Include="Web.config" />
+    <Content Include="WebForm1.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="WebForm2.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="WebForm3.aspx">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="WebUserControl1.ascx">
+      <SubType>UserControl</SubType>
+    </Content>
+    <None Include="WxeLauncher.ashx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/dev/libraries/commons/trunk/ObjectBinding/Web.Test</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

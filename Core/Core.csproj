@@ -1,531 +1,340 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = ""
-                AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.Core"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = ""
-                RootNamespace = "Rubicon"
-                RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE;NET11"
-                    DocumentationFile = ""
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "false"
-                    OutputPath = "bin\Debug\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE;NET11"
-                    DocumentationFile = "bin\Release\Rubicon.Core.xml"
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = "1591"
-                    Optimize = "true"
-                    OutputPath = "bin\Release\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
-                    Name = "log4net"
-                    AssemblyName = "log4net"
-                    HintPath = "..\prereq\Assemblies\log4net.dll"
-                />
-                <Reference
-                    Name = "System.Drawing"
-                    AssemblyName = "System.Drawing"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
-                />
-                <Reference
-                    Name = "System.Windows.Forms"
-                    AssemblyName = "System.Windows.Forms"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AssemblyInfoTemplate.cs"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Core.build"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Collections\AutoInitHashtable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Collections\NameObjectCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Collections\TypedArrayList.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Collections\TypedHashtable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Data\ITransaction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "doc\Building Rubicon.Commons.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\mcee_cs.dat"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "doc\WhatsNew_Rubicon.Core.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\GettingStartedTemplate.html"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\include.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\MSDN.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\MultiLingualResourcesAttribute.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\NamespaceDoc.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\ResourceManagerWrapper.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\Globalization\MultiLingualResourcesAttribute.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\Globalization\ResourceManagerWrapper.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "doc\include\NullableValueTypes\include.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Globalization\IObjectWithResources.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\IResourceManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\MultiLingualResourcesAttribute.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\NullResourceManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\ResourceException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\ResourceIdentifiersAttribute.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\ResourceManagerCache.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\ResourceManagerPool.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\ResourceManagerSet.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\ResourceManagerWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\Exceptions.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\INaNullable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaBoolean.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaBooleanConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaByte.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaByteConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaDateTime.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaDateTimeConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaDecimal.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaDecimalConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaDouble.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaDoubleConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaGuid.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaGuidConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaInt16.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaInt16Converter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaInt32.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaInt32Converter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaInt64.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaInt64Converter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaSingle.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaSingleConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NullableValueTypes\NaTypeUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectBinding\BusinessObject.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectBinding\BusinessObjectPropertyPath.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectBinding\IBusinessObject.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectBinding\IBusinessObjectClass.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectBinding\IBusinessObjectProperty.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectBinding\IBusinessObjectProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectBinding\IBusinessObjectService.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\IdentifierGenerator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\MonospaceTextFormat.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\SeparatedStringBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineArgument.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineArgumentCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineAttributes.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineClassParser.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineEnumArgument.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineFlagArgument.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineModeArgument.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineParser.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\CommandLineValueArgument.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Text\CommandLine\Exceptions.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\AdvancedEnumConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\ArgumentUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\ArrayUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\BidirectionalStringConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\EnumDescription.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\EnumUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\ListUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\NameValueCollectionUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\ReflectionUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\StringUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\TypeConversionServices.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\TypeUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\WorkContext.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Xml\XmlSchemaValidationHandler.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Xml\XmlSerializationUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
-
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Rubicon.Core</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Rubicon</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Rubicon.Core.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591</NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <Name>log4net</Name>
+      <HintPath>..\prereq\Assemblies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\AutoInitHashtable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\NameObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\TypedArrayList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Collections\TypedHashtable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\ITransaction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\IObjectWithResources.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\IResourceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\MultiLingualResourcesAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\NullResourceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceIdentifiersAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceManagerCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceManagerPool.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceManagerSet.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Globalization\ResourceManagerWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\Exceptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\INaNullable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaBoolean.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaBooleanConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaByte.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaByteConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaDateTime.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaDateTimeConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaDecimal.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaDecimalConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaDouble.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaDoubleConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaGuid.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaGuidConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaInt16.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaInt16Converter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaInt32.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaInt32Converter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaInt64.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaInt64Converter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaSingle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaSingleConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NullableValueTypes\NaTypeUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectBinding\BusinessObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectBinding\BusinessObjectPropertyPath.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectBinding\IBusinessObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectBinding\IBusinessObjectClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectBinding\IBusinessObjectProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectBinding\IBusinessObjectProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectBinding\IBusinessObjectService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineArgumentCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineAttributes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineClassParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineEnumArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineFlagArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineModeArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineParser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\CommandLineValueArgument.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\CommandLine\Exceptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\IdentifierGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\MonospaceTextFormat.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Text\SeparatedStringBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\AdvancedEnumConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ArgumentUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ArrayUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\BidirectionalStringConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\EnumDescription.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\EnumUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ListUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\NameValueCollectionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ReflectionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\StringUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TypeConversionServices.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\TypeUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\WorkContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Xml\XmlSchemaValidationHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Xml\XmlSerializationUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="doc\mcee_cs.dat" />
+    <Content Include="Core.build" />
+    <Content Include="doc\Building Rubicon.Commons.txt" />
+    <Content Include="doc\include\GettingStartedTemplate.html" />
+    <Content Include="doc\include\Globalization\MultiLingualResourcesAttribute.xml" />
+    <Content Include="doc\include\Globalization\ResourceManagerWrapper.xml" />
+    <Content Include="doc\include\include.xml" />
+    <Content Include="doc\include\MSDN.css" />
+    <Content Include="doc\include\MultiLingualResourcesAttribute.xml" />
+    <Content Include="doc\include\NamespaceDoc.xml" />
+    <Content Include="doc\include\NullableValueTypes\include.xml" />
+    <Content Include="doc\include\ResourceManagerWrapper.xml" />
+    <Content Include="doc\WhatsNew_Rubicon.Core.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

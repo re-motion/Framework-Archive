@@ -1,1127 +1,596 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = ""
-                AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.Web"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = ""
-                RootNamespace = "Rubicon.Web"
-                RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE;NET11"
-                    DocumentationFile = ""
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "true"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "false"
-                    OutputPath = "bin\debug\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE;NET11"
-                    DocumentationFile = "bin\Release\Rubicon.Web.xml"
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = "1591;1573"
-                    Optimize = "true"
-                    OutputPath = "bin\Release\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
-                    Name = "System.Web"
-                    AssemblyName = "System.Web"
-                    HintPath = "..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.Web.dll"
-                />
-                <Reference
-                    Name = "System.Drawing"
-                    AssemblyName = "System.Drawing"
-                    HintPath = "..\..\..\..\WINNT\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
-                />
-                <Reference
-                    Name = "System.Windows.Forms"
-                    AssemblyName = "System.Windows.Forms"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
-                />
-                <Reference
-                    Name = "Core"
-                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "Microsoft.Web.UI.WebControls"
-                    AssemblyName = "Microsoft.Web.UI.WebControls"
-                    HintPath = "..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll"
-                    Private = "True"
-                />
-                <Reference
-                    Name = "log4net"
-                    AssemblyName = "log4net"
-                    HintPath = "..\..\prereq\Assemblies\log4net.dll"
-                />
-                <Reference
-                    Name = "system.design"
-                    AssemblyName = "System.Design"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.design.dll"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AssemblyInfoTemplate.cs"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "IResourceUrlResolver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ResourceUrlResolver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Web.build"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Configuration\ExecutionEngineConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\ResourceConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\SmartNavigationConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\WcagConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\WebConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\WebConfiguration.xsd"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Configuration\WebConfiguration.xsx"
-                    DependentUpon = "WebConfiguration.xsd"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Doc\Bugs and ToDos.xls"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Doc\FormGridManager.doc"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Doc\Globalization.doc"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Doc\WhatsNew_Rubicon.Web.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\NamespaceDoc.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ResourceDispatcher.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\Configuration\ExecutionEngineConfiguration.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\Configuration\ResourceConfiguration.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\Configuration\SmartNavigationConfiguration.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\Configuration\WcagConfiguration.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\Configuration\WebConfiguration.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ExecutionEngine\IWxePage.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ExecutionEngine\WxeContext.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ExecutionEngine\WxeHandler.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ExecutionEngine\WxeMethodStep.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ExecutionEngine\WxePage.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ExecutionEngine\WxePageStep.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ExecutionEngine\WxeStep.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\ISmartPage.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\SmartPage.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\DropDownMenu.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\FormGridManager.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\TabbedMultiView.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\ValidationStateViewer.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\WebButton.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\WebLinkButton.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\WebTabStrip.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\WebTreeView.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\Utilities\UrlUtility.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "ExecutionEngine\NumberedMemberFinder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeContext.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeExecuteNextStepException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeForm.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeFunctionState.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeHandler.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeIf.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeLauncher.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeMethodStep.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeOutParameterNotSupportedException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxePageFunction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxePageInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxePageStep.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeParameterConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeParameterDeclaration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxePostbackOutOfSequenceException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeResourcePageStep.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeStep.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeStepList.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeTemplateControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeTemplateControlInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeTimeoutException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeTransactedFunctionBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeTransactionBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeTryCatch.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeUserCancelException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\WxeUserControl.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\UrlMapping\ConfigurationBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\UrlMapping\UrlMapping.xsd"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "ExecutionEngine\UrlMapping\UrlMapping.xsx"
-                    DependentUpon = "UrlMapping.xsd"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExecutionEngine\UrlMapping\UrlMappingSchema.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Globalization\FormGridManager.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\FormGridManager.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\SmartPageInfo.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\SmartPageInfo.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\ValidationStateViewer.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\ValidationStateViewer.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\WxePageInfo.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\WxePageInfo.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Res\HTML\ColorScheme_1_3_26.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\DatePicker.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\DropDownMenu.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\DropDownMenu.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\ExecutionEngine.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\ExecutionEngine.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\ExecutionEngineIE.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\FontSize080.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\FontSize080Quirks.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\FontSize100.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\FontSize100Quirks.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\FormGrid.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\SmartNavigation.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\SmartPage.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\SmartPage.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\Style.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\TabbedMenu.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\TabbedMultiView.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\TabStrip.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\TreeView.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\Utilities.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\DropDownMenuArrow.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\DropDownMenuItemIconPane.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\Help.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\RequiredField.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\Spacer.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TabbedMainMenuTabTopLeftCorner.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TabbedMainMenuTabTopRightCorner.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewF.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewFMinus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewFPlus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewI.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewL.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewLMinus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewLPlus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewMinus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewPlus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewR.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewRMinus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewRPlus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewT.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewTMinus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewTPlus.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\TreeViewWhite.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\ValidationError.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\UI\DatePickerForm.aspx"
-                    SubType = "Form"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\UI\WxeHandler.ashx"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Res\UI\WxeLauncher.ashx"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "UI\HtmlHeadAppender.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\IPage.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\ISmartNavigablePage.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\PostLoad.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\SmartPage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\SmartPageInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\WcagException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\WcagHelper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Command.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\CompoundValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ControlItemCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\DatePickerPage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\DropDownMenu.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\EmailAddressValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\FormGridLabel.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\FormGridManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\FormGridRowInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\FormGridRowInfoCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\HiddenField.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\HtmlHeadContents.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IBaseValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IconInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IControlStateManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IControlWithDesignTimeSupport.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IEditableControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IFocusableControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IFormGridRowProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\INavigationControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ISmartControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ISupportsPostLoadControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ITemplateControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IUserControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IValidatableControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\LazyContainer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\LengthValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\MenuTab.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\MenuTabCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\NavigationCommand.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\NumericValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\SingleControlItemCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\SmartHyperLink.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\SmartLabel.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\TabbedMenu.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\TabbedMenuEvents.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\TabbedMultiView.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\TabView.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\TabViewCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ValidationError.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\ValidationStateViewer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebButton.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebLinkButton.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebMenuItem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebMenuItemCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebTab.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebTabCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebTabStrip.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebTreeNode.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebTreeNodeCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebTreeView.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\WebTreeViewEvents.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\AdvancedCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\CollectionEditorServiceProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\ControlToStringConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\FormGridManagerDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\MainMenuTabCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\SmartControlToStringConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\StringArrayToStringConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\SubMenuTabCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\TabbedMenuDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\TypeDescriptorContext.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\WebControlDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\WebMenuItemCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\WebTreeNodeCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Globalization\IResourceDispatchTarget.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Globalization\ResourceDispatcher.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Globalization\ResourceManagerUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Globalization\WebMultiLingualResourcesAttribute.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\ControlHelper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\HtmlUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\PageUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\ScriptUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\UrlUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Utilities\WebTypeUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
-
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DF8BA786-9679-4879-8757-16AE2709D83A}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Rubicon.Web</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Rubicon.Web</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Rubicon.Web.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;1573</NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <Name>log4net</Name>
+      <HintPath>..\..\prereq\Assemblies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.UI.WebControls">
+      <Name>Microsoft.Web.UI.WebControls</Name>
+      <HintPath>..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Design">
+      <Name>system.design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Name>Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\ExecutionEngineConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\ResourceConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\SmartNavigationConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\WcagConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\WebConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\NumberedMemberFinder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\UrlMapping\ConfigurationBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\UrlMapping\UrlMappingConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\UrlMapping\UrlMappingLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\UrlMapping\UrlMappingSchema.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeExecuteNextStepException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeForm.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeFunctionState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeIf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeLauncher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeMethodStep.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeOutParameterNotSupportedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxePageFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxePageInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxePageStep.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeParameterConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeParameterDeclaration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxePostbackOutOfSequenceException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeResourcePageStep.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeStep.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeStepList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeTemplateControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeTemplateControlInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeTimeoutException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeTransactedFunctionBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeTransactionBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeTryCatch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeUserCancelException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExecutionEngine\WxeUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IResourceUrlResolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ResourceUrlResolver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\Command.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\CompoundValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ControlItemCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\DatePickerPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\DropDownMenu.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\EmailAddressValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\FormGridLabel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\FormGridManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\FormGridRowInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\FormGridRowInfoCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\HiddenField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\HtmlHeadContents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IBaseValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IconInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IControlStateManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IControlWithDesignTimeSupport.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IEditableControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IFocusableControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IFormGridRowProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\INavigationControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ISmartControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ISupportsPostLoadControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ITemplateControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IUserControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IValidatableControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\LazyContainer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\LengthValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\MenuTab.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\MenuTabCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\NavigationCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\NumericValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\SingleControlItemCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\SmartHyperLink.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\SmartLabel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TabbedMenu.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TabbedMenuEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TabbedMultiView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TabView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\TabViewCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ValidationError.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\ValidationStateViewer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebLinkButton.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebMenuItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebMenuItemCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebTabCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebTabStrip.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebTreeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebTreeNodeCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebTreeView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\WebTreeViewEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\AdvancedCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\CollectionEditorServiceProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\ControlToStringConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\FormGridManagerDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\MainMenuTabCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\SmartControlToStringConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\StringArrayToStringConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\SubMenuTabCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\TabbedMenuDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\TypeDescriptorContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\WebControlDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\WebMenuItemCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\WebTreeNodeCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Globalization\IResourceDispatchTarget.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Globalization\ResourceDispatcher.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Globalization\ResourceManagerUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Globalization\WebMultiLingualResourcesAttribute.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\HtmlHeadAppender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\IPage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\ISmartNavigablePage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\PostLoad.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\SmartPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\SmartPageInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WcagException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\WcagHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ControlHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\HtmlUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\PageUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\ScriptUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\UrlUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Utilities\WebTypeUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Configuration\WebConfiguration.xsx">
+      <DependentUpon>WebConfiguration.xsd</DependentUpon>
+    </None>
+    <None Include="Doc\Bugs and ToDos.xls" />
+    <None Include="Doc\FormGridManager.doc" />
+    <None Include="Doc\Globalization.doc" />
+    <None Include="ExecutionEngine\UrlMapping\UrlMapping.xsx">
+      <DependentUpon>UrlMapping.xsd</DependentUpon>
+    </None>
+    <None Include="Res\UI\WxeHandler.ashx" />
+    <None Include="Res\UI\WxeLauncher.ashx" />
+    <None Include="Web.build" />
+    <EmbeddedResource Include="Configuration\WebConfiguration.xsd" />
+    <EmbeddedResource Include="ExecutionEngine\UrlMapping\UrlMapping.xsd" />
+    <EmbeddedResource Include="Globalization\FormGridManager.de.resx" />
+    <EmbeddedResource Include="Globalization\FormGridManager.resx" />
+    <EmbeddedResource Include="Globalization\SmartPageInfo.de.resx" />
+    <EmbeddedResource Include="Globalization\SmartPageInfo.resx" />
+    <EmbeddedResource Include="Globalization\ValidationStateViewer.de.resx" />
+    <EmbeddedResource Include="Globalization\ValidationStateViewer.resx" />
+    <EmbeddedResource Include="Globalization\WxePageInfo.de.resx" />
+    <EmbeddedResource Include="Globalization\WxePageInfo.resx" />
+    <Content Include="Doc\include\Configuration\ExecutionEngineConfiguration.xml" />
+    <Content Include="Doc\include\Configuration\ResourceConfiguration.xml" />
+    <Content Include="Doc\include\Configuration\SmartNavigationConfiguration.xml" />
+    <Content Include="Doc\include\Configuration\WcagConfiguration.xml" />
+    <Content Include="Doc\include\Configuration\WebConfiguration.xml" />
+    <Content Include="Doc\include\ExecutionEngine\IWxePage.xml" />
+    <Content Include="Doc\include\ExecutionEngine\UrlMapping\UrlMappingConfiguration.xml" />
+    <Content Include="Doc\include\ExecutionEngine\WxeContext.xml" />
+    <Content Include="Doc\include\ExecutionEngine\WxeHandler.xml" />
+    <Content Include="Doc\include\ExecutionEngine\WxeMethodStep.xml" />
+    <Content Include="Doc\include\ExecutionEngine\WxePage.xml" />
+    <Content Include="Doc\include\ExecutionEngine\WxePageStep.xml" />
+    <Content Include="Doc\include\ExecutionEngine\WxeStep.xml" />
+    <Content Include="Doc\include\NamespaceDoc.xml" />
+    <Content Include="Doc\include\ResourceDispatcher.xml" />
+    <Content Include="Doc\include\UI\Controls\DropDownMenu.xml" />
+    <Content Include="Doc\include\UI\Controls\FormGridManager.xml" />
+    <Content Include="Doc\include\UI\Controls\TabbedMultiView.xml" />
+    <Content Include="Doc\include\UI\Controls\ValidationStateViewer.xml" />
+    <Content Include="Doc\include\UI\Controls\WebButton.xml" />
+    <Content Include="Doc\include\UI\Controls\WebLinkButton.xml" />
+    <Content Include="Doc\include\UI\Controls\WebTabStrip.xml" />
+    <Content Include="Doc\include\UI\Controls\WebTreeView.xml" />
+    <Content Include="Doc\include\UI\ISmartPage.xml" />
+    <Content Include="Doc\include\UI\SmartPage.xml" />
+    <Content Include="Doc\include\Utilities\UrlUtility.xml" />
+    <Content Include="Doc\WhatsNew_Rubicon.Web.txt" />
+    <Content Include="Res\HTML\ColorScheme_1_3_26.css" />
+    <Content Include="Res\HTML\DatePicker.js" />
+    <Content Include="Res\HTML\DropDownMenu.css" />
+    <Content Include="Res\HTML\DropDownMenu.js" />
+    <Content Include="Res\HTML\ExecutionEngine.css" />
+    <Content Include="Res\HTML\ExecutionEngine.js" />
+    <Content Include="Res\HTML\ExecutionEngineIE.css" />
+    <Content Include="Res\HTML\FontSize080.css" />
+    <Content Include="Res\HTML\FontSize080Quirks.css" />
+    <Content Include="Res\HTML\FontSize100.css" />
+    <Content Include="Res\HTML\FontSize100Quirks.css" />
+    <Content Include="Res\HTML\FormGrid.css" />
+    <Content Include="Res\HTML\SmartNavigation.js" />
+    <Content Include="Res\HTML\SmartPage.css" />
+    <Content Include="Res\HTML\SmartPage.js" />
+    <Content Include="Res\HTML\Style.css" />
+    <Content Include="Res\HTML\TabbedMenu.css" />
+    <Content Include="Res\HTML\TabbedMultiView.css" />
+    <Content Include="Res\HTML\TabStrip.css" />
+    <Content Include="Res\HTML\TreeView.css" />
+    <Content Include="Res\HTML\Utilities.js" />
+    <Content Include="Res\Image\DropDownMenuArrow.gif" />
+    <Content Include="Res\Image\DropDownMenuItemIconPane.gif" />
+    <Content Include="Res\Image\Help.gif" />
+    <Content Include="Res\Image\RequiredField.gif" />
+    <Content Include="Res\Image\Spacer.gif" />
+    <Content Include="Res\Image\TabbedMainMenuTabTopLeftCorner.gif" />
+    <Content Include="Res\Image\TabbedMainMenuTabTopRightCorner.gif" />
+    <Content Include="Res\Image\TreeViewF.gif" />
+    <Content Include="Res\Image\TreeViewFMinus.gif" />
+    <Content Include="Res\Image\TreeViewFPlus.gif" />
+    <Content Include="Res\Image\TreeViewI.gif" />
+    <Content Include="Res\Image\TreeViewL.gif" />
+    <Content Include="Res\Image\TreeViewLMinus.gif" />
+    <Content Include="Res\Image\TreeViewLPlus.gif" />
+    <Content Include="Res\Image\TreeViewMinus.gif" />
+    <Content Include="Res\Image\TreeViewPlus.gif" />
+    <Content Include="Res\Image\TreeViewR.gif" />
+    <Content Include="Res\Image\TreeViewRMinus.gif" />
+    <Content Include="Res\Image\TreeViewRPlus.gif" />
+    <Content Include="Res\Image\TreeViewT.gif" />
+    <Content Include="Res\Image\TreeViewTMinus.gif" />
+    <Content Include="Res\Image\TreeViewTPlus.gif" />
+    <Content Include="Res\Image\TreeViewWhite.gif" />
+    <Content Include="Res\Image\ValidationError.gif" />
+    <Content Include="Res\UI\DatePickerForm.aspx">
+      <SubType>Form</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

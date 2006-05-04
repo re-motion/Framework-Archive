@@ -1,677 +1,365 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{390FBB93-A757-47A7-B769-A64A7465FF84}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = ""
-                AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.ObjectBinding.Web"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = ""
-                RootNamespace = "Rubicon.ObjectBinding.Web"
-                RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE;NET11"
-                    DocumentationFile = ""
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "false"
-                    OutputPath = "bin\Debug\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE;NET11"
-                    DocumentationFile = "bin\Release\Rubicon.ObjectBinding.Web.xml"
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = "1591;1573"
-                    Optimize = "true"
-                    OutputPath = "bin\Release\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "Core"
-                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "system.web"
-                    AssemblyName = "System.Web"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.web.dll"
-                />
-                <Reference
-                    Name = "system.design"
-                    AssemblyName = "System.Design"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.design.dll"
-                />
-                <Reference
-                    Name = "system.drawing"
-                    AssemblyName = "System.Drawing"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.drawing.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
-                    Name = "Web"
-                    Project = "{DF8BA786-9679-4879-8757-16AE2709D83A}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "log4net"
-                    AssemblyName = "log4net"
-                    HintPath = "..\..\prereq\Assemblies\log4net.dll"
-                />
-                <Reference
-                    Name = "ObjectBinding"
-                    Project = "{FDCCDB1E-0962-41DA-99A1-2DB390C48748}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "system.windows.forms"
-                    AssemblyName = "System.Windows.Forms"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\system.windows.forms.dll"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AssemblyInfoTemplate.cs"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "ControlFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataSourcePage.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataSourceUserControl.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IBusinessObjectWebUIService.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectBinding.Web.build"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Doc\BocList.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\Bugs and ToDos.xls"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "Doc\Business Object Controls Features.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\WhatsNew_Rubicon.ObjectBinding.Web.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\NamespaceDoc.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocBooleanValue.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocCheckBox.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocDateTimeValue.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocDateTimeValueValidator.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocDropDownMenu.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocEnumValue.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocList.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocMultilineTextValue.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocReferenceValue.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocTextValue.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\BocTreeView.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Globalization\BocBooleanValue.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocBooleanValue.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocCheckBox.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocCheckBox.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocDateTimeValue.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocDateTimeValue.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocEnumValue.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocEnumValue.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocList.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocList.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocMultilineTextValue.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocMultilineTextValue.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocReferenceValue.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocReferenceValue.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocTextValue.de.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Globalization\BocTextValue.resx"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Res\HTML\BocBooleanValue.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocBooleanValue.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocCheckBox.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocCheckboxValue.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocDateTimeValue.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocEnumValue.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocList.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocList.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocMultilineTextValue.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocReferenceValue.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocReferenceValue.js"
-                    SubType = "Code"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\BocTextValue.css"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\HTML\TextBoxStyle.js"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\CheckBoxFalse.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\CheckBoxNull.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\CheckBoxTrue.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\DatePicker.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveFirst.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveFirstInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveLast.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveLastInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveNext.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MoveNextInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MovePrevious.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\MovePreviousInactive.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\RequiredField.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\SortAscending.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\SortDescending.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Res\Image\ValidationError.gif"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "UI\Controls\BocBooleanValue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocCheckbox.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocColumnDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocColumnDefinitionCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocCommand.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocCustomColumnDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocDateTimeValue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocDateTimeValueValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocDropDownMenu.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocEnumValue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocList.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocListEvents.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocListItemCommand.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocListRow.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocListSortingOrderEntry.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocListView.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocListViewCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocMenuItem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocMenuItemCommand.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocMultilineTextValue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocReferenceValue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocTextValue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocTextValueValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocTreeNode.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BocTreeView.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BusinessObjectBinding.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BusinessObjectBoundEditableWebControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BusinessObjectBoundWebControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BusinessObjectControlItemCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\BusinessObjectReferenceDataSourceControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\DataEditControl.cs"
-                    SubType = "ASPXCodeBehind"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\IBusinessObjectDataSourceControl.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\PropertyPathBinding.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\PropertyPathBindingCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Styles.cs"
-                    SubType = "Component"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\UserControlBinding.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditableRow.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditableRowControlFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditableRowDataSourceFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditableRowIDProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeController.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Controls\Infrastructure\BocList\EditModeValidator.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BocColumnDefinitionCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BocDataSourceDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BocDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BocListDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BocListViewCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BocMenuItemCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BocReferenceValueDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BusinessObjectBoundControlDesigner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\BusinessObjectDataSourceControlConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\ComponentBindingExpressionUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UI\Design\PropertyPathBindingCollectionEditor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
-
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{390FBB93-A757-47A7-B769-A64A7465FF84}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Rubicon.ObjectBinding.Web</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Rubicon.ObjectBinding.Web</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\Rubicon.ObjectBinding.Web.xml</DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591;1573</NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <Name>log4net</Name>
+      <HintPath>..\..\prereq\Assemblies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Design">
+      <Name>system.design</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>system.drawing</Name>
+    </Reference>
+    <Reference Include="System.Web">
+      <Name>system.web</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>system.windows.forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Name>Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.csproj">
+      <Name>Web</Name>
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\ObjectBinding.csproj">
+      <Name>ObjectBinding</Name>
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ControlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataSourcePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DataSourceUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IBusinessObjectWebUIService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocBooleanValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocCheckbox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocColumnDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocColumnDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocCustomColumnDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocDateTimeValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocDateTimeValueValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocDropDownMenu.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocEnumValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocListEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocListItemCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocListRow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocListSortingOrderEntry.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocListView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocListViewCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocMenuItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocMenuItemCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocMultilineTextValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocReferenceValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocTextValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocTextValueValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocTreeNode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BocTreeView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BusinessObjectBinding.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BusinessObjectBoundEditableWebControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BusinessObjectBoundWebControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BusinessObjectControlItemCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\BusinessObjectReferenceDataSourceControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\DataEditControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\IBusinessObjectDataSourceControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\Infrastructure\BocList\EditableRow.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\Infrastructure\BocList\EditableRowControlFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\Infrastructure\BocList\EditableRowDataSourceFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\Infrastructure\BocList\EditableRowIDProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\Infrastructure\BocList\EditModeController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\Infrastructure\BocList\EditModeValidator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\PropertyPathBinding.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\PropertyPathBindingCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\Styles.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\Controls\UserControlBinding.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BocColumnDefinitionCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BocDataSourceDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BocDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BocListDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BocListViewCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BocMenuItemCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BocReferenceValueDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BusinessObjectBoundControlDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\BusinessObjectDataSourceControlConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\ComponentBindingExpressionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UI\Design\PropertyPathBindingCollectionEditor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Doc\Bugs and ToDos.xls" />
+    <None Include="ObjectBinding.Web.build" />
+    <Content Include="Doc\BocList.txt" />
+    <Content Include="Doc\Business Object Controls Features.txt" />
+    <Content Include="Doc\include\NamespaceDoc.xml" />
+    <Content Include="Doc\include\UI\Controls\BocBooleanValue.xml" />
+    <Content Include="Doc\include\UI\Controls\BocCheckBox.xml" />
+    <Content Include="Doc\include\UI\Controls\BocDateTimeValue.xml" />
+    <Content Include="Doc\include\UI\Controls\BocDateTimeValueValidator.xml" />
+    <Content Include="Doc\include\UI\Controls\BocDropDownMenu.xml" />
+    <Content Include="Doc\include\UI\Controls\BocEnumValue.xml" />
+    <Content Include="Doc\include\UI\Controls\BocList.xml" />
+    <Content Include="Doc\include\UI\Controls\BocMultilineTextValue.xml" />
+    <Content Include="Doc\include\UI\Controls\BocReferenceValue.xml" />
+    <Content Include="Doc\include\UI\Controls\BocTextValue.xml" />
+    <Content Include="Doc\include\UI\Controls\BocTreeView.xml" />
+    <Content Include="Doc\include\UI\Controls\IBusinessObjectDataSourceControl.xml" />
+    <Content Include="Doc\WhatsNew_Rubicon.ObjectBinding.Web.txt" />
+    <Content Include="Res\HTML\BocBooleanValue.css" />
+    <Content Include="Res\HTML\BocBooleanValue.js" />
+    <Content Include="Res\HTML\BocCheckBox.js" />
+    <Content Include="Res\HTML\BocCheckboxValue.css" />
+    <Content Include="Res\HTML\BocDateTimeValue.css" />
+    <Content Include="Res\HTML\BocEnumValue.css" />
+    <Content Include="Res\HTML\BocList.css" />
+    <Content Include="Res\HTML\BocList.js" />
+    <Content Include="Res\HTML\BocMultilineTextValue.css" />
+    <Content Include="Res\HTML\BocReferenceValue.css" />
+    <Content Include="Res\HTML\BocReferenceValue.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Res\HTML\BocTextValue.css" />
+    <Content Include="Res\HTML\TextBoxStyle.js" />
+    <Content Include="Res\Image\CheckBoxFalse.gif" />
+    <Content Include="Res\Image\CheckBoxNull.gif" />
+    <Content Include="Res\Image\CheckBoxTrue.gif" />
+    <Content Include="Res\Image\DatePicker.gif" />
+    <Content Include="Res\Image\MoveFirst.gif" />
+    <Content Include="Res\Image\MoveFirstInactive.gif" />
+    <Content Include="Res\Image\MoveLast.gif" />
+    <Content Include="Res\Image\MoveLastInactive.gif" />
+    <Content Include="Res\Image\MoveNext.gif" />
+    <Content Include="Res\Image\MoveNextInactive.gif" />
+    <Content Include="Res\Image\MovePrevious.gif" />
+    <Content Include="Res\Image\MovePreviousInactive.gif" />
+    <Content Include="Res\Image\RequiredField.gif" />
+    <Content Include="Res\Image\SortAscending.gif" />
+    <Content Include="Res\Image\SortDescending.gif" />
+    <Content Include="Res\Image\ValidationError.gif" />
+    <EmbeddedResource Include="Globalization\BocBooleanValue.de.resx" />
+    <EmbeddedResource Include="Globalization\BocBooleanValue.resx" />
+    <EmbeddedResource Include="Globalization\BocCheckBox.de.resx" />
+    <EmbeddedResource Include="Globalization\BocCheckBox.resx" />
+    <EmbeddedResource Include="Globalization\BocDateTimeValue.de.resx" />
+    <EmbeddedResource Include="Globalization\BocDateTimeValue.resx" />
+    <EmbeddedResource Include="Globalization\BocEnumValue.de.resx" />
+    <EmbeddedResource Include="Globalization\BocEnumValue.resx" />
+    <EmbeddedResource Include="Globalization\BocList.de.resx" />
+    <EmbeddedResource Include="Globalization\BocList.resx" />
+    <EmbeddedResource Include="Globalization\BocMultilineTextValue.de.resx" />
+    <EmbeddedResource Include="Globalization\BocMultilineTextValue.resx" />
+    <EmbeddedResource Include="Globalization\BocReferenceValue.de.resx" />
+    <EmbeddedResource Include="Globalization\BocReferenceValue.resx" />
+    <EmbeddedResource Include="Globalization\BocTextValue.de.resx" />
+    <EmbeddedResource Include="Globalization\BocTextValue.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

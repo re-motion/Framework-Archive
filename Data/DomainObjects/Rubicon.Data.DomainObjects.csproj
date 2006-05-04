@@ -1,675 +1,432 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = ""
-                AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.Data.DomainObjects"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = 'copy "$(ProjectDir)*.xsd" "$(TargetDir)*.xsd"'
-                RootNamespace = "Rubicon.Data.DomainObjects"
-                RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE"
-                    DocumentationFile = "Rubicon.Data.DomainObjects.xml"
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = "1591"
-                    Optimize = "false"
-                    OutputPath = "bin\Debug\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "bin\Release\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
-                    Name = "Core"
-                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AssemblyInfoTemplate.cs"
-                    SubType = "Code"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "ClientTransaction.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CommonCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataContainer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObject.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjectCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjectCollectionEvents.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjectException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Events.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "INullableObject.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "InvalidEnumDefinitionException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "InvalidTypeException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "mapping.xsd"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "ObjectID.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PropertyValue.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PropertyValueCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "queries.xsd"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "ReflectionUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Rubicon.Data.DomainObjects.build"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "StateType.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "storageProviders.xsd"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "types.xsd"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "ValueTooLongException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\BaseFileLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\ClassDefinitionLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\ConfigurationNamespaceManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\LoaderUtility.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\MappingLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\PrefixNamespace.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\QueryConfigurationLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\RelationDefinitionLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ConfigurationLoader\StorageProviderConfigurationLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\AnonymousEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\ClientTransactionsDifferException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\CollectionEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\CollectionEndPointChangeAgent.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\DataContainerCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\DataContainerMap.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\DataManagementException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\DataManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\ICollectionChangeDelegate.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\ICollectionEndPointChangeDelegate.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\IEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\MandatoryRelationNotSetException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\NullAnonymousEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\NullCollectionEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\NullObjectEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\ObjectDeletedException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\ObjectDiscardedException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\ObjectEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationEndPoint.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationEndPointCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationEndPointID.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationEndPointMap.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Doc\How to add a new property type.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\How to make a build.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\WhatsNew_Rubicon.Data.DomainObjects.txt"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\DomainObjects.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Doc\include\NamespaceDoc.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Mapping\CardinalityType.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\ClassDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\ClassDefinitionCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\IRelationEndPointDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\MandatoryMappingTypeNotFoundException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\MappingConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\MappingException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\NullRelationEndPointDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\PropertyDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\PropertyDefinitionCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\PropertyDefinitionCollectionEvents.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\RelationDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\RelationDefinitionCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\RelationEndPointDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\TypeInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Mapping\VirtualRelationEndPointDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\ConcurrencyViolationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\ConverterException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\IDataContainerFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\ObjectNotFoundException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\PersistenceException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\PersistenceManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\StorageProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\StorageProviderCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\StorageProviderException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\StorageProviderManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\ValueConverterBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Configuration\IdentityTypeNotSupportedException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Configuration\StorageProviderConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Configuration\StorageProviderConfigurationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Configuration\StorageProviderDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Configuration\StorageProviderDefinitionCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\CommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\DataContainerFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\DeleteCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\InsertCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\QueryCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\RdbmsProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\RdbmsProviderDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\RdbmsProviderException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SelectCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProvider.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\UpdateCommandBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\ValueConverter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\WhereClauseBuilder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\IQuery.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\Query.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryParameter.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryParameterCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryParameterType.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\Configuration\QueryConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\Configuration\QueryConfigurationException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\Configuration\QueryDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\Configuration\QueryDefinitionCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\Configuration\QueryType.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
-
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Rubicon.Data.DomainObjects</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Rubicon.Data.DomainObjects</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>Rubicon.Data.DomainObjects.xml</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>1591</NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Name>Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientTransaction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CommonCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\BaseFileLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\ClassDefinitionLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\ConfigurationNamespaceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\LoaderUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\MappingLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\PrefixNamespace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\QueryConfigurationLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\RelationDefinitionLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationLoader\StorageProviderConfigurationLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataContainer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\AnonymousEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ClientTransactionsDifferException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\CollectionEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\CollectionEndPointChangeAgent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataContainerCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataContainerMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataManagementException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ICollectionChangeDelegate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ICollectionEndPointChangeDelegate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\IEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\MandatoryRelationNotSetException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\NullAnonymousEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\NullCollectionEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\NullObjectEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ObjectDeletedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ObjectDiscardedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ObjectEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPoint.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointID.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointMap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectCollectionEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjectException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Events.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="INullableObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InvalidEnumDefinitionException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InvalidTypeException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\CardinalityType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\ClassDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\ClassDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\IRelationEndPointDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\MandatoryMappingTypeNotFoundException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\MappingConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\MappingException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\NullRelationEndPointDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\PropertyDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\PropertyDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\PropertyDefinitionCollectionEvents.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\RelationDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\RelationDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\RelationEndPointDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\TypeInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mapping\VirtualRelationEndPointDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectID.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ConcurrencyViolationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Configuration\IdentityTypeNotSupportedException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Configuration\StorageProviderConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Configuration\StorageProviderConfigurationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Configuration\StorageProviderDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Configuration\StorageProviderDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ConverterException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\IDataContainerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ObjectNotFoundException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\PersistenceException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\PersistenceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\CommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\DataContainerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\DeleteCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\InsertCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\QueryCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\RdbmsProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\RdbmsProviderDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\RdbmsProviderException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SelectCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\UpdateCommandBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\ValueConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\WhereClauseBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProvider.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProviderCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProviderException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProviderManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ValueConverterBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PropertyValueCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryConfigurationException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryDefinitionCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Configuration\QueryType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\IQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\Query.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryParameter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryParameterCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryParameterType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ReflectionUtility.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StateType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ValueTooLongException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="AssemblyInfoTemplate.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="mapping.xsd" />
+    <None Include="queries.xsd" />
+    <None Include="Rubicon.Data.DomainObjects.build" />
+    <Content Include="Doc\How to add a new property type.txt" />
+    <Content Include="Doc\How to make a build.txt" />
+    <Content Include="Doc\include\DomainObjects.xml" />
+    <Content Include="Doc\include\NamespaceDoc.xml" />
+    <Content Include="Doc\WhatsNew_Rubicon.Data.DomainObjects.txt" />
+    <Content Include="storageProviders.xsd" />
+    <Content Include="types.xsd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)*.xsd" "$(TargetDir)*.xsd"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,1122 +1,668 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = ""
-                AssemblyKeyContainerName = ""
-                AssemblyName = "Rubicon.Data.DomainObjects.UnitTests"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = 'copy "$(ProjectDir)..\DomainObjects\*.xsd" "$(TargetDir)*.xsd"&#xd;&#xa;copy "$(ProjectDir)*.xml" "$(TargetDir)*.xml"&#xd;&#xa;copy "$(ProjectDir)Database\*.sql" "$(TargetDir)*.sql"'
-                RootNamespace = "Rubicon.Data.DomainObjects.UnitTests"
-                RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "false"
-                    OutputPath = "bin\Debug\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "bin\Release\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
-                    Name = "Rubicon.Data.DomainObjects"
-                    Project = "{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "Core"
-                    Project = "{2AA369EC-A4E7-4D75-9101-EFA90E902625}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "nunit.framework"
-                    AssemblyName = "nunit.framework"
-                    HintPath = "..\..\prereq\Assemblies\nunit.framework.dll"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "AssemblyInfoTemplate.cs"
-                    SubType = "Code"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "ClientTransactionBaseTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ClientTransactionMock.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CommonCollectionMock.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "CommonCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DatabaseTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "entireMappingWithUnresolvedTypes.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mapping.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithCollectionTypeAndOneToOneRelation.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithColumnAndCardinalityMany.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithDerivationAndDuplicateColumnName.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithDerivationAndInvalidEntityName.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithDuplicateColumnName.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithDuplicateColumnNameAndRelationProperty.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithInvalidDerivation.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithInvalidDerivationAcrossStorageProviders.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithMinimumData.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithMoreThanTwoEndPoints.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithNonExistingBaseClass.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithOnlyOneEndPoint.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithOppositeClassAndCardinalityMany.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithOppositeClassAndTwoRelationProperties.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithOppositeClassReferringToItself.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithPropertyDefinedInBaseAndDerivedClass.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithRelationAndIdenticalPropertyNames.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithResolvedTypes.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithSchemaException.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithUnresolvedTypes.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "mappingWithXmlException.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "queries.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "queriesForLoaderTest.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Rubicon.Data.DomainObjects.UnitTests.build"
-                    BuildAction = "None"
-                />
-                <File
-                    RelPath = "scalarQueryWithCollectionType.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "SerializationBaseTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "storageProviders.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "storageProvidersForLoaderTest.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "storageProvidersWithSchemaException.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "storageProvidersWithXmlException.xml"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "UnitTestStorageProviderStub.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "UnitTestStorageProviderStubDefinition.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionChecker.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionCollectionWithUnresolvedTypesTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithResolvedTypesTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionLoaderWithUnresolvedTypesTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ClassDefinitionWithNullEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ConstructionOfRelationDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ConstructionOfRelationEndPointDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\ConstructionOfVirtualRelationEndPointDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\MappingConfigurationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\MappingLoaderTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\NullRelationEndPointDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\PropertyDefinitionCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\PropertyDefinitionFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\PropertyDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\RelationDefinitionChecker.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\RelationDefinitionCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\RelationDefinitionLoaderWithResolvedTypesTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\RelationDefinitionLoaderWithUnresolvedTypesTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\RelationDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\RelationDefinitionWithNullEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\RelationEndPointDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\StorageProviderConfigurationLoaderTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\TypeInfoTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Mapping\VirtualRelationEndPointDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Queries\QueryConfigurationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Queries\QueryDefinitionChecker.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Queries\QueryDefinitionCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\Queries\QueryDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\StorageProviders\StorageProviderConfigurationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\StorageProviders\StorageProviderDefinitionChecker.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Configuration\StorageProviders\StorageProviderDefinitionCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Database\CreateDB.sql"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Database\CreateTestData.sql"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Database\SetupDB.sql"
-                    BuildAction = "Content"
-                />
-                <File
-                    RelPath = "Database\TestDataLoader.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\AnonymousEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\CollectionEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\DataContainerCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\DataContainerMapTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\DataContainerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\DataManagerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\NullAnonymousEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\ObjectDeletedExceptionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\ObjectEndPointTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\PropertyValueCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\PropertyValueTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RegisterInRelationEndPointMapTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationEndPointBaseTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationEndPointCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationEndPointIDTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DataManagement\RelationEndPointMapTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\AddToOneToManyRelationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\AddToOneToManyRelationWithLazyLoadTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\ChangeUnidirectionalRelationWithNullTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\CommitDomainObjectTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DeleteDomainObjectTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DeleteDomainObjectWithLazyLoadTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DeleteDomainObjectWithManyToOneRelationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DeleteDomainObjectWithOneToManyRelationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DeleteDomainObjectWithOneToOneRelationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DeleteNewDomainObjectTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DomainObjectCollectionsWithDifferentClientTransactionsTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DomainObjectCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DomainObjectTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\DomainObjectWithHierarchyTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\NewDomainObjectTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\OneToManyRelationChangeTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\OneToOneRelationChangeTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\OneToOneRelationChangeWithNullTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\RemoveFromOneToManyRelationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\ReplaceInOneToManyRelationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\RollbackDomainObjectTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "DomainObjects\UnidirectionalRelationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\ChangeState.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\ClientTransactionEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\CollectionChangeState.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\DomainObjectCollectionEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\DomainObjectEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\DomainObjectRelationCheckEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\EventReceiverBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\EventReceiverCancelException.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\ObjectDeletionState.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\PropertyChangeState.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\PropertyDefinitionCollectionEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\PropertyValueContainerEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\PropertyValueEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\RelationChangeState.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "EventReceiver\SequenceEventReceiver.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Factories\DomainObjectIDs.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Factories\QueryFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Factories\StorageProviderDefinitionFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Factories\TestDataContainerFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Factories\TestMappingConfiguration.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IntegrationTests\DomainObjectEventRelationsTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IntegrationTests\DomainObjectTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "IntegrationTests\SerializationTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjectIDs\ObjectIDTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\DataContainerChecker.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\PersistenceManagerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\PropertyValueChecker.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\StorageProviderCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\StorageProviderManagerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\ValueConverterBaseMock.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\ValueConverterBaseTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\DeleteCommandBuilderTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\RdbmsProviderDefinitionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SelectCommandBuilderTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderBaseTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderCreateNewDataContainerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderDeleteTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderExecuteCollectionQueryTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderExecuteScalarQueryTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderLoadDataContainersByRelatedID.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderLoadDataContainerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderSaveExistingTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderSaveNewTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\SqlProviderTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Persistence\Rdbms\ValueConverterTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryManagerTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryParameterCollectionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryParameterTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Queries\QueryTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Resources\Image1.png"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Resources\Image2.png"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Resources\ImageLarger1MB.bmp"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Resources\ResourceManager.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Serialization\ClientTransactionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Serialization\MappingTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Serialization\QueriesTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Ceo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassNotDerivedFromDomainObject.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassNotInMapping.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithAllDataTypes.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithGuidKey.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithInvalidRelation.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithKeyOfInvalidType.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithoutClassIDProperty.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithoutIDProperty.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithoutRelatedClassIDColumn.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithoutRelatedClassIDColumnAndDerivation.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithoutTimestampProperty.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithRelatedClassIDColumnAndNoInheritance.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\ClassWithValidRelations.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Client.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Company.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Computer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Customer.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Distributor.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Employee.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\File.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\FileSystemItem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Folder.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\IndustrialSector.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Location.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Official.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Order.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\OrderCollection.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\OrderItem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\OrderTicket.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Partner.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Person.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\SpecialOfficial.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\Supplier.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TestDomain\TestDomainBase.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Transaction\ClientTransactionTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Transaction\CommitEventsTest.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
-
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6DEF9C11-1D5A-4B14-A4EB-F4C7E7CC3E7B}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Rubicon.Data.DomainObjects.UnitTests</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Rubicon.Data.DomainObjects.UnitTests</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <Name>nunit.framework</Name>
+      <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Name>Core</Name>
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\DomainObjects\Rubicon.Data.DomainObjects.csproj">
+      <Name>Rubicon.Data.DomainObjects</Name>
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientTransactionBaseTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientTransactionMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CommonCollectionMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CommonCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ClassDefinitionChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ClassDefinitionCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ClassDefinitionCollectionWithUnresolvedTypesTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ClassDefinitionFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ClassDefinitionLoaderWithResolvedTypesTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ClassDefinitionLoaderWithUnresolvedTypesTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ClassDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ClassDefinitionWithNullEndPointTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ConstructionOfRelationDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ConstructionOfRelationEndPointDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\ConstructionOfVirtualRelationEndPointDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\MappingConfigurationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\MappingLoaderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\NullRelationEndPointDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\PropertyDefinitionCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\PropertyDefinitionFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\PropertyDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\RelationDefinitionChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\RelationDefinitionCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\RelationDefinitionLoaderWithResolvedTypesTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\RelationDefinitionLoaderWithUnresolvedTypesTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\RelationDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\RelationDefinitionWithNullEndPointTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\RelationEndPointDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\StorageProviderConfigurationLoaderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\TypeInfoTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Mapping\VirtualRelationEndPointDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Queries\QueryConfigurationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Queries\QueryDefinitionChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Queries\QueryDefinitionCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Queries\QueryDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\StorageProviders\StorageProviderConfigurationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\StorageProviders\StorageProviderDefinitionChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\StorageProviders\StorageProviderDefinitionCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DatabaseTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Database\TestDataLoader.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\AnonymousEndPointTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\CollectionEndPointTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataContainerCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataContainerMapTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataContainerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\DataManagerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\NullAnonymousEndPointTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ObjectDeletedExceptionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\ObjectEndPointTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\PropertyValueCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\PropertyValueTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RegisterInRelationEndPointMapTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointBaseTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointIDTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManagement\RelationEndPointMapTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\AddToOneToManyRelationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\AddToOneToManyRelationWithLazyLoadTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\ChangeUnidirectionalRelationWithNullTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\CommitDomainObjectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DeleteDomainObjectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DeleteDomainObjectWithLazyLoadTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DeleteDomainObjectWithManyToOneRelationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DeleteDomainObjectWithOneToManyRelationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DeleteDomainObjectWithOneToOneRelationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DeleteNewDomainObjectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DomainObjectCollectionsWithDifferentClientTransactionsTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DomainObjectCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DomainObjectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\DomainObjectWithHierarchyTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\NewDomainObjectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\OneToManyRelationChangeTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\OneToOneRelationChangeTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\OneToOneRelationChangeWithNullTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\RemoveFromOneToManyRelationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\ReplaceInOneToManyRelationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\RollbackDomainObjectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DomainObjects\UnidirectionalRelationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\ChangeState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\ClientTransactionEventReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\CollectionChangeState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\DomainObjectCollectionEventReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\DomainObjectEventReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\DomainObjectRelationCheckEventReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\EventReceiverBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\EventReceiverCancelException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\ObjectDeletionState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\PropertyChangeState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\PropertyDefinitionCollectionEventReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\PropertyValueContainerEventReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\PropertyValueEventReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\RelationChangeState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EventReceiver\SequenceEventReceiver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\DomainObjectIDs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\QueryFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\StorageProviderDefinitionFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\TestDataContainerFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Factories\TestMappingConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntegrationTests\DomainObjectEventRelationsTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntegrationTests\DomainObjectTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IntegrationTests\SerializationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjectIDs\ObjectIDTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\DataContainerChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\PersistenceManagerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\PropertyValueChecker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\DeleteCommandBuilderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\RdbmsProviderDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SelectCommandBuilderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderBaseTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderCreateNewDataContainerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderDeleteTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderExecuteCollectionQueryTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderExecuteScalarQueryTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderLoadDataContainersByRelatedID.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderLoadDataContainerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderSaveExistingTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderSaveNewTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\SqlProviderTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\Rdbms\ValueConverterTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProviderCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\StorageProviderManagerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ValueConverterBaseMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Persistence\ValueConverterBaseTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryManagerTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryParameterCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryParameterTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Queries\QueryTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Resources\ResourceManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SerializationBaseTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\ClientTransactionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\MappingTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Serialization\QueriesTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Ceo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassNotDerivedFromDomainObject.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassNotInMapping.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithAllDataTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithGuidKey.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithInvalidRelation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithKeyOfInvalidType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithoutClassIDProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithoutIDProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithoutRelatedClassIDColumn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithoutRelatedClassIDColumnAndDerivation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithoutTimestampProperty.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithRelatedClassIDColumnAndNoInheritance.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\ClassWithValidRelations.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Client.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Company.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Computer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Customer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Distributor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Employee.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\File.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\FileSystemItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Folder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\IndustrialSector.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Location.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Official.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Order.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\OrderCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\OrderItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\OrderTicket.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Partner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Person.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\SpecialOfficial.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Supplier.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\TestDomainBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Transaction\ClientTransactionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Transaction\CommitEventsTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTestStorageProviderStub.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnitTestStorageProviderStubDefinition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <None Include="AssemblyInfoTemplate.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="Rubicon.Data.DomainObjects.UnitTests.build" />
+    <Content Include="Database\CreateDB.sql" />
+    <Content Include="Database\CreateTestData.sql" />
+    <Content Include="Database\SetupDB.sql" />
+    <Content Include="entireMappingWithUnresolvedTypes.xml" />
+    <Content Include="mapping.xml" />
+    <Content Include="mappingWithCollectionTypeAndOneToOneRelation.xml" />
+    <Content Include="mappingWithColumnAndCardinalityMany.xml" />
+    <Content Include="mappingWithDerivationAndDuplicateColumnName.xml" />
+    <Content Include="mappingWithDerivationAndInvalidEntityName.xml" />
+    <Content Include="mappingWithDuplicateColumnName.xml" />
+    <Content Include="mappingWithDuplicateColumnNameAndRelationProperty.xml" />
+    <Content Include="mappingWithInvalidDerivation.xml" />
+    <Content Include="mappingWithInvalidDerivationAcrossStorageProviders.xml" />
+    <Content Include="mappingWithMinimumData.xml" />
+    <Content Include="mappingWithMoreThanTwoEndPoints.xml" />
+    <Content Include="mappingWithNonExistingBaseClass.xml" />
+    <Content Include="mappingWithOnlyOneEndPoint.xml" />
+    <Content Include="mappingWithOppositeClassAndCardinalityMany.xml" />
+    <Content Include="mappingWithOppositeClassAndTwoRelationProperties.xml" />
+    <Content Include="mappingWithOppositeClassReferringToItself.xml" />
+    <Content Include="mappingWithPropertyDefinedInBaseAndDerivedClass.xml" />
+    <Content Include="mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml" />
+    <Content Include="mappingWithRelationAndIdenticalPropertyNames.xml" />
+    <Content Include="mappingWithResolvedTypes.xml" />
+    <Content Include="mappingWithSchemaException.xml" />
+    <Content Include="mappingWithUnresolvedTypes.xml" />
+    <Content Include="mappingWithXmlException.xml" />
+    <Content Include="queries.xml" />
+    <Content Include="queriesForLoaderTest.xml" />
+    <Content Include="scalarQueryWithCollectionType.xml" />
+    <Content Include="storageProviders.xml" />
+    <Content Include="storageProvidersForLoaderTest.xml" />
+    <Content Include="storageProvidersWithSchemaException.xml" />
+    <Content Include="storageProvidersWithXmlException.xml" />
+    <EmbeddedResource Include="Resources\Image1.png" />
+    <EmbeddedResource Include="Resources\Image2.png" />
+    <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)..\DomainObjects\*.xsd" "$(TargetDir)*.xsd"
+copy "$(ProjectDir)*.xml" "$(TargetDir)*.xml"
+copy "$(ProjectDir)Database\*.sql" "$(TargetDir)*.sql"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
