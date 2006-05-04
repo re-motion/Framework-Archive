@@ -27,7 +27,6 @@
       <references failonempty="true">
         <include name="${build.outputdir}/Rubicon.Core.dll" />
         <include name="${build.outputdir}/log4net.dll" />
-        <include name="${build.outputdir}/Microsoft.Web.UI.WebControls.dll" if="${nant.settings.currentframework == 'net-1.1'}"/>
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Drawing.dll"/>
