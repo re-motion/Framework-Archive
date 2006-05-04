@@ -1,8 +1,6 @@
 using System;
 using System.Reflection;
-#if ! NET11
 using System.Web.Compilation;
-#endif
 using System.Web.UI;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
@@ -116,22 +114,18 @@ public class WebMultiLingualResourcesAttribute : MultiLingualResourcesAttribute
   public WebMultiLingualResourcesAttribute (string baseName)
     : base (baseName)
   {
-#if ! NET11
     ArgumentUtility.CheckNotNullOrEmpty ("baseName", baseName);
     Type type = BuildManager.GetType (baseName, false);
     if (type != null)
       SetResourceAssembly (type.Assembly);
-#endif
   }
 
-#if ! NET11
   public WebMultiLingualResourcesAttribute (Type resourceType)
     : base (resourceType.FullName)
   {
     ArgumentUtility.CheckNotNull ("resourceType", resourceType);
     SetResourceAssembly (resourceType.Assembly);
   }
-#endif
 }
 
 }

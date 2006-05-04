@@ -291,24 +291,8 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   protected override NameValueCollection DeterminePostBackMode()
   {
     NameValueCollection result = base.DeterminePostBackMode();
-
-#if NET11
-    OnPreInit();
-#endif
-
     return result;
   }
-
-#if NET11
-  /// <summary> Called before the initialization phase of the page. </summary>
-  /// <remarks> 
-  ///   In ASP.NET 1.1 this method is called by <b>DeterminePostBackMode</b>. Therefor you should not use
-  ///   the postback collection during pre init.
-  /// </remarks>
-  protected virtual void OnPreInit ()
-  {
-  }
-#endif
 
   /// <summary> Gets the post back data for the page. </summary>
   NameValueCollection ISmartPage.GetPostBackCollection ()

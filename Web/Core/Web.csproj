@@ -265,9 +265,6 @@
     <Compile Include="UI\Controls\FormGridRowInfoCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\HiddenField.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="UI\Controls\HtmlHeadContents.cs">
       <SubType>Code</SubType>
     </Compile>

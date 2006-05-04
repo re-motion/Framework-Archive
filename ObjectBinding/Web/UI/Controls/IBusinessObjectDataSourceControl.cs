@@ -48,9 +48,7 @@ public interface IBusinessObjectDataSourceControl: IBusinessObjectDataSource, IC
 ///     documentation for an examples of the <b>LoadValues</b> and the <b>SaveValues</b> patterns.
 ///   </note>
 /// </remarks>
-#if ! NET11
-[System.Web.UI.NonVisualControl]
-#endif
+[NonVisualControl]
 [Designer (typeof (BocDataSourceDesigner))]
 public abstract class BusinessObjectDataSourceControl: Control, IBusinessObjectDataSourceControl
 {

@@ -280,7 +280,6 @@ namespace Rubicon.Web.Utilities
       return viewState;
     }
 
-#if ! NET11
     public static PageStatePersister GetPageStatePersister (Page target)
     {
       ArgumentUtility.CheckNotNull ("target", target);
@@ -294,7 +293,6 @@ namespace Rubicon.Web.Utilities
       //  protected PageStatePersister System.Web.UI.Page.PageStatePersister
       return (PageStatePersister) typeof (Page).InvokeMember ("PageStatePersister", bindingFlags, null, target, new object[0]);
     }
-#endif
 
     // member fields
 

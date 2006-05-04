@@ -39,9 +39,6 @@ public class HttpContextHelper
 
     object httpRuntime = PrivateInvoke.GetNonPublicStaticField (typeof (HttpRuntime), "_theRuntime");
     PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppPath", s_appPhysicalDir);
-#if NET11
-    PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppVPath", s_appVirtualDir);
-#else
     string assemblyName = typeof (HttpApplication).Assembly.FullName;
     Type virtualPathType = Type.GetType ("System.Web.VirtualPath, " + assemblyName, true);
     object virtualPath = PrivateInvoke.InvokePublicStaticMethod (virtualPathType, "Create", s_appVirtualDir);
@@ -49,7 +46,6 @@ public class HttpContextHelper
     PrivateInvoke.SetNonPublicField (httpRuntime, "_appDomainAppId", "Rubicon.Web.UnitTests");
     Type buildManagerType = typeof (System.Web.Compilation.BuildManager);
     PrivateInvoke.SetNonPublicStaticProperty (buildManagerType, "SkipTopLevelCompilationExceptions", true);
-#endif
     HttpContext context = new HttpContext (workerRequest);
     PrivateInvoke.SetNonPublicField (context.Request, "_httpMethod", httpMethod);
 
@@ -98,24 +94,11 @@ public class HttpContextHelper
     bool newSession = true;
     SessionStateMode mode = SessionStateMode.InProc;
     bool isReadOnly = false;
-#if NET11
-    string assemblyName = typeof (HttpApplication).Assembly.FullName;
-    Type sessionDictionaryType =  Type.GetType ("System.Web.SessionState.SessionDictionary, " + assemblyName, true);
-    
-    object sessionDictionary = PrivateInvoke.CreateInstanceNonPublicCtor (sessionDictionaryType, new object[0]);
-
-    bool cookieless = true;
-    sessionState = (HttpSessionState) PrivateInvoke.CreateInstanceNonPublicCtor (
-        typeof (HttpSessionState), 
-        new object[] {id, sessionDictionary, staticObjects, timeout, newSession, cookieless, mode, isReadOnly});
-#else
     SessionStateItemCollection sessionItems = new SessionStateItemCollection ();
     HttpSessionStateContainer httpSessionStateContainer = new HttpSessionStateContainer (
-      id, sessionItems, staticObjects, timeout, newSession, HttpCookieMode.UseUri, mode, isReadOnly);
+        id, sessionItems, staticObjects, timeout, newSession, HttpCookieMode.UseUri, mode, isReadOnly);
 
-    sessionState = (HttpSessionState) PrivateInvoke.CreateInstanceNonPublicCtor (
-        typeof (HttpSessionState), httpSessionStateContainer);
-#endif
+    sessionState = (HttpSessionState) PrivateInvoke.CreateInstanceNonPublicCtor (typeof (HttpSessionState), httpSessionStateContainer);
     return sessionState;
   }
 

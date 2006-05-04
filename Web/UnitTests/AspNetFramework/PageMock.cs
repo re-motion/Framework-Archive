@@ -16,9 +16,7 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
 
     // member fields
 
-#if ! NET11
     private PageStatePersister _pageStatePersister;
-#endif	
 
     // construction and disposing
 
@@ -40,7 +38,6 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
       PrivateInvoke.SetNonPublicField (this, "_requestValueCollection", requestValueCollection);
     }
 
-#if ! NET11
     protected override PageStatePersister PageStatePersister
     {
       get { return GetPageStatePersister (); }
@@ -74,7 +71,6 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
     {
       PrivateInvoke.InvokeNonPublicMethod (this, typeof (Page), "SaveAllState", new object[0]);
     }
-#endif
   }
 
 }

@@ -15,12 +15,7 @@ namespace Rubicon.Web.UI.Controls
   [PersistChildren (true)]
   [ParseChildren (true, "LazyControls")]
   [ToolboxData ("<{0}:TabView runat=\"server\"></{0}:TabView>")]
-#if NET11
-  [CLSCompliant (false)]
-  public class TabView : Microsoft.Web.UI.WebControls.PageView
-#else
   public class TabView : System.Web.UI.WebControls.View
-#endif
   {
     //  constants
     
@@ -97,13 +92,6 @@ namespace Rubicon.Web.UI.Controls
       }
     }
 
-    internal void OnInsert (TabbedMultiView.MultiView multiView)
-    {
-#if NET11
-      base.ParentMultiPage = multiView;
-#endif
-    }
-
     protected void OnInsert (Control multiView)
     {
       OnInsert ((TabbedMultiView.MultiView) multiView);
@@ -142,18 +130,6 @@ namespace Rubicon.Web.UI.Controls
       _icon.Reset ();
     }
 
-#if NET11
-    protected override Microsoft.Web.UI.WebControls.RenderPathID RenderPath
-    {
-      get 
-      { 
-    	  if (this.IsDesignMode)
-		      return Microsoft.Web.UI.WebControls.RenderPathID.DesignerPath;
-        else
-	  	    return Microsoft.Web.UI.WebControls.RenderPathID.DownLevelPath;
-      }
-    }
-#else
     private bool _overrideVisible = false;
     private bool _isVisible = true;
 
@@ -181,14 +157,9 @@ namespace Rubicon.Web.UI.Controls
         _isVisible = value;
       }
     }
-#endif
-
   }
 
 
-#if NET11
-  [CLSCompliant (false)]
-#endif
   [ToolboxItem (false)]
   public class EmptyTabView : TabView
   {

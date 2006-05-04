@@ -164,10 +164,8 @@ public class SmartPageInfo
       bool isDesignMode = ControlHelper.IsDesignMode (_page);
 
       Control page = (Page) _page;
-#if ! NET11      
       if (((Page) page).Master != null)
         page = ((Page) page).Master;
-#endif
 
       MemberInfo[] fields = page.GetType().FindMembers (
             MemberTypes.Field, 
@@ -200,10 +198,8 @@ public class SmartPageInfo
       EnsureHtmlFormFieldInitialized();
 
       Control page = (Page) _page;
-#if ! NET11      
       if (((Page) page).Master != null)
         page = ((Page) page).Master;
-#endif
 
       if (_htmlFormField != null) // Can only be null without an exception during design mode
         return (HtmlForm) _htmlFormField.GetValue (page);
@@ -215,10 +211,8 @@ public class SmartPageInfo
       EnsureHtmlFormFieldInitialized();
 
       Control page = (Page) _page;
-#if ! NET11      
       if (((Page) page).Master != null)
         page = ((Page) page).Master;
-#endif
 
       if (_htmlFormField != null) // Can only be null without an exception during design mode
         _htmlFormField.SetValue (page, value);
@@ -228,7 +222,6 @@ public class SmartPageInfo
 
   private void Page_Init(object sender, EventArgs e)
   {
-#if ! NET11
     if (((Page) _page).Header != null)
     {
       bool hasHeadContents = false;
@@ -243,7 +236,6 @@ public class SmartPageInfo
       if (! hasHeadContents)
         ((Page) _page).Header.Controls.AddAt (0, new HtmlHeadContents());
     }
-#endif
   }
 
   private void Page_PreRender (object sender, EventArgs e)

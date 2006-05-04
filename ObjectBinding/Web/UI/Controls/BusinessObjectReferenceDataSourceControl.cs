@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Web.UI;
 using Rubicon.ObjectBinding;
 using Rubicon.ObjectBinding.Design;
 using Rubicon.ObjectBinding.Web;
@@ -60,9 +61,7 @@ public class BusinessObjectReferenceSearchDataSourceControl: BusinessObjectRefer
 /// </summary>
 /// <seealso cref="IBusinessObjectReferenceDataSource"/>
 /// <seealso cref="IBusinessObjectDataSourceControl"/>
-#if ! NET11
-[System.Web.UI.NonVisualControl]
-#endif
+[NonVisualControl]
 [Designer (typeof (BocDataSourceDesigner))]
 public class BusinessObjectReferenceDataSourceControl: 
     BusinessObjectBoundEditableWebControl, IBusinessObjectDataSourceControl, IBusinessObjectReferenceDataSource

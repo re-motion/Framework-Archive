@@ -476,11 +476,7 @@ public class WxePageStep: WxeStep
   {
     // page.SaveVieState()
     MethodInfo saveViewStateMethod;
-#if NET11    
-    saveViewStateMethod = typeof (Page).GetMethod ("SavePageViewState", BindingFlags.Instance | BindingFlags.NonPublic);
-#else
     saveViewStateMethod = typeof (Page).GetMethod ("SaveAllState", BindingFlags.Instance | BindingFlags.NonPublic);
-#endif
     saveViewStateMethod.Invoke (page, new object[0]); 
   }
 

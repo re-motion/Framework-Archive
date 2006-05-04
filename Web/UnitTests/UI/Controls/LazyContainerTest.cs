@@ -1,12 +1,10 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-#if ! NET11
-using System.Collections.Generic;
-#endif
 
 using NUnit.Framework;
 
@@ -310,7 +308,6 @@ namespace Rubicon.Web.UnitTests.UI.Controls
       Assert.IsNotNull (values.Second);
     }
 
-#if ! NET11
 
     [Test]
     [ExpectedException (typeof (InvalidOperationException), "Cannot ensure LazyContainer 'LazyContainer' before its state has been loaded.")]
@@ -482,8 +479,6 @@ namespace Rubicon.Web.UnitTests.UI.Controls
 
       Page.SaveAllState ();
     }
-
-#endif
 
     private void LazyContainer_Init (object sender, EventArgs e)
     {

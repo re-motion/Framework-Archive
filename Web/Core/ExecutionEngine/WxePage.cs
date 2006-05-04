@@ -672,10 +672,6 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
     NameValueCollection result = _wxePageInfo.EnsurePostBackModeDetermined (Context);
     _wxePageInfo.Initialize (Context);
 
-#if NET11
-    base.OnPreInit();
-#endif
-
     return result;
   }
 

@@ -1,16 +1,13 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
 
-#if NET11
-public class TabViewCollection: ControlCollection
-#else
-public class TabViewCollection: System.Web.UI.WebControls.ViewCollection
-#endif
+public class TabViewCollection: ViewCollection
 {
   public TabViewCollection (Control owner)
     : this ((TabbedMultiView.MultiView) owner)
@@ -26,7 +23,6 @@ public class TabViewCollection: System.Web.UI.WebControls.ViewCollection
   {
     ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TabView));
     TabView view = (TabView) control;
-    view.OnInsert (Owner);
     base.Add (view);
     Owner.OnTabViewInserted (view);
   }
@@ -35,7 +31,6 @@ public class TabViewCollection: System.Web.UI.WebControls.ViewCollection
   {
     ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TabView));
     TabView view = (TabView) control;
-    view.OnInsert (Owner);
     base.AddAt (index, view);
     Owner.OnTabViewInserted (view);
   }
@@ -59,17 +54,12 @@ public class TabViewCollection: System.Web.UI.WebControls.ViewCollection
     Owner.OnTabViewRemoved (view);
   }
 
-#if ! NET11
   [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
   public new TabView this[int index]
   {
     get { return (TabView) base[index]; }
   }
-#endif
 
-#if NET11
-  [CLSCompliant (false)]
-#endif
   private new TabbedMultiView.MultiView Owner
   {
     get { return (TabbedMultiView.MultiView) base.Owner; }

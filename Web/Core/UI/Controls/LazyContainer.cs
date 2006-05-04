@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Web.UI;
@@ -7,9 +8,6 @@ using System.Web.UI.WebControls;
 
 using Rubicon.Utilities;
 using Rubicon.Web.Utilities;
-#if ! NET11
-using System.Collections.Generic;
-#endif
 
 namespace Rubicon.Web.UI.Controls
 {
@@ -27,10 +25,8 @@ namespace Rubicon.Web.UI.Controls
     private bool _isEnsured;
     private EmptyControlCollection _emptyControlCollection;
     private PlaceHolder _placeHolder;
-#if ! NET11
-    Dictionary<string, object> _childControlStatesBackUp;
+    private Dictionary<string, object> _childControlStatesBackUp;
     private bool _hasControlStateLoaded;
-#endif
     private object _recursiveViewState;
     private bool _isSavingViewStateRecursive;
     private bool _isLoadingViewStateRecursive;
@@ -50,7 +46,7 @@ namespace Rubicon.Web.UI.Controls
         return;
 
       _isEnsured = true;
-#if ! NET11
+
       if (_isLazyLoadingEnabled)
       {        
         if (!_hasControlStateLoaded && Page != null && Page.IsPostBack)
@@ -58,7 +54,7 @@ namespace Rubicon.Web.UI.Controls
 
         RestoreChildControlState ();
       }
-#endif
+
       EnsurePlaceHolderCreated ();
       Controls.Add (_placeHolder);
     }
@@ -117,9 +113,7 @@ namespace Rubicon.Web.UI.Controls
       base.OnInit (e);
       EnsureChildControls ();
 
-#if ! NET11
       Page.RegisterRequiresControlState (this);
-#endif
     }
 
     protected override void LoadViewState (object savedState)
@@ -160,8 +154,6 @@ namespace Rubicon.Web.UI.Controls
 
       return values;
     }
-
-#if ! NET11
 
     protected override void LoadControlState (object savedState)
     {
@@ -226,8 +218,6 @@ namespace Rubicon.Web.UI.Controls
 
       return values;
     }
-
-#endif
   }
 
 }

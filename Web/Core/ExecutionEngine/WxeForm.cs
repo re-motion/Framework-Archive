@@ -139,11 +139,7 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
     {
       if (! Rubicon.Web.UI.HtmlHeadAppender.Current.HasAppended)
       {
-#if NET11
-        throw new WxeException ("The Rubicon.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document.");
-#else
         throw new WxeException ("The Rubicon.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document or specify the runat=server attribute for the 'head' section to allow for an automatically generated HtmlHeadContents control.");
-#endif
       }
 
       if (Page.SmartNavigation)

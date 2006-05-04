@@ -13,9 +13,7 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
     // member fields
 
     private string _valueInViewState;
-#if ! NET11
     private string _valueInControlState;
-#endif
 
     // construction and disposing
 
@@ -29,9 +27,7 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
     {
       base.OnInit (e);
 
-#if ! NET11
       Page.RegisterRequiresControlState (this);
-#endif
     }
 
     public string ValueInViewState
@@ -40,13 +36,11 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
       set { _valueInViewState = value; }
     }
 
-#if ! NET11
     public string ValueInControlState
     {
       get { return _valueInControlState; }
       set { _valueInControlState = value; }
     }
-#endif
     
     protected override void LoadViewState (object savedState)
     {
@@ -58,7 +52,6 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
       return _valueInViewState;
     }
 
-#if ! NET11
     protected override void LoadControlState (object savedState)
     {
       _valueInControlState = (string) savedState;
@@ -68,7 +61,6 @@ namespace Rubicon.Web.UnitTests.AspNetFramework
     {
       return _valueInControlState;
     }
-#endif
   }
 
 }

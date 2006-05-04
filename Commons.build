@@ -3,8 +3,7 @@
 
   <include buildfile="build/properties.include.xml" verbose="true" />
   <include buildfile="build/Commons.include.xml" verbose="true" />
-  <include buildfile="build/Commons.Doc.net-1.1.include.xml" verbose="true" if="${nant.settings.currentframework == 'net-1.1'}" />
-  <include buildfile="build/Commons.Doc.include.xml" verbose="true" unless="${nant.settings.currentframework == 'net-1.1'}" />
+  <include buildfile="build/Commons.Doc.include.xml" verbose="true" />
 
   <property name="solution.basedir" value="${project::get-base-directory()}" />
   <property name="solution.global-dir" value="/development/global"/>
@@ -24,8 +23,7 @@
 
   <property name="svn.exe" value="C:\Program Files\Subversion\bin\svn.exe" overwrite="false"/>
   
-  <property name="doc.sdkdocversion" value="SDK_v1_1" if="${nant.settings.currentframework == 'net-1.1'}" />
-  <property name="doc.sdkdocversion" value="SDK_v2_0" if="${nant.settings.currentframework == 'net-2.0'}" />
+  <property name="doc.sdkdocversion" value="SDK_v2_0" />
 
   <target name="local" description="make local build into directory build/current">
     <property name="build.local" value="true" />
@@ -51,7 +49,6 @@
     <property name="project.config" value="debug" />
     <property name="build.debug" value="true" />
     <property name="build.csc.define" value="DEBUG;TRACE;"/>
-    <property name="build.csc.define" value="${build.csc.define}NET11;" if="${nant.settings.currentframework == 'net-1.1'}"/>
     <call target="init-build-version" />
   </target>
 
@@ -64,7 +61,6 @@
     <property name="project.config" value="release" />
     <property name="build.debug" value="false" />
     <property name="build.csc.define" value="TRACE;"/>
-    <property name="build.csc.define" value="${build.csc.define}NET11;" if="${nant.settings.currentframework == 'net-1.1'}"/>
     <call target="init-build-version" />
   </target>
 
@@ -99,7 +95,6 @@
     <property name="project.config" value="documentation" />
     <property name="build.debug" value="false" />
     <property name="build.csc.define" value="TRACE;"/>
-    <property name="build.csc.define" value="${build.csc.define}NET11;" if="${nant.settings.currentframework == 'net-1.1'}"/>
     <call target="init-build-version" />
   </target>
 
@@ -150,7 +145,7 @@
     <call target="release" />
   </target>
 
-  <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, Web.Legacy, ObjectBinding, ObjectBinding.Web, 
+  <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, ObjectBinding, ObjectBinding.Web, 
       ObjectBinding.Reflection, Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, 
       Data.DomainObjects.Web">
     <echo message="Target has executed."/>
@@ -161,9 +156,11 @@
     <echo message="Target has executed."/>
   </target>
 
-  <target name="forCooNet" depends="prereq, Core, Development.Core, Development.CodeDom, Web, Web.Legacy, ObjectBinding, ObjectBinding.Web">
+  <!--
+  <target name="forCooNet" depends="prereq, Core, Development.Core, Development.CodeDom, Web, ObjectBinding, ObjectBinding.Web">
     <echo message="Target has executed."/>
   </target>
+  -->
 
   <!--======================= PROJECTS =======================-->
 
@@ -252,14 +249,6 @@
     <property name="project.name" value="Web" />
     <property name="project.dir" value="Web/Core" />
     <property name="project.output" value="Rubicon.Web" />
-    <property name="project.extension" value="dll" />
-    <call target="execute-buildstep" />
-  </target>
-
-  <target name="Web.Legacy" depends="Core, Web">
-    <property name="project.name" value="Web.Legacy" />
-    <property name="project.dir" value="Web/Legacy" />
-    <property name="project.output" value="Rubicon.Web.Legacy" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
   </target>
