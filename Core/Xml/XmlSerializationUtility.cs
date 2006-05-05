@@ -10,28 +10,48 @@ using log4net;
 namespace Rubicon.Xml
 {
 
-public class XmlSerializationUtility
+public static class XmlSerializationUtility
 {
   private static readonly ILog s_log = LogManager.GetLogger (typeof (XmlSerializationUtility));
 
-  public static object DeserializeUsingSchema (
-      XmlTextReader reader, string context, Type type, string defaultNamespace, XmlSchemaCollection schemas)
+  [Obsolete ("This overload is obsolete. Please use the DeserializeUsingSchema (XmlTextReader, String, Type, String, XmlSchemaSet) overload instead.")]
+  public static object DeserializeUsingSchema (XmlTextReader reader, string context, Type type, string defaultNamespace, XmlSchemaCollection schemas)
+  {
+    return DeserializeUsingSchema (reader, context, type, defaultNamespace, ConvertXmlSchemaCollectionToXmlSchemaSet (schemas));
+  }
+
+  [Obsolete ("This overload is obsolete. Please use the DeserializeUsingSchema (XmlReader, String, Type, String, XmlSchemaSet) overload instead.")]
+  public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlSchemaCollection schemas)
+  {
+    return DeserializeUsingSchema (reader, context, type, defaultNamespace, ConvertXmlSchemaCollectionToXmlSchemaSet (schemas));
+  }
+
+  [Obsolete ("This overload is obsolete. Please use the DeserializeUsingSchema (XmlReader, String, Type, XmlSchemaSet) overload instead.")]
+  public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, XmlSchemaCollection schemas)
+  {
+    return DeserializeUsingSchema (reader, context, type, ConvertXmlSchemaCollectionToXmlSchemaSet (schemas));
+  }
+
+  public static object DeserializeUsingSchema (XmlTextReader reader, string context, Type type, string defaultNamespace, XmlSchemaSet schemas)
   {
     ArgumentUtility.CheckNotNull ("reader", reader);
     ArgumentUtility.CheckNotNullOrEmpty ("context", context);
     ArgumentUtility.CheckNotNull ("type", type);
     ArgumentUtility.CheckNotNull ("schemas", schemas);
 
-    XmlValidatingReader validatingReader = null;
+    XmlReaderSettings settings = new XmlReaderSettings ();
+    settings.Schemas = schemas;
+    XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler (context);
+    settings.ValidationEventHandler += validationHandler.Handler;
+
+    XmlReader validatingReader = XmlReader.Create (reader, settings);
     try
     {
       XmlSerializer serializer = new XmlSerializer (type, defaultNamespace);
-      validatingReader = new XmlValidatingReader (reader);
-      validatingReader.Schemas.Add (schemas);
-      XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler (context);
-      validatingReader.ValidationEventHandler += validationHandler.Handler;
       object result = serializer.Deserialize (validatingReader);
+      
       validationHandler.EnsureNoErrors();
+      
       return result;
     }
     catch (XmlSchemaException e)
@@ -64,27 +84,34 @@ public class XmlSerializationUtility
     }
   }
 
-  public static object DeserializeUsingSchema (
-      XmlTextReader reader, string context, Type type, XmlSchemaCollection schemas)
+  public static object DeserializeUsingSchema (XmlTextReader reader, string context, Type type, XmlSchemaSet schemas)
   {
-    return XmlSerializationUtility.DeserializeUsingSchema (
-        reader, context, type, XmlSerializationUtility.GetNamespace (type), schemas);
+    return DeserializeUsingSchema (reader, context, type, GetNamespace (type), schemas);
   }
 
-  public static object DeserializeUsingSchema (
-      XmlTextReader reader, string context, Type type, string schemaUri, XmlReader schemaReader)
+  public static object DeserializeUsingSchema (XmlTextReader reader, string context, Type type, string schemaUri, XmlReader schemaReader)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("schemaUri", schemaUri);
     ArgumentUtility.CheckNotNull ("schemaReader", schemaReader);
 
-    XmlSchemaCollection schemas = new XmlSchemaCollection();
+    XmlSchemaSet schemas = new XmlSchemaSet();
     schemas.Add (schemaUri, schemaReader);
-    return XmlSerializationUtility.DeserializeUsingSchema (
-        reader, context, type, XmlSerializationUtility.GetNamespace (type), schemas);
+    return DeserializeUsingSchema (reader, context, type, GetNamespace (type), schemas);
   }
-  
-  public static object DeserializeUsingSchema (
-      XmlReader reader, string context, Type type, string defaultNamespace, XmlSchemaCollection schemas)
+
+  [Obsolete ("Uses obsolete XmlSchemaCollection.")]
+  private static XmlSchemaSet ConvertXmlSchemaCollectionToXmlSchemaSet (XmlSchemaCollection schemas)
+  {
+    ArgumentUtility.CheckNotNull ("schemas", schemas);
+
+    XmlSchemaSet schemaSet = new XmlSchemaSet ();
+    foreach (XmlSchema schema in schemas)
+      schemaSet.Add (schema);
+    
+    return schemaSet;
+  }
+
+  public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string defaultNamespace, XmlSchemaSet schemas)
   { 
     ArgumentUtility.CheckNotNull ("reader", reader);
 
@@ -96,26 +123,22 @@ public class XmlSerializationUtility
     memoryStream.Seek (0, SeekOrigin.Begin);
 
     XmlTextReader textReader = new XmlTextReader (context, memoryStream, new NameTable());
-    return XmlSerializationUtility.DeserializeUsingSchema (textReader, context, type, defaultNamespace, schemas);
+    return DeserializeUsingSchema (textReader, context, type, defaultNamespace, schemas);
   }
 
-  public static object DeserializeUsingSchema (
-      XmlReader reader, string context, Type type, XmlSchemaCollection schemas)
+  public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, XmlSchemaSet schemas)
   { 
-    return XmlSerializationUtility.DeserializeUsingSchema (
-        reader, context, type, XmlSerializationUtility.GetNamespace (type), schemas);
+    return DeserializeUsingSchema (reader, context, type, GetNamespace (type), schemas);
   }
 
-  public static object DeserializeUsingSchema (
-      XmlReader reader, string context, Type type, string schemaUri, XmlReader schemaReader)
+  public static object DeserializeUsingSchema (XmlReader reader, string context, Type type, string schemaUri, XmlReader schemaReader)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("schemaUri", schemaUri);
     ArgumentUtility.CheckNotNull ("schemaReader", schemaReader);
 
-    XmlSchemaCollection schemas = new XmlSchemaCollection();
+    XmlSchemaSet schemas = new XmlSchemaSet();
     schemas.Add (schemaUri, schemaReader);
-    return XmlSerializationUtility.DeserializeUsingSchema (
-        reader, context, type, XmlSerializationUtility.GetNamespace (type), schemas);
+    return DeserializeUsingSchema (reader, context, type, GetNamespace (type), schemas);
   }
 
   public static string GetNamespace (Type type)
@@ -152,11 +175,6 @@ public class XmlSerializationUtility
       return xmlRoot.Namespace;
     else
       return xmlType.Namespace;
-  }
-
-  /// <exclude />
-  private XmlSerializationUtility()
-  {
   }
 }
 

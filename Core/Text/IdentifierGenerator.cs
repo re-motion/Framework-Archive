@@ -250,12 +250,12 @@ public class IdentifierGenerator: ICloneable
       if (_isCaseSensitive)
         _uniqueIdentifiers = new Hashtable ();
       else
-        _uniqueIdentifiers = new Hashtable (new CaseInsensitiveHashCodeProvider(), new CaseInsensitiveComparer());
+        _uniqueIdentifiers = new Hashtable (StringComparer.CurrentCultureIgnoreCase);
 
       if (_useCaseSensitiveNames)
         _uniqueIdentfiersByObject = new Hashtable ();
       else
-        _uniqueIdentfiersByObject = new Hashtable (new CaseInsensitiveHashCodeProvider(), new CaseInsensitiveComparer());
+        _uniqueIdentfiersByObject = new Hashtable (StringComparer.CurrentCultureIgnoreCase);
     }
     else
     {

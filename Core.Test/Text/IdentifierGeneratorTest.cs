@@ -34,14 +34,16 @@ public class IdentifierGeneratorTest
     CheckValidIdentifier (idGen, "3myid", "_myid");
     CheckValidIdentifier (idGen, "_myid3", "_myid3");
     CheckValidIdentifier (idGen, "myid‰", "myid_");
+    CheckValidIdentifier (idGen, "myidﬂ", "myid_");
 
     CheckUniqueIdentifier (idGen, "myƒid", "my_id");
     CheckUniqueIdentifier (idGen, "Myƒid", "My_id");
     CheckUniqueIdentifier (idGen, "my‹id", "my_id_1");
     CheckUniqueIdentifier (idGen, "my÷id", "my_id_2");
+    CheckUniqueIdentifier (idGen, "myﬂid", "my_id_3");
     CheckUniqueIdentifier (idGen, "myƒid", "my_id");
     CheckUniqueIdentifier (idGen, "my‹id", "my_id_1");
-	}
+  }
 
   [Test]
 	public void TestUniqueObjects()
@@ -67,14 +69,17 @@ public class IdentifierGeneratorTest
     CheckValidIdentifier (idGen, "_myid", "myid");
     CheckValidIdentifier (idGen, "myid3", "myid3");
     CheckValidIdentifier (idGen, "myid‰", "myid_");
+    CheckValidIdentifier (idGen, "myid‰", "myid_");
+    CheckValidIdentifier (idGen, "myidﬂ", "myid_");
 
     CheckUniqueIdentifier (idGen, "myƒid", "my_id");
     CheckUniqueIdentifier (idGen, "Myƒid", "my_id");
     CheckUniqueIdentifier (idGen, "my‹id", "my_id_1");
     CheckUniqueIdentifier (idGen, "my÷id", "my_id_2");
+    CheckUniqueIdentifier (idGen, "myﬂid", "my_id_3");
     CheckUniqueIdentifier (idGen, "myƒid", "my_id");
     CheckUniqueIdentifier (idGen, "my‹id", "my_id_1");
-	}
+  }
 
   [Test]
 	public void TestXmlStyle()
@@ -86,14 +91,16 @@ public class IdentifierGeneratorTest
     CheckValidIdentifier (idGen, "-myid", "_myid");
     CheckValidIdentifier (idGen, "myid3", "myid3");
     CheckValidIdentifier (idGen, "myid‰", "myid_");
+    CheckValidIdentifier (idGen, "myidﬂ", "myid_");
 
     CheckUniqueIdentifier (idGen, "myƒid", "my_id");
     CheckUniqueIdentifier (idGen, "Myƒid", "My_id_1");
     CheckUniqueIdentifier (idGen, "my‹id", "my_id_2");
     CheckUniqueIdentifier (idGen, "my÷id", "my_id_3");
+    CheckUniqueIdentifier (idGen, "myﬂid", "my_id_4");
     CheckUniqueIdentifier (idGen, "myƒid", "my_id");
     CheckUniqueIdentifier (idGen, "my‹id", "my_id_2");
-	}
+  }
 
   public void CheckValidIdentifier (IdentifierGenerator idGen, string uniqueName, string expectedIdentifier)
   {
