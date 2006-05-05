@@ -308,7 +308,7 @@ public class TypeConversionServicesTest
   }
 
   [Test]
-  [ExpectedException (typeof (ArgumentException))]
+  [ExpectedException (typeof (FormatException))]
   public void ConvertFromStringToInt32EnumWithEmpty()
   {
     _services.Convert (_string, _int32Enum, "");

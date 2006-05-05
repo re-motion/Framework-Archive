@@ -76,11 +76,6 @@
       <Name>log4net</Name>
       <HintPath>..\..\prereq\Assemblies\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.UI.WebControls">
-      <Name>Microsoft.Web.UI.WebControls</Name>
-      <HintPath>..\prereq\Assemblies\Microsoft.Web.UI.WebControls.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>

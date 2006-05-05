@@ -1,3 +1,20 @@
+1.7.0
+=====
+- Upgrade auf NUnit 2.2.8 .net 2.0
+- Upgrade auf log4net 1.2.10 .net 2.0
+  Release Notes: http://logging.apache.org/log4net/release/release-notes.html
+  vorherige Version 1.2.0 Beta 8
+  Breaking Changes (gekürzt)
+  * Renamed config classes and attributes
+    In the log4net.Config namespace the DOMConfigurator and DOMConfiguratorAttribute have been marked as obsolete. The XmlConfigurator and 
+    XmlConfiguratorAttribute types replace DOMConfigurator and DOMConfiguratorAttribute.
+  * Fixed pascal casing of type names
+    Renamed AdoNetAppender, AspNetTraceAppender, SmtpAppender, Iso8601DateFormatter, MdcFilter, and NdcFilter. Note that the config file type 
+    resolver is case insensitive so this is only a breaking change for code that programmatically creates a type that has been renamed.
+  * C style string escapes no longer supported by config parser
+    The XML config parser no longer supports decoding C style escape sequences in strings. Previously sequences like \n and \\ where decoded. 
+    Instead use the appropriate XML encodings as required.
+
 1.4.56
 ======
 - Rubicon.Utilities.SeparatedStringBuilder nach Rubicon.Text verschoben.
