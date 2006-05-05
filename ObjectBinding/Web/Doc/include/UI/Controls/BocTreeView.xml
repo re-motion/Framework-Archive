@@ -33,7 +33,7 @@
       
       <h4 class="dtH4">General Usage Notes</h4>     
       <para>
-        Tn <see cref="InvalidOperationException"/> will be thrown during the encapsulated <see cref="WebTreeView"/>'s 
+        The <see cref="InvalidOperationException"/> will be thrown during the encapsulated <see cref="WebTreeView"/>'s 
         call to the <c>EvaluateWebTreeNode</c> delegate, if <see cref="EnableTreeNodeCaching"/> is 
         <see langword="true"/> and a tree node's <see cref="IBusinessObjectWithIdentity"/> or 
         <see cref="IBusinessObjectReferenceProperty"/> could not be restored from the underlying object model.
