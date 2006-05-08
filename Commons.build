@@ -6,7 +6,7 @@
   <include buildfile="build/Commons.Doc.include.xml" verbose="true" />
 
   <property name="solution.basedir" value="${project::get-base-directory()}" />
-  <property name="solution.global-dir" value="/development/global"/>
+  <property name="solution.global-dir" value="/development/global" overwrite="false"/>
   <property name="solution.build-version-file" value="${solution.basedir}/build/buildversion.xml" />
   <property name="solution.key-file" value="${solution.global-dir}/rubicon.snk" overwrite="false" />
   <property name="solution.intellisense-xslt-file" value="file:///C:${solution.global-dir}/xslt/xmldoc.xslt" overwrite="false" />
