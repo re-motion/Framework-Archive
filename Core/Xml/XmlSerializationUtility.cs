@@ -44,9 +44,11 @@ public static class XmlSerializationUtility
     XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler (context);
     settings.ValidationEventHandler += validationHandler.Handler;
 
-    XmlReader validatingReader = XmlReader.Create (reader, settings);
+    XmlReader validatingReader = null;
     try
     {
+      validatingReader = XmlReader.Create (reader, settings);
+
       XmlSerializer serializer = new XmlSerializer (type, defaultNamespace);
       object result = serializer.Deserialize (validatingReader);
       
