@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="SecurityClientTest.cs" />
+    <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
