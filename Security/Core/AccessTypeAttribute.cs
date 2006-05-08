@@ -5,7 +5,7 @@ using System.Text;
 namespace Rubicon.Security
 {
   [AttributeUsage (AttributeTargets.Enum)]
-  public class AccessTypeAttribute: Attribute
+  public class AccessTypeAttribute : Attribute
   {
   }
 }

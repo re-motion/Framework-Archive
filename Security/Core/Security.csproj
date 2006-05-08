@@ -33,6 +33,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessType.cs" />
     <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ISecurableType.cs" />

@@ -41,15 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="SecurityClientTest.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
+    <Compile Include="TestAccessType.cs" />
+    <Compile Include="TestAccessTypeWithoutAccessTypeAttribute.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
+      <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
+      <Name>Development.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Security.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
