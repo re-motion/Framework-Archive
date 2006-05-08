@@ -7,6 +7,8 @@
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
+        <!-- obsolete warning -->
+        <warning number="0618" />
       </nowarn> 
       <sources failonempty="true">
         <include name="**/*.cs"/>
