@@ -10,8 +10,10 @@
       <nowarn>
         <!-- missing XML comment -->
         <warning number="1591" />
-        <!-- no obsolete warning for net2.0-->
-        <warning number="0618" if="${nant.settings.currentframework == 'net-2.0'}" />
+        <!-- Ambiguous reference in cref attribute -->
+        <warning number="0419" />
+        <!-- obsolete warning -->
+        <warning number="0618" />
       </nowarn>
       <sources failonempty="true">
         <include name="*.cs"/>

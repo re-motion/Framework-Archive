@@ -10,6 +10,8 @@
       <nowarn>
         <!-- missing XML comment -->
         <warning number="1591" />
+        <!-- obsolete warning -->
+        <warning number="0618" />
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs"/>
