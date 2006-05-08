@@ -41,6 +41,7 @@ public static class XmlSerializationUtility
 
     XmlReaderSettings settings = new XmlReaderSettings ();
     settings.Schemas = schemas;
+    settings.ValidationType = ValidationType.Schema;
     XmlSchemaValidationHandler validationHandler = new XmlSchemaValidationHandler (context);
     settings.ValidationEventHandler += validationHandler.Handler;
 
