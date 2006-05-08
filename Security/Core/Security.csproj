@@ -35,8 +35,12 @@
   <ItemGroup>
     <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ISecurableType.cs" />
+    <Compile Include="ISecurityContextFactory.cs" />
+    <Compile Include="ISecurityService.cs" />
+    <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityContext.cs" />
-    <Compile Include="StandardAccessType.cs" />
+    <Compile Include="GeneralAccessType.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
