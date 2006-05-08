@@ -8,6 +8,8 @@
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
+        <!-- Ambiguous reference in cref attribute -->
+        <warning number="0419" />
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs"/>
