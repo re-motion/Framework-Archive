@@ -76,12 +76,6 @@ public class BusinessObjectBoundControlDesigner: WebControlDesigner
       }
     }
   }
-
-  public override bool DesignTimeHtmlRequiresLoadComplete
-  {
-    get { return true; }
-  }
-
 }
 
 }

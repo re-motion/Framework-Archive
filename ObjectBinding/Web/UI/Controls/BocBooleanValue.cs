@@ -251,7 +251,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
 
       if (Enabled)
       {
-        if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
+        if (!Page.ClientScript.IsStartupScriptRegistered (s_startUpScriptKey))
         {
           string trueValue = NaBoolean.True.ToString();
           string falseValue = NaBoolean.False.ToString();
@@ -282,7 +282,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
             + (StringUtility.IsNullOrEmpty (_nullDescription) ? "null" : "'" + _nullDescription + "'") + ");";
 
         if (_autoPostBack.IsTrue)
-          script += Page.GetPostBackEventReference (this) + ";";
+          script += Page.ClientScript.GetPostBackEventReference (this, "") + ";";
         script += "return false;";
       }
       else

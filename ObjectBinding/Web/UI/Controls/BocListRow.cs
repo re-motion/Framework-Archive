@@ -285,10 +285,6 @@ public class BocListRow: IComparable
       {
         s_log.Error (string.Format ("Exception thrown while reading string value for property path '{0}' in row {1} of BocList.", propertyPath, _index), e);
       }
-      catch
-      {
-        s_log.Error (string.Format ("Unmanaged exception thrown while reading string value for property path '{0}' in row {1} of BocList.", propertyPath, _index));
-      }
       Values[propertyPath] = value;
     }
     return value;
@@ -308,10 +304,6 @@ public class BocListRow: IComparable
       catch (Exception e)
       {
         s_log.Error (string.Format ("Exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index), e);
-      }
-      catch
-      {
-        s_log.Error (string.Format ("Unmanaged exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index));
       }
       Values[column] = value;
     }
@@ -333,10 +325,6 @@ public class BocListRow: IComparable
       {
         s_log.Error (string.Format ("Exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index), e);
       }
-      catch
-      {
-        s_log.Error (string.Format ("Unmanaged exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index));
-      }
       Values[column] = value;
     }
     return value;
@@ -356,10 +344,6 @@ public class BocListRow: IComparable
       catch (Exception e)
       {
         s_log.Error (string.Format ("Exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index), e);
-      }
-      catch
-      {
-        s_log.Error (string.Format ("Unmanaged exception thrown while reading string value for column '{0}' in row {1} of BocList.", column.ItemID, _index));
       }
       Values[column] = value;
     }

@@ -519,7 +519,7 @@ public class BocReferenceValue:
       HtmlHeadAppender.Current.RegisterJavaScriptInclude (s_scriptFileKey, scriptUrl);
     }
 
-    if (! IsDesignMode && ! Page.IsStartupScriptRegistered (s_startUpScriptKey))
+    if (!IsDesignMode && !Page.ClientScript.IsStartupScriptRegistered (s_startUpScriptKey))
     {
       const string script = "BocReferenceValue_InitializeGlobals ('" + c_nullIdentifier + "');";
       ScriptUtility.RegisterStartupScriptBlock (Page, s_startUpScriptKey, script);
@@ -656,7 +656,7 @@ public class BocReferenceValue:
     string argument = string.Empty;
     string postBackEvent = null; 
     if (! IsDesignMode)
-      postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+      postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument) + ";";
     string objectID = string.Empty;
     if (InternalValue != c_nullIdentifier)
       objectID = InternalValue;
@@ -747,7 +747,7 @@ public class BocReferenceValue:
     bool isCommandEnabled = IsCommandEnabled (isReadOnly);
 
     string argument = string.Empty;
-    string postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+    string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument) + ";";
     string objectID = string.Empty;
     if (InternalValue != c_nullIdentifier)
       objectID = InternalValue;

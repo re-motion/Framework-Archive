@@ -244,7 +244,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
 
       if (Enabled)
       {
-        if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
+        if (!Page.ClientScript.IsStartupScriptRegistered (s_startUpScriptKey))
         {
           string script = string.Format (
               "BocCheckBox_InitializeGlobals ('{0}', '{1}');",
@@ -266,7 +266,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
             + (StringUtility.IsNullOrEmpty (_falseDescription) ? "null" :"'" +  _falseDescription + "'") + ");";
 
         if (IsAutoPostBackEnabled)
-          script += Page.GetPostBackEventReference (this) + ";";
+          script += Page.ClientScript.GetPostBackEventReference (this, "") + ";";
         checkBoxScript = "BocCheckBox_OnClick" + script;
         labelScript = "BocCheckBox_ToggleCheckboxValue" + script;
       }

@@ -1269,7 +1269,7 @@ public class BocList:
       }
 
       //  Startup script initalizing the global values of the script.
-      if (! Page.IsStartupScriptRegistered (s_startUpScriptKey))
+      if (! Page.ClientScript.IsStartupScriptRegistered (s_startUpScriptKey))
       {
         string script = string.Format (
             "BocList_InitializeGlobals ('{0}', '{1}');",
@@ -1877,7 +1877,7 @@ public class BocList:
     writer.RenderEndTag();
 
     string key = UniqueID + "_ListMenuItems";
-    if (! Page.IsStartupScriptRegistered (key))
+    if (! Page.ClientScript.IsStartupScriptRegistered (key))
     {
       StringBuilder script = new StringBuilder();
       script.AppendFormat ("BocList_AddMenuInfo (document.getElementById ('{0}'), \r\n\t", ClientID);
@@ -1928,7 +1928,7 @@ public class BocList:
         {
           // Clientside script creates an anchor with href="#" and onclick=function
           string argument = c_eventMenuItemPrefix + menuItemIndex.ToString();
-          href = Page.GetPostBackClientHyperlink (this, argument) + ";";
+          href = Page.ClientScript.GetPostBackClientHyperlink (this, argument) + ";";
           href = ScriptUtility.EscapeClientScript (href);
           href = "'" + href + "'";
         }
@@ -2143,7 +2143,7 @@ public class BocList:
       else
       {
         string argument = c_goToCommandPrefix + GoToOption.First.ToString();
-        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument);
         postBackEvent += "; return false;";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
@@ -2166,7 +2166,7 @@ public class BocList:
       else
       {
         string argument = c_goToCommandPrefix + GoToOption.Previous.ToString();
-        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument);
         postBackEvent += "; return false;";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
@@ -2189,7 +2189,7 @@ public class BocList:
       else
       {
         string argument = c_goToCommandPrefix + GoToOption.Next.ToString();
-        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument);
         postBackEvent += "; return false;";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
@@ -2212,7 +2212,7 @@ public class BocList:
       else
       {
         string argument = c_goToCommandPrefix + GoToOption.Last.ToString();
-        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument);
         postBackEvent += "; return false;";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
@@ -2528,7 +2528,7 @@ public class BocList:
       if (! IsRowEditModeActive && ! IsListEditModeActive && _hasClientScript)
       {
         string argument = c_sortCommandPrefix + columnIndex.ToString();
-        string postBackEvent = Page.GetPostBackClientEvent (this, argument);
+        string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument);
         postBackEvent += "; return false;";
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent);
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
@@ -2913,7 +2913,7 @@ public class BocList:
       if (! isReadOnly && _hasClientScript)
       {
         argument = c_eventRowEditModePrefix + originalRowIndex + "," + RowEditModeCommand.Save;
-        postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+        postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument) + ";";
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
       }
@@ -2941,7 +2941,7 @@ public class BocList:
       if (! isReadOnly && _hasClientScript)
       {
         argument = c_eventRowEditModePrefix + originalRowIndex + "," + RowEditModeCommand.Cancel;
-        postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+        postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument) + ";";
         writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
         writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
       }
@@ -2971,7 +2971,7 @@ public class BocList:
         if (! isReadOnly && _hasClientScript)
         {
           argument = c_eventRowEditModePrefix + originalRowIndex + "," + RowEditModeCommand.Edit;
-          postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+          postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument) + ";";
           writer.AddAttribute (HtmlTextWriterAttribute.Href, "#");
           writer.AddAttribute (HtmlTextWriterAttribute.Onclick, postBackEvent + c_onCommandClickScript);
         }
@@ -3113,7 +3113,7 @@ public class BocList:
         objectID = businessObjectWithIdentity.UniqueIdentifier;
 
       string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
-      string postBackEvent = Page.GetPostBackClientEvent (this, argument) + ";";
+      string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument) + ";";
       string onClick = _hasClientScript ? c_onCommandClickScript : string.Empty;
       command.RenderBegin (writer, postBackEvent, onClick, originalRowIndex, objectID);
     }
@@ -3168,7 +3168,7 @@ public class BocList:
       emptyListMessage = GetResourceManager().GetString (ResourceIdentifier.EmptyListMessage);
     else
       emptyListMessage = _emptyListMessage;
-    emptyListMessage = emptyListMessage; // Do not HTML encode
+    // Do not HTML encode
     writer.Write (emptyListMessage);
 
     writer.RenderEndTag();
@@ -3198,7 +3198,7 @@ public class BocList:
     if (IsRowEditModeActive)
       return "return false;";
     string postBackArgument = FormatCustomCellPostBackArgument (columnIndex, listIndex, customCellArgument);
-    return Page.GetPostBackClientEvent (this, postBackArgument) + ";";
+    return Page.ClientScript.GetPostBackEventReference (this, postBackArgument) + ";";
   }
 
   /// <summary> Formats the arguments into a post back argument to be used by the client side post back event. </summary>
@@ -4893,7 +4893,7 @@ public class BocList:
   ///   validation has been successful.
   /// </remarks>
   /// <param name="saveChanges"> 
-  ///   <see langword="true"/> to validate and save the changes, <see cref="false"/> to discard them.
+  ///   <see langword="true"/> to validate and save the changes, <see langword="false"/> to discard them.
   /// </param>
   public void EndRowEditMode (bool saveChanges)
   {
@@ -4926,7 +4926,7 @@ public class BocList:
   ///   validation has been successful.
   /// </remarks>
   /// <param name="saveChanges"> 
-  ///   <see langword="true"/> to validate and save the changes, <see cref="false"/> to discard them.
+  ///   <see langword="true"/> to validate and save the changes, <see langword="false"/> to discard them.
   /// </param>
   public void EndListEditMode (bool saveChanges)
   {
@@ -4952,7 +4952,7 @@ public class BocList:
   }
 
   /// <summary> Explicitly validates the changes made to the edit mode. </summary>
-  /// <returns> <see cref="true"/> if the rows contain only valid values. </returns>
+  /// <returns> <see langword="true"/> if the rows contain only valid values. </returns>
   public bool ValidateEditableRows()
   {
     return _editModeController.Validate();
