@@ -146,7 +146,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
 
     //  Startup script initalizing the global values of the script.
     key = typeof (DropDownMenu).FullName+ "_Startup";
-    if (! Page.IsStartupScriptRegistered (key))
+    if (! Page.ClientScript.IsStartupScriptRegistered (key))
     {
       if (styleSheetUrl == null)
       {
@@ -158,8 +158,8 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
     }
 
     key = UniqueID;
-    if (   Enabled 
-        && ! Page.IsStartupScriptRegistered (key))
+    if (   Enabled
+        && !Page.ClientScript.IsStartupScriptRegistered (key))
     {
       StringBuilder script = new StringBuilder();
       script.Append ("DropDownMenu_AddMenuInfo (\r\n\t");
@@ -222,7 +222,7 @@ public class DropDownMenu: WebControl, IControl, IPostBackEventHandler, IControl
         {
           // Clientside script creates an anchor with href="#" and onclick=function
           string argument = menuItemIndex.ToString();
-          href = Page.GetPostBackClientHyperlink (this, argument);
+          href = Page.ClientScript.GetPostBackClientHyperlink (this, argument);
           href = ScriptUtility.EscapeClientScript (href);
           href = "'" + href + "'";
         }

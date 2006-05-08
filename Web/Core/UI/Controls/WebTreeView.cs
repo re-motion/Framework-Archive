@@ -488,7 +488,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
     if (hasExpansionLink)
     {
       string argument = c_expansionCommandPrefix + nodePath;
-      string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+      string postBackLink = Page.ClientScript.GetPostBackClientHyperlink (this, argument);
       writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
     }
@@ -511,7 +511,7 @@ public class WebTreeView: WebControl, IControl, IPostBackEventHandler, IResource
     writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
     string argument = c_clickCommandPrefix + nodePath;
-    string postBackLink = Page.GetPostBackClientHyperlink (this, argument);
+    string postBackLink = Page.ClientScript.GetPostBackClientHyperlink (this, argument);
     writer.AddAttribute (HtmlTextWriterAttribute.Href, postBackLink);
     writer.RenderBeginTag (HtmlTextWriterTag.A);
     if (   node.Icon != null 

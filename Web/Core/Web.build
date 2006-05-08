@@ -3,18 +3,18 @@
 
   <target name="build" description="perform a build">
   
-    <copy file="${prereq.assemblies}\Microsoft.Web.UI.WebControls.dll" todir="${build.outputdir}" overwrite="true" />
-
     <csc  target="library" 
           output="${build.outputdir}/${project.output}.${project.extension}" 
           doc="${project.doc}" 
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
-        <warning number="1591" /> <!-- missing XML comment -->
-        <warning number="1573" /> <!-- only some parameters miss xml comment -->
-        <warning number="0612" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
-        <warning number="0618" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
+        <!-- missing XML comment -->
+        <warning number="1591" />
+        <!-- only some parameters miss xml comment -->
+        <warning number="1573" />
+        <!-- Ambiguous reference in cref attribute -->
+        <warning number="0419" />
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
@@ -28,6 +28,7 @@
         <include name="${build.outputdir}/Rubicon.Core.dll" />
         <include name="${build.outputdir}/log4net.dll" />
         <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Drawing.dll"/>
         <include asis="true" name="System.Web.dll"/>

@@ -178,11 +178,11 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     WxeContext wxeContext = WxeContext.Current;
     Page page = (Page) _page;
-    
-    page.RegisterHiddenField (WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
-    page.RegisterHiddenField (WxePageInfo.ReturningTokenID, null);
+
+    page.ClientScript.RegisterHiddenField (WxeHandler.Parameters.WxeFunctionToken, wxeContext.FunctionToken);
+    page.ClientScript.RegisterHiddenField (WxePageInfo.ReturningTokenID, null);
     int nextPostBackID = wxeContext.PostBackID + 1;
-    page.RegisterHiddenField (WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString());
+    page.ClientScript.RegisterHiddenField (WxePageInfo.PostBackSequenceNumberID, nextPostBackID.ToString ());
 
     string key = "wxeDoSubmit";
     ScriptUtility.RegisterClientScriptBlock (page, key,

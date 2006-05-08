@@ -40,7 +40,7 @@ public class WebConfiguration: IConfigurationSectionHandler
         {
           if (s_current == null)
           {
-            XmlNode section = (XmlNode) ConfigurationSettings.GetConfig (ElementName);
+            XmlNode section = (XmlNode) ConfigurationManager.GetSection (ElementName);
             if (section != null)
             {
               s_current = (WebConfiguration) XmlSerializationUtility.DeserializeUsingSchema (

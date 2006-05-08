@@ -142,8 +142,8 @@ public class WxeForm: HtmlForm, IPostBackDataHandler
         throw new WxeException ("The Rubicon.Web.UI.Controls.HtmlHeadContents control is missing on the page. Please add this control to the 'head' section of the document or specify the runat=server attribute for the 'head' section to allow for an automatically generated HtmlHeadContents control.");
       }
 
-      if (Page.SmartNavigation)
-        throw new WxeException ("Enabling ASP.NET SmartNavigation is not supported on WXE Pages. Use the smart navigation feature integrated into rubicon framework instead.");
+      if (Page.MaintainScrollPositionOnPostBack)
+        throw new WxeException ("Enabling the ASP.NET smart navigation by setting System.Web.UI.Page.MaintainScrollPositionOnPostBack to true is not supported on WXE Pages. Use the smart navigation feature integrated into rubicon framework instead.");
     }
     base.Render (writer);
   }

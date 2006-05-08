@@ -20,7 +20,7 @@ public class UrlMappingLoader
 
   private string _configurationFile;
   private Type _type;
-  private XmlSchemaCollection _schemas;
+  private XmlSchemaSet _schemas;
 
   // construction and disposing
 
@@ -48,7 +48,7 @@ public class UrlMappingLoader
     _schemas = GetSchemas (schemas);
   }
 
-  protected virtual object LoadConfiguration (string configurationFile, Type type, XmlSchemaCollection schemas)
+  protected virtual object LoadConfiguration (string configurationFile, Type type, XmlSchemaSet schemas)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
     ArgumentUtility.CheckNotNull ("type", type);
@@ -79,14 +79,14 @@ public class UrlMappingLoader
 //    }
   }
 
-  protected virtual XmlSchemaCollection GetSchemas (SchemaBase[] schemas)
+  protected virtual XmlSchemaSet GetSchemas (SchemaBase[] schemas)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("schemas", schemas);
 
-    XmlSchemaCollection schemaCollection = new XmlSchemaCollection();
+    XmlSchemaSet schemaSet = new XmlSchemaSet();
     foreach (SchemaBase schema in schemas)
-      schemaCollection.Add (schema.SchemaUri, schema.GetSchemaReader());
-    return schemaCollection;
+      schemaSet.Add (schema.SchemaUri, schema.GetSchemaReader());
+    return schemaSet;
   }
 
   public string ConfigurationFile
@@ -99,7 +99,7 @@ public class UrlMappingLoader
     get { return _type; }
   }
 
-  public XmlSchemaCollection Schemas
+  public XmlSchemaSet Schemas
   {
     get { return _schemas; }
   }

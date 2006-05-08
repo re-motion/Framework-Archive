@@ -445,7 +445,7 @@ public class SmartPageInfo
       string smartScrollingValue = null;
       if (postBackCollection != null && ! _isSmartNavigationDataDisacarded)
         smartScrollingValue = postBackCollection[c_smartScrollingID];
-      page.RegisterHiddenField (c_smartScrollingID, smartScrollingValue);
+      page.ClientScript.RegisterHiddenField (c_smartScrollingID, smartScrollingValue);
     }
 
     if (smartNavigablePage.IsSmartFocusingEnabled)
@@ -455,7 +455,7 @@ public class SmartPageInfo
         smartFocusValue = postBackCollection[c_smartFocusID];
       if (! StringUtility.IsNullOrEmpty (_smartFocusID))
         smartFocusValue = _smartFocusID;
-      page.RegisterHiddenField (c_smartFocusID, smartFocusValue);
+      page.ClientScript.RegisterHiddenField (c_smartFocusID, smartFocusValue);
     }
   }
 

@@ -13,9 +13,10 @@ namespace Rubicon.Web.UI.Design
 /// </summary>
 public class WebControlDesigner: ControlDesigner
 {
-  public override bool DesignTimeHtmlRequiresLoadComplete
+  public override void Initialize (IComponent component)
   {
-    get { return true; }
+    base.Initialize (component);
+    SetViewFlags (ViewFlags.DesignTimeHtmlRequiresLoadComplete, true);
   }
 
   public override string GetDesignTimeHtml()

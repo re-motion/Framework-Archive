@@ -231,7 +231,7 @@ public class SmartPage: Page, ISmartPage, ISmartNavigablePage
   /// <param name="id"> 
   ///   The client side ID of the control to assign the focus to. Must no be <see langword="null"/> or empty. 
   /// </param>
-  public void SetFocus (string id)
+  public new void SetFocus (string id)
   {
     _smartPageInfo.SetFocus (id);
   }

@@ -331,7 +331,7 @@ public class WebTab: IControlItem, IControlStateManager
     {
       return string.Empty;
     }
-    return _tabStrip.Page.GetPostBackClientHyperlink (_tabStrip, ItemID);
+    return _tabStrip.Page.ClientScript.GetPostBackClientHyperlink (_tabStrip, ItemID);
   }
 
   public virtual void RenderBeginTagForCommand (HtmlTextWriter writer, bool isEnabled, WebTabStyle style)

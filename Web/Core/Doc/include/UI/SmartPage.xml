@@ -77,10 +77,6 @@
       The following contains a list of featueres not standardized by interfaces.
       <list type="bullet">
         <item>
-          An <see cref="OnPreInit"/> method, which is a rough equivalent to the <b>OnPreInit</b> method introduced
-          with <b>ASP.NET 2.0</b>.
-        </item>
-        <item>
           The <see cref="PrepareValidation"/> method, which ensures that all controls implenting 
           <see cref="IValidatableControl"/> know their validators. Call this method prior to validation if you 
           intend to validate using the 

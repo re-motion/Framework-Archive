@@ -73,7 +73,7 @@ public class DatePickerPage : Page
     Form.Controls.Add (DateValueField);
 
     //  Force the creation of the postback function
-    Page.GetPostBackEventReference (this, "");
+    Page.ClientScript.GetPostBackEventReference (this, "");
 
     base.OnInit(e);
 	}
@@ -127,7 +127,7 @@ public class DatePickerPage : Page
   {
     string key = typeof (DatePickerPage).FullName + "_Calendar_SelectionChanged";
     string script = "DatePicker_Calendar_SelectionChanged ('" + Calendar.SelectedDate.ToShortDateString() + "');";
-    if (! Page.IsStartupScriptRegistered (key))
+    if (!Page.ClientScript.IsStartupScriptRegistered (key))
       ScriptUtility.RegisterStartupScriptBlock (this, key, script);
   }
 }
