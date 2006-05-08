@@ -9,8 +9,6 @@
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
-        <warning number="0612" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
-        <warning number="0618" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
