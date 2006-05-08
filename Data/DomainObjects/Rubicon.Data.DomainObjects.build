@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="nant-schema" name="Rubicon.Data.DomainObjects">
-  
+
   <target name="build" description="perform a build">
     <csc  target="library"
           output="${build.outputdir}/${project.output}.${project.extension}"
@@ -8,10 +8,11 @@
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
-        <warning number="1591" /> <!-- missing XML comment -->
-        <warning number="0612" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
-        <warning number="0618" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
-      </nowarn> 
+        <!-- missing XML comment -->
+        <warning number="1591" />
+        <!-- no obsolete warning for net2.0-->
+        <warning number="0618" if="${nant.settings.currentframework == 'net-2.0'}" />
+      </nowarn>
       <sources failonempty="true">
         <include name="*.cs"/>
         <include name="ConfigurationLoader/**/*.cs"/>
@@ -31,7 +32,7 @@
     <copy todir="${build.outputdir}" file="mapping.xsd" overwrite="true"/>
     <copy todir="${build.outputdir}" file="storageProviders.xsd" overwrite="true"/>
     <copy todir="${build.outputdir}" file="types.xsd" overwrite="true"/>
-    <copy todir="${build.outputdir}" file="queries.xsd" overwrite="true"/>    
+    <copy todir="${build.outputdir}" file="queries.xsd" overwrite="true"/>
   </target>
-  
+
 </project>
