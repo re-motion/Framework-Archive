@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Rubicon.Security;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Domain
 {
   [AbstractRole]
   public enum TestAbstractRoles

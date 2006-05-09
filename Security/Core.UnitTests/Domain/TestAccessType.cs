@@ -4,7 +4,7 @@ using System.Text;
 
 using System.Security;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Domain
 {
 
   [AccessType]

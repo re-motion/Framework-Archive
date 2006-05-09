@@ -44,16 +44,16 @@
   <ItemGroup>
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Domain\SimpleEnum.cs" />
+    <Compile Include="Domain\TestAbstractRoles.cs" />
+    <Compile Include="Domain\TestAccessType.cs" />
+    <Compile Include="Domain\TestAccessTypeWithoutAccessTypeAttribute.cs" />
+    <Compile Include="Domain\TestFlags.cs" />
+    <Compile Include="Domain\TestSecurityState.cs" />
     <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="SecurityClientTest.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <Compile Include="SecurityContextTest.cs" />
-    <Compile Include="SimpleEnum.cs" />
-    <Compile Include="TestAbstractRoles.cs" />
-    <Compile Include="TestAccessType.cs" />
-    <Compile Include="TestAccessTypeWithoutAccessTypeAttribute.cs" />
-    <Compile Include="TestFlags.cs" />
-    <Compile Include="TestSecurityState.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>

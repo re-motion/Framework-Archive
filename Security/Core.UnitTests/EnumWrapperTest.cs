@@ -4,6 +4,8 @@ using System.Text;
 
 using NUnit.Framework;
 
+using Rubicon.Security.UnitTests.Domain;
+
 namespace Rubicon.Security.UnitTests
 {
   [TestFixture]
@@ -15,12 +17,12 @@ namespace Rubicon.Security.UnitTests
       EnumWrapper wrapper = new EnumWrapper (TestAccessType.First);
 
       Assert.AreEqual ("First", wrapper.Value);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestAccessType, Rubicon.Security.UnitTests", wrapper.TypeName);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.Domain.TestAccessType, Rubicon.Security.UnitTests", wrapper.TypeName);
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated Type 'Rubicon.Security.UnitTests.TestFlags' cannot be wrapped. "
+        "Enumerated Type 'Rubicon.Security.UnitTests.Domain.TestFlags' cannot be wrapped. "
         + "Only enumerated types without the FlagsAttribute can be wrapped.\r\nParameter name: value")]
     public void InitializeWithEnumHavingFlagsAttribute ()
     {

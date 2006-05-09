@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
+using Rubicon.Security.UnitTests.Domain;
+
 namespace Rubicon.Security.UnitTests
 {
   [TestFixture]
@@ -16,17 +18,17 @@ namespace Rubicon.Security.UnitTests
           "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", null, abstractRoles);
 
       Assert.AreEqual (2, context.AbstractRoles.Length);
-      Assert.Contains ("Rubicon.Security.UnitTests.TestAbstractRoles.QualityEngineer, Rubicon.Security.UnitTests", context.AbstractRoles);
-      Assert.Contains ("Rubicon.Security.UnitTests.TestAbstractRoles.Developer, Rubicon.Security.UnitTests", context.AbstractRoles);
+      Assert.Contains ("Rubicon.Security.UnitTests.Domain.TestAbstractRoles.QualityEngineer, Rubicon.Security.UnitTests", context.AbstractRoles);
+      Assert.Contains ("Rubicon.Security.UnitTests.Domain.TestAbstractRoles.Developer, Rubicon.Security.UnitTests", context.AbstractRoles);
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated Type 'Rubicon.Security.UnitTests.SimpleEnum' cannot be used as an abstract role. "
+       "Enumerated Type 'Rubicon.Security.UnitTests.Domain.SimpleEnum' cannot be used as an abstract role. "
         + "Valid abstract roles must have the Rubicon.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles")]
     public void CreateSecurityContextWithInvalidAbstractRole ()
     {
-      Enum[] abstractRoles = new Enum[] { SimpleEnum.Public };
+      Enum[] abstractRoles = new Enum[] { SimpleEnum.First };
       SecurityContext context = new SecurityContext (
           "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", null, abstractRoles);
     }
@@ -56,13 +58,13 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated Type 'Rubicon.Security.UnitTests.SimpleEnum' cannot be used as a security state. "
+        "Enumerated Type 'Rubicon.Security.UnitTests.Domain.SimpleEnum' cannot be used as a security state. "
         + "Valid security states must have the Rubicon.Security.SecurityStateAttribute applied.\r\nParameter name: states")]
     public void CreateSecurityContextWithInvalidState ()
     {
       Dictionary<string, Enum> testStates = new Dictionary<string, Enum> ();
       testStates.Add ("Confidentiality", TestSecurityState.Public);
-      testStates.Add ("State", SimpleEnum.Confidential);
+      testStates.Add ("State", SimpleEnum.Second);
 
       SecurityContext context = new SecurityContext (
           "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", testStates, null);
