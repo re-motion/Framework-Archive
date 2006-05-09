@@ -8,7 +8,7 @@ namespace Rubicon.Security
   public struct EnumWrapper
   {
     private readonly string _typeName;
-    private readonly int _value;
+    private readonly string _value;
 
     public EnumWrapper (Enum value)
     {
@@ -23,7 +23,7 @@ namespace Rubicon.Security
       }
       
       _typeName = TypeUtility.GetPartialAssemblyQualifiedName (type);
-      _value = (int) (object) value;      
+      _value = value.ToString();
     }
 
     public string TypeName
@@ -31,7 +31,7 @@ namespace Rubicon.Security
       get { return _typeName; }
     }	
 
-    public int Value
+    public string Value
     {
       get { return _value; }
     }

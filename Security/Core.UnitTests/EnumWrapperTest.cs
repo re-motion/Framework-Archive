@@ -14,7 +14,7 @@ namespace Rubicon.Security.UnitTests
     {
       EnumWrapper wrapper = new EnumWrapper (TestAccessType.First);
 
-      Assert.AreEqual ((int) TestAccessType.First, wrapper.Value);
+      Assert.AreEqual ("First", wrapper.Value);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestAccessType, Rubicon.Security.UnitTests", wrapper.TypeName);
     }
 
