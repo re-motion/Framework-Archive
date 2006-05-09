@@ -47,12 +47,12 @@
     <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="SecurityClientTest.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
-    <Compile Include="TestAccessType.cs" />
-    <Compile Include="TestAccessTypeWithoutAccessTypeAttribute.cs" />
     <Compile Include="SecurityContextTest.cs" />
-    <Compile Include="TestFlags.cs" />
     <Compile Include="SimpleEnum.cs" />
     <Compile Include="TestAbstractRoles.cs" />
+    <Compile Include="TestAccessType.cs" />
+    <Compile Include="TestAccessTypeWithoutAccessTypeAttribute.cs" />
+    <Compile Include="TestFlags.cs" />
     <Compile Include="TestSecurityState.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
