@@ -9,6 +9,8 @@ using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 
+using Rubicon.Security;
+
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
 /// <summary>
@@ -113,23 +115,26 @@ public class BaseProperty : IBusinessObjectProperty
   /// </param>
   /// <param name="obj">
   ///   The object to evaluate this property for, or <see langword="null"/>.
-  ///   This parameter is not used in the current implementation.
   /// </param>
   /// <returns><see langword="true"/></returns>
   public bool IsAccessible (IBusinessObjectClass objectClass, IBusinessObject obj)
   {
-    return true;
+    ISecurableType securableType = obj as ISecurableType;
+    if (securableType == null)
+      return true;
+
+    SecurityClient securityClient = new SecurityClient ();
+    return securityClient.HasAccess (securableType, AccessType.Get (GeneralAccessType.Read));
   }
 
   /// <summary> Indicates whether this property can be accessed by the user. </summary>
   /// <param name="obj">
   ///   The object to evaluate this property for, or <see langword="null"/>.
-  ///   This parameter is not used in the current implementation.
   /// </param>
   /// <returns><see langword="true"/></returns>
   public bool IsAccessible (IBusinessObject obj)
   {
-    return true;
+    return IsAccessible (null, obj);
   }
 
   /// <summary>Indicates whether this property can be modified by the user.</summary>
@@ -137,7 +142,15 @@ public class BaseProperty : IBusinessObjectProperty
   /// <returns><see langword="true"/> if the user can set this property; otherwise <see langword="false"/>.</returns>
   public bool IsReadOnly (IBusinessObject obj)
   {
-    return !_propertyInfo.CanWrite;
+    if (!_propertyInfo.CanWrite)
+      return true;
+
+    ISecurableType securableType = obj as ISecurableType;
+    if (securableType == null)
+      return false;
+
+    SecurityClient securityClient = new SecurityClient ();
+    return !securityClient.HasAccess (securableType, AccessType.Get (GeneralAccessType.Edit));
   }
 
   /// <summary>

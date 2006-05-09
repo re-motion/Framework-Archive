@@ -74,6 +74,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NMock2, Version=1.0.2313.18049, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\NMock2.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <Name>nunit.framework</Name>
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
@@ -96,6 +100,10 @@
       <Name>ObjectBinding</Name>
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
       <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
@@ -121,6 +129,7 @@
     <Compile Include="DomainObjectIDs.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PropertyTypes\BasePropertySecurityTest.cs" />
     <Compile Include="PropertyTypes\BusinessObjectWithIdentity.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -142,6 +151,7 @@
     <Compile Include="TestDomain\OrderTicket.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestDomain\SecurableSearchObject.cs" />
     <Compile Include="TestDomain\TestDomainBase.cs">
       <SubType>Code</SubType>
     </Compile>

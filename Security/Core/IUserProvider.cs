@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Rubicon.Security
 {
-  public interface ISecurityService
+  public interface IUserProvider
   {
-    AccessType[] GetAccess (SecurityContext context, IPrincipal user);
+    IPrincipal GetUser ();
   }
 }
