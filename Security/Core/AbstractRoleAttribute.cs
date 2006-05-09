@@ -4,13 +4,8 @@ using System.Text;
 
 namespace Rubicon.Security
 {
-  [AccessType]
-  public enum GeneralAccessType
+  [AttributeUsage (AttributeTargets.Enum)]
+  public class AbstractRoleAttribute : Attribute
   {
-    Create,
-    Read,
-    Edit,
-    Delete,
-    Find
   }
 }

@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests
       _mockSecurableType = _mocks.NewMock<ISecurableType> ();
       _mockSecurityContextFactory = _mocks.NewMock<ISecurityContextFactory> ();
       _context = new SecurityContext ("Rubicon.Security.UnitTests.TestClass", "owner", "group", "client",
-          new Dictionary<string, string> (), new List<string> ());
+          new Dictionary<string, Enum> (), new Enum[0]);
 
       Expect.Once.On (_mockSecurityContextFactory)
           .Method ("GetSecurityContext")
@@ -39,10 +39,10 @@ namespace Rubicon.Security.UnitTests
       Expect.Once.On (_mockSecurityService)
           .Method ("GetAccess")
           .With (_context, "owner")
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
+          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
       SecurityClient securityClient = new SecurityClient (_mockSecurityService);
-      bool hasAccess = securityClient.HasAccess (_mockSecurableType, "owner", new Enum[] { GeneralAccessType.Edit });
+      bool hasAccess = securityClient.HasAccess (_mockSecurableType, "owner", AccessType.Get (GeneralAccessType.Edit));
 
       Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -54,10 +54,10 @@ namespace Rubicon.Security.UnitTests
       Expect.Once.On (_mockSecurityService)
           .Method ("GetAccess")
           .With (_context, "owner")
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Create, GeneralAccessType.Delete }));
+          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create), AccessType.Get (GeneralAccessType.Delete) }));
 
       SecurityClient securityClient = new SecurityClient (_mockSecurityService);
-      bool hasAccess = securityClient.HasAccess (_mockSecurableType, "owner", new Enum[] { GeneralAccessType.Edit });
+      bool hasAccess = securityClient.HasAccess (_mockSecurableType, "owner", AccessType.Get (GeneralAccessType.Edit));
 
       Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();

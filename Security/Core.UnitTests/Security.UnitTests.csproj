@@ -47,6 +47,10 @@
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <Compile Include="TestAccessType.cs" />
     <Compile Include="TestAccessTypeWithoutAccessTypeAttribute.cs" />
+    <Compile Include="SecurityContextTest.cs" />
+    <Compile Include="SimpleEnum.cs" />
+    <Compile Include="TestAbstractRoles.cs" />
+    <Compile Include="TestSecurityState.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>

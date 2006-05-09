@@ -6,6 +6,6 @@ namespace Rubicon.Security
 {
   public interface ISecurityService
   {
-    Enum[] GetAccess (SecurityContext context, string userName);
+    AccessType[] GetAccess (SecurityContext context, string userName);
   }
 }

@@ -21,7 +21,7 @@ namespace Rubicon.Security.UnitTests
       _mocks = new Mockery ();
       _securityServiceMock = _mocks.NewMock<ISecurityService> ();
       _context = new SecurityContext ("Rubicon.Security.UnitTests.TestClass", "owner", "group", "client",
-          new Dictionary<string, string> (), new List<string> ());
+          new Dictionary<string, Enum> (), new Enum[0]);
     }
 
     [Test]
@@ -30,10 +30,10 @@ namespace Rubicon.Security.UnitTests
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .With (_context, "owner")
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
+          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, "owner", new Enum[] { GeneralAccessType.Edit });
+      bool hasAccess = securityClient.HasAccess (_context, "owner", AccessType.Get (GeneralAccessType.Edit));
 
       Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -45,10 +45,10 @@ namespace Rubicon.Security.UnitTests
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .With (_context, "owner")
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
+          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, "owner", new Enum[] { GeneralAccessType.Create });
+      bool hasAccess = securityClient.HasAccess (_context, "owner", AccessType.Get (GeneralAccessType.Create));
 
       Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -57,13 +57,18 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void HasAccessWithMultipleAllowedAccessResults ()
     {
+      AccessType[] mockResult = new AccessType[] { 
+          AccessType.Get (GeneralAccessType.Create),
+          AccessType.Get (GeneralAccessType.Delete),
+          AccessType.Get (GeneralAccessType.Read) };
+
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .With (_context, "owner")
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Create, GeneralAccessType.Delete, GeneralAccessType.Read }));
+          .Will (Return.Value (mockResult));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, "owner", new Enum[] { GeneralAccessType.Read });
+      bool hasAccess = securityClient.HasAccess (_context, "owner", AccessType.Get (GeneralAccessType.Read));
 
       Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -72,14 +77,19 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void HasAccessWithMultipleRequiredAccessTypes ()
     {
+      AccessType[] mockResult = new AccessType[] { 
+          AccessType.Get (GeneralAccessType.Create),
+          AccessType.Get (GeneralAccessType.Delete),
+          AccessType.Get (GeneralAccessType.Read) };
+
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .With (_context, "owner")
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Create, GeneralAccessType.Delete, GeneralAccessType.Read }));
+          .Will (Return.Value (mockResult));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, "owner",
-          new Enum[] { GeneralAccessType.Delete, GeneralAccessType.Create });
+      bool hasAccess = securityClient.HasAccess (_context, "owner", 
+          AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Create));
 
       Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -88,14 +98,19 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void HasNotAccessWithMultipleRequiredAccessTypes ()
     {
+      AccessType[] mockResult = new AccessType[] { 
+          AccessType.Get (GeneralAccessType.Create),
+          AccessType.Get (GeneralAccessType.Delete),
+          AccessType.Get (GeneralAccessType.Read) };
+
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .With (_context, "owner")
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Create, GeneralAccessType.Delete, GeneralAccessType.Read }));
+          .Will (Return.Value (mockResult));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, "owner",
-          new Enum[] { GeneralAccessType.Delete, GeneralAccessType.Find });
+      bool hasAccess = securityClient.HasAccess (_context, "owner", 
+          AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Find));
 
       Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -107,11 +122,11 @@ namespace Rubicon.Security.UnitTests
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .With (_context, "owner")
-          .Will (Return.Value (new Enum[0]));
+          .Will (Return.Value (new AccessType[0]));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock);
       bool hasAccess = securityClient.HasAccess (_context, "owner",
-          new Enum[] { GeneralAccessType.Find, GeneralAccessType.Edit, GeneralAccessType.Read });
+          AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
 
       Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -126,8 +141,8 @@ namespace Rubicon.Security.UnitTests
           .Will (Return.Value (null));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, "owner",
-          new Enum[] { GeneralAccessType.Find, GeneralAccessType.Edit, GeneralAccessType.Read });
+      bool hasAccess = securityClient.HasAccess (_context, "owner", 
+          AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
 
       Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();

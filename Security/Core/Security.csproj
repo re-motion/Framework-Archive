@@ -33,6 +33,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractRoleAttribute.cs" />
     <Compile Include="AccessType.cs" />
     <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="AssemblyInfo.cs" />
@@ -42,6 +43,7 @@
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityContext.cs" />
     <Compile Include="GeneralAccessType.cs" />
+    <Compile Include="SecurityStateAttribute.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
