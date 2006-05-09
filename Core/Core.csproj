@@ -106,6 +106,7 @@
     <Compile Include="Data\ITransaction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\PermanentGuidAttribute.cs" />
     <Compile Include="Globalization\IObjectWithResources.cs">
       <SubType>Code</SubType>
     </Compile>

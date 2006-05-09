@@ -492,7 +492,9 @@
     <None Include="Res\UI\WxeLauncher.ashx" />
     <None Include="Web.build" />
     <EmbeddedResource Include="Configuration\WebConfiguration.xsd" />
-    <EmbeddedResource Include="ExecutionEngine\UrlMapping\UrlMapping.xsd" />
+    <EmbeddedResource Include="ExecutionEngine\UrlMapping\UrlMapping.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\FormGridManager.de.resx" />
     <EmbeddedResource Include="Globalization\FormGridManager.resx" />
     <EmbeddedResource Include="Globalization\SmartPageInfo.de.resx" />
