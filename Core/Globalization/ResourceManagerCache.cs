@@ -7,6 +7,7 @@ namespace Rubicon.Globalization
 /// <summary>
 ///   Provides a cache that keeps an IResourceManager for each type.
 /// </summary>
+[Obsolete ("Use a Dictionary<Type,IResourceManager> instance instead.")]
 public class ResourceManagerCache
 {
   private static Hashtable s_cache = new Hashtable();
