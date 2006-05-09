@@ -2,17 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using System.Security;
-
 namespace Rubicon.Security.UnitTests
 {
-
-  [AccessType]
-  public enum TestAccessType
+  [Flags]
+  public enum TestFlags
   {
     First = 1,
-    Second = 2,
-    Third = 3
+    Second = 2
   }
-
 }

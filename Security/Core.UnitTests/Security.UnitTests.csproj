@@ -18,6 +18,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,11 +44,13 @@
   <ItemGroup>
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="SecurityClientTest.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <Compile Include="TestAccessType.cs" />
     <Compile Include="TestAccessTypeWithoutAccessTypeAttribute.cs" />
     <Compile Include="SecurityContextTest.cs" />
+    <Compile Include="TestFlags.cs" />
     <Compile Include="SimpleEnum.cs" />
     <Compile Include="TestAbstractRoles.cs" />
     <Compile Include="TestSecurityState.cs" />

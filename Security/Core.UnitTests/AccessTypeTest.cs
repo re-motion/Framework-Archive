@@ -28,10 +28,9 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void GetAccessTypeFromEnum ()
     {
-      AccessType accessType = AccessType.Get (TestAccessType.First);
+      AccessType accessType = AccessType.Get (new EnumWrapper (TestAccessType.First));
 
-      Assert.AreEqual (TestAccessType.First, accessType.Value);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestAccessType.First, Rubicon.Security.UnitTests", accessType.ID);
+      Assert.AreEqual (new EnumWrapper (TestAccessType.First), accessType.Value);
     }
 
     [Test]
@@ -40,7 +39,7 @@ namespace Rubicon.Security.UnitTests
         + "Valid access types must have the Rubicon.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void GetAccessTypeFromEnumWithoutAccessTypeAttribute ()
     {
-      AccessType.Get (TestAccessTypeWithoutAccessTypeAttribute.First);
+      AccessType.Get (new EnumWrapper (TestAccessTypeWithoutAccessTypeAttribute.First));
     }
 
     [Test]
@@ -53,7 +52,7 @@ namespace Rubicon.Security.UnitTests
 
     private void ClearAccessTypeCache ()
     {
-      PrivateInvoke.SetNonPublicStaticField (typeof (AccessType), "s_cache", new Dictionary<Enum, AccessType> ());
+      PrivateInvoke.SetNonPublicStaticField (typeof (AccessType), "s_cache", new Dictionary<EnumWrapper, AccessType> ());
     }
   }
 

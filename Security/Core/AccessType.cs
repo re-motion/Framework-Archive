@@ -13,9 +13,15 @@ namespace Rubicon.Security
 
     // static members and constants
 
-    private static Dictionary<Enum, AccessType> s_cache = new Dictionary<Enum, AccessType> ();
+    private static Dictionary<EnumWrapper, AccessType> s_cache = new Dictionary<EnumWrapper, AccessType> ();
 
     public static AccessType Get (Enum accessType)
+    {
+      ArgumentUtility.CheckNotNull ("accessType", accessType);
+      return Get (new EnumWrapper (accessType));
+    }
+
+    public static AccessType Get (EnumWrapper accessType)
     {
       ArgumentUtility.CheckNotNull ("accessType", accessType);
 
@@ -35,14 +41,13 @@ namespace Rubicon.Security
 
     // member fields
 
-    private Enum _value;
-    private string _id;
+    private EnumWrapper _value;
 
     // construction and disposing
 
-    private AccessType (Enum accessType)
+    private AccessType (EnumWrapper accessType)
     {
-      Type type = accessType.GetType ();
+      Type type = TypeUtility.GetType (accessType.TypeName);
       if (!type.IsDefined (typeof (AccessTypeAttribute), false))
       {
         throw new ArgumentException (string.Format ("Enumerated Type '{0}' cannot be used as an access type. Valid access types must have the "
@@ -51,17 +56,11 @@ namespace Rubicon.Security
       }
 
       _value = accessType;
-      _id = type.FullName + "." + accessType.ToString () + ", " + type.Assembly.GetName ().Name;
     }
 
     // methods and properties
 
-    public string ID
-    {
-      get { return _id; }
-    }
-
-    public Enum Value
+    public EnumWrapper Value
     {
       get { return _value; }
     }

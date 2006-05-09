@@ -37,6 +37,7 @@
     <Compile Include="AccessType.cs" />
     <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="EnumWrapper.cs" />
     <Compile Include="ISecurableType.cs" />
     <Compile Include="ISecurityContextFactory.cs" />
     <Compile Include="ISecurityService.cs" />
