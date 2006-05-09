@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="nant-schema" name="Rubicon.Development.CodeDom">  
+<project xmlns="nant-schema" name="Rubicon.Development.CodeDom">
 
   <target name="build" description="perform a build">
 
@@ -10,10 +10,11 @@
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
-        <warning number="1591" /> <!-- missing XML comment -->
-        <warning number="0612" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
-        <warning number="0618" if="${nant.settings.currentframework == 'net-2.0'}" /> <!-- no obsolete warning for net2.0-->
-      </nowarn> 
+        <!-- missing XML comment -->
+        <warning number="1591" />
+        <!-- obsolete warning -->
+        <warning number="0618" />
+      </nowarn>
       <sources failonempty="true">
         <include name="*.cs" />
         <include name="NullableValueTypes/**/*.cs" />
@@ -26,7 +27,7 @@
         <include asis="true" name="VJSharpCodeProvider.dll"/>
       </references>
     </csc>
-        
+
   </target>
 
 </project>
