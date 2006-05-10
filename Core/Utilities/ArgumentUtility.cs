@@ -104,13 +104,14 @@ namespace Rubicon.Utilities
       if (!typeof (T).IsValueType && actualValue == null)
         return default (T);
 
-      CheckTypeIsAssignableFrom (argumentName, actualValue.GetType (), expectedType);
+      if (!expectedType.IsAssignableFrom (actualValue.GetType ()))
+        throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType ());
       return actualValue;
     }
 
-    /// <summary>Checks whether <paramref name="actualType"/> is not <see langword="null"/> and is derived from <paramref name="expectedType"/>.</summary>
+    /// <summary>Checks whether <paramref name="actualType"/> is not <see langword="null"/> and can be assigned to <paramref name="expectedType"/>.</summary>
     /// <exception cref="ArgumentNullException">The <paramref name="actualType"/> is <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> is not a sub class of <paramref name="expectedType"/>.</exception>
+    /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
     public static void CheckNotNullAndTypeIsAssignableFrom (string argumentName, Type actualType, Type expectedType)
     {
       if (actualType == null)
@@ -118,15 +119,15 @@ namespace Rubicon.Utilities
       CheckTypeIsAssignableFrom (argumentName, actualType, expectedType);
     }
 
-    /// <summary>Checks whether <paramref name="actualType"/> is derived from <paramref name="expectedType"/>.</summary>
-    /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> is not a sub class of <paramref name="expectedType"/>.</exception>
+    /// <summary>Checks whether <paramref name="actualType"/> can be assigned to <paramref name="expectedType"/>.</summary>
+    /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
     public static void CheckTypeIsAssignableFrom (string argumentName, Type actualType, Type expectedType)
     {
       if (actualType == null)
         return;
 
       if (!expectedType.IsAssignableFrom (actualType))
-        throw new ArgumentTypeException (argumentName, expectedType, actualType);
+        throw new ArgumentTypeException (string.Format ("Argument {0} is a {2}, which is cannot be assigned to type {1}.", argumentName, expectedType, actualType));
     }
 
     public static void CheckItemsType (string argumentName, ICollection collection, Type itemType)
@@ -190,6 +191,11 @@ namespace Rubicon.Utilities
 
     public ArgumentTypeException (SerializationInfo info, StreamingContext context)
       : base (info, context)
+    {
+    }
+
+    public ArgumentTypeException (string message)
+      : base (message)
     {
     }
 
