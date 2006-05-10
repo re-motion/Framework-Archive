@@ -49,12 +49,14 @@
     <Compile Include="Domain\File.cs" />
     <Compile Include="Domain\PaperFile.cs" />
     <Compile Include="Domain\SimpleEnum.cs" />
+    <Compile Include="Domain\SimpleType.cs" />
     <Compile Include="Domain\TestAbstractRole.cs" />
     <Compile Include="Domain\TestAccessType.cs" />
     <Compile Include="Domain\TestAccessTypeWithoutAccessTypeAttribute.cs" />
     <Compile Include="Domain\TestFlags.cs" />
     <Compile Include="Domain\TestSecurityState.cs" />
     <Compile Include="EnumWrapperTest.cs" />
+    <Compile Include="Metadata\TypeReflectorTest.cs" />
     <Compile Include="SecurityClientTest.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <Compile Include="SecurityContextTest.cs" />
@@ -73,9 +75,6 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Metadata\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
