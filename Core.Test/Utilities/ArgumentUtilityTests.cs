@@ -67,7 +67,7 @@ public class ArgumentUtilityTests
   [ExpectedException (typeof (ArgumentNullException))]
   public void CheckNotNullAndType_FailNull ()
   {
-    ArgumentUtility.CheckNotNullAndType ("arg", null, typeof (string));
+    ArgumentUtility.CheckNotNullAndType ("arg", (object) null, typeof (string));
   }
   [Test]
   [ExpectedException (typeof (ArgumentTypeException))]
@@ -91,17 +91,47 @@ public class ArgumentUtilityTests
   [ExpectedException (typeof (NotSupportedException))]
   public void CheckType_FailValueType ()
   {
-    ArgumentUtility.CheckType ("arg", null, typeof (int));
+    ArgumentUtility.CheckType ("arg", (object) null, typeof (int));
   }
   [Test]
   public void CheckType_SucceedReferenceTypeNull ()
   {
-    ArgumentUtility.CheckType ("arg", null, typeof (string));
+    ArgumentUtility.CheckType ("arg", (object) null, typeof (string));
   }
   [Test]
   public void CheckType_SucceedNotNull ()
   {
     ArgumentUtility.CheckType ("arg", "test", typeof (string));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentNullException))]
+  public void CheckNotNullAndTypeIsAssignableFrom_FailNull ()
+  {
+    ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", null, typeof (string));
+  }
+  [Test]
+  [ExpectedException (typeof (ArgumentTypeException))]
+  public void CheckNotNullAndTypeIsAssignableFrom_FailType ()
+  {
+    ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("arg", typeof (object), typeof (string));
+  }
+  [Test]
+  public void CheckNotNullAndTypeIsAssignableFrom_Succeed ()
+  {
+    ArgumentUtility.CheckTypeIsAssignableFrom ("arg", typeof (string), typeof (object));
+  }
+
+  [Test]
+  [ExpectedException (typeof (ArgumentTypeException))]
+  public void CheckTypeIsAssignableFrom_Fail ()
+  {
+    ArgumentUtility.CheckTypeIsAssignableFrom ("arg", typeof (object), typeof (string));
+  }
+  [Test]
+  public void CheckTypeIsAssignableFrom_Succeed ()
+  {
+    ArgumentUtility.CheckTypeIsAssignableFrom ("arg", typeof (string), typeof (object));
   }
 }
 
