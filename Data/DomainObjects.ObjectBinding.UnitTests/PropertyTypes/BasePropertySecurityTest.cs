@@ -37,7 +37,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
           .Method ("GetUser")
           .Will (Return.Value (new GenericPrincipal (new GenericIdentity ("owner"), new string[0])));
 
-      _securityContext = new SecurityContext ("Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.Testclass", "owner", "group", "client", null, null);
+      _securityContext = new SecurityContext (typeof (SecurableSearchObject), "owner", "group", "client", null, null);
 
       _securityContextFactory = _mocks.NewMock<ISecurityContextFactory> ();
       Stub.On (_securityContextFactory)

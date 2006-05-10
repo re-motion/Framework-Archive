@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Rubicon.Security.UnitTests.Domain
 {
-
-  public class File
+  public class File : ISecurableType
   {
     private Confidentiality _confidentiality;
     private FileState _state;
@@ -31,6 +30,11 @@ namespace Rubicon.Security.UnitTests.Domain
     {
       get { return _id; }
       set { _id = value; }
+    }
+
+    public ISecurityContextFactory GetSecurityContextFactory ()
+    {
+      throw new Exception ("The method or operation is not implemented.");
     }
   }
 

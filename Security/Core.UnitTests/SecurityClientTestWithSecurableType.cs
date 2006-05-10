@@ -5,6 +5,8 @@ using System.Text;
 using NUnit.Framework;
 using NMock2;
 
+using Rubicon.Security.UnitTests.Domain;
+
 namespace Rubicon.Security.UnitTests
 {
   [TestFixture]
@@ -26,8 +28,7 @@ namespace Rubicon.Security.UnitTests
       _mockSecurityContextFactory = _mocks.NewMock<ISecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _context = new SecurityContext ("Rubicon.Security.UnitTests.TestClass", "owner", "group", "client",
-          new Dictionary<string, Enum> (), new Enum[0]);
+      _context = new SecurityContext (typeof (File), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
 
       Expect.Once.On (_mockSecurityContextFactory)
           .Method ("GetSecurityContext")

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using Rubicon.Utilities;
 
 using Rubicon.Security.UnitTests.Domain;
 
@@ -14,12 +15,11 @@ namespace Rubicon.Security.UnitTests
     public void CreateSecurityContextWithAbstractRole ()
     {
       Enum[] abstractRoles = new Enum[] { TestAbstractRole.QualityEngineer, TestAbstractRole.Developer };
-      SecurityContext context = new SecurityContext (
-          "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", null, abstractRoles);
+      SecurityContext context = new SecurityContext (typeof (File), "owner", "group", "client", null, abstractRoles);
 
       Assert.AreEqual (2, context.AbstractRoles.Length);
-      Assert.Contains ("Rubicon.Security.UnitTests.Domain.TestAbstractRole.QualityEngineer, Rubicon.Security.UnitTests", context.AbstractRoles);
-      Assert.Contains ("Rubicon.Security.UnitTests.Domain.TestAbstractRole.Developer, Rubicon.Security.UnitTests", context.AbstractRoles);
+      Assert.Contains (new EnumWrapper (TestAbstractRole.QualityEngineer), context.AbstractRoles);
+      Assert.Contains (new EnumWrapper (TestAbstractRole.Developer), context.AbstractRoles);
     }
 
     [Test]
@@ -29,16 +29,13 @@ namespace Rubicon.Security.UnitTests
     public void CreateSecurityContextWithInvalidAbstractRole ()
     {
       Enum[] abstractRoles = new Enum[] { SimpleEnum.First };
-      SecurityContext context = new SecurityContext (
-          "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", null, abstractRoles);
+      SecurityContext context = new SecurityContext (typeof (File), "owner", "group", "client", null, abstractRoles);
     }
 
     [Test]
     public void CreateSecurityContextWithNullAbstractRoles ()
     {
-      SecurityContext context = new SecurityContext (
-          "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", null, null);
-
+      SecurityContext context = new SecurityContext (typeof (File), "owner", "group", "client", null, null);
       Assert.AreEqual (0, context.AbstractRoles.Length);
     }
 
@@ -49,11 +46,10 @@ namespace Rubicon.Security.UnitTests
       testStates.Add ("Confidentiality", TestSecurityState.Public);
       testStates.Add ("State", TestSecurityState.Secret);
 
-      SecurityContext context = new SecurityContext (
-          "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", testStates, null);
+      SecurityContext context = new SecurityContext (typeof (File), "owner", "group", "client", testStates, null);
 
-      Assert.AreEqual (TestSecurityState.Public, context.GetState ("Confidentiality"));
-      Assert.AreEqual (TestSecurityState.Secret, context.GetState ("State"));
+      Assert.AreEqual (new EnumWrapper (TestSecurityState.Public), context.GetState ("Confidentiality"));
+      Assert.AreEqual (new EnumWrapper (TestSecurityState.Secret), context.GetState ("State"));
     }
 
     [Test]
@@ -66,8 +62,21 @@ namespace Rubicon.Security.UnitTests
       testStates.Add ("Confidentiality", TestSecurityState.Public);
       testStates.Add ("State", SimpleEnum.Second);
 
-      SecurityContext context = new SecurityContext (
-          "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", testStates, null);
+      SecurityContext context = new SecurityContext (typeof (File), "owner", "group", "client", testStates, null);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentTypeException))]
+    public void CreateSecurityContextWithInvalidType ()
+    {
+      SecurityContext context = new SecurityContext (typeof (SimpleType), "owner", "group", "client", null, null);
+    }
+
+    [Test]
+    public void GetClassName ()
+    {
+      SecurityContext context = new SecurityContext (typeof (File), "owner", "group", "client", null, null);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.Domain.File, Rubicon.Security.UnitTests", context.Class);
     }
   }
 }

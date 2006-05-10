@@ -11,20 +11,20 @@ namespace Rubicon.Security
     private readonly string _owner;
     private readonly string _ownerGroup;
     private readonly string _ownerClient;
-    private IDictionary<string, Enum> _states;
-    private string[] _abstractRoles;
+    private IDictionary<string, EnumWrapper> _states;
+    private EnumWrapper[] _abstractRoles;
 
     public SecurityContext (
-        string fullClassName,
+        Type classType,
         string owner,
         string ownerGroup,
         string ownerClient,
         IDictionary<string, Enum> states,
         ICollection<Enum> abstractRoles)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("fullClassName", fullClassName);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("classType", classType, typeof (ISecurableType));
 
-      List<string> abstractRoleList = new List<string> ();
+      List<EnumWrapper> abstractRoleList = new List<EnumWrapper> ();
 
       if (abstractRoles != null)
       {
@@ -39,15 +39,13 @@ namespace Rubicon.Security
             throw new ArgumentException (message, "abstractRoles");
           }
 
-          string role = roleType.FullName + "." + abstractRole.ToString () + ", " + roleType.Assembly.GetName ().Name;
-
-          abstractRoleList.Add (role);
+          abstractRoleList.Add (new EnumWrapper (abstractRole));
         }
       }
 
       _abstractRoles = abstractRoleList.ToArray ();
 
-      Dictionary<string, Enum> securityStates = new Dictionary<string, Enum> ();
+      Dictionary<string, EnumWrapper> securityStates = new Dictionary<string, EnumWrapper> ();
 
       if (states != null)
       {
@@ -62,11 +60,11 @@ namespace Rubicon.Security
             throw new ArgumentException (message, "states");
           }
 
-          securityStates.Add (valuePair.Key, valuePair.Value);
+          securityStates.Add (valuePair.Key, new EnumWrapper (valuePair.Value));
         }
       }
 
-      _class = fullClassName;
+      _class = TypeUtility.GetPartialAssemblyQualifiedName (classType);
       _owner = owner;
       _ownerGroup = ownerGroup;
       _ownerClient = ownerClient;
@@ -94,12 +92,12 @@ namespace Rubicon.Security
       get { return _ownerClient; }
     }
 
-    public string[] AbstractRoles
+    public EnumWrapper[] AbstractRoles
     {
       get { return _abstractRoles; }
     }
 
-    public Enum GetState (string propertyName)
+    public EnumWrapper GetState (string propertyName)
     {
       return _states[propertyName];
     }
