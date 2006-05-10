@@ -43,6 +43,10 @@
     <Compile Include="ISecurityContextFactory.cs" />
     <Compile Include="ISecurityService.cs" />
     <Compile Include="IUserProvider.cs" />
+    <Compile Include="Metadata\EnumValueInfo.cs" />
+    <Compile Include="Metadata\SecurableTypeInfo.cs" />
+    <Compile Include="Metadata\StatePropertyInfo.cs" />
+    <Compile Include="Metadata\StatePropertyReflector.cs" />
     <Compile Include="Metadata\TypeReflector.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityContext.cs" />

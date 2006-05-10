@@ -3,6 +3,7 @@ using Rubicon.Security;
 
 namespace Rubicon.Security.UnitTests.Domain
 {
+  [SecurityState]
   public enum Confidentiality
   {
     Normal = 0,

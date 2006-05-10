@@ -45,6 +45,7 @@
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Domain\Confidentiality.cs" />
+    <Compile Include="Domain\TestValueType.cs" />
     <Compile Include="Domain\FileState.cs" />
     <Compile Include="Domain\File.cs" />
     <Compile Include="Domain\PaperFile.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Domain\TestFlags.cs" />
     <Compile Include="Domain\TestSecurityState.cs" />
     <Compile Include="EnumWrapperTest.cs" />
+    <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
     <Compile Include="Metadata\TypeReflectorTest.cs" />
     <Compile Include="SecurityClientTest.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />

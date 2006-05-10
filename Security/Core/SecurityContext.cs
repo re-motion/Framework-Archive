@@ -31,7 +31,7 @@ namespace Rubicon.Security
         foreach (Enum abstractRole in abstractRoles)
         {
           Type roleType = abstractRole.GetType ();
-          if (!roleType.IsDefined (typeof (AbstractRoleAttribute), false))
+          if (!Attribute.IsDefined (roleType, typeof (AbstractRoleAttribute), false))
           {
             string message = string.Format ("Enumerated Type '{0}' cannot be used as an abstract role. Valid abstract roles must have the {1} applied.",
                 roleType, typeof (AbstractRoleAttribute).FullName);
@@ -52,7 +52,7 @@ namespace Rubicon.Security
         foreach (KeyValuePair<string, Enum> valuePair in states)
         {
           Type stateType = valuePair.Value.GetType ();
-          if (!stateType.IsDefined (typeof (SecurityStateAttribute), false))
+          if (!Attribute.IsDefined (stateType, typeof (SecurityStateAttribute), false))
           {
             string message = string.Format ("Enumerated Type '{0}' cannot be used as a security state. Valid security states must have the {1} applied.",
                 stateType, typeof (SecurityStateAttribute).FullName);
