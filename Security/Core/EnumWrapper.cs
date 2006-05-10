@@ -18,7 +18,7 @@ namespace Rubicon.Security
       if (type.IsDefined (typeof (FlagsAttribute), false))
       {
         throw new ArgumentException (
-            string.Format ("Enumerated type '{0}' cannot be wrapped. Only enumerated types without the FlagsAttribute can be wrapped.", type.FullName),
+            string.Format ("Enumerated type '{0}' cannot be wrapped. Only enumerated types without the {1} can be wrapped.", type.FullName, typeof (FlagsAttribute).FullName),
             "value");
       }
       

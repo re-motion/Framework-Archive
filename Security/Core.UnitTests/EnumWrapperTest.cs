@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     [ExpectedException (typeof (ArgumentException),
         "Enumerated type 'Rubicon.Security.UnitTests.Domain.TestFlags' cannot be wrapped. "
-        + "Only enumerated types without the FlagsAttribute can be wrapped.\r\nParameter name: value")]
+        + "Only enumerated types without the System.FlagsAttribute can be wrapped.\r\nParameter name: value")]
     public void InitializeWithEnumHavingFlagsAttribute ()
     {
       new EnumWrapper (TestFlags.First);

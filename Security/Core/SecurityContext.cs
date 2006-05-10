@@ -33,8 +33,8 @@ namespace Rubicon.Security
           Type roleType = abstractRole.GetType ();
           if (!roleType.IsDefined (typeof (AbstractRoleAttribute), false))
           {
-            string message = string.Format ("Enumerated Type '{0}' cannot be used as an abstract role. Valid abstract roles must have the"
-                + " Rubicon.Security.AbstractRoleAttribute applied.", roleType);
+            string message = string.Format ("Enumerated Type '{0}' cannot be used as an abstract role. Valid abstract roles must have the {1} applied.",
+                roleType, typeof (AbstractRoleAttribute).FullName);
 
             throw new ArgumentException (message, "abstractRoles");
           }
@@ -54,8 +54,8 @@ namespace Rubicon.Security
           Type stateType = valuePair.Value.GetType ();
           if (!stateType.IsDefined (typeof (SecurityStateAttribute), false))
           {
-            string message = string.Format ("Enumerated Type '{0}' cannot be used as a security state. Valid security states must have the"
-                + " Rubicon.Security.SecurityStateAttribute applied.", stateType);
+            string message = string.Format ("Enumerated Type '{0}' cannot be used as a security state. Valid security states must have the {1} applied.",
+                stateType, typeof (SecurityStateAttribute).FullName);
 
             throw new ArgumentException (message, "states");
           }
