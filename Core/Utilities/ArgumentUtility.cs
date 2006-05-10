@@ -82,9 +82,7 @@ namespace Rubicon.Utilities
       throw new ArgumentOutOfRangeException (argumentName, actualValue, message);
     }
 
-    /// <summary>
-    /// Returns the value itself if it is not <see langword="null"/> and of the specified type.
-    /// </summary>
+    /// <summary>Returns the value itself if it is not <see langword="null"/> and of the specified type.</summary>
     /// <exception cref="ArgumentNullException">The <param name="actualValue"/> is a <see langword="null"/>.</exception>
     /// <exception cref="ArgumentTypeException">The <param name="actualValue"/> is an instance of another type (which is not a subclass of the <param name="expectedType"/>).</exception>
     public static T CheckNotNullAndType<T> (string argumentName, T actualValue, Type expectedType)
@@ -94,9 +92,7 @@ namespace Rubicon.Utilities
       return CheckType<T> (argumentName, actualValue, expectedType);
     }
 
-    /// <summary>
-    /// Returns the value itself if it is of the specified reference type.
-    /// </summary>
+    /// <summary>Returns the value itself if it is of the specified reference type.</summary>
     /// <exception cref="ArgumentTypeException">The <param name="actualValue"/> is an instance of another type (which is not a subclass of the <param name="expectedType"/>).</exception>
     /// <exception cref="NotSupportedException">The <param name="expectedType"/> is a value type.</exception>
     /// <remarks>For value types, use <see cref="CheckNotNullAndType{T}"/> instead.</remarks>
