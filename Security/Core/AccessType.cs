@@ -50,7 +50,7 @@ namespace Rubicon.Security
       Type type = TypeUtility.GetType (accessType.TypeName);
       if (!type.IsDefined (typeof (AccessTypeAttribute), false))
       {
-        throw new ArgumentException (string.Format ("Enumerated Type '{0}' cannot be used as an access type. Valid access types must have the "
+        throw new ArgumentException (string.Format ("Enumerated type '{0}' cannot be used as an access type. Valid access types must have the "
                 + "Rubicon.Security.AccessTypeAttribute applied.", type.FullName),
             "accessType");
       }
