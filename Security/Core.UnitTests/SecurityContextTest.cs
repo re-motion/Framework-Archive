@@ -13,13 +13,13 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void CreateSecurityContextWithAbstractRole ()
     {
-      Enum[] abstractRoles = new Enum[] { TestAbstractRoles.QualityEngineer, TestAbstractRoles.Developer };
+      Enum[] abstractRoles = new Enum[] { TestAbstractRole.QualityEngineer, TestAbstractRole.Developer };
       SecurityContext context = new SecurityContext (
           "Rubicon.Security.UnitTests.SecurityContextTest", "owner", "group", "client", null, abstractRoles);
 
       Assert.AreEqual (2, context.AbstractRoles.Length);
-      Assert.Contains ("Rubicon.Security.UnitTests.Domain.TestAbstractRoles.QualityEngineer, Rubicon.Security.UnitTests", context.AbstractRoles);
-      Assert.Contains ("Rubicon.Security.UnitTests.Domain.TestAbstractRoles.Developer, Rubicon.Security.UnitTests", context.AbstractRoles);
+      Assert.Contains ("Rubicon.Security.UnitTests.Domain.TestAbstractRole.QualityEngineer, Rubicon.Security.UnitTests", context.AbstractRoles);
+      Assert.Contains ("Rubicon.Security.UnitTests.Domain.TestAbstractRole.Developer, Rubicon.Security.UnitTests", context.AbstractRoles);
     }
 
     [Test]

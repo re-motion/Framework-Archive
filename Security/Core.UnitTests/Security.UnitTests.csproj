@@ -44,8 +44,12 @@
   <ItemGroup>
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Domain\Confidentiality.cs" />
+    <Compile Include="Domain\FileState.cs" />
+    <Compile Include="Domain\File.cs" />
+    <Compile Include="Domain\PaperFile.cs" />
     <Compile Include="Domain\SimpleEnum.cs" />
-    <Compile Include="Domain\TestAbstractRoles.cs" />
+    <Compile Include="Domain\TestAbstractRole.cs" />
     <Compile Include="Domain\TestAccessType.cs" />
     <Compile Include="Domain\TestAccessTypeWithoutAccessTypeAttribute.cs" />
     <Compile Include="Domain\TestFlags.cs" />

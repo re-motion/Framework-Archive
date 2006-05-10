@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Rubicon.Security;
+
+using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Domain
 {
-  [AbstractRole]
-  public enum TestAbstractRoles
+
+  public class PaperFile : File
   {
-    QualityEngineer,
-    Developer
+    public PaperFile ()
+    {
+    }
   }
 }
