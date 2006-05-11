@@ -46,9 +46,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.IsNotNull (values);
       Assert.AreEqual (3, values.Count);
 
-      Assert.AreEqual (0, values[0].ID);
-      Assert.AreEqual (1, values[1].ID);
-      Assert.AreEqual (2, values[2].ID);
+      Assert.AreEqual (0, values[0].Value);
+      Assert.AreEqual (1, values[1].Value);
+      Assert.AreEqual (2, values[2].Value);
       Assert.AreEqual ("Normal", values[0].Name);
       Assert.AreEqual ("Confidential", values[1].Name);
       Assert.AreEqual ("Private", values[2].Name);

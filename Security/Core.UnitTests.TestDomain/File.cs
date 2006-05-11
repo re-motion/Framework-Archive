@@ -36,6 +36,11 @@ namespace Rubicon.Security.UnitTests.TestDomain
       set { _id = value; }
     }
 
+   // [RequiredPermission (DomainAccessTypes.Journalize)]
+    public void Journalize ()
+    {
+    }
+
     public ISecurityContextFactory GetSecurityContextFactory ()
     {
       throw new Exception ("The method or operation is not implemented.");

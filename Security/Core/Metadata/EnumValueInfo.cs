@@ -15,38 +15,44 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private int _id;
+    private Guid _id;
+    private int _value;
     private string _name;
 
     // construction and disposing
 
-    public EnumValueInfo (int id, string name)
+    public EnumValueInfo (int value, string name)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
-      _id = id;
+      _value = value;
       _name = name;
     }
 
     // methods and properties
 
-    public int ID
+    public Guid ID
     {
       get { return _id; }
       set { _id = value; }
     }
 
+    public int Value
+    {
+      get { return _value; }
+      set { _value = value; }
+    }
 
     public string Name
     {
       get
       {
-        return _name; 
+        return _name;
       }
-      set 
+      set
       {
         ArgumentUtility.CheckNotNullOrEmpty ("Name", value);
-        _name = value; 
+        _name = value;
       }
     }
   }

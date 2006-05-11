@@ -48,7 +48,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       _valueNormal = new EnumValueInfo (0, "Normal");
       _valuePrivate = new EnumValueInfo (1, "Private");
-      _valueSecret = new EnumValueInfo (1, "Private");
+      _valueSecret = new EnumValueInfo (2, "Secret");
     }
 
     [Test]

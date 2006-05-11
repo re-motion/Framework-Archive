@@ -17,7 +17,8 @@ namespace Rubicon.Security.Metadata
 
     private Guid _id;
     private string _name;
-    private List<StatePropertyInfo> _properties;
+    private List<StatePropertyInfo> _properties = new List<StatePropertyInfo>();
+    private List<EnumValueInfo> _accessTypes = new List<EnumValueInfo>();
     private SecurableClassInfo _baseClass;
     private List<SecurableClassInfo> _derivedClasses = new List<SecurableClassInfo> ();
 
@@ -44,7 +45,11 @@ namespace Rubicon.Security.Metadata
     public List<StatePropertyInfo> Properties
     {
       get { return _properties; }
-      set { _properties = value; }
+    }
+
+    public List<EnumValueInfo> AccessTypes
+    {
+      get { return _accessTypes; }
     }
 
     public SecurableClassInfo BaseClass

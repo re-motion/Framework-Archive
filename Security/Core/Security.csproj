@@ -43,9 +43,11 @@
     <Compile Include="ISecurityContextFactory.cs" />
     <Compile Include="ISecurityService.cs" />
     <Compile Include="IUserProvider.cs" />
+    <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
     <Compile Include="Metadata\ClassReflector.cs" />
     <Compile Include="Metadata\EnumerationReflector.cs" />
+    <Compile Include="Metadata\IAccessTypeReflector.cs" />
     <Compile Include="Metadata\IClassReflector.cs" />
     <Compile Include="Metadata\EnumValueInfo.cs" />
     <Compile Include="Metadata\IEnumerationReflector.cs" />

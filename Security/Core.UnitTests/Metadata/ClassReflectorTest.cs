@@ -25,10 +25,15 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     private Mockery _mocks;
     private IStatePropertyReflector _statePropertyReflectorMock;
+    private IAccessTypeReflector _accessTypeReflectorMock;
     private ClassReflector _reflector;
     private MetadataCache _cache;
     private StatePropertyInfo _confidentialityProperty;
     private StatePropertyInfo _stateProperty;
+
+    private List<EnumValueInfo> _generalAccessTypes;
+    private EnumValueInfo _journalizeAccessType;
+    private EnumValueInfo _archiveAccessType;
 
     // construction and disposing
 
@@ -43,7 +48,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       _mocks = new Mockery ();
       _statePropertyReflectorMock = _mocks.NewMock<IStatePropertyReflector> ();
-      _reflector = new ClassReflector (_statePropertyReflectorMock);
+      _accessTypeReflectorMock = _mocks.NewMock<IAccessTypeReflector> ();
+      _reflector = new ClassReflector (_statePropertyReflectorMock, _accessTypeReflectorMock);
       _cache = new MetadataCache ();
 
       _confidentialityProperty = new StatePropertyInfo ();
@@ -53,17 +59,32 @@ namespace Rubicon.Security.UnitTests.Metadata
       _stateProperty = new StatePropertyInfo ();
       _stateProperty.ID = new Guid ();
       _stateProperty.Name = "State";
+
+      _generalAccessTypes = new List<EnumValueInfo> ();
+      _generalAccessTypes.Add (new EnumValueInfo (0, "Read"));
+      _generalAccessTypes.Add (new EnumValueInfo (1, "Write"));
+
+      _journalizeAccessType = new EnumValueInfo (2, "Journalize");
+      _archiveAccessType = new EnumValueInfo (3, "Archive");
     }
 
     [Test]
     public void Initialize ()
     {
       Assert.AreSame (_statePropertyReflectorMock, _reflector.StatePropertyReflector);
+      Assert.AreSame (_accessTypeReflectorMock, _reflector.AccessTypeReflector);
     }
 
     [Test]
     public void GetMetadata ()
     {
+      List<EnumValueInfo> fileAccessTypes = new List<EnumValueInfo> (_generalAccessTypes);
+      fileAccessTypes.Add (_journalizeAccessType);
+
+      List<EnumValueInfo> paperFileAccessTypes = new List<EnumValueInfo> (_generalAccessTypes);
+      paperFileAccessTypes.Add (_journalizeAccessType);
+      paperFileAccessTypes.Add (_archiveAccessType);
+
       Expect.Once.On (_statePropertyReflectorMock)
           .Method ("GetMetadata")
           .With (typeof (PaperFile).GetProperty ("Confidentiality"), _cache)
@@ -79,6 +100,16 @@ namespace Rubicon.Security.UnitTests.Metadata
           .With (typeof (File).GetProperty ("Confidentiality"), _cache)
           .Will (Return.Value (_confidentialityProperty));
 
+      Expect.Once.On (_accessTypeReflectorMock)
+          .Method ("GetAccessTypes")
+          .With (typeof (File), _cache)
+          .Will (Return.Value (fileAccessTypes));
+
+      Expect.Once.On (_accessTypeReflectorMock)
+          .Method ("GetAccessTypes")
+          .With (typeof (PaperFile), _cache)
+          .Will (Return.Value (paperFileAccessTypes));
+
       SecurableClassInfo info = _reflector.GetMetadata (typeof (PaperFile), _cache);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -93,10 +124,13 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.AreEqual (1, info.BaseClass.DerivedClasses.Count);
       Assert.Contains (info, info.BaseClass.DerivedClasses);
 
-      Assert.IsNotNull (info.Properties);
       Assert.AreEqual (2, info.Properties.Count);
       Assert.Contains (_confidentialityProperty, info.Properties);
       Assert.Contains (_stateProperty, info.Properties);
+
+      Assert.AreEqual (4, info.AccessTypes.Count);
+      foreach (EnumValueInfo accessType in paperFileAccessTypes)
+        Assert.Contains (accessType, info.AccessTypes);
     }
 
     [Test]

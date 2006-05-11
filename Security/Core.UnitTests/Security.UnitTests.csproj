@@ -47,6 +47,7 @@
     <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="Metadata\AssemblyReflectorTest.cs" />
     <Compile Include="Metadata\ClassReflectorTest.cs" />
+    <Compile Include="Metadata\AccessTypeReflectorTest.cs" />
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
     <Compile Include="Metadata\MetadataCacheTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />

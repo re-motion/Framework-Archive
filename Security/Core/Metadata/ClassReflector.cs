@@ -18,17 +18,22 @@ namespace Rubicon.Security.Metadata
     // member fields
 
     private IStatePropertyReflector _statePropertyReflector;
-    
+    private IAccessTypeReflector _accessTypeReflector;
+
     // construction and disposing
 
-    public ClassReflector () : this (new StatePropertyReflector ())
+    public ClassReflector ()
+      : this (new StatePropertyReflector (), new AccessTypeReflector ())
     {
     }
 
-    public ClassReflector (IStatePropertyReflector statePropertyReflector)
+    public ClassReflector (IStatePropertyReflector statePropertyReflector, IAccessTypeReflector accessTypeReflector)
     {
       ArgumentUtility.CheckNotNull ("statePropertyReflector", statePropertyReflector);
+      ArgumentUtility.CheckNotNull ("accessTypeReflector", accessTypeReflector);
+
       _statePropertyReflector = statePropertyReflector;
+      _accessTypeReflector = accessTypeReflector;
     }
 
     // methods and properties
@@ -36,6 +41,11 @@ namespace Rubicon.Security.Metadata
     public IStatePropertyReflector StatePropertyReflector
     {
       get { return _statePropertyReflector; }
+    }
+
+    public IAccessTypeReflector AccessTypeReflector
+    {
+      get { return _accessTypeReflector; }
     }
 
     public SecurableClassInfo GetMetadata (Type type, MetadataCache cache)
@@ -53,7 +63,8 @@ namespace Rubicon.Security.Metadata
         PermanentGuidAttribute guidAttribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (type, typeof (PermanentGuidAttribute), true);
         if (guidAttribute != null)
           info.ID = guidAttribute.Value;
-        info.Properties = GetProperties (type, cache);
+        info.Properties.AddRange (GetProperties (type, cache));
+        info.AccessTypes.AddRange (_accessTypeReflector.GetAccessTypes (type, cache));
 
         cache.AddTypeInfo (type, info);
 
@@ -73,9 +84,9 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("cache", cache);
 
       MemberInfo[] propertyInfos = type.FindMembers (
-          MemberTypes.Property, 
-          BindingFlags.Instance | BindingFlags.Public, 
-          FindStatePropertiesFilter, 
+          MemberTypes.Property,
+          BindingFlags.Instance | BindingFlags.Public,
+          FindStatePropertiesFilter,
           null);
 
       List<StatePropertyInfo> statePropertyInfos = new List<StatePropertyInfo> ();
@@ -92,5 +103,5 @@ namespace Rubicon.Security.Metadata
       PropertyInfo property = (PropertyInfo) member;
       return property.PropertyType.IsEnum && Attribute.IsDefined (property.PropertyType, typeof (SecurityStateAttribute), false);
     }
- }
+  }
 }
