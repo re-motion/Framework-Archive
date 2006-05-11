@@ -10,16 +10,25 @@ namespace Rubicon.Security
   public class SecurityClient
   {
     private ISecurityService _securityService;
+    private IPermissionReflector _permissionReflector;
 
     public SecurityClient ()
-        : this (SecurityConfiguration.Current.SecurityService)
+        : this (SecurityConfiguration.Current.SecurityService, new PermissionReflector ())
     {
     }
 
     public SecurityClient (ISecurityService securityService)
+        : this (securityService, new PermissionReflector ())
+    {
+    }
+
+    public SecurityClient (ISecurityService securityService, IPermissionReflector permissionReflector)
     {
       ArgumentUtility.CheckNotNull ("securityService", securityService);
+      ArgumentUtility.CheckNotNull ("permissionReflector", permissionReflector);
+  
       _securityService = securityService;
+      _permissionReflector = permissionReflector;
     }
 
     public bool HasAccess (SecurityContext context, IPrincipal user, params AccessType[] requiredAccessTypes)
@@ -45,8 +54,6 @@ namespace Rubicon.Security
     public bool HasAccess (ISecurableType securableType, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableType", securableType);
-      ArgumentUtility.CheckNotNull ("user", user);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
       ISecurityContextFactory contextFactory = securableType.GetSecurityContextFactory ();
       if (contextFactory == null)
@@ -57,18 +64,96 @@ namespace Rubicon.Security
 
     public bool HasAccess (SecurityContext context, params AccessType[] requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
-
       return HasAccess (context, GetCurrentUser (), requiredAccessTypes);
     }
 
     public bool HasAccess (ISecurableType securableType, params AccessType[] requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull ("securableType", securableType);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
-
       return HasAccess (securableType, GetCurrentUser (), requiredAccessTypes);
+    }
+
+    public void CheckMethodAccess (ISecurableType securableType, string methodName)
+    {
+      CheckMethodAccess (securableType, methodName, GetCurrentUser ());
+    }
+
+    public void CheckMethodAccess (ISecurableType securableType, string methodName, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("securableType", securableType);
+      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+
+      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredMethodPermissions (securableType.GetType (), methodName);
+      CheckRequiredMethodAccess (securableType, methodName, requiredAccessTypeEnums, user);
+    }
+
+    public void CheckMethodAccess (ISecurableType securableType, string methodName, Type[] parameterTypes)
+    {
+      CheckMethodAccess (securableType, methodName, parameterTypes, GetCurrentUser ());
+    }
+
+    public void CheckMethodAccess (ISecurableType securableType, string methodName, Type[] parameterTypes, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("securableType", securableType);
+      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNullOrItemsNull ("parameterTypes", parameterTypes);
+      ArgumentUtility.CheckNotNull ("user", user);
+
+      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredMethodPermissions (securableType.GetType (), methodName, parameterTypes);
+      CheckRequiredMethodAccess (securableType, methodName, requiredAccessTypeEnums, user);
+    }
+
+    public void CheckConstructorAccess (Type type)
+    {
+      CheckConstructorAccess (type, GetCurrentUser ());
+    }
+
+    public void CheckConstructorAccess (Type type, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("user", user);
+
+      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredConstructorPermissions (type);
+      CheckRequiredConstructorAccess (type, requiredAccessTypeEnums, user);
+    }
+
+    public void CheckConstructorAccess (Type type, Type[] parameterTypes)
+    {
+      CheckConstructorAccess (type, parameterTypes, GetCurrentUser ());
+    }
+
+    public void CheckConstructorAccess (Type type, Type[] parameterTypes, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNullOrItemsNull ("parameterTypes", parameterTypes);
+      ArgumentUtility.CheckNotNull ("user", user);
+
+      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredConstructorPermissions (type, parameterTypes);
+      CheckRequiredConstructorAccess (type, requiredAccessTypeEnums, user);
+    }
+
+    private void CheckRequiredConstructorAccess (Type type, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    {
+      AccessType[] requiredAccessTypes = ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums);
+
+      if (Array.IndexOf (requiredAccessTypeEnums, GeneralAccessType.Create) < 0)
+      {
+        Array.Resize (ref requiredAccessTypes, requiredAccessTypes.Length + 1);
+        requiredAccessTypes[requiredAccessTypes.Length - 1] = AccessType.Get (GeneralAccessType.Create);
+      }
+
+      if (!HasAccess (new SecurityContext (type), user, requiredAccessTypes))
+        throw new AccessViolationException ("Access to constructor has been denied.");
+    }
+
+    private void CheckRequiredMethodAccess (ISecurableType securableType, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    {
+      if (!HasAccess (securableType, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
+        throw new AccessViolationException (string.Format ("Access to method '{0}' has been denied.", methodName));
+    }
+
+    private AccessType[] ConvertRequiredAccessTypeEnums (Enum[] requiredAccessTypeEnums)
+    {
+      return Array.ConvertAll (requiredAccessTypeEnums, new Converter<Enum, AccessType> (AccessType.Get));
     }
 
     private IPrincipal GetCurrentUser ()

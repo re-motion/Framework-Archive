@@ -44,6 +44,12 @@
   <ItemGroup>
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Domain\PermissionReflection\DerivedSecurableClass.cs" />
+    <Compile Include="Domain\PermissionReflection\DerivedSecurableClassWithoutConstructorOverloads.cs" />
+    <Compile Include="Domain\PermissionReflection\SecurableClass.cs" />
+    <Compile Include="Domain\PermissionReflection\SecurableClassWithoutConstructorOverloads.cs" />
+    <Compile Include="Domain\PermissionReflection\SecurableClassWithPrivateConstructor.cs" />
+    <Compile Include="Domain\PermissionReflection\SecurableClassWithPrivateOverloadedConstructor.cs" />
     <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="Metadata\AssemblyReflectorTest.cs" />
     <Compile Include="Metadata\ClassReflectorTest.cs" />
@@ -59,7 +65,11 @@
     <Compile Include="SampleDomain\TestFlags.cs" />
     <Compile Include="SampleDomain\TestSecurityState.cs" />
     <Compile Include="SampleDomain\TestValueType.cs" />
-    <Compile Include="SecurityClientTest.cs" />
+    <Compile Include="PermissionReflectorTest.cs" />
+    <Compile Include="RequiredMethodPermissionAttributeTest.cs" />
+    <Compile Include="SecurityClientTestWithCheckConstructorAccess.cs" />
+    <Compile Include="SecurityClientTestWithCheckMethodAccess.cs" />
+    <Compile Include="SecurityClientTestWithHasAccess.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <Compile Include="SecurityContextTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />

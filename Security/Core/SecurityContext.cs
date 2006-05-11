@@ -14,6 +14,11 @@ namespace Rubicon.Security
     private IDictionary<string, EnumWrapper> _states;
     private EnumWrapper[] _abstractRoles;
 
+    public SecurityContext (Type classType)
+      : this (classType, null, null, null, null, null)
+    {
+    }
+
     public SecurityContext (
         Type classType,
         string owner,

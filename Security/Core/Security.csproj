@@ -36,9 +36,11 @@
     <Compile Include="AbstractRoleAttribute.cs" />
     <Compile Include="AccessType.cs" />
     <Compile Include="AccessTypeAttribute.cs" />
+    <Compile Include="AccessViolationException.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="EnumWrapper.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
+    <Compile Include="IPermissionReflector.cs" />
     <Compile Include="ISecurableType.cs" />
     <Compile Include="ISecurityContextFactory.cs" />
     <Compile Include="ISecurityService.cs" />
@@ -56,6 +58,8 @@
     <Compile Include="Metadata\SecurableClassInfo.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
+    <Compile Include="PermissionReflector.cs" />
+    <Compile Include="RequiredMethodPermissionAttribute.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityContext.cs" />
     <Compile Include="GeneralAccessType.cs" />
