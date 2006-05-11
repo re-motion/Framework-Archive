@@ -17,15 +17,15 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private IEnumeratedTypeReflector _enumeratedTypeReflector;
+    private IEnumerationReflector _enumeratedTypeReflector;
 
     // construction and disposing
 
-    public StatePropertyReflector () : this (new EnumeratedTypeReflector())
+    public StatePropertyReflector () : this (new EnumerationReflector())
     {
     }
 
-    public StatePropertyReflector (IEnumeratedTypeReflector enumeratedTypeReflector)
+    public StatePropertyReflector (IEnumerationReflector enumeratedTypeReflector)
     {
       ArgumentUtility.CheckNotNull ("enumeratedTypeReflector", enumeratedTypeReflector);
       _enumeratedTypeReflector = enumeratedTypeReflector;
@@ -33,7 +33,7 @@ namespace Rubicon.Security.Metadata
 
     // methods and properties
 
-    public IEnumeratedTypeReflector EnumeratedTypeReflector
+    public IEnumerationReflector EnumeratedTypeReflector
     {
       get { return _enumeratedTypeReflector; }
     }

@@ -42,8 +42,8 @@ namespace Rubicon.Security.UnitTests.Metadata
       Type fileType = typeof (File);
       Type paperFileType = typeof (PaperFile);
 
-      SecurableTypeInfo fileTypeInfo = new SecurableTypeInfo ();
-      SecurableTypeInfo paperFileTypeInfo = new SecurableTypeInfo ();
+      SecurableClassInfo fileTypeInfo = new SecurableClassInfo ();
+      SecurableClassInfo paperFileTypeInfo = new SecurableClassInfo ();
 
       Assert.IsFalse (_cache.ContainsTypeInfo (fileType));
       Assert.IsNull (_cache.GetTypeInfo (fileType));
@@ -90,13 +90,13 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetCachedTypeInfos ()
     {
-      SecurableTypeInfo fileTypeInfo = new SecurableTypeInfo ();
-      SecurableTypeInfo paperFileTypeInfo = new SecurableTypeInfo ();
+      SecurableClassInfo fileTypeInfo = new SecurableClassInfo ();
+      SecurableClassInfo paperFileTypeInfo = new SecurableClassInfo ();
 
       _cache.AddTypeInfo (typeof (File), fileTypeInfo);
       _cache.AddTypeInfo (typeof (PaperFile), paperFileTypeInfo);
 
-      List<SecurableTypeInfo> infos = _cache.GetTypeInfos ();
+      List<SecurableClassInfo> infos = _cache.GetTypeInfos ();
 
       Assert.IsNotNull (infos);
       Assert.AreEqual (2, infos.Count);

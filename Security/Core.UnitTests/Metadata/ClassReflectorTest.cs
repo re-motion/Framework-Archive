@@ -15,7 +15,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 {
 
   [TestFixture]
-  public class TypeReflectorTest
+  public class ClassReflectorTest
   {
     // types
 
@@ -25,14 +25,14 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     private Mockery _mocks;
     private IStatePropertyReflector _statePropertyReflectorMock;
-    private TypeReflector _reflector;
+    private ClassReflector _reflector;
     private MetadataCache _cache;
     private StatePropertyInfo _confidentialityProperty;
     private StatePropertyInfo _stateProperty;
 
     // construction and disposing
 
-    public TypeReflectorTest ()
+    public ClassReflectorTest ()
     {
     }
 
@@ -43,7 +43,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       _mocks = new Mockery ();
       _statePropertyReflectorMock = _mocks.NewMock<IStatePropertyReflector> ();
-      _reflector = new TypeReflector (_statePropertyReflectorMock);
+      _reflector = new ClassReflector (_statePropertyReflectorMock);
       _cache = new MetadataCache ();
 
       _confidentialityProperty = new StatePropertyInfo ();
@@ -79,13 +79,19 @@ namespace Rubicon.Security.UnitTests.Metadata
           .With (typeof (File).GetProperty ("Confidentiality"), _cache)
           .Will (Return.Value (_confidentialityProperty));
 
-      SecurableTypeInfo info = _reflector.GetMetadata (typeof (PaperFile), _cache);
+      SecurableClassInfo info = _reflector.GetMetadata (typeof (PaperFile), _cache);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
 
       Assert.IsNotNull (info);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.PaperFile", info.Name);
       Assert.AreEqual (new Guid ("00000000-0000-0000-0002-000000000000"), info.ID);
+      
+      Assert.AreEqual (0, info.DerivedClasses.Count);
+      Assert.IsNotNull (info.BaseClass);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", info.BaseClass.Name);
+      Assert.AreEqual (1, info.BaseClass.DerivedClasses.Count);
+      Assert.Contains (info, info.BaseClass.DerivedClasses);
 
       Assert.IsNotNull (info.Properties);
       Assert.AreEqual (2, info.Properties.Count);
@@ -96,13 +102,13 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetMetadataForCache ()
     {
-      TypeReflector reflector = new TypeReflector ();
-      SecurableTypeInfo paperFileInfo = reflector.GetMetadata (typeof (PaperFile), _cache);
+      ClassReflector reflector = new ClassReflector ();
+      SecurableClassInfo paperFileInfo = reflector.GetMetadata (typeof (PaperFile), _cache);
 
       Assert.IsNotNull (paperFileInfo);
       Assert.AreEqual (paperFileInfo, _cache.GetTypeInfo (typeof (PaperFile)));
 
-      SecurableTypeInfo fileInfo = _cache.GetTypeInfo (typeof (File));
+      SecurableClassInfo fileInfo = _cache.GetTypeInfo (typeof (File));
       Assert.IsNotNull (fileInfo);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", fileInfo.Name);
     }
@@ -111,14 +117,14 @@ namespace Rubicon.Security.UnitTests.Metadata
     [ExpectedException (typeof (ArgumentTypeException))]
     public void GetMetadataWithInvalidType ()
     {
-      new TypeReflector ().GetMetadata (typeof (Role), _cache);
+      new ClassReflector ().GetMetadata (typeof (Role), _cache);
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), "Value types are not supported.\r\nParameter name: type")]
     public void GetMetadataWithInvalidValueType ()
     {
-      new TypeReflector ().GetMetadata (typeof (TestValueType), _cache);
+      new ClassReflector ().GetMetadata (typeof (TestValueType), _cache);
     }
   }
 }

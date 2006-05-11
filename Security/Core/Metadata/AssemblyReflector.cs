@@ -17,15 +17,15 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private ITypeReflector _typeReflector;
+    private IClassReflector _typeReflector;
     
     // construction and disposing
 
-    public AssemblyReflector () : this (new TypeReflector ())
+    public AssemblyReflector () : this (new ClassReflector ())
     {
     }
 
-    public AssemblyReflector (ITypeReflector typeReflector)
+    public AssemblyReflector (IClassReflector typeReflector)
     {
       ArgumentUtility.CheckNotNull ("typeReflector", typeReflector);
       _typeReflector = typeReflector;
@@ -33,7 +33,7 @@ namespace Rubicon.Security.Metadata
 
     // methods and properties
 
-    public ITypeReflector TypeReflector
+    public IClassReflector TypeReflector
     {
       get { return _typeReflector; }
     }

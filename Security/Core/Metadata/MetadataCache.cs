@@ -17,7 +17,7 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private Dictionary<Type, SecurableTypeInfo> _types = new Dictionary<Type, SecurableTypeInfo> ();
+    private Dictionary<Type, SecurableClassInfo> _types = new Dictionary<Type, SecurableClassInfo> ();
     private Dictionary<PropertyInfo, StatePropertyInfo> _stateProperties = new Dictionary<PropertyInfo, StatePropertyInfo> ();
 
     // construction and disposing
@@ -28,7 +28,7 @@ namespace Rubicon.Security.Metadata
 
     // methods and properties
 
-    public SecurableTypeInfo GetTypeInfo (Type key)
+    public SecurableClassInfo GetTypeInfo (Type key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
@@ -38,7 +38,7 @@ namespace Rubicon.Security.Metadata
         return null;
     }
 
-    public void AddTypeInfo (Type key, SecurableTypeInfo value)
+    public void AddTypeInfo (Type key, SecurableClassInfo value)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("value", value);
@@ -89,9 +89,9 @@ namespace Rubicon.Security.Metadata
         return property.DeclaringType.GetProperty (property.Name);
     }
 
-    public List<SecurableTypeInfo> GetTypeInfos ()
+    public List<SecurableClassInfo> GetTypeInfos ()
     { 
-      return new List<SecurableTypeInfo> (_types.Values);
+      return new List<SecurableClassInfo> (_types.Values);
     }
 
     public List<StatePropertyInfo> GetStatePropertyInfos ()

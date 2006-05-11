@@ -9,7 +9,7 @@ using Rubicon.Data;
 namespace Rubicon.Security.Metadata
 {
 
-  public class TypeReflector : ITypeReflector
+  public class ClassReflector : IClassReflector
   {
     // types
 
@@ -21,11 +21,11 @@ namespace Rubicon.Security.Metadata
     
     // construction and disposing
 
-    public TypeReflector () : this (new StatePropertyReflector ())
+    public ClassReflector () : this (new StatePropertyReflector ())
     {
     }
 
-    public TypeReflector (IStatePropertyReflector statePropertyReflector)
+    public ClassReflector (IStatePropertyReflector statePropertyReflector)
     {
       ArgumentUtility.CheckNotNull ("statePropertyReflector", statePropertyReflector);
       _statePropertyReflector = statePropertyReflector;
@@ -38,17 +38,17 @@ namespace Rubicon.Security.Metadata
       get { return _statePropertyReflector; }
     }
 
-    public SecurableTypeInfo GetMetadata (Type type, MetadataCache cache)
+    public SecurableClassInfo GetMetadata (Type type, MetadataCache cache)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableType));
       if (type.IsValueType)
         throw new ArgumentException ("Value types are not supported.", "type");
       ArgumentUtility.CheckNotNull ("cache", cache);
 
-      SecurableTypeInfo info = cache.GetTypeInfo (type);
+      SecurableClassInfo info = cache.GetTypeInfo (type);
       if (info == null)
       {
-        info = new SecurableTypeInfo ();
+        info = new SecurableClassInfo ();
         info.Name = type.FullName;
         PermanentGuidAttribute guidAttribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (type, typeof (PermanentGuidAttribute), true);
         if (guidAttribute != null)
@@ -58,7 +58,10 @@ namespace Rubicon.Security.Metadata
         cache.AddTypeInfo (type, info);
 
         if (typeof (ISecurableType).IsAssignableFrom (type.BaseType))
-          GetMetadata (type.BaseType, cache);
+        {
+          info.BaseClass = GetMetadata (type.BaseType, cache);
+          info.BaseClass.DerivedClasses.Add (info);
+        }
       }
 
       return info;

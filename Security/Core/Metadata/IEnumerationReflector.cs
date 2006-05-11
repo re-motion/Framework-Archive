@@ -5,7 +5,7 @@ using System.Reflection;
 namespace Rubicon.Security.Metadata
 {
 
-  public interface IEnumeratedTypeReflector
+  public interface IEnumerationReflector
   {
     List<EnumValueInfo> GetValues (Type type);
   }

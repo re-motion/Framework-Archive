@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     // member fields
 
     private Mockery _mocks;
-    private IEnumeratedTypeReflector _enumeratedTypeReflectorMock;
+    private IEnumerationReflector _enumeratedTypeReflectorMock;
     private StatePropertyReflector _reflector;
     private MetadataCache _cache;
     private EnumValueInfo _valueNormal;
@@ -42,7 +42,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void SetUp ()
     {
       _mocks = new Mockery ();
-      _enumeratedTypeReflectorMock = _mocks.NewMock<IEnumeratedTypeReflector> ();
+      _enumeratedTypeReflectorMock = _mocks.NewMock<IEnumerationReflector> ();
       _reflector = new StatePropertyReflector (_enumeratedTypeReflectorMock);
       _cache = new MetadataCache ();
 

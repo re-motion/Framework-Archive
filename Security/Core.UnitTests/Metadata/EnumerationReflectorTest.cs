@@ -14,7 +14,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 {
 
   [TestFixture]
-  public class EnumeratedTypeReflectorTest
+  public class EnumerationReflectorTest
   {
     // types
 
@@ -22,12 +22,11 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private Mockery _mocks;
-    private EnumeratedTypeReflector _reflector;
+    private EnumerationReflector _reflector;
 
     // construction and disposing
 
-    public EnumeratedTypeReflectorTest ()
+    public EnumerationReflectorTest ()
     {
     }
 
@@ -36,7 +35,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _reflector = new EnumeratedTypeReflector ();
+      _reflector = new EnumerationReflector ();
     }
 
     [Test]
@@ -59,7 +58,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [ExpectedException (typeof (ArgumentException), "The type 'System.String' is not an enumerated type.\r\nParameter name: type")]
     public void GetMetadataWithInvalidType ()
     {
-      new EnumeratedTypeReflector ().GetValues (typeof (string));
+      new EnumerationReflector ().GetValues (typeof (string));
     }
   }
 }

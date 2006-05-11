@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.Metadata
 {
 
-  public class EnumeratedTypeReflector : IEnumeratedTypeReflector
+  public class EnumerationReflector : IEnumerationReflector
   {
     // types
 
@@ -17,7 +17,7 @@ namespace Rubicon.Security.Metadata
 
     // construction and disposing
 
-    public EnumeratedTypeReflector ()
+    public EnumerationReflector ()
     {
     }
 

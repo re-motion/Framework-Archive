@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.Metadata
 {
 
-  public class SecurableTypeInfo
+  public class SecurableClassInfo
   {
     // types
 
@@ -18,10 +18,12 @@ namespace Rubicon.Security.Metadata
     private Guid _id;
     private string _name;
     private List<StatePropertyInfo> _properties;
+    private SecurableClassInfo _baseClass;
+    private List<SecurableClassInfo> _derivedClasses = new List<SecurableClassInfo> ();
 
     // construction and disposing
 
-    public SecurableTypeInfo ()
+    public SecurableClassInfo ()
     {
     }
 
@@ -44,5 +46,17 @@ namespace Rubicon.Security.Metadata
       get { return _properties; }
       set { _properties = value; }
     }
+
+    public SecurableClassInfo BaseClass
+    {
+      get { return _baseClass; }
+      set { _baseClass = value; }
+    }
+
+    public List<SecurableClassInfo> DerivedClasses
+    {
+      get { return _derivedClasses; }
+    }
+	
   }
 }

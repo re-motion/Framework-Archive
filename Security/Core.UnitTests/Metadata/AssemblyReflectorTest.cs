@@ -21,7 +21,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private ITypeReflector _typeReflector;
+    private IClassReflector _typeReflector;
     private AssemblyReflector _reflector;
     private MetadataCache _cache;
 
@@ -36,7 +36,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _typeReflector = new TypeReflector ();
+      _typeReflector = new ClassReflector ();
       _reflector = new AssemblyReflector (_typeReflector);
       _cache = new MetadataCache ();
     }
@@ -52,11 +52,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       _reflector.GetMetadata (typeof (File).Assembly, _cache);
 
-      SecurableTypeInfo paperFileTypeInfo = _cache.GetTypeInfo (typeof (PaperFile));
+      SecurableClassInfo paperFileTypeInfo = _cache.GetTypeInfo (typeof (PaperFile));
       Assert.IsNotNull (paperFileTypeInfo);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.PaperFile", paperFileTypeInfo.Name);
       
-      SecurableTypeInfo fileTypeInfo = _cache.GetTypeInfo (typeof (File));
+      SecurableClassInfo fileTypeInfo = _cache.GetTypeInfo (typeof (File));
       Assert.IsNotNull (fileTypeInfo);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", fileTypeInfo.Name);
     }
