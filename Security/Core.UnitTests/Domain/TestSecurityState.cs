@@ -4,7 +4,7 @@ using System.Text;
 
 using Rubicon.Security;
 
-namespace Rubicon.Security.UnitTests.Domain
+namespace Rubicon.Security.UnitTests.SampleDomain
 {
   [SecurityState]
   public enum TestSecurityState

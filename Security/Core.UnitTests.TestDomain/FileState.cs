@@ -1,7 +1,7 @@
 using System;
 using Rubicon.Security;
 
-namespace Rubicon.Security.UnitTests.Domain
+namespace Rubicon.Security.UnitTests.TestDomain
 {
   [SecurityState]
   public enum FileState

@@ -4,7 +4,8 @@ using System.Text;
 using NUnit.Framework;
 using Rubicon.Utilities;
 
-using Rubicon.Security.UnitTests.Domain;
+using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.TestDomain;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -24,7 +25,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-       "Enumerated Type 'Rubicon.Security.UnitTests.Domain.SimpleEnum' cannot be used as an abstract role. "
+       "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as an abstract role. "
         + "Valid abstract roles must have the Rubicon.Security.AbstractRoleAttribute applied.\r\nParameter name: abstractRoles")]
     public void CreateSecurityContextWithInvalidAbstractRole ()
     {
@@ -54,7 +55,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated Type 'Rubicon.Security.UnitTests.Domain.SimpleEnum' cannot be used as a security state. "
+       "Enumerated Type 'Rubicon.Security.UnitTests.SampleDomain.SimpleEnum' cannot be used as a security state. "
         + "Valid security states must have the Rubicon.Security.SecurityStateAttribute applied.\r\nParameter name: states")]
     public void CreateSecurityContextWithInvalidState ()
     {
@@ -76,7 +77,7 @@ namespace Rubicon.Security.UnitTests
     public void GetClassName ()
     {
       SecurityContext context = new SecurityContext (typeof (File), "owner", "group", "client", null, null);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.Domain.File, Rubicon.Security.UnitTests", context.Class);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain", context.Class);
     }
   }
 }

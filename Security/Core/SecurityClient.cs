@@ -26,7 +26,7 @@ namespace Rubicon.Security
     {
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("user", user);
-      ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
       AccessType[] actualAccessTypes = _securityService.GetAccess (context, user);
 
@@ -46,7 +46,7 @@ namespace Rubicon.Security
     {
       ArgumentUtility.CheckNotNull ("securableType", securableType);
       ArgumentUtility.CheckNotNull ("user", user);
-      ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
       ISecurityContextFactory contextFactory = securableType.GetSecurityContextFactory ();
       if (contextFactory == null)
@@ -58,7 +58,7 @@ namespace Rubicon.Security
     public bool HasAccess (SecurityContext context, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
       return HasAccess (context, GetCurrentUser (), requiredAccessTypes);
     }
@@ -66,7 +66,7 @@ namespace Rubicon.Security
     public bool HasAccess (ISecurableType securableType, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableType", securableType);
-      ArgumentUtility.CheckNotNullOrEmpty ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
       return HasAccess (securableType, GetCurrentUser (), requiredAccessTypes);
     }

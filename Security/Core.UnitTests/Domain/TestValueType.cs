@@ -4,7 +4,7 @@ using System.Text;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests.Domain
+namespace Rubicon.Security.UnitTests.SampleDomain
 {
 
   public struct TestValueType : ISecurableType

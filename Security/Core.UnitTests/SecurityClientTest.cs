@@ -6,7 +6,8 @@ using NUnit.Framework;
 using NMock2;
 
 using Rubicon.Security;
-using Rubicon.Security.UnitTests.Domain;
+using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.UnitTests.TestDomain;
 
 namespace Rubicon.Security.UnitTests
 {

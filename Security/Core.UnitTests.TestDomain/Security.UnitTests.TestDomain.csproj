@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</ProjectGuid>
+    <ProjectGuid>{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security</RootNamespace>
-    <AssemblyName>Rubicon.Security</AssemblyName>
+    <RootNamespace>Rubicon.Security.UnitTests.TestDomain</RootNamespace>
+    <AssemblyName>Rubicon.Security.UnitTests.TestDomain</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,41 +29,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractRoleAttribute.cs" />
-    <Compile Include="AccessType.cs" />
-    <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="EnumWrapper.cs" />
-    <Compile Include="Configuration\SecurityConfiguration.cs" />
-    <Compile Include="ISecurableType.cs" />
-    <Compile Include="ISecurityContextFactory.cs" />
-    <Compile Include="ISecurityService.cs" />
-    <Compile Include="IUserProvider.cs" />
-    <Compile Include="Metadata\AssemblyReflector.cs" />
-    <Compile Include="Metadata\EnumeratedTypeReflector.cs" />
-    <Compile Include="Metadata\IEnumeratedTypeReflector.cs" />
-    <Compile Include="Metadata\EnumValueInfo.cs" />
-    <Compile Include="Metadata\IStatePropertyReflector.cs" />
-    <Compile Include="Metadata\ITypeReflector.cs" />
-    <Compile Include="Metadata\MetadataCache.cs" />
-    <Compile Include="Metadata\SecurableTypeInfo.cs" />
-    <Compile Include="Metadata\StatePropertyInfo.cs" />
-    <Compile Include="Metadata\StatePropertyReflector.cs" />
-    <Compile Include="Metadata\TypeReflector.cs" />
-    <Compile Include="SecurityClient.cs" />
-    <Compile Include="SecurityContext.cs" />
-    <Compile Include="GeneralAccessType.cs" />
-    <Compile Include="SecurityStateAttribute.cs" />
+    <Compile Include="Confidentiality.cs" />
+    <Compile Include="File.cs" />
+    <Compile Include="FileState.cs" />
+    <Compile Include="PaperFile.cs" />
+    <Compile Include="SomeEnum.cs" />
+    <Compile Include="Role.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Security.UnitTests.SampleDomain
+namespace Rubicon.Security.UnitTests.TestDomain
 {
-  public enum SimpleEnum
+  public enum SomeEnum
   {
     First,
     Second,

@@ -44,11 +44,7 @@
   <ItemGroup>
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Domain\Confidentiality.cs" />
     <Compile Include="Domain\TestValueType.cs" />
-    <Compile Include="Domain\FileState.cs" />
-    <Compile Include="Domain\File.cs" />
-    <Compile Include="Domain\PaperFile.cs" />
     <Compile Include="Domain\SimpleEnum.cs" />
     <Compile Include="Domain\SimpleType.cs" />
     <Compile Include="Domain\TestAbstractRole.cs" />
@@ -57,6 +53,9 @@
     <Compile Include="Domain\TestFlags.cs" />
     <Compile Include="Domain\TestSecurityState.cs" />
     <Compile Include="EnumWrapperTest.cs" />
+    <Compile Include="Metadata\AssemblyReflectorTest.cs" />
+    <Compile Include="Metadata\EnumeratedTypeReflectorTest.cs" />
+    <Compile Include="Metadata\MetadataCacheTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
     <Compile Include="Metadata\TypeReflectorTest.cs" />
     <Compile Include="SecurityClientTest.cs" />
@@ -72,6 +71,10 @@
     <ProjectReference Include="..\..\Development\Core\Development.Core.csproj">
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Name>Development.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core.UnitTests.TestDomain\Security.UnitTests.TestDomain.csproj">
+      <Project>{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}</Project>
+      <Name>Security.UnitTests.TestDomain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Security.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>

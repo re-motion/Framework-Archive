@@ -4,12 +4,11 @@ using System.Text;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests.SampleDomain
+namespace Rubicon.Security.UnitTests.TestDomain
 {
-
-  public class SimpleType
+  public class Role
   {
-    public SimpleType ()
+    public Role ()
     {
     }
   }

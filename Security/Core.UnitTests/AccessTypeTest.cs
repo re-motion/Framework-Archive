@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 using Rubicon.Development.UnitTesting;
 using Rubicon.Security;
-using Rubicon.Security.UnitTests.Domain;
+using Rubicon.Security.UnitTests.SampleDomain;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -36,7 +36,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "Enumerated type 'Rubicon.Security.UnitTests.Domain.TestAccessTypeWithoutAccessTypeAttribute' cannot be used as an access type. "
+        "Enumerated type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessTypeWithoutAccessTypeAttribute' cannot be used as an access type. "
         + "Valid access types must have the Rubicon.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void GetAccessTypeFromEnumWithoutAccessTypeAttribute ()
     {
