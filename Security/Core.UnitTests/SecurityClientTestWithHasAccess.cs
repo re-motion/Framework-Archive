@@ -6,7 +6,7 @@ using NUnit.Framework;
 using NMock2;
 
 using Rubicon.Security;
-using Rubicon.Security.UnitTests.Domain.PermissionReflection;
+using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 
 namespace Rubicon.Security.UnitTests
 {

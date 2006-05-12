@@ -44,12 +44,6 @@
   <ItemGroup>
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Domain\PermissionReflection\DerivedSecurableClass.cs" />
-    <Compile Include="Domain\PermissionReflection\DerivedSecurableClassWithoutConstructorOverloads.cs" />
-    <Compile Include="Domain\PermissionReflection\SecurableClass.cs" />
-    <Compile Include="Domain\PermissionReflection\SecurableClassWithoutConstructorOverloads.cs" />
-    <Compile Include="Domain\PermissionReflection\SecurableClassWithPrivateConstructor.cs" />
-    <Compile Include="Domain\PermissionReflection\SecurableClassWithPrivateOverloadedConstructor.cs" />
     <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="Metadata\AssemblyReflectorTest.cs" />
     <Compile Include="Metadata\ClassReflectorTest.cs" />
@@ -57,6 +51,12 @@
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
     <Compile Include="Metadata\MetadataCacheTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
+    <Compile Include="SampleDomain\PermissionReflection\DerivedSecurableClass.cs" />
+    <Compile Include="SampleDomain\PermissionReflection\DerivedSecurableClassWithoutConstructorOverloads.cs" />
+    <Compile Include="SampleDomain\PermissionReflection\SecurableClass.cs" />
+    <Compile Include="SampleDomain\PermissionReflection\SecurableClassWithoutConstructorOverloads.cs" />
+    <Compile Include="SampleDomain\PermissionReflection\SecurableClassWithPrivateConstructor.cs" />
+    <Compile Include="SampleDomain\PermissionReflection\SecurableClassWithPrivateOverloadedConstructor.cs" />
     <Compile Include="SampleDomain\SimpleEnum.cs" />
     <Compile Include="SampleDomain\SimpleType.cs" />
     <Compile Include="SampleDomain\TestAbstractRole.cs" />

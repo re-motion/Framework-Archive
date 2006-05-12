@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Security.UnitTests.Domain.PermissionReflection
+namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 {
   public class DerivedSecurableClass : SecurableClass
   {
@@ -12,12 +12,12 @@ namespace Rubicon.Security.UnitTests.Domain.PermissionReflection
     }
 
     public DerivedSecurableClass (ISecurityContextFactory contextFactory)
-        : base (contextFactory)
+      : base (contextFactory)
     {
     }
 
     [RequiredMethodPermission (GeneralAccessType.Read)]
-    public new void Send()
+    public new void Send ()
     {
     }
 

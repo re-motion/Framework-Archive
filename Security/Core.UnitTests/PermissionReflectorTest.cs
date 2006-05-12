@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
-using Rubicon.Security.UnitTests.Domain.PermissionReflection;
+using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -109,7 +109,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test, ExpectedException (typeof (ArgumentException),
-        "The method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.Domain.PermissionReflection.DerivedSecurableClass'."
+        "The method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.DerivedSecurableClass'."
         + "\r\nParameter name: methodName")]
     public void GetExceptionForNotExistingMethod ()
     {
@@ -117,7 +117,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test, ExpectedException (typeof (ArgumentException),
-        "The method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.Domain.PermissionReflection.DerivedSecurableClass'."
+        "The method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.DerivedSecurableClass'."
         + "\r\nParameter name: methodName")]
     public void GetExceptionForNotExistingOverloadedMethod ()
     {
@@ -144,7 +144,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test, ExpectedException (typeof (ArgumentException),
-        "The static method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.Domain.PermissionReflection.SecurableClass'."
+        "The static method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableClass'."
         + "\r\nParameter name: methodName")]
     public void GetExceptionForNotExistingStaticMethod ()
     {
@@ -180,7 +180,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test, ExpectedException (typeof (ArgumentException),
-        "The static method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.Domain.PermissionReflection.SecurableClass'."
+        "The static method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableClass'."
         + "\r\nParameter name: methodName")]
     public void GetExceptionForNotExistingOverloadedStaticMethod ()
     {
@@ -231,7 +231,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException), 
-        "Type 'Rubicon.Security.UnitTests.Domain.PermissionReflection.SecurableClassWithPrivateConstructor' does not have a public constructor."
+        "Type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableClassWithPrivateConstructor' does not have a public constructor."
         + "\r\nParameter name: type")]
     public void GetExceptionForPrivateConstructor ()
     {
@@ -240,7 +240,7 @@ namespace Rubicon.Security.UnitTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The specified constructor for type 'Rubicon.Security.UnitTests.Domain.PermissionReflection.SecurableClassWithPrivateOverloadedConstructor' "
+        "The specified constructor for type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableClassWithPrivateOverloadedConstructor' "
         + "is not public.\r\nParameter name: type")]
     public void GetExceptionForPrivateOverloadedConstructor ()
     {
