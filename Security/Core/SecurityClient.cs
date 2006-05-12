@@ -142,13 +142,16 @@ namespace Rubicon.Security
       }
 
       if (!HasAccess (new SecurityContext (type), user, requiredAccessTypes))
-        throw new AccessViolationException ("Access to constructor has been denied.");
+        throw new AccessViolationException (string.Format ("Access to constructor for type '{0}' has been denied.", type.FullName));
     }
 
     private void CheckRequiredMethodAccess (ISecurableType securableType, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
       if (!HasAccess (securableType, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
-        throw new AccessViolationException (string.Format ("Access to method '{0}' has been denied.", methodName));
+      {
+        throw new AccessViolationException (string.Format (
+            "Access to method '{0}' on type '{1}' has been denied.", methodName, securableType.GetType ().FullName));
+      }
     }
 
     private AccessType[] ConvertRequiredAccessTypeEnums (Enum[] requiredAccessTypeEnums)

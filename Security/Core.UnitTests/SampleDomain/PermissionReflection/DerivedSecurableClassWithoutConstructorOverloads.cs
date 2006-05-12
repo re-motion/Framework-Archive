@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Rubicon.Security.UnitTests.Domain.PermissionReflection
+namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 {
   public class DerivedSecurableClassWithoutConstructorOverloads : SecurableClassWithoutConstructorOverloads
   {
