@@ -5,9 +5,9 @@ using System.Text;
 namespace Rubicon.Data
 {
   /// <summary>
-  ///   Supplies an identifier that should remain constant even accross refactorings. Can be applied to reference types and properties.
+  ///   Supplies an identifier that should remain constant even accross refactorings. Can be applied to reference types, properties and fields.
   /// </summary>
-  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property)]
+  [AttributeUsage (AttributeTargets.Class | AttributeTargets.Property |AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
   public class PermanentGuidAttribute : Attribute
   {
     private readonly Guid _value;
