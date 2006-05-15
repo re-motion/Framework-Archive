@@ -7,7 +7,7 @@ namespace Rubicon.Security.Metadata
 
   public interface IEnumerationReflector
   {
-    List<EnumValueInfo> GetValues (Type type);
+    Dictionary<Enum, EnumValueInfo> GetValues (Type type, MetadataCache cache);
   }
 
 }

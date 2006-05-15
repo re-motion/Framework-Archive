@@ -17,7 +17,7 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private IEnumerationReflector _enumeratedTypeReflector;
+    private IEnumerationReflector _enumerationReflector;
 
     // construction and disposing
 
@@ -25,17 +25,17 @@ namespace Rubicon.Security.Metadata
     {
     }
 
-    public StatePropertyReflector (IEnumerationReflector enumeratedTypeReflector)
+    public StatePropertyReflector (IEnumerationReflector enumerationReflector)
     {
-      ArgumentUtility.CheckNotNull ("enumeratedTypeReflector", enumeratedTypeReflector);
-      _enumeratedTypeReflector = enumeratedTypeReflector;
+      ArgumentUtility.CheckNotNull ("enumerationReflector", enumerationReflector);
+      _enumerationReflector = enumerationReflector;
     }
 
     // methods and properties
 
-    public IEnumerationReflector EnumeratedTypeReflector
+    public IEnumerationReflector EnumerationTypeReflector
     {
-      get { return _enumeratedTypeReflector; }
+      get { return _enumerationReflector; }
     }
 
     public StatePropertyInfo GetMetadata (PropertyInfo property, MetadataCache cache)
@@ -62,10 +62,10 @@ namespace Rubicon.Security.Metadata
       {
         info = new StatePropertyInfo ();
         info.Name = property.Name;
-        PermanentGuidAttribute guidAttribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (property, typeof (PermanentGuidAttribute), true);
-        if (guidAttribute != null)
-          info.ID = guidAttribute.Value;
-        info.Values = _enumeratedTypeReflector.GetValues (property.PropertyType);
+        PermanentGuidAttribute attribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (property, typeof (PermanentGuidAttribute), true);
+        if (attribute != null)
+          info.ID = attribute.Value;
+        info.Values = new List<EnumValueInfo> (_enumerationReflector.GetValues (property.PropertyType, cache).Values);
 
         cache.AddStatePropertyInfo (property, info);
       }

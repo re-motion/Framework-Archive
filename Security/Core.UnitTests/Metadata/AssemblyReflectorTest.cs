@@ -44,7 +44,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (_typeReflector, _reflector.TypeReflector);
+      Assert.AreSame (_typeReflector, _reflector.ClassReflector);
     }
 
     [Test]
@@ -59,6 +59,10 @@ namespace Rubicon.Security.UnitTests.Metadata
       SecurableClassInfo fileTypeInfo = _cache.GetTypeInfo (typeof (File));
       Assert.IsNotNull (fileTypeInfo);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", fileTypeInfo.Name);
+
+      EnumValueInfo generalAccessTypeCreateEnumValueInfo = _cache.GetAccessType (GeneralAccessType.Create);
+      Assert.IsNotNull (generalAccessTypeCreateEnumValueInfo);
+      Assert.AreEqual ("Create", generalAccessTypeCreateEnumValueInfo.Name);
     }
   }
 }

@@ -17,7 +17,7 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private IClassReflector _typeReflector;
+    private IClassReflector _classReflector;
     
     // construction and disposing
 
@@ -25,17 +25,17 @@ namespace Rubicon.Security.Metadata
     {
     }
 
-    public AssemblyReflector (IClassReflector typeReflector)
+    public AssemblyReflector (IClassReflector classReflector)
     {
-      ArgumentUtility.CheckNotNull ("typeReflector", typeReflector);
-      _typeReflector = typeReflector;
+      ArgumentUtility.CheckNotNull ("classReflector", classReflector);
+      _classReflector = classReflector;
     }
 
     // methods and properties
 
-    public IClassReflector TypeReflector
+    public IClassReflector ClassReflector
     {
-      get { return _typeReflector; }
+      get { return _classReflector; }
     }
 
     public void GetMetadata (Assembly assembly, MetadataCache cache)
@@ -46,7 +46,7 @@ namespace Rubicon.Security.Metadata
       foreach (Type type in assembly.GetTypes ())
       {
         if (typeof (ISecurableType).IsAssignableFrom (type))
-          _typeReflector.GetMetadata (type, cache);
+          _classReflector.GetMetadata (type, cache);
       }
     }
   }

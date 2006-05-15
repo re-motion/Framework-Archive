@@ -134,7 +134,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    public void GetMetadataForCache ()
+    public void GetMetadataFromCache ()
     {
       ClassReflector reflector = new ClassReflector ();
       SecurableClassInfo paperFileInfo = reflector.GetMetadata (typeof (PaperFile), _cache);

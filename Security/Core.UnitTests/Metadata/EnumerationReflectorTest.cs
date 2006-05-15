@@ -23,6 +23,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     // member fields
 
     private EnumerationReflector _reflector;
+    private MetadataCache _cache;
 
     // construction and disposing
 
@@ -36,29 +37,40 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void SetUp ()
     {
       _reflector = new EnumerationReflector ();
+      _cache = new MetadataCache ();
     }
 
     [Test]
     public void GetValues ()
     {
-      List<EnumValueInfo> values = _reflector.GetValues (typeof (Confidentiality));
+      Dictionary<Enum, EnumValueInfo> values = _reflector.GetValues (typeof (DomainAccessType), _cache);
 
       Assert.IsNotNull (values);
-      Assert.AreEqual (3, values.Count);
+      Assert.AreEqual (2, values.Count);
 
-      Assert.AreEqual (0, values[0].Value);
-      Assert.AreEqual (1, values[1].Value);
-      Assert.AreEqual (2, values[2].Value);
-      Assert.AreEqual ("Normal", values[0].Name);
-      Assert.AreEqual ("Confidential", values[1].Name);
-      Assert.AreEqual ("Private", values[2].Name);
+      Assert.AreEqual (0, values[DomainAccessType.Journalize].Value);
+      Assert.AreEqual ("Journalize", values[DomainAccessType.Journalize].Name);
+      Assert.AreEqual (new Guid ("00000002-0001-0000-0000-000000000000"), values[DomainAccessType.Journalize].ID);
+      
+      Assert.AreEqual (1, values[DomainAccessType.Archive].Value);
+      Assert.AreEqual ("Archive", values[DomainAccessType.Archive].Name);
+      Assert.AreEqual (new Guid ("00000002-0002-0000-0000-000000000000"), values[DomainAccessType.Archive].ID);
+    }
+
+    [Test]
+    public void GetValuesFromCache ()
+    {
+      Dictionary<Enum, EnumValueInfo> values = _reflector.GetValues (typeof (DomainAccessType), _cache);
+
+      Assert.AreSame (values[DomainAccessType.Journalize], _cache.GetEnumValueInfo (DomainAccessType.Journalize));
+      Assert.AreSame (values[DomainAccessType.Archive], _cache.GetEnumValueInfo (DomainAccessType.Archive));
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), "The type 'System.String' is not an enumerated type.\r\nParameter name: type")]
     public void GetMetadataWithInvalidType ()
     {
-      new EnumerationReflector ().GetValues (typeof (string));
+      new EnumerationReflector ().GetValues (typeof (string), _cache);
     }
   }
 }

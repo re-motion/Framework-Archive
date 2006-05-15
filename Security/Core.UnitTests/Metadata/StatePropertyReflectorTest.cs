@@ -28,7 +28,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     private MetadataCache _cache;
     private EnumValueInfo _valueNormal;
     private EnumValueInfo _valuePrivate;
-    private EnumValueInfo _valueSecret;
+    private EnumValueInfo _valueConfidential;
 
     // construction and disposing
 
@@ -48,22 +48,27 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       _valueNormal = new EnumValueInfo (0, "Normal");
       _valuePrivate = new EnumValueInfo (1, "Private");
-      _valueSecret = new EnumValueInfo (2, "Secret");
+      _valueConfidential = new EnumValueInfo (2, "Confidential");
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (_enumeratedTypeReflectorMock, _reflector.EnumeratedTypeReflector);
+      Assert.AreSame (_enumeratedTypeReflectorMock, _reflector.EnumerationTypeReflector);
     }
 
     [Test]
     public void GetMetadata ()
     {
+      Dictionary<Enum, EnumValueInfo> values = new Dictionary<Enum, EnumValueInfo> ();
+      values.Add (Confidentiality.Normal, _valueNormal);
+      values.Add (Confidentiality.Confidential, _valueConfidential);
+      values.Add (Confidentiality.Private, _valuePrivate);
+
       Expect.Once.On (_enumeratedTypeReflectorMock)
           .Method ("GetValues")
-          .With (typeof (Confidentiality))
-          .Will (Return.Value (new List<EnumValueInfo> (new EnumValueInfo[] { _valueNormal, _valuePrivate, _valueSecret })));
+          .With (typeof (Confidentiality), _cache)
+          .Will (Return.Value (values));
 
       StatePropertyInfo info = _reflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
 
@@ -77,11 +82,11 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.AreEqual (3, info.Values.Count);
       Assert.Contains (_valueNormal, info.Values);
       Assert.Contains (_valuePrivate, info.Values);
-      Assert.Contains (_valueSecret, info.Values);
+      Assert.Contains (_valueConfidential, info.Values);
     }
 
     [Test]
-    public void GetMetadataForCache ()
+    public void GetMetadataFromCache ()
     {
       StatePropertyReflector reflector = new StatePropertyReflector ();
       reflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);

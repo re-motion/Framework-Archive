@@ -19,6 +19,8 @@ namespace Rubicon.Security.Metadata
 
     private Dictionary<Type, SecurableClassInfo> _types = new Dictionary<Type, SecurableClassInfo> ();
     private Dictionary<PropertyInfo, StatePropertyInfo> _stateProperties = new Dictionary<PropertyInfo, StatePropertyInfo> ();
+    private Dictionary<Enum, EnumValueInfo> _enumValues = new Dictionary<Enum, EnumValueInfo> ();
+    private Dictionary<Enum, EnumValueInfo> _accessTypes = new Dictionary<Enum, EnumValueInfo> ();
 
     // construction and disposing
 
@@ -89,6 +91,56 @@ namespace Rubicon.Security.Metadata
         return property.DeclaringType.GetProperty (property.Name);
     }
 
+    public EnumValueInfo GetEnumValueInfo (Enum key)
+    {
+      ArgumentUtility.CheckNotNull ("key", key);
+
+      if (_enumValues.ContainsKey (key))
+        return _enumValues[key];
+      else
+        return null;
+    }
+
+    public void AddEnumValueInfo (Enum key, EnumValueInfo value)
+    {
+      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull ("value", value);
+
+      _enumValues.Add (key, value);
+    }
+
+    public bool ContainsEnumValueInfo (Enum key)
+    {
+      ArgumentUtility.CheckNotNull ("key", key);
+
+      return _enumValues.ContainsKey (key);
+    }
+
+    public EnumValueInfo GetAccessType (Enum key)
+    {
+      ArgumentUtility.CheckNotNull ("key", key);
+
+      if (_accessTypes.ContainsKey (key))
+        return _accessTypes[key];
+      else
+        return null;
+    }
+
+    public void AddAccessType (Enum key, EnumValueInfo value)
+    {
+      ArgumentUtility.CheckNotNull ("key", key);
+      ArgumentUtility.CheckNotNull ("value", value);
+
+      _accessTypes.Add (key, value);
+    }
+
+    public bool ContainsAccessType (Enum key)
+    {
+      ArgumentUtility.CheckNotNull ("key", key);
+
+      return _accessTypes.ContainsKey (key);
+    }
+
     public List<SecurableClassInfo> GetTypeInfos ()
     { 
       return new List<SecurableClassInfo> (_types.Values);
@@ -97,6 +149,11 @@ namespace Rubicon.Security.Metadata
     public List<StatePropertyInfo> GetStatePropertyInfos ()
     {
       return new List<StatePropertyInfo> (_stateProperties.Values);
+    }
+
+    public List<EnumValueInfo> GetAccessTypes ()
+    {
+      return new List<EnumValueInfo> (_accessTypes.Values);
     }
   }
 }

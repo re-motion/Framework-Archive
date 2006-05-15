@@ -41,7 +41,6 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    [Ignore ("Implement GetAccessTypes")]
     public void GetAccessTypes ()
     {
       List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (PaperFile), _cache);
@@ -53,6 +52,24 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.AreEqual ("Edit", values[2].Name);
       Assert.AreEqual ("Delete", values[3].Name);
       Assert.AreEqual ("Find", values[4].Name);
+    }
+
+    [Test]
+    public void GetAccessTypesFromCache ()
+    {
+      List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (PaperFile), _cache);
+
+      Assert.AreSame (values[0], _cache.GetAccessType (GeneralAccessType.Create));
+      Assert.AreSame (values[1], _cache.GetAccessType (GeneralAccessType.Read));
+      Assert.AreSame (values[2], _cache.GetAccessType (GeneralAccessType.Edit));
+      Assert.AreSame (values[3], _cache.GetAccessType (GeneralAccessType.Delete));
+      Assert.AreSame (values[4], _cache.GetAccessType (GeneralAccessType.Find));
+    }
+
+    [Test]
+    [Ignore ("Implement type specific access types")]
+    public void GetAccessTypesForType ()
+    {
     }
   }
 }

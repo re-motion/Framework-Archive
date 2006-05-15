@@ -88,6 +88,44 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
+    public void CacheEnumValueInfos ()
+    {
+      EnumValueInfo fileStateNewEnumValueInfo = new EnumValueInfo (0, "New");
+      EnumValueInfo fileStateNormalEnumValueInfo = new EnumValueInfo (1, "Normal");
+
+      Assert.IsFalse (_cache.ContainsEnumValueInfo (FileState.New));
+      Assert.IsNull (_cache.GetEnumValueInfo (FileState.New));
+
+      _cache.AddEnumValueInfo (FileState.New, fileStateNewEnumValueInfo);
+      Assert.AreEqual (fileStateNewEnumValueInfo, _cache.GetEnumValueInfo (FileState.New));
+      Assert.IsFalse (_cache.ContainsEnumValueInfo (FileState.Normal));
+      Assert.IsNull (_cache.GetEnumValueInfo (FileState.Normal));
+
+      _cache.AddEnumValueInfo (FileState.Normal, fileStateNormalEnumValueInfo);
+      Assert.AreEqual (fileStateNewEnumValueInfo, _cache.GetEnumValueInfo (FileState.New));
+      Assert.AreEqual (fileStateNormalEnumValueInfo, _cache.GetEnumValueInfo (FileState.Normal));
+    }
+
+    [Test]
+    public void CacheAccessTypes ()
+    {
+      EnumValueInfo domainAccessTypeJournalize = new EnumValueInfo (0, "Journalize");
+      EnumValueInfo domainAccessTypeArchive = new EnumValueInfo (1, "Archive");
+
+      Assert.IsFalse (_cache.ContainsAccessType (DomainAccessType.Journalize));
+      Assert.IsNull (_cache.GetAccessType (DomainAccessType.Journalize));
+
+      _cache.AddAccessType (DomainAccessType.Journalize, domainAccessTypeJournalize);
+      Assert.AreEqual (domainAccessTypeJournalize, _cache.GetAccessType (DomainAccessType.Journalize));
+      Assert.IsFalse (_cache.ContainsAccessType (DomainAccessType.Archive));
+      Assert.IsNull (_cache.GetAccessType (DomainAccessType.Archive));
+
+      _cache.AddAccessType (DomainAccessType.Archive, domainAccessTypeArchive);
+      Assert.AreEqual (domainAccessTypeJournalize, _cache.GetAccessType (DomainAccessType.Journalize));
+      Assert.AreEqual (domainAccessTypeArchive, _cache.GetAccessType (DomainAccessType.Archive));
+    }
+
+    [Test]
     public void GetCachedTypeInfos ()
     {
       SecurableClassInfo fileTypeInfo = new SecurableClassInfo ();
@@ -125,6 +163,23 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.AreEqual (2, infos.Count);
       Assert.Contains (confidentialityPropertyInfo, infos);
       Assert.Contains (statePropertyInfo, infos);
+    }
+
+    [Test]
+    public void GetCachedAccessTypes ()
+    {
+      EnumValueInfo domainAccessTypeJournalize = new EnumValueInfo (0, "Journalize");
+      EnumValueInfo domainAccessTypeArchive = new EnumValueInfo (1, "Archive");
+
+      _cache.AddAccessType (DomainAccessType.Journalize, domainAccessTypeJournalize);
+      _cache.AddAccessType (DomainAccessType.Archive, domainAccessTypeArchive);
+
+      List<EnumValueInfo> infos = _cache.GetAccessTypes ();
+
+      Assert.IsNotNull (infos);
+      Assert.AreEqual (2, infos.Count);
+      Assert.Contains (domainAccessTypeJournalize, infos);
+      Assert.Contains (domainAccessTypeArchive, infos);
     }
   }
 }
