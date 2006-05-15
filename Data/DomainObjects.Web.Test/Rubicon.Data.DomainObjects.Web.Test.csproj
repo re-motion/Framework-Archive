@@ -220,13 +220,6 @@
       <DependentUpon>WxeTestPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Content Include="bin\mapping.xml" />
-    <Content Include="bin\mapping.xsd" />
-    <Content Include="bin\queries.xml" />
-    <Content Include="bin\queries.xsd" />
-    <Content Include="bin\storageProviders.xml" />
-    <Content Include="bin\storageProviders.xsd" />
-    <Content Include="bin\types.xsd" />
     <Content Include="ControlWithAllDataTypes.ascx">
       <SubType>UserControl</SubType>
     </Content>
@@ -243,12 +236,15 @@
     <Content Include="Global.asax">
       <SubType>Component</SubType>
     </Content>
+    <Content Include="mapping.xml" />
     <Content Include="NewObject.aspx">
       <SubType>Form</SubType>
     </Content>
+    <Content Include="queries.xml" />
     <Content Include="SearchObject.aspx">
       <SubType>Form</SubType>
     </Content>
+    <Content Include="storageProviders.xml" />
     <Content Include="UndefinedEnumTest.aspx">
       <SubType>Form</SubType>
     </Content>
@@ -256,6 +252,18 @@
     <Content Include="WxeTestPage.aspx">
       <SubType>Form</SubType>
     </Content>
+    <None Include="mapping.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="queries.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="storageProviders.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="types.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
@@ -265,8 +273,8 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)*.xsd" "$(TargetDir)"
+copy "$(ProjectDir)*.xml" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

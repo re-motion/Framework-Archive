@@ -194,10 +194,11 @@ public class ObjectIDTest
   [Test]
   public void EqualityOperatorForSameObject ()
   {
-    ObjectID id = new ObjectID ("Official", 42);
+    ObjectID id1 = new ObjectID ("Official", 42);
+    ObjectID id2 = id1;
 
-    Assert.IsTrue (id == id);
-    Assert.IsFalse (id != id);
+    Assert.IsTrue (id1 == id2);
+    Assert.IsFalse (id1 != id2);
   }
 
   [Test]
