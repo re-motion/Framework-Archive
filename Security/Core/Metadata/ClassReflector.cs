@@ -62,7 +62,7 @@ namespace Rubicon.Security.Metadata
         info.Name = type.FullName;
         PermanentGuidAttribute guidAttribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (type, typeof (PermanentGuidAttribute), true);
         if (guidAttribute != null)
-          info.ID = guidAttribute.Value;
+          info.ID = guidAttribute.Value.ToString ();
         info.Properties.AddRange (GetProperties (type, cache));
         info.AccessTypes.AddRange (_accessTypeReflector.GetAccessTypes (type, cache));
 

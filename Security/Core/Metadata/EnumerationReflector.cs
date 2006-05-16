@@ -57,7 +57,7 @@ namespace Rubicon.Security.Metadata
         FieldInfo fieldInfo = value.GetType ().GetField (name, BindingFlags.Static | BindingFlags.Public);
         PermanentGuidAttribute attribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (fieldInfo, typeof (PermanentGuidAttribute), false);
         if (attribute != null)
-          info.ID = attribute.Value;
+          info.ID = attribute.Value.ToString ();
 
         cache.AddEnumValueInfo (value, info);
       }

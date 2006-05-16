@@ -64,7 +64,7 @@ namespace Rubicon.Security.Metadata
         info.Name = property.Name;
         PermanentGuidAttribute attribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (property, typeof (PermanentGuidAttribute), true);
         if (attribute != null)
-          info.ID = attribute.Value;
+          info.ID = attribute.Value.ToString ();
         info.Values = new List<EnumValueInfo> (_enumerationReflector.GetValues (property.PropertyType, cache).Values);
 
         cache.AddStatePropertyInfo (property, info);

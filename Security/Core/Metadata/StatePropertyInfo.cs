@@ -16,7 +16,7 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private Guid _id;	
+    private string _id;	
     private string _name;
     private List<EnumValueInfo> _values;
 	
@@ -28,7 +28,7 @@ namespace Rubicon.Security.Metadata
 
     // methods and properties
 
-    public Guid ID
+    public string ID
     {
       get { return _id; }
       set { _id = value; }

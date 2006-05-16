@@ -50,11 +50,11 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       Assert.AreEqual (0, values[DomainAccessType.Journalize].Value);
       Assert.AreEqual ("Journalize", values[DomainAccessType.Journalize].Name);
-      Assert.AreEqual (new Guid ("00000002-0001-0000-0000-000000000000"), values[DomainAccessType.Journalize].ID);
+      Assert.AreEqual ("00000002-0001-0000-0000-000000000000", values[DomainAccessType.Journalize].ID);
       
       Assert.AreEqual (1, values[DomainAccessType.Archive].Value);
       Assert.AreEqual ("Archive", values[DomainAccessType.Archive].Name);
-      Assert.AreEqual (new Guid ("00000002-0002-0000-0000-000000000000"), values[DomainAccessType.Archive].ID);
+      Assert.AreEqual ("00000002-0002-0000-0000-000000000000", values[DomainAccessType.Archive].ID);
     }
 
     [Test]
@@ -66,7 +66,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       Assert.AreEqual (0, value.Value);
       Assert.AreEqual ("Journalize", value.Name);
-      Assert.AreEqual (new Guid ("00000002-0001-0000-0000-000000000000"), value.ID);
+      Assert.AreEqual ("00000002-0001-0000-0000-000000000000", value.ID);
     }
 
     [Test]

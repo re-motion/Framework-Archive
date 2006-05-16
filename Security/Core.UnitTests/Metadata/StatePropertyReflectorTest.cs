@@ -76,7 +76,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       Assert.IsNotNull (info);
       Assert.AreEqual ("Confidentiality", info.Name);
-      Assert.AreEqual (new Guid ("00000000-0000-0000-0001-000000000001"), info.ID);
+      Assert.AreEqual ("00000000-0000-0000-0001-000000000001", info.ID);
       
       Assert.IsNotNull (info.Values);
       Assert.AreEqual (3, info.Values.Count);

@@ -53,11 +53,11 @@ namespace Rubicon.Security.UnitTests.Metadata
       _cache = new MetadataCache ();
 
       _confidentialityProperty = new StatePropertyInfo ();
-      _confidentialityProperty.ID = new Guid ();
+      _confidentialityProperty.ID = Guid.NewGuid ().ToString ();
       _confidentialityProperty.Name = "Confidentiality";
 
       _stateProperty = new StatePropertyInfo ();
-      _stateProperty.ID = new Guid ();
+      _stateProperty.ID = Guid.NewGuid().ToString();
       _stateProperty.Name = "State";
 
       _generalAccessTypes = new List<EnumValueInfo> ();
@@ -116,7 +116,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       Assert.IsNotNull (info);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.PaperFile", info.Name);
-      Assert.AreEqual (new Guid ("00000000-0000-0000-0002-000000000000"), info.ID);
+      Assert.AreEqual ("00000000-0000-0000-0002-000000000000", info.ID);
       
       Assert.AreEqual (0, info.DerivedClasses.Count);
       Assert.IsNotNull (info.BaseClass);
