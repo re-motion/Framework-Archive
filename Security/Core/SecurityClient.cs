@@ -131,6 +131,32 @@ namespace Rubicon.Security
       CheckRequiredConstructorAccess (type, requiredAccessTypeEnums, user);
     }
 
+    public void CheckStaticMethodAccess (Type type, string methodName)
+    {
+      CheckStaticMethodAccess (type, methodName, GetCurrentUser ());
+    }
+
+    public void CheckStaticMethodAccess (Type type, string methodName, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredStaticMethodPermissions (type, methodName);
+      CheckRequiredStaticMethodAccess (type, methodName, requiredAccessTypeEnums, user);
+    }
+
+    public void CheckStaticMethodAccess (Type type, string methodName, Type[] parameterTypes)
+    {
+      CheckStaticMethodAccess (type, methodName, parameterTypes, GetCurrentUser ());
+    }
+
+    public void CheckStaticMethodAccess (Type type, string methodName, Type[] parameterTypes, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+
+      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredStaticMethodPermissions (type, methodName, parameterTypes);
+      CheckRequiredStaticMethodAccess (type, methodName, requiredAccessTypeEnums, user);
+    }
+
     private void CheckRequiredConstructorAccess (Type type, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
       AccessType[] requiredAccessTypes = ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums);
@@ -147,11 +173,23 @@ namespace Rubicon.Security
 
     private void CheckRequiredMethodAccess (ISecurableType securableType, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
+      if (requiredAccessTypeEnums.Length == 0)
+        throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");
+
       if (!HasAccess (securableType, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
       {
         throw new AccessViolationException (string.Format (
             "Access to method '{0}' on type '{1}' has been denied.", methodName, securableType.GetType ().FullName));
       }
+    }
+
+    private void CheckRequiredStaticMethodAccess (Type type, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    {
+      if (requiredAccessTypeEnums.Length == 0)
+        throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");
+
+      if (!HasAccess (new SecurityContext (type), user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
+        throw new AccessViolationException (string.Format ("Access to static method '{0}' on type '{1}' has been denied.", methodName, type.FullName));
     }
 
     private AccessType[] ConvertRequiredAccessTypeEnums (Enum[] requiredAccessTypeEnums)
