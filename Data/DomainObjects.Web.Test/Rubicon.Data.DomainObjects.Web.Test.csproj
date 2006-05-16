@@ -267,6 +267,14 @@
     <None Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Globalization\ClassForRelationTest.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\ClassWithAllDataTypes.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Res\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

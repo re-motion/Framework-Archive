@@ -66,7 +66,7 @@
       </TABLE>
       <asp:button id="SearchButton" runat="server" Text="Suchen"></asp:button><obw:boclist id="ResultList" runat="server" DataSourceControl="FoundObjects">
 <FixedColumns>
-<obw:BocEditDetailsColumnDefinition SaveText="Speichern" CancelText="Abbrechen" EditText="Bearbeiten" ColumnTitle="Aktion"></obw:BocEditDetailsColumnDefinition>
+<obw:BocRowEditModeColumnDefinition SaveText="Speichern" CancelText="Abbrechen" EditText="Bearbeiten" ColumnTitle="Aktion"></obw:BocRowEditModeColumnDefinition>
 <obw:BocSimpleColumnDefinition PropertyPathIdentifier="StringProperty">
 <PersistedCommand>
 <obw:BocListItemCommand Type="None"></obw:BocListItemCommand>
