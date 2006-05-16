@@ -142,12 +142,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void GetAccessTypesFromCache ()
     {
       List<EnumValueInfo> expectedAccessTypes = _reflector.GetAccessTypes (typeof (PaperFile), _cache);
+      List<EnumValueInfo> actualAccessTypes = _cache.GetAccessTypes ();
 
-      Assert.AreSame (expectedAccessTypes[0], _cache.GetAccessType (GeneralAccessType.Create));
-      Assert.AreSame (expectedAccessTypes[1], _cache.GetAccessType (GeneralAccessType.Read));
-      Assert.AreSame (expectedAccessTypes[2], _cache.GetAccessType (GeneralAccessType.Edit));
-      Assert.AreSame (expectedAccessTypes[3], _cache.GetAccessType (GeneralAccessType.Delete));
-      Assert.AreSame (expectedAccessTypes[4], _cache.GetAccessType (GeneralAccessType.Find));
+      Assert.AreEqual (6, expectedAccessTypes.Count);
+      foreach (EnumValueInfo expected in expectedAccessTypes)
+        Assert.Contains (expected, actualAccessTypes);
     }
   }
 }

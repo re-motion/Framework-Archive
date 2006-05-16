@@ -93,11 +93,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       AbstractRoleReflector reflector = new AbstractRoleReflector ();
       List<EnumValueInfo> expectedAbstractRoles = reflector.GetAbstractRoles (typeof (File).Assembly, _cache);
-
+      List<EnumValueInfo> actualAbstractRoles = _cache.GetAbstractRoles();
+     
       Assert.AreEqual (3, expectedAbstractRoles.Count);
-      Assert.AreSame (expectedAbstractRoles[0], _cache.GetAbstractRole (DomainAbstractRole.Clerk));
-      Assert.AreSame (expectedAbstractRoles[1], _cache.GetAbstractRole (DomainAbstractRole.Secretary));
-      Assert.AreSame (expectedAbstractRoles[2], _cache.GetAbstractRole (SpecialAbstractRole.Administrator));
+      foreach (EnumValueInfo expected in expectedAbstractRoles)
+        Assert.Contains (expected, actualAbstractRoles);
     }
   }
 }
