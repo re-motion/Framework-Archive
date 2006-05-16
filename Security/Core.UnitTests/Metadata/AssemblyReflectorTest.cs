@@ -55,11 +55,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       _reflector.GetMetadata (typeof (File).Assembly, _cache);
 
-      SecurableClassInfo paperFileTypeInfo = _cache.GetTypeInfo (typeof (PaperFile));
+      SecurableClassInfo paperFileTypeInfo = _cache.GetSecurableClassInfo (typeof (PaperFile));
       Assert.IsNotNull (paperFileTypeInfo);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.PaperFile", paperFileTypeInfo.Name);
       
-      SecurableClassInfo fileTypeInfo = _cache.GetTypeInfo (typeof (File));
+      SecurableClassInfo fileTypeInfo = _cache.GetSecurableClassInfo (typeof (File));
       Assert.IsNotNull (fileTypeInfo);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", fileTypeInfo.Name);
 

@@ -140,9 +140,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       SecurableClassInfo paperFileInfo = reflector.GetMetadata (typeof (PaperFile), _cache);
 
       Assert.IsNotNull (paperFileInfo);
-      Assert.AreEqual (paperFileInfo, _cache.GetTypeInfo (typeof (PaperFile)));
+      Assert.AreEqual (paperFileInfo, _cache.GetSecurableClassInfo (typeof (PaperFile)));
 
-      SecurableClassInfo fileInfo = _cache.GetTypeInfo (typeof (File));
+      SecurableClassInfo fileInfo = _cache.GetSecurableClassInfo (typeof (File));
       Assert.IsNotNull (fileInfo);
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", fileInfo.Name);
     }

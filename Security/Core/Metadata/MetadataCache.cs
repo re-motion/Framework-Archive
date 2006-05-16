@@ -17,7 +17,7 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private Dictionary<Type, SecurableClassInfo> _types = new Dictionary<Type, SecurableClassInfo> ();
+    private Dictionary<Type, SecurableClassInfo> _classes = new Dictionary<Type, SecurableClassInfo> ();
     private Dictionary<PropertyInfo, StatePropertyInfo> _stateProperties = new Dictionary<PropertyInfo, StatePropertyInfo> ();
     private Dictionary<Enum, EnumValueInfo> _enumValues = new Dictionary<Enum, EnumValueInfo> ();
     private Dictionary<Enum, EnumValueInfo> _accessTypes = new Dictionary<Enum, EnumValueInfo> ();
@@ -31,29 +31,29 @@ namespace Rubicon.Security.Metadata
 
     // methods and properties
 
-    public SecurableClassInfo GetTypeInfo (Type key)
+    public SecurableClassInfo GetSecurableClassInfo (Type key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
-      if (_types.ContainsKey (key))
-        return _types[key];
+      if (_classes.ContainsKey (key))
+        return _classes[key];
       else
         return null;
     }
 
-    public void AddTypeInfo (Type key, SecurableClassInfo value)
+    public void AddSecurableClassInfo (Type key, SecurableClassInfo value)
     {
       ArgumentUtility.CheckNotNull ("key", key);
       ArgumentUtility.CheckNotNull ("value", value);
 
-      _types.Add (key, value);
+      _classes.Add (key, value);
     }
 
-    public bool ContainsTypeInfo (Type key)
+    public bool ContainsSecurableClassInfo (Type key)
     {
       ArgumentUtility.CheckNotNull ("key", key);
 
-      return _types.ContainsKey (key);
+      return _classes.ContainsKey (key);
     }
 
     public StatePropertyInfo GetStatePropertyInfo (PropertyInfo key)
@@ -167,9 +167,9 @@ namespace Rubicon.Security.Metadata
       return _abstractRoles.ContainsKey (key);
     }
 
-    public List<SecurableClassInfo> GetTypeInfos ()
+    public List<SecurableClassInfo> GetSecurableClassInfos ()
     { 
-      return new List<SecurableClassInfo> (_types.Values);
+      return new List<SecurableClassInfo> (_classes.Values);
     }
 
     public List<StatePropertyInfo> GetStatePropertyInfos ()

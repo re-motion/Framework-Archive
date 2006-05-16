@@ -37,7 +37,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    public void CacheTypeInfos ()
+    public void CacheSecurableClassInfos ()
     {
       Type fileType = typeof (File);
       Type paperFileType = typeof (PaperFile);
@@ -45,17 +45,17 @@ namespace Rubicon.Security.UnitTests.Metadata
       SecurableClassInfo fileTypeInfo = new SecurableClassInfo ();
       SecurableClassInfo paperFileTypeInfo = new SecurableClassInfo ();
 
-      Assert.IsFalse (_cache.ContainsTypeInfo (fileType));
-      Assert.IsNull (_cache.GetTypeInfo (fileType));
+      Assert.IsFalse (_cache.ContainsSecurableClassInfo (fileType));
+      Assert.IsNull (_cache.GetSecurableClassInfo (fileType));
 
-      _cache.AddTypeInfo (fileType, fileTypeInfo);
-      Assert.AreSame (fileTypeInfo, _cache.GetTypeInfo (fileType));
-      Assert.IsFalse (_cache.ContainsTypeInfo (paperFileType));
-      Assert.IsNull (_cache.GetTypeInfo (paperFileType));
+      _cache.AddSecurableClassInfo (fileType, fileTypeInfo);
+      Assert.AreSame (fileTypeInfo, _cache.GetSecurableClassInfo (fileType));
+      Assert.IsFalse (_cache.ContainsSecurableClassInfo (paperFileType));
+      Assert.IsNull (_cache.GetSecurableClassInfo (paperFileType));
 
-      _cache.AddTypeInfo (paperFileType, paperFileTypeInfo);
-      Assert.AreSame (fileTypeInfo, _cache.GetTypeInfo (fileType));
-      Assert.AreSame (paperFileTypeInfo, _cache.GetTypeInfo (paperFileType));
+      _cache.AddSecurableClassInfo (paperFileType, paperFileTypeInfo);
+      Assert.AreSame (fileTypeInfo, _cache.GetSecurableClassInfo (fileType));
+      Assert.AreSame (paperFileTypeInfo, _cache.GetSecurableClassInfo (paperFileType));
     }
 
     [Test]
@@ -145,15 +145,15 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    public void GetCachedTypeInfos ()
+    public void GetCachedSecurableClassInfos ()
     {
       SecurableClassInfo fileTypeInfo = new SecurableClassInfo ();
       SecurableClassInfo paperFileTypeInfo = new SecurableClassInfo ();
 
-      _cache.AddTypeInfo (typeof (File), fileTypeInfo);
-      _cache.AddTypeInfo (typeof (PaperFile), paperFileTypeInfo);
+      _cache.AddSecurableClassInfo (typeof (File), fileTypeInfo);
+      _cache.AddSecurableClassInfo (typeof (PaperFile), paperFileTypeInfo);
 
-      List<SecurableClassInfo> infos = _cache.GetTypeInfos ();
+      List<SecurableClassInfo> infos = _cache.GetSecurableClassInfos ();
 
       Assert.IsNotNull (infos);
       Assert.AreEqual (2, infos.Count);

@@ -55,7 +55,7 @@ namespace Rubicon.Security.Metadata
         throw new ArgumentException ("Value types are not supported.", "type");
       ArgumentUtility.CheckNotNull ("cache", cache);
 
-      SecurableClassInfo info = cache.GetTypeInfo (type);
+      SecurableClassInfo info = cache.GetSecurableClassInfo (type);
       if (info == null)
       {
         info = new SecurableClassInfo ();
@@ -66,7 +66,7 @@ namespace Rubicon.Security.Metadata
         info.Properties.AddRange (GetProperties (type, cache));
         info.AccessTypes.AddRange (_accessTypeReflector.GetAccessTypes (type, cache));
 
-        cache.AddTypeInfo (type, info);
+        cache.AddSecurableClassInfo (type, info);
 
         if (typeof (ISecurableType).IsAssignableFrom (type.BaseType))
         {
