@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<xs:schema id="SecurityMetadata" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:sm="http://www.rubicon-it.com/Security/Metadata/1.0" 
+    targetNamespace="http://www.rubicon-it.com/Security/Metadata/1.0"
+    elementFormDefault="qualified"
+    attributeFormDefault="unqualified" 
+    xml:lang="en">
+
+  <xs:element name="securityMetadata">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="classes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="class" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="derivedClasses">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="classRef" type="xs:string" maxOccurs="unbounded" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="stateProperties">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="statePropertyRef" type="xs:string" maxOccurs="unbounded" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="accessTypes">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="accessTypeRef" type="xs:string" maxOccurs="unbounded" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+
+                  <xs:attribute name="id" use="required"/>
+                  <xs:attribute name="name" use="required"/>
+                  <xs:attribute name="base" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="stateProperties">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="stateProperty" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="state" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="name" use="required" />
+                        <xs:attribute name="value" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="id" use="required" />
+                  <xs:attribute name="name" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="accessTypes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="accessType" type="sm:enumValue" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="abstractRoles">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="abstractRole" type="sm:enumValue" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:key name="classKey">
+      <xs:selector xpath="sm:classes/sm:class" />
+      <xs:field xpath="@id" />
+    </xs:key>
+
+    <xs:key name="statePropertyKey">
+      <xs:selector xpath="sm:stateProperties/sm:stateProperty" />
+      <xs:field xpath="@id" />
+    </xs:key>
+
+    <xs:key name="accessTypeKey">
+      <xs:selector xpath="sm:accessTypes/sm:accessType" />
+      <xs:field xpath="@id" />
+    </xs:key>
+
+    <xs:key name="abstractRoleKey">
+      <xs:selector xpath="sm:abstractRoles/sm:abstractRole" />
+      <xs:field xpath="@id" />
+    </xs:key>
+  </xs:element>
+
+  <xs:complexType name="enumValue">
+    <xs:attribute name="id" use="required"/>
+    <xs:attribute name="name" use="required"/>
+    <xs:attribute name="value" use="required"/>
+  </xs:complexType>
+</xs:schema>

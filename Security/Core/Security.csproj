@@ -66,7 +66,8 @@
     <Compile Include="SecurityContext.cs" />
     <Compile Include="GeneralAccessType.cs" />
     <Compile Include="SecurityStateAttribute.cs" />
-    <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Metadata\AssemblyInfoTemplate.cs" />
+    <None Include="Metadata\SecurityMetadata.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
