@@ -48,6 +48,8 @@
     <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
     <Compile Include="Metadata\ClassReflector.cs" />
+    <Compile Include="Metadata\AbstractRoleReflector.cs" />
+    <Compile Include="Metadata\IAbstractRoleReflector.cs" />
     <Compile Include="Metadata\EnumerationReflector.cs" />
     <Compile Include="Metadata\IAccessTypeReflector.cs" />
     <Compile Include="Metadata\IClassReflector.cs" />

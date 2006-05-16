@@ -18,17 +18,21 @@ namespace Rubicon.Security.Metadata
     // member fields
 
     private IClassReflector _classReflector;
+    private IAbstractRoleReflector _abstractRoleReflector;
     
     // construction and disposing
 
-    public AssemblyReflector () : this (new ClassReflector ())
+    public AssemblyReflector () : this (new ClassReflector (), new AbstractRoleReflector ())
     {
     }
 
-    public AssemblyReflector (IClassReflector classReflector)
+    public AssemblyReflector (IClassReflector classReflector, IAbstractRoleReflector abstractRoleReflector)
     {
       ArgumentUtility.CheckNotNull ("classReflector", classReflector);
+      ArgumentUtility.CheckNotNull ("abstractRoleReflector", abstractRoleReflector);
+      
       _classReflector = classReflector;
+      _abstractRoleReflector = abstractRoleReflector;
     }
 
     // methods and properties
@@ -36,6 +40,11 @@ namespace Rubicon.Security.Metadata
     public IClassReflector ClassReflector
     {
       get { return _classReflector; }
+    }
+
+    public IAbstractRoleReflector AbstractRoleReflector
+    {
+      get { return _abstractRoleReflector; }
     }
 
     public void GetMetadata (Assembly assembly, MetadataCache cache)
@@ -48,6 +57,8 @@ namespace Rubicon.Security.Metadata
         if (typeof (ISecurableType).IsAssignableFrom (type))
           _classReflector.GetMetadata (type, cache);
       }
+
+      _abstractRoleReflector.GetAbstractRoles (assembly, cache);
     }
   }
 }

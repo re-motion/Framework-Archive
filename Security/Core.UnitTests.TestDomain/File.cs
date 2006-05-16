@@ -36,7 +36,7 @@ namespace Rubicon.Security.UnitTests.TestDomain
       set { _id = value; }
     }
 
-   // [RequiredPermission (DomainAccessType.Journalize)]
+    [RequiredMethodPermission (DomainAccessType.Journalize)]
     public void Journalize ()
     {
     }

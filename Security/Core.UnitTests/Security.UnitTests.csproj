@@ -48,9 +48,16 @@
     <Compile Include="Metadata\AssemblyReflectorTest.cs" />
     <Compile Include="Metadata\ClassReflectorTest.cs" />
     <Compile Include="Metadata\AccessTypeReflectorTest.cs" />
+    <Compile Include="Metadata\AbstractRoleReflectorTest.cs" />
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
     <Compile Include="Metadata\MetadataCacheTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
+    <Compile Include="SampleDomain\DerivedSecurableClassWithSecuredConstructors.cs" />
+    <Compile Include="SampleDomain\DerivedSecurableClassWithSecuredInstanceMethods.cs" />
+    <Compile Include="SampleDomain\DerivedSecurableClassWithSecuredStaticMethods.cs" />
+    <Compile Include="SampleDomain\SecurableClassWithSecuredStaticMethods.cs" />
+    <Compile Include="SampleDomain\SecurableClassWithSecuredConstructors.cs" />
+    <Compile Include="SampleDomain\SecurableClassWithSecuredInstanceMethods.cs" />
     <Compile Include="SampleDomain\PermissionReflection\DerivedSecurableClass.cs" />
     <Compile Include="SampleDomain\PermissionReflection\DerivedSecurableClassWithoutConstructorOverloads.cs" />
     <Compile Include="SampleDomain\PermissionReflection\SecurableClass.cs" />

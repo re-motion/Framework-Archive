@@ -33,26 +33,36 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("cache", cache);
 
       System.Collections.IList values = Enum.GetValues (type);
-      string[] names = Enum.GetNames (type);
 
       Dictionary<Enum, EnumValueInfo> enumValueInfos = new Dictionary<Enum, EnumValueInfo> ();
       for (int i = 0; i < values.Count; i++)
       {
-        EnumValueInfo info = cache.GetEnumValueInfo ((Enum) values[i]);
-        if (info == null)
-        {
-          info = new EnumValueInfo ((int) values[i], names[i]);
-          FieldInfo fieldInfo = type.GetField (names[i], BindingFlags.Static | BindingFlags.Public);
-          PermanentGuidAttribute attribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (fieldInfo, typeof (PermanentGuidAttribute), false);
-          if (attribute != null)
-            info.ID = attribute.Value;
-
-          cache.AddEnumValueInfo ((Enum) values[i], info);
-        }
-        enumValueInfos.Add ((Enum) values[i], info);
+        Enum value = (Enum) values[i];
+        enumValueInfos.Add (value, GetValue (value, cache));
       }
 
       return enumValueInfos;
+    }
+
+    public EnumValueInfo GetValue (Enum value, MetadataCache cache)
+    {
+      ArgumentUtility.CheckNotNull ("value", value);
+      ArgumentUtility.CheckNotNull ("cache", cache);
+
+      EnumValueInfo info = cache.GetEnumValueInfo (value);
+      if (info == null)
+      {
+        string name = value.ToString ();
+        info = new EnumValueInfo (Convert.ToInt32 (value), name);
+        FieldInfo fieldInfo = value.GetType ().GetField (name, BindingFlags.Static | BindingFlags.Public);
+        PermanentGuidAttribute attribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (fieldInfo, typeof (PermanentGuidAttribute), false);
+        if (attribute != null)
+          info.ID = attribute.Value;
+
+        cache.AddEnumValueInfo (value, info);
+      }
+
+      return info;
     }
   }
 

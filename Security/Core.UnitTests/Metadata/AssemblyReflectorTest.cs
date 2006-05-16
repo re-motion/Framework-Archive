@@ -21,7 +21,8 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private IClassReflector _typeReflector;
+    private IClassReflector _classReflector;
+    private IAbstractRoleReflector _abstractRoleReflector;
     private AssemblyReflector _reflector;
     private MetadataCache _cache;
 
@@ -36,15 +37,17 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _typeReflector = new ClassReflector ();
-      _reflector = new AssemblyReflector (_typeReflector);
+      _classReflector = new ClassReflector ();
+      _abstractRoleReflector = new AbstractRoleReflector ();
+      _reflector = new AssemblyReflector (_classReflector, _abstractRoleReflector);
       _cache = new MetadataCache ();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (_typeReflector, _reflector.ClassReflector);
+      Assert.AreSame (_classReflector, _reflector.ClassReflector);
+      Assert.AreSame (_abstractRoleReflector, _reflector.AbstractRoleReflector);
     }
 
     [Test]
@@ -63,6 +66,18 @@ namespace Rubicon.Security.UnitTests.Metadata
       EnumValueInfo generalAccessTypeCreateEnumValueInfo = _cache.GetAccessType (GeneralAccessType.Create);
       Assert.IsNotNull (generalAccessTypeCreateEnumValueInfo);
       Assert.AreEqual ("Create", generalAccessTypeCreateEnumValueInfo.Name);
+
+      EnumValueInfo domainAccessTypeJournalizeEnumValueInfo = _cache.GetAccessType (DomainAccessType.Journalize);
+      Assert.IsNotNull (domainAccessTypeJournalizeEnumValueInfo);
+      Assert.AreEqual ("Journalize", domainAccessTypeJournalizeEnumValueInfo.Name);
+
+      EnumValueInfo domainAbstractRoleClerkEnumValueInfo = _cache.GetAbstractRole (DomainAbstractRole.Clerk);
+      Assert.IsNotNull (domainAbstractRoleClerkEnumValueInfo);
+      Assert.AreEqual ("Clerk", domainAbstractRoleClerkEnumValueInfo.Name);
+
+      EnumValueInfo specialAbstractRoleAdministratorEnumValueInfo = _cache.GetAbstractRole (SpecialAbstractRole.Administrator);
+      Assert.IsNotNull (specialAbstractRoleAdministratorEnumValueInfo);
+      Assert.AreEqual ("Administrator", specialAbstractRoleAdministratorEnumValueInfo.Name);
     }
   }
 }

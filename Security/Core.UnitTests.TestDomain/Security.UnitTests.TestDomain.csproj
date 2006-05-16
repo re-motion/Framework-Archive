@@ -35,6 +35,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Confidentiality.cs" />
+    <Compile Include="SpecialAbstractRole.cs" />
+    <Compile Include="DomainAbstractRole.cs" />
     <Compile Include="DomainAccessType.cs" />
     <Compile Include="File.cs" />
     <Compile Include="FileState.cs" />

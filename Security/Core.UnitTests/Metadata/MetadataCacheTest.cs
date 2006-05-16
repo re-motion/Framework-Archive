@@ -49,13 +49,13 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.IsNull (_cache.GetTypeInfo (fileType));
 
       _cache.AddTypeInfo (fileType, fileTypeInfo);
-      Assert.AreEqual (fileTypeInfo, _cache.GetTypeInfo (fileType));
+      Assert.AreSame (fileTypeInfo, _cache.GetTypeInfo (fileType));
       Assert.IsFalse (_cache.ContainsTypeInfo (paperFileType));
       Assert.IsNull (_cache.GetTypeInfo (paperFileType));
 
       _cache.AddTypeInfo (paperFileType, paperFileTypeInfo);
-      Assert.AreEqual (fileTypeInfo, _cache.GetTypeInfo (fileType));
-      Assert.AreEqual (paperFileTypeInfo, _cache.GetTypeInfo (paperFileType));
+      Assert.AreSame (fileTypeInfo, _cache.GetTypeInfo (fileType));
+      Assert.AreSame (paperFileTypeInfo, _cache.GetTypeInfo (paperFileType));
     }
 
     [Test]
@@ -77,14 +77,14 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.IsNull (_cache.GetStatePropertyInfo (fileConfidentialityProperty));
 
       _cache.AddStatePropertyInfo (fileConfidentialityProperty, confidentialityPropertyInfo);
-      Assert.AreEqual (confidentialityPropertyInfo, _cache.GetStatePropertyInfo (fileConfidentialityProperty));
-      Assert.AreEqual (_cache.GetStatePropertyInfo (fileConfidentialityProperty), _cache.GetStatePropertyInfo (paperFileConfidentialityProperty));
+      Assert.AreSame (confidentialityPropertyInfo, _cache.GetStatePropertyInfo (fileConfidentialityProperty));
+      Assert.AreSame (_cache.GetStatePropertyInfo (fileConfidentialityProperty), _cache.GetStatePropertyInfo (paperFileConfidentialityProperty));
       Assert.IsFalse (_cache.ContainsStatePropertyInfo (paperFileStateProperty));
       Assert.IsNull (_cache.GetStatePropertyInfo (paperFileStateProperty));
 
       _cache.AddStatePropertyInfo (paperFileStateProperty, statePropertyInfo);
-      Assert.AreEqual (confidentialityPropertyInfo, _cache.GetStatePropertyInfo (fileConfidentialityProperty));
-      Assert.AreEqual (statePropertyInfo, _cache.GetStatePropertyInfo (paperFileStateProperty));
+      Assert.AreSame (confidentialityPropertyInfo, _cache.GetStatePropertyInfo (fileConfidentialityProperty));
+      Assert.AreSame (statePropertyInfo, _cache.GetStatePropertyInfo (paperFileStateProperty));
     }
 
     [Test]
@@ -97,13 +97,13 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.IsNull (_cache.GetEnumValueInfo (FileState.New));
 
       _cache.AddEnumValueInfo (FileState.New, fileStateNewEnumValueInfo);
-      Assert.AreEqual (fileStateNewEnumValueInfo, _cache.GetEnumValueInfo (FileState.New));
+      Assert.AreSame (fileStateNewEnumValueInfo, _cache.GetEnumValueInfo (FileState.New));
       Assert.IsFalse (_cache.ContainsEnumValueInfo (FileState.Normal));
       Assert.IsNull (_cache.GetEnumValueInfo (FileState.Normal));
 
       _cache.AddEnumValueInfo (FileState.Normal, fileStateNormalEnumValueInfo);
-      Assert.AreEqual (fileStateNewEnumValueInfo, _cache.GetEnumValueInfo (FileState.New));
-      Assert.AreEqual (fileStateNormalEnumValueInfo, _cache.GetEnumValueInfo (FileState.Normal));
+      Assert.AreSame (fileStateNewEnumValueInfo, _cache.GetEnumValueInfo (FileState.New));
+      Assert.AreSame (fileStateNormalEnumValueInfo, _cache.GetEnumValueInfo (FileState.Normal));
     }
 
     [Test]
@@ -116,13 +116,32 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.IsNull (_cache.GetAccessType (DomainAccessType.Journalize));
 
       _cache.AddAccessType (DomainAccessType.Journalize, domainAccessTypeJournalize);
-      Assert.AreEqual (domainAccessTypeJournalize, _cache.GetAccessType (DomainAccessType.Journalize));
+      Assert.AreSame (domainAccessTypeJournalize, _cache.GetAccessType (DomainAccessType.Journalize));
       Assert.IsFalse (_cache.ContainsAccessType (DomainAccessType.Archive));
       Assert.IsNull (_cache.GetAccessType (DomainAccessType.Archive));
 
       _cache.AddAccessType (DomainAccessType.Archive, domainAccessTypeArchive);
-      Assert.AreEqual (domainAccessTypeJournalize, _cache.GetAccessType (DomainAccessType.Journalize));
-      Assert.AreEqual (domainAccessTypeArchive, _cache.GetAccessType (DomainAccessType.Archive));
+      Assert.AreSame (domainAccessTypeJournalize, _cache.GetAccessType (DomainAccessType.Journalize));
+      Assert.AreSame (domainAccessTypeArchive, _cache.GetAccessType (DomainAccessType.Archive));
+    }
+
+    [Test]
+    public void CacheAbstractRoles ()
+    {
+      EnumValueInfo valueDomainAbstractRoleClerk = new EnumValueInfo (0, "Clerk");
+      EnumValueInfo valueDomainAbstractRoleSecretary = new EnumValueInfo (1, "Secretary");
+
+      Assert.IsFalse (_cache.ContainsAbstractRole (DomainAbstractRole.Clerk));
+      Assert.IsNull (_cache.GetAbstractRole (DomainAbstractRole.Secretary));
+
+      _cache.AddAbstractRole (DomainAbstractRole.Clerk, valueDomainAbstractRoleClerk);
+      Assert.AreSame (valueDomainAbstractRoleClerk, _cache.GetAbstractRole (DomainAbstractRole.Clerk));
+      Assert.IsFalse (_cache.ContainsAbstractRole (DomainAbstractRole.Secretary));
+      Assert.IsNull (_cache.GetAbstractRole (DomainAbstractRole.Secretary));
+
+      _cache.AddAbstractRole (DomainAbstractRole.Secretary, valueDomainAbstractRoleSecretary);
+      Assert.AreSame (valueDomainAbstractRoleClerk, _cache.GetAbstractRole (DomainAbstractRole.Clerk));
+      Assert.AreSame (valueDomainAbstractRoleSecretary, _cache.GetAbstractRole (DomainAbstractRole.Secretary));
     }
 
     [Test]
@@ -180,6 +199,23 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.AreEqual (2, infos.Count);
       Assert.Contains (domainAccessTypeJournalize, infos);
       Assert.Contains (domainAccessTypeArchive, infos);
+    }
+
+    [Test]
+    public void GetCachedAbstractRoles ()
+    {
+      EnumValueInfo valueDomainAbstractRoleClerk = new EnumValueInfo (0, "Clerk");
+      EnumValueInfo valueDomainAbstractRoleSecretary = new EnumValueInfo (1, "Secretary");
+
+      _cache.AddAbstractRole (DomainAbstractRole.Clerk, valueDomainAbstractRoleClerk);
+      _cache.AddAbstractRole (DomainAbstractRole.Secretary, valueDomainAbstractRoleSecretary);
+
+      List<EnumValueInfo> infos = _cache.GetAbstractRoles ();
+
+      Assert.IsNotNull (infos);
+      Assert.AreEqual (2, infos.Count);
+      Assert.Contains (valueDomainAbstractRoleClerk, infos);
+      Assert.Contains (valueDomainAbstractRoleSecretary, infos);
     }
   }
 }

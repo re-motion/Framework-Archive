@@ -58,6 +58,18 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
+    public void GetValue ()
+    {
+      EnumValueInfo value = _reflector.GetValue (DomainAccessType.Journalize, _cache);
+
+      Assert.IsNotNull (value);
+
+      Assert.AreEqual (0, value.Value);
+      Assert.AreEqual ("Journalize", value.Name);
+      Assert.AreEqual (new Guid ("00000002-0001-0000-0000-000000000000"), value.ID);
+    }
+
+    [Test]
     public void GetValuesFromCache ()
     {
       Dictionary<Enum, EnumValueInfo> values = _reflector.GetValues (typeof (DomainAccessType), _cache);
