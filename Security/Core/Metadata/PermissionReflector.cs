@@ -5,7 +5,7 @@ using System.Text;
 
 using Rubicon.Utilities;
 
-namespace Rubicon.Security
+namespace Rubicon.Security.Metadata
 {
   public class PermissionReflector : IPermissionReflector
   {

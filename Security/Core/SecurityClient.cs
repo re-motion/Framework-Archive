@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Text;
 using Rubicon.Utilities;
 using Rubicon.Security.Configuration;
+using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security
 {

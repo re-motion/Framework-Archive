@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.Metadata
 {
   [TestFixture]
   public class PermissionReflectorTest

@@ -51,6 +51,7 @@
     <Compile Include="Metadata\AbstractRoleReflectorTest.cs" />
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
     <Compile Include="Metadata\MetadataCacheTest.cs" />
+    <Compile Include="Metadata\PermissionReflectorTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
     <Compile Include="SampleDomain\DerivedSecurableClassWithSecuredConstructors.cs" />
     <Compile Include="SampleDomain\DerivedSecurableClassWithSecuredInstanceMethods.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="SampleDomain\TestFlags.cs" />
     <Compile Include="SampleDomain\TestSecurityState.cs" />
     <Compile Include="SampleDomain\TestValueType.cs" />
-    <Compile Include="PermissionReflectorTest.cs" />
     <Compile Include="RequiredMethodPermissionAttributeTest.cs" />
     <Compile Include="SecurityClientTestWithCheckConstructorAccess.cs" />
     <Compile Include="SecurityClientTestWithCheckMethodAccess.cs" />

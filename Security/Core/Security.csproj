@@ -38,9 +38,9 @@
     <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="AccessViolationException.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <None Include="AssemblyInfoTemplate.cs" />
     <Compile Include="EnumWrapper.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
-    <Compile Include="IPermissionReflector.cs" />
     <Compile Include="ISecurableType.cs" />
     <Compile Include="ISecurityContextFactory.cs" />
     <Compile Include="ISecurityService.cs" />
@@ -55,18 +55,18 @@
     <Compile Include="Metadata\IClassReflector.cs" />
     <Compile Include="Metadata\EnumValueInfo.cs" />
     <Compile Include="Metadata\IEnumerationReflector.cs" />
+    <Compile Include="Metadata\IPermissionReflector.cs" />
     <Compile Include="Metadata\IStatePropertyReflector.cs" />
     <Compile Include="Metadata\MetadataCache.cs" />
+    <Compile Include="Metadata\PermissionReflector.cs" />
     <Compile Include="Metadata\SecurableClassInfo.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
-    <Compile Include="PermissionReflector.cs" />
     <Compile Include="RequiredMethodPermissionAttribute.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityContext.cs" />
     <Compile Include="GeneralAccessType.cs" />
     <Compile Include="SecurityStateAttribute.cs" />
-    <None Include="Metadata\AssemblyInfoTemplate.cs" />
     <None Include="Metadata\SecurityMetadata.xsd" />
   </ItemGroup>
   <ItemGroup>
