@@ -50,6 +50,8 @@
     <Compile Include="Metadata\AccessTypeReflectorTest.cs" />
     <Compile Include="Metadata\AbstractRoleReflectorTest.cs" />
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
+    <Compile Include="Metadata\EnumValueInfoListContentsAsserter.cs" />
+    <Compile Include="Metadata\EnumValueInfoListContentsAsserterTest.cs" />
     <Compile Include="Metadata\MetadataCacheTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />

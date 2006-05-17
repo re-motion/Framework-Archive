@@ -28,7 +28,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     private MetadataCache _cache;
     private EnumValueInfo _valueDomainAbstractRoleClerk;
     private EnumValueInfo _valueDomainAbstractRoleSecretary;
-    private EnumValueInfo _valueSpeicalAbstractRoleAdministrator;
+    private EnumValueInfo _valueSpecialAbstractRoleAdministrator;
 
     // construction and disposing
 
@@ -48,7 +48,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       _valueDomainAbstractRoleClerk = new EnumValueInfo (0, "Clerk");
       _valueDomainAbstractRoleSecretary = new EnumValueInfo (1, "Secretary");
-      _valueSpeicalAbstractRoleAdministrator = new EnumValueInfo (0, "Administrator");
+      _valueSpecialAbstractRoleAdministrator = new EnumValueInfo (0, "Administrator");
     }
 
     [Test]
@@ -65,7 +65,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       domainAbstractRoles.Add (DomainAbstractRole.Secretary, _valueDomainAbstractRoleSecretary);
 
       Dictionary<Enum, EnumValueInfo> specialAbstractRoles = new Dictionary<Enum, EnumValueInfo> ();
-      specialAbstractRoles.Add (SpecialAbstractRole.Administrator, _valueSpeicalAbstractRoleAdministrator);
+      specialAbstractRoles.Add (SpecialAbstractRole.Administrator, _valueSpecialAbstractRoleAdministrator);
 
       Expect.Once.On (_enumeratedTypeReflectorMock)
           .Method ("GetValues")
@@ -85,7 +85,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.AreEqual (3, values.Count);
       Assert.Contains (_valueDomainAbstractRoleClerk, values);
       Assert.Contains (_valueDomainAbstractRoleSecretary, values);
-      Assert.Contains (_valueSpeicalAbstractRoleAdministrator, values);
+      Assert.Contains (_valueSpecialAbstractRoleAdministrator, values);
     }
 
     [Test]

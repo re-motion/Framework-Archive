@@ -52,90 +52,90 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypes ()
     {
-      List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (PaperFile), _cache);
+      List<EnumValueInfo> actualAccessTypes = _reflector.GetAccessTypes (typeof (PaperFile), _cache);
 
-      Assert.IsNotNull (values);
-      Assert.AreEqual (6, values.Count);
-      Assert.AreEqual ("Create", values[0].Name);
-      Assert.AreEqual ("Read", values[1].Name);
-      Assert.AreEqual ("Edit", values[2].Name);
-      Assert.AreEqual ("Delete", values[3].Name);
-      Assert.AreEqual ("Find", values[4].Name);
-      Assert.AreEqual ("Journalize", values[5].Name);
+      Assert.IsNotNull (actualAccessTypes);
+      Assert.AreEqual (6, actualAccessTypes.Count);
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Create", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Read", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Edit", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Delete", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Find", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Journalize", actualAccessTypes));
     }
 
     [Test]
     public void GetAccessTypesFromInstanceMethods ()
     {
-      List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (SecurableClassWithSecuredInstanceMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _reflector.GetAccessTypes (typeof (SecurableClassWithSecuredInstanceMethods), _cache);
 
-      Assert.IsNotNull (values);
-      Assert.AreEqual (8, values.Count);
-      Assert.AreEqual ("First", values[5].Name);
-      Assert.AreEqual ("Second", values[6].Name);
-      Assert.AreEqual ("Third", values[7].Name);
+      Assert.IsNotNull (actualAccessTypes);
+      Assert.AreEqual (8, actualAccessTypes.Count);
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("First", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Second", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Third", actualAccessTypes));
     }
 
     [Test]
     public void GetAccessTypesFromStaticMethods ()
     {
-      List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (SecurableClassWithSecuredStaticMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _reflector.GetAccessTypes (typeof (SecurableClassWithSecuredStaticMethods), _cache);
 
-      Assert.IsNotNull (values);
-      Assert.AreEqual (8, values.Count);
-      Assert.AreEqual ("First", values[5].Name);
-      Assert.AreEqual ("Second", values[6].Name);
-      Assert.AreEqual ("Third", values[7].Name);
+      Assert.IsNotNull (actualAccessTypes);
+      Assert.AreEqual (8, actualAccessTypes.Count);
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("First", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Second", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Third", actualAccessTypes));
     }
 
     [Test]
     public void GetAccessTypesFromContructors ()
     {
-      List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (SecurableClassWithSecuredConstructors), _cache);
+      List<EnumValueInfo> actualAccessTypes = _reflector.GetAccessTypes (typeof (SecurableClassWithSecuredConstructors), _cache);
 
-      Assert.IsNotNull (values);
-      Assert.AreEqual (7, values.Count);
-      Assert.AreEqual ("First", values[5].Name);
-      Assert.AreEqual ("Second", values[6].Name);
+      Assert.IsNotNull (actualAccessTypes);
+      Assert.AreEqual (7, actualAccessTypes.Count);
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("First", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Second", actualAccessTypes));
     }
 
     [Test]
     public void GetAccessTypesDerivedClassFromInstanceMethods ()
     {
-      List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (DerivedSecurableClassWithSecuredInstanceMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _reflector.GetAccessTypes (typeof (DerivedSecurableClassWithSecuredInstanceMethods), _cache);
 
-      Assert.IsNotNull (values);
-      Assert.AreEqual (9, values.Count);
-      Assert.AreEqual ("Fourth", values[5].Name);
-      Assert.AreEqual ("First", values[6].Name);
-      Assert.AreEqual ("Second", values[7].Name);
-      Assert.AreEqual ("Third", values[8].Name);
+      Assert.IsNotNull (actualAccessTypes);
+      Assert.AreEqual (9, actualAccessTypes.Count);
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("First", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Second", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Third", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Fourth", actualAccessTypes));
     }
 
     [Test]
     public void GetAccessTypesDerivedClassFromStaticMethods ()
     {
-      List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (DerivedSecurableClassWithSecuredStaticMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _reflector.GetAccessTypes (typeof (DerivedSecurableClassWithSecuredStaticMethods), _cache);
 
-      Assert.IsNotNull (values);
-      Assert.AreEqual (9, values.Count);
-      Assert.AreEqual ("Fourth", values[5].Name);
-      Assert.AreEqual ("First", values[6].Name);
-      Assert.AreEqual ("Second", values[7].Name);
-      Assert.AreEqual ("Third", values[8].Name);
+      Assert.IsNotNull (actualAccessTypes);
+      Assert.AreEqual (9, actualAccessTypes.Count);
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("First", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Second", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Third", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Fourth", actualAccessTypes));
     }
 
     [Test]
     [Ignore ("Access types on base constructors are not specified.")]
     public void GetAccessTypesForDerivedClassFromContructors ()
     {
-      List<EnumValueInfo> values = _reflector.GetAccessTypes (typeof (DerivedSecurableClassWithSecuredConstructors), _cache);
+      List<EnumValueInfo> actualAccessTypes = _reflector.GetAccessTypes (typeof (DerivedSecurableClassWithSecuredConstructors), _cache);
 
-      Assert.IsNotNull (values);
-      Assert.AreEqual (8, values.Count);
-      Assert.AreEqual ("First", values[5].Name);
-      Assert.AreEqual ("Second", values[6].Name);
-      Assert.AreEqual ("Fourth", values[7].Name);
+      Assert.IsNotNull (actualAccessTypes);
+      Assert.AreEqual (8, actualAccessTypes.Count);
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("First", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Second", actualAccessTypes));
+      Assert.DoAssert (new EnumValueInfoListContentsAsserter ("Fourth", actualAccessTypes));
     }
 
     [Test]
