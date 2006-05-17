@@ -18,7 +18,7 @@ namespace Rubicon.Security.Metadata
 
     private string _id;	
     private string _name;
-    private List<EnumValueInfo> _values;
+    private List<EnumValueInfo> _values = new List<EnumValueInfo>();
 	
     // construction and disposing
 
