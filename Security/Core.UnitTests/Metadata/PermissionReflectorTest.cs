@@ -4,6 +4,7 @@ using System.Text;
 using NUnit.Framework;
 
 using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
+using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests.Metadata
 {
