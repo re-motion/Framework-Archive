@@ -27,9 +27,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       XmlDocument mappingDocument = new XmlDocument ();
       mappingDocument.Load (@"mappingWithUnresolvedTypes.xml");
 

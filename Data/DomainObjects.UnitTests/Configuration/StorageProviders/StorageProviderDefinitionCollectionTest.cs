@@ -26,9 +26,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _collection = new StorageProviderDefinitionCollection ();
 
       _definition = new UnitTestStorageProviderStubDefinition (

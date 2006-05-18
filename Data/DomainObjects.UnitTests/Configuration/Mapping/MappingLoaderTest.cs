@@ -29,9 +29,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    [SetUp]
-    public void Setup ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _loader = new MappingLoader (@"mapping.xml", @"mapping.xsd", true);
     }
 

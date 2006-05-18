@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     private const string c_createTestDataFileName = "CreateTestData.sql";
 
-    private static readonly MappingConfiguration s_mappingConfiguration = new MappingConfiguration (@"TableInheritanceMapping.xml", @"mapping.xsd");
+    //private static readonly MappingConfiguration s_mappingConfiguration = new MappingConfiguration (@"TableInheritanceMapping.xml", @"mapping.xsd");
 
     // member fields
 
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     [TestFixtureSetUp]
     public void TestFixtureSetUp ()
     {
-      MappingConfiguration.SetCurrent (s_mappingConfiguration);
+      //MappingConfiguration.SetCurrent (s_mappingConfiguration);
     }
   }
 }

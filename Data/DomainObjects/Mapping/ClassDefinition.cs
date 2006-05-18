@@ -36,7 +36,6 @@ public class ClassDefinition : ISerializable, IObjectReference
   {
   }
 
-
   public ClassDefinition (
       string id, 
       string entityName, 
@@ -46,7 +45,7 @@ public class ClassDefinition : ISerializable, IObjectReference
       ClassDefinition baseClass)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-    ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
+    if (entityName == string.Empty) throw new ArgumentEmptyException ("entityName");
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
     ArgumentUtility.CheckNotNullOrEmpty ("classTypeName", classTypeName);
 
@@ -66,7 +65,7 @@ public class ClassDefinition : ISerializable, IObjectReference
       ClassDefinition baseClass)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("id", id);
-    ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
+    if (entityName == string.Empty) throw new ArgumentEmptyException ("entityName");
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
     ArgumentUtility.CheckNotNull ("classType", classType);
 
@@ -88,6 +87,8 @@ public class ClassDefinition : ISerializable, IObjectReference
     if (classType != null)
     {
       CheckClassType (id, classType);
+      CheckAbstractType (entityName, classType, classTypeName);
+
       classTypeName = classType.AssemblyQualifiedName;
     }
 
@@ -134,6 +135,20 @@ public class ClassDefinition : ISerializable, IObjectReference
     {
       throw CreateMappingException ("Type '{0}' of class '{1}'" 
         + " is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.", classType, classID);
+    }
+  }
+
+  private void CheckAbstractType (string entityName, Type classType, string classTypeName)
+  {
+    if (entityName == null && !classType.IsAbstract)
+    {
+      string typeName;
+      if (classTypeName != null)
+        typeName = classTypeName;
+      else
+        typeName = classType.AssemblyQualifiedName;
+
+      throw CreateMappingException ("The provided type '{0}' must be abstract, because no entityName is specified.", typeName);
     }
   }
 

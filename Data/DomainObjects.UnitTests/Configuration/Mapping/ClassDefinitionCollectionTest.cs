@@ -27,9 +27,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _classDefinition = new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
       _collection = new ClassDefinitionCollection ();
     }

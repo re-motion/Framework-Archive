@@ -26,9 +26,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _collection = new ClassDefinitionCollection (false);
       _classDefinitionWithUnresolvedType = new ClassDefinition ("Order", "OrderTable", "StorageProvider", "UnresolvedType", false);
     }

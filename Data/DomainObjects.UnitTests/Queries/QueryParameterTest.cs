@@ -24,9 +24,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Queries
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _parameter = new QueryParameter ("name", "value", QueryParameterType.Value);
     }
 

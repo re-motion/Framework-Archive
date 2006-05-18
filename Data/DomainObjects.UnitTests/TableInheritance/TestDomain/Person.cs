@@ -4,7 +4,7 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 {
-  public class Person : DomainObject
+  public class Person : DomainBase
   {
     // types
 

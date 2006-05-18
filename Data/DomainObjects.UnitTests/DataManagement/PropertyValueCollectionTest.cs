@@ -27,9 +27,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _collection = new PropertyValueCollection ();
     }
 

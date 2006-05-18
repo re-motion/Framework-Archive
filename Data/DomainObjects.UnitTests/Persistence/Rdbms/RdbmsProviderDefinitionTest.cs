@@ -25,9 +25,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _definition = new RdbmsProviderDefinition ("StorageProviderID", typeof (SqlProvider), "ConnectionString");
     }
 

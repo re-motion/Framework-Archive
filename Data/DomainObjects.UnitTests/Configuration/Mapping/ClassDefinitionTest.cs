@@ -30,9 +30,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _orderClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Order)];
       _distributorClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Distributor)];
 

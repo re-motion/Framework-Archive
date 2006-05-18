@@ -502,6 +502,7 @@
     <Compile Include="StandardMappingTest.cs" />
     <Compile Include="TableInheritance\ClassDefinitionTest.cs" />
     <Compile Include="TableInheritance\TableInheritanceMappingTest.cs" />
+    <Compile Include="TableInheritance\TestDomain\DomainBase.cs" />
     <Compile Include="TableInheritance\TestDomain\Person.cs" />
     <Compile Include="TestDomain\Ceo.cs">
       <SubType>Code</SubType>
@@ -670,6 +671,7 @@
     <PostBuildEvent>copy "$(ProjectDir)..\DomainObjects\*.xsd" "$(TargetDir)"
 copy "$(ProjectDir)*.xml" "$(TargetDir)"
 copy "$(ProjectDir)Configuration\Mapping\TestMappings\*.xml" "$(TargetDir)"
+copy "$(ProjectDir)TableInheritance\*.xml" "$(TargetDir)"
 copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

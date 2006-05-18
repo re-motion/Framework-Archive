@@ -28,9 +28,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _objectID = DomainObjectIDs.Order1;
       _propertyName = "OrderTicket";
       _endPointID = new RelationEndPointID (_objectID, _propertyName);
@@ -176,10 +177,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     [Test]
     public void EqualityOperatorForSameObject ()
     {
-      RelationEndPointID id = new RelationEndPointID (_objectID, _propertyName);
+      RelationEndPointID id1 = new RelationEndPointID (_objectID, _propertyName);
+      RelationEndPointID id2 = id1;
 
-      Assert.IsTrue (id == id);
-      Assert.IsFalse (id != id);
+      Assert.IsTrue (id1 == id2);
+      Assert.IsFalse (id1 != id2);
     }
 
     [Test]

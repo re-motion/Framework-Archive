@@ -16,10 +16,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
 
     // static members and constants
 
-
     // member fields
 
-    private DomainObjectIDs _domainObjectIDs;
     private string _connectionString;
 
     // construction and disposing
@@ -29,7 +27,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
       ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
 
       _connectionString = connectionString;
-      _domainObjectIDs = new DomainObjectIDs ();
     }
 
     // methods and properties
@@ -61,11 +58,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
       {
         command.ExecuteNonQuery ();
       }
-    }
-
-    protected DomainObjectIDs DomainObjectIDs
-    {
-      get { return _domainObjectIDs; }
     }
   }
 }

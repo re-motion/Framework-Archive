@@ -725,7 +725,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         connection.Open ();
         using (SqlCommand command = new SqlCommand ("select * from Ceo where ID = @id", connection))
         {
-          command.Parameters.Add ("@id", DomainObjectIDs.Ceo1.Value);
+          command.Parameters.AddWithValue ("@id", DomainObjectIDs.Ceo1.Value);
           using (SqlDataReader reader = command.ExecuteReader ())
           {
             reader.Read ();

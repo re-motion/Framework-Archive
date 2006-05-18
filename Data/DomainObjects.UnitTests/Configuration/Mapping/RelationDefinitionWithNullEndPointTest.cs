@@ -27,9 +27,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _relation = TestMappingConfiguration.Current.RelationDefinitions.GetMandatory ("ClientToLocation");
       _clientEndPoint = (NullRelationEndPointDefinition) _relation.EndPointDefinitions[0];
       _locationEndPoint = (RelationEndPointDefinition) _relation.EndPointDefinitions[1];

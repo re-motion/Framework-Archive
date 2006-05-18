@@ -28,9 +28,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _collection = new QueryDefinitionCollection ();
 
       _definition = new QueryDefinition (

@@ -26,9 +26,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _storageProviderManager = new StorageProviderManager ();
     }
 

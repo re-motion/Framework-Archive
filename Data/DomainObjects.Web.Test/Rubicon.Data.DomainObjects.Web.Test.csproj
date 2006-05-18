@@ -252,18 +252,6 @@
     <Content Include="WxeTestPage.aspx">
       <SubType>Form</SubType>
     </Content>
-    <None Include="mapping.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="queries.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="storageProviders.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="types.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
@@ -281,7 +269,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)*.xsd" "$(TargetDir)"
+    <PostBuildEvent>copy "$(SolutionDir)DomainObjects\*.xsd" "$(TargetDir)"
 copy "$(ProjectDir)*.xml" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>

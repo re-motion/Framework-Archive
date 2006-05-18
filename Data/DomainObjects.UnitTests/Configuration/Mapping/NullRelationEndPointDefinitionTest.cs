@@ -25,9 +25,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _clientDefinition = MappingConfiguration.Current.ClassDefinitions["Client"];
       _definition = new NullRelationEndPointDefinition (_clientDefinition);
     }

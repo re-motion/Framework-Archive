@@ -412,7 +412,9 @@
     <None Include="AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>
-    <None Include="mapping.xsd" />
+    <None Include="mapping.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="queries.xsd" />
     <None Include="Rubicon.Data.DomainObjects.build" />
     <Content Include="Doc\How to add a new property type.txt" />

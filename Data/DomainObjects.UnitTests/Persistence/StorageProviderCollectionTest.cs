@@ -26,9 +26,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _provider = new SqlProvider (new RdbmsProviderDefinition ("TestDomain", typeof (SqlProvider), "ConnectionString"));
       _collection = new StorageProviderCollection ();
     }

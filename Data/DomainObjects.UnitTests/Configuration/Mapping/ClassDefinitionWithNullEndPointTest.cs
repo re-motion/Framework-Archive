@@ -28,9 +28,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     // methods and properties
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _clientClass = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Client");
       _locationClass = TestMappingConfiguration.Current.ClassDefinitions.GetMandatory ("Location");
 
