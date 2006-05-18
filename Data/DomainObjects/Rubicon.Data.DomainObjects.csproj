@@ -414,21 +414,29 @@
     </None>
     <None Include="mapping.xsd">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="queries.xsd" />
+    <None Include="queries.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Rubicon.Data.DomainObjects.build" />
     <Content Include="Doc\How to add a new property type.txt" />
     <Content Include="Doc\How to make a build.txt" />
     <Content Include="Doc\include\DomainObjects.xml" />
     <Content Include="Doc\include\NamespaceDoc.xml" />
     <Content Include="Doc\WhatsNew_Rubicon.Data.DomainObjects.txt" />
-    <Content Include="storageProviders.xsd" />
-    <Content Include="types.xsd" />
+    <Content Include="storageProviders.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="types.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)*.xsd" "$(TargetDir)*.xsd"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -21,7 +21,7 @@
 
     <class id="Person" baseClass="DomainBase">
       <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person, Rubicon.Data.DomainObjects.UnitTests</type>
-      <entity name="Person" />
+      <entity name="TableInheritance_Person" />
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
         <property name="FirstName">

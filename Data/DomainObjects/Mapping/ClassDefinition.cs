@@ -87,8 +87,6 @@ public class ClassDefinition : ISerializable, IObjectReference
     if (classType != null)
     {
       CheckClassType (id, classType);
-      CheckAbstractType (entityName, classType, classTypeName);
-
       classTypeName = classType.AssemblyQualifiedName;
     }
 
@@ -135,20 +133,6 @@ public class ClassDefinition : ISerializable, IObjectReference
     {
       throw CreateMappingException ("Type '{0}' of class '{1}'" 
         + " is not derived from 'Rubicon.Data.DomainObjects.DomainObject'.", classType, classID);
-    }
-  }
-
-  private void CheckAbstractType (string entityName, Type classType, string classTypeName)
-  {
-    if (entityName == null && !classType.IsAbstract)
-    {
-      string typeName;
-      if (classTypeName != null)
-        typeName = classTypeName;
-      else
-        typeName = classType.AssemblyQualifiedName;
-
-      throw CreateMappingException ("The provided type '{0}' must be abstract, because no entityName is specified.", typeName);
     }
   }
 
@@ -440,7 +424,7 @@ public class ClassDefinition : ISerializable, IObjectReference
       string entityName, 
       string storageProviderID)
   {
-    if (baseClass.EntityName != entityName)
+    if (baseClass.EntityName != null && baseClass.EntityName != entityName)
     {
       throw CreateMappingException (
           "Entity name ('{0}') of class '{1}' and entity name ('{2}') of its base class '{3}' must be equal.",

@@ -625,41 +625,82 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Rubicon.Data.DomainObjects.UnitTests.build" />
-    <Content Include="Configuration\Mapping\TestMappings\entireMappingWithUnresolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithCollectionTypeAndOneToOneRelation.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithColumnAndCardinalityMany.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndDuplicateColumnName.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndInvalidEntityName.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDuplicateColumnName.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDuplicateColumnNameAndRelationProperty.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidDerivation.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidDerivationAcrossStorageProviders.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithMinimumData.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithMoreThanTwoEndPoints.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithNonExistingBaseClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithOnlyOneEndPoint.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassAndCardinalityMany.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassAndTwoRelationProperties.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassReferringToItself.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInBaseAndDerivedClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithRelationAndIdenticalPropertyNames.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithResolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithSchemaException.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithUnresolvedTypes.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithXmlException.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\entireMappingWithUnresolvedTypes.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithCollectionTypeAndOneToOneRelation.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithColumnAndCardinalityMany.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndDuplicateColumnName.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndInvalidEntityName.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithDuplicateColumnName.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithDuplicateColumnNameAndRelationProperty.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidDerivation.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidDerivationAcrossStorageProviders.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithMinimumData.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithMoreThanTwoEndPoints.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithNonExistingBaseClass.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithOnlyOneEndPoint.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassAndCardinalityMany.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassAndTwoRelationProperties.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassReferringToItself.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInBaseAndDerivedClass.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithRelationAndIdenticalPropertyNames.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithResolvedTypes.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithSchemaException.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithUnresolvedTypes.xml">
+    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithXmlException.xml">
+    </Content>
     <Content Include="Database\CreateDB.sql" />
-    <Content Include="Database\CreateTestData.sql" />
+    <Content Include="Database\CreateTestData.sql">
+    </Content>
     <Content Include="Database\SetupDB.sql" />
-    <Content Include="mapping.xml" />
-    <Content Include="queries.xml" />
-    <Content Include="queriesForLoaderTest.xml" />
-    <Content Include="scalarQueryWithCollectionType.xml" />
-    <Content Include="storageProviders.xml" />
-    <Content Include="storageProvidersForLoaderTest.xml" />
-    <Content Include="storageProvidersWithSchemaException.xml" />
-    <Content Include="storageProvidersWithXmlException.xml" />
-    <Content Include="TableInheritance\TableInheritanceMapping.xml" />
+    <Content Include="mapping.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="queries.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="queriesForLoaderTest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="scalarQueryWithCollectionType.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="storageProviders.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="storageProvidersForLoaderTest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="storageProvidersWithSchemaException.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="storageProvidersWithXmlException.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TableInheritance\TableInheritanceMapping.xml">
+    </Content>
     <EmbeddedResource Include="Resources\Image1.png" />
     <EmbeddedResource Include="Resources\Image2.png" />
     <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />
@@ -668,9 +709,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)..\DomainObjects\*.xsd" "$(TargetDir)"
-copy "$(ProjectDir)*.xml" "$(TargetDir)"
-copy "$(ProjectDir)Configuration\Mapping\TestMappings\*.xml" "$(TargetDir)"
+    <PostBuildEvent>copy "$(ProjectDir)Configuration\Mapping\TestMappings\*.xml" "$(TargetDir)"
 copy "$(ProjectDir)TableInheritance\*.xml" "$(TargetDir)"
 copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>

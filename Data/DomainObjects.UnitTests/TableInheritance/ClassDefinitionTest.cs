@@ -36,53 +36,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
-    public void ClassTypeWithoutEntityNameMustBeAbstract ()
-    {
-      try
-      {
-        new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
-        Assert.Fail ("MappingException was expected.");
-      }
-      catch (MappingException ex)
-      {
-        string expectedMessage = string.Format (
-            "The provided type '{0}' must be abstract, because no entityName is specified.", typeof (Person).AssemblyQualifiedName);
-
-        Assert.AreEqual (expectedMessage, ex.Message);
-      }
-    }
-
-    [Test]
-    public void ClassTypeNameWithoutEntityNameMustBeAbstract ()
-    {
-      try
-      {
-        new ClassDefinition (
-            "Person", null, c_testDomainProviderID, 
-            "Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person, Rubicon.Data.DomainObjects.UnitTests", true);
-
-        Assert.Fail ("MappingException was expected.");
-      }
-      catch (MappingException ex)
-      {
-        string expectedMessage = "The provided type"
-            + " 'Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person, Rubicon.Data.DomainObjects.UnitTests' must be abstract,"
-            + " because no entityName is specified.";
-
-        Assert.AreEqual (expectedMessage, ex.Message);
-      }
-    }
-
-    [Test]
-    public void ClassTypeIsNotCheckedToBeAbstractIfResolveClassTypeNameIsFalse ()
-    {
-      ClassDefinition classDefinition = new ClassDefinition (
-          "Person", null, c_testDomainProviderID, typeof (Person).AssemblyQualifiedName, false);
-
-      Assert.IsNull (classDefinition.EntityName);
-    }
-
-    [Test]
     [ExpectedException (typeof (ArgumentEmptyException))]
     public void EntityNameMustNotBeEmptyWithClassType ()
     {
@@ -94,6 +47,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public void EntityNameMustNotBeEmptyWithClassTypeName ()
     {
       new ClassDefinition ("DomainBase", string.Empty, c_testDomainProviderID, typeof (DomainBase).AssemblyQualifiedName, true);
+    }
+
+    [Test]
+    public void CheckBaseClassWithNullEntityName ()
+    {
+      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, c_testDomainProviderID, typeof (DomainBase));
+      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
+
+      Assert.IsNull (domainBaseClass.EntityName);
+      Assert.IsNotNull (personClass.EntityName);
     }
   }
 }
