@@ -620,6 +620,7 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Rubicon.Data.DomainObjects.UnitTests.build" />
+    <Content Include="Configuration\Mapping\TestMappings\entireMappingWithUnresolvedTypes.xml" />
     <Content Include="Configuration\Mapping\TestMappings\mappingWithCollectionTypeAndOneToOneRelation.xml" />
     <Content Include="Configuration\Mapping\TestMappings\mappingWithColumnAndCardinalityMany.xml" />
     <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndDuplicateColumnName.xml" />
@@ -645,7 +646,6 @@
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\CreateTestData.sql" />
     <Content Include="Database\SetupDB.sql" />
-    <Content Include="entireMappingWithUnresolvedTypes.xml" />
     <Content Include="mapping.xml" />
     <Content Include="queries.xml" />
     <Content Include="queriesForLoaderTest.xml" />
