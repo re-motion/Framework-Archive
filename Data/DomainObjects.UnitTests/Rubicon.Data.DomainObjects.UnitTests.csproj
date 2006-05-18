@@ -609,7 +609,6 @@
     <Compile Include="Transaction\CommitEventsTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TwoTransactions.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">
       <SubType>Code</SubType>
     </Compile>
