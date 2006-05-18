@@ -2,26 +2,26 @@ using System;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-[Serializable]
-public class EventReceiverBase
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  protected EventReceiverBase ()
+  [Serializable]
+  public class EventReceiverBase
   {
-  }
+    // types
 
-  // methods and properties
+    // static members and constants
 
-  protected void CancelOperation ()
-  {
-    throw new EventReceiverCancelException ();
+    // member fields
+
+    // construction and disposing
+
+    protected EventReceiverBase ()
+    {
+    }
+
+    // methods and properties
+
+    protected void CancelOperation ()
+    {
+      throw new EventReceiverCancelException ();
+    }
   }
-}
 }

@@ -8,40 +8,40 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 {
-[TestFixture]
-public class ObjectDeletedExceptionTest
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public ObjectDeletedExceptionTest ()
+  [TestFixture]
+  public class ObjectDeletedExceptionTest : StandardMappingTest
   {
-  }
+    // types
 
-  // methods and properties
+    // static members and constants
 
-  [Test]
-  public void Serialization ()
-  {
-    ObjectDeletedException exception = new ObjectDeletedException (DomainObjectIDs.Order1);
+    // member fields
 
-    using (MemoryStream memoryStream = new MemoryStream ())
+    // construction and disposing
+
+    public ObjectDeletedExceptionTest ()
     {
-      BinaryFormatter formatter = new BinaryFormatter();
-      formatter.Serialize (memoryStream, exception);
-      memoryStream.Seek (0, SeekOrigin.Begin);
+    }
 
-      formatter = new BinaryFormatter();
+    // methods and properties
 
-      exception = (ObjectDeletedException) formatter.Deserialize (memoryStream);
-      
-      Assert.AreEqual (DomainObjectIDs.Order1, exception.ID);
-    }    
+    [Test]
+    public void Serialization ()
+    {
+      ObjectDeletedException exception = new ObjectDeletedException (DomainObjectIDs.Order1);
+
+      using (MemoryStream memoryStream = new MemoryStream ())
+      {
+        BinaryFormatter formatter = new BinaryFormatter ();
+        formatter.Serialize (memoryStream, exception);
+        memoryStream.Seek (0, SeekOrigin.Begin);
+
+        formatter = new BinaryFormatter ();
+
+        exception = (ObjectDeletedException) formatter.Deserialize (memoryStream);
+
+        Assert.AreEqual (DomainObjectIDs.Order1, exception.ID);
+      }
+    }
   }
-}
 }

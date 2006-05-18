@@ -9,59 +9,59 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
-[TestFixture]
-public class SqlProviderTest : SqlProviderBaseTest
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public SqlProviderTest ()
+  [TestFixture]
+  public class SqlProviderTest : SqlProviderBaseTest
   {
-  }
+    // types
 
-  // methods and properties
+    // static members and constants
 
-  [Test]
-  public void IsConnectedFalse ()
-  {
-    RdbmsProvider rdbmsProvider = Provider;
+    // member fields
 
-    Assert.IsFalse (rdbmsProvider.IsConnected);
-  }
+    // construction and disposing
 
-  [Test]
-  public void ConnectionHandling ()
-  {
-    RdbmsProvider rdbmsProvider = Provider;
-
-    rdbmsProvider.Connect ();
-    Assert.IsTrue (rdbmsProvider.IsConnected);
-    rdbmsProvider.Disconnect ();
-    Assert.IsFalse (rdbmsProvider.IsConnected);
-  }
-
-  [Test]
-  public void Disposing ()
-  {
-    using (StorageProvider provider = Provider)
+    public SqlProviderTest ()
     {
-      provider.LoadDataContainer (DomainObjectIDs.Order1);
     }
 
-    RdbmsProvider rdbmsProvider = Provider;
-    Assert.IsFalse (rdbmsProvider.IsConnected);
-  }
+    // methods and properties
 
-  [Test]
-  public void GetParameterName ()
-  {
-    Assert.AreEqual ("@parameter", Provider.GetParameterName ("parameter"));    
-    Assert.AreEqual ("@parameter", Provider.GetParameterName ("@parameter"));
+    [Test]
+    public void IsConnectedFalse ()
+    {
+      RdbmsProvider rdbmsProvider = Provider;
+
+      Assert.IsFalse (rdbmsProvider.IsConnected);
+    }
+
+    [Test]
+    public void ConnectionHandling ()
+    {
+      RdbmsProvider rdbmsProvider = Provider;
+
+      rdbmsProvider.Connect ();
+      Assert.IsTrue (rdbmsProvider.IsConnected);
+      rdbmsProvider.Disconnect ();
+      Assert.IsFalse (rdbmsProvider.IsConnected);
+    }
+
+    [Test]
+    public void Disposing ()
+    {
+      using (StorageProvider provider = Provider)
+      {
+        provider.LoadDataContainer (DomainObjectIDs.Order1);
+      }
+
+      RdbmsProvider rdbmsProvider = Provider;
+      Assert.IsFalse (rdbmsProvider.IsConnected);
+    }
+
+    [Test]
+    public void GetParameterName ()
+    {
+      Assert.AreEqual ("@parameter", Provider.GetParameterName ("parameter"));
+      Assert.AreEqual ("@parameter", Provider.GetParameterName ("@parameter"));
+    }
   }
-}
 }

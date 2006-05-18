@@ -8,50 +8,50 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Queries
 {
-[TestFixture]
-public class QueryTest
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public QueryTest ()
+  [TestFixture]
+  public class QueryTest : StandardMappingTest
   {
+    // types
+
+    // static members and constants
+
+    // member fields
+
+    // construction and disposing
+
+    public QueryTest ()
+    {
+    }
+
+    // methods and properties
+
+    [Test]
+    public void InitializeWithQueryID ()
+    {
+      QueryParameterCollection parameters = new QueryParameterCollection ();
+      Query query = new Query ("OrderQuery", parameters);
+
+      QueryDefinition definition = QueryConfiguration.Current["OrderQuery"];
+      Assert.AreSame (definition, query.Definition);
+      Assert.AreEqual (definition.ID, query.ID);
+      Assert.AreEqual (definition.CollectionType, query.CollectionType);
+      Assert.AreEqual (definition.QueryType, query.QueryType);
+      Assert.AreEqual (definition.Statement, query.Statement);
+      Assert.AreEqual (definition.StorageProviderID, query.StorageProviderID);
+      Assert.AreSame (parameters, query.Parameters);
+    }
+
+    [Test]
+    public void InitializeWithQueryDefinition ()
+    {
+      QueryParameterCollection parameters = new QueryParameterCollection ();
+
+      QueryDefinition definition = QueryFactory.CreateOrderQueryDefinition ();
+      Query query = new Query (definition, parameters);
+
+      Assert.AreSame (definition, query.Definition);
+      Assert.AreEqual (definition.ID, query.ID);
+      Assert.AreSame (parameters, query.Parameters);
+    }
   }
-
-  // methods and properties
-
-  [Test]
-  public void InitializeWithQueryID ()
-  {
-    QueryParameterCollection parameters = new QueryParameterCollection ();
-    Query query = new Query ("OrderQuery", parameters);
-
-    QueryDefinition definition = QueryConfiguration.Current["OrderQuery"];
-    Assert.AreSame (definition, query.Definition);
-    Assert.AreEqual (definition.ID, query.ID);
-    Assert.AreEqual (definition.CollectionType, query.CollectionType);
-    Assert.AreEqual (definition.QueryType, query.QueryType);
-    Assert.AreEqual (definition.Statement, query.Statement);
-    Assert.AreEqual (definition.StorageProviderID, query.StorageProviderID);
-    Assert.AreSame (parameters, query.Parameters);
-  }
-
-  [Test]
-  public void InitializeWithQueryDefinition ()
-  {
-    QueryParameterCollection parameters = new QueryParameterCollection ();
-
-    QueryDefinition definition = QueryFactory.CreateOrderQueryDefinition ();
-    Query query = new Query (definition, parameters);
-
-    Assert.AreSame (definition, query.Definition);
-    Assert.AreEqual (definition.ID, query.ID);
-    Assert.AreSame (parameters, query.Parameters);
-  }
-}
 }

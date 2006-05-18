@@ -9,68 +9,69 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
-public class UnitTestStorageProviderStub : StorageProvider
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public UnitTestStorageProviderStub (UnitTestStorageProviderStubDefinition definition) : base (definition)
+  public class UnitTestStorageProviderStub : StorageProvider
   {
-  }
+    // types
 
-  // methods and properties
+    // static members and constants
 
-  public override DataContainer LoadDataContainer (ObjectID id)
-  {
-    DataContainer container = DataContainer.CreateForExisting (id, null);
-    PropertyDefinition definition = new PropertyDefinition ("Name", "Name", "string", new NaInt32 (100));
-    container.PropertyValues.Add (new PropertyValue (definition, "Max Sachbearbeiter"));
-    return container;
-  }
+    // member fields
 
-  public override DataContainerCollection ExecuteCollectionQuery (IQuery query)
-  {
-    return null;
-  }
+    // construction and disposing
 
-  public override object ExecuteScalarQuery (IQuery query)
-  {
-    return null;
-  }
+    public UnitTestStorageProviderStub (UnitTestStorageProviderStubDefinition definition)
+      : base (definition)
+    {
+    }
 
-  public override void Save (DataContainerCollection dataContainers)
-  {
-  }
+    // methods and properties
 
-  public override void SetTimestamp (DataContainerCollection dataContainers)
-  {
-  }
+    public override DataContainer LoadDataContainer (ObjectID id)
+    {
+      DataContainer container = DataContainer.CreateForExisting (id, null);
+      PropertyDefinition definition = new PropertyDefinition ("Name", "Name", "string", new NaInt32 (100));
+      container.PropertyValues.Add (new PropertyValue (definition, "Max Sachbearbeiter"));
+      return container;
+    }
 
-  public override DataContainerCollection LoadDataContainersByRelatedID (ClassDefinition classDefinition, string propertyName, ObjectID relatedID)
-  {
-    return null;
-  }
+    public override DataContainerCollection ExecuteCollectionQuery (IQuery query)
+    {
+      return null;
+    }
 
-  public override void BeginTransaction ()
-  {
-  }
+    public override object ExecuteScalarQuery (IQuery query)
+    {
+      return null;
+    }
 
-  public override void Commit ()
-  {
-  }
+    public override void Save (DataContainerCollection dataContainers)
+    {
+    }
 
-  public override void Rollback()
-  {
-  }
+    public override void SetTimestamp (DataContainerCollection dataContainers)
+    {
+    }
 
-  public override DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
-  {
-    return null;
+    public override DataContainerCollection LoadDataContainersByRelatedID (ClassDefinition classDefinition, string propertyName, ObjectID relatedID)
+    {
+      return null;
+    }
+
+    public override void BeginTransaction ()
+    {
+    }
+
+    public override void Commit ()
+    {
+    }
+
+    public override void Rollback ()
+    {
+    }
+
+    public override DataContainer CreateNewDataContainer (ClassDefinition classDefinition)
+    {
+      return null;
+    }
   }
-}
 }

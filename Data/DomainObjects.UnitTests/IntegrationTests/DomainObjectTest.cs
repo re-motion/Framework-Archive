@@ -13,56 +13,56 @@ using Rubicon.Data.DomainObjects.UnitTests.DomainObjects;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 {
-[TestFixture]
-public class DomainObjectTest : ClientTransactionBaseTest
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  DataContainer _orderDataContainer;
-  PropertyValueCollection _orderPropertyValues;
-  PropertyValue _orderDeliveryDateProperty;
-  PropertyValue _orderCustomerProperty;
-
-  DomainObjectEventReceiver _orderDomainObjectEventReceiver;
-  PropertyValueContainerEventReceiver _orderDataContainerEventReceiver;
-  PropertyValueContainerEventReceiver _orderPropertyValuesEventReceiver;
-  PropertyValueEventReceiver _orderDeliveryDatePropertyEventReceiver;
-  PropertyValueEventReceiver _orderCustomerPropertyEventReceiver;
-
-  // construction and disposing
-
-  public DomainObjectTest ()
+  [TestFixture]
+  public class DomainObjectTest : ClientTransactionBaseTest
   {
-  }
+    // types
 
-  // methods and properties
+    // static members and constants
 
-  [Test]
-  public void RelationEventTest ()
-  {
-    Customer newCustomer1 = new Customer ();
-    newCustomer1.Name = "NewCustomer1";
+    // member fields
 
-    Customer newCustomer2 = new Customer ();
-    newCustomer2.Name = "NewCustomer2";
+    DataContainer _orderDataContainer;
+    PropertyValueCollection _orderPropertyValues;
+    PropertyValue _orderDeliveryDateProperty;
+    PropertyValue _orderCustomerProperty;
 
-    Official official2 = Official.GetObject (DomainObjectIDs.Official2);
-    Ceo newCeo1 = new Ceo ();
-    Ceo newCeo2 = new Ceo ();
-    Order newOrder1 = new Order ();
-    newOrder1.DeliveryDate = new DateTime (2006, 1, 1);
+    DomainObjectEventReceiver _orderDomainObjectEventReceiver;
+    PropertyValueContainerEventReceiver _orderDataContainerEventReceiver;
+    PropertyValueContainerEventReceiver _orderPropertyValuesEventReceiver;
+    PropertyValueEventReceiver _orderDeliveryDatePropertyEventReceiver;
+    PropertyValueEventReceiver _orderCustomerPropertyEventReceiver;
 
-    Order newOrder2 = new Order ();
-    newOrder2.DeliveryDate = new DateTime (2006, 2, 2);
+    // construction and disposing
 
-    OrderItem newOrderItem1 = new OrderItem ();
-    OrderItem newOrderItem2 = new OrderItem ();
+    public DomainObjectTest ()
+    {
+    }
 
-    DomainObject[] domainObjects = new DomainObject[] 
+    // methods and properties
+
+    [Test]
+    public void RelationEventTest ()
+    {
+      Customer newCustomer1 = new Customer ();
+      newCustomer1.Name = "NewCustomer1";
+
+      Customer newCustomer2 = new Customer ();
+      newCustomer2.Name = "NewCustomer2";
+
+      Official official2 = Official.GetObject (DomainObjectIDs.Official2);
+      Ceo newCeo1 = new Ceo ();
+      Ceo newCeo2 = new Ceo ();
+      Order newOrder1 = new Order ();
+      newOrder1.DeliveryDate = new DateTime (2006, 1, 1);
+
+      Order newOrder2 = new Order ();
+      newOrder2.DeliveryDate = new DateTime (2006, 2, 2);
+
+      OrderItem newOrderItem1 = new OrderItem ();
+      OrderItem newOrderItem2 = new OrderItem ();
+
+      DomainObject[] domainObjects = new DomainObject[] 
     { 
       newCustomer1, 
       newCustomer2, 
@@ -75,7 +75,7 @@ public class DomainObjectTest : ClientTransactionBaseTest
       newOrderItem2 
     };
 
-    DomainObjectCollection[] collections = new DomainObjectCollection[] 
+      DomainObjectCollection[] collections = new DomainObjectCollection[] 
     { 
       newCustomer1.Orders, 
       newCustomer2.Orders, 
@@ -84,40 +84,40 @@ public class DomainObjectTest : ClientTransactionBaseTest
       newOrder2.OrderItems 
     };
 
-    SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjects, collections);
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjects, collections);
 
-    //1
-    newCeo1.Company = newCustomer1;
-    //2
-    newCeo2.Company = newCustomer1;
-    //3
-    newCeo1.Company = newCustomer2;
-    //4
-    newCeo1.Company = null;
+      //1
+      newCeo1.Company = newCustomer1;
+      //2
+      newCeo2.Company = newCustomer1;
+      //3
+      newCeo1.Company = newCustomer2;
+      //4
+      newCeo1.Company = null;
 
-    //5
-    newCustomer1.Orders.Add (newOrder1);
-    //6
-    newCustomer1.Orders.Add (newOrder2);
-    //7
-    newCustomer1.Orders.Remove (newOrder2);
-    
-    //8
-    newOrderItem1.Order = newOrder1;
-    //9
-    newOrderItem2.Order = newOrder1;
-    //10
-    newOrderItem1.Order = null;
-    //11
-    newOrderItem1.Order = newOrder2;
+      //5
+      newCustomer1.Orders.Add (newOrder1);
+      //6
+      newCustomer1.Orders.Add (newOrder2);
+      //7
+      newCustomer1.Orders.Remove (newOrder2);
 
-    //12
-    newOrder1.Official = official2;
+      //8
+      newOrderItem1.Order = newOrder1;
+      //9
+      newOrderItem2.Order = newOrder1;
+      //10
+      newOrderItem1.Order = null;
+      //11
+      newOrderItem1.Order = newOrder2;
 
-    //13
-    OrderTicket newOrderTicket1 = new OrderTicket (newOrder1);
+      //12
+      newOrder1.Official = official2;
 
-    ChangeState[] expectedChangeStates = new ChangeState[]
+      //13
+      OrderTicket newOrderTicket1 = new OrderTicket (newOrder1);
+
+      ChangeState[] expectedChangeStates = new ChangeState[]
     { 
       new RelationChangeState (newCeo1, "Company", null, newCustomer1, "1: 1. Changing event of newCeo from null to newCustomer1"),
       new RelationChangeState (newCustomer1, "Ceo", null, newCeo1, "1: 2. Changing event of newCustomer1 from null to newCeo1"),
@@ -199,20 +199,20 @@ public class DomainObjectTest : ClientTransactionBaseTest
 
       new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "13: 1. Changing event of newOrder1 from null to newOrderTicket1"),
       new RelationChangeState (newOrder1, "OrderTicket", null, null, "13: 2. Changed event of newOrder1 from null to newOrderTicket1")
-    };      
+    };
 
-    eventReceiver.Check (expectedChangeStates);
-    eventReceiver.Unregister ();
-  
-    eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] { newCustomer1, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-        new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders } );
+      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Unregister ();
 
-    //14
-    newOrderTicket1.Order = newOrder2;
+      eventReceiver = new SequenceEventReceiver (
+          new DomainObject[] { newCustomer1, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
+          new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders });
+
+      //14
+      newOrderTicket1.Order = newOrder2;
 
 
-    expectedChangeStates = new ChangeState[]
+      expectedChangeStates = new ChangeState[]
     { 
       new RelationChangeState (newOrderTicket1, "Order", newOrder1, newOrder2, "14: 1. Changing event of newOrderTicket1 from newOrder1 to newOrder2"),
       new RelationChangeState (newOrder1, "OrderTicket", newOrderTicket1, null, "14: 2. Changing event of newOrder1 from newOrderTicket1 to null"),
@@ -222,17 +222,17 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newOrder2, "OrderTicket", null, null, "14: 6. Changed event of newOrder1 from null to newOrderTicket1"),
     };
 
-    eventReceiver.Check (expectedChangeStates);
-    eventReceiver.Unregister ();
+      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Unregister ();
 
-    //15a
-    eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] { newCustomer1, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-        new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders } );
+      //15a
+      eventReceiver = new SequenceEventReceiver (
+          new DomainObject[] { newCustomer1, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
+          new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders });
 
-    newOrder2.Customer = newCustomer1;
+      newOrder2.Customer = newCustomer1;
 
-    expectedChangeStates = new ChangeState[]
+      expectedChangeStates = new ChangeState[]
     { 
       new RelationChangeState (newOrder2, "Customer", null, newCustomer1, "15a: 1. Changing event of newOrder2 from null to newCustomer1.Orders"),
       new CollectionChangeState (newCustomer1.Orders, newOrder2, "15a: 2. Adding of newOrder2 to newCustomer1"),
@@ -242,17 +242,17 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newCustomer1, "Orders", null, null, "15a: 6. Changed event of newCustomer2 from null to newOrder2"),
     };
 
-    eventReceiver.Check (expectedChangeStates);
-    eventReceiver.Unregister ();
-    
-    //15b
-    eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-        new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders } );
+      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Unregister ();
 
-    newOrder2.Customer = newCustomer2;
+      //15b
+      eventReceiver = new SequenceEventReceiver (
+          new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
+          new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders });
 
-    expectedChangeStates = new ChangeState[]
+      newOrder2.Customer = newCustomer2;
+
+      expectedChangeStates = new ChangeState[]
     { 
       new RelationChangeState (newOrder2, "Customer", newCustomer1, newCustomer2, "15b: 1. Changing event of newOrder2 from null to newCustomer2.Orders"),
       new CollectionChangeState (newCustomer1.Orders, newOrder2, "15b: 2. Removing of newOrder2 from newCustomer1"),
@@ -266,17 +266,17 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newCustomer2, "Orders", null, null, "15b: 10. Changed event of newCustomer2 from null to newOrder2"),
     };
 
-    eventReceiver.Check (expectedChangeStates);
-    eventReceiver.Unregister ();
+      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Unregister ();
 
-    //16
-    eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-        new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders } );
+      //16
+      eventReceiver = new SequenceEventReceiver (
+          new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
+          new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders });
 
-    newOrder2.Delete ();
+      newOrder2.Delete ();
 
-    expectedChangeStates = new ChangeState[]
+      expectedChangeStates = new ChangeState[]
     { 
       new ObjectDeletionState (newOrder2, "16: 1. Deleting event of newOrder2"),
       new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 2. Removing of newOrder2 from newCustomer2"),
@@ -291,17 +291,17 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
     };
 
-    eventReceiver.Check (expectedChangeStates);
-    eventReceiver.Unregister ();
+      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Unregister ();
 
-    //17
-    eventReceiver = new SequenceEventReceiver (
-        new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder1, newOrderItem1 },
-        new DomainObjectCollection[] { newCustomer1.Orders, newCustomer2.Orders } );
+      //17
+      eventReceiver = new SequenceEventReceiver (
+          new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder1, newOrderItem1 },
+          new DomainObjectCollection[] { newCustomer1.Orders, newCustomer2.Orders });
 
-    newOrderTicket1.Order = newOrder1;
+      newOrderTicket1.Order = newOrder1;
 
-    expectedChangeStates = new ChangeState[]
+      expectedChangeStates = new ChangeState[]
     { 
       new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
       new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
@@ -309,196 +309,196 @@ public class DomainObjectTest : ClientTransactionBaseTest
       new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
     };
 
-    eventReceiver.Check (expectedChangeStates);
-    eventReceiver.Unregister ();
+      eventReceiver.Check (expectedChangeStates);
+      eventReceiver.Unregister ();
 
-    //cleanup for commit
-    newCustomer2.Delete ();
-    newCeo1.Delete ();
-    newOrderItem1.Delete ();
+      //cleanup for commit
+      newCustomer2.Delete ();
+      newCeo1.Delete ();
+      newOrderItem1.Delete ();
 
-    ClientTransaction.Current.Commit ();
-  }
+      ClientTransaction.Current.Commit ();
+    }
 
-  [Test]
-  public void SetValuesAndAccessOriginalValuesTest ()
-  {
-    OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
-
-    DataContainer dataContainer = orderItem.DataContainer;
-
-    dataContainer.SetValue ("Product", "newProduct");
-
-    Assert.IsFalse (dataContainer.PropertyValues["Product"].OriginalValue.ToString () == "newProduct");
-    Assert.AreEqual ("newProduct", orderItem.Product);
-
-    ClientTransactionMock.Commit ();
-    orderItem.Product = "newProduct2";
-
-    Assert.IsTrue (dataContainer.PropertyValues["Product"].OriginalValue.ToString () == "newProduct");
-    Assert.AreEqual ("newProduct2", orderItem.Product);
-  }
-
-  [Test]
-  [ExpectedException(typeof(MandatoryRelationNotSetException))]
-  public void NewCustomerAndCEOTest ()
-  {
-    IndustrialSector industrialSector = new IndustrialSector ();
-    Customer customer = new Customer ();
-    customer.Ceo = new Ceo ();
-
-    industrialSector.Companies.Add (customer);
-
-    Order order1 = new Order ();
-    new OrderTicket (order1);
-
-    //getting an SQL Exception without this line
-    order1.DeliveryDate = DateTime.Now; 
-
-    OrderItem orderItem = new OrderItem ();
-    order1.OrderItems.Add (orderItem);
-    order1.Official = Official.GetObject (DomainObjectIDs.Official2);
-    customer.Orders.Add (order1);
-  
-    try
+    [Test]
+    public void SetValuesAndAccessOriginalValuesTest ()
     {
+      OrderItem orderItem = OrderItem.GetObject (DomainObjectIDs.OrderItem1);
+
+      DataContainer dataContainer = orderItem.DataContainer;
+
+      dataContainer.SetValue ("Product", "newProduct");
+
+      Assert.IsFalse (dataContainer.PropertyValues["Product"].OriginalValue.ToString () == "newProduct");
+      Assert.AreEqual ("newProduct", orderItem.Product);
+
+      ClientTransactionMock.Commit ();
+      orderItem.Product = "newProduct2";
+
+      Assert.IsTrue (dataContainer.PropertyValues["Product"].OriginalValue.ToString () == "newProduct");
+      Assert.AreEqual ("newProduct2", orderItem.Product);
+    }
+
+    [Test]
+    [ExpectedException (typeof (MandatoryRelationNotSetException))]
+    public void NewCustomerAndCEOTest ()
+    {
+      IndustrialSector industrialSector = new IndustrialSector ();
+      Customer customer = new Customer ();
+      customer.Ceo = new Ceo ();
+
+      industrialSector.Companies.Add (customer);
+
+      Order order1 = new Order ();
+      new OrderTicket (order1);
+
+      //getting an SQL Exception without this line
+      order1.DeliveryDate = DateTime.Now;
+
+      OrderItem orderItem = new OrderItem ();
+      order1.OrderItems.Add (orderItem);
+      order1.Official = Official.GetObject (DomainObjectIDs.Official2);
+      customer.Orders.Add (order1);
+
+      try
+      {
+        ClientTransactionMock.Commit ();
+      }
+      catch (MandatoryRelationNotSetException)
+      {
+        Assert.Fail ("MandatoryRelationNotSetException was thrown when none was expected.");
+      }
+
+      customer.Delete ();
+      ClientTransaction.Current.Commit ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException))]
+    public void AddInvalidPropertyValueTest ()
+    {
+      Employee employee = new Employee ();
+
+      PropertyDefinition propertyDefinition = new PropertyDefinition ("testproperty", "testproperty", "string", true, true, 10);
+      PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
+
+      Assert.IsFalse (propertyValues.Contains ("testproperty"));
+
+      propertyValues.Add (new PropertyValue (propertyDefinition));
+
+      Assert.IsTrue (propertyValues.Contains ("testproperty"));
+      Assert.IsNotNull (propertyValues["testproperty"]);
+
       ClientTransactionMock.Commit ();
     }
-    catch (MandatoryRelationNotSetException)
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException))]
+    public void AddPropertyValueWithExistingNameTest ()
     {
-      Assert.Fail ("MandatoryRelationNotSetException was thrown when none was expected.");
+      Employee employee = new Employee ();
+
+      PropertyDefinition propertyDefinition = new PropertyDefinition ("Name", "Name", "string", true, true, 10);
+      PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
+
+      Assert.IsTrue (propertyValues.Contains ("Name"));
+
+      propertyValues.Add (new PropertyValue (propertyDefinition));
     }
 
-    customer.Delete ();
-    ClientTransaction.Current.Commit ();
+    [Test]
+    public void PropertyEventsOfNewObjectPropertyChangeTest ()
+    {
+      Order newOrder = new Order ();
+
+      InitializeEventReceivers (newOrder);
+      CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+
+      newOrder.DeliveryDate = DateTime.Now;
+
+      CheckEvents (_orderDeliveryDatePropertyEventReceiver, _orderDeliveryDateProperty);
+    }
+
+    [Test]
+    public void PropertyEventsOfNewObjectRelationChangeTest ()
+    {
+      Order newOrder = new Order ();
+
+      InitializeEventReceivers (newOrder);
+      CheckNoEvents (_orderCustomerPropertyEventReceiver);
+
+      newOrder.Customer = null;
+
+      CheckNoEvents (_orderCustomerPropertyEventReceiver);
+    }
+
+    [Test]
+    public void PropertyEventsOfExistingObjectPropertyChangeTest ()
+    {
+      Order order2 = Order.GetObject (DomainObjectIDs.Order2);
+
+      InitializeEventReceivers (order2);
+      CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+
+      order2.DeliveryDate = DateTime.Now;
+
+      CheckEvents (_orderDeliveryDatePropertyEventReceiver, _orderDeliveryDateProperty);
+    }
+
+    [Test]
+    public void PropertyEventsOfExistingObjectRelationChangeTest ()
+    {
+      Order order2 = Order.GetObject (DomainObjectIDs.Order2);
+
+      InitializeEventReceivers (order2);
+      CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+
+      order2.Customer = null;
+
+      CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
+    }
+
+    private void InitializeEventReceivers (Order order)
+    {
+      _orderDataContainer = order.DataContainer;
+      _orderPropertyValues = _orderDataContainer.PropertyValues;
+      _orderDeliveryDateProperty = _orderPropertyValues["DeliveryDate"];
+      _orderCustomerProperty = _orderPropertyValues["Customer"];
+
+      _orderDomainObjectEventReceiver = new DomainObjectEventReceiver (order);
+      _orderDataContainerEventReceiver = new PropertyValueContainerEventReceiver (_orderDataContainer, false);
+      _orderPropertyValuesEventReceiver = new PropertyValueContainerEventReceiver (_orderPropertyValues, false);
+
+      _orderDeliveryDatePropertyEventReceiver = new PropertyValueEventReceiver (_orderDeliveryDateProperty);
+      _orderCustomerPropertyEventReceiver = new PropertyValueEventReceiver (_orderCustomerProperty);
+    }
+
+    private void CheckNoEvents (PropertyValueEventReceiver propertyValueEventReceiver)
+    {
+      Assert.IsFalse (propertyValueEventReceiver.HasChangingEventBeenCalled);
+      Assert.IsFalse (propertyValueEventReceiver.HasChangedEventBeenCalled);
+      Assert.IsNull (_orderPropertyValuesEventReceiver.ChangingPropertyValue);
+      Assert.IsNull (_orderPropertyValuesEventReceiver.ChangedPropertyValue);
+      Assert.IsNull (_orderDataContainerEventReceiver.ChangingPropertyValue);
+      Assert.IsNull (_orderDataContainerEventReceiver.ChangedPropertyValue);
+      Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangingEventBeenCalled);
+      Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangedEventBeenCalled);
+      Assert.IsNull (_orderDomainObjectEventReceiver.ChangingPropertyValue);
+      Assert.IsNull (_orderDomainObjectEventReceiver.ChangedPropertyValue);
+    }
+
+    private void CheckEvents (PropertyValueEventReceiver propertyValueEventReceiver, PropertyValue propertyValue)
+    {
+      Assert.IsTrue (propertyValueEventReceiver.HasChangingEventBeenCalled);
+      Assert.IsTrue (propertyValueEventReceiver.HasChangedEventBeenCalled);
+      Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangingPropertyValue);
+      Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangedPropertyValue);
+      Assert.AreSame (propertyValue, _orderDataContainerEventReceiver.ChangingPropertyValue);
+      Assert.AreSame (propertyValue, _orderDataContainerEventReceiver.ChangedPropertyValue);
+      Assert.IsTrue (_orderDomainObjectEventReceiver.HasChangingEventBeenCalled);
+      Assert.IsTrue (_orderDomainObjectEventReceiver.HasChangedEventBeenCalled);
+      Assert.AreSame (propertyValue, _orderDomainObjectEventReceiver.ChangingPropertyValue);
+      Assert.AreSame (propertyValue, _orderDomainObjectEventReceiver.ChangedPropertyValue);
+    }
   }
-
-  [Test]
-  [ExpectedException (typeof (RdbmsProviderException))]
-  public void AddInvalidPropertyValueTest ()
-  {
-    Employee employee = new Employee ();
-
-    PropertyDefinition propertyDefinition = new PropertyDefinition ("testproperty", "testproperty", "string", true, true, 10);
-    PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
-
-    Assert.IsFalse (propertyValues.Contains ("testproperty"));
-
-    propertyValues.Add (new PropertyValue (propertyDefinition));
-  
-    Assert.IsTrue (propertyValues.Contains ("testproperty"));
-    Assert.IsNotNull (propertyValues["testproperty"]);
-
-    ClientTransactionMock.Commit ();
-  }
-
-  [Test]
-  [ExpectedException (typeof (ArgumentException))]
-  public void AddPropertyValueWithExistingNameTest ()
-  {
-    Employee employee = new Employee ();
-
-    PropertyDefinition propertyDefinition = new PropertyDefinition ("Name", "Name", "string", true, true, 10);
-    PropertyValueCollection propertyValues = employee.DataContainer.PropertyValues;
-
-    Assert.IsTrue (propertyValues.Contains ("Name"));
-
-    propertyValues.Add (new PropertyValue (propertyDefinition));
-  }
-
-  [Test]
-  public void PropertyEventsOfNewObjectPropertyChangeTest ()
-  {
-    Order newOrder = new Order ();
-
-    InitializeEventReceivers (newOrder);
-    CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
-
-    newOrder.DeliveryDate = DateTime.Now;
-
-    CheckEvents (_orderDeliveryDatePropertyEventReceiver, _orderDeliveryDateProperty);
-  }
-
-  [Test]
-  public void PropertyEventsOfNewObjectRelationChangeTest ()
-  {
-    Order newOrder = new Order ();
-
-    InitializeEventReceivers (newOrder);
-    CheckNoEvents (_orderCustomerPropertyEventReceiver);
-
-    newOrder.Customer = null;
-
-    CheckNoEvents (_orderCustomerPropertyEventReceiver);
-  }
-
-  [Test]
-  public void PropertyEventsOfExistingObjectPropertyChangeTest ()
-  {
-    Order order2 = Order.GetObject (DomainObjectIDs.Order2);
-
-    InitializeEventReceivers (order2);
-    CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
-
-    order2.DeliveryDate = DateTime.Now;
-
-    CheckEvents  (_orderDeliveryDatePropertyEventReceiver, _orderDeliveryDateProperty);
-  }
-
-  [Test]
-  public void PropertyEventsOfExistingObjectRelationChangeTest ()
-  {
-    Order order2 = Order.GetObject (DomainObjectIDs.Order2);
-
-    InitializeEventReceivers (order2);
-    CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
-
-    order2.Customer = null;
-
-    CheckNoEvents  (_orderDeliveryDatePropertyEventReceiver);
-  }
-
-  private void InitializeEventReceivers (Order order)
-  {
-    _orderDataContainer = order.DataContainer;
-    _orderPropertyValues = _orderDataContainer.PropertyValues;
-    _orderDeliveryDateProperty = _orderPropertyValues["DeliveryDate"];
-    _orderCustomerProperty = _orderPropertyValues["Customer"];
-
-    _orderDomainObjectEventReceiver = new DomainObjectEventReceiver (order);
-    _orderDataContainerEventReceiver = new PropertyValueContainerEventReceiver (_orderDataContainer, false);
-    _orderPropertyValuesEventReceiver = new PropertyValueContainerEventReceiver (_orderPropertyValues, false);
-    
-    _orderDeliveryDatePropertyEventReceiver = new PropertyValueEventReceiver (_orderDeliveryDateProperty);
-    _orderCustomerPropertyEventReceiver = new PropertyValueEventReceiver (_orderCustomerProperty);
-  }
-
-  private void CheckNoEvents (PropertyValueEventReceiver propertyValueEventReceiver)
-  {
-    Assert.IsFalse (propertyValueEventReceiver.HasChangingEventBeenCalled);
-    Assert.IsFalse (propertyValueEventReceiver.HasChangedEventBeenCalled);
-    Assert.IsNull (_orderPropertyValuesEventReceiver.ChangingPropertyValue);
-    Assert.IsNull (_orderPropertyValuesEventReceiver.ChangedPropertyValue);
-    Assert.IsNull (_orderDataContainerEventReceiver.ChangingPropertyValue);
-    Assert.IsNull (_orderDataContainerEventReceiver.ChangedPropertyValue);
-    Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangingEventBeenCalled);
-    Assert.IsFalse (_orderDomainObjectEventReceiver.HasChangedEventBeenCalled);
-    Assert.IsNull (_orderDomainObjectEventReceiver.ChangingPropertyValue);
-    Assert.IsNull (_orderDomainObjectEventReceiver.ChangedPropertyValue);
-  }
-
-  private void CheckEvents (PropertyValueEventReceiver propertyValueEventReceiver, PropertyValue propertyValue)
-  {
-    Assert.IsTrue (propertyValueEventReceiver.HasChangingEventBeenCalled);
-    Assert.IsTrue (propertyValueEventReceiver.HasChangedEventBeenCalled);
-    Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangingPropertyValue);
-    Assert.AreSame (propertyValue, _orderPropertyValuesEventReceiver.ChangedPropertyValue);
-    Assert.AreSame (propertyValue, _orderDataContainerEventReceiver.ChangingPropertyValue);
-    Assert.AreSame (propertyValue, _orderDataContainerEventReceiver.ChangedPropertyValue);
-    Assert.IsTrue (_orderDomainObjectEventReceiver.HasChangingEventBeenCalled);
-    Assert.IsTrue (_orderDomainObjectEventReceiver.HasChangedEventBeenCalled);
-    Assert.AreSame (propertyValue, _orderDomainObjectEventReceiver.ChangingPropertyValue);
-    Assert.AreSame (propertyValue, _orderDomainObjectEventReceiver.ChangedPropertyValue);
-  }
-}
 }

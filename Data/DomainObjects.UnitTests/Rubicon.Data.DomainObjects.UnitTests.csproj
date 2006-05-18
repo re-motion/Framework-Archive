@@ -498,6 +498,7 @@
     <Compile Include="Serialization\QueriesTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StandardMappingTest.cs" />
     <Compile Include="TestDomain\Ceo.cs">
       <SubType>Code</SubType>
     </Compile>

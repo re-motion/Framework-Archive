@@ -8,71 +8,70 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
-
-[TestFixture]
-public class ClassDefinitionLoaderWithUnresolvedTypesTest
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  private ClassDefinitionLoader _loader;
-
-  // construction and disposing
-
-  public ClassDefinitionLoaderWithUnresolvedTypesTest ()
+  [TestFixture]
+  public class ClassDefinitionLoaderWithUnresolvedTypesTest : StandardMappingTest
   {
+    // types
+
+    // static members and constants
+
+    // member fields
+
+    private ClassDefinitionLoader _loader;
+
+    // construction and disposing
+
+    public ClassDefinitionLoaderWithUnresolvedTypesTest ()
+    {
+    }
+
+    // methods and properties
+
+    [SetUp]
+    public void SetUp ()
+    {
+      XmlDocument mappingDocument = new XmlDocument ();
+      mappingDocument.Load (@"mappingWithUnresolvedTypes.xml");
+
+      PrefixNamespace[] namespaces = new PrefixNamespace[] { PrefixNamespace.MappingNamespace };
+      ConfigurationNamespaceManager namespaceManager = new ConfigurationNamespaceManager (mappingDocument, namespaces);
+
+      _loader = new ClassDefinitionLoader (mappingDocument, namespaceManager, false);
+    }
+
+    [Test]
+    public void Initialize ()
+    {
+      Assert.IsFalse (_loader.ResolveTypes);
+    }
+
+    [Test]
+    public void MappingWithUnresolvedTypes ()
+    {
+      ClassDefinitionCollection classDefinitions = _loader.GetClassDefinitions ();
+
+      Assert.IsFalse (classDefinitions.AreResolvedTypesRequired);
+      Assert.AreEqual (4, classDefinitions.Count);
+
+      ClassDefinition classDefinition = classDefinitions.GetMandatory ("Customer");
+      Assert.IsFalse (classDefinition.IsClassTypeResolved);
+      Assert.AreEqual ("UnresolvedCustomerType, UnknownAssembly", classDefinition.ClassTypeName);
+
+      PropertyDefinitionCollection propertyDefinitions = classDefinition.GetPropertyDefinitions ();
+      Assert.AreEqual (2, propertyDefinitions.Count);
+
+      PropertyDefinition customerSinceProperty = propertyDefinitions["CustomerSince"];
+      Assert.IsFalse (customerSinceProperty.IsPropertyTypeResolved);
+      Assert.AreEqual ("dateTime", customerSinceProperty.MappingTypeName);
+
+      PropertyDefinition customerTypeProperty = propertyDefinitions["Type"];
+      Assert.IsFalse (customerTypeProperty.IsPropertyTypeResolved);
+      Assert.AreEqual ("UnresolvedCustomerType+UnresolvedCustomerEnum, UnknownAssembly", customerTypeProperty.MappingTypeName);
+
+      ClassDefinition orderDefinition = classDefinitions.GetMandatory ("Order");
+      PropertyDefinition customerProperty = orderDefinition.GetMandatoryPropertyDefinition ("Customer");
+      Assert.IsFalse (customerProperty.IsPropertyTypeResolved);
+      Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, customerProperty.MappingTypeName);
+    }
   }
-
-  // methods and properties
-
-  [SetUp]
-  public void SetUp ()
-  {
-    XmlDocument mappingDocument = new XmlDocument ();
-    mappingDocument.Load (@"mappingWithUnresolvedTypes.xml");
-
-    PrefixNamespace[] namespaces = new PrefixNamespace[] {PrefixNamespace.MappingNamespace};
-    ConfigurationNamespaceManager namespaceManager = new ConfigurationNamespaceManager (mappingDocument, namespaces);
-    
-    _loader = new ClassDefinitionLoader (mappingDocument, namespaceManager, false);
-  }
-
-  [Test]
-  public void Initialize ()
-  {
-    Assert.IsFalse (_loader.ResolveTypes);
-  }
-  
-  [Test]
-  public void MappingWithUnresolvedTypes ()
-  {
-    ClassDefinitionCollection classDefinitions = _loader.GetClassDefinitions ();
-
-    Assert.IsFalse (classDefinitions.AreResolvedTypesRequired);
-    Assert.AreEqual (4, classDefinitions.Count);
-    
-    ClassDefinition classDefinition = classDefinitions.GetMandatory ("Customer");
-    Assert.IsFalse (classDefinition.IsClassTypeResolved);
-    Assert.AreEqual ("UnresolvedCustomerType, UnknownAssembly", classDefinition.ClassTypeName);
-
-    PropertyDefinitionCollection propertyDefinitions = classDefinition.GetPropertyDefinitions();
-    Assert.AreEqual (2, propertyDefinitions.Count);
-
-    PropertyDefinition customerSinceProperty = propertyDefinitions["CustomerSince"];
-    Assert.IsFalse (customerSinceProperty.IsPropertyTypeResolved);
-    Assert.AreEqual ("dateTime", customerSinceProperty.MappingTypeName);
-
-    PropertyDefinition customerTypeProperty = propertyDefinitions["Type"];
-    Assert.IsFalse (customerTypeProperty.IsPropertyTypeResolved);
-    Assert.AreEqual ("UnresolvedCustomerType+UnresolvedCustomerEnum, UnknownAssembly", customerTypeProperty.MappingTypeName);
-
-    ClassDefinition orderDefinition = classDefinitions.GetMandatory ("Order");
-    PropertyDefinition customerProperty = orderDefinition.GetMandatoryPropertyDefinition ("Customer");
-    Assert.IsFalse (customerProperty.IsPropertyTypeResolved);
-    Assert.AreEqual (TypeInfo.ObjectIDMappingTypeName, customerProperty.MappingTypeName);
-  }
-}
 }

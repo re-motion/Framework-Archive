@@ -4,45 +4,47 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-public class ClassWithInvalidRelation : TestDomainBase
-{
-  // types
-
-  // static members and constants
-
-  public static new ClassWithInvalidRelation GetObject (ObjectID id)
+  public class ClassWithInvalidRelation : TestDomainBase
   {
-    return (ClassWithInvalidRelation) DomainObject.GetObject (id);
-  }
+    // types
 
-  // member fields
+    // static members and constants
 
-  // construction and disposing
-
-  public ClassWithInvalidRelation ()
-  {
-  }
-
-  public ClassWithInvalidRelation (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
-  protected ClassWithInvalidRelation (DataContainer dataContainer) : base (dataContainer)
-  {
-  }
-
-  // methods and properties
-
-  public ClassWithGuidKey ClassWithGuidKey
-  {
-    get
+    public static new ClassWithInvalidRelation GetObject (ObjectID id)
     {
-      return (ClassWithGuidKey) GetRelatedObject ("ClassWithGuidKey");
+      return (ClassWithInvalidRelation) DomainObject.GetObject (id);
     }
-    set 
-    { 
-      SetRelatedObject ("ClassWithGuidKey", value); 
+
+    // member fields
+
+    // construction and disposing
+
+    public ClassWithInvalidRelation ()
+    {
+    }
+
+    public ClassWithInvalidRelation (ClientTransaction clientTransaction)
+      : base (clientTransaction)
+    {
+    }
+
+    protected ClassWithInvalidRelation (DataContainer dataContainer)
+      : base (dataContainer)
+    {
+    }
+
+    // methods and properties
+
+    public ClassWithGuidKey ClassWithGuidKey
+    {
+      get
+      {
+        return (ClassWithGuidKey) GetRelatedObject ("ClassWithGuidKey");
+      }
+      set
+      {
+        SetRelatedObject ("ClassWithGuidKey", value);
+      }
     }
   }
-}
 }

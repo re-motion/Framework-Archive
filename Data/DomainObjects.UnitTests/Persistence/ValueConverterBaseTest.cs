@@ -7,88 +7,88 @@ using Rubicon.NullableValueTypes;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
-[TestFixture]
-public class ValueConverterBaseTest
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  private ValueConverterBaseMock _converterMock;
-
-  // construction and disposing
-
-  public ValueConverterBaseTest ()
+  [TestFixture]
+  public class ValueConverterBaseTest : StandardMappingTest
   {
+    // types
+
+    // static members and constants
+
+    // member fields
+
+    private ValueConverterBaseMock _converterMock;
+
+    // construction and disposing
+
+    public ValueConverterBaseTest ()
+    {
+    }
+
+    // methods and properties
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _converterMock = new ValueConverterBaseMock ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConverterException),
+        "Enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType'"
+        + " does not define the value 'InvalidEnumValue', property 'Type'.")]
+    public void GetInvalidEnumValue ()
+    {
+      ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
+      PropertyDefinition enumProperty = customerDefinition["Type"];
+
+      _converterMock.GetEnumValue (enumProperty, "InvalidEnumValue");
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConverterException), "Invalid null value for not-nullable property 'Type' encountered. Class: 'Customer'.")]
+    public void GetNullValueForEnum ()
+    {
+      ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
+      PropertyDefinition enumProperty = customerDefinition["Type"];
+
+      _converterMock.GetValue (customerDefinition, enumProperty, null);
+    }
+
+    [Test]
+    public void GetNullValueForNaDateTime ()
+    {
+      ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
+      PropertyDefinition dateTimeProperty = customerDefinition["CustomerSince"];
+
+      Assert.AreEqual (NaDateTime.Null, _converterMock.GetValue (customerDefinition, dateTimeProperty, null));
+    }
+
+    [Test]
+    public void GetObjectIDWithInt32Value ()
+    {
+      ObjectID expectedID = new ObjectID ("Official", 1);
+      ObjectID actualID = _converterMock.GetObjectID (MappingConfiguration.Current.ClassDefinitions["Official"], 1);
+
+      Assert.AreEqual (expectedID, actualID);
+    }
+
+    [Test]
+    public void GetObjectIDWithStringValue ()
+    {
+      ObjectID expectedID = new ObjectID ("Official", "StringValue");
+      ObjectID actualID = _converterMock.GetObjectID (MappingConfiguration.Current.ClassDefinitions["Official"], "StringValue");
+
+      Assert.AreEqual (expectedID, actualID);
+    }
+
+    [Test]
+    public void GetObjectIDWithGuidValue ()
+    {
+      Guid value = Guid.NewGuid ();
+      ObjectID expectedID = new ObjectID ("Order", value);
+      ObjectID actualID = _converterMock.GetObjectID (MappingConfiguration.Current.ClassDefinitions["Order"], value);
+
+      Assert.AreEqual (expectedID, actualID);
+    }
   }
-
-  // methods and properties
-
-  [SetUp]
-  public void SetUp ()
-  {
-    _converterMock = new ValueConverterBaseMock ();
-  }
-
-  [Test]
-  [ExpectedException (typeof (ConverterException), 
-      "Enumeration 'Rubicon.Data.DomainObjects.UnitTests.TestDomain.Customer+CustomerType'"
-      + " does not define the value 'InvalidEnumValue', property 'Type'.")]
-  public void GetInvalidEnumValue ()
-  {
-    ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-    PropertyDefinition enumProperty = customerDefinition["Type"];
-
-    _converterMock.GetEnumValue (enumProperty, "InvalidEnumValue");    
-  }
-
-  [Test]
-  [ExpectedException (typeof (ConverterException), "Invalid null value for not-nullable property 'Type' encountered. Class: 'Customer'.")]
-  public void GetNullValueForEnum ()
-  {
-    ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-    PropertyDefinition enumProperty = customerDefinition["Type"];
-
-    _converterMock.GetValue (customerDefinition, enumProperty, null);
-  }
-
-  [Test]
-  public void GetNullValueForNaDateTime ()
-  {
-    ClassDefinition customerDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory ("Customer");
-    PropertyDefinition dateTimeProperty = customerDefinition["CustomerSince"];
-
-    Assert.AreEqual (NaDateTime.Null, _converterMock.GetValue (customerDefinition, dateTimeProperty, null));
-  }
-
-  [Test]
-  public void GetObjectIDWithInt32Value ()
-  {
-    ObjectID expectedID = new ObjectID ("Official", 1);
-    ObjectID actualID = _converterMock.GetObjectID (MappingConfiguration.Current.ClassDefinitions["Official"], 1);
-    
-    Assert.AreEqual (expectedID, actualID);
-  }
-
-  [Test]
-  public void GetObjectIDWithStringValue ()
-  {
-    ObjectID expectedID = new ObjectID ("Official", "StringValue");
-    ObjectID actualID = _converterMock.GetObjectID (MappingConfiguration.Current.ClassDefinitions["Official"], "StringValue");
-    
-    Assert.AreEqual (expectedID, actualID);
-  }
-
-  [Test]
-  public void GetObjectIDWithGuidValue ()
-  {
-    Guid value = Guid.NewGuid ();
-    ObjectID expectedID = new ObjectID ("Order", value);
-    ObjectID actualID = _converterMock.GetObjectID (MappingConfiguration.Current.ClassDefinitions["Order"], value);
-    
-    Assert.AreEqual (expectedID, actualID);
-  }
-}
 }

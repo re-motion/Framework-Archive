@@ -4,34 +4,36 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-public class ClassWithoutIDProperty : TestDomainBase
-{
-  // types
-
-  // static members and constants
-
-  public static new ClassWithoutIDProperty GetObject (ObjectID id)
+  public class ClassWithoutIDProperty : TestDomainBase
   {
-    return (ClassWithoutIDProperty) DomainObject.GetObject (id);
+    // types
+
+    // static members and constants
+
+    public static new ClassWithoutIDProperty GetObject (ObjectID id)
+    {
+      return (ClassWithoutIDProperty) DomainObject.GetObject (id);
+    }
+
+    // member fields
+
+    // construction and disposing
+
+    public ClassWithoutIDProperty ()
+    {
+    }
+
+    public ClassWithoutIDProperty (ClientTransaction clientTransaction)
+      : base (clientTransaction)
+    {
+    }
+
+    protected ClassWithoutIDProperty (DataContainer dataContainer)
+      : base (dataContainer)
+    {
+    }
+
+    // methods and properties
+
   }
-
-  // member fields
-
-  // construction and disposing
-
-  public ClassWithoutIDProperty ()
-  {
-  }
-
-  public ClassWithoutIDProperty (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
-  protected ClassWithoutIDProperty (DataContainer dataContainer) : base (dataContainer)
-  {
-  }
-
-  // methods and properties
-
-}
 }

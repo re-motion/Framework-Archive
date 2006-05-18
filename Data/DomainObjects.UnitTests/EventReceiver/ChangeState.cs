@@ -4,66 +4,67 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-[Serializable]
-public class ChangeState
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  private object _sender;
-  private string _message;
-
-  // construction and disposing
-
-  public ChangeState (object sender) : this (sender, null)
+  [Serializable]
+  public class ChangeState
   {
-  }
+    // types
 
-  public ChangeState (object sender, string message)
-  {
-    ArgumentUtility.CheckNotNull ("sender", sender);
+    // static members and constants
 
-    _sender = sender;
-    _message = message;
-  }
+    // member fields
 
-  // methods and properties
+    private object _sender;
+    private string _message;
 
-  public object Sender
-  {
-    get { return _sender; }
-  }
+    // construction and disposing
 
-  public string Message
-  {
-    get { return _message; }
-  }
-
-  public virtual void Check (ChangeState expectedState)
-  {
-    ArgumentUtility.CheckNotNull ("expectedState", expectedState);
-
-    if (this.GetType () != expectedState.GetType ())
+    public ChangeState (object sender)
+      : this (sender, null)
     {
-      throw CreateApplicationException (
-          "Type of actual state '{0}' does not match type of expected state '{1}'.", 
-          this.GetType (), 
-          expectedState.GetType ());
     }
 
-    if (!object.ReferenceEquals (_sender, expectedState.Sender))
+    public ChangeState (object sender, string message)
     {
-      throw CreateApplicationException (
-          "Actual sender '{0}' does not match expected sender '{1}'.", _sender, expectedState.Sender);
+      ArgumentUtility.CheckNotNull ("sender", sender);
+
+      _sender = sender;
+      _message = message;
+    }
+
+    // methods and properties
+
+    public object Sender
+    {
+      get { return _sender; }
+    }
+
+    public string Message
+    {
+      get { return _message; }
+    }
+
+    public virtual void Check (ChangeState expectedState)
+    {
+      ArgumentUtility.CheckNotNull ("expectedState", expectedState);
+
+      if (this.GetType () != expectedState.GetType ())
+      {
+        throw CreateApplicationException (
+            "Type of actual state '{0}' does not match type of expected state '{1}'.",
+            this.GetType (),
+            expectedState.GetType ());
+      }
+
+      if (!object.ReferenceEquals (_sender, expectedState.Sender))
+      {
+        throw CreateApplicationException (
+            "Actual sender '{0}' does not match expected sender '{1}'.", _sender, expectedState.Sender);
+      }
+    }
+
+    protected ApplicationException CreateApplicationException (string message, params object[] args)
+    {
+      return new ApplicationException (string.Format (message, args));
     }
   }
-
-  protected ApplicationException CreateApplicationException (string message, params object[] args)
-  {
-    return new ApplicationException (string.Format (message, args));
-  }
-}
 }

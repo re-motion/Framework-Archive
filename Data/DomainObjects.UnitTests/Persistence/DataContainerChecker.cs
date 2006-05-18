@@ -5,37 +5,37 @@ using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 {
-public class DataContainerChecker
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public DataContainerChecker ()
+  public class DataContainerChecker
   {
-  }
+    // types
 
-  // methods and properties
+    // static members and constants
 
-  public void Check (DataContainer expectedContainer, DataContainer actualContainer)
-  {
-    Assert.IsNotNull (actualContainer, "actualContainer");
-    Assert.AreEqual (expectedContainer.ID.Value, actualContainer.ID.Value, "ID");
-    Assert.AreEqual (expectedContainer.DomainObjectType, actualContainer.DomainObjectType, "DomainObjectType");
-    Assert.AreEqual (expectedContainer.State, actualContainer.State, "State");
-    
-    Assert.AreEqual (expectedContainer.PropertyValues.Count, actualContainer.PropertyValues.Count, 
-        "PropertyValues.Count");
+    // member fields
 
-    PropertyValueChecker valueChecker = new PropertyValueChecker ();
-    foreach (PropertyValue expectedPropertyValue in expectedContainer.PropertyValues)
+    // construction and disposing
+
+    public DataContainerChecker ()
     {
-      valueChecker.Check (expectedPropertyValue, actualContainer.PropertyValues[expectedPropertyValue.Name]);
+    }
+
+    // methods and properties
+
+    public void Check (DataContainer expectedContainer, DataContainer actualContainer)
+    {
+      Assert.IsNotNull (actualContainer, "actualContainer");
+      Assert.AreEqual (expectedContainer.ID.Value, actualContainer.ID.Value, "ID");
+      Assert.AreEqual (expectedContainer.DomainObjectType, actualContainer.DomainObjectType, "DomainObjectType");
+      Assert.AreEqual (expectedContainer.State, actualContainer.State, "State");
+
+      Assert.AreEqual (expectedContainer.PropertyValues.Count, actualContainer.PropertyValues.Count,
+          "PropertyValues.Count");
+
+      PropertyValueChecker valueChecker = new PropertyValueChecker ();
+      foreach (PropertyValue expectedPropertyValue in expectedContainer.PropertyValues)
+      {
+        valueChecker.Check (expectedPropertyValue, actualContainer.PropertyValues[expectedPropertyValue.Name]);
+      }
     }
   }
-}
 }

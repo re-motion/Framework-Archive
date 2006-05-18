@@ -4,81 +4,83 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 {
-public class ClassWithGuidKey : TestDomainBase
-{
-  // types
-
-  // static members and constants
-
-  public static new ClassWithGuidKey GetObject (ObjectID id)
+  public class ClassWithGuidKey : TestDomainBase
   {
-    return (ClassWithGuidKey) DomainObject.GetObject (id);
-  }
+    // types
 
-  // member fields
+    // static members and constants
 
-  // construction and disposing
-
-  public ClassWithGuidKey ()
-  {
-  }
-
-  public ClassWithGuidKey (ClientTransaction clientTransaction) : base (clientTransaction)
-  {
-  }
-
-  protected ClassWithGuidKey (DataContainer dataContainer) : base (dataContainer)
-  {
-  }
-
-  // methods and properties
-
-  public ClassWithValidRelations ClassWithValidRelationsOptional
-  {
-    get 
-    { 
-      return (ClassWithValidRelations) GetRelatedObject ("ClassWithValidRelationsOptional"); 
-    }
-    set 
-    { 
-      SetRelatedObject ("ClassWithValidRelationsOptional", value); 
-    }
-  }
-
-  public ClassWithValidRelations ClassWithValidRelationsNonOptional
-  {
-    get
+    public static new ClassWithGuidKey GetObject (ObjectID id)
     {
-      return (ClassWithValidRelations) GetRelatedObject ("ClassWithValidRelationsNonOptional");
+      return (ClassWithGuidKey) DomainObject.GetObject (id);
     }
-    set 
-    { 
-      SetRelatedObject ("ClassWithValidRelationsNonOptional", value); 
-    }
-  }
 
-  public ClassWithInvalidRelation ClassWithInvalidRelation
-  {
-    get
-    {
-      return (ClassWithInvalidRelation) GetRelatedObject ("ClassWithInvalidRelation");
-    }
-    set 
-    { 
-      SetRelatedObject ("ClassWithInvalidRelation", value); 
-    }
-  }
+    // member fields
 
-  public ClassWithRelatedClassIDColumnAndNoInheritance ClassWithRelatedClassIDColumnAndNoInheritance
-  {
-    get
+    // construction and disposing
+
+    public ClassWithGuidKey ()
     {
-      return (ClassWithRelatedClassIDColumnAndNoInheritance) GetRelatedObject ("ClassWithRelatedClassIDColumnAndNoInheritance");
     }
-    set 
-    { 
-      SetRelatedObject ("ClassWithRelatedClassIDColumnAndNoInheritance", value); 
+
+    public ClassWithGuidKey (ClientTransaction clientTransaction)
+      : base (clientTransaction)
+    {
+    }
+
+    protected ClassWithGuidKey (DataContainer dataContainer)
+      : base (dataContainer)
+    {
+    }
+
+    // methods and properties
+
+    public ClassWithValidRelations ClassWithValidRelationsOptional
+    {
+      get
+      {
+        return (ClassWithValidRelations) GetRelatedObject ("ClassWithValidRelationsOptional");
+      }
+      set
+      {
+        SetRelatedObject ("ClassWithValidRelationsOptional", value);
+      }
+    }
+
+    public ClassWithValidRelations ClassWithValidRelationsNonOptional
+    {
+      get
+      {
+        return (ClassWithValidRelations) GetRelatedObject ("ClassWithValidRelationsNonOptional");
+      }
+      set
+      {
+        SetRelatedObject ("ClassWithValidRelationsNonOptional", value);
+      }
+    }
+
+    public ClassWithInvalidRelation ClassWithInvalidRelation
+    {
+      get
+      {
+        return (ClassWithInvalidRelation) GetRelatedObject ("ClassWithInvalidRelation");
+      }
+      set
+      {
+        SetRelatedObject ("ClassWithInvalidRelation", value);
+      }
+    }
+
+    public ClassWithRelatedClassIDColumnAndNoInheritance ClassWithRelatedClassIDColumnAndNoInheritance
+    {
+      get
+      {
+        return (ClassWithRelatedClassIDColumnAndNoInheritance) GetRelatedObject ("ClassWithRelatedClassIDColumnAndNoInheritance");
+      }
+      set
+      {
+        SetRelatedObject ("ClassWithRelatedClassIDColumnAndNoInheritance", value);
+      }
     }
   }
-}
 }

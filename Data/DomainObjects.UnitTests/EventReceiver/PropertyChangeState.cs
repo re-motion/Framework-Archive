@@ -5,91 +5,91 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-[Serializable]
-public class PropertyChangeState : ChangeState
-{
-  // types
+  [Serializable]
+  public class PropertyChangeState : ChangeState
+  {
+    // types
 
-  // static members and constants
+    // static members and constants
 
-  // member fields
+    // member fields
 
-  private PropertyValue _propertyValue;
-  private object _oldValue;
-  private object _newValue;
+    private PropertyValue _propertyValue;
+    private object _oldValue;
+    private object _newValue;
 
-  // construction and disposing
+    // construction and disposing
 
-  public PropertyChangeState (
-      object sender, 
-      PropertyValue propertyValue, 
-      object oldValue, 
-      object newValue)
+    public PropertyChangeState (
+        object sender,
+        PropertyValue propertyValue,
+        object oldValue,
+        object newValue)
       : this (sender, propertyValue, oldValue, newValue, null)
-  {
-  }
+    {
+    }
 
-  public PropertyChangeState (
-      object sender, 
-      PropertyValue propertyValue, 
-      object oldValue, 
-      object newValue, 
-      string message)
+    public PropertyChangeState (
+        object sender,
+        PropertyValue propertyValue,
+        object oldValue,
+        object newValue,
+        string message)
       : base (sender, message)
-  {
-    ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
-
-    _propertyValue = propertyValue;
-    _oldValue = oldValue;
-    _newValue = newValue;
-  }
-
-  // methods and properties
-
-  public PropertyValue PropertyValue
-  {
-    get { return _propertyValue; }
-  }
-
-  public object OldValue
-  {
-    get { return _oldValue; }
-  }
-
-  public object NewValue
-  {
-    get { return _newValue; }
-  }
-
-  public override void Check (ChangeState expectedState)
-  {
-    base.Check (expectedState);
-
-    PropertyChangeState propertyChangeState = (PropertyChangeState) expectedState;
-
-    if (_propertyValue.Name != propertyChangeState.PropertyValue.Name)
     {
-      throw CreateApplicationException (
-          "Actual PropertyName '{0}' and expected PropertyName '{1}' do not match.",
-          _propertyValue.Name, 
-          propertyChangeState.PropertyValue.Name);
+      ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+
+      _propertyValue = propertyValue;
+      _oldValue = oldValue;
+      _newValue = newValue;
     }
 
-    if (!object.Equals (_oldValue, propertyChangeState.OldValue))
+    // methods and properties
+
+    public PropertyValue PropertyValue
     {
-      throw CreateApplicationException (
-          "Actual old value '{0}' and expected old value '{1}' do not match.",
-          _oldValue, 
-          propertyChangeState.OldValue);
+      get { return _propertyValue; }
     }
 
-    if (!object.Equals (_newValue, propertyChangeState.NewValue))
+    public object OldValue
     {
-      throw CreateApplicationException (
-          "Actual new value '{0}' and expected new value '{1}' do not match.",
-          _newValue, 
-          propertyChangeState.NewValue);
+      get { return _oldValue; }
+    }
+
+    public object NewValue
+    {
+      get { return _newValue; }
+    }
+
+    public override void Check (ChangeState expectedState)
+    {
+      base.Check (expectedState);
+
+      PropertyChangeState propertyChangeState = (PropertyChangeState) expectedState;
+
+      if (_propertyValue.Name != propertyChangeState.PropertyValue.Name)
+      {
+        throw CreateApplicationException (
+            "Actual PropertyName '{0}' and expected PropertyName '{1}' do not match.",
+            _propertyValue.Name,
+            propertyChangeState.PropertyValue.Name);
+      }
+
+      if (!object.Equals (_oldValue, propertyChangeState.OldValue))
+      {
+        throw CreateApplicationException (
+            "Actual old value '{0}' and expected old value '{1}' do not match.",
+            _oldValue,
+            propertyChangeState.OldValue);
+      }
+
+      if (!object.Equals (_newValue, propertyChangeState.NewValue))
+      {
+        throw CreateApplicationException (
+            "Actual new value '{0}' and expected new value '{1}' do not match.",
+            _newValue,
+            propertyChangeState.NewValue);
+      }
     }
   }
-}
 }

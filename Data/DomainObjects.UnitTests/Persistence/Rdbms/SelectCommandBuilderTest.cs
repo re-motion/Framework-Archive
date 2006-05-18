@@ -8,36 +8,36 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
-[TestFixture]
-public class SelectCommandBuilderTest : SqlProviderBaseTest
-{
-  // types
-
-  // static members and constants
-
-  // member fields
-
-  // construction and disposing
-
-  public SelectCommandBuilderTest ()
+  [TestFixture]
+  public class SelectCommandBuilderTest : SqlProviderBaseTest
   {
-  }
+    // types
 
-  // methods and properties
+    // static members and constants
 
-  [Test]
-  public void CreateWithOrderClause ()
-  {
-    ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
-    
-    SelectCommandBuilder builder = new SelectCommandBuilder (
-        Provider, "*", orderDefinition, "CustomerID", DomainObjectIDs.Customer1, "OrderNumber desc");
-    
-    Provider.Connect ();
-    using (IDbCommand command = builder.Create ())
+    // member fields
+
+    // construction and disposing
+
+    public SelectCommandBuilderTest ()
     {
-      Assert.AreEqual ("SELECT * FROM [Order] WHERE [CustomerID] = @CustomerID ORDER BY OrderNumber desc;", command.CommandText);
+    }
+
+    // methods and properties
+
+    [Test]
+    public void CreateWithOrderClause ()
+    {
+      ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
+
+      SelectCommandBuilder builder = new SelectCommandBuilder (
+          Provider, "*", orderDefinition, "CustomerID", DomainObjectIDs.Customer1, "OrderNumber desc");
+
+      Provider.Connect ();
+      using (IDbCommand command = builder.Create ())
+      {
+        Assert.AreEqual ("SELECT * FROM [Order] WHERE [CustomerID] = @CustomerID ORDER BY OrderNumber desc;", command.CommandText);
+      }
     }
   }
-}
 }
