@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
-  public class ClientTransactionBaseTest : DatabaseTest
+  public class ClientTransactionBaseTest : StandardMappingTest
   {
     // types
 

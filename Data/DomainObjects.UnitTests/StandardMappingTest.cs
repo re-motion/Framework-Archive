@@ -4,14 +4,17 @@ using System.Text;
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.UnitTests.Database;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
-  public class StandardMappingTest
+  public class StandardMappingTest : DatabaseTest
   {
     // types
 
     // static members and constants
+
+    private const string c_createTestDataFileName = "CreateTestData.sql";
 
     private static readonly MappingConfiguration s_mappingConfiguration = new MappingConfiguration (@"mapping.xml", @"mapping.xsd");
 
@@ -22,6 +25,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     // construction and disposing
 
     protected StandardMappingTest ()
+      : base (new StandardMappingTestDataLoader (c_connectionString), c_createTestDataFileName)
     {
     }
 

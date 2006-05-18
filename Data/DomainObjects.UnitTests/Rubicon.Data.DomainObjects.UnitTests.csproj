@@ -219,6 +219,7 @@
     <Compile Include="DatabaseTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Database\StandardMappingTestDataLoader.cs" />
     <Compile Include="Database\TestDataLoader.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -499,6 +500,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="StandardMappingTest.cs" />
+    <Compile Include="TableInheritance\ClassDefinitionTest.cs" />
+    <Compile Include="TableInheritance\TableInheritanceMappingTest.cs" />
+    <Compile Include="TableInheritance\TestDomain\Person.cs" />
     <Compile Include="TestDomain\Ceo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -654,6 +658,7 @@
     <Content Include="storageProvidersForLoaderTest.xml" />
     <Content Include="storageProvidersWithSchemaException.xml" />
     <Content Include="storageProvidersWithXmlException.xml" />
+    <Content Include="TableInheritance\TableInheritanceMapping.xml" />
     <EmbeddedResource Include="Resources\Image1.png" />
     <EmbeddedResource Include="Resources\Image2.png" />
     <EmbeddedResource Include="Resources\ImageLarger1MB.bmp" />

@@ -2,10 +2,11 @@ using System;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.UnitTests.Database;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
-  public class DatabaseTest : StandardMappingTest
+  public abstract class DatabaseTest
   {
     // types
 
@@ -18,10 +19,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests
 
     // member fields
 
+    private TestDataLoader _loader;
+    private string _createTestDataFileName;
+
     // construction and disposing
 
-    protected DatabaseTest ()
+    protected DatabaseTest (TestDataLoader loader, string createTestDataFileName)
     {
+      ArgumentUtility.CheckNotNull ("loader", loader);
+      ArgumentUtility.CheckNotNullOrEmpty ("createTestDataFileName", createTestDataFileName);
+
+      _loader = loader;
+      _createTestDataFileName = createTestDataFileName;
     }
 
     // methods and properties
@@ -29,10 +38,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     [SetUp]
     public virtual void SetUp ()
     {
-      using (TestDataLoader loader = new TestDataLoader (c_connectionString))
-      {
-        loader.Load ();
-      }
+      _loader.Load (_createTestDataFileName);
     }
   }
 }

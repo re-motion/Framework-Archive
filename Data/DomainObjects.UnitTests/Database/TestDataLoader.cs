@@ -6,109 +6,66 @@ using System.Text;
 
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.Resources;
+using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Database
 {
-  public class TestDataLoader : IDisposable
+  public class TestDataLoader
   {
     // types
 
     // static members and constants
 
-    private const string c_testDomainFilename = "CreateTestData.sql";
 
     // member fields
 
-    private SqlConnection _connection;
-    private SqlTransaction _transaction;
     private DomainObjectIDs _domainObjectIDs;
-    
-    private bool _disposed = false;
+    private string _connectionString;
 
     // construction and disposing
 
     public TestDataLoader (string connectionString)
     {
-      _connection = new SqlConnection (connectionString);
-      _connection.Open ();
+      ArgumentUtility.CheckNotNullOrEmpty ("connectionString", connectionString);
 
+      _connectionString = connectionString;
       _domainObjectIDs = new DomainObjectIDs ();
     }
 
     // methods and properties
 
-    public void Load ()
+    public void Load (string sqlFileName)
     {
-      using (_transaction = _connection.BeginTransaction ())
-      {
-        ExecuteSqlFile (c_testDomainFilename);
-        LoadBlobs ();
+      ArgumentUtility.CheckNotNullOrEmpty ("sqlFileName", sqlFileName);
 
-        _transaction.Commit ();
+      using (SqlConnection connection = new SqlConnection (_connectionString))
+      {
+        connection.Open ();
+
+        using (SqlTransaction transaction = connection.BeginTransaction ())
+        {
+          PerformLoad (connection, transaction, sqlFileName);
+          transaction.Commit ();
+        }
       }
     }
 
-    private void ExecuteSqlFile (string sqlFile)
+    protected virtual void PerformLoad (SqlConnection connection, SqlTransaction transaction, string sqlFileName)
     {
-      using (SqlCommand command = new SqlCommand (ReadFile (sqlFile), _connection, _transaction))
+      ExecuteSqlFile (connection, transaction, sqlFileName);
+    }
+
+    protected void ExecuteSqlFile (SqlConnection connection, SqlTransaction transaction, string sqlFile)
+    {
+      using (SqlCommand command = new SqlCommand (File.ReadAllText (sqlFile, Encoding.Default), connection, transaction))
       {
         command.ExecuteNonQuery ();
       }
     }
 
-    private string ReadFile (string file)
+    protected DomainObjectIDs DomainObjectIDs
     {
-      using (StreamReader reader = new StreamReader (file, Encoding.Default))
-      {
-        return reader.ReadToEnd ();
-      }
-    }
-
-    private void LoadBlobs ()
-    {
-      UpdateClassWithAllDataTypes (_domainObjectIDs.ClassWithAllDataTypes1, ResourceManager.GetImage1 ());
-      UpdateClassWithAllDataTypes (_domainObjectIDs.ClassWithAllDataTypes2, ResourceManager.GetImage2 ());
-    }
-
-    private void UpdateClassWithAllDataTypes (ObjectID id, byte[] binary)
-    {
-      string updateText = "Update [TableWithAllDataTypes] set [Binary] = @binary where [ID] = @id";
-      using (SqlCommand command = new SqlCommand (updateText, _connection, _transaction))
-      {
-        command.Parameters.Add ("@binary", binary);
-        command.Parameters.Add ("@id", id.Value);
-        command.ExecuteNonQuery ();
-      }
-    }
-
-    #region IDisposable Members
-
-    public void Dispose ()
-    {
-      Dispose (true);
-      GC.SuppressFinalize (this);
-    }
-
-    #endregion
-
-    private void Dispose (bool disposing)
-    {
-      if (!_disposed && disposing)
-      {
-        if (_connection != null)
-        {
-          _connection.Close ();
-          _connection = null;
-        }
-
-        if (_transaction != null)
-        {
-          _transaction.Dispose ();
-          _transaction = null;
-        }
-
-        _disposed = true;
-      }
+      get { return _domainObjectIDs; }
     }
   }
 }

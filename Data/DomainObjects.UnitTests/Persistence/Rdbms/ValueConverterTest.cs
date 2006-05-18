@@ -10,7 +10,7 @@ using Rubicon.Data.DomainObjects.UnitTests.Factories;
 namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 {
   [TestFixture]
-  public class ValueConverterTest : DatabaseTest
+  public class ValueConverterTest : StandardMappingTest
   {
     // types
 
