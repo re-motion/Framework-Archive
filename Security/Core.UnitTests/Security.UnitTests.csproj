@@ -38,12 +38,17 @@
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Configuration\UserProviderMock.cs" />
+    <Compile Include="Configuration\SecurityConfigurationMock.cs" />
+    <Compile Include="Configuration\SecurityConfigurationTest.cs" />
+    <Compile Include="Configuration\SecurityServiceMock.cs" />
     <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="Metadata\AssemblyReflectorTest.cs" />
     <Compile Include="Metadata\ClassReflectorTest.cs" />

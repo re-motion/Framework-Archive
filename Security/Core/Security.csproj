@@ -29,6 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -39,6 +40,8 @@
     <Compile Include="AccessViolationException.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
+    <Compile Include="Configuration\UserProviderElement.cs" />
+    <Compile Include="Configuration\SecurityServiceElement.cs" />
     <Compile Include="EnumWrapper.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
     <Compile Include="ISecurableType.cs" />
@@ -67,6 +70,7 @@
     <Compile Include="SecurityContext.cs" />
     <Compile Include="GeneralAccessType.cs" />
     <Compile Include="SecurityStateAttribute.cs" />
+    <Compile Include="ThreadUserProvider.cs" />
     <None Include="Metadata\SecurityMetadata.xsd" />
   </ItemGroup>
   <ItemGroup>
