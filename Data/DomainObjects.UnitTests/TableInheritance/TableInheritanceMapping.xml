@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
+	<classes>
+    
+		<class id="DomainBase">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase, Rubicon.Data.DomainObjects.UnitTests</type>
+			<storageProviderID>TestDomain</storageProviderID>
+			<properties>
+				<property name="CreatedBy">
+					<type>string</type>
+					<column>CreatedBy</column>
+					<maxLength>100</maxLength>
+				</property>
+        <property name="CreatedAt">
+          <type>dateTime</type>
+          <column>CreatedAt</column>
+        </property>
+      </properties>
+		</class>
+
+    <class id="Person" baseClass="DomainBase">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Person" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="FirstName">
+          <type>string</type>
+          <column>FirstName</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="LastName">
+          <type>string</type>
+          <column>LastName</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="DateOfBirth">
+          <type>dateTime</type>
+          <column>DateOfBirth</column>
+        </property>
+      </properties>
+    </class>
+
+    <class id="Organization" baseClass="DomainBase">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Organization, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="Organization" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="NumberOfEmployees">
+          <type>int32</type>
+          <column>NumberOfEmployees</column>
+        </property>
+      </properties>
+    </class>
+
+  </classes>
+</mapping>
