@@ -25,21 +25,21 @@ namespace Rubicon.Security.Metadata
       XmlDocument document = new XmlDocument();
       XmlElement rootElement = document.CreateElement ("securityMetadata", MetadataXmlNamespace);
 
-      AppendInfos (document, rootElement, _cache.GetSecurableClassInfos (), CreateClassNode, "classes");
-      AppendInfos (document, rootElement, _cache.GetStatePropertyInfos (), CreateStatePropertyNode, "stateProperties");
-      AppendInfos (document, rootElement, _cache.GetAccessTypes (), CreateAccessTypeNode, "accessTypes");
-      AppendInfos (document, rootElement, _cache.GetAbstractRoles (), CreateAbstractRoleNode, "abstractRoles");
+      AppendCollection (document, rootElement, "classes", _cache.GetSecurableClassInfos (), CreateClassNode);
+      AppendCollection (document, rootElement, "stateProperties", _cache.GetStatePropertyInfos (), CreateStatePropertyNode);
+      AppendCollection (document, rootElement, "accessTypes", _cache.GetAccessTypes (), CreateAccessTypeNode);
+      AppendCollection (document, rootElement, "abstractRoles", _cache.GetAbstractRoles (), CreateAbstractRoleNode);
 
       document.AppendChild (rootElement);
       return document;
     }
 
-    private void AppendInfos<T> (
-        XmlDocument document,
-        XmlElement parentElement,
-        List<T> infos,
-        CreateInfoNodeDelegate<T> createInfoNodeDelegate,
-        string collectionElementName)
+    private void AppendCollection<T> (
+        XmlDocument document, 
+        XmlElement parentElement, 
+        string collectionElementName, 
+        List<T> infos, 
+        CreateInfoNodeDelegate<T> createInfoNodeDelegate)
     {
       if (infos.Count > 0)
       {
@@ -138,9 +138,9 @@ namespace Rubicon.Security.Metadata
         classElement.Attributes.Append (baseClassAttribute);
       }
 
-      AppendInfos (document, classElement, classInfo.DerivedClasses, CreateDerivedClassRefElement, "derivedClasses");
-      AppendInfos (document, classElement, classInfo.Properties, CreateStatePropertyRefElement, "stateProperties");
-      AppendInfos (document, classElement, classInfo.AccessTypes, CreateAccessTypeRefElement, "accessTypes");
+      AppendCollection (document, classElement, "derivedClasses", classInfo.DerivedClasses, CreateDerivedClassRefElement);
+      AppendCollection (document, classElement, "stateProperties", classInfo.Properties, CreateStatePropertyRefElement);
+      AppendCollection (document, classElement, "accessTypes", classInfo.AccessTypes, CreateAccessTypeRefElement);
 
       return classElement;
     }
