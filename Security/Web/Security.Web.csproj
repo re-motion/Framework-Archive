@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}</ProjectGuid>
+    <ProjectGuid>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security.UnitTests.TestDomain</RootNamespace>
-    <AssemblyName>Rubicon.Security.UnitTests.TestDomain</AssemblyName>
+    <RootNamespace>Rubicon.Security.Web</RootNamespace>
+    <AssemblyName>Rubicon.Security.Web</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,19 +29,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Confidentiality.cs" />
-    <Compile Include="SpecialAbstractRole.cs" />
-    <Compile Include="DomainAbstractRole.cs" />
-    <Compile Include="DomainAccessType.cs" />
-    <Compile Include="File.cs" />
-    <Compile Include="FileState.cs" />
-    <Compile Include="PaperFile.cs" />
-    <Compile Include="SomeEnum.cs" />
-    <Compile Include="Role.cs" />
+    <Compile Include="HttpContextUserProvider.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>

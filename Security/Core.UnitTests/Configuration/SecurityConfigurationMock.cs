@@ -58,5 +58,11 @@ namespace Rubicon.Security.UnitTests.Configuration
       get { return base.CustomUserProvider; }
       set { base.CustomUserProvider = value; }
     }
+
+    public new UserProviderType UserProviderType
+    {
+      get { return base.UserProviderType; }
+      set { base.UserProviderType = value; }
+    }
   }
 }

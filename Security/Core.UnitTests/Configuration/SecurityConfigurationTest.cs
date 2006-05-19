@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Text;
 using System.Xml;
 
 using NUnit.Framework;
 
 using Rubicon.Security.Configuration;
+using Rubicon.Security.Web;
 using Rubicon.Utilities;
-using System.IO;
-using System.Configuration;
 
 namespace Rubicon.Security.UnitTests.Configuration
 {
@@ -38,11 +39,23 @@ namespace Rubicon.Security.UnitTests.Configuration
     }
 
     [Test]
-    public void DeserializeSecurityConfigurationWithDefaultServiceType ()
+    public void DeserializeSecurityConfigurationWithDefaultService ()
     {
       string xmlFragment = @"<securityConfiguration />";
 
       _configuration.DeserializeSection (xmlFragment);
+      
+      Assert.AreEqual (SecurityServiceType.None, _configuration.SecurityServiceType);
+      Assert.IsNull (_configuration.SecurityService);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithNoService ()
+    {
+      string xmlFragment = @"<securityConfiguration service=""None"" />";
+
+      _configuration.DeserializeSection (xmlFragment);
+      
       Assert.AreEqual (SecurityServiceType.None, _configuration.SecurityServiceType);
       Assert.IsNull (_configuration.SecurityService);
     }
@@ -77,6 +90,8 @@ namespace Rubicon.Security.UnitTests.Configuration
           </securityConfiguration>";
 
       _configuration.DeserializeSection (xmlFragment);
+      
+      Assert.AreEqual (SecurityServiceType.Custom, _configuration.SecurityServiceType);
       Assert.IsNotNull (_configuration.CustomService);
       Assert.AreSame (typeof (SecurityServiceMock), _configuration.CustomService.Type);
       Assert.IsNotNull (_configuration.SecurityService);
@@ -93,8 +108,57 @@ namespace Rubicon.Security.UnitTests.Configuration
           </securityConfiguration>";
 
       _configuration.DeserializeSection (xmlFragment);
+      
+      Assert.AreEqual (SecurityServiceType.Custom, _configuration.SecurityServiceType);
       Assert.IsNotNull (_configuration.CustomService);
       Type type = _configuration.CustomService.Type;
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithDefaultUserProvider ()
+    {
+      string xmlFragment = @"<securityConfiguration />";
+
+      _configuration.DeserializeSection (xmlFragment);
+      
+      Assert.AreEqual (UserProviderType.Thread, _configuration.UserProviderType);
+      Assert.IsNotNull (_configuration.UserProvider);
+      Assert.IsInstanceOfType (typeof (ThreadUserProvider), _configuration.UserProvider);
+    }
+
+     [Test]
+    public void DeserializeSecurityConfigurationWithNoUserProvider ()
+    {
+      string xmlFragment = @"<securityConfiguration userProvider=""None"" />";
+
+      _configuration.DeserializeSection (xmlFragment);
+      
+      Assert.AreEqual (UserProviderType.None, _configuration.UserProviderType);
+      Assert.IsNull (_configuration.UserProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithThreadUserProvider ()
+    {
+      string xmlFragment = @"<securityConfiguration userProvider=""Thread"" />";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.AreEqual (UserProviderType.Thread, _configuration.UserProviderType);
+      Assert.IsNotNull (_configuration.UserProvider);
+      Assert.IsInstanceOfType (typeof (ThreadUserProvider), _configuration.UserProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithHttpContextUserProvider ()
+    {
+      string xmlFragment = @"<securityConfiguration userProvider=""HttpContext"" />";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.AreEqual (UserProviderType.HttpContext, _configuration.UserProviderType);
+      Assert.IsNotNull (_configuration.UserProvider);
+      Assert.IsInstanceOfType (typeof (HttpContextUserProvider), _configuration.UserProvider);
     }
 
     [Test]
@@ -106,20 +170,12 @@ namespace Rubicon.Security.UnitTests.Configuration
           </securityConfiguration>";
 
       _configuration.DeserializeSection (xmlFragment);
+
+      Assert.AreEqual (UserProviderType.Custom, _configuration.UserProviderType);
       Assert.IsNotNull (_configuration.CustomUserProvider);
       Assert.AreSame (typeof (UserProviderMock), _configuration.CustomUserProvider.Type);
       Assert.IsNotNull (_configuration.UserProvider);
       Assert.IsInstanceOfType (typeof (UserProviderMock), _configuration.UserProvider);
-    }
-
-    [Test]
-    public void DeserializeSecurityConfigurationWithThreadUserProvider ()
-    {
-      string xmlFragment = @"<securityConfiguration userProvider=""Thread"" />";
-
-      _configuration.DeserializeSection (xmlFragment);
-      Assert.IsNotNull (_configuration.UserProvider);
-      Assert.IsInstanceOfType (typeof (ThreadUserProvider), _configuration.UserProvider);
     }
   }
 }

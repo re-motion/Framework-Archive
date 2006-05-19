@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
+using System.Text;
+using System.Reflection;
+
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
@@ -12,7 +14,15 @@ namespace Rubicon.Security.Configuration
 
     // static members
 
-    private static SecurityConfiguration s_current = null;
+    private static readonly string s_httpContextUserProviderName;
+    private static SecurityConfiguration s_current;
+
+    static SecurityConfiguration ()
+    {
+      AssemblyName assemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
+      string assemblyNameSuffix = assemblyName.FullName.Substring (assemblyName.Name.Length);
+      s_httpContextUserProviderName = "Rubicon.Security.Web.HttpContextUserProvider, Rubicon.Security.Web" + assemblyNameSuffix;
+    }
 
     public static SecurityConfiguration Current
     {
@@ -72,8 +82,17 @@ namespace Rubicon.Security.Configuration
       {
         if (_securityService == null)
         {
-          if (SecurityServiceType == SecurityServiceType.Custom)
-            _securityService = (ISecurityService) Activator.CreateInstance (CustomService.Type);
+          switch (SecurityServiceType)
+          {
+            case SecurityServiceType.None:
+              _securityService = null;
+              break;
+            case SecurityServiceType.Custom:
+              _securityService = (ISecurityService) Activator.CreateInstance (CustomService.Type);
+              break;
+            default:
+              throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the SecurityService.", SecurityServiceType));
+          }
         }
         return _securityService;
       }
@@ -91,17 +110,37 @@ namespace Rubicon.Security.Configuration
         {
           switch (UserProviderType)
           {
+            case UserProviderType.None:
+              _userProvider = null;
+              break;
             case UserProviderType.Thread:
               _userProvider = new ThreadUserProvider ();
+              break;
+            case UserProviderType.HttpContext:
+              Type type = Type.GetType (s_httpContextUserProviderName, false, false);
+              if (type == null)
+              {
+                throw new TypeLoadException (string.Format ("Cannot load type '{0}' required by configuration setting userProvider=HttpContext. "
+                        + "If the configuration belongs to a web application, please ensure that the assembly 'Rubicon.Web.Security' is located "
+                        + "within the CLR's probing path for this application. If the configuration belongs to a any other kind of application "
+                        + "(e.g. a Windows Forms or a Console application), you cannot use the HttpContext as a user provider.",
+                    s_httpContextUserProviderName));            
+              }
+              _userProvider = (IUserProvider) Activator.CreateInstance (type);
               break;
             case UserProviderType.Custom:
               _userProvider = (IUserProvider) Activator.CreateInstance (CustomUserProvider.Type);
               break;
+            default:
+              throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the UserProvider.", UserProviderType));
           }
         }
         return _userProvider;
       }
-      set { _userProvider = value; }
+      set 
+      {
+        _userProvider = value; 
+      }
     }
 
     protected override ConfigurationPropertyCollection Properties
@@ -137,13 +176,14 @@ namespace Rubicon.Security.Configuration
   public enum SecurityServiceType
   {
     None,
-    SecurityManagerService,
-    SecurityManagerWebService,
+    //SecurityManagerService,
+    //SecurityManagerWebService,
     Custom
   }
 
   public enum UserProviderType
   {
+    None,
     Thread,
     HttpContext,
     Custom
