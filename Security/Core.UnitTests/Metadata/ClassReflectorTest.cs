@@ -12,7 +12,7 @@ using Rubicon.Security.UnitTests.TestDomain;
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Metadata
-{
+{ 
 
   [TestFixture]
   public class ClassReflectorTest
