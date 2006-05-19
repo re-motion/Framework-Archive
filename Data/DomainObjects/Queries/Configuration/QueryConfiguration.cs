@@ -8,6 +8,7 @@ namespace Rubicon.Data.DomainObjects.Queries.Configuration
 /// <summary>
 /// Represents the current query configuration.
 /// </summary>
+// TODO: Handle property ResolveType! => Push down property from ConfigurationBase, because StorageProviderConfiguration will not use it.
 public class QueryConfiguration : ConfigurationBase
 {
   // types
@@ -58,6 +59,7 @@ public class QueryConfiguration : ConfigurationBase
   /// <param name="queryConfiguration">The <b>QueryConfiguration</b> to which the current <b>QueryConfiguration</b> is set.</param>
   public static void SetCurrent (QueryConfiguration queryConfiguration)
   {
+    // TODO later: SetCurrent must not accept queryConfiguration with ResolveType = true as soon as QueryConfiguration handles ResolveTypes! 
     lock (typeof (QueryConfiguration))
     {
       s_queryConfiguration = queryConfiguration;

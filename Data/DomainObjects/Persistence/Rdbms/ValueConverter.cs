@@ -158,7 +158,7 @@ public class ValueConverter : ValueConverterBase
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain a value.", 
             GetClassIDColumnName (propertyDefinition.ColumnName),
-            relatedMappingClassDefinition.EntityName);
+            relatedMappingClassDefinition.MyEntityName);
       }
 
 
@@ -166,8 +166,8 @@ public class ValueConverter : ValueConverterBase
       {
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain null.",
-            GetClassIDColumnName (propertyDefinition.ColumnName), 
-            classDefinition.EntityName);
+            GetClassIDColumnName (propertyDefinition.ColumnName),
+            classDefinition.MyEntityName);
 
       }
 
@@ -201,7 +201,7 @@ public class ValueConverter : ValueConverterBase
         {
           throw CreateRdbmsProviderException (
               "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
-              classDefinition.EntityName,
+              classDefinition.MyEntityName,
               GetClassIDColumnName (propertyDefinition.ColumnName),
               relatedMappingClassDefinition.ID);
         }
@@ -216,8 +216,8 @@ public class ValueConverter : ValueConverterBase
     StorageProviderDefinition storageProviderDefinition = 
         StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (propertyDefinition.ClassDefinition.StorageProviderID);
 
-    return storageProviderDefinition.GetHashCode () 
-        ^ propertyDefinition.ClassDefinition.EntityName.GetHashCode () 
+    return storageProviderDefinition.GetHashCode ()
+        ^ propertyDefinition.ClassDefinition.MyEntityName.GetHashCode () 
         ^ propertyDefinition.ColumnName.GetHashCode ();
   }
 

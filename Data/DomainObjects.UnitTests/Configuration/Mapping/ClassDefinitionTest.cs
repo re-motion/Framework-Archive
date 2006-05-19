@@ -63,26 +63,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void InitializeWithTypeNameAndBaseClass ()
     {
       ClassDefinition expected = new ClassDefinition (
-          "SpecialDistributor", "Company", DatabaseTest.c_testDomainProviderID,
-          typeof (Distributor),
-          CreateDistributorClass ());
+          "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), CreatePartnerClass ());
 
       ClassDefinition actual = new ClassDefinition (
-          "SpecialDistributor", "Company", DatabaseTest.c_testDomainProviderID,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests", true,
-          CreateDistributorClass ());
+          "Distributor", "Company", DatabaseTest.c_testDomainProviderID, 
+          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests", true, CreatePartnerClass ());
 
       _checker.Check (expected, actual);
-    }
-
-    [Test]
-    [ExpectedException (typeof (MappingException))]
-    public void IntializeWithTypeNameAndInvalidEntityName ()
-    {
-      new ClassDefinition (
-          "SpecialDistributor", "WrongEntityName", DatabaseTest.c_testDomainProviderID,
-          "Rubicon.Data.DomainObjects.UnitTests.TestDomain.Distributor, Rubicon.Data.DomainObjects.UnitTests", true,
-          CreateDistributorClass ());
     }
 
     [Test]
@@ -241,18 +228,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Entity name ('Customer') of class 'Customer' and entity name ('Company') of its " +
-            "base class 'Company' must be equal.")]
-    public void InvalidEntityNameOfBaseClass ()
-    {
-      ClassDefinition companyClass = new ClassDefinition ("Company", "Company", "TestDomain", typeof (Company));
-
-      ClassDefinition customerClass = new ClassDefinition (
-          "Customer", "Customer", "TestDomain", typeof (Customer), companyClass);
-    }
-
-    [Test]
-    [ExpectedException (typeof (MappingException),
         "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
     public void BaseClassWithDifferentStorageProvider ()
     {
@@ -260,6 +235,50 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       ClassDefinition customerClass = new ClassDefinition (
           "Customer", "Company", "Provider 2", typeof (Customer), companyClass);
+    }
+
+    [Test]
+    public void ClassTypeIsNotDerivedFromBaseClassType ()
+    {
+      ClassDefinition orderClass = new ClassDefinition ("Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order));
+
+      try
+      {
+        new ClassDefinition ("Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor), orderClass);
+        Assert.Fail ("MappingException was expected.");
+      }
+      catch (MappingException ex)
+      {
+        string expectedMessage = string.Format (
+            "Type '{0}' of class '{1}' is not derived from type '{2}' of base class '{3}'.", 
+            typeof (Distributor).AssemblyQualifiedName, "Distributor", orderClass.ClassType.AssemblyQualifiedName, orderClass.ID);
+
+        Assert.AreEqual (expectedMessage, ex.Message);
+      }
+    }
+
+    [Test]
+    public void ClassTypeIsNotDerivedFromBaseClassTypeWithUnresolvedTypes ()
+    {
+      ClassDefinition orderClass = new ClassDefinition (
+          "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
+
+      ClassDefinition distributorClass = new ClassDefinition (
+          "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, false, orderClass);
+
+      // Expectation: no exception
+    }
+
+    [Test]
+    public void ClassTypeIsNotDerivedFromBaseClassTypeWithUnresolvedTypeInBaseClassOnly ()
+    {
+      ClassDefinition orderClass = new ClassDefinition (
+          "Order", "Order", DatabaseTest.c_testDomainProviderID, typeof (Order).AssemblyQualifiedName, false);
+
+      ClassDefinition distributorClass = new ClassDefinition (
+          "Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor).AssemblyQualifiedName, true, orderClass);
+
+      // Expectation: no exception
     }
 
     [Test]
@@ -736,9 +755,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       return false;
     }
 
-    private ClassDefinition CreateDistributorClass ()
+    private ClassDefinition CreatePartnerClass ()
     {
-      return new ClassDefinition ("Distributor", "Company", DatabaseTest.c_testDomainProviderID, typeof (Distributor));
+      return new ClassDefinition ("Partner", "Company", DatabaseTest.c_testDomainProviderID, typeof (Partner));
     }
   }
 }

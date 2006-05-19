@@ -103,17 +103,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Entity name ('Customer') of class 'Customer' and entity name ('Company') of its " +
-            "base class 'Company' must be equal.")]
-    public void MappingWithDerivationAndInvalidEntityName ()
-    {
-      MappingLoader loader = new MappingLoader (@"mappingWithDerivationAndInvalidEntityName.xml", @"mapping.xsd", true);
-
-      ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
-    }
-
-    [Test]
-    [ExpectedException (typeof (MappingException),
         "Cannot derive class 'Customer' from base class 'Company' handled by different StorageProviders.")]
     public void MappingWithInvalidDerivationAcrossStorageProviders ()
     {
@@ -242,7 +231,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Property 'SpecialCustomer' of class 'SpecialOrder' inherits a property which already defines the column 'CustomerID'.")]
+    [ExpectedException (typeof (MappingException), "Class 'Customer' with property 'OtherName' inherits a property which already defines the column 'NameColumn'.")]
     public void MappingWithDerivationAndDuplicateColumnName ()
     {
       MappingLoader loader = new MappingLoader (@"mappingWithDerivationAndDuplicateColumnName.xml", @"mapping.xsd", true);

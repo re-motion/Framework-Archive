@@ -59,7 +59,7 @@ public class UpdateCommandBuilder : CommandBuilder
       whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
 
     command.CommandText = string.Format ("UPDATE [{0}] SET {1} WHERE {2};",
-        _dataContainer.ClassDefinition.EntityName,
+        _dataContainer.ClassDefinition.MyEntityName,
         _updateBuilder.ToString (),
         whereClauseBuilder.ToString ());
 

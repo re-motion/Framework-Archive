@@ -123,7 +123,7 @@ public class SqlFileBuilder
 
       foreach (ClassDefinition baseClass in GetBaseClassDefinitions (storageProviderID))
       {
-        WriteDropTable (baseClass.EntityName);
+        WriteDropTable (baseClass.MyEntityName);
       }
 
       foreach (ClassDefinition baseClass in GetBaseClassDefinitions (storageProviderID))
@@ -216,7 +216,7 @@ public class SqlFileBuilder
       if (endPoints.Length == 0)
         return;
 
-      Write (ReplaceTag (s_alterTableHeader, s_tablenameTag, classDefinition.EntityName));
+      Write (ReplaceTag (s_alterTableHeader, s_tablenameTag, classDefinition.MyEntityName));
 
       bool constraintWritten = false;
       foreach (RelationEndPointDefinition endPoint in endPoints)
@@ -237,7 +237,7 @@ public class SqlFileBuilder
     {
       string constraintText = s_foreignKey;
       constraintText = ReplaceTag (constraintText, s_columnnameTag, endPoint.PropertyDefinition.ColumnName);
-      constraintText = ReplaceTag (constraintText, s_refTablenameTag, endPoint.ClassDefinition.GetMandatoryOppositeClassDefinition (endPoint.PropertyName).EntityName);
+      constraintText = ReplaceTag (constraintText, s_refTablenameTag, endPoint.ClassDefinition.GetMandatoryOppositeClassDefinition (endPoint.PropertyName).MyEntityName);
       constraintText = ReplaceTag (constraintText, s_refColumnnameTag, "ID");
       constraintText = ReplaceTag (constraintText, s_constraintnameTag, endPoint.ClassDefinition.GetRelationDefinition(endPoint.PropertyName).ID);
       Write (constraintText);
@@ -249,9 +249,9 @@ public class SqlFileBuilder
       foreach (ClassDefinition classDefinition in GetBaseClassDefinitions (storageProviderID))
       {
         if (tableNames != null)
-          tableNames += ", '" + classDefinition.EntityName + "'";
+          tableNames += ", '" + classDefinition.MyEntityName + "'";
         else
-          tableNames = "'" + classDefinition.EntityName + "'";
+          tableNames = "'" + classDefinition.MyEntityName + "'";
       }
 
       Write (ReplaceTag (s_dropConstraints, s_tablenameTag, tableNames));
@@ -266,7 +266,7 @@ public class SqlFileBuilder
     
     private void WriteCreateTable (ClassDefinition baseClass)
     {
-      Write (ReplaceTag (s_tableHeader, s_tablenameTag, baseClass.EntityName));
+      Write (ReplaceTag (s_tableHeader, s_tablenameTag, baseClass.MyEntityName));
 
       Write (s_idColumn);
 
@@ -279,7 +279,7 @@ public class SqlFileBuilder
         WriteColumns (derivedClass, true);
 
       WriteLine ();
-      Write (ReplaceTag (s_primaryKey, s_constraintnameTag, baseClass.EntityName));
+      Write (ReplaceTag (s_primaryKey, s_constraintnameTag, baseClass.MyEntityName));
 
       Write (s_tableFooter);
       Write (s_go);

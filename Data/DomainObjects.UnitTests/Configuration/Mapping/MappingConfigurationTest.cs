@@ -82,6 +82,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
+    [ExpectedException (typeof (ArgumentException), 
+        "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.\r\nParameter name: mappingConfiguration")]
+    public void SetCurrentRejectsUnresolvedTypes ()
+    {
+      MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd", false);
+      MappingConfiguration.SetCurrent (configuration);
+    }
+
+    [Test]
     public void ApplicationName ()
     {
       Assert.AreEqual ("UnitTests", MappingConfiguration.Current.ApplicationName);

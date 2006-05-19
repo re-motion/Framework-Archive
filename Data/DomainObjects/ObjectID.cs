@@ -150,7 +150,10 @@ public sealed class ObjectID
   /// <exception cref="Mapping.MappingException"/>The specified <paramref name="classID"/> could not be found in the mapping configuration.
   public ObjectID (string classID, object value)
   {
-    Initialize (classID, value);
+    ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
+
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID);
+    Initialize (classDefinition, value, "classID");
   }
 
   /// <summary>
@@ -178,7 +181,7 @@ public sealed class ObjectID
     ArgumentUtility.CheckNotNull ("classType", classType);
 
     ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classType);
-    Initialize (classDefinition.ID, value);
+    Initialize (classDefinition, value, "classType");
   }
 
   /// <summary>
@@ -225,16 +228,21 @@ public sealed class ObjectID
           classDefinition.ID);
     }
 
-    Initialize (classDefinition.ID, value);
+    Initialize (classDefinition, value, "classDefinition");
   }
 
-  private void Initialize (string classID, object value)
+  private void Initialize (ClassDefinition classDefinition, object value, string argumentName)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("classID", classID);
     ArgumentUtility.CheckNotNull ("value", value);
-    CheckValue ("value", value);
 
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (classID);
+    if (classDefinition.ClassType.IsAbstract)
+    {
+      throw CreateArgumentException (
+          argumentName, "An ObjectID cannot be constructed for abstract type '{0}' of class '{1}'.", 
+          classDefinition.ClassType.AssemblyQualifiedName, classDefinition.ID);
+    }
+
+    CheckValue ("value", value);
 
     StorageProviderDefinition storageProviderDefinition = 
         StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);

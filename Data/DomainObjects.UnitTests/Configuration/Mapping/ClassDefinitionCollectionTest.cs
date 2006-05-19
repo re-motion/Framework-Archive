@@ -136,7 +136,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       _collection.Add (_classDefinition);
 
       ClassDefinition copy = new ClassDefinition (
-          _classDefinition.ID, _classDefinition.EntityName, _classDefinition.StorageProviderID, _classDefinition.ClassType, _classDefinition.BaseClass);
+          _classDefinition.ID, _classDefinition.MyEntityName, _classDefinition.StorageProviderID, _classDefinition.ClassType, _classDefinition.BaseClass);
 
       Assert.IsFalse (_collection.Contains (copy));
     }

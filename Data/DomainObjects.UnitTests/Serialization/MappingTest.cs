@@ -339,7 +339,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Serialization
 
       Assert.AreEqual (expected.ClassType, actual.ClassType);
       Assert.AreEqual (expected.ClassTypeName, actual.ClassTypeName);
-      Assert.AreEqual (expected.EntityName, actual.EntityName);
+      Assert.AreEqual (expected.MyEntityName, actual.MyEntityName);
       Assert.AreEqual (expected.StorageProviderID, actual.StorageProviderID);
 
       Assert.AreEqual (expected.DerivedClasses.Count, actual.DerivedClasses.Count);

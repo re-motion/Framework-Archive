@@ -38,9 +38,57 @@
           <type>dateTime</type>
           <column>DateOfBirth</column>
         </property>
+        <relationProperty relationID="PersonToAddress" name="Address" cardinality="one" isMandatory="false" />
       </properties>
     </class>
 
+    <class id="Address">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Address, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_Address" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Street">
+          <type>string</type>
+          <column>Street</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="Zip">
+          <type>string</type>
+          <column>Zip</column>
+          <maxLength>10</maxLength>
+        </property>
+        <property name="City">
+          <type>string</type>
+          <column>City</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="Country">
+          <type>string</type>
+          <column>Country</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty relationID="PersonToAddress" name="Person" cardinality="one" isMandatory="true">
+          <column>PersonID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="Customer" baseClass="Person">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="CustomerType">
+          <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.CustomerType, Rubicon.Data.DomainObjects.UnitTests</type>
+          <column>CustomerType</column>
+        </property>
+        <property name="CustomerSince">
+          <type>dateTime</type>
+          <column>CustomerSince</column>
+        </property>
+      </properties>
+    </class>
+
+    <!--
     <class id="Organization" baseClass="DomainBase">
       <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Organization, Rubicon.Data.DomainObjects.UnitTests</type>
       <entity name="Organization" />
@@ -57,6 +105,7 @@
         </property>
       </properties>
     </class>
-
+    -->
+    
   </classes>
 </mapping>

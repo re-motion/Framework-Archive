@@ -130,7 +130,7 @@ public class SelectCommandBuilder : CommandBuilder
       orderExpression = " ORDER BY " + _orderClause;
 
     command.CommandText = string.Format ("SELECT {0} FROM [{1}] WHERE {2}{3};", 
-        _selectColumns, _classDefinition.EntityName, whereClauseBuilder.ToString (), orderExpression);
+        _selectColumns, _classDefinition.MyEntityName, whereClauseBuilder.ToString (), orderExpression);
 
     return command;
   }

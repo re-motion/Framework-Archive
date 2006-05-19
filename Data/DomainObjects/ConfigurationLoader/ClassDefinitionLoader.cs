@@ -89,7 +89,8 @@ public class ClassDefinitionLoader
   private ClassDefinition GetClassDefinition (XmlNode classNode)
   {
     string id = classNode.SelectSingleNode ("@id", _namespaceManager).InnerText;
-    string entityName = classNode.SelectSingleNode (FormatXPath ("{0}:entity/@name"), _namespaceManager).InnerText;
+    string entityName = GetEntityName (classNode);
+
     string storageProviderID = classNode.SelectSingleNode (FormatXPath ("{0}:storageProviderID"), _namespaceManager).InnerText;
     string classTypeName = classNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText.Trim ();
 
@@ -102,6 +103,15 @@ public class ClassDefinitionLoader
     FillPropertyDefinitions (classDefinition, classNode);
 
     return classDefinition;
+  }
+
+  private string GetEntityName (XmlNode classNode)
+  {
+    XmlNode entityNode = classNode.SelectSingleNode (FormatXPath ("{0}:entity/@name"), _namespaceManager);
+    if (entityNode != null)
+      return entityNode.InnerText;
+
+    return null;
   }
 
   private void FillPropertyDefinitions (ClassDefinition classDefinition, XmlNode classNode)

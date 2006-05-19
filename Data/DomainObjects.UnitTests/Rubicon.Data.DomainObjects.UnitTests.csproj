@@ -501,7 +501,11 @@
     </Compile>
     <Compile Include="StandardMappingTest.cs" />
     <Compile Include="TableInheritance\ClassDefinitionTest.cs" />
+    <Compile Include="TableInheritance\MappingConfigurationTest.cs" />
+    <Compile Include="TableInheritance\ObjectIDTest.cs" />
     <Compile Include="TableInheritance\TableInheritanceMappingTest.cs" />
+    <Compile Include="TableInheritance\TestDomain\Address.cs" />
+    <Compile Include="TableInheritance\TestDomain\Customer.cs" />
     <Compile Include="TableInheritance\TestDomain\DomainBase.cs" />
     <Compile Include="TableInheritance\TestDomain\Person.cs" />
     <Compile Include="TestDomain\Ceo.cs">
@@ -633,8 +637,6 @@
     </Content>
     <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndDuplicateColumnName.xml">
     </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndInvalidEntityName.xml">
-    </Content>
     <Content Include="Configuration\Mapping\TestMappings\mappingWithDuplicateColumnName.xml">
     </Content>
     <Content Include="Configuration\Mapping\TestMappings\mappingWithDuplicateColumnNameAndRelationProperty.xml">
@@ -642,8 +644,6 @@
     <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidDerivation.xml">
     </Content>
     <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidDerivationAcrossStorageProviders.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithMinimumData.xml">
     </Content>
     <Content Include="Configuration\Mapping\TestMappings\mappingWithMoreThanTwoEndPoints.xml">
     </Content>
@@ -678,6 +678,9 @@
     <Content Include="mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="mappingWithMinimumData.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="queries.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -699,6 +702,7 @@
     <Content Include="storageProvidersWithXmlException.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TableInheritance\TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml" />
     <Content Include="TableInheritance\TableInheritanceMapping.xml">
     </Content>
     <EmbeddedResource Include="Resources\Image1.png" />

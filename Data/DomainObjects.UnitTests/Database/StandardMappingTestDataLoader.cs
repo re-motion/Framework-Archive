@@ -18,13 +18,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
 
     // member fields
 
-    private DomainObjectIDs _domainObjectIDs;
-
     // construction and disposing
 
     public StandardMappingTestDataLoader (string connectionString) : base (connectionString)
     {
-      _domainObjectIDs = new DomainObjectIDs ();
     }
 
     // methods and properties
@@ -37,8 +34,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Database
 
     private void LoadBlobs (SqlConnection connection, SqlTransaction transaction)
     {
-      UpdateClassWithAllDataTypes (connection, transaction, _domainObjectIDs.ClassWithAllDataTypes1, ResourceManager.GetImage1 ());
-      UpdateClassWithAllDataTypes (connection, transaction, _domainObjectIDs.ClassWithAllDataTypes2, ResourceManager.GetImage2 ());
+      DomainObjectIDs domainObjectIDs = new DomainObjectIDs ();
+      UpdateClassWithAllDataTypes (connection, transaction, domainObjectIDs.ClassWithAllDataTypes1, ResourceManager.GetImage1 ());
+      UpdateClassWithAllDataTypes (connection, transaction, domainObjectIDs.ClassWithAllDataTypes2, ResourceManager.GetImage2 ());
     }
 
     private void UpdateClassWithAllDataTypes (SqlConnection connection, SqlTransaction transaction, ObjectID id, byte[] binary)

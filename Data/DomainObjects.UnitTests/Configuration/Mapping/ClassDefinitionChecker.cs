@@ -43,9 +43,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           string.Format ("StorageProviderID of class definition '{0}' does not match. Expected: {1}, actual: {2}",
           expectedDefinition.ID, expectedDefinition.StorageProviderID, actualDefinition.StorageProviderID));
 
-      Assert.AreEqual (expectedDefinition.EntityName, actualDefinition.EntityName,
+      Assert.AreEqual (expectedDefinition.MyEntityName, actualDefinition.MyEntityName,
           string.Format ("EntityName of class definition '{0}' does not match. Expected: {1}, actual: {2}",
-          expectedDefinition.ID, expectedDefinition.EntityName, actualDefinition.EntityName));
+          expectedDefinition.ID, expectedDefinition.MyEntityName, actualDefinition.MyEntityName));
 
       if (expectedDefinition.BaseClass == null)
       {

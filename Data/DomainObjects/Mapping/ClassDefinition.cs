@@ -104,7 +104,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     {
       // Note: CheckBasePropertyDefinitions does not have to be called, because member _propertyDefinitions is
       //       initialized to an empty collection during construction.
-      CheckBaseClass (baseClass, id, entityName, storageProviderID);
+      CheckBaseClass (baseClass, id, entityName, storageProviderID, classType);
       PerformSetBaseClass (baseClass);
     }  
   }
@@ -137,6 +137,37 @@ public class ClassDefinition : ISerializable, IObjectReference
   }
 
   // methods and properties
+
+  public string GetEntityName ()
+  {
+    if (_entityName != null)
+      return _entityName;
+
+    if (_baseClass == null)
+      return null;
+
+    return _baseClass.GetEntityName ();
+  }
+
+  public void Validate ()
+  {
+    if (_classType == null)
+      return;
+
+    if (GetEntityName () == null && !_classType.IsAbstract)
+    {
+      throw CreateMappingException (
+          "Type '{0}' must be abstract, because neither class '{1}' nor its base classes specify an entity name.", 
+          _classType.AssemblyQualifiedName, _id);
+    }
+
+    if (_baseClass != null && _entityName != null && _baseClass.GetEntityName () != null && _entityName != _baseClass.GetEntityName ())
+    {
+      throw CreateMappingException (
+          "Class '{0}' must not specify an entity name '{1}' which is different from inherited entity name '{2}'.", 
+          _id, _entityName, _baseClass.GetEntityName ());
+    }
+  }
 
   public bool Contains (PropertyDefinition propertyDefinition)
   {
@@ -368,7 +399,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     get { return _id; }
   }
 
-  public string EntityName
+  public string MyEntityName
   {
     get { return _entityName; }
   }
@@ -422,13 +453,14 @@ public class ClassDefinition : ISerializable, IObjectReference
       ClassDefinition baseClass,
       string id,
       string entityName, 
-      string storageProviderID)
+      string storageProviderID, 
+      Type classType)
   {
-    if (baseClass.EntityName != null && baseClass.EntityName != entityName)
+    if (classType != null && baseClass.ClassType != null && !classType.IsSubclassOf (baseClass.ClassType))
     {
       throw CreateMappingException (
-          "Entity name ('{0}') of class '{1}' and entity name ('{2}') of its base class '{3}' must be equal.",
-          entityName, id, baseClass.EntityName, baseClass.ID);
+          "Type '{0}' of class '{1}' is not derived from type '{2}' of base class '{3}'.", 
+          classType.AssemblyQualifiedName, id, baseClass.ClassType.AssemblyQualifiedName, baseClass.ID);
     }
 
     if (baseClass.StorageProviderID != storageProviderID)
@@ -446,7 +478,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     if (baseClass == this)
       throw CreateMappingException ("Class '{0}' cannot refer to itself as base class.", _id);
 
-    CheckBaseClass (baseClass, _id, _entityName, _storageProviderID);
+    CheckBaseClass (baseClass, _id, _entityName, _storageProviderID, _classType);
     CheckBasePropertyDefinitions (baseClass);
 
     PerformSetBaseClass (baseClass);
@@ -467,8 +499,8 @@ public class ClassDefinition : ISerializable, IObjectReference
       if (basePropertyDefinitions.ContainsColumnName (propertyDefinition.ColumnName))
       {
         throw CreateMappingException (
-            "Property '{0}' of class '{1}' inherits a property which already defines the column '{2}'.",
-            propertyDefinition.PropertyName, this.ID, propertyDefinition.ColumnName);
+            "Class '{0}' with property '{1}' inherits a property which already defines the column '{2}'.",
+            this.ID, propertyDefinition.PropertyName, propertyDefinition.ColumnName);
       }
     }
   }

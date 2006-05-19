@@ -61,7 +61,7 @@ public class InsertCommandBuilder : CommandBuilder
     }
 
     command.CommandText = string.Format ("INSERT INTO [{0}] ({1}) VALUES ({2});",
-        _dataContainer.ClassDefinition.EntityName, _columnBuilder.ToString (), _valueBuilder.ToString ());
+        _dataContainer.ClassDefinition.MyEntityName, _columnBuilder.ToString (), _valueBuilder.ToString ());
 
     return command;
   }
