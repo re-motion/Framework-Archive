@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     private IClassReflector _classReflector;
     private IAbstractRoleReflector _abstractRoleReflector;
-    private AssemblyReflector _reflector;
+    private AssemblyReflector _assemblyReflector;
     private MetadataCache _cache;
 
     // construction and disposing
@@ -39,21 +39,21 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       _classReflector = new ClassReflector ();
       _abstractRoleReflector = new AbstractRoleReflector ();
-      _reflector = new AssemblyReflector (_classReflector, _abstractRoleReflector);
+      _assemblyReflector = new AssemblyReflector (_classReflector, _abstractRoleReflector);
       _cache = new MetadataCache ();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (_classReflector, _reflector.ClassReflector);
-      Assert.AreSame (_abstractRoleReflector, _reflector.AbstractRoleReflector);
+      Assert.AreSame (_classReflector, _assemblyReflector.ClassReflector);
+      Assert.AreSame (_abstractRoleReflector, _assemblyReflector.AbstractRoleReflector);
     }
 
     [Test]
     public void GetMetadata ()
     {
-      _reflector.GetMetadata (typeof (File).Assembly, _cache);
+      _assemblyReflector.GetMetadata (typeof (File).Assembly, _cache);
 
       SecurableClassInfo paperFileTypeInfo = _cache.GetSecurableClassInfo (typeof (PaperFile));
       Assert.IsNotNull (paperFileTypeInfo);

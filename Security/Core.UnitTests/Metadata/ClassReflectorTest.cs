@@ -26,7 +26,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     private Mockery _mocks;
     private IStatePropertyReflector _statePropertyReflectorMock;
     private IAccessTypeReflector _accessTypeReflectorMock;
-    private ClassReflector _reflector;
+    private ClassReflector _classReflector;
     private MetadataCache _cache;
     private StatePropertyInfo _confidentialityProperty;
     private StatePropertyInfo _stateProperty;
@@ -49,7 +49,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       _mocks = new Mockery ();
       _statePropertyReflectorMock = _mocks.NewMock<IStatePropertyReflector> ();
       _accessTypeReflectorMock = _mocks.NewMock<IAccessTypeReflector> ();
-      _reflector = new ClassReflector (_statePropertyReflectorMock, _accessTypeReflectorMock);
+      _classReflector = new ClassReflector (_statePropertyReflectorMock, _accessTypeReflectorMock);
       _cache = new MetadataCache ();
 
       _confidentialityProperty = new StatePropertyInfo ();
@@ -71,8 +71,9 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (_statePropertyReflectorMock, _reflector.StatePropertyReflector);
-      Assert.AreSame (_accessTypeReflectorMock, _reflector.AccessTypeReflector);
+      Assert.IsInstanceOfType (typeof (IClassReflector), _classReflector);
+      Assert.AreSame (_statePropertyReflectorMock, _classReflector.StatePropertyReflector);
+      Assert.AreSame (_accessTypeReflectorMock, _classReflector.AccessTypeReflector);
     }
 
     [Test]
@@ -110,7 +111,7 @@ namespace Rubicon.Security.UnitTests.Metadata
           .With (typeof (PaperFile), _cache)
           .Will (Return.Value (paperFileAccessTypes));
 
-      SecurableClassInfo info = _reflector.GetMetadata (typeof (PaperFile), _cache);
+      SecurableClassInfo info = _classReflector.GetMetadata (typeof (PaperFile), _cache);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
 

@@ -24,7 +24,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     private Mockery _mocks;
     private IEnumerationReflector _enumeratedTypeReflectorMock;
-    private AbstractRoleReflector _reflector;
+    private AbstractRoleReflector _abstractRoleReflector;
     private MetadataCache _cache;
     private EnumValueInfo _valueDomainAbstractRoleClerk;
     private EnumValueInfo _valueDomainAbstractRoleSecretary;
@@ -43,7 +43,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       _mocks = new Mockery ();
       _enumeratedTypeReflectorMock = _mocks.NewMock<IEnumerationReflector> ();
-      _reflector = new AbstractRoleReflector (_enumeratedTypeReflectorMock);
+      _abstractRoleReflector = new AbstractRoleReflector (_enumeratedTypeReflectorMock);
       _cache = new MetadataCache ();
 
       _valueDomainAbstractRoleClerk = new EnumValueInfo (0, "Clerk");
@@ -54,7 +54,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (_enumeratedTypeReflectorMock, _reflector.EnumerationTypeReflector);
+      Assert.IsInstanceOfType (typeof (IAbstractRoleReflector), _abstractRoleReflector);
+      Assert.AreSame (_enumeratedTypeReflectorMock, _abstractRoleReflector.EnumerationTypeReflector);
     }
 
     [Test]
@@ -77,7 +78,7 @@ namespace Rubicon.Security.UnitTests.Metadata
           .With (typeof (SpecialAbstractRole), _cache)
           .Will (Return.Value (specialAbstractRoles));
 
-      List<EnumValueInfo> values = _reflector.GetAbstractRoles (typeof (File).Assembly, _cache);
+      List<EnumValueInfo> values = _abstractRoleReflector.GetAbstractRoles (typeof (File).Assembly, _cache);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
 

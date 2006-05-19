@@ -22,7 +22,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private EnumerationReflector _reflector;
+    private EnumerationReflector _enumerationReflector;
     private MetadataCache _cache;
 
     // construction and disposing
@@ -36,14 +36,20 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _reflector = new EnumerationReflector ();
+      _enumerationReflector = new EnumerationReflector ();
       _cache = new MetadataCache ();
+    }
+
+    [Test]
+    public void Initialize ()
+    {
+      Assert.IsInstanceOfType (typeof (IEnumerationReflector), _enumerationReflector);
     }
 
     [Test]
     public void GetValues ()
     {
-      Dictionary<Enum, EnumValueInfo> values = _reflector.GetValues (typeof (DomainAccessType), _cache);
+      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (typeof (DomainAccessType), _cache);
 
       Assert.IsNotNull (values);
       Assert.AreEqual (2, values.Count);
@@ -60,7 +66,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetValue ()
     {
-      EnumValueInfo value = _reflector.GetValue (DomainAccessType.Journalize, _cache);
+      EnumValueInfo value = _enumerationReflector.GetValue (DomainAccessType.Journalize, _cache);
 
       Assert.IsNotNull (value);
 
@@ -72,7 +78,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetValuesFromCache ()
     {
-      Dictionary<Enum, EnumValueInfo> values = _reflector.GetValues (typeof (DomainAccessType), _cache);
+      Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (typeof (DomainAccessType), _cache);
 
       Assert.AreSame (values[DomainAccessType.Journalize], _cache.GetEnumValueInfo (DomainAccessType.Journalize));
       Assert.AreSame (values[DomainAccessType.Archive], _cache.GetEnumValueInfo (DomainAccessType.Archive));

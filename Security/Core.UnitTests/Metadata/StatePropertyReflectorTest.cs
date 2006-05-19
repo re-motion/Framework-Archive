@@ -24,7 +24,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     private Mockery _mocks;
     private IEnumerationReflector _enumeratedTypeReflectorMock;
-    private StatePropertyReflector _reflector;
+    private StatePropertyReflector _statePropertyReflector;
     private MetadataCache _cache;
     private EnumValueInfo _valueNormal;
     private EnumValueInfo _valuePrivate;
@@ -43,7 +43,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       _mocks = new Mockery ();
       _enumeratedTypeReflectorMock = _mocks.NewMock<IEnumerationReflector> ();
-      _reflector = new StatePropertyReflector (_enumeratedTypeReflectorMock);
+      _statePropertyReflector = new StatePropertyReflector (_enumeratedTypeReflectorMock);
       _cache = new MetadataCache ();
 
       _valueNormal = new EnumValueInfo (0, "Normal");
@@ -54,7 +54,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (_enumeratedTypeReflectorMock, _reflector.EnumerationTypeReflector);
+      Assert.IsInstanceOfType (typeof (IStatePropertyReflector), _statePropertyReflector);
+      Assert.AreSame (_enumeratedTypeReflectorMock, _statePropertyReflector.EnumerationTypeReflector);
     }
 
     [Test]
@@ -70,7 +71,7 @@ namespace Rubicon.Security.UnitTests.Metadata
           .With (typeof (Confidentiality), _cache)
           .Will (Return.Value (values));
 
-      StatePropertyInfo info = _reflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
+      StatePropertyInfo info = _statePropertyReflector.GetMetadata (typeof (PaperFile).GetProperty ("Confidentiality"), _cache);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
 
