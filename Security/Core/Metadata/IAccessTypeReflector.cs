@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Rubicon.Security.Metadata
 {
   public interface IAccessTypeReflector
   {
-    System.Collections.Generic.List<EnumValueInfo> GetAccessTypes (Type type, MetadataCache cache);
+    List<EnumValueInfo> GetAccessTypesFromType (Type type, MetadataCache cache);
+    List<EnumValueInfo> GetAccessTypesFromAssembly (Assembly assembly, MetadataCache cache);
   }
 }

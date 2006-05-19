@@ -109,39 +109,33 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void CacheAccessTypes ()
     {
-      EnumValueInfo domainAccessTypeJournalize = new EnumValueInfo (0, "Journalize");
-      EnumValueInfo domainAccessTypeArchive = new EnumValueInfo (1, "Archive");
-
       Assert.IsFalse (_cache.ContainsAccessType (DomainAccessType.Journalize));
       Assert.IsNull (_cache.GetAccessType (DomainAccessType.Journalize));
 
-      _cache.AddAccessType (DomainAccessType.Journalize, domainAccessTypeJournalize);
-      Assert.AreSame (domainAccessTypeJournalize, _cache.GetAccessType (DomainAccessType.Journalize));
+      _cache.AddAccessType (DomainAccessType.Journalize, AccessTypes.Journalize);
+      Assert.AreSame (AccessTypes.Journalize, _cache.GetAccessType (DomainAccessType.Journalize));
       Assert.IsFalse (_cache.ContainsAccessType (DomainAccessType.Archive));
       Assert.IsNull (_cache.GetAccessType (DomainAccessType.Archive));
 
-      _cache.AddAccessType (DomainAccessType.Archive, domainAccessTypeArchive);
-      Assert.AreSame (domainAccessTypeJournalize, _cache.GetAccessType (DomainAccessType.Journalize));
-      Assert.AreSame (domainAccessTypeArchive, _cache.GetAccessType (DomainAccessType.Archive));
+      _cache.AddAccessType (DomainAccessType.Archive, AccessTypes.Archive);
+      Assert.AreSame (AccessTypes.Journalize, _cache.GetAccessType (DomainAccessType.Journalize));
+      Assert.AreSame (AccessTypes.Archive, _cache.GetAccessType (DomainAccessType.Archive));
     }
 
     [Test]
     public void CacheAbstractRoles ()
     {
-      EnumValueInfo valueDomainAbstractRoleClerk = new EnumValueInfo (0, "Clerk");
-      EnumValueInfo valueDomainAbstractRoleSecretary = new EnumValueInfo (1, "Secretary");
-
       Assert.IsFalse (_cache.ContainsAbstractRole (DomainAbstractRole.Clerk));
       Assert.IsNull (_cache.GetAbstractRole (DomainAbstractRole.Secretary));
 
-      _cache.AddAbstractRole (DomainAbstractRole.Clerk, valueDomainAbstractRoleClerk);
-      Assert.AreSame (valueDomainAbstractRoleClerk, _cache.GetAbstractRole (DomainAbstractRole.Clerk));
+      _cache.AddAbstractRole (DomainAbstractRole.Clerk, AbstractRoles.Clerk);
+      Assert.AreSame (AbstractRoles.Clerk, _cache.GetAbstractRole (DomainAbstractRole.Clerk));
       Assert.IsFalse (_cache.ContainsAbstractRole (DomainAbstractRole.Secretary));
       Assert.IsNull (_cache.GetAbstractRole (DomainAbstractRole.Secretary));
 
-      _cache.AddAbstractRole (DomainAbstractRole.Secretary, valueDomainAbstractRoleSecretary);
-      Assert.AreSame (valueDomainAbstractRoleClerk, _cache.GetAbstractRole (DomainAbstractRole.Clerk));
-      Assert.AreSame (valueDomainAbstractRoleSecretary, _cache.GetAbstractRole (DomainAbstractRole.Secretary));
+      _cache.AddAbstractRole (DomainAbstractRole.Secretary, AbstractRoles.Secretary);
+      Assert.AreSame (AbstractRoles.Clerk, _cache.GetAbstractRole (DomainAbstractRole.Clerk));
+      Assert.AreSame (AbstractRoles.Secretary, _cache.GetAbstractRole (DomainAbstractRole.Secretary));
     }
 
     [Test]
@@ -187,18 +181,15 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetCachedAccessTypes ()
     {
-      EnumValueInfo domainAccessTypeJournalize = new EnumValueInfo (0, "Journalize");
-      EnumValueInfo domainAccessTypeArchive = new EnumValueInfo (1, "Archive");
-
-      _cache.AddAccessType (DomainAccessType.Journalize, domainAccessTypeJournalize);
-      _cache.AddAccessType (DomainAccessType.Archive, domainAccessTypeArchive);
+      _cache.AddAccessType (DomainAccessType.Journalize, AccessTypes.Journalize);
+      _cache.AddAccessType (DomainAccessType.Archive, AccessTypes.Archive);
 
       List<EnumValueInfo> infos = _cache.GetAccessTypes ();
 
       Assert.IsNotNull (infos);
       Assert.AreEqual (2, infos.Count);
-      Assert.Contains (domainAccessTypeJournalize, infos);
-      Assert.Contains (domainAccessTypeArchive, infos);
+      Assert.Contains (AccessTypes.Journalize, infos);
+      Assert.Contains (AccessTypes.Archive, infos);
     }
 
     [Test]

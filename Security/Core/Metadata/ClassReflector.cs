@@ -64,7 +64,7 @@ namespace Rubicon.Security.Metadata
         if (guidAttribute != null)
           info.ID = guidAttribute.Value.ToString ();
         info.Properties.AddRange (GetProperties (type, cache));
-        info.AccessTypes.AddRange (_accessTypeReflector.GetAccessTypes (type, cache));
+        info.AccessTypes.AddRange (_accessTypeReflector.GetAccessTypesFromType (type, cache));
 
         cache.AddSecurableClassInfo (type, info);
 

@@ -31,10 +31,6 @@ namespace Rubicon.Security.UnitTests.Metadata
     private StatePropertyInfo _confidentialityProperty;
     private StatePropertyInfo _stateProperty;
 
-    private List<EnumValueInfo> _generalAccessTypes;
-    private EnumValueInfo _journalizeAccessType;
-    private EnumValueInfo _archiveAccessType;
-
     // construction and disposing
 
     public ClassReflectorTest ()
@@ -59,13 +55,6 @@ namespace Rubicon.Security.UnitTests.Metadata
       _stateProperty = new StatePropertyInfo ();
       _stateProperty.ID = Guid.NewGuid().ToString();
       _stateProperty.Name = "State";
-
-      _generalAccessTypes = new List<EnumValueInfo> ();
-      _generalAccessTypes.Add (new EnumValueInfo (0, "Read"));
-      _generalAccessTypes.Add (new EnumValueInfo (1, "Write"));
-
-      _journalizeAccessType = new EnumValueInfo (2, "Journalize");
-      _archiveAccessType = new EnumValueInfo (3, "Archive");
     }
 
     [Test]
@@ -79,12 +68,16 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetMetadata ()
     {
-      List<EnumValueInfo> fileAccessTypes = new List<EnumValueInfo> (_generalAccessTypes);
-      fileAccessTypes.Add (_journalizeAccessType);
+      List<EnumValueInfo> fileAccessTypes = new List<EnumValueInfo> ();
+      fileAccessTypes.Add (AccessTypes.Read);
+      fileAccessTypes.Add (AccessTypes.Write);
+      fileAccessTypes.Add (AccessTypes.Journalize);
 
-      List<EnumValueInfo> paperFileAccessTypes = new List<EnumValueInfo> (_generalAccessTypes);
-      paperFileAccessTypes.Add (_journalizeAccessType);
-      paperFileAccessTypes.Add (_archiveAccessType);
+      List<EnumValueInfo> paperFileAccessTypes = new List<EnumValueInfo> ();
+      paperFileAccessTypes.Add (AccessTypes.Read);
+      paperFileAccessTypes.Add (AccessTypes.Write);
+      paperFileAccessTypes.Add (AccessTypes.Journalize);
+      paperFileAccessTypes.Add (AccessTypes.Archive);
 
       Expect.Once.On (_statePropertyReflectorMock)
           .Method ("GetMetadata")
@@ -102,12 +95,12 @@ namespace Rubicon.Security.UnitTests.Metadata
           .Will (Return.Value (_confidentialityProperty));
 
       Expect.Once.On (_accessTypeReflectorMock)
-          .Method ("GetAccessTypes")
+          .Method ("GetAccessTypesFromType")
           .With (typeof (File), _cache)
           .Will (Return.Value (fileAccessTypes));
 
       Expect.Once.On (_accessTypeReflectorMock)
-          .Method ("GetAccessTypes")
+          .Method ("GetAccessTypesFromType")
           .With (typeof (PaperFile), _cache)
           .Will (Return.Value (paperFileAccessTypes));
 

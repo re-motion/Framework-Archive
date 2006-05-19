@@ -26,9 +26,6 @@ namespace Rubicon.Security.UnitTests.Metadata
     private IEnumerationReflector _enumeratedTypeReflectorMock;
     private AbstractRoleReflector _abstractRoleReflector;
     private MetadataCache _cache;
-    private EnumValueInfo _valueDomainAbstractRoleClerk;
-    private EnumValueInfo _valueDomainAbstractRoleSecretary;
-    private EnumValueInfo _valueSpecialAbstractRoleAdministrator;
 
     // construction and disposing
 
@@ -45,10 +42,6 @@ namespace Rubicon.Security.UnitTests.Metadata
       _enumeratedTypeReflectorMock = _mocks.NewMock<IEnumerationReflector> ();
       _abstractRoleReflector = new AbstractRoleReflector (_enumeratedTypeReflectorMock);
       _cache = new MetadataCache ();
-
-      _valueDomainAbstractRoleClerk = new EnumValueInfo (0, "Clerk");
-      _valueDomainAbstractRoleSecretary = new EnumValueInfo (1, "Secretary");
-      _valueSpecialAbstractRoleAdministrator = new EnumValueInfo (0, "Administrator");
     }
 
     [Test]
@@ -62,11 +55,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void GetAbstractRoles ()
     {
       Dictionary<Enum, EnumValueInfo> domainAbstractRoles = new Dictionary<Enum, EnumValueInfo> ();
-      domainAbstractRoles.Add (DomainAbstractRole.Clerk, _valueDomainAbstractRoleClerk);
-      domainAbstractRoles.Add (DomainAbstractRole.Secretary, _valueDomainAbstractRoleSecretary);
+      domainAbstractRoles.Add (DomainAbstractRole.Clerk, AbstractRoles.Clerk);
+      domainAbstractRoles.Add (DomainAbstractRole.Secretary, AbstractRoles.Secretary);
 
       Dictionary<Enum, EnumValueInfo> specialAbstractRoles = new Dictionary<Enum, EnumValueInfo> ();
-      specialAbstractRoles.Add (SpecialAbstractRole.Administrator, _valueSpecialAbstractRoleAdministrator);
+      specialAbstractRoles.Add (SpecialAbstractRole.Administrator, AbstractRoles.Administrator);
 
       Expect.Once.On (_enumeratedTypeReflectorMock)
           .Method ("GetValues")
@@ -84,9 +77,9 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       Assert.IsNotNull (values);
       Assert.AreEqual (3, values.Count);
-      Assert.Contains (_valueDomainAbstractRoleClerk, values);
-      Assert.Contains (_valueDomainAbstractRoleSecretary, values);
-      Assert.Contains (_valueSpecialAbstractRoleAdministrator, values);
+      Assert.Contains (AbstractRoles.Clerk, values);
+      Assert.Contains (AbstractRoles.Secretary, values);
+      Assert.Contains (AbstractRoles.Administrator, values);
     }
 
     [Test]

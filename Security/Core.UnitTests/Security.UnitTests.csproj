@@ -50,11 +50,15 @@
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
     <Compile Include="EnumWrapperTest.cs" />
+    <Compile Include="Metadata\AccessTypes.cs" />
     <Compile Include="Metadata\AssemblyReflectorTest.cs" />
     <Compile Include="Metadata\ClassReflectorTest.cs" />
     <Compile Include="Metadata\AccessTypeReflectorTest.cs" />
     <Compile Include="Metadata\AbstractRoleReflectorTest.cs" />
+    <Compile Include="Metadata\AbstractRoles.cs" />
+    <Compile Include="Metadata\PropertyStates.cs" />
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
+    <Compile Include="Metadata\EnumValueInfoAssert.cs" />
     <Compile Include="Metadata\EnumValueInfoListContentsAsserter.cs" />
     <Compile Include="Metadata\EnumValueInfoListContentsAsserterTest.cs" />
     <Compile Include="Metadata\MetadataCacheTest.cs" />

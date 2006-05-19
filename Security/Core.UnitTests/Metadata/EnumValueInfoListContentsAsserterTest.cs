@@ -38,28 +38,28 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void AssertWithValidValue ()
     {
-      EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("First", _list);
+      EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("First", _list, string.Empty, null);
       Assert.IsTrue (asserter.Test ());
     }
 
     [Test]
     public void AssertWithListNull ()
     {
-      EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("First", null);
+      EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("First", null, string.Empty, null);
       Assert.IsFalse (asserter.Test ());
     }
 
     [Test]
     public void AssertWithInvalidValue ()
     {
-      EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("Other", _list);
+      EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("Other", _list, string.Empty, null);
       Assert.IsFalse (asserter.Test ());
     }
 
     [Test]
     public void GetMessage ()
     {
-      EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("Expected", _list);
+      EnumValueInfoListContentsAsserter asserter = new EnumValueInfoListContentsAsserter ("Expected", _list, string.Empty, null);
       Assert.AreEqual ("\r\n\texpected: <\"Expected\">\r\n\t but was: <<\"First\">,<\"Second\">>", asserter.Message);
     }
 

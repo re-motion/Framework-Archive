@@ -39,7 +39,30 @@ namespace Rubicon.Security.Metadata
       get { return _enumerationReflector; }
     }
 
-    public List<EnumValueInfo> GetAccessTypes (Type type, MetadataCache cache)
+    public List<EnumValueInfo> GetAccessTypesFromAssembly (Assembly assembly, MetadataCache cache)
+    {
+      ArgumentUtility.CheckNotNull ("assembly", assembly);
+      ArgumentUtility.CheckNotNull ("cache", cache);
+
+      List<EnumValueInfo> accessTypes = new List<EnumValueInfo> ();
+      foreach (Type type in assembly.GetTypes ())
+      {
+        if (type.IsEnum && Attribute.IsDefined (type, typeof (AccessTypeAttribute), false))
+        {
+          Dictionary<Enum, EnumValueInfo> values = _enumerationReflector.GetValues (type, cache);
+          foreach (KeyValuePair<Enum, EnumValueInfo> entry in values)
+          {
+            if (!cache.ContainsAccessType (entry.Key))
+              cache.AddAccessType (entry.Key, entry.Value);
+            accessTypes.Add (entry.Value);
+          }
+        }
+      }
+
+      return accessTypes;
+    }
+
+    public List<EnumValueInfo> GetAccessTypesFromType (Type type, MetadataCache cache)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("cache", cache);

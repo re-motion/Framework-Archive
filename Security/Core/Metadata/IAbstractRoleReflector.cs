@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Rubicon.Security.Metadata
 {
   public interface IAbstractRoleReflector
   {
-    System.Collections.Generic.List<EnumValueInfo> GetAbstractRoles (Assembly assembly, MetadataCache cache);
+    List<EnumValueInfo> GetAbstractRoles (Assembly assembly, MetadataCache cache);
   }
 }

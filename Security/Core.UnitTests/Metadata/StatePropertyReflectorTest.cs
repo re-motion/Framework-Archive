@@ -26,9 +26,6 @@ namespace Rubicon.Security.UnitTests.Metadata
     private IEnumerationReflector _enumeratedTypeReflectorMock;
     private StatePropertyReflector _statePropertyReflector;
     private MetadataCache _cache;
-    private EnumValueInfo _valueNormal;
-    private EnumValueInfo _valuePrivate;
-    private EnumValueInfo _valueConfidential;
 
     // construction and disposing
 
@@ -45,10 +42,6 @@ namespace Rubicon.Security.UnitTests.Metadata
       _enumeratedTypeReflectorMock = _mocks.NewMock<IEnumerationReflector> ();
       _statePropertyReflector = new StatePropertyReflector (_enumeratedTypeReflectorMock);
       _cache = new MetadataCache ();
-
-      _valueNormal = new EnumValueInfo (0, "Normal");
-      _valuePrivate = new EnumValueInfo (1, "Private");
-      _valueConfidential = new EnumValueInfo (2, "Confidential");
     }
 
     [Test]
@@ -62,9 +55,9 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void GetMetadata ()
     {
       Dictionary<Enum, EnumValueInfo> values = new Dictionary<Enum, EnumValueInfo> ();
-      values.Add (Confidentiality.Normal, _valueNormal);
-      values.Add (Confidentiality.Confidential, _valueConfidential);
-      values.Add (Confidentiality.Private, _valuePrivate);
+      values.Add (Confidentiality.Normal, PropertyStates.Normal);
+      values.Add (Confidentiality.Confidential, PropertyStates.Confidential);
+      values.Add (Confidentiality.Private, PropertyStates.Private);
 
       Expect.Once.On (_enumeratedTypeReflectorMock)
           .Method ("GetValues")
@@ -81,9 +74,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       
       Assert.IsNotNull (info.Values);
       Assert.AreEqual (3, info.Values.Count);
-      Assert.Contains (_valueNormal, info.Values);
-      Assert.Contains (_valuePrivate, info.Values);
-      Assert.Contains (_valueConfidential, info.Values);
+      Assert.Contains (PropertyStates.Normal, info.Values);
+      Assert.Contains (PropertyStates.Private, info.Values);
+      Assert.Contains (PropertyStates.Confidential, info.Values);
     }
 
     [Test]

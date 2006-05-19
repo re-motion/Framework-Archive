@@ -29,16 +29,6 @@ namespace Rubicon.Security.UnitTests.Metadata
       _list = list;
     }
 
-    public EnumValueInfoListContentsAsserter (string expectedName, IList<EnumValueInfo> list, string message)
-      : this (expectedName, list, message, null)
-    {
-    }
-
-    public EnumValueInfoListContentsAsserter (string expectedName, IList<EnumValueInfo> list)
-      : this (expectedName, list, string.Empty, null)
-    {
-    }
-
     // methods and properties
 
     public override bool Test ()
@@ -60,7 +50,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       get
       {
         FailureMessage.DisplayExpectedValue (_expectedName);
-        FailureMessage.DisplayListElements ("\t but was: ", ExtractNames (_list), 0, 5);
+        FailureMessage.DisplayListElements ("\t but was: ", ExtractNames (_list), 0, 10);
 
         return base.FailureMessage.ToString ();
       }

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 
 using NUnit.Framework;
+using NMock2;
 
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.TestDomain;
@@ -21,8 +22,10 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     // member fields
 
-    private IClassReflector _classReflector;
-    private IAbstractRoleReflector _abstractRoleReflector;
+    private Mockery _mocks;
+    private IClassReflector _classReflectorMock;
+    private IAbstractRoleReflector _abstractRoleReflectorMock;
+    private IAccessTypeReflector _accessTypeReflectorMock;
     private AssemblyReflector _assemblyReflector;
     private MetadataCache _cache;
 
@@ -37,47 +40,62 @@ namespace Rubicon.Security.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _classReflector = new ClassReflector ();
-      _abstractRoleReflector = new AbstractRoleReflector ();
-      _assemblyReflector = new AssemblyReflector (_classReflector, _abstractRoleReflector);
+      _mocks = new Mockery ();
+      _accessTypeReflectorMock = _mocks.NewMock<IAccessTypeReflector> ();
+      _classReflectorMock = _mocks.NewMock < IClassReflector> ();
+      _abstractRoleReflectorMock = _mocks.NewMock <IAbstractRoleReflector> ();
+      _assemblyReflector = new AssemblyReflector (_accessTypeReflectorMock, _classReflectorMock, _abstractRoleReflectorMock);
       _cache = new MetadataCache ();
     }
 
     [Test]
     public void Initialize ()
     {
-      Assert.AreSame (_classReflector, _assemblyReflector.ClassReflector);
-      Assert.AreSame (_abstractRoleReflector, _assemblyReflector.AbstractRoleReflector);
+      Assert.AreSame (_classReflectorMock, _assemblyReflector.ClassReflector);
+      Assert.AreSame (_accessTypeReflectorMock, _assemblyReflector.AccessTypeReflector);
+      Assert.AreSame (_abstractRoleReflectorMock, _assemblyReflector.AbstractRoleReflector);
     }
 
     [Test]
     public void GetMetadata ()
     {
-      _assemblyReflector.GetMetadata (typeof (File).Assembly, _cache);
+      Assembly securityAssembly = typeof (IAccessTypeReflector).Assembly;
+      Assembly assembly = typeof (File).Assembly;
 
-      SecurableClassInfo paperFileTypeInfo = _cache.GetSecurableClassInfo (typeof (PaperFile));
-      Assert.IsNotNull (paperFileTypeInfo);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.PaperFile", paperFileTypeInfo.Name);
-      
-      SecurableClassInfo fileTypeInfo = _cache.GetSecurableClassInfo (typeof (File));
-      Assert.IsNotNull (fileTypeInfo);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", fileTypeInfo.Name);
+      Expect.Once.On (_accessTypeReflectorMock)
+          .Method ("GetAccessTypesFromAssembly")
+          .With (securityAssembly, _cache)
+          .Will (Return.Value (new List<EnumValueInfo> (new EnumValueInfo[] {AccessTypes.Read, AccessTypes.Write})));
 
-      EnumValueInfo generalAccessTypeCreateEnumValueInfo = _cache.GetAccessType (GeneralAccessType.Create);
-      Assert.IsNotNull (generalAccessTypeCreateEnumValueInfo);
-      Assert.AreEqual ("Create", generalAccessTypeCreateEnumValueInfo.Name);
+      Expect.Once.On (_accessTypeReflectorMock)
+          .Method ("GetAccessTypesFromAssembly")
+          .With (assembly, _cache)
+          .Will (Return.Value (new List<EnumValueInfo> (new EnumValueInfo[] { AccessTypes.Journalize, AccessTypes.Archive })));
 
-      EnumValueInfo domainAccessTypeJournalizeEnumValueInfo = _cache.GetAccessType (DomainAccessType.Journalize);
-      Assert.IsNotNull (domainAccessTypeJournalizeEnumValueInfo);
-      Assert.AreEqual ("Journalize", domainAccessTypeJournalizeEnumValueInfo.Name);
+      Expect.Once.On (_abstractRoleReflectorMock)
+          .Method ("GetAbstractRoles")
+          .With (securityAssembly, _cache)
+          .Will (Return.Value (new List<EnumValueInfo> ()));
 
-      EnumValueInfo domainAbstractRoleClerkEnumValueInfo = _cache.GetAbstractRole (DomainAbstractRole.Clerk);
-      Assert.IsNotNull (domainAbstractRoleClerkEnumValueInfo);
-      Assert.AreEqual ("Clerk", domainAbstractRoleClerkEnumValueInfo.Name);
+      Expect.Once.On (_abstractRoleReflectorMock)
+          .Method ("GetAbstractRoles")
+          .With (assembly, _cache)
+          .Will (Return.Value (new List<EnumValueInfo> (
+              new EnumValueInfo[] { AbstractRoles.Clerk, AbstractRoles.Secretary, AbstractRoles.Administrator })));
 
-      EnumValueInfo specialAbstractRoleAdministratorEnumValueInfo = _cache.GetAbstractRole (SpecialAbstractRole.Administrator);
-      Assert.IsNotNull (specialAbstractRoleAdministratorEnumValueInfo);
-      Assert.AreEqual ("Administrator", specialAbstractRoleAdministratorEnumValueInfo.Name);
+      Expect.Once.On (_classReflectorMock)
+          .Method ("GetMetadata")
+          .With (typeof (File), _cache)
+          .Will (Return.Value (new SecurableClassInfo()));
+
+      Expect.Once.On (_classReflectorMock)
+          .Method ("GetMetadata")
+          .With (typeof (PaperFile), _cache)
+          .Will (Return.Value (new SecurableClassInfo ()));
+
+      _assemblyReflector.GetMetadata (assembly, _cache);
+
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
   }
 }
