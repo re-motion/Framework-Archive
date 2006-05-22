@@ -115,6 +115,7 @@ namespace Rubicon.Security.UnitTests.Metadata
               <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete"" value=""3"" />
               <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find"" value=""4"" />
               <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize"" value=""0"" />
+              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive"" value=""1"" />
             </accessTypes>
 
             <abstractRoles>
@@ -197,6 +198,7 @@ namespace Rubicon.Security.UnitTests.Metadata
               <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete"" value=""3"" />
               <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find"" value=""4"" />
               <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize"" value=""0"" />
+              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive"" value=""1"" />
             </accessTypes>
 
             <abstractRoles>
