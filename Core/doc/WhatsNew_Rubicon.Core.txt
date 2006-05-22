@@ -1,3 +1,7 @@
+1.7.1
+=====
+- Rubicon.Utilities.TypeNameConverter: Neuer TypeConverter um .net Typnamen bzw die abgekürzte Form ("::") in Typen zu konvertieren.
+
 1.7.0
 =====
 - Upgrade auf NUnit 2.2.8 .net 2.0
