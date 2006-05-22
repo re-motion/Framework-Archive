@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Xml;
+
+namespace Rubicon.Security.UnitTests.XmlAsserter
+{
+  [CLSCompliant (false)]
+  public class XmlDocumentSimilarAsserter : XmlDocumentBaseAsserter
+  {
+    private NodeStackToXPathConverter _nodeStackToXPathConverter;
+
+    public XmlDocumentSimilarAsserter (XmlDocument expected, XmlDocument actual, string message, params object[] args)
+      : base (expected, actual, message, args)
+    {
+      _nodeStackToXPathConverter = new NodeStackToXPathConverter ();
+      _nodeStackToXPathConverter.IncludeNamespaces = true;
+    }
+
+    protected override bool CompareDocuments (XmlDocument expectedDocument, XmlDocument actualDocument)
+    {
+      if (!ContainsNodeStack (expectedDocument.FirstChild, actualDocument))
+        return false;
+
+      return ContainsNodeStack (actualDocument.FirstChild, expectedDocument);
+    }
+
+    private bool ContainsNodeStack (XmlNode node, XmlDocument testDocument)
+    {
+      Stack<XmlNode> nodeStack = GetNodeStack (node);
+      string xPathExpression = _nodeStackToXPathConverter.GetXPathExpression (nodeStack);
+      XmlNodeList nodes = testDocument.SelectNodes (xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
+      if (nodes.Count == 0)
+      {
+        FailureMessage.AddLine (xPathExpression + " Evaluation failed.");
+        FailureMessage.AddLine ("Node missing in actual document:");
+        ShowNodeStack (node, FailureMessage.AddExpectedLine);
+
+        if (node.ParentNode != null)
+        {
+          Stack<XmlNode> parentNodeStack = GetNodeStack (node.ParentNode);
+          xPathExpression = _nodeStackToXPathConverter.GetXPathExpression (parentNodeStack);
+          XmlNodeList actualNodes = testDocument.SelectNodes (xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
+          if (actualNodes.Count > 0)
+            ShowNodeStack (actualNodes[0], FailureMessage.AddActualLine);
+        }
+        return false;
+      }
+
+      foreach (XmlNode childNode in node.ChildNodes)
+      {
+        if (!ContainsNodeStack (childNode, testDocument))
+          return false;
+      }
+
+      return true;
+    }
+  }
+}

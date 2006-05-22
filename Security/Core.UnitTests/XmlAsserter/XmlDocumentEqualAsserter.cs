@@ -7,30 +7,22 @@ using NUnit.Framework;
 namespace Rubicon.Security.UnitTests.XmlAsserter
 {
   [CLSCompliant (false)]
-  public class XmlDocumentEqualAsserter : AbstractAsserter
+  public class XmlDocumentEqualAsserter : XmlDocumentBaseAsserter
   {
-    private XmlDocument _expectedDocument;
-    private XmlDocument _actualDocument;
+    private XmlnsAttributeHandler _xmlnsAttributeFilter;
 
     public XmlDocumentEqualAsserter (XmlDocument expected, XmlDocument actual, string message, params object[] args)
-      : base (message, args)
+        : base (expected, actual, message, args)
     {
-      _expectedDocument = expected;
-      _actualDocument = actual;
+      _xmlnsAttributeFilter = new XmlnsAttributeHandler ();
     }
 
-    public override bool Test ()
+    protected override bool CompareDocuments (XmlDocument expectedDocument, XmlDocument actualDocument)
     {
-      if (_actualDocument == null && _expectedDocument == null)
-        return true;
-
-      if (_actualDocument == null || _expectedDocument == null)
-        return false;
-
-      return AreChildNodesEqual (_expectedDocument, _actualDocument);
+      return CompareNodes (expectedDocument, actualDocument);
     }
 
-    private bool AreChildNodesEqual (XmlNode expectedParentNode, XmlNode actualParentNode)
+    protected bool CompareNodes (XmlNode expectedParentNode, XmlNode actualParentNode)
     {
       if (expectedParentNode.ChildNodes.Count != actualParentNode.ChildNodes.Count)
       {
@@ -54,22 +46,22 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
           return false;
         }
 
-        if (!AreChildNodesEqual (expectedNode, actualNode))
+        if (!CompareNodes (expectedNode, actualNode))
           return false;
       }
 
       return true;
     }
 
-    private bool AreNodesEqual (XmlNode expected, XmlNode actual)
+    protected virtual bool AreNodesEqual (XmlNode expected, XmlNode actual)
     {
-      return expected.NamespaceURI == actual.NamespaceURI 
-          && expected.LocalName == actual.LocalName 
+      return expected.NamespaceURI == actual.NamespaceURI
+          && expected.LocalName == actual.LocalName
           && AreNodeAttributesEqual (expected.Attributes, actual.Attributes)
           && expected.Value == actual.Value;
     }
 
-    private bool AreNodeAttributesEqual (XmlAttributeCollection expectedAttributes, XmlAttributeCollection actualAttributes)
+    protected virtual bool AreNodeAttributesEqual (XmlAttributeCollection expectedAttributes, XmlAttributeCollection actualAttributes)
     {
       if (expectedAttributes == null && actualAttributes == null)
         return true;
@@ -77,8 +69,8 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
       if (expectedAttributes == null || actualAttributes == null)
         return false;
 
-      FilterNamespaceDeclarations (expectedAttributes);
-      FilterNamespaceDeclarations (actualAttributes);
+      _xmlnsAttributeFilter.Handle (expectedAttributes);
+      _xmlnsAttributeFilter.Handle (actualAttributes);
 
       if (expectedAttributes.Count != actualAttributes.Count)
         return false;
@@ -92,82 +84,17 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
       return true;
     }
 
-    private bool AreAttributesEqual (XmlAttribute expected, XmlAttribute actual)
+    protected bool AreAttributesEqual (XmlAttribute expected, XmlAttribute actual)
     {
       return expected.NamespaceURI == actual.NamespaceURI
           && expected.LocalName == actual.LocalName
           && expected.Value == actual.Value;
     }
 
-    private bool IsNamespaceDeclaration (XmlAttribute attribute)
+    protected void SetFailureMessage (XmlNode expectedNode, XmlNode actualNode)
     {
-      return attribute.LocalName == "xmlns" && attribute.NamespaceURI == "http://www.w3.org/2000/xmlns/";
-    }
-
-    private void FilterNamespaceDeclarations (XmlAttributeCollection attributes)
-    {
-      for (int i = attributes.Count - 1; i >= 0; i--)
-      {
-        if (IsNamespaceDeclaration (attributes[i]))
-          attributes.Remove (attributes[i]);
-      }
-    }
-
-    private void SetFailureMessage (XmlNode expectedNode, XmlNode actualNode)
-    {
-      Stack<XmlNode> expectedNodeStack = GetNodeStack (expectedNode);
-      Stack<XmlNode> actualNodeStack = GetNodeStack (actualNode);
-
-      while (expectedNodeStack.Count > 0)
-        FailureMessage.AddExpectedLine (GetNodeInfo (expectedNodeStack.Pop ()));
-
-      while (actualNodeStack.Count > 0)
-        FailureMessage.AddActualLine (GetNodeInfo (actualNodeStack.Pop ()));
-    }
-
-    private Stack<XmlNode> GetNodeStack (XmlNode node)
-    {
-      Stack<XmlNode> nodeStack = new Stack<XmlNode> ();
-
-      XmlNode currentNode = node;
-      while (currentNode != null && !(currentNode is XmlDocument))
-      {
-        nodeStack.Push (currentNode);
-        currentNode = currentNode.ParentNode;
-      }
-
-      return nodeStack;
-    }
-
-    private string GetNodeInfo (XmlNode node)
-    {
-      return node.NamespaceURI + ":" + node.LocalName + GetAttributeInfo (node.Attributes) + GetNodeValueInfo (node.Value);
-    }
-
-    private string GetAttributeInfo (XmlAttributeCollection attributes)
-    {
-      if (attributes == null || attributes.Count == 0)
-        return string.Empty;
-
-      StringBuilder attributeInfoBuilder = new StringBuilder ();
-
-      foreach (XmlAttribute attribute in attributes)
-      {
-        if (attributeInfoBuilder.Length > 0)
-          attributeInfoBuilder.Append (", ");
-
-        attributeInfoBuilder.Append (attribute.NamespaceURI + ":" + attribute.Name + "=\"" + attribute.Value + "\"");
-      }
-
-      return "[" + attributeInfoBuilder.ToString () + "]";
-    }
-
-    private string GetNodeValueInfo (string nodeValue)
-    {
-      if (nodeValue == null)
-        return string.Empty;
-
-      return " = \"" + nodeValue + "\"";
+      ShowNodeStack (expectedNode, FailureMessage.AddExpectedLine);
+      ShowNodeStack (actualNode, FailureMessage.AddActualLine);
     }
   }
 }

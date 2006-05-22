@@ -55,5 +55,38 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
     {
       AreDocumentsEqual (expectedXml, actualDocument, string.Empty, null);
     }
+
+    static public void AreDocumentsSimilar (XmlDocument expectedDocument, XmlDocument actualDocument, string message, params object[] args)
+    {
+      Assert.DoAssert (new XmlDocumentSimilarAsserter (expectedDocument, actualDocument, message, args));
+    }
+
+    static public void AreDocumentsSimilar (XmlDocument expectedDocument, XmlDocument actualDocument, string message)
+    {
+      AreDocumentsSimilar (expectedDocument, actualDocument, message, null);
+    }
+
+    static public void AreDocumentsSimilar (XmlDocument expectedDocument, XmlDocument actualDocument)
+    {
+      AreDocumentsSimilar (expectedDocument, actualDocument, string.Empty, null);
+    }
+
+    static public void AreDocumentsSimilar (string expectedXml, XmlDocument actualDocument, string message, params object[] args)
+    {
+      XmlDocument expectedDocument = new XmlDocument ();
+      expectedDocument.LoadXml (expectedXml);
+
+      AreDocumentsSimilar (expectedDocument, actualDocument, message, args);
+    }
+
+    static public void AreDocumentsSimilar (string expectedXml, XmlDocument actualDocument, string message)
+    {
+      AreDocumentsSimilar (expectedXml, actualDocument, message, null);
+    }
+
+    static public void AreDocumentsSimilar (string expectedXml, XmlDocument actualDocument)
+    {
+      AreDocumentsSimilar (expectedXml, actualDocument, string.Empty, null);
+    }
   }
 }

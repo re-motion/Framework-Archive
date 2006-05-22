@@ -62,6 +62,7 @@
     <Compile Include="Metadata\EnumValueInfoListContentsAsserter.cs" />
     <Compile Include="Metadata\EnumValueInfoListContentsAsserterTest.cs" />
     <Compile Include="Metadata\MetadataCacheTest.cs" />
+    <Compile Include="Metadata\MetadataExtractorTest.cs" />
     <Compile Include="Metadata\MetadataToXmlConverterTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
@@ -92,10 +93,15 @@
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <Compile Include="SecurityContextTest.cs" />
     <Compile Include="ThreadUserProviderTest.cs" />
+    <Compile Include="XmlAsserter\NodeStackToXPathConverter.cs" />
+    <Compile Include="XmlAsserter\NodeStackToXPathConverterTest.cs" />
     <Compile Include="XmlAsserter\XmlAssert.cs" />
+    <Compile Include="XmlAsserter\XmlDocumentBaseAsserter.cs" />
     <Compile Include="XmlAsserter\XmlDocumentEqualAsserter.cs" />
     <Compile Include="XmlAsserter\XmlDocumentEqualAsserterTest.cs" />
+    <Compile Include="XmlAsserter\XmlDocumentSimilarAsserter.cs" />
     <Compile Include="XmlAsserter\XmlElementAsserter.cs" />
+    <Compile Include="XmlAsserter\XmlnsAttributeFilter.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>

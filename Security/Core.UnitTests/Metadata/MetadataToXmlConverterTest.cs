@@ -21,13 +21,13 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void SetUp ()
     {
       _cache = new MetadataCache ();
-      _converter = new MetadataToXmlConverter (_cache);
+      _converter = new MetadataToXmlConverter ();
     }
 
     [Test]
     public void EmptyMetadata ()
     {
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"<securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"" />";
       XmlAssert.AreDocumentsEqual (expectedXml, document);
@@ -41,7 +41,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       classInfo.Name = "File";
       _cache.AddSecurableClassInfo (typeof (File), classInfo);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -67,7 +67,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       PropertyInfo property = type.GetProperty ("Confidentiality");
       _cache.AddStatePropertyInfo (property, propertyInfo);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -90,7 +90,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       accessType.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       _cache.AddAccessType (DomainAccessType.Archive, accessType);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -109,7 +109,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       abstractRole.ID = "00000004-0001-0000-0000-000000000000";
       _cache.AddAbstractRole (SpecialAbstractRole.Administrator, abstractRole);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -139,7 +139,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       derivedClassInfo2.Name = "InputFile";
       _cache.AddSecurableClassInfo (typeof (SecurableClassInfo), derivedClassInfo2);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -176,7 +176,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       baseClassInfo.DerivedClasses.Add (derivedClassInfo1);
       baseClassInfo.DerivedClasses.Add (derivedClassInfo2);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -220,7 +220,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       PropertyInfo property2 = type.GetProperty ("SimpleEnum");
       _cache.AddStatePropertyInfo (property2, propertyInfo2);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -253,7 +253,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       accessType2.ID = "c6995b9b-7fed-42df-a2d1-897600b00fb0";
       _cache.AddAccessType (DomainAccessType.Journalize, accessType2);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -277,7 +277,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       abstractRole2.ID = "3b84739a-7f35-4224-989f-3d5b05047cbb";
       _cache.AddAbstractRole (SomeEnum.First, abstractRole2);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -311,7 +311,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       classInfo.Properties.Add (propertyInfo);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -354,7 +354,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       classInfo.AccessTypes.Add (accessType1);
       classInfo.AccessTypes.Add (accessType2);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -436,7 +436,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       abstractRole2.ID = "3b84739a-7f35-4224-989f-3d5b05047cbb";
       _cache.AddAbstractRole (SomeEnum.First, abstractRole2);
 
-      XmlDocument document = _converter.Convert ();
+      XmlDocument document = _converter.Convert (_cache);
 
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">

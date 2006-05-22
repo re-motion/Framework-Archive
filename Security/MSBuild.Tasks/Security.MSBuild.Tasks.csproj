@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AC34B1D8-A295-44A4-AE9D-8167B3C3ED44}</ProjectGuid>
+    <ProjectGuid>{7CA0F5EF-CDEA-4B5D-9954-1CC50973C7D0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security.UnitTests.TestDomain</RootNamespace>
-    <AssemblyName>Rubicon.Security.UnitTests.TestDomain</AssemblyName>
+    <RootNamespace>Rubicon.Security.MSBuild.Tasks</RootNamespace>
+    <AssemblyName>Rubicon.Security.MSBuild.Tasks</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,27 +28,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities" />
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Confidentiality.cs" />
-    <Compile Include="SpecialAbstractRole.cs" />
-    <Compile Include="DomainAbstractRole.cs" />
-    <Compile Include="DomainAccessType.cs" />
-    <Compile Include="File.cs" />
-    <Compile Include="FileState.cs" />
-    <Compile Include="PaperFile.cs" />
-    <Compile Include="SomeEnum.cs" />
-    <Compile Include="Role.cs" />
-    <None Include="AssemblyInfoTemplate.cs" />
+    <Compile Include="ExtractSecurityMetadata.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Core\Security.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security</Name>
@@ -58,10 +48,8 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>-->
-  
-  <UsingTask TaskName="Rubicon.Security.Metadata.Extractor.MSBuild.ExtractSecurityMetadata" AssemblyFile="..\..\Security\MSBuild.Tasks\bin\Debug\Rubicon.Security.Metadata.Extractor.MSBuild.dll" />
-  <Target Name="AfterBuild">
-    <ExtractSecurityMetadata Assemblies="$(TargetPath)" OutputFilename="$(TargetDir)\security-metadata.xml" />
   </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

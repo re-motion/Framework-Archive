@@ -6,29 +6,32 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Metadata
 {
-  public class MetadataToXmlConverter
+  public class MetadataToXmlConverter : IMetadataConverter
   {
-    private delegate XmlNode CreateInfoNodeDelegate<T> (XmlDocument document, T info);
+    private delegate XmlNode CreateCollectionItemNodeDelegate<T> (XmlDocument document, T itemInfo);
 
     public const string MetadataXmlNamespace = "http://www.rubicon-it.com/Security/Metadata/1.0";
 
-    private MetadataCache _cache;
-
-    public MetadataToXmlConverter (MetadataCache cache)
+    public void ConvertAndSave (MetadataCache cache, string filename)
     {
       ArgumentUtility.CheckNotNull ("cache", cache);
-      _cache = cache;
+      ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
+
+      XmlDocument xmlDocument = Convert (cache);
+      xmlDocument.Save (filename);
     }
 
-    public XmlDocument Convert()
+    public XmlDocument Convert (MetadataCache cache)
     {
-      XmlDocument document = new XmlDocument();
+      ArgumentUtility.CheckNotNull ("cache", cache);
+
+      XmlDocument document = new XmlDocument ();
       XmlElement rootElement = document.CreateElement ("securityMetadata", MetadataXmlNamespace);
 
-      AppendCollection (document, rootElement, "classes", _cache.GetSecurableClassInfos (), CreateClassNode);
-      AppendCollection (document, rootElement, "stateProperties", _cache.GetStatePropertyInfos (), CreateStatePropertyNode);
-      AppendCollection (document, rootElement, "accessTypes", _cache.GetAccessTypes (), CreateAccessTypeNode);
-      AppendCollection (document, rootElement, "abstractRoles", _cache.GetAbstractRoles (), CreateAbstractRoleNode);
+      AppendCollection (document, rootElement, "classes", cache.GetSecurableClassInfos (), CreateClassNode);
+      AppendCollection (document, rootElement, "stateProperties", cache.GetStatePropertyInfos (), CreateStatePropertyNode);
+      AppendCollection (document, rootElement, "accessTypes", cache.GetAccessTypes (), CreateAccessTypeNode);
+      AppendCollection (document, rootElement, "abstractRoles", cache.GetAbstractRoles (), CreateAbstractRoleNode);
 
       document.AppendChild (rootElement);
       return document;
@@ -38,15 +41,15 @@ namespace Rubicon.Security.Metadata
         XmlDocument document, 
         XmlElement parentElement, 
         string collectionElementName, 
-        List<T> infos, 
-        CreateInfoNodeDelegate<T> createInfoNodeDelegate)
+        List<T> infos,
+        CreateCollectionItemNodeDelegate<T> createCollectionItemNodeDelegate)
     {
       if (infos.Count > 0)
       {
         XmlElement collectionElement = document.CreateElement (collectionElementName, MetadataXmlNamespace);
 
         foreach (T info in infos)
-          collectionElement.AppendChild (createInfoNodeDelegate (document, info));
+          collectionElement.AppendChild (createCollectionItemNodeDelegate (document, info));
 
         parentElement.AppendChild (collectionElement);
       }

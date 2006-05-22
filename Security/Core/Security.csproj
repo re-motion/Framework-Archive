@@ -49,6 +49,7 @@
     <Compile Include="IUserProvider.cs" />
     <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
+    <Compile Include="Metadata\MetadataExtractor.cs" />
     <Compile Include="Metadata\ClassReflector.cs" />
     <Compile Include="Metadata\AbstractRoleReflector.cs" />
     <Compile Include="Metadata\IAbstractRoleReflector.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Metadata\IClassReflector.cs" />
     <Compile Include="Metadata\EnumValueInfo.cs" />
     <Compile Include="Metadata\IEnumerationReflector.cs" />
+    <Compile Include="Metadata\IMetadataConverter.cs" />
     <Compile Include="Metadata\IPermissionReflector.cs" />
     <Compile Include="Metadata\IStatePropertyReflector.cs" />
     <Compile Include="Metadata\MetadataCache.cs" />
