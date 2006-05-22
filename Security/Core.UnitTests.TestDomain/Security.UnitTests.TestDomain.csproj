@@ -58,10 +58,10 @@
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>-->
+  </Target>
   
   <UsingTask TaskName="Rubicon.Security.Metadata.Extractor.MSBuild.ExtractSecurityMetadata" AssemblyFile="..\..\Security\MSBuild.Tasks\bin\Debug\Rubicon.Security.Metadata.Extractor.MSBuild.dll" />
   <Target Name="AfterBuild">
     <ExtractSecurityMetadata Assemblies="$(TargetPath)" OutputFilename="$(TargetDir)\security-metadata.xml" />
-  </Target>
+  </Target>-->
 </Project>
