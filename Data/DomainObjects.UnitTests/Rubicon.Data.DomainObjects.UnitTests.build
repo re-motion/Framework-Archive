@@ -29,7 +29,9 @@
     </csc>
     <copy todir="${build.test.outputdir}">
       <fileset>
-        <include name="*.xml" />
+        <include name="**/*.xml" />
+        <exclude name="bin/**/*.xml" />
+        <exclude name="obj/**/*.xml" />
       </fileset>
     </copy>
   </target>
