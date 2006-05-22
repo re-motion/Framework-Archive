@@ -94,6 +94,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       classDefinitions.Add (CreateFileDefinition (fileSystemItemDefinition));
 
       classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ());
+      classDefinitions.Add (CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition ());
       classDefinitions.Add (CreateClassWithoutRelatedClassIDColumnDefinition ());
       classDefinitions.Add (CreateClassWithAllDataTypesDefinition ());
       classDefinitions.Add (CreateClassWithGuidKeyDefinition ());
@@ -425,6 +426,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
     private ClassDefinition CreateClassWithoutRelatedClassIDColumnAndDerivationDefinition ()
     {
       ClassDefinition classDefinition = new ClassDefinition (
+          "ClassWithOptionalOneToOneRelationAndOppositeDerivedClass",
+          "TableWithOptionalOneToOneRelationAndOppositeDerivedClass",
+          DatabaseTest.c_testDomainProviderID,
+          typeof (ClassWithOptionalOneToOneRelationAndOppositeDerivedClass));
+
+      classDefinition.MyPropertyDefinitions.Add (new PropertyDefinition (
+          "Company", "CompanyID", TypeInfo.ObjectIDMappingTypeName));
+
+      return classDefinition;
+    }
+
+    private ClassDefinition CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassDefinition ()
+    {
+      ClassDefinition classDefinition = new ClassDefinition (
           "ClassWithoutRelatedClassIDColumnAndDerivation",
           "TableWithoutRelatedClassIDColumnAndDerivation",
           DatabaseTest.c_testDomainProviderID,
@@ -498,6 +513,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       relationDefinitions.Add (CreateFolderToFileSystemItemRelationDefinition ());
 
       relationDefinitions.Add (CreateCompanyToClassWithoutRelatedClassIDColumnAndDerivationRelationDefinition ());
+      relationDefinitions.Add (CreateCompanyToClassWithOptionalOneToOneRelationAndOppositeDerivedClassRelationDefinition ());
       relationDefinitions.Add (CreateDistributorToClassWithoutRelatedClassIDColumnRelationDefinition ());
       relationDefinitions.Add (CreateClassWithGuidKeyToClassWithValidRelationsOptional ());
       relationDefinitions.Add (CreateClassWithGuidKeyToClassWithValidRelationsNonOptional ());
@@ -724,6 +740,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
 
       companyClass.MyRelationDefinitions.Add (relation);
       classWithoutRelatedClassIDColumnAndDerivation.MyRelationDefinitions.Add (relation);
+
+      return relation;
+    }
+
+    private RelationDefinition CreateCompanyToClassWithOptionalOneToOneRelationAndOppositeDerivedClassRelationDefinition ()
+    {
+      ClassDefinition companyClass = _classDefinitions["Company"];
+      ClassDefinition classWithOptionalOneToOneRelationAndOppositeDerivedClass = _classDefinitions["ClassWithOptionalOneToOneRelationAndOppositeDerivedClass"];
+
+      NullRelationEndPointDefinition endPoint1 = new NullRelationEndPointDefinition (companyClass);
+
+      RelationEndPointDefinition endPoint2 = new RelationEndPointDefinition (
+          classWithOptionalOneToOneRelationAndOppositeDerivedClass, "Company", false);
+
+      RelationDefinition relation = new RelationDefinition ("CompanyToClassWithOptionalOneToOneRelationAndOppositeDerivedClass", endPoint1, endPoint2);
+
+      classWithOptionalOneToOneRelationAndOppositeDerivedClass.MyRelationDefinitions.Add (relation);
 
       return relation;
     }

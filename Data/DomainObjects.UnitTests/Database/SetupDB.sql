@@ -25,6 +25,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
 DROP TABLE [TableWithoutRelatedClassIDColumnAndDerivation]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithOptionalOneToOneRelationAndOppositeDerivedClass') 
+DROP TABLE [TableWithOptionalOneToOneRelationAndOppositeDerivedClass]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithoutRelatedClassIDColumn') 
 DROP TABLE [TableWithoutRelatedClassIDColumn]
 GO
@@ -302,6 +306,19 @@ CREATE TABLE [TableWithoutRelatedClassIDColumnAndDerivation] (
   
   CONSTRAINT [PK_TableWithoutRelatedClassIDColumnAndDerivation] PRIMARY KEY CLUSTERED ([ID]),
   CONSTRAINT [FK_TableWithoutRelatedClassIDColumnAndDerivation_Company] FOREIGN KEY ([CompanyID]) REFERENCES [Company] ([ID])
+) 
+GO
+
+CREATE TABLE [TableWithOptionalOneToOneRelationAndOppositeDerivedClass] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [CompanyID] uniqueidentifier NULL,
+  [CompanyIDClassID] varchar (100) NULL,
+ 
+  CONSTRAINT [PK_TableWithOptionalOneToOneRelationAndOppositeDerivedClass] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_TableWithOptionalOneToOneRelationAndOppositeDerivedClass_Company] FOREIGN KEY ([CompanyID]) REFERENCES [Company] ([ID])
 ) 
 GO
 

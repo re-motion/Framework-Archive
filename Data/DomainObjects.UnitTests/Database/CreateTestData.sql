@@ -6,6 +6,7 @@ delete from [Client]
 delete from [Computer]
 delete from [Employee]
 delete from [TableWithoutRelatedClassIDColumnAndDerivation]
+delete from [TableWithOptionalOneToOneRelationAndOppositeDerivedClass]
 delete from [TableWithoutRelatedClassIDColumn]
 delete from [Ceo]
 delete from [OrderTicket]
@@ -325,10 +326,16 @@ insert into [TableWithoutRelatedClassIDColumn] (ID, ClassID, DistributorID)
     values ('{CD3BE83E-FBB7-4251-AAE4-B216485C5638}', 'ClassWithoutRelatedClassIDColumn', 
     '{E4087155-D60A-4d31-95B3-9A401A3E4E78}')
 
--- ClassWithoutRelatedClassIDColumnAndDerivation
+-- TableWithoutRelatedClassIDColumnAndDerivation
 insert into [TableWithoutRelatedClassIDColumnAndDerivation] (ID, ClassID, CompanyID) 
     values ('{4821D7F7-B586-4435-B572-8A96A44B113E}', 'ClassWithoutRelatedClassIDColumnAndDerivation', 
     '{C4954DA8-8870-45c1-B7A3-C7E5E6AD641A}')
+
+-- TableWithOptionalOneToOneRelationAndOppositeDerivedClass
+-- Note: This row does not conform to mapping, because column 'CompanyIDClassID' must be null.
+insert into [TableWithOptionalOneToOneRelationAndOppositeDerivedClass] (ID, ClassID, CompanyID, CompanyIDClassID) 
+    values ('{5115A733-5CD1-46C5-81EE-0B50EF0A5858}', 'ClassWithOptionalOneToOneRelationAndOppositeDerivedClass', 
+    null, 'Company')
 
 -- TableWithAllDataTypes
 

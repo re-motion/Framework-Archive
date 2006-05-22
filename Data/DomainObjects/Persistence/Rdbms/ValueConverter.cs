@@ -136,8 +136,8 @@ public class ValueConverter : ValueConverterBase
       IDataReader dataReader,
       int objectIDColumnOrdinal)
   {
-    ClassDefinition relatedMappingClassDefinition = classDefinition.GetMandatoryOppositeClassDefinition (propertyDefinition.PropertyName);
-    if (relatedMappingClassDefinition.IsPartOfInheritanceHierarchy && classDefinition.StorageProviderID == relatedMappingClassDefinition.StorageProviderID)
+    ClassDefinition relatedClassDefinition = classDefinition.GetMandatoryOppositeClassDefinition (propertyDefinition.PropertyName);
+    if (relatedClassDefinition.IsPartOfInheritanceHierarchy && classDefinition.StorageProviderID == relatedClassDefinition.StorageProviderID)
     {
       int classIDColumnOrdinal = -1;
       try
@@ -148,9 +148,10 @@ public class ValueConverter : ValueConverterBase
       {
         throw CreateRdbmsProviderException (
             "Incorrect database format encountered."
-            + " Entity must have column '{0}' defined, because opposite class '{1}' is part of an inheritance hierarchy.",
+            + " Entity '{0}' must have column '{1}' defined, because opposite class '{2}' is part of an inheritance hierarchy.",
+            classDefinition.MyEntityName,
             GetClassIDColumnName (propertyDefinition.ColumnName), 
-            relatedMappingClassDefinition.ID);    
+            relatedClassDefinition.ID);    
       }
 
       if (dataReader.IsDBNull (objectIDColumnOrdinal) && !dataReader.IsDBNull (classIDColumnOrdinal))
@@ -158,9 +159,8 @@ public class ValueConverter : ValueConverterBase
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain a value.", 
             GetClassIDColumnName (propertyDefinition.ColumnName),
-            relatedMappingClassDefinition.MyEntityName);
+            classDefinition.MyEntityName);
       }
-
 
       if (!dataReader.IsDBNull (objectIDColumnOrdinal) && dataReader.IsDBNull (classIDColumnOrdinal))
       {
@@ -172,14 +172,14 @@ public class ValueConverter : ValueConverterBase
       }
 
       if (dataReader.IsDBNull (classIDColumnOrdinal))
-        return relatedMappingClassDefinition;
+        return relatedClassDefinition;
       else
         return MappingConfiguration.Current.ClassDefinitions.GetMandatory (dataReader.GetString (classIDColumnOrdinal));
     }
     else
     {
       // Note: We cannot ask an IDataReader if a specific column exists without an exception thrown by IDataReader.
-      // Because throwing and catching exceptions is a very time consuming operation the result is cached per object class
+      // Because throwing and catching exceptions is a very time consuming operation the result is cached per entity
       // and relation and is reused in subsequent calls.
       lock (typeof (ValueConverter))
       {
@@ -203,11 +203,11 @@ public class ValueConverter : ValueConverterBase
               "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
               classDefinition.MyEntityName,
               GetClassIDColumnName (propertyDefinition.ColumnName),
-              relatedMappingClassDefinition.ID);
+              relatedClassDefinition.ID);
         }
       }
 
-      return relatedMappingClassDefinition;
+      return relatedClassDefinition;
     }
   }
 

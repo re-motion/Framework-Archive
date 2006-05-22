@@ -114,6 +114,29 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     }
 
     [Test]
+    [ExpectedException (typeof (RdbmsProviderException), "Incorrect database value encountered. Column 'CompanyIDClassID' of"
+        + " entity 'TableWithOptionalOneToOneRelationAndOppositeDerivedClass' must not contain a value.")]
+    public void GetValueForClassWithOptionalOneToOneRelationAndOppositeDerivedClassWithCompanyIDClassIDNotNull ()
+    {
+      ClassDefinition classWithOptionalOneToOneRelationAndOppositeDerivedClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (
+          "ClassWithOptionalOneToOneRelationAndOppositeDerivedClass");
+
+      IDbCommand command = CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassCommand (new Guid ("{5115A733-5CD1-46C5-81EE-0B50EF0A5858}"));
+      using (IDataReader reader = command.ExecuteReader ())
+      {
+        Assert.IsTrue (reader.Read ());
+
+        int columnOrdinal = _converter.GetMandatoryOrdinal (reader, classWithOptionalOneToOneRelationAndOppositeDerivedClass["Company"].ColumnName);
+
+        _converter.GetValue (
+            classWithOptionalOneToOneRelationAndOppositeDerivedClass, 
+            classWithOptionalOneToOneRelationAndOppositeDerivedClass["Company"], 
+            reader, 
+            columnOrdinal);
+      }
+    }
+
+    [Test]
     public void GetValueForCeo ()
     {
       IDbCommand command = CreateCeoCommand ((Guid) DomainObjectIDs.Ceo1.Value);
@@ -176,6 +199,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         int columnOrdinal = _converter.GetMandatoryOrdinal (reader, parentFolderProperty.ColumnName);
         Assert.IsNull (_converter.GetValue (fileDefinition, parentFolderProperty, reader, columnOrdinal));
       }
+    }
+
+    private IDbCommand CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassCommand (Guid id)
+    {
+      return CreateCommand ("TableWithOptionalOneToOneRelationAndOppositeDerivedClass", id);
     }
 
     private IDbCommand CreateCeoCommand (Guid id)

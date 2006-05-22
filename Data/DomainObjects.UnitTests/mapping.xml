@@ -541,7 +541,18 @@
 				</relationProperty>
 			</properties>
 		</class>
-		<class id="ClassWithRelatedClassIDColumnAndNoInheritance">
+    <class id="ClassWithOptionalOneToOneRelationAndOppositeDerivedClass">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithOptionalOneToOneRelationAndOppositeDerivedClass, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableWithOptionalOneToOneRelationAndOppositeDerivedClass"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty name="Company" relationID="CompanyToClassWithOptionalOneToOneRelationAndOppositeDerivedClass" cardinality="one" isMandatory="false">
+          <column>CompanyID</column>
+          <oppositeClass>Company</oppositeClass>
+        </relationProperty>
+      </properties>
+    </class>
+    <class id="ClassWithRelatedClassIDColumnAndNoInheritance">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithRelatedClassIDColumnAndNoInheritance, Rubicon.Data.DomainObjects.UnitTests</type>
 			<entity name="TableWithRelatedClassIDColumnAndNoInheritance"/>
 			<storageProviderID>TestDomain</storageProviderID>

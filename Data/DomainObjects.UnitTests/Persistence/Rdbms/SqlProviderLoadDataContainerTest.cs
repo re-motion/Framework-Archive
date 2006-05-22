@@ -182,7 +182,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (RdbmsProviderException),
         "Error while reading property 'Distributor' for class 'ClassWithoutRelatedClassIDColumn':"
         + " Incorrect database format encountered."
-        + " Entity must have column 'DistributorIDClassID' defined, because opposite class 'Distributor' is part of an inheritance hierarchy.")]
+        + " Entity 'TableWithoutRelatedClassIDColumn' must have column 'DistributorIDClassID' defined, because opposite class 'Distributor' is part of an inheritance hierarchy.")]
     public void LoadDataContainerWithoutRelatedIDColumn ()
     {
       ObjectID id = new ObjectID ("ClassWithoutRelatedClassIDColumn", new Guid ("{CD3BE83E-FBB7-4251-AAE4-B216485C5638}"));
@@ -194,7 +194,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (RdbmsProviderException),
         "Error while reading property 'Company' for class 'ClassWithoutRelatedClassIDColumnAndDerivation':"
         + " Incorrect database format encountered."
-        + " Entity must have column 'CompanyIDClassID' defined, because opposite class 'Company' is part of an inheritance hierarchy.")]
+        + " Entity 'TableWithoutRelatedClassIDColumnAndDerivation' must have column 'CompanyIDClassID' defined, because opposite class 'Company' is part of an inheritance hierarchy.")]
     public void LoadDataContainerWithoutRelatedIDColumnAndDerivation ()
     {
       ObjectID id = new ObjectID ("ClassWithoutRelatedClassIDColumnAndDerivation",
