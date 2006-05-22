@@ -491,7 +491,9 @@
     <None Include="Res\UI\WxeHandler.ashx" />
     <None Include="Res\UI\WxeLauncher.ashx" />
     <None Include="Web.build" />
-    <EmbeddedResource Include="Configuration\WebConfiguration.xsd" />
+    <EmbeddedResource Include="Configuration\WebConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ExecutionEngine\UrlMapping\UrlMapping.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>

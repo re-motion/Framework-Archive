@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
-using Rubicon.Utilities;
 
 namespace Rubicon.Security.Configuration
 {
@@ -16,8 +15,8 @@ namespace Rubicon.Security.Configuration
       _typeProperty = new ConfigurationProperty (
           "type", 
           typeof (Type), 
-          null, 
-          new TypeNameConverter (),
+          null,
+          new Rubicon.Utilities.TypeNameConverter (), 
           new SubclassTypeValidator (typeof (IUserProvider)), 
           ConfigurationPropertyOptions.IsRequired);
 

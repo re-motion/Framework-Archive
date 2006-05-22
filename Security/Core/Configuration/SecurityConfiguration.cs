@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 
 using Rubicon.Utilities;
+using System.IO;
 
 namespace Rubicon.Security.Configuration
 {
@@ -14,15 +15,7 @@ namespace Rubicon.Security.Configuration
 
     // static members
 
-    private static readonly string s_httpContextUserProviderName;
     private static SecurityConfiguration s_current;
-
-    static SecurityConfiguration ()
-    {
-      AssemblyName assemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
-      string assemblyNameSuffix = assemblyName.FullName.Substring (assemblyName.Name.Length);
-      s_httpContextUserProviderName = "Rubicon.Security.Web.HttpContextUserProvider, Rubicon.Security.Web" + assemblyNameSuffix;
-    }
 
     public static SecurityConfiguration Current
     {
@@ -34,7 +27,7 @@ namespace Rubicon.Security.Configuration
           {
             if (s_current == null)
             {
-              s_current = new SecurityConfiguration ();
+              s_current = (SecurityConfiguration) ConfigurationManager.GetSection ("rubicon.security");
             }
           }
         }
@@ -49,15 +42,18 @@ namespace Rubicon.Security.Configuration
     private IUserProvider _userProvider;
 
     private ConfigurationPropertyCollection _properties;
+    private readonly ConfigurationProperty _xmlnsProperty;
     private readonly ConfigurationProperty _customSecurityServiceProperty;
     private readonly ConfigurationProperty _securityServiceTypeProperty;
     private readonly ConfigurationProperty _customUserProviderProperty;
     private readonly ConfigurationProperty _userProviderTypeProperty;
+    private Type _httpContextUserProviderType;
 
     // construction and disposing
 
     public SecurityConfiguration ()
     {
+      _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
       _customSecurityServiceProperty =
           new ConfigurationProperty ("customService", typeof (SecurityServiceElement), null, ConfigurationPropertyOptions.None);
       _securityServiceTypeProperty =
@@ -68,6 +64,7 @@ namespace Rubicon.Security.Configuration
           new ConfigurationProperty ("userProvider", typeof (UserProviderType), UserProviderType.Thread, ConfigurationPropertyOptions.None);
 
       _properties = new ConfigurationPropertyCollection ();
+      _properties.Add (_xmlnsProperty);
       _properties.Add (_customSecurityServiceProperty);
       _properties.Add (_securityServiceTypeProperty);
       _properties.Add (_customUserProviderProperty);
@@ -81,19 +78,7 @@ namespace Rubicon.Security.Configuration
       get
       {
         if (_securityService == null)
-        {
-          switch (SecurityServiceType)
-          {
-            case SecurityServiceType.None:
-              _securityService = null;
-              break;
-            case SecurityServiceType.Custom:
-              _securityService = (ISecurityService) Activator.CreateInstance (CustomService.Type);
-              break;
-            default:
-              throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the SecurityService.", SecurityServiceType));
-          }
-        }
+          _securityService = GetSecurityServiceFromConfiguration ();
         return _securityService;
       }
       set
@@ -107,40 +92,75 @@ namespace Rubicon.Security.Configuration
       get
       {
         if (_userProvider == null)
-        {
-          switch (UserProviderType)
-          {
-            case UserProviderType.None:
-              _userProvider = null;
-              break;
-            case UserProviderType.Thread:
-              _userProvider = new ThreadUserProvider ();
-              break;
-            case UserProviderType.HttpContext:
-              Type type = Type.GetType (s_httpContextUserProviderName, false, false);
-              if (type == null)
-              {
-                throw new TypeLoadException (string.Format ("Cannot load type '{0}' required by configuration setting userProvider=HttpContext. "
-                        + "If the configuration belongs to a web application, please ensure that the assembly 'Rubicon.Web.Security' is located "
-                        + "within the CLR's probing path for this application. If the configuration belongs to a any other kind of application "
-                        + "(e.g. a Windows Forms or a Console application), you cannot use the HttpContext as a user provider.",
-                    s_httpContextUserProviderName));            
-              }
-              _userProvider = (IUserProvider) Activator.CreateInstance (type);
-              break;
-            case UserProviderType.Custom:
-              _userProvider = (IUserProvider) Activator.CreateInstance (CustomUserProvider.Type);
-              break;
-            default:
-              throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the UserProvider.", UserProviderType));
-          }
-        }
+          _userProvider = GetUserProviderFromConfiguration ();
         return _userProvider;
       }
-      set 
+      set
       {
-        _userProvider = value; 
+        _userProvider = value;
       }
+    }
+
+    private ISecurityService GetSecurityServiceFromConfiguration ()
+    {
+      switch (SecurityServiceType)
+      {
+        case SecurityServiceType.None:
+          return null;
+        case SecurityServiceType.Custom:
+          return (ISecurityService) Activator.CreateInstance (CustomService.Type);
+        default:
+          throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the SecurityService.", SecurityServiceType));
+      }
+    }
+
+    private IUserProvider GetUserProviderFromConfiguration ()
+    {
+      switch (UserProviderType)
+      {
+        case UserProviderType.None:
+          return null;
+        case UserProviderType.Thread:
+          return new ThreadUserProvider ();
+        case UserProviderType.HttpContext:
+          if (_httpContextUserProviderType == null)
+            _httpContextUserProviderType = GetHttpContextUserProviderType ();
+          return (IUserProvider) Activator.CreateInstance (_httpContextUserProviderType);
+        case UserProviderType.Custom:
+          return (IUserProvider) Activator.CreateInstance (CustomUserProvider.Type);
+        default:
+          throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the UserProvider.", UserProviderType));
+      }
+    }
+
+    private Type GetHttpContextUserProviderType ()
+    {
+      AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
+      AssemblyName securityWebAssemblyName = new AssemblyName (securityAssemblyName.FullName);
+      securityWebAssemblyName.Name = "Rubicon.Security.Web";
+
+      try
+      {
+        Assembly.Load (securityWebAssemblyName);
+      }
+      catch (FileNotFoundException e)
+      {
+        throw new ConfigurationErrorsException (string.Format ("The current value of property 'userProvider' requires that the assembly "
+                + "'Rubicon.Security.Web' must be placed within the CLR's probing path for this application. The error is: {0}", e.Message),
+            e,
+            ElementInformation.Properties[_userProviderTypeProperty.Name].Source,
+            ElementInformation.Properties[_userProviderTypeProperty.Name].LineNumber);
+      }
+
+      return Type.GetType (Assembly.CreateQualifiedName (securityWebAssemblyName.FullName, "Rubicon.Security.Web.HttpContextUserProvider"), true, false);
+    }
+
+    protected override void PostDeserialize ()
+    {
+      base.PostDeserialize ();
+
+      if (UserProviderType == UserProviderType.HttpContext)
+        _httpContextUserProviderType = GetHttpContextUserProviderType ();
     }
 
     protected override ConfigurationPropertyCollection Properties

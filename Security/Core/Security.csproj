@@ -30,6 +30,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -73,7 +74,10 @@
     <Compile Include="GeneralAccessType.cs" />
     <Compile Include="SecurityStateAttribute.cs" />
     <Compile Include="ThreadUserProvider.cs" />
-    <None Include="Metadata\SecurityMetadata.xsd" />
+    <EmbeddedResource Include="Configuration\SecurityConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Metadata\SecurityMetadata.xsd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
