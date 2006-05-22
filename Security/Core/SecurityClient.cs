@@ -169,7 +169,7 @@ namespace Rubicon.Security
       }
 
       if (!HasAccess (new SecurityContext (type), user, requiredAccessTypes))
-        throw new AccessViolationException (string.Format ("Access to constructor for type '{0}' has been denied.", type.FullName));
+        throw new PermissionDeniedException (string.Format ("Access to constructor for type '{0}' has been denied.", type.FullName));
     }
 
     private void CheckRequiredMethodAccess (ISecurableType securableType, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
@@ -179,7 +179,7 @@ namespace Rubicon.Security
 
       if (!HasAccess (securableType, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
       {
-        throw new AccessViolationException (string.Format (
+        throw new PermissionDeniedException (string.Format (
             "Access to method '{0}' on type '{1}' has been denied.", methodName, securableType.GetType ().FullName));
       }
     }
@@ -190,7 +190,7 @@ namespace Rubicon.Security
         throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");
 
       if (!HasAccess (new SecurityContext (type), user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
-        throw new AccessViolationException (string.Format ("Access to static method '{0}' on type '{1}' has been denied.", methodName, type.FullName));
+        throw new PermissionDeniedException (string.Format ("Access to static method '{0}' on type '{1}' has been denied.", methodName, type.FullName));
     }
 
     private AccessType[] ConvertRequiredAccessTypeEnums (Enum[] requiredAccessTypeEnums)

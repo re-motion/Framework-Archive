@@ -47,7 +47,7 @@ namespace Rubicon.Security.UnitTests
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
-    [Test, ExpectedException (typeof (AccessViolationException))]
+    [Test, ExpectedException (typeof (PermissionDeniedException))]
     public void CheckDeniedAccess ()
     {
       Expect.Once.On (_permissionReflectorMock)
