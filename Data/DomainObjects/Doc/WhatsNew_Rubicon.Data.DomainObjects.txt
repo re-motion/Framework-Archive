@@ -1,3 +1,9 @@
+1.7.1.0
+=======
+
+- Im Falle von ungültigen Datenbankwerten bei einer FK-Spalte wurden die Fehlermeldungen verbessert.
+
+
 1.4.37.0
 ========
 
