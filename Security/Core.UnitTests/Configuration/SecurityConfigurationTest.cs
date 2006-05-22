@@ -39,6 +39,17 @@ namespace Rubicon.Security.UnitTests.Configuration
     }
 
     [Test]
+    public void GetSecurityConfigurationWithoutConfigurationSection ()
+    {
+      SecurityConfiguration configuration = SecurityConfiguration.Current;
+
+      Assert.IsNotNull (configuration);
+      Assert.IsNull (configuration.SecurityService);
+      Assert.IsNotNull (configuration.UserProvider);
+      Assert.IsInstanceOfType (typeof (ThreadUserProvider), configuration.UserProvider);
+    }
+
+    [Test]
     public void DeserializeSecurityConfigurationWithNamespace ()
     {
       string xmlFragment = @"<rubicon.security xmlns=""http://www.rubicon-it.com/Security/Configuration"" />";

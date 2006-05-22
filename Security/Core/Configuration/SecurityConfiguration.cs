@@ -28,6 +28,8 @@ namespace Rubicon.Security.Configuration
             if (s_current == null)
             {
               s_current = (SecurityConfiguration) ConfigurationManager.GetSection ("rubicon.security");
+              if (s_current == null)
+                s_current = new SecurityConfiguration ();
             }
           }
         }
