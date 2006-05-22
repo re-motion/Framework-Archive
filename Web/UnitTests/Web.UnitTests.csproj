@@ -77,6 +77,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NMock2, Version=1.0.2313.18049, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\NMock2.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <Name>nunit.framework</Name>
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
@@ -84,6 +88,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -102,6 +107,14 @@
       <Name>Development.Core</Name>
       <Project>{B719A305-0493-4C72-88FE-9A2FC6964578}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Web\Security.Web.csproj">
+      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
+      <Name>Security.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\Web.csproj">
       <Name>Web</Name>
@@ -131,6 +144,9 @@
     <Compile Include="Configuration\WebConfigurationMock.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\SecurableClass.cs" />
+    <Compile Include="ExecutionEngine\TestFunctionWithSecurity.cs" />
+    <Compile Include="ExecutionEngine\WxeFunctionSecurityTest.cs" />
     <Compile Include="ExecutionEngine\TestFunction.cs">
       <SubType>Code</SubType>
     </Compile>
