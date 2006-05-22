@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.UnitTests.Database;
 using Rubicon.Utilities;
+using System.Data;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
@@ -39,6 +40,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     public virtual void SetUp ()
     {
       _loader.Load (_createTestDataFileName);
+    }
+
+    protected IDbCommand CreateCommand (string table, Guid id, IDbConnection connection)
+    {
+      IDbCommand command = connection.CreateCommand ();
+      command.CommandText = string.Format ("SELECT * FROM [{0}] where ID = @id", table);
+
+      IDbDataParameter parameter = command.CreateParameter ();
+      parameter.ParameterName = "@id";
+      parameter.Value = id;
+      command.Parameters.Add (parameter);
+
+      return command;
     }
   }
 }

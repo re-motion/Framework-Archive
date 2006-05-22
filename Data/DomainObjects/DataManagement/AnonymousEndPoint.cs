@@ -86,11 +86,6 @@ public class AnonymousEndPoint : IEndPoint
     get { return _objectID; }
   }
 
-  public ClassDefinition ClassDefinition
-  {
-    get { return _definition.ClassDefinition; }
-  }
-
   public RelationDefinition RelationDefinition
   {
     get { return _relationDefinition; }

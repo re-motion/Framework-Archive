@@ -151,19 +151,14 @@ public abstract class RelationEndPoint : IEndPoint
     get { return _definition.PropertyName; }
   }
 
-  public ClassDefinition ClassDefinition
-  {
-    get { return _definition.ClassDefinition; }
-  }
-
   public IRelationEndPointDefinition OppositeEndPointDefinition
   {
-    get { return ClassDefinition.GetMandatoryOppositeEndPointDefinition (PropertyName); }
+    get { return _definition.ClassDefinition.GetMandatoryOppositeEndPointDefinition (PropertyName); }
   }
 
   public RelationDefinition RelationDefinition
   {
-    get { return ClassDefinition.GetMandatoryRelationDefinition (PropertyName); }
+    get { return _definition.ClassDefinition.GetMandatoryRelationDefinition (PropertyName); }
   }
 
   public bool IsVirtual

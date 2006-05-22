@@ -52,7 +52,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.IsNull (endPoint.GetDataContainer ());
       Assert.IsNull (endPoint.ObjectID);
 
-      Assert.AreEqual (_clientEndPointDefinition.ClassDefinition, endPoint.ClassDefinition);
       Assert.AreSame (_clientToLocationDefinition, endPoint.RelationDefinition);
       Assert.AreSame (_clientEndPointDefinition, endPoint.Definition);
       Assert.IsNotNull (endPoint.Definition as NullRelationEndPointDefinition);

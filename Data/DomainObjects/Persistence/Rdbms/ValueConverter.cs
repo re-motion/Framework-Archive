@@ -168,7 +168,6 @@ public class ValueConverter : ValueConverterBase
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain null.",
             GetClassIDColumnName (propertyDefinition.ColumnName),
             classDefinition.MyEntityName);
-
       }
 
       if (dataReader.IsDBNull (classIDColumnOrdinal))
@@ -183,7 +182,7 @@ public class ValueConverter : ValueConverterBase
       // and relation and is reused in subsequent calls.
       lock (typeof (ValueConverter))
       {
-        int hashKey = GetClassIDColumnHashKey (propertyDefinition);
+        int hashKey = GetClassIDColumnHashKey (classDefinition, propertyDefinition);
         if (!s_hasClassIDColumn.Contains (hashKey))
         {      
           try
@@ -211,13 +210,13 @@ public class ValueConverter : ValueConverterBase
     }
   }
 
-  private int GetClassIDColumnHashKey (PropertyDefinition propertyDefinition)
+  private int GetClassIDColumnHashKey (ClassDefinition classDefinition, PropertyDefinition propertyDefinition)
   {
     StorageProviderDefinition storageProviderDefinition = 
-        StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (propertyDefinition.ClassDefinition.StorageProviderID);
+        StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);
 
     return storageProviderDefinition.GetHashCode ()
-        ^ propertyDefinition.ClassDefinition.MyEntityName.GetHashCode () 
+        ^ classDefinition.GetEntityName ().GetHashCode () 
         ^ propertyDefinition.ColumnName.GetHashCode ();
   }
 

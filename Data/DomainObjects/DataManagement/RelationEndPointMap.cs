@@ -98,10 +98,10 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     if (objectEndPoint == null)
       return _clientTransaction.LoadRelatedObject (endPointID);
     
-    if (objectEndPoint.OppositeObjectID != null)
-      return _clientTransaction.GetObject (objectEndPoint.OppositeObjectID, false);
+    if (objectEndPoint.OppositeObjectID == null)
+      return null;
 
-    return null;
+    return _clientTransaction.GetObject (objectEndPoint.OppositeObjectID, false);
   }
 
   public DomainObject GetOriginalRelatedObject (RelationEndPointID endPointID)
@@ -113,10 +113,10 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     if (objectEndPoint == null)
       return _clientTransaction.LoadRelatedObject (endPointID);
 
-    if (objectEndPoint.OriginalOppositeObjectID != null)
-      return _clientTransaction.GetObject (objectEndPoint.OriginalOppositeObjectID, true);
+    if (objectEndPoint.OriginalOppositeObjectID == null)
+      return null;
 
-    return null;
+    return _clientTransaction.GetObject (objectEndPoint.OriginalOppositeObjectID, true);
   }
   
   public DomainObjectCollection GetRelatedObjects (RelationEndPointID endPointID)

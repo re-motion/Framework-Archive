@@ -355,9 +355,7 @@ public class ClientTransaction : ITransaction
 
     using (PersistenceManager persistenceManager = new PersistenceManager ())
     {
-      DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (
-          domainObject.DataContainer, relationEndPointID);
-
+      DataContainer relatedDataContainer = persistenceManager.LoadRelatedDataContainer (domainObject.DataContainer, relationEndPointID);
       if (relatedDataContainer != null)
       {
         SetClientTransaction (relatedDataContainer);

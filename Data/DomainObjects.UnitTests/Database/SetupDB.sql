@@ -97,6 +97,18 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
 DROP TABLE [TableWithoutTimestampColumn]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Address') 
+DROP TABLE [TableInheritance_Address]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Person') 
+DROP TABLE [TableInheritance_Person]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Client') 
+DROP TABLE [TableInheritance_Client]
+GO
+
 IF OBJECT_ID ('rpf_testSPQuery', 'P') IS NOT NULL 
   DROP PROCEDURE rpf_testSPQuery;
 GO
@@ -454,6 +466,58 @@ CREATE TABLE [TableWithRelatedClassIDColumnAndNoInheritance] (
   
   CONSTRAINT [FK_TableWithGuidKey_TableWithRelatedClassIDColumnAndNoInheritance] 
       FOREIGN KEY ([TableWithGuidKeyID]) REFERENCES [TableWithGuidKey] ([ID])
+) 
+GO
+
+CREATE TABLE [TableInheritance_Client] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [Name] varchar (100) NOT NULL,
+  
+  CONSTRAINT [PK_TableInheritance_Client] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
+
+CREATE TABLE [TableInheritance_Person] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  -- DomainBase columns
+  [CreatedBy] varchar (100) NOT NULL,
+  [CreatedAt] datetime NOT NULL,
+  [ClientID] uniqueidentifier NULL,
+  
+  -- Person columns
+  [FirstName] varchar (100) NOT NULL,
+  [LastName] varchar (100) NOT NULL,
+  [DateOfBirth] datetime NOT NULL,     
+
+  -- Customer columns
+  [CustomerType] int NULL,
+  [CustomerSince] datetime NULL,
+    
+  CONSTRAINT [PK_TableInheritance_Person] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_TableInheritance_Client_TableInheritance_Person] FOREIGN KEY ([ClientID]) REFERENCES [TableInheritance_Client] ([ID])
+) 
+GO
+
+CREATE TABLE [TableInheritance_Address] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [Street] nvarchar (100) NOT NULL,
+  [Zip] nvarchar (10) NOT NULL,
+  [City] nvarchar (100) NOT NULL,
+  [Country] nvarchar (100) NOT NULL,
+  [PersonID] uniqueidentifier NULL,
+  [PersonIDClassID] varchar (100) NULL,
+  
+  CONSTRAINT [PK_TableInheritance_Address] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_TableInheritance_Person_TableInheritance_Address] FOREIGN KEY ([PersonID]) REFERENCES [TableInheritance_Person] ([ID])  
 ) 
 GO
 

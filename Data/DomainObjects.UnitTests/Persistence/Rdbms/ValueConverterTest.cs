@@ -203,30 +203,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     private IDbCommand CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassCommand (Guid id)
     {
-      return CreateCommand ("TableWithOptionalOneToOneRelationAndOppositeDerivedClass", id);
+      return CreateCommand ("TableWithOptionalOneToOneRelationAndOppositeDerivedClass", id, _connection);
     }
 
     private IDbCommand CreateCeoCommand (Guid id)
     {
-      return CreateCommand ("Ceo", id);
+      return CreateCommand ("Ceo", id, _connection);
     }
 
     private IDbCommand CreateFileSystemItemCommand (Guid id)
     {
-      return CreateCommand ("FileSystemItem", id);
-    }
-
-    private IDbCommand CreateCommand (string table, Guid id)
-    {
-      IDbCommand command = _connection.CreateCommand ();
-      command.CommandText = string.Format ("SELECT * FROM [{0}] where ID = @id", table);
-
-      IDbDataParameter parameter = command.CreateParameter ();
-      parameter.ParameterName = "@id";
-      parameter.Value = id;
-      command.Parameters.Add (parameter);
-
-      return command;
+      return CreateCommand ("FileSystemItem", id, _connection);
     }
   }
 }

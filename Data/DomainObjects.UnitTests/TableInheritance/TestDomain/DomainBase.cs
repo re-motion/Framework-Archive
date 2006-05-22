@@ -42,5 +42,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       set { DataContainer.SetValue ("CreatedAt", value); }
     }
 
+    public Client Client
+    {
+      get { return (Client) GetRelatedObject ("Client"); }
+    }
   }
 }

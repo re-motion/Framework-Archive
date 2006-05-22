@@ -11,9 +11,7 @@ public interface IEndPoint : INullableObject
   DataContainer GetDataContainer ();
   ObjectID ObjectID { get; }
 
-  ClassDefinition ClassDefinition { get; }
   RelationDefinition RelationDefinition { get; }
   IRelationEndPointDefinition Definition { get; }
-  
 }
 }

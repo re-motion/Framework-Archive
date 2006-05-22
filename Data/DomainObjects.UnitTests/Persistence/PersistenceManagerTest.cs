@@ -210,8 +210,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence
 
     [Test]
     [ExpectedException (typeof (PersistenceException),
-        "Property 'ClassWithGuidKey' of class 'ClassWithInvalidRelation' refers"
-        + " to non-existing object with ID 'a53f679d-0e91-4504-aee8-59250de249b3'.")]
+        "Property 'ClassWithGuidKey' of object 'ClassWithInvalidRelation|35ba182c-c836-490e-af79-74c72145bce5|System.Guid' refers"
+        + " to non-existing object 'ClassWithGuidKey|a53f679d-0e91-4504-aee8-59250de249b3|System.Guid'.")]
     public void LoadRelatedDataContainerByInvalidID ()
     {
       ObjectID id = new ObjectID ("ClassWithInvalidRelation", new Guid ("{35BA182C-C836-490e-AF79-74C72145BCE5}"));

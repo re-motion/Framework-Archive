@@ -197,10 +197,7 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  public override DataContainerCollection LoadDataContainersByRelatedID (
-      ClassDefinition classDefinition, 
-      string propertyName, 
-      ObjectID relatedID)
+  public override DataContainerCollection LoadDataContainersByRelatedID (ClassDefinition classDefinition, string propertyName, ObjectID relatedID)
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
@@ -219,6 +216,9 @@ public abstract class RdbmsProvider : StorageProvider
 
     VirtualRelationEndPointDefinition oppositeRelationEndPointDefinition = 
         (VirtualRelationEndPointDefinition) classDefinition.GetMandatoryOppositeEndPointDefinition (property.PropertyName);
+
+    // TODO: ClassDefinition does not have to have an entity assigned => abstract base class in a concrete table inheritance scenario =>
+    // Search for all concrete entities and look for objects.
 
     SelectCommandBuilder commandBuilder = new SelectCommandBuilder (
         this, classDefinition, property, relatedID, oppositeRelationEndPointDefinition.SortExpression);

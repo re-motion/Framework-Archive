@@ -505,9 +505,11 @@
     <Compile Include="TableInheritance\ObjectIDTest.cs" />
     <Compile Include="TableInheritance\TableInheritanceMappingTest.cs" />
     <Compile Include="TableInheritance\TestDomain\Address.cs" />
+    <Compile Include="TableInheritance\TestDomain\Client.cs" />
     <Compile Include="TableInheritance\TestDomain\Customer.cs" />
     <Compile Include="TableInheritance\TestDomain\DomainBase.cs" />
     <Compile Include="TableInheritance\TestDomain\Person.cs" />
+    <Compile Include="TableInheritance\ValueConverterTest.cs" />
     <Compile Include="TestDomain\Ceo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -672,6 +674,7 @@
     </Content>
     <Content Include="Configuration\Mapping\TestMappings\mappingWithXmlException.xml">
     </Content>
+    <Content Include="Database\CreateTableInheritanceTestData.sql" />
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\CreateTestData.sql">
     </Content>

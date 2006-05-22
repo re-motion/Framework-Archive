@@ -2,8 +2,20 @@
 
 <mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\..\DomainObjects\mapping.xsd">
 	<classes>
-    
-		<class id="DomainBase">
+    <class id="Client">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Client, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_Client"></entity>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+      </properties>
+    </class>
+
+    <class id="DomainBase">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase, Rubicon.Data.DomainObjects.UnitTests</type>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
@@ -16,6 +28,10 @@
           <type>dateTime</type>
           <column>CreatedAt</column>
         </property>
+        <relationProperty relationID="ClientToDomainBase" name="Client" cardinality="one" isMandatory="false">
+          <column>ClientID</column>
+          <oppositeClass>Client</oppositeClass>
+        </relationProperty> 
       </properties>
 		</class>
 
@@ -87,25 +103,6 @@
         </property>
       </properties>
     </class>
-
-    <!--
-    <class id="Organization" baseClass="DomainBase">
-      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Organization, Rubicon.Data.DomainObjects.UnitTests</type>
-      <entity name="Organization" />
-      <storageProviderID>TestDomain</storageProviderID>
-      <properties>
-        <property name="Name">
-          <type>string</type>
-          <column>Name</column>
-          <maxLength>100</maxLength>
-        </property>
-        <property name="NumberOfEmployees">
-          <type>int32</type>
-          <column>NumberOfEmployees</column>
-        </property>
-      </properties>
-    </class>
-    -->
     
   </classes>
 </mapping>
