@@ -37,7 +37,6 @@
     <Compile Include="AbstractRoleAttribute.cs" />
     <Compile Include="AccessType.cs" />
     <Compile Include="AccessTypeAttribute.cs" />
-    <Compile Include="AccessViolationException.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <Compile Include="Configuration\UserProviderElement.cs" />
@@ -68,6 +67,7 @@
     <Compile Include="Metadata\SecurableClassInfo.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
+    <Compile Include="PermissionDeniedException.cs" />
     <Compile Include="RequiredMethodPermissionAttribute.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityContext.cs" />
