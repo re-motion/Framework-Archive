@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="nant-schema" name="Rubicon.Web.Test">  
+<project xmlns="nant-schema" name="Rubicon.Security.UnitTests">  
 
   <target name="build" description="perform a build">
 
@@ -12,32 +12,26 @@
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
-        <include name="AspNetFramework/**/*.cs" />
         <include name="Configuration/**/*.cs" />
-        <include name="ExecutionEngine/**/*.cs" />
-        <include name="UI/**/*.cs" />
+        <include name="Metadata/**/*.cs" />
+        <include name="SampleDomain/**/*.cs" />
+        <include name="XmlAsserter/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
         <include name="${build.test.outputdir}/Rubicon.Core.dll" />
         <include name="${build.test.outputdir}/Rubicon.Development.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Security.UnitTests.TestDomain.dll" />
         <include name="${build.test.outputdir}/Rubicon.Security.Web.dll" />
-        <include name="${build.test.outputdir}/Rubicon.Web.dll" />
         <include name="${build.test.outputdir}/NMock2.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
-        <include asis="true" name="System.Web.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
     </csc>
-    <copy todir="${build.test.outputdir}">
-      <fileset>
-        <include name="Res/*.xml" />
-      </fileset>
-    </copy>
         
   </target>
 

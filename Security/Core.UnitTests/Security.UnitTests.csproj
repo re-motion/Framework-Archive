@@ -39,7 +39,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +102,7 @@
     <Compile Include="XmlAsserter\XmlElementAsserter.cs" />
     <Compile Include="XmlAsserter\XmlnsAttributeFilter.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Security.UnitTests.build" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

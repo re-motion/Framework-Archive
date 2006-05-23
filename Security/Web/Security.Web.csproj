@@ -29,9 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
@@ -41,6 +39,7 @@
     <Compile Include="HttpContextUserProvider.cs" />
     <Compile Include="ExecutionEngine\RequiredWxeFunctionPermissionAttribute.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Security.Web.build" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

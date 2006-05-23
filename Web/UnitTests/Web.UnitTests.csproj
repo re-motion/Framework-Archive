@@ -89,15 +89,11 @@
       <Name>System</Name>
     </Reference>
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Web">
       <Name>system.web</Name>
     </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
+    <Reference Include="System.XML" />
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Name>Core</Name>
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>

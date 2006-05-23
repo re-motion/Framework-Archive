@@ -11,7 +11,7 @@ using System.Web.UI;
 
 [assembly: AssemblyTitle("Rubicon ObjectBinding For DomainObjects Web Library")]
 [assembly: AssemblyDescription("Class library for using Rubicon ObjectBinding and the Rubicon Persistence Framework in web applications.")]
-[assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: release")]
+[assembly: AssemblyConfiguration(".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
 [assembly: AssemblyProduct("Rubicon .NET Commons")]
 [assembly: AssemblyCopyright("(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
@@ -30,7 +30,7 @@ using System.Web.UI;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.0.0")]
+[assembly: AssemblyVersion("1.7.0.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -58,6 +58,6 @@ using System.Web.UI;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
 [assembly: AssemblyKeyName("")]
 [assembly: TagPrefix ("Rubicon.Data.DomainObjects.ObjectBinding.Web", "dow")]

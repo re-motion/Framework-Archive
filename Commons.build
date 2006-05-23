@@ -145,14 +145,14 @@
     <call target="release" />
   </target>
 
-  <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, ObjectBinding, ObjectBinding.Web, 
-      ObjectBinding.Reflection, Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, 
-      Data.DomainObjects.Web">
+  <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, 
+      Security.Web, Web, ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, Data.DomainObjects.ObjectBinding.Web, 
+      Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Web">
     <echo message="Target has executed."/>
   </target>
 
-  <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, Data.DomainObjects.UnitTests, 
-      Data.DomainObjects.ObjectBinding.UnitTests">
+  <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Security.UnitTests, Web.UnitTests, ObjectBinding.Web.UnitTests, 
+      Data.DomainObjects.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests">
     <echo message="Target has executed."/>
   </target>
 
@@ -245,7 +245,39 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Web" depends="Core">
+  <target name="Security" depends="Core">
+    <property name="project.name" value="Security" />
+    <property name="project.dir" value="Security/Core" />
+    <property name="project.output" value="Rubicon.Security" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="Security.Web" depends="Core">
+    <property name="project.name" value="Security.Web" />
+    <property name="project.dir" value="Security/Web" />
+    <property name="project.output" value="Rubicon.Security.Web" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="Security.Metadata.Extractor" depends="Core, Security">
+    <property name="project.name" value="Security.Metadata.Extractor" />
+    <property name="project.dir" value="Security/Metadata.Extractor" />
+    <property name="project.output" value="Rubicon.Security.Metadata.Extractor" />
+    <property name="project.extension" value="exe" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="Security.MSBuild.Tasks" depends="Core">
+    <property name="project.name" value="Security.MSBuild.Tasks" />
+    <property name="project.dir" value="Security/MSBuild.Tasks" />
+    <property name="project.output" value="Rubicon.Security.MSBuild.Tasks" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="Web" depends="Core, Security.Web">
     <property name="project.name" value="Web" />
     <property name="project.dir" value="Web/Core" />
     <property name="project.output" value="Rubicon.Web" />
@@ -304,6 +336,35 @@
     <property name="project.name" value="Development.Core.Test" />
     <property name="project.dir" value="Development/Core.Test" />
     <property name="project.output" value="Rubicon.Development.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+
+    <if test="${build.step.run-tests}">
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+    </if>
+  </target>
+
+  <target name="Security.UnitTests.TestDomain" depends="Core, Security">
+    <property name="project.name" value="Security.UnitTests.TestDomain" />
+    <property name="project.dir" value="Security/Core.UnitTests.TestDomain" />
+    <property name="project.output" value="Rubicon.Security.UnitTests.TestDomain" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
+  <target name="Security.UnitTests">
+    <call target="Core" cascade="false"/>
+    <call target="Security" cascade="false"/>
+    <call target="Security.UnitTests.TestDomain" cascade="false"/>
+    <call target="Security.Web" cascade="false"/>
+
+    <property name="project.name" value="Security.UnitTests" />
+    <property name="project.dir" value="Security/Core.UnitTests" />
+    <property name="project.output" value="Rubicon.Security.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
 

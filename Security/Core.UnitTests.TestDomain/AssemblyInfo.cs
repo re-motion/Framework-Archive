@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle ("Test-Domain for Rubicon Security Library Unittests")]
-[assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: release")]
+[assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
 [assembly: AssemblyProduct("Rubicon .NET Commons")]
 [assembly: AssemblyCopyright("(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
@@ -26,7 +26,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.0.0")]
+[assembly: AssemblyVersion("1.7.0.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -54,5 +54,5 @@ using System.Runtime.CompilerServices;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile(@"\development\global\rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
 [assembly: AssemblyKeyName("")]

@@ -27,7 +27,7 @@
         <exclude name="Resources/*.cs" />
       </resources>
     </csc>
-    <copy todir="${build.test.outputdir}">
+    <copy todir="${build.test.outputdir}" flatten="true">
       <fileset>
         <include name="**/*.xml" />
         <exclude name="bin/**/*.xml" />

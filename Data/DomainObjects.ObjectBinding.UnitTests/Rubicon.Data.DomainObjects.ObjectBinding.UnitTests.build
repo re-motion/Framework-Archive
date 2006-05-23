@@ -13,12 +13,15 @@
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Core.dll"/>
-        <include asis="true" name="${build.test.outputdir}/Rubicon.ObjectBinding.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll"/>
         <include asis="true" name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.ObjectBinding.dll"/>
+        <include asis="true" name="${build.test.outputdir}/Rubicon.Security.dll"/>
+        <include asis="true" name="${build.test.outputdir}/NMock2.dll"/>
+        <include asis="true" name="${build.test.outputdir}/nunit.framework.dll"/>
         <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Data.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>

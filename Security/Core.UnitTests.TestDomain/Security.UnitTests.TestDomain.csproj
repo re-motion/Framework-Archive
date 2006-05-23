@@ -43,6 +43,7 @@
     <Compile Include="SomeEnum.cs" />
     <Compile Include="Role.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Security.UnitTests.TestDomain.build" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
