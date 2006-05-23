@@ -105,6 +105,10 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInhe
 DROP TABLE [TableInheritance_Person]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_OrganizationalUnit') 
+DROP TABLE [TableInheritance_OrganizationalUnit]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Client') 
 DROP TABLE [TableInheritance_Client]
 GO
@@ -477,6 +481,24 @@ CREATE TABLE [TableInheritance_Client] (
   [Name] varchar (100) NOT NULL,
   
   CONSTRAINT [PK_TableInheritance_Client] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
+
+CREATE TABLE [TableInheritance_OrganizationalUnit] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  -- DomainBase columns
+  [CreatedBy] varchar (100) NOT NULL,
+  [CreatedAt] datetime NOT NULL,
+  [ClientID] uniqueidentifier NULL,
+  
+  -- OrganizationalUnit columns
+  [Name] varchar (100) NOT NULL,
+    
+  CONSTRAINT [PK_TableInheritance_OrganizationalUnit] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_TableInheritance_Client_TableInheritance_OrganizationalUnit] FOREIGN KEY ([ClientID]) REFERENCES [TableInheritance_Client] ([ID])
 ) 
 GO
 

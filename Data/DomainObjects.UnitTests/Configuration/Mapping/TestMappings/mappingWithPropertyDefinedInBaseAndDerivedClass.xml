@@ -24,7 +24,7 @@
 			<properties>
 				<property name="Name">
 					<type>string</type>
-					<column>Name</column>
+					<column>CustomerName</column>
 					<maxLength>100</maxLength>
 				</property>
 				<property name="CustomerSince">

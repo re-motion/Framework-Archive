@@ -60,7 +60,10 @@ public class MappingLoader : BaseFileLoader
   public ClassDefinitionCollection GetClassDefinitions ()
   {
     ClassDefinitionLoader classDefinitionLoader = new ClassDefinitionLoader (Document, NamespaceManager, ResolveTypes);        
-    return classDefinitionLoader.GetClassDefinitions ();
+
+    ClassDefinitionCollection classDefinitions = classDefinitionLoader.GetClassDefinitions ();
+    classDefinitions.Validate ();
+    return classDefinitions;
   }
 
   public RelationDefinitionCollection GetRelationDefinitions (ClassDefinitionCollection classDefinitions)

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Runtime.Serialization;
 
 using Rubicon.Utilities;
+using System.Collections.Generic;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
@@ -147,26 +148,6 @@ public class ClassDefinition : ISerializable, IObjectReference
       return null;
 
     return _baseClass.GetEntityName ();
-  }
-
-  public void Validate ()
-  {
-    if (_classType == null)
-      return;
-
-    if (GetEntityName () == null && !_classType.IsAbstract)
-    {
-      throw CreateMappingException (
-          "Type '{0}' must be abstract, because neither class '{1}' nor its base classes specify an entity name.", 
-          _classType.AssemblyQualifiedName, _id);
-    }
-
-    if (_baseClass != null && _entityName != null && _baseClass.GetEntityName () != null && _entityName != _baseClass.GetEntityName ())
-    {
-      throw CreateMappingException (
-          "Class '{0}' must not specify an entity name '{1}' which is different from inherited entity name '{2}'.", 
-          _id, _entityName, _baseClass.GetEntityName ());
-    }
   }
 
   public bool Contains (PropertyDefinition propertyDefinition)
@@ -449,28 +430,6 @@ public class ClassDefinition : ISerializable, IObjectReference
     get { return (_baseClass != null || _derivedClasses.Count > 0); }
   }
 
-  private void CheckBaseClass (
-      ClassDefinition baseClass,
-      string id,
-      string entityName, 
-      string storageProviderID, 
-      Type classType)
-  {
-    if (classType != null && baseClass.ClassType != null && !classType.IsSubclassOf (baseClass.ClassType))
-    {
-      throw CreateMappingException (
-          "Type '{0}' of class '{1}' is not derived from type '{2}' of base class '{3}'.", 
-          classType.AssemblyQualifiedName, id, baseClass.ClassType.AssemblyQualifiedName, baseClass.ID);
-    }
-
-    if (baseClass.StorageProviderID != storageProviderID)
-    {
-      throw CreateMappingException (
-          "Cannot derive class '{0}' from base class '{1}' handled by different StorageProviders.",
-          id, baseClass.ID);    
-    }
-  }
-
   internal void SetBaseClass (ClassDefinition baseClass)
   {
     ArgumentUtility.CheckNotNull ("baseClass", baseClass);
@@ -479,53 +438,63 @@ public class ClassDefinition : ISerializable, IObjectReference
       throw CreateMappingException ("Class '{0}' cannot refer to itself as base class.", _id);
 
     CheckBaseClass (baseClass, _id, _entityName, _storageProviderID, _classType);
-    CheckBasePropertyDefinitions (baseClass);
-
     PerformSetBaseClass (baseClass);
   }
 
-  private void CheckBasePropertyDefinitions (ClassDefinition baseClass)
+  internal void Validate ()
   {
-    PropertyDefinitionCollection basePropertyDefinitions = baseClass.GetPropertyDefinitions ();
-    foreach (PropertyDefinition propertyDefinition in _propertyDefinitions)
-    {
-      if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
-      {
-        throw CreateMappingException ("Class '{0}' cannot be set as base class for class"
-            + " '{1}', because the property '{2}' is defined in both classes.",
-            baseClass.ID, this.ID, propertyDefinition.PropertyName);
-      }
+    if (_classType == null)
+      return;
 
-      if (basePropertyDefinitions.ContainsColumnName (propertyDefinition.ColumnName))
+    if (GetEntityName () == null && !_classType.IsAbstract)
+    {
+      throw CreateMappingException (
+          "Type '{0}' must be abstract, because neither class '{1}' nor its base classes specify an entity name.",
+          _classType.AssemblyQualifiedName, _id);
+    }
+
+    if (_baseClass != null && _entityName != null && _baseClass.GetEntityName () != null && _entityName != _baseClass.GetEntityName ())
+    {
+      throw CreateMappingException (
+          "Class '{0}' must not specify an entity name '{1}' which is different from inherited entity name '{2}'.",
+          _id, _entityName, _baseClass.GetEntityName ());
+    }
+
+    if (_baseClass != null)
+    {
+      PropertyDefinitionCollection basePropertyDefinitions = _baseClass.GetPropertyDefinitions ();
+      foreach (PropertyDefinition propertyDefinition in _propertyDefinitions)
       {
-        throw CreateMappingException (
-            "Class '{0}' with property '{1}' inherits a property which already defines the column '{2}'.",
-            this.ID, propertyDefinition.PropertyName, propertyDefinition.ColumnName);
+        if (basePropertyDefinitions.Contains (propertyDefinition.PropertyName))
+        {
+          throw CreateMappingException (
+              "Class '{0}' must not define property '{1}', because base class '{2}' already defines a property with the same name.",
+              _id, propertyDefinition.PropertyName, basePropertyDefinitions[propertyDefinition.PropertyName].ClassDefinition.ID);
+        }
       }
     }
   }
 
-  private void PerformSetBaseClass (ClassDefinition baseClass)
+  internal void ValidateColumnNameForInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitions)
   {
-    _baseClass = baseClass;
-    _baseClass.AddDerivedClass (this);
-  }
+    foreach (PropertyDefinition myPropertyDefinition in _propertyDefinitions)
+    {
+      if (allPropertyDefinitions.ContainsKey (myPropertyDefinition.ColumnName))
+      {
+        PropertyDefinition basePropertyDefinition = allPropertyDefinitions[myPropertyDefinition.ColumnName];
 
-  private void AddDerivedClass (ClassDefinition derivedClass)
-  {
-    ClassDefinitionCollection derivedClasses = new ClassDefinitionCollection (_derivedClasses, false);
-    derivedClasses.Add (derivedClass);
-    _derivedClasses = new ClassDefinitionCollection (derivedClasses, true);
-  }
+        throw CreateMappingException (
+            "Property '{0}' of class '{1}' must not define column name '{2}',"
+            + " because class '{3}' in same inheritance hierarchy already defines property '{4}' with the same column name.",
+            myPropertyDefinition.PropertyName, _id, myPropertyDefinition.ColumnName,
+            basePropertyDefinition.ClassDefinition.ID, basePropertyDefinition.PropertyName);
+      }
 
-  private MappingException CreateMappingException (string message, params object[] args)
-  {
-    return new MappingException (string.Format (message, args));
-  }
+      allPropertyDefinitions.Add (myPropertyDefinition.ColumnName, myPropertyDefinition);
+    }
 
-  private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
-  {
-    return new InvalidOperationException (string.Format (message, args));
+    foreach (ClassDefinition derivedClassDefinition in _derivedClasses)
+      derivedClassDefinition.ValidateColumnNameForInheritanceHierarchy (allPropertyDefinitions);
   }
 
   internal void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)
@@ -557,6 +526,51 @@ public class ClassDefinition : ISerializable, IObjectReference
   internal void PropertyDefinitions_Added (object sender, PropertyDefinitionAddedEventArgs args)
   {
     args.PropertyDefinition.SetClassDefinition (this);
+  }
+
+  private void PerformSetBaseClass (ClassDefinition baseClass)
+  {
+    _baseClass = baseClass;
+    _baseClass.AddDerivedClass (this);
+  }
+
+  private void AddDerivedClass (ClassDefinition derivedClass)
+  {
+    ClassDefinitionCollection derivedClasses = new ClassDefinitionCollection (_derivedClasses, false);
+    derivedClasses.Add (derivedClass);
+    _derivedClasses = new ClassDefinitionCollection (derivedClasses, true);
+  }
+
+  private MappingException CreateMappingException (string message, params object[] args)
+  {
+    return new MappingException (string.Format (message, args));
+  }
+
+  private InvalidOperationException CreateInvalidOperationException (string message, params object[] args)
+  {
+    return new InvalidOperationException (string.Format (message, args));
+  }
+
+  private void CheckBaseClass (
+      ClassDefinition baseClass,
+      string id,
+      string entityName,
+      string storageProviderID,
+      Type classType)
+  {
+    if (classType != null && baseClass.ClassType != null && !classType.IsSubclassOf (baseClass.ClassType))
+    {
+      throw CreateMappingException (
+          "Type '{0}' of class '{1}' is not derived from type '{2}' of base class '{3}'.",
+          classType.AssemblyQualifiedName, id, baseClass.ClassType.AssemblyQualifiedName, baseClass.ID);
+    }
+
+    if (baseClass.StorageProviderID != storageProviderID)
+    {
+      throw CreateMappingException (
+          "Cannot derive class '{0}' from base class '{1}' handled by different StorageProviders.",
+          id, baseClass.ID);
+    }
   }
 
   #region ISerializable Members

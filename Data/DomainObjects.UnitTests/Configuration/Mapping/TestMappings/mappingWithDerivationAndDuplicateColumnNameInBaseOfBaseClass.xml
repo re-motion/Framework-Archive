@@ -24,11 +24,11 @@
 			<entity name="Company" />
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties>
-        <!-- Note: Name is alread defined in base class Company, which is invalid. -->
-				<property name="Name">
+        <!-- Note: Property has different name than property in base class. -->
+				<property name="SupplierName">
 					<type>string</type>
-          <!-- Note: Name property has different column name than same property in base class. -->
-          <column>SupplierName</column> 
+          <!-- Note: Column name is invalid, because base class Company already defines a property with the same column name. -->
+					<column>Name</column>
 					<maxLength>100</maxLength>
 				</property>
 				<property name="SupplierQuality">

@@ -97,8 +97,7 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     public void Validate ()
     {
-      foreach (ClassDefinition classDefinition in _classDefinitions)
-        classDefinition.Validate ();
+      _classDefinitions.Validate ();
     }
 
     public ClassDefinitionCollection ClassDefinitions

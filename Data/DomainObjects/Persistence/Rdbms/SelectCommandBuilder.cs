@@ -129,6 +129,7 @@ public class SelectCommandBuilder : CommandBuilder
     if (_orderClause != null)
       orderExpression = " ORDER BY " + _orderClause;
 
+    // TODO: Implement concrete table inheritance!
     command.CommandText = string.Format ("SELECT {0} FROM [{1}] WHERE {2}{3};", 
         _selectColumns, _classDefinition.MyEntityName, whereClauseBuilder.ToString (), orderExpression);
 

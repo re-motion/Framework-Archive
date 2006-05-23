@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Specialized;
 
 using Rubicon.Utilities;
+using System.Collections.Generic;
 
 namespace Rubicon.Data.DomainObjects.Mapping
 {
@@ -44,6 +45,21 @@ public class ClassDefinitionCollection : CommonCollection
   }
 
   // methods and properties
+
+  public void Validate ()
+  {
+    ClassDefinitionCollection inheritanceRootClassDefinitions = new ClassDefinitionCollection (this.AreResolvedTypesRequired);
+    foreach (ClassDefinition classDefinition in this)
+    {
+      classDefinition.Validate ();
+
+      if (classDefinition.BaseClass == null && classDefinition.DerivedClasses.Count > 0)
+        inheritanceRootClassDefinitions.Add (classDefinition);
+    }
+
+    foreach (ClassDefinition inheritanceRootClassDefinition in inheritanceRootClassDefinitions)
+      inheritanceRootClassDefinition.ValidateColumnNameForInheritanceHierarchy (new Dictionary<string, PropertyDefinition> ());
+  }
 
   public ClassDefinition GetMandatory (Type classType)
   {

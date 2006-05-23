@@ -25,6 +25,7 @@
 			<properties>
         <property name="OtherName">
           <type>string</type>
+          <!-- Note: NameColumn is already defined in base class Company! -->
           <column>NameColumn</column>
           <maxLength>100</maxLength>
         </property>

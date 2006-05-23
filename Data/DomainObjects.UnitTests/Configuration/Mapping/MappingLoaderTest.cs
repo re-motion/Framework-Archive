@@ -113,8 +113,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
     [Test]
     [ExpectedException (typeof (MappingException),
-        "Class 'Company' cannot be set as base class for class 'Customer',"
-          + " because the property 'Name' is defined in both classes.")]
+        "Class 'Customer' must not define property 'Name', because base class 'Company' already defines a property with the same name.")]
     public void MappingWithPropertyDefinedInBaseAndDerivedClass ()
     {
       MappingLoader loader = new MappingLoader (@"mappingWithPropertyDefinedInBaseAndDerivedClass.xml", @"mapping.xsd", true);
@@ -123,9 +122,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        "Class 'Partner' cannot be set as base class for class 'Supplier',"
-          + " because the property 'Name' is defined in both classes.")]
+    [ExpectedException (typeof (MappingException), 
+        "Class 'Supplier' must not define property 'Name', because base class 'Company' already defines a property with the same name.")]
     public void MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass ()
     {
       MappingLoader loader = new MappingLoader (@"mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml", @"mapping.xsd", true);
@@ -231,12 +229,25 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), "Class 'Customer' with property 'OtherName' inherits a property which already defines the column 'NameColumn'.")]
+    [ExpectedException (typeof (MappingException), 
+        "Property 'OtherName' of class 'Customer' must not define column name 'NameColumn',"
+        + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
     public void MappingWithDerivationAndDuplicateColumnName ()
     {
       MappingLoader loader = new MappingLoader (@"mappingWithDerivationAndDuplicateColumnName.xml", @"mapping.xsd", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), 
+        "Property 'SupplierName' of class 'Supplier' must not define column name 'Name',"
+        + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
+    public void MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass ()
+    {
+      MappingLoader loader = new MappingLoader (@"mappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml", @"mapping.xsd", true);
+
+      loader.GetClassDefinitions ();
     }
 
     [Test]

@@ -458,6 +458,31 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       CheckNoEvents (_orderDeliveryDatePropertyEventReceiver);
     }
 
+    [Test]
+    public void SaveObjectWithNonMandatoryOneToManyRelation ()
+    {
+      Customer newCustomer = new Customer ();
+      newCustomer.Ceo = new Ceo ();
+
+      Customer existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);
+      Assert.AreEqual (1, existingCustomer.Orders.Count);
+      Assert.IsNotNull (existingCustomer.Orders[0].OrderTicket);
+      Assert.AreEqual (1, existingCustomer.Orders[0].OrderItems.Count);
+
+      existingCustomer.Orders[0].OrderTicket.Delete ();
+      existingCustomer.Orders[0].OrderItems[0].Delete ();
+      existingCustomer.Orders[0].Delete ();
+
+      ClientTransaction.Current.Commit ();
+      ClientTransaction.SetCurrent (null);
+
+      newCustomer = Customer.GetObject (newCustomer.ID);
+      existingCustomer = Customer.GetObject (DomainObjectIDs.Customer3);
+
+      Assert.AreEqual (0, newCustomer.Orders.Count);
+      Assert.AreEqual (0, existingCustomer.Orders.Count);
+    }
+
     private void InitializeEventReceivers (Order order)
     {
       _orderDataContainer = order.DataContainer;

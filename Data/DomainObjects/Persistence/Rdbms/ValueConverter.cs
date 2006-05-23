@@ -146,6 +146,7 @@ public class ValueConverter : ValueConverterBase
       }
       catch (IndexOutOfRangeException)
       {
+        // TODO: Implement concrete table inheritance!
         throw CreateRdbmsProviderException (
             "Incorrect database format encountered."
             + " Entity '{0}' must have column '{1}' defined, because opposite class '{2}' is part of an inheritance hierarchy.",
@@ -156,6 +157,7 @@ public class ValueConverter : ValueConverterBase
 
       if (dataReader.IsDBNull (objectIDColumnOrdinal) && !dataReader.IsDBNull (classIDColumnOrdinal))
       {
+        // TODO: Implement concrete table inheritance!
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain a value.", 
             GetClassIDColumnName (propertyDefinition.ColumnName),
@@ -164,6 +166,7 @@ public class ValueConverter : ValueConverterBase
 
       if (!dataReader.IsDBNull (objectIDColumnOrdinal) && dataReader.IsDBNull (classIDColumnOrdinal))
       {
+        // TODO: Implement concrete table inheritance!
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain null.",
             GetClassIDColumnName (propertyDefinition.ColumnName),
@@ -198,6 +201,7 @@ public class ValueConverter : ValueConverterBase
 
         if ((bool) s_hasClassIDColumn[hashKey])
         {
+          // TODO: Implement concrete table inheritance!
           throw CreateRdbmsProviderException (
               "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
               classDefinition.MyEntityName,
