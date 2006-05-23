@@ -572,7 +572,7 @@ namespace Rubicon.Web.ExecutionEngine
     protected virtual void CheckPermissions (WxeContext context)
     {
       RequiredWxeFunctionPermissionAttribute attribute =
-          (RequiredWxeFunctionPermissionAttribute) Attribute.GetCustomAttribute (this.GetType (), typeof (RequiredWxeFunctionPermissionAttribute), true);
+          (RequiredWxeFunctionPermissionAttribute) Attribute.GetCustomAttribute (GetType (), typeof (RequiredWxeFunctionPermissionAttribute), true);
 
       if (attribute == null)
         return;
@@ -583,19 +583,39 @@ namespace Rubicon.Web.ExecutionEngine
       else if (attribute.ParameterNumber.HasValue)
         parameterName = ParameterDeclarations[attribute.ParameterNumber.Value].Name;
 
-      ISecurableType securableType = null;
       if (!StringUtility.IsNullOrEmpty (parameterName))
       {
-        securableType = Variables[parameterName] as ISecurableType;
-        if (securableType == null)
-          throw new WxeException (string.Format ("Parameter '{0}' is not of type Rubicon.Security.ISecurableType.", parameterName));
+        CheckInstanceMethdAccess (parameterName, attribute.ProtectedMethod);
       }
+      else if (attribute.SecurableClass != null)
+      {
+        if (StringUtility.IsNullOrEmpty (attribute.ProtectedMethod))
+          CheckConstructorAccess (attribute.SecurableClass);
+        else
+          CheckStaticMethdAccess (attribute.SecurableClass, attribute.ProtectedMethod);
+      }
+    }
 
+    private void CheckInstanceMethdAccess (string parameterName, string method)
+    {
+      ISecurableType securableType = Variables[parameterName] as ISecurableType;
       if (securableType == null)
-        return;
+        throw new WxeException (string.Format ("Parameter '{0}' is null or not of type Rubicon.Security.ISecurableType.", parameterName));
 
       SecurityClient securityClient = new SecurityClient ();
-      securityClient.CheckMethodAccess (securableType, attribute.ProtectedMethod);
+      securityClient.CheckMethodAccess (securableType, method);
+    }
+
+    private void CheckStaticMethdAccess (Type securableClass, string method)
+    {
+      SecurityClient securityClient = new SecurityClient ();
+      securityClient.CheckStaticMethodAccess (securableClass, method);
+    }
+
+    private void CheckConstructorAccess (Type securableClass)
+    {
+      SecurityClient securityClient = new SecurityClient ();
+      securityClient.CheckConstructorAccess (securableClass);
     }
   }
 
@@ -607,17 +627,17 @@ namespace Rubicon.Web.ExecutionEngine
     private WxeParameterDirection _direction;
 
     public WxeParameterAttribute (int index, WxeParameterDirection direction)
-      : this (index, NaBoolean.Null , direction)
+      : this (index, NaBoolean.Null, direction)
     {
     }
 
     public WxeParameterAttribute (int index, bool required)
-      : this (index, new NaBoolean (required) , WxeParameterDirection.In)
+      : this (index, new NaBoolean (required), WxeParameterDirection.In)
     {
     }
 
     public WxeParameterAttribute (int index)
-      : this (index, NaBoolean.Null , WxeParameterDirection.In)
+      : this (index, NaBoolean.Null, WxeParameterDirection.In)
     {
     }
 
@@ -630,7 +650,7 @@ namespace Rubicon.Web.ExecutionEngine
     ///     and <see langword="false"/> for reference types. </param>
     /// <param name="direction"> Declares the parameter as input or output parameter, or both. </param>
     public WxeParameterAttribute (int index, bool required, WxeParameterDirection direction)
-      : this (index, new NaBoolean (required) , direction)
+      : this (index, new NaBoolean (required), direction)
     {
     }
 

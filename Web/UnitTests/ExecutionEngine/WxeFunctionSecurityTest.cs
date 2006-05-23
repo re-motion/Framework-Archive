@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 using Rubicon.Security;
 using Rubicon.Security.Configuration;
-using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
@@ -55,13 +54,13 @@ public class WxeFunctionSecurityTest: WxeTest
   }
 
   [Test]
-  public void ExecuteSecuredFunction ()
+  public void ExecuteFunctionWithPermissionsFromInstanceMethod ()
   {
     Expect.Once.On (_securityService)
         .Method ("GetAccess")
         .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read) }));
 
-    TestFunctionWithSecurity function = new TestFunctionWithSecurity (new SecurableClass (_securityContextFactory));
+    TestFunctionWithPermissionsFromInstanceMethods function = new TestFunctionWithPermissionsFromInstanceMethods (new SecurableClass (_securityContextFactory));
     function.Execute ();
 
     _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -69,16 +68,64 @@ public class WxeFunctionSecurityTest: WxeTest
 
   [Test]
   [ExpectedException (typeof (PermissionDeniedException))]
-  public void ExecuteSecuredFunctionWithInsufficientPermissions ()
+  public void ExecuteFunctionWithInsufficientPermissionsFromInstanceMethod ()
   {
     Expect.Once.On (_securityService)
         .Method ("GetAccess")
-        .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
+        .Will (Return.Value (new AccessType[0]));
 
-    TestFunctionWithSecurity function = new TestFunctionWithSecurity (new SecurableClass (_securityContextFactory));
+    TestFunctionWithPermissionsFromInstanceMethods function = new TestFunctionWithPermissionsFromInstanceMethods (new SecurableClass (_securityContextFactory));
+    function.Execute ();
+  }
+
+  [Test]
+  public void ExecuteFunctionWithPermissionsFromStaticMethod ()
+  {
+    Expect.Once.On (_securityService)
+        .Method ("GetAccess")
+        .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
+
+    TestFunctionWithPermissionsFromStaticMethods function = new TestFunctionWithPermissionsFromStaticMethods ();
     function.Execute ();
 
     _mocks.VerifyAllExpectationsHaveBeenMet ();
+  }
+
+  [Test]
+  [ExpectedException (typeof (PermissionDeniedException))]
+  public void ExecuteFunctionWithInsufficientPermissionsFromStaticMethod ()
+  {
+    Expect.Once.On (_securityService)
+        .Method ("GetAccess")
+        .Will (Return.Value (new AccessType[0]));
+
+    TestFunctionWithPermissionsFromStaticMethods function = new TestFunctionWithPermissionsFromStaticMethods ();
+    function.Execute ();
+  }
+
+  [Test]
+  public void ExecuteFunctionWithPermissionsFromConstructor ()
+  {
+    Expect.Once.On (_securityService)
+        .Method ("GetAccess")
+        .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
+
+    TestFunctionWithPermissionsFromConstructor function = new TestFunctionWithPermissionsFromConstructor ();
+    function.Execute ();
+
+    _mocks.VerifyAllExpectationsHaveBeenMet ();
+  }
+
+  [Test]
+  [ExpectedException (typeof (PermissionDeniedException))]
+  public void ExecuteFunctionWithInsufficientPermissionsFromConstructor ()
+  {
+    Expect.Once.On (_securityService)
+        .Method ("GetAccess")
+        .Will (Return.Value (new AccessType[0]));
+
+    TestFunctionWithPermissionsFromConstructor function = new TestFunctionWithPermissionsFromConstructor ();
+    function.Execute ();
   }
 }
 

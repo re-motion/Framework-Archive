@@ -9,7 +9,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.Web.UnitTests.ExecutionEngine
 {
   [RequiredWxeFunctionPermission ("ThisObject", "Show")]
-  public class TestFunctionWithSecurity : WxeFunction
+  public class TestFunctionWithPermissionsFromInstanceMethods : WxeFunction
   {
     // types
 
@@ -19,7 +19,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     // construction and disposing
 
-    public TestFunctionWithSecurity (SecurableClass thisObject)
+    public TestFunctionWithPermissionsFromInstanceMethods (SecurableClass thisObject)
       : base (thisObject)
     {
     }

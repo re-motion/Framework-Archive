@@ -140,8 +140,10 @@
     <Compile Include="Configuration\WebConfigurationMock.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromConstructor.cs" />
+    <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromStaticMethods.cs" />
     <Compile Include="ExecutionEngine\SecurableClass.cs" />
-    <Compile Include="ExecutionEngine\TestFunctionWithSecurity.cs" />
+    <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethods.cs" />
     <Compile Include="ExecutionEngine\WxeFunctionSecurityTest.cs" />
     <Compile Include="ExecutionEngine\TestFunction.cs">
       <SubType>Code</SubType>

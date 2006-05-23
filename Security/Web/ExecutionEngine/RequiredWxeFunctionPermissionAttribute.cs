@@ -15,6 +15,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     // member fields
 
+    private Type _securableClass;	
     private int? _parameterNumber;
     private string _parameterName;
     private string _protectedMethod;
@@ -25,7 +26,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNullOrEmpty ("protectedMethod", protectedMethod);
 
-      Initialize (parameterNumber, null, protectedMethod);
+      Initialize (null, parameterNumber, null, protectedMethod);
     }
 
     public RequiredWxeFunctionPermissionAttribute (string parameterName, string protectedMethod)
@@ -33,11 +34,27 @@ namespace Rubicon.Security.Web.ExecutionEngine
       ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
       ArgumentUtility.CheckNotNullOrEmpty ("protectedMethod", protectedMethod);
 
-      Initialize (null, parameterName, protectedMethod);
+      Initialize (null, null, parameterName, protectedMethod);
     }
 
-    private void Initialize (int? parameterNumber, string parameterName, string protectedMethod)
+    public RequiredWxeFunctionPermissionAttribute (Type securableClass, string protectedMethod)
     {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableType));
+      ArgumentUtility.CheckNotNullOrEmpty ("protectedMethod", protectedMethod);
+
+      Initialize (securableClass, null, null, protectedMethod);
+    }
+
+    public RequiredWxeFunctionPermissionAttribute (Type securableClass)
+    {
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableType));
+
+      Initialize (securableClass, null, null, null);
+    }
+
+    private void Initialize (Type securableClass, int? parameterNumber, string parameterName, string protectedMethod)
+    {
+      _securableClass = securableClass;
       _parameterNumber = parameterNumber;
       _parameterName = parameterName;
       _protectedMethod = protectedMethod;
@@ -45,12 +62,15 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     // methods and properties
 
+    public Type SecurableClass
+    {
+      get { return _securableClass; }
+    }
 
     public int? ParameterNumber
     {
       get { return _parameterNumber; }
     }
-
 
     public string ParameterName
     {

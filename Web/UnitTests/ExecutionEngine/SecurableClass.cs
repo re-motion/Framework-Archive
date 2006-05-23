@@ -15,6 +15,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     private ISecurityContextFactory _securityContextFactory;
 
+    [RequiredMethodPermission (GeneralAccessType.Create)]
     public SecurableClass (ISecurityContextFactory securityContextFactory)
     {
       _securityContextFactory = securityContextFactory;

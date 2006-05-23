@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--EXTERNAL_PROPERTIES: build.outputdir;project.doc;build.debug;build.csc.define;project.output;project.extension-->
 <project xmlns="nant-schema" name="Rubicon.Security.UnitTests.TestDomain">  
 
   <target name="build" description="perform a build">
