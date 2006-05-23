@@ -48,17 +48,18 @@ public class ClassDefinitionCollection : CommonCollection
 
   public void Validate ()
   {
-    ClassDefinitionCollection inheritanceRootClassDefinitions = new ClassDefinitionCollection (this.AreResolvedTypesRequired);
+    ClassDefinitionCollection rootClasses = new ClassDefinitionCollection (this.AreResolvedTypesRequired);
     foreach (ClassDefinition classDefinition in this)
     {
-      classDefinition.Validate ();
-
-      if (classDefinition.BaseClass == null && classDefinition.DerivedClasses.Count > 0)
-        inheritanceRootClassDefinitions.Add (classDefinition);
+      ClassDefinition rootClassDefinition = classDefinition.GetInheritanceRootClass ();
+      if (!rootClasses.Contains (rootClassDefinition))
+        rootClasses.Add (rootClassDefinition);
     }
 
-    foreach (ClassDefinition inheritanceRootClassDefinition in inheritanceRootClassDefinitions)
-      inheritanceRootClassDefinition.ValidateColumnNameForInheritanceHierarchy (new Dictionary<string, PropertyDefinition> ());
+    foreach (ClassDefinition rootClass in rootClasses)
+    {
+      ValidateRootClass (rootClass);
+    }
   }
 
   public ClassDefinition GetMandatory (Type classType)
@@ -175,6 +176,29 @@ public class ClassDefinitionCollection : CommonCollection
   }
 
   #endregion
+
+  private void ValidateRootClass (ClassDefinition rootClass)
+  {
+    if (!Contains (rootClass))
+    {
+      throw CreateInvalidOperationException (
+          "Validate cannot be invoked, because class '{0}' is a base class of a class in the collection,"
+          + " but the base class is not part of the collection itself.",
+          rootClass.ID);
+    }
+
+    foreach (ClassDefinition derivedClass in rootClass.GetAllDerivedClasses ())
+    {
+      if (!Contains (derivedClass))
+      {
+        throw CreateInvalidOperationException (
+            "Validate cannot be invoked, because class '{0}' is a derived class of '{1}', but is not part of the collection itself.",
+            derivedClass.ID, rootClass.ID);
+      }
+    }
+
+    rootClass.ValidateInheritanceHierarchy (new Dictionary<string, PropertyDefinition> ());
+  }
 
   private MappingException CreateMappingException (string message, params object[] args)
   {

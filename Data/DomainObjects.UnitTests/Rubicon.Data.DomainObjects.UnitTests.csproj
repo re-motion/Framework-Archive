@@ -634,6 +634,7 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Rubicon.Data.DomainObjects.UnitTests.build" />
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInTwoBaseClasses.xml" />
     <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml" />
     <Content Include="Configuration\Mapping\TestMappings\entireMappingWithUnresolvedTypes.xml">
     </Content>

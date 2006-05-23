@@ -1,3 +1,12 @@
+1.7.2.0
+=======
+
+- Mapping: 
+  Für die Implementierung von Concrete Table Inheritance dürfen ab dieser Version Eigenschaften zweier Klassen, die Teil 
+  der selben Vererbungshierarchie sind, nicht die selben Spaltennamen verwenden. Dies gilt auch für Objektklassen, die 
+  sich in parallelen Vererbungszweigen befinden.
+
+
 1.7.1.0
 =======
 

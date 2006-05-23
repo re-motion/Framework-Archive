@@ -139,6 +139,22 @@ public class ClassDefinition : ISerializable, IObjectReference
 
   // methods and properties
 
+  public ClassDefinitionCollection GetAllDerivedClasses ()
+  {
+    bool areResolvedTypeNamesRequired = (_classType != null);
+    ClassDefinitionCollection allDerivedClasses = new ClassDefinitionCollection (areResolvedTypeNamesRequired);
+    FillAllDerivedClasses (allDerivedClasses);
+    return allDerivedClasses;
+  }
+
+  public ClassDefinition GetInheritanceRootClass ()
+  {
+    if (_baseClass != null)
+      return _baseClass.GetInheritanceRootClass ();
+
+    return this;
+  }
+
   public string GetEntityName ()
   {
     if (_entityName != null)
@@ -441,16 +457,16 @@ public class ClassDefinition : ISerializable, IObjectReference
     PerformSetBaseClass (baseClass);
   }
 
-  internal void Validate ()
+  internal void ValidateInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitionsInInheritanceHierarchy)
   {
-    if (_classType == null)
-      return;
-
-    if (GetEntityName () == null && !_classType.IsAbstract)
+    if (_classType != null)
     {
-      throw CreateMappingException (
-          "Type '{0}' must be abstract, because neither class '{1}' nor its base classes specify an entity name.",
-          _classType.AssemblyQualifiedName, _id);
+      if (GetEntityName () == null && !_classType.IsAbstract)
+      {
+        throw CreateMappingException (
+            "Type '{0}' must be abstract, because neither class '{1}' nor its base classes specify an entity name.",
+            _classType.AssemblyQualifiedName, _id);
+      }
     }
 
     if (_baseClass != null && _entityName != null && _baseClass.GetEntityName () != null && _entityName != _baseClass.GetEntityName ())
@@ -473,15 +489,12 @@ public class ClassDefinition : ISerializable, IObjectReference
         }
       }
     }
-  }
 
-  internal void ValidateColumnNameForInheritanceHierarchy (Dictionary<string, PropertyDefinition> allPropertyDefinitions)
-  {
     foreach (PropertyDefinition myPropertyDefinition in _propertyDefinitions)
     {
-      if (allPropertyDefinitions.ContainsKey (myPropertyDefinition.ColumnName))
+      if (allPropertyDefinitionsInInheritanceHierarchy.ContainsKey (myPropertyDefinition.ColumnName))
       {
-        PropertyDefinition basePropertyDefinition = allPropertyDefinitions[myPropertyDefinition.ColumnName];
+        PropertyDefinition basePropertyDefinition = allPropertyDefinitionsInInheritanceHierarchy[myPropertyDefinition.ColumnName];
 
         throw CreateMappingException (
             "Property '{0}' of class '{1}' must not define column name '{2}',"
@@ -490,11 +503,11 @@ public class ClassDefinition : ISerializable, IObjectReference
             basePropertyDefinition.ClassDefinition.ID, basePropertyDefinition.PropertyName);
       }
 
-      allPropertyDefinitions.Add (myPropertyDefinition.ColumnName, myPropertyDefinition);
+      allPropertyDefinitionsInInheritanceHierarchy.Add (myPropertyDefinition.ColumnName, myPropertyDefinition);
     }
 
     foreach (ClassDefinition derivedClassDefinition in _derivedClasses)
-      derivedClassDefinition.ValidateColumnNameForInheritanceHierarchy (allPropertyDefinitions);
+      derivedClassDefinition.ValidateInheritanceHierarchy (allPropertyDefinitionsInInheritanceHierarchy);
   }
 
   internal void PropertyDefinitions_Adding (object sender, PropertyDefinitionAddingEventArgs args)
@@ -570,6 +583,15 @@ public class ClassDefinition : ISerializable, IObjectReference
       throw CreateMappingException (
           "Cannot derive class '{0}' from base class '{1}' handled by different StorageProviders.",
           id, baseClass.ID);
+    }
+  }
+
+  private void FillAllDerivedClasses (ClassDefinitionCollection allDerivedClasses)
+  {
+    foreach (ClassDefinition derivedClass in _derivedClasses)
+    {
+      allDerivedClasses.Add (derivedClass);
+      derivedClass.FillAllDerivedClasses (allDerivedClasses);
     }
   }
 

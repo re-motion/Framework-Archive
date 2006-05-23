@@ -74,7 +74,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
       ClassDefinition customerClass = new ClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
 
-      _classDefinitions.Add (customerClass);
+      _classDefinitions.Add (domainBaseClass);
+      _classDefinitions.Add (personClass);
+      _classDefinitions.Add (customerClass);      
 
       _classDefinitions.Validate ();
 
@@ -89,6 +91,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ClassDefinition customerClass = new ClassDefinition (
           "Customer", personClass.MyEntityName, c_testDomainProviderID, typeof (Customer), personClass);
 
+      _classDefinitions.Add (personClass);
       _classDefinitions.Add (customerClass);
 
       _classDefinitions.Validate ();
@@ -107,8 +110,34 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ClassDefinition customerClass = new ClassDefinition (
           "Customer", "DifferentEntityNameThanBaseClass", c_testDomainProviderID, typeof (Customer), personClass);
 
+      _classDefinitions.Add (personClass);
       _classDefinitions.Add (customerClass);
 
+      _classDefinitions.Validate ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        "Validate cannot be invoked, because class 'Person' is a base class of a class in the collection,"
+        + " but the base class is not part of the collection itself.")]
+    public void ValidateWithBaseClassNotInCollection ()
+    {
+      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
+      ClassDefinition customerClass = new ClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
+
+      _classDefinitions.Add (customerClass);
+      _classDefinitions.Validate ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException),
+        "Validate cannot be invoked, because class 'Customer' is a derived class of 'Person', but is not part of the collection itself.")]
+    public void ValidateWithDerivedClassNotInCollection ()
+    {
+      ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person));
+      ClassDefinition customerClass = new ClassDefinition ("Customer", null, c_testDomainProviderID, typeof (Customer), personClass);
+
+      _classDefinitions.Add (personClass);
       _classDefinitions.Validate ();
     }
 
@@ -118,6 +147,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
       ClassDefinition personClass = new ClassDefinition ("Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
 
+      _classDefinitions.Add (domainBaseClass);
       _classDefinitions.Add (personClass);
 
       _classDefinitions.Validate ();

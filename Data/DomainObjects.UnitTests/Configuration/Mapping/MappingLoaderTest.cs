@@ -236,7 +236,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       MappingLoader loader = new MappingLoader (@"mappingWithDerivationAndDuplicateColumnName.xml", @"mapping.xsd", true);
 
-      loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+      loader.GetClassDefinitions ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException),
+        "Property 'OtherName' of class 'Customer' must not define column name 'NameColumn',"
+        + " because class 'Company' in same inheritance hierarchy already defines property 'Name' with the same column name.")]
+    public void MappingWithDerivationAndDuplicateColumnNameWithoutResolvedTypes ()
+    {
+      MappingLoader loader = new MappingLoader (@"mappingWithDerivationAndDuplicateColumnName.xml", @"mapping.xsd", false);
+
+      loader.GetClassDefinitions ();
     }
 
     [Test]
@@ -286,6 +297,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       MappingLoader loader = new MappingLoader (@"mappingWithOppositeClassAndTwoRelationProperties.xml", @"mapping.xsd", true);
 
       loader.GetRelationDefinitions (loader.GetClassDefinitions ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (MappingException))]
+    public void MappingWithPropertyDefinedInTwoBaseClasses ()
+    {
+      MappingLoader loader = new MappingLoader (@"mappingWithPropertyDefinedInTwoBaseClasses.xml", @"mapping.xsd", true);
+
+      loader.GetClassDefinitions ();
     }
   }
 }

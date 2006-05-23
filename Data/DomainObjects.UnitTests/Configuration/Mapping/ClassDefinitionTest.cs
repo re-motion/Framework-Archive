@@ -744,6 +744,27 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.AreSame (_orderClass, _orderClass.MyPropertyDefinitions.ClassDefinition);
     }
 
+    [Test]
+    public void GetInheritanceRootClass ()
+    {
+      ClassDefinition expected = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      Assert.AreSame (expected, _distributorClass.GetInheritanceRootClass ());
+    }
+
+    [Test]
+    public void GetAllDerivedClasses ()
+    {
+      ClassDefinition companyClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+      ClassDefinitionCollection allDerivedClasses = companyClass.GetAllDerivedClasses ();
+      Assert.IsNotNull (allDerivedClasses);
+      Assert.AreEqual (4, allDerivedClasses.Count);
+
+      Assert.IsTrue (allDerivedClasses.Contains (typeof (Customer)));
+      Assert.IsTrue (allDerivedClasses.Contains (typeof (Partner)));
+      Assert.IsTrue (allDerivedClasses.Contains (typeof (Supplier)));
+      Assert.IsTrue (allDerivedClasses.Contains (typeof (Distributor)));
+    }
+
     private bool Contains (IRelationEndPointDefinition[] endPointDefinitions, string propertyName)
     {
       foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)
