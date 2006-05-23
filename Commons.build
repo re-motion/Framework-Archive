@@ -353,7 +353,7 @@
     <property name="project.dir" value="Security/Core.UnitTests.TestDomain" />
     <property name="project.output" value="Rubicon.Security.UnitTests.TestDomain" />
     <property name="project.extension" value="dll" />
-    <call target="execute-buildstep" />
+    <call target="buildtest" />
   </target>
 
   <target name="Security.UnitTests">
