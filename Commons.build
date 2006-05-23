@@ -146,8 +146,8 @@
   </target>
 
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, 
-      Security.Web, Web, ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, Data.DomainObjects.ObjectBinding.Web, 
-      Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Web">
+      Security.Web, Security.UnitTests.TestDomain, Web, ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, 
+      Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Web">
     <echo message="Target has executed."/>
   </target>
 
@@ -277,6 +277,14 @@
     <call target="execute-buildstep" />
   </target>
 
+  <target name="Security.UnitTests.TestDomain" depends="Core, Security">
+    <property name="project.name" value="Security.UnitTests.TestDomain" />
+    <property name="project.dir" value="Security/Core.UnitTests.TestDomain" />
+    <property name="project.output" value="Rubicon.Security.UnitTests.TestDomain" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
   <target name="Web" depends="Core, Security.Web">
     <property name="project.name" value="Web" />
     <property name="project.dir" value="Web/Core" />
@@ -346,14 +354,6 @@
         <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
       </nunit2>
     </if>
-  </target>
-
-  <target name="Security.UnitTests.TestDomain" depends="Core, Security">
-    <property name="project.name" value="Security.UnitTests.TestDomain" />
-    <property name="project.dir" value="Security/Core.UnitTests.TestDomain" />
-    <property name="project.output" value="Rubicon.Security.UnitTests.TestDomain" />
-    <property name="project.extension" value="dll" />
-    <call target="buildtest" />
   </target>
 
   <target name="Security.UnitTests">
