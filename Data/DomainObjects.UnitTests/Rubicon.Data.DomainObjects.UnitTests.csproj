@@ -500,13 +500,29 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="StandardMappingTest.cs" />
-    <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs" />
-    <Compile Include="TableInheritance\ClassDefinitionTest.cs" />
-    <Compile Include="TableInheritance\MappingConfigurationTest.cs" />
-    <Compile Include="TableInheritance\ObjectIDTest.cs" />
+    <Compile Include="TableInheritance\ClassDefinitionCollectionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\ClassDefinitionTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\DomainObjectIDs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\IntegrationTest.cs" />
+    <Compile Include="TableInheritance\MappingConfigurationTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\ObjectIDTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableInheritance\SqlProviderTest.cs" />
     <Compile Include="TableInheritance\TableInheritanceMappingTest.cs" />
     <Compile Include="TableInheritance\TestDomain\Address.cs" />
     <Compile Include="TableInheritance\TestDomain\Client.cs" />
+    <Compile Include="TableInheritance\TestDomain\HistoryEntry.cs" />
+    <Compile Include="TableInheritance\TestDomain\Order.cs" />
+    <Compile Include="TableInheritance\TestDomain\Region.cs" />
     <Compile Include="TableInheritance\TestDomain\OrganizationalUnit.cs" />
     <Compile Include="TableInheritance\TestDomain\Customer.cs" />
     <Compile Include="TableInheritance\TestDomain\DomainBase.cs" />

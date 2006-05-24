@@ -46,5 +46,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
       get { return (Client) GetRelatedObject ("Client"); }
     }
+
+    public DomainObjectCollection HistoryEntries
+    {
+      get { return GetRelatedObjects ("HistoryEntries"); }
+    }
   }
 }

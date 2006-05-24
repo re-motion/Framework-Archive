@@ -19,6 +19,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     // member fields
 
+    private DomainObjectIDs _domainObjectIDs;
+	
     // construction and disposing
 
     public TableInheritanceMappingTest () : base (new TestDataLoader (c_connectionString), c_createTestDataFileName)
@@ -27,10 +29,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     // methods and properties
 
+    protected DomainObjectIDs DomainObjectIDs
+    {
+      get { return _domainObjectIDs; }
+    }
+
     [TestFixtureSetUp]
     public void TestFixtureSetUp ()
     {
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
+      _domainObjectIDs = new DomainObjectIDs ();
+    }
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      ClientTransaction.SetCurrent (null);
     }
   }
 }

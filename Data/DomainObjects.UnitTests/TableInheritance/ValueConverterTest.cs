@@ -55,9 +55,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ClassDefinition personClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Person));
       PropertyDefinition clientProperty = personClass.GetMandatoryPropertyDefinition ("Client");
-      ObjectID expectedID = new ObjectID (typeof (Client), new Guid ("{F7AD91EF-AC75-4fe3-A427-E40312B12917}"));
+      ObjectID expectedID = DomainObjectIDs.Client;
 
-      using (IDbCommand command = CreatePersonCommand (new Guid ("{21E9BEA1-3026-430a-A01E-E9B6A39928A8}")))
+      using (IDbCommand command = CreatePersonCommand ((Guid) DomainObjectIDs.Person.Value))
       {
         using (IDataReader reader = command.ExecuteReader ())
         {

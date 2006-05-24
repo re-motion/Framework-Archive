@@ -15,6 +15,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (Address) DomainObject.GetObject (id);
     }
 
+    public static new Address GetObject (ObjectID id, ClientTransaction clientTransaction)
+    {
+      return (Address) DomainObject.GetObject (id, clientTransaction);
+    }
+
     // member fields
 
     // construction and disposing
@@ -56,6 +61,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
       get { return DataContainer.GetString ("Country"); }
       set { DataContainer.SetValue ("Country", value); }
+    }
+
+    public Person Person
+    {
+      get { return (Person) GetRelatedObject ("Person"); }
+      set { SetRelatedObject ("Person", value); }
     }
   }
 }

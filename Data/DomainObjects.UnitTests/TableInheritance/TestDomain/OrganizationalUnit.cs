@@ -15,6 +15,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (OrganizationalUnit) DomainObject.GetObject (id);
     }
 
+    public static new OrganizationalUnit GetObject (ObjectID id, ClientTransaction clientTransaction)
+    {
+      return (OrganizationalUnit) DomainObject.GetObject (id, clientTransaction);
+    }
+
     // member fields
 
     // construction and disposing

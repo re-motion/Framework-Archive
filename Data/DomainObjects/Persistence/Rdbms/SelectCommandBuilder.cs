@@ -17,8 +17,8 @@ public class SelectCommandBuilder : CommandBuilder
 
   private string _selectColumns;
   private ClassDefinition _classDefinition;
-  private string _columnName;
-  private object _value;
+  private string _whereClauseColumnName;
+  private object _whereClauseValue;
   private string _orderClause;
 
   // construction and disposing
@@ -26,52 +26,38 @@ public class SelectCommandBuilder : CommandBuilder
   public SelectCommandBuilder (
       RdbmsProvider provider,
       ClassDefinition classDefinition,
-      PropertyDefinition propertyDefinition,
-      object value) : this (provider, "*", classDefinition, propertyDefinition, value)
+      PropertyDefinition whereClausePropertyDefinition,
+      object whereClauseValue)
+    : this (provider, "*", classDefinition, whereClausePropertyDefinition, whereClauseValue)
   {
   }
 
   public SelectCommandBuilder (
       RdbmsProvider provider,
       ClassDefinition classDefinition,
-      string columnName,
-      object value) : this (provider, "*", classDefinition, columnName, value)
+      string whereClauseColumnName,
+      object whereClauseValue)
+    : this (provider, "*", classDefinition, whereClauseColumnName, whereClauseValue)
   {
   }
 
   public SelectCommandBuilder (
       RdbmsProvider provider,
       ClassDefinition classDefinition,
-      PropertyDefinition propertyDefinition,
-      object value,
-      string orderClause) : this (provider, "*", classDefinition, propertyDefinition, value, orderClause)
+      PropertyDefinition whereClausePropertyDefinition,
+      object whereClauseValue,
+      string orderClause)
+    : this (provider, "*", classDefinition, whereClausePropertyDefinition, whereClauseValue, orderClause)
   {
   }
 
   public SelectCommandBuilder (
       RdbmsProvider provider,
       ClassDefinition classDefinition,
-      string columnName,
-      object value,
-      string orderClause) : this (provider, "*", classDefinition, columnName, value, orderClause)
-  {
-  }
-
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      string selectColumns,
-      ClassDefinition classDefinition,
-      PropertyDefinition propertyDefinition,
-      object value) : this (provider, selectColumns, classDefinition, propertyDefinition, value, null)
-  {
-  }
-
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      string selectColumns,
-      ClassDefinition classDefinition,
-      string columnName,
-      object value) : this (provider, selectColumns, classDefinition, columnName, value, null)
+      string whereClauseColumnName,
+      object whereClauseValue,
+      string orderClause)
+    : this (provider, "*", classDefinition, whereClauseColumnName, whereClauseValue, orderClause)
   {
   }
 
@@ -79,41 +65,61 @@ public class SelectCommandBuilder : CommandBuilder
       RdbmsProvider provider,
       string selectColumns,
       ClassDefinition classDefinition,
-      PropertyDefinition propertyDefinition,
-      object value,
+      PropertyDefinition whereClausePropertyDefinition,
+      object whereClauseValue)
+    : this (provider, selectColumns, classDefinition, whereClausePropertyDefinition, whereClauseValue, null)
+  {
+  }
+
+  public SelectCommandBuilder (
+      RdbmsProvider provider,
+      string selectColumns,
+      ClassDefinition classDefinition,
+      string whereClauseColumnName,
+      object whereClauseValue)
+    : this (provider, selectColumns, classDefinition, whereClauseColumnName, whereClauseValue, null)
+  {
+  }
+
+  public SelectCommandBuilder (
+      RdbmsProvider provider,
+      string selectColumns,
+      ClassDefinition classDefinition,
+      PropertyDefinition whereClausePropertyDefinition,
+      object whereClauseValue,
       string orderClause) : base (provider)
   {
-    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
-    SetInitialValues (selectColumns, classDefinition, propertyDefinition.ColumnName, value, orderClause);
+    ArgumentUtility.CheckNotNull ("whereClausePropertyDefinition", whereClausePropertyDefinition);
+    SetInitialValues (selectColumns, classDefinition, whereClausePropertyDefinition.ColumnName, whereClauseValue, orderClause);
   }
 
   public SelectCommandBuilder (
       RdbmsProvider provider,
       string selectColumns,
       ClassDefinition classDefinition,
-      string columnName,
-      object value,
+      string whereClauseColumnName,
+      object whereClauseValue,
       string orderClause) : base (provider)
   {
-    SetInitialValues (selectColumns, classDefinition, columnName, value, orderClause);
+    SetInitialValues (selectColumns, classDefinition, whereClauseColumnName, whereClauseValue, orderClause);
   }
 
   private void SetInitialValues (
       string selectColumns, 
-      ClassDefinition classDefinition, 
-      string columnName, 
-      object value, 
+      ClassDefinition classDefinition,
+      string whereClauseColumnName,
+      object whereClauseValue, 
       string orderClause)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("selectColumns", selectColumns);
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-    ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
-    ArgumentUtility.CheckNotNull ("value", value);
+    ArgumentUtility.CheckNotNullOrEmpty ("whereClauseColumnName", whereClauseColumnName);
+    ArgumentUtility.CheckNotNull ("whereClauseValue", whereClauseValue);
 
     _selectColumns = selectColumns;
     _classDefinition = classDefinition;
-    _columnName = columnName;
-    _value = value;
+    _whereClauseColumnName = whereClauseColumnName;
+    _whereClauseValue = whereClauseValue;
     _orderClause = orderClause;
   }
 
@@ -123,7 +129,7 @@ public class SelectCommandBuilder : CommandBuilder
   {
     IDbCommand command = CreateCommand ();
     WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
-    whereClauseBuilder.Add (_columnName, GetValue ());
+    whereClauseBuilder.Add (_whereClauseColumnName, GetValue ());
 
     string orderExpression = string.Empty;
     if (_orderClause != null)
@@ -131,7 +137,7 @@ public class SelectCommandBuilder : CommandBuilder
 
     // TODO: Implement concrete table inheritance!
     command.CommandText = string.Format ("SELECT {0} FROM [{1}] WHERE {2}{3};", 
-        _selectColumns, _classDefinition.MyEntityName, whereClauseBuilder.ToString (), orderExpression);
+        _selectColumns, _classDefinition.GetEntityName (), whereClauseBuilder.ToString (), orderExpression);
 
     return command;
   }
@@ -143,10 +149,10 @@ public class SelectCommandBuilder : CommandBuilder
 
   private object GetValue ()
   {
-    if (_value.GetType () == typeof (ObjectID))
-      return GetObjectIDForParameter ((ObjectID) _value);
+    if (_whereClauseValue.GetType () == typeof (ObjectID))
+      return GetObjectIDForParameter ((ObjectID) _whereClauseValue);
     else
-      return _value;
+      return _whereClauseValue;
   }
 }
 }

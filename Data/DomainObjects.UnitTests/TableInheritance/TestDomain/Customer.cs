@@ -21,6 +21,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       return (Customer) DomainObject.GetObject (id);
     }
 
+    public static new Customer GetObject (ObjectID id, ClientTransaction clientTransaction)
+    {
+      return (Customer) DomainObject.GetObject (id, clientTransaction);
+    }
+
     // member fields
 
     // construction and disposing
@@ -50,6 +55,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
       get { return DataContainer.GetDateTime ("CustomerSince"); }
       set { DataContainer.SetValue ("CustomerSince", value); }
+    }
+
+    public Region Region
+    {
+      get { return (Region) GetRelatedObject ("Region"); }
+      set { SetRelatedObject ("Region", value); }
+    }
+
+    public DomainObjectCollection Orders
+    {
+      get { return GetRelatedObjects ("Orders"); }
     }
   }
 }

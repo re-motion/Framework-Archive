@@ -192,5 +192,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       _classDefinitions.Validate ();
     }
 
+    [Test]
+    [ExpectedException (typeof (MappingException), 
+        "At least two classes in different inheritance branches derived from abstract class 'DomainBase'"
+        + " specify the same entity name 'TableInheritance_Person', which is not allowed.")]
+    public void ValidateWithSameEntityNamesInDifferentInheritanceBranches ()
+    {
+      ClassDefinition domainBaseClass = new ClassDefinition ("DomainBase", null, DatabaseTest.c_testDomainProviderID, typeof (DomainBase));
+
+      ClassDefinition personClass = new ClassDefinition (
+          "Person", "TableInheritance_Person", c_testDomainProviderID, typeof (Person), domainBaseClass);
+
+      ClassDefinition organizationalUnitClass = new ClassDefinition (
+          "OrganizationalUnit", "TableInheritance_Person", c_testDomainProviderID, typeof (OrganizationalUnit), domainBaseClass);
+
+      _classDefinitions.Add (domainBaseClass);
+      _classDefinitions.Add (personClass);
+      _classDefinitions.Add (organizationalUnitClass);
+
+      _classDefinitions.Validate ();
+    }
+
   }
 }

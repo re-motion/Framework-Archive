@@ -139,6 +139,17 @@ public class ClassDefinition : ISerializable, IObjectReference
 
   // methods and properties
 
+  public string[] GetAllConcreteEntityNames ()
+  {
+    if (GetEntityName () != null)
+      return new string[] { GetEntityName () };
+
+    List<string> allConcreteEntityNames = new List<string> ();
+    FillAllConcreteEntityNames (allConcreteEntityNames);
+
+    return allConcreteEntityNames.ToArray ();
+  }
+
   public ClassDefinitionCollection GetAllDerivedClasses ()
   {
     bool areResolvedTypeNamesRequired = (_classType != null);
@@ -584,6 +595,18 @@ public class ClassDefinition : ISerializable, IObjectReference
           "Cannot derive class '{0}' from base class '{1}' handled by different StorageProviders.",
           id, baseClass.ID);
     }
+  }
+
+  private void FillAllConcreteEntityNames (List<string> allConcreteEntityNames)
+  {
+    if (_entityName != null)
+    {
+      allConcreteEntityNames.Add (_entityName);
+      return;
+    }
+
+    foreach (ClassDefinition derivedClass in _derivedClasses)
+      derivedClass.FillAllConcreteEntityNames (allConcreteEntityNames);
   }
 
   private void FillAllDerivedClasses (ClassDefinitionCollection allDerivedClasses)

@@ -97,12 +97,24 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWith
 DROP TABLE [TableWithoutTimestampColumn]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Order') 
+DROP TABLE [TableInheritance_Order]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Address') 
 DROP TABLE [TableInheritance_Address]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_HistoryEntry') 
+DROP TABLE [TableInheritance_HistoryEntry]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Person') 
 DROP TABLE [TableInheritance_Person]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Region') 
+DROP TABLE [TableInheritance_Region]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_OrganizationalUnit') 
@@ -502,6 +514,17 @@ CREATE TABLE [TableInheritance_OrganizationalUnit] (
 ) 
 GO
 
+CREATE TABLE [TableInheritance_Region] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [Name] varchar (100) NOT NULL,
+  
+  CONSTRAINT [PK_TableInheritance_Region] PRIMARY KEY CLUSTERED ([ID])
+) 
+GO
+
 CREATE TABLE [TableInheritance_Person] (
   [ID] uniqueidentifier NOT NULL,
   [ClassID] varchar (100) NOT NULL,
@@ -520,9 +543,26 @@ CREATE TABLE [TableInheritance_Person] (
   -- Customer columns
   [CustomerType] int NULL,
   [CustomerSince] datetime NULL,
+  [RegionID] uniqueidentifier NULL,
     
   CONSTRAINT [PK_TableInheritance_Person] PRIMARY KEY CLUSTERED ([ID]),
-  CONSTRAINT [FK_TableInheritance_Client_TableInheritance_Person] FOREIGN KEY ([ClientID]) REFERENCES [TableInheritance_Client] ([ID])
+  CONSTRAINT [FK_TableInheritance_Client_TableInheritance_Person] FOREIGN KEY ([ClientID]) REFERENCES [TableInheritance_Client] ([ID]),
+  CONSTRAINT [FK_TableInheritance_Region_TableInheritance_Customer] FOREIGN KEY ([RegionID]) REFERENCES [TableInheritance_Region] ([ID])
+) 
+GO
+
+CREATE TABLE [TableInheritance_HistoryEntry] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  -- Person columns
+  [HistoryDate] datetime NOT NULL,
+  [Text] varchar (250) NOT NULL,
+  [OwnerID] uniqueidentifier NULL, -- Note: OwnerID has no FK, because it refers to multiple tables (concrete table inheritance).
+  [OwnerIDClassID] varchar (100) NULL,
+   
+  CONSTRAINT [PK_TableInheritance_HistoryEntry] PRIMARY KEY CLUSTERED ([ID])
 ) 
 GO
 
@@ -542,6 +582,22 @@ CREATE TABLE [TableInheritance_Address] (
   CONSTRAINT [FK_TableInheritance_Person_TableInheritance_Address] FOREIGN KEY ([PersonID]) REFERENCES [TableInheritance_Person] ([ID])  
 ) 
 GO
+
+CREATE TABLE [TableInheritance_Order] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [Number] int NOT NULL,
+  [OrderDate] datetime NOT NULL,
+  [CustomerID] uniqueidentifier NULL,
+  [CustomerIDClassID] varchar (100) NULL,
+  
+  CONSTRAINT [PK_TableInheritance_Order] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_TableInheritance_Customer_TableInheritance_Order] FOREIGN KEY ([CustomerID]) REFERENCES [TableInheritance_Person] ([ID])  
+) 
+GO
+
 
 CREATE PROCEDURE rpf_testSPQuery
 AS

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\..\DomainObjects\mapping.xsd">
-	<classes>
+  <classes>
     <class id="Client">
       <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Client, Rubicon.Data.DomainObjects.UnitTests</type>
       <entity name="TableInheritance_Client"></entity>
@@ -12,28 +12,51 @@
           <column>Name</column>
           <maxLength>100</maxLength>
         </property>
+        <relationProperty relationID="ClientToDomainBase" name="AssignedObjects" cardinality="many" isMandatory="false" />
+      </properties>
+    </class>
+
+    <class id="HistoryEntry">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.HistoryEntry, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_HistoryEntry"></entity>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="HistoryDate">
+          <type>dateTime</type>
+          <column>HistoryDate</column>
+        </property>
+        <property name="Text">
+          <type>string</type>
+          <column>Text</column>
+          <maxLength>250</maxLength>
+        </property>
+        <relationProperty relationID="DomainBaseToHistoryEntry" name="Owner" cardinality="one" isMandatory="true">
+          <column>OwnerID</column>          
+        </relationProperty>
       </properties>
     </class>
 
     <class id="DomainBase">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase, Rubicon.Data.DomainObjects.UnitTests</type>
-			<storageProviderID>TestDomain</storageProviderID>
-			<properties>
-				<property name="CreatedBy">
-					<type>string</type>
-					<column>CreatedBy</column>
-					<maxLength>100</maxLength>
-				</property>
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase, Rubicon.Data.DomainObjects.UnitTests</type>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="CreatedBy">
+          <type>string</type>
+          <column>CreatedBy</column>
+          <maxLength>100</maxLength>
+        </property>
         <property name="CreatedAt">
           <type>dateTime</type>
           <column>CreatedAt</column>
         </property>
         <relationProperty relationID="ClientToDomainBase" name="Client" cardinality="one" isMandatory="false">
           <column>ClientID</column>
-          <oppositeClass>Client</oppositeClass>
-        </relationProperty> 
+        </relationProperty>
+        <relationProperty relationID="DomainBaseToHistoryEntry" name="HistoryEntries" cardinality="many" isMandatory="false">
+          <sortExpression>HistoryDate desc</sortExpression>
+        </relationProperty>
       </properties>
-		</class>
+    </class>
 
     <class id="OrganizationalUnit" baseClass="DomainBase">
       <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.OrganizationalUnit, Rubicon.Data.DomainObjects.UnitTests</type>
@@ -71,6 +94,58 @@
       </properties>
     </class>
 
+    <class id="Customer" baseClass="Person">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="CustomerType">
+          <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.CustomerType, Rubicon.Data.DomainObjects.UnitTests</type>
+          <column>CustomerType</column>
+        </property>
+        <property name="CustomerSince">
+          <type>dateTime</type>
+          <column>CustomerSince</column>
+        </property>
+        <relationProperty relationID="RegionToCustomer" name="Region" cardinality="one" isMandatory="false" >
+          <column>RegionID</column>
+        </relationProperty>
+        <relationProperty relationID="OrderToCustomer" name="Orders" cardinality="many" isMandatory="false"/>
+      </properties>
+    </class>
+
+    <class id="Region">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Region, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_Region"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty relationID="RegionToCustomer" name="Customers" cardinality="many" isMandatory="false" />
+      </properties>
+    </class>
+
+    <class id="Order">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Order, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_Order"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Number">
+          <type>int32</type>
+          <column>Number</column>
+        </property>
+        <property name="OrderDate">
+          <type>dateTime</type>
+          <column>OrderDate</column>
+        </property>
+        <relationProperty relationID="OrderToCustomer" name="Customer" cardinality="one" isMandatory="false">
+          <column>CustomerID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
     <class id="Address">
       <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Address, Rubicon.Data.DomainObjects.UnitTests</type>
       <entity name="TableInheritance_Address" />
@@ -101,21 +176,5 @@
         </relationProperty>
       </properties>
     </class>
-
-    <class id="Customer" baseClass="Person">
-      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Customer, Rubicon.Data.DomainObjects.UnitTests</type>
-      <storageProviderID>TestDomain</storageProviderID>
-      <properties>
-        <property name="CustomerType">
-          <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.CustomerType, Rubicon.Data.DomainObjects.UnitTests</type>
-          <column>CustomerType</column>
-        </property>
-        <property name="CustomerSince">
-          <type>dateTime</type>
-          <column>CustomerSince</column>
-        </property>
-      </properties>
-    </class>
-    
   </classes>
 </mapping>

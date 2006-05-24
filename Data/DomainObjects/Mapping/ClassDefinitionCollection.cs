@@ -179,6 +179,30 @@ public class ClassDefinitionCollection : CommonCollection
 
   private void ValidateRootClass (ClassDefinition rootClass)
   {
+    ValidateEntireInheritanceHierarchyIsPartOfCollection (rootClass);
+    rootClass.ValidateInheritanceHierarchy (new Dictionary<string, PropertyDefinition> ());
+    ValidateConcreteEntityNames (rootClass);
+  }
+
+  private void ValidateConcreteEntityNames (ClassDefinition rootClass)
+  {
+    Dictionary<string, object> allDistinctConcreteEntityNames = new Dictionary<string, object> ();
+    foreach (string entityName in rootClass.GetAllConcreteEntityNames ())
+    {
+      if (allDistinctConcreteEntityNames.ContainsKey (entityName))
+      {
+        throw CreateMappingException (
+            "At least two classes in different inheritance branches derived from abstract class '{0}'"
+            + " specify the same entity name '{1}', which is not allowed.",
+            rootClass.ID, entityName);
+      }
+
+      allDistinctConcreteEntityNames.Add (entityName, null);
+    }
+  }
+
+  private void ValidateEntireInheritanceHierarchyIsPartOfCollection (ClassDefinition rootClass)
+  {
     if (!Contains (rootClass))
     {
       throw CreateInvalidOperationException (
@@ -196,8 +220,6 @@ public class ClassDefinitionCollection : CommonCollection
             derivedClass.ID, rootClass.ID);
       }
     }
-
-    rootClass.ValidateInheritanceHierarchy (new Dictionary<string, PropertyDefinition> ());
   }
 
   private MappingException CreateMappingException (string message, params object[] args)
