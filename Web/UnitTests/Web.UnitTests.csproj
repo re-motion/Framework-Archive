@@ -142,8 +142,8 @@
     </Compile>
     <Compile Include="ExecutionEngine\Security\SecurableClass.cs" />
     <Compile Include="ExecutionEngine\Security\TestFunctionWithPermissionsFromConstructor.cs" />
-    <Compile Include="ExecutionEngine\Security\TestFunctionWithPermissionsFromInstanceMethods.cs" />
-    <Compile Include="ExecutionEngine\Security\TestFunctionWithPermissionsFromStaticMethods.cs" />
+    <Compile Include="ExecutionEngine\Security\TestFunctionWithPermissionsFromInstanceMethod.cs" />
+    <Compile Include="ExecutionEngine\Security\TestFunctionWithPermissionsFromStaticMethod.cs" />
     <Compile Include="ExecutionEngine\Security\WxeFunctionSecurityTest.cs" />
     <Compile Include="ExecutionEngine\TestFunction.cs">
       <SubType>Code</SubType>
