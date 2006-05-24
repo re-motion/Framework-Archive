@@ -52,7 +52,7 @@ namespace Rubicon.Security
       return true;
     }
 
-    public bool HasAccess (ISecurableType securableType, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public bool HasAccess (ISecurableObject securableType, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableType", securableType);
 
@@ -68,17 +68,17 @@ namespace Rubicon.Security
       return HasAccess (context, GetCurrentUser (), requiredAccessTypes);
     }
 
-    public bool HasAccess (ISecurableType securableType, params AccessType[] requiredAccessTypes)
+    public bool HasAccess (ISecurableObject securableType, params AccessType[] requiredAccessTypes)
     {
       return HasAccess (securableType, GetCurrentUser (), requiredAccessTypes);
     }
 
-    public void CheckMethodAccess (ISecurableType securableType, string methodName)
+    public void CheckMethodAccess (ISecurableObject securableType, string methodName)
     {
       CheckMethodAccess (securableType, methodName, GetCurrentUser ());
     }
 
-    public void CheckMethodAccess (ISecurableType securableType, string methodName, IPrincipal user)
+    public void CheckMethodAccess (ISecurableObject securableType, string methodName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableType", securableType);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
@@ -87,12 +87,12 @@ namespace Rubicon.Security
       CheckRequiredMethodAccess (securableType, methodName, requiredAccessTypeEnums, user);
     }
 
-    public void CheckMethodAccess (ISecurableType securableType, string methodName, Type[] parameterTypes)
+    public void CheckMethodAccess (ISecurableObject securableType, string methodName, Type[] parameterTypes)
     {
       CheckMethodAccess (securableType, methodName, parameterTypes, GetCurrentUser ());
     }
 
-    public void CheckMethodAccess (ISecurableType securableType, string methodName, Type[] parameterTypes, IPrincipal user)
+    public void CheckMethodAccess (ISecurableObject securableType, string methodName, Type[] parameterTypes, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableType", securableType);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
@@ -172,7 +172,7 @@ namespace Rubicon.Security
         throw new PermissionDeniedException (string.Format ("Access to constructor for type '{0}' has been denied.", type.FullName));
     }
 
-    private void CheckRequiredMethodAccess (ISecurableType securableType, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    private void CheckRequiredMethodAccess (ISecurableObject securableType, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
       if (requiredAccessTypeEnums.Length == 0)
         throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");

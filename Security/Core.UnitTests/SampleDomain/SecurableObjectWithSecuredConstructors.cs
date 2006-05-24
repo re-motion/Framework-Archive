@@ -6,24 +6,15 @@ using Rubicon.Security;
 
 namespace Rubicon.Security.UnitTests.SampleDomain
 {
-  public class SecurableClassWithSecuredStaticMethods : ISecurableType
+  public class SecurableObjectWithSecuredConstructors : ISecurableObject
   {
     [RequiredMethodPermission (TestAccessType.First)]
-    public static void StaticMethod ()
+    public SecurableObjectWithSecuredConstructors ()
     {
     }
 
     [RequiredMethodPermission (TestAccessType.Second)]
-    public static void StaticMethod (string value)
-    {
-    }
-
-    [RequiredMethodPermission (TestAccessType.Third)]
-    public static void OtherStaticMethod (string value)
-    {
-    }
-
-    public SecurableClassWithSecuredStaticMethods ()
+    public SecurableObjectWithSecuredConstructors (string value)
     {
     }
 

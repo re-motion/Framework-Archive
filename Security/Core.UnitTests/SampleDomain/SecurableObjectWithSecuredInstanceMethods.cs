@@ -6,9 +6,9 @@ using Rubicon.Security;
 
 namespace Rubicon.Security.UnitTests.SampleDomain
 {
-  public class SecurableClassWithSecuredInstanceMethods : ISecurableType
+  public class SecurableObjectWithSecuredInstanceMethods : ISecurableObject
   {
-    public SecurableClassWithSecuredInstanceMethods ()
+    public SecurableObjectWithSecuredInstanceMethods ()
     {
     }
 

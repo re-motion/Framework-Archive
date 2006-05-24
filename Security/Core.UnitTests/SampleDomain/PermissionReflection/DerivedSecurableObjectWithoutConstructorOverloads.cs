@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 {
-  public class DerivedSecurableClassWithoutConstructorOverloads : SecurableClassWithoutConstructorOverloads
+  public class DerivedSecurableObjectWithoutConstructorOverloads : SecurableObjectWithoutConstructorOverloads
   {
     [RequiredMethodPermission (GeneralAccessType.Find)]
-    public DerivedSecurableClassWithoutConstructorOverloads ()
+    public DerivedSecurableObjectWithoutConstructorOverloads ()
     {
     }
   }

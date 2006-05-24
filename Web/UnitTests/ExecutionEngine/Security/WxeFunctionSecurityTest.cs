@@ -34,7 +34,7 @@ public class WxeFunctionSecurityTest: WxeTest
         .Method ("GetUser")
         .Will (Return.Value (new GenericPrincipal (new GenericIdentity ("owner"), new string[0])));
 
-    _securityContext = new SecurityContext (typeof (SecurableClass), "owner", "group", "client", null, null);
+    _securityContext = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", null, null);
 
     _securityContextFactory = _mocks.NewMock<ISecurityContextFactory> ();
     Stub.On (_securityContextFactory)
@@ -61,7 +61,7 @@ public class WxeFunctionSecurityTest: WxeTest
         .Method ("GetAccess")
         .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read) }));
 
-    TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (new SecurableClass (_securityContextFactory));
+    TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (new SecurableObject (_securityContextFactory));
     function.Execute ();
 
     _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -75,7 +75,7 @@ public class WxeFunctionSecurityTest: WxeTest
         .Method ("GetAccess")
         .Will (Return.Value (new AccessType[0]));
 
-    TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (new SecurableClass (_securityContextFactory));
+    TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (new SecurableObject (_securityContextFactory));
     function.Execute ();
   }
 

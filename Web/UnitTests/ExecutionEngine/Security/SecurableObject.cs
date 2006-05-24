@@ -7,7 +7,7 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 {
-  public class SecurableClass : ISecurableType
+  public class SecurableObject : ISecurableObject
   {
     [RequiredMethodPermission (GeneralAccessType.Create)]
     public static void Create ()
@@ -17,7 +17,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
     private ISecurityContextFactory _securityContextFactory;
 
     [RequiredMethodPermission (GeneralAccessType.Create)]
-    public SecurableClass (ISecurityContextFactory securityContextFactory)
+    public SecurableObject (ISecurityContextFactory securityContextFactory)
     {
       _securityContextFactory = securityContextFactory;
     }

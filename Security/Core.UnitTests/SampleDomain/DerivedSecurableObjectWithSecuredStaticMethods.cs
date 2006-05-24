@@ -6,14 +6,14 @@ using Rubicon.Security;
 
 namespace Rubicon.Security.UnitTests.SampleDomain
 {
-  public class DerivedSecurableClassWithSecuredStaticMethods : SecurableClassWithSecuredStaticMethods
+  public class DerivedSecurableObjectWithSecuredStaticMethods : SecurableObjectWithSecuredStaticMethods
   {
     [RequiredMethodPermission (TestAccessType.Fourth)]
     public static void DerivedStaticMethod ()
     {
     }
 
-    public DerivedSecurableClassWithSecuredStaticMethods ()
+    public DerivedSecurableObjectWithSecuredStaticMethods ()
     {
     }
   }

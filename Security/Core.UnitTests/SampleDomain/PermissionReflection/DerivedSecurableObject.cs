@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 {
-  public class DerivedSecurableClass : SecurableClass
+  public class DerivedSecurableObject : SecurableObject
   {
     [RequiredMethodPermission (GeneralAccessType.Find)]
-    public DerivedSecurableClass ()
+    public DerivedSecurableObject ()
     {
     }
 
-    public DerivedSecurableClass (ISecurityContextFactory contextFactory)
+    public DerivedSecurableObject (ISecurityContextFactory contextFactory)
       : base (contextFactory)
     {
     }

@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 {
-  public class SecurableClassWithPrivateOverloadedConstructor : ISecurableType
+  public class SecurableObjectWithPrivateOverloadedConstructor : ISecurableObject
   {
     [RequiredMethodPermission (GeneralAccessType.Find)]
-    protected SecurableClassWithPrivateOverloadedConstructor ()
+    protected SecurableObjectWithPrivateOverloadedConstructor ()
     {
     }
 
     [RequiredMethodPermission (GeneralAccessType.Edit)]
-    public SecurableClassWithPrivateOverloadedConstructor (string filename)
+    public SecurableObjectWithPrivateOverloadedConstructor (string filename)
     {
     }
 

@@ -25,7 +25,7 @@ namespace Rubicon.Security.UnitTests
       _securityServiceMock = _mocks.NewMock<ISecurityService> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _context = new SecurityContext (typeof (SecurableClass), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+      _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
     }
 
     [Test]

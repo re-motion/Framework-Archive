@@ -64,7 +64,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesFromInstanceMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableClassWithSecuredInstanceMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredInstanceMethods), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
       Assert.AreEqual (8, actualAccessTypes.Count);
@@ -81,7 +81,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesFromStaticMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableClassWithSecuredStaticMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredStaticMethods), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
       Assert.AreEqual (8, actualAccessTypes.Count);
@@ -98,7 +98,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesFromContructors ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableClassWithSecuredConstructors), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredConstructors), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
       Assert.AreEqual (7, actualAccessTypes.Count);
@@ -114,7 +114,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesDerivedClassFromInstanceMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableClassWithSecuredInstanceMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredInstanceMethods), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
       Assert.AreEqual (9, actualAccessTypes.Count);
@@ -132,7 +132,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetAccessTypesDerivedClassFromStaticMethods ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableClassWithSecuredStaticMethods), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredStaticMethods), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
       Assert.AreEqual (9, actualAccessTypes.Count);
@@ -151,7 +151,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Ignore ("Access types on base constructors are not specified.")]
     public void GetAccessTypesForDerivedClassFromContructors ()
     {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableClassWithSecuredConstructors), _cache);
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredConstructors), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
       Assert.AreEqual (8, actualAccessTypes.Count);

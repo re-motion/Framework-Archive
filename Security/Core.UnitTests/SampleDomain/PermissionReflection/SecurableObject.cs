@@ -6,16 +6,16 @@ using Rubicon.Security;
 
 namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 {
-  public class SecurableClass : ISecurableType
+  public class SecurableObject : ISecurableObject
   {
     public static void CheckPermissions ()
     {
     }
 
     [RequiredMethodPermission (GeneralAccessType.Create)]
-    public static SecurableClass CreateForSpecialCase ()
+    public static SecurableObject CreateForSpecialCase ()
     {
-      return new SecurableClass ();
+      return new SecurableObject ();
     }
 
     public static bool IsValid ()
@@ -24,18 +24,18 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
     }
 
     [RequiredMethodPermission (GeneralAccessType.Read)]
-    public static bool IsValid (SecurableClass securableClass)
+    public static bool IsValid (SecurableObject securableClass)
     {
       return true;
     }
 
     private ISecurityContextFactory _contextFactory;
 
-    public SecurableClass ()
+    public SecurableObject ()
     {
     }
 
-    public SecurableClass (ISecurityContextFactory contextFactory)
+    public SecurableObject (ISecurityContextFactory contextFactory)
     {
       _contextFactory = contextFactory;
     }

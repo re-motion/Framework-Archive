@@ -29,7 +29,7 @@ namespace Rubicon.Security.UnitTests
       _contextFactoryMock = _mocks.NewMock<ISecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _context = new SecurityContext (typeof (SecurableClass), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+      _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
 
       Stub.On (_contextFactoryMock)
           .Method ("GetSecurityContext")
@@ -41,7 +41,7 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredMethodPermissions")
-          .With (typeof (SecurableClass), "Record")
+          .With (typeof (SecurableObject), "Record")
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
@@ -49,7 +49,7 @@ namespace Rubicon.Security.UnitTests
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckMethodAccess (new SecurableClass (_contextFactoryMock), "Record", _user);
+      securityClient.CheckMethodAccess (new SecurableObject (_contextFactoryMock), "Record", _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
@@ -59,7 +59,7 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredMethodPermissions")
-          .With (typeof (SecurableClass), "Record")
+          .With (typeof (SecurableObject), "Record")
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
@@ -67,7 +67,7 @@ namespace Rubicon.Security.UnitTests
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckMethodAccess (new SecurableClass (_contextFactoryMock), "Record", _user);
+      securityClient.CheckMethodAccess (new SecurableObject (_contextFactoryMock), "Record", _user);
     }
 
     [Test]
@@ -75,7 +75,7 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredMethodPermissions")
-          .With (typeof (SecurableClass), "Load", new Type[] { typeof (string) })
+          .With (typeof (SecurableObject), "Load", new Type[] { typeof (string) })
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
@@ -83,7 +83,7 @@ namespace Rubicon.Security.UnitTests
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckMethodAccess (new SecurableClass (_contextFactoryMock), "Load", new Type[] { typeof (string) }, _user);
+      securityClient.CheckMethodAccess (new SecurableObject (_contextFactoryMock), "Load", new Type[] { typeof (string) }, _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
@@ -94,11 +94,11 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredMethodPermissions")
-          .With (typeof (SecurableClass), "Save")
+          .With (typeof (SecurableObject), "Save")
           .Will (Return.Value (new Enum[0]));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckMethodAccess (new SecurableClass (_contextFactoryMock), "Save", _user);
+      securityClient.CheckMethodAccess (new SecurableObject (_contextFactoryMock), "Save", _user);
     }
 
     [Test]
@@ -106,14 +106,14 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredStaticMethodPermissions")
-          .With (typeof (SecurableClass), "CreateForSpecialCase")
+          .With (typeof (SecurableObject), "CreateForSpecialCase")
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckStaticMethodAccess (typeof (SecurableClass), "CreateForSpecialCase", _user);
+      securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
@@ -123,14 +123,14 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredStaticMethodPermissions")
-          .With (typeof (SecurableClass), "CreateForSpecialCase")
+          .With (typeof (SecurableObject), "CreateForSpecialCase")
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckStaticMethodAccess (typeof (SecurableClass), "CreateForSpecialCase", _user);
+      securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
     }
 
     [Test]
@@ -138,14 +138,14 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredStaticMethodPermissions")
-          .With (typeof (SecurableClass), "IsValid", new Type[] { typeof (SecurableClass) })
+          .With (typeof (SecurableObject), "IsValid", new Type[] { typeof (SecurableObject) })
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckStaticMethodAccess (typeof (SecurableClass), "IsValid", new Type[] { typeof (SecurableClass) }, _user);
+      securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "IsValid", new Type[] { typeof (SecurableObject) }, _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
@@ -156,11 +156,11 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredStaticMethodPermissions")
-          .With (typeof (SecurableClass), "CreateForSpecialCase")
+          .With (typeof (SecurableObject), "CreateForSpecialCase")
           .Will (Return.Value (new Enum[0]));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckStaticMethodAccess (typeof (SecurableClass), "CreateForSpecialCase", _user);
+      securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
     }
   }
 }

@@ -69,7 +69,7 @@ namespace Rubicon.Security.Metadata
 
       foreach (Type type in assembly.GetTypes ())
       {
-        if (typeof (ISecurableType).IsAssignableFrom (type))
+        if (typeof (ISecurableObject).IsAssignableFrom (type))
           _classReflector.GetMetadata (type, cache);
       }
 

@@ -27,7 +27,7 @@ namespace Rubicon.Security
         IDictionary<string, Enum> states,
         ICollection<Enum> abstractRoles)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("classType", classType, typeof (ISecurableType));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("classType", classType, typeof (ISecurableObject));
 
       List<EnumWrapper> abstractRoleList = new List<EnumWrapper> ();
 

@@ -14,7 +14,7 @@ namespace Rubicon.Security.UnitTests
   public class SecurityClientTestWithSecurableType
   {
     private Mockery _mocks;
-    private ISecurableType _mockSecurableType;
+    private ISecurableObject _mockSecurableType;
     private ISecurityContextFactory _mockSecurityContextFactory;
     private ISecurityService _mockSecurityService;
     private SecurityContext _context;
@@ -25,7 +25,7 @@ namespace Rubicon.Security.UnitTests
     {
       _mocks = new Mockery ();
       _mockSecurityService = _mocks.NewMock<ISecurityService> ();
-      _mockSecurableType = _mocks.NewMock<ISecurableType> ();
+      _mockSecurableType = _mocks.NewMock<ISecurableObject> ();
       _mockSecurityContextFactory = _mocks.NewMock<ISecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);

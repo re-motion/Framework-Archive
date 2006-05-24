@@ -50,7 +50,7 @@ namespace Rubicon.Security.Metadata
 
     public SecurableClassInfo GetMetadata (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableType));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
       if (type.IsValueType)
         throw new ArgumentException ("Value types are not supported.", "type");
       ArgumentUtility.CheckNotNull ("cache", cache);
@@ -68,7 +68,7 @@ namespace Rubicon.Security.Metadata
 
         cache.AddSecurableClassInfo (type, info);
 
-        if (typeof (ISecurableType).IsAssignableFrom (type.BaseType))
+        if (typeof (ISecurableObject).IsAssignableFrom (type.BaseType))
         {
           info.BaseClass = GetMetadata (type.BaseType, cache);
           info.BaseClass.DerivedClasses.Add (info);
@@ -80,7 +80,7 @@ namespace Rubicon.Security.Metadata
 
     protected virtual List<StatePropertyInfo> GetProperties (Type type, MetadataCache cache)
     {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableType));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
       ArgumentUtility.CheckNotNull ("cache", cache);
 
       MemberInfo[] propertyInfos = type.FindMembers (

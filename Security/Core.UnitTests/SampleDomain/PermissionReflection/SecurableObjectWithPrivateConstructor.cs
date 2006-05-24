@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Security;
-
 namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 {
-  public class SecurableClassWithoutConstructorOverloads : ISecurableType
+  public class SecurableObjectWithPrivateConstructor : ISecurableObject
   {
-    public SecurableClassWithoutConstructorOverloads ()
+    [RequiredMethodPermission (GeneralAccessType.Find)]
+    protected SecurableObjectWithPrivateConstructor ()
     {
     }
 

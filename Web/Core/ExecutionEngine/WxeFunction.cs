@@ -614,7 +614,7 @@ namespace Rubicon.Web.ExecutionEngine
             GetType ().Name));
       }
 
-      ISecurableType securableType = Variables[parameterName] as ISecurableType;
+      ISecurableObject securableType = Variables[parameterName] as ISecurableObject;
       if (securableType == null)
         throw new WxeException (string.Format ("Parameter '{0}' is null or not of type 'Rubicon.Security.ISecurableType'.", parameterName));
 

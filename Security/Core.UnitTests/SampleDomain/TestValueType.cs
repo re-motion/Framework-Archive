@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.UnitTests.SampleDomain
 {
 
-  public struct TestValueType : ISecurableType
+  public struct TestValueType : ISecurableObject
   {
     public ISecurityContextFactory GetSecurityContextFactory ()
     {

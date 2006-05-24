@@ -27,7 +27,7 @@ namespace Rubicon.Security.UnitTests
       _permissionReflectorMock = _mocks.NewMock<IPermissionReflector> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _statelessContext = new SecurityContext (typeof (SecurableClass));
+      _statelessContext = new SecurityContext (typeof (SecurableObject));
     }
 
     [Test]
@@ -35,14 +35,14 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredConstructorPermissions")
-          .With (typeof (SecurableClass))
+          .With (typeof (SecurableObject))
           .Will (Return.Value (new Enum[0]));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckConstructorAccess (typeof (SecurableClass), _user);
+      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
@@ -52,14 +52,14 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredConstructorPermissions")
-          .With (typeof (SecurableClass))
+          .With (typeof (SecurableObject))
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckConstructorAccess (typeof (SecurableClass), _user);
+      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
     }
 
     [Test]
@@ -67,14 +67,14 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_permissionReflectorMock)
           .Method ("GetRequiredConstructorPermissions")
-          .With (typeof (SecurableClass), new Type[] { typeof (string) })
+          .With (typeof (SecurableObject), new Type[] { typeof (string) })
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Create) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckConstructorAccess (typeof (SecurableClass), new Type[] { typeof (string) }, _user);
+      securityClient.CheckConstructorAccess (typeof (SecurableObject), new Type[] { typeof (string) }, _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }

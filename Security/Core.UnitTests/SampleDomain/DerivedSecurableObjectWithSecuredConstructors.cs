@@ -6,14 +6,10 @@ using Rubicon.Security;
 
 namespace Rubicon.Security.UnitTests.SampleDomain
 {
-  public class DerivedSecurableClassWithSecuredInstanceMethods : SecurableClassWithSecuredInstanceMethods
+  public class DerivedSecurableObjectWithSecuredConstructors : SecurableObjectWithSecuredConstructors
   {
-    public DerivedSecurableClassWithSecuredInstanceMethods ()
-    {
-    }
-
     [RequiredMethodPermission (TestAccessType.Fourth)]
-    public void InstanceMethod ()
+    public DerivedSecurableObjectWithSecuredConstructors ()
     {
     }
   }

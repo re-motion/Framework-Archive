@@ -119,7 +119,7 @@ public class BaseProperty : IBusinessObjectProperty
   /// <returns><see langword="true"/></returns>
   public bool IsAccessible (IBusinessObjectClass objectClass, IBusinessObject obj)
   {
-    ISecurableType securableType = obj as ISecurableType;
+    ISecurableObject securableType = obj as ISecurableObject;
     if (securableType == null)
       return true;
 
@@ -145,7 +145,7 @@ public class BaseProperty : IBusinessObjectProperty
     if (!_propertyInfo.CanWrite)
       return true;
 
-    ISecurableType securableType = obj as ISecurableType;
+    ISecurableObject securableType = obj as ISecurableObject;
     if (securableType == null)
       return false;
 

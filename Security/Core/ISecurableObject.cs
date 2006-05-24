@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Rubicon.Security
 {
-  public interface ISecurableType
+  public interface ISecurableObject
   {
     ISecurityContextFactory GetSecurityContextFactory ();
   }

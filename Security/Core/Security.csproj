@@ -43,7 +43,7 @@
     <Compile Include="Configuration\SecurityServiceElement.cs" />
     <Compile Include="EnumWrapper.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
-    <Compile Include="ISecurableType.cs" />
+    <Compile Include="ISecurableObject.cs" />
     <Compile Include="ISecurityContextFactory.cs" />
     <Compile Include="ISecurityService.cs" />
     <Compile Include="IUserProvider.cs" />

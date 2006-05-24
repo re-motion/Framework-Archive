@@ -6,7 +6,7 @@ using Rubicon.Data;
 namespace Rubicon.Security.UnitTests.TestDomain
 {
   [PermanentGuid ("00000000-0000-0000-0001-000000000000")]
-  public class File : ISecurableType
+  public class File : ISecurableObject
   {
     private Confidentiality _confidentiality;
     private SomeEnum _someEnum;

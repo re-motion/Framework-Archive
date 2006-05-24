@@ -8,7 +8,7 @@ using Rubicon.Security;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 {
-  public class SecurableSearchObject : BindableSearchObject, ISecurableType
+  public class SecurableSearchObject : BindableSearchObject, ISecurableObject
   {
     private string _stringProperty;
     private ISecurityContextFactory _securityContextFactory;

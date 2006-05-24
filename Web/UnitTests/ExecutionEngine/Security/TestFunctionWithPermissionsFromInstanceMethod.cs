@@ -20,7 +20,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 
     // construction and disposing
 
-    public TestFunctionWithPermissionsFromInstanceMethod (SecurableClass thisObject)
+    public TestFunctionWithPermissionsFromInstanceMethod (SecurableObject thisObject)
       : base (thisObject)
     {
     }
@@ -28,11 +28,11 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
     // methods and properties
 
     [WxeParameter (0, true, WxeParameterDirection.In)]
-    public SecurableClass ThisObject
+    public SecurableObject ThisObject
     {
       get
       {
-        return (SecurableClass) Variables["ThisObject"];
+        return (SecurableObject) Variables["ThisObject"];
       }
       set
       {

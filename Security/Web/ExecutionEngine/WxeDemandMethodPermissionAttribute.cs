@@ -47,7 +47,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
       get { return _securableClass; }
       set
       {
-        ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("SecurableClass", value, typeof (ISecurableType));
+        ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("SecurableClass", value, typeof (ISecurableObject));
         _securableClass = value;
       }
     }
