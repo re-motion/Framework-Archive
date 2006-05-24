@@ -33,10 +33,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void CheckSuccessfulAccess ()
     {
-      Expect.Once.On (_permissionReflectorMock)
-          .Method ("GetRequiredConstructorPermissions")
-          .With (typeof (SecurableObject))
-          .Will (Return.Value (new Enum[0]));
+      Expect.Never.On (_permissionReflectorMock);
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
@@ -50,13 +47,10 @@ namespace Rubicon.Security.UnitTests
     [Test, ExpectedException (typeof (PermissionDeniedException))]
     public void CheckDeniedAccess ()
     {
-      Expect.Once.On (_permissionReflectorMock)
-          .Method ("GetRequiredConstructorPermissions")
-          .With (typeof (SecurableObject))
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
+      Expect.Never.On (_permissionReflectorMock);
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
+          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
       securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
@@ -65,16 +59,13 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void CheckAccessForOverloadedConstructor ()
     {
-      Expect.Once.On (_permissionReflectorMock)
-          .Method ("GetRequiredConstructorPermissions")
-          .With (typeof (SecurableObject), new Type[] { typeof (string) })
-          .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
+      Expect.Never.On (_permissionReflectorMock);
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Create) }));
 
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckConstructorAccess (typeof (SecurableObject), new Type[] { typeof (string) }, _user);
+      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }

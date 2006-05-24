@@ -16,14 +16,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 
     private ISecurityContextFactory _securityContextFactory;
 
-    [RequiredMethodPermission (GeneralAccessType.Create)]
     public SecurableObject (ISecurityContextFactory securityContextFactory)
     {
       _securityContextFactory = securityContextFactory;
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Edit)]
-    [RequiredMethodPermission (GeneralAccessType.Read)]
+    [RequiredMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Read)]
     public void Show ()
     {
     }

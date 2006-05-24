@@ -87,22 +87,6 @@ namespace Rubicon.Security
       CheckRequiredMethodAccess (securableType, methodName, requiredAccessTypeEnums, user);
     }
 
-    public void CheckMethodAccess (ISecurableObject securableType, string methodName, Type[] parameterTypes)
-    {
-      CheckMethodAccess (securableType, methodName, parameterTypes, GetCurrentUser ());
-    }
-
-    public void CheckMethodAccess (ISecurableObject securableType, string methodName, Type[] parameterTypes, IPrincipal user)
-    {
-      ArgumentUtility.CheckNotNull ("securableType", securableType);
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
-      ArgumentUtility.CheckNotNullOrItemsNull ("parameterTypes", parameterTypes);
-      ArgumentUtility.CheckNotNull ("user", user);
-
-      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredMethodPermissions (securableType.GetType (), methodName, parameterTypes);
-      CheckRequiredMethodAccess (securableType, methodName, requiredAccessTypeEnums, user);
-    }
-
     public void CheckConstructorAccess (Type type)
     {
       CheckConstructorAccess (type, GetCurrentUser ());
@@ -113,24 +97,11 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredConstructorPermissions (type);
-      CheckRequiredConstructorAccess (type, requiredAccessTypeEnums, user);
-    }
+      AccessType[] requiredAccessTypes = new AccessType[] { AccessType.Get (GeneralAccessType.Create) };
 
-    public void CheckConstructorAccess (Type type, Type[] parameterTypes)
-    {
-      CheckConstructorAccess (type, parameterTypes, GetCurrentUser ());
-    }
-
-    public void CheckConstructorAccess (Type type, Type[] parameterTypes, IPrincipal user)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrItemsNull ("parameterTypes", parameterTypes);
-      ArgumentUtility.CheckNotNull ("user", user);
-
-      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredConstructorPermissions (type, parameterTypes);
-      CheckRequiredConstructorAccess (type, requiredAccessTypeEnums, user);
-    }
+      if (!HasAccess (new SecurityContext (type), user, requiredAccessTypes ))
+        throw new PermissionDeniedException (string.Format ("Access to constructor for type '{0}' has been denied.", type.FullName));
+   }
 
     public void CheckStaticMethodAccess (Type type, string methodName)
     {
@@ -143,33 +114,6 @@ namespace Rubicon.Security
 
       Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredStaticMethodPermissions (type, methodName);
       CheckRequiredStaticMethodAccess (type, methodName, requiredAccessTypeEnums, user);
-    }
-
-    public void CheckStaticMethodAccess (Type type, string methodName, Type[] parameterTypes)
-    {
-      CheckStaticMethodAccess (type, methodName, parameterTypes, GetCurrentUser ());
-    }
-
-    public void CheckStaticMethodAccess (Type type, string methodName, Type[] parameterTypes, IPrincipal user)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredStaticMethodPermissions (type, methodName, parameterTypes);
-      CheckRequiredStaticMethodAccess (type, methodName, requiredAccessTypeEnums, user);
-    }
-
-    private void CheckRequiredConstructorAccess (Type type, Enum[] requiredAccessTypeEnums, IPrincipal user)
-    {
-      AccessType[] requiredAccessTypes = ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums);
-
-      if (Array.IndexOf (requiredAccessTypeEnums, GeneralAccessType.Create) < 0)
-      {
-        Array.Resize (ref requiredAccessTypes, requiredAccessTypes.Length + 1);
-        requiredAccessTypes[requiredAccessTypes.Length - 1] = AccessType.Get (GeneralAccessType.Create);
-      }
-
-      if (!HasAccess (new SecurityContext (type), user, requiredAccessTypes))
-        throw new PermissionDeniedException (string.Format ("Access to constructor for type '{0}' has been denied.", type.FullName));
     }
 
     private void CheckRequiredMethodAccess (ISecurableObject securableType, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)

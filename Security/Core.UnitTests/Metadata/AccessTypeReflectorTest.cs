@@ -96,22 +96,6 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    public void GetAccessTypesFromContructors ()
-    {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredConstructors), _cache);
-
-      Assert.IsNotNull (actualAccessTypes);
-      Assert.AreEqual (7, actualAccessTypes.Count);
-      EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("First", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
-    }
-
-    [Test]
     public void GetAccessTypesDerivedClassFromInstanceMethods ()
     {
       List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredInstanceMethods), _cache);

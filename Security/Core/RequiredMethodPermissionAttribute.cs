@@ -6,15 +6,36 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  [AttributeUsage (AttributeTargets.Method | AttributeTargets.Constructor, AllowMultiple=true)]
+  [AttributeUsage (AttributeTargets.Method, AllowMultiple=false)]
   public class RequiredMethodPermissionAttribute : Attribute
   {
-    private Enum _accessType;
+    private Enum[] _accessTypes;
 
     public RequiredMethodPermissionAttribute (object accessType)
+        : this (new object[] { accessType })
     {
-      ArgumentUtility.CheckNotNullAndType ("accessType", accessType, typeof (Enum));
+    }
 
+    public RequiredMethodPermissionAttribute (params object[] accessTypes)
+    {
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("accessTypes", accessTypes);
+      ArgumentUtility.CheckItemsType ("accessTypes", accessTypes, typeof (Enum));
+
+      Enum[] accessTypeEnums = new Enum[accessTypes.Length];
+
+      for (int i = 0; i < accessTypes.Length; i++)
+        accessTypeEnums[i] = GetAccessType (accessTypes[i]);
+
+      _accessTypes = accessTypeEnums;
+    }
+
+    public Enum[] AccessTypes
+    {
+      get { return _accessTypes; }
+    }
+
+    private Enum GetAccessType (object accessType)
+    {
       Type permissionType = accessType.GetType ();
       if (!permissionType.IsDefined (typeof (AccessTypeAttribute), false))
       {
@@ -24,12 +45,7 @@ namespace Rubicon.Security
         throw new ArgumentException (message, "accessType");
       }
 
-      _accessType = (Enum) accessType;
-    }
-
-    public Enum AccessType
-    {
-      get { return _accessType; }
+      return (Enum) accessType;
     }
   }
 }

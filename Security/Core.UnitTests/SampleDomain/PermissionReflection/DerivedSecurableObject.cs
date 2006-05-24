@@ -6,7 +6,12 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 {
   public class DerivedSecurableObject : SecurableObject
   {
-    [RequiredMethodPermission (GeneralAccessType.Find)]
+    //[RequiredMethodPermission (GeneralAccessType.Edit)]
+    //public static new string GetObjectName (SecurableObject securableObject)
+    //{
+    //  return null;
+    //}
+
     public DerivedSecurableObject ()
     {
     }

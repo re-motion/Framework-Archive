@@ -38,16 +38,16 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    public void GetPermissionsForVirtualMethod ()
+    public void GetPermissionsForOverloadedMethodOneAttribute ()
     {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Print");
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Delete");
 
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Find, requiredAccessTypes);
+      Assert.AreEqual (GeneralAccessType.Delete, requiredAccessTypes[0]);
     }
 
     [Test]
-    public void GetPermissionsForMethodWithTwoAttributes ()
+    public void GetPermissionsForMethodWithTwoPermissions ()
     {
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Show");
 
@@ -57,73 +57,43 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    public void GetPermissionsForNewMethodInDerivedClass ()
+    public void GetPermissionsForMethodOfDerivedClass ()
     {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Send");
-
-      Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Read, requiredAccessTypes);
-    }
-
-    [Test]
-    public void GetPermissionsForVirtualMethodInDerivedClass ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Print");
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Show");
 
       Assert.AreEqual (2, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Find, requiredAccessTypes);
+      Assert.Contains (GeneralAccessType.Edit, requiredAccessTypes);
       Assert.Contains (GeneralAccessType.Create, requiredAccessTypes);
     }
 
-    [Test, ExpectedException (typeof (System.Reflection.AmbiguousMatchException))]
-    public void GetExceptionForOverloadedMethod ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Load");
-    }
-
-    [Test]
-    public void GetPermissionsForOverloadedMethod ()
-    {
-      Enum[] requiredAccessTypes = 
-          _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Load", new Type[] { typeof (string) });
-
-      Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Create, requiredAccessTypes);
-    }
-
-    [Test]
-    public void GetPermissionsForOverloadedMethodWithoutParameters ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Load", new Type[0]);
-
-      Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Delete, requiredAccessTypes);
-    }
-
-    [Test]
-    public void FilterDuplicatedMethodPermissions ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Create");
-
-      Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Create, requiredAccessTypes);
-    }
-
-    [Test, ExpectedException (typeof (ArgumentException),
-       "The method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.DerivedSecurableObject'."
-        + "\r\nParameter name: methodName")]
+    [Test, ExpectedException (typeof (ArgumentException), "The method 'Sve' could not be found.\r\nParameter name: methodName")]
     public void GetExceptionForNotExistingMethod ()
     {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "NotExistingMethod");
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Sve");
     }
 
     [Test, ExpectedException (typeof (ArgumentException),
-       "The method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.DerivedSecurableObject'."
-        + "\r\nParameter name: methodName")]
-    public void GetExceptionForNotExistingOverloadedMethod ()
+        "The method 'Send' has multiple RequiredMethodPermissionAttributes defined.\r\nParameter name: methodName")]
+    public void GetExceptionForPermissionsDeclaredOnBaseAndDerivedClass ()
     {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "NotExistingMethod",
-          new Type[] { typeof (string) });
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Send");
+    }
+
+    [Test, ExpectedException (typeof (ArgumentException),
+        "The method 'Load' has multiple RequiredMethodPermissionAttributes defined.\r\nParameter name: methodName")]
+    public void GetExceptionForPermissionsDeclaredOnOverloads ()
+    {
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Load");
+    }
+
+    [Test, ExpectedException (typeof (ArgumentException),
+        "The RequiredMethodPermissionAttributes must not be defined on methods overriden or redefined in derived classes. "
+        + "A method 'Print' exists in class 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.DerivedSecurableObject' and its "
+        + "base class."
+        + "\r\nParameter name: methodName")]
+    public void GetExceptionForVirtualMethod ()
+    {
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (DerivedSecurableObject), "Print");
     }
 
     [Test]
@@ -136,117 +106,36 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    public void GetPermissionsForStaticMethodWithOneAttribute ()
+    public void GetPermissionsForStaticMethodOneAttribute ()
     {
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "CreateForSpecialCase");
 
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Create, requiredAccessTypes);
-    }
-
-    [Test, ExpectedException (typeof (ArgumentException),
-       "The static method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableObject'."
-        + "\r\nParameter name: methodName")]
-    public void GetExceptionForNotExistingStaticMethod ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "NotExistingMethod");
+      Assert.AreEqual (GeneralAccessType.Create, requiredAccessTypes[0]);
     }
 
     [Test]
-    public void GetPermissionsForStaticMethodInDerivedClass ()
+    public void GetPermissionsForStaticOverloadedMethodOneAttribute ()
+    {
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "IsValid");
+
+      Assert.AreEqual (1, requiredAccessTypes.Length);
+      Assert.AreEqual (GeneralAccessType.Read, requiredAccessTypes[0]);
+    }
+
+    [Test]
+    public void GetPermissionsForStaticMethodOfDerivedClass ()
     {
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (DerivedSecurableObject), "CreateForSpecialCase");
 
       Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Create, requiredAccessTypes);
+      Assert.AreEqual (GeneralAccessType.Create, requiredAccessTypes[0]);
     }
 
-    [Test]
-    public void GetPermissionsForOverloadedStaticMethodWithoutAttributes ()
+    [Test, ExpectedException (typeof (ArgumentException), "The method 'Sve' could not be found.\r\nParameter name: methodName")]
+    public void GetExceptionForNotExistingStaticMethod ()
     {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "IsValid", new Type[0]);
-
-      Assert.IsNotNull (requiredAccessTypes);
-      Assert.IsEmpty (requiredAccessTypes);
-    }
-
-    [Test]
-    public void GetPermissionsForOverloadedStaticMethodWithOneAttribute ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "IsValid", 
-          new Type[] { typeof (SecurableObject) });
-
-      Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Read, requiredAccessTypes);
-    }
-
-    [Test, ExpectedException (typeof (ArgumentException),
-       "The static method 'NotExistingMethod' does not exist on type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableObject'."
-        + "\r\nParameter name: methodName")]
-    public void GetExceptionForNotExistingOverloadedStaticMethod ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "NotExistingMethod", new Type[0]);
-    }
-
-    [Test]
-    public void GetPermissionsForOverloadedStaticMethodInDerivedClass ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (DerivedSecurableObject), "IsValid", 
-          new Type[] { typeof (SecurableObject) });
-
-      Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Read, requiredAccessTypes);
-    }
-
-    [Test]
-    public void GetPermissionsForConstructor ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredConstructorPermissions (typeof (SecurableObjectWithoutConstructorOverloads));
-
-      Assert.AreEqual (0, requiredAccessTypes.Length);
-    }
-
-    [Test]
-    public void GetPermissionsForConstructorWithAttribute ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredConstructorPermissions (typeof (DerivedSecurableObjectWithoutConstructorOverloads));
-
-      Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Find, requiredAccessTypes);
-    }
-
-    [Test, ExpectedException (typeof (System.Reflection.AmbiguousMatchException))]
-    public void GetExceptionForOverloadedConstructor ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredConstructorPermissions (typeof (SecurableObject));
-    }
-
-    [Test]
-    public void GetPermissionsForOverloadedConstructor ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredConstructorPermissions (typeof (DerivedSecurableObject), new Type[0]);
-
-      Assert.AreEqual (1, requiredAccessTypes.Length);
-      Assert.Contains (GeneralAccessType.Find, requiredAccessTypes);
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException),
-       "Type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableObjectWithPrivateConstructor' does not have a public constructor."
-        + "\r\nParameter name: type")]
-    public void GetExceptionForPrivateConstructor ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredConstructorPermissions (typeof (SecurableObjectWithPrivateConstructor));
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException),
-       "The specified constructor for type 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableObjectWithPrivateOverloadedConstructor' "
-        + "is not public.\r\nParameter name: type")]
-    public void GetExceptionForPrivateOverloadedConstructor ()
-    {
-      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredConstructorPermissions (typeof (SecurableObjectWithPrivateOverloadedConstructor),
-          new Type[0]);
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "Sve");
     }
   }
 }

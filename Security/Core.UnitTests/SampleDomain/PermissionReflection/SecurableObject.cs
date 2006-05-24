@@ -29,6 +29,12 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
       return true;
     }
 
+    [RequiredMethodPermission (GeneralAccessType.Read)]
+    public static string GetObjectName (SecurableObject securableObject)
+    {
+      return null;
+    }
+
     private ISecurityContextFactory _contextFactory;
 
     public SecurableObject ()
@@ -45,8 +51,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
       return _contextFactory;
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Edit)]
-    [RequiredMethodPermission (GeneralAccessType.Create)]
+    [RequiredMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Create)]
     public void Show ()
     {
     }
@@ -76,13 +81,16 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Create)]
-    [RequiredMethodPermission (GeneralAccessType.Create)]
-    public void Create ()
+    public void Save ()
     {
     }
 
-    public void Save ()
+    public void Delete ()
+    {
+    }
+
+    [RequiredMethodPermission (GeneralAccessType.Delete)]
+    public void Delete (int count)
     {
     }
   }

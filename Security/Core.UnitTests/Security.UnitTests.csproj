@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +56,7 @@
     <Compile Include="Metadata\AccessTypeReflectorTest.cs" />
     <Compile Include="Metadata\AbstractRoleReflectorTest.cs" />
     <Compile Include="Metadata\AbstractRoles.cs" />
+    <Compile Include="Metadata\PermissionReflectorTest.cs" />
     <Compile Include="Metadata\PropertyStates.cs" />
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
     <Compile Include="Metadata\EnumValueInfoAssert.cs" />
@@ -63,18 +65,11 @@
     <Compile Include="Metadata\MetadataCacheTest.cs" />
     <Compile Include="Metadata\MetadataExtractorTest.cs" />
     <Compile Include="Metadata\MetadataToXmlConverterTest.cs" />
-    <Compile Include="Metadata\PermissionReflectorTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
-    <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredConstructors.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredInstanceMethods.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredStaticMethods.cs" />
     <Compile Include="SampleDomain\PermissionReflection\DerivedSecurableObject.cs" />
-    <Compile Include="SampleDomain\PermissionReflection\DerivedSecurableObjectWithoutConstructorOverloads.cs" />
     <Compile Include="SampleDomain\PermissionReflection\SecurableObject.cs" />
-    <Compile Include="SampleDomain\PermissionReflection\SecurableObjectWithoutConstructorOverloads.cs" />
-    <Compile Include="SampleDomain\PermissionReflection\SecurableObjectWithPrivateConstructor.cs" />
-    <Compile Include="SampleDomain\PermissionReflection\SecurableObjectWithPrivateOverloadedConstructor.cs" />
-    <Compile Include="SampleDomain\SecurableObjectWithSecuredConstructors.cs" />
     <Compile Include="SampleDomain\SecurableObjectWithSecuredInstanceMethods.cs" />
     <Compile Include="SampleDomain\SecurableObjectWithSecuredStaticMethods.cs" />
     <Compile Include="SampleDomain\SimpleEnum.cs" />

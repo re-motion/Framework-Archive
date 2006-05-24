@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.Metadata
@@ -14,24 +13,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-      MethodInfo methodInfo = type.GetMethod (methodName, BindingFlags.Public | BindingFlags.Instance);
-      if (methodInfo == null)
-        throw new ArgumentException (string.Format ("The method '{0}' does not exist on type '{1}'.", methodName, type.FullName), "methodName");
-
-      return GetRequiredMethodPermissions (methodInfo);
-    }
-
-    public Enum[] GetRequiredMethodPermissions (Type type, string methodName, Type[] parameterTypes)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
-      ArgumentUtility.CheckNotNullOrItemsNull ("parameterTypes", parameterTypes);
-
-      MethodInfo methodInfo = type.GetMethod (methodName, BindingFlags.Public | BindingFlags.Instance, null, parameterTypes, null);
-      if (methodInfo == null)
-        throw new ArgumentException (string.Format ("The method '{0}' does not exist on type '{1}'.", methodName, type.FullName), "methodName");
-
-      return GetRequiredMethodPermissions (methodInfo);
+      return GetRequiredMethodPermissions (type, methodName, BindingFlags.Public | BindingFlags.Instance);
     }
 
     public Enum[] GetRequiredStaticMethodPermissions (Type type, string methodName)
@@ -39,52 +21,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-      MethodInfo methodInfo = type.GetMethod (methodName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-      if (methodInfo == null)
-        throw new ArgumentException (string.Format ("The static method '{0}' does not exist on type '{1}'.", methodName, type.FullName), "methodName");
-
-      return GetRequiredMethodPermissions (methodInfo);
-    }
-
-    public Enum[] GetRequiredStaticMethodPermissions (Type type, string methodName, Type[] parameterTypes)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
-      ArgumentUtility.CheckNotNullOrItemsNull ("parameterTypes", parameterTypes);
-
-      MethodInfo methodInfo = type.GetMethod (methodName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy, null,
-          parameterTypes, null);
-
-      if (methodInfo == null)
-        throw new ArgumentException (string.Format ("The static method '{0}' does not exist on type '{1}'.", methodName, type.FullName), "methodName");
-
-      return GetRequiredMethodPermissions (methodInfo);
-    }
-
-    public Enum[] GetRequiredConstructorPermissions (Type type)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      ConstructorInfo[] constructorInfos = type.GetConstructors (BindingFlags.Public | BindingFlags.Instance);
-      if (constructorInfos.Length > 1)
-        throw new AmbiguousMatchException ();
-
-      if (constructorInfos.Length == 0)
-        throw new ArgumentException (string.Format ("Type '{0}' does not have a public constructor.", type.FullName), "type");
-
-      return GetRequiredMethodPermissions (constructorInfos[0]);
-    }
-
-    public Enum[] GetRequiredConstructorPermissions (Type type, Type[] parameterTypes)
-    {
-      ArgumentUtility.CheckNotNull ("type", type);
-      ArgumentUtility.CheckNotNullOrItemsNull ("parameterTypes", parameterTypes);
-
-      ConstructorInfo constructorInfo = type.GetConstructor (BindingFlags.Public | BindingFlags.Instance, null, parameterTypes, null);
-      if (constructorInfo == null)
-        throw new ArgumentException (string.Format ("The specified constructor for type '{0}' is not public.", type.FullName), "type");
-
-      return GetRequiredMethodPermissions (constructorInfo);
+      return GetRequiredMethodPermissions (type, methodName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
     }
 
     public Enum[] GetRequiredMethodPermissions (MethodBase methodInfo)
@@ -95,15 +32,47 @@ namespace Rubicon.Security.Metadata
       RequiredMethodPermissionAttribute[] requiredPermissionAttributes =
           (RequiredMethodPermissionAttribute[]) methodInfo.GetCustomAttributes (typeof (RequiredMethodPermissionAttribute), true);
 
-      List<Enum> requiredPermissions = new List<Enum> ();
+      return requiredPermissionAttributes[0].AccessTypes;
+    }
 
-      foreach (RequiredMethodPermissionAttribute requiredPermissionAttribute in requiredPermissionAttributes)
+    private bool IsSecuredMethod (MemberInfo member, object filterCriteria)
+    {
+      string methodName = (string) filterCriteria;
+      MethodInfo methodInfo = (MethodInfo) member;
+
+      return methodInfo.Name == methodName && methodInfo.IsDefined (typeof (RequiredMethodPermissionAttribute), true);
+    }
+
+    private Enum[] GetRequiredMethodPermissions (Type type, string methodName, BindingFlags bindingFlags)
+    {
+      if (!TypeHasMethod (type, methodName, bindingFlags))
+        throw new ArgumentException (string.Format ("The method '{0}' could not be found.", methodName), "methodName");
+
+      MemberInfo[] foundMethods = type.FindMembers (MemberTypes.Method, bindingFlags, IsSecuredMethod, methodName);
+      if (foundMethods.Length == 0)
+        return new Enum[0];
+
+      if (foundMethods.Length > 1)
       {
-        if (!requiredPermissions.Contains (requiredPermissionAttribute.AccessType))
-          requiredPermissions.Add (requiredPermissionAttribute.AccessType);
+        throw new ArgumentException (string.Format (
+            "The method '{0}' has multiple RequiredMethodPermissionAttributes defined.", methodName), "methodName");
       }
 
-      return requiredPermissions.ToArray ();
+      MethodInfo foundMethod = (MethodInfo) foundMethods[0];
+      if (type.BaseType != null && foundMethod.DeclaringType == type && TypeHasMethod (type.BaseType, methodName, bindingFlags))
+      {
+        throw new ArgumentException (string.Format (
+            "The RequiredMethodPermissionAttributes must not be defined on methods overriden or redefined in derived classes. "
+            + "A method '{0}' exists in class '{1}' and its base class.", methodName, type.FullName), "methodName");
+      }
+
+      return GetRequiredMethodPermissions (foundMethod);
+    }
+
+    private bool TypeHasMethod (Type type, string methodName, BindingFlags bindingFlags)
+    {
+      MemberInfo[] existingMembers = type.GetMember (methodName, MemberTypes.Method, bindingFlags);
+      return existingMembers.Length > 0;
     }
   }
 }
