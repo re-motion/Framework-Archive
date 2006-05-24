@@ -148,24 +148,6 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
-    [Ignore ("Access types on base constructors are not specified.")]
-    public void GetAccessTypesForDerivedClassFromContructors ()
-    {
-      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredConstructors), _cache);
-
-      Assert.IsNotNull (actualAccessTypes);
-      Assert.AreEqual (8, actualAccessTypes.Count);
-      EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("First", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
-      EnumValueInfoAssert.Contains ("Fourth", actualAccessTypes);
-    }
-
-    [Test]
     public void GetAccessTypesFromCache ()
     {
       List<EnumValueInfo> expectedAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (PaperFile), _cache);
