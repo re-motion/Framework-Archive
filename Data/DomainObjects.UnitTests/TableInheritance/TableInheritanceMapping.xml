@@ -12,7 +12,9 @@
           <column>Name</column>
           <maxLength>100</maxLength>
         </property>
-        <relationProperty relationID="ClientToDomainBase" name="AssignedObjects" cardinality="many" isMandatory="false" />
+        <relationProperty relationID="ClientToDomainBase" name="AssignedObjects" cardinality="many" isMandatory="false">
+          <sortExpression>CreatedAt asc</sortExpression>
+        </relationProperty>
       </properties>
     </class>
 
@@ -58,19 +60,6 @@
       </properties>
     </class>
 
-    <class id="OrganizationalUnit" baseClass="DomainBase">
-      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.OrganizationalUnit, Rubicon.Data.DomainObjects.UnitTests</type>
-      <entity name="TableInheritance_OrganizationalUnit" />
-      <storageProviderID>TestDomain</storageProviderID>
-      <properties>
-        <property name="Name">
-          <type>string</type>
-          <column>Name</column>
-          <maxLength>100</maxLength>
-        </property>
-      </properties>
-    </class>
-
     <class id="Person" baseClass="DomainBase">
       <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Person, Rubicon.Data.DomainObjects.UnitTests</type>
       <entity name="TableInheritance_Person" />
@@ -110,6 +99,19 @@
           <column>RegionID</column>
         </relationProperty>
         <relationProperty relationID="OrderToCustomer" name="Orders" cardinality="many" isMandatory="false"/>
+      </properties>
+    </class>
+
+    <class id="OrganizationalUnit" baseClass="DomainBase">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.OrganizationalUnit, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_OrganizationalUnit" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
       </properties>
     </class>
 

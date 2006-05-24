@@ -295,9 +295,6 @@
     <Compile Include="Persistence\ConverterException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Persistence\IDataContainerFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Persistence\ObjectNotFoundException.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -310,6 +307,7 @@
     <Compile Include="Persistence\Rdbms\CommandBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistence\Rdbms\ConcreteTableInheritanceRelationLoader.cs" />
     <Compile Include="Persistence\Rdbms\DataContainerFactory.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -337,6 +335,7 @@
     <Compile Include="Persistence\Rdbms\SqlProvider.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Persistence\Rdbms\UnionSelectCommandBuilder.cs" />
     <Compile Include="Persistence\Rdbms\UpdateCommandBuilder.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -8,7 +8,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 {
-public class DataContainerFactory : IDataContainerFactory
+public class DataContainerFactory
 {
   // types
 

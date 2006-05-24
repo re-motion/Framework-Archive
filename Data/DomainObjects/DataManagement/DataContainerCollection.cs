@@ -12,6 +12,21 @@ public class DataContainerCollection : CommonCollection
 
   // static members and constants
 
+  public static DataContainerCollection Join (DataContainerCollection firstCollection, DataContainerCollection secondCollection)
+  {
+    ArgumentUtility.CheckNotNull ("firstCollection", firstCollection);
+    ArgumentUtility.CheckNotNull ("secondCollection", secondCollection);
+
+    DataContainerCollection joinedCollection = new DataContainerCollection (firstCollection, false);
+    foreach (DataContainer dataContainer in secondCollection)
+    {
+      if (!joinedCollection.Contains (dataContainer.ID))
+        joinedCollection.Add (dataContainer);
+    }
+
+    return joinedCollection;
+  }
+
   // member fields
 
   // construction and disposing

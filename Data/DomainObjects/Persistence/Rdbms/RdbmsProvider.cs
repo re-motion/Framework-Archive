@@ -18,6 +18,14 @@ public abstract class RdbmsProvider : StorageProvider
 
   // static members and constants
 
+
+  public static string GetClassIDColumnName (string columnName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
+
+    return columnName + "ClassID";
+  }
+
   // member fields
 
   private IDbConnection _connection;
@@ -52,6 +60,7 @@ public abstract class RdbmsProvider : StorageProvider
 
   public abstract string GetParameterName (string name);
   protected abstract IDbConnection CreateConnection ();
+  public abstract string GetColumnsFromSortExpression (string sortExpression);
 
   // methods and properties
 
@@ -170,7 +179,7 @@ public abstract class RdbmsProvider : StorageProvider
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
       {
-        IDataContainerFactory dataContainerFactory = CreateDataContainerFactory (reader, query);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
         return dataContainerFactory.CreateCollection ();
       }
     }    
@@ -207,27 +216,23 @@ public abstract class RdbmsProvider : StorageProvider
 
     Connect ();
 
-    PropertyDefinition property = classDefinition.GetPropertyDefinition (propertyName);
-    if (property == null)
+    PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition (propertyName);
+    if (propertyDefinition == null)
     {
       throw CreateRdbmsProviderException ("Class '{0}' does not contain property '{1}'.",
           classDefinition.ID, propertyName);
     }
 
-    VirtualRelationEndPointDefinition oppositeRelationEndPointDefinition = 
-        (VirtualRelationEndPointDefinition) classDefinition.GetMandatoryOppositeEndPointDefinition (property.PropertyName);
-
     // TODO: ClassDefinition does not have to have an entity assigned => abstract base class in a concrete table inheritance scenario =>
     // Search for all concrete entities and look for objects.
 
-    SelectCommandBuilder commandBuilder = new SelectCommandBuilder (
-        this, classDefinition, property, relatedID, oppositeRelationEndPointDefinition.SortExpression);
+    SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForRelatedIDLookup (this, classDefinition, propertyDefinition, relatedID);
 
     using (IDbCommand command = commandBuilder.Create ())
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
       {
-        IDataContainerFactory dataContainerFactory = CreateDataContainerFactory (reader);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
         return dataContainerFactory.CreateCollection ();
       }
     }
@@ -241,12 +246,12 @@ public abstract class RdbmsProvider : StorageProvider
 
     Connect();
 
-    SelectCommandBuilder commandBuilder = new SelectCommandBuilder (this, id.ClassDefinition, "ID", id.Value);
+    SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForIDLookup (this, "*", id.ClassDefinition.GetEntityName (), id);
     using (IDbCommand command = commandBuilder.Create ())
     {
       using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleRow))
       {
-        IDataContainerFactory dataContainerFactory = CreateDataContainerFactory (reader);
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
         return dataContainerFactory.CreateDataContainer ();
       }
     }
@@ -312,6 +317,22 @@ public abstract class RdbmsProvider : StorageProvider
 
     return DataContainer.CreateNew (CreateNewObjectID (classDefinition));
   }
+
+  public virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
+  {
+    CheckDisposed ();
+    ArgumentUtility.CheckNotNull ("command", command);
+    ArgumentUtility.CheckValidEnumValue (behavior, "behavior");
+
+    try
+    {
+      return command.ExecuteReader (behavior);
+    }
+    catch (Exception e)
+    {
+      throw CreateRdbmsProviderException (e, "Error while executing SQL command.");
+    }
+  }
   
   public IDbConnection Connection
   {
@@ -331,13 +352,6 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  protected virtual IDataContainerFactory CreateDataContainerFactory (IDataReader reader, IQuery query)
-  {
-    ArgumentUtility.CheckNotNull ("reader", reader);
-    
-    return new DataContainerFactory (reader);
-  }
-
   protected virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
     CheckDisposed ();
@@ -345,22 +359,6 @@ public abstract class RdbmsProvider : StorageProvider
     CheckClassDefinition (classDefinition, "classDefinition");
 
     return new ObjectID (classDefinition.ID, Guid.NewGuid ());
-  }
-
-  protected virtual IDataReader ExecuteReader (IDbCommand command, CommandBehavior behavior)
-  {
-    CheckDisposed ();
-    ArgumentUtility.CheckNotNull ("command", command);
-    ArgumentUtility.CheckValidEnumValue (behavior, "behavior");
-
-    try
-    {
-      return command.ExecuteReader (behavior);
-    }
-    catch (Exception e)
-    {
-      throw CreateRdbmsProviderException (e, "Error while executing SQL command.");
-    }
   }
   
   protected virtual void SetTimestamp (DataContainer dataContainer)
@@ -371,8 +369,8 @@ public abstract class RdbmsProvider : StorageProvider
     if (dataContainer.State == StateType.Deleted)
       throw CreateArgumentException ("dataContainer", "Timestamp cannot be set for a deleted DataContainer.");
 
-    SelectCommandBuilder commandBuilder = new SelectCommandBuilder (
-        this, "Timestamp", dataContainer.ClassDefinition, "ID", dataContainer.ID.Value);
+    SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForIDLookup (
+        this, "Timestamp", dataContainer.ClassDefinition.GetEntityName (), dataContainer.ID);
 
     using (IDbCommand command = commandBuilder.Create ())
     {
@@ -451,13 +449,6 @@ public abstract class RdbmsProvider : StorageProvider
       params object[] args)
   {
     return new ConcurrencyViolationException (string.Format (formatString, args), innerException);
-  }
-
-  private IDataContainerFactory CreateDataContainerFactory (IDataReader reader)
-  {
-    ArgumentUtility.CheckNotNull ("reader", reader);
-
-    return CreateDataContainerFactory (reader, null);
   }
 
   private void DisposeTransaction ()

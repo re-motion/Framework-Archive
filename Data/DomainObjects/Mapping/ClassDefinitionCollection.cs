@@ -37,10 +37,9 @@ public class ClassDefinitionCollection : CommonCollection
     ArgumentUtility.CheckNotNull ("collection", collection);
 
     foreach (ClassDefinition classDefinition in collection)
-    {
       Add (classDefinition);
-    }
 
+    _areResolvedTypesRequired = collection.AreResolvedTypesRequired;
     this.SetIsReadOnly (makeCollectionReadOnly);
   }
 

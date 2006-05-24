@@ -13,114 +13,74 @@ public class SelectCommandBuilder : CommandBuilder
 
   // static members and constants
 
+  public static SelectCommandBuilder CreateForIDLookup (RdbmsProvider provider, string selectColumns, string entityName, ObjectID id)
+  {
+    ArgumentUtility.CheckNotNull ("provider", provider);
+    ArgumentUtility.CheckNotNullOrEmpty ("selectColumns", selectColumns);
+    ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
+    ArgumentUtility.CheckNotNull ("id", id);
+
+    return new SelectCommandBuilder (provider, selectColumns, entityName, "ID", new ObjectID[] { id }, false, null);
+  }
+
+  public static SelectCommandBuilder CreateForIDLookup (RdbmsProvider provider, string entityName, ObjectID[] ids)
+  {
+    ArgumentUtility.CheckNotNull ("provider", provider);
+    ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
+    ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("ids", ids);
+
+    return new SelectCommandBuilder (provider, "*", entityName, "ID", ids, false, null);
+  }
+
+  public static SelectCommandBuilder CreateForRelatedIDLookup (
+      RdbmsProvider provider, 
+      ClassDefinition classDefinition, 
+      PropertyDefinition propertyDefinition,
+      ObjectID relatedID)
+  {
+    ArgumentUtility.CheckNotNull ("provider", provider);
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNull ("propertyDefinition", propertyDefinition);
+    ArgumentUtility.CheckNotNull ("relatedID", relatedID);
+
+    VirtualRelationEndPointDefinition oppositeRelationEndPointDefinition =
+        (VirtualRelationEndPointDefinition) classDefinition.GetMandatoryOppositeEndPointDefinition (propertyDefinition.PropertyName);
+
+    return new SelectCommandBuilder (
+        provider, "*", classDefinition.GetEntityName (), propertyDefinition.ColumnName, new ObjectID[] { relatedID }, true, oppositeRelationEndPointDefinition.SortExpression);
+  }
+
   // member fields
 
   private string _selectColumns;
-  private ClassDefinition _classDefinition;
+  private string _entityName;
   private string _whereClauseColumnName;
-  private object _whereClauseValue;
-  private string _orderClause;
+  private ObjectID[] _whereClauseIDs;
+  private bool _whereClauseValueIsRelatedID;
+  private string _orderExpression;
 
   // construction and disposing
 
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      ClassDefinition classDefinition,
-      PropertyDefinition whereClausePropertyDefinition,
-      object whereClauseValue)
-    : this (provider, "*", classDefinition, whereClausePropertyDefinition, whereClauseValue)
-  {
-  }
-
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      ClassDefinition classDefinition,
-      string whereClauseColumnName,
-      object whereClauseValue)
-    : this (provider, "*", classDefinition, whereClauseColumnName, whereClauseValue)
-  {
-  }
-
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      ClassDefinition classDefinition,
-      PropertyDefinition whereClausePropertyDefinition,
-      object whereClauseValue,
-      string orderClause)
-    : this (provider, "*", classDefinition, whereClausePropertyDefinition, whereClauseValue, orderClause)
-  {
-  }
-
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      ClassDefinition classDefinition,
-      string whereClauseColumnName,
-      object whereClauseValue,
-      string orderClause)
-    : this (provider, "*", classDefinition, whereClauseColumnName, whereClauseValue, orderClause)
-  {
-  }
-
-  public SelectCommandBuilder (
+  private SelectCommandBuilder (
       RdbmsProvider provider,
       string selectColumns,
-      ClassDefinition classDefinition,
-      PropertyDefinition whereClausePropertyDefinition,
-      object whereClauseValue)
-    : this (provider, selectColumns, classDefinition, whereClausePropertyDefinition, whereClauseValue, null)
-  {
-  }
-
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      string selectColumns,
-      ClassDefinition classDefinition,
+      string entityName,
       string whereClauseColumnName,
-      object whereClauseValue)
-    : this (provider, selectColumns, classDefinition, whereClauseColumnName, whereClauseValue, null)
-  {
-  }
-
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      string selectColumns,
-      ClassDefinition classDefinition,
-      PropertyDefinition whereClausePropertyDefinition,
-      object whereClauseValue,
-      string orderClause) : base (provider)
-  {
-    ArgumentUtility.CheckNotNull ("whereClausePropertyDefinition", whereClausePropertyDefinition);
-    SetInitialValues (selectColumns, classDefinition, whereClausePropertyDefinition.ColumnName, whereClauseValue, orderClause);
-  }
-
-  public SelectCommandBuilder (
-      RdbmsProvider provider,
-      string selectColumns,
-      ClassDefinition classDefinition,
-      string whereClauseColumnName,
-      object whereClauseValue,
-      string orderClause) : base (provider)
-  {
-    SetInitialValues (selectColumns, classDefinition, whereClauseColumnName, whereClauseValue, orderClause);
-  }
-
-  private void SetInitialValues (
-      string selectColumns, 
-      ClassDefinition classDefinition,
-      string whereClauseColumnName,
-      object whereClauseValue, 
-      string orderClause)
+      ObjectID[] whereClauseIDs,
+      bool whereClauseValueIsRelatedID,
+      string orderExpression) : base (provider)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("selectColumns", selectColumns);
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+    ArgumentUtility.CheckNotNullOrEmpty ("entityName", entityName);
     ArgumentUtility.CheckNotNullOrEmpty ("whereClauseColumnName", whereClauseColumnName);
-    ArgumentUtility.CheckNotNull ("whereClauseValue", whereClauseValue);
+    ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("whereClauseIDs", whereClauseIDs);
 
     _selectColumns = selectColumns;
-    _classDefinition = classDefinition;
+    _entityName = entityName;
     _whereClauseColumnName = whereClauseColumnName;
-    _whereClauseValue = whereClauseValue;
-    _orderClause = orderClause;
+    _whereClauseIDs = whereClauseIDs;
+    _whereClauseValueIsRelatedID = whereClauseValueIsRelatedID;
+    _orderExpression = orderExpression;
   }
 
   // methods and properties
@@ -129,15 +89,22 @@ public class SelectCommandBuilder : CommandBuilder
   {
     IDbCommand command = CreateCommand ();
     WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
-    whereClauseBuilder.Add (_whereClauseColumnName, GetValue ());
 
-    string orderExpression = string.Empty;
-    if (_orderClause != null)
-      orderExpression = " ORDER BY " + _orderClause;
+    if (_whereClauseIDs.Length == 1)
+      whereClauseBuilder.Add (_whereClauseColumnName, GetObjectIDValueForParameter (_whereClauseIDs[0]));
+    else
+      whereClauseBuilder.SetInExpression (_whereClauseColumnName, GetValueArrayForParameter (_whereClauseIDs));
 
-    // TODO: Implement concrete table inheritance!
-    command.CommandText = string.Format ("SELECT {0} FROM [{1}] WHERE {2}{3};", 
-        _selectColumns, _classDefinition.GetEntityName (), whereClauseBuilder.ToString (), orderExpression);
+    // TODO in case of integer primary keys: 
+    // If RdbmsProvider or one of its derived classes will support integer primary keys in addition to GUIDs,
+    // the code below must be selectively actived to run only for integer primary keys.
+    // Note: This behaviour is not desired in case of GUID primary keys, because two same foreign key GUIDs pointing 
+    //       to different classIDs must be an error! In this case PersistenceManager.CheckClassIDForVirtualEndPoint raises an exception. 
+    //if (_whereClauseValueIsRelatedID && _whereClauseID.ClassDefinition.IsPartOfInheritanceHierarchy && IsOfSameStorageProvider (_whereClauseID))
+    //  whereClauseBuilder.Add (RdbmsProvider.GetClassIDColumnName (_whereClauseColumnName), _whereClauseID.ClassID);
+
+    command.CommandText = string.Format ("SELECT {0} FROM [{1}] WHERE {2}{3};",
+        _selectColumns, _entityName, whereClauseBuilder.ToString (), GetOrderClause (_orderExpression));
 
     return command;
   }
@@ -147,12 +114,14 @@ public class SelectCommandBuilder : CommandBuilder
     throw new NotSupportedException ("'AppendColumn' is not supported by 'SelectCommandBuilder'.");
   }
 
-  private object GetValue ()
+  private object[] GetValueArrayForParameter (ObjectID[] objectIDs)
   {
-    if (_whereClauseValue.GetType () == typeof (ObjectID))
-      return GetObjectIDForParameter ((ObjectID) _whereClauseValue);
-    else
-      return _whereClauseValue;
+    object[] values = new object[objectIDs.Length];
+    
+    for (int i = 0; i < objectIDs.Length; i++)
+      values[i] = GetObjectIDValueForParameter (objectIDs[i]);
+
+    return values;
   }
 }
 }

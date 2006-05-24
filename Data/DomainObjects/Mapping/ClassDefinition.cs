@@ -96,8 +96,8 @@ public class ClassDefinition : ISerializable, IObjectReference
     _classType = classType;
     _classTypeName = classTypeName;
     _storageProviderID = storageProviderID;
-    
-    _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (), true);
+
+    _derivedClasses = new ClassDefinitionCollection (new ClassDefinitionCollection (resolveClassType), true);
     _propertyDefinitions = new PropertyDefinitionCollection (this);
     _relationDefinitions = new RelationDefinitionCollection ();
 

@@ -150,6 +150,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       Assert.AreEqual (1, copiedCollection.Count);
       Assert.AreSame (_classDefinition, copiedCollection[0]);
+      Assert.AreEqual (_collection.AreResolvedTypesRequired, copiedCollection.AreResolvedTypesRequired);
     }
 
     [Test]

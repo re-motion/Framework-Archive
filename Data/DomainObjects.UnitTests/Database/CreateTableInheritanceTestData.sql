@@ -16,12 +16,22 @@ insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{F7AD91EF-A
 insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [Name]) 
     values ('{C6F4E04D-0465-4a9e-A944-C9FD26E33C44}', 'OrganizationalUnit', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', GETDATE(), 'Entwicklung')
 
+-- Note: This OrganizationalUnit has the same ID as PersonWithSameIDAsOrganizationalUnit.
+--       A SqlProvider test checks that RdbmsProvider.LoadDataContainerByRelatedID uses the classID column.
+--       This OrganizationalUnit must have an associated HistoryEntry.
+insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [Name]) 
+    values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'OrganizationalUnit', null, 'UnitTests', GETDATE(), 'OrganizationalUnitWithSameIDAsPerson')
+
 -- TableInheritance_Region
 insert into [TableInheritance_Region] (ID, ClassID, [Name]) values ('{7905CF32-FBC2-47fe-AC40-3E398BEEA5AB}', 'Region', 'NÖ')
 
--- TableInheritance_Person
+-- TableInheritance_Person 
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth])
     values ('{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'Person', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', GETDATE(), 'Max', 'Mustermann', '1980/6/9')
+
+-- Note: This person has an OrganizationalUnit with the same ID. It needs at least one HistoryEntry.
+insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth])
+    values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'Person', null, 'UnitTests', GETDATE(), '', 'PersonWithSameIDAsOrganizationalUnit', '1980/6/9')
 
 -- TableInheritance_Customer
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [RegionID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [CustomerType], [CustomerSince])
@@ -34,6 +44,15 @@ insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDCla
 
 insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])
     values ('{02D662F0-ED50-49b4-8A26-BB6025EDCA8C}', 'HistoryEntry', '{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'Customer', '2006/5/25', 'Name geändert')
+
+insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])
+    values ('{9CCCB590-B765-4bc3-B481-AAC67AEEAD7E}', 'HistoryEntry', '{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'Person', '2006/5/26', 'Person angelegt')
+
+insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])
+    values ('{840EC009-03FB-4221-85B9-72E480A47373}', 'HistoryEntry', '{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'Person', '2006/5/26', 'Person angelegt')
+
+insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])
+    values ('{2C7FB7B3-EB16-43f9-BDDE-B8B3F23A93D2}', 'HistoryEntry', '{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'OrganizationalUnit', '2006/5/27', 'OU angelegt')
 
 -- TableInheritance_Address
 insert into [TableInheritance_Address] (ID, ClassID, [PersonID], [PersonIDClassID], [Street], [Zip], [City], [Country]) 

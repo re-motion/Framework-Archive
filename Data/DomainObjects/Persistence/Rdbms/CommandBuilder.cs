@@ -33,6 +33,11 @@ public abstract class CommandBuilder
 
   // methods and properties
 
+  public RdbmsProvider Provider
+  {
+    get { return _provider; }
+  }
+
   public IDataParameter AddCommandParameter (IDbCommand command, string parameterName, PropertyValue propertyValue)
   {
     ArgumentUtility.CheckNotNull ("command", command);
@@ -97,7 +102,7 @@ public abstract class CommandBuilder
     {
       ObjectID relatedID = (ObjectID) propertyValue.Value;
       relatedClassDefinition = relatedID.ClassDefinition;
-      relatedIDValue = GetObjectIDForParameter (relatedID);
+      relatedIDValue = GetObjectIDValueForParameter (relatedID);
     }
     else
     {
@@ -122,7 +127,7 @@ public abstract class CommandBuilder
 
     if (relatedClassDefinition.IsPartOfInheritanceHierarchy)
     {
-      string classIDColumnName = propertyValue.Definition.ColumnName + "ClassID";
+      string classIDColumnName = RdbmsProvider.GetClassIDColumnName (propertyValue.Definition.ColumnName);
       AppendColumn (classIDColumnName, classIDColumnName);
 
       string classID = null;
@@ -133,24 +138,44 @@ public abstract class CommandBuilder
     }  
   }
 
-  protected object GetObjectIDForParameter (ObjectID id)
+  protected object GetValueForParameter (object value)
   {
-    ArgumentUtility.CheckNotNull ("id", id);
+    ArgumentUtility.CheckNotNull ("value", value);
 
-    if (id.StorageProviderID == _provider.ID)
-      return id.Value;
+    if (value.GetType () == typeof (ObjectID))
+      return GetObjectIDValueForParameter ((ObjectID) value);
     else
-      return id.ToString ();
-  }
-
-  public RdbmsProvider Provider
-  {
-    get { return _provider; }
+      return value;
   }
 
   protected virtual void AppendColumn (string columnName, string parameterName)
   {
     throw new InvalidOperationException ("AppendColumn must be overridden in derived class.");
+  }
+
+  protected object GetObjectIDValueForParameter (ObjectID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+
+    if (IsOfSameStorageProvider (id))
+      return id.Value;
+    else
+      return id.ToString ();
+  }
+
+  protected bool IsOfSameStorageProvider (ObjectID id)
+  {
+    ArgumentUtility.CheckNotNull ("id", id);
+
+    return id.StorageProviderID == _provider.ID;
+  }
+
+  protected string GetOrderClause (string orderExpression)
+  {
+    if (orderExpression != null && orderExpression != string.Empty)
+      return " ORDER BY " + orderExpression;
+
+    return string.Empty;
   }
 
   protected ArgumentException CreateArgumentException (string parameterName, string message, params object[] args)

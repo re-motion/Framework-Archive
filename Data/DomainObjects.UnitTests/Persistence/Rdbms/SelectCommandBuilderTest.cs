@@ -30,13 +30,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     {
       ClassDefinition orderDefinition = TestMappingConfiguration.Current.ClassDefinitions["Order"];
 
-      SelectCommandBuilder builder = new SelectCommandBuilder (
-          Provider, "*", orderDefinition, "CustomerID", DomainObjectIDs.Customer1, "OrderNumber desc");
+      SelectCommandBuilder builder = SelectCommandBuilder.CreateForRelatedIDLookup (
+          Provider, orderDefinition, orderDefinition.GetMandatoryPropertyDefinition ("Customer"), DomainObjectIDs.Customer1);
 
       Provider.Connect ();
       using (IDbCommand command = builder.Create ())
       {
-        Assert.AreEqual ("SELECT * FROM [Order] WHERE [CustomerID] = @CustomerID ORDER BY OrderNumber desc;", command.CommandText);
+        Assert.AreEqual (
+            "SELECT * FROM [Order] WHERE [CustomerID] = @CustomerID ORDER BY OrderNo asc;", 
+            command.CommandText);
       }
     }
   }

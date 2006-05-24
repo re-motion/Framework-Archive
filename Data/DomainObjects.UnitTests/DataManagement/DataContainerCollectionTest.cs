@@ -287,5 +287,53 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     {
       _collection.GetByState ((StateType) 1000);
     }
+
+    [Test]
+    public void Join ()
+    {
+      DataContainer firstDataContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
+      DataContainerCollection firstCollection = new DataContainerCollection ();
+      firstCollection.Add (firstDataContainer);
+
+      DataContainer secondDataContainer = TestDataContainerFactory.CreateOrder2DataContainer ();
+      DataContainerCollection secondCollection = new DataContainerCollection ();
+      secondCollection.Add (secondDataContainer);
+
+      DataContainerCollection joinedCollection = DataContainerCollection.Join (firstCollection, secondCollection);
+      Assert.AreEqual (2, joinedCollection.Count);
+      Assert.AreEqual (firstDataContainer.ID, joinedCollection[0].ID);
+      Assert.AreEqual (secondDataContainer.ID, joinedCollection[1].ID);
+    }
+
+    [Test]
+    public void JoinWithSameDataContainer ()
+    {
+      DataContainer dataContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
+      DataContainerCollection firstCollection = new DataContainerCollection ();
+      firstCollection.Add (dataContainer);
+
+      DataContainerCollection secondCollection = new DataContainerCollection ();
+      secondCollection.Add (dataContainer);
+
+      DataContainerCollection joinedCollection = DataContainerCollection.Join (firstCollection, secondCollection);
+      Assert.AreEqual (1, joinedCollection.Count);
+      Assert.AreEqual (dataContainer.ID, joinedCollection[0].ID);
+    }
+
+    [Test]
+    public void JoinWithDataContainersOfSameID ()
+    {
+      DataContainer dataContainer = TestDataContainerFactory.CreateOrder1DataContainer ();
+      DataContainerCollection firstCollection = new DataContainerCollection ();
+      firstCollection.Add (dataContainer);
+
+      DataContainerCollection secondCollection = new DataContainerCollection ();
+      secondCollection.Add (TestDataContainerFactory.CreateOrder1DataContainer ());
+
+      DataContainerCollection joinedCollection = DataContainerCollection.Join (firstCollection, secondCollection);
+      Assert.AreEqual (1, joinedCollection.Count);
+      Assert.AreSame (dataContainer, joinedCollection[0]);
+    }
+
   }
 }
