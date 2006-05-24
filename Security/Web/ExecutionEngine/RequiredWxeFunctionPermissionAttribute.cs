@@ -6,8 +6,15 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Web.ExecutionEngine
 {
+  public enum MethodType
+  {
+    Instance,
+    Static,   
+    Constructor
+  }
+
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-  public class RequiredWxeFunctionPermissionAttribute : Attribute
+  public class WxeDemandMethodPermissionAttribute : Attribute
   {
     // types
 
@@ -15,72 +22,57 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     // member fields
 
+    private MethodType _type;
     private Type _securableClass;	
-    private int? _parameterNumber;
     private string _parameterName;
-    private string _protectedMethod;
+    private string _method;
 
     // construction and disposing
 
-    public RequiredWxeFunctionPermissionAttribute (int parameterNumber, string protectedMethod)
+    public WxeDemandMethodPermissionAttribute (MethodType type)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("protectedMethod", protectedMethod);
-
-      Initialize (null, parameterNumber, null, protectedMethod);
-    }
-
-    public RequiredWxeFunctionPermissionAttribute (string parameterName, string protectedMethod)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
-      ArgumentUtility.CheckNotNullOrEmpty ("protectedMethod", protectedMethod);
-
-      Initialize (null, null, parameterName, protectedMethod);
-    }
-
-    public RequiredWxeFunctionPermissionAttribute (Type securableClass, string protectedMethod)
-    {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableType));
-      ArgumentUtility.CheckNotNullOrEmpty ("protectedMethod", protectedMethod);
-
-      Initialize (securableClass, null, null, protectedMethod);
-    }
-
-    public RequiredWxeFunctionPermissionAttribute (Type securableClass)
-    {
-      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableType));
-
-      Initialize (securableClass, null, null, null);
-    }
-
-    private void Initialize (Type securableClass, int? parameterNumber, string parameterName, string protectedMethod)
-    {
-      _securableClass = securableClass;
-      _parameterNumber = parameterNumber;
-      _parameterName = parameterName;
-      _protectedMethod = protectedMethod;
+      _type = type;
     }
 
     // methods and properties
 
+    public MethodType Type
+    {
+      get { return _type; }
+      set { _type = value; }
+    }
+
     public Type SecurableClass
     {
       get { return _securableClass; }
-    }
-
-    public int? ParameterNumber
-    {
-      get { return _parameterNumber; }
+      set
+      {
+        ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("SecurableClass", value, typeof (ISecurableType));
+        _securableClass = value;
+      }
     }
 
     public string ParameterName
     {
-      get { return _parameterName; }
+      get
+      {
+        return _parameterName; 
+      }
+      set 
+      {
+        ArgumentUtility.CheckNotNullOrEmpty ("ParameterName", value);
+        _parameterName = value; 
+      }
     }
 
-    public string ProtectedMethod
+    public string Method
     {
-      get { return _protectedMethod; }
+      get { return _method; }
+      set
+      {
+        ArgumentUtility.CheckNotNullOrEmpty ("Method", value);
+        _method = value;
+      }
     }
-	
   }
 }

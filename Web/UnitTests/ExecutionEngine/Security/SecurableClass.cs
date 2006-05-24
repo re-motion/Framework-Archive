@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 using Rubicon.Security;
+using Rubicon.Web.UnitTests.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 {
   public class SecurableClass : ISecurableType
   {

@@ -5,11 +5,12 @@ using System.Text;
 using Rubicon.Security.Web.ExecutionEngine;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UnitTests.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 {
-  [RequiredWxeFunctionPermission ("ThisObject", "Show")]
-  public class TestFunctionWithPermissionsFromInstanceMethods : WxeFunction
+  [WxeDemandMethodPermission (MethodType.Instance, ParameterName="ThisObject", Method="Show")]
+  public class TestFunctionWithPermissionsFromInstanceMethod : WxeFunction
   {
     // types
 
@@ -19,7 +20,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     // construction and disposing
 
-    public TestFunctionWithPermissionsFromInstanceMethods (SecurableClass thisObject)
+    public TestFunctionWithPermissionsFromInstanceMethod (SecurableClass thisObject)
       : base (thisObject)
     {
     }

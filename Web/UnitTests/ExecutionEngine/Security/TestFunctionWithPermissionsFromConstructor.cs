@@ -5,10 +5,11 @@ using System.Text;
 using Rubicon.Security.Web.ExecutionEngine;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UnitTests.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 {
-  [RequiredWxeFunctionPermission (typeof (SecurableClass))]
+  [WxeDemandMethodPermission (MethodType.Constructor, SecurableClass=typeof (SecurableClass))]
   public class TestFunctionWithPermissionsFromConstructor : WxeFunction
   {
     // types

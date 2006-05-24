@@ -6,8 +6,9 @@ using NUnit.Framework;
 
 using Rubicon.Security;
 using Rubicon.Security.Configuration;
+using Rubicon.Web.UnitTests.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine
+namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 {
 
 [TestFixture]
@@ -60,7 +61,7 @@ public class WxeFunctionSecurityTest: WxeTest
         .Method ("GetAccess")
         .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read) }));
 
-    TestFunctionWithPermissionsFromInstanceMethods function = new TestFunctionWithPermissionsFromInstanceMethods (new SecurableClass (_securityContextFactory));
+    TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (new SecurableClass (_securityContextFactory));
     function.Execute ();
 
     _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -74,7 +75,7 @@ public class WxeFunctionSecurityTest: WxeTest
         .Method ("GetAccess")
         .Will (Return.Value (new AccessType[0]));
 
-    TestFunctionWithPermissionsFromInstanceMethods function = new TestFunctionWithPermissionsFromInstanceMethods (new SecurableClass (_securityContextFactory));
+    TestFunctionWithPermissionsFromInstanceMethod function = new TestFunctionWithPermissionsFromInstanceMethod (new SecurableClass (_securityContextFactory));
     function.Execute ();
   }
 
@@ -85,7 +86,7 @@ public class WxeFunctionSecurityTest: WxeTest
         .Method ("GetAccess")
         .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
 
-    TestFunctionWithPermissionsFromStaticMethods function = new TestFunctionWithPermissionsFromStaticMethods ();
+    TestFunctionWithPermissionsFromStaticMethod function = new TestFunctionWithPermissionsFromStaticMethod ();
     function.Execute ();
 
     _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -99,7 +100,7 @@ public class WxeFunctionSecurityTest: WxeTest
         .Method ("GetAccess")
         .Will (Return.Value (new AccessType[0]));
 
-    TestFunctionWithPermissionsFromStaticMethods function = new TestFunctionWithPermissionsFromStaticMethods ();
+    TestFunctionWithPermissionsFromConstructor function = new TestFunctionWithPermissionsFromConstructor ();
     function.Execute ();
   }
 
