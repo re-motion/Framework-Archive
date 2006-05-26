@@ -35,7 +35,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
       return null;
     }
 
-    private ISecurityContextFactory _contextFactory;
+    private IObjectSecurityStrategy _securityStrategy;
 
     public SecurableObject ()
     {
@@ -43,12 +43,12 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
 
     public SecurableObject (ISecurityContextFactory contextFactory)
     {
-      _contextFactory = contextFactory;
+      _securityStrategy = new ObjectSecurityStrategy (contextFactory);
     }
 
-    public ISecurityContextFactory GetSecurityContextFactory ()
+    public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      return _contextFactory;
+      return _securityStrategy;
     }
 
     [DemandMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Create)]

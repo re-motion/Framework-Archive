@@ -15,7 +15,7 @@ namespace Rubicon.Security.UnitTests
   {
     private Mockery _mocks;
     private ISecurityService _securityServiceMock;
-    private IPermissionReflector _permissionReflectorMock;
+    private IPermissionProvider _permissionReflectorMock;
     private IPrincipal _user;
     private SecurityContext _statelessContext;
 
@@ -24,7 +24,7 @@ namespace Rubicon.Security.UnitTests
     {
       _mocks = new Mockery ();
       _securityServiceMock = _mocks.NewMock<ISecurityService> ();
-      _permissionReflectorMock = _mocks.NewMock<IPermissionReflector> ();
+      _permissionReflectorMock = _mocks.NewMock<IPermissionProvider> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _statelessContext = new SecurityContext (typeof (SecurableObject));

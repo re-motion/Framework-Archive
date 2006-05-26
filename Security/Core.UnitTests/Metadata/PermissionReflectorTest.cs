@@ -11,7 +11,7 @@ namespace Rubicon.Security.UnitTests.Metadata
   [TestFixture]
   public class PermissionReflectorTest
   {
-    private IPermissionReflector _permissionReflector;
+    private IPermissionProvider _permissionReflector;
 
     [SetUp]
     public void SetUp ()

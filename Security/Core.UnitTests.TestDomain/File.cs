@@ -41,7 +41,7 @@ namespace Rubicon.Security.UnitTests.TestDomain
     {
     }
 
-    public ISecurityContextFactory GetSecurityContextFactory ()
+    public IObjectSecurityStrategy GetSecurityStrategy ()
     {
       throw new Exception ("The method or operation is not implemented.");
     }

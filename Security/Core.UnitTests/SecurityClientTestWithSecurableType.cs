@@ -15,7 +15,7 @@ namespace Rubicon.Security.UnitTests
   {
     private Mockery _mocks;
     private ISecurableObject _mockSecurableType;
-    private ISecurityContextFactory _mockSecurityContextFactory;
+    private IObjectSecurityStrategy _mockSecurityStrategy;
     private ISecurityService _mockSecurityService;
     private SecurityContext _context;
     private IPrincipal _user;
@@ -24,28 +24,24 @@ namespace Rubicon.Security.UnitTests
     public void SetUp ()
     {
       _mocks = new Mockery ();
-      _mockSecurityService = _mocks.NewMock<ISecurityService> ();
       _mockSecurableType = _mocks.NewMock<ISecurableObject> ();
-      _mockSecurityContextFactory = _mocks.NewMock<ISecurityContextFactory> ();
+      _mockSecurityStrategy = _mocks.NewMock<IObjectSecurityStrategy> ();
+      _mockSecurityService = _mocks.NewMock<ISecurityService> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _context = new SecurityContext (typeof (File), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
-
-      Expect.Once.On (_mockSecurityContextFactory)
-          .Method ("GetSecurityContext")
-          .Will (Return.Value (_context));
     }
 
     [Test]
     public void HasAccess ()
     {
+      Expect.Once.On (_mockSecurityStrategy)
+          .Method ("HasAccess")
+          .With (_mockSecurityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Edit) })
+          .Will (Return.Value (true));
       Expect.Once.On (_mockSecurableType)
-          .Method ("GetSecurityContextFactory")
-          .Will (Return.Value (_mockSecurityContextFactory));
-      Expect.Once.On (_mockSecurityService)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
+          .Method ("GetSecurityStrategy")
+          .Will (Return.Value (_mockSecurityStrategy));
 
       SecurityClient securityClient = new SecurityClient (_mockSecurityService);
       bool hasAccess = securityClient.HasAccess (_mockSecurableType, _user, AccessType.Get (GeneralAccessType.Edit));
@@ -57,13 +53,13 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void HasNotAccess ()
     {
+      Expect.Once.On (_mockSecurityStrategy)
+          .Method ("HasAccess")
+          .With (_mockSecurityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Edit) })
+          .Will (Return.Value (false));
       Expect.Once.On (_mockSecurableType)
-          .Method ("GetSecurityContextFactory")
-          .Will (Return.Value (_mockSecurityContextFactory));
-      Expect.Once.On (_mockSecurityService)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create), AccessType.Get (GeneralAccessType.Delete) }));
+          .Method ("GetSecurityStrategy")
+          .Will (Return.Value (_mockSecurityStrategy));
 
       SecurityClient securityClient = new SecurityClient (_mockSecurityService);
       bool hasAccess = securityClient.HasAccess (_mockSecurableType, _user, AccessType.Get (GeneralAccessType.Edit));
@@ -73,12 +69,12 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    [ExpectedException (typeof(ArgumentException),
-         "The securable type did not return a ISecurityContextFactory.\r\nParameter name: securableType")]
-    public void SecurityContextFactoryIsNull ()
+    [ExpectedException (typeof (ArgumentException),
+        "The securable object did not return a IObjectSecurityStrategy.\r\nParameter name: securableObject")]
+    public void SecurityStrategyIsNull ()
     {
       Expect.Once.On (_mockSecurableType)
-          .Method ("GetSecurityContextFactory")
+          .Method ("GetSecurityStrategy")
           .Will (Return.Value (null));
       Expect.Never.On (_mockSecurityService)
           .Method ("GetAccess");

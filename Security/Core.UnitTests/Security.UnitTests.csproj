@@ -49,6 +49,7 @@
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
+    <Compile Include="FunctionalSecurityStrategyTest.cs" />
     <Compile Include="DemandMethodPermissionAttributeTest.cs" />
     <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="Metadata\AccessTypes.cs" />
@@ -83,7 +84,7 @@
     <Compile Include="SampleDomain\TestValueType.cs" />
     <Compile Include="SecurityClientTestWithCheckConstructorAccess.cs" />
     <Compile Include="SecurityClientTestWithCheckMethodAccess.cs" />
-    <Compile Include="SecurityClientTestWithHasAccess.cs" />
+    <Compile Include="ObjectSecurityStrategyTest.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <Compile Include="SecurityContextTest.cs" />
     <Compile Include="ThreadUserProviderTest.cs" />

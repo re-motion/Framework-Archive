@@ -6,7 +6,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Metadata
 {
-  public class PermissionReflector : IPermissionReflector
+  public class PermissionReflector : IPermissionProvider
   {
     public Enum[] GetRequiredMethodPermissions (Type type, string methodName)
     {

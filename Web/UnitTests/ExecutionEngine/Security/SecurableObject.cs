@@ -31,9 +31,9 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
     {
     }
 
-    public ISecurityContextFactory GetSecurityContextFactory ()
+    public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      return _securityContextFactory;
+      throw new Exception ("The method or operation is not implemented.");
     }
   }
 }

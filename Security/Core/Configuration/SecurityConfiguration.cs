@@ -42,6 +42,7 @@ namespace Rubicon.Security.Configuration
 
     private ISecurityService _securityService;
     private IUserProvider _userProvider;
+    private IFunctionalSecurityStrategy _functionalSecurityStrategy;
 
     private ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _xmlnsProperty;
@@ -100,6 +101,21 @@ namespace Rubicon.Security.Configuration
       set
       {
         _userProvider = value;
+      }
+    }
+
+    public IFunctionalSecurityStrategy FunctionalSecurityStrategy
+    {
+      get
+      {
+        if (_functionalSecurityStrategy == null)
+          _functionalSecurityStrategy = new FunctionalSecurityStrategy ();
+
+        return _functionalSecurityStrategy;
+      }
+      set
+      {
+        _functionalSecurityStrategy = value;
       }
     }
 

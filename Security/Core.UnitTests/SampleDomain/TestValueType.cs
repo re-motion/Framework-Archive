@@ -9,9 +9,9 @@ namespace Rubicon.Security.UnitTests.SampleDomain
 
   public struct TestValueType : ISecurableObject
   {
-    public ISecurityContextFactory GetSecurityContextFactory ()
+    public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      throw new NotImplementedException ("The method or operation is not implemented.");
+      throw new Exception ("The method or operation is not implemented.");
     }
   }
 }

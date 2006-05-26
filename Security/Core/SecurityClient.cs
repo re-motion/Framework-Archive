@@ -11,71 +11,66 @@ namespace Rubicon.Security
   public class SecurityClient
   {
     private ISecurityService _securityService;
-    private IPermissionReflector _permissionReflector;
+    private IPermissionProvider _permissionProvider;
+    private IUserProvider _userProvider;
+    private IFunctionalSecurityStrategy _functionalSecurityStrategy;
 
     public SecurityClient ()
-        : this (SecurityConfiguration.Current.SecurityService, new PermissionReflector ())
+        : this (SecurityConfiguration.Current.SecurityService, new PermissionReflector (), SecurityConfiguration.Current.UserProvider)
     {
     }
 
     public SecurityClient (ISecurityService securityService)
-        : this (securityService, new PermissionReflector ())
+        : this (securityService, new PermissionReflector (), SecurityConfiguration.Current.UserProvider)
     {
     }
 
-    public SecurityClient (ISecurityService securityService, IPermissionReflector permissionReflector)
+    public SecurityClient (ISecurityService securityService, IPermissionProvider permissionReflector)
+        : this (securityService, permissionReflector, SecurityConfiguration.Current.UserProvider)
+    {
+    }
+
+    public SecurityClient (ISecurityService securityService, IPermissionProvider permissionReflector, IUserProvider userProvider)
+        : this (securityService, permissionReflector, userProvider, SecurityConfiguration.Current.FunctionalSecurityStrategy)
+    {
+    }
+
+    public SecurityClient (
+        ISecurityService securityService,
+        IPermissionProvider permissionReflector,
+        IUserProvider userProvider,
+        IFunctionalSecurityStrategy functionalSecurityStrategy)
     {
       ArgumentUtility.CheckNotNull ("securityService", securityService);
       ArgumentUtility.CheckNotNull ("permissionReflector", permissionReflector);
-  
+      ArgumentUtility.CheckNotNull ("userProvider", userProvider);
+      ArgumentUtility.CheckNotNull ("functionalSecurityStrategy", functionalSecurityStrategy);
+
       _securityService = securityService;
-      _permissionReflector = permissionReflector;
+      _permissionProvider = permissionReflector;
+      _userProvider = userProvider;
+      _functionalSecurityStrategy = functionalSecurityStrategy;
     }
 
-    public bool HasAccess (SecurityContext context, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public bool HasAccess (ISecurableObject securableObject, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
-      ArgumentUtility.CheckNotNull ("user", user);
-      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
+      ArgumentUtility.CheckNotNull ("securableObject", securableObject);
 
-      AccessType[] actualAccessTypes = _securityService.GetAccess (context, user);
+      IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy ();
+      if (objectSecurityStrategy == null)
+        throw new ArgumentException ("The securable object did not return a IObjectSecurityStrategy.", "securableObject");
 
-      if (actualAccessTypes == null)
-        return false;
-
-      foreach (AccessType requiredAccessType in requiredAccessTypes)
-      {
-        if (Array.IndexOf<AccessType> (actualAccessTypes, requiredAccessType) < 0)
-          return false;
-      }
-
-      return true;
-    }
-
-    public bool HasAccess (ISecurableObject securableType, IPrincipal user, params AccessType[] requiredAccessTypes)
-    {
-      ArgumentUtility.CheckNotNull ("securableType", securableType);
-
-      ISecurityContextFactory contextFactory = securableType.GetSecurityContextFactory ();
-      if (contextFactory == null)
-        throw new ArgumentException ("The securable type did not return a ISecurityContextFactory.", "securableType");
-
-      return HasAccess (contextFactory.GetSecurityContext (), user, requiredAccessTypes);
-    }
-
-    public bool HasAccess (SecurityContext context, params AccessType[] requiredAccessTypes)
-    {
-      return HasAccess (context, GetCurrentUser (), requiredAccessTypes);
+      return objectSecurityStrategy.HasAccess (_securityService, user, requiredAccessTypes);
     }
 
     public bool HasAccess (ISecurableObject securableType, params AccessType[] requiredAccessTypes)
     {
-      return HasAccess (securableType, GetCurrentUser (), requiredAccessTypes);
+      return HasAccess (securableType, _userProvider.GetUser (), requiredAccessTypes);
     }
 
     public void CheckMethodAccess (ISecurableObject securableType, string methodName)
     {
-      CheckMethodAccess (securableType, methodName, GetCurrentUser ());
+      CheckMethodAccess (securableType, methodName, _userProvider.GetUser ());
     }
 
     public void CheckMethodAccess (ISecurableObject securableType, string methodName, IPrincipal user)
@@ -83,13 +78,13 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("securableType", securableType);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredMethodPermissions (securableType.GetType (), methodName);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableType.GetType (), methodName);
       CheckRequiredMethodAccess (securableType, methodName, requiredAccessTypeEnums, user);
     }
 
     public void CheckConstructorAccess (Type type)
     {
-      CheckConstructorAccess (type, GetCurrentUser ());
+      CheckConstructorAccess (type, _userProvider.GetUser ());
     }
 
     public void CheckConstructorAccess (Type type, IPrincipal user)
@@ -99,20 +94,20 @@ namespace Rubicon.Security
 
       AccessType[] requiredAccessTypes = new AccessType[] { AccessType.Get (GeneralAccessType.Create) };
 
-      if (!HasAccess (new SecurityContext (type), user, requiredAccessTypes ))
+      if (!_functionalSecurityStrategy.HasAccess (type, _securityService, user, requiredAccessTypes))
         throw new PermissionDeniedException (string.Format ("Access to constructor for type '{0}' has been denied.", type.FullName));
    }
 
     public void CheckStaticMethodAccess (Type type, string methodName)
     {
-      CheckStaticMethodAccess (type, methodName, GetCurrentUser ());
+      CheckStaticMethodAccess (type, methodName, _userProvider.GetUser ());
     }
 
     public void CheckStaticMethodAccess (Type type, string methodName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("type", type);
 
-      Enum[] requiredAccessTypeEnums = _permissionReflector.GetRequiredStaticMethodPermissions (type, methodName);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredStaticMethodPermissions (type, methodName);
       CheckRequiredStaticMethodAccess (type, methodName, requiredAccessTypeEnums, user);
     }
 
@@ -133,18 +128,13 @@ namespace Rubicon.Security
       if (requiredAccessTypeEnums.Length == 0)
         throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");
 
-      if (!HasAccess (new SecurityContext (type), user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
+      if (!_functionalSecurityStrategy.HasAccess (type, _securityService, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
         throw new PermissionDeniedException (string.Format ("Access to static method '{0}' on type '{1}' has been denied.", methodName, type.FullName));
     }
 
     private AccessType[] ConvertRequiredAccessTypeEnums (Enum[] requiredAccessTypeEnums)
     {
       return Array.ConvertAll (requiredAccessTypeEnums, new Converter<Enum, AccessType> (AccessType.Get));
-    }
-
-    private IPrincipal GetCurrentUser ()
-    {
-      return SecurityConfiguration.Current.UserProvider.GetUser ();
     }
   }
 }

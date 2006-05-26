@@ -17,7 +17,7 @@ namespace Rubicon.Security.UnitTests
     private ISecurityService _securityServiceMock;
     private IPrincipal _user;
     private SecurityContext _context;
-    private IPermissionReflector _permissionReflectorMock;
+    private IPermissionProvider _permissionReflectorMock;
     private ISecurityContextFactory _contextFactoryMock;
 
     [SetUp]
@@ -25,7 +25,7 @@ namespace Rubicon.Security.UnitTests
     {
       _mocks = new Mockery ();
       _securityServiceMock = _mocks.NewMock<ISecurityService> ();
-      _permissionReflectorMock = _mocks.NewMock<IPermissionReflector> ();
+      _permissionReflectorMock = _mocks.NewMock<IPermissionProvider> ();
       _contextFactoryMock = _mocks.NewMock<ISecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
@@ -54,7 +54,8 @@ namespace Rubicon.Security.UnitTests
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
-    [Test, ExpectedException (typeof (PermissionDeniedException))]
+    [Test]
+    [ExpectedException (typeof (PermissionDeniedException))]
     public void CheckDeniedAccess ()
     {
       Expect.Once.On (_permissionReflectorMock)

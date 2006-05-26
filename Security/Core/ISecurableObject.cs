@@ -6,6 +6,6 @@ namespace Rubicon.Security
 {
   public interface ISecurableObject
   {
-    ISecurityContextFactory GetSecurityContextFactory ();
+    IObjectSecurityStrategy GetSecurityStrategy ();
   }
 }

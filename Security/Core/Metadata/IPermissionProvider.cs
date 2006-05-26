@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Rubicon.Security.Metadata
 {
-  public interface IPermissionReflector
+  public interface IPermissionProvider
   {
     Enum[] GetRequiredMethodPermissions (Type type, string methodName);
     Enum[] GetRequiredStaticMethodPermissions (Type type, string methodName);

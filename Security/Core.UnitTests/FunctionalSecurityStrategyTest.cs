@@ -11,12 +11,12 @@ using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 namespace Rubicon.Security.UnitTests
 {
   [TestFixture]
-  public class SecurityClientTestWithHasAccess
+  public class FunctionalSecurityStrategyTest
   {
     private Mockery _mocks;
     private ISecurityService _securityServiceMock;
     private IPrincipal _user;
-    private SecurityContext _context;
+    private FunctionalSecurityStrategy _strategy;
 
     [SetUp]
     public void SetUp ()
@@ -25,7 +25,8 @@ namespace Rubicon.Security.UnitTests
       _securityServiceMock = _mocks.NewMock<ISecurityService> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+
+      _strategy = new FunctionalSecurityStrategy ();
     }
 
     [Test]
@@ -33,11 +34,9 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
-          .With (_context, _user)
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _securityServiceMock, _user, AccessType.Get (GeneralAccessType.Edit));
 
       Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -48,11 +47,9 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
-          .With (_context, _user)
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, _user, AccessType.Get (GeneralAccessType.Create));
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _securityServiceMock, _user, AccessType.Get (GeneralAccessType.Create));
 
       Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -68,11 +65,9 @@ namespace Rubicon.Security.UnitTests
 
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
-          .With (_context, _user)
           .Will (Return.Value (mockResult));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, _user, AccessType.Get (GeneralAccessType.Read));
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _securityServiceMock, _user, AccessType.Get (GeneralAccessType.Read));
 
       Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -88,11 +83,9 @@ namespace Rubicon.Security.UnitTests
 
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
-          .With (_context, _user)
           .Will (Return.Value (mockResult));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, _user, 
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _securityServiceMock, _user, 
           AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Create));
 
       Assert.AreEqual (true, hasAccess);
@@ -109,11 +102,9 @@ namespace Rubicon.Security.UnitTests
 
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
-          .With (_context, _user)
           .Will (Return.Value (mockResult));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, _user, 
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _securityServiceMock, _user,
           AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Find));
 
       Assert.AreEqual (false, hasAccess);
@@ -125,11 +116,9 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
-          .With (_context, _user)
           .Will (Return.Value (new AccessType[0]));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, _user,
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _securityServiceMock, _user,
           AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
 
       Assert.AreEqual (false, hasAccess);
@@ -141,11 +130,9 @@ namespace Rubicon.Security.UnitTests
     {
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
-          .With (_context, _user)
           .Will (Return.Value (null));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock);
-      bool hasAccess = securityClient.HasAccess (_context, _user, 
+      bool hasAccess = _strategy.HasAccess (typeof (SecurableObject), _securityServiceMock, _user,
           AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
 
       Assert.AreEqual (false, hasAccess);

@@ -29,9 +29,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
       throw new NotImplementedException ();
     }
 
-    public ISecurityContextFactory GetSecurityContextFactory ()
+    public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      return _securityContextFactory;
+      throw new Exception ("The method or operation is not implemented.");
     }
   }
 }
