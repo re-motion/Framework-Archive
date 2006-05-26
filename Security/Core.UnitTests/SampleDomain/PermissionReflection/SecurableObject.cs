@@ -93,5 +93,10 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
     public void Delete (int count)
     {
     }
+
+    [DemandMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Find, GeneralAccessType.Edit)]
+    public void Close ()
+    {
+    }
   }
 }

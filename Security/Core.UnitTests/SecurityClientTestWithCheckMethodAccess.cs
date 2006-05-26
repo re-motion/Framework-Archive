@@ -70,24 +70,6 @@ namespace Rubicon.Security.UnitTests
       securityClient.CheckMethodAccess (new SecurableObject (_contextFactoryMock), "Record", _user);
     }
 
-    //[Test]
-    //public void CheckAccessForOverloadedMethod ()
-    //{
-    //  Expect.Once.On (_permissionReflectorMock)
-    //      .Method ("GetRequiredMethodPermissions")
-    //      .With (typeof (SecurableObject), "Load", new Type[] { typeof (string) })
-    //      .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
-    //  Expect.Once.On (_securityServiceMock)
-    //      .Method ("GetAccess")
-    //      .With (_context, _user)
-    //      .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
-
-    //  SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-    //  securityClient.CheckMethodAccess (new SecurableObject (_contextFactoryMock), "Load", new Type[] { typeof (string) }, _user);
-
-    //  _mocks.VerifyAllExpectationsHaveBeenMet ();
-    //}
-
     [Test]
     [ExpectedException(typeof(ArgumentException), "The method 'Save' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void CheckAccessForMethodWithoutRequiredPermissions ()
@@ -132,23 +114,6 @@ namespace Rubicon.Security.UnitTests
       SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
       securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
     }
-
-    //[Test]
-    //public void CheckAccessForOverloadedStaticMethod ()
-    //{
-    //  Expect.Once.On (_permissionReflectorMock)
-    //      .Method ("GetRequiredStaticMethodPermissions")
-    //      .With (typeof (SecurableObject), "IsValid", new Type[] { typeof (SecurableObject) })
-    //      .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
-    //  Expect.Once.On (_securityServiceMock)
-    //      .Method ("GetAccess")
-    //      .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
-
-    //  SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-    //  securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "IsValid", new Type[] { typeof (SecurableObject) }, _user);
-
-    //  _mocks.VerifyAllExpectationsHaveBeenMet ();
-    //}
 
     [Test, ExpectedException (typeof (ArgumentException),
         "The method 'CreateForSpecialCase' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]

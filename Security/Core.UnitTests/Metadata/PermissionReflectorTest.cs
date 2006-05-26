@@ -137,5 +137,15 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       Enum[] requiredAccessTypes = _permissionReflector.GetRequiredStaticMethodPermissions (typeof (SecurableObject), "Sve");
     }
+
+    [Test]
+    public void FilterMultipleAccessTypes ()
+    {
+      Enum[] requiredAccessTypes = _permissionReflector.GetRequiredMethodPermissions (typeof (SecurableObject), "Close");
+
+      Assert.AreEqual (2, requiredAccessTypes.Length);
+      Assert.Contains (GeneralAccessType.Edit, requiredAccessTypes);
+      Assert.Contains (GeneralAccessType.Find, requiredAccessTypes);
+    }
   }
 }

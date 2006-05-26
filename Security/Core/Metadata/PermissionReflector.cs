@@ -29,10 +29,19 @@ namespace Rubicon.Security.Metadata
       if (!methodInfo.IsDefined (typeof (DemandMethodPermissionAttribute), true))
         return new Enum[0];
 
-      DemandMethodPermissionAttribute[] requiredPermissionAttributes =
+      DemandMethodPermissionAttribute[] demandPermissionAttributes =
           (DemandMethodPermissionAttribute[]) methodInfo.GetCustomAttributes (typeof (DemandMethodPermissionAttribute), true);
 
-      return requiredPermissionAttributes[0].AccessTypes;
+      DemandMethodPermissionAttribute demandPermission = demandPermissionAttributes[0];
+
+      List<Enum> permissions = new List<Enum> ();
+      foreach (Enum accessTypeEnum in demandPermission.AccessTypes)
+      {
+        if (!permissions.Contains (accessTypeEnum))
+          permissions.Add (accessTypeEnum);
+      }
+
+      return permissions.ToArray();
     }
 
     private bool IsSecuredMethod (MemberInfo member, object filterCriteria)
