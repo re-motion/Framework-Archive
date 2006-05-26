@@ -42,6 +42,7 @@
     <None Include="Security.build" />
     <Compile Include="Configuration\UserProviderElement.cs" />
     <Compile Include="Configuration\SecurityServiceElement.cs" />
+    <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="EnumWrapper.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
     <Compile Include="ISecurableObject.cs" />
@@ -69,7 +70,6 @@
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
     <Compile Include="PermissionDeniedException.cs" />
-    <Compile Include="RequiredMethodPermissionAttribute.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityContext.cs" />
     <Compile Include="GeneralAccessType.cs" />

@@ -49,6 +49,7 @@
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
+    <Compile Include="DemandMethodPermissionAttributeTest.cs" />
     <Compile Include="EnumWrapperTest.cs" />
     <Compile Include="Metadata\AccessTypes.cs" />
     <Compile Include="Metadata\AssemblyReflectorTest.cs" />
@@ -80,7 +81,6 @@
     <Compile Include="SampleDomain\TestFlags.cs" />
     <Compile Include="SampleDomain\TestSecurityState.cs" />
     <Compile Include="SampleDomain\TestValueType.cs" />
-    <Compile Include="RequiredMethodPermissionAttributeTest.cs" />
     <Compile Include="SecurityClientTestWithCheckConstructorAccess.cs" />
     <Compile Include="SecurityClientTestWithCheckMethodAccess.cs" />
     <Compile Include="SecurityClientTestWithHasAccess.cs" />
