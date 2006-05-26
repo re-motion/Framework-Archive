@@ -12,7 +12,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessType.Create)]
     public static SecurableObject CreateForSpecialCase ()
     {
       return new SecurableObject ();
@@ -23,13 +23,13 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
       return false;
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessType.Read)]
     public static bool IsValid (SecurableObject securableClass)
     {
       return true;
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessType.Read)]
     public static string GetObjectName (SecurableObject securableObject)
     {
       return null;
@@ -51,32 +51,32 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
       return _contextFactory;
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Create)]
     public void Show ()
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Edit)]
+    [DemandMethodPermission (GeneralAccessType.Edit)]
     public void Record ()
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Delete)]
+    [DemandMethodPermission (GeneralAccessType.Delete)]
     public void Load ()
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessType.Create)]
     public void Load (string filename)
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Find)]
+    [DemandMethodPermission (GeneralAccessType.Find)]
     public virtual void Print ()
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Delete)]
+    [DemandMethodPermission (GeneralAccessType.Delete)]
     public void Send ()
     {
     }
@@ -89,7 +89,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Delete)]
+    [DemandMethodPermission (GeneralAccessType.Delete)]
     public void Delete (int count)
     {
     }

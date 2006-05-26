@@ -26,11 +26,11 @@ namespace Rubicon.Security.Metadata
 
     public Enum[] GetRequiredMethodPermissions (MethodBase methodInfo)
     {
-      if (!methodInfo.IsDefined (typeof (RequiredMethodPermissionAttribute), true))
+      if (!methodInfo.IsDefined (typeof (DemandMethodPermissionAttribute), true))
         return new Enum[0];
 
-      RequiredMethodPermissionAttribute[] requiredPermissionAttributes =
-          (RequiredMethodPermissionAttribute[]) methodInfo.GetCustomAttributes (typeof (RequiredMethodPermissionAttribute), true);
+      DemandMethodPermissionAttribute[] requiredPermissionAttributes =
+          (DemandMethodPermissionAttribute[]) methodInfo.GetCustomAttributes (typeof (DemandMethodPermissionAttribute), true);
 
       return requiredPermissionAttributes[0].AccessTypes;
     }
@@ -40,7 +40,7 @@ namespace Rubicon.Security.Metadata
       string methodName = (string) filterCriteria;
       MethodInfo methodInfo = (MethodInfo) member;
 
-      return methodInfo.Name == methodName && methodInfo.IsDefined (typeof (RequiredMethodPermissionAttribute), true);
+      return methodInfo.Name == methodName && methodInfo.IsDefined (typeof (DemandMethodPermissionAttribute), true);
     }
 
     private Enum[] GetRequiredMethodPermissions (Type type, string methodName, BindingFlags bindingFlags)

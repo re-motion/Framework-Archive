@@ -126,7 +126,7 @@ namespace Rubicon.Security.Metadata
 
     private bool FindRequriedPermissionsFilter (MemberInfo member, object filterCriteria)
     {
-      return Attribute.IsDefined (member, typeof (RequiredMethodPermissionAttribute), true);
+      return Attribute.IsDefined (member, typeof (DemandMethodPermissionAttribute), true);
     }  
 
     private Dictionary<Enum, EnumValueInfo> GetAccessTypesFromRequiredMethodPermissions (MethodBase[] methodBases, MetadataCache cache)

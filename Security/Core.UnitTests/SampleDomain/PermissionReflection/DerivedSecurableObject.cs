@@ -21,12 +21,12 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessType.Read)]
     public new void Send ()
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessType.Create)]
     public override void Print ()
     {
       base.Print ();

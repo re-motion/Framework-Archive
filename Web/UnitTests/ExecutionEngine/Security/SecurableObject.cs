@@ -9,7 +9,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 {
   public class SecurableObject : ISecurableObject
   {
-    [RequiredMethodPermission (GeneralAccessType.Create)]
+    [DemandMethodPermission (GeneralAccessType.Create)]
     public static void Create ()
     {
     }
@@ -21,12 +21,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
       _securityContextFactory = securityContextFactory;
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Read)]
     public void Show ()
     {
     }
 
-    [RequiredMethodPermission (GeneralAccessType.Delete)]
+    [DemandMethodPermission (GeneralAccessType.Delete)]
     public void Delete ()
     {
     }

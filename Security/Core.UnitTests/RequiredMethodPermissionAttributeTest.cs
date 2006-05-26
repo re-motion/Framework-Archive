@@ -15,7 +15,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void AcceptValidAccessType ()
     {
-      RequiredMethodPermissionAttribute methodPermissionAttribute = new RequiredMethodPermissionAttribute (TestAccessType.Second);
+      DemandMethodPermissionAttribute methodPermissionAttribute = new DemandMethodPermissionAttribute (TestAccessType.Second);
       Assert.AreEqual (TestAccessType.Second, methodPermissionAttribute.AccessTypes[0]);
     }
 
@@ -25,22 +25,22 @@ namespace Rubicon.Security.UnitTests
         + "Valid access types must have the Rubicon.Security.AccessTypeAttribute applied.\r\nParameter name: accessType")]
     public void RejectAccessTypeWithoutAccessTypeAttribute ()
     {
-      RequiredMethodPermissionAttribute methodPermissionAttribute = 
-          new RequiredMethodPermissionAttribute (TestAccessTypeWithoutAccessTypeAttribute.First);
+      DemandMethodPermissionAttribute methodPermissionAttribute = 
+          new DemandMethodPermissionAttribute (TestAccessTypeWithoutAccessTypeAttribute.First);
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentItemTypeException))]
     public void RejectOtherObjectTypes ()
     {
-      RequiredMethodPermissionAttribute methodPermissionAttribute = new RequiredMethodPermissionAttribute (new SimpleType());
+      DemandMethodPermissionAttribute methodPermissionAttribute = new DemandMethodPermissionAttribute (new SimpleType());
     }
 
     [Test]
     public void AcceptMultipleAccessTypes ()
     {
-      RequiredMethodPermissionAttribute methodPermissionAttribute =
-          new RequiredMethodPermissionAttribute (TestAccessType.Second, TestAccessType.Fourth);
+      DemandMethodPermissionAttribute methodPermissionAttribute =
+          new DemandMethodPermissionAttribute (TestAccessType.Second, TestAccessType.Fourth);
 
       Assert.AreEqual (2, methodPermissionAttribute.AccessTypes.Length);
       Assert.Contains (TestAccessType.Second, methodPermissionAttribute.AccessTypes);

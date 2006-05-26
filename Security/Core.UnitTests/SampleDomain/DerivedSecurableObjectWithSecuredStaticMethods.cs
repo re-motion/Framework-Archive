@@ -8,7 +8,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain
 {
   public class DerivedSecurableObjectWithSecuredStaticMethods : SecurableObjectWithSecuredStaticMethods
   {
-    [RequiredMethodPermission (TestAccessType.Fourth)]
+    [DemandMethodPermission (TestAccessType.Fourth)]
     public static void DerivedStaticMethod ()
     {
     }
