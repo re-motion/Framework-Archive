@@ -11,8 +11,28 @@ namespace Rubicon.Security
   {
     private Enum[] _accessTypes;
 
-    public RequiredMethodPermissionAttribute (object accessType)
-        : this (new object[] { accessType })
+    public RequiredMethodPermissionAttribute (object accessType1)
+        : this (new object[] { accessType1 })
+    {
+    }
+
+    public RequiredMethodPermissionAttribute (object accessType1, object accessType2)
+      : this (new object[] { accessType1, accessType2 })
+    {
+    }
+
+    public RequiredMethodPermissionAttribute (object accessType1, object accessType2, object accessType3)
+      : this (new object[] { accessType1, accessType2, accessType3 })
+    {
+    }
+
+    public RequiredMethodPermissionAttribute (object accessType1, object accessType2, object accessType3, object accessType4)
+      : this (new object[] { accessType1, accessType2, accessType3, accessType4 })
+    {
+    }
+
+    public RequiredMethodPermissionAttribute (object accessType1, object accessType2, object accessType3, object accessType4, object accessType5)
+      : this (new object[] { accessType1, accessType2, accessType3, accessType4, accessType5 })
     {
     }
 
