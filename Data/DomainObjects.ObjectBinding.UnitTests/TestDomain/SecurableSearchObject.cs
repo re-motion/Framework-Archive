@@ -11,11 +11,11 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
   public class SecurableSearchObject : BindableSearchObject, ISecurableObject
   {
     private string _stringProperty;
-    private ISecurityContextFactory _securityContextFactory;
+    private IObjectSecurityStrategy _securityStrategy;
 
     public SecurableSearchObject (ISecurityContextFactory securityContextFactory)
     {
-      _securityContextFactory = securityContextFactory;
+      _securityStrategy = new ObjectSecurityStrategy (securityContextFactory);
     }
 
     public string StringProperty
@@ -31,7 +31,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      throw new Exception ("The method or operation is not implemented.");
+      return _securityStrategy;
     }
   }
 }

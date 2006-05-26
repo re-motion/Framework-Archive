@@ -14,11 +14,11 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
     {
     }
 
-    private ISecurityContextFactory _securityContextFactory;
+    private IObjectSecurityStrategy _securityStrategy;
 
     public SecurableObject (ISecurityContextFactory securityContextFactory)
     {
-      _securityContextFactory = securityContextFactory;
+      _securityStrategy = new ObjectSecurityStrategy (securityContextFactory);
     }
 
     [DemandMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Read)]
@@ -33,7 +33,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
 
     public IObjectSecurityStrategy GetSecurityStrategy ()
     {
-      throw new Exception ("The method or operation is not implemented.");
+      return _securityStrategy;
     }
   }
 }
