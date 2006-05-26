@@ -99,9 +99,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       classDefinitions.Add (CreateClassWithAllDataTypesDefinition ());
       classDefinitions.Add (CreateClassWithGuidKeyDefinition ());
       classDefinitions.Add (CreateClassWithInvalidKeyTypeDefinition ());
-      classDefinitions.Add (CreateClassWithoutIDPropertyDefinition ());
-      classDefinitions.Add (CreateClassWithoutClassIDPropertyDefinition ());
-      classDefinitions.Add (CreateClassWithoutTimestampPropertyDefinition ());
+      classDefinitions.Add (CreateClassWithoutIDColumnDefinition ());
+      classDefinitions.Add (CreateClassWithoutClassIDColumnDefinition ());
+      classDefinitions.Add (CreateClassWithoutTimestampColumnDefinition ());
       classDefinitions.Add (CreateClassWithValidRelationsDefinition ());
       classDefinitions.Add (CreateClassWithInvalidRelationDefinition ());
       classDefinitions.Add (CreateIndustrialSectorDefinition ());
@@ -360,26 +360,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutIDPropertyDefinition ()
+    private ClassDefinition CreateClassWithoutIDColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutIDProperty", "TableWithoutIDColumn",
-        DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutIDProperty));
+      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutIDColumn", "TableWithoutIDColumn",
+        DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutIDColumn));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutClassIDPropertyDefinition ()
+    private ClassDefinition CreateClassWithoutClassIDColumnDefinition ()
     {
       ClassDefinition classDefinition = new ClassDefinition (
-          "ClassWithoutClassIDProperty", "TableWithoutClassIDColumn", DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutClassIDProperty));
+          "ClassWithoutClassIDColumn", "TableWithoutClassIDColumn", DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutClassIDColumn));
 
       return classDefinition;
     }
 
-    private ClassDefinition CreateClassWithoutTimestampPropertyDefinition ()
+    private ClassDefinition CreateClassWithoutTimestampColumnDefinition ()
     {
-      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutTimestampProperty", "TableWithoutTimestampColumn",
-          DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutTimestampProperty));
+      ClassDefinition classDefinition = new ClassDefinition ("ClassWithoutTimestampColumn", "TableWithoutTimestampColumn",
+          DatabaseTest.c_testDomainProviderID, typeof (ClassWithoutTimestampColumn));
 
       return classDefinition;
     }

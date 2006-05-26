@@ -49,20 +49,13 @@ public class DataContainerFactory
   protected virtual DataContainer CreateDataContainerFromReader ()
   {
     ValueConverter valueConverter = new ValueConverter ();
-
-    string classID = _dataReader.GetString (valueConverter.GetMandatoryOrdinal (_dataReader, "ClassID"));
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
-
-    object idValue = _dataReader.GetValue (valueConverter.GetMandatoryOrdinal (_dataReader, "ID"));
+    
+    ObjectID id = valueConverter.GetID (_dataReader);
     object timestamp = _dataReader.GetValue (valueConverter.GetMandatoryOrdinal (_dataReader, "Timestamp"));
 
-    if (classDefinition == null)
-      throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
-
-    ObjectID id = valueConverter.GetObjectID (classDefinition, idValue);
     DataContainer dataContainer = DataContainer.CreateForExisting (id, timestamp);
 
-    foreach (PropertyDefinition propertyDefinition in classDefinition.GetPropertyDefinitions ())
+    foreach (PropertyDefinition propertyDefinition in id.ClassDefinition.GetPropertyDefinitions ())
     {
       int columnOrdinal = valueConverter.GetMandatoryOrdinal (_dataReader, propertyDefinition.ColumnName);
 
@@ -70,22 +63,22 @@ public class DataContainerFactory
 
       try
       {
-        dataValue = valueConverter.GetValue (classDefinition, propertyDefinition, _dataReader, columnOrdinal);
+        dataValue = valueConverter.GetValue (id.ClassDefinition, propertyDefinition, _dataReader, columnOrdinal);
       }
       catch (RdbmsProviderException e)
       {
         throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
-            propertyDefinition.PropertyName, classDefinition.ID, e.Message);
+            propertyDefinition.PropertyName, id.ClassID, e.Message);
       }
       catch (ConverterException e)
       {
         throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
-            propertyDefinition.PropertyName, classDefinition.ID, e.Message);
+            propertyDefinition.PropertyName, id.ClassID, e.Message);
       }
       catch (InvalidCastException e)
       {
         throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
-            propertyDefinition.PropertyName, classDefinition.ID, e.Message);
+            propertyDefinition.PropertyName, id.ClassID, e.Message);
       }
 
       dataContainer.PropertyValues.Add (new PropertyValue (propertyDefinition, dataValue));

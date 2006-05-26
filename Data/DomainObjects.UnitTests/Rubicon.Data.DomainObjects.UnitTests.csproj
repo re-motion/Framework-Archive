@@ -553,21 +553,15 @@
     <Compile Include="TestDomain\ClassWithKeyOfInvalidType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestDomain\ClassWithoutClassIDProperty.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TestDomain\ClassWithoutIDProperty.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="TestDomain\ClassWithoutClassIDColumn.cs" />
+    <Compile Include="TestDomain\ClassWithoutIDColumn.cs" />
     <Compile Include="TestDomain\ClassWithoutRelatedClassIDColumn.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TestDomain\ClassWithoutRelatedClassIDColumnAndDerivation.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="TestDomain\ClassWithoutTimestampProperty.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="TestDomain\ClassWithoutTimestampColumn.cs" />
     <Compile Include="TestDomain\ClassWithRelatedClassIDColumnAndNoInheritance.cs">
       <SubType>Code</SubType>
     </Compile>

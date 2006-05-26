@@ -28,12 +28,25 @@ public class SqlProvider : RdbmsProvider
   {
     ArgumentUtility.CheckNotNullOrEmpty ("sortExpression", sortExpression);
 
-    string formattedSortExpression = Regex.Replace (sortExpression, @"\r|\n|\t", " ", RegexOptions.IgnoreCase);
+    // Collapse all whitespaces (space, tab, carrriage return, ...) to a single space
+    string formattedSortExpression = Regex.Replace (sortExpression, @"\s+", " ");
 
+    // Collate is not supported. If collate should be supported later, UnionSelectCommandBuilder must 
+    // add collate columns to select list (because it uses a UNION).
     if (formattedSortExpression.IndexOf (" COLLATE", StringComparison.InvariantCultureIgnoreCase) >= 0)
       throw CreateArgumentException ("sortExpression", "Collations cannot be used in sort expressions. Sort expression: '{0}'.", sortExpression);
 
-    return Regex.Replace (formattedSortExpression, @" asc| desc", string.Empty, RegexOptions.IgnoreCase);
+    // Space after "," must be removed to avoid the following regex " asc| desc" matching a column beginning with "asc" or "desc"
+    formattedSortExpression = Regex.Replace (formattedSortExpression, @" ?, ?", ",");
+    
+    // Remove sort orders
+    formattedSortExpression = Regex.Replace (formattedSortExpression, @" asc| desc", string.Empty, RegexOptions.IgnoreCase);
+    
+    // Add space after each "," for better readability of resulting SQL expression
+    formattedSortExpression = Regex.Replace (formattedSortExpression, @" ?, ?", ", ");
+
+    // Remove any leading or trailing whitespace
+    return formattedSortExpression.Trim ();
   }
 
   public override string GetParameterName (string name)

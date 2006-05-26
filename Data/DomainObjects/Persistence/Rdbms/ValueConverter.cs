@@ -65,6 +65,8 @@ public class ValueConverter : ValueConverterBase
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
 
+    // TODO: Provide ID and entityName for a better troubleshooting experience
+
     try
     {  
       return dataReader.GetOrdinal (columnName);
@@ -99,6 +101,20 @@ public class ValueConverter : ValueConverterBase
       dataValue = null;
     
     return base.GetValue (classDefinition, propertyDefinition, dataValue);
+  }
+
+  public ObjectID GetID (IDataReader dataReader)
+  {
+    ArgumentUtility.CheckNotNull ("dataReader", dataReader);
+
+    object idValue = dataReader.GetValue (GetMandatoryOrdinal (dataReader, "ID"));
+    string classID = dataReader.GetString (GetMandatoryOrdinal (dataReader, "ClassID"));
+
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
+    if (classDefinition == null)
+      throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
+
+    return GetObjectID (classDefinition, idValue);
   }
 
   public override ObjectID GetObjectID (ClassDefinition classDefinition, object dataValue)

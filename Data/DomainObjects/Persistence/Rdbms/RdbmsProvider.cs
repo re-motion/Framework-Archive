@@ -218,13 +218,10 @@ public abstract class RdbmsProvider : StorageProvider
 
     PropertyDefinition propertyDefinition = classDefinition.GetPropertyDefinition (propertyName);
     if (propertyDefinition == null)
-    {
-      throw CreateRdbmsProviderException ("Class '{0}' does not contain property '{1}'.",
-          classDefinition.ID, propertyName);
-    }
+      throw CreateRdbmsProviderException ("Class '{0}' does not contain property '{1}'.", classDefinition.ID, propertyName);
 
-    // TODO: ClassDefinition does not have to have an entity assigned => abstract base class in a concrete table inheritance scenario =>
-    // Search for all concrete entities and look for objects.
+    // TODO: ClassDefinition does not have to have an entity assigned => relation to abstract base class in a concrete table inheritance scenario =>
+    // Use GetEntityName () to recognize this and use ConcreteTableInheritanceRelationLoader.
 
     SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForRelatedIDLookup (this, classDefinition, propertyDefinition, relatedID);
 

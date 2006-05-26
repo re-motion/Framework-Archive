@@ -476,20 +476,20 @@
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
-		<class id="ClassWithoutIDProperty">
-			<type>UndefinedNamespace.ClassWithoutIDProperty, UnknownAssembly</type>
+		<class id="ClassWithoutIDColumn">
+			<type>UndefinedNamespace.ClassWithoutIDColumn, UnknownAssembly</type>
 			<entity name="TableWithoutIDColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
-		<class id="ClassWithoutClassIDProperty">
-			<type>UndefinedNamespace.ClassWithoutClassIDProperty, UnknownAssembly</type>
+		<class id="ClassWithoutClassIDColumn">
+			<type>UndefinedNamespace.ClassWithoutClassIDColumn, UnknownAssembly</type>
 			<entity name="TableWithoutClassIDColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
-		<class id="ClassWithoutTimestampProperty">
-			<type>UndefinedNamespace.ClassWithoutTimestampProperty, UnknownAssembly</type>
+		<class id="ClassWithoutTimestampColumn">
+			<type>UndefinedNamespace.ClassWithoutTimestampColumn, UnknownAssembly</type>
 			<entity name="TableWithoutTimestampColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>

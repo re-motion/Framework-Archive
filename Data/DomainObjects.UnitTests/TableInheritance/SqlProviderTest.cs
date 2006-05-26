@@ -43,12 +43,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       RdbmsProvider rdbmsProvider = Provider;
       Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1, Column2"));
+      Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("    Column1   ,    Column2   "));
+      Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1,Column2"));
+      Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1 asc,Column2 desc"));
       Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1 asc, Column2 desc"));
       Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1 ASC, Column2 DESC"));
-      Assert.AreEqual ("Column1 , Column2  ", rdbmsProvider.GetColumnsFromSortExpression ("Column1 \tASC, Column2  \nDESC"));
-      Assert.AreEqual ("Column1,  Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1\tASC,\r\nColumn2\nDESC"));
+      Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1 \tASC, Column2  \nDESC"));
+      Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1\tASC,\r\nColumn2\nDESC"));
       Assert.AreEqual ("[ASC], [desc]", rdbmsProvider.GetColumnsFromSortExpression ("[ASC] ASC, [desc] DESC"));
       Assert.AreEqual ("[Collate]", rdbmsProvider.GetColumnsFromSortExpression ("[Collate] asc"));
+      Assert.AreEqual ("AscColumnAsc1Asc, DescColumn2Desc", rdbmsProvider.GetColumnsFromSortExpression ("AscColumnAsc1Asc ASC, DescColumn2Desc DESC"));
     }
 
     [Test]
@@ -57,6 +61,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public void GetColumnsWithCollate ()
     {
       Provider.GetColumnsFromSortExpression ("Column1 collate German_PhoneBook_CI_AI");
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException),
+        "Collations cannot be used in sort expressions. Sort expression: 'Column1\t\tcollate German_PhoneBook_CI_AI'.\r\nParameter name: sortExpression")]
+    public void GetColumnsWithCollateAfterMultipleTabs ()
+    {
+      Provider.GetColumnsFromSortExpression ("Column1\t\tcollate German_PhoneBook_CI_AI");
     }
 
   }

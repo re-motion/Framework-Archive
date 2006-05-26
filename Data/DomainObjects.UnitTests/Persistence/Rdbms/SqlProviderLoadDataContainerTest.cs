@@ -60,7 +60,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (RdbmsProviderException), "Error while executing SQL command.")]
     public void LoadDataContainerWithoutIDColumn ()
     {
-      ObjectID id = new ObjectID ("ClassWithoutIDProperty", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
+      ObjectID id = new ObjectID ("ClassWithoutIDColumn", new Guid ("{7D1F5F2E-D111-433b-A675-300B55DC4756}"));
 
       try
       {
@@ -77,7 +77,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (RdbmsProviderException), "The mandatory column 'ClassID' could not be found.")]
     public void LoadDataContainerWithoutClassIDColumn ()
     {
-      ObjectID id = new ObjectID ("ClassWithoutClassIDProperty", new Guid ("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
+      ObjectID id = new ObjectID ("ClassWithoutClassIDColumn", new Guid ("{DDD02092-355B-4820-90B6-7F1540C0547E}"));
 
       DataContainer container = Provider.LoadDataContainer (id);
     }
@@ -86,7 +86,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
     [ExpectedException (typeof (RdbmsProviderException), "The mandatory column 'Timestamp' could not be found.")]
     public void LoadDataContainerWithoutTimestampColumn ()
     {
-      ObjectID id = new ObjectID ("ClassWithoutTimestampProperty", new Guid ("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
+      ObjectID id = new ObjectID ("ClassWithoutTimestampColumn", new Guid ("{027DCBD7-ED68-461d-AE80-B8E145A7B816}"));
 
       DataContainer container = Provider.LoadDataContainer (id);
     }

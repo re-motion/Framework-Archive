@@ -12,31 +12,37 @@ delete from [TableInheritance_Client]
 -- TableInheritance_Client
 insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'Client', 'rubicon')
 
+-- Note: This client has an OrganizationalUnit assigned with an invalid ClassID:
+insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{58535280-84EC-41d9-9F8F-BCAC64BB3709}', 'Client', 'ClientWithOrganizationalUnitWithInvalidClassID')
+
 -- TableInheritance_OrganizationalUnit
 insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [Name]) 
-    values ('{C6F4E04D-0465-4a9e-A944-C9FD26E33C44}', 'OrganizationalUnit', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', GETDATE(), 'Entwicklung')
+    values ('{C6F4E04D-0465-4a9e-A944-C9FD26E33C44}', 'OrganizationalUnit', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', '2006/1/1', 'Entwicklung')
+
+insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [Name]) 
+    values ('{1B5BA13A-F6AD-4390-87BB-D85A1C098D1C}', 'InvalidClassID', '{58535280-84EC-41d9-9F8F-BCAC64BB3709}', 'UnitTests', '2006/1/1', 'OrganizationalUnitWithInvalidClassID')
 
 -- Note: This OrganizationalUnit has the same ID as PersonWithSameIDAsOrganizationalUnit.
 --       A SqlProvider test checks that RdbmsProvider.LoadDataContainerByRelatedID uses the classID column.
 --       This OrganizationalUnit must have an associated HistoryEntry.
 insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [Name]) 
-    values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'OrganizationalUnit', null, 'UnitTests', GETDATE(), 'OrganizationalUnitWithSameIDAsPerson')
+    values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'OrganizationalUnit', null, 'UnitTests', '2006/1/2', 'OrganizationalUnitWithSameIDAsPerson')
 
 -- TableInheritance_Region
 insert into [TableInheritance_Region] (ID, ClassID, [Name]) values ('{7905CF32-FBC2-47fe-AC40-3E398BEEA5AB}', 'Region', 'NÖ')
 
 -- TableInheritance_Person 
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth])
-    values ('{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'Person', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', GETDATE(), 'Max', 'Mustermann', '1980/6/9')
+    values ('{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'Person', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', '2006/1/3', 'Max', 'Mustermann', '1980/6/9')
 
 -- Note: This person has an OrganizationalUnit with the same ID. It needs at least one HistoryEntry.
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth])
-    values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'Person', null, 'UnitTests', GETDATE(), '', 'PersonWithSameIDAsOrganizationalUnit', '1980/6/9')
+    values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'Person', null, 'UnitTests','2006/1/4', '', 'PersonWithSameIDAsOrganizationalUnit', '1980/6/9')
 
 -- TableInheritance_Customer
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [RegionID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [CustomerType], [CustomerSince])
     values ('{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'Customer', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', '{7905CF32-FBC2-47fe-AC40-3E398BEEA5AB}',
-    'UnitTests', GETDATE(), 'Zaphod', 'Beeblebrox', '1950/1/1', 1, '1992/12/24')
+    'UnitTests', '2006/1/5', 'Zaphod', 'Beeblebrox', '1950/1/1', 1, '1992/12/24')
 
 -- TableInheritance_HistoryEntry
 insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])

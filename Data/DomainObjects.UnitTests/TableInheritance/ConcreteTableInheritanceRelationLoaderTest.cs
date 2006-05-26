@@ -56,5 +56,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       Assert.IsTrue (dataContainers.Contains (DomainObjectIDs.Person));
       Assert.IsTrue (dataContainers.Contains (DomainObjectIDs.OrganizationalUnit));
     }
+
+    [Test]
+    public void LoadOrderedDataContainers ()
+    {
+      DataContainerCollection dataContainers = _loader.LoadDataContainers ();
+
+      Assert.IsNotNull (dataContainers);
+      Assert.AreEqual (3, dataContainers.Count);
+      Assert.AreEqual (DomainObjectIDs.OrganizationalUnit, dataContainers[0].ID);
+      Assert.AreEqual (DomainObjectIDs.Person, dataContainers[1].ID);
+      Assert.AreEqual (DomainObjectIDs.Customer, dataContainers[2].ID);
+    }
+
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException), "Invalid ClassID 'InvalidClassID' for ID '1b5ba13a-f6ad-4390-87bb-d85a1c098d1c' encountered.")]
+    public void LoadDataContainerWithInvalidClassID ()
+    {
+      ConcreteTableInheritanceRelationLoader loader = new ConcreteTableInheritanceRelationLoader (
+          Provider, _domainBaseClass, _domainBaseClass.GetMandatoryPropertyDefinition ("Client"), 
+          new ObjectID (typeof (Client), new Guid ("{58535280-84EC-41d9-9F8F-BCAC64BB3709}")));
+
+      loader.LoadDataContainers ();
+    }
   }
 }

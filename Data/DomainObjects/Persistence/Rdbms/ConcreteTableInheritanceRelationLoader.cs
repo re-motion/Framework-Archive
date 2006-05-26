@@ -56,8 +56,16 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
       foreach (string entityName in objectIDsPerEntityName.Keys)
         allDataContainers = DataContainerCollection.Join (allDataContainers, GetDataContainers (entityName, objectIDsPerEntityName[entityName]));
 
-      return allDataContainers;
-      // TODO: Sort DataContainerCollection
+      return GetOrderedDataContainers (objectIDsInCorrectOrder, allDataContainers);
+    }
+
+    private DataContainerCollection GetOrderedDataContainers (List<ObjectID> objectIDsInCorrectOrder, DataContainerCollection unorderedDataContainers)
+    {
+      DataContainerCollection orderedDataContainers = new DataContainerCollection ();
+      foreach (ObjectID objectID in objectIDsInCorrectOrder)
+        orderedDataContainers.Add (unorderedDataContainers[objectID]);
+
+      return orderedDataContainers;
     }
 
     private DataContainerCollection GetDataContainers (string entityName, List<ObjectID> objectIDs)
@@ -83,22 +91,13 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
       using (IDbCommand command = builder.Create ())
       {
-        //TODO: handle exceptions
         using (IDataReader reader = Provider.ExecuteReader (command, CommandBehavior.SingleResult))
         {
           ValueConverter valueConverter = new ValueConverter ();
 
           while (reader.Read ())
           {
-            string classID = reader.GetString (valueConverter.GetMandatoryOrdinal (reader, "ClassID"));
-            ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
-
-            object idValue = reader.GetValue (valueConverter.GetMandatoryOrdinal (reader, "ID"));
-
-            //if (classDefinition == null)
-            //  throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
-
-            objectIDsInCorrectOrder.Add (valueConverter.GetObjectID (classDefinition, idValue));
+            objectIDsInCorrectOrder.Add (valueConverter.GetID (reader));
           }
         }
       }

@@ -479,20 +479,20 @@
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
-		<class id="ClassWithoutIDProperty">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutIDProperty, Rubicon.Data.DomainObjects.UnitTests</type>
+		<class id="ClassWithoutIDColumn">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutIDColumn, Rubicon.Data.DomainObjects.UnitTests</type>
 			<entity name="TableWithoutIDColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
-		<class id="ClassWithoutClassIDProperty">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutClassIDProperty, Rubicon.Data.DomainObjects.UnitTests</type>
+		<class id="ClassWithoutClassIDColumn">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutClassIDColumn, Rubicon.Data.DomainObjects.UnitTests</type>
 			<entity name="TableWithoutClassIDColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
 		</class>
-		<class id="ClassWithoutTimestampProperty">
-			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutTimestampProperty, Rubicon.Data.DomainObjects.UnitTests</type>
+		<class id="ClassWithoutTimestampColumn">
+			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.ClassWithoutTimestampColumn, Rubicon.Data.DomainObjects.UnitTests</type>
 			<entity name="TableWithoutTimestampColumn"/>
 			<storageProviderID>TestDomain</storageProviderID>
 			<properties/>
