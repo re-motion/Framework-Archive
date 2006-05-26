@@ -507,9 +507,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TableInheritance\ConcreteTableInheritanceRelationLoaderTest.cs" />
+    <Compile Include="TableInheritance\DataContainerFactoryTest.cs" />
     <Compile Include="TableInheritance\DomainObjectIDs.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TableInheritance\DomainObjectTest.cs" />
     <Compile Include="TableInheritance\IntegrationTest.cs" />
     <Compile Include="TableInheritance\MappingConfigurationTest.cs">
       <SubType>Code</SubType>
@@ -521,8 +523,11 @@
     <Compile Include="TableInheritance\SqlProviderTest.cs" />
     <Compile Include="TableInheritance\SqlProviderBaseTest.cs" />
     <Compile Include="TableInheritance\TableInheritanceMappingTest.cs" />
+    <Compile Include="TableInheritance\TestDomain\AbstractClassWithoutDerivations.cs" />
     <Compile Include="TableInheritance\TestDomain\Address.cs" />
     <Compile Include="TableInheritance\TestDomain\Client.cs" />
+    <Compile Include="TableInheritance\TestDomain\BaseClassWithInvalidRelationClassIDColumns.cs" />
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithInvalidRelationClassIDColumns.cs" />
     <Compile Include="TableInheritance\TestDomain\HistoryEntry.cs" />
     <Compile Include="TableInheritance\TestDomain\Order.cs" />
     <Compile Include="TableInheritance\TestDomain\Region.cs" />

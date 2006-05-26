@@ -39,6 +39,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
     [Test]
+    public void LoadDataContainersByRelatedIDWithAbstractBaseClass ()
+    {
+      ClassDefinition domainBaseClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (DomainBase));
+
+      DataContainerCollection loadedDataContainers = Provider.LoadDataContainersByRelatedID (domainBaseClass, "Client", DomainObjectIDs.Client);
+
+      Assert.IsNotNull (loadedDataContainers);
+      Assert.AreEqual (3, loadedDataContainers.Count);
+      Assert.AreEqual (DomainObjectIDs.OrganizationalUnit, loadedDataContainers[0].ID);
+      Assert.AreEqual (DomainObjectIDs.Person, loadedDataContainers[1].ID);
+      Assert.AreEqual (DomainObjectIDs.Customer, loadedDataContainers[2].ID);
+    }
+
+    [Test]
     public void GetColumnsFromSortExpression ()
     {
       RdbmsProvider rdbmsProvider = Provider;

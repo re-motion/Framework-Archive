@@ -65,20 +65,10 @@ public class DataContainerFactory
       {
         dataValue = valueConverter.GetValue (id.ClassDefinition, propertyDefinition, _dataReader, columnOrdinal);
       }
-      catch (RdbmsProviderException e)
+      catch (Exception e)
       {
-        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
-            propertyDefinition.PropertyName, id.ClassID, e.Message);
-      }
-      catch (ConverterException e)
-      {
-        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
-            propertyDefinition.PropertyName, id.ClassID, e.Message);
-      }
-      catch (InvalidCastException e)
-      {
-        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' for class '{1}': {2}",
-            propertyDefinition.PropertyName, id.ClassID, e.Message);
+        throw CreateRdbmsProviderException (e, "Error while reading property '{0}' of object '{1}': {2}",
+            propertyDefinition.PropertyName, id, e.Message);
       }
 
       dataContainer.PropertyValues.Add (new PropertyValue (propertyDefinition, dataValue));

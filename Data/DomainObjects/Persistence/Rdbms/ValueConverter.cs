@@ -65,8 +65,6 @@ public class ValueConverter : ValueConverterBase
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
     ArgumentUtility.CheckNotNullOrEmpty ("columnName", columnName);
 
-    // TODO: Provide ID and entityName for a better troubleshooting experience
-
     try
     {  
       return dataReader.GetOrdinal (columnName);
@@ -108,12 +106,8 @@ public class ValueConverter : ValueConverterBase
     ArgumentUtility.CheckNotNull ("dataReader", dataReader);
 
     object idValue = dataReader.GetValue (GetMandatoryOrdinal (dataReader, "ID"));
-    string classID = dataReader.GetString (GetMandatoryOrdinal (dataReader, "ClassID"));
-
-    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
-    if (classDefinition == null)
-      throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
-
+    ClassDefinition classDefinition = GetClassDefinition (dataReader, idValue);
+   
     return GetObjectID (classDefinition, idValue);
   }
 
@@ -125,6 +119,33 @@ public class ValueConverter : ValueConverterBase
       dataValue = null;
     
     return base.GetObjectID (classDefinition, dataValue);
+  }
+
+  private ClassDefinition GetClassDefinition (IDataReader dataReader, object idValue)
+  {
+    string classID = GetClassID (dataReader);
+
+    ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions[classID];
+    if (classDefinition == null)
+      throw CreateRdbmsProviderException ("Invalid ClassID '{0}' for ID '{1}' encountered.", classID, idValue);
+
+    if (classDefinition.ClassType.IsAbstract)
+    {
+      throw CreateRdbmsProviderException (
+          "Invalid database value encountered. Column 'ClassID' of row with ID '{0}' refers to abstract class '{1}'.",
+          idValue, classDefinition.ID);
+    }
+
+    return classDefinition;
+  }
+
+  private string GetClassID (IDataReader dataReader)
+  {
+    int classIDColumnOrdinal = GetMandatoryOrdinal (dataReader, "ClassID");
+    if (dataReader.IsDBNull (classIDColumnOrdinal))
+      throw CreateRdbmsProviderException ("Invalid database value encountered. Column 'ClassID' must not contain null.");
+
+    return dataReader.GetString (classIDColumnOrdinal);
   }
 
   private ObjectID GetObjectID (ClassDefinition classDefinition, PropertyDefinition propertyDefinition, IDataReader dataReader, int objectIDColumnOrdinal)
@@ -162,31 +183,28 @@ public class ValueConverter : ValueConverterBase
       }
       catch (IndexOutOfRangeException)
       {
-        // TODO: Implement concrete table inheritance!
         throw CreateRdbmsProviderException (
             "Incorrect database format encountered."
             + " Entity '{0}' must have column '{1}' defined, because opposite class '{2}' is part of an inheritance hierarchy.",
-            classDefinition.MyEntityName,
+            classDefinition.GetEntityName (),
             RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName), 
             relatedClassDefinition.ID);    
       }
 
       if (dataReader.IsDBNull (objectIDColumnOrdinal) && !dataReader.IsDBNull (classIDColumnOrdinal))
       {
-        // TODO: Implement concrete table inheritance!
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain a value.",
             RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName),
-            classDefinition.MyEntityName);
+            classDefinition.GetEntityName ());
       }
 
       if (!dataReader.IsDBNull (objectIDColumnOrdinal) && dataReader.IsDBNull (classIDColumnOrdinal))
       {
-        // TODO: Implement concrete table inheritance!
         throw CreateRdbmsProviderException (
             "Incorrect database value encountered. Column '{0}' of entity '{1}' must not contain null.",
             RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName),
-            classDefinition.MyEntityName);
+            classDefinition.GetEntityName ());
       }
 
       if (dataReader.IsDBNull (classIDColumnOrdinal))
@@ -217,10 +235,9 @@ public class ValueConverter : ValueConverterBase
 
         if ((bool) s_hasClassIDColumn[hashKey])
         {
-          // TODO: Implement concrete table inheritance!
           throw CreateRdbmsProviderException (
               "Incorrect database format encountered. Entity '{0}' must not contain column '{1}', because opposite class '{2}' is not part of an inheritance hierarchy.",
-              classDefinition.MyEntityName,
+              classDefinition.GetEntityName (),
               RdbmsProvider.GetClassIDColumnName (propertyDefinition.ColumnName),
               relatedClassDefinition.ID);
         }
@@ -236,7 +253,7 @@ public class ValueConverter : ValueConverterBase
         StorageProviderConfiguration.Current.StorageProviderDefinitions.GetMandatory (classDefinition.StorageProviderID);
 
     return storageProviderDefinition.GetHashCode ()
-        ^ classDefinition.GetEntityName ().GetHashCode () 
+        ^ classDefinition.GetEntityName ().GetHashCode ()
         ^ propertyDefinition.ColumnName.GetHashCode ();
   }
 

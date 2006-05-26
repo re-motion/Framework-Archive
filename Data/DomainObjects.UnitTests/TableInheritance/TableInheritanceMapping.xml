@@ -38,6 +38,16 @@
       </properties>
     </class>
 
+    <class id="AbstractClassWithoutDerivations">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.AbstractClassWithoutDerivations, Rubicon.Data.DomainObjects.UnitTests</type>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty relationID="DomainBaseToAbstractClassWithoutDerivations" name="DomainBase" cardinality="one" isMandatory="false">
+          <column>DomainBaseID</column>
+        </relationProperty>
+      </properties>  
+    </class>
+
     <class id="DomainBase">
       <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DomainBase, Rubicon.Data.DomainObjects.UnitTests</type>
       <storageProviderID>TestDomain</storageProviderID>
@@ -57,6 +67,7 @@
         <relationProperty relationID="DomainBaseToHistoryEntry" name="HistoryEntries" cardinality="many" isMandatory="false">
           <sortExpression>HistoryDate desc</sortExpression>
         </relationProperty>
+        <relationProperty relationID="DomainBaseToAbstractClassWithoutDerivations" name="AbstractClassesWithoutDerivations" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -177,6 +188,55 @@
           <column>PersonID</column>
         </relationProperty>
       </properties>
+    </class>
+
+    
+    <!-- Classes with invalid database structure for exception testing only -->
+
+    <class id="BaseClassWithInvalidRelationClassIDColumns">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.BaseClassWithInvalidRelationClassIDColumns, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_BaseClassWithInvalidRelationClassIDColumns" />
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty 
+            relationID="BaseClassWithInvalidRelationClassIDColumns_To_Client" 
+            name="Client" 
+            cardinality="one" 
+            isMandatory="false">
+          <column>ClientID</column>
+          <oppositeClass>Client</oppositeClass>
+        </relationProperty>
+        <relationProperty 
+            relationID="BaseClassWithInvalidRelationClassIDColumns_To_DomainBase" 
+            name="DomainBase" 
+            cardinality="one" 
+            isMandatory="false">
+          <column>DomainBaseID</column>
+          <oppositeClass>DomainBase</oppositeClass>
+        </relationProperty>
+        <relationProperty
+            relationID="BaseClassWithInvalidRelationClassIDColumns_To_DomainBase_WithInvalidClassIDValue"
+            name="DomainBaseWithInvalidClassIDValue"
+            cardinality="one"
+            isMandatory="false">
+          <column>DomainBaseWithInvalidClassIDValueID</column>
+          <oppositeClass>DomainBase</oppositeClass>
+        </relationProperty>
+        <relationProperty
+            relationID="BaseClassWithInvalidRelationClassIDColumns_To_DomainBase_WithInvalidClassIDNullValue"
+            name="DomainBaseWithInvalidClassIDNullValue"
+            cardinality="one"
+            isMandatory="false">
+          <column>DomainBaseWithInvalidClassIDNullValueID</column>
+          <oppositeClass>DomainBase</oppositeClass>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="DerivedClassWithInvalidRelationClassIDColumns" baseClass="BaseClassWithInvalidRelationClassIDColumns">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DerivedClassWithInvalidRelationClassIDColumns, Rubicon.Data.DomainObjects.UnitTests</type>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties />
     </class>
   </classes>
 </mapping>

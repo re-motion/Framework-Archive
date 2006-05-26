@@ -58,11 +58,9 @@ public class UpdateCommandBuilder : CommandBuilder
     if (_dataContainer.State != StateType.New)
       whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
 
-    // TODO: Implement concrete table inheritance!
-    command.CommandText = string.Format ("UPDATE [{0}] SET {1} WHERE {2};",
-        _dataContainer.ClassDefinition.MyEntityName,
-        _updateBuilder.ToString (),
-        whereClauseBuilder.ToString ());
+    command.CommandText = string.Format (
+        "UPDATE [{0}] SET {1} WHERE {2};",
+        _dataContainer.ClassDefinition.GetEntityName (), _updateBuilder.ToString (), whereClauseBuilder.ToString ());
 
     return command;
   }

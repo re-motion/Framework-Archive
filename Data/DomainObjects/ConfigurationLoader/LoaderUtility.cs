@@ -57,7 +57,7 @@ public sealed class LoaderUtility
     ArgumentUtility.CheckNotNullOrEmpty ("appSettingKey", appSettingKey);
     ArgumentUtility.CheckNotNullOrEmpty ("defaultFileName", defaultFileName);
 
-    string fileName = ConfigurationSettings.AppSettings[appSettingKey];
+    string fileName = ConfigurationManager.AppSettings[appSettingKey];
 
     if (File.Exists (fileName))
       return fileName;

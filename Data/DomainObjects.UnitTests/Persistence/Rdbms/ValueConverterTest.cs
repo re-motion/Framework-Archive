@@ -201,6 +201,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       }
     }
 
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException), "Invalid database value encountered. Column 'ClassID' must not contain null.")]
+    public void GetIDWithClassIDNull ()
+    {
+      using (IDbCommand command = _connection.CreateCommand ())
+      {
+        command.CommandText = string.Format ("SELECT '{0}' as ID, null as ClassID;", DomainObjectIDs.Person1.Value);
+        using (IDataReader reader = command.ExecuteReader ())
+        {
+          Assert.IsTrue (reader.Read ());
+          _converter.GetID (reader);
+        }
+      }
+    }
+
     private IDbCommand CreateClassWithOptionalOneToOneRelationAndOppositeDerivedClassCommand (Guid id)
     {
       return CreateCommand ("TableWithOptionalOneToOneRelationAndOppositeDerivedClass", id, _connection);

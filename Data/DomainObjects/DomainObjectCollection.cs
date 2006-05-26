@@ -797,7 +797,23 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// which can be independently modified without affecting the original collection.
   /// Thus meaning the references to the domain objects are copied, not the domain objects themselves.
   /// </remarks>
-  public object Clone ()
+  object ICloneable.Clone ()
+  {
+    return Clone ();
+  }
+
+  /// <summary>
+  /// Creates a shallow copy of this collection.
+  /// </summary>
+  /// <returns>The cloned collection.</returns>
+  /// <remarks>
+  /// If this collection is read-only, the clone will be read-only too. 
+  /// If this collection is not read-only, the clone will not be read-only too.<br/><br/>
+  /// A shallow copy creates a new <see cref="DomainObjectCollection"/> instance
+  /// which can be independently modified without affecting the original collection.
+  /// Thus meaning the references to the domain objects are copied, not the domain objects themselves.
+  /// </remarks>
+  public DomainObjectCollection Clone ()
   {
     return Clone (this.IsReadOnly);
   }

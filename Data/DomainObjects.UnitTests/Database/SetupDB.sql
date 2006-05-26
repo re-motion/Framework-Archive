@@ -125,6 +125,11 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInhe
 DROP TABLE [TableInheritance_Client]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns') 
+DROP TABLE [TableInheritance_BaseClassWithInvalidRelationClassIDColumns]
+GO
+
+
 IF OBJECT_ID ('rpf_testSPQuery', 'P') IS NOT NULL 
   DROP PROCEDURE rpf_testSPQuery;
 GO
@@ -598,7 +603,6 @@ CREATE TABLE [TableInheritance_Order] (
 ) 
 GO
 
-
 CREATE PROCEDURE rpf_testSPQuery
 AS
   SELECT * FROM [Order] WHERE [Order].[OrderNo] = 1 OR [Order].[OrderNo] = 3 ORDER BY OrderNo ASC
@@ -608,4 +612,27 @@ CREATE PROCEDURE rpf_testSPQueryWithParameter
   @customerID uniqueidentifier
 AS
   SELECT * FROM [Order] WHERE [Order].[CustomerID] = @customerID ORDER BY OrderNo ASC
+GO
+
+
+
+-- Tables with invalid database structure for exception testing only
+
+CREATE TABLE [TableInheritance_BaseClassWithInvalidRelationClassIDColumns] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [ClientID] uniqueidentifier NULL, -- Note: To conform to mapping column ClientIDClassID must not be defined.
+  [ClientIDClassID] varchar (100) NULL, 
+  [DomainBaseID] uniqueidentifier NULL, -- Note: To conform to mapping column DomainBaseIDClassID must be defined.
+  
+  [DomainBaseWithInvalidClassIDValueID] uniqueidentifier NULL, 
+  [DomainBaseWithInvalidClassIDValueIDClassID] varchar (100) NULL, 
+  [DomainBaseWithInvalidClassIDNullValueID] uniqueidentifier NULL, 
+  [DomainBaseWithInvalidClassIDNullValueIDClassID] varchar (100) NULL, 
+  
+  -- Note: This table does not need to have foreign keys, because rows cannot be read because of invalid ClassID column structure
+  CONSTRAINT [PK_TableInheritance_BaseClassWithInvalidRelationClassIDColumns] PRIMARY KEY CLUSTERED ([ID])
+) 
 GO

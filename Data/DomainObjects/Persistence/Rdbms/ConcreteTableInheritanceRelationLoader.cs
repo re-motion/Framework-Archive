@@ -50,6 +50,8 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
     public DataContainerCollection LoadDataContainers ()
     {
       List<ObjectID> objectIDsInCorrectOrder = GetObjectIDsInCorrectOrder ();
+      if (objectIDsInCorrectOrder.Count == 0)
+        return new DataContainerCollection ();
 
       Dictionary<string, List<ObjectID>> objectIDsPerEntityName = GetObjectIDsPerEntityName (objectIDsInCorrectOrder);
       DataContainerCollection allDataContainers = new DataContainerCollection ();
@@ -57,6 +59,31 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
         allDataContainers = DataContainerCollection.Join (allDataContainers, GetDataContainers (entityName, objectIDsPerEntityName[entityName]));
 
       return GetOrderedDataContainers (objectIDsInCorrectOrder, allDataContainers);
+    }
+
+    private List<ObjectID> GetObjectIDsInCorrectOrder ()
+    {
+      UnionSelectCommandBuilder builder = UnionSelectCommandBuilder.CreateForRelatedIDLookup (
+          _provider, _classDefinition, _propertyDefinition, _relatedID);
+
+      using (IDbCommand command = builder.Create ())
+      {
+        if (command == null)
+          return new List<ObjectID> ();
+           
+        using (IDataReader reader = Provider.ExecuteReader (command, CommandBehavior.SingleResult))
+        {
+          List<ObjectID> objectIDsInCorrectOrder = new List<ObjectID> ();
+
+          ValueConverter valueConverter = new ValueConverter ();
+          while (reader.Read ())
+          {
+            objectIDsInCorrectOrder.Add (valueConverter.GetID (reader));
+          }
+
+          return objectIDsInCorrectOrder;
+        }
+      } 
     }
 
     private DataContainerCollection GetOrderedDataContainers (List<ObjectID> objectIDsInCorrectOrder, DataContainerCollection unorderedDataContainers)
@@ -80,28 +107,6 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
           return dataContainerFactory.CreateCollection ();
         }
       }
-    }
-
-    private List<ObjectID> GetObjectIDsInCorrectOrder ()
-    {
-      UnionSelectCommandBuilder builder = UnionSelectCommandBuilder.CreateForRelatedIDLookup (
-          _provider, _classDefinition, _propertyDefinition, _relatedID);
-
-      List<ObjectID> objectIDsInCorrectOrder = new List<ObjectID> ();
-
-      using (IDbCommand command = builder.Create ())
-      {
-        using (IDataReader reader = Provider.ExecuteReader (command, CommandBehavior.SingleResult))
-        {
-          ValueConverter valueConverter = new ValueConverter ();
-
-          while (reader.Read ())
-          {
-            objectIDsInCorrectOrder.Add (valueConverter.GetID (reader));
-          }
-        }
-      }
-      return objectIDsInCorrectOrder;
     }
 
     private Dictionary<string, List<ObjectID>> GetObjectIDsPerEntityName (List<ObjectID> objectIDsInCorrectOrder)

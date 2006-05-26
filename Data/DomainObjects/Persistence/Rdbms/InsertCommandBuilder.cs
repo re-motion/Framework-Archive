@@ -60,9 +60,9 @@ public class InsertCommandBuilder : CommandBuilder
       }
     }
     
-    // TODO: Implement concrete table inheritance!
-    command.CommandText = string.Format ("INSERT INTO [{0}] ({1}) VALUES ({2});",
-        _dataContainer.ClassDefinition.MyEntityName, _columnBuilder.ToString (), _valueBuilder.ToString ());
+    command.CommandText = string.Format (
+        "INSERT INTO [{0}] ({1}) VALUES ({2});",
+        _dataContainer.ClassDefinition.GetEntityName (), _columnBuilder.ToString (), _valueBuilder.ToString ());
 
     return command;
   }

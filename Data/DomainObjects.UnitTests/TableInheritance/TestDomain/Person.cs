@@ -56,5 +56,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       get { return DataContainer.GetDateTime ("DateOfBirth"); }
       set { DataContainer.SetValue ("DateOfBirth", value); }
     }
+
+    public Address Address
+    {
+      get { return (Address) GetRelatedObject ("Address"); }
+    }
   }
 }

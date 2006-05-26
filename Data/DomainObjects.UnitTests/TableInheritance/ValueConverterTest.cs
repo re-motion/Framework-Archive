@@ -11,7 +11,7 @@ using Rubicon.Data.DomainObjects.Persistence;
 namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 {
   [TestFixture]
-  public class ValueConverterTest : TableInheritanceMappingTest
+  public class ValueConverterTest : SqlProviderBaseTest
   {
     // types
 
@@ -44,9 +44,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     }
 
 
-    [TearDown]
-    public void TearDown ()
+    public override void TearDown ()
     {
+      base.TearDown ();
+
       _storageProviderManager.Dispose ();
     }
 
@@ -65,6 +66,133 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
           int columnOrdinal = _converter.GetMandatoryOrdinal (reader, clientProperty.ColumnName);
           Assert.AreEqual (expectedID, _converter.GetValue (personClass, clientProperty, reader, columnOrdinal));
+        }
+      }
+    }
+
+    [Test]
+    public void GetIDWithAbstractClassID ()
+    {
+      using (IDbCommand command = _connection.CreateCommand ())
+      {
+        command.CommandText = string.Format ("SELECT '{0}' as ID, 'DomainBase' as ClassID;", DomainObjectIDs.Person.Value);
+        using (IDataReader reader = command.ExecuteReader ())
+        {
+          Assert.IsTrue (reader.Read ());
+
+          try
+          {
+            _converter.GetID (reader);
+            Assert.Fail ("RdbmsProviderException was expected.");
+          }
+          catch (RdbmsProviderException ex)
+          {
+            string expectedMessage = string.Format (
+                "Invalid database value encountered. Column 'ClassID' of row with ID '{0}' refers to abstract class 'DomainBase'.", 
+                DomainObjectIDs.Person.Value);
+
+            Assert.AreEqual (expectedMessage, ex.Message);
+          }
+        }
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException),
+        "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must have column"
+        + " 'DomainBaseIDClassID' defined, because opposite class 'DomainBase' is part of an inheritance hierarchy.")]
+    public void GetValueWithMissingRelationClassIDColumn ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (
+          typeof (DerivedClassWithInvalidRelationClassIDColumns));
+
+      ObjectID id = new ObjectID (classDefinition, new Guid ("{BEBF584B-31A6-4d5e-8628-7EACE9034588}"));
+
+      SelectCommandBuilder builder = SelectCommandBuilder.CreateForIDLookup (Provider, "*", classDefinition.GetEntityName (), id);
+      using (IDbCommand command = builder.Create ())
+      {
+        using (IDataReader reader = command.ExecuteReader ())
+        {
+          Assert.IsTrue (reader.Read ());
+
+          _converter.GetValue (
+              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("DomainBase"),
+              reader, reader.GetOrdinal ("DomainBaseID"));
+        }
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException),
+        "Incorrect database format encountered. Entity 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain column"
+        + " 'ClientIDClassID', because opposite class 'Client' is not part of an inheritance hierarchy.")]
+    public void GetValueWithInvalidRelationClassIDColumn ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (
+          typeof (DerivedClassWithInvalidRelationClassIDColumns));
+
+      ObjectID id = new ObjectID (classDefinition, new Guid ("{BEBF584B-31A6-4d5e-8628-7EACE9034588}"));
+
+      SelectCommandBuilder builder = SelectCommandBuilder.CreateForIDLookup (Provider, "*", classDefinition.GetEntityName (), id);
+      using (IDbCommand command = builder.Create ())
+      {
+        using (IDataReader reader = command.ExecuteReader ())
+        {
+          Assert.IsTrue (reader.Read ());
+
+          _converter.GetValue (
+              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("Client"),
+              reader, reader.GetOrdinal ("ClientID"));
+        }
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException),
+        "Incorrect database value encountered. Column 'DomainBaseWithInvalidClassIDValueIDClassID' of entity"
+        + " 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain a value.")]
+    public void GetValueWithInvalidRelationClassIDColumnValue ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (
+          typeof (DerivedClassWithInvalidRelationClassIDColumns));
+
+      ObjectID id = new ObjectID (classDefinition, new Guid ("{BEBF584B-31A6-4d5e-8628-7EACE9034588}"));
+
+      SelectCommandBuilder builder = SelectCommandBuilder.CreateForIDLookup (Provider, "*", classDefinition.GetEntityName (), id);
+      using (IDbCommand command = builder.Create ())
+      {
+        using (IDataReader reader = command.ExecuteReader ())
+        {
+          Assert.IsTrue (reader.Read ());
+
+          _converter.GetValue (
+              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("DomainBaseWithInvalidClassIDValue"),
+              reader, reader.GetOrdinal ("DomainBaseWithInvalidClassIDValueID"));
+        }
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException),
+        "Incorrect database value encountered. Column 'DomainBaseWithInvalidClassIDNullValueIDClassID' of entity"
+        + " 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns' must not contain null.")]
+    public void GetValueWithInvalidRelationClassIDColumnNullValue ()
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (
+          typeof (DerivedClassWithInvalidRelationClassIDColumns));
+
+      ObjectID id = new ObjectID (classDefinition, new Guid ("{BEBF584B-31A6-4d5e-8628-7EACE9034588}"));
+
+      SelectCommandBuilder builder = SelectCommandBuilder.CreateForIDLookup (Provider, "*", classDefinition.GetEntityName (), id);
+      using (IDbCommand command = builder.Create ())
+      {
+        using (IDataReader reader = command.ExecuteReader ())
+        {
+          Assert.IsTrue (reader.Read ());
+
+          _converter.GetValue (
+              classDefinition, classDefinition.GetMandatoryPropertyDefinition ("DomainBaseWithInvalidClassIDNullValue"),
+              reader, reader.GetOrdinal ("DomainBaseWithInvalidClassIDNullValueID"));
         }
       }
     }

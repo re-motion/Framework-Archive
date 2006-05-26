@@ -79,5 +79,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       loader.LoadDataContainers ();
     }
+
+    [Test]
+    public void LoadDataContainersWithNoConcreteEntity ()
+    {
+      ClassDefinition abstractClassWithoutDerivationsClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (
+          typeof (AbstractClassWithoutDerivations));
+
+      ConcreteTableInheritanceRelationLoader loader = new ConcreteTableInheritanceRelationLoader (
+          Provider, abstractClassWithoutDerivationsClass, 
+          abstractClassWithoutDerivationsClass.GetMandatoryPropertyDefinition ("DomainBase"), 
+          DomainObjectIDs.Person);
+
+      DataContainerCollection loadedDataContainers = loader.LoadDataContainers ();
+      Assert.IsNotNull (loadedDataContainers);
+      Assert.IsEmpty (loadedDataContainers);
+    }
+
   }
 }

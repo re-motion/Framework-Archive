@@ -180,7 +180,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Error while reading property 'Distributor' for class 'ClassWithoutRelatedClassIDColumn':"
+        "Error while reading property 'Distributor' of object 'ClassWithoutRelatedClassIDColumn|cd3be83e-fbb7-4251-aae4-b216485c5638|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithoutRelatedClassIDColumn' must have column 'DistributorIDClassID' defined, because opposite class 'Distributor' is part of an inheritance hierarchy.")]
     public void LoadDataContainerWithoutRelatedIDColumn ()
@@ -192,7 +192,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Error while reading property 'Company' for class 'ClassWithoutRelatedClassIDColumnAndDerivation':"
+       "Error while reading property 'Company' of object 'ClassWithoutRelatedClassIDColumnAndDerivation|4821d7f7-b586-4435-b572-8a96a44b113e|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithoutRelatedClassIDColumnAndDerivation' must have column 'CompanyIDClassID' defined, because opposite class 'Company' is part of an inheritance hierarchy.")]
     public void LoadDataContainerWithoutRelatedIDColumnAndDerivation ()
@@ -215,7 +215,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
 
     [Test]
     [ExpectedException (typeof (RdbmsProviderException),
-        "Error while reading property 'ClassWithGuidKey' for class 'ClassWithRelatedClassIDColumnAndNoInheritance':"
+       "Error while reading property 'ClassWithGuidKey' of object 'ClassWithRelatedClassIDColumnAndNoInheritance|cb72715d-f419-4ab9-8d49-abcba4e9edb4|System.Guid':"
         + " Incorrect database format encountered."
         + " Entity 'TableWithRelatedClassIDColumnAndNoInheritance' must not contain column 'TableWithGuidKeyIDClassID',"
         + " because opposite class 'ClassWithGuidKey' is not part of an inheritance hierarchy.")]

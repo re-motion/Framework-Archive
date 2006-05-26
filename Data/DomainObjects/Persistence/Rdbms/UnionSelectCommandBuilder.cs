@@ -54,6 +54,10 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
     public override IDbCommand Create ()
     {
+      string[] allConcreteEntityNames = _classDefinition.GetAllConcreteEntityNames ();
+      if (allConcreteEntityNames.Length == 0)
+        return null;
+
       IDbCommand command = CreateCommand ();
       WhereClauseBuilder whereClauseBuilder = new WhereClauseBuilder (this, command);
       whereClauseBuilder.Add (_propertyDefinition.ColumnName, GetObjectIDValueForParameter (_relatedID));
@@ -65,7 +69,7 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
       StringBuilder commandTextStringBuilder = new StringBuilder ();
       string selectTemplate = "SELECT [ID], [ClassID]{0} FROM [{1}] WHERE {2}";
-      foreach (string entityName in _classDefinition.GetAllConcreteEntityNames ())
+      foreach (string entityName in allConcreteEntityNames)
       {
         if (commandTextStringBuilder.Length > 0)
           commandTextStringBuilder.Append ("\nUNION ");
@@ -75,7 +79,9 @@ namespace Rubicon.Data.DomainObjects.Persistence.Rdbms
 
       commandTextStringBuilder.Append (GetOrderClause (oppositeRelationEndPointDefinition.SortExpression));
       commandTextStringBuilder.Append (";");
+      
       command.CommandText = commandTextStringBuilder.ToString ();
+
       return command;
     }
 

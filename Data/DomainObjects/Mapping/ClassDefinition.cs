@@ -105,7 +105,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     {
       // Note: CheckBasePropertyDefinitions does not have to be called, because member _propertyDefinitions is
       //       initialized to an empty collection during construction.
-      CheckBaseClass (baseClass, id, entityName, storageProviderID, classType);
+      CheckBaseClass (baseClass, id, storageProviderID, classType);
       PerformSetBaseClass (baseClass);
     }  
   }
@@ -464,7 +464,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     if (baseClass == this)
       throw CreateMappingException ("Class '{0}' cannot refer to itself as base class.", _id);
 
-    CheckBaseClass (baseClass, _id, _entityName, _storageProviderID, _classType);
+    CheckBaseClass (baseClass, _id, _storageProviderID, _classType);
     PerformSetBaseClass (baseClass);
   }
 
@@ -575,12 +575,7 @@ public class ClassDefinition : ISerializable, IObjectReference
     return new InvalidOperationException (string.Format (message, args));
   }
 
-  private void CheckBaseClass (
-      ClassDefinition baseClass,
-      string id,
-      string entityName,
-      string storageProviderID,
-      Type classType)
+  private void CheckBaseClass (ClassDefinition baseClass, string id, string storageProviderID, Type classType)
   {
     if (classType != null && baseClass.ClassType != null && !classType.IsSubclassOf (baseClass.ClassType))
     {

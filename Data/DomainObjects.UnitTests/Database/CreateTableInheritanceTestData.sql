@@ -7,15 +7,17 @@ delete from [TableInheritance_Person]
 delete from [TableInheritance_Region]
 delete from [TableInheritance_OrganizationalUnit]
 delete from [TableInheritance_Client]
+delete from [TableInheritance_BaseClassWithInvalidRelationClassIDColumns]
 
 
--- TableInheritance_Client
+-- Client
 insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'Client', 'rubicon')
 
 -- Note: This client has an OrganizationalUnit assigned with an invalid ClassID:
 insert into [TableInheritance_Client] (ID, ClassID, [Name]) values ('{58535280-84EC-41d9-9F8F-BCAC64BB3709}', 'Client', 'ClientWithOrganizationalUnitWithInvalidClassID')
 
--- TableInheritance_OrganizationalUnit
+
+-- OrganizationalUnit
 insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [Name]) 
     values ('{C6F4E04D-0465-4a9e-A944-C9FD26E33C44}', 'OrganizationalUnit', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', '2006/1/1', 'Entwicklung')
 
@@ -28,10 +30,12 @@ insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [Cre
 insert into [TableInheritance_OrganizationalUnit] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [Name]) 
     values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'OrganizationalUnit', null, 'UnitTests', '2006/1/2', 'OrganizationalUnitWithSameIDAsPerson')
 
--- TableInheritance_Region
+
+-- Region
 insert into [TableInheritance_Region] (ID, ClassID, [Name]) values ('{7905CF32-FBC2-47fe-AC40-3E398BEEA5AB}', 'Region', 'NÖ')
 
--- TableInheritance_Person 
+
+-- Person 
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth])
     values ('{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'Person', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', 'UnitTests', '2006/1/3', 'Max', 'Mustermann', '1980/6/9')
 
@@ -39,12 +43,18 @@ insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [Cr
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth])
     values ('{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'Person', null, 'UnitTests','2006/1/4', '', 'PersonWithSameIDAsOrganizationalUnit', '1980/6/9')
 
--- TableInheritance_Customer
+
+-- Customer
 insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [RegionID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [CustomerType], [CustomerSince])
     values ('{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'Customer', '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', '{7905CF32-FBC2-47fe-AC40-3E398BEEA5AB}',
     'UnitTests', '2006/1/5', 'Zaphod', 'Beeblebrox', '1950/1/1', 1, '1992/12/24')
 
--- TableInheritance_HistoryEntry
+-- Note: The customer's order contains an invalid CustomerIDClassID value.
+insert into [TableInheritance_Person] (ID, ClassID, [ClientID], [RegionID], [CreatedBy], [CreatedAt], [FirstName], [LastName], [DateOfBirth], [CustomerType], [CustomerSince])
+    values ('{3C8854E7-16C6-4783-93B2-8C303A881761}', 'Customer', null, null, 'UnitTests', '2006/1/15', '', 'CustomerWithInvalidOrder', '1951/1/1', 1, '1992/12/26')
+
+
+-- HistoryEntry
 insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])
     values ('{0A2A6302-9CCB-4ab2-B006-2F1D89526435}', 'HistoryEntry', '{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'Customer', '2006/5/24', 'Kunde angelegt')
 
@@ -60,10 +70,32 @@ insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDCla
 insert into [TableInheritance_HistoryEntry] (ID, ClassID, [OwnerID], [OwnerIDClassID], [HistoryDate], [Text])
     values ('{2C7FB7B3-EB16-43f9-BDDE-B8B3F23A93D2}', 'HistoryEntry', '{B969AFCB-2CDA-45ff-8490-EB52A86D5464}', 'OrganizationalUnit', '2006/5/27', 'OU angelegt')
 
--- TableInheritance_Address
+
+-- Address
 insert into [TableInheritance_Address] (ID, ClassID, [PersonID], [PersonIDClassID], [Street], [Zip], [City], [Country]) 
     values ('{5D5AA233-7371-44bc-807F-7849E8B08302}', 'Address', '{21E9BEA1-3026-430a-A01E-E9B6A39928A8}', 'Person', 'Werdertorgasse 14', '1010', 'Wien', 'Österreich')
 
--- TableInheritance_Order
+
+-- Order
 insert into [TableInheritance_Order] (ID, ClassID, [CustomerID], [CustomerIDClassID], [Number], [OrderDate]) 
     values ('{6B88B60C-1C91-4005-8C60-72053DB48D5D}', 'Order', '{623016F9-B525-4CAE-A2BD-D4A6155B2F33}', 'Customer', 1, '2006/05/24')
+
+-- Note: This Order is invalid, because column CustomerIDClassID refers to abstract class DomainBase.
+insert into [TableInheritance_Order] (ID, ClassID, [CustomerID], [CustomerIDClassID], [Number], [OrderDate]) 
+    values ('{F404FD2C-B92F-46d8-BEAC-F92C0599BFD3}', 'Order', '{3C8854E7-16C6-4783-93B2-8C303A881761}', 'DomainBase', 1, '2006/01/21')
+
+
+
+
+-- Tables with invalid database structure for exception testing only ---------------------------------------------------------
+
+-- DerivedClassWithInvalidRelationClassIDColumns
+
+-- Note: Foreign key values are irrelevant, because table structure is invalid
+insert into [TableInheritance_BaseClassWithInvalidRelationClassIDColumns] 
+    (ID, ClassID, [ClientID], [ClientIDClassID], [DomainBaseID], 
+    [DomainBaseWithInvalidClassIDValueID], [DomainBaseWithInvalidClassIDValueIDClassID], 
+    [DomainBaseWithInvalidClassIDNullValueID], [DomainBaseWithInvalidClassIDNullValueIDClassID]) 
+values (
+    '{BEBF584B-31A6-4d5e-8628-7EACE9034588}', 'DerivedClassWithInvalidRelationClassIDColumns', NEWID(), 'Client', NEWID(), 
+    null, 'Person', NEWID(), null)

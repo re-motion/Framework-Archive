@@ -47,6 +47,14 @@ public class ClassDefinitionCollection : CommonCollection
 
   public void Validate ()
   {
+    foreach (ClassDefinition rootClass in GetInheritanceRootClasses ())
+    {
+      ValidateRootClass (rootClass);
+    }
+  }
+
+  public ClassDefinitionCollection GetInheritanceRootClasses ()
+  {
     ClassDefinitionCollection rootClasses = new ClassDefinitionCollection (this.AreResolvedTypesRequired);
     foreach (ClassDefinition classDefinition in this)
     {
@@ -55,10 +63,7 @@ public class ClassDefinitionCollection : CommonCollection
         rootClasses.Add (rootClassDefinition);
     }
 
-    foreach (ClassDefinition rootClass in rootClasses)
-    {
-      ValidateRootClass (rootClass);
-    }
+    return rootClasses;
   }
 
   public ClassDefinition GetMandatory (Type classType)

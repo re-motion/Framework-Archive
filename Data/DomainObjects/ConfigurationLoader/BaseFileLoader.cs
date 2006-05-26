@@ -7,6 +7,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
+// TODO for all configuration loaders: Check if every field is trimmed during loading.
 public class BaseFileLoader
 {
   // types
@@ -57,28 +58,22 @@ public class BaseFileLoader
       string schemaFile,
       string schemaNamespace)
   {
-    XmlTextReader textReader = null;
-    XmlValidatingReader validatingReader = null;
+    // TODO: correct namespace of root element must be checked in all configuration files, because
+    // .NET raises no exception in this case
 
-    try
+    using (XmlTextReader textReader = new XmlTextReader (configurationFile))
     {
-      textReader = new XmlTextReader (configurationFile);
-      validatingReader = new XmlValidatingReader (textReader);
-      validatingReader.ValidationType = ValidationType.Schema;
-      validatingReader.Schemas.Add (schemaNamespace, schemaFile);
+      XmlReaderSettings validatingReaderSettings = new XmlReaderSettings ();
+      validatingReaderSettings.ValidationType = ValidationType.Schema;
+      validatingReaderSettings.Schemas.Add (schemaNamespace, schemaFile);
 
-      XmlDocument document = new XmlDocument (new NameTable ());
-      document.Load (validatingReader);
+      using (XmlReader validatingReader = XmlReader.Create (textReader, validatingReaderSettings))
+      {
+        XmlDocument document = new XmlDocument (new NameTable ());
+        document.Load (validatingReader);
 
-      return document;
-    }
-    finally 
-    {
-      if (textReader != null)
-        textReader.Close ();
-
-      if (validatingReader != null)
-        validatingReader.Close ();
+        return document;
+      }
     }
   }
 

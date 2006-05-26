@@ -40,10 +40,9 @@ public class DeleteCommandBuilder : CommandBuilder
     if (MustAddTimestampToWhereClause ())
       whereClauseBuilder.Add ("Timestamp", _dataContainer.Timestamp);
 
-    // TODO: Implement concrete table inheritance!
-    command.CommandText = string.Format ("DELETE FROM [{0}] WHERE {1};",
-        _dataContainer.ClassDefinition.MyEntityName,
-        whereClauseBuilder.ToString ());
+    command.CommandText = string.Format (
+        "DELETE FROM [{0}] WHERE {1};",
+        _dataContainer.ClassDefinition.GetEntityName (), whereClauseBuilder.ToString ());
 
     return command;
   }

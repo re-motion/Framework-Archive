@@ -16,11 +16,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
 
     protected DomainBase ()
     {
+      InitializeNew ();
     }
 
     protected DomainBase (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
+      InitializeNew ();
     }
 
     protected DomainBase (DataContainer dataContainer)
@@ -28,7 +30,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
     }
 
+    private void InitializeNew ()
+    {
+      CreatedBy = "UnitTests";
+      CreatedAt = DateTime.Now;
+    }
+
     // methods and properties
+
+    // Note: This property always returns an empty collection.
+    public DomainObjectCollection AbstractClassesWithoutDerivations
+    {
+      get { return GetRelatedObjects ("AbstractClassesWithoutDerivations"); }
+    }
 
     public string CreatedBy
     {

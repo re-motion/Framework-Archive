@@ -24,6 +24,10 @@ public abstract class CommandBuilder
   protected CommandBuilder (RdbmsProvider provider)
   {
     ArgumentUtility.CheckNotNull ("provider", provider);
+
+    if (!provider.IsConnected)
+      throw new ArgumentException ("Provider must be connected first.", "provider");
+
     _provider = provider;
   }
 

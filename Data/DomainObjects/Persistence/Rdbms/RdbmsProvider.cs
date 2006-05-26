@@ -170,23 +170,20 @@ public abstract class RdbmsProvider : StorageProvider
 
   public override DataContainerCollection ExecuteCollectionQuery (IQuery query)
   {
+    CheckDisposed ();
     CheckQuery (query, QueryType.Collection, "query");
 
     Connect ();
 
     QueryCommandBuilder commandBuilder = new QueryCommandBuilder (this, query);
-    using (IDbCommand command = commandBuilder.Create ())
-    {
-      using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
-      {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
-        return dataContainerFactory.CreateCollection ();
-      }
-    }    
+    return LoadDataContainers (commandBuilder);
   }
 
   public override object ExecuteScalarQuery (IQuery query)
   {
+    // TODO: ExecuteScalarQuery must not return DBNull.Value, but null instead. Verify this with a unit test.
+
+    CheckDisposed ();
     CheckQuery (query, QueryType.Scalar, "query");
 
     Connect ();
@@ -220,18 +217,17 @@ public abstract class RdbmsProvider : StorageProvider
     if (propertyDefinition == null)
       throw CreateRdbmsProviderException ("Class '{0}' does not contain property '{1}'.", classDefinition.ID, propertyName);
 
-    // TODO: ClassDefinition does not have to have an entity assigned => relation to abstract base class in a concrete table inheritance scenario =>
-    // Use GetEntityName () to recognize this and use ConcreteTableInheritanceRelationLoader.
-
-    SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForRelatedIDLookup (this, classDefinition, propertyDefinition, relatedID);
-
-    using (IDbCommand command = commandBuilder.Create ())
+    if (classDefinition.GetEntityName () != null)
     {
-      using (IDataReader reader = ExecuteReader (command, CommandBehavior.SingleResult))
-      {
-        DataContainerFactory dataContainerFactory = new DataContainerFactory (reader);
-        return dataContainerFactory.CreateCollection ();
-      }
+      SelectCommandBuilder commandBuilder = SelectCommandBuilder.CreateForRelatedIDLookup (this, classDefinition, propertyDefinition, relatedID);
+      return LoadDataContainers (commandBuilder);
+    }
+    else
+    {
+      ConcreteTableInheritanceRelationLoader loader = new ConcreteTableInheritanceRelationLoader (
+          this, classDefinition, propertyDefinition, relatedID);
+
+      return loader.LoadDataContainers ();
     }
   }
 
@@ -262,34 +258,16 @@ public abstract class RdbmsProvider : StorageProvider
     Connect ();
 
     foreach (DataContainer dataContainer in dataContainers.GetByState (StateType.New))
-    {
-      CommandBuilder commandBuilder = new InsertCommandBuilder (this, dataContainer);
-      using (IDbCommand command = commandBuilder.Create ())
-      {
-        Save (command, dataContainer.ID);
-      }
-    }
+      Save (new InsertCommandBuilder (this, dataContainer), dataContainer.ID);
 
     foreach (DataContainer dataContainer in dataContainers)
     {
       if (dataContainer.State != StateType.Unchanged)
-      {
-        CommandBuilder commandBuilder = new UpdateCommandBuilder (this, dataContainer);
-        using (IDbCommand command = commandBuilder.Create ())
-        {
-          Save (command, dataContainer.ID);
-        }
-      }
+        Save (new UpdateCommandBuilder (this, dataContainer), dataContainer.ID);
     }
 
     foreach (DataContainer dataContainer in dataContainers.GetByState (StateType.Deleted))
-    {
-      CommandBuilder commandBuilder = new DeleteCommandBuilder (this, dataContainer);
-      using (IDbCommand command = commandBuilder.Create ())
-      {
-        Save (command, dataContainer.ID);
-      }
-    }
+      Save (new DeleteCommandBuilder (this, dataContainer), dataContainer.ID);
   }
 
   public override void SetTimestamp (DataContainerCollection dataContainers)
@@ -349,6 +327,21 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
+  protected virtual DataContainerCollection LoadDataContainers (CommandBuilder commandBuilder)
+  {
+    CheckDisposed ();
+    ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);
+
+    using (IDbCommand command = commandBuilder.Create ())
+    {
+      using (IDataReader dataReader = ExecuteReader (command, CommandBehavior.SingleResult))
+      {
+        DataContainerFactory dataContainerFactory = new DataContainerFactory (dataReader);
+        return dataContainerFactory.CreateCollection ();
+      }
+    }  
+  }
+
   protected virtual ObjectID CreateNewObjectID (ClassDefinition classDefinition)
   {
     CheckDisposed ();
@@ -382,29 +375,33 @@ public abstract class RdbmsProvider : StorageProvider
     }
   }
 
-  protected virtual void Save (IDbCommand command, ObjectID id)
+  protected void Save (CommandBuilder commandBuilder, ObjectID id)
   {
     CheckDisposed ();
+    ArgumentUtility.CheckNotNull ("commandBuilder", commandBuilder);
     ArgumentUtility.CheckNotNull ("id", id);
     CheckStorageProviderID (id, "id");
 
-    if (command == null)
-      return;
+    using (IDbCommand command = commandBuilder.Create ())
+    {
+      if (command == null)
+        return;
 
-    int recordsAffected = 0;
-    try
-    {
-      recordsAffected = command.ExecuteNonQuery ();
-    }
-    catch (Exception e)
-    {
-      throw CreateRdbmsProviderException (e, "Error while saving object '{0}'.", id);
-    }
+      int recordsAffected = 0;
+      try
+      {
+        recordsAffected = command.ExecuteNonQuery ();
+      }
+      catch (Exception e)
+      {
+        throw CreateRdbmsProviderException (e, "Error while saving object '{0}'.", id);
+      }
 
-    if (recordsAffected != 1)
-    {
-      throw CreateConcurrencyViolationException (
-          "Concurrency violation encountered. Object '{0}' has already been changed by someone else.", id);
+      if (recordsAffected != 1)
+      {
+        throw CreateConcurrencyViolationException (
+            "Concurrency violation encountered. Object '{0}' has already been changed by someone else.", id);
+      }
     }
   }
 
