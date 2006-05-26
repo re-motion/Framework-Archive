@@ -10,7 +10,7 @@ using Rubicon.Security.UnitTests.SampleDomain;
 namespace Rubicon.Security.UnitTests
 {
   [TestFixture]
-  public class RequiredMethodPermissionAttributeTest
+  public class DemandMethodPermissionAttributeTest
   {
     [Test]
     public void AcceptValidAccessType ()
