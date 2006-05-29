@@ -199,6 +199,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       try
       {
         order1.OrderItems[index] = orderItem3;
+        Assert.Fail ("This test expects a ClientTransactionsDifferException.");
       }
       catch (ClientTransactionsDifferException ex)
       {
@@ -209,10 +210,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
             index);
 
         Assert.AreEqual (actualMessage, ex.Message);
-        return;
       }
-
-      Assert.Fail ("This test expects a ClientTransactionsDifferException.");
     }
 
     [Test]

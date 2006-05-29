@@ -7,7 +7,6 @@ using System.Data;
 
 namespace Rubicon.Data.DomainObjects.UnitTests
 {
-  // TODO ES: Check if every catch in the unit tests works correctly and uses Assert.Fail if no exception is raised.
   public abstract class DatabaseTest
   {
     // types

@@ -86,10 +86,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedStates = new ChangeState[]
-      {
-        new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket")
-      };
+        ChangeState[] expectedStates = new ChangeState[] { new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket") };
 
         _eventReceiver.Check (expectedStates);
       }
@@ -108,10 +105,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       catch (EventReceiverCancelException)
       {
         ChangeState[] expectedStates = new ChangeState[]
-      {
-        new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
-        new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order")
-      };
+            {
+              new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
+              new RelationChangeState (_order, "OrderTicket", _orderTicket, null, "2. Relation changing event of order")
+            };
 
         _eventReceiver.Check (expectedStates);
       }
@@ -149,10 +146,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       _orderTicket.Delete ();
 
       ChangeState[] expectedStates = new ChangeState[]
-    {
-      new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
-      new ObjectDeletionState (_orderTicket, "2. Deleted event of orderTicket"),
-    };
+          {
+            new ObjectDeletionState (_orderTicket, "1. Deleting event of orderTicket"),
+            new ObjectDeletionState (_orderTicket, "2. Deleted event of orderTicket"),
+          };
 
       _eventReceiver.Check (expectedStates);
     }
@@ -166,10 +163,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       _order.Delete ();
 
       ChangeState[] expectedStates = new ChangeState[]
-    {
-      new ObjectDeletionState (_order, "1. Deleting event of ordert"),
-      new ObjectDeletionState (_order, "2. Deleted event of order"),
-    };
+          {
+            new ObjectDeletionState (_order, "1. Deleting event of ordert"),
+            new ObjectDeletionState (_order, "2. Deleted event of order"),
+          };
 
       _eventReceiver.Check (expectedStates);
     }

@@ -71,15 +71,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       try
       {
         _definition.CheckIdentityType (typeof (string));
+        Assert.Fail ("Test expects an IdentityTypeNotSupportedException.");
       }
       catch (IdentityTypeNotSupportedException ex)
       {
         Assert.AreEqual (typeof (SqlProvider), ex.StorageProviderType);
         Assert.AreEqual (typeof (string), ex.InvalidIdentityType);
-        return;
       }
-
-      Assert.Fail ("Test expects an IdentityTypeNotSupportedException.");
     }
   }
 }

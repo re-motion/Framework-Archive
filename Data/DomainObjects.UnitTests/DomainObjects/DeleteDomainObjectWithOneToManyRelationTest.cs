@@ -71,10 +71,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedStates = new ChangeState[]
-      {
-        new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
-      };
+        ChangeState[] expectedStates = new ChangeState[] { new ObjectDeletionState (_supervisor, "1. Deleting of supervisor") };
 
         _eventReceiver.Check (expectedStates);
       }
@@ -93,10 +90,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       catch (EventReceiverCancelException)
       {
         ChangeState[] expectedStates = new ChangeState[]
-      {
-        new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
-        new RelationChangeState (_subordinate1, "Supervisor", _supervisor, null, "2. Relation changing of subordinate1")
-      };
+            {
+              new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
+              new RelationChangeState (_subordinate1, "Supervisor", _supervisor, null, "2. Relation changing of subordinate1")
+            };
 
         _eventReceiver.Check (expectedStates);
       }

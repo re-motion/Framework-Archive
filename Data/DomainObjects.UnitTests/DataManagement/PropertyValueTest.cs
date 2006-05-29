@@ -239,6 +239,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       try
       {
         propertyValue.Value = "Test string";
+        Assert.Fail ("EventReceiverCancelException was expected");
       }
       catch (EventReceiverCancelException)
       {

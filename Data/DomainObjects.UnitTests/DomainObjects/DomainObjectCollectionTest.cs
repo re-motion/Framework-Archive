@@ -482,6 +482,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       try
       {
         collection.Remove ((ObjectID) null);
+        Assert.Fail ("ArgumentNullException was expected");
       }
       catch (ArgumentNullException)
       {
@@ -502,6 +503,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       try
       {
         collection.Remove ((DomainObject) null);
+        Assert.Fail ("ArgumentNullException was expected");
       }
       catch (ArgumentNullException)
       {
@@ -870,10 +872,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       }
       catch (EventReceiverCancelException)
       {
-        ChangeState[] expectedStates = new ChangeState[] 
-      {
-        new CollectionChangeState (_collection, _customer1, "1. Removing event")
-      };
+        ChangeState[] expectedStates = new ChangeState[] { new CollectionChangeState (_collection, _customer1, "1. Removing event") };
 
         Assert.AreSame (_customer1, _collection[0]);
         Assert.AreEqual (2, _collection.Count);
@@ -895,10 +894,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       catch (EventReceiverCancelException)
       {
         ChangeState[] expectedStates = new ChangeState[] 
-      {
-        new CollectionChangeState (_collection, _customer1, "1. Removing event"),
-        new CollectionChangeState (_collection, _customer3NotInCollection, "2. Adding event")
-      };
+            {
+              new CollectionChangeState (_collection, _customer1, "1. Removing event"),
+              new CollectionChangeState (_collection, _customer3NotInCollection, "2. Adding event")
+            };
 
         Assert.AreSame (_customer1, _collection[0]);
         Assert.AreEqual (2, _collection.Count);
