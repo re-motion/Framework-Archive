@@ -95,10 +95,6 @@
       <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\..\Security\Core\Security.csproj">
-      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
-      <Name>Security</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DomainObjects\Rubicon.Data.DomainObjects.csproj">
       <Name>Rubicon.Data.DomainObjects</Name>
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
@@ -218,8 +214,12 @@
     <EmbeddedResource Include="Design\ClassPickerControl.resx">
       <DependentUpon>ClassPickerControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\BooleanProperty.de.resx" />
-    <EmbeddedResource Include="Globalization\BooleanProperty.resx" />
+    <EmbeddedResource Include="Globalization\BooleanProperty.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BooleanProperty.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

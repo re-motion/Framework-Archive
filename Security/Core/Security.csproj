@@ -34,24 +34,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractRoleAttribute.cs" />
-    <Compile Include="AccessType.cs" />
-    <Compile Include="AccessTypeAttribute.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.build" />
     <Compile Include="BaseSecurityStrategy.cs" />
     <Compile Include="Configuration\TypeElement.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
-    <Compile Include="EnumWrapper.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
     <Compile Include="FunctionalSecurityStrategy.cs" />
-    <Compile Include="IFunctionalSecurityStrategy.cs" />
-    <Compile Include="ISecurableObject.cs" />
-    <Compile Include="ISecurityContextFactory.cs" />
-    <Compile Include="ISecurityService.cs" />
-    <Compile Include="IObjectSecurityStrategy.cs" />
-    <Compile Include="IUserProvider.cs" />
     <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
     <Compile Include="Metadata\IPermissionProvider.cs" />
@@ -74,9 +64,8 @@
     <Compile Include="Metadata\StatePropertyReflector.cs" />
     <Compile Include="PermissionDeniedException.cs" />
     <Compile Include="SecurityClient.cs" />
-    <Compile Include="SecurityContext.cs" />
     <Compile Include="GeneralAccessType.cs" />
-    <Compile Include="SecurityStateAttribute.cs" />
+    <Compile Include="ObjectSecurityProvider.cs" />
     <Compile Include="ObjectSecurityStrategy.cs" />
     <Compile Include="ThreadUserProvider.cs" />
     <EmbeddedResource Include="Configuration\SecurityConfiguration.xsd">

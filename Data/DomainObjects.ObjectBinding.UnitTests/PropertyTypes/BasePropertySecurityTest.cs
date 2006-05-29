@@ -19,30 +19,18 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
   public class BasePropertySecurityTest
   {
     private Mockery _mocks;
-    private ISecurityService _securityService;
-    private IUserProvider _userProvider;
-    private SecurityContext _securityContext;
-    private ISecurityContextFactory _securityContextFactory;
+    private IObjectSecurityProvider _mockObjectSecurityProvider;
     private StringProperty _property;
+    private SecurableSearchObject _testSearchObject;
 
     [SetUp]
     public void SetUp ()
     {
       _mocks = new Mockery ();
-      _securityService = _mocks.NewMock<ISecurityService> ();
-      _userProvider = _mocks.NewMock<IUserProvider> ();
-      SecurityConfiguration.Current.SecurityService = _securityService;
-      SecurityConfiguration.Current.UserProvider = _userProvider;
-      Stub.On (_userProvider)
-          .Method ("GetUser")
-          .Will (Return.Value (new GenericPrincipal (new GenericIdentity ("owner"), new string[0])));
+      _mockObjectSecurityProvider = _mocks.NewMock<IObjectSecurityProvider> ();
 
-      _securityContext = new SecurityContext (typeof (SecurableSearchObject), "owner", "group", "client", null, null);
-
-      _securityContextFactory = _mocks.NewMock<ISecurityContextFactory> ();
-      Stub.On (_securityContextFactory)
-          .Method ("GetSecurityContext")
-          .Will (Return.Value (_securityContext));
+      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (_mockObjectSecurityProvider);
+      _testSearchObject = new SecurableSearchObject (_mocks.NewMock<ISecurityContextFactory> ());
 
       Type domainObjectType = typeof (SecurableSearchObject);
       PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("StringProperty");
@@ -52,32 +40,31 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     [Test]
     public void IsAccessible ()
     {
-      Stub.On (_securityService)
-          .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create), AccessType.Get (GeneralAccessType.Delete) }));
+      Expect.Once.On (_mockObjectSecurityProvider)
+          .Method ("HasAccessOnGetAccessor")
+          .With (_testSearchObject)
+          .Will (Return.Value (true));
 
-      SecurableSearchObject testSearchObject = new SecurableSearchObject (_securityContextFactory);
-      Assert.AreEqual (false, _property.IsAccessible (testSearchObject));
+      Assert.AreEqual (true, _property.IsAccessible (_testSearchObject));
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
     [Test]
     public void IsNotAccessible ()
     {
-      Expect.Once.On (_securityService)
-          .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read) }));
+      Expect.Once.On (_mockObjectSecurityProvider)
+          .Method ("HasAccessOnGetAccessor")
+          .With (_testSearchObject)
+          .Will (Return.Value (false));
 
-      SecurableSearchObject testSearchObject = new SecurableSearchObject (_securityContextFactory);
-      Assert.AreEqual (true, _property.IsAccessible (testSearchObject));
+      Assert.AreEqual (false, _property.IsAccessible (_testSearchObject));
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
     [Test]
     public void IsAccessibleForNonSecurableType ()
     {
-      Expect.Never.On (_securityService)
-          .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read) }));
+      Expect.Never.On (_mockObjectSecurityProvider);
 
       Type domainObjectType = typeof (TestSearchObject);
       PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("StringProperty");
@@ -91,31 +78,31 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     [Test]
     public void IsReadOnly ()
     {
-      Stub.On (_securityService)
-          .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create), AccessType.Get (GeneralAccessType.Delete) }));
+      Expect.Once.On (_mockObjectSecurityProvider)
+          .Method ("HasAccessOnSetAccessor")
+          .With (_testSearchObject)
+          .Will (Return.Value (false));
 
-      SecurableSearchObject testSearchObject = new SecurableSearchObject (_securityContextFactory);
-      Assert.AreEqual (true, _property.IsReadOnly (testSearchObject));
+      Assert.AreEqual (true, _property.IsReadOnly (_testSearchObject));
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
     [Test]
     public void IsNotReadOnly ()
     {
-      Expect.Once.On (_securityService)
-          .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read) }));
+      Expect.Once.On (_mockObjectSecurityProvider)
+          .Method ("HasAccessOnSetAccessor")
+          .With (_testSearchObject)
+          .Will (Return.Value (true));
 
-      SecurableSearchObject testSearchObject = new SecurableSearchObject (_securityContextFactory);
-      Assert.AreEqual (false, _property.IsReadOnly (testSearchObject));
+      Assert.AreEqual (false, _property.IsReadOnly (_testSearchObject));
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
     [Test]
     public void IsNotReadOnlyForNonSecurableType ()
     {
-      Expect.Never.On (_securityService)
-          .Method ("GetAccess");
+      Expect.Never.On (_mockObjectSecurityProvider);
 
       Type domainObjectType = typeof (TestSearchObject);
       PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("StringProperty");
@@ -129,8 +116,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     [Test]
     public void IsReadOnlyForNonSecurableType ()
     {
-      Expect.Never.On (_securityService)
-          .Method ("GetAccess");
+      Expect.Never.On (_mockObjectSecurityProvider);
 
       Type domainObjectType = typeof (TestSearchObject);
       PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("ReadOnlyStringProperty");

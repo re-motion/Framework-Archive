@@ -119,12 +119,15 @@ public class BaseProperty : IBusinessObjectProperty
   /// <returns><see langword="true"/></returns>
   public bool IsAccessible (IBusinessObjectClass objectClass, IBusinessObject obj)
   {
-    ISecurableObject securableType = obj as ISecurableObject;
-    if (securableType == null)
+    ISecurableObject securableObject = obj as ISecurableObject;
+    if (securableObject == null)
       return true;
 
-    SecurityClient securityClient = new SecurityClient ();
-    return securityClient.HasAccess (securableType, AccessType.Get (GeneralAccessType.Read));
+    IObjectSecurityProvider objectSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IObjectSecurityProvider> ();
+    if (objectSecurityProvider == null)
+      return true;
+
+    return objectSecurityProvider.HasAccessOnGetAccessor (securableObject);
   }
 
   /// <summary> Indicates whether this property can be accessed by the user. </summary>
@@ -145,12 +148,15 @@ public class BaseProperty : IBusinessObjectProperty
     if (!_propertyInfo.CanWrite)
       return true;
 
-    ISecurableObject securableType = obj as ISecurableObject;
-    if (securableType == null)
+    ISecurableObject securableObject = obj as ISecurableObject;
+    if (securableObject == null)
       return false;
 
-    SecurityClient securityClient = new SecurityClient ();
-    return !securityClient.HasAccess (securableType, AccessType.Get (GeneralAccessType.Edit));
+    IObjectSecurityProvider objectSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IObjectSecurityProvider> ();
+    if (objectSecurityProvider == null)
+      return false;
+
+    return !objectSecurityProvider.HasAccessOnSetAccessor (securableObject);
   }
 
   /// <summary>

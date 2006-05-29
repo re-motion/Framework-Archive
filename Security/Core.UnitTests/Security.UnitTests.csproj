@@ -88,6 +88,9 @@
     <Compile Include="ObjectSecurityStrategyTest.cs" />
     <Compile Include="SecurityClientTestWithSecurableType.cs" />
     <Compile Include="SecurityContextTest.cs" />
+    <Compile Include="ObjectSecurityProviderTest.cs" />
+    <Compile Include="SecurityProviderRegistryMock.cs" />
+    <Compile Include="SecurityProviderRegistryTest.cs" />
     <Compile Include="ThreadUserProviderTest.cs" />
     <Compile Include="XmlAsserter\NodeStackToXPathConverter.cs" />
     <Compile Include="XmlAsserter\NodeStackToXPathConverterTest.cs" />
