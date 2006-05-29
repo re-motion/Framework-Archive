@@ -1,5 +1,6 @@
 use TestDomain
 
+delete from [TableInheritance_DerivedClassWithEntityWithHierarchy]
 delete from [TableInheritance_Order]
 delete from [TableInheritance_Address]
 delete from [TableInheritance_HistoryEntry]
@@ -8,6 +9,8 @@ delete from [TableInheritance_Region]
 delete from [TableInheritance_OrganizationalUnit]
 delete from [TableInheritance_Client]
 delete from [TableInheritance_BaseClassWithInvalidRelationClassIDColumns]
+delete from [TableInheritance_File]
+delete from [TableInheritance_Folder]
 
 
 -- Client
@@ -85,6 +88,130 @@ insert into [TableInheritance_Order] (ID, ClassID, [CustomerID], [CustomerIDClas
     values ('{F404FD2C-B92F-46d8-BEAC-F92C0599BFD3}', 'Order', '{3C8854E7-16C6-4783-93B2-8C303A881761}', 'DomainBase', 1, '2006/01/21')
 
 
+-- Folder
+insert into [TableInheritance_Folder] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID])
+    values ('{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder', 'Root', null, null)
+
+insert into [TableInheritance_Folder] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID])
+    values ('{6B8A65C1-1D49-4dab-97D7-F466F3EAB91E}', 'Folder', 'Ordner 1', '{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder')
+
+insert into [TableInheritance_Folder] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID])
+    values ('{906927FE-FCFB-45cb-9320-8C2491A7A0FB}', 'Folder', 'Ordner mit ungültigerm ParentFolder', '{8A901797-A61C-4484-870D-CFAA4B38AEDE}', 'File')
+insert into [TableInheritance_File] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID], [Size])
+    values ('{8A901797-A61C-4484-870D-CFAA4B38AEDE}', 'File', 'TestDatei', null, null, 512)
+
+
+-- File
+insert into [TableInheritance_File] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID], [Size])
+    values ('{023392E2-AB99-434f-A71F-8A9865D10C8C}', 'File', 'Datei im Root', '{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder', 42)
+
+insert into [TableInheritance_File] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID], [Size])
+    values ('{6108E150-6D3C-4e38-9865-895BD143D180}', 'File', 'Datei im Ordner 1', '{6B8A65C1-1D49-4dab-97D7-F466F3EAB91E}', 'Folder', 512)
+
+
+-- DerivedClassWithEntityWithHierarchy
+insert into [TableInheritance_DerivedClassWithEntityWithHierarchy] 
+    (ID, ClassID, [Name], 
+    [ParentAbstractBaseClassWithHierarchyID], [ParentAbstractBaseClassWithHierarchyIDClassID], 
+    [ParentDerivedClassWithEntityWithHierarchyID], [ParentDerivedClassWithEntityWithHierarchyIDClassID],
+    [ClientFromAbstractBaseClassID], [ClientFromDerivedClassWithEntityID],
+    [FileSystemItemFromAbstractBaseClassID], [FileSystemItemFromAbstractBaseClassIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityID], [FileSystemItemFromDerivedClassWithEntityIDClassID])
+values
+    ('{137DA04C-2B53-463e-A893-D8B246D6BFA9}', 'DerivedClassWithEntityWithHierarchy', 'DerivedClassWithEntityWithHierarchy 1',
+    null, null,
+    null, null,
+    '{F7AD91EF-AC75-4fe3-A427-E40312B12917}', '{58535280-84EC-41d9-9F8F-BCAC64BB3709}',
+    '{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder',
+    '{023392E2-AB99-434f-A71F-8A9865D10C8C}', 'File')
+
+insert into [TableInheritance_DerivedClassWithEntityWithHierarchy] 
+    (ID, ClassID, [Name], 
+    [ParentAbstractBaseClassWithHierarchyID], [ParentAbstractBaseClassWithHierarchyIDClassID], 
+    [ParentDerivedClassWithEntityWithHierarchyID], [ParentDerivedClassWithEntityWithHierarchyIDClassID],
+    [ClientFromAbstractBaseClassID], [ClientFromDerivedClassWithEntityID],
+    [FileSystemItemFromAbstractBaseClassID], [FileSystemItemFromAbstractBaseClassIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityID], [FileSystemItemFromDerivedClassWithEntityIDClassID])
+values
+    ('{6389C3AB-9E65-4bfb-9321-EC9F50B6A479}', 'DerivedClassWithEntityWithHierarchy', 'DerivedClassWithEntityWithHierarchy 2',
+    '{137DA04C-2B53-463e-A893-D8B246D6BFA9}', 'DerivedClassWithEntityWithHierarchy',
+    '{137DA04C-2B53-463e-A893-D8B246D6BFA9}', 'DerivedClassWithEntityWithHierarchy',
+    null, null,
+    null, null,
+    null, null)
+
+insert into [TableInheritance_DerivedClassWithEntityWithHierarchy] 
+    (ID, ClassID, [Name], 
+    [ParentAbstractBaseClassWithHierarchyID], [ParentAbstractBaseClassWithHierarchyIDClassID], 
+    [ParentDerivedClassWithEntityWithHierarchyID], [ParentDerivedClassWithEntityWithHierarchyIDClassID],
+    [ClientFromAbstractBaseClassID], [ClientFromDerivedClassWithEntityID],
+    [FileSystemItemFromAbstractBaseClassID], [FileSystemItemFromAbstractBaseClassIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityID], [FileSystemItemFromDerivedClassWithEntityIDClassID])
+values
+    ('{15526A7A-57EC-42c3-95A7-B40E46784846}', 'DerivedClassWithEntityWithHierarchy', 'DerivedClassWithEntityWithHierarchy 3',
+    '{137DA04C-2B53-463e-A893-D8B246D6BFA9}', 'DerivedClassWithEntityWithHierarchy',
+    '{137DA04C-2B53-463e-A893-D8B246D6BFA9}', 'DerivedClassWithEntityWithHierarchy',
+    null, null,
+    null, null,
+    null, null)
+
+-- DerivedClassWithEntityFromBaseClassWithHierarchy
+insert into [TableInheritance_DerivedClassWithEntityWithHierarchy] 
+    (ID, ClassID, [Name], 
+    [ParentAbstractBaseClassWithHierarchyID], [ParentAbstractBaseClassWithHierarchyIDClassID], 
+    [ParentDerivedClassWithEntityWithHierarchyID], [ParentDerivedClassWithEntityWithHierarchyIDClassID],
+    [ParentDerivedClassWithEntityFromBaseClassWithHierarchyID],[ParentDerivedClassWithEntityFromBaseClassWithHierarchyIDClassID],
+    [ClientFromAbstractBaseClassID], [ClientFromDerivedClassWithEntityID], [ClientFromDerivedClassWithEntityFromBaseClassID],
+    [FileSystemItemFromAbstractBaseClassID], [FileSystemItemFromAbstractBaseClassIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityID], [FileSystemItemFromDerivedClassWithEntityIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityFromBaseClassID], [FileSystemItemFromDerivedClassWithEntityFromBaseClassIDClassID])
+values
+    ('{24F27B35-68F8-4035-A454-33CFC1AF6339}', 'DerivedClassWithEntityFromBaseClassWithHierarchy', 'DerivedClassWithEntityFromBaseClassWithHierarchy 1',
+    '{137DA04C-2B53-463e-A893-D8B246D6BFA9}', 'DerivedClassWithEntityWithHierarchy',
+    '{137DA04C-2B53-463e-A893-D8B246D6BFA9}', 'DerivedClassWithEntityWithHierarchy',
+    null, null,
+    null, null, '{F7AD91EF-AC75-4fe3-A427-E40312B12917}',
+    null, null,
+    null, null,
+    '{6108E150-6D3C-4e38-9865-895BD143D180}', 'File')
+
+insert into [TableInheritance_DerivedClassWithEntityWithHierarchy] 
+    (ID, ClassID, [Name], 
+    [ParentAbstractBaseClassWithHierarchyID], [ParentAbstractBaseClassWithHierarchyIDClassID], 
+    [ParentDerivedClassWithEntityWithHierarchyID], [ParentDerivedClassWithEntityWithHierarchyIDClassID],
+    [ParentDerivedClassWithEntityFromBaseClassWithHierarchyID],[ParentDerivedClassWithEntityFromBaseClassWithHierarchyIDClassID],
+    [ClientFromAbstractBaseClassID], [ClientFromDerivedClassWithEntityID], [ClientFromDerivedClassWithEntityFromBaseClassID],
+    [FileSystemItemFromAbstractBaseClassID], [FileSystemItemFromAbstractBaseClassIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityID], [FileSystemItemFromDerivedClassWithEntityIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityFromBaseClassID], [FileSystemItemFromDerivedClassWithEntityFromBaseClassIDClassID])
+values
+    ('{9C730A8A-8F83-4b26-AF40-FB0C3D4DD387}', 'DerivedClassWithEntityFromBaseClassWithHierarchy', 'DerivedClassWithEntityFromBaseClassWithHierarchy 2',
+    '{6389C3AB-9E65-4bfb-9321-EC9F50B6A479}', 'DerivedClassWithEntityWithHierarchy',
+    '{6389C3AB-9E65-4bfb-9321-EC9F50B6A479}', 'DerivedClassWithEntityWithHierarchy',
+    '{24F27B35-68F8-4035-A454-33CFC1AF6339}', 'DerivedClassWithEntityFromBaseClassWithHierarchy',
+    null, null, null,
+    null, null,
+    null, null,
+    null, null)
+
+insert into [TableInheritance_DerivedClassWithEntityWithHierarchy] 
+    (ID, ClassID, [Name], 
+    [ParentAbstractBaseClassWithHierarchyID], [ParentAbstractBaseClassWithHierarchyIDClassID], 
+    [ParentDerivedClassWithEntityWithHierarchyID], [ParentDerivedClassWithEntityWithHierarchyIDClassID],
+    [ParentDerivedClassWithEntityFromBaseClassWithHierarchyID],[ParentDerivedClassWithEntityFromBaseClassWithHierarchyIDClassID],
+    [ClientFromAbstractBaseClassID], [ClientFromDerivedClassWithEntityID], [ClientFromDerivedClassWithEntityFromBaseClassID],
+    [FileSystemItemFromAbstractBaseClassID], [FileSystemItemFromAbstractBaseClassIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityID], [FileSystemItemFromDerivedClassWithEntityIDClassID],
+    [FileSystemItemFromDerivedClassWithEntityFromBaseClassID], [FileSystemItemFromDerivedClassWithEntityFromBaseClassIDClassID])
+values
+    ('{953B2E51-C324-4f86-8FA0-3AFA2A2E4E72}', 'DerivedClassWithEntityFromBaseClassWithHierarchy', 'DerivedClassWithEntityFromBaseClassWithHierarchy 3',
+    '{15526A7A-57EC-42c3-95A7-B40E46784846}', 'DerivedClassWithEntityWithHierarchy',
+    '{15526A7A-57EC-42c3-95A7-B40E46784846}', 'DerivedClassWithEntityWithHierarchy',
+    '{24F27B35-68F8-4035-A454-33CFC1AF6339}', 'DerivedClassWithEntityFromBaseClassWithHierarchy',
+    null, null, null,
+    null, null,
+    null, null,
+    null, null)
 
 
 -- Tables with invalid database structure for exception testing only ---------------------------------------------------------

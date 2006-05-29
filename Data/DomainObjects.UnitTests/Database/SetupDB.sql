@@ -121,12 +121,24 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInhe
 DROP TABLE [TableInheritance_OrganizationalUnit]
 GO
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_DerivedClassWithEntityWithHierarchy') 
+DROP TABLE [TableInheritance_DerivedClassWithEntityWithHierarchy]
+GO
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Client') 
 DROP TABLE [TableInheritance_Client]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_BaseClassWithInvalidRelationClassIDColumns') 
 DROP TABLE [TableInheritance_BaseClassWithInvalidRelationClassIDColumns]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_File') 
+DROP TABLE [TableInheritance_File]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableInheritance_Folder') 
+DROP TABLE [TableInheritance_Folder]
 GO
 
 
@@ -600,6 +612,76 @@ CREATE TABLE [TableInheritance_Order] (
   
   CONSTRAINT [PK_TableInheritance_Order] PRIMARY KEY CLUSTERED ([ID]),
   CONSTRAINT [FK_TableInheritance_Customer_TableInheritance_Order] FOREIGN KEY ([CustomerID]) REFERENCES [TableInheritance_Person] ([ID])  
+) 
+GO
+
+CREATE TABLE [TableInheritance_Folder] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [Name] varchar (100) NOT NULL,
+  [ParentFolderID] uniqueidentifier NULL,
+  [ParentFolderIDClassID] varchar (100) NULL,
+  
+  CONSTRAINT [PK_TableInheritance_Folder] PRIMARY KEY CLUSTERED ([ID])
+  --,
+  --CONSTRAINT [FK_TableInheritance_Folder_TableInheritance_FileSystemItem] FOREIGN KEY ([ParentFolderID]) REFERENCES [TableInheritance_Folder] ([ID])  
+) 
+GO
+
+CREATE TABLE [TableInheritance_File] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [Name] varchar (100) NOT NULL,
+  [Size] int NOT NULL,
+  [ParentFolderID] uniqueidentifier NULL,
+  [ParentFolderIDClassID] varchar (100) NULL,
+  
+  CONSTRAINT [PK_TableInheritance_File] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_TableInheritance_Folder_TableInheritance_File] FOREIGN KEY ([ParentFolderID]) REFERENCES [TableInheritance_Folder] ([ID])  
+) 
+GO
+
+CREATE TABLE [TableInheritance_DerivedClassWithEntityWithHierarchy] (
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+  
+  [Name] varchar (100) NOT NULL,
+  [ParentAbstractBaseClassWithHierarchyID] uniqueidentifier NULL,
+  [ParentAbstractBaseClassWithHierarchyIDClassID] varchar (100) NULL,
+  [ParentDerivedClassWithEntityWithHierarchyID] uniqueidentifier NULL,
+  [ParentDerivedClassWithEntityWithHierarchyIDClassID] varchar (100) NULL,
+  [ParentDerivedClassWithEntityFromBaseClassWithHierarchyID] uniqueidentifier NULL,
+  [ParentDerivedClassWithEntityFromBaseClassWithHierarchyIDClassID] varchar (100) NULL,
+  
+  [ClientFromAbstractBaseClassID] uniqueidentifier NULL,
+  [ClientFromDerivedClassWithEntityID] uniqueidentifier NULL,
+  [ClientFromDerivedClassWithEntityFromBaseClassID] uniqueidentifier NULL,
+
+  [FileSystemItemFromAbstractBaseClassID] uniqueidentifier NULL,
+  [FileSystemItemFromAbstractBaseClassIDClassID] varchar (100) NULL,
+  [FileSystemItemFromDerivedClassWithEntityID] uniqueidentifier NULL,
+  [FileSystemItemFromDerivedClassWithEntityIDClassID] varchar (100) NULL,
+  [FileSystemItemFromDerivedClassWithEntityFromBaseClassID] uniqueidentifier NULL,
+  [FileSystemItemFromDerivedClassWithEntityFromBaseClassIDClassID] varchar (100) NULL,
+  
+  CONSTRAINT [PK_TableInheritance_DerivedClassWithEntityWithHierarchy] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_TableInheritance_DerivedClassWithEntityWithHierarchy_Hierarchy1] FOREIGN KEY ([ParentAbstractBaseClassWithHierarchyID]) 
+      REFERENCES [TableInheritance_DerivedClassWithEntityWithHierarchy] ([ID]),
+  CONSTRAINT [FK_TableInheritance_DerivedClassWithEntityWithHierarchy_Hierarchy2] FOREIGN KEY ([ParentDerivedClassWithEntityWithHierarchyID]) 
+      REFERENCES [TableInheritance_DerivedClassWithEntityWithHierarchy] ([ID]),
+  CONSTRAINT [FK_TableInheritance_DerivedClassWithEntityWithHierarchy_Hierarchy3] FOREIGN KEY ([ParentDerivedClassWithEntityFromBaseClassWithHierarchyID]) 
+      REFERENCES [TableInheritance_DerivedClassWithEntityWithHierarchy] ([ID]),
+  CONSTRAINT [FK_TableInheritance_Client_TableInheritance_DerivedClassWithEntityWithHierarchy_1] FOREIGN KEY ([ClientFromAbstractBaseClassID]) 
+      REFERENCES [TableInheritance_Client] ([ID]),
+  CONSTRAINT [FK_TableInheritance_Client_TableInheritance_DerivedClassWithEntityWithHierarchy_2] FOREIGN KEY ([ClientFromDerivedClassWithEntityID]) 
+      REFERENCES [TableInheritance_Client] ([ID]),
+  CONSTRAINT [FK_TableInheritance_Client_TableInheritance_DerivedClassWithEntityWithHierarchy_3] FOREIGN KEY ([ClientFromDerivedClassWithEntityFromBaseClassID]) 
+      REFERENCES [TableInheritance_Client] ([ID])
 ) 
 GO
 

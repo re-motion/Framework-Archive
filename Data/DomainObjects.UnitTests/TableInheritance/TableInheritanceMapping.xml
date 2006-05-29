@@ -190,7 +190,113 @@
       </properties>
     </class>
 
-    
+    <class id="FileSystemItem">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.FileSystemItem, Rubicon.Data.DomainObjects.UnitTests</type>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty relationID="FolderToFileSystemItem" name="ParentFolder" cardinality="one" isMandatory="false">
+          <column>ParentFolderID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="Folder" baseClass="FileSystemItem">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.Folder, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_Folder"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty relationID="FolderToFileSystemItem" name="FileSystemItems" cardinality="many" isMandatory="false">
+          <sortExpression>Name ASC</sortExpression>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="File" baseClass="FileSystemItem">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.File, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_File"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Size">
+          <type>int32</type>
+          <column>Size</column>
+        </property>
+      </properties>
+    </class>
+
+    <class id="AbstractBaseClassWithHierarchy">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.AbstractBaseClassWithHierarchy, Rubicon.Data.DomainObjects.UnitTests</type>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty relationID="AbstractBaseClassWithHierarchy" name="ParentAbstractBaseClassWithHierarchy" cardinality="one" isMandatory="false">
+          <column>ParentAbstractBaseClassWithHierarchyID</column>
+        </relationProperty>
+        <relationProperty relationID="AbstractBaseClassWithHierarchy" name="ChildAbstractBaseClassesWithHierarchy" cardinality="many" isMandatory="false">
+          <sortExpression>Name DESC</sortExpression>
+        </relationProperty>
+        <relationProperty relationID="ClientToAbstractBaseClassWithHierarchy" name="ClientFromAbstractBaseClass" cardinality="one" isMandatory="false">
+          <column>ClientFromAbstractBaseClassID</column>
+          <oppositeClass>Client</oppositeClass>
+        </relationProperty>
+        <relationProperty relationID="FileSystemItemToAbstractBaseClassWithHierarchy" name="FileSystemItemFromAbstractBaseClass" cardinality="one" isMandatory="false">
+          <column>FileSystemItemFromAbstractBaseClassID</column>
+          <oppositeClass>FileSystemItem</oppositeClass>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="DerivedClassWithEntityWithHierarchy" baseClass="AbstractBaseClassWithHierarchy">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DerivedClassWithEntityWithHierarchy, Rubicon.Data.DomainObjects.UnitTests</type>
+      <entity name="TableInheritance_DerivedClassWithEntityWithHierarchy"/>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty relationID="DerivedClassWithEntityWithHierarchy" name="ParentDerivedClassWithEntityWithHierarchy" cardinality="one" isMandatory="false">
+          <column>ParentDerivedClassWithEntityWithHierarchyID</column>
+        </relationProperty>
+        <relationProperty relationID="DerivedClassWithEntityWithHierarchy" name="ChildDerivedClassesWithEntityWithHierarchy" cardinality="many" isMandatory="false">
+          <sortExpression>Name ASC</sortExpression>
+        </relationProperty>
+        <relationProperty relationID="ClientToDerivedClassWithEntityWithHierarchy" name="ClientFromDerivedClassWithEntity" cardinality="one" isMandatory="false">
+          <column>ClientFromDerivedClassWithEntityID</column>
+          <oppositeClass>Client</oppositeClass>
+        </relationProperty>
+        <relationProperty relationID="FileSystemItemToDerivedClassWithEntityWithHierarchy" name="FileSystemItemFromDerivedClassWithEntity" cardinality="one" isMandatory="false">
+          <column>FileSystemItemFromDerivedClassWithEntityID</column>
+          <oppositeClass>FileSystemItem</oppositeClass>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="DerivedClassWithEntityFromBaseClassWithHierarchy" baseClass="DerivedClassWithEntityWithHierarchy">
+      <type>Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain.DerivedClassWithEntityFromBaseClassWithHierarchy, Rubicon.Data.DomainObjects.UnitTests</type>
+      <storageProviderID>TestDomain</storageProviderID>
+      <properties>
+        <relationProperty relationID="DerivedClassWithEntityFromBaseClassWithHierarchy" name="ParentDerivedClassWithEntityFromBaseClassWithHierarchy" cardinality="one" isMandatory="false">
+          <column>ParentDerivedClassWithEntityFromBaseClassWithHierarchyID</column>
+        </relationProperty>
+        <relationProperty relationID="DerivedClassWithEntityFromBaseClassWithHierarchy" name="ChildDerivedClassesWithEntityFromBaseClassWithHierarchy" cardinality="many" isMandatory="false">
+          <sortExpression>Name ASC</sortExpression>
+        </relationProperty>
+        <relationProperty relationID="ClientToDerivedClassWithEntityFromBaseClassWithHierarchy" name="ClientFromDerivedClassWithEntityFromBaseClass" cardinality="one" isMandatory="false">
+          <column>ClientFromDerivedClassWithEntityFromBaseClassID</column>
+          <oppositeClass>Client</oppositeClass>
+        </relationProperty>
+        <relationProperty relationID="FileSystemItemToDerivedClassWithEntityFromBaseClassWithHierarchy" name="FileSystemItemFromDerivedClassWithEntityFromBaseClass" cardinality="one" isMandatory="false">
+          <column>FileSystemItemFromDerivedClassWithEntityFromBaseClassID</column>
+          <oppositeClass>FileSystemItem</oppositeClass>
+        </relationProperty>
+      </properties>
+    </class>
+
     <!-- Classes with invalid database structure for exception testing only -->
 
     <class id="BaseClassWithInvalidRelationClassIDColumns">

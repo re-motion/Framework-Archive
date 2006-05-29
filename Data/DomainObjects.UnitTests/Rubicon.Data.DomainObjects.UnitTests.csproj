@@ -527,7 +527,13 @@
     <Compile Include="TableInheritance\TestDomain\Address.cs" />
     <Compile Include="TableInheritance\TestDomain\Client.cs" />
     <Compile Include="TableInheritance\TestDomain\BaseClassWithInvalidRelationClassIDColumns.cs" />
+    <Compile Include="TableInheritance\TestDomain\AbstractBaseClassWithHierarchy.cs" />
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithEntityFromBaseClassWithHierarchy.cs" />
+    <Compile Include="TableInheritance\TestDomain\DerivedClassWithEntityWithHierarchy.cs" />
+    <Compile Include="TableInheritance\TestDomain\File.cs" />
+    <Compile Include="TableInheritance\TestDomain\Folder.cs" />
     <Compile Include="TableInheritance\TestDomain\DerivedClassWithInvalidRelationClassIDColumns.cs" />
+    <Compile Include="TableInheritance\TestDomain\FileSystemItem.cs" />
     <Compile Include="TableInheritance\TestDomain\HistoryEntry.cs" />
     <Compile Include="TableInheritance\TestDomain\Order.cs" />
     <Compile Include="TableInheritance\TestDomain\Region.cs" />
