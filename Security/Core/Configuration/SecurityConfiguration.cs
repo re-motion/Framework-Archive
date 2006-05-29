@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Text;
 using System.Reflection;
 
+using Rubicon.Security.Metadata;
 using Rubicon.Utilities;
-using System.IO;
 
 namespace Rubicon.Security.Configuration
 {
@@ -43,6 +44,7 @@ namespace Rubicon.Security.Configuration
     private ISecurityService _securityService;
     private IUserProvider _userProvider;
     private IFunctionalSecurityStrategy _functionalSecurityStrategy;
+    private IPermissionProvider _permissionProvider;
 
     private ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _xmlnsProperty;
@@ -50,6 +52,7 @@ namespace Rubicon.Security.Configuration
     private readonly ConfigurationProperty _securityServiceTypeProperty;
     private readonly ConfigurationProperty _customUserProviderProperty;
     private readonly ConfigurationProperty _userProviderTypeProperty;
+    private readonly ConfigurationProperty _customPermissionProviderProperty;
     private Type _httpContextUserProviderType;
 
     // construction and disposing
@@ -58,13 +61,15 @@ namespace Rubicon.Security.Configuration
     {
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
       _customSecurityServiceProperty =
-          new ConfigurationProperty ("customService", typeof (SecurityServiceElement), null, ConfigurationPropertyOptions.None);
+          new ConfigurationProperty ("customService", typeof (TypeElement<ISecurityService>), null, ConfigurationPropertyOptions.None);
       _securityServiceTypeProperty =
           new ConfigurationProperty ("service", typeof (SecurityServiceType), SecurityServiceType.None, ConfigurationPropertyOptions.None);
       _customUserProviderProperty =
-          new ConfigurationProperty ("customUserProvider", typeof (UserProviderElement), null, ConfigurationPropertyOptions.None);
+          new ConfigurationProperty ("customUserProvider", typeof (TypeElement<IUserProvider>), null, ConfigurationPropertyOptions.None);
       _userProviderTypeProperty =
           new ConfigurationProperty ("userProvider", typeof (UserProviderType), UserProviderType.Thread, ConfigurationPropertyOptions.None);
+      _customPermissionProviderProperty =
+          new ConfigurationProperty ("customPermissionProvider", typeof (TypeElement<IPermissionProvider>), null, ConfigurationPropertyOptions.None);
 
       _properties = new ConfigurationPropertyCollection ();
       _properties.Add (_xmlnsProperty);
@@ -72,6 +77,7 @@ namespace Rubicon.Security.Configuration
       _properties.Add (_securityServiceTypeProperty);
       _properties.Add (_customUserProviderProperty);
       _properties.Add (_userProviderTypeProperty);
+      _properties.Add (_customPermissionProviderProperty);
     }
 
     // methods and properties
@@ -101,6 +107,17 @@ namespace Rubicon.Security.Configuration
       set
       {
         _userProvider = value;
+      }
+    }
+
+    public IPermissionProvider PermissionProvider
+    {
+      get
+      {
+        if (_permissionProvider == null)
+          _permissionProvider = GetPermissionProviderFromConfiguration ();
+
+        return _permissionProvider;
       }
     }
 
@@ -151,6 +168,14 @@ namespace Rubicon.Security.Configuration
       }
     }
 
+    private IPermissionProvider GetPermissionProviderFromConfiguration ()
+    {
+      if (CustomPermissionProvider.Type == null)
+        return new PermissionReflector ();
+
+      return (IPermissionProvider) Activator.CreateInstance (CustomPermissionProvider.Type);
+    }
+
     private Type GetHttpContextUserProviderType ()
     {
       AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
@@ -186,9 +211,9 @@ namespace Rubicon.Security.Configuration
       get { return _properties; }
     }
 
-    protected SecurityServiceElement CustomService
+    protected TypeElement<ISecurityService> CustomService
     {
-      get { return (SecurityServiceElement) this[_customSecurityServiceProperty]; }
+      get { return (TypeElement<ISecurityService>) this[_customSecurityServiceProperty]; }
       set { this[_customSecurityServiceProperty] = value; }
     }
 
@@ -198,9 +223,9 @@ namespace Rubicon.Security.Configuration
       set { this[_securityServiceTypeProperty] = value; }
     }
 
-    protected UserProviderElement CustomUserProvider
+    protected TypeElement<IUserProvider> CustomUserProvider
     {
-      get { return (UserProviderElement) this[_customUserProviderProperty]; }
+      get { return (TypeElement<IUserProvider>) this[_customUserProviderProperty]; }
       set { this[_customUserProviderProperty] = value; }
     }
 
@@ -208,6 +233,12 @@ namespace Rubicon.Security.Configuration
     {
       get { return (UserProviderType) this[_userProviderTypeProperty]; }
       set { this[_userProviderTypeProperty] = value; }
+    }
+
+    protected TypeElement<IPermissionProvider> CustomPermissionProvider
+    {
+      get { return (TypeElement<IPermissionProvider>) this[_customPermissionProviderProperty]; }
+      set { this[_customPermissionProviderProperty] = value; }
     }
   }
 

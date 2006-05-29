@@ -41,8 +41,7 @@
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.build" />
     <Compile Include="BaseSecurityStrategy.cs" />
-    <Compile Include="Configuration\UserProviderElement.cs" />
-    <Compile Include="Configuration\SecurityServiceElement.cs" />
+    <Compile Include="Configuration\TypeElement.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="EnumWrapper.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />

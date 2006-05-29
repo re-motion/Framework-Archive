@@ -41,7 +41,7 @@ namespace Rubicon.Security.UnitTests.Configuration
       DeserializeSection (reader);
     }
 
-    public new SecurityServiceElement CustomService
+    public new TypeElement<ISecurityService> CustomService
     {
       get { return base.CustomService; }
       set { base.CustomService = value; }
@@ -53,7 +53,7 @@ namespace Rubicon.Security.UnitTests.Configuration
       set { base.SecurityServiceType = value; }
     }
 
-    public new UserProviderElement CustomUserProvider
+    public new TypeElement<IUserProvider> CustomUserProvider
     {
       get { return base.CustomUserProvider; }
       set { base.CustomUserProvider = value; }

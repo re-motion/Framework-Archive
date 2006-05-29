@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
+using System.Text;
 
 namespace Rubicon.Security.Configuration
 {
-  public class UserProviderElement : ConfigurationElement
+  public class TypeElement<T> : ConfigurationElement
   {
     private readonly ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _typeProperty;
 
-    public UserProviderElement ()
+    public TypeElement ()
     {
       _typeProperty = new ConfigurationProperty (
-          "type", 
-          typeof (Type), 
+          "type",
+          typeof (Type),
           null,
-          new Rubicon.Utilities.TypeNameConverter (), 
-          new SubclassTypeValidator (typeof (IUserProvider)), 
+          new Rubicon.Utilities.TypeNameConverter (),
+          new SubclassTypeValidator (typeof (T)),
           ConfigurationPropertyOptions.IsRequired);
 
       _properties = new ConfigurationPropertyCollection ();

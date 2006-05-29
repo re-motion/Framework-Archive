@@ -8,6 +8,7 @@ using System.Xml;
 using NUnit.Framework;
 
 using Rubicon.Security.Configuration;
+using Rubicon.Security.Metadata;
 using Rubicon.Security.Web;
 using Rubicon.Utilities;
 
@@ -184,6 +185,41 @@ namespace Rubicon.Security.UnitTests.Configuration
       Assert.AreSame (typeof (UserProviderMock), _configuration.CustomUserProvider.Type);
       Assert.IsNotNull (_configuration.UserProvider);
       Assert.IsInstanceOfType (typeof (UserProviderMock), _configuration.UserProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithDefaultPermissionProvider ()
+    {
+      string xmlFragment = @"<rubicon.security />";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.IsNotNull (_configuration.PermissionProvider);
+      Assert.IsInstanceOfType (typeof (PermissionReflector), _configuration.PermissionProvider);
+    }
+
+    [Test]
+    public void DefaultPermissionProviderIsAlwaysSameInstance ()
+    {
+      string xmlFragment = @"<rubicon.security />";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.AreSame (_configuration.PermissionProvider, _configuration.PermissionProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithCustomPermissionProvider ()
+    {
+      string xmlFragment = @"
+          <rubicon.security>
+            <customPermissionProvider type=""Rubicon.Security.UnitTests::Configuration.PermissionProviderMock"" />
+          </rubicon.security>";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.IsNotNull (_configuration.CustomService);
+      Assert.IsInstanceOfType (typeof (PermissionProviderMock), _configuration.PermissionProvider);
     }
   }
 }
