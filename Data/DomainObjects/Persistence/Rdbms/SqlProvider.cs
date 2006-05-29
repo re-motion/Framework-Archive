@@ -26,10 +26,14 @@ public class SqlProvider : RdbmsProvider
 
   public override string GetColumnsFromSortExpression (string sortExpression)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("sortExpression", sortExpression);
+    if (StringUtility.IsNullOrEmpty (sortExpression))
+      return sortExpression;
 
     // Collapse all whitespaces (space, tab, carrriage return, ...) to a single space
     string formattedSortExpression = Regex.Replace (sortExpression, @"\s+", " ");
+
+    // Remove any leading or trailing whitespace
+    formattedSortExpression = formattedSortExpression.Trim ();
 
     // Collate is not supported. If collate should be supported later, UnionSelectCommandBuilder must 
     // add collate columns to select list (because it uses a UNION).

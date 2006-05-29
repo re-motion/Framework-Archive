@@ -56,6 +56,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     public void GetColumnsFromSortExpression ()
     {
       RdbmsProvider rdbmsProvider = Provider;
+      Assert.AreEqual ("Column", rdbmsProvider.GetColumnsFromSortExpression ("Column"));
+      Assert.AreEqual ("Column", rdbmsProvider.GetColumnsFromSortExpression (" Column"));
+      Assert.AreEqual ("Asc", rdbmsProvider.GetColumnsFromSortExpression ("Asc"));
+      Assert.AreEqual ("Asc", rdbmsProvider.GetColumnsFromSortExpression (" Asc"));
+      Assert.AreEqual ("asc", rdbmsProvider.GetColumnsFromSortExpression (" asc"));
+      Assert.AreEqual ("[Asc]", rdbmsProvider.GetColumnsFromSortExpression ("[Asc]"));
       Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1, Column2"));
       Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("    Column1   ,    Column2   "));
       Assert.AreEqual ("Column1, Column2", rdbmsProvider.GetColumnsFromSortExpression ("Column1,Column2"));
@@ -67,6 +73,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       Assert.AreEqual ("[ASC], [desc]", rdbmsProvider.GetColumnsFromSortExpression ("[ASC] ASC, [desc] DESC"));
       Assert.AreEqual ("[Collate]", rdbmsProvider.GetColumnsFromSortExpression ("[Collate] asc"));
       Assert.AreEqual ("AscColumnAsc1Asc, DescColumn2Desc", rdbmsProvider.GetColumnsFromSortExpression ("AscColumnAsc1Asc ASC, DescColumn2Desc DESC"));
+      Assert.IsNull (rdbmsProvider.GetColumnsFromSortExpression (null));
+      Assert.AreEqual (string.Empty, rdbmsProvider.GetColumnsFromSortExpression (string.Empty));
     }
 
     [Test]
