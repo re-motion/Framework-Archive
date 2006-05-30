@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using NMock2;
 using NUnit.Framework;
 
 using Rubicon.Security;
@@ -18,6 +19,7 @@ namespace Rubicon.Security.UnitTests
     // member fields
 
     private SecurityProviderRegistry _securityProviderRegistry;
+    private Mockery _mocks;
 
     // construction and disposing
 
@@ -30,6 +32,7 @@ namespace Rubicon.Security.UnitTests
     [SetUp]
     public void SetUp ()
     {
+      _mocks = new Mockery ();
       _securityProviderRegistry = new SecurityProviderRegistryMock ();
     }
 
@@ -42,17 +45,27 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void SetAndGetProvider ()
     {
-      IObjectSecurityProvider exptectedProvider = new ObjectSecurityProvider ();
-      _securityProviderRegistry.SetProvider<IObjectSecurityProvider> (exptectedProvider);
-      IObjectSecurityProvider actualProvider = _securityProviderRegistry.GetProvider<IObjectSecurityProvider> ();
+      ISecurityProvider exptectedProvider = _mocks.NewMock<ISecurityProvider> ();
+      _securityProviderRegistry.SetProvider<ISecurityProvider> (exptectedProvider);
 
-      Assert.AreSame (exptectedProvider, actualProvider);
+      Assert.AreSame (exptectedProvider, _securityProviderRegistry.GetProvider<ISecurityProvider> ());
     }
 
     [Test]
     public void GetProviderNotSet ()
     {
-      Assert.IsNull (_securityProviderRegistry.GetProvider<IObjectSecurityProvider> ());
+      Assert.IsNull (_securityProviderRegistry.GetProvider<ISecurityProvider> ());
+    }
+
+    [Test]
+    public void SetProviderNull ()
+    {
+      ISecurityProvider provider = _mocks.NewMock<ISecurityProvider> ();
+      _securityProviderRegistry.SetProvider<ISecurityProvider>(provider);
+      Assert.IsNotNull (_securityProviderRegistry.GetProvider<ISecurityProvider> ());
+
+      _securityProviderRegistry.SetProvider<ISecurityProvider> (null);
+      Assert.IsNull (_securityProviderRegistry.GetProvider<ISecurityProvider> ());
     }
   }
 }

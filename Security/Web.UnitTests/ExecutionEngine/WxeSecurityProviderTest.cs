@@ -23,7 +23,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     // member fields
 
-    private WxeSecurityProvider _securityProvider;
+    private IWxeSecurityProvider _securityProvider;
     private Mockery _mocks;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
     private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;

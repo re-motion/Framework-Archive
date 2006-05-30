@@ -49,7 +49,6 @@
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromConstructor.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethod.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromStaticMethod.cs" />
-    <Compile Include="ExecutionEngine\WxeFunctionSecurityTest.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Web.UnitTests.build" />

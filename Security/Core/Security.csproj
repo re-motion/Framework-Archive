@@ -62,7 +62,6 @@
     <Compile Include="Metadata\SecurableClassInfo.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
-    <Compile Include="PermissionDeniedException.cs" />
     <Compile Include="SecurityClient.cs" />
     <Compile Include="SecurityConfigurationException.cs" />
     <Compile Include="GeneralAccessType.cs" />

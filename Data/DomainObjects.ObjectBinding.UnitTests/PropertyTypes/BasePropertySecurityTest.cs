@@ -38,6 +38,13 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     }
 
     [Test]
+    public void IsAccessibleWithoutObjectSecurityProvider ()
+    {
+      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
+      Assert.AreEqual (true, _property.IsAccessible (_securableSearchObject));
+    }
+
+    [Test]
     public void IsAccessible ()
     {
       Expect.Once.On (_mockObjectSecurityProvider)
@@ -73,6 +80,13 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       TestSearchObject testSearchObject = new TestSearchObject ();
       Assert.AreEqual (true, property.IsAccessible (testSearchObject));
       _mocks.VerifyAllExpectationsHaveBeenMet ();
+    }
+
+    [Test]
+    public void IsNotReadOnlyWithoutObjectSecurityProvider ()
+    {
+      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
+      Assert.AreEqual (false, _property.IsReadOnly (_securableSearchObject));
     }
 
     [Test]

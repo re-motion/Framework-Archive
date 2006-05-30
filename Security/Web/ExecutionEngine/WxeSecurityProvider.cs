@@ -7,7 +7,7 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Security.Web.ExecutionEngine
 {
-  public class WxeSecurityProvider
+  public class WxeSecurityProvider : IWxeSecurityProvider
   {
     // types
 
@@ -39,7 +39,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
           CheckMethodAccess (function, attribute.ParameterName, attribute.Method);
           break;
         case MethodType.Static:
-          CheckStaticMethodAccess (function, attribute.SecurableClass, attribute.Method);
+          CheckStaticMethodAccess (attribute.SecurableClass, attribute.Method);
           break;
         case MethodType.Constructor:
           CheckConstructorAccess (attribute.SecurableClass);
@@ -77,7 +77,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
       securityClient.CheckMethodAccess (securableObject, method);
     }
 
-    private void CheckStaticMethodAccess (WxeFunction function, Type securableClass, string method)
+    private void CheckStaticMethodAccess (Type securableClass, string method)
     {
       if (securableClass == null)
       {

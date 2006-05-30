@@ -239,6 +239,7 @@
     <Compile Include="Security\ISecurityProvider.cs" />
     <Compile Include="Security\ISecurityService.cs" />
     <Compile Include="Security\IUserProvider.cs" />
+    <Compile Include="Security\PermissionDeniedException.cs" />
     <Compile Include="Security\SecurityContext.cs" />
     <Compile Include="Security\SecurityProviderRegistry.cs" />
     <Compile Include="Security\SecurityStateAttribute.cs" />

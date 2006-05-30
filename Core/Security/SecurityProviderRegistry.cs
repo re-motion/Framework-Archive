@@ -33,8 +33,6 @@ namespace Rubicon.Security
 
     public void SetProvider<T> (T value) where T : class, ISecurityProvider
     {
-      ArgumentUtility.CheckNotNull ("value", value);
-
       _registry[typeof (T)] = value;
     }
 

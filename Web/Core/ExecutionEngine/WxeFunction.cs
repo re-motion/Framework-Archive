@@ -14,6 +14,7 @@ using Rubicon.Collections;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Security;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -564,89 +565,12 @@ namespace Rubicon.Web.ExecutionEngine
 
     protected virtual void CheckPermissions (WxeContext context)
     {
-      //WxeDemandMethodPermissionAttribute attribute =
-      //    (WxeDemandMethodPermissionAttribute) Attribute.GetCustomAttribute (GetType (), typeof (WxeDemandMethodPermissionAttribute), true);
+      IWxeSecurityProvider wxeSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWxeSecurityProvider> ();
+      if (wxeSecurityProvider == null)
+        return;
 
-      //if (attribute == null)
-      //  return;
-
-      //switch (attribute.Type)
-      //{
-      //  case MethodType.Instance:
-      //    CheckInstanceMethdAccess (attribute.ParameterName, attribute.Method);
-      //    break;
-      //  case MethodType.Static:
-      //    CheckStaticMethdAccess (attribute.SecurableClass, attribute.Method);
-      //    break;
-      //  case MethodType.Constructor:
-      //    CheckConstructorAccess (attribute.SecurableClass);
-      //    break;
-      //  default:
-      //    throw new InvalidOperationException (string.Format ("MethodType '{0}' is not supported.", attribute.Type));
-      //    break;
-      //}
+      wxeSecurityProvider.CheckAccess (this);
     }
-
-    //private void CheckInstanceMethdAccess (string parameterName, string method)
-    //{
-    //  if (StringUtility.IsNullOrEmpty (parameterName))
-    //  {
-    //    if (ParameterDeclarations.Length == 0)
-    //    {
-    //      throw new WxeException (string.Format (
-    //          "WxeFunction '{0}' has a WxeDemandMethodPermissionAttribute applied, but does not define any parameters to supply the 'this-object'.",
-    //          GetType ().Name));
-    //    }
-    //    parameterName = ParameterDeclarations[0].Name;
-    //  }
-
-    //  if (StringUtility.IsNullOrEmpty (method))
-    //  {
-    //    throw new WxeException (string.Format (
-    //        "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify a method to get the requied permissions from.",
-    //        GetType ().Name));
-    //  }
-
-    //  ISecurableObject securableType = Variables[parameterName] as ISecurableObject;
-    //  if (securableType == null)
-    //    throw new WxeException (string.Format ("Parameter '{0}' is null or not of type 'Rubicon.Security.ISecurableType'.", parameterName));
-
-    //  SecurityClient securityClient = new SecurityClient ();
-    //  securityClient.CheckMethodAccess (securableType, method);
-    //}
-
-    //private void CheckStaticMethdAccess (Type securableClass, string method)
-    //{
-    //  if (securableClass == null)
-    //  {
-    //    throw new WxeException (string.Format (
-    //        "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify a type implementing 'Rubicon.Security.ISecurableType'.",
-    //        GetType ().Name));
-    //  }
-
-    //  if (StringUtility.IsNullOrEmpty (method))
-    //  {
-    //    throw new WxeException (string.Format (
-    //        "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify a method to get the requied permissions from.",
-    //        GetType ().Name));
-    //  }
-
-    //  SecurityClient securityClient = new SecurityClient ();
-    //  securityClient.CheckStaticMethodAccess (securableClass, method);
-    //}
-
-    //private void CheckConstructorAccess (Type securableClass)
-    //{
-    //  if (securableClass == null)
-    //  {
-    //    throw new WxeException (string.Format (
-    //        "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify a type implementing 'Rubicon.Security.ISecurableType'.",
-    //        GetType ().Name));
-    //  }
-
-    //  SecurityClient securityClient = new SecurityClient ();
-    //  securityClient.CheckConstructorAccess (securableClass);
-    //}
   }
 
   [AttributeUsage (AttributeTargets.Property, AllowMultiple = false)]

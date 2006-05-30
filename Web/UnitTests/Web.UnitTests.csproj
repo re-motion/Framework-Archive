@@ -168,6 +168,7 @@
     <Compile Include="ExecutionEngine\WxeContextTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ExecutionEngine\WxeFunctionSecurityTest.cs" />
     <Compile Include="ExecutionEngine\WxeFunctionStateMock.cs">
       <SubType>Code</SubType>
     </Compile>
