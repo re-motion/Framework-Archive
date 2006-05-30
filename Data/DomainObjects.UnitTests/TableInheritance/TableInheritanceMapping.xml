@@ -210,6 +210,12 @@
       <entity name="TableInheritance_Folder"/>
       <storageProviderID>TestDomain</storageProviderID>
       <properties>
+        <!-- A property with the same name but different column name exists class Folder which is valid 
+             because it is a different derivation branch of class FileSystemItem -->
+        <property name="CreatedAt">
+          <type>dateTime</type>
+          <column>FolderCreatedAt</column>
+        </property>
         <relationProperty relationID="FolderToFileSystemItem" name="FileSystemItems" cardinality="many" isMandatory="false">
           <sortExpression>Name ASC</sortExpression>
         </relationProperty>
@@ -224,6 +230,12 @@
         <property name="Size">
           <type>int32</type>
           <column>Size</column>
+        </property>
+        <!-- A property with the same name but different column name exists class File which is valid 
+             because it is a different derivation branch of class FileSystemItem -->
+        <property name="CreatedAt">
+          <type>dateTime</type>
+          <column>FileCreatedAt</column>
         </property>
       </properties>
     </class>

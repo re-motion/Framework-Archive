@@ -89,24 +89,18 @@ insert into [TableInheritance_Order] (ID, ClassID, [CustomerID], [CustomerIDClas
 
 
 -- Folder
-insert into [TableInheritance_Folder] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID])
-    values ('{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder', 'Root', null, null)
+insert into [TableInheritance_Folder] (ID, ClassID, [Name], [FolderCreatedAt], [ParentFolderID], [ParentFolderIDClassID])
+    values ('{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder', 'Root', '2006/02/01', null, null)
 
-insert into [TableInheritance_Folder] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID])
-    values ('{6B8A65C1-1D49-4dab-97D7-F466F3EAB91E}', 'Folder', 'Ordner 1', '{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder')
-
-insert into [TableInheritance_Folder] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID])
-    values ('{906927FE-FCFB-45cb-9320-8C2491A7A0FB}', 'Folder', 'Ordner mit ungültigerm ParentFolder', '{8A901797-A61C-4484-870D-CFAA4B38AEDE}', 'File')
-insert into [TableInheritance_File] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID], [Size])
-    values ('{8A901797-A61C-4484-870D-CFAA4B38AEDE}', 'File', 'TestDatei', null, null, 512)
-
+insert into [TableInheritance_Folder] (ID, ClassID, [Name], [FolderCreatedAt], [ParentFolderID], [ParentFolderIDClassID])
+    values ('{6B8A65C1-1D49-4dab-97D7-F466F3EAB91E}', 'Folder', 'Ordner 1', '2006/02/02', '{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder')
 
 -- File
-insert into [TableInheritance_File] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID], [Size])
-    values ('{023392E2-AB99-434f-A71F-8A9865D10C8C}', 'File', 'Datei im Root', '{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder', 42)
+insert into [TableInheritance_File] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID], [Size], [FileCreatedAt])
+    values ('{023392E2-AB99-434f-A71F-8A9865D10C8C}', 'File', 'Datei im Root', '{1A45A89B-746E-4a9e-AC2C-E960E90C0DAD}', 'Folder', 42, '2006/02/03')
 
-insert into [TableInheritance_File] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID], [Size])
-    values ('{6108E150-6D3C-4e38-9865-895BD143D180}', 'File', 'Datei im Ordner 1', '{6B8A65C1-1D49-4dab-97D7-F466F3EAB91E}', 'Folder', 512)
+insert into [TableInheritance_File] (ID, ClassID, [Name], [ParentFolderID], [ParentFolderIDClassID], [Size], [FileCreatedAt])
+    values ('{6108E150-6D3C-4e38-9865-895BD143D180}', 'File', 'Datei im Ordner 1', '{6B8A65C1-1D49-4dab-97D7-F466F3EAB91E}', 'Folder', 512, '2006/02/04')
 
 
 -- DerivedClassWithEntityWithHierarchy

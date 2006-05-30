@@ -117,6 +117,9 @@
     <Compile Include="TestDomain\Client.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestDomain\ClientBoundBaseClass.cs" />
+    <Compile Include="TestDomain\Company.cs" />
+    <Compile Include="TestDomain\Person.cs" />
     <Compile Include="TestDomain\File.cs">
       <SubType>Code</SubType>
     </Compile>

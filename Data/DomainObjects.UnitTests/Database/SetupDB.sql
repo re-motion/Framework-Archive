@@ -621,12 +621,12 @@ CREATE TABLE [TableInheritance_Folder] (
   [Timestamp] rowversion NOT NULL,
   
   [Name] varchar (100) NOT NULL,
+  [FolderCreatedAt] datetime NOT NULL,
   [ParentFolderID] uniqueidentifier NULL,
   [ParentFolderIDClassID] varchar (100) NULL,
   
-  CONSTRAINT [PK_TableInheritance_Folder] PRIMARY KEY CLUSTERED ([ID])
-  --,
-  --CONSTRAINT [FK_TableInheritance_Folder_TableInheritance_FileSystemItem] FOREIGN KEY ([ParentFolderID]) REFERENCES [TableInheritance_Folder] ([ID])  
+  CONSTRAINT [PK_TableInheritance_Folder] PRIMARY KEY CLUSTERED ([ID]),
+  CONSTRAINT [FK_TableInheritance_Folder_TableInheritance_FileSystemItem] FOREIGN KEY ([ParentFolderID]) REFERENCES [TableInheritance_Folder] ([ID])  
 ) 
 GO
 
@@ -637,6 +637,7 @@ CREATE TABLE [TableInheritance_File] (
   
   [Name] varchar (100) NOT NULL,
   [Size] int NOT NULL,
+  [FileCreatedAt] datetime NOT NULL,
   [ParentFolderID] uniqueidentifier NULL,
   [ParentFolderIDClassID] varchar (100) NULL,
   

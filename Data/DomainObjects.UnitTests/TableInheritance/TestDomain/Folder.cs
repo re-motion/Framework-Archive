@@ -34,5 +34,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
     {
       get { return GetRelatedObjects ("FileSystemItems"); }
     }
+
+    public DateTime CreatedAt
+    {
+      get { return DataContainer.GetDateTime ("CreatedAt"); }
+      set { DataContainer.SetValue ("CreatedAt", value); }
+    }
   }
 }

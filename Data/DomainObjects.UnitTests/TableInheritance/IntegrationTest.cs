@@ -54,7 +54,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       _derivedClassWithEntityFromBaseClass2ID = CreateDerivedClassWithEntityFromBaseClassWithHierarchyObjectID ("{9C730A8A-8F83-4b26-AF40-FB0C3D4DD387}");
       _derivedClassWithEntityFromBaseClass3ID = CreateDerivedClassWithEntityFromBaseClassWithHierarchyObjectID ("{953B2E51-C324-4f86-8FA0-3AFA2A2E4E72}");
     }
-    
+
+    [Test]
+    public void LoadObjectsWithSamePropertyNameInDifferentInheritanceBranches ()
+    {
+      Folder rootFolder = Folder.GetObject (_rootFolderID);
+      Assert.AreEqual (new DateTime (2006, 2, 1), rootFolder.CreatedAt);
+
+      File fileInRootFolder = File.GetObject (_fileInRootFolderID);
+      Assert.AreEqual (new DateTime (2006, 2, 3), fileInRootFolder.CreatedAt);
+    }
+
+
     [Test]
     public void CompositePatternNavigateOneToMany ()
     {
@@ -135,17 +146,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
       DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass1 =
           DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass1ID);
+
       Assert.AreEqual (_derivedClassWithEntity1ID, derivedClassWithEntityFromBaseClass1.ParentAbstractBaseClassWithHierarchy.ID);
       Assert.AreEqual (_derivedClassWithEntity1ID, derivedClassWithEntityFromBaseClass1.ParentDerivedClassWithEntityWithHierarchy.ID);
 
       DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass2 =
           DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass2ID);
+
       Assert.AreEqual (_derivedClassWithEntity2ID, derivedClassWithEntityFromBaseClass2.ParentAbstractBaseClassWithHierarchy.ID);
       Assert.AreEqual (_derivedClassWithEntity2ID, derivedClassWithEntityFromBaseClass2.ParentDerivedClassWithEntityWithHierarchy.ID);
       Assert.AreEqual (_derivedClassWithEntityFromBaseClass1ID, derivedClassWithEntityFromBaseClass2.ParentDerivedClassWithEntityFromBaseClassWithHierarchy.ID);
 
       DerivedClassWithEntityFromBaseClassWithHierarchy derivedClassWithEntityFromBaseClass3 =
           DerivedClassWithEntityFromBaseClassWithHierarchy.GetObject (_derivedClassWithEntityFromBaseClass3ID);
+
       Assert.AreEqual (_derivedClassWithEntity3ID, derivedClassWithEntityFromBaseClass3.ParentAbstractBaseClassWithHierarchy.ID);
       Assert.AreEqual (_derivedClassWithEntity3ID, derivedClassWithEntityFromBaseClass3.ParentDerivedClassWithEntityWithHierarchy.ID);
       Assert.AreEqual (_derivedClassWithEntityFromBaseClass1ID, derivedClassWithEntityFromBaseClass3.ParentDerivedClassWithEntityFromBaseClassWithHierarchy.ID);

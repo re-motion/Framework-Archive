@@ -45,10 +45,38 @@ public class LoadObjectsTest : DatabaseTest
       DateTime endTime = DateTime.Now;
 
       elapsedTime += (endTime - startTime);
+      Assert.AreEqual (3000, files.Count);
     }
 
     double averageMilliSeconds = elapsedTime.TotalMilliseconds / numberOfTests;
     Console.WriteLine ("LoadObjectsOverRelationTest (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString ("n"));
+  }
+
+  [Test]
+  public void LoadObjectsOverRelationWithAbstractBaseClass ()
+  {
+    const int numberOfTests = 10;
+
+    Console.WriteLine ("Expected average duration of LoadObjectsOverRelationWithAbstractBaseClass on reference system: ??? ms");
+
+    TimeSpan elapsedTime = new TimeSpan (0);
+    for (int i = 0; i < numberOfTests; i++)
+    {
+      ClientTransaction.SetCurrent (null);
+      Client client = Client.GetObject (s_clientID);
+
+      DateTime startTime = DateTime.Now;
+
+      DomainObjectCollection clientBoundBaseClasses = client.ClientBoundBaseClasses;
+
+      DateTime endTime = DateTime.Now;
+
+      elapsedTime += (endTime - startTime);
+      Assert.AreEqual (3000, clientBoundBaseClasses.Count);
+    }
+
+    double averageMilliSeconds = elapsedTime.TotalMilliseconds / numberOfTests;
+    Console.WriteLine ("LoadObjectsOverRelationWithAbstractBaseClass (executed {0}x): Average duration: {1} ms", numberOfTests, averageMilliSeconds.ToString ("n"));
   }
 }
 }
