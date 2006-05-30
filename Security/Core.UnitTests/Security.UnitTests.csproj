@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AccessTypeTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Configuration\FunctionalSecurityStrategyMock.cs" />
     <Compile Include="Configuration\PermissionProviderMock.cs" />
     <Compile Include="Configuration\UserProviderMock.cs" />
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />

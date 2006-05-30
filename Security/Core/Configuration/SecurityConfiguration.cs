@@ -53,6 +53,7 @@ namespace Rubicon.Security.Configuration
     private readonly ConfigurationProperty _customUserProviderProperty;
     private readonly ConfigurationProperty _userProviderTypeProperty;
     private readonly ConfigurationProperty _customPermissionProviderProperty;
+    private readonly ConfigurationProperty _customFunctionalSecurityStrategyProperty;
     private Type _httpContextUserProviderType;
 
     // construction and disposing
@@ -70,6 +71,9 @@ namespace Rubicon.Security.Configuration
           new ConfigurationProperty ("userProvider", typeof (UserProviderType), UserProviderType.Thread, ConfigurationPropertyOptions.None);
       _customPermissionProviderProperty =
           new ConfigurationProperty ("customPermissionProvider", typeof (TypeElement<IPermissionProvider>), null, ConfigurationPropertyOptions.None);
+      _customFunctionalSecurityStrategyProperty =
+          new ConfigurationProperty (
+              "customFunctionalSecurityStrategy", typeof (TypeElement<IFunctionalSecurityStrategy>), null, ConfigurationPropertyOptions.None);
 
       _properties = new ConfigurationPropertyCollection ();
       _properties.Add (_xmlnsProperty);
@@ -78,6 +82,7 @@ namespace Rubicon.Security.Configuration
       _properties.Add (_customUserProviderProperty);
       _properties.Add (_userProviderTypeProperty);
       _properties.Add (_customPermissionProviderProperty);
+      _properties.Add (_customFunctionalSecurityStrategyProperty);
     }
 
     // methods and properties
@@ -126,7 +131,7 @@ namespace Rubicon.Security.Configuration
       get
       {
         if (_functionalSecurityStrategy == null)
-          _functionalSecurityStrategy = new FunctionalSecurityStrategy ();
+          _functionalSecurityStrategy = GetFunctionalSecurityStrategyFromConfiguration ();
 
         return _functionalSecurityStrategy;
       }
@@ -174,6 +179,14 @@ namespace Rubicon.Security.Configuration
         return new PermissionReflector ();
 
       return (IPermissionProvider) Activator.CreateInstance (CustomPermissionProvider.Type);
+    }
+
+    private IFunctionalSecurityStrategy GetFunctionalSecurityStrategyFromConfiguration ()
+    {
+      if (CustomFunctionalSecurityStrategy.Type == null)
+        return new FunctionalSecurityStrategy ();
+
+      return (IFunctionalSecurityStrategy) Activator.CreateInstance (CustomFunctionalSecurityStrategy.Type);
     }
 
     private Type GetHttpContextUserProviderType ()
@@ -239,6 +252,12 @@ namespace Rubicon.Security.Configuration
     {
       get { return (TypeElement<IPermissionProvider>) this[_customPermissionProviderProperty]; }
       set { this[_customPermissionProviderProperty] = value; }
+    }
+
+    protected TypeElement<IFunctionalSecurityStrategy> CustomFunctionalSecurityStrategy
+    {
+      get { return (TypeElement<IFunctionalSecurityStrategy>) this[_customFunctionalSecurityStrategyProperty]; }
+      set { this[_customFunctionalSecurityStrategyProperty] = value; }
     }
   }
 

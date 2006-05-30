@@ -199,7 +199,7 @@ namespace Rubicon.Security.UnitTests.Configuration
     }
 
     [Test]
-    public void DefaultPermissionProviderIsAlwaysSameInstance ()
+    public void PermissionProviderIsAlwaysSameInstance ()
     {
       string xmlFragment = @"<rubicon.security />";
 
@@ -220,6 +220,41 @@ namespace Rubicon.Security.UnitTests.Configuration
 
       Assert.IsNotNull (_configuration.CustomService);
       Assert.IsInstanceOfType (typeof (PermissionProviderMock), _configuration.PermissionProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithDefaultFunctionalSecurityStrategy ()
+    {
+      string xmlFragment = @"<rubicon.security />";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.IsNotNull (_configuration.FunctionalSecurityStrategy);
+      Assert.IsInstanceOfType (typeof (FunctionalSecurityStrategy), _configuration.FunctionalSecurityStrategy);
+    }
+
+    [Test]
+    public void FunctionalSecurityStrategyIsAlwaysSameInstance ()
+    {
+      string xmlFragment = @"<rubicon.security />";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.AreSame (_configuration.FunctionalSecurityStrategy, _configuration.FunctionalSecurityStrategy);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithCustomFunctionalSecurityStrategy ()
+    {
+      string xmlFragment = @"
+          <rubicon.security>
+            <customFunctionalSecurityStrategy type=""Rubicon.Security.UnitTests::Configuration.FunctionalSecurityStrategyMock"" />
+          </rubicon.security>";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.IsNotNull (_configuration.CustomService);
+      Assert.IsInstanceOfType (typeof (FunctionalSecurityStrategyMock), _configuration.FunctionalSecurityStrategy);
     }
   }
 }

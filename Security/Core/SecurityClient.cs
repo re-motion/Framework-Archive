@@ -10,6 +10,41 @@ namespace Rubicon.Security
 {
   public class SecurityClient
   {
+    private static SecurityClient s_current;
+
+    public static SecurityClient Current
+    {
+      get
+      {
+        if (s_current == null)
+        {
+          lock (typeof (SecurityClient))
+          {
+            if (s_current == null)
+              s_current = CreateSecurityClientFromConfiguration ();
+          }
+        }
+
+        return s_current;
+      }
+    }
+
+    private static SecurityClient CreateSecurityClientFromConfiguration ()
+    {
+      ISecurityService securityService = SecurityConfiguration.Current.SecurityService;
+      IPermissionProvider permissionProvider = SecurityConfiguration.Current.PermissionProvider;
+      IUserProvider userProvider = SecurityConfiguration.Current.UserProvider;
+      IFunctionalSecurityStrategy functionalSecurityStrategy = SecurityConfiguration.Current.FunctionalSecurityStrategy;
+
+      if (securityService == null)
+        throw new SecurityConfigurationException ("The security service has not been configured.");
+
+      if (userProvider == null)
+        throw new SecurityConfigurationException ("The user provider has not been configured.");
+
+      return new SecurityClient (securityService, permissionProvider, userProvider, functionalSecurityStrategy);
+    }
+
     private ISecurityService _securityService;
     private IPermissionProvider _permissionProvider;
     private IUserProvider _userProvider;

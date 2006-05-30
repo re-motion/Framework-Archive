@@ -64,7 +64,9 @@
     <Compile Include="Metadata\StatePropertyReflector.cs" />
     <Compile Include="PermissionDeniedException.cs" />
     <Compile Include="SecurityClient.cs" />
+    <Compile Include="SecurityConfigurationException.cs" />
     <Compile Include="GeneralAccessType.cs" />
+    <Compile Include="SecurityException.cs" />
     <Compile Include="ObjectSecurityProvider.cs" />
     <Compile Include="ObjectSecurityStrategy.cs" />
     <Compile Include="ThreadUserProvider.cs" />
