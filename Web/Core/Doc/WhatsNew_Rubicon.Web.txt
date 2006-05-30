@@ -1,3 +1,8 @@
+1.7.3
+=====
+- WxeFunction
+  * Obsolete Methode GetParamaterDeclarations entfernt. Statt dessen ist GetParameterDeclarations vorgesehen. (Siehe auch 1.4.7)
+
 1.5.55
 ======
 - TabbedMultiView 
@@ -161,6 +166,7 @@
 =====
 - Rubicon.Web.ExecutionEngine.WxeFunction
   * GetParameterDeclarations(): Tippfehler gefixed: GetParam_a_terDeclarations
+
 1.4.6
 =====
 - Rubicon.Web.UI.Globalization.WebMultiLingualResourcesAttribute
