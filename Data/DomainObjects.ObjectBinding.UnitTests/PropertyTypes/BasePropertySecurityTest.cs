@@ -21,7 +21,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     private Mockery _mocks;
     private IObjectSecurityProvider _mockObjectSecurityProvider;
     private StringProperty _property;
-    private SecurableSearchObject _testSearchObject;
+    private SecurableSearchObject _securableSearchObject;
 
     [SetUp]
     public void SetUp ()
@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       _mockObjectSecurityProvider = _mocks.NewMock<IObjectSecurityProvider> ();
 
       SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (_mockObjectSecurityProvider);
-      _testSearchObject = new SecurableSearchObject (_mocks.NewMock<ISecurityContextFactory> ());
+      _securableSearchObject = new SecurableSearchObject (_mocks.NewMock<ISecurityContextFactory> ());
 
       Type domainObjectType = typeof (SecurableSearchObject);
       PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("StringProperty");
@@ -42,10 +42,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     {
       Expect.Once.On (_mockObjectSecurityProvider)
           .Method ("HasAccessOnGetAccessor")
-          .With (_testSearchObject)
+          .With (_securableSearchObject)
           .Will (Return.Value (true));
 
-      Assert.AreEqual (true, _property.IsAccessible (_testSearchObject));
+      Assert.AreEqual (true, _property.IsAccessible (_securableSearchObject));
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
@@ -54,10 +54,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     {
       Expect.Once.On (_mockObjectSecurityProvider)
           .Method ("HasAccessOnGetAccessor")
-          .With (_testSearchObject)
+          .With (_securableSearchObject)
           .Will (Return.Value (false));
 
-      Assert.AreEqual (false, _property.IsAccessible (_testSearchObject));
+      Assert.AreEqual (false, _property.IsAccessible (_securableSearchObject));
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
@@ -80,10 +80,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     {
       Expect.Once.On (_mockObjectSecurityProvider)
           .Method ("HasAccessOnSetAccessor")
-          .With (_testSearchObject)
+          .With (_securableSearchObject)
           .Will (Return.Value (false));
 
-      Assert.AreEqual (true, _property.IsReadOnly (_testSearchObject));
+      Assert.AreEqual (true, _property.IsReadOnly (_securableSearchObject));
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
@@ -92,10 +92,10 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
     {
       Expect.Once.On (_mockObjectSecurityProvider)
           .Method ("HasAccessOnSetAccessor")
-          .With (_testSearchObject)
+          .With (_securableSearchObject)
           .Will (Return.Value (true));
 
-      Assert.AreEqual (false, _property.IsReadOnly (_testSearchObject));
+      Assert.AreEqual (false, _property.IsReadOnly (_securableSearchObject));
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
