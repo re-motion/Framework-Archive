@@ -26,8 +26,6 @@
       </sources>
       <references failonempty="true">
         <include name="${build.outputdir}/Rubicon.Core.dll" />
-        <include name="${build.outputdir}/Rubicon.Security.dll" />
-        <include name="${build.outputdir}/Rubicon.Security.Web.dll" />
         <include name="${build.outputdir}/log4net.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>

@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UnitTests.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
+namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
   [WxeDemandMethodPermission (MethodType.Instance, ParameterName="ThisObject", Method="Show")]
   public class TestFunctionWithPermissionsFromInstanceMethod : WxeFunction

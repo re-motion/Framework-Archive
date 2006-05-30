@@ -16,7 +16,9 @@ namespace Rubicon.Security
     Edit = 2,
     [PermanentGuid ("305FBB40-75C8-423a-84B2-B26EA9E7CAE7")]
     Delete = 3,
+    [PermanentGuid ("67CEA479-0BE7-4e2f-B2E0-BB1FCC9EA1D6")]
+    Search = 4,
     [PermanentGuid ("203B7478-96F1-4bf1-B4EA-5BDD1206252C")]
-    Find = 4
+    Find = 5
   }
 }

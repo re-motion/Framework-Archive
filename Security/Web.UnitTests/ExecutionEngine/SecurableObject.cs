@@ -5,23 +5,23 @@ using System.Text;
 using Rubicon.Security;
 using Rubicon.Web.UnitTests.ExecutionEngine;
 
-namespace Rubicon.Web.UnitTests.ExecutionEngine.Security
+namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
   public class SecurableObject : ISecurableObject
   {
-    [DemandMethodPermission (GeneralAccessType.Create)]
-    public static void Create ()
+    [DemandMethodPermission (GeneralAccessType.Search)]
+    public static void Search ()
     {
     }
 
     private IObjectSecurityStrategy _securityStrategy;
 
-    public SecurableObject (ISecurityContextFactory securityContextFactory)
+    public SecurableObject (IObjectSecurityStrategy securityStrategy)
     {
-      _securityStrategy = new ObjectSecurityStrategy (securityContextFactory);
+      _securityStrategy = securityStrategy;
     }
 
-    [DemandMethodPermission (GeneralAccessType.Edit, GeneralAccessType.Read)]
+    [DemandMethodPermission (GeneralAccessType.Read)]
     public void Show ()
     {
     }

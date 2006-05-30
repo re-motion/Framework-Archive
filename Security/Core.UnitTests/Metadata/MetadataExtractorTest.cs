@@ -72,6 +72,7 @@ namespace Rubicon.Security.UnitTests.Metadata
                   <accessTypeRef>62dfcd92-a480-4d57-95f1-28c0f5996b3a</accessTypeRef>
                   <accessTypeRef>11186122-6de0-4194-b434-9979230c41fd</accessTypeRef>
                   <accessTypeRef>305fbb40-75c8-423a-84b2-b26ea9e7cae7</accessTypeRef>
+                  <accessTypeRef>67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6</accessTypeRef>
                   <accessTypeRef>203b7478-96f1-4bf1-b4ea-5bdd1206252c</accessTypeRef>
                   <accessTypeRef>00000002-0001-0000-0000-000000000000</accessTypeRef>
                 </accessTypes>
@@ -88,6 +89,7 @@ namespace Rubicon.Security.UnitTests.Metadata
                   <accessTypeRef>62dfcd92-a480-4d57-95f1-28c0f5996b3a</accessTypeRef>
                   <accessTypeRef>11186122-6de0-4194-b434-9979230c41fd</accessTypeRef>
                   <accessTypeRef>305fbb40-75c8-423a-84b2-b26ea9e7cae7</accessTypeRef>
+                  <accessTypeRef>67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6</accessTypeRef>
                   <accessTypeRef>203b7478-96f1-4bf1-b4ea-5bdd1206252c</accessTypeRef>
                   <accessTypeRef>00000002-0001-0000-0000-000000000000</accessTypeRef>
                 </accessTypes>
@@ -113,7 +115,8 @@ namespace Rubicon.Security.UnitTests.Metadata
               <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read"" value=""1"" />
               <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit"" value=""2"" />
               <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete"" value=""3"" />
-              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find"" value=""4"" />
+              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search"" value=""4"" />
+              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find"" value=""5"" />
               <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize"" value=""0"" />
               <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive"" value=""1"" />
             </accessTypes>
@@ -155,6 +158,7 @@ namespace Rubicon.Security.UnitTests.Metadata
                   <accessTypeRef>62dfcd92-a480-4d57-95f1-28c0f5996b3a</accessTypeRef>
                   <accessTypeRef>11186122-6de0-4194-b434-9979230c41fd</accessTypeRef>
                   <accessTypeRef>305fbb40-75c8-423a-84b2-b26ea9e7cae7</accessTypeRef>
+                  <accessTypeRef>67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6</accessTypeRef>
                   <accessTypeRef>203b7478-96f1-4bf1-b4ea-5bdd1206252c</accessTypeRef>
                   <accessTypeRef>00000002-0001-0000-0000-000000000000</accessTypeRef>
                 </accessTypes>
@@ -171,6 +175,7 @@ namespace Rubicon.Security.UnitTests.Metadata
                   <accessTypeRef>62dfcd92-a480-4d57-95f1-28c0f5996b3a</accessTypeRef>
                   <accessTypeRef>11186122-6de0-4194-b434-9979230c41fd</accessTypeRef>
                   <accessTypeRef>305fbb40-75c8-423a-84b2-b26ea9e7cae7</accessTypeRef>
+                  <accessTypeRef>67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6</accessTypeRef>
                   <accessTypeRef>203b7478-96f1-4bf1-b4ea-5bdd1206252c</accessTypeRef>
                   <accessTypeRef>00000002-0001-0000-0000-000000000000</accessTypeRef>
                 </accessTypes>
@@ -196,7 +201,8 @@ namespace Rubicon.Security.UnitTests.Metadata
               <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read"" value=""1"" />
               <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit"" value=""2"" />
               <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete"" value=""3"" />
-              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find"" value=""4"" />
+              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search"" value=""4"" />
+              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find"" value=""5"" />
               <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize"" value=""0"" />
               <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive"" value=""1"" />
             </accessTypes>

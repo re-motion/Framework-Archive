@@ -67,11 +67,12 @@ namespace Rubicon.Security.UnitTests.Metadata
       List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredInstanceMethods), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
-      Assert.AreEqual (8, actualAccessTypes.Count);
+      Assert.AreEqual (9, actualAccessTypes.Count);
       EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
       EnumValueInfoAssert.Contains ("First", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
@@ -84,11 +85,12 @@ namespace Rubicon.Security.UnitTests.Metadata
       List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredStaticMethods), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
-      Assert.AreEqual (8, actualAccessTypes.Count);
+      Assert.AreEqual (9, actualAccessTypes.Count);
       EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
       EnumValueInfoAssert.Contains ("First", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
@@ -101,11 +103,12 @@ namespace Rubicon.Security.UnitTests.Metadata
       List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredInstanceMethods), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
-      Assert.AreEqual (9, actualAccessTypes.Count);
+      Assert.AreEqual (10, actualAccessTypes.Count);
       EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
       EnumValueInfoAssert.Contains ("First", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
@@ -119,12 +122,13 @@ namespace Rubicon.Security.UnitTests.Metadata
       List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (DerivedSecurableObjectWithSecuredStaticMethods), _cache);
 
       Assert.IsNotNull (actualAccessTypes);
-      Assert.AreEqual (9, actualAccessTypes.Count);
+      Assert.AreEqual (10, actualAccessTypes.Count);
       EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
       EnumValueInfoAssert.Contains ("First", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Second", actualAccessTypes);
       EnumValueInfoAssert.Contains ("Third", actualAccessTypes);
@@ -137,7 +141,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       List<EnumValueInfo> expectedAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (PaperFile), _cache);
       List<EnumValueInfo> actualAccessTypes = _cache.GetAccessTypes ();
 
-      Assert.AreEqual (6, expectedAccessTypes.Count);
+      Assert.AreEqual (7, expectedAccessTypes.Count);
       foreach (EnumValueInfo expected in expectedAccessTypes)
         Assert.Contains (expected, actualAccessTypes);
     }

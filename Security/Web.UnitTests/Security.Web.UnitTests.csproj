@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</ProjectGuid>
+    <ProjectGuid>{5ED46C3D-6273-4025-8ECF-0550BBFC403A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.Security.Web</RootNamespace>
-    <AssemblyName>Rubicon.Security.Web</AssemblyName>
+    <RootNamespace>Rubicon.Security.Web.UnitTests</RootNamespace>
+    <AssemblyName>Rubicon.Security.Web.UnitTests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,6 +18,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,21 +29,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NMock2, Version=1.0.2313.18049, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\NMock2.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttribute.cs" />
-    <Compile Include="ExecutionEngine\WxeSecurityProvider.cs" />
-    <Compile Include="HttpContextUserProvider.cs" />
+    <Compile Include="ExecutionEngine\TestFunctionWithoutPermissions.cs" />
+    <Compile Include="ExecutionEngine\SecurableObject.cs" />
+    <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromConstructor.cs" />
+    <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethod.cs" />
+    <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromStaticMethod.cs" />
+    <Compile Include="ExecutionEngine\WxeFunctionSecurityTest.cs" />
+    <Compile Include="ExecutionEngine\WxeSecurityProviderTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
-    <None Include="Security.Web.build" />
+    <None Include="Security.Web.UnitTests.build" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
@@ -53,9 +63,17 @@
       <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
       <Name>Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Web\UnitTests\Web.UnitTests.csproj">
+      <Project>{F3EE8E9C-5230-4D1A-B655-CA65E2D52F21}</Project>
+      <Name>Web.UnitTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Security.csproj">
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Web\Security.Web.csproj">
+      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
+      <Name>Security.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
