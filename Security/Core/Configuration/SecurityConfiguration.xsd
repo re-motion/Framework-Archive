@@ -19,6 +19,16 @@
             <xs:attribute name="type" type="c:DotNetType" default="None" />
           </xs:complexType>
         </xs:element>
+        <xs:element name="customPermissionProvider" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="type" type="c:DotNetType" default="None" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="customFunctionalSecurityStrategy" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="type" type="c:DotNetType" default="None" />
+          </xs:complexType>
+        </xs:element>
       </xs:all>
       <xs:attribute name="service" type="c:SecurityServiceType" default="None" />
       <xs:attribute name="userProvider" type="c:UserProviderType" default="Thread" />
