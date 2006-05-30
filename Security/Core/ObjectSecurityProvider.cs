@@ -26,15 +26,15 @@ namespace Rubicon.Security
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
 
-      SecurityClient securityClient = new SecurityClient ();
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       return securityClient.HasAccess (securableObject, AccessType.Get (GeneralAccessType.Read));
     }
 
     public bool HasAccessOnSetAccessor (ISecurableObject securableObject)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
-      
-      SecurityClient securityClient = new SecurityClient ();
+
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       return securityClient.HasAccess (securableObject, AccessType.Get (GeneralAccessType.Edit));
     }
   }

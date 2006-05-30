@@ -10,26 +10,7 @@ namespace Rubicon.Security
 {
   public class SecurityClient
   {
-    private static SecurityClient s_current;
-
-    public static SecurityClient Current
-    {
-      get
-      {
-        if (s_current == null)
-        {
-          lock (typeof (SecurityClient))
-          {
-            if (s_current == null)
-              s_current = CreateSecurityClientFromConfiguration ();
-          }
-        }
-
-        return s_current;
-      }
-    }
-
-    private static SecurityClient CreateSecurityClientFromConfiguration ()
+    public static SecurityClient CreateSecurityClientFromConfiguration ()
     {
       ISecurityService securityService = SecurityConfiguration.Current.SecurityService;
       IPermissionProvider permissionProvider = SecurityConfiguration.Current.PermissionProvider;
@@ -49,26 +30,6 @@ namespace Rubicon.Security
     private IPermissionProvider _permissionProvider;
     private IUserProvider _userProvider;
     private IFunctionalSecurityStrategy _functionalSecurityStrategy;
-
-    public SecurityClient ()
-        : this (SecurityConfiguration.Current.SecurityService, new PermissionReflector (), SecurityConfiguration.Current.UserProvider)
-    {
-    }
-
-    public SecurityClient (ISecurityService securityService)
-        : this (securityService, new PermissionReflector (), SecurityConfiguration.Current.UserProvider)
-    {
-    }
-
-    public SecurityClient (ISecurityService securityService, IPermissionProvider permissionReflector)
-        : this (securityService, permissionReflector, SecurityConfiguration.Current.UserProvider)
-    {
-    }
-
-    public SecurityClient (ISecurityService securityService, IPermissionProvider permissionReflector, IUserProvider userProvider)
-        : this (securityService, permissionReflector, userProvider, SecurityConfiguration.Current.FunctionalSecurityStrategy)
-    {
-    }
 
     public SecurityClient (
         ISecurityService securityService,

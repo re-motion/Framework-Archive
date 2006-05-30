@@ -6,6 +6,7 @@ using System.Text;
 using NUnit.Framework;
 using NMock2;
 
+using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.TestDomain;
 
 namespace Rubicon.Security.UnitTests
@@ -19,6 +20,7 @@ namespace Rubicon.Security.UnitTests
     private ISecurityService _mockSecurityService;
     private SecurityContext _context;
     private IPrincipal _user;
+    private SecurityClient _securityClient;
 
     [SetUp]
     public void SetUp ()
@@ -30,6 +32,8 @@ namespace Rubicon.Security.UnitTests
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _context = new SecurityContext (typeof (File), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+
+      _securityClient = new SecurityClient (_mockSecurityService, new PermissionReflector (), new ThreadUserProvider (), new FunctionalSecurityStrategy ());
     }
 
     [Test]
@@ -43,8 +47,7 @@ namespace Rubicon.Security.UnitTests
           .Method ("GetSecurityStrategy")
           .Will (Return.Value (_mockSecurityStrategy));
 
-      SecurityClient securityClient = new SecurityClient (_mockSecurityService);
-      bool hasAccess = securityClient.HasAccess (_mockSecurableType, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _securityClient.HasAccess (_mockSecurableType, _user, AccessType.Get (GeneralAccessType.Edit));
 
       Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -61,8 +64,7 @@ namespace Rubicon.Security.UnitTests
           .Method ("GetSecurityStrategy")
           .Will (Return.Value (_mockSecurityStrategy));
 
-      SecurityClient securityClient = new SecurityClient (_mockSecurityService);
-      bool hasAccess = securityClient.HasAccess (_mockSecurableType, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _securityClient.HasAccess (_mockSecurableType, _user, AccessType.Get (GeneralAccessType.Edit));
 
       Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAllExpectationsHaveBeenMet ();
@@ -79,8 +81,7 @@ namespace Rubicon.Security.UnitTests
       Expect.Never.On (_mockSecurityService)
           .Method ("GetAccess");
 
-      SecurityClient securityClient = new SecurityClient (_mockSecurityService);
-      bool hasAccess = securityClient.HasAccess (_mockSecurableType, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _securityClient.HasAccess (_mockSecurableType, _user, AccessType.Get (GeneralAccessType.Edit));
     }
   }
 }

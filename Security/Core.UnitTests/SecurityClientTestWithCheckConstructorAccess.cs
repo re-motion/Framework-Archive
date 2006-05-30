@@ -18,6 +18,7 @@ namespace Rubicon.Security.UnitTests
     private IPermissionProvider _permissionReflectorMock;
     private IPrincipal _user;
     private SecurityContext _statelessContext;
+    private SecurityClient _securityClient;
 
     [SetUp]
     public void SetUp ()
@@ -28,6 +29,8 @@ namespace Rubicon.Security.UnitTests
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _statelessContext = new SecurityContext (typeof (SecurableObject));
+
+      _securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock, new ThreadUserProvider (), new FunctionalSecurityStrategy ());
     }
 
     [Test]
@@ -38,8 +41,7 @@ namespace Rubicon.Security.UnitTests
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
+      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
@@ -52,8 +54,7 @@ namespace Rubicon.Security.UnitTests
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
+      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
     }
 
     [Test]
@@ -64,8 +65,7 @@ namespace Rubicon.Security.UnitTests
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Create) }));
 
-      SecurityClient securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock);
-      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
+      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }

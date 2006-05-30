@@ -79,7 +79,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    public void HasAccessOnGetAccessorWithInalidAccessType ()
+    public void HasAccessOnGetAccessorWithInvalidAccessType ()
     {
       Expect.Once.On (_mockObjectSecurityStrategy)
           .Method ("HasAccess")
@@ -109,7 +109,7 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    public void HasAccessOnSetAccessorWithInalidAccessType ()
+    public void HasAccessOnSetAccessorWithInvalidAccessType ()
     {
       Expect.Once.On (_mockObjectSecurityStrategy)
           .Method ("HasAccess")

@@ -39,7 +39,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
           CheckMethodAccess (function, attribute.ParameterName, attribute.Method);
           break;
         case MethodType.Static:
-          CheckStaticMethdAccess (function, attribute.SecurableClass, attribute.Method);
+          CheckStaticMethodAccess (function, attribute.SecurableClass, attribute.Method);
           break;
         case MethodType.Constructor:
           CheckConstructorAccess (attribute.SecurableClass);
@@ -73,11 +73,11 @@ namespace Rubicon.Security.Web.ExecutionEngine
       if (securableObject == null)
         throw new WxeException (string.Format ("Parameter '{0}' is null or does not implement interface 'Rubicon.Security.ISecurableObject'.", parameterName));
 
-      SecurityClient securityClient = new SecurityClient ();
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       securityClient.CheckMethodAccess (securableObject, method);
     }
 
-    private void CheckStaticMethdAccess (WxeFunction function, Type securableClass, string method)
+    private void CheckStaticMethodAccess (WxeFunction function, Type securableClass, string method)
     {
       if (securableClass == null)
       {
@@ -93,7 +93,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
             GetType ().Name));
       }
 
-      SecurityClient securityClient = new SecurityClient ();
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       securityClient.CheckStaticMethodAccess (securableClass, method);
     }
 
@@ -106,7 +106,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
             GetType ().Name));
       }
 
-      SecurityClient securityClient = new SecurityClient ();
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
       securityClient.CheckConstructorAccess (securableClass);
     }
   }
