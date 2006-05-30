@@ -41,9 +41,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
         case MethodType.Static:
           CheckStaticMethdAccess (function, attribute.SecurableClass, attribute.Method);
           break;
-        //case MethodType.Constructor:
-        //  CheckConstructorAccess (attribute.SecurableClass);
-        //  break;
+        case MethodType.Constructor:
+          CheckConstructorAccess (attribute.SecurableClass);
+          break;
         default:
           throw new InvalidOperationException (string.Format ("MethodType '{0}' is not supported.", attribute.Type));
       }
@@ -97,17 +97,17 @@ namespace Rubicon.Security.Web.ExecutionEngine
       securityClient.CheckStaticMethodAccess (securableClass, method);
     }
 
-    //private void CheckConstructorAccess (Type securableClass)
-    //{
-    //  if (securableClass == null)
-    //  {
-    //    throw new WxeException (string.Format (
-    //        "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify a type implementing 'Rubicon.Security.ISecurableType'.",
-    //        GetType ().Name));
-    //  }
+    private void CheckConstructorAccess (Type securableClass)
+    {
+      if (securableClass == null)
+      {
+        throw new WxeException (string.Format (
+            "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify a type implementing interface 'Rubicon.Security.ISecurableObject'.",
+            GetType ().Name));
+      }
 
-    //  SecurityClient securityClient = new SecurityClient ();
-    //  securityClient.CheckConstructorAccess (securableClass);
-    //}
+      SecurityClient securityClient = new SecurityClient ();
+      securityClient.CheckConstructorAccess (securableClass);
+    }
   }
 }

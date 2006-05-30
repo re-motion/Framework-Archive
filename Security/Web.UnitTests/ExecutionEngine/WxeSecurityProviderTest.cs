@@ -134,14 +134,26 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     {
       Expect.Once.On (_mockFunctionalSecurityStrategy)
           .Method ("HasAccess")
-          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Search) })
+          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Create) })
           .Will (Return.Value (true));
 
-      TestFunctionWithPermissionsFromStaticMethod function = new TestFunctionWithPermissionsFromStaticMethod ();
+      TestFunctionWithPermissionsFromConstructor function = new TestFunctionWithPermissionsFromConstructor ();
       _securityProvider.CheckAccess (function);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
 
+    [Test]
+    [ExpectedException (typeof (PermissionDeniedException))]
+    public void CheckAccessWithInvalidPermissionsFromConstructor ()
+    {
+      Expect.Once.On (_mockFunctionalSecurityStrategy)
+          .Method ("HasAccess")
+          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Create) })
+          .Will (Return.Value (false));
+
+      TestFunctionWithPermissionsFromConstructor function = new TestFunctionWithPermissionsFromConstructor ();
+      _securityProvider.CheckAccess (function);
+    }
   }
 }
