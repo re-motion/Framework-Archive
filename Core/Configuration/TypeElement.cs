@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Text;
 
-namespace Rubicon.Security.Configuration
+namespace Rubicon.Configuration
 {
   public class TypeElement<T> : ConfigurationElement
   {

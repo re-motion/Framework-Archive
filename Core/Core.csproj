@@ -103,6 +103,7 @@
     <Compile Include="Collections\TypedHashtable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\TypeElement.cs" />
     <Compile Include="Data\ITransaction.cs">
       <SubType>Code</SubType>
     </Compile>

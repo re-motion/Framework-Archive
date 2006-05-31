@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
+using Rubicon.Configuration;
 using Rubicon.Security.Configuration;
 using Rubicon.Utilities;
 

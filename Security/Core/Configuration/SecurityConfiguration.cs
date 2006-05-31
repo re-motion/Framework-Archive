@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Reflection;
 
+using Rubicon.Configuration;
 using Rubicon.Security.Metadata;
 using Rubicon.Utilities;
 

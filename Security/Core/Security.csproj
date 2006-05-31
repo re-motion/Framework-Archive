@@ -38,7 +38,6 @@
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.build" />
     <Compile Include="BaseSecurityStrategy.cs" />
-    <Compile Include="Configuration\TypeElement.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
     <Compile Include="FunctionalSecurityStrategy.cs" />
