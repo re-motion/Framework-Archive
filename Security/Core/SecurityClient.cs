@@ -48,6 +48,7 @@ namespace Rubicon.Security
       _functionalSecurityStrategy = functionalSecurityStrategy;
     }
 
+
     public bool HasAccess (ISecurableObject securableObject, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
@@ -59,74 +60,131 @@ namespace Rubicon.Security
       return objectSecurityStrategy.HasAccess (_securityService, user, requiredAccessTypes);
     }
 
-    public bool HasAccess (ISecurableObject securableType, params AccessType[] requiredAccessTypes)
+    public bool HasAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
     {
-      return HasAccess (securableType, _userProvider.GetUser (), requiredAccessTypes);
+      return HasAccess (securableObject, _userProvider.GetUser (), requiredAccessTypes);
     }
 
-    public void CheckMethodAccess (ISecurableObject securableType, string methodName)
+
+    public bool HasMethodAccess (ISecurableObject securableObject, string methodName)
     {
-      CheckMethodAccess (securableType, methodName, _userProvider.GetUser ());
+      return HasMethodAccess (securableObject, methodName, _userProvider.GetUser ());
     }
 
-    public void CheckMethodAccess (ISecurableObject securableType, string methodName, IPrincipal user)
+    public bool HasMethodAccess (ISecurableObject securableObject, string methodName, IPrincipal user)
     {
-      ArgumentUtility.CheckNotNull ("securableType", securableType);
+      ArgumentUtility.CheckNotNull ("securableObject", securableObject);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableType.GetType (), methodName);
-      CheckRequiredMethodAccess (securableType, methodName, requiredAccessTypeEnums, user);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetType (), methodName);
+      return HasRequiredMethodAccess (securableObject, methodName, requiredAccessTypeEnums, user);
     }
 
-    public void CheckConstructorAccess (Type type)
+    public bool HasConstructorAccess (Type securableClass)
     {
-      CheckConstructorAccess (type, _userProvider.GetUser ());
+      return HasConstructorAccess (securableClass, _userProvider.GetUser ());
     }
 
-    public void CheckConstructorAccess (Type type, IPrincipal user)
+    public bool HasConstructorAccess (Type securableClass, IPrincipal user)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNull ("securableClass", securableClass);
       ArgumentUtility.CheckNotNull ("user", user);
 
       AccessType[] requiredAccessTypes = new AccessType[] { AccessType.Get (GeneralAccessType.Create) };
 
-      if (!_functionalSecurityStrategy.HasAccess (type, _securityService, user, requiredAccessTypes))
-        throw new PermissionDeniedException (string.Format ("Access to constructor for type '{0}' has been denied.", type.FullName));
-   }
-
-    public void CheckStaticMethodAccess (Type type, string methodName)
-    {
-      CheckStaticMethodAccess (type, methodName, _userProvider.GetUser ());
+      return _functionalSecurityStrategy.HasAccess (securableClass, _securityService, user, requiredAccessTypes);
     }
 
-    public void CheckStaticMethodAccess (Type type, string methodName, IPrincipal user)
+    public bool HasStaticMethodAccess (Type securableClass, string methodName)
     {
-      ArgumentUtility.CheckNotNull ("type", type);
-
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredStaticMethodPermissions (type, methodName);
-      CheckRequiredStaticMethodAccess (type, methodName, requiredAccessTypeEnums, user);
+      return HasStaticMethodAccess (securableClass, methodName, _userProvider.GetUser ());
     }
 
-    private void CheckRequiredMethodAccess (ISecurableObject securableType, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    public bool HasStaticMethodAccess (Type securableClass, string methodName, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("securableClass", securableClass);
+
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredStaticMethodPermissions (securableClass, methodName);
+      return HasRequiredStaticMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user);
+    }
+
+    private bool HasRequiredMethodAccess (ISecurableObject securableObject, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
       if (requiredAccessTypeEnums.Length == 0)
         throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");
 
-      if (!HasAccess (securableType, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
+      return HasAccess (securableObject, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums));
+    }
+
+    private bool HasRequiredStaticMethodAccess (Type securableClass, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    {
+      if (requiredAccessTypeEnums.Length == 0)
+        throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");
+
+      return _functionalSecurityStrategy.HasAccess (securableClass, _securityService, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums));
+    }
+
+
+    public void CheckMethodAccess (ISecurableObject securableObject, string methodName)
+    {
+      CheckMethodAccess (securableObject, methodName, _userProvider.GetUser ());
+    }
+
+    public void CheckMethodAccess (ISecurableObject securableObject, string methodName, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("securableObject", securableObject);
+      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetType (), methodName);
+      CheckRequiredMethodAccess (securableObject, methodName, requiredAccessTypeEnums, user);
+    }
+
+    public void CheckConstructorAccess (Type securableClass)
+    {
+      CheckConstructorAccess (securableClass, _userProvider.GetUser ());
+    }
+
+    public void CheckConstructorAccess (Type securableClass, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("securableClass", securableClass);
+      ArgumentUtility.CheckNotNull ("user", user);
+
+      if (!HasConstructorAccess (securableClass, user))
+        throw new PermissionDeniedException (string.Format ("Access to constructor for type '{0}' has been denied.", securableClass.FullName));
+   }
+
+    public void CheckStaticMethodAccess (Type securableClass, string methodName)
+    {
+      CheckStaticMethodAccess (securableClass, methodName, _userProvider.GetUser ());
+    }
+
+    public void CheckStaticMethodAccess (Type securableClass, string methodName, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("securableClass", securableClass);
+
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredStaticMethodPermissions (securableClass, methodName);
+      CheckRequiredStaticMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user);
+    }
+
+    private void CheckRequiredMethodAccess (ISecurableObject securableObject, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    {
+      if (!HasRequiredMethodAccess (securableObject, methodName, requiredAccessTypeEnums, user))
       {
         throw new PermissionDeniedException (string.Format (
-            "Access to method '{0}' on type '{1}' has been denied.", methodName, securableType.GetType ().FullName));
+            "Access to method '{0}' on type '{1}' has been denied.", methodName, securableObject.GetType ().FullName));
       }
     }
 
-    private void CheckRequiredStaticMethodAccess (Type type, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    private void CheckRequiredStaticMethodAccess (Type securableClass, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
-      if (requiredAccessTypeEnums.Length == 0)
-        throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");
+      if (!HasRequiredStaticMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user))
+      {
+        throw new PermissionDeniedException (string.Format (
+            "Access to static method '{0}' on type '{1}' has been denied.", methodName, securableClass.FullName));
+      }
 
-      if (!_functionalSecurityStrategy.HasAccess (type, _securityService, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums)))
-        throw new PermissionDeniedException (string.Format ("Access to static method '{0}' on type '{1}' has been denied.", methodName, type.FullName));
     }
+
 
     private AccessType[] ConvertRequiredAccessTypeEnums (Enum[] requiredAccessTypeEnums)
     {

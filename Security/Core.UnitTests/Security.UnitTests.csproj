@@ -51,6 +51,8 @@
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
+    <Compile Include="SecurityClientTestWithHasConstructorAccess.cs" />
+    <Compile Include="SecurityClientTestWithHasMethodAccess.cs" />
     <Compile Include="FunctionalSecurityStrategyTest.cs" />
     <Compile Include="DemandMethodPermissionAttributeTest.cs" />
     <Compile Include="EnumWrapperTest.cs" />

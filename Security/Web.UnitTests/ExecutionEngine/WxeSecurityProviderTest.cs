@@ -155,5 +155,30 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       TestFunctionWithPermissionsFromConstructor function = new TestFunctionWithPermissionsFromConstructor ();
       _securityProvider.CheckAccess (function);
     }
+   
+    [Test]
+    public void HasAccessWithoutWxeDemandPermissionAttribute ()
+    {
+      Expect.Never.On (_mockFunctionalSecurityStrategy);
+      bool hasAccess = _securityProvider.HasAccess (typeof (TestFunctionWithoutPermissions));
+
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
+    public void HasAccessWithValidPermissionsFromInstanceMethodAndStateless ()
+    {
+      Expect.Once.On (_mockFunctionalSecurityStrategy)
+          .Method ("HasAccess")
+          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Read) })
+          .Will (Return.Value (true));
+
+      bool hasAccess = _securityProvider.HasAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
+      
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsTrue (hasAccess);
+    }
+
   }
 }
