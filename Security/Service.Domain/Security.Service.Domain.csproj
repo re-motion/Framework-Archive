@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <None Include="AssemblyInfoTemplate.cs" />
     <Compile Include="BaseSecurityServiceObject.cs" />
     <Compile Include="OrganizationalStructure\Client.cs" />
     <Compile Include="OrganizationalStructure\ConcretePosition.cs" />
@@ -99,9 +100,6 @@
     <EmbeddedResource Include="Globalization\OrganizationalStructure\User.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

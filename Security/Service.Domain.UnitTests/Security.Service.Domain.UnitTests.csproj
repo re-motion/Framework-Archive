@@ -48,6 +48,10 @@
       <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Service.Domain\Security.Service.Domain.csproj">
+      <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
+      <Name>Security.Service.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
