@@ -40,11 +40,7 @@ namespace Rubicon.Security.Service.Domain.OrganizationalStructure
 
     // construction and disposing
 
-    public Position ()
-    {
-    }
-
-    public Position (ClientTransaction clientTransaction)
+    protected internal Position (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
     }

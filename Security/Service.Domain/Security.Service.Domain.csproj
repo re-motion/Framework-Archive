@@ -29,6 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -36,10 +37,13 @@
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <Compile Include="BaseSecurityServiceObject.cs" />
+    <Compile Include="Configuration\SecurityDomainConfiguration.cs" />
     <Compile Include="OrganizationalStructure\Client.cs" />
     <Compile Include="OrganizationalStructure\ConcretePosition.cs" />
     <Compile Include="OrganizationalStructure\Group.cs" />
     <Compile Include="OrganizationalStructure\GroupType.cs" />
+    <Compile Include="OrganizationalStructure\IOrganizationalStructureFactory.cs" />
+    <Compile Include="OrganizationalStructure\OrganizationalStructureFactory.cs" />
     <Compile Include="OrganizationalStructure\OrganizationalStructureObject.cs" />
     <Compile Include="OrganizationalStructure\Position.cs" />
     <Compile Include="OrganizationalStructure\Role.cs" />
@@ -50,6 +54,9 @@
     <Content Include="storageProviders.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Configuration\SecurityDomainConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="mapping.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

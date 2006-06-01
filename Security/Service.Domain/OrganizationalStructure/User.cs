@@ -40,11 +40,7 @@ namespace Rubicon.Security.Service.Domain.OrganizationalStructure
 
     // construction and disposing
 
-    public User ()
-    {
-    }
-
-    public User (ClientTransaction clientTransaction)
+    protected internal User (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
     }
