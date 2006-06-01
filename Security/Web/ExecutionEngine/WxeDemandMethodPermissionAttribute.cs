@@ -9,7 +9,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
   public enum MethodType
   {
     Instance,
-    Static,   
+    Static,
     Constructor
   }
 
@@ -23,7 +23,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
     // member fields
 
     private MethodType _type;
-    private Type _securableClass;	
+    private Type _securableClass;
     private string _parameterName;
     private string _method;
 
@@ -44,35 +44,27 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     public Type SecurableClass
     {
-      get { return _securableClass; }
+      get
+      {
+        return _securableClass;
+      }
       set
       {
-        ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("SecurableClass", value, typeof (ISecurableObject));
+        ArgumentUtility.CheckTypeIsAssignableFrom ("SecurableClass", value, typeof (ISecurableObject));
         _securableClass = value;
       }
     }
 
     public string ParameterName
     {
-      get
-      {
-        return _parameterName; 
-      }
-      set 
-      {
-        ArgumentUtility.CheckNotNullOrEmpty ("ParameterName", value);
-        _parameterName = value; 
-      }
+      get { return _parameterName; }
+      set { _parameterName = value; }
     }
 
-    public string Method
+    public string MethodName
     {
       get { return _method; }
-      set
-      {
-        ArgumentUtility.CheckNotNullOrEmpty ("Method", value);
-        _method = value;
-      }
+      set { _method = value; }
     }
   }
 }

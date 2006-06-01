@@ -9,8 +9,7 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
-  [WxeDemandMethodPermission (MethodType.Instance, ParameterName="ThisObject", MethodName="Show")]
-  public class TestFunctionWithPermissionsFromInstanceMethod : WxeFunction
+  public class TestFunctionWithThisObject : WxeFunction
   {
     // types
 
@@ -20,8 +19,8 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     // construction and disposing
 
-    public TestFunctionWithPermissionsFromInstanceMethod (SecurableObject thisObject)
-      : base (thisObject)
+    public TestFunctionWithThisObject (SecurableObject thisObject, object someObject)
+      : base (thisObject, someObject)
     {
     }
 
@@ -37,6 +36,19 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       set
       {
         Variables["ThisObject"] = value;
+      }
+    }
+
+    [WxeParameter (1, true, WxeParameterDirection.In)]
+    public object SomeObject
+    {
+      get
+      {
+        return Variables["SomeObject"];
+      }
+      set
+      {
+        Variables["SomeObject"] = value;
       }
     }
   }

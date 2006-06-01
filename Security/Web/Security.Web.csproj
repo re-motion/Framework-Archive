@@ -30,7 +30,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
@@ -38,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttribute.cs" />
+    <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelper.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProvider.cs" />
     <Compile Include="HttpContextUserProvider.cs" />
     <None Include="AssemblyInfoTemplate.cs" />

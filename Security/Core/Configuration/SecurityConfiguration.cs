@@ -125,6 +125,11 @@ namespace Rubicon.Security.Configuration
 
         return _permissionProvider;
       }
+      set
+      {
+        ArgumentUtility.CheckNotNull ("value", value);
+        _permissionProvider = value;
+      }
     }
 
     public IFunctionalSecurityStrategy FunctionalSecurityStrategy
@@ -138,6 +143,7 @@ namespace Rubicon.Security.Configuration
       }
       set
       {
+        ArgumentUtility.CheckNotNull ("value", value);
         _functionalSecurityStrategy = value;
       }
     }
