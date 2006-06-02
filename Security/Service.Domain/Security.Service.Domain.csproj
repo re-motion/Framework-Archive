@@ -38,6 +38,17 @@
     <None Include="AssemblyInfoTemplate.cs" />
     <Compile Include="BaseSecurityServiceObject.cs" />
     <Compile Include="Configuration\SecurityDomainConfiguration.cs" />
+    <Compile Include="Metadata\AbstractRoleDefinition.cs" />
+    <Compile Include="Metadata\AccessTypeDefinition.cs" />
+    <Compile Include="Metadata\AccessTypeReference.cs" />
+    <Compile Include="Metadata\EnumValueDefinition.cs" />
+    <Compile Include="Metadata\EnumValueDefinitionWithIdentity.cs" />
+    <Compile Include="Metadata\MetadataImporter.cs" />
+    <Compile Include="Metadata\MetadataObject.cs" />
+    <Compile Include="Metadata\SecurableClassDefinition.cs" />
+    <Compile Include="Metadata\StateDefinition.cs" />
+    <Compile Include="Metadata\StatePropertyDefinition.cs" />
+    <Compile Include="Metadata\StatePropertyReference.cs" />
     <Compile Include="OrganizationalStructure\Client.cs" />
     <Compile Include="OrganizationalStructure\ConcretePosition.cs" />
     <Compile Include="OrganizationalStructure\Group.cs" />
@@ -61,6 +72,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\SetupDB.sql" />
     <Content Include="types.xsd">
       <SubType>Designer</SubType>

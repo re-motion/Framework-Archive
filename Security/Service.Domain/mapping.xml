@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <mapping application="Rubicon.Security.Service" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
   <classes>
+
+    <!-- Organizational structure -->
     <class id="Client">
       <type>Rubicon.Security.Service.Domain.OrganizationalStructure.Client, Rubicon.Security.Service.Domain</type>
       <entity name="Client"/>
@@ -153,6 +155,133 @@
           <oppositeClass>Group</oppositeClass>
         </relationProperty>
       </properties>
+    </class>
+
+    <!-- Metadata -->
+    <class id="EnumValueDefinition">
+      <type>Rubicon.Security.Service.Domain.Metadata.EnumValueDefinition, Rubicon.Security.Service.Domain</type>
+      <entity name="EnumValueDefinition"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="Value">
+          <type>int64</type>
+          <column>Value</column>
+        </property>
+      </properties>
+    </class>
+
+    <class id="EnumValueDefinitionWithIdentity" baseClass="EnumValueDefinition">
+      <type>Rubicon.Security.Service.Domain.Metadata.EnumValueDefinitionWithIdentity, Rubicon.Security.Service.Domain</type>
+      <entity name="EnumValueDefinition"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <property name="MetadataItemID">
+          <type>guid</type>
+          <column>MetadataItemID</column>
+        </property>
+      </properties>
+    </class>
+    
+    <class id="SecurableClassDefinition">
+      <type>Rubicon.Security.Service.Domain.Metadata.SecurableClassDefinition, Rubicon.Security.Service.Domain</type>
+      <entity name="SecurableClassDefinition"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <property name="MetadataItemID">
+          <type>guid</type>
+          <column>MetadataItemID</column>
+        </property>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="BaseClass" relationID="DerivedToBaseClass" cardinality="one" isMandatory="false">
+          <column>BaseClassID</column>
+        </relationProperty>
+        <relationProperty name="DerivedClasses" relationID="DerivedToBaseClass" cardinality="many" isMandatory="false" />
+        <relationProperty name="AccessTypeReferences" relationID="ClassToAccessTypeReference" cardinality="many" isMandatory="false" />
+        <relationProperty name="StatePropertyReferences" relationID="ClassToStatePropertyReference" cardinality="many" isMandatory="false" />
+      </properties>
+    </class>
+
+    <class id="StatePropertyReference">
+      <type>Rubicon.Security.Service.Domain.Metadata.StatePropertyReference, Rubicon.Security.Service.Domain</type>
+      <entity name="StatePropertyReference"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <relationProperty name="Class" relationID="ClassToStatePropertyReference" cardinality="one" isMandatory="true">
+          <column>ClassID</column>
+        </relationProperty>
+        <relationProperty name="StateProperty" relationID="StatePropertyToStatePropertyReference" cardinality="one" isMandatory="true">
+          <column>StatePropertyID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="StatePropertyDefinition">
+      <type>Rubicon.Security.Service.Domain.Metadata.StatePropertyDefinition, Rubicon.Security.Service.Domain</type>
+      <entity name="StatePropertyDefinition"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <property name="MetadataItemID">
+          <type>guid</type>
+          <column>MetadataItemID</column>
+        </property>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="References" relationID="StatePropertyToStatePropertyReference" cardinality="many" isMandatory="false" />
+        <relationProperty name="DefinedStates" relationID="StatePropertyToState" cardinality="many" isMandatory="true" />
+      </properties>
+    </class>
+
+    <class id="StateDefinition" baseClass="EnumValueDefinition">
+      <type>Rubicon.Security.Service.Domain.Metadata.StateDefinition, Rubicon.Security.Service.Domain</type>
+      <entity name="EnumValueDefinition"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <relationProperty name="StateProperty" relationID="StatePropertyToState" cardinality="one" isMandatory="true">
+          <column>StatePropertyID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="AccesTypeReference">
+      <type>Rubicon.Security.Service.Domain.Metadata.AccessTypeReference, Rubicon.Security.Service.Domain</type>
+      <entity name="AccessTypeReference"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <relationProperty name="Class" relationID="ClassToAccessTypeReference" cardinality="one" isMandatory="true">
+          <column>ClassID</column>
+        </relationProperty>
+        <relationProperty name="AccessType" relationID="AccessTypeToAccessTypeReference" cardinality="one" isMandatory="true">
+          <column>AccessTypeID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="AccessTypeDefinition" baseClass="EnumValueDefinitionWithIdentity">
+      <type>Rubicon.Security.Service.Domain.Metadata.AccessTypeDefinition, Rubicon.Security.Service.Domain</type>
+      <entity name="EnumValueDefinition"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <relationProperty name="References" relationID="AccessTypeToAccessTypeReference" cardinality="many" isMandatory="false" />
+      </properties>
+    </class>
+
+    <class id="AbstractRoleDefinition" baseClass="EnumValueDefinitionWithIdentity">
+      <type>Rubicon.Security.Service.Domain.Metadata.AbstractRoleDefinition, Rubicon.Security.Service.Domain</type>
+      <entity name="EnumValueDefinition"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties />
     </class>
   </classes>
 </mapping>
