@@ -18,6 +18,7 @@
       <sources failonempty="true">
         <include name="*.cs" />
         <include name="Collections/**/*.cs" />
+        <include name="Configuration/**/*.cs" />
         <include name="Data/**/*.cs" />
         <include name="Globalization/**/*.cs" />
         <include name="NullableValueTypes/**/*.cs" />

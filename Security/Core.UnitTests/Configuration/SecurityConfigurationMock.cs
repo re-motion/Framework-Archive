@@ -17,6 +17,11 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // static members
 
+    public static new void SetCurrent (SecurityConfiguration configuration)
+    {
+      SecurityConfiguration.SetCurrent (configuration);
+    }
+
     // member fields
 
     // construction and disposing
@@ -40,30 +45,6 @@ namespace Rubicon.Security.UnitTests.Configuration
       XmlReader reader = XmlReader.Create (stream);
 
       DeserializeSection (reader);
-    }
-
-    public new TypeElement<ISecurityService> CustomService
-    {
-      get { return base.CustomService; }
-      set { base.CustomService = value; }
-    }
-
-    public new SecurityServiceType SecurityServiceType
-    {
-      get { return base.SecurityServiceType; }
-      set { base.SecurityServiceType = value; }
-    }
-
-    public new TypeElement<IUserProvider> CustomUserProvider
-    {
-      get { return base.CustomUserProvider; }
-      set { base.CustomUserProvider = value; }
-    }
-
-    public new UserProviderType UserProviderType
-    {
-      get { return base.UserProviderType; }
-      set { base.UserProviderType = value; }
     }
   }
 }

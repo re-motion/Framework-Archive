@@ -40,6 +40,14 @@ namespace Rubicon.Security.Configuration
       }
     }
 
+    protected static void SetCurrent (SecurityConfiguration configuration)
+    {
+      lock (typeof (SecurityConfiguration))
+      {
+        s_current = configuration;
+      }
+   }
+
     // member fields
 
     private ISecurityService _securityService;
