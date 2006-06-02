@@ -246,7 +246,7 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="Web" depends="Core, Security.Web">
+  <target name="Web" depends="Core">
     <property name="project.name" value="Web" />
     <property name="project.dir" value="Web/Core" />
     <property name="project.output" value="Rubicon.Web" />
