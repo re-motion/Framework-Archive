@@ -12,7 +12,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
   [TestFixture]
-  public class WxeDemandMethodPermissionAttributeHelperTestGetSecurableObject
+  public class WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject
   {
     // types
 
@@ -25,7 +25,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     // construction and disposing
 
-    public WxeDemandMethodPermissionAttributeHelperTestGetSecurableObject ()
+    public WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject ()
     {
     }
 
@@ -36,6 +36,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     {
       _mocks = new Mockery ();
       _attribute = new WxeDemandMethodPermissionAttribute (MethodType.Instance);
+      _attribute.MethodName = "Read";
 
       object someObject = new object ();
       SecurableObject thisObject = new SecurableObject (null);

@@ -68,5 +68,46 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
+
+    [Test]
+    public void HasStatelessAccessGranted ()
+    {
+      Expect.Once.On (_mockWxeSecurityProvider)
+          .Method ("HasStatelessAccess")
+          .With (typeof (TestFunction))
+          .Will (Return.Value (true));
+
+      bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
+
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
+    public void HasStatelessAccessDenied ()
+    {
+      Expect.Once.On (_mockWxeSecurityProvider)
+      .Method ("HasStatelessAccess")
+      .With (typeof (TestFunction))
+      .Will (Return.Value (false));
+
+      bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
+
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsFalse (hasAccess);
+    }
+
+    [Test]
+    public void HasStatelessAccessGrantedWithoutWxeSecurityProvider ()
+    {
+      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
+
+      Expect.Never.On (_mockWxeSecurityProvider);
+
+      bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
+
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsTrue (hasAccess);
+    }
   }
 }

@@ -157,19 +157,5 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       _mocks.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsFalse (hasAccess);
     }
-
-    [Test]
-    [ExpectedException (typeof (InvalidOperationException ), 
-        "The property 'SecurityService' of the current 'Rubicon.Security.Configuration.SecurityConfiguration' evaluated and returned null.")]
-    public void HasStatelessAccessWithSecurityServiceNull ()
-    {
-      Stub.On (_mockFunctionalSecurityStrategy)
-          .Method ("HasAccess")
-          .With (typeof (SecurableObject), _securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Read) })
-          .Will (Return.Value (true));
-
-      SecurityConfiguration.Current.SecurityService = null;
-      _securityProvider.HasStatelessAccess (typeof (TestFunctionWithPermissionsFromInstanceMethod));
-    }  
   }
 }

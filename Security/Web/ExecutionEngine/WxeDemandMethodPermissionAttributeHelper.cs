@@ -25,11 +25,45 @@ namespace Rubicon.Security.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("functionType", functionType);
       ArgumentUtility.CheckNotNull ("attribute", attribute);
 
+      switch (attribute.Type)
+      {
+        case MethodType.Instance:
+          CheckMethodNameNotNullOrEmpty (functionType, attribute.MethodName);
+          break;
+        case MethodType.Static:
+          CheckSecurabeClassNotNull (functionType, attribute.SecurableClass);
+          CheckMethodNameNotNullOrEmpty (functionType, attribute.MethodName);
+          break;
+        case MethodType.Constructor:
+          CheckSecurabeClassNotNull (functionType, attribute.SecurableClass);
+          break;
+      }
+
       _functionType = functionType;
       _attribute = attribute;
     }
 
     // methods and properties
+
+    public Type FunctionType
+    {
+      get { return _functionType; }
+    }
+
+    public MethodType MethodType
+    {
+      get { return _attribute.Type; }
+    }
+
+    public string MethodName
+    {
+      get { return _attribute.MethodName; }
+    }
+
+    public Type SecurableClass
+    {
+      get { return _attribute.SecurableClass; }
+    }
 
     public Type GetTypeOfSecurableObject ()
     {
@@ -88,35 +122,23 @@ namespace Rubicon.Security.Web.ExecutionEngine
           _attribute.ParameterName, _functionType.FullName));
     }
 
-    public void Validate ()
+    private void CheckMethodNameNotNullOrEmpty (Type functionType, string methodName)
     {
-      CheckMethodNameNotNullOrEmpty ();
-      CheckSecurabeClassNotNull ();
-    }
-
-    private void CheckMethodNameNotNullOrEmpty ()
-    {
-      bool isMethodNameRequired = _attribute.Type == MethodType.Instance || _attribute.Type == MethodType.Static;
-      bool hasMehtodName = !StringUtility.IsNullOrEmpty (_attribute.MethodName);
-
-      if (isMethodNameRequired && !hasMehtodName)
+      if (StringUtility.IsNullOrEmpty (methodName))
       {
         throw new WxeException (string.Format (
             "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify the method to get the required permissions from.",
-            _functionType.FullName));
+            functionType.FullName));
       }
     }
 
-    private void CheckSecurabeClassNotNull ()
+    private void CheckSecurabeClassNotNull (Type functionType, Type securableClass)
     {
-      bool isSecurableClassRequired = _attribute.Type == MethodType.Constructor || _attribute.Type == MethodType.Static;
-      bool hasSecurableClass = _attribute.SecurableClass != null;
-
-      if (isSecurableClassRequired && !hasSecurableClass)
+      if (securableClass == null)
       {
         throw new WxeException (string.Format (
             "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify a type implementing interface '{1}'.",
-            _functionType.FullName, typeof (ISecurableObject).FullName));
+            functionType.FullName, typeof (ISecurableObject).FullName));
       }
     }
   }

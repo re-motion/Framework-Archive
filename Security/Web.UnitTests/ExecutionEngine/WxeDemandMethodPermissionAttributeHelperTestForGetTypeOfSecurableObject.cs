@@ -34,7 +34,8 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     public void SetUp ()
     {
       _mocks = new Mockery ();
-      _attribute = new WxeDemandMethodPermissionAttribute (MethodType.Static);
+      _attribute = new WxeDemandMethodPermissionAttribute (MethodType.Instance);
+      _attribute.MethodName = "Read";
     }
 
     [Test]

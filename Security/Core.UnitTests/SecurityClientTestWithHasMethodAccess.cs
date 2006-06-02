@@ -7,6 +7,7 @@ using NMock2;
 
 using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 using Rubicon.Security.Metadata;
+using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -97,6 +98,7 @@ namespace Rubicon.Security.UnitTests
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
+          .With (Is.NotNull, Is.Same (_user))
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
 
       bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
@@ -114,6 +116,7 @@ namespace Rubicon.Security.UnitTests
           .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
+          .With (Is.NotNull, Is.Same (_user))
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
 
       bool hasAccess = _securityClient.HasStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
@@ -133,6 +136,55 @@ namespace Rubicon.Security.UnitTests
           .Will (Return.Value (new Enum[0]));
 
       _securityClient.HasStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
+    }
+
+    [Test]
+    public void HasSuccessfulStatelessAccess ()
+    {
+      Expect.Once.On (_permissionReflectorMock)
+          .Method ("GetRequiredMethodPermissions")
+          .With (typeof (SecurableObject), "Record")
+          .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
+      Expect.Once.On (_securityServiceMock)
+          .Method ("GetAccess")
+          .With (Is.NotNull, Is.Same (_user))
+          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
+
+      bool hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "Record", _user);
+
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
+    public void HasDeniedStatelessAccess ()
+    {
+      Expect.Once.On (_permissionReflectorMock)
+          .Method ("GetRequiredMethodPermissions")
+          .With (typeof (SecurableObject), "Record")
+          .Will (Return.Value (new Enum[] { GeneralAccessType.Edit }));
+      Expect.Once.On (_securityServiceMock)
+          .Method ("GetAccess")
+          .With (Is.NotNull, Is.Same (_user))
+          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
+
+      bool hasAccess = _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "Record", _user);
+
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsFalse (hasAccess);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException),
+        "The method 'Save' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+    public void HasStatelessAccessForMethodWithoutRequiredPermissions ()
+    {
+      Stub.On (_permissionReflectorMock)
+          .Method ("GetRequiredMethodPermissions")
+          .With (typeof (SecurableObject), "Save")
+          .Will (Return.Value (new Enum[0]));
+
+      _securityClient.HasStatelessMethodAccess (typeof (SecurableObject), "Save", _user);
     }
   }
 }

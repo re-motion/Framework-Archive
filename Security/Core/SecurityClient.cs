@@ -5,6 +5,7 @@ using System.Text;
 using Rubicon.Utilities;
 using Rubicon.Security.Configuration;
 using Rubicon.Security.Metadata;
+using System.ComponentModel;
 
 namespace Rubicon.Security
 {
@@ -49,20 +50,22 @@ namespace Rubicon.Security
     }
 
 
+    public bool HasAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
+    {
+      return HasAccess (securableObject, _userProvider.GetUser (), requiredAccessTypes);
+    }
+
     public bool HasAccess (ISecurableObject securableObject, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
+      ArgumentUtility.CheckNotNull ("user", user);
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
       IObjectSecurityStrategy objectSecurityStrategy = securableObject.GetSecurityStrategy ();
       if (objectSecurityStrategy == null)
         throw new ArgumentException ("The securable object did not return a IObjectSecurityStrategy.", "securableObject");
 
       return objectSecurityStrategy.HasAccess (_securityService, user, requiredAccessTypes);
-    }
-
-    public bool HasAccess (ISecurableObject securableObject, params AccessType[] requiredAccessTypes)
-    {
-      return HasAccess (securableObject, _userProvider.GetUser (), requiredAccessTypes);
     }
 
 
@@ -75,6 +78,7 @@ namespace Rubicon.Security
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetType (), methodName);
       return HasRequiredMethodAccess (securableObject, methodName, requiredAccessTypeEnums, user);
@@ -103,9 +107,28 @@ namespace Rubicon.Security
     public bool HasStaticMethodAccess (Type securableClass, string methodName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableClass", securableClass);
+      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredStaticMethodPermissions (securableClass, methodName);
-      return HasRequiredStaticMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user);
+      return HasRequiredMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public bool HasStatelessMethodAccess (Type securableClass, string methodName)
+    {
+      return HasStatelessMethodAccess (securableClass, methodName, _userProvider.GetUser ());
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public bool HasStatelessMethodAccess (Type securableClass, string methodName, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("securableClass", securableClass);
+      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNull ("user", user);
+
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableClass, methodName);
+      return HasRequiredMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user);
     }
 
     private bool HasRequiredMethodAccess (ISecurableObject securableObject, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
@@ -116,7 +139,7 @@ namespace Rubicon.Security
       return HasAccess (securableObject, user, ConvertRequiredAccessTypeEnums (requiredAccessTypeEnums));
     }
 
-    private bool HasRequiredStaticMethodAccess (Type securableClass, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    private bool HasRequiredMethodAccess (Type securableClass, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
       if (requiredAccessTypeEnums.Length == 0)
         throw new ArgumentException (string.Format ("The method '{0}' does not define required permissions.", methodName), "requiredAccessTypeEnums");
@@ -134,6 +157,7 @@ namespace Rubicon.Security
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredMethodPermissions (securableObject.GetType (), methodName);
       CheckRequiredMethodAccess (securableObject, methodName, requiredAccessTypeEnums, user);
@@ -151,7 +175,7 @@ namespace Rubicon.Security
 
       if (!HasConstructorAccess (securableClass, user))
         throw new PermissionDeniedException (string.Format ("Access to constructor for type '{0}' has been denied.", securableClass.FullName));
-   }
+    }
 
     public void CheckStaticMethodAccess (Type securableClass, string methodName)
     {
@@ -161,9 +185,11 @@ namespace Rubicon.Security
     public void CheckStaticMethodAccess (Type securableClass, string methodName, IPrincipal user)
     {
       ArgumentUtility.CheckNotNull ("securableClass", securableClass);
+      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredStaticMethodPermissions (securableClass, methodName);
-      CheckRequiredStaticMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user);
+      CheckRequiredMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user);
     }
 
     private void CheckRequiredMethodAccess (ISecurableObject securableObject, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
@@ -175,9 +201,9 @@ namespace Rubicon.Security
       }
     }
 
-    private void CheckRequiredStaticMethodAccess (Type securableClass, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    private void CheckRequiredMethodAccess (Type securableClass, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
-      if (!HasRequiredStaticMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user))
+      if (!HasRequiredMethodAccess (securableClass, methodName, requiredAccessTypeEnums, user))
       {
         throw new PermissionDeniedException (string.Format (
             "Access to static method '{0}' on type '{1}' has been denied.", methodName, securableClass.FullName));

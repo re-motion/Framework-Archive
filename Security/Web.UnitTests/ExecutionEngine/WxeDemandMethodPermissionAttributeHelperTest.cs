@@ -12,7 +12,7 @@ using Rubicon.Web.ExecutionEngine;
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
   [TestFixture]
-  public class WxeDemandMethodPermissionAttributeHelperTestForValidate
+  public class WxeDemandMethodPermissionAttributeHelperTest
   {
     // types
 
@@ -22,14 +22,14 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     // construction and disposing
 
-    public WxeDemandMethodPermissionAttributeHelperTestForValidate ()
+    public WxeDemandMethodPermissionAttributeHelperTest ()
     {
     }
 
     // methods and properties
 
     [Test]
-    public void TestWithMethodTypeInstance ()
+    public void InitializeWithMethodTypeInstance ()
     {
       WxeDemandMethodPermissionAttribute attribute = new WxeDemandMethodPermissionAttribute (MethodType.Instance);
       attribute.SecurableClass = null;
@@ -39,14 +39,17 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
           typeof (TestFunctionWithThisObject),
           attribute);
 
-      helper.Validate ();
+      Assert.AreSame (typeof (TestFunctionWithThisObject), helper.FunctionType);
+      Assert.AreEqual (MethodType.Instance, helper.MethodType);
+      Assert.IsNull (helper.SecurableClass);
+      Assert.AreEqual ("Show", helper.MethodName);
     }
 
     [Test]
     [ExpectedException (typeof (WxeException), 
         "The WxeDemandMethodPermissionAttribute applied to WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObject'"
         + " does not specify the method to get the required permissions from.")]
-    public void TestWithMethodTypeInstanceAndNoMethodName ()
+    public void InitializeWithMethodTypeInstanceAndNoMethodName ()
     {
       WxeDemandMethodPermissionAttribute attribute = new WxeDemandMethodPermissionAttribute (MethodType.Instance);
       attribute.SecurableClass = null;
@@ -55,13 +58,11 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
           typeof (TestFunctionWithThisObject),
           attribute);
-
-      helper.Validate ();
     }
 
 
     [Test]
-    public void TestWithMethodTypeStatic ()
+    public void InitializeWithMethodTypeStatic ()
     {
       WxeDemandMethodPermissionAttribute attribute = new WxeDemandMethodPermissionAttribute (MethodType.Static);
       attribute.SecurableClass = typeof (SecurableObject);
@@ -71,14 +72,17 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
           typeof (TestFunctionWithThisObject),
           attribute);
 
-      helper.Validate ();
+      Assert.AreSame (typeof (TestFunctionWithThisObject), helper.FunctionType);
+      Assert.AreEqual (MethodType.Static, helper.MethodType);
+      Assert.AreSame (typeof (SecurableObject), helper.SecurableClass);
+      Assert.AreEqual ("Search", helper.MethodName);
     }
 
     [Test]
     [ExpectedException (typeof (WxeException),
         "The WxeDemandMethodPermissionAttribute applied to WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObject'"
         + " does not specify the method to get the required permissions from.")]
-    public void TestWithMethodTypeStaticAndNoMethodName ()
+    public void InitializeWithMethodTypeStaticAndNoMethodName ()
     {
       WxeDemandMethodPermissionAttribute attribute = new WxeDemandMethodPermissionAttribute (MethodType.Static);
       attribute.SecurableClass = typeof (SecurableObject);
@@ -87,15 +91,13 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
           typeof (TestFunctionWithThisObject),
           attribute);
-
-      helper.Validate ();
     }
 
     [Test]
     [ExpectedException (typeof (WxeException),
         "The WxeDemandMethodPermissionAttribute applied to WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObject'"
         + " does not specify a type implementing interface 'Rubicon.Security.ISecurableObject'.")]
-    public void TestWithMethodTypeStaticAndNoSecurableClass ()
+    public void InitializeWithMethodTypeStaticAndNoSecurableClass ()
     {
       WxeDemandMethodPermissionAttribute attribute = new WxeDemandMethodPermissionAttribute (MethodType.Static);
       attribute.SecurableClass = null;
@@ -104,12 +106,10 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
           typeof (TestFunctionWithThisObject),
           attribute);
-
-      helper.Validate ();
     }
 
     [Test]
-    public void TestWithMethodTypeConstructor ()
+    public void InitializeWithMethodTypeConstructor ()
     {
       WxeDemandMethodPermissionAttribute attribute = new WxeDemandMethodPermissionAttribute (MethodType.Constructor);
       attribute.SecurableClass = typeof (SecurableObject);
@@ -119,14 +119,17 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
           typeof (TestFunctionWithThisObject),
           attribute);
 
-      helper.Validate ();
+      Assert.AreSame (typeof (TestFunctionWithThisObject), helper.FunctionType);
+      Assert.AreEqual (MethodType.Constructor, helper.MethodType);
+      Assert.AreSame (typeof (SecurableObject), helper.SecurableClass);
+      Assert.IsNull (helper.MethodName);
     }
 
     [Test]
     [ExpectedException (typeof (WxeException),
         "The WxeDemandMethodPermissionAttribute applied to WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObject'"
         + " does not specify a type implementing interface 'Rubicon.Security.ISecurableObject'.")]
-    public void TestWithMethodTypeConstructorAndNoSecurableClass ()
+    public void InitializeWithMethodTypeConstructorAndNoSecurableClass ()
     {
       WxeDemandMethodPermissionAttribute attribute = new WxeDemandMethodPermissionAttribute (MethodType.Constructor);
       attribute.SecurableClass = null;
@@ -135,8 +138,6 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
           typeof (TestFunctionWithThisObject),
           attribute);
-
-      helper.Validate ();
     }
   }
 }

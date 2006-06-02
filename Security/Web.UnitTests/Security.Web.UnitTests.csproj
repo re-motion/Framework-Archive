@@ -44,12 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForValidate.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithThisObjectAsSecondParameter.cs" />
+    <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTest.cs" />
+    <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject.cs" />
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetTypeOfSecurableObject.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithoutParameters.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithThisObject.cs" />
-    <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestGetSecurableObject.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromStaticMethod.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromInstanceMethod.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromConstructor.cs" />

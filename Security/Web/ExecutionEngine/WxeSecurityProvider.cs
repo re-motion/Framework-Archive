@@ -33,21 +33,24 @@ namespace Rubicon.Security.Web.ExecutionEngine
       if (attribute == null)
         return;
 
-      switch (attribute.Type)
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (function.GetType (), attribute);
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+
+      switch (helper.MethodType)
       {
         case MethodType.Instance:
-          CheckInstanceMethodAccess (function, attribute);
+          securityClient.CheckMethodAccess (helper.GetSecurableObject (function), helper.MethodName);
           break;
         case MethodType.Static:
-          CheckStaticMethodAccess (function.GetType (), attribute);
+          securityClient.CheckStaticMethodAccess (helper.SecurableClass, helper.MethodName);
           break;
         case MethodType.Constructor:
-          CheckConstructorAccess (function.GetType (), attribute);
+          securityClient.CheckConstructorAccess (helper.SecurableClass);
           break;
         default:
           throw new ArgumentException (string.Format (
               "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' specifies the not supported MethodType '{1}'.",
-              function.GetType ().Name, attribute.Type));
+              helper.FunctionType.FullName, helper.MethodType));
       }
     }
 
@@ -59,18 +62,21 @@ namespace Rubicon.Security.Web.ExecutionEngine
       if (attribute == null)
         return true;
 
-      switch (attribute.Type)
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (function.GetType (), attribute);
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+
+      switch (helper.MethodType)
       {
         case MethodType.Instance:
-          return HasInstanceMethodAccess (function, attribute);
+          return securityClient.HasMethodAccess (helper.GetSecurableObject (function), helper.MethodName);
         case MethodType.Static:
-          return HasStaticMethodAccess (function.GetType (), attribute);
+          return securityClient.HasStaticMethodAccess (helper.SecurableClass, helper.MethodName);
         case MethodType.Constructor:
-          return HasConstructorAccess (function.GetType (), attribute);
+          return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
           throw new ArgumentException (string.Format (
               "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' specifies the not supported MethodType '{1}'.",
-              function.GetType ().Name, attribute.Type));
+              helper.FunctionType.FullName, helper.MethodType));
       }
     }
 
@@ -82,103 +88,27 @@ namespace Rubicon.Security.Web.ExecutionEngine
       if (attribute == null)
         return true;
 
-      switch (attribute.Type)
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (functionType, attribute);
+      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+     
+      switch (helper.MethodType)
       {
         case MethodType.Instance:
-          return HasStatelessInstanceMethodAccess (functionType, attribute);
+          return securityClient.HasStatelessMethodAccess (helper.GetTypeOfSecurableObject(), helper.MethodName);
         case MethodType.Static:
-          return HasStaticMethodAccess (functionType, attribute);
+          return securityClient.HasStaticMethodAccess (helper.SecurableClass, helper.MethodName);
         case MethodType.Constructor:
-          return HasConstructorAccess (functionType, attribute);
+          return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
           throw new ArgumentException (string.Format (
               "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' specifies the not supported MethodType '{1}'.",
-              functionType.Name, attribute.Type));
+              helper.FunctionType.FullName, helper.MethodType));
       }
     }
 
     private WxeDemandMethodPermissionAttribute GetPermissionAttribute (Type functionType)
     {
       return (WxeDemandMethodPermissionAttribute) Attribute.GetCustomAttribute (functionType, typeof (WxeDemandMethodPermissionAttribute), true);
-    }
-
-    private bool HasInstanceMethodAccess (WxeFunction function, WxeDemandMethodPermissionAttribute attribute)
-    {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (function.GetType (), attribute);
-      helper.Validate ();
-      
-      ISecurableObject securableObject = helper.GetSecurableObject (function);
-      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      return securityClient.HasMethodAccess (securableObject, attribute.MethodName);
-    }
-
-    private bool HasStatelessInstanceMethodAccess (Type functionType, WxeDemandMethodPermissionAttribute attribute)
-    {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (functionType, attribute);
-      helper.Validate ();
-
-      Type securableClass = helper.GetTypeOfSecurableObject ();
-      Enum[] requiredAccessTypeEnums = SecurityConfiguration.Current.PermissionProvider.GetRequiredMethodPermissions (securableClass, attribute.MethodName);
-
-      ISecurityService securityService = SecurityConfiguration.Current.SecurityService;
-      if (securityService == null)
-        throw new InvalidOperationException (string.Format ("The property 'SecurityService' of the current '{0}' evaluated and returned null.", typeof (SecurityConfiguration).FullName));
-
-      IUserProvider userProvider = SecurityConfiguration.Current.UserProvider;
-      if (userProvider == null)
-        throw new InvalidOperationException (string.Format ("The property 'UserProvider' of the current '{0}' evaluated and returned null.", typeof (SecurityConfiguration).FullName));
-
-      return SecurityConfiguration.Current.FunctionalSecurityStrategy.HasAccess (
-          securableClass,
-          securityService,
-          userProvider.GetUser (),
-          Array.ConvertAll (requiredAccessTypeEnums, new Converter<Enum, AccessType> (AccessType.Get)));
-    }
-
-    private bool HasStaticMethodAccess (Type functionType, WxeDemandMethodPermissionAttribute attribute)
-    {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (functionType, attribute);
-      helper.Validate ();
-
-      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      return securityClient.HasStaticMethodAccess (attribute.SecurableClass, attribute.MethodName);
-    }
-
-    private bool HasConstructorAccess (Type functionType, WxeDemandMethodPermissionAttribute attribute)
-    {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (functionType, attribute);
-      helper.Validate ();
-
-      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      return securityClient.HasConstructorAccess (attribute.SecurableClass);
-    }
-
-    private void CheckInstanceMethodAccess (WxeFunction function, WxeDemandMethodPermissionAttribute attribute)
-    {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (function.GetType (), attribute);
-      helper.Validate ();
-
-      ISecurableObject securableObject = helper.GetSecurableObject (function);
-      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      securityClient.CheckMethodAccess (securableObject, attribute.MethodName);
-    }
-
-    private void CheckStaticMethodAccess (Type functionType, WxeDemandMethodPermissionAttribute attribute)
-    {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (functionType, attribute);
-      helper.Validate ();
-
-      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      securityClient.CheckStaticMethodAccess (attribute.SecurableClass, attribute.MethodName);
-    }
-
-    private void CheckConstructorAccess (Type functionType, WxeDemandMethodPermissionAttribute attribute)
-    {
-      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (functionType, attribute);
-      helper.Validate ();
-
-      SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      securityClient.CheckConstructorAccess (attribute.SecurableClass);
     }
   }
 }
