@@ -106,12 +106,6 @@
     <Compile Include="CodeFileBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ConfigurationLoader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConstraintDefinition.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DomainModelBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -130,9 +124,9 @@
     <Compile Include="SqlBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SqlFileBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Sql\CreateTableBuilder.cs" />
+    <Compile Include="Sql\SqlFileBuilder.cs" />
+    <Compile Include="TypeName.cs" />
     <None Include="AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>

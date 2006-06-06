@@ -3,88 +3,145 @@ using System.IO;
 
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
+using System.Collections.Generic;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-  
-public class DomainObjectBuilder
-{
-  // types
-
-  private class Builder: CodeFileBuilder
+  public class DomainObjectBuilder : CodeFileBuilder
   {
+    // types
+
+    // static members and constants
+
+    // types
+
+    // static members and constants
+
+    public const string DefaultBaseClass = "BindableDomainObject";
+
+    public static void Build (
+        MappingConfiguration mappingConfiguration,
+        string filename, 
+        ClassDefinition classDefinition, 
+        string baseClass, 
+        bool serializableAttribute, 
+        bool multiLingualResourcesAttribute)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
+
+      using (TextWriter writer = new StreamWriter (filename))
+      {
+        Build (mappingConfiguration, writer, classDefinition, baseClass, serializableAttribute, multiLingualResourcesAttribute);
+      }
+    }
+
+    public static void Build (
+        MappingConfiguration mappingConfiguration,
+        TextWriter writer, 
+        ClassDefinition classDefinition, 
+        string baseClass, 
+        bool serializableAttribute, 
+        bool multiLingualResourcesAttribute)
+    {
+      ArgumentUtility.CheckNotNull ("writer", writer);
+      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+      ArgumentUtility.CheckNotNull ("baseClass", baseClass);
+
+      DomainObjectBuilder builder = new DomainObjectBuilder (mappingConfiguration, writer);
+      builder.Build (classDefinition, baseClass, serializableAttribute, multiLingualResourcesAttribute);
+    }
+
     #region templates
 
     private static readonly string s_getObjectContent =
-        "    return (%classname%) DomainObject.GetObject (%parameterlist%);" + Environment.NewLine;
+        "    return (%classname%) DomainObject.GetObject (%parameterlist%);\r\n";
 
     private static readonly string s_getObjectParameters = "ObjectID id";
     private static readonly string s_getObjectParametersForContent = "id";
 
-    private static readonly string s_getObjectParametersWithDeleted = "ObjectID id, bool includeDeleted";
-    private static readonly string s_getObjectParametersWithDeletedForContent = "id, includeDeleted";
-
     private static readonly string s_getObjectParametersWithTransaction = "ObjectID id, ClientTransaction clientTransaction";
     private static readonly string s_getObjectParametersWithTransactionForContent = "id, clientTransaction";
 
-    private static readonly string s_getObjectParametersWithTransactionAndDeleted = "ObjectID id, ClientTransaction clientTransaction, bool includeDeleted";
-    private static readonly string s_getObjectParametersWithTransactionAndDeletedForContent = "id, clientTransaction, includeDeleted";
+    private static readonly string s_nestedEnum =
+        "  public enum %enumname%\r\n"
+        + "  {\r\n"
+        + "    DummyEntry = 0\r\n"
+        + "  }\r\n"
+        + "\r\n";
 
     private static readonly string s_valuePropertyGetStatement = 
-        "    get { return (%propertytype%) DataContainer[\"%propertyname%\"]; }" + Environment.NewLine;
+        "    get { return (%propertytype%) DataContainer[\"%propertyname%\"]; }\r\n";
     private static readonly string s_valuePropertySetStatement = 
-        "    set { DataContainer[\"%propertyname%\"] = value; }" + Environment.NewLine;
+        "    set { DataContainer[\"%propertyname%\"] = value; }\r\n";
 
     private static readonly string s_relationPropertyCardinalityOneGetStatement = 
-        "    get { return (%propertytype%) GetRelatedObject (\"%propertyname%\"); }" + Environment.NewLine;
+        "    get { return (%propertytype%) GetRelatedObject (\"%propertyname%\"); }\r\n";
     private static readonly string s_relationPropertyCardinalityOneSetStatement = 
-        "    set { SetRelatedObject (\"%propertyname%\", value); }" + Environment.NewLine;
+        "    set { SetRelatedObject (\"%propertyname%\", value); }\r\n";
 
     private static readonly string s_relationPropertyCardinalityManyGetStatement = 
-        "    get { return (%propertytype%) GetRelatedObjects (\"%propertyname%\"); }" + Environment.NewLine;
-    private static readonly string s_relationPropertyCardinalityManySetStatement = "    set { } // marks property %propertyname% as modifiable" + Environment.NewLine;
+        "    get { return (%propertytype%) GetRelatedObjects (\"%propertyname%\"); }\r\n";
+    private static readonly string s_relationPropertyCardinalityManySetStatement = "    set { } // marks property %propertyname% as modifiable\r\n";
+
     #endregion
 
-    private ClassDefinition _classDefinition;
+    // member fields
 
-    public Builder (TextWriter writer) : base (writer)
+    private MappingConfiguration _mappingConfiguration;
+
+    // construction and disposing
+    
+    public DomainObjectBuilder (MappingConfiguration mappingConfiguration, TextWriter writer) : base (writer)
     {
+      ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
+
+      _mappingConfiguration = mappingConfiguration;
     }
 
-    public void Build (ClassDefinition classDefinition, string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
-    {
-      _classDefinition = classDefinition;
-      Type type = classDefinition.ClassType;
+    // methods and properties
 
-      BeginNamespace (type.Namespace);
+    public MappingConfiguration MappingConfiguration
+    {
+      get { return _mappingConfiguration; }
+    }
+
+    private void Build (ClassDefinition classDefinition, string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
+    {
+      TypeName typeName = new TypeName (classDefinition.ClassTypeName);
+
+      BeginNamespace (typeName.Namespace);
 
       if (serializableAttribute)
         WriteSerializableAttribute ();
 
       if (multiLingualResourcesAttribute)
-        WriteMultiLingualResourcesAttribute (type);
+        WriteMultiLingualResourcesAttribute (typeName);
 
       if (classDefinition.BaseClass == null)
-        BeginClass (type.Name, baseClass);
+      {
+        BeginClass (typeName.Name, baseClass, classDefinition.GetEntityName() == null);
+      }
       else
-        BeginClass (type.Name, classDefinition.BaseClass.ID);
+      {
+        TypeName baseTypeName = new TypeName (classDefinition.BaseClass.ClassTypeName);
+        //TODO ES: decide if typeName must be fully qualified
+        BeginClass (typeName.Name, baseTypeName.Name, classDefinition.GetEntityName () == null);
+      }
 
       // types
       WriteComment ("types");
       WriteLine ();
 
       //Write nested types (enums)
-      foreach (PropertyDefinition propertyDefinition in GetEnumPropertyDefinitionsWithNestedType (type))
-        WriteNestedEnum (propertyDefinition.PropertyType, multiLingualResourcesAttribute);
+      foreach (TypeName nestedEnumTypeName in GetNestedPropertyTypeNames (typeName))
+        WriteNestedEnum (nestedEnumTypeName, multiLingualResourcesAttribute);
 
       // static members and constants
       WriteComment ("static members and constants");
       WriteLine ();
 
-      WriteGetObject (type.Name);
-      WriteGetObjectWithDeleted (type.Name);
-      WriteGetObjectWithTransaction (type.Name);
-      WriteGetObjectWithTransactionAndDeleted (type.Name);
+      WriteGetObject (typeName.Name, s_getObjectParameters, s_getObjectParametersForContent);
+      WriteGetObject (typeName.Name, s_getObjectParametersWithTransaction, s_getObjectParametersWithTransactionForContent);
 
       // member fields
       WriteComment ("member fields");
@@ -94,9 +151,9 @@ public class DomainObjectBuilder
       WriteComment ("construction and disposing");
       WriteLine ();
 
-      WriteConstructorDefault (type.Name);
-      WriteConstructorWithTransaction (type.Name);
-      WriteConstructorWithDataContainer (type.Name);
+      WriteConstructor (typeName.Name, null, null);
+      WriteConstructor (typeName.Name, "ClientTransaction clientTransaction", "clientTransaction");
+      WriteInfrastructureConstructor (typeName.Name);
 
       // methods and properties
       WriteComment ("methods and properties");
@@ -104,104 +161,55 @@ public class DomainObjectBuilder
 
       foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
       {
-        if (propertyDefinition.PropertyType == typeof (ObjectID))
+        if (propertyDefinition.MappingTypeName == TypeInfo.ObjectIDMappingTypeName)
           continue;
 
-        WriteValueProperty (propertyDefinition.PropertyName, TypeToCSharpString (propertyDefinition.PropertyType));
+        //TODO ES: do not qualify with the name of the declaring type if it is declared in this type
+        WriteValueProperty (propertyDefinition.PropertyName, GetCSharpTypeName (propertyDefinition));
       }
 
       foreach (IRelationEndPointDefinition endPointDefinition in classDefinition.GetMyRelationEndPointDefinitions ())
       {
         if (endPointDefinition.Cardinality == CardinalityType.One)
-          WriteRelationPropertyCardinalityOne (endPointDefinition.PropertyName, classDefinition.GetOppositeClassDefinition(endPointDefinition.PropertyName).ClassType);
-
-        if (endPointDefinition.Cardinality == CardinalityType.Many)
-          WriteRelationPropertyCardinalityMany (endPointDefinition.PropertyName, endPointDefinition.PropertyType);
+        {
+          TypeName propertyTypeName = new TypeName (classDefinition.GetOppositeClassDefinition (endPointDefinition.PropertyName).ClassTypeName);
+          WriteProperty (endPointDefinition.PropertyName, GetTypeName (typeName, propertyTypeName), s_relationPropertyCardinalityOneGetStatement, s_relationPropertyCardinalityOneSetStatement);
+        }
+        else
+        {
+          WriteProperty (endPointDefinition.PropertyName, GetTypeName (typeName, new TypeName (endPointDefinition.PropertyTypeName)), s_relationPropertyCardinalityManyGetStatement, s_relationPropertyCardinalityManySetStatement);
+        }
       }
 
       EndClass ();
-    
       EndNamespace ();
-
       FinishFile ();
     }
 
-
-    private void WriteGetObject (string className)
+    private void WriteGetObject (string className, string parameterList, string parametersListForGetObjectInvocation)
     {
-      BeginGetObject (className, s_getObjectParameters);
+      BeginMethod (s_accessibilityPublic, s_modifierStatic + s_modifierNew, className, "GetObject", parameterList);
 
       string output = s_getObjectContent;
       output = ReplaceTag (output, s_classnameTag, className);
-      output = ReplaceTag (output, s_parameterlistTag, s_getObjectParametersForContent);
+      output = ReplaceTag (output, s_parameterlistTag, parametersListForGetObjectInvocation);
       Write (output);
 
-      EndGetObject ();
-    }
-
-    private void WriteGetObjectWithDeleted (string className)
-    {
-      BeginGetObject (className, s_getObjectParametersWithDeleted);
-
-      string output = s_getObjectContent;
-      output = ReplaceTag (output, s_classnameTag, className);
-      output = ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithDeletedForContent);
-      Write (output);
-
-      EndGetObject ();
-    }
-
-    private void WriteGetObjectWithTransaction (string className)
-    {
-      BeginGetObject (className, s_getObjectParametersWithTransaction);
-
-      string output = s_getObjectContent;
-      output = ReplaceTag (output, s_classnameTag, className);
-      output = ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithTransactionForContent);
-      Write (output);
-
-      EndGetObject ();
-    }
-
-    private void WriteGetObjectWithTransactionAndDeleted (string className)
-    {
-      BeginGetObject (className, s_getObjectParametersWithTransactionAndDeleted);
-
-      string output = s_getObjectContent;
-      output = ReplaceTag (output, s_classnameTag, className);
-      output = ReplaceTag (output, s_parameterlistTag, s_getObjectParametersWithTransactionAndDeletedForContent);
-      Write (output);
-
-      EndGetObject ();
-    }
-
-    private void BeginGetObject (string className, string parameters)
-    {
-      string accessibility = s_accessibilityPublic + " " + s_accessibilityStatic + " " + s_accessibilityNew;
-      BeginMethod (accessibility, className, "GetObject", parameters);
-    }
-
-    private void EndGetObject ()
-    {
       EndMethod ();
     }
 
-    private void WriteConstructorDefault (string className)
+    private void WriteConstructor (string className, string parameterList, string parameterListForBaseConstructorCall)
     {
-      BeginConstructor (className);
+      BeginConstructor (className, parameterList, parameterListForBaseConstructorCall);
       EndConstructor ();
     }
 
-    private void WriteConstructorWithTransaction (string className)
-    {
-      BeginConstructor (className, "ClientTransaction clientTransaction", "clientTransaction");
-      EndConstructor ();
-    }
-
-    private void WriteConstructorWithDataContainer (string className)
+    private void WriteInfrastructureConstructor (string className)
     {
       BeginConstructor (s_accessibilityProtected, className, "DataContainer dataContainer", "dataContainer");
+      WriteIndentation (1);
       WriteComment ("This infrastructure constructor is necessary for the DomainObjects framework.");
+      WriteIndentation (1);
       WriteComment ("Do not remove the constructor or place any code here.");
       EndConstructor ();
     }
@@ -211,16 +219,6 @@ public class DomainObjectBuilder
       WriteProperty (propertyName, propertyTypeName, s_valuePropertyGetStatement, s_valuePropertySetStatement);
     }
     
-    private void WriteRelationPropertyCardinalityOne (string propertyName, Type propertyType)
-    {
-      WriteProperty (propertyName, GetTypeName (propertyType), s_relationPropertyCardinalityOneGetStatement, s_relationPropertyCardinalityOneSetStatement);
-    }
-    
-    private void WriteRelationPropertyCardinalityMany (string propertyName, Type propertyType)
-    {
-      WriteProperty (propertyName, GetTypeName (propertyType), s_relationPropertyCardinalityManyGetStatement, s_relationPropertyCardinalityManySetStatement);
-    }
-
     private void WriteProperty (string propertyName, string propertyTypeName, string getTemplate, string setTemplate)
     {
       BeginProperty (propertyName, propertyTypeName);
@@ -243,46 +241,64 @@ public class DomainObjectBuilder
       EndProperty ();
     }
 
-    private string GetTypeName (Type type)
+    protected void WriteNestedEnum (TypeName enumTypeName, bool enumDescriptionResourceAttribute)
     {
-      if (_classDefinition.ClassType.Namespace == type.Namespace || _classDefinition.ClassType.Namespace.StartsWith (type.Namespace))
-        return type.Name;
+      if (enumDescriptionResourceAttribute)
+      {
+        WriteIndentation (1);
+        WriteEnumDescriptionResourceAttribute (enumTypeName);
+      }
+      Write (ReplaceTag (s_nestedEnum, s_enumTag, enumTypeName.Name));
+    }
+
+    private string GetTypeName (TypeName typeNameOfClassWritten, TypeName typeName)
+    {
+      if (typeNameOfClassWritten.Namespace == typeName.Namespace || typeNameOfClassWritten.Namespace.StartsWith (typeName.Namespace))
+        return typeName.Name;
       else
-        return type.FullName;
+        return typeName.FullName;
     }
-  }
 
-  // static members and constants
-
-  public const string DefaultBaseClass = "BindableDomainObject";
-
-  public static void Build (
-      string filename, ClassDefinition classDefinition, 
-      string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
-  {
-    ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
-
-    using (TextWriter writer = new StreamWriter (filename))
+    public List<TypeName> GetAllDistinctPropertyTypeNames ()
     {
-      Build (writer, classDefinition, baseClass, serializableAttribute, multiLingualResourcesAttribute);
+      List<TypeName> propertyTypeNames = new List<TypeName> ();
+      foreach (ClassDefinition classDefinition in _mappingConfiguration.ClassDefinitions)
+      {
+        foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
+        {
+          if (propertyDefinition.MappingTypeName.Contains (","))
+          {
+            TypeName propertyTypeName = new TypeName (propertyDefinition.MappingTypeName);
+
+            if (!IsTypeNameAlreadyInList (propertyTypeNames, propertyTypeName))
+              propertyTypeNames.Add (propertyTypeName);
+          }
+        }
+      }
+      return propertyTypeNames;
+    }
+
+    private bool IsTypeNameAlreadyInList (List<TypeName> typeNames, TypeName typeName)
+    {
+      foreach (TypeName typeNameInList in typeNames)
+      {
+        if (typeNameInList.CompareTo(typeName) == 0)
+          return true;
+      }
+      return false;
+    }
+
+    public List<TypeName> GetNestedPropertyTypeNames (TypeName typeName)
+    {
+      List<TypeName> nestedPropertyTypeNames = new List<TypeName> ();
+
+      foreach (TypeName propertyTypeName in GetAllDistinctPropertyTypeNames ())
+      {
+        if (propertyTypeName.IsNested && propertyTypeName.DeclaringTypeName.CompareTo (typeName) == 0)
+          nestedPropertyTypeNames.Add (propertyTypeName);
+      }
+
+      return nestedPropertyTypeNames;
     }
   }
-
-  public static void Build (
-      TextWriter writer, ClassDefinition classDefinition, 
-      string baseClass, bool serializableAttribute, bool multiLingualResourcesAttribute)
-  {
-    ArgumentUtility.CheckNotNull ("stream", writer);
-    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-    ArgumentUtility.CheckNotNull ("baseClass", baseClass);
-
-    Builder builder = new Builder (writer);
-    builder.Build (classDefinition, baseClass, serializableAttribute, multiLingualResourcesAttribute);
-  }
-
-  private DomainObjectBuilder()
-  {
-  }
-}
-
 }

@@ -9,7 +9,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
 
-public abstract class CodeFileBuilder: FileBuilder
+public class CodeFileBuilder: FileBuilder
 {
   // types
 
@@ -43,6 +43,7 @@ public abstract class CodeFileBuilder: FileBuilder
   protected static readonly string s_classnameTag = "%classname%";
   protected static readonly string s_baseClassnameTag = "%baseclassname%";
   protected static readonly string s_accessibilityTag = "%accessibility%";
+  protected static readonly string s_modifierTag = "%modifier%";
   protected static readonly string s_returntypeTag = "%returntype%";
   protected static readonly string s_methodnameTag = "%methodname%";
   protected static readonly string s_parameterlistTag = "%parameterlist%";
@@ -60,85 +61,66 @@ public abstract class CodeFileBuilder: FileBuilder
   private static readonly string s_indentation = "  ";
 
   private static readonly string s_comment =
-      "  // %comment%" + Environment.NewLine;
+      "  // %comment%\r\n";
   private static readonly string s_fileHeader = 
-      "using System;" + Environment.NewLine
-      + "" + Environment.NewLine 
-      + "using Rubicon.Data.DomainObjects;" + Environment.NewLine 
-      + "using Rubicon.Data.DomainObjects.ObjectBinding;" + Environment.NewLine 
-      + "using Rubicon.NullableValueTypes;" + Environment.NewLine 
-      + "using Rubicon.Globalization;" + Environment.NewLine 
-      + "using Rubicon.Utilities;" + Environment.NewLine 
-      + Environment.NewLine;
+      "using System;\r\n"
+      + "\r\n" 
+      + "using Rubicon.Data.DomainObjects;\r\n"
+      + "using Rubicon.Data.DomainObjects.ObjectBinding;\r\n"
+      + "using Rubicon.NullableValueTypes;\r\n"
+      + "using Rubicon.Globalization;\r\n"
+      + "using Rubicon.Utilities;\r\n"
+      + "\r\n";
   private static readonly string s_serializableAttribute = 
-      "[Serializable]" + Environment.NewLine;
+      "[Serializable]\r\n";
   private static readonly string s_multilingualResourcesAttribute = 
-      "[MultiLingualResources(\"%namespace%.Globalization.%typename%\")]" + Environment.NewLine;
+      "[MultiLingualResources(\"%namespace%.Globalization.%typename%\")]\r\n";
   private static readonly string s_enumDescriptionResourceAttribute = 
-      "[EnumDescriptionResource(\"%namespace%.Globalization.%typename%\")]" + Environment.NewLine;
+      "[EnumDescriptionResource(\"%namespace%.Globalization.%typename%\")]\r\n";
 
   private static readonly string s_namespaceHeader = 
-      "namespace %namespace%" + Environment.NewLine
-      + "{" + Environment.NewLine;
-  private static readonly string s_namespaceFooter = "}" + Environment.NewLine;
+      "namespace %namespace%\r\n"
+      + "{\r\n";
+  private static readonly string s_namespaceFooter = "}\r\n";
 
   private static readonly string s_classHeader = 
-      "public class %classname% : %baseclassname%" + Environment.NewLine
-      + "{" + Environment.NewLine;
+      "public %modifier%class %classname% : %baseclassname%\r\n"
+      + "{\r\n";
   private static readonly string s_classFooter = 
-      "}" + Environment.NewLine;
+      "}\r\n";
 
-  protected static readonly string s_accessibilityStatic = "static";
-  protected static readonly string s_accessibilityNew = "new";
-  protected static readonly string s_accessibilityPrivate = "private";
-  protected static readonly string s_accessibilityProtected = "protected";
-  protected static readonly string s_accessibilityPublic = "public";
-  protected static readonly string s_accessibilityDefault = "public";
+  protected static readonly string s_modifierStatic = "static ";
+  protected static readonly string s_modifierNew = "new ";
+  protected static readonly string s_modifierAbstract = "abstract ";
+
+  protected static readonly string s_accessibilityPrivate = "private ";
+  protected static readonly string s_accessibilityProtected = "protected ";
+  protected static readonly string s_accessibilityPublic = "public ";
 
   protected static readonly string s_returntypeVoid = "void";
 
   private static readonly string s_methodHeader = 
-      "  %accessibility% %returntype% %methodname% (%parameterlist%)" + Environment.NewLine
-      + "  {" + Environment.NewLine;
+      "  %accessibility%%modifier%%returntype% %methodname% (%parameterlist%)\r\n"
+      + "  {\r\n";
   private static readonly string s_methodFooter =
-      "  }" + Environment.NewLine
-      + "" + Environment.NewLine;
-
-  private static readonly string s_indexerHeader = 
-      "  %accessibility% %returntype% this[%parameterlist%]" + Environment.NewLine
-      + "  {" + Environment.NewLine;
-  private static readonly string s_indexerFooter =
-      "  }" + Environment.NewLine
-      + "" + Environment.NewLine;
+      "  }\r\n"
+      + "\r\n";
 
   private static readonly string s_constructorHeader = 
-      "  %accessibility% %classname% (%parameterlist%)%baseconstructor%" + Environment.NewLine
-      + "  {" + Environment.NewLine;
+      "  %accessibility%%classname% (%parameterlist%)%baseconstructor%\r\n"
+      + "  {\r\n";
   private static readonly string s_constructorFooter =
-      "  }" + Environment.NewLine
-      + "" + Environment.NewLine;
+      "  }\r\n"
+      + "\r\n";
 
   private readonly string s_baseConstructorCall = " : base (%parameterlist%)";
 
-  private static readonly string s_enum = 
-      "public enum %enumname%" + Environment.NewLine
-      + "{" + Environment.NewLine
-      + "  DummyEntry = 0" + Environment.NewLine
-      + "}" + Environment.NewLine;
-
-  private static readonly string s_nestedEnum = 
-      "  public enum %enumname%" + Environment.NewLine
-      + "  {" + Environment.NewLine
-      + "    DummyEntry = 0" + Environment.NewLine
-      + "  }" + Environment.NewLine
-      + "" + Environment.NewLine;
-
   private static readonly string s_propertyHeader = 
-      "  %accessibility% %propertytype% %propertyname%" + Environment.NewLine
-      + "  {" + Environment.NewLine;
+      "  %accessibility%%propertytype% %propertyname%\r\n"
+      + "  {\r\n";
   private static readonly string s_propertyFooter =
-      "  }" + Environment.NewLine
-      + "" + Environment.NewLine;
+      "  }\r\n"
+      + "\r\n";
 
   #endregion
 
@@ -155,13 +137,28 @@ public abstract class CodeFileBuilder: FileBuilder
   
   // methods and properties
 
-  protected virtual string TypeToCSharpString (Type type)
+  protected virtual string GetCSharpTypeName (PropertyDefinition propertyDefinition)
   {
-    string cSharpTypeString = (string) s_TypeToCSharpType[type];
-    if (cSharpTypeString != null)
-      return cSharpTypeString;
+    TypeName typeName;
+    if (propertyDefinition.MappingTypeName.Contains (","))
+    {
+      typeName = new TypeName (propertyDefinition.MappingTypeName);
+    }
     else
-      return type.Name;
+    {
+      TypeInfo typeInfo = TypeInfo.GetInstance (propertyDefinition.MappingTypeName, propertyDefinition.IsNullable);
+
+      string cSharpTypeString = (string) s_TypeToCSharpType[typeInfo.Type];
+      if (cSharpTypeString != null)
+        return cSharpTypeString;
+      else
+        typeName = new TypeName (typeInfo.Type.AssemblyQualifiedName);
+    }
+
+    if (typeName.IsNested)
+      return typeName.DeclaringTypeName.Name + "." + typeName.Name;
+
+    return typeName.Name;
   }
 
   protected override void FinishFile ()
@@ -186,6 +183,7 @@ public abstract class CodeFileBuilder: FileBuilder
     Write (commentLine);
   }
 
+  //TODO ES: remove additional logic with _fileHeaderWritten when ConfigurationLoader is gone and rename to WriteFileHeader
   protected void BeginFile ()
   {
     if (!_fileHeaderWritten)
@@ -195,6 +193,7 @@ public abstract class CodeFileBuilder: FileBuilder
     }
   }
 
+  //TODO ES: remove additional logic with _lastNamespaceWritten when ConfigurationLoader is gone
   protected void BeginNamespace (string namespaceName)
   {
     BeginFile ();
@@ -219,26 +218,31 @@ public abstract class CodeFileBuilder: FileBuilder
     Write (s_serializableAttribute);
   }
 
-  protected void WriteMultiLingualResourcesAttribute (Type type)
+  protected void WriteMultiLingualResourcesAttribute (TypeName typeName)
   {
     string attributeString = s_multilingualResourcesAttribute;
-    attributeString = ReplaceTag (attributeString, s_typeNameTag, type.Name);
-    attributeString = ReplaceTag (attributeString, s_namespaceTag, type.Namespace);
+    attributeString = ReplaceTag (attributeString, s_typeNameTag, typeName.Name);
+    attributeString = ReplaceTag (attributeString, s_namespaceTag, typeName.Namespace);
     Write (attributeString);
   }
 
-  protected void WriteEnumDescriptionResourceAttribute (Type type)
+  protected void WriteEnumDescriptionResourceAttribute (TypeName typeName)
   {
-    // TODO: modify type name if nested
     string attributeString = s_enumDescriptionResourceAttribute;
-    attributeString = ReplaceTag (attributeString, s_typeNameTag, type.Name);
-    attributeString = ReplaceTag (attributeString, s_namespaceTag, type.Namespace);
+    
+    if (typeName.IsNested) 
+      attributeString = ReplaceTag (attributeString, s_typeNameTag, typeName.DeclaringTypeName.Name + "+" + typeName.Name);
+    else
+      attributeString = ReplaceTag (attributeString, s_typeNameTag, typeName.Name);
+
+    attributeString = ReplaceTag (attributeString, s_namespaceTag, typeName.Namespace);
     Write (attributeString);
   }
 
-  protected void BeginClass (string className, string baseClassName)
+  protected void BeginClass (string className, string baseClassName, bool abstractClass)
   {
     string classHeader = s_classHeader;
+    classHeader = ReplaceTag (classHeader, s_modifierTag, abstractClass ? s_modifierAbstract : string.Empty);
     classHeader = ReplaceTag (classHeader, s_classnameTag, className);
     classHeader = ReplaceTag (classHeader, s_baseClassnameTag, baseClassName);
 
@@ -250,7 +254,7 @@ public abstract class CodeFileBuilder: FileBuilder
     Write (s_classFooter);
   }
 
-  protected void BeginMethod (string accessibility, string returnType, string methodName, string parameterlist)
+  protected void BeginMethod (string accessibility, string modifier, string returnType, string methodName, string parameterlist)
   {
     ArgumentUtility.CheckNotNull ("accessibility", accessibility);
     ArgumentUtility.CheckNotNull ("returnType", returnType);
@@ -259,6 +263,7 @@ public abstract class CodeFileBuilder: FileBuilder
 
     string constructor = s_methodHeader;
     constructor = ReplaceTag (constructor, s_accessibilityTag, accessibility);
+    constructor = ReplaceTag (constructor, s_modifierTag, modifier);
     constructor = ReplaceTag (constructor, s_returntypeTag, returnType);
     constructor = ReplaceTag (constructor, s_methodnameTag, methodName);
     constructor = ReplaceTag (constructor, s_parameterlistTag, parameterlist);
@@ -271,58 +276,27 @@ public abstract class CodeFileBuilder: FileBuilder
     Write (s_methodFooter);
   }
 
-  protected void BeginIndexer (string accessibility, string returntypename, string parameter)
+  protected void BeginConstructor (string className, string parameterlist, string parameterListForBaseConstructorCall)
   {
-    ArgumentUtility.CheckNotNull ("accessibility", accessibility);
-    ArgumentUtility.CheckNotNull ("returntypename", returntypename);
-    ArgumentUtility.CheckNotNull ("parameter", parameter);
-
-    string constructor = s_indexerHeader;
-    constructor = ReplaceTag (constructor, s_accessibilityTag, accessibility);
-    constructor = ReplaceTag (constructor, s_returntypeTag, returntypename);
-    constructor = ReplaceTag (constructor, s_parameterlistTag, parameter);
-
-    Write (constructor);
+    BeginConstructor (s_accessibilityPublic, className, parameterlist, parameterListForBaseConstructorCall);
   }
 
-  protected void EndIndexer ()
-  {
-    Write (s_indexerFooter);
-  }
-
-  protected void BeginConstructor (string className)
-  {
-    BeginConstructor (s_accessibilityDefault, className, "", null);
-  }
-
-  protected void BeginConstructor (string className, string parameterlist)
-  {
-    BeginConstructor (s_accessibilityDefault, className, parameterlist, null);
-  }
-
-  protected void BeginConstructor (string className, string parameterlist, string baseParameterlist)
-  {
-    BeginConstructor (s_accessibilityDefault, className, parameterlist, baseParameterlist);
-  }
-
-  protected void BeginConstructor (string accessibility, string className, string parameterlist, string baseParameterlist)
+  protected void BeginConstructor (string accessibility, string className, string parameterlist, string parameterListForBaseConstructorCall)
   {
     ArgumentUtility.CheckNotNull ("className", className);
-    ArgumentUtility.CheckNotNull ("parameterlist", parameterlist);
 
     string constructor = s_constructorHeader;
     constructor = ReplaceTag (constructor, s_accessibilityTag, accessibility);
     constructor = ReplaceTag (constructor, s_classnameTag, className);
     constructor = ReplaceTag (constructor, s_parameterlistTag, parameterlist);
-    if (baseParameterlist != null)
-    {
-      string baseConstructorCall = ReplaceTag (s_baseConstructorCall, s_parameterlistTag, baseParameterlist);
-      constructor = ReplaceTag (constructor, s_baseConstructorTag, baseConstructorCall);
-    }
+
+    string baseConstructorCall;
+    if (parameterListForBaseConstructorCall != null)
+      baseConstructorCall = ReplaceTag (s_baseConstructorCall, s_parameterlistTag, parameterListForBaseConstructorCall);
     else
-    {
-      constructor = ReplaceTag (constructor, s_baseConstructorTag, "");
-    }
+      baseConstructorCall = string.Empty;
+
+    constructor = ReplaceTag (constructor, s_baseConstructorTag, baseConstructorCall);
 
     Write (constructor);
   }
@@ -332,29 +306,9 @@ public abstract class CodeFileBuilder: FileBuilder
     Write (s_constructorFooter);
   }
 
-  protected void WriteEnum (string enumName)
-  {
-    Write (ReplaceTag (s_enum, s_enumTag, enumName));
-  }
-
-  protected void WriteNestedEnum (Type enumType, bool enumDescriptionResourceAttribute)
-  {
-    if (enumDescriptionResourceAttribute)
-    {
-      WriteIndentation (1);
-      WriteEnumDescriptionResourceAttribute (enumType);
-    }
-    Write (ReplaceTag (s_nestedEnum, s_enumTag, enumType.Name));
-  }
-
-  protected void WriteNestedEnum (string enumName)
-  {
-    Write (ReplaceTag (s_nestedEnum, s_enumTag, enumName));
-  }
-
   protected void BeginProperty (string propertyName, string propertyType)
   {
-    BeginProperty (s_accessibilityDefault, propertyName, propertyType);
+    BeginProperty (s_accessibilityPublic, propertyName, propertyType);
   }
 
   protected void BeginProperty (string accessibility, string propertyName, string propertyType)
@@ -370,20 +324,6 @@ public abstract class CodeFileBuilder: FileBuilder
   protected void EndProperty ()
   {
     Write (s_propertyFooter);
-  }
-
-  protected PropertyDefinition[] GetEnumPropertyDefinitionsWithNestedType (Type outerType)
-  {
-    ArrayList nestedTypes = new ArrayList ();
-    foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
-    {
-      foreach (PropertyDefinition propertyDefinition in classDefinition.MyPropertyDefinitions)
-      {
-        if (propertyDefinition.PropertyType.IsEnum && propertyDefinition.PropertyType.DeclaringType == outerType)
-          nestedTypes.Add (propertyDefinition);
-      }
-    }
-    return (PropertyDefinition[]) nestedTypes.ToArray (typeof(PropertyDefinition));
   }
 }
 }

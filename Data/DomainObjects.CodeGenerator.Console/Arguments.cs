@@ -25,22 +25,22 @@ public class Arguments
   public OperationMode Mode;
 
   [CommandLineStringArgument ("sqloutput", true, 
-      Description = "Create SQL file(s) in this directtory (default: current).",
+      Description = "Create SQL file(s) in this directory (default: current).",
       Placeholder = "directory")]
   public string SqlOutput = "SetupDB.sql";
 
   [CommandLineStringArgument ("classoutput", true, 
-      Description = "Create domain object file(s) in this directtory (default: current).",
+      Description = "Create domain object file(s) in this directory (default: current).",
       Placeholder = "directory")]
   public string ClassOutput = string.Empty;
 
   [CommandLineStringArgument ("config", true,
-      Description = "Search for XML files in this directtory (default: current).",
+      Description = "Search for XML files in this directory (default: current).",
       Placeholder = "directory")]
   public string ConfigDirectory = string.Empty;
 
   [CommandLineStringArgument ("schema", true,
-      Description = "Search for XML schema files in this directtory (default: current).",
+      Description = "Search for XML schema files in this directory (default: current).",
       Placeholder = "directory")]
   public string SchemaDirectory = string.Empty;
 
@@ -50,7 +50,7 @@ public class Arguments
   public string DomainObjectBaseClass = DomainObjectBuilder.DefaultBaseClass;
 
   [CommandLineStringArgument ("collbase", true, 
-      Description = "Create domain object collection classes derived from this class (default: " + DomainObjectCollectionBuilder.DefaultBaseClass + ")",
+      Description = "Create domain object collection classes derived from this class (default: DomainObjectCollection)",
       Placeholder = "classname")]
   public string DomainObjectCollectionBaseClass = DomainObjectCollectionBuilder.DefaultBaseClass;
 

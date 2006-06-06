@@ -4,51 +4,63 @@ using System.IO;
 
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
+using System.Collections.Generic;
+using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
+  public class SqlBuilder
+  {
+    // types
 
-public class SqlBuilder 
-{
-	public static void Build (string outputFile) 
-	{
-    ArgumentUtility.CheckNotNullOrEmpty ("outputFile", outputFile);
+    // static members and constants
 
-    string[] storageProviderIDs = GetDistinctStorageProviderIDs ();
-
-    if (storageProviderIDs.Length == 1)
+    public static void Build (MappingConfiguration mappingConfiguration, StorageProviderConfiguration storageProviderConfiguration, string outputFolder)
     {
-      SqlFileBuilder.Build (outputFile, storageProviderIDs[0]);
-    }
-    else
-    {
-      foreach (string storageProviderID in storageProviderIDs)
+      ArgumentUtility.CheckNotNullOrEmpty ("outputFolder", outputFolder);
+
+      string[] storageProviderIDs = GetDistinctStorageProviderIDs (mappingConfiguration);
+
+      if (storageProviderIDs.Length == 1)
       {
-        string filename = outputFile;
-        if (filename.IndexOf (".") > -1)
-          filename = filename.Insert (filename.LastIndexOf ("."), "_" + storageProviderID);
-        else
-          filename = filename + "_" + storageProviderID;
+        string fileName = Path.Combine (outputFolder, "SetupDB.sql");
+        SqlFileBuilder sqlFileBuilder = new SqlFileBuilder (mappingConfiguration, storageProviderConfiguration, storageProviderIDs[0]);
+        File.WriteAllText (fileName, sqlFileBuilder.GetScript ());
+      }
+      else
+      {
+        foreach (string storageProviderID in storageProviderIDs)
+        {
+          string fileName = "SetupDB_" + storageProviderID + ".sql";
 
-        SqlFileBuilder.Build (filename, storageProviderID);
+          SqlFileBuilder sqlFileBuilder = new SqlFileBuilder (mappingConfiguration, storageProviderConfiguration, storageProviderID);
+          File.WriteAllText (fileName, sqlFileBuilder.GetScript ());
+        }
       }
     }
-	}
 
-  private static string[] GetDistinctStorageProviderIDs ()
-  {
-    ArrayList storageProviderIDs = new ArrayList();
-    foreach (ClassDefinition classDefinition in MappingConfiguration.Current.ClassDefinitions)
+    private static string[] GetDistinctStorageProviderIDs (MappingConfiguration mappingConfiguration)
     {
-      if (!storageProviderIDs.Contains (classDefinition.StorageProviderID))
-        storageProviderIDs.Add (classDefinition.StorageProviderID);
+      List<String> storageProviderIDs = new List<String> ();
+      foreach (ClassDefinition classDefinition in mappingConfiguration.ClassDefinitions)
+      {
+        if (!storageProviderIDs.Contains (classDefinition.StorageProviderID))
+          storageProviderIDs.Add (classDefinition.StorageProviderID);
+      }
+      return storageProviderIDs.ToArray ();
     }
-    return (string[]) storageProviderIDs.ToArray (typeof (string));
-  }
 
-  private SqlBuilder()
-  {
+    // member fields
+
+    // construction and disposing
+
+    private SqlBuilder ()
+    {
+    }
+
+    // methods and properties
+
   }
-}
 
 }

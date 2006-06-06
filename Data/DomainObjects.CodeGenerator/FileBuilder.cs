@@ -5,39 +5,39 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-
-public abstract class FileBuilder
-{
-  private TextWriter _writer = null;
-
-  protected FileBuilder (TextWriter writer)
+  public abstract class FileBuilder
   {
-    ArgumentUtility.CheckNotNull ("writer", writer);
+    private TextWriter _writer = null;
 
-    _writer = writer;
-  }
+    protected FileBuilder (TextWriter writer)
+    {
+      ArgumentUtility.CheckNotNull ("writer", writer);
 
-  protected void Write (string text)
-  {
-    _writer.Write (text);
-  }
+      _writer = writer;
+    }
 
-  protected void WriteLine ()
-  {
-    Write (Environment.NewLine);
-  }
+    protected void Write (string text)
+    {
+      _writer.Write (text);
+    }
 
-  protected virtual void FinishFile()
-  {
-    _writer.Flush();
-  }
+    protected void WriteLine ()
+    {
+      _writer.WriteLine ();
+    }
 
-  public string ReplaceTag (string original, string tag, string value)
-  {
-    string newString = original.Replace (tag, value);
-    if (newString == original)
-      throw new ApplicationException (string.Format ("ReplaceTag did not replace tag '{0}' with '{1}' in string '{2}'. Tag was not found.", tag, value, original));
-    return newString;
+    protected virtual void FinishFile ()
+    {
+      _writer.Flush ();
+    }
+
+    public string ReplaceTag (string originalString, string tag, string value)
+    {
+      ArgumentUtility.CheckNotNull ("originalString", originalString);
+      if (!originalString.Contains (tag))
+        throw new ArgumentException ("tag", string.Format ("Tag '{0}' could not be found in original string '{1}'.", tag, originalString));
+
+      return originalString.Replace (tag, value);
+    }
   }
-}
 }

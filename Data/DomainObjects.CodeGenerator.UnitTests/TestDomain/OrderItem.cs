@@ -1,0 +1,66 @@
+using System;
+
+using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.ObjectBinding;
+using Rubicon.NullableValueTypes;
+using Rubicon.Globalization;
+using Rubicon.Utilities;
+
+namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain
+{
+public class OrderItem : BindableDomainObject
+{
+  // types
+
+  // static members and constants
+
+  public static new OrderItem GetObject (ObjectID id)
+  {
+    return (OrderItem) DomainObject.GetObject (id);
+  }
+
+  public static new OrderItem GetObject (ObjectID id, ClientTransaction clientTransaction)
+  {
+    return (OrderItem) DomainObject.GetObject (id, clientTransaction);
+  }
+
+  // member fields
+
+  // construction and disposing
+
+  public OrderItem ()
+  {
+  }
+
+  public OrderItem (ClientTransaction clientTransaction) : base (clientTransaction)
+  {
+  }
+
+  protected OrderItem (DataContainer dataContainer) : base (dataContainer)
+  {
+    // This infrastructure constructor is necessary for the DomainObjects framework.
+    // Do not remove the constructor or place any code here.
+  }
+
+  // methods and properties
+
+  public int Position
+  {
+    get { return (int) DataContainer["Position"]; }
+    set { DataContainer["Position"] = value; }
+  }
+
+  public string Product
+  {
+    get { return (string) DataContainer["Product"]; }
+    set { DataContainer["Product"] = value; }
+  }
+
+  public Order Order
+  {
+    get { return (Order) GetRelatedObject ("Order"); }
+    set { SetRelatedObject ("Order", value); }
+  }
+
+}
+}
