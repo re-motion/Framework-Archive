@@ -22,24 +22,24 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     // member fields
 
-    private MethodType _type;
+    private MethodType _methodType;
     private Type _securableClass;
     private string _parameterName;
-    private string _method;
+    private string _methodName;
 
     // construction and disposing
 
     public WxeDemandMethodPermissionAttribute (MethodType type)
     {
-      _type = type;
+      _methodType = type;
     }
 
     // methods and properties
 
-    public MethodType Type
+    public MethodType MethodType
     {
-      get { return _type; }
-      set { _type = value; }
+      get { return _methodType; }
+      set { _methodType = value; }
     }
 
     public Type SecurableClass
@@ -63,8 +63,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     public string MethodName
     {
-      get { return _method; }
-      set { _method = value; }
+      get { return _methodName; }
+      set { _methodName = value; }
     }
   }
 }

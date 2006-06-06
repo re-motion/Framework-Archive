@@ -25,7 +25,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
       ArgumentUtility.CheckNotNull ("functionType", functionType);
       ArgumentUtility.CheckNotNull ("attribute", attribute);
 
-      switch (attribute.Type)
+      switch (attribute.MethodType)
       {
         case MethodType.Instance:
           CheckMethodNameNotNullOrEmpty (functionType, attribute.MethodName);
@@ -52,7 +52,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     public MethodType MethodType
     {
-      get { return _attribute.Type; }
+      get { return _attribute.MethodType; }
     }
 
     public string MethodName

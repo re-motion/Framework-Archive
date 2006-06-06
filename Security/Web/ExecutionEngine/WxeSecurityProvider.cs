@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using Rubicon.Utilities;
-using Rubicon.Web.ExecutionEngine;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.Configuration;
+using Rubicon.Utilities;
+using Rubicon.Web.ExecutionEngine;
 
 namespace Rubicon.Security.Web.ExecutionEngine
 {
@@ -49,8 +49,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
           break;
         default:
           throw new ArgumentException (string.Format (
-              "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' specifies the not supported MethodType '{1}'.",
-              helper.FunctionType.FullName, helper.MethodType));
+              "Value '{0}' is not supported by the MethodType property of the WxeDemandMethodPermissionAttribute.",
+              helper.MethodType));
       }
     }
 
@@ -75,8 +75,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
           return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
           throw new ArgumentException (string.Format (
-              "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' specifies the not supported MethodType '{1}'.",
-              helper.FunctionType.FullName, helper.MethodType));
+              "Value '{0}' is not supported by the MethodType property of the WxeDemandMethodPermissionAttribute.",
+              helper.MethodType));
       }
     }
 
@@ -101,8 +101,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
           return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
           throw new ArgumentException (string.Format (
-              "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' specifies the not supported MethodType '{1}'.",
-              helper.FunctionType.FullName, helper.MethodType));
+              "Value '{0}' is not supported by the MethodType property of the WxeDemandMethodPermissionAttribute.",
+              helper.MethodType));
       }
     }
 

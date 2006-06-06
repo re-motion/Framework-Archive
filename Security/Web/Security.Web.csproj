@@ -43,6 +43,10 @@
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelper.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProvider.cs" />
     <Compile Include="HttpContextUserProvider.cs" />
+    <Compile Include="UI\DemandTargetMethodPermissionAttribute.cs" />
+    <Compile Include="UI\DemandTargetPermissionAttribute.cs" />
+    <Compile Include="UI\DemandTargetWxeFunctionPermissionAttribute.cs" />
+    <Compile Include="UI\WebSecurityProvider.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Web.build" />
   </ItemGroup>

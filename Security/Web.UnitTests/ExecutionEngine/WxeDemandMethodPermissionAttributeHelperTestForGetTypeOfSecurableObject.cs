@@ -6,6 +6,7 @@ using NMock2;
 using NUnit.Framework;
 
 using Rubicon.Security.Web.ExecutionEngine;
+using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 

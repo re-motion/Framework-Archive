@@ -1,0 +1,84 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Web.UI;
+
+using Rubicon.Security.Metadata;
+using Rubicon.Security.Configuration;
+using Rubicon.Utilities;
+using Rubicon.Web.UI;
+using Rubicon.Web.ExecutionEngine;
+
+namespace Rubicon.Security.Web.UI
+{
+  public class WebSecurityProvider : IWebSecurityProvider
+  {
+    // types
+
+    // static members
+
+    // member fields
+
+    // construction and disposing
+
+    public WebSecurityProvider ()
+    {
+    }
+
+    // methods and properties
+
+    public bool HasAccess (ISecurableObject securableObject, Delegate handler)
+    {
+      ArgumentUtility.CheckNotNull ("handler", handler);
+
+      List<DemandTargetPermissionAttribute> attributes = GetPermissionAttributes (handler.GetInvocationList ());
+
+      bool hasAccess = true;
+      foreach (DemandTargetPermissionAttribute attribute in attributes)
+      {
+        switch (attribute.PermissionSource)
+        {
+          case PermissionSource.WxeFunction:
+            hasAccess &= WxeFunction.HasAccess (attribute.FunctionType);
+            break;
+          case PermissionSource.SecurableObject:
+            ArgumentUtility.CheckNotNull ("securableObject", securableObject);
+            SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
+            hasAccess &= securityClient.HasMethodAccess (securableObject, attribute.MethodName);
+            break;
+          default:
+            throw new ArgumentException (string.Format (
+                "Value '{0}' is not supported by the PermissionSource property of the DemandTargetPermissionAttribute.",
+                attribute.PermissionSource));
+        }
+
+        if (!hasAccess)
+          break;
+      }
+
+      return hasAccess;
+    }
+
+    public void CheckAccess (ISecurableObject securableObject, Delegate handler)
+    {
+      throw new Exception ("The method or operation is not implemented.");
+    }
+
+    private List<DemandTargetPermissionAttribute> GetPermissionAttributes (Delegate[] delegates)
+    {
+      List<DemandTargetPermissionAttribute> attributes = new List<DemandTargetPermissionAttribute> ();
+      foreach (Delegate handler in delegates)
+      {
+        DemandTargetPermissionAttribute attribute = (DemandTargetPermissionAttribute) Attribute.GetCustomAttribute (
+            handler.Method,
+            typeof (DemandTargetPermissionAttribute),
+            false);
+
+        if (attribute != null)
+          attributes.Add (attribute);
+      }
+
+      return attributes;
+    }
+  }
+}

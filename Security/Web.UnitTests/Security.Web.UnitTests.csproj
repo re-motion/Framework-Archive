@@ -40,10 +40,12 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Domain\SecurableObject.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithThisObjectAsSecondParameter.cs" />
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTest.cs" />
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject.cs" />
@@ -54,11 +56,12 @@
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromInstanceMethod.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromConstructor.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithoutPermissions.cs" />
-    <Compile Include="ExecutionEngine\SecurableObject.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromConstructor.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethod.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromStaticMethod.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithoutPermissionAttribute.cs" />
+    <Compile Include="UI\WebSecurityProviderTestWithPermissionFromSecurableObject.cs" />
+    <Compile Include="UI\WebSecurityProviderTestWithPermissionFromWxeFunction.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Web.UnitTests.build" />
   </ItemGroup>

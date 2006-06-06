@@ -5,6 +5,7 @@ using System.Text;
 using NMock2;
 using NUnit.Framework;
 
+using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Security.Web.ExecutionEngine;
 using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;

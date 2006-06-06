@@ -8,9 +8,10 @@ using NUnit.Framework;
 
 using Rubicon.Security;
 using Rubicon.Security.Configuration;
-using Rubicon.Web.UnitTests.ExecutionEngine;
-using Rubicon.Web.ExecutionEngine;
 using Rubicon.Security.Web.ExecutionEngine;
+using Rubicon.Security.Web.UnitTests.Domain;
+using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
@@ -58,6 +59,14 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       SecurityConfiguration.Current.SecurityService = _securityService;
       SecurityConfiguration.Current.UserProvider = _userProvider;
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      SecurityConfiguration.Current.SecurityService = null;
+      SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
+      SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy ();
     }
 
     [Test]

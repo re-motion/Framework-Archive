@@ -29,7 +29,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
-    public void ExecuteFunction ()
+    public void ExecuteFunctionWithAccessGranted ()
     {
       TestFunction function = new TestFunction ();
       Expect.Once.On (_mockWxeSecurityProvider)
@@ -43,7 +43,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (PermissionDeniedException), "Test Exception")]
-    public void ExecuteFunctionWithInvalidPermissions ()
+    public void ExecuteFunctionWithAccessDenied ()
     {
       TestFunction function = new TestFunction ();
       Expect.Once.On (_mockWxeSecurityProvider)

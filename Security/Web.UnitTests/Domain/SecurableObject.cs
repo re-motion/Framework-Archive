@@ -5,7 +5,7 @@ using System.Text;
 using Rubicon.Security;
 using Rubicon.Web.UnitTests.ExecutionEngine;
 
-namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
+namespace Rubicon.Security.Web.UnitTests.Domain
 {
   public class SecurableObject : ISecurableObject
   {

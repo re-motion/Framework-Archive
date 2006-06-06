@@ -250,6 +250,7 @@
     <Compile Include="UI\Controls\WebButtonMock.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\WebButtonSecurityTest.cs" />
     <Compile Include="UI\Controls\WebButtonTest.cs">
       <SubType>Code</SubType>
     </Compile>
