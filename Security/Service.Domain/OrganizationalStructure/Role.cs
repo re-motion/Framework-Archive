@@ -40,10 +40,6 @@ namespace Rubicon.Security.Service.Domain.OrganizationalStructure
 
     // construction and disposing
 
-    public Role ()
-    {
-    }
-
     public Role (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {

@@ -36,10 +36,6 @@ namespace Rubicon.Security.Service.Domain.OrganizationalStructure
 
     // construction and disposing
 
-    public OrganizationalStructureObject ()
-    {
-    }
-
     public OrganizationalStructureObject (ClientTransaction clientTransaction) : base (clientTransaction)
     {
     }

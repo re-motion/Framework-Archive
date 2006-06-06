@@ -40,10 +40,6 @@ namespace Rubicon.Security.Service.Domain.OrganizationalStructure
 
     // construction and disposing
 
-    public GroupType ()
-    {
-    }
-
     public GroupType (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {

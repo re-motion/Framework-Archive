@@ -40,10 +40,6 @@ namespace Rubicon.Security.Service.Domain.OrganizationalStructure
 
     // construction and disposing
 
-    public ConcretePosition ()
-    {
-    }
-
     public ConcretePosition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
