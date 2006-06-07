@@ -44,9 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Configuration\SecurityDomainConfigurationTest.cs" />
+    <Compile Include="Configuration\DomainConfigurationTest.cs" />
+    <Compile Include="Configuration\TestDomainConfiguration.cs" />
     <Compile Include="Configuration\TestOrganizationalStructureFactory.cs" />
-    <Compile Include="Configuration\TestSecurityDomainConfiguration.cs" />
     <Compile Include="Metadata\DomainObjectCollectionContainsAsserter.cs" />
     <Compile Include="Metadata\DomainObjectFilter.cs" />
     <Compile Include="Metadata\DomainObjectFilterCriteria.cs" />

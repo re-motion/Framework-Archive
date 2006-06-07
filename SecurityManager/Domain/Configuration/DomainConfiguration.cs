@@ -8,7 +8,7 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.Domain.Configuration
 {
-  public class SecurityDomainConfiguration : ConfigurationSection
+  public class DomainConfiguration : ConfigurationSection
   {
 
     private IOrganizationalStructureFactory _organizationalStructureFactory;
@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.Domain.Configuration
     private readonly ConfigurationProperty _xmlnsProperty;
     private readonly ConfigurationProperty _customOrganizationalStructureFactoryProperty;
 
-    public SecurityDomainConfiguration ()
+    public DomainConfiguration ()
     {
       _properties = new ConfigurationPropertyCollection ();
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);

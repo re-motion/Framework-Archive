@@ -37,7 +37,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <Compile Include="BaseSecurityServiceObject.cs" />
-    <Compile Include="Configuration\SecurityDomainConfiguration.cs" />
+    <Compile Include="Configuration\DomainConfiguration.cs" />
     <Compile Include="Metadata\AbstractRoleDefinition.cs" />
     <Compile Include="Metadata\AccessTypeDefinition.cs" />
     <Compile Include="Metadata\AccessTypeReference.cs" />
@@ -65,9 +65,9 @@
     <Content Include="storageProviders.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\SecurityDomainConfiguration.xsd">
+    <None Include="Configuration\DomainConfiguration.xsd">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </None>
     <None Include="mapping.xsd">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

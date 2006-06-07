@@ -10,7 +10,7 @@ using Rubicon.SecurityManager.Domain.Configuration;
 
 namespace Rubicon.SecurityManager.Domain.UnitTests.Configuration
 {
-  internal class TestSecurityDomainConfiguration : SecurityDomainConfiguration
+  internal class TestDomainConfiguration : DomainConfiguration
   {
     public void DeserializeSection (string xmlFragment)
     {

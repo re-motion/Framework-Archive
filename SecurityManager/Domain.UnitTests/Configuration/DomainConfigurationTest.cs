@@ -10,14 +10,14 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 namespace Rubicon.SecurityManager.Domain.UnitTests.Configuration
 {
   [TestFixture]
-  public class SecurityDomainConfigurationTest
+  public class DomainConfigurationTest
   {
-    private TestSecurityDomainConfiguration _configuration;
+    private TestDomainConfiguration _configuration;
 
     [SetUp]
     public void SetUp ()
     {
-      _configuration = new TestSecurityDomainConfiguration ();
+      _configuration = new TestDomainConfiguration ();
     }
 
     [Test]
