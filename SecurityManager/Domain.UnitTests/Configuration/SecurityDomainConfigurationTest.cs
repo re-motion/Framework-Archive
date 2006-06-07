@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Text;
+using NUnit.Framework;
+
+using Rubicon.SecurityManager.Domain.Configuration;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+
+namespace Rubicon.SecurityManager.Domain.UnitTests.Configuration
+{
+  [TestFixture]
+  public class SecurityDomainConfigurationTest
+  {
+    private TestSecurityDomainConfiguration _configuration;
+
+    [SetUp]
+    public void SetUp ()
+    {
+      _configuration = new TestSecurityDomainConfiguration ();
+    }
+
+    [Test]
+    public void DeserializeWithDefaultFactory ()
+    {
+      string xmlFragment = @"<rubicon.securityManager.domain />";
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.IsNotNull (_configuration.OrganizationalStructureFactory);
+      Assert.IsInstanceOfType (typeof (OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+    }
+
+    [Test]
+    public void DeserializeWithNamespace ()
+    {
+      string xmlFragment = @"<rubicon.securityManager.domain xmlns=""http://www.rubicon-it.com/SecurityManager/Domain/Configuration"" />";
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.IsNotNull (_configuration.OrganizationalStructureFactory);
+      Assert.IsInstanceOfType (typeof (OrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+    }
+
+    [Test]
+    public void DeserializeWithCustomFactory ()
+    {
+      string xmlFragment = @"
+          <rubicon.securityManager.domain xmlns=""http://www.rubicon-it.com/SecurityManager/Domain/Configuration"">
+            <customOrganizationalStructureFactory type=""Rubicon.SecurityManager.Domain.UnitTests::Configuration.TestOrganizationalStructureFactory"" />
+          </rubicon.securityManager.domain>";
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.IsNotNull (_configuration.OrganizationalStructureFactory);
+      Assert.IsInstanceOfType (typeof (TestOrganizationalStructureFactory), _configuration.OrganizationalStructureFactory);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConfigurationErrorsException))]
+    public void DeserializeWithInvalidFactoryType ()
+    {
+      string xmlFragment = @"
+          <rubicon.securityManager.domain>
+            <customOrganizationalStructureFactory type=""Invalid"" />
+          </rubicon.securityManager.domain>";
+      _configuration.DeserializeSection (xmlFragment);
+      IOrganizationalStructureFactory factory = _configuration.OrganizationalStructureFactory;
+    }
+  }
+}
