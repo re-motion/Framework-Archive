@@ -39,10 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public AccessTypeReference ()
-    {
-    }
-
     public AccessTypeReference (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {

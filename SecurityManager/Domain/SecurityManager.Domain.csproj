@@ -42,7 +42,6 @@
     <Compile Include="Metadata\AccessTypeDefinition.cs" />
     <Compile Include="Metadata\AccessTypeReference.cs" />
     <Compile Include="Metadata\EnumValueDefinition.cs" />
-    <Compile Include="Metadata\EnumValueDefinitionWithIdentity.cs" />
     <Compile Include="Metadata\MetadataImporter.cs" />
     <Compile Include="Metadata\MetadataObject.cs" />
     <Compile Include="Metadata\SecurableClassDefinition.cs" />

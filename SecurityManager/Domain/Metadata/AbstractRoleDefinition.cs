@@ -9,7 +9,7 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class AbstractRoleDefinition : EnumValueDefinitionWithIdentity
+  public class AbstractRoleDefinition : EnumValueDefinition
   {
     // types
 
@@ -39,10 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public AbstractRoleDefinition ()
-    {
-    }
-
     public AbstractRoleDefinition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
@@ -56,6 +52,5 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     // methods and properties
-
   }
 }

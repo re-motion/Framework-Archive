@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
-  public class MetadataObject : BaseSecurityServiceObject
+  public abstract class MetadataObject : BaseSecurityServiceObject
   {
     // types
 
@@ -36,10 +36,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public MetadataObject ()
-    {
-    }
-
     public MetadataObject (ClientTransaction clientTransaction) : base (clientTransaction)
     {
     }
@@ -51,5 +47,17 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     // methods and properties
+
+    public virtual Guid MetadataItemID
+    {
+      get { return (Guid) DataContainer["MetadataItemID"]; }
+      set { DataContainer["MetadataItemID"] = value; }
+    }
+
+    public string Name
+    {
+      get { return (string) DataContainer["Name"]; }
+      set { DataContainer["Name"] = value; }
+    }
   }
 }

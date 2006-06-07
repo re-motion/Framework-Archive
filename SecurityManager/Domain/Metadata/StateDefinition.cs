@@ -39,10 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public StateDefinition ()
-    {
-    }
-
     public StateDefinition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
@@ -63,5 +59,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       set { SetRelatedObject ("StateProperty", value); }
     }
 
+    public override Guid MetadataItemID
+    {
+      get { throw new NotSupportedException ("States do not support MetadataItemID"); }
+      set { throw new NotSupportedException ("States do not support MetadataItemID"); }
+    }
   }
 }

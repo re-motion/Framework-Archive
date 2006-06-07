@@ -39,10 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public StatePropertyReference ()
-    {
-    }
-
     public StatePropertyReference (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {

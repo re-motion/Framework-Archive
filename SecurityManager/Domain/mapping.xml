@@ -163,6 +163,10 @@
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityServiceDomain</storageProviderID>
       <properties>
+        <property name="MetadataItemID">
+          <type>guid</type>
+          <column>MetadataItemID</column>
+        </property>
         <property name="Name">
           <type>string</type>
           <column>Name</column>
@@ -171,18 +175,6 @@
         <property name="Value">
           <type>int64</type>
           <column>Value</column>
-        </property>
-      </properties>
-    </class>
-
-    <class id="EnumValueDefinitionWithIdentity" baseClass="EnumValueDefinition">
-      <type>Rubicon.SecurityManager.Domain.Metadata.EnumValueDefinitionWithIdentity, Rubicon.SecurityManager.Domain</type>
-      <entity name="EnumValueDefinition"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
-      <properties>
-        <property name="MetadataItemID">
-          <type>guid</type>
-          <column>MetadataItemID</column>
         </property>
       </properties>
     </class>
@@ -268,7 +260,7 @@
       </properties>
     </class>
 
-    <class id="AccessTypeDefinition" baseClass="EnumValueDefinitionWithIdentity">
+    <class id="AccessTypeDefinition" baseClass="EnumValueDefinition">
       <type>Rubicon.SecurityManager.Domain.Metadata.AccessTypeDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityServiceDomain</storageProviderID>
@@ -277,7 +269,7 @@
       </properties>
     </class>
 
-    <class id="AbstractRoleDefinition" baseClass="EnumValueDefinitionWithIdentity">
+    <class id="AbstractRoleDefinition" baseClass="EnumValueDefinition">
       <type>Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityServiceDomain</storageProviderID>

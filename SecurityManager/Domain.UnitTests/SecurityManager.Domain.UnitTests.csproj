@@ -54,6 +54,7 @@
     <Compile Include="Metadata\DomainObjectFilterTest.cs" />
     <Compile Include="Metadata\MetadataImporterTest.cs" />
     <Compile Include="Metadata\RpfAssert.cs" />
+    <Compile Include="Metadata\SecurableClassDefinitionTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -39,10 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public EnumValueDefinition ()
-    {
-    }
-
     public EnumValueDefinition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
@@ -56,12 +52,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     // methods and properties
-
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
 
     public long Value
     {

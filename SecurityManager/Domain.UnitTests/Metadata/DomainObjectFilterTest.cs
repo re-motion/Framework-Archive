@@ -12,8 +12,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
   public class DomainObjectFilterTest
   {
     private DomainObjectCollection _collection;
-    private EnumValueDefinitionWithIdentity _object1;
-    private EnumValueDefinitionWithIdentity _object2;
+    private EnumValueDefinition _object1;
+    private EnumValueDefinition _object2;
     private SecurableClassDefinition _securableClassDefinition;
 
     private DomainObjectFilter _filter;
@@ -23,15 +23,15 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     {
       _collection = new DomainObjectCollection ();
 
-      _object1 = new EnumValueDefinitionWithIdentity ();
+      _object1 = new EnumValueDefinition (ClientTransaction.Current);
       _object1.MetadataItemID = new Guid ("00000000-0000-0000-0001-000000000000");
       _object1.Name = "Class1";
 
-      _object2 = new EnumValueDefinitionWithIdentity ();
+      _object2 = new EnumValueDefinition (ClientTransaction.Current);
       _object2.MetadataItemID = new Guid ("00000000-0000-0000-0002-000000000000");
       _object2.Name = "Class2";
 
-      _securableClassDefinition = new SecurableClassDefinition ();
+      _securableClassDefinition = new SecurableClassDefinition (ClientTransaction.Current);
 
       _collection.Add (_object1);
       _collection.Add (_object2);
@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     [Test]
     public void FilterObjectsByType ()
     {
-      DomainObjectFilterCriteria filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinitionWithIdentity));
+      DomainObjectFilterCriteria filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinition));
       DomainObjectCollection result = _filter.GetObjects (filterCriteria);
 
       Assert.AreEqual (2, result.Count);
@@ -54,7 +54,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     [Test]
     public void FilterObjectsByProperty ()
     {
-      DomainObjectFilterCriteria filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinitionWithIdentity));
+      DomainObjectFilterCriteria filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinition));
       filterCriteria.ExpectPropertyValue ("MetadataItemID", new Guid ("00000000-0000-0000-0002-000000000000"));
       filterCriteria.ExpectPropertyValue ("Name", "Class2");
 
@@ -67,7 +67,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     [Test]
     public void FilterObjectsByPropertyWithNoResult ()
     {
-      DomainObjectFilterCriteria filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinitionWithIdentity));
+      DomainObjectFilterCriteria filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinition));
       filterCriteria.ExpectPropertyValue ("MetadataItemID", new Guid ("00000000-0000-0000-0002-000000000000"));
       filterCriteria.ExpectPropertyValue ("Name", "Clas1");
 
@@ -98,7 +98,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     [ExpectedException (typeof (ArgumentException), ExpectedMessage = "Multiple objects satisfy the filter criteria.\r\nParameter name: criteria")]
     public void GetExceptionWhenMultipleObjectsSatisfyFilterCriteriaForFilterDomainObject ()
     {
-      DomainObjectFilterCriteria filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinitionWithIdentity));
+      DomainObjectFilterCriteria filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinition));
       DomainObject result = _filter.GetObject (filterCriteria);
     }
   }

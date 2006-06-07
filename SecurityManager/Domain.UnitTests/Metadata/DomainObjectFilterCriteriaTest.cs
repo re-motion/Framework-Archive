@@ -4,7 +4,6 @@ using System.Text;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects;
-
 using Rubicon.SecurityManager.Domain.Metadata;
 
 namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
@@ -31,20 +30,20 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     [SetUp]
     public void SetUp ()
     {
-      _filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinitionWithIdentity));
+      _filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinition));
     }
 
     [Test]
     public void ObjectSatisfiesType ()
     {
-      EnumValueDefinitionWithIdentity enumValueDefinition = new EnumValueDefinitionWithIdentity ();
+      EnumValueDefinition enumValueDefinition = new EnumValueDefinition (ClientTransaction.Current);
       Assert.IsTrue (_filterCriteria.IsSatisfied (enumValueDefinition));
     }
 
     [Test]
     public void ObjectDoesNotSatisfyType ()
     {
-      SecurableClassDefinition securableClassDefinition = new SecurableClassDefinition ();
+      SecurableClassDefinition securableClassDefinition = new SecurableClassDefinition (ClientTransaction.Current);
       Assert.IsFalse (_filterCriteria.IsSatisfied (securableClassDefinition));
     }
 
@@ -53,7 +52,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     {
       _filterCriteria.ExpectPropertyValue ("MetadataItemID", new Guid ("00000000-0000-0000-0001-000000000000"));
 
-      EnumValueDefinitionWithIdentity enumValueDefinition = new EnumValueDefinitionWithIdentity ();
+      EnumValueDefinition enumValueDefinition = new EnumValueDefinition (ClientTransaction.Current);
       enumValueDefinition.MetadataItemID = new Guid ("00000000-0000-0000-0002-000000000000");
 
       Assert.IsFalse (_filterCriteria.IsSatisfied (enumValueDefinition));
@@ -62,7 +61,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     [Test]
     public void ObjectSatisfiesDerivedType ()
     {
-      AbstractRoleDefinition abstractRoleDefinition = new AbstractRoleDefinition ();
+      AbstractRoleDefinition abstractRoleDefinition = new AbstractRoleDefinition (ClientTransaction.Current);
       Assert.IsTrue (_filterCriteria.IsSatisfied (abstractRoleDefinition));
     }
   }

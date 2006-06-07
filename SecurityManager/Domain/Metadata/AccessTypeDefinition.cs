@@ -9,7 +9,7 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class AccessTypeDefinition : EnumValueDefinitionWithIdentity
+  public class AccessTypeDefinition : EnumValueDefinition
   {
     // types
 
@@ -39,10 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public AccessTypeDefinition ()
-    {
-    }
-
     public AccessTypeDefinition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
@@ -62,6 +58,5 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("References"); }
       set { } // marks property References as modifiable
     }
-
   }
 }

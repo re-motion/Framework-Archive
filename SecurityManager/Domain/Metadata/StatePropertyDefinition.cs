@@ -39,10 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public StatePropertyDefinition ()
-    {
-    }
-
     public StatePropertyDefinition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
@@ -57,18 +53,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // methods and properties
 
-    public Guid MetadataItemID
-    {
-      get { return (Guid) DataContainer["MetadataItemID"]; }
-      set { DataContainer["MetadataItemID"] = value; }
-    }
-
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
-
     public Rubicon.Data.DomainObjects.DomainObjectCollection References
     {
       get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("References"); }
@@ -80,6 +64,5 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("DefinedStates"); }
       set { } // marks property DefinedStates as modifiable
     }
-
   }
 }

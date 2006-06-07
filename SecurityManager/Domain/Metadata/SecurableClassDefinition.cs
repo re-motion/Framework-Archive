@@ -39,10 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public SecurableClassDefinition ()
-    {
-    }
-
     public SecurableClassDefinition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
@@ -57,41 +53,44 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // methods and properties
 
-    public Guid MetadataItemID
-    {
-      get { return (Guid) DataContainer["MetadataItemID"]; }
-      set { DataContainer["MetadataItemID"] = value; }
-    }
-
-    public string Name
-    {
-      get { return (string) DataContainer["Name"]; }
-      set { DataContainer["Name"] = value; }
-    }
-
     public SecurableClassDefinition BaseClass
     {
       get { return (SecurableClassDefinition) GetRelatedObject ("BaseClass"); }
       set { SetRelatedObject ("BaseClass", value); }
     }
 
-    public Rubicon.Data.DomainObjects.DomainObjectCollection DerivedClasses
+    public DomainObjectCollection DerivedClasses
     {
-      get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("DerivedClasses"); }
+      get { return (DomainObjectCollection) GetRelatedObjects ("DerivedClasses"); }
       set { } // marks property DerivedClasses as modifiable
     }
 
-    public Rubicon.Data.DomainObjects.DomainObjectCollection AccessTypeReferences
+    public DomainObjectCollection AccessTypeReferences
     {
-      get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("AccessTypeReferences"); }
+      get { return (DomainObjectCollection) GetRelatedObjects ("AccessTypeReferences"); }
       set { } // marks property AccessTypeReferences as modifiable
     }
 
-    public Rubicon.Data.DomainObjects.DomainObjectCollection StatePropertyReferences
+    public DomainObjectCollection StatePropertyReferences
     {
-      get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("StatePropertyReferences"); }
+      get { return (DomainObjectCollection) GetRelatedObjects ("StatePropertyReferences"); }
       set { } // marks property StatePropertyReferences as modifiable
     }
 
+    public void AddAccessType (AccessTypeDefinition accessType)
+    {
+      AccessTypeReference reference = new AccessTypeReference (this.ClientTransaction);
+      reference.AccessType = accessType;
+
+      AccessTypeReferences.Add (reference);
+    }
+
+    public void AddStateProperty (StatePropertyDefinition stateProperty)
+    {
+      StatePropertyReference reference = new StatePropertyReference (this.ClientTransaction);
+      reference.StateProperty = stateProperty;
+
+      StatePropertyReferences.Add (reference);
+    }
   }
 }

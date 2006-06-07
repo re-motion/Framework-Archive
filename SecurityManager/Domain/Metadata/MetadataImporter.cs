@@ -12,20 +12,49 @@ namespace Rubicon.SecurityManager.Domain.Metadata
   {
     private delegate T CreateItemDelegate<T> (XmlNamespaceManager namespaceManager, XmlNode itemNode) where T: MetadataObject;
 
-    private DomainObjectCollection _importedObjects;
     private ClientTransaction _clientTransaction;
+    private Dictionary<Guid, SecurableClassDefinition> _classes;
+    private Dictionary<Guid, StatePropertyDefinition> _stateProperties;
+    private Dictionary<Guid, AbstractRoleDefinition> _abstractRoles;
+    private Dictionary<Guid, AccessTypeDefinition> _accessTypes;
+
+    private Dictionary<Guid, Guid> _baseClassReferences;
+    private Dictionary<Guid, List<Guid>> _statePropertyReferences;
+    private Dictionary<Guid, List<Guid>> _accessTypeReferences;
 
     public MetadataImporter (ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       _clientTransaction = transaction;
-      _importedObjects = new DomainObjectCollection ();
+      _classes = new Dictionary<Guid, SecurableClassDefinition> ();
+      _stateProperties = new Dictionary<Guid, StatePropertyDefinition> ();
+      _abstractRoles = new Dictionary<Guid, AbstractRoleDefinition> ();
+      _accessTypes = new Dictionary<Guid, AccessTypeDefinition> ();
+
+      _baseClassReferences = new Dictionary<Guid, Guid> ();
+      _statePropertyReferences = new Dictionary<Guid, List<Guid>> ();
+      _accessTypeReferences = new Dictionary<Guid, List<Guid>> ();
     }
 
-    public DomainObjectCollection ImportedObjects
+    public Dictionary<Guid, SecurableClassDefinition> Classes
     {
-      get { return _importedObjects; }
+      get { return _classes; }
+    }
+
+    public Dictionary<Guid, StatePropertyDefinition> StateProperties
+    {
+      get { return _stateProperties; }
+    }
+
+    public Dictionary<Guid, AbstractRoleDefinition> AbstractRoles
+    {
+      get { return _abstractRoles; }
+    }
+
+    public Dictionary<Guid, AccessTypeDefinition> AccessTypes
+    {
+      get { return _accessTypes; }
     }
 
     public void Import (XmlDocument metadataXmlDocument)
@@ -34,31 +63,61 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       // TODO: namespace should be extracted to only one location!
       namespaceManager.AddNamespace ("md", "http://www.rubicon-it.com/Security/Metadata/1.0");
 
-      AddItem<SecurableClassDefinition> (metadataXmlDocument, "/md:securityMetadata/md:classes/md:class", namespaceManager, CreateSecurableClassDefinition);
-      AddItem<StatePropertyDefinition> (metadataXmlDocument, "/md:securityMetadata/md:stateProperties/md:stateProperty", namespaceManager, CreateStatePropertyDefinition);
-      AddItem<AbstractRoleDefinition> (metadataXmlDocument, "/md:securityMetadata/md:abstractRoles/md:abstractRole", namespaceManager, CreateAbstractRoleDefinition);
-      AddItem<AccessTypeDefinition> (metadataXmlDocument, "/md:securityMetadata/md:accessTypes/md:accessType", namespaceManager, CreateAccessTypeDefinition);
+      AddItem (_classes, metadataXmlDocument, "/md:securityMetadata/md:classes/md:class", namespaceManager, CreateSecurableClassDefinition);
+      AddItem (_stateProperties, metadataXmlDocument, "/md:securityMetadata/md:stateProperties/md:stateProperty", namespaceManager, CreateStatePropertyDefinition);
+      AddItem (_abstractRoles, metadataXmlDocument, "/md:securityMetadata/md:abstractRoles/md:abstractRole", namespaceManager, CreateAbstractRoleDefinition);
+      AddItem (_accessTypes, metadataXmlDocument, "/md:securityMetadata/md:accessTypes/md:accessType", namespaceManager, CreateAccessTypeDefinition);
+
+      LinkDerivedClasses ();
+      LinkStatePropertiesToClasses ();
+      LinkAccessTypesToClasses ();
     }
 
     private void AddItem<T> (
+        Dictionary<Guid, T> dictionary,
         XmlNode parentNode,
         string xpath,
         XmlNamespaceManager namespaceManager,
         CreateItemDelegate<T> createItemDelegate) where T : MetadataObject
     {
-      AddItem<T> (_importedObjects, parentNode, xpath, namespaceManager, createItemDelegate);
-    }
-
-    private void AddItem<T> (
-        DomainObjectCollection collection,
-        XmlNode parentNode, 
-        string xpath, 
-        XmlNamespaceManager namespaceManager, 
-        CreateItemDelegate<T> createItemDelegate) where T: MetadataObject
-    {
       XmlNodeList itemNodes = parentNode.SelectNodes (xpath, namespaceManager);
       foreach (XmlNode itemNode in itemNodes)
-        collection.Add (createItemDelegate (namespaceManager, itemNode));
+      {
+        T item = createItemDelegate (namespaceManager, itemNode);
+        dictionary.Add (item.MetadataItemID, item);
+      }
+    }
+
+    private void LinkDerivedClasses ()
+    {
+      foreach (Guid classID in _baseClassReferences.Keys)
+      {
+        SecurableClassDefinition securableClass = _classes[classID];
+        SecurableClassDefinition baseClass = _classes[_baseClassReferences[classID]];
+        securableClass.BaseClass = baseClass;
+      }
+    }
+
+    private void LinkStatePropertiesToClasses ()
+    {
+      foreach (Guid classID in _statePropertyReferences.Keys)
+      {
+        List<Guid> statePropertyReferences = _statePropertyReferences[classID];
+
+        foreach (Guid statePropertyID in statePropertyReferences)
+          _classes[classID].AddStateProperty (_stateProperties[statePropertyID]);
+      }
+    }
+
+    private void LinkAccessTypesToClasses ()
+    {
+      foreach (Guid classID in _accessTypeReferences.Keys)
+      {
+        List<Guid> accessTypeReferences = _accessTypeReferences[classID];
+
+        foreach (Guid accessTypeID in accessTypeReferences)
+          _classes[classID].AddAccessType (_accessTypes[accessTypeID]);
+      }
     }
 
     private SecurableClassDefinition CreateSecurableClassDefinition (XmlNamespaceManager namespaceManager, XmlNode securableClassDefinitionNode)
@@ -66,8 +125,32 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       SecurableClassDefinition securableClassDefinition = new SecurableClassDefinition (_clientTransaction);
       securableClassDefinition.Name = securableClassDefinitionNode.Attributes["name"].Value;
       securableClassDefinition.MetadataItemID = new Guid (securableClassDefinitionNode.Attributes["id"].Value);
+      if (securableClassDefinitionNode.Attributes["base"] != null)
+      {
+        Guid baseClassID = new Guid (securableClassDefinitionNode.Attributes["base"].Value);
+        _baseClassReferences.Add (securableClassDefinition.MetadataItemID, baseClassID);
+      }
+
+      CreateReferences (securableClassDefinition, securableClassDefinitionNode, namespaceManager, "md:stateProperties/md:statePropertyRef", _statePropertyReferences);
+      CreateReferences (securableClassDefinition, securableClassDefinitionNode, namespaceManager, "md:accessTypes/md:accessTypeRef", _accessTypeReferences);
 
       return securableClassDefinition;
+    }
+
+    private void CreateReferences (
+        SecurableClassDefinition securableClassDefinition, 
+        XmlNode securableClassDefinitionNode,
+        XmlNamespaceManager namespaceManager,
+        string xpath,
+        Dictionary<Guid, List<Guid>> referenceRegistry)
+    {
+      List<Guid> references = new List<Guid> ();
+      XmlNodeList referenceNodes = securableClassDefinitionNode.SelectNodes (xpath, namespaceManager);
+
+      foreach (XmlNode referenceNode in referenceNodes)
+        references.Add (new Guid (referenceNode.InnerText));
+
+      referenceRegistry.Add (securableClassDefinition.MetadataItemID, references);
     }
 
     private AbstractRoleDefinition CreateAbstractRoleDefinition (XmlNamespaceManager namespaceManager, XmlNode abstractRoleDefinitionNode)
@@ -96,7 +179,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       statePropertyDefinition.Name = statePropertyDefinitionNode.Attributes["name"].Value;
       statePropertyDefinition.MetadataItemID = new Guid (statePropertyDefinitionNode.Attributes["id"].Value);
 
-      AddItem<StateDefinition> (statePropertyDefinition.DefinedStates, statePropertyDefinitionNode, "md:state", namespaceManager, CreateStateDefinition);
+      XmlNodeList stateNodes = statePropertyDefinitionNode.SelectNodes ("md:state", namespaceManager);
+      foreach (XmlNode stateNode in stateNodes)
+        statePropertyDefinition.DefinedStates.Add (CreateStateDefinition (namespaceManager, stateNode));
 
       return statePropertyDefinition;
     }
