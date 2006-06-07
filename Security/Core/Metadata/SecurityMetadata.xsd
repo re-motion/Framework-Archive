@@ -16,14 +16,6 @@
               <xs:element name="class" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="derivedClasses">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="classRef" type="xs:string" maxOccurs="unbounded" />
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
-
                     <xs:element name="stateProperties">
                       <xs:complexType>
                         <xs:sequence>

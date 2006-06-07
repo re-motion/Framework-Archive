@@ -141,16 +141,10 @@ namespace Rubicon.Security.Metadata
         classElement.Attributes.Append (baseClassAttribute);
       }
 
-      AppendCollection (document, classElement, "derivedClasses", classInfo.DerivedClasses, CreateDerivedClassRefElement);
       AppendCollection (document, classElement, "stateProperties", classInfo.Properties, CreateStatePropertyRefElement);
       AppendCollection (document, classElement, "accessTypes", classInfo.AccessTypes, CreateAccessTypeRefElement);
 
       return classElement;
-    }
-
-    private XmlElement CreateDerivedClassRefElement (XmlDocument document, SecurableClassInfo derivedClassInfo)
-    {
-      return CreateRefElement (document, "classRef", derivedClassInfo.ID);
     }
 
     private XmlElement CreateStatePropertyRefElement (XmlDocument document, StatePropertyInfo propertyInfo)

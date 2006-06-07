@@ -59,10 +59,6 @@ namespace Rubicon.Security.UnitTests.Metadata
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
-                <derivedClasses>
-                  <classRef>00000000-0000-0000-0002-000000000000</classRef>
-                </derivedClasses>
-
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                 </stateProperties>
@@ -145,10 +141,6 @@ namespace Rubicon.Security.UnitTests.Metadata
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
-                <derivedClasses>
-                  <classRef>00000000-0000-0000-0002-000000000000</classRef>
-                </derivedClasses>
-
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                 </stateProperties>

@@ -181,15 +181,8 @@ namespace Rubicon.Security.UnitTests.Metadata
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"">
-                <derivedClasses>
-                  <classRef>00000000-0000-0000-0002-000000000000</classRef>
-                  <classRef>118a9d5e-4f89-40af-ade5-e4613e4638d5</classRef>
-                </derivedClasses>
-              </class>
-
+              <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"" />
               <class id=""00000000-0000-0000-0002-000000000000"" name=""PaperFile"" base=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" />
-
               <class id=""118a9d5e-4f89-40af-ade5-e4613e4638d5"" name=""InputFile"" base=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" />
             </classes>
           </securityMetadata>";
@@ -442,10 +435,6 @@ namespace Rubicon.Security.UnitTests.Metadata
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"">
-                <derivedClasses>
-                  <classRef>ac101f66-6d1f-4002-b32b-f951db36582c</classRef>
-                </derivedClasses>
-
                 <stateProperties>
                   <statePropertyRef>d81b1521-ea06-4338-af6f-ff8510394efd</statePropertyRef>
                 </stateProperties>
