@@ -69,9 +69,9 @@
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Rubicon.Data.DomainObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Service.Domain\Security.Service.Domain.csproj">
+    <ProjectReference Include="..\Service.Domain\SecurityManager.Domain.csproj">
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
-      <Name>Security.Service.Domain</Name>
+      <Name>SecurityManager.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
