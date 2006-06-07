@@ -323,6 +323,7 @@
     <Compile Include="Utilities\WorkContext.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Xml\SchemaBase.cs" />
     <Compile Include="Xml\XmlSchemaValidationHandler.cs">
       <SubType>Code</SubType>
     </Compile>
