@@ -9,7 +9,6 @@ using NMock2;
 using Rubicon.Data.DomainObjects.ObjectBinding.PropertyTypes;
 using Rubicon.NullableValueTypes;
 using Rubicon.Security;
-using Rubicon.Security.Configuration;
 
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
 
@@ -30,7 +29,7 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       _mockObjectSecurityProvider = _mocks.NewMock<IObjectSecurityProvider> ();
 
       SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (_mockObjectSecurityProvider);
-      _securableSearchObject = new SecurableSearchObject (_mocks.NewMock<ISecurityContextFactory> ());
+      _securableSearchObject = new SecurableSearchObject (_mocks.NewMock<IObjectSecurityStrategy> ());
 
       Type domainObjectType = typeof (SecurableSearchObject);
       PropertyInfo stringPropertyInfo = domainObjectType.GetProperty ("StringProperty");

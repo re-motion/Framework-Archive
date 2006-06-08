@@ -13,9 +13,9 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain
     private string _stringProperty;
     private IObjectSecurityStrategy _securityStrategy;
 
-    public SecurableSearchObject (ISecurityContextFactory securityContextFactory)
+    public SecurableSearchObject (IObjectSecurityStrategy securityStrategy)
     {
-      _securityStrategy = new ObjectSecurityStrategy (securityContextFactory);
+      _securityStrategy = securityStrategy;
     }
 
     public string StringProperty

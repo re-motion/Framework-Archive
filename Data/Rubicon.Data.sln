@@ -32,10 +32,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D6EE53F7-7F63-46D0-9057-0FA0001EF46A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "..\Security\Core\Security.csproj", "{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Web", "..\Security\Web\Security.Web.csproj", "{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests", "DomainObjects.CodeGenerator.UnitTests\Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.csproj", "{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}"
 EndProject
 Global
@@ -102,14 +98,6 @@ Global
 		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86C6C68B-3AF4-4ADE-95FD-29D404F114FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02C4509B-5FCA-44ED-8F03-A8F2DD1F84DF}.Release|Any CPU.ActiveCfg = Release|Any CPU

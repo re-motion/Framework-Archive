@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--EXTERNAL_PROPERTIES: build.outputdir;project.doc;build.debug;build.csc.define;project.output;project.extension-->
+<!--EXTERNAL_PROPERTIES: build.test.outputdir;build.csc.define;build.debug;project.output;project.extension-->
 <project xmlns="nant-schema" name="Rubicon.Security.UnitTests.TestDomain">  
 
   <target name="build" description="perform a build">
 
     <csc  target="library" 
-          output="${build.outputdir}/${project.output}.${project.extension}" 
-          doc="${project.doc}" 
+          output="${build.test.outputdir}/${project.output}.${project.extension}" 
+          unsafe="true" 
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
@@ -18,8 +18,8 @@
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
-        <include name="${build.outputdir}/Rubicon.Core.dll" />
-        <include name="${build.outputdir}/Rubicon.Security.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Core.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Security.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
