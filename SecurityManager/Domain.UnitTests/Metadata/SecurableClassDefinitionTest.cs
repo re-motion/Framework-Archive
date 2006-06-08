@@ -9,14 +9,15 @@ using Rubicon.Data.DomainObjects;
 namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
 {
   [TestFixture]
-  public class SecurableClassDefinitionTest
+  public class SecurableClassDefinitionTest : DomainTest
   {
     private ClientTransaction _transaction;
     private SecurableClassDefinition _classDefinition;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _transaction = new ClientTransaction ();
       _classDefinition = new SecurableClassDefinition (_transaction);
     }

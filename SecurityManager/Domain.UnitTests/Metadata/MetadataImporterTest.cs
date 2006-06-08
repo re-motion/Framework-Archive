@@ -11,14 +11,15 @@ using Rubicon.SecurityManager.Domain.Metadata;
 namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
 {
   [TestFixture]
-  public class MetadataImporterTest
+  public class MetadataImporterTest : DomainTest
   {
     private ClientTransaction _transaction;
     private MetadataImporter _importer;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _transaction = new ClientTransaction ();
       _importer = new MetadataImporter (_transaction);
     }

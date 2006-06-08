@@ -39,7 +39,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -55,7 +54,9 @@
     <Compile Include="Metadata\MetadataImporterTest.cs" />
     <Compile Include="Metadata\RpfAssert.cs" />
     <Compile Include="Metadata\SecurableClassDefinitionTest.cs" />
+    <Compile Include="DomainTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="SecurityManager.Domain.UnitTests.build" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
@@ -77,8 +78,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <MappingFiles Include="..\Domain\mapping.xml" />
-    <MappingFiles Include="..\Domain\storageProviders.xml" />
+    <MappingFiles Include="..\Domain\SecurityManagerMapping.xml" />
+    <MappingFiles Include="..\Domain\SecurityManagerStorageProviders.xml" />
+    <MappingFiles Include="..\Domain\mapping.xsd" />
+    <MappingFiles Include="..\Domain\storageProviders.xsd" />
+    <MappingFiles Include="..\Domain\types.xsd" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

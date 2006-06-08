@@ -23,13 +23,14 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       //    .ExpectPropertyValue ("Name", "blabla").In (importedObjects);
 
   [TestFixture]
-  public class DomainObjectFilterCriteriaTest
+  public class DomainObjectFilterCriteriaTest : DomainTest
   {
     private DomainObjectFilterCriteria _filterCriteria;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _filterCriteria = new DomainObjectFilterCriteria (typeof (EnumValueDefinition));
     }
 

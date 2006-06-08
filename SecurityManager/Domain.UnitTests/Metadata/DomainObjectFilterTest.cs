@@ -9,7 +9,7 @@ using Rubicon.SecurityManager.Domain.Metadata;
 namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
 {
   [TestFixture]
-  public class DomainObjectFilterTest
+  public class DomainObjectFilterTest : DomainTest
   {
     private DomainObjectCollection _collection;
     private EnumValueDefinition _object1;
@@ -18,9 +18,10 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
 
     private DomainObjectFilter _filter;
 
-    [SetUp]
-    public void SetUp ()
+    public override void SetUp ()
     {
+      base.SetUp ();
+
       _collection = new DomainObjectCollection ();
 
       _object1 = new EnumValueDefinition (ClientTransaction.Current);
