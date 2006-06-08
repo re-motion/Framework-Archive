@@ -262,6 +262,16 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     }
 
     [Test]
+    public void GetConstraint ()
+    {
+      IRelationEndPointDefinition anonymousEndPointDefinition = _customerClass.GetOppositeEndPointDefinition ("PrimaryOfficial");
+
+      Assert.IsTrue (anonymousEndPointDefinition.IsNull);
+      Assert.IsEmpty (_sqlFileBuilder.GetConstraint (anonymousEndPointDefinition));
+    }
+
+
+    [Test]
     public void GetDropTableScriptWithSingleClass ()
     {
       SqlFileBuilder sqlFileBuilder = new SqlFileBuilder (MappingConfiguration, StorageProviderConfiguration, "SecondStorageProvider");

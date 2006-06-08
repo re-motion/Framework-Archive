@@ -161,6 +161,9 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     {
       ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
 
+      if (relationEndPoint.IsNull)
+        return string.Empty;
+
       ClassDefinition oppositeClassDefinition = relationEndPoint.ClassDefinition.GetMandatoryOppositeClassDefinition (relationEndPoint.PropertyName);
 
       if (!HasConstraint (relationEndPoint, oppositeClassDefinition))
