@@ -51,6 +51,7 @@
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
+    <Compile Include="MockObjectCreator.cs" />
     <Compile Include="SecurityClientTestWithHasConstructorAccess.cs" />
     <Compile Include="SecurityClientTestWithHasMethodAccess.cs" />
     <Compile Include="FunctionalSecurityStrategyTest.cs" />
@@ -128,6 +129,9 @@
       <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
       <Name>Security.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SecurityClient\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
