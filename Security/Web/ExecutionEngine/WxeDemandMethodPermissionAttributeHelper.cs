@@ -16,11 +16,11 @@ namespace Rubicon.Security.Web.ExecutionEngine
     // member fields
 
     private Type _functionType;
-    private WxeDemandMethodPermissionAttribute _attribute;
+    private WxeDemandTargetPermissionAttribute _attribute;
 
     // construction and disposing
 
-    public WxeDemandMethodPermissionAttributeHelper (Type functionType, WxeDemandMethodPermissionAttribute attribute)
+    public WxeDemandMethodPermissionAttributeHelper (Type functionType, WxeDemandTargetPermissionAttribute attribute)
     {
       ArgumentUtility.CheckNotNull ("functionType", functionType);
       ArgumentUtility.CheckNotNull ("attribute", attribute);
@@ -71,9 +71,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration (parameterDeclarations);
       if (!typeof (ISecurableObject).IsAssignableFrom (parameterDeclaration.Type))
       {
-        throw new WxeException (string.Format ("The parameter '{0}' specified by the WxeDemandMethodPermissionAttribute applied to WxeFunction '{1}'"
-                + " does not implement interface '{2}'.",
-            parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
+        throw new WxeException (string.Format (
+            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' does not implement interface '{3}'.",
+            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
       }
 
       return parameterDeclaration.Type;
@@ -87,9 +87,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
       ISecurableObject securableObject = function.Variables[parameterDeclaration.Name] as ISecurableObject;
       if (securableObject == null)
       {
-        throw new WxeException (string.Format ("The parameter '{0}' specified by the WxeDemandMethodPermissionAttribute applied to WxeFunction '{1}'"
-                + " is null or does not implement interface '{2}'.",
-            parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
+        throw new WxeException (string.Format (
+            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is null or does not implement interface '{3}'.",
+            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
       }
 
       return securableObject;
@@ -100,8 +100,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
       if (parameterDeclarations.Length == 0)
       {
         throw new WxeException (string.Format (
-            "WxeFunction '{0}' has a WxeDemandMethodPermissionAttribute applied, but does not define any parameters to supply the 'this-object'.",
-            _functionType.FullName));
+            "WxeFunction '{1}' has a {0} applied, but does not define any parameters to supply the 'this-object'.",
+            _attribute.GetType ().Name, _functionType.FullName));
       }
 
       if (StringUtility.IsNullOrEmpty (_attribute.ParameterName))
@@ -117,9 +117,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
         }
       }
 
-      throw new WxeException (string.Format ("The parameter '{0}' specified by the WxeDemandMethodPermissionAttribute applied to WxeFunction '{1}'"
-              + " is not a valid parameter of this function.",
-          _attribute.ParameterName, _functionType.FullName));
+      throw new WxeException (string.Format (
+          "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is not a valid parameter of this function.",
+          _attribute.GetType ().Name, _attribute.ParameterName, _functionType.FullName));
     }
 
     private void CheckMethodNameNotNullOrEmpty (Type functionType, string methodName)
@@ -127,8 +127,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
       if (StringUtility.IsNullOrEmpty (methodName))
       {
         throw new WxeException (string.Format (
-            "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify the method to get the required permissions from.",
-            functionType.FullName));
+            "The {0} applied to WxeFunction '{1}' does not specify the method to get the required permissions from.",
+            _attribute.GetType ().Name, functionType.FullName));
       }
     }
 
@@ -137,8 +137,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
       if (securableClass == null)
       {
         throw new WxeException (string.Format (
-            "The WxeDemandMethodPermissionAttribute applied to WxeFunction '{0}' does not specify a type implementing interface '{1}'.",
-            functionType.FullName, typeof (ISecurableObject).FullName));
+            "The {0} applied to WxeFunction '{1}' does not specify a type implementing interface '{2}'.",
+            _attribute.GetType ().Name, functionType.FullName, typeof (ISecurableObject).FullName));
       }
     }
   }

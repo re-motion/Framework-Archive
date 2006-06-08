@@ -10,7 +10,7 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
-  [WxeDemandMethodPermission (MethodType.Constructor, SecurableClass=typeof (SecurableObject))]
+  [WxeDemandCreatePermission (typeof (SecurableObject))]
   public class TestFunctionWithPermissionsFromConstructor : WxeFunction
   {
     // types

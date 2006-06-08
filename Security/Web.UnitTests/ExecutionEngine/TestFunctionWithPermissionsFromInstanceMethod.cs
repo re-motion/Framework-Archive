@@ -10,7 +10,7 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
-  [WxeDemandMethodPermission (MethodType.Instance, ParameterName="ThisObject", MethodName="Show")]
+  [WxeDemandTargetMethodPermission ("Show")]
   public class TestFunctionWithPermissionsFromInstanceMethod : WxeFunction
   {
     // types

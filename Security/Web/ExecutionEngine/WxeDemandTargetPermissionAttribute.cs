@@ -13,8 +13,13 @@ namespace Rubicon.Security.Web.ExecutionEngine
     Constructor
   }
 
+  //// dirty - optional, irgendwann, vielleicht doch -> nie
+  //[WxeDemandObjectPermission (AccessTypes.Edit)] // default: 1st parameter
+  //[WxeDemandObjectPermission (AccessTypes.Edit, ParameterName = "obj")]
+  //[WxeDemandClassPermission (AccessTypes.Search, typeof (Akt))]
+
   [AttributeUsage (AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-  public class WxeDemandMethodPermissionAttribute : Attribute
+  public abstract class WxeDemandTargetPermissionAttribute : Attribute
   {
     // types
 
@@ -29,7 +34,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     // construction and disposing
 
-    public WxeDemandMethodPermissionAttribute (MethodType type)
+    public WxeDemandTargetPermissionAttribute (MethodType type)
     {
       _methodType = type;
     }
@@ -39,7 +44,6 @@ namespace Rubicon.Security.Web.ExecutionEngine
     public MethodType MethodType
     {
       get { return _methodType; }
-      set { _methodType = value; }
     }
 
     public Type SecurableClass
@@ -48,7 +52,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
       {
         return _securableClass;
       }
-      set
+      protected set
       {
         ArgumentUtility.CheckTypeIsAssignableFrom ("SecurableClass", value, typeof (ISecurableObject));
         _securableClass = value;
@@ -58,13 +62,13 @@ namespace Rubicon.Security.Web.ExecutionEngine
     public string ParameterName
     {
       get { return _parameterName; }
-      set { _parameterName = value; }
+      protected set { _parameterName = value; }
     }
 
     public string MethodName
     {
       get { return _methodName; }
-      set { _methodName = value; }
+      protected set { _methodName = value; }
     }
   }
 }

@@ -29,7 +29,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull ("function", function);
 
-      WxeDemandMethodPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
+      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
       if (attribute == null)
         return;
 
@@ -58,7 +58,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNull ("function", function);
 
-      WxeDemandMethodPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
+      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (function.GetType ());
       if (attribute == null)
         return true;
 
@@ -84,7 +84,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("functionType", functionType, typeof (WxeFunction));
 
-      WxeDemandMethodPermissionAttribute attribute = GetPermissionAttribute (functionType);
+      WxeDemandTargetPermissionAttribute attribute = GetPermissionAttribute (functionType);
       if (attribute == null)
         return true;
 
@@ -106,9 +106,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
       }
     }
 
-    private WxeDemandMethodPermissionAttribute GetPermissionAttribute (Type functionType)
+    private WxeDemandTargetPermissionAttribute GetPermissionAttribute (Type functionType)
     {
-      return (WxeDemandMethodPermissionAttribute) Attribute.GetCustomAttribute (functionType, typeof (WxeDemandMethodPermissionAttribute), true);
+      return (WxeDemandTargetPermissionAttribute) Attribute.GetCustomAttribute (functionType, typeof (WxeDemandTargetPermissionAttribute), true);
     }
   }
 }

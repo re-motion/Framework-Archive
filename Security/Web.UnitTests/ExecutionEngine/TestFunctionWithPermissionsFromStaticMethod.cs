@@ -10,7 +10,7 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
-  [WxeDemandMethodPermission (MethodType.Static, SecurableClass=typeof (SecurableObject), MethodName="Search")]
+  [WxeDemandTargetStaticMethodPermission ("Search", typeof (SecurableObject))]
   public class TestFunctionWithPermissionsFromStaticMethod : WxeFunction
   {
     // types
