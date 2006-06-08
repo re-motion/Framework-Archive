@@ -6,7 +6,7 @@ DECLARE @statement nvarchar (4000)
 SET @statement = ''
 SELECT @statement = @statement + 'ALTER TABLE [' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' 
     FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id 
-    WHERE fk.xtype = 'F' AND t.name IN ('Customer', 'DevelopmentPartner', 'Order', 'OrderItem', 'Ceo', 'TableWithAllDataTypes')
+    WHERE fk.xtype = 'F' AND t.name IN ('Customer', 'DevelopmentPartner', 'Order', 'OrderItem', 'Ceo', 'TableWithAllDataTypes', 'Employee')
     ORDER BY t.name, fk.name
 exec sp_executesql @statement
 GO
@@ -29,6 +29,9 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Ceo')
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithAllDataTypes')
   DROP TABLE [TableWithAllDataTypes]
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Employee')
+  DROP TABLE [Employee]
 GO
 
 -- Create all tables
@@ -160,6 +163,19 @@ CREATE TABLE [TableWithAllDataTypes]
 
   CONSTRAINT [PK_TableWithAllDataTypes] PRIMARY KEY CLUSTERED ([ID])
 )
+
+CREATE TABLE [Employee]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- Employee columns
+  [Name] nvarchar (100) NOT NULL,
+  [SupervisorID] uniqueidentifier NULL,
+
+  CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED ([ID])
+)
 GO
 
 -- Create constraints for tables that were created above
@@ -168,4 +184,7 @@ ALTER TABLE [Order] ADD
 
 ALTER TABLE [OrderItem] ADD
   CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [Order] ([ID])
+
+ALTER TABLE [Employee] ADD
+  CONSTRAINT [FK_EmployeeToEmployee] FOREIGN KEY ([SupervisorID]) REFERENCES [Employee] ([ID])
 GO

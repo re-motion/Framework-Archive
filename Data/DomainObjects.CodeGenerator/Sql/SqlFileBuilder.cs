@@ -114,8 +114,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 
     public string GetDatabaseName ()
     {
-      RdbmsProviderDefinition provider = (RdbmsProviderDefinition) _storageProviderConfiguration.StorageProviderDefinitions[_storageProviderID];
-      return GetDatabasenameFromConnectionString (provider.ConnectionString);
+      RdbmsProviderDefinition providerDefinition = 
+          _storageProviderConfiguration.StorageProviderDefinitions[_storageProviderID] as RdbmsProviderDefinition;
+
+      if (providerDefinition == null)
+        return null;
+
+      return GetDatabasenameFromConnectionString (providerDefinition.ConnectionString);
     }
 
     public string GetAddConstraintScript ()

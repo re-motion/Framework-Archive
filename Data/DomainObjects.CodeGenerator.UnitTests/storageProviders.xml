@@ -17,5 +17,9 @@
       <connectionString xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms">Integrated Security=SSPI;Initial Catalog=CodeGeneratorUnitTests2;Data Source=localhost</connectionString>
     </configuration>
   </storageProvider>
+  <storageProvider id="NonRdbmsStorageProvider">
+    <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.NonRdbmsStorageProvider, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+    <configuration type="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.NonRdbmsStorageProviderDefinition, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests" />
+  </storageProvider>
 
 </storageProviders>

@@ -44,6 +44,7 @@
     <Compile Include="IntegrationTests\DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\EnumBuilderTest.cs" />
     <Compile Include="MappingBaseTest.cs" />
+    <Compile Include="NonRdbmsStorageProvider.cs" />
     <Compile Include="Sql\CreateTableBuilderTest.cs" />
     <Compile Include="Sql\SqlFileBuilderTest.cs" />
     <None Include="TestDomain\ClassWithAllDataTypes.cs" />
@@ -56,6 +57,7 @@
     <None Include="TestDomain\Customer.cs" />
     <None Include="TestDomain\OrderPriority.cs" />
     <Compile Include="TypeNameTest.cs" />
+    <Compile Include="NonRdbmsStorageProviderDefinition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

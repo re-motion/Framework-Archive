@@ -57,13 +57,14 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
       ClassDefinitionCollection tableRootClasses = _sqlFileBuilder.TableRootClasses;
 
       Assert.IsNotNull (tableRootClasses);
-      Assert.AreEqual (6, tableRootClasses.Count);
+      Assert.AreEqual (7, tableRootClasses.Count);
       Assert.IsTrue (tableRootClasses.Contains (_ceoClass));
       Assert.IsTrue (tableRootClasses.Contains (_customerClass));
       Assert.IsTrue (tableRootClasses.Contains (MappingConfiguration.ClassDefinitions.GetMandatory ("DevelopmentPartner")));
       Assert.IsTrue (tableRootClasses.Contains (_orderClass));
       Assert.IsTrue (tableRootClasses.Contains (_orderItemClass));
       Assert.IsTrue (tableRootClasses.Contains (MappingConfiguration.ClassDefinitions.GetMandatory ("ClassWithAllDataTypes")));
+      Assert.IsTrue (tableRootClasses.Contains (MappingConfiguration.ClassDefinitions.GetMandatory ("Employee")));
     }
 
     [Test]
@@ -132,6 +133,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
     public void GetDatabaseName ()
     {
       Assert.AreEqual ("CodeGeneratorUnitTests1", _sqlFileBuilder.GetDatabaseName ());
+    }
+
+    [Test]
+    public void GetDatabaseNameWithNonRdmbsProvider ()
+    {
+      SqlFileBuilder sqlFileBuilder = new SqlFileBuilder (MappingConfiguration, StorageProviderConfiguration, "NonRdbmsStorageProvider");
+      Assert.IsNull (sqlFileBuilder.GetDatabaseName ());
     }
 
     [Test]
@@ -256,7 +264,9 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
       string expectedScript = "ALTER TABLE [Order] ADD\n"
           + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [Customer] ([ID])\n\n"
           + "ALTER TABLE [OrderItem] ADD\n"
-          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [Order] ([ID])\n";
+          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [Order] ([ID])\n\n"
+          +"ALTER TABLE [Employee] ADD\n"
+          + "  CONSTRAINT [FK_EmployeeToEmployee] FOREIGN KEY ([SupervisorID]) REFERENCES [Employee] ([ID])\n";
 
       Assert.AreEqual (expectedScript, actualScript);
     }
@@ -299,7 +309,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
           + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Ceo')\n"
           + "  DROP TABLE [Ceo]\n\n"
           + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'TableWithAllDataTypes')\n"
-          + "  DROP TABLE [TableWithAllDataTypes]\n";
+          + "  DROP TABLE [TableWithAllDataTypes]\n\n"
+          + "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Employee')\n"
+          + "  DROP TABLE [Employee]\n";
+      ;
 
       Assert.AreEqual (expectedScript, actualScript);
     }

@@ -63,7 +63,6 @@
           <maxLength>255</maxLength>
         </property>
       </properties>
-
     </class>
     
     <class id="Order">
@@ -334,6 +333,24 @@
           <nullable>true</nullable>
           <maxLength>1000000</maxLength>
         </property>
+      </properties>
+    </class>
+
+    <class id="Employee">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Employee, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <entity name="Employee"/>
+      <storageProviderID>FirstStorageProvider</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+
+        <relationProperty relationID="EmployeeToEmployee" name="Supervisor" cardinality="one" isMandatory="false">
+          <column>SupervisorID</column>
+        </relationProperty>
+        <relationProperty relationID="EmployeeToEmployee" name="Subordinates" cardinality="many" isMandatory="false"/>
       </properties>
     </class>
   </classes>
