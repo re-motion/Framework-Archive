@@ -11,9 +11,9 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
-[assembly: AssemblyCopyright("(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyProduct ("Rubicon Security Manager")]
+[assembly: AssemblyCopyright ("(c) 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
 //

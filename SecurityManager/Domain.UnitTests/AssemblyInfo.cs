@@ -10,9 +10,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle ("Rubicon Security Manager Domain Layer Unittests")]
 [assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
-[assembly: AssemblyProduct("Rubicon .NET Commons")]
-[assembly: AssemblyCopyright("(c) 2003 - 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyProduct ("Rubicon Security Manager")]
+[assembly: AssemblyCopyright ("(c) 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
 //
@@ -26,7 +26,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.0.202")]
+[assembly: AssemblyVersion("1.7.3.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 

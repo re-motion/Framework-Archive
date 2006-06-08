@@ -10,9 +10,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle ("Rubicon Security Manager Domain Layer Unittests")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
-[assembly: AssemblyProduct("@productname@")]
-[assembly: AssemblyCopyright("@copyright@")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyProduct ("Rubicon Security Manager")]
+[assembly: AssemblyCopyright ("(c) 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
 //

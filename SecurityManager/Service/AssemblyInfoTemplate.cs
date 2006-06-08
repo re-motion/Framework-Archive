@@ -11,9 +11,9 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
-[assembly: AssemblyProduct("@productname@")]
-[assembly: AssemblyCopyright("@copyright@")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyProduct ("Rubicon Security Manager")]
+[assembly: AssemblyCopyright ("(c) 2006 rubicon informationstechnologie gmbh, www.rubicon-it.com")]
+[assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture("")]		
 [assembly: CLSCompliant(true)]
 //

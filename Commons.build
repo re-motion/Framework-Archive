@@ -147,13 +147,15 @@
 
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, 
       Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Web,
-      Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web">
+      Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web,
+      SecurityManager.Domain">
     <echo message="Target has executed."/>
   </target>
 
   <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, 
       Data.DomainObjects.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
-      Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests">
+      Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests,
+      SecurityManager.Domain.UnitTests">
     <echo message="Target has executed."/>
   </target>
 
@@ -318,6 +320,14 @@
     <call target="execute-buildstep" />
   </target>
 
+  <target name="SecurityManager.Domain" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+    <property name="project.name" value="SecurityManager.Domain" />
+    <property name="project.dir" value="SecurityManager/Domain" />
+    <property name="project.output" value="Rubicon.SecurityManager.Domain" />
+    <property name="project.extension" value="dll" />
+    <call target="execute-buildstep" />
+  </target>
+
   <!--======================= UNIT TESTS =======================-->
 
   <target name="CoreTest">
@@ -422,14 +432,8 @@
         <arg line="-S ${sql.instance}" />
         <arg value="-E" />
         <arg value="-n" />
-        <arg line="-i ${project.basedir}\Database\setupDB.sql" />
+        <arg line="-i ${project.basedir}\Database\SetupDB.sql" />
       </exec>
-      <copy todir="${build.test.outputdir}" overwrite="true" flatten="true">
-        <fileset >
-          <include name="${project.dir}/Database/*.sql" />
-          <include name="${project.dir}/*.xml" />
-        </fileset>
-      </copy>
 
       <echo message="Running unit tests..." />
       <nunit2>
@@ -464,14 +468,8 @@
         <arg line="-S ${sql.instance}" />
         <arg value="-E" />
         <arg value="-n" />
-        <arg line="-i ${project.basedir}\Database\setupDB.sql" />
+        <arg line="-i ${project.basedir}\Database\SetupDB.sql" />
       </exec>
-      <copy todir="${build.test.outputdir}" overwrite="true" flatten="true">
-        <fileset >
-          <include name="${project.dir}/Database/*.sql" />
-          <include name="${project.dir}/*.xml" />
-        </fileset>
-      </copy>
 
       <echo message="Running unit tests..." />
       <nunit2>
@@ -518,6 +516,41 @@
     <call target="buildtest" />
 
     <if test="${build.step.run-tests}">
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+    </if>
+  </target>
+
+  <target name="SecurityManager.Domain.UnitTests">
+    <call target="Core" cascade="false"/>
+    <call target="Data.DomainObjects" cascade="false"/>
+    <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
+    <call target="SecurityManager.Domain" cascade="false"/>
+
+    <property name="project.name" value="SecurityManager.Domain.UnitTests" />
+    <property name="project.dir" value="SecurityManager/Domain.UnitTests" />
+    <property name="project.output" value="Rubicon.SecurityManager.Domain.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+
+    <if test="${build.step.run-tests}">
+      <!--
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${build.test.outputdir}\CreateDB.sql" />
+      </exec>
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${build.test.outputdir}\SetupDB.sql" />
+      </exec>
+      -->
       <echo message="Running unit tests..." />
       <nunit2>
         <formatter type="Plain" />

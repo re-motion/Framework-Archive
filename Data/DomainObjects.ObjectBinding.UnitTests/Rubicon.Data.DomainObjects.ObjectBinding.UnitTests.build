@@ -26,8 +26,9 @@
         <include asis="true" name="System.Xml.dll"/>
       </references>
     </csc>
-    <copy todir="${build.test.outputdir}">
+    <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
       <fileset>
+        <include name="Database/*.sql" />
         <include name="*.xml" />
       </fileset>
     </copy>

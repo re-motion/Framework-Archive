@@ -27,8 +27,9 @@
         <exclude name="Resources/*.cs" />
       </resources>
     </csc>
-    <copy todir="${build.test.outputdir}" flatten="true">
+    <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
       <fileset>
+        <include name="Database/*.sql" />
         <include name="**/*.xml" />
         <exclude name="bin/**/*.xml" />
         <exclude name="obj/**/*.xml" />
