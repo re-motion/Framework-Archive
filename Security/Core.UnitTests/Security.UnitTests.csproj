@@ -90,7 +90,7 @@
     <Compile Include="SecurityClientTests\HasAccessTest.cs" />
     <Compile Include="SecurityClientTests\HasConstructorAccessTest.cs" />
     <Compile Include="SecurityClientTests\HasMethodAccessTest.cs" />
-    <Compile Include="SecurityClientTests\MockObjectCreator.cs" />
+    <Compile Include="SecurityClientTests\SecurityClientTestHelper.cs" />
     <Compile Include="SecurityContextTest.cs" />
     <Compile Include="ObjectSecurityProviderTest.cs" />
     <Compile Include="SecurityProviderRegistryMock.cs" />

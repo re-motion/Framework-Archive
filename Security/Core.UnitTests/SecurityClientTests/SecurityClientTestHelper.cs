@@ -10,7 +10,7 @@ using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
-  public class MockObjectHelper
+  public class SecurityClientTestHelper
   {
     private Mockery _mocks;
     private IPrincipal _user;
@@ -18,7 +18,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     private ISecurityService _securityServiceMock;
     private IPermissionProvider _permissionReflectorMock;
 
-    public MockObjectHelper (SecurityContext context, IPrincipal user)
+    public SecurityClientTestHelper (SecurityContext context, IPrincipal user)
     {
       _context = context;
       _user = user;
@@ -27,35 +27,9 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _permissionReflectorMock = _mocks.NewMock<IPermissionProvider> ();
     }
 
-    public Mockery Mocks
+    public void ExpectPermissionReflectorToBeNeverCalled ()
     {
-      get { return _mocks; }
-    }
-
-    public ISecurityService CreateSecurityServiceMock (params Enum[] returnAccessTypeEnums)
-    {
-      AccessType[] returnAccessTypes = Array.ConvertAll<Enum, AccessType> (returnAccessTypeEnums, new Converter<Enum, AccessType> (AccessType.Get));
-      
-      ISecurityService securityServiceMock = _mocks.NewMock<ISecurityService> ();
-
-      Expect.Once.On (securityServiceMock)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (returnAccessTypes));
-
-      return securityServiceMock;
-    }
-
-    public IPermissionProvider CreatePermissionProviderMock (string expectedMethodName, params Enum[] returnAccessTypeEnums)
-    {
-      IPermissionProvider permissionProviderMock = _mocks.NewMock<IPermissionProvider> ();
-
-      Expect.Once.On (permissionProviderMock)
-          .Method ("GetRequiredMethodPermissions")
-          .With (typeof (SecurableObject), expectedMethodName)
-          .Will (Return.Value (returnAccessTypeEnums));
-
-      return permissionProviderMock;
+      Expect.Never.On (_permissionReflectorMock);
     }
 
     public void ExpectGetRequiredMethodPermissions (string methodName, params Enum[] returnAccessTypes)

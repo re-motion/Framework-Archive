@@ -13,61 +13,50 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
   [TestFixture]
   public class CheckConstructorAccessTest
   {
-    private Mockery _mocks;
-    private ISecurityService _securityServiceMock;
-    private IPermissionProvider _permissionReflectorMock;
+    private SecurityClientTestHelper _testHelper;
     private IPrincipal _user;
     private SecurityContext _statelessContext;
-    private SecurityClient _securityClient;
 
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
-      _securityServiceMock = _mocks.NewMock<ISecurityService> ();
-      _permissionReflectorMock = _mocks.NewMock<IPermissionProvider> ();
-
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _statelessContext = new SecurityContext (typeof (SecurableObject));
-
-      _securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock, new ThreadUserProvider (), new FunctionalSecurityStrategy ());
+      _testHelper = new SecurityClientTestHelper (_statelessContext, _user);
     }
 
     [Test]
-    public void CheckSuccessfulAccess ()
+    public void OneReturnedAccessType_ShouldAllowAccess ()
     {
-      Expect.Never.On (_permissionReflectorMock);
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
+      _testHelper.ExpectPermissionReflectorToBeNeverCalled ();
+      _testHelper.ExpectGetAccessForStaticMethods (GeneralAccessType.Create);
 
-      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
+      SecurityClient securityClient = _testHelper.CreateSecurityClient ();
+      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
     }
 
     [Test, ExpectedException (typeof (PermissionDeniedException))]
-    public void CheckDeniedAccess ()
+    public void OneReturnedAccessType_ShouldThrowPermissionDeniedException ()
     {
-      Expect.Never.On (_permissionReflectorMock);
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
+      _testHelper.ExpectPermissionReflectorToBeNeverCalled ();
+      _testHelper.ExpectGetAccessForStaticMethods (GeneralAccessType.Read);
 
-      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
+      SecurityClient securityClient = _testHelper.CreateSecurityClient ();
+      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
     }
 
     [Test]
-    public void CheckAccessForOverloadedConstructor ()
+    public void MultipleReturnedAccessTypes_ShouldAllowAccess ()
     {
-      Expect.Never.On (_permissionReflectorMock);
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Create) }));
+      _testHelper.ExpectPermissionReflectorToBeNeverCalled ();
+      _testHelper.ExpectGetAccessForStaticMethods (GeneralAccessType.Edit, GeneralAccessType.Create);
 
-      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
+      SecurityClient securityClient = _testHelper.CreateSecurityClient ();
+      securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
     }
   }
 }

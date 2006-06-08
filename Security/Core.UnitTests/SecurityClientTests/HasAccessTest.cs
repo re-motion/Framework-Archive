@@ -14,6 +14,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
   [TestFixture]
   public class HasAccessTest
   {
+    private SecurityClientTestHelper _testHelper;
     private Mockery _mocks;
     private ISecurableObject _mockSecurableType;
     private IObjectSecurityStrategy _mockSecurityStrategy;
@@ -32,6 +33,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _context = new SecurityContext (typeof (File), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+      _testHelper = new SecurityClientTestHelper (_context, _user);
 
       _securityClient = new SecurityClient (_mockSecurityService, new PermissionReflector (), new ThreadUserProvider (), new FunctionalSecurityStrategy ());
     }
