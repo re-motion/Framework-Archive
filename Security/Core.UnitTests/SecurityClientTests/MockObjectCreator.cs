@@ -8,9 +8,9 @@ using NMock2;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
-  public class MockObjectCreator
+  public class MockObjectHelper
   {
     private Mockery _mocks;
     private IPrincipal _user;
@@ -18,7 +18,7 @@ namespace Rubicon.Security.UnitTests
     private ISecurityService _securityServiceMock;
     private IPermissionProvider _permissionReflectorMock;
 
-    public MockObjectCreator (SecurityContext context, IPrincipal user)
+    public MockObjectHelper (SecurityContext context, IPrincipal user)
     {
       _context = context;
       _user = user;

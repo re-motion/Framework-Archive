@@ -51,7 +51,6 @@
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
-    <Compile Include="MockObjectCreator.cs" />
     <Compile Include="FunctionalSecurityStrategyTest.cs" />
     <Compile Include="DemandMethodPermissionAttributeTest.cs" />
     <Compile Include="EnumWrapperTest.cs" />
@@ -86,11 +85,12 @@
     <Compile Include="SampleDomain\TestSecurityState.cs" />
     <Compile Include="SampleDomain\TestValueType.cs" />
     <Compile Include="ObjectSecurityStrategyTest.cs" />
-    <Compile Include="SecurityClientTests\SecurityClientTestWithCheckConstructorAccess.cs" />
-    <Compile Include="SecurityClientTests\SecurityClientTestWithCheckMethodAccess.cs" />
-    <Compile Include="SecurityClientTests\SecurityClientTestWithHasConstructorAccess.cs" />
-    <Compile Include="SecurityClientTests\SecurityClientTestWithHasMethodAccess.cs" />
-    <Compile Include="SecurityClientTests\SecurityClientTestWithSecurableType.cs" />
+    <Compile Include="SecurityClientTests\CheckConstructorAccessTest.cs" />
+    <Compile Include="SecurityClientTests\CheckMethodAccessTest.cs" />
+    <Compile Include="SecurityClientTests\HasAccessTest.cs" />
+    <Compile Include="SecurityClientTests\HasConstructorAccessTest.cs" />
+    <Compile Include="SecurityClientTests\HasMethodAccessTest.cs" />
+    <Compile Include="SecurityClientTests\MockObjectCreator.cs" />
     <Compile Include="SecurityContextTest.cs" />
     <Compile Include="ObjectSecurityProviderTest.cs" />
     <Compile Include="SecurityProviderRegistryMock.cs" />

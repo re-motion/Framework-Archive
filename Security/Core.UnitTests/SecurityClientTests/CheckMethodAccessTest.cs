@@ -11,9 +11,9 @@ using Rubicon.Security.Metadata;
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
-  public class SecurityClientTestWithCheckMethodAccess
+  public class CheckMethodAccessTest
   {
-    private MockObjectCreator _mockMother;
+    private MockObjectHelper _mockHelper;
     private IPrincipal _user;
     private SecurityContext _context;
     private SecurityClient _securityClient;
@@ -23,58 +23,59 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     {
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
-      _mockMother = new MockObjectCreator (_context, _user);
+      _mockHelper = new MockObjectHelper (_context, _user);
 
-      _securityClient = _mockMother.CreateSecurityClient ();
+      _securityClient = _mockHelper.CreateSecurityClient ();
     }
 
     [Test]
     public void CheckSuccessfulAccess ()
     {
-      _mockMother.ExpectGetRequiredMethodPermissions ("Record", GeneralAccessType.Edit);
-      _mockMother.ExpectGetAccess (GeneralAccessType.Edit);
+      _mockHelper.ExpectGetRequiredMethodPermissions ("Record", GeneralAccessType.Edit);
+      _mockHelper.ExpectGetAccess (GeneralAccessType.Edit);
+      ISecurableObject securableObject = _mockHelper.CreateSecurableObject ();
 
-      _securityClient.CheckMethodAccess (_mockMother.CreateSecurableObject (), "Record", _user);
+      _securityClient.CheckMethodAccess (securableObject, "Record", _user);
 
-      _mockMother.VerifyAllExpectationsHaveBeenMet ();
+      _mockHelper.VerifyAllExpectationsHaveBeenMet ();
     }
 
     [Test]
     [ExpectedException (typeof (PermissionDeniedException))]
     public void CheckDeniedAccess ()
     {
-      _mockMother.ExpectGetRequiredMethodPermissions ("Record", GeneralAccessType.Edit);
-      _mockMother.ExpectGetAccess (GeneralAccessType.Read);
+      _mockHelper.ExpectGetRequiredMethodPermissions ("Record", GeneralAccessType.Edit);
+      _mockHelper.ExpectGetAccess (GeneralAccessType.Read);
 
-      _securityClient.CheckMethodAccess (_mockMother.CreateSecurableObject (), "Record", _user);
+      _securityClient.CheckMethodAccess (_mockHelper.CreateSecurableObject (), "Record", _user);
     }
 
     [Test]
     [ExpectedException (typeof (ArgumentException), "The method 'Save' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void CheckAccessForMethodWithoutRequiredPermissions ()
     {
-      _mockMother.ExpectGetRequiredMethodPermissions ("Save", new Enum[0]);
+      _mockHelper.ExpectGetRequiredMethodPermissions ("Save", new Enum[0]);
 
-      _securityClient.CheckMethodAccess (_mockMother.CreateSecurableObject (), "Save", _user);
+      _securityClient.CheckMethodAccess (_mockHelper.CreateSecurableObject (), "Save", _user);
     }
 
     [Test]
     public void CheckSuccessfulStaticMethodAccess ()
     {
-      _mockMother.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", GeneralAccessType.Edit);
-      _mockMother.ExpectGetAccessForStaticMethods (GeneralAccessType.Edit);
+      _mockHelper.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", GeneralAccessType.Edit);
+      _mockHelper.ExpectGetAccessForStaticMethods (GeneralAccessType.Edit);
 
       _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
 
-      _mockMother.VerifyAllExpectationsHaveBeenMet ();
+      _mockHelper.VerifyAllExpectationsHaveBeenMet ();
     }
 
     [Test]
     [ExpectedException (typeof (PermissionDeniedException))]
     public void CheckDeniedAccessForStaticMethod ()
     {
-      _mockMother.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", GeneralAccessType.Edit);
-      _mockMother.ExpectGetAccessForStaticMethods (GeneralAccessType.Read);
+      _mockHelper.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", GeneralAccessType.Edit);
+      _mockHelper.ExpectGetAccessForStaticMethods (GeneralAccessType.Read);
 
       _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
     }
@@ -84,7 +85,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
         "The method 'CreateForSpecialCase' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void CheckAccessForStaticMethodWithoutRequiredPermissions ()
     {
-      _mockMother.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", new Enum[0]);
+      _mockHelper.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", new Enum[0]);
 
       _securityClient.CheckStaticMethodAccess (typeof (SecurableObject), "CreateForSpecialCase", _user);
     }

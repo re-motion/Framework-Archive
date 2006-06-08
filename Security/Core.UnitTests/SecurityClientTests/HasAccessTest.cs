@@ -12,7 +12,7 @@ using Rubicon.Security.UnitTests.TestDomain;
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
-  public class SecurityClientTestWithSecurableType
+  public class HasAccessTest
   {
     private Mockery _mocks;
     private ISecurableObject _mockSecurableType;

@@ -12,7 +12,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
-  public class SecurityClientTestWithHasMethodAccess
+  public class HasMethodAccessTest
   {
     private Mockery _mocks;
     private ISecurityService _securityServiceMock;
