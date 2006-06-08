@@ -12,10 +12,10 @@ using Rubicon.Security.Web.UI;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.UI;
 
-namespace Rubicon.Security.Web.UnitTests.UI
+namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
 {
   [TestFixture]
-  public class WebSecurityProviderTestWithPermissionFromSecurableObject
+  public class PermissionFromSecurableObjectTest
   {
     private IWebSecurityProvider _securityProvider;
     private Mockery _mocks;

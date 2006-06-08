@@ -14,10 +14,10 @@ using Rubicon.Web.UI;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Security.Web.ExecutionEngine;
 
-namespace Rubicon.Security.Web.UnitTests.UI
+namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
 {
   [TestFixture]
-  public class WebSecurityProviderTestWithPermissionFromWxeFunction
+  public class PermissionFromWxeFunctionTest
   {
     private IWebSecurityProvider _securityProvider;
     private Mockery _mocks;

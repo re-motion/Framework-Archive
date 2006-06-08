@@ -60,8 +60,8 @@
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromInstanceMethod.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithPermissionsFromStaticMethod.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithoutPermissionAttribute.cs" />
-    <Compile Include="UI\WebSecurityProviderTestWithPermissionFromSecurableObject.cs" />
-    <Compile Include="UI\WebSecurityProviderTestWithPermissionFromWxeFunction.cs" />
+    <Compile Include="UI\WebSecurityProviderTests\PermissionFromSecurableObjectTest.cs" />
+    <Compile Include="UI\WebSecurityProviderTests\PermissionFromWxeFunctionTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Web.UnitTests.build" />
   </ItemGroup>
