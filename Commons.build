@@ -133,6 +133,8 @@
     <call target="cleantemp" />
     <call target="zip" cascade="false" />
     <call target="sourcezip" cascade="false" />
+    <call target="securityManager-zip" cascade="false" />
+    <call target="securityManager-sourcezip" cascade="false" />
     <call target="getcurrent" cascade="false" />
   </target>
 
