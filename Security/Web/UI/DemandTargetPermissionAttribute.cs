@@ -13,6 +13,7 @@ namespace Rubicon.Security.Web.UI
     WxeFunction
   }
 
+  [AttributeUsage (AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
   public abstract class DemandTargetPermissionAttribute : Attribute
   {
     // types
