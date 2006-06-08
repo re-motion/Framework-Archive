@@ -9,7 +9,7 @@ using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 using Rubicon.Security.Metadata;
 using Rubicon.Utilities;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
   public class SecurityClientTestWithHasMethodAccess

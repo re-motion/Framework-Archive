@@ -8,10 +8,10 @@ using NMock2;
 using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 using Rubicon.Security.Metadata;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
-  public class SecurityClientTestWithHasConstructorAccess
+  public class SecurityClientTestWithCheckConstructorAccess
   {
     private Mockery _mocks;
     private ISecurityService _securityServiceMock;
@@ -34,45 +34,40 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    public void HasSuccessfulAccess ()
+    public void CheckSuccessfulAccess ()
     {
       Expect.Never.On (_permissionReflectorMock);
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Create) }));
 
-      bool hasAccess =_securityClient.HasConstructorAccess (typeof (SecurableObject), _user);
+      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (hasAccess);
     }
 
-    [Test]
-    public void HasDeniedAccess ()
+    [Test, ExpectedException (typeof (PermissionDeniedException))]
+    public void CheckDeniedAccess ()
     {
       Expect.Never.On (_permissionReflectorMock);
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Read) }));
 
-      bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject), _user);
-      
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (hasAccess);
+      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
     }
 
     [Test]
-    public void HasAccessForOverloadedConstructor ()
+    public void CheckAccessForOverloadedConstructor ()
     {
       Expect.Never.On (_permissionReflectorMock);
       Expect.Once.On (_securityServiceMock)
           .Method ("GetAccess")
           .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Create) }));
 
-      bool hasAccess = _securityClient.HasConstructorAccess (typeof (SecurableObject), _user);
+      _securityClient.CheckConstructorAccess (typeof (SecurableObject), _user);
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (hasAccess);
     }
   }
 }

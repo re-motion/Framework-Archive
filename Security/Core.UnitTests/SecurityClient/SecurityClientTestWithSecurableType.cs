@@ -9,7 +9,7 @@ using NMock2;
 using Rubicon.Security.Metadata;
 using Rubicon.Security.UnitTests.TestDomain;
 
-namespace Rubicon.Security.UnitTests
+namespace Rubicon.Security.UnitTests.SecurityClientTests
 {
   [TestFixture]
   public class SecurityClientTestWithSecurableType

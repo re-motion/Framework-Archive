@@ -52,8 +52,6 @@
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
     <Compile Include="MockObjectCreator.cs" />
-    <Compile Include="SecurityClientTestWithHasConstructorAccess.cs" />
-    <Compile Include="SecurityClientTestWithHasMethodAccess.cs" />
     <Compile Include="FunctionalSecurityStrategyTest.cs" />
     <Compile Include="DemandMethodPermissionAttributeTest.cs" />
     <Compile Include="EnumWrapperTest.cs" />
@@ -87,10 +85,12 @@
     <Compile Include="SampleDomain\TestFlags.cs" />
     <Compile Include="SampleDomain\TestSecurityState.cs" />
     <Compile Include="SampleDomain\TestValueType.cs" />
-    <Compile Include="SecurityClientTestWithCheckConstructorAccess.cs" />
-    <Compile Include="SecurityClientTestWithCheckMethodAccess.cs" />
     <Compile Include="ObjectSecurityStrategyTest.cs" />
-    <Compile Include="SecurityClientTestWithSecurableType.cs" />
+    <Compile Include="SecurityClientTests\SecurityClientTestWithCheckConstructorAccess.cs" />
+    <Compile Include="SecurityClientTests\SecurityClientTestWithCheckMethodAccess.cs" />
+    <Compile Include="SecurityClientTests\SecurityClientTestWithHasConstructorAccess.cs" />
+    <Compile Include="SecurityClientTests\SecurityClientTestWithHasMethodAccess.cs" />
+    <Compile Include="SecurityClientTests\SecurityClientTestWithSecurableType.cs" />
     <Compile Include="SecurityContextTest.cs" />
     <Compile Include="ObjectSecurityProviderTest.cs" />
     <Compile Include="SecurityProviderRegistryMock.cs" />
@@ -129,9 +129,6 @@
       <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
       <Name>Security.Web</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SecurityClient\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
