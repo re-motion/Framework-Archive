@@ -46,14 +46,11 @@
     <Compile Include="Configuration\DomainConfigurationTest.cs" />
     <Compile Include="Configuration\TestDomainConfiguration.cs" />
     <Compile Include="Configuration\TestOrganizationalStructureFactory.cs" />
-    <Compile Include="Metadata\DomainObjectCollectionContainsAsserter.cs" />
-    <Compile Include="Metadata\DomainObjectFilter.cs" />
-    <Compile Include="Metadata\DomainObjectFilterCriteria.cs" />
-    <Compile Include="Metadata\DomainObjectFilterCriteriaTest.cs" />
-    <Compile Include="Metadata\DomainObjectFilterTest.cs" />
+    <Compile Include="Metadata\MetadataObjectAssert.cs" />
     <Compile Include="Metadata\MetadataImporterTest.cs" />
-    <Compile Include="Metadata\RpfAssert.cs" />
+    <Compile Include="Metadata\MetadataTestHelper.cs" />
     <Compile Include="Metadata\SecurableClassDefinitionTest.cs" />
+    <Compile Include="Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="DomainTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Domain.UnitTests.build" />

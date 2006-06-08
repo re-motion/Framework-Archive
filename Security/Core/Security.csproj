@@ -59,6 +59,7 @@
     <Compile Include="Metadata\MetadataToXmlConverter.cs" />
     <Compile Include="Metadata\PermissionReflector.cs" />
     <Compile Include="Metadata\SecurableClassInfo.cs" />
+    <Compile Include="Metadata\SecurityMetadataSchema.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />
     <Compile Include="SecurityClient.cs" />

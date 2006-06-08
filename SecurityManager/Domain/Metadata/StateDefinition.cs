@@ -44,6 +44,13 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
     }
 
+    public StateDefinition (ClientTransaction clientTransaction, string name, long value)
+      : base (clientTransaction)
+    {
+      DataContainer["Name"] = name;
+      DataContainer["Value"] = value;
+    }
+
     protected StateDefinition (DataContainer dataContainer)
       : base (dataContainer)
     {

@@ -10,7 +10,12 @@ namespace Rubicon.Security.Metadata
   {
     private delegate XmlNode CreateCollectionItemNodeDelegate<T> (XmlDocument document, T itemInfo);
 
-    public const string MetadataXmlNamespace = "http://www.rubicon-it.com/Security/Metadata/1.0";
+    private SecurityMetadataSchema _metadataSchema;
+
+    public MetadataToXmlConverter ()
+    {
+      _metadataSchema = new SecurityMetadataSchema ();
+    }
 
     public void ConvertAndSave (MetadataCache cache, string filename)
     {
@@ -26,7 +31,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("cache", cache);
 
       XmlDocument document = new XmlDocument ();
-      XmlElement rootElement = document.CreateElement ("securityMetadata", MetadataXmlNamespace);
+      XmlElement rootElement = document.CreateElement ("securityMetadata", _metadataSchema.SchemaUri);
 
       AppendCollection (document, rootElement, "classes", cache.GetSecurableClassInfos (), CreateClassNode);
       AppendCollection (document, rootElement, "stateProperties", cache.GetStatePropertyInfos (), CreateStatePropertyNode);
@@ -46,7 +51,7 @@ namespace Rubicon.Security.Metadata
     {
       if (infos.Count > 0)
       {
-        XmlElement collectionElement = document.CreateElement (collectionElementName, MetadataXmlNamespace);
+        XmlElement collectionElement = document.CreateElement (collectionElementName, _metadataSchema.SchemaUri);
 
         foreach (T info in infos)
           collectionElement.AppendChild (createCollectionItemNodeDelegate (document, info));
@@ -57,14 +62,14 @@ namespace Rubicon.Security.Metadata
 
     private XmlElement CreateAccessTypeNode (XmlDocument document, EnumValueInfo accessTypeInfo)
     {
-      XmlElement accessTypeElement = document.CreateElement ("accessType", MetadataXmlNamespace);
+      XmlElement accessTypeElement = document.CreateElement ("accessType", _metadataSchema.SchemaUri);
       AppendEnumValueInfoAttributes (document, accessTypeInfo, accessTypeElement);
       return accessTypeElement;
     }
 
     private XmlElement CreateAbstractRoleNode (XmlDocument document, EnumValueInfo abstractRoleInfo)
     {
-      XmlElement abstractRoleElement = document.CreateElement ("abstractRole", MetadataXmlNamespace);
+      XmlElement abstractRoleElement = document.CreateElement ("abstractRole", _metadataSchema.SchemaUri);
       AppendEnumValueInfoAttributes (document, abstractRoleInfo, abstractRoleElement);
       return abstractRoleElement;
     }
@@ -87,7 +92,7 @@ namespace Rubicon.Security.Metadata
 
     private XmlElement CreateStatePropertyNode (XmlDocument document, StatePropertyInfo propertyInfo)
     {
-      XmlElement propertyElement = document.CreateElement ("stateProperty", MetadataXmlNamespace);
+      XmlElement propertyElement = document.CreateElement ("stateProperty", _metadataSchema.SchemaUri);
 
       XmlAttribute propertyIdAttribute = document.CreateAttribute ("id");
       propertyIdAttribute.Value = propertyInfo.ID;
@@ -106,7 +111,7 @@ namespace Rubicon.Security.Metadata
 
     private XmlElement CreateStatePropertyValueNode (XmlDocument document, EnumValueInfo enumValueInfo)
     {
-      XmlElement propertyValueElement = document.CreateElement ("state", MetadataXmlNamespace);
+      XmlElement propertyValueElement = document.CreateElement ("state", _metadataSchema.SchemaUri);
 
       XmlAttribute propertyValueNameAttribute = document.CreateAttribute ("name");
       propertyValueNameAttribute.Value = enumValueInfo.Name;
@@ -122,7 +127,7 @@ namespace Rubicon.Security.Metadata
 
     private XmlElement CreateClassNode (XmlDocument document, SecurableClassInfo classInfo)
     {
-      XmlElement classElement = document.CreateElement ("class", MetadataXmlNamespace);
+      XmlElement classElement = document.CreateElement ("class", _metadataSchema.SchemaUri);
       
       XmlAttribute classIdAttribute = document.CreateAttribute ("id");
       classIdAttribute.Value = classInfo.ID;
@@ -157,9 +162,9 @@ namespace Rubicon.Security.Metadata
       return CreateRefElement (document, "accessTypeRef", accessTypeInfo.ID);
     }
 
-    private static XmlElement CreateRefElement (XmlDocument document, string elementName, string idText)
+    private XmlElement CreateRefElement (XmlDocument document, string elementName, string idText)
     {
-      XmlElement refElement = document.CreateElement (elementName, MetadataXmlNamespace);
+      XmlElement refElement = document.CreateElement (elementName, _metadataSchema.SchemaUri);
 
       XmlText idTextNode = document.CreateTextNode (idText);
       refElement.AppendChild (idTextNode);

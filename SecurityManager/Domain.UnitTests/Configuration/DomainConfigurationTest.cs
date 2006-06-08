@@ -21,7 +21,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Configuration
     }
 
     [Test]
-    public void DeserializeWithDefaultFactory ()
+    public void DeserializeSection_DefaultFactory ()
     {
       string xmlFragment = @"<rubicon.securityManager.domain />";
       _configuration.DeserializeSection (xmlFragment);
@@ -31,7 +31,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Configuration
     }
 
     [Test]
-    public void DeserializeWithNamespace ()
+    public void DeserializeSection_WithNamespace ()
     {
       string xmlFragment = @"<rubicon.securityManager.domain xmlns=""http://www.rubicon-it.com/SecurityManager/Domain/Configuration"" />";
       _configuration.DeserializeSection (xmlFragment);
@@ -41,7 +41,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Configuration
     }
 
     [Test]
-    public void DeserializeWithCustomFactory ()
+    public void DeserializeSection_CustomFactory ()
     {
       string xmlFragment = @"
           <rubicon.securityManager.domain xmlns=""http://www.rubicon-it.com/SecurityManager/Domain/Configuration"">
@@ -55,7 +55,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Configuration
 
     [Test]
     [ExpectedException (typeof (ConfigurationErrorsException))]
-    public void DeserializeWithInvalidFactoryType ()
+    public void DeserializeSection_InvalidFactoryType ()
     {
       string xmlFragment = @"
           <rubicon.securityManager.domain>

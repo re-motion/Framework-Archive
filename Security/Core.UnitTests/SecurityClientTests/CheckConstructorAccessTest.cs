@@ -37,7 +37,8 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _testHelper.VerifyAllExpectationsHaveBeenMet ();
     }
 
-    [Test, ExpectedException (typeof (PermissionDeniedException))]
+    [Test]
+    [ExpectedException (typeof (PermissionDeniedException))]
     public void OneReturnedAccessType_ShouldThrowPermissionDeniedException ()
     {
       _testHelper.ExpectPermissionReflectorToBeNeverCalled ();

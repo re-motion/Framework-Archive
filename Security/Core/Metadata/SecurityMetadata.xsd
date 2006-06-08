@@ -13,10 +13,10 @@
         <xs:element name="classes">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="class" maxOccurs="unbounded">
+              <xs:element name="class" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="stateProperties">
+                    <xs:element name="stateProperties" minOccurs="0">
                       <xs:complexType>
                         <xs:sequence>
                           <xs:element name="statePropertyRef" type="xs:string" maxOccurs="unbounded" />
@@ -24,7 +24,7 @@
                       </xs:complexType>
                     </xs:element>
 
-                    <xs:element name="accessTypes">
+                    <xs:element name="accessTypes" minOccurs="0">
                       <xs:complexType>
                         <xs:sequence>
                           <xs:element name="accessTypeRef" type="xs:string" maxOccurs="unbounded" />
@@ -45,10 +45,10 @@
         <xs:element name="stateProperties">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="stateProperty" maxOccurs="unbounded">
+              <xs:element name="stateProperty" minOccurs="0" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="state" maxOccurs="unbounded">
+                    <xs:element name="state" minOccurs="0" maxOccurs="unbounded">
                       <xs:complexType>
                         <xs:attribute name="name" use="required" type="xs:string" />
                         <xs:attribute name="value" use="required" type="xs:long" />
@@ -66,7 +66,7 @@
         <xs:element name="accessTypes">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="accessType" type="sm:enumValue" maxOccurs="unbounded" />
+              <xs:element name="accessType" type="sm:enumValue" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -74,7 +74,7 @@
         <xs:element name="abstractRoles">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="abstractRole" type="sm:enumValue" maxOccurs="unbounded" />
+              <xs:element name="abstractRole" type="sm:enumValue" minOccurs="0" maxOccurs="unbounded" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

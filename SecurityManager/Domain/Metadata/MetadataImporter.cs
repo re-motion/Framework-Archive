@@ -5,6 +5,7 @@ using System.Xml;
 
 using Rubicon.Data.DomainObjects;
 using Rubicon.Utilities;
+using Rubicon.Security.Metadata;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -37,6 +38,11 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       _accessTypeReferences = new Dictionary<Guid, List<Guid>> ();
     }
 
+    public ClientTransaction Transaction
+    {
+      get { return _clientTransaction; }
+    }
+
     public Dictionary<Guid, SecurableClassDefinition> Classes
     {
       get { return _classes; }
@@ -59,9 +65,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void Import (XmlDocument metadataXmlDocument)
     {
+      SecurityMetadataSchema metadataSchema = new SecurityMetadataSchema ();
+      if (!metadataXmlDocument.Schemas.Contains (metadataSchema.SchemaUri))
+        metadataXmlDocument.Schemas.Add (metadataSchema.SchemaUri, metadataSchema.GetSchemaReader ());
+
+      metadataXmlDocument.Validate (null);
+
       XmlNamespaceManager namespaceManager = new XmlNamespaceManager (metadataXmlDocument.NameTable);
-      // TODO: namespace should be extracted to only one location!
-      namespaceManager.AddNamespace ("md", "http://www.rubicon-it.com/Security/Metadata/1.0");
+      namespaceManager.AddNamespace ("md", metadataSchema.SchemaUri);
 
       AddItem (_classes, metadataXmlDocument, "/md:securityMetadata/md:classes/md:class", namespaceManager, CreateSecurableClassDefinition);
       AddItem (_stateProperties, metadataXmlDocument, "/md:securityMetadata/md:stateProperties/md:stateProperty", namespaceManager, CreateStatePropertyDefinition);

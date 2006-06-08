@@ -44,6 +44,13 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
     }
 
+    public StatePropertyDefinition (ClientTransaction clientTransaction, Guid metadataItemID, string name)
+      : base (clientTransaction)
+    {
+      DataContainer["MetadataItemID"] = metadataItemID;
+      DataContainer["Name"] = name;
+    }
+
     protected StatePropertyDefinition (DataContainer dataContainer)
       : base (dataContainer)
     {
@@ -53,16 +60,57 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // methods and properties
 
-    public Rubicon.Data.DomainObjects.DomainObjectCollection References
+    public DomainObjectCollection References
     {
-      get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("References"); }
+      get { return (DomainObjectCollection) GetRelatedObjects ("References"); }
       set { } // marks property References as modifiable
     }
 
-    public Rubicon.Data.DomainObjects.DomainObjectCollection DefinedStates
+    public DomainObjectCollection DefinedStates
     {
-      get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("DefinedStates"); }
+      get { return (DomainObjectCollection) GetRelatedObjects ("DefinedStates"); }
       set { } // marks property DefinedStates as modifiable
+    }
+
+    public StateDefinition GetStateByName (string name)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+
+      foreach (StateDefinition state in DefinedStates)
+      {
+        if (state.Name == name)
+          return state;
+      }
+
+      throw new ArgumentException (string.Format ("The state '{0}' is not defined for the property '{1}'.", name, this.Name), "name");
+    }
+
+    public StateDefinition GetStateByValue (int stateValue)
+    {
+      foreach (StateDefinition state in DefinedStates)
+      {
+        if (state.Value == stateValue)
+          return state;
+      }
+
+      throw new ArgumentException (string.Format ("A state with the value {0} is not defined for the property '{1}'.", stateValue, this.Name), "stateValue");
+    }
+
+    public void AddState (string stateName, int value)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("stateName", stateName);
+
+      StateDefinition newStateDefinition = new StateDefinition (this.ClientTransaction);
+      newStateDefinition.Name = stateName;
+      newStateDefinition.Value = value;
+
+      AddState (newStateDefinition);
+    }
+
+    public void AddState (StateDefinition newState)
+    {
+      ArgumentUtility.CheckNotNull ("newState", newState);
+      DefinedStates.Add (newState);
     }
   }
 }

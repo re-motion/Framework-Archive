@@ -44,6 +44,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
     }
 
+    public AccessTypeDefinition (ClientTransaction clientTransaction, Guid metadataItemID, string name, long value)
+      : base (clientTransaction)
+    {
+      DataContainer["MetadataItemID"] = metadataItemID;
+      DataContainer["Name"] = name;
+      DataContainer["Value"] = value;
+    }
+
     protected AccessTypeDefinition (DataContainer dataContainer)
       : base (dataContainer)
     {

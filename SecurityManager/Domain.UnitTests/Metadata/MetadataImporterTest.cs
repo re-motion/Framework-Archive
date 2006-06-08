@@ -13,21 +13,28 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
   [TestFixture]
   public class MetadataImporterTest : DomainTest
   {
-    private ClientTransaction _transaction;
+    private MetadataTestHelper _testHelper;
     private MetadataImporter _importer;
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _transaction = new ClientTransaction ();
-      _importer = new MetadataImporter (_transaction);
+      _testHelper = new MetadataTestHelper ();
+      _importer = new MetadataImporter (_testHelper.Transaction);
     }
 
     [Test]
-    public void EmptyMetadataFile ()
+    public void Import_EmptyMetadataFile ()
     {
-      string metadataXml = @"<securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"" />";
+      string metadataXml = @"
+          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+            <classes />
+            <stateProperties />
+            <accessTypes />
+            <abstractRoles />
+          </securityMetadata>
+          ";
 
       _importer.Import (GetXmlDocument (metadataXml));
 
@@ -38,14 +45,16 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     }
 
     [Test]
-    public void ImportSecurableClass ()
+    public void Import_1SecurableClass ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
-              </class>
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
             </classes>
+            <stateProperties />
+            <accessTypes />
+            <abstractRoles />
           </securityMetadata>
           ";
 
@@ -61,16 +70,17 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     }
 
     [Test]
-    public void ImportSecurableClasses ()
+    public void Import_2SecurableClasses ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
-              </class>
-              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.Directory"">
-              </class>
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
+              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.Directory"" />
             </classes>
+            <stateProperties />
+            <accessTypes />
+            <abstractRoles />
           </securityMetadata>
           ";
 
@@ -89,10 +99,13 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     }
 
     [Test]
-    public void ImportAbstractRoles ()
+    public void Import_3AbstractRoles ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+            <classes />
+            <stateProperties />
+            <accessTypes />
             <abstractRoles>
               <abstractRole id=""00000003-0001-0000-0000-000000000000"" name=""Clerk"" value=""0"" />
               <abstractRole id=""00000003-0002-0000-0000-000000000000"" name=""Secretary"" value=""1"" />
@@ -108,29 +121,29 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      AbstractRoleDefinition role1 = _importer.AbstractRoles[new Guid ("00000003-0001-0000-0000-000000000000")];
-      Assert.AreEqual ("Clerk", role1.Name);
-      Assert.AreEqual (0, role1.Value);
+      AbstractRoleDefinition expectedRole = _testHelper.CreateClerkAbstractRole ();
+      MetadataObjectAssert.AreEqual (expectedRole, _importer.AbstractRoles[expectedRole.MetadataItemID], "Abstract Role Clerk");
 
-      AbstractRoleDefinition role2 = _importer.AbstractRoles[new Guid ("00000003-0002-0000-0000-000000000000")];
-      Assert.AreEqual ("Secretary", role2.Name);
-      Assert.AreEqual (1, role2.Value);
+      expectedRole = _testHelper.CreateSecretaryAbstractRole ();
+      MetadataObjectAssert.AreEqual (expectedRole, _importer.AbstractRoles[expectedRole.MetadataItemID], "Abstract Role Secretary");
 
-      AbstractRoleDefinition role3 = _importer.AbstractRoles[new Guid ("00000004-0001-0000-0000-000000000000")];
-      Assert.AreEqual ("Administrator", role3.Name);
-      Assert.AreEqual (0, role3.Value);
+      expectedRole = _testHelper.CreateAdministratorAbstractRole ();
+      MetadataObjectAssert.AreEqual (expectedRole, _importer.AbstractRoles[expectedRole.MetadataItemID], "Abstract Role Administrator");
     }
 
     [Test]
-    public void ImportAccessTypes ()
+    public void Import_3AccessTypes ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+            <classes />
+            <stateProperties />
             <accessTypes>
               <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create"" value=""0"" />
               <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read"" value=""1"" />
               <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit"" value=""2"" />
             </accessTypes>
+            <abstractRoles />
           </securityMetadata>
           ";
 
@@ -141,24 +154,22 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (3, _importer.AccessTypes.Count, "Access type count");
 
-      AccessTypeDefinition accessType1 = _importer.AccessTypes[new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5")];
-      Assert.AreEqual ("Create", accessType1.Name);
-      Assert.AreEqual (0, accessType1.Value);
+      AccessTypeDefinition expectedAccessType = _testHelper.CreateAccessTypeCreate ();
+      MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Create");
 
-      AccessTypeDefinition accessType2 = _importer.AccessTypes[new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a")];
-      Assert.AreEqual ("Read", accessType2.Name);
-      Assert.AreEqual (1, accessType2.Value);
+      expectedAccessType = _testHelper.CreateAccessTypeRead ();
+      MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Read");
 
-      AccessTypeDefinition accessType3 = _importer.AccessTypes[new Guid ("11186122-6de0-4194-b434-9979230c41fd")];
-      Assert.AreEqual ("Edit", accessType3.Name);
-      Assert.AreEqual (2, accessType3.Value);
+      expectedAccessType = _testHelper.CreateAccessTypeEdit ();
+      MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Edit");
     }
 
     [Test]
-    public void ImportStateProperties ()
+    public void Import_2StateProperties ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+            <classes />
             <stateProperties>
               <stateProperty id=""00000000-0000-0000-0002-000000000001"" name=""State"">
                 <state name=""New"" value=""0"" />
@@ -169,9 +180,11 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
               <stateProperty id=""00000000-0000-0000-0001-000000000001"" name=""Confidentiality"">
                 <state name=""Normal"" value=""0"" />
                 <state name=""Confidential"" value=""1"" />
-                <state name=""Private"" value=""2"" />
+                <state name=""Private"" value=""4"" />
               </stateProperty>
             </stateProperties>
+            <accessTypes />
+            <abstractRoles />
           </securityMetadata>
           ";
 
@@ -182,39 +195,19 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      StatePropertyDefinition prop1 = _importer.StateProperties[new Guid ("00000000-0000-0000-0002-000000000001")];
-      Assert.AreEqual ("State", prop1.Name);
-      Assert.AreEqual (3, prop1.DefinedStates.Count);
+      StatePropertyDefinition expectedProperty = _testHelper.CreateFileStateProperty ();
+      StatePropertyDefinition actualProperty = _importer.StateProperties[expectedProperty.MetadataItemID];
+      Assert.IsNotNull (actualProperty, "State property not found");
+      MetadataObjectAssert.AreEqual (expectedProperty, actualProperty, "State property");
 
-      DomainObjectFilterCriteria newStateFilter = new DomainObjectFilterCriteria (typeof (StateDefinition))
-          .ExpectPropertyValue ("Name", "New").ExpectPropertyValue ("Value", (long) 0);
-      DomainObjectFilterCriteria normalStateFilter = new DomainObjectFilterCriteria (typeof (StateDefinition))
-          .ExpectPropertyValue ("Name", "Normal").ExpectPropertyValue ("Value", (long) 1);
-      DomainObjectFilterCriteria archivedStateFilter = new DomainObjectFilterCriteria (typeof (StateDefinition))
-          .ExpectPropertyValue ("Name", "Archived").ExpectPropertyValue ("Value", (long) 2);
-
-      RpfAssert.Contains (newStateFilter, prop1.DefinedStates);
-      RpfAssert.Contains (normalStateFilter, prop1.DefinedStates);
-      RpfAssert.Contains (archivedStateFilter, prop1.DefinedStates);
-
-      StatePropertyDefinition prop2 = _importer.StateProperties[new Guid ("00000000-0000-0000-0001-000000000001")];
-      Assert.AreEqual ("State", prop1.Name);
-      Assert.AreEqual (3, prop2.DefinedStates.Count);
-
-      DomainObjectFilterCriteria normalConfidentialityFilter = new DomainObjectFilterCriteria (typeof (StateDefinition))
-          .ExpectPropertyValue ("Name", "Normal").ExpectPropertyValue ("Value", (long) 0);
-      DomainObjectFilterCriteria confidentialConfidentialityFilter = new DomainObjectFilterCriteria (typeof (StateDefinition))
-          .ExpectPropertyValue ("Name", "Confidential").ExpectPropertyValue ("Value", (long) 1);
-      DomainObjectFilterCriteria privateConfidentialityFilter = new DomainObjectFilterCriteria (typeof (StateDefinition))
-          .ExpectPropertyValue ("Name", "Private").ExpectPropertyValue ("Value", (long) 2);
-
-      RpfAssert.Contains (normalConfidentialityFilter, prop2.DefinedStates);
-      RpfAssert.Contains (confidentialConfidentialityFilter, prop2.DefinedStates);
-      RpfAssert.Contains (privateConfidentialityFilter, prop2.DefinedStates);
+      expectedProperty = _testHelper.CreateConfidentialityProperty ();
+      actualProperty = _importer.StateProperties[expectedProperty.MetadataItemID];
+      Assert.IsNotNull (actualProperty, "Confidentiality property not found");
+      MetadataObjectAssert.AreEqual (expectedProperty, actualProperty, "Confidentiality property");
     }
 
     [Test]
-    public void ImportDerivedClasses ()
+    public void Import_ABaseClassAndADerivedClass ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -222,6 +215,9 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"" />
               <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.PaperFile"" base=""00000000-0000-0000-0001-000000000000"" />
             </classes>
+            <stateProperties />
+            <accessTypes />
+            <abstractRoles />
           </securityMetadata>";
 
       _importer.Import (GetXmlDocument (metadataXml));
@@ -243,7 +239,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     }
 
     [Test]
-    public void ImportWithStatePropertyReferences ()
+    public void Import_1ClassAnd2StateProperties ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -268,6 +264,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
                 <state name=""Private"" value=""2"" />
               </stateProperty>
             </stateProperties>
+            <accessTypes />
+            <abstractRoles />
           </securityMetadata>";
 
       _importer.Import (GetXmlDocument (metadataXml));
@@ -287,7 +285,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     }
 
     [Test]
-    public void ImportWithAccessTypeReferences ()
+    public void Import_1ClassAnd8AccessTypes ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -299,6 +297,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
               </class>
             </classes>
 
+            <stateProperties />
+
             <accessTypes>
               <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create"" value=""0"" />
               <accessType id=""62dfcd92-a480-4d57-95f1-28c0f5996b3a"" name=""Read"" value=""1"" />
@@ -309,6 +309,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
               <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize"" value=""0"" />
               <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive"" value=""1"" />
             </accessTypes>
+            
+            <abstractRoles />
           </securityMetadata>";
 
       _importer.Import (GetXmlDocument (metadataXml));
@@ -327,7 +329,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     }
 
     [Test]
-    public void ImportSecurityDomain ()
+    public void Import_ABaseClassAndADerivedClassWith2StatePropertiesAnd8AccessTypesAnd3AbstractRoles ()
     {
       string metadataXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
@@ -404,6 +406,18 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       Assert.AreEqual (2, _importer.StateProperties.Count, "State property count");
       Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (8, _importer.AccessTypes.Count, "Access type count");
+    }
+
+    [Test]
+    [ExpectedException (typeof (System.Xml.Schema.XmlSchemaValidationException))]
+    public void Import_InvalidXml ()
+    {
+      string metadataXml = @"
+          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+            <classes />
+          </securityMetadata>";
+
+      _importer.Import (GetXmlDocument (metadataXml));
     }
 
     private XmlDocument GetXmlDocument (string metadataXml)
