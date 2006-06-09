@@ -372,6 +372,11 @@
       <entity name="Permission"/>
       <storageProviderID>SecurityServiceDomain</storageProviderID>
       <properties>
+        <property name="Allowed">
+          <type>boolean</type>
+          <column>Allowed</column>
+          <nullable>true</nullable>
+        </property>
         <relationProperty name="AccessControlEntry" relationID="AccessControlEntryToPermission" cardinality="one" isMandatory="true">
           <column>AccessControlEntryID</column>
         </relationProperty>

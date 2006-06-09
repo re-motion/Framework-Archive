@@ -55,6 +55,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // methods and properties
 
+    public NaBoolean Allowed
+    {
+      get { return (NaBoolean) DataContainer["Allowed"]; }
+      set { DataContainer["Allowed"] = value; }
+    }
+
     public AccessTypeDefinition AccessType
     {
       get { return (Rubicon.SecurityManager.Domain.Metadata.AccessTypeDefinition) GetRelatedObject ("AccessType"); }
