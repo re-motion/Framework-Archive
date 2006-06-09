@@ -6,7 +6,7 @@ DECLARE @statement nvarchar (4000)
 SET @statement = ''
 SELECT @statement = @statement + 'ALTER TABLE [' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' 
     FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id 
-    WHERE fk.xtype = 'F' AND t.name IN ('Client', 'Group', 'GroupType', 'ConcretePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'EnumValueDefinition', 'AccessTypeReference', 'EnumValueDefinition', 'EnumValueDefinition')
+    WHERE fk.xtype = 'F' AND t.name IN ('Client', 'Group', 'GroupType', 'ConcretePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'EnumValueDefinition', 'AccessTypeReference', 'EnumValueDefinition', 'EnumValueDefinition', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission')
     ORDER BY t.name, fk.name
 exec sp_executesql @statement
 GO
@@ -43,10 +43,6 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EnumValue
 DROP TABLE [EnumValueDefinition]
 GO
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EnumValueDefinition')
-DROP TABLE [EnumValueDefinition]
-GO
-
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'SecurableClassDefinition')
 DROP TABLE [SecurableClassDefinition]
 GO
@@ -73,6 +69,26 @@ GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EnumValueDefinition')
 DROP TABLE [EnumValueDefinition]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'StateCombination')
+DROP TABLE [StateCombination]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'StateUsage')
+DROP TABLE [StateUsage]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'AccessControlList')
+DROP TABLE [AccessControlList]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'AccessControlEntry')
+DROP TABLE [AccessControlEntry]
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Permission')
+DROP TABLE [Permission]
 GO
 
 CREATE TABLE [Client]
@@ -188,21 +204,9 @@ CREATE TABLE [EnumValueDefinition]
   [Timestamp] rowversion NOT NULL,
 
   -- EnumValueDefinition columns
+  [MetadataItemID] uniqueidentifier NOT NULL,
   [Name] nvarchar (100) NOT NULL,
   [Value] bigint NOT NULL,
-
-  CONSTRAINT [PK_EnumValueDefinition] PRIMARY KEY CLUSTERED ([ID])
-)
-GO
-
-CREATE TABLE [EnumValueDefinition]
-(
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Timestamp] rowversion NOT NULL,
-
-  -- EnumValueDefinitionWithIdentity columns
-  [MetadataItemID] uniqueidentifier NOT NULL,
 
   CONSTRAINT [PK_EnumValueDefinition] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -302,6 +306,82 @@ CREATE TABLE [EnumValueDefinition]
 )
 GO
 
+CREATE TABLE [StateCombination]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- StateCombination columns
+  [ClassDefinitionID] uniqueidentifier NULL,
+  [AccessControlListID] uniqueidentifier NULL,
+
+  CONSTRAINT [PK_StateCombination] PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+
+CREATE TABLE [StateUsage]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- StateUsage columns
+  [StateCombinationID] uniqueidentifier NULL,
+  [StateDefinitionID] uniqueidentifier NULL,
+
+  CONSTRAINT [PK_StateUsage] PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+
+CREATE TABLE [AccessControlList]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- AccessControlList columns
+  [ClassDefinitionID] uniqueidentifier NULL,
+
+  CONSTRAINT [PK_AccessControlList] PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+
+CREATE TABLE [AccessControlEntry]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- AccessControlEntry columns
+  [ClientSelection] int NOT NULL,
+  [GroupSelection] int NOT NULL,
+  [UserSelection] int NOT NULL,
+  [AccessControlListID] uniqueidentifier NULL,
+  [GroupID] uniqueidentifier NULL,
+  [GroupTypeID] uniqueidentifier NULL,
+  [PositionID] uniqueidentifier NULL,
+  [UserID] uniqueidentifier NULL,
+  [AbstractRoleID] uniqueidentifier NULL,
+
+  CONSTRAINT [PK_AccessControlEntry] PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+
+CREATE TABLE [Permission]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- Permission columns
+  [AccessControlEntryID] uniqueidentifier NULL,
+  [AccessTypeDefinitionID] uniqueidentifier NULL,
+
+  CONSTRAINT [PK_Permission] PRIMARY KEY CLUSTERED ([ID])
+)
+GO
+
 ALTER TABLE [Group] ADD
   CONSTRAINT [FK_ClientToGroup] FOREIGN KEY ([ClientID]) REFERENCES [Client] ([ID]),
   CONSTRAINT [FK_ChildrenToParentGroup] FOREIGN KEY ([ParentID]) REFERENCES [Group] ([ID]),
@@ -348,5 +428,33 @@ GO
 ALTER TABLE [AccessTypeReference] ADD
   CONSTRAINT [FK_ClassToAccessTypeReference] FOREIGN KEY ([ClassID]) REFERENCES [SecurableClassDefinition] ([ID]),
   CONSTRAINT [FK_AccessTypeToAccessTypeReference] FOREIGN KEY ([AccessTypeID]) REFERENCES [EnumValueDefinition] ([ID])
+GO
+
+ALTER TABLE [StateCombination] ADD
+  CONSTRAINT [FK_ClassToStateCombination] FOREIGN KEY ([ClassDefinitionID]) REFERENCES [SecurableClassDefinition] ([ID]),
+  CONSTRAINT [FK_AccessControlListToStateCombination] FOREIGN KEY ([AccessControlListID]) REFERENCES [AccessControlList] ([ID])
+GO
+
+ALTER TABLE [StateUsage] ADD
+  CONSTRAINT [FK_StateDefinitionToStateUsage] FOREIGN KEY ([StateDefinitionID]) REFERENCES [EnumValueDefinition] ([ID]),
+  CONSTRAINT [FK_StateCombinationToStateUsage] FOREIGN KEY ([StateCombinationID]) REFERENCES [StateCombination] ([ID])
+GO
+
+ALTER TABLE [AccessControlList] ADD
+  CONSTRAINT [FK_ClassToAccessControlList] FOREIGN KEY ([ClassDefinitionID]) REFERENCES [SecurableClassDefinition] ([ID])
+GO
+
+ALTER TABLE [AccessControlEntry] ADD
+  CONSTRAINT [FK_GroupToAccessControlEntry] FOREIGN KEY ([GroupID]) REFERENCES [Group] ([ID]),
+  CONSTRAINT [FK_GroupTypeToAccessControlEntry] FOREIGN KEY ([GroupTypeID]) REFERENCES [GroupType] ([ID]),
+  CONSTRAINT [FK_PositionToAccessControlEntry] FOREIGN KEY ([PositionID]) REFERENCES [Position] ([ID]),
+  CONSTRAINT [FK_UserToAccessControlEntry] FOREIGN KEY ([UserID]) REFERENCES [User] ([ID]),
+  CONSTRAINT [FK_AbstractRoleToAccessControlEntry] FOREIGN KEY ([AbstractRoleID]) REFERENCES [EnumValueDefinition] ([ID]),
+  CONSTRAINT [FK_AccessControlListToAccessControlEntries] FOREIGN KEY ([AccessControlListID]) REFERENCES [AccessControlList] ([ID])
+GO
+
+ALTER TABLE [Permission] ADD
+  CONSTRAINT [FK_AccessTypeDefinitionToPermission] FOREIGN KEY ([AccessTypeDefinitionID]) REFERENCES [EnumValueDefinition] ([ID]),
+  CONSTRAINT [FK_AccessControlEntryToPermission] FOREIGN KEY ([AccessControlEntryID]) REFERENCES [AccessControlEntry] ([ID])
 GO
 

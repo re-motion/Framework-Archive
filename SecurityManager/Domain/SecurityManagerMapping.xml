@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <mapping application="Rubicon.SecurityManager" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
   <classes>
-
     <!-- Organizational structure -->
     <class id="Client">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.Client, Rubicon.SecurityManager.Domain</type>
@@ -43,6 +42,7 @@
           <column>GroupTypeID</column>
         </relationProperty>
         <relationProperty name="Roles" relationID="GroupToRole" cardinality="many" isMandatory="false" />
+        <relationProperty name="AccessControlEntries" relationID="GroupToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -62,6 +62,7 @@
           <column>ClientID</column>
           <oppositeClass>Client</oppositeClass>
         </relationProperty>
+        <relationProperty name="AccessControlEntries" relationID="GroupTypeToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -100,6 +101,7 @@
           <column>ClientID</column>
           <oppositeClass>Client</oppositeClass>
         </relationProperty>
+        <relationProperty name="AccessControlEntries" relationID="PositionToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -154,6 +156,7 @@
           <column>GroupID</column>
           <oppositeClass>Group</oppositeClass>
         </relationProperty>
+        <relationProperty name="AccessControlEntries" relationID="UserToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -199,6 +202,8 @@
         <relationProperty name="DerivedClasses" relationID="DerivedToBaseClass" cardinality="many" isMandatory="false" />
         <relationProperty name="AccessTypeReferences" relationID="ClassToAccessTypeReference" cardinality="many" isMandatory="false" />
         <relationProperty name="StatePropertyReferences" relationID="ClassToStatePropertyReference" cardinality="many" isMandatory="false" />
+        <relationProperty name="StateCombinations" relationID="ClassToStateCombination" cardinality="many" isMandatory="false" />
+        <relationProperty name="AccessControlLists" relationID="ClassToAccessControlList" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -243,6 +248,7 @@
         <relationProperty name="StateProperty" relationID="StatePropertyToState" cardinality="one" isMandatory="true">
           <column>StatePropertyID</column>
         </relationProperty>
+        <relationProperty name="Usages" relationID="StateDefinitionToStateUsage" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -266,6 +272,7 @@
       <storageProviderID>SecurityServiceDomain</storageProviderID>
       <properties>
         <relationProperty name="References" relationID="AccessTypeToAccessTypeReference" cardinality="many" isMandatory="false" />
+        <relationProperty name="Permissions" relationID="AccessTypeDefinitionToPermission" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -273,7 +280,105 @@
       <type>Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityServiceDomain</storageProviderID>
-      <properties />
+      <properties>
+        <relationProperty name="AccessControlEntries" relationID="AbstractRoleToAccessControlEntry" cardinality="many" isMandatory="false" />
+      </properties>
+    </class>
+
+    <!-- Access Control -->
+    <class id="StateCombination">
+      <type>Rubicon.SecurityManager.Domain.AccessControl.StateCombination, Rubicon.SecurityManager.Domain</type>
+      <entity name="StateCombination"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <relationProperty name="StateUsages" relationID="StateCombinationToStateUsage" cardinality="many" isMandatory="false" />
+        <relationProperty name="ClassDefinition" relationID="ClassToStateCombination" cardinality="one" isMandatory="true">
+          <column>ClassDefinitionID</column>
+        </relationProperty>
+        <relationProperty name="AccessControlList" relationID="AccessControlListToStateCombination" cardinality="one" isMandatory="true">
+          <column>AccessControlListID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="StateUsage">
+      <type>Rubicon.SecurityManager.Domain.AccessControl.StateUsage, Rubicon.SecurityManager.Domain</type>
+      <entity name="StateUsage"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <relationProperty name="StateCombination" relationID="StateCombinationToStateUsage" cardinality="one" isMandatory="true">
+          <column>StateCombinationID</column>
+        </relationProperty>
+        <relationProperty name="StateDefinition" relationID="StateDefinitionToStateUsage" cardinality="one" isMandatory="true">
+          <column>StateDefinitionID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="AccessControlList">
+      <type>Rubicon.SecurityManager.Domain.AccessControl.AccessControlList, Rubicon.SecurityManager.Domain</type>
+      <entity name="AccessControlList"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <relationProperty name="ClassDefinition" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
+          <column>ClassDefinitionID</column>
+        </relationProperty>
+        <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="false" />
+        <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true" />
+      </properties>
+    </class>
+
+    <class id="AccessControlEntry">
+      <type>Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry, Rubicon.SecurityManager.Domain</type>
+      <entity name="AccessControlEntry"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <property name="Client">
+          <type>Rubicon.SecurityManager.Domain.AccessControl.ClientSelection, Rubicon.SecurityManager.Domain</type>
+          <column>ClientSelection</column>
+        </property>
+        <property name="Group">
+          <type>Rubicon.SecurityManager.Domain.AccessControl.GroupSelection, Rubicon.SecurityManager.Domain</type>
+          <column>GroupSelection</column>
+        </property>
+        <property name="User">
+          <type>Rubicon.SecurityManager.Domain.AccessControl.UserSelection, Rubicon.SecurityManager.Domain</type>
+          <column>UserSelection</column>
+        </property>
+        <relationProperty name="AccessControlList" relationID="AccessControlListToAccessControlEntries" cardinality="one" isMandatory="true">
+          <column>AccessControlListID</column>
+        </relationProperty>
+        <relationProperty name="SpecificGroup" relationID="GroupToAccessControlEntry" cardinality="one" isMandatory="false">
+          <column>GroupID</column>
+        </relationProperty>
+        <relationProperty name="SpecificGroupType" relationID="GroupTypeToAccessControlEntry" cardinality="one" isMandatory="false">
+          <column>GroupTypeID</column>
+        </relationProperty>
+        <relationProperty name="SpecificPosition" relationID="PositionToAccessControlEntry" cardinality="one" isMandatory="false">
+          <column>PositionID</column>
+        </relationProperty>
+        <relationProperty name="SpecificUser" relationID="UserToAccessControlEntry" cardinality="one" isMandatory="false">
+          <column>UserID</column>
+        </relationProperty>
+        <relationProperty name="SpecificAbstractRole" relationID="AbstractRoleToAccessControlEntry" cardinality="one" isMandatory="false">
+          <column>AbstractRoleID</column>
+        </relationProperty>
+        <relationProperty name="Permissions" relationID="AccessControlEntryToPermission" cardinality="many" isMandatory="false" />
+      </properties>
+    </class>
+
+    <class id="Permission">
+      <type>Rubicon.SecurityManager.Domain.AccessControl.Permission, Rubicon.SecurityManager.Domain</type>
+      <entity name="Permission"/>
+      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <properties>
+        <relationProperty name="AccessControlEntry" relationID="AccessControlEntryToPermission" cardinality="one" isMandatory="true">
+          <column>AccessControlEntryID</column>
+        </relationProperty>
+        <relationProperty name="AccessType" relationID="AccessTypeDefinitionToPermission" cardinality="one" isMandatory="true">
+          <column>AccessTypeDefinitionID</column>
+        </relationProperty>
+      </properties>
     </class>
   </classes>
 </mapping>

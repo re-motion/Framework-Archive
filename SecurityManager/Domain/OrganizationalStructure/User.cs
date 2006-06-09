@@ -96,5 +96,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { SetRelatedObject ("Group", value); }
     }
 
+    public DomainObjectCollection AccessControlEntries
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
+      set { } // marks property AccessControlEntries as modifiable
+    }
   }
 }

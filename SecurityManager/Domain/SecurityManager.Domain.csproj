@@ -33,6 +33,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessControl\AccessControlEntry.cs" />
+    <Compile Include="AccessControl\AccessControlList.cs" />
+    <Compile Include="AccessControl\ClientSelection.cs" />
+    <Compile Include="AccessControl\AccessControlObject.cs" />
+    <Compile Include="AccessControl\GroupSelection.cs" />
+    <Compile Include="AccessControl\Permission.cs" />
+    <Compile Include="AccessControl\StateCombination.cs" />
+    <Compile Include="AccessControl\StateUsage.cs" />
+    <Compile Include="AccessControl\UserSelection.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <Compile Include="BaseSecurityServiceObject.cs" />

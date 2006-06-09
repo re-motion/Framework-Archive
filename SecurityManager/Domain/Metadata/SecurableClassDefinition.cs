@@ -77,6 +77,18 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       set { } // marks property StatePropertyReferences as modifiable
     }
 
+    public DomainObjectCollection StateCombinations
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("StateCombinations"); }
+      set { } // marks property StateCombinations as modifiable
+    }
+
+    public DomainObjectCollection AccessControlLists
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlLists"); }
+      set { } // marks property AccessControlLists as modifiable
+    }
+
     public void AddAccessType (AccessTypeDefinition accessType)
     {
       AccessTypeReference reference = new AccessTypeReference (this.ClientTransaction);
