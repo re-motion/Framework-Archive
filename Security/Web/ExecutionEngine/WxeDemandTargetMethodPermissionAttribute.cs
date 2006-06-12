@@ -30,7 +30,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     // methods and properties
 
-    // TODO: To be removed 
+    // TODO: Property is to be removed 
     [EditorBrowsable (EditorBrowsableState.Never)]
     public new string ParameterName
     {

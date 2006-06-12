@@ -18,7 +18,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Domain\DerivedSecurableObject.cs" />
     <Compile Include="Domain\SecurableObject.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithThisObjectAsSecondParameter.cs" />
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTest.cs" />

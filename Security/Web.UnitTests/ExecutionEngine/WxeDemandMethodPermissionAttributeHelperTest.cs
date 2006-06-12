@@ -60,6 +60,37 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       Assert.AreEqual ("Search", helper.MethodName);
     }
 
+    [Test]
+    public void InitializeWithMethodTypeStaticAndMethodEnum ()
+    {
+      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Methods.Search);
+
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+          typeof (TestFunctionWithThisObject),
+          attribute);
+
+      Assert.AreSame (typeof (TestFunctionWithThisObject), helper.FunctionType);
+      Assert.AreEqual (MethodType.Static, helper.MethodType);
+      Assert.AreSame (typeof (SecurableObject), helper.SecurableClass);
+      Assert.AreEqual ("Search", helper.MethodName);
+    }
+
+    [Test]
+    public void InitializeWithMethodTypeStaticAndMethodEnumFromBaseClass ()
+    {
+      WxeDemandTargetStaticMethodPermissionAttribute attribute = 
+          new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Methods.Search, typeof (DerivedSecurableObject));
+
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+          typeof (TestFunctionWithThisObject),
+          attribute);
+
+      Assert.AreSame (typeof (TestFunctionWithThisObject), helper.FunctionType);
+      Assert.AreEqual (MethodType.Static, helper.MethodType);
+      Assert.AreSame (typeof (DerivedSecurableObject), helper.SecurableClass);
+      Assert.AreEqual ("Search", helper.MethodName);
+    }
+
 
     [Test]
     public void InitializeWithMethodTypeConstructor ()

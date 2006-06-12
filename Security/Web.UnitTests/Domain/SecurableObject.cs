@@ -9,6 +9,13 @@ namespace Rubicon.Security.Web.UnitTests.Domain
 {
   public class SecurableObject : ISecurableObject
   {
+    public enum Methods
+    {
+      Delete,
+      Show,
+      Search
+    }
+
     [DemandMethodPermission (GeneralAccessType.Search)]
     public static void Search ()
     {
