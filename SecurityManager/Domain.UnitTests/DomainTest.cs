@@ -16,11 +16,6 @@ namespace Rubicon.SecurityManager.Domain.UnitTests
 
     // static members and constants
 
-    private static readonly MappingConfiguration s_mappingConfiguration = 
-        new MappingConfiguration (@"SecurityManagerMapping.xml", @"mapping.xsd");
-    private static readonly StorageProviderConfiguration s_storageProviderConfiguration =
-        new StorageProviderConfiguration (@"SecurityManagerStorageProviders.xml", @"storageProviders.xsd");
-
     // member fields
 	
     // construction and disposing
@@ -34,8 +29,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests
     [TestFixtureSetUp]
     public void TestFixtureSetUp ()
     {
-      MappingConfiguration.SetCurrent (s_mappingConfiguration);
-      StorageProviderConfiguration.SetCurrent (s_storageProviderConfiguration);
+      MappingConfiguration.SetCurrent (new MappingConfiguration (@"SecurityManagerMapping.xml", @"mapping.xsd"));
+      StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"SecurityManagerStorageProviders.xml", @"storageProviders.xsd"));
     }
 
     [SetUp]
