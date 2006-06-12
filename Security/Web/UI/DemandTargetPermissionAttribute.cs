@@ -44,6 +44,27 @@ namespace Rubicon.Security.Web.UI
       _methodName = methodName;
     }
 
+    protected DemandTargetPermissionAttribute (object methodEnum)
+    {
+      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
+
+      Enum enumValue = (Enum) methodEnum;
+      Type enumType = enumValue.GetType ();
+
+      // TODO: rewrite with test
+      if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
+      {
+        throw new ArgumentException (string.Format (
+                "Enumerated type '{0}' is not declared as a nested type or the declaring type does not implement interface '{1}'.",
+                enumType.FullName,
+                typeof (ISecurableObject).FullName),
+            "methodEnum");
+      }
+
+      _permissionSource = PermissionSource.SecurableObject;
+      _methodName = enumValue.ToString ();
+    }
+
     // methods and properties
 
     public PermissionSource PermissionSource

@@ -21,6 +21,11 @@ namespace Rubicon.Security.Web.UI
     {
     }
 
+    public DemandTargetMethodPermissionAttribute (object methodEnum)
+      : base (methodEnum)
+    {
+    }
+
     // methods and properties
   }
 }
