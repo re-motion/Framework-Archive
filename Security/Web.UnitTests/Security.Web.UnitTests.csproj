@@ -62,6 +62,7 @@
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithoutPermissionAttribute.cs" />
     <Compile Include="UI\WebSecurityProviderTests\PermissionFromSecurableObjectTest.cs" />
     <Compile Include="UI\WebSecurityProviderTests\PermissionFromWxeFunctionTest.cs" />
+    <Compile Include="UI\WebSecurityProviderTests\WebPermissionProviderTestHelper.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Web.UnitTests.build" />
   </ItemGroup>

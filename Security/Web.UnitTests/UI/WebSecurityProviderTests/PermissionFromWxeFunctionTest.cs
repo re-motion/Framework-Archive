@@ -20,18 +20,15 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
   public class PermissionFromWxeFunctionTest
   {
     private IWebSecurityProvider _securityProvider;
-    private Mockery _mocks;
-    private IWxeSecurityProvider _mockWxeSecurityProvider;
-
+    private WebPermissionProviderTestHelper _testHelper;
+  
     [SetUp]
     public void SetUp ()
     {
       _securityProvider = new WebSecurityProvider ();
 
-      _mocks = new Mockery ();
-
-      _mockWxeSecurityProvider = _mocks.NewMock<IWxeSecurityProvider> ();
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_mockWxeSecurityProvider);
+      _testHelper = new WebPermissionProviderTestHelper ();
+      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
     }
 
     [TearDown]
@@ -43,32 +40,22 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessGranted ()
     {
-      Expect.Once.On (_mockWxeSecurityProvider)
-         .Method ("HasStatelessAccess")
-         .With (typeof (TestFunctionWithThisObject))
-         .Will (Return.Value (true));
+      _testHelper.ExpectHasStatelessAccess (typeof (TestFunctionWithThisObject), true);
 
-      WebSecurityProvider securityProvider = new WebSecurityProvider ();
+      bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 
-      bool hasAccess = securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
-
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
     public void HasAccessDenied ()
     {
-      Expect.Once.On (_mockWxeSecurityProvider)
-         .Method ("HasStatelessAccess")
-         .With (typeof (TestFunctionWithThisObject))
-         .Will (Return.Value (false));
+      _testHelper.ExpectHasStatelessAccess (typeof (TestFunctionWithThisObject), false);
 
-      WebSecurityProvider securityProvider = new WebSecurityProvider ();
+      bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 
-      bool hasAccess = securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
-
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsFalse (hasAccess);
     }
 

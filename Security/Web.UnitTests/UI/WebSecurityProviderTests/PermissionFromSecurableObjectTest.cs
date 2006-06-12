@@ -18,31 +18,16 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
   public class PermissionFromSecurableObjectTest
   {
     private IWebSecurityProvider _securityProvider;
-    private Mockery _mocks;
-    private IObjectSecurityStrategy _mockObjectSecurityStrategy;
-    private ISecurityService _securityService;
-    private IUserProvider _userProvider;
-    private IPrincipal _user;
+    private WebPermissionProviderTestHelper _testHelper;
 
     [SetUp]
     public void SetUp ()
     {
       _securityProvider = new WebSecurityProvider ();
 
-      _mocks = new Mockery ();
-
-      _securityService = _mocks.NewMock<ISecurityService> ();
-      _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _userProvider = _mocks.NewMock<IUserProvider> ();
-      Stub.On (_userProvider)
-          .Method ("GetUser")
-          .WithNoArguments ()
-          .Will (Return.Value (_user));
-
-      _mockObjectSecurityStrategy = _mocks.NewMock<IObjectSecurityStrategy> ();
-
-      SecurityConfiguration.Current.SecurityService = _securityService;
-      SecurityConfiguration.Current.UserProvider = _userProvider;
+      _testHelper = new WebPermissionProviderTestHelper ();
+      SecurityConfiguration.Current.SecurityService = _testHelper.SecurityService;
+      SecurityConfiguration.Current.UserProvider = _testHelper.UserProvider;
     }
 
     [TearDown]
@@ -55,35 +40,22 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessGranted ()
     {
+      _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessType.Read }, true);
 
-      Expect.Once.On (_mockObjectSecurityStrategy)
-          .Method ("HasAccess")
-          .With (_securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Read) })
-          .Will (Return.Value (true));
+      bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
 
-      WebSecurityProvider securityProvider = new WebSecurityProvider ();
-
-      SecurableObject securableObject = new SecurableObject (_mockObjectSecurityStrategy);
-      bool hasAccess = securityProvider.HasAccess (securableObject, new EventHandler (TestEventHandler));
-
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
     public void HasAccessDenied ()
     {
-      Expect.Once.On (_mockObjectSecurityStrategy)
-          .Method ("HasAccess")
-          .With (_securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Read) })
-          .Will (Return.Value (false));
+      _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessType.Read }, false);
 
-      WebSecurityProvider securityProvider = new WebSecurityProvider ();
+      bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
 
-      SecurableObject securableObject = new SecurableObject (_mockObjectSecurityStrategy);
-      bool hasAccess = securityProvider.HasAccess (securableObject, new EventHandler (TestEventHandler));
-
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsFalse (hasAccess);
     }
 
