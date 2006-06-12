@@ -305,6 +305,7 @@
     <Compile Include="UI\Controls\IValidatableControl.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\SecurityDependentProperty.cs" />
     <Compile Include="UI\IWebSecurityProvider.cs" />
     <Compile Include="UI\Controls\LazyContainer.cs">
       <SubType>Code</SubType>

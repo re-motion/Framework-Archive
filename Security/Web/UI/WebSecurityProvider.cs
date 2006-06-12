@@ -59,10 +59,10 @@ namespace Rubicon.Security.Web.UI
       return hasAccess;
     }
 
-    public void CheckAccess (ISecurableObject securableObject, Delegate handler)
-    {
-      throw new Exception ("The method or operation is not implemented.");
-    }
+    //public void CheckAccess (ISecurableObject securableObject, Delegate handler)
+    //{
+    //  throw new Exception ("The method or operation is not implemented.");
+    //}
 
     private List<DemandTargetPermissionAttribute> GetPermissionAttributes (Delegate[] delegates)
     {

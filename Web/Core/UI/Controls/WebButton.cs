@@ -23,6 +23,8 @@ namespace Rubicon.Web.UI.Controls
     // collection for controls (buttons) having PostData but no IPostBackDataHandler. 
       IPostBackDataHandler
   {
+    private static readonly object s_clickEvent = new object ();
+
     private IconInfo _icon;
 #if NET11
   private bool _useSubmitBehavior = true;
@@ -31,6 +33,9 @@ namespace Rubicon.Web.UI.Controls
 #endif
 
     private NaBooleanEnum _useLegacyButton = NaBooleanEnum.Undefined;
+
+    private ISecurableObject _securableObject;
+    private SecurityDependentProperty _securityDependentProperty = SecurityDependentProperty.Visible;
 
     public WebButton ()
     {
@@ -392,17 +397,28 @@ namespace Rubicon.Web.UI.Controls
       if (securityProvider == null)
         return true;
 
-      return securityProvider.HasAccess (null, null);
+      EventHandler clickHandler = (EventHandler) Events[s_clickEvent];
+      if (clickHandler == null)
+        return true;
+      
+      return securityProvider.HasAccess (_securableObject, (EventHandler) Events[s_clickEvent]);
     }
 
     public override bool Visible
     {
       get
       {
-        if (base.Visible)
-          return HasAccess ();
+        if (_securityDependentProperty == SecurityDependentProperty.Visible)
+        {
+          if (base.Visible)
+            return HasAccess ();
+          else
+            return false;
+        }
         else
-          return false;
+        {
+          return base.Visible;
+        }
       }
       set
       {
@@ -410,6 +426,66 @@ namespace Rubicon.Web.UI.Controls
       }
     }
 
+    public override bool Enabled
+    {
+      get
+      {
+        if (_securityDependentProperty == SecurityDependentProperty.Enabled)
+        {
+          if (base.Enabled)
+            return HasAccess ();
+          else
+            return false;
+        }
+        else
+        {
+          return base.Enabled;
+        }
+      }
+      set
+      {
+        base.Enabled = value;
+      }
+    }
+
+    [Category ("Action")]
+    public new event EventHandler Click
+    {
+      add
+      {
+        base.Events.AddHandler (s_clickEvent, value);
+      }
+      remove
+      {
+        base.Events.RemoveHandler (s_clickEvent, value);
+      }
+    }
+
+    protected override void OnClick (EventArgs e)
+    {
+      base.OnClick (e);
+
+      EventHandler clickHandler = (EventHandler) Events[s_clickEvent];
+      if (clickHandler != null)
+        clickHandler (this, e);
+    }
+
+    [Browsable (false)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public ISecurableObject SecurableObject
+    {
+      get { return _securableObject; }
+      set { _securableObject = value; }
+    }
+
+    [Category ("Behavior")]
+    [DefaultValue (SecurityDependentProperty.Visible)]
+    public SecurityDependentProperty SecurityDependentProperty
+    {
+      get { return _securityDependentProperty; }
+      set { _securityDependentProperty = value; }
+    }
+	
     #region protected virtual string CssClass...
     /// <summary> Gets the CSS-Class applied to the <see cref="WebButton"/> itself. </summary>
     /// <remarks> 

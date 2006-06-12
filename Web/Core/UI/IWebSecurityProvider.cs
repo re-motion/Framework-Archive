@@ -8,6 +8,6 @@ namespace Rubicon.Web.UI
   {
     bool HasAccess (ISecurableObject securableObject, Delegate handler);
     //bool HasStatelessAccess (Type functionType);
-    void CheckAccess (ISecurableObject securableObject, Delegate handler);
+    //void CheckAccess (ISecurableObject securableObject, Delegate handler);
   }
 }
