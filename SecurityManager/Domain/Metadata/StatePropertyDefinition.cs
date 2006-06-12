@@ -96,6 +96,11 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       throw new ArgumentException (string.Format ("A state with the value {0} is not defined for the property '{1}'.", stateValue, this.Name), "stateValue");
     }
 
+    public new StateDefinition this[string stateName]
+    {
+      get { return GetStateByName (stateName); }
+    }
+
     public void AddState (string stateName, int value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("stateName", stateName);

@@ -39,9 +39,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessControl\AccessControlListFinderTest.cs" />
+    <Compile Include="AccessControl\AccessControlObjectAssert.cs" />
+    <Compile Include="AccessControl\AccessControlTestHelper.cs" />
+    <Compile Include="AccessControl\StateCombinationTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\DomainConfigurationTest.cs" />
     <Compile Include="Configuration\TestDomainConfiguration.cs" />
@@ -52,6 +57,8 @@
     <Compile Include="Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="DomainTest.cs" />
+    <Compile Include="TestDomain\Order.cs" />
+    <Compile Include="TestDomain\SecurityStates.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Domain.UnitTests.build" />
   </ItemGroup>
@@ -67,6 +74,10 @@
     <ProjectReference Include="..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Rubicon.Data.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain\SecurityManager.Domain.csproj">
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>

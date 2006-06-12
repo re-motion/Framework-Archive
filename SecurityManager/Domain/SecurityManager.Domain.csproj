@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="AccessControl\AccessControlEntry.cs" />
     <Compile Include="AccessControl\AccessControlList.cs" />
+    <Compile Include="AccessControl\AccessControlListFinder.cs" />
     <Compile Include="AccessControl\ClientSelection.cs" />
     <Compile Include="AccessControl\AccessControlObject.cs" />
     <Compile Include="AccessControl\GroupSelection.cs" />

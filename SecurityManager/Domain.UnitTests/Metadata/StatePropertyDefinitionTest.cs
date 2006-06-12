@@ -61,6 +61,17 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     }
 
     [Test]
+    public void Indexer_ValidName ()
+    {
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+
+      StateDefinition actualState = stateProperty[MetadataTestHelper.Confidentiality_ConfidentialName];
+
+      StateDefinition expectedState = _testHelper.CreateConfidentialState ();
+      MetadataObjectAssert.AreEqual (expectedState, actualState, "Confidential state");
+    }
+
+    [Test]
     public void AddState_WithNameAndValue ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
