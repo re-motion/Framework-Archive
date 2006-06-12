@@ -44,6 +44,21 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       Assert.AreEqual ("Show", helper.MethodName);
     }
 
+    [Test]
+    public void InitializeWithMethodTypeInstanceAndMethodEnum ()
+    {
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute (SecurableObject.Methods.Show);
+
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+          typeof (TestFunctionWithThisObject),
+          attribute);
+
+      Assert.AreSame (typeof (TestFunctionWithThisObject), helper.FunctionType);
+      Assert.AreEqual (MethodType.Instance, helper.MethodType);
+      Assert.AreSame (typeof (SecurableObject), helper.SecurableClass);
+      Assert.AreEqual ("Show", helper.MethodName);
+    }
+
 
     [Test]
     public void InitializeWithMethodTypeStatic ()
