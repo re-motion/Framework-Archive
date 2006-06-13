@@ -250,10 +250,9 @@
     <Compile Include="UI\Controls\WebButtonMock.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\WebButtonSecurityTest.cs" />
-    <Compile Include="UI\Controls\WebButtonTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="UI\Controls\WebButtonTests\SecurityTestWithEnabled.cs" />
+    <Compile Include="UI\Controls\WebButtonTests\SecurityTestWithVisible.cs" />
+    <Compile Include="UI\Controls\WebButtonTests\WcagTest.cs" />
     <Compile Include="UI\Controls\WebControlTest.cs">
       <SubType>Code</SubType>
     </Compile>

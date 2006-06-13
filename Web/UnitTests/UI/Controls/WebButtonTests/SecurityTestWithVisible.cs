@@ -12,7 +12,7 @@ using Rubicon.Web.UI.Controls;
 namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 {
   [TestFixture]
-  public class SecurityTestWithEnabled
+  public class SecurityTestWithVisible
   {
     private WebButton _button;
     private Mockery _mocks;
@@ -28,18 +28,18 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_mockWebSecurityProvider);
       _button = new WebButton ();
-      _button.SecurityDependentProperty = SecurityDependentProperty.Enabled;
+      _button.SecurityDependentProperty = SecurityDependentProperty.Visible;
       _button.SecurableObject = _mockSecurableObject;
     }
 
     [Test]
-    public void SecurityDepenedentPropertySetToEnabled ()
+    public void SecurityDepenedentPropertySetToVisible ()
     {
       Expect.Never.On (_mockWebSecurityProvider);
 
       _button.Click += TestHandler;
-      _button.Visible = true;
-      bool isVisible = _button.Visible;
+      _button.Enabled = true;
+      bool enabled = _button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
     }
@@ -52,11 +52,11 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
       Expect.Never.On (_mockWebSecurityProvider);
 
       _button.Click += TestHandler;
-      _button.Enabled = true;
-      bool enabled = _button.Enabled;
+      _button.Visible = true;
+      bool isVisible = _button.Visible;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (enabled);
+      Assert.IsTrue (isVisible);
     }
 
     [Test]
@@ -67,11 +67,11 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
       Expect.Never.On (_mockWebSecurityProvider);
 
       _button.Click += TestHandler;
-      _button.Enabled = false;
-      bool enabled = _button.Enabled;
+      _button.Visible = false;
+      bool isVisible = _button.Visible;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (enabled);
+      Assert.IsFalse (isVisible);
     }
 
     [Test]
@@ -79,11 +79,11 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     {
       Expect.Never.On (_mockWebSecurityProvider);
 
-      _button.Enabled = true;
-      bool enabled = _button.Enabled;
+      _button.Visible = true;
+      bool isVisible = _button.Visible;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (enabled);
+      Assert.IsTrue (isVisible);
     }
 
     [Test]
@@ -91,27 +91,27 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     {
       Expect.Never.On (_mockWebSecurityProvider);
 
-      _button.Enabled = false;
-      bool enabled = _button.Enabled;
+      _button.Visible = false;
+      bool isVisible = _button.Visible;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (enabled);
+      Assert.IsFalse (isVisible);
     }
 
     [Test]
     public void EvaluateTrue_FromTrueAndAccessGranted ()
     {
-      Expect.Once.On (_mockWebSecurityProvider)
+       Expect.Once.On (_mockWebSecurityProvider)
           .Method ("HasAccess")
           .With (_mockSecurableObject, new EventHandler (TestHandler))
           .Will (Return.Value (true));
 
       _button.Click += TestHandler;
-      _button.Enabled = true;
-      bool enabled = _button.Enabled;
+      _button.Visible = true;
+      bool isVisible = _button.Visible;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (enabled);
+      Assert.IsTrue (isVisible);
     }
 
     [Test]
@@ -123,11 +123,11 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
           .Will (Return.Value (false));
 
       _button.Click += TestHandler;
-      _button.Enabled = true;
-      bool enabled = _button.Enabled;
+      _button.Visible = true;
+      bool isVisible = _button.Visible;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (enabled);
+      Assert.IsFalse (isVisible);
     }
 
     [Test]
@@ -136,11 +136,11 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
       Expect.Never.On (_mockWebSecurityProvider);
 
       _button.Click += TestHandler;
-      _button.Enabled = false;
-      bool enabled = _button.Enabled;
+      _button.Visible = false;
+      bool isVisible = _button.Visible;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (enabled);
+      Assert.IsFalse (isVisible);
     }
 
     private void TestHandler (object sender, EventArgs e)
