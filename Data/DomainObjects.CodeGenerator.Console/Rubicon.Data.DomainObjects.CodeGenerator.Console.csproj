@@ -100,7 +100,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
-    <Content Include="Doc\howToPerformATest.txt" />
     <Content Include="Doc\ReadMe_DOGen.txt" />
     <Compile Include="Arguments.cs">
       <SubType>Code</SubType>
@@ -120,6 +119,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy $(ProjectDir)..\DomainObjects\*.xsd $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

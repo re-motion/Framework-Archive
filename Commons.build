@@ -155,7 +155,7 @@
   </target>
 
   <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, 
-      Data.DomainObjects.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, 
+      Data.DomainObjects.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, Data.DomainObjects.CodeGenerator.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests,
       SecurityManager.Domain.UnitTests">
     <echo message="Target has executed."/>
@@ -401,6 +401,29 @@
         <formatter type="Plain" />
         <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
       </nunit2>
+    </if>
+  </target>
+
+  <target name="Data.DomainObjects.CodeGenerator.UnitTests">
+    <call target="Core" cascade="false"/>
+    <call target="Data.DomainObjects" cascade="false"/>
+    <call target="Data.DomainObjects.CodeGenerator" cascade="false"/>
+    <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
+
+    <property name="project.name" value="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests" />
+    <property name="project.dir" value="Data/DomainObjects.CodeGenerator.UnitTests" />
+    <property name="project.output" value="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests" />
+    <property name="project.extension" value="dll" />
+    <call target="buildtest" />
+
+    <if test="${build.step.run-tests}">
+
+      <echo message="Running unit tests..." />
+      <nunit2>
+        <formatter type="Plain" />
+        <test assemblyname="${build.test.outputdir}/${project.output}.${project.extension}" />
+      </nunit2>
+
     </if>
   </target>
 

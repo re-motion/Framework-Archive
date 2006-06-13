@@ -3,6 +3,7 @@ using System.Xml;
 using System.Xml.Schema;
 
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Schemas;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
@@ -12,32 +13,25 @@ public class StorageProviderConfigurationLoader : BaseFileLoader
 
   // static members and constants
 
-  public const string ConfigurationAppSettingKey =
-      "Rubicon.Data.DomainObjects.Persistence.Configuration.ConfigurationFile";
-
-  public const string SchemaAppSettingKey = "Rubicon.Data.DomainObjects.Persistence.Configuration.SchemaFile";
-
+  public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Persistence.Configuration.ConfigurationFile";
   public const string DefaultConfigurationFile = "storageProviders.xml";
-  public const string DefaultSchemaFile = "storageProviders.xsd";
 
   public static StorageProviderConfigurationLoader Create ()
   {
-    return new StorageProviderConfigurationLoader (
-        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
-        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, DefaultSchemaFile));
+    return new StorageProviderConfigurationLoader (LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile));
   }
 
   // member fields
 
   // construction and disposing
 
-  public StorageProviderConfigurationLoader (string configurationFile, string schemaFile)
+  public StorageProviderConfigurationLoader (string configurationFile)
   {
     try
     {
       base.Initialize (
           configurationFile, 
-          schemaFile, 
+          new SchemaRetriever (SchemaRetriever.SchemaType.StorageProviders), 
           true,
           new PrefixNamespace[] {PrefixNamespace.StorageProviderConfigurationNamespace}, 
           PrefixNamespace.StorageProviderConfigurationNamespace);

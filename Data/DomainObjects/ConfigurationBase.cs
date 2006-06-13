@@ -18,7 +18,6 @@ public class ConfigurationBase
 
   private string _applicationName;
   private string _configurationFile;
-  private string _schemaFile;
   private bool _resolveTypes;
 
   // construction and disposing
@@ -34,7 +33,6 @@ public class ConfigurationBase
 
     _applicationName = loader.GetApplicationName ();
     _configurationFile = loader.ConfigurationFile;
-    _schemaFile = loader.SchemaFile;
     _resolveTypes = loader.ResolveTypes;
   }
 
@@ -54,14 +52,6 @@ public class ConfigurationBase
   public string ConfigurationFile
   {
     get { return _configurationFile; }
-  }
-
-  /// <summary>
-  /// Gets the schema file that the <see cref="ConfigurationFile"/> has been validated against.
-  /// </summary>
-  public string SchemaFile
-  {
-    get { return _schemaFile; }
   }
 
   /// <summary>

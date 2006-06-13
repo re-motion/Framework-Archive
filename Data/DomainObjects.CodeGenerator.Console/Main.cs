@@ -31,13 +31,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
       try
       {
         StorageProviderConfiguration storageProviderConfiguration = new StorageProviderConfiguration (
-            Path.Combine (arguments.ConfigDirectory, StorageProviderConfigurationLoader.DefaultConfigurationFile),
-            Path.Combine (arguments.SchemaDirectory, StorageProviderConfigurationLoader.DefaultSchemaFile));
+            Path.Combine (arguments.ConfigDirectory, StorageProviderConfigurationLoader.DefaultConfigurationFile));
 
         MappingConfiguration mappingConfiguration = new MappingConfiguration (
-            Path.Combine (arguments.ConfigDirectory, MappingLoader.DefaultConfigurationFile),
-            Path.Combine (arguments.SchemaDirectory, MappingLoader.DefaultSchemaFile),
-            false);
+            Path.Combine (arguments.ConfigDirectory, MappingLoader.DefaultConfigurationFile), false);
 
         if ((arguments.Mode & OperationMode.Sql) != 0)
           SqlFileBuilder.Build (mappingConfiguration, storageProviderConfiguration, arguments.SqlOutput);

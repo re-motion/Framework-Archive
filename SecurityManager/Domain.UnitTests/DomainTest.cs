@@ -29,8 +29,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests
     [TestFixtureSetUp]
     public void TestFixtureSetUp ()
     {
-      MappingConfiguration.SetCurrent (new MappingConfiguration (@"SecurityManagerMapping.xml", @"mapping.xsd"));
-      StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"SecurityManagerStorageProviders.xml", @"storageProviders.xsd"));
+      MappingConfiguration.SetCurrent (new MappingConfiguration (@"SecurityManagerMapping.xml"));
+      StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"SecurityManagerStorageProviders.xml"));
     }
 
     [SetUp]

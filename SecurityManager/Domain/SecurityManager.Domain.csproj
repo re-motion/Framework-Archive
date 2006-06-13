@@ -74,22 +74,10 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="SecurityManager.Domain.build" />
-    <None Include="mapping.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\SetupDB.sql" />
     <Content Include="SecurityManagerMapping.xml" />
     <Content Include="SecurityManagerStorageProviders.xml" />
-    <Content Include="types.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="storageProviders.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

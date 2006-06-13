@@ -7,6 +7,7 @@ using System.Configuration;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Schemas;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
@@ -17,32 +18,26 @@ public class MappingLoader : BaseFileLoader
   // static members and constants
  
   public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.ConfigurationFile";
-  public const string SchemaAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.SchemaFile";
-
   public const string DefaultConfigurationFile = "mapping.xml";
-  public const string DefaultSchemaFile = "mapping.xsd";
   
   public static MappingLoader Create ()
   {
-    return new MappingLoader (
-        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
-        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, DefaultSchemaFile),
-        true);
+    return new MappingLoader (LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile), true);
   }
 
   // member fields
 
   // construction and disposing
 
-  public MappingLoader (string configurationFile, string schemaFile, bool resolveTypes)
+  public MappingLoader (string configurationFile, bool resolveTypes)
   {
     try
     {
       base.Initialize (
-          configurationFile, 
-          schemaFile, 
+          configurationFile,
+          new SchemaRetriever (SchemaRetriever.SchemaType.Mapping),
           resolveTypes,
-          new PrefixNamespace[] {PrefixNamespace.MappingNamespace}, 
+          new PrefixNamespace[] { PrefixNamespace.MappingNamespace },
           PrefixNamespace.MappingNamespace);
     }
     catch (ConfigurationException e)

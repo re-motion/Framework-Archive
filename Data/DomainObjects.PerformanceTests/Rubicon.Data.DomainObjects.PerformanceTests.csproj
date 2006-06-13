@@ -138,8 +138,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy $(SolutionDir)DomainObjects\*.xsd $(TargetDir)
-copy $(ProjectDir)*.xml $(TargetDir)
+    <PostBuildEvent>copy $(ProjectDir)*.xml $(TargetDir)
 copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>

@@ -170,8 +170,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)..\DomainObjects\*.xsd" "$(TargetDir)*.xsd"
-copy "$(ProjectDir)*.xml" "$(TargetDir)*.xml"
+    <PostBuildEvent>copy "$(ProjectDir)*.xml" "$(TargetDir)*.xml"
 copy "$(ProjectDir)Database\*.sql" "$(TargetDir)*.sql"</PostBuildEvent>
   </PropertyGroup>
 </Project>

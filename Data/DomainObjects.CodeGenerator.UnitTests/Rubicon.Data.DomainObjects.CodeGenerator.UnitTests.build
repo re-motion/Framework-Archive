@@ -13,6 +13,7 @@
       <sources failonempty="true">
         <include name="**/*.cs"/>
         <exclude name="IntegrationTests/TestDomain/*.cs" />
+        <exclude name="bin/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">

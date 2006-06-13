@@ -487,6 +487,7 @@
     <Compile Include="Resources\ResourceManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Schemas\SchemaRetrieverTest.cs" />
     <Compile Include="SerializationBaseTest.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -757,6 +758,7 @@
     </PreBuildEvent>
     <PostBuildEvent>copy "$(ProjectDir)Configuration\Mapping\TestMappings\*.xml" "$(TargetDir)"
 copy "$(ProjectDir)TableInheritance\*.xml" "$(TargetDir)"
-copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"</PostBuildEvent>
+copy "$(ProjectDir)Database\*.sql" "$(TargetDir)"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

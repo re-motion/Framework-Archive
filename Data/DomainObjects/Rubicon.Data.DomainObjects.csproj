@@ -401,6 +401,7 @@
     <Compile Include="ReflectionUtility.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Schemas\SchemaRetriever.cs" />
     <Compile Include="StateType.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -410,26 +411,24 @@
     <None Include="AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>
-    <None Include="mapping.xsd">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="queries.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Rubicon.Data.DomainObjects.build" />
+    <EmbeddedResource Include="Schemas\mapping.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\queries.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\storageProviders.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Schemas\types.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Doc\How to add a new property type.txt" />
     <Content Include="Doc\How to make a build.txt" />
     <Content Include="Doc\include\DomainObjects.xml" />
     <Content Include="Doc\include\NamespaceDoc.xml" />
     <Content Include="Doc\WhatsNew_Rubicon.Data.DomainObjects.txt" />
-    <Content Include="storageProviders.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="types.xsd">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -15,7 +15,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
 
     private const string c_createTestDataFileName = "CreateTableInheritanceTestData.sql";
 
-    private static readonly MappingConfiguration s_mappingConfiguration = new MappingConfiguration (@"TableInheritanceMapping.xml", @"mapping.xsd");
+    private static readonly MappingConfiguration s_mappingConfiguration = new MappingConfiguration (@"TableInheritanceMapping.xml");
 
     // member fields
 

@@ -72,13 +72,13 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
     // construction and disposing
 
-    public MappingConfiguration (string configurationFile, string schemaFile)
-      : this (configurationFile, schemaFile, true)
+    public MappingConfiguration (string configurationFile)
+      : this (configurationFile, true)
     {
     }
 
-    public MappingConfiguration (string configurationFile, string schemaFile, bool resolveTypes)
-      : this (new MappingLoader (configurationFile, schemaFile, resolveTypes))
+    public MappingConfiguration (string configurationFile, bool resolveTypes)
+      : this (new MappingLoader (configurationFile, resolveTypes))
     {
     }
 

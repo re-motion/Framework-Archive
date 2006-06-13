@@ -161,7 +161,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
 
       DeleteOnDemand (@"TestDirectory\SetupDB.sql");
 
-      StorageProviderConfiguration storageProviderConfiguration = new StorageProviderConfiguration ("emptyStorageProviders.xml", "storageProviders.xsd");
+      StorageProviderConfiguration storageProviderConfiguration = new StorageProviderConfiguration ("emptyStorageProviders.xml");
       storageProviderConfiguration.StorageProviderDefinitions.Add (_firstStorageProviderDefinition);
 
       SqlFileBuilder.Build (MappingConfiguration, storageProviderConfiguration, "TestDirectory");

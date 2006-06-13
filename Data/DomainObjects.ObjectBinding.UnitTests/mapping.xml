@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
+<mapping application="UnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\mapping.xsd">
 	<classes>
 		<class id="Order">
 			<type>Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.ObjectBinding.UnitTests</type>

@@ -4,6 +4,7 @@ using System.Xml;
 using System.Xml.Schema;
 
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Schemas;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
@@ -19,7 +20,6 @@ public class BaseFileLoader
   private XmlDocument _document;
   private ConfigurationNamespaceManager _namespaceManager;
   private string _configurationFile;
-  private string _schemaFile;
   private bool _resolveTypes;
 
   // construction and disposing
@@ -29,40 +29,39 @@ public class BaseFileLoader
   }
 
   protected void Initialize (
-      string configurationFile, 
-      string schemaFile, 
+      string configurationFile,
+      SchemaRetriever schemaRetriever,
       bool resolveTypes,
-      PrefixNamespace[] namespaces, 
+      PrefixNamespace[] namespaces,
       PrefixNamespace schemaNamespace)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
-    ArgumentUtility.CheckNotNullOrEmpty ("schemaFile", schemaFile);
+    ArgumentUtility.CheckNotNull ("schemaRetriever", schemaRetriever);
     ArgumentUtility.CheckNotNull ("namespaces", namespaces);
     ArgumentUtility.CheckNotNull ("schemaNamespace", schemaNamespace);
 
-    if (!File.Exists (configurationFile)) throw new FileNotFoundException (string.Format ("Configuration file '{0}' could not be found.", configurationFile) , configurationFile);
-    if (!File.Exists (schemaFile)) throw new FileNotFoundException (string.Format ("Schema file '{0}' could not be found.", schemaFile), schemaFile);
+    if (!File.Exists (configurationFile))
+      throw new FileNotFoundException (string.Format ("Configuration file '{0}' could not be found.", configurationFile), configurationFile);
 
     _configurationFile = Path.GetFullPath (configurationFile);
-    _schemaFile = Path.GetFullPath (schemaFile);
     _resolveTypes = resolveTypes;
 
-    _document = LoadConfigurationFile (_configurationFile, _schemaFile, schemaNamespace.Uri);
+    _document = LoadConfigurationFile (_configurationFile, schemaRetriever, schemaNamespace.Uri);
     _namespaceManager = new ConfigurationNamespaceManager (_document, namespaces);
   }
 
   // methods and properties
 
   private XmlDocument LoadConfigurationFile (
-      string configurationFile, 
-      string schemaFile,
+      string configurationFile,
+      SchemaRetriever schemaRetriever,
       string schemaNamespace)
   {
     using (XmlTextReader textReader = new XmlTextReader (configurationFile))
     {
       XmlReaderSettings validatingReaderSettings = new XmlReaderSettings ();
       validatingReaderSettings.ValidationType = ValidationType.Schema;
-      validatingReaderSettings.Schemas.Add (schemaNamespace, schemaFile);
+      validatingReaderSettings.Schemas.Add (schemaRetriever.GetSchemaSet ());
 
       using (XmlReader validatingReader = XmlReader.Create (textReader, validatingReaderSettings))
       {
@@ -90,11 +89,6 @@ public class BaseFileLoader
   public string ConfigurationFile
   {
     get { return _configurationFile; }
-  }
-
-  public string SchemaFile
-  {
-    get { return _schemaFile; }
   }
 
   public bool ResolveTypes

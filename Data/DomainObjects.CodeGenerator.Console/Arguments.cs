@@ -39,11 +39,6 @@ public class Arguments
       Placeholder = "directory")]
   public string ConfigDirectory = string.Empty;
 
-  [CommandLineStringArgument ("schema", true,
-      Description = "Search for XML schema files in this directory (default: current).",
-      Placeholder = "directory")]
-  public string SchemaDirectory = string.Empty;
-
   [CommandLineStringArgument ("dobase", true, 
       Description = "Create domain object classes derived from this class (default: " + DomainObjectBuilder.DefaultBaseClass + ")",
       Placeholder = "classname")]

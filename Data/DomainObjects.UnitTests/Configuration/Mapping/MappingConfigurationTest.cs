@@ -29,39 +29,33 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void InitializeWithFileNamesOnly ()
     {
-      MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd");
+      MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml");
 
       string configurationFile = Path.GetFullPath (@"mappingWithMinimumData.xml");
-      string schemaFile = Path.GetFullPath (@"mapping.xsd");
 
       Assert.AreEqual (configurationFile, configuration.ConfigurationFile);
-      Assert.AreEqual (schemaFile, configuration.SchemaFile);
       Assert.IsTrue (configuration.ResolveTypes);
     }
 
     [Test]
     public void InitializeWithFileNamesAndResolveTypes ()
     {
-      MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd", true);
+      MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", true);
 
       string configurationFile = Path.GetFullPath (@"mappingWithMinimumData.xml");
-      string schemaFile = Path.GetFullPath (@"mapping.xsd");
 
       Assert.AreEqual (configurationFile, configuration.ConfigurationFile);
-      Assert.AreEqual (schemaFile, configuration.SchemaFile);
       Assert.IsTrue (configuration.ResolveTypes);
     }
 
     [Test]
     public void InitializeWithLoaderAndResolveTypes ()
     {
-      MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"mappingWithMinimumData.xml", @"mapping.xsd", true));
+      MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"mappingWithMinimumData.xml", true));
 
       string configurationFile = Path.GetFullPath (@"mappingWithMinimumData.xml");
-      string schemaFile = Path.GetFullPath (@"mapping.xsd");
 
       Assert.AreEqual (configurationFile, configuration.ConfigurationFile);
-      Assert.AreEqual (schemaFile, configuration.SchemaFile);
       Assert.IsTrue (configuration.ResolveTypes);
     }
 
@@ -70,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     {
       try
       {
-        MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"mappingWithMinimumData.xml", @"mapping.xsd", true));
+        MappingConfiguration configuration = new MappingConfiguration (new MappingLoader (@"mappingWithMinimumData.xml", true));
         MappingConfiguration.SetCurrent (configuration);
 
         Assert.AreSame (configuration, MappingConfiguration.Current);
@@ -86,7 +80,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         "Argument 'mappingConfiguration' must have property 'ResolveTypes' set.\r\nParameter name: mappingConfiguration")]
     public void SetCurrentRejectsUnresolvedTypes ()
     {
-      MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", @"mapping.xsd", false);
+      MappingConfiguration configuration = new MappingConfiguration (@"mappingWithMinimumData.xml", false);
       MappingConfiguration.SetCurrent (configuration);
     }
 
@@ -159,7 +153,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void MappingWithUnresolvedTypes ()
     {
       MappingConfiguration configuration = new MappingConfiguration (
-          new MappingLoader (@"mappingWithUnresolvedTypes.xml", @"mapping.xsd", false));
+          new MappingLoader (@"mappingWithUnresolvedTypes.xml", false));
 
       Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);
     }
@@ -168,7 +162,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     public void EntireMappingWithUnresolvedTypes ()
     {
       MappingConfiguration configuration = new MappingConfiguration (
-          new MappingLoader (@"entireMappingWithUnresolvedTypes.xml", @"mapping.xsd", false));
+          new MappingLoader (@"entireMappingWithUnresolvedTypes.xml", false));
 
       Assert.IsFalse (configuration.ResolveTypes);
       Assert.IsFalse (configuration.ClassDefinitions.AreResolvedTypesRequired);

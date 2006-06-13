@@ -46,8 +46,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     [SetUp]
     public virtual void SetUp ()
     {
-      _storageProviderConfiguration = new StorageProviderConfiguration ("storageProviders.xml", "storageProviders.xsd");
-      _mappingConfiguration = new MappingConfiguration ("mapping.xml", "mapping.xsd", false);
+      _storageProviderConfiguration = new StorageProviderConfiguration ("storageProviders.xml");
+      _mappingConfiguration = new MappingConfiguration ("mapping.xml", false);
 
       _orderItemClass = MappingConfiguration.ClassDefinitions.GetMandatory ("OrderItem");
       _orderClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Order");

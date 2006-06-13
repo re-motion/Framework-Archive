@@ -61,7 +61,7 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
     try
     {
       mappingFile = GetMappingFilePath (projectPath);
-      MappingLoader mappingLoader = new MappingLoader (mappingFile, GetMappingSchemaPath (projectPath), true);
+      MappingLoader mappingLoader = new MappingLoader (mappingFile, true);
       MappingConfiguration.SetCurrent (new MappingConfiguration (mappingLoader));
     }
     catch (Exception e)
@@ -94,14 +94,6 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
         projectPath,
         MappingLoader.ConfigurationAppSettingKey,
         projectPath + @"\bin\mapping.xml");
-  }
-
-  private string GetMappingSchemaPath (string projectPath)
-  {
-    return GetFilePathFromWebConfig (
-        projectPath,
-        MappingLoader.SchemaAppSettingKey,
-        projectPath + @"\bin\mapping.xsd");
   }
 
   private string GetFilePathFromWebConfig (string projectPath, string configurationKey, string defaultPath)

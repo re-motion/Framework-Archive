@@ -37,10 +37,6 @@
       <fileset basedir="${build.outputdir}">
         <include name="SecurityManagerMapping.xml" />
         <include name="SecurityManagerStorageProviders.xml" />
-
-        <include name="mapping.xsd" />
-        <include name="storageProviders.xsd" />
-        <include name="types.xsd" />
       </fileset>
     </copy>
 

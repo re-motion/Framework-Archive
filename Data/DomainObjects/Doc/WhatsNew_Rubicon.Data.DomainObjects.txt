@@ -1,3 +1,24 @@
+1.7.6.0
+=======
+
+- Mapping, StorageProviders, Queries:
+  Die XML Schema Dateien mapping.xsd, storageProviders.xsd und queries.xsd sind jetzt als Ressource in der Assembly
+  Rubicon.Data.DomainObjects enthalten und müssen daher nicht mehr im bin Verzeichnis der Projekte liegen.
+
+  Damit entfallen auch die folgenden web.config Einträge:
+    * Rubicon.Data.DomainObjects.Mapping.SchemaFile
+    * Rubicon.Data.DomainObjects.Persistence.Configuration.SchemaFile
+    * Rubicon.Data.DomainObjects.Queries.Configuration.SchemaFile
+
+- Concrete Table Inheritance:
+  Hat eine Vererbungshierarchie abstrakte Basisklassen können deren abgeleitete Klassen in unterschiedliche Tabellen 
+  persistiert werden. Dazu wird bei den abstrakten Klassen im Mapping kein <entity> Element angegeben. Jede Tabelle enthält
+  dabei auch die Spalten der abstrakten Basisklassen.
+  
+  Bei der Generierung der SQL Skripts mit DoGen wird dies berücksichtigt. Weiters wird eine View pro Klasse erstellt, 
+  die alle Objekte dieser und ihrere abgeleiteten Klassen zurückgibt. Diese können für Datenbankabfragen verwendet werden.
+  
+
 1.7.2.0
 =======
 

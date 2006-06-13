@@ -8,7 +8,7 @@
     targetNamespace="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0" 
     xml:lang="en">
 
-  <xs:import namespace="http://www.rubicon-it.com/Data/DomainObjects/Types" schemaLocation="types.xsd" />
+  <xs:import namespace="http://www.rubicon-it.com/Data/DomainObjects/Types" />
 
   <xs:element name="queries">
     <xs:complexType>

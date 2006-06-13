@@ -26,13 +26,12 @@ public class QueryConfiguration : ConfigurationBase
   /// <list type="bullet">
   ///   <item>
   ///     <description>
-  ///       If the application configuration file (e.g. web.config, app.config) contains the keys 
-  ///       <b>Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile</b> and
-  ///       <b>Rubicon.Data.DomainObjects.Queries.Configuration.SchemaFile</b> specifying the configuration file and the schema file for verficiation those are used.
+  ///       If the application configuration file (e.g. web.config, app.config) contains the key 
+  ///       <b>Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile</b> specifying the configuration file this is used.
   ///     </description>  
   ///   </item>
   ///   <item>
-  ///     <description>The files <b>queries.xml</b> and <b>queries.xsd</b> must be present in the same directory as the assemblies reside.</description>
+  ///     <description>The file <b>queries.xml</b>  must be present in the same directory as the assemblies reside.</description>
   ///   </item>  
   /// </list>
   /// </para>
@@ -76,10 +75,9 @@ public class QueryConfiguration : ConfigurationBase
   /// Initializes a new instance of the <b>QueryConfiguration</b> class from an XML configuration file and an XML schema file.
   /// </summary>
   /// <param name="configurationFile">Configuration information is read from this file.</param>
-  /// <param name="schemaFile">The <paramref name="schemaFile"/> is used to verify the correctness of the specified <paramref name="configurationFile"/>.</param>
   /// <exception cref="QueryConfigurationException">The query configuration could not be read from the specified <paramref name="configurationFile"/>.</exception>
-  public QueryConfiguration (string configurationFile, string schemaFile) 
-      : this (new QueryConfigurationLoader (configurationFile, schemaFile))
+  public QueryConfiguration (string configurationFile) 
+      : this (new QueryConfigurationLoader (configurationFile))
   {
   }
 

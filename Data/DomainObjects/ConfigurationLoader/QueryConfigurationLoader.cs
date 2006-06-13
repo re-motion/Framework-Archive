@@ -4,6 +4,7 @@ using System.Xml.Schema;
 
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.Data.DomainObjects.Schemas;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
@@ -13,19 +14,12 @@ public class QueryConfigurationLoader : BaseFileLoader
 
   // static members and constants
 
-  public const string ConfigurationAppSettingKey = 
-      "Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile";
-
-  public const string SchemaAppSettingKey = "Rubicon.Data.DomainObjects.Queries.Configuration.SchemaFile";
-
+  public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Queries.Configuration.ConfigurationFile";
   public const string DefaultConfigurationFile = "queries.xml";
-  public const string DefaultSchemaFile = "queries.xsd";
 
   public static QueryConfigurationLoader Create ()
   {
-    return new QueryConfigurationLoader (
-        LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile),
-        LoaderUtility.GetXmlFileName (SchemaAppSettingKey, DefaultSchemaFile));
+    return new QueryConfigurationLoader (LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile));
   }
 
   // member fields
@@ -33,13 +27,13 @@ public class QueryConfigurationLoader : BaseFileLoader
   // construction and disposing
 
   //TODO: resolve parameter
-  public QueryConfigurationLoader (string configurationFile, string schemaFile)
+  public QueryConfigurationLoader (string configurationFile)
   {
     try
     {
       base.Initialize (
           configurationFile, 
-          schemaFile, 
+          new SchemaRetriever (SchemaRetriever.SchemaType.Queries), 
           true,
           new PrefixNamespace[] {PrefixNamespace.QueryConfigurationNamespace}, 
           PrefixNamespace.QueryConfigurationNamespace);

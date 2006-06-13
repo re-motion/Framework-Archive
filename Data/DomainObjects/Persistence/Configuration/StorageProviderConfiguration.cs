@@ -44,8 +44,8 @@ public class StorageProviderConfiguration : ConfigurationBase
 
   // construction and disposing
 
-  public StorageProviderConfiguration (string configurationFile, string schemaFile) 
-      : this (new StorageProviderConfigurationLoader (configurationFile, schemaFile))
+  public StorageProviderConfiguration (string configurationFile) 
+      : this (new StorageProviderConfigurationLoader (configurationFile))
   {
   }
 
