@@ -279,9 +279,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       StatePropertyDefinition property1 = _importer.StateProperties[new Guid ("00000000-0000-0000-0002-000000000001")];
       StatePropertyDefinition property2 = _importer.StateProperties[new Guid ("00000000-0000-0000-0001-000000000001")];
 
-      Assert.AreEqual (1, classDefinition.StatePropertyReferences.Count, "State property reference count");
-      StatePropertyReference propertyReference = (StatePropertyReference) classDefinition.StatePropertyReferences[0];
-      Assert.AreSame (property2, propertyReference.StateProperty);
+      Assert.AreEqual (1, classDefinition.StateProperties.Count, "State property count");
+      Assert.AreSame (property2, classDefinition.StateProperties[0]);
     }
 
     [Test]
@@ -323,9 +322,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       SecurableClassDefinition classDefinition = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
       AccessTypeDefinition accessType = _importer.AccessTypes[new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a")];
 
-      Assert.AreEqual (1, classDefinition.AccessTypeReferences.Count, "Access type reference count");
-      AccessTypeReference accessTypeReference = (AccessTypeReference) classDefinition.AccessTypeReferences[0];
-      Assert.AreSame (accessType, accessTypeReference.AccessType);
+      Assert.AreEqual (1, classDefinition.AccessTypes.Count, "Access type count");
+      Assert.AreSame (accessType, classDefinition.AccessTypes[0]);
     }
 
     [Test]

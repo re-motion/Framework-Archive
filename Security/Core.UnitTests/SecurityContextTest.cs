@@ -82,6 +82,66 @@ namespace Rubicon.Security.UnitTests
       Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain", context.Class);
     }
 
+    [Test]
+    public void IsStateless_WithStates ()
+    {
+      Dictionary<string, Enum> states = new Dictionary<string,Enum>();
+      states.Add ("Confidentiality", TestSecurityState.Public);
+
+      SecurityContext context = CreateTestSecurityContextWithStates (states);
+
+      Assert.IsFalse (context.IsStateless);
+    }
+
+    [Test]
+    public void IsStateless_WithoutStates ()
+    {
+      SecurityContext context = CreateTestSecurityContext ();
+
+      Assert.IsTrue (context.IsStateless);
+    }
+
+    [Test]
+    public void ContainsState_ContextContainsDemandedState ()
+    {
+      Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
+      states.Add ("Confidentiality", TestSecurityState.Public);
+
+      SecurityContext context = CreateTestSecurityContextWithStates (states);
+
+      Assert.IsTrue (context.ContainsState ("Confidentiality"));
+    }
+
+    [Test]
+    public void ContainsState_ContextDoesNotContainDemandedState ()
+    {
+      Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
+      states.Add ("Confidentiality", TestSecurityState.Public);
+
+      SecurityContext context = CreateTestSecurityContextWithStates (states);
+
+      Assert.IsFalse (context.ContainsState ("State"));
+    }
+
+    [Test]
+    public void GetNumberOfStates_WithStates ()
+    {
+      Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
+      states.Add ("Confidentiality", TestSecurityState.Public);
+
+      SecurityContext context = CreateTestSecurityContextWithStates (states);
+
+      Assert.AreEqual (1, context.GetNumberOfStates());
+    }
+
+    [Test]
+    public void GetNumberOfStates_WithoutStates ()
+    {
+      SecurityContext context = CreateTestSecurityContext ();
+
+      Assert.AreEqual (0, context.GetNumberOfStates ());
+    }
+
     private SecurityContext CreateTestSecurityContextForType (Type type)
     {
       return CreateTestSecurityContext (type, null, null);

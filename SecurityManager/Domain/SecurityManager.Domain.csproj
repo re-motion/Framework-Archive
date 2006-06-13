@@ -35,23 +35,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessControl\AccessControlEntry.cs" />
+    <Compile Include="AccessControl\AccessControlException.cs" />
     <Compile Include="AccessControl\AccessControlList.cs" />
     <Compile Include="AccessControl\AccessControlListFinder.cs" />
     <Compile Include="AccessControl\ClientSelection.cs" />
     <Compile Include="AccessControl\AccessControlObject.cs" />
     <Compile Include="AccessControl\GroupSelection.cs" />
     <Compile Include="AccessControl\Permission.cs" />
+    <Compile Include="AccessControl\SecurityToken.cs" />
     <Compile Include="AccessControl\StateCombination.cs" />
     <Compile Include="AccessControl\StateUsage.cs" />
     <Compile Include="AccessControl\UserSelection.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
-    <Compile Include="BaseSecurityServiceObject.cs" />
+    <Compile Include="BaseSecurityManagerObject.cs" />
     <Compile Include="Configuration\DomainConfiguration.cs" />
     <Compile Include="Metadata\AbstractRoleDefinition.cs" />
     <Compile Include="Metadata\AccessTypeDefinition.cs" />
     <Compile Include="Metadata\AccessTypeReference.cs" />
     <Compile Include="Metadata\EnumValueDefinition.cs" />
+    <Compile Include="Metadata\FindAbstractRolesQueryBuilder.cs" />
     <Compile Include="Metadata\MetadataImporter.cs" />
     <Compile Include="Metadata\MetadataObject.cs" />
     <Compile Include="Metadata\SecurableClassDefinition.cs" />
@@ -68,11 +71,15 @@
     <Compile Include="OrganizationalStructure\Position.cs" />
     <Compile Include="OrganizationalStructure\Role.cs" />
     <Compile Include="OrganizationalStructure\User.cs" />
+    <Compile Include="QueryBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Configuration\DomainConfiguration.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="SecurityManagerQueries.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SecurityManager.Domain.build" />
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\SetupDB.sql" />

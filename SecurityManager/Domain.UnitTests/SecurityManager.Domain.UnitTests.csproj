@@ -46,17 +46,23 @@
     <Compile Include="AccessControl\AccessControlListFinderTest.cs" />
     <Compile Include="AccessControl\AccessControlObjectAssert.cs" />
     <Compile Include="AccessControl\AccessControlTestHelper.cs" />
+    <Compile Include="AccessControl\SecurityTokenTest.cs" />
     <Compile Include="AccessControl\StateCombinationTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\DomainConfigurationTest.cs" />
     <Compile Include="Configuration\TestDomainConfiguration.cs" />
     <Compile Include="Configuration\TestOrganizationalStructureFactory.cs" />
+    <Compile Include="DatabaseFixtures.cs" />
+    <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="Metadata\AbstractRoleDefinitionTest.cs" />
+    <Compile Include="Metadata\FindAbstractRolesQueryBuilderTest.cs" />
     <Compile Include="Metadata\MetadataObjectAssert.cs" />
     <Compile Include="Metadata\MetadataImporterTest.cs" />
     <Compile Include="Metadata\MetadataTestHelper.cs" />
     <Compile Include="Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="DomainTest.cs" />
+    <Compile Include="TestDomain\AbstractRoles.cs" />
     <Compile Include="TestDomain\Order.cs" />
     <Compile Include="TestDomain\SecurityStates.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
@@ -87,6 +93,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <MappingFiles Include="..\Domain\SecurityManagerMapping.xml" />
+    <MappingFiles Include="..\Domain\SecurityManagerQueries.xml" />
     <MappingFiles Include="..\Domain\SecurityManagerStorageProviders.xml" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

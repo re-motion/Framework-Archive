@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
+
+using Rubicon.SecurityManager.Domain.AccessControl;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -14,6 +18,21 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     // types
 
     // static members and constants
+
+    public static SecurableClassDefinition FindByName (ClientTransaction transaction, string name)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName");
+      query.Parameters.Add ("@name", name);
+
+      DomainObjectCollection result = transaction.QueryManager.GetCollection (query);
+      if (result.Count == 0)
+        return null;
+
+      return (SecurableClassDefinition) result[0];
+    }
 
     public static new SecurableClassDefinition GetObject (ObjectID id)
     {
@@ -36,6 +55,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     // member fields
+
+    private DomainObjectCollection _stateProperties;
+    private DomainObjectCollection _accessTypes;
 
     // construction and disposing
 
@@ -65,16 +87,40 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       set { } // marks property DerivedClasses as modifiable
     }
 
-    public DomainObjectCollection AccessTypeReferences
+    public DomainObjectCollection StateProperties
     {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessTypeReferences"); }
-      set { } // marks property AccessTypeReferences as modifiable
+      get
+      {
+        if (_stateProperties == null)
+        {
+          DomainObjectCollection stateProperties = new DomainObjectCollection ();
+
+          foreach (StatePropertyReference propertyReference in StatePropertyReferences)
+            stateProperties.Add (propertyReference.StateProperty);
+
+          _stateProperties = new DomainObjectCollection (stateProperties, true);
+        }
+
+        return _stateProperties;
+      }
     }
 
-    public DomainObjectCollection StatePropertyReferences
+    public DomainObjectCollection AccessTypes
     {
-      get { return (DomainObjectCollection) GetRelatedObjects ("StatePropertyReferences"); }
-      set { } // marks property StatePropertyReferences as modifiable
+      get
+      {
+        if (_accessTypes == null)
+        {
+          DomainObjectCollection accessTypes = new DomainObjectCollection ();
+
+          foreach (AccessTypeReference accessTypeReference in AccessTypeReferences)
+            accessTypes.Add (accessTypeReference.AccessType);
+
+          _accessTypes = new DomainObjectCollection (accessTypes, true);
+        }
+
+        return _accessTypes;
+      }
     }
 
     public DomainObjectCollection StateCombinations
@@ -91,18 +137,41 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public void AddAccessType (AccessTypeDefinition accessType)
     {
-      AccessTypeReference reference = new AccessTypeReference (this.ClientTransaction);
+      AccessTypeReference reference = new AccessTypeReference (ClientTransaction);
       reference.AccessType = accessType;
 
       AccessTypeReferences.Add (reference);
+      _accessTypes = null;
     }
 
     public void AddStateProperty (StatePropertyDefinition stateProperty)
     {
-      StatePropertyReference reference = new StatePropertyReference (this.ClientTransaction);
+      StatePropertyReference reference = new StatePropertyReference (ClientTransaction);
       reference.StateProperty = stateProperty;
 
       StatePropertyReferences.Add (reference);
+      _stateProperties = null;
+    }
+
+    public StateCombination FindStateCombination (List<StateDefinition> states)
+    {
+      foreach (StateCombination stateCombination in StateCombinations)
+      {
+        if (stateCombination.MatchesStates (states))
+          return stateCombination;
+      }
+
+      return null;
+    }
+
+    private DomainObjectCollection StatePropertyReferences
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("StatePropertyReferences"); }
+    }
+
+    private DomainObjectCollection AccessTypeReferences
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("AccessTypeReferences"); }
     }
   }
 }

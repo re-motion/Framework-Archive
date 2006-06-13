@@ -106,5 +106,20 @@ namespace Rubicon.Security
     {
       return _states[propertyName];
     }
+
+    public bool ContainsState (string propertyName)
+    {
+      return _states.ContainsKey (propertyName);
+    }
+
+    public bool IsStateless
+    {
+      get { return _states.Count == 0; }
+    }
+
+    public int GetNumberOfStates ()
+    {
+      return _states.Count;
+    }
   }
 }

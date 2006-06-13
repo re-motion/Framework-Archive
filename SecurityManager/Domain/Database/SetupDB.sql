@@ -1,4 +1,4 @@
-USE SecurityService
+USE RubiconSecurityManager
 GO
 
 -- Drop foreign keys of all tables that will be created below
@@ -6,7 +6,7 @@ DECLARE @statement nvarchar (4000)
 SET @statement = ''
 SELECT @statement = @statement + 'ALTER TABLE [' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' 
     FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id 
-    WHERE fk.xtype = 'F' AND t.name IN ('Client', 'Group', 'GroupType', 'ConcretePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'EnumValueDefinition', 'AccessTypeReference', 'EnumValueDefinition', 'EnumValueDefinition', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission')
+    WHERE fk.xtype = 'F' AND t.name IN ('Client', 'Group', 'GroupType', 'ConcretePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'AccessTypeReference', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission')
     ORDER BY t.name, fk.name
 exec sp_executesql @statement
 GO
@@ -55,20 +55,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'StateProp
 DROP TABLE [StatePropertyDefinition]
 GO
 
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EnumValueDefinition')
-DROP TABLE [EnumValueDefinition]
-GO
-
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'AccessTypeReference')
 DROP TABLE [AccessTypeReference]
-GO
-
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EnumValueDefinition')
-DROP TABLE [EnumValueDefinition]
-GO
-
-IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'EnumValueDefinition')
-DROP TABLE [EnumValueDefinition]
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'StateCombination')
@@ -234,7 +222,7 @@ CREATE TABLE [StatePropertyReference]
   [Timestamp] rowversion NOT NULL,
 
   -- StatePropertyReference columns
-  [ClassID] uniqueidentifier NULL,
+  [SecurableClassID] uniqueidentifier NULL,
   [StatePropertyID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_StatePropertyReference] PRIMARY KEY CLUSTERED ([ID])
@@ -255,17 +243,9 @@ CREATE TABLE [StatePropertyDefinition]
 )
 GO
 
-CREATE TABLE [EnumValueDefinition]
-(
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Timestamp] rowversion NOT NULL,
-
-  -- StateDefinition columns
-  [StatePropertyID] uniqueidentifier NULL,
-
-  CONSTRAINT [PK_EnumValueDefinition] PRIMARY KEY CLUSTERED ([ID])
-)
+-- StateDefinition columns
+ALTER TABLE [EnumValueDefinition] ADD
+  [StatePropertyID] uniqueidentifier NULL
 GO
 
 CREATE TABLE [AccessTypeReference]
@@ -275,34 +255,10 @@ CREATE TABLE [AccessTypeReference]
   [Timestamp] rowversion NOT NULL,
 
   -- AccesTypeReference columns
-  [ClassID] uniqueidentifier NULL,
+  [SecurableClassID] uniqueidentifier NULL,
   [AccessTypeID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_AccessTypeReference] PRIMARY KEY CLUSTERED ([ID])
-)
-GO
-
-CREATE TABLE [EnumValueDefinition]
-(
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Timestamp] rowversion NOT NULL,
-
-  -- AccessTypeDefinition columns
-
-  CONSTRAINT [PK_EnumValueDefinition] PRIMARY KEY CLUSTERED ([ID])
-)
-GO
-
-CREATE TABLE [EnumValueDefinition]
-(
-  [ID] uniqueidentifier NOT NULL,
-  [ClassID] varchar (100) NOT NULL,
-  [Timestamp] rowversion NOT NULL,
-
-  -- AbstractRoleDefinition columns
-
-  CONSTRAINT [PK_EnumValueDefinition] PRIMARY KEY CLUSTERED ([ID])
 )
 GO
 
@@ -357,6 +313,7 @@ CREATE TABLE [AccessControlEntry]
   [ClientSelection] int NOT NULL,
   [GroupSelection] int NOT NULL,
   [UserSelection] int NOT NULL,
+  [Priority] int NOT NULL,
   [AccessControlListID] uniqueidentifier NULL,
   [GroupID] uniqueidentifier NULL,
   [GroupTypeID] uniqueidentifier NULL,
@@ -417,7 +374,7 @@ ALTER TABLE [SecurableClassDefinition] ADD
 GO
 
 ALTER TABLE [StatePropertyReference] ADD
-  CONSTRAINT [FK_ClassToStatePropertyReference] FOREIGN KEY ([ClassID]) REFERENCES [SecurableClassDefinition] ([ID]),
+  CONSTRAINT [FK_ClassToStatePropertyReference] FOREIGN KEY ([SecurableClassID]) REFERENCES [SecurableClassDefinition] ([ID]),
   CONSTRAINT [FK_StatePropertyToStatePropertyReference] FOREIGN KEY ([StatePropertyID]) REFERENCES [StatePropertyDefinition] ([ID])
 GO
 
@@ -426,7 +383,7 @@ ALTER TABLE [EnumValueDefinition] ADD
 GO
 
 ALTER TABLE [AccessTypeReference] ADD
-  CONSTRAINT [FK_ClassToAccessTypeReference] FOREIGN KEY ([ClassID]) REFERENCES [SecurableClassDefinition] ([ID]),
+  CONSTRAINT [FK_ClassToAccessTypeReference] FOREIGN KEY ([SecurableClassID]) REFERENCES [SecurableClassDefinition] ([ID]),
   CONSTRAINT [FK_AccessTypeToAccessTypeReference] FOREIGN KEY ([AccessTypeID]) REFERENCES [EnumValueDefinition] ([ID])
 GO
 
@@ -457,4 +414,3 @@ ALTER TABLE [Permission] ADD
   CONSTRAINT [FK_AccessTypeDefinitionToPermission] FOREIGN KEY ([AccessTypeDefinitionID]) REFERENCES [EnumValueDefinition] ([ID]),
   CONSTRAINT [FK_AccessControlEntryToPermission] FOREIGN KEY ([AccessControlEntryID]) REFERENCES [AccessControlEntry] ([ID])
 GO
-

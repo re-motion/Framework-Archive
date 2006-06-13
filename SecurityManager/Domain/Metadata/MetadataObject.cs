@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
-  public abstract class MetadataObject : BaseSecurityServiceObject
+  public abstract class MetadataObject : BaseSecurityManagerObject
   {
     // types
 

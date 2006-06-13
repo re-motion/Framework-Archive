@@ -12,6 +12,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
 {
   public class AccessControlTestHelper
   {
+    public const int OrderClassPropertyCount = 2;
+
     private ClientTransaction _transaction;
 
     public AccessControlTestHelper ()
@@ -24,24 +26,27 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       get { return _transaction; }
     }
 
-    public void AttachPropertyToClass (SecurableClassDefinition classDefinition, StatePropertyDefinition stateProperty)
+    public SecurableClassDefinition CreateOrderClassDefinition ()
     {
-      StatePropertyReference propertyReference = new StatePropertyReference (_transaction);
-      propertyReference.StateProperty = stateProperty;
-      classDefinition.StatePropertyReferences.Add (propertyReference);
+      return CreateClassDefinition ("Rubicon.SecurityManager.Domain.UnitTests.TestDomain.Order");
     }
 
-    public SecurableClassDefinition CreateSecurableClassDefinition ()
+    public SecurableClassDefinition CreateInvoiceClassDefinition ()
+    {
+      return CreateClassDefinition ("Rubicon.SecurityManager.Domain.UnitTests.TestDomain.Invoice");
+    }
+
+    public SecurableClassDefinition CreateClassDefinition (string name)
     {
       SecurableClassDefinition classDefinition = new SecurableClassDefinition (_transaction);
-      classDefinition.Name = "Rubicon.SecurityManager.Domain.UnitTests.TestDomain.Order";
+      classDefinition.Name = name;
 
       return classDefinition;
     }
 
-    public SecurableClassDefinition CreateClassDefinitionWithProperties ()
+    public SecurableClassDefinition CreateOrderClassDefinitionWithProperties ()
     {
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition ();
+      SecurableClassDefinition classDefinition = CreateOrderClassDefinition ();
       StatePropertyDefinition orderStateProperty = CreateOrderStateProperty (classDefinition);
       StatePropertyDefinition paymentStateProperty = CreatePaymentStateProperty (classDefinition);
 
@@ -85,7 +90,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       StatePropertyDefinition orderStateProperty = CreateStateProperty ("State");
       orderStateProperty.AddState ("Received", 0);
       orderStateProperty.AddState ("Delivered", 1);
-      AttachPropertyToClass (classDefinition, orderStateProperty);
+      classDefinition.AddStateProperty (orderStateProperty);
 
       return orderStateProperty;
     }
@@ -95,14 +100,19 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       StatePropertyDefinition paymentStateProperty = CreateStateProperty ("Payment");
       paymentStateProperty.AddState ("None", 0);
       paymentStateProperty.AddState ("Paid", 1);
-      AttachPropertyToClass (classDefinition, paymentStateProperty);
+      classDefinition.AddStateProperty (paymentStateProperty);
 
       return paymentStateProperty;
     }
 
-    public List<StateCombination> CreateStateCombinations ()
+    public List<StateCombination> CreateStateCombinationsForOrder ()
     {
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition ();
+      SecurableClassDefinition orderClass = CreateOrderClassDefinition ();
+      return CreateOrderStateAndPaymentStateCombinations (orderClass);
+    }
+
+    public List<StateCombination> CreateOrderStateAndPaymentStateCombinations (SecurableClassDefinition classDefinition)
+    {
       StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
       StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
 
@@ -114,6 +124,18 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       stateCombinations.Add (CreateStateCombination (classDefinition));
 
       return stateCombinations;
+    }
+
+    public StateCombination GetStateCombinationForDeliveredAndUnpaidOrder ()
+    {
+      List<StateCombination> stateCombinations = CreateStateCombinationsForOrder ();
+      return stateCombinations[2];
+    }
+
+    public StateCombination GetStateCombinationWithoutStates ()
+    {
+      List<StateCombination> stateCombinations = CreateStateCombinationsForOrder ();
+      return stateCombinations[4];
     }
 
     public List<AccessControlList> CreateAccessControlLists (SecurableClassDefinition classDefinition)
@@ -129,6 +151,59 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       acls.Add (CreateAccessControlList (classDefinition));
 
       return acls;
+    }
+
+    public AccessControlList GetAclForDeliveredAndUnpaidStates (SecurableClassDefinition classDefinition)
+    {
+      List<AccessControlList> acls = CreateAccessControlLists (classDefinition);
+      return acls[2];
+    }
+
+    public AccessControlList GetAclForStateless (SecurableClassDefinition classDefinition)
+    {
+      List<AccessControlList> acls = CreateAccessControlLists (classDefinition);
+      return acls[4];
+    }
+
+    public List<StateDefinition> GetDeliveredAndUnpaidStateList (SecurableClassDefinition classDefinition)
+    {
+      List<StateDefinition> states = new List<StateDefinition> ();
+
+      foreach (StatePropertyDefinition property in classDefinition.StateProperties)
+      {
+        if (property.Name == "State")
+          states.Add (property["Delivered"]);
+
+        if (property.Name == "Payment")
+          states.Add (property["None"]);
+      }
+
+      return states;
+    }
+
+    public StatePropertyDefinition CreateTestProperty ()
+    {
+      StatePropertyDefinition property = CreateStateProperty ("Test");
+      property.AddState ("Test1", 0);
+      property.AddState ("Test2", 1);
+
+      return property;
+    }
+
+    public void AttachAccessType (SecurableClassDefinition classDefinition, Guid metadataItemID, string name, long value)
+    {
+      AccessTypeDefinition accessType = new AccessTypeDefinition (_transaction, metadataItemID, name, value);
+      classDefinition.AddAccessType (accessType);
+    }
+
+    public void AttachJournalizeAccessType (SecurableClassDefinition classDefinition)
+    {
+      classDefinition.AddAccessType (CreateJournalizeAccessType ());
+    }
+
+    public AccessTypeDefinition CreateJournalizeAccessType ()
+    {
+      return new AccessTypeDefinition (_transaction, Guid.NewGuid (), "Journalize", 42);
     }
   }
 }

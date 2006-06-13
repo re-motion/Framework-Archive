@@ -74,6 +74,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       set { DataContainer["User"] = value; }
     }
 
+    public int Priority
+    {
+      get { return (int) DataContainer["Priority"]; }
+      set { DataContainer["Priority"] = value; }
+    }
+
     public Group SpecificGroup
     {
       get { return (Group) GetRelatedObject ("SpecificGroup"); }

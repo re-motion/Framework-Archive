@@ -42,5 +42,20 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       for (int i = 0; i < expected.DefinedStates.Count; i++)
         MetadataObjectAssert.AreEqual ((StateDefinition) expected.DefinedStates[i], (StateDefinition) actual.DefinedStates[i], message);
     }
+
+    public static void AreEqual (SecurableClassDefinition expected, SecurableClassDefinition actual)
+    {
+      AreEqual (expected, actual, string.Empty, null);
+    }
+
+    public static void AreEqual (SecurableClassDefinition expected, SecurableClassDefinition actual, string message)
+    {
+      AreEqual (expected, actual, message, null);
+    }
+
+    public static void AreEqual (SecurableClassDefinition expected, SecurableClassDefinition actual, string message, params object[] args)
+    {
+      Assert.AreEqual (expected.Name, actual.Name, message, args);
+    }
   }
 }

@@ -5,7 +5,7 @@
     <class id="Client">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.Client, Rubicon.SecurityManager.Domain</type>
       <entity name="Client"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="Name">
           <type>string</type>
@@ -18,7 +18,7 @@
     <class id="Group">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.Group, Rubicon.SecurityManager.Domain</type>
       <entity name="Group"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="Name">
           <type>string</type>
@@ -49,7 +49,7 @@
     <class id="GroupType">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType, Rubicon.SecurityManager.Domain</type>
       <entity name="GroupType"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="Name">
           <type>string</type>
@@ -69,7 +69,7 @@
     <class id="ConcretePosition">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.ConcretePosition, Rubicon.SecurityManager.Domain</type>
       <entity name="ConcretePosition"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="Name">
           <type>string</type>
@@ -88,7 +88,7 @@
     <class id="Position">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.Position, Rubicon.SecurityManager.Domain</type>
       <entity name="Position"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="Name">
           <type>string</type>
@@ -108,7 +108,7 @@
     <class id="Role">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.Role, Rubicon.SecurityManager.Domain</type>
       <entity name="Role"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="Position" relationID="PositionToRole" cardinality="one" isMandatory="true">
           <column>PositionID</column>
@@ -125,7 +125,7 @@
     <class id="User">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.User, Rubicon.SecurityManager.Domain</type>
       <entity name="User"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="Title">
           <type>string</type>
@@ -164,7 +164,7 @@
     <class id="EnumValueDefinition">
       <type>Rubicon.SecurityManager.Domain.Metadata.EnumValueDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="EnumValueDefinition"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="MetadataItemID">
           <type>guid</type>
@@ -185,7 +185,7 @@
     <class id="SecurableClassDefinition">
       <type>Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="SecurableClassDefinition"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="MetadataItemID">
           <type>guid</type>
@@ -210,10 +210,10 @@
     <class id="StatePropertyReference">
       <type>Rubicon.SecurityManager.Domain.Metadata.StatePropertyReference, Rubicon.SecurityManager.Domain</type>
       <entity name="StatePropertyReference"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="Class" relationID="ClassToStatePropertyReference" cardinality="one" isMandatory="true">
-          <column>ClassID</column>
+          <column>SecurableClassID</column>
         </relationProperty>
         <relationProperty name="StateProperty" relationID="StatePropertyToStatePropertyReference" cardinality="one" isMandatory="true">
           <column>StatePropertyID</column>
@@ -224,7 +224,7 @@
     <class id="StatePropertyDefinition">
       <type>Rubicon.SecurityManager.Domain.Metadata.StatePropertyDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="StatePropertyDefinition"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="MetadataItemID">
           <type>guid</type>
@@ -243,7 +243,7 @@
     <class id="StateDefinition" baseClass="EnumValueDefinition">
       <type>Rubicon.SecurityManager.Domain.Metadata.StateDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="EnumValueDefinition"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="StateProperty" relationID="StatePropertyToState" cardinality="one" isMandatory="true">
           <column>StatePropertyID</column>
@@ -255,10 +255,10 @@
     <class id="AccesTypeReference">
       <type>Rubicon.SecurityManager.Domain.Metadata.AccessTypeReference, Rubicon.SecurityManager.Domain</type>
       <entity name="AccessTypeReference"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="Class" relationID="ClassToAccessTypeReference" cardinality="one" isMandatory="true">
-          <column>ClassID</column>
+          <column>SecurableClassID</column>
         </relationProperty>
         <relationProperty name="AccessType" relationID="AccessTypeToAccessTypeReference" cardinality="one" isMandatory="true">
           <column>AccessTypeID</column>
@@ -269,7 +269,7 @@
     <class id="AccessTypeDefinition" baseClass="EnumValueDefinition">
       <type>Rubicon.SecurityManager.Domain.Metadata.AccessTypeDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="EnumValueDefinition"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="References" relationID="AccessTypeToAccessTypeReference" cardinality="many" isMandatory="false" />
         <relationProperty name="Permissions" relationID="AccessTypeDefinitionToPermission" cardinality="many" isMandatory="false" />
@@ -279,7 +279,7 @@
     <class id="AbstractRoleDefinition" baseClass="EnumValueDefinition">
       <type>Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition, Rubicon.SecurityManager.Domain</type>
       <entity name="EnumValueDefinition"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="AccessControlEntries" relationID="AbstractRoleToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
@@ -289,7 +289,7 @@
     <class id="StateCombination">
       <type>Rubicon.SecurityManager.Domain.AccessControl.StateCombination, Rubicon.SecurityManager.Domain</type>
       <entity name="StateCombination"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="StateUsages" relationID="StateCombinationToStateUsage" cardinality="many" isMandatory="false" />
         <relationProperty name="ClassDefinition" relationID="ClassToStateCombination" cardinality="one" isMandatory="true">
@@ -304,7 +304,7 @@
     <class id="StateUsage">
       <type>Rubicon.SecurityManager.Domain.AccessControl.StateUsage, Rubicon.SecurityManager.Domain</type>
       <entity name="StateUsage"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="StateCombination" relationID="StateCombinationToStateUsage" cardinality="one" isMandatory="true">
           <column>StateCombinationID</column>
@@ -318,20 +318,22 @@
     <class id="AccessControlList">
       <type>Rubicon.SecurityManager.Domain.AccessControl.AccessControlList, Rubicon.SecurityManager.Domain</type>
       <entity name="AccessControlList"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <relationProperty name="ClassDefinition" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
           <column>ClassDefinitionID</column>
         </relationProperty>
         <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="false" />
-        <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true" />
+        <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true">
+          <sortExpression>[Priority] DESC</sortExpression>
+        </relationProperty>
       </properties>
     </class>
 
     <class id="AccessControlEntry">
       <type>Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry, Rubicon.SecurityManager.Domain</type>
       <entity name="AccessControlEntry"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="Client">
           <type>Rubicon.SecurityManager.Domain.AccessControl.ClientSelection, Rubicon.SecurityManager.Domain</type>
@@ -344,6 +346,10 @@
         <property name="User">
           <type>Rubicon.SecurityManager.Domain.AccessControl.UserSelection, Rubicon.SecurityManager.Domain</type>
           <column>UserSelection</column>
+        </property>
+        <property name="Priority">
+          <type>int32</type>
+          <column>Priority</column>
         </property>
         <relationProperty name="AccessControlList" relationID="AccessControlListToAccessControlEntries" cardinality="one" isMandatory="true">
           <column>AccessControlListID</column>
@@ -370,7 +376,7 @@
     <class id="Permission">
       <type>Rubicon.SecurityManager.Domain.AccessControl.Permission, Rubicon.SecurityManager.Domain</type>
       <entity name="Permission"/>
-      <storageProviderID>SecurityServiceDomain</storageProviderID>
+      <storageProviderID>SecurityManagerDomain</storageProviderID>
       <properties>
         <property name="Allowed">
           <type>boolean</type>

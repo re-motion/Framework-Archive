@@ -21,11 +21,11 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     }
 
     [Test]
-    public void GetStateByName_ValidName ()
+    public void GetState_ValidName ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
 
-      StateDefinition actualState = stateProperty.GetStateByName (MetadataTestHelper.Confidentiality_ConfidentialName);
+      StateDefinition actualState = stateProperty.GetState (MetadataTestHelper.Confidentiality_ConfidentialName);
 
       StateDefinition expectedState = _testHelper.CreateConfidentialState ();
       MetadataObjectAssert.AreEqual (expectedState, actualState, "Confidential state");
@@ -33,19 +33,33 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
 
     [Test]
     [ExpectedException (typeof (ArgumentException), "The state 'New' is not defined for the property 'Confidentiality'.\r\nParameter name: name")]
-    public void GetStateByName_InvalidName ()
+    public void GetState_InvalidName ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
 
-      StateDefinition actualState = stateProperty.GetStateByName ("New");
+      StateDefinition actualState = stateProperty.GetState ("New");
     }
 
     [Test]
-    public void GetStateByValue_ValidValue ()
+    public void ContainsState_ValidName ()
+    {
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      Assert.IsTrue (stateProperty.ContainsState (MetadataTestHelper.Confidentiality_ConfidentialName));
+    }
+
+    [Test]
+    public void ContainsState_InvalidName ()
+    {
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      Assert.IsFalse (stateProperty.ContainsState ("New"));
+    }
+
+    [Test]
+    public void GetState_ValidValue ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
 
-      StateDefinition actualState = stateProperty.GetStateByValue (MetadataTestHelper.Confidentiality_PrivateValue);
+      StateDefinition actualState = stateProperty.GetState (MetadataTestHelper.Confidentiality_PrivateValue);
 
       StateDefinition expectedState = _testHelper.CreatePrivateState ();
       MetadataObjectAssert.AreEqual (expectedState, actualState, "Private state");
@@ -53,11 +67,25 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
 
     [Test]
     [ExpectedException (typeof (ArgumentException), "A state with the value 42 is not defined for the property 'Confidentiality'.\r\nParameter name: stateValue")]
-    public void GetStateByValue_InvalidValue ()
+    public void GetState_InvalidValue ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
 
-      StateDefinition actualState = stateProperty.GetStateByValue (42);
+      StateDefinition actualState = stateProperty.GetState (42);
+    }
+
+    [Test]
+    public void ContainsState_ValidValue ()
+    {
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      Assert.IsTrue (stateProperty.ContainsState (MetadataTestHelper.Confidentiality_PrivateValue));
+    }
+
+    [Test]
+    public void ContainsState_InvalidValue ()
+    {
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      Assert.IsFalse (stateProperty.ContainsState (42));
     }
 
     [Test]
@@ -80,7 +108,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
 
       Assert.AreEqual (1, stateProperty.DefinedStates.Count);
       StateDefinition expectedState = _testHelper.CreateState ("NewState", 42);
-      MetadataObjectAssert.AreEqual (expectedState, stateProperty.GetStateByName ("NewState"));
+      MetadataObjectAssert.AreEqual (expectedState, stateProperty.GetState ("NewState"));
     }
 
     [Test]
@@ -92,7 +120,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       stateProperty.AddState (newState);
 
       Assert.AreEqual (1, stateProperty.DefinedStates.Count);
-      MetadataObjectAssert.AreEqual (newState, stateProperty.GetStateByName ("NewState"));
+      MetadataObjectAssert.AreEqual (newState, stateProperty.GetState ("NewState"));
     }
   }
 }

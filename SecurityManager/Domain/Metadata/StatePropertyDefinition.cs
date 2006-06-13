@@ -72,7 +72,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       set { } // marks property DefinedStates as modifiable
     }
 
-    public StateDefinition GetStateByName (string name)
+    public StateDefinition GetState (string name)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
@@ -82,10 +82,23 @@ namespace Rubicon.SecurityManager.Domain.Metadata
           return state;
       }
 
-      throw new ArgumentException (string.Format ("The state '{0}' is not defined for the property '{1}'.", name, this.Name), "name");
+      throw new ArgumentException (string.Format ("The state '{0}' is not defined for the property '{1}'.", name, Name), "name");
     }
 
-    public StateDefinition GetStateByValue (int stateValue)
+    public bool ContainsState (string name)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+
+      foreach (StateDefinition state in DefinedStates)
+      {
+        if (state.Name == name)
+          return true;
+      }
+
+      return false;
+    }
+
+    public StateDefinition GetState (int stateValue)
     {
       foreach (StateDefinition state in DefinedStates)
       {
@@ -93,19 +106,30 @@ namespace Rubicon.SecurityManager.Domain.Metadata
           return state;
       }
 
-      throw new ArgumentException (string.Format ("A state with the value {0} is not defined for the property '{1}'.", stateValue, this.Name), "stateValue");
+      throw new ArgumentException (string.Format ("A state with the value {0} is not defined for the property '{1}'.", stateValue, Name), "stateValue");
+    }
+
+    public bool ContainsState (int stateValue)
+    {
+      foreach (StateDefinition state in DefinedStates)
+      {
+        if (state.Value == stateValue)
+          return true;
+      }
+
+      return false;
     }
 
     public new StateDefinition this[string stateName]
     {
-      get { return GetStateByName (stateName); }
+      get { return GetState (stateName); }
     }
 
     public void AddState (string stateName, int value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("stateName", stateName);
 
-      StateDefinition newStateDefinition = new StateDefinition (this.ClientTransaction);
+      StateDefinition newStateDefinition = new StateDefinition (ClientTransaction);
       newStateDefinition.Name = stateName;
       newStateDefinition.Value = value;
 

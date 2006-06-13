@@ -92,7 +92,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public void AttachState (StateDefinition state)
     {
-      StateUsage usage = new StateUsage (this.ClientTransaction);
+      StateUsage usage = new StateUsage (ClientTransaction);
       usage.StateDefinition = state;
       StateUsages.Add (usage);
     }

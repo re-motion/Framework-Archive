@@ -7,7 +7,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 
 namespace Rubicon.SecurityManager.Domain
 {
-  public class BaseSecurityServiceObject : BindableDomainObject
+  public class BaseSecurityManagerObject : BindableDomainObject
   {
     // types
 
@@ -17,15 +17,15 @@ namespace Rubicon.SecurityManager.Domain
 
     // construction and disposing
 
-    public BaseSecurityServiceObject ()
+    public BaseSecurityManagerObject ()
     {
     }
 
-    public BaseSecurityServiceObject (ClientTransaction clientTransaction) : base (clientTransaction)
+    public BaseSecurityManagerObject (ClientTransaction clientTransaction) : base (clientTransaction)
     {
     }
 
-    protected BaseSecurityServiceObject (DataContainer dataContainer) : base (dataContainer)
+    protected BaseSecurityManagerObject (DataContainer dataContainer) : base (dataContainer)
     {
     // This infrastructure constructor is necessary for the DomainObjects framework.
     // Do not remove the constructor or place any code here.

@@ -1,15 +1,15 @@
-CREATE DATABASE SecurityService
+CREATE DATABASE RubiconSecurityManager
 ON PRIMARY (
-	Name = 'SecurityService_Data',
-	Filename = 'C:\Databases\SecurityService.mdf',
+	Name = 'RubiconSecurityManager_Data',
+	Filename = 'C:\Databases\RubiconSecurityManager.mdf',
 	Size = 10MB
 )
 LOG ON (
-	Name = 'SecurityService_Log',
-	Filename = 'C:\Databases\SecurityService.ldf',
+	Name = 'RubiconSecurityManager_Log',
+	Filename = 'C:\Databases\RubiconSecurityManager.ldf',
 	Size = 10MB
 )
 GO
 
-ALTER DATABASE SecurityService SET RECOVERY SIMPLE
+ALTER DATABASE RubiconSecurityManager SET RECOVERY SIMPLE
 GO

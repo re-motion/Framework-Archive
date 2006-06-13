@@ -6,7 +6,7 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
-  public class OrganizationalStructureObject : BaseSecurityServiceObject
+  public class OrganizationalStructureObject : BaseSecurityManagerObject
   {
     // types
 

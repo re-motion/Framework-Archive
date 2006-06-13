@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     [Test]
     public void MatchesStates_StatelessAndWithoutDemandedStates ()
     {
-      StateCombination combination = GetStateCombinationWithoutStates ();
+      StateCombination combination = _testHelper.GetStateCombinationWithoutStates ();
       List<StateDefinition> states = CreateEmptyStateList ();
 
       Assert.IsTrue (combination.MatchesStates (states));
@@ -31,7 +31,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     [Test]
     public void MatchesStates_StatefulAndWithoutDemandedStates ()
     {
-      StateCombination combination = GetStateCombinationForDeliveredAndUnpaidOrder ();
+      StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
       List<StateDefinition> states = CreateEmptyStateList ();
 
       Assert.IsFalse (combination.MatchesStates (states));
@@ -40,7 +40,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     [Test]
     public void MatchesStates_DeliveredAndUnpaid ()
     {
-      StateCombination combination = GetStateCombinationForDeliveredAndUnpaidOrder ();
+      StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
       List<StateDefinition> states = CreateStateListFromCombination (combination);
 
       Assert.IsTrue (combination.MatchesStates (states));
@@ -49,7 +49,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     [Test]
     public void MatchesStates_StatelessAndDemandDeliveredAndUnpaid ()
     {
-      StateCombination deliverdAndUnpaidCombination = GetStateCombinationForDeliveredAndUnpaidOrder ();
+      StateCombination deliverdAndUnpaidCombination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
       List<StateDefinition> states = CreateStateListFromCombination (deliverdAndUnpaidCombination);
       StateCombination statelessCombination = GetStatelessCombinationForClass (deliverdAndUnpaidCombination.ClassDefinition);
 
@@ -59,12 +59,10 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     [Test]
     public void AttachState_NewState ()
     {
-      SecurableClassDefinition classDefinition = _testHelper.CreateSecurableClassDefinition ();
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
       StateCombination combination = _testHelper.CreateStateCombination (classDefinition);
-      StatePropertyDefinition property = _testHelper.CreateStateProperty ("Test");
-      property.AddState ("Test1", 0);
-      property.AddState ("Test2", 1);
-
+      StatePropertyDefinition property = _testHelper.CreateTestProperty ();
+      
       combination.AttachState (property["Test1"]);
 
       Assert.AreEqual (1, combination.StateUsages.Count);
@@ -96,18 +94,6 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     private static List<StateDefinition> CreateEmptyStateList ()
     {
       return new List<StateDefinition> ();
-    }
-
-    private StateCombination GetStateCombinationForDeliveredAndUnpaidOrder ()
-    {
-      List<StateCombination> stateCombinations = _testHelper.CreateStateCombinations ();
-      return stateCombinations[2];
-    }
-
-    private StateCombination GetStateCombinationWithoutStates ()
-    {
-      List<StateCombination> stateCombinations = _testHelper.CreateStateCombinations ();
-      return stateCombinations[4];
     }
   }
 }

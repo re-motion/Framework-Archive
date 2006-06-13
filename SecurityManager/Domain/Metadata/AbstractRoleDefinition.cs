@@ -5,6 +5,11 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
+using Rubicon.Security;
+using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
+using Rubicon.Data.DomainObjects.Mapping;
+using System.Text;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -15,14 +20,43 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static new AbstractRoleDefinition GetObject (ObjectID id)
+    public static DomainObjectCollection Find (ClientTransaction transaction, EnumWrapper[] abstractRoles)
     {
-      return (AbstractRoleDefinition) DomainObject.GetObject (id);
+      if (abstractRoles.Length == 0)
+        return new DomainObjectCollection ();
+
+      return transaction.QueryManager.GetCollection (CreateFindAbstractRolesQuery (abstractRoles));
     }
 
-    public static new AbstractRoleDefinition GetObject (ObjectID id, bool includeDeleted)
+    private static Query CreateFindAbstractRolesQuery (EnumWrapper[] abstractRoleNames)
     {
-      return (AbstractRoleDefinition) DomainObject.GetObject (id, includeDeleted);
+      QueryParameterCollection parameterCollection = new QueryParameterCollection ();
+      string sql = "SELECT * FROM [EnumValueDefinition] WHERE ClassID='AbstractRoleDefinition' AND ({0});";
+      StringBuilder whereClauseBuilder = new StringBuilder (abstractRoleNames.Length * 50);
+
+      for (int i = 0; i < abstractRoleNames.Length; i++)
+      {
+        EnumWrapper roleWrapper = abstractRoleNames[i];
+
+        if (whereClauseBuilder.Length > 0)
+          whereClauseBuilder.Append (" OR ");
+
+        string parameterName = "@p" + i.ToString ();
+        whereClauseBuilder.Append ("Name = ");
+        whereClauseBuilder.Append (parameterName);
+
+        parameterCollection.Add (parameterName, roleWrapper.Value);
+      }
+
+      QueryDefinition abstractRoleQueryDefinition = new QueryDefinition ("AbstractRoleQuery", GetStorageProviderIDFromType (typeof (AbstractRoleDefinition)), string.Format (sql, whereClauseBuilder.ToString ()), QueryType.Collection);
+
+      return new Query (abstractRoleQueryDefinition, parameterCollection);
+    }
+
+    private static string GetStorageProviderIDFromType (Type type)
+    {
+      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
+      return classDefinition.StorageProviderID;
     }
 
     public static new AbstractRoleDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)

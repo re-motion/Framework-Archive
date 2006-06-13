@@ -12,7 +12,7 @@ using Rubicon.SecurityManager.Domain.Metadata;
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   [Serializable]
-  public class AccessControlObject : BaseSecurityServiceObject
+  public class AccessControlObject : BaseSecurityManagerObject
   {
     // types
 

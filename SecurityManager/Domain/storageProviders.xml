@@ -5,10 +5,10 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 		xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0 ..\DomainObjects\storageProviders.xsd">
 
-  <storageProvider id="SecurityManagerDomain">
+  <storageProvider id="SecurityServiceDomain">
     <type>Rubicon.Data.DomainObjects.Persistence.Rdbms.SqlProvider, Rubicon.Data.DomainObjects</type>
     <configuration type="Rubicon.Data.DomainObjects.Persistence.Rdbms.RdbmsProviderDefinition, Rubicon.Data.DomainObjects">
-      <connectionString xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms">Integrated Security=SSPI;Initial Catalog=RubiconSecurityManager;Data Source=localhost</connectionString>
+      <connectionString xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms">Integrated Security=SSPI;Initial Catalog=SecurityService;Data Source=localhost</connectionString>
     </configuration>
   </storageProvider>
 

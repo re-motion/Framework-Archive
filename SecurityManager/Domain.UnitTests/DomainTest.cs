@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using Rubicon.Data.DomainObjects.Queries.Configuration;
 
 namespace Rubicon.SecurityManager.Domain.UnitTests
 {
@@ -31,6 +32,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests
     {
       MappingConfiguration.SetCurrent (new MappingConfiguration (@"SecurityManagerMapping.xml"));
       StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"SecurityManagerStorageProviders.xml"));
+      QueryConfiguration.SetCurrent (new QueryConfiguration (@"SecurityManagerQueries.xml"));
     }
 
     [SetUp]
