@@ -2,7 +2,7 @@
 <mapping application="CodeGeneratorUnitTests" 
          xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\mapping.xsd">
+         xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\Mapping.xsd">
 	<classes>
 		<class id="Company">
 			<type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Company, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>

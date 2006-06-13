@@ -37,15 +37,15 @@ namespace Rubicon.Data.DomainObjects.Schemas
       switch (type)
       {
         case SchemaType.Mapping:
-          _schemaFile = "mapping.xsd";
+          _schemaFile = "Mapping.xsd";
           _schemaUri =  PrefixNamespace.MappingNamespace.Uri;
           break;
         case SchemaType.Queries:
-          _schemaFile = "queries.xsd";
+          _schemaFile = "Queries.xsd";
           _schemaUri = PrefixNamespace.QueryConfigurationNamespace.Uri;
           break;
         case SchemaType.StorageProviders:
-          _schemaFile = "storageProviders.xsd";
+          _schemaFile = "StorageProviders.xsd";
           _schemaUri = PrefixNamespace.StorageProviderConfigurationNamespace.Uri;
           break;
       }
@@ -66,7 +66,7 @@ namespace Rubicon.Data.DomainObjects.Schemas
     public override XmlSchemaSet GetSchemaSet ()
     {
       XmlSchemaSet schemaSet = new XmlSchemaSet ();
-      schemaSet.Add (GetSchema ("types.xsd"));
+      schemaSet.Add (GetSchema ("Types.xsd"));
       schemaSet.Add (GetSchema (_schemaFile));
       return schemaSet;
     }

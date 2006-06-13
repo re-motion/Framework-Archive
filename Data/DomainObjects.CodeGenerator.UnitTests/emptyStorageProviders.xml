@@ -3,5 +3,5 @@
 		application="UnitTests" 
 		xmlns="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0" 
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0 ..\DomainObjects\Schemas\storageProviders.xsd" />
+		xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0 ..\DomainObjects\Schemas\StorageProviders.xsd" />
 		

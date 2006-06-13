@@ -3,7 +3,7 @@
     application="RplObjectBindingTest" 
     xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\mapping.xsd">
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\Schemas\Mapping.xsd">
 	<classes>
 		<class id="ClassWithAllDataTypes">
 			<type>Rubicon.Data.DomainObjects.Web.Test.Domain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.Web.Test</type>

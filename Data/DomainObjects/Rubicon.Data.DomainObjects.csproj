@@ -412,16 +412,16 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Rubicon.Data.DomainObjects.build" />
-    <EmbeddedResource Include="Schemas\mapping.xsd">
+    <EmbeddedResource Include="Schemas\Mapping.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Schemas\queries.xsd">
+    <EmbeddedResource Include="Schemas\Queries.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Schemas\storageProviders.xsd">
+    <EmbeddedResource Include="Schemas\StorageProviders.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Schemas\types.xsd">
+    <EmbeddedResource Include="Schemas\Types.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Doc\How to add a new property type.txt" />

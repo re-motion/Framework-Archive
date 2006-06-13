@@ -2,7 +2,7 @@
 =======
 
 - Mapping, StorageProviders, Queries:
-  Die XML Schema Dateien mapping.xsd, storageProviders.xsd und queries.xsd sind jetzt als Ressource in der Assembly
+  Die XML Schema Dateien Mapping.xsd, StorageProviders.xsd und Queries.xsd sind jetzt als Ressource in der Assembly
   Rubicon.Data.DomainObjects enthalten und müssen daher nicht mehr im bin Verzeichnis der Projekte liegen.
 
   Damit entfallen auch die folgenden web.config Einträge:
