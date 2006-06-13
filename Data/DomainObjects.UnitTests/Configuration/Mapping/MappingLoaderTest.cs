@@ -307,5 +307,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       loader.GetClassDefinitions ();
     }
+
+    [Test]
+    [ExpectedException (typeof (MappingException), 
+        "Error while reading mapping: The root element has namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidMappingNamespace'"
+        + " but was expected to have 'http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0'.")]
+    public void MappingWithInvalidNamespace ()
+    {
+      MappingLoader loader = new MappingLoader (@"mappingWithInvalidNamespace.xml", @"mapping.xsd", true);
+    }
   }
 }

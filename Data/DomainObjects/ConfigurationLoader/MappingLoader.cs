@@ -45,6 +45,10 @@ public class MappingLoader : BaseFileLoader
           new PrefixNamespace[] {PrefixNamespace.MappingNamespace}, 
           PrefixNamespace.MappingNamespace);
     }
+    catch (ConfigurationException e)
+    {
+      throw CreateMappingException (e, "Error while reading mapping: {0}", e.Message);
+    }
     catch (XmlSchemaException e)
     {
       throw CreateMappingException (e, "Error while reading mapping: {0}", e.Message);

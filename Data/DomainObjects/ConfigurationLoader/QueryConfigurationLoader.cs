@@ -44,15 +44,17 @@ public class QueryConfigurationLoader : BaseFileLoader
           new PrefixNamespace[] {PrefixNamespace.QueryConfigurationNamespace}, 
           PrefixNamespace.QueryConfigurationNamespace);
     }
+    catch (ConfigurationException e)
+    {
+      throw CreateQueryConfigurationException (e, "Error while reading query configuration: {0}", e.Message);
+    }
     catch (XmlSchemaException e)
     {
-      throw CreateQueryConfigurationException (
-          e, "Error while reading query configuration: {0}", e.Message);
+      throw CreateQueryConfigurationException (e, "Error while reading query configuration: {0}", e.Message);
     }
     catch (XmlException e)
     {
-      throw CreateQueryConfigurationException (
-          e, "Error while reading query configuration: {0}", e.Message);
+      throw CreateQueryConfigurationException (e, "Error while reading query configuration: {0}", e.Message);
     }
   }
   

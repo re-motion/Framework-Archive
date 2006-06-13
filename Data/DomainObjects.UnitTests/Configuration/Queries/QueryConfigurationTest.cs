@@ -48,6 +48,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
+    [ExpectedException (typeof (QueryConfigurationException), 
+        "Error while reading query configuration: The root element has namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidMappingNamespace'"
+        + " but was expected to have 'http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0'.")]
+    public void QueryConfigurationWithInvalidNamespace ()
+    {
+      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"queriesWithInvalidNamespace.xml", @"queries.xsd");
+    }
+
+    [Test]
     public void InitializeWithFileNames ()
     {
       try

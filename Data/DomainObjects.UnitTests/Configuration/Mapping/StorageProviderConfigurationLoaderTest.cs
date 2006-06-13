@@ -52,6 +52,17 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
           @"storageProvidersWithXmlException.xml",
           @"storageProviders.xsd");
     }
+
+    [Test]
+    [ExpectedException (typeof (StorageProviderConfigurationException),
+        "Error while reading storage provider configuration: The root element has namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidMappingNamespace'"
+        + " but was expected to have 'http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0'.")]
+    public void StorageProvidersWithInvalidNamespace ()
+    {
+      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (
+          @"storageProvidersWithInvalidNamespace.xml", 
+          @"storageProviders.xsd");
+    }
   }
 
 }

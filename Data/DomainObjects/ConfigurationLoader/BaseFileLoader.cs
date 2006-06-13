@@ -58,9 +58,6 @@ public class BaseFileLoader
       string schemaFile,
       string schemaNamespace)
   {
-    // TODO ES: correct namespace of root element must be checked in all configuration files, because
-    // .NET raises no exception in this case
-
     using (XmlTextReader textReader = new XmlTextReader (configurationFile))
     {
       XmlReaderSettings validatingReaderSettings = new XmlReaderSettings ();
@@ -71,6 +68,14 @@ public class BaseFileLoader
       {
         XmlDocument document = new XmlDocument (new NameTable ());
         document.Load (validatingReader);
+
+        if (document.DocumentElement.NamespaceURI != schemaNamespace)
+        {
+          throw CreateConfigurationException (
+              "The root element has namespace '{0}' but was expected to have '{1}'.",
+              document.DocumentElement.NamespaceURI,
+              schemaNamespace);
+        }
 
         return document;
       }
@@ -105,6 +110,11 @@ public class BaseFileLoader
   protected ConfigurationNamespaceManager NamespaceManager
   {
     get { return _namespaceManager; }
+  }
+
+  private ConfigurationException CreateConfigurationException (string format, params string[] args)
+  {
+    return new ConfigurationException (string.Format (format, args));
   }
 }
 }

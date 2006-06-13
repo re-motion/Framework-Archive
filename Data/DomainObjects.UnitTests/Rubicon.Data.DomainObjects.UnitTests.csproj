@@ -659,6 +659,9 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Rubicon.Data.DomainObjects.UnitTests.build" />
+    <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidNamespace.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInTwoBaseClasses.xml" />
     <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml" />
     <Content Include="Configuration\Mapping\TestMappings\entireMappingWithUnresolvedTypes.xml">
@@ -702,6 +705,12 @@
     <Content Include="Configuration\Mapping\TestMappings\mappingWithUnresolvedTypes.xml">
     </Content>
     <Content Include="Configuration\Mapping\TestMappings\mappingWithXmlException.xml">
+    </Content>
+    <Content Include="queriesWithInvalidNamespace.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="storageProvidersWithInvalidNamespace.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Database\CreateTableInheritanceTestData.sql" />
     <Content Include="Database\CreateDB.sql" />

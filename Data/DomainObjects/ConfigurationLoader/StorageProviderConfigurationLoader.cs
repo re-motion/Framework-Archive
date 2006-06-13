@@ -41,16 +41,19 @@ public class StorageProviderConfigurationLoader : BaseFileLoader
           true,
           new PrefixNamespace[] {PrefixNamespace.StorageProviderConfigurationNamespace}, 
           PrefixNamespace.StorageProviderConfigurationNamespace);
+
+    }
+    catch (ConfigurationException e)
+    {
+      throw CreateStorageProviderConfigurationException (e, "Error while reading storage provider configuration: {0}", e.Message);
     }
     catch (XmlSchemaException e)
     {
-      throw CreateStorageProviderConfigurationException (
-          e, "Error while reading storage provider configuration: {0}", e.Message);
+      throw CreateStorageProviderConfigurationException (e, "Error while reading storage provider configuration: {0}", e.Message);
     }
     catch (XmlException e)
     {
-      throw CreateStorageProviderConfigurationException (
-          e, "Error while reading storage provider configuration: {0}", e.Message);
+      throw CreateStorageProviderConfigurationException (e, "Error while reading storage provider configuration: {0}", e.Message);
     }
   }
   
