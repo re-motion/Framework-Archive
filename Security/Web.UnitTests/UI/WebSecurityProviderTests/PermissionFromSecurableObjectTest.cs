@@ -28,6 +28,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _testHelper = new WebPermissionProviderTestHelper ();
       SecurityConfiguration.Current.SecurityService = _testHelper.SecurityService;
       SecurityConfiguration.Current.UserProvider = _testHelper.UserProvider;
+      SecurityConfiguration.Current.FunctionalSecurityStrategy = _testHelper.FunctionalSecurityStrategy;
     }
 
     [TearDown]
@@ -35,6 +36,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     {
       SecurityConfiguration.Current.SecurityService = null;
       SecurityConfiguration.Current.UserProvider = new ThreadUserProvider ();
+      SecurityConfiguration.Current.FunctionalSecurityStrategy = new FunctionalSecurityStrategy();
     }
 
     [Test]
@@ -54,6 +56,28 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessType.Read }, false);
 
       bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), new EventHandler (TestEventHandler));
+
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsFalse (hasAccess);
+    }
+
+    [Test]
+    public void HasAccessGranted_WithSecurableObjectSetToNull ()
+    {
+      _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessType.Read }, true);
+
+      bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
+
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
+    public void HasAccessDenied_WithSecurableObjectSetToNull ()
+    {
+      _testHelper.ExpectHasStatelessAccessForSecurableObject (new Enum[] { GeneralAccessType.Read }, false);
+
+      bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 
       _testHelper.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsFalse (hasAccess);

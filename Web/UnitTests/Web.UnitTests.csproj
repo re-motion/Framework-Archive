@@ -214,9 +214,9 @@
     <Compile Include="StringCollectionCheckerTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\CommandTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="UI\Controls\CommandTests\CommandTest.cs" />
+    <Compile Include="UI\Controls\CommandTests\CommandTestHelper.cs" />
+    <Compile Include="UI\Controls\CommandTests\SecurityTests.cs" />
     <Compile Include="UI\Controls\ControlInvoker.cs">
       <SubType>Code</SubType>
     </Compile>

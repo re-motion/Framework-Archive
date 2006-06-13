@@ -40,7 +40,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessGranted ()
     {
-      _testHelper.ExpectHasStatelessAccess (typeof (TestFunctionWithThisObject), true);
+      _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), true);
 
       bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 
@@ -51,7 +51,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     [Test]
     public void HasAccessDenied ()
     {
-      _testHelper.ExpectHasStatelessAccess (typeof (TestFunctionWithThisObject), false);
+      _testHelper.ExpectHasStatelessAccessForWxeFunction (typeof (TestFunctionWithThisObject), false);
 
       bool hasAccess = _securityProvider.HasAccess (null, new EventHandler (TestEventHandler));
 

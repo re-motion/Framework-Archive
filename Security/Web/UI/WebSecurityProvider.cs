@@ -42,9 +42,11 @@ namespace Rubicon.Security.Web.UI
             hasAccess &= WxeFunction.HasAccess (attribute.FunctionType);
             break;
           case PermissionSource.SecurableObject:
-            ArgumentUtility.CheckNotNull ("securableObject", securableObject);
             SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-            hasAccess &= securityClient.HasMethodAccess (securableObject, attribute.MethodName);
+            if (securableObject == null)
+              hasAccess &= securityClient.HasStatelessMethodAccess (attribute.SecurableClass, attribute.MethodName);
+            else
+              hasAccess &= securityClient.HasMethodAccess (securableObject, attribute.MethodName);
             break;
           default:
             throw new ArgumentException (string.Format (

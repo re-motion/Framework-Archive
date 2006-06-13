@@ -25,6 +25,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     private ISecurityService _mockSecurityService;
     private IUserProvider _mockUserProvider;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
+    private IFunctionalSecurityStrategy _mockFunctionalSecurityStrategy;
     private IWxeSecurityProvider _mockWxeSecurityProvider;
 
     // construction and disposing
@@ -35,6 +36,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       
       _mockSecurityService = _mocks.NewMock<ISecurityService> ();
       _mockObjectSecurityStrategy = _mocks.NewMock<IObjectSecurityStrategy> ();
+      _mockFunctionalSecurityStrategy = _mocks.NewMock<IFunctionalSecurityStrategy> ();
       _mockWxeSecurityProvider = _mocks.NewMock<IWxeSecurityProvider> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
@@ -52,6 +54,11 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       Expect.Never.On (_mockObjectSecurityStrategy);
     }
 
+    public void ExpectFunctionalSecurityStrategyToBeNeverCalled ()
+    {
+      Expect.Never.On (_mockObjectSecurityStrategy);
+    }
+
     public void ExpectWxeSecurityProviderToBeNeverCalled ()
     {
       Expect.Never.On (_mockWxeSecurityProvider);
@@ -65,7 +72,15 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
          .Will (Return.Value (returnValue));
     }
 
-    public void ExpectHasStatelessAccess (Type functionType, bool returnValue)
+    public void ExpectHasStatelessAccessForSecurableObject (Enum[] accessTypes, bool returnValue)
+    {
+      Expect.Once.On (_mockFunctionalSecurityStrategy)
+         .Method ("HasAccess")
+         .With (typeof (SecurableObject), _mockSecurityService, _user, Array.ConvertAll<Enum, AccessType> (accessTypes, AccessType.Get))
+         .Will (Return.Value (returnValue));
+    }
+
+    public void ExpectHasStatelessAccessForWxeFunction (Type functionType, bool returnValue)
     {
       Expect.Once.On (_mockWxeSecurityProvider)
          .Method ("HasStatelessAccess")
@@ -91,6 +106,11 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     public IObjectSecurityStrategy ObjectSecurityStrategy
     {
       get { return _mockObjectSecurityStrategy; }
+    }
+
+    public IFunctionalSecurityStrategy FunctionalSecurityStrategy
+    {
+      get { return _mockFunctionalSecurityStrategy; }
     }
 
     public IWxeSecurityProvider WxeSecurityProvider

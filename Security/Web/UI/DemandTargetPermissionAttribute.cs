@@ -25,6 +25,7 @@ namespace Rubicon.Security.Web.UI
     private PermissionSource _permissionSource;
     private Type _functionType;
     private string _methodName;
+    private Type _securableClass;
 
     // construction and disposing
 
@@ -42,6 +43,16 @@ namespace Rubicon.Security.Web.UI
 
       _permissionSource = PermissionSource.SecurableObject;
       _methodName = methodName;
+    }
+
+    protected DemandTargetPermissionAttribute (string methodName, Type securableClass)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+
+      _permissionSource = PermissionSource.SecurableObject;
+      _methodName = methodName;
+      _securableClass = securableClass;
     }
 
     protected DemandTargetPermissionAttribute (object methodEnum)
@@ -62,6 +73,7 @@ namespace Rubicon.Security.Web.UI
       }
 
       _permissionSource = PermissionSource.SecurableObject;
+      _securableClass = enumType.DeclaringType;
       _methodName = enumValue.ToString ();
     }
 
@@ -80,6 +92,11 @@ namespace Rubicon.Security.Web.UI
     public string MethodName
     {
       get { return _methodName; }
+    }
+  
+    public Type SecurableClass
+    {
+      get { return _securableClass; }
     }
   }
 }
