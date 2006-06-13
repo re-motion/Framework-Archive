@@ -39,38 +39,20 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
-    <None Include="IntegrationTests\TestData\Ceo.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="IntegrationTests\TestData\ClassWithAllDataTypes.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="IntegrationTests\TestData\Company.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="IntegrationTests\TestData\Customer.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="IntegrationTests\TestData\Official.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="IntegrationTests\TestData\Order.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="IntegrationTests\TestData\OrderCollection.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="IntegrationTests\TestData\OrderItem.cs">
-      <SubType>Code</SubType>
-    </None>
-    <None Include="IntegrationTests\TestData\OrderPriority.cs">
-      <SubType>Code</SubType>
-    </None>
     <None Include="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.build" />
     <Compile Include="DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectCollectionBuilderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\EnumBuilderTest.cs" />
+    <None Include="IntegrationTests\TestDomain\Ceo.cs" />
+    <None Include="IntegrationTests\TestDomain\ClassWithAllDataTypes.cs" />
+    <None Include="IntegrationTests\TestDomain\Company.cs" />
+    <None Include="IntegrationTests\TestDomain\Customer.cs" />
+    <None Include="IntegrationTests\TestDomain\Official.cs" />
+    <None Include="IntegrationTests\TestDomain\Order.cs" />
+    <None Include="IntegrationTests\TestDomain\OrderCollection.cs" />
+    <None Include="IntegrationTests\TestDomain\OrderItem.cs" />
+    <None Include="IntegrationTests\TestDomain\OrderPriority.cs" />
     <Compile Include="MappingBaseTest.cs" />
     <Compile Include="NonRdbmsStorageProvider.cs" />
     <Compile Include="Sql\ConstraintBuilderTest.cs" />
@@ -123,7 +105,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>copy "$(ProjectDir)IntegrationTests\TestData\*.cs" $(TargetDir)
+    <PostBuildEvent>copy "$(ProjectDir)IntegrationTests\TestDomain\*.cs" $(TargetDir)
 copy "$(ProjectDir)Sql\TestData\*.sql" $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>
