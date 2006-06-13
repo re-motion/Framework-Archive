@@ -6,11 +6,11 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Web.Configuration;
 using Rubicon.Web.UnitTests.Configuration;
 
-namespace Rubicon.Web.UnitTests.UI.Controls
+namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 {
 
 [TestFixture]
-public class WebButtonTest: WebControlTest
+public class WcagTest: WebControlTest
 {
   private WebButtonMock _webButton;
 

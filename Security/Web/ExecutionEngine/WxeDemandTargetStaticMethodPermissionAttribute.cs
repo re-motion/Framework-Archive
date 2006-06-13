@@ -19,12 +19,12 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     // construction and disposing
 
-    public WxeDemandTargetStaticMethodPermissionAttribute (object methodEnum)
+    public WxeDemandTargetStaticMethodPermissionAttribute (object methodNameEnum)
       : base (MethodType.Static)
     {
-      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
+      ArgumentUtility.CheckNotNullAndType ("methodNameEnum", methodNameEnum, typeof (Enum));
 
-      Enum enumValue = (Enum) methodEnum;
+      Enum enumValue = (Enum) methodNameEnum;
       Type enumType = enumValue.GetType();
 
       // TODO: rewrite with test
@@ -34,19 +34,19 @@ namespace Rubicon.Security.Web.ExecutionEngine
                 "Enumerated type '{0}' is not declared as a nested type or the declaring type does not implement interface '{1}'.", 
                 enumType.FullName, 
                 typeof (ISecurableObject).FullName),
-            "methodEnum");
+            "methodNameEnum");
       }
 
       Initialize (enumValue.ToString (), enumType.DeclaringType);
     }
 
-    public WxeDemandTargetStaticMethodPermissionAttribute (object methodEnum, Type securableClass)
+    public WxeDemandTargetStaticMethodPermissionAttribute (object methodNameEnum, Type securableClass)
       : base (MethodType.Static)
     {
-      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
+      ArgumentUtility.CheckNotNullAndType ("methodNameEnum", methodNameEnum, typeof (Enum));
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
 
-      Enum enumValue = (Enum) methodEnum;
+      Enum enumValue = (Enum) methodNameEnum;
       Type enumType = enumValue.GetType ();
 
       // TODO: rewrite with test
@@ -56,14 +56,14 @@ namespace Rubicon.Security.Web.ExecutionEngine
                 "Enumerated type '{0}' is not declared as a nested type or the declaring type does not implement interface '{1}'.",
                 enumType.FullName,
                 typeof (ISecurableObject).FullName),
-            "methodEnum");
+            "methodNameEnum");
       }
 
       // TODO: rewrite with test
       if (!enumType.DeclaringType.IsAssignableFrom (securableClass))
       {
         throw new ArgumentException (string.Format (
-                "Type '{0}' cannot be assigned to the declaring type '{1}' of the enum value specified by parameter 'methodEnum'.",
+                "Type '{0}' cannot be assigned to the declaring type '{1}' of the enum value specified by parameter 'methodNameEnum'.",
                 securableClass,
                 enumType.DeclaringType),
             "securableClass");

@@ -28,12 +28,12 @@ namespace Rubicon.Security.Web.ExecutionEngine
       MethodName = methodName;
     }
 
-    public WxeDemandTargetMethodPermissionAttribute (object methodEnum)
+    public WxeDemandTargetMethodPermissionAttribute (object methodNameEnum)
       : base (MethodType.Instance)
     {
-      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
+      ArgumentUtility.CheckNotNullAndType ("methodNameEnum", methodNameEnum, typeof (Enum));
 
-      Enum enumValue = (Enum) methodEnum;
+      Enum enumValue = (Enum) methodNameEnum;
       Type enumType = enumValue.GetType ();
 
       // TODO: rewrite with test
@@ -43,7 +43,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
                 "Enumerated type '{0}' is not declared as a nested type or the declaring type does not implement interface '{1}'.",
                 enumType.FullName,
                 typeof (ISecurableObject).FullName),
-            "methodEnum");
+            "methodNameEnum");
       }
 
       SecurableClass = enumType.DeclaringType;

@@ -9,10 +9,10 @@ using Rubicon.Security;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.Web.UnitTests.UI.Controls
+namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 {
   [TestFixture]
-  public class WebButtonSecurityTest
+  public class SecurityTestWithVisible
   {
     private Mockery _mocks;
     private IWebSecurityProvider _mockWebSecurityProvider;
