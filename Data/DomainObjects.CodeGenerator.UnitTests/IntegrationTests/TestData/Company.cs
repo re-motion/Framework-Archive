@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain
+namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain
 {
 [Serializable]
 public abstract class Company : BindableDomainObject
@@ -61,6 +61,12 @@ public abstract class Company : BindableDomainObject
   {
     get { return (Ceo) GetRelatedObject ("Ceo"); }
     set { SetRelatedObject ("Ceo", value); }
+  }
+
+  public Address Address
+  {
+    get { return (Address) GetRelatedObject ("Address"); }
+    set { SetRelatedObject ("Address", value); }
   }
 
 }

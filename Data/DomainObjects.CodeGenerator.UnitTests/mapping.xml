@@ -2,7 +2,7 @@
 <mapping application="CodeGeneratorUnitTests" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
 	<classes>
 		<class id="Company">
-			<type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Company, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+			<type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Company, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
 			<storageProviderID>FirstStorageProvider</storageProviderID>
 			<properties>
 				<property name="Name">
@@ -17,20 +17,28 @@
           <maxLength>100</maxLength>
         </property>
         <relationProperty name="Ceo" relationID="CompanyClassIDToCeo" cardinality="one" isMandatory="true"/>
-			</properties>
+        <relationProperty relationID="AddressToCompany" name="Address" cardinality="one" isMandatory="false">
+          <column>AddressID</column>
+        </relationProperty>
+      </properties>
 		</class>
     
 		<class id="Customer" baseClass="Company">
-			<type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+			<type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Customer, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
 			<entity name="Customer"/>
 			<storageProviderID>FirstStorageProvider</storageProviderID>
 			<properties>
 				<property name="Type">
-					<type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+					<type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
 					<column>CustomerType</column>
 				</property>
+        <property name="PropertyWithIdenticalNameInDifferentInheritanceBranches">
+          <type>string</type>
+          <column>CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches</column>
+          <maxLength>100</maxLength>
+        </property>
 				<relationProperty name="Orders" relationID="CustomerToOrder" cardinality="many" isMandatory="false">
-					<collectionType>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</collectionType>
+					<collectionType>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</collectionType>
 					<sortExpression>Number ASC</sortExpression>
 				</relationProperty>
         <relationProperty name="PrimaryOfficial" relationID="OfficialToCustomer" cardinality="one" isMandatory="true">
@@ -41,7 +49,7 @@
 		</class>
 
     <class id="Partner" baseClass="Company">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Partner, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
         <property name="Description">
@@ -49,11 +57,16 @@
           <column>Description</column>
           <maxLength>255</maxLength>
         </property>
+        <property name="PropertyWithIdenticalNameInDifferentInheritanceBranches">
+          <type>string</type>
+          <column>PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches</column>
+          <maxLength>100</maxLength>
+        </property>
       </properties>
     </class>
 
     <class id="DevelopmentPartner" baseClass="Partner">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.DevelopmentPartner, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.DevelopmentPartner, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <entity name="DevelopmentPartner"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -64,9 +77,39 @@
         </property>
       </properties>
     </class>
+
+    <class id="AbstractWithoutConcreteClass" baseClass="Company">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.AbstractWithoutConcreteClass, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <storageProviderID>FirstStorageProvider</storageProviderID>
+      <properties/>
+    </class>
+    
+    <class id="Address">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Address, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <entity name="Address"/>
+      <storageProviderID>FirstStorageProvider</storageProviderID>
+      <properties>
+        <property name="Street">
+          <type>string</type>
+          <column>Street</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="Zip">
+          <type>string</type>
+          <column>Zip</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="City">
+          <type>string</type>
+          <column>City</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty relationID="AddressToCompany" name="Company" cardinality="one" isMandatory="true" />
+      </properties>
+    </class>
     
     <class id="Order">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Order, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Order, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <entity name="Order"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -75,7 +118,7 @@
           <column>Number</column>
         </property>
         <property name="Priority">
-          <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+          <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
           <column>Priority</column>
         </property>
         <relationProperty name="Customer" relationID="CustomerToOrder" cardinality="one" isMandatory="true">
@@ -89,7 +132,7 @@
     </class>
 
     <class id="OrderItem">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderItem, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <entity name="OrderItem"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -109,7 +152,7 @@
     </class>
 
     <class id="Official">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Official, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Official, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <entity name="Official"/>
       <storageProviderID>SecondStorageProvider</storageProviderID>
       <properties>
@@ -119,22 +162,34 @@
           <maxLength>100</maxLength>
         </property>
         <property name="ResponsibleForOrderPriority">
-          <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+          <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
           <column>ResponsibleForOrderPriority</column>
         </property>
         <property name="ResponsibleForCustomerType">
-          <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+          <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
           <column>ResponsibleForCustomerType</column>
         </property>
 
         <relationProperty name="Orders" relationID="OfficialToOrder" cardinality="many" isMandatory="false">
-          <collectionType>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</collectionType>
+          <collectionType>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderCollection, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</collectionType>
         </relationProperty>
       </properties>
     </class>
 
+    <class id="SpecialOfficial" baseClass="Official">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Official, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <storageProviderID>SecondStorageProvider</storageProviderID>
+      <properties>
+        <property name="Speciality">
+          <type>string</type>
+          <column>Speciality</column>
+          <maxLength>255</maxLength>
+        </property>
+      </properties>
+    </class>
+    
     <class id="Ceo">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Ceo, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <entity name="Ceo"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -150,7 +205,7 @@
     </class>
 
     <class id="ClassWithAllDataTypes">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.ClassWithAllDataTypes, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <entity name="TableWithAllDataTypes"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -179,7 +234,7 @@
           <column>Double</column>
         </property>
         <property name="EnumProperty">
-          <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+          <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
           <column>Enum</column>
         </property>
         <property name="GuidProperty">
@@ -337,7 +392,7 @@
     </class>
 
     <class id="Employee">
-      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Employee, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Employee, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
       <entity name="Employee"/>
       <storageProviderID>FirstStorageProvider</storageProviderID>
       <properties>
@@ -351,6 +406,77 @@
           <column>SupervisorID</column>
         </relationProperty>
         <relationProperty relationID="EmployeeToEmployee" name="Subordinates" cardinality="many" isMandatory="false"/>
+      </properties>
+    </class>
+
+    <class id="ClassWithRelations">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.ClassWithRelations, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <entity name="ClassWithRelations"/>
+      <storageProviderID>FirstStorageProvider</storageProviderID>
+      <properties>
+        <relationProperty relationID="DerivedClassToClassWithRelations" name="DerivedClass" isMandatory="false" cardinality="one">
+          <column>DerivedClassID</column>
+          <oppositeClass>DerivedClass</oppositeClass>
+        </relationProperty>
+      </properties>
+    </class>
+    
+    <class id="ConcreteClass">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.ConcreteClass, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <entity name="ConcreteClass"/>
+      <storageProviderID>FirstStorageProvider</storageProviderID>
+      <properties>
+        <property name="PropertyInConcreteClass">
+          <type>string</type>
+          <column>PropertyInConcreteClass</column>
+          <maxLength>100</maxLength>
+        </property>
+      </properties>
+    </class>
+
+    <class id="DerivedClass" baseClass="ConcreteClass">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.DerivedClass, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <storageProviderID>FirstStorageProvider</storageProviderID>
+      <properties>
+        <property name="PropertyInDerivedClass">
+          <type>string</type>
+          <column>PropertyInDerivedClass</column>
+          <maxLength>100</maxLength>
+        </property>
+      </properties>
+    </class>
+
+    <class id="SecondDerivedClass" baseClass="ConcreteClass">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.SecondDerivedClass, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <entity name="ConcreteClass"/>
+      <storageProviderID>FirstStorageProvider</storageProviderID>
+      <properties>
+        <property name="PropertyInSecondDerivedClass">
+          <type>string</type>
+          <column>PropertyInSecondDerivedClass</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty relationID="ClassWithRelationsToSecondDerivedClass" name="ClassWithRelationsInSecondDerivedClass" cardinality="one" isMandatory="false">
+          <column>ClassWithRelationsInSecondDerivedClassID</column>
+          <oppositeClass>ClassWithRelations</oppositeClass>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <class id="DerivedOfDerivedClass" baseClass="DerivedClass">
+      <type>Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.DerivedOfDerivedClass, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests</type>
+      <entity name="ConcreteClass"/>
+      <storageProviderID>FirstStorageProvider</storageProviderID>
+      <properties>
+        <property name="PropertyInDerivedOfDerivedClass">
+          <type>string</type>
+          <column>PropertyInDerivedOfDerivedClass</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty relationID="ClassWithRelationsToDerivedOfDerivedClass" name="ClassWithRelationsInDerivedOfDerivedClass" cardinality="one" isMandatory="false">
+          <column>ClassWithRelationsInDerivedOfDerivedClassID</column>
+          <oppositeClass>ClassWithRelations</oppositeClass>
+        </relationProperty>
       </properties>
     </class>
   </classes>

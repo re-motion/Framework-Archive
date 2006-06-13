@@ -1,0 +1,251 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using NUnit.Framework;
+using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
+using Rubicon.Data.DomainObjects.Mapping;
+using Rubicon.NullableValueTypes;
+using System.Collections;
+
+namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
+{
+  [TestFixture]
+  public class ConstraintBuilderTest : MappingBaseTest
+  {
+    // types
+
+    // static members and constants
+
+    // member fields
+
+    private ConstraintBuilder _constraintBuilder;
+
+    // construction and disposing
+
+    public ConstraintBuilderTest ()
+    {
+    }
+
+    // methods and properties
+
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      _constraintBuilder = new ConstraintBuilder ();
+    }
+
+    [Test]
+    public void AddConstraintWithRelationToSameStorageProvider ()
+    {
+      _constraintBuilder.AddConstraint (OrderItemClass);
+
+      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\n"
+          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithRelationToOtherStorageProvider ()
+    {
+      _constraintBuilder.AddConstraint (OrderClass);
+
+      string expectedScript = "ALTER TABLE [dbo].[Order] ADD\n"
+          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintMultipleTimes ()
+    {
+      _constraintBuilder.AddConstraint (OrderItemClass);
+      _constraintBuilder.AddConstraint (OrderClass);
+
+      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\n"
+          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\n\n"
+          + "ALTER TABLE [dbo].[Order] ADD\n"
+          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+
+    }
+
+    [Test]
+    public void AddConstraintWithTwoConstraints ()
+    {
+      ClassDefinition firstClass = new ClassDefinition (
+          "FirstClass", "FirstEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
+
+      firstClass.MyPropertyDefinitions.Add (
+          new PropertyDefinition ("SecondClass", "SecondClassID", TypeInfo.ObjectIDMappingTypeName, false, true, NaInt32.Null));
+
+      firstClass.MyPropertyDefinitions.Add (
+          new PropertyDefinition ("ThirdClass", "ThirdClassID", TypeInfo.ObjectIDMappingTypeName, false, true, NaInt32.Null));
+
+      ClassDefinition secondClass = new ClassDefinition (
+          "SecondClass", "SecondEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
+
+      ClassDefinition thirdClass = new ClassDefinition (
+          "ThirdClass", "ThirdEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
+
+      RelationDefinition relationDefinition1 = new RelationDefinition (
+          "FirstClassToSecondClass",
+          new RelationEndPointDefinition (firstClass, "SecondClass", false),
+          new VirtualRelationEndPointDefinition (secondClass, "FirstClass", false, CardinalityType.Many, typeof (DomainObjectCollection)));
+      firstClass.MyRelationDefinitions.Add (relationDefinition1);
+      secondClass.MyRelationDefinitions.Add (relationDefinition1);
+
+      RelationDefinition relationDefinition2 = new RelationDefinition (
+          "FirstClassToThirdClass",
+          new RelationEndPointDefinition (firstClass, "ThirdClass", false),
+          new VirtualRelationEndPointDefinition (thirdClass, "FirstClass", false, CardinalityType.Many, typeof (DomainObjectCollection)));
+      firstClass.MyRelationDefinitions.Add (relationDefinition2);
+      thirdClass.MyRelationDefinitions.Add (relationDefinition2);
+
+      _constraintBuilder.AddConstraint (firstClass);
+
+      string expectedScript = "ALTER TABLE [dbo].[FirstEntity] ADD\n"
+          + "  CONSTRAINT [FK_FirstClassToSecondClass] FOREIGN KEY ([SecondClassID]) REFERENCES [dbo].[SecondEntity] ([ID]),\n"
+          + "  CONSTRAINT [FK_FirstClassToThirdClass] FOREIGN KEY ([ThirdClassID]) REFERENCES [dbo].[ThirdEntity] ([ID])\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithNoConstraintNecessary ()
+    {
+      _constraintBuilder.AddConstraint (MappingConfiguration.ClassDefinitions.GetMandatory ("Official"));
+      Assert.IsEmpty (_constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithRelationInDerivedClass ()
+    {
+      ClassDefinition baseClass = new ClassDefinition (
+          "BaseClass", "BaseClassEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
+
+      ClassDefinition derivedClass = new ClassDefinition (
+          "DerivedClass", "BaseClassEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false, baseClass);
+
+      derivedClass.MyPropertyDefinitions.Add (
+          new PropertyDefinition ("OtherClass", "OtherClassID", TypeInfo.ObjectIDMappingTypeName, false, true, NaInt32.Null));
+
+      ClassDefinition otherClass = new ClassDefinition (
+          "OtherClass", "OtherClassEntity", "FirstStorageProvider", "Namespace.TypeName, AssemblyName", false);
+
+      RelationDefinition relationDefinition1 = new RelationDefinition (
+          "OtherClassToDerivedClass",
+          new RelationEndPointDefinition (derivedClass, "OtherClass", false),
+          new VirtualRelationEndPointDefinition (otherClass, "DerivedClass", false, CardinalityType.Many, typeof (DomainObjectCollection)));
+
+      derivedClass.MyRelationDefinitions.Add (relationDefinition1);
+      otherClass.MyRelationDefinitions.Add (relationDefinition1);
+
+      _constraintBuilder.AddConstraint (baseClass);
+
+      string expectedScript = "ALTER TABLE [dbo].[BaseClassEntity] ADD\n"
+          + "  CONSTRAINT [FK_OtherClassToDerivedClass] FOREIGN KEY ([OtherClassID]) REFERENCES [dbo].[OtherClassEntity] ([ID])\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithRelationToDerivedOfConcreteClass ()
+    {
+      _constraintBuilder.AddConstraint (ClassWithRelations);
+
+      string expectedScript = "ALTER TABLE [dbo].[ClassWithRelations] ADD\n"
+          + "  CONSTRAINT [FK_DerivedClassToClassWithRelations] FOREIGN KEY ([DerivedClassID]) REFERENCES [dbo].[ConcreteClass] ([ID])\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithRelationToAbstractClass ()
+    {
+      _constraintBuilder.AddConstraint (CeoClass);
+
+      Assert.IsEmpty (_constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithAbstractClass ()
+    {
+      _constraintBuilder.AddConstraint (CompanyClass);
+
+      Assert.IsEmpty (_constraintBuilder.GetAddConstraintScript ());
+      Assert.IsEmpty (_constraintBuilder.GetDropConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithDerivedClassWithEntityName ()
+    {
+      _constraintBuilder.AddConstraint (SecondDerivedClass);
+
+      Assert.IsEmpty (_constraintBuilder.GetAddConstraintScript ());
+      Assert.IsEmpty (_constraintBuilder.GetDropConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraintWithDerivedOfDerivedClassWithEntityName ()
+    {
+      _constraintBuilder.AddConstraint (DerivedOfDerivedClass);
+
+      Assert.IsEmpty (_constraintBuilder.GetAddConstraintScript ());
+      Assert.IsEmpty (_constraintBuilder.GetDropConstraintScript ());
+    }
+
+    [Test]
+    public void AddConstraints ()
+    {
+      ClassDefinitionCollection classes = new ClassDefinitionCollection (false);
+      classes.Add (OrderItemClass);
+      classes.Add (OrderClass);
+
+      _constraintBuilder.AddConstraints (classes);
+
+      string expectedScript = "ALTER TABLE [dbo].[OrderItem] ADD\n"
+          + "  CONSTRAINT [FK_OrderToOrderItem] FOREIGN KEY ([OrderID]) REFERENCES [dbo].[Order] ([ID])\n\n"
+          + "ALTER TABLE [dbo].[Order] ADD\n"
+          + "  CONSTRAINT [FK_CustomerToOrder] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customer] ([ID])\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetAddConstraintScript ());
+    }
+
+    [Test]
+    public void GetDropConstraintsScript ()
+    {
+      _constraintBuilder.AddConstraint (ClassWithRelations);
+
+      string expectedScript = "DECLARE @statement nvarchar (4000)\n"
+          + "SET @statement = ''\n"
+          + "SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \n"
+          + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \n"
+          + "    WHERE fk.xtype = 'F' AND t.name IN ('ClassWithRelations')\n"
+          + "    ORDER BY t.name, fk.name\n"
+          + "exec sp_executesql @statement\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetDropConstraintScript ());
+    }
+
+    [Test]
+    public void GetDropConstraintsScriptWithMultipleEntities ()
+    {
+      _constraintBuilder.AddConstraint (ClassWithRelations);
+      _constraintBuilder.AddConstraint (ConcreteClass);
+
+      string expectedScript = "DECLARE @statement nvarchar (4000)\n"
+          + "SET @statement = ''\n"
+          + "SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \n"
+          + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \n"
+          + "    WHERE fk.xtype = 'F' AND t.name IN ('ClassWithRelations', 'ConcreteClass')\n"
+          + "    ORDER BY t.name, fk.name\n"
+          + "exec sp_executesql @statement\n";
+
+      Assert.AreEqual (expectedScript, _constraintBuilder.GetDropConstraintScript ());
+    }
+  }
+}

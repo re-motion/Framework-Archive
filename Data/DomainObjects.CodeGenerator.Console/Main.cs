@@ -6,6 +6,7 @@ using Rubicon.Text.CommandLine;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
+using Rubicon.Data.DomainObjects.CodeGenerator.Sql;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 {
@@ -39,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
             false);
 
         if ((arguments.Mode & OperationMode.Sql) != 0)
-          SqlBuilder.Build (mappingConfiguration, storageProviderConfiguration, arguments.SqlOutput);
+          SqlFileBuilder.Build (mappingConfiguration, storageProviderConfiguration, arguments.SqlOutput);
 
         if ((arguments.Mode & OperationMode.DomainModel) != 0)
         {

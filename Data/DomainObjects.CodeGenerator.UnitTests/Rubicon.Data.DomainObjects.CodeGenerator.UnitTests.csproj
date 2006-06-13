@@ -39,23 +39,44 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="IntegrationTests\TestData\Ceo.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="IntegrationTests\TestData\ClassWithAllDataTypes.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="IntegrationTests\TestData\Company.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="IntegrationTests\TestData\Customer.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="IntegrationTests\TestData\Official.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="IntegrationTests\TestData\Order.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="IntegrationTests\TestData\OrderCollection.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="IntegrationTests\TestData\OrderItem.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="IntegrationTests\TestData\OrderPriority.cs">
+      <SubType>Code</SubType>
+    </None>
+    <None Include="Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.build" />
     <Compile Include="DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectCollectionBuilderTest.cs" />
     <Compile Include="IntegrationTests\DomainObjectBuilderTest.cs" />
     <Compile Include="IntegrationTests\EnumBuilderTest.cs" />
     <Compile Include="MappingBaseTest.cs" />
     <Compile Include="NonRdbmsStorageProvider.cs" />
-    <Compile Include="Sql\CreateTableBuilderTest.cs" />
+    <Compile Include="Sql\ConstraintBuilderTest.cs" />
+    <Compile Include="Sql\TableBuilderTest.cs" />
+    <Compile Include="Sql\ViewBuilderTest.cs" />
     <Compile Include="Sql\SqlFileBuilderTest.cs" />
-    <None Include="TestDomain\ClassWithAllDataTypes.cs" />
-    <None Include="TestDomain\Company.cs" />
-    <None Include="TestDomain\Ceo.cs" />
-    <None Include="TestDomain\Official.cs" />
-    <None Include="TestDomain\OrderCollection.cs" />
-    <None Include="TestDomain\OrderItem.cs" />
-    <None Include="TestDomain\Order.cs" />
-    <None Include="TestDomain\Customer.cs" />
-    <None Include="TestDomain\OrderPriority.cs" />
     <Compile Include="TypeNameTest.cs" />
     <Compile Include="NonRdbmsStorageProviderDefinition.cs" />
   </ItemGroup>
@@ -78,16 +99,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="emptyStorageProviders.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Sql\TestData\SetupDB_FirstStorageProvider.sql" />
+    <Content Include="Sql\TestData\SetupDB_SecondStorageProvider.sql" />
     <Content Include="storageProviders.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Database\SetupDB_FirstStorageProvider.sql" />
-    <None Include="Database\SetupDB_SecondStorageProvider.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -100,4 +122,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)IntegrationTests\TestData\*.cs" $(TargetDir)
+copy "$(ProjectDir)Sql\TestData\*.sql" $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

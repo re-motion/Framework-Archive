@@ -27,7 +27,7 @@ public class Arguments
   [CommandLineStringArgument ("sqloutput", true, 
       Description = "Create SQL file(s) in this directory (default: current).",
       Placeholder = "directory")]
-  public string SqlOutput = "SetupDB.sql";
+  public string SqlOutput = string.Empty;
 
   [CommandLineStringArgument ("classoutput", true, 
       Description = "Create domain object file(s) in this directory (default: current).",
@@ -75,5 +75,4 @@ public class Arguments
     }
   }
 }
-
 }

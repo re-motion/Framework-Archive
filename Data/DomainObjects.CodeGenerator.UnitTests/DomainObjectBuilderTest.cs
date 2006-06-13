@@ -53,11 +53,11 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
       List<TypeName> actualdistinctPropertyTypeNames = _domainObjectBuilder.GetAllDistinctPropertyTypeNames ();
 
       string customerQualifiedName =
-          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests";
+          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests";
       string orderPriorityQualifiedName =
-          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests";
+          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderPriority, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests";
       string enumTypeQualifiedName =
-          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests";
+          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.ClassWithAllDataTypes+EnumType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests";
 
       Assert.AreEqual (3, actualdistinctPropertyTypeNames.Count);
       Assert.AreEqual (customerQualifiedName, actualdistinctPropertyTypeNames[0].AssemblyQualifiedName);
@@ -69,12 +69,12 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     public void GetNestedPropertyTypeNames ()
     {
       TypeName typeName = new TypeName (
-          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Customer, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests");
+          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Customer, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests");
 
       List<TypeName> nestedPropertyTypeNames = _domainObjectBuilder.GetNestedPropertyTypeNames (typeName);
 
       string nestedTypeQualifiedName =
-          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests";
+          "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.Customer+CustomerType, Rubicon.Data.DomainObjects.CodeGenerator.UnitTests";
 
       Assert.AreEqual (1, nestedPropertyTypeNames.Count);
       Assert.AreEqual (nestedTypeQualifiedName, nestedPropertyTypeNames[0].AssemblyQualifiedName);

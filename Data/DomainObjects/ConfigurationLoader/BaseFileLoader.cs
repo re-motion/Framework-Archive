@@ -58,7 +58,7 @@ public class BaseFileLoader
       string schemaFile,
       string schemaNamespace)
   {
-    // TODO: correct namespace of root element must be checked in all configuration files, because
+    // TODO ES: correct namespace of root element must be checked in all configuration files, because
     // .NET raises no exception in this case
 
     using (XmlTextReader textReader = new XmlTextReader (configurationFile))

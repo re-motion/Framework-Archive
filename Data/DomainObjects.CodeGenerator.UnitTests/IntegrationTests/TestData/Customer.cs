@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain
+namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain
 {
 public class Customer : Company
 {
@@ -53,6 +53,12 @@ public class Customer : Company
   {
     get { return (Customer.CustomerType) DataContainer["Type"]; }
     set { DataContainer["Type"] = value; }
+  }
+
+  public string PropertyWithIdenticalNameInDifferentInheritanceBranches
+  {
+    get { return (string) DataContainer["PropertyWithIdenticalNameInDifferentInheritanceBranches"]; }
+    set { DataContainer["PropertyWithIdenticalNameInDifferentInheritanceBranches"] = value; }
   }
 
   public OrderCollection Orders

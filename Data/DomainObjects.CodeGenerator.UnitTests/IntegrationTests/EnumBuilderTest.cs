@@ -26,14 +26,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildOrderPriority ()
     {
-      //TODO: use TypeName instead of a Type as parameter
       using (StringWriter stringWriter = new StringWriter ())
       {
         TypeName typeName = new TypeName (
-            "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.OrderPriority", "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests");
+            "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderPriority", "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests");
 
         EnumBuilder.Build (stringWriter, typeName, false);
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\OrderPriority.cs"), stringWriter.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"OrderPriority.cs"), stringWriter.ToString ());
       }
     }
 

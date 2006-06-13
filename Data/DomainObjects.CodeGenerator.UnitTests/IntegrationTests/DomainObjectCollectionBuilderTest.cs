@@ -26,14 +26,13 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
     [Test]
     public void BuildOrderCollection ()
     {
-      //TODO: use TypeName instead of a Type as parameter
       using (StringWriter stringWriter = new StringWriter ())
       {
-        TypeName orderCollectionTypeName = new TypeName ("Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain.OrderCollection", "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests");
+        TypeName orderCollectionTypeName = new TypeName ("Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain.OrderCollection", "Rubicon.Data.DomainObjects.CodeGenerator.UnitTests");
 
         DomainObjectCollectionBuilder.Build (stringWriter, orderCollectionTypeName, "Order", DomainObjectCollectionBuilder.DefaultBaseClass, false);
 
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\OrderCollection.cs"), stringWriter.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"OrderCollection.cs"), stringWriter.ToString ());
       }
     }
 

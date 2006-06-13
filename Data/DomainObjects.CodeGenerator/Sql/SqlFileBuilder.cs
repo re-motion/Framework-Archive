@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Persistence.Rdbms;
+using System.IO;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 {
@@ -14,51 +15,91 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 
     // static members and constants
 
-    private const string s_dropForeignKeyConstraintsFormat = "DECLARE @statement nvarchar (4000)\n"
-        + "SET @statement = ''\n"
-        + "SELECT @statement = @statement + 'ALTER TABLE [' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' \n"
-        + "    FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id \n"
-        + "    WHERE fk.xtype = 'F' AND t.name IN ({0})\n"
-        + "    ORDER BY t.name, fk.name\n"
-        + "exec sp_executesql @statement\n";
+    public const string DefaultSchema = "dbo";
 
-    private const string s_dropTableFormat = "IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = '{0}')\n"
-          + "  DROP TABLE [{0}]\n";
+    public static void Build (MappingConfiguration mappingConfiguration, StorageProviderConfiguration storageProviderConfiguration, string outputPath)
+    {
+      ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
+      ArgumentUtility.CheckNotNull ("storageProviderConfiguration", storageProviderConfiguration);
+      ArgumentUtility.CheckNotNull ("outputPath", outputPath);
 
-    private const string s_scriptFormat = "USE {0}\n"
-        + "GO\n\n"
-        + "-- Drop foreign keys of all tables that will be created below\n"
-        + "{1}GO\n\n"
-        + "-- Drop all tables that will be created below\n"
-        + "{2}GO\n\n"
-        + "-- Create all tables\n"
-        + "{3}GO\n\n"
-        + "-- Create constraints for tables that were created above\n"
-        + "{4}GO\n";
+      if (outputPath != string.Empty && !Directory.Exists (outputPath))
+        Directory.CreateDirectory (outputPath);
+
+      if (storageProviderConfiguration.StorageProviderDefinitions.Count == 1)
+      {
+        RdbmsProviderDefinition rdbmsProviderDefinition = storageProviderConfiguration.StorageProviderDefinitions[0] as RdbmsProviderDefinition;
+        if (rdbmsProviderDefinition != null)
+          Build (mappingConfiguration, rdbmsProviderDefinition, GetFileName (rdbmsProviderDefinition, outputPath, false));
+      }
+      else
+      {
+        foreach (StorageProviderDefinition storageProviderDefinition in storageProviderConfiguration.StorageProviderDefinitions)
+        {
+          RdbmsProviderDefinition rdbmsProviderDefinition = storageProviderDefinition as RdbmsProviderDefinition;
+          if (rdbmsProviderDefinition != null)
+            Build (mappingConfiguration, rdbmsProviderDefinition, GetFileName (rdbmsProviderDefinition, outputPath, true));
+        }
+      }
+    }
+
+    public static void Build (
+        MappingConfiguration mappingConfiguration, 
+        RdbmsProviderDefinition rdbmsProviderDefinition, 
+        string fileName)
+    {
+      ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
+      ArgumentUtility.CheckNotNull ("rdbmsProviderDefinition", rdbmsProviderDefinition);
+
+      SqlFileBuilder sqlFileBuilder = new SqlFileBuilder (mappingConfiguration, rdbmsProviderDefinition);
+      File.WriteAllText (fileName, sqlFileBuilder.GetScript ());
+    }
+
+    public static string GetFileName (StorageProviderDefinition storageProviderDefinition, string outputPath, bool multipleStorageProviders)
+    {
+      ArgumentUtility.CheckNotNull ("storageProviderDefinition", storageProviderDefinition);
+      ArgumentUtility.CheckNotNull ("outputPath", outputPath);
+
+      string fileName;
+      if (multipleStorageProviders)
+        fileName = string.Format ("SetupDB_{0}.sql", storageProviderDefinition.ID);
+      else
+        fileName = "SetupDB.sql";
+
+      return Path.Combine (outputPath,  fileName);
+    }
 
     // member fields
 
     private MappingConfiguration _mappingConfiguration;
-    private StorageProviderConfiguration _storageProviderConfiguration;
-    private string _storageProviderID;
+    private RdbmsProviderDefinition _rdbmsProviderDefinition;
 
-    private ClassDefinitionCollection _tableRootClasses;
+    private ClassDefinitionCollection _classes;
 
     // construction and disposing
 
     public SqlFileBuilder (
         MappingConfiguration mappingConfiguration,
-        StorageProviderConfiguration storageProviderConfiguration,
-        string storageProviderID)
+        RdbmsProviderDefinition rdbmsProviderDefinition)
     {
       ArgumentUtility.CheckNotNull ("mappingConfiguration", mappingConfiguration);
-      ArgumentUtility.CheckNotNull ("storageProviderConfiguration", storageProviderConfiguration);
-      ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
+      ArgumentUtility.CheckNotNull ("rdbmsProviderDefinition", rdbmsProviderDefinition);
 
       _mappingConfiguration = mappingConfiguration;
-      _storageProviderConfiguration = storageProviderConfiguration;
-      _storageProviderID = storageProviderID;
-      _tableRootClasses = GetTableRootClassesOfThisStorageProvider ();
+      _rdbmsProviderDefinition = rdbmsProviderDefinition;
+      _classes = GetClassesInStorageProvider (mappingConfiguration.ClassDefinitions, _rdbmsProviderDefinition.ID);
+    }
+
+    private ClassDefinitionCollection GetClassesInStorageProvider (ClassDefinitionCollection classDefinitions, string storageProviderID)
+    {
+      ClassDefinitionCollection classes = new ClassDefinitionCollection (false);
+      foreach (ClassDefinition currentClass in classDefinitions)
+      {
+        if (currentClass.StorageProviderID == _rdbmsProviderDefinition.ID)
+          classes.Add (currentClass);
+      }
+
+      return classes;
     }
 
     // methods and properties
@@ -68,222 +109,55 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       get { return _mappingConfiguration; }
     }
 
-    public StorageProviderConfiguration StorageProviderConfiguration
+    public RdbmsProviderDefinition RdbmsProviderDefinition
     {
-      get { return _storageProviderConfiguration; }
+      get { return _rdbmsProviderDefinition; }
     }
 
-    public string StorageProviderID
+    public ClassDefinitionCollection Classes
     {
-      get { return _storageProviderID; }
-    }
-
-    public ClassDefinitionCollection TableRootClasses
-    {
-      get { return _tableRootClasses; }
-    }
-
-    public string GetScript ()
-    {
-      return string.Format (s_scriptFormat, 
-          GetDatabaseName (), GetDropForeignKeyScript (), GetDropTableScript (), GetCreateTableScript (), GetAddConstraintScript ());
-    }
-
-    public List<string> GetEntityNames (ClassDefinitionCollection classDefinitions)
-    {
-      ArgumentUtility.CheckNotNullOrEmpty ("classDefinitions", classDefinitions);
-
-      List<string> entityNames = new List<string> ();
-
-      foreach (ClassDefinition classDefinition in classDefinitions)
-      {
-        string entityName = classDefinition.GetEntityName ();
-        if (entityName != null && !entityNames.Contains (entityName))
-          entityNames.Add (entityName);
-      }
-
-      return entityNames;
-    }
-
-    public string GetDropForeignKeyScript ()
-    {
-      List<string> entityNames = GetEntityNames (TableRootClasses);
-
-      return string.Format (s_dropForeignKeyConstraintsFormat, "'" + string.Join ("', '", entityNames.ToArray ()) + "'");
+      get { return _classes; }
     }
 
     public string GetDatabaseName ()
     {
-      RdbmsProviderDefinition providerDefinition = 
-          _storageProviderConfiguration.StorageProviderDefinitions[_storageProviderID] as RdbmsProviderDefinition;
-
-      if (providerDefinition == null)
-        return null;
-
-      return GetDatabasenameFromConnectionString (providerDefinition.ConnectionString);
-    }
-
-    public string GetAddConstraintScript ()
-    {
-      StringBuilder addConstraintScriptBuilder = new StringBuilder ();
-
-      foreach (ClassDefinition classDefinition in _tableRootClasses)
-      {
-        string script = GetAddConstraintScript (classDefinition);
-        if (script.Length != 0)
-        {
-          if (addConstraintScriptBuilder.Length != 0)
-            addConstraintScriptBuilder.Append ("\n");
-
-          addConstraintScriptBuilder.Append (script);
-        }
-      }
-      return addConstraintScriptBuilder.ToString ();
-    }
-
-    public string GetAddConstraintScript (ClassDefinition classDefinition)
-    {
-      ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
-
-      string constraints = string.Empty;
-      foreach (IRelationEndPointDefinition relationEndPoint in GetRelationEndPoints (classDefinition))
-      {
-        string constraint = GetConstraint (relationEndPoint);
-
-        if (constraints.Length != 0 && constraint.Length != 0)
-          constraints += ",\n" + constraint;
-        else
-          constraints += constraint;
-      }
-
-      if (constraints == string.Empty)
-        return string.Empty;
-
-      return string.Format ("ALTER TABLE [{0}] ADD\n{1}\n", classDefinition.MyEntityName, constraints);
-    }
-
-    public string GetConstraint (IRelationEndPointDefinition relationEndPoint)
-    {
-      ArgumentUtility.CheckNotNull ("relationEndPoint", relationEndPoint);
-
-      if (relationEndPoint.IsNull)
-        return string.Empty;
-
-      ClassDefinition oppositeClassDefinition = relationEndPoint.ClassDefinition.GetMandatoryOppositeClassDefinition (relationEndPoint.PropertyName);
-
-      if (!HasConstraint (relationEndPoint, oppositeClassDefinition))
-        return string.Empty;
-
-      PropertyDefinition propertyDefinition = relationEndPoint.ClassDefinition.GetMandatoryPropertyDefinition (relationEndPoint.PropertyName);
-
-      return string.Format ("  CONSTRAINT [FK_{0}] FOREIGN KEY ([{1}]) REFERENCES [{2}] ([ID])",
-          relationEndPoint.RelationDefinition.ID,
-          propertyDefinition.ColumnName,
-          oppositeClassDefinition.MyEntityName);
-    }
-
-    private List<IRelationEndPointDefinition> GetRelationEndPoints (ClassDefinition classDefinition)
-    {
-      IRelationEndPointDefinition[] relationEndPointDefinitions = classDefinition.GetRelationEndPointDefinitions ();
-
-      List<IRelationEndPointDefinition> allRelationEndPointDefinitions = new List<IRelationEndPointDefinition> ();
-      if (classDefinition.BaseClass != null)
-        allRelationEndPointDefinitions.AddRange (classDefinition.BaseClass.GetRelationEndPointDefinitions ());
-
-      FillAllRelationEndPointDefinitions (classDefinition, allRelationEndPointDefinitions);
-
-      return allRelationEndPointDefinitions;
-    }
-
-    private void FillAllRelationEndPointDefinitions (ClassDefinition classDefinition, List<IRelationEndPointDefinition> allRelationEndPointDefinitions)
-    {
-      foreach (RelationDefinition relationDefinition in classDefinition.MyRelationDefinitions)
-      {
-        foreach (IRelationEndPointDefinition relationEndPointDefinition in relationDefinition.EndPointDefinitions)
-        {
-          if (relationEndPointDefinition.ClassDefinition == classDefinition)
-            allRelationEndPointDefinitions.Add (relationEndPointDefinition);
-        }
-      }
-
-      foreach (ClassDefinition derivedClass in classDefinition.DerivedClasses)
-        FillAllRelationEndPointDefinitions (derivedClass, allRelationEndPointDefinitions);
-    }
-
-    private string GetDatabasenameFromConnectionString (string connectionString)
-    {
-      string temp = connectionString.Substring (connectionString.IndexOf ("Initial Catalog=") + 16);
+      //TODO improve this logic
+      string temp = _rdbmsProviderDefinition.ConnectionString.Substring (_rdbmsProviderDefinition.ConnectionString.IndexOf ("Initial Catalog=") + 16);
       return temp.Substring (0, temp.IndexOf (";"));
     }
 
-    private ClassDefinitionCollection GetTableRootClassesOfThisStorageProvider ()
+    public string GetScript ()
     {
-      ClassDefinitionCollection inheritanceRootClasses = MappingConfiguration.ClassDefinitions.GetInheritanceRootClasses ();
+      ViewBuilder viewBuilder = new ViewBuilder ();
+      viewBuilder.AddViews (_classes);
 
-      ClassDefinitionCollection allTableRootClasses = new ClassDefinitionCollection (false);
-      foreach (ClassDefinition inheritanceRootClass in inheritanceRootClasses)
-      {
-        if (inheritanceRootClass.StorageProviderID == _storageProviderID)
-          FillAllTableRootClasses (inheritanceRootClass, allTableRootClasses);
-      }
+      TableBuilder tableBuilder = new TableBuilder ();
+      tableBuilder.AddTables (_classes);
 
-      return allTableRootClasses;
-    }
+      ConstraintBuilder constraintBuilder = new ConstraintBuilder ();
+      constraintBuilder.AddConstraints (_classes);
 
-    private void FillAllTableRootClasses (ClassDefinition classDefinition, ClassDefinitionCollection allTableRootClasses)
-    {
-      if (classDefinition.GetEntityName () != null)
-      {
-        allTableRootClasses.Add (classDefinition);
-        return;
-      }
-
-      foreach (ClassDefinition derivedClass in classDefinition.DerivedClasses)
-        FillAllTableRootClasses (derivedClass, allTableRootClasses);
-    }
-
-    private bool HasConstraint (IRelationEndPointDefinition relationEndPoint, ClassDefinition oppositeClassDefinition)
-    {
-      if (relationEndPoint.IsVirtual)
-        return false;
-
-      if (oppositeClassDefinition.StorageProviderID != relationEndPoint.ClassDefinition.StorageProviderID)
-        return false;
-
-      if (oppositeClassDefinition.GetEntityName () == null)
-        return false;
-
-      return true;
-    }
-
-    private string GetCreateTableScript ()
-    {
-      CreateTableBuilder createTableBuilder = new CreateTableBuilder ();
-
-      StringBuilder scriptBuilder = new StringBuilder ();
-
-      foreach (ClassDefinition classDefinition in _tableRootClasses)
-      {
-        if (scriptBuilder.Length != 0)
-          scriptBuilder.Append ("\n");
-
-        scriptBuilder.Append (createTableBuilder.GetCreateTableStatement (classDefinition));
-      }
-
-      return scriptBuilder.ToString ();
-    }
-
-    public string GetDropTableScript ()
-    {
-      StringBuilder scriptBuilder = new StringBuilder ();
-      foreach (ClassDefinition classDefinition in _tableRootClasses)
-      {
-        if (scriptBuilder.Length != 0)
-          scriptBuilder.Append ("\n");
-
-        scriptBuilder.AppendFormat (s_dropTableFormat, classDefinition.MyEntityName);
-      }
-      return scriptBuilder.ToString ();
+      return string.Format ("USE {0}\n"
+          + "GO\n\n"
+          + "-- Drop all views that will be created below\n"
+          + "{1}GO\n\n"
+          + "-- Drop foreign keys of all tables that will be created below\n"
+          + "{2}GO\n\n"
+          + "-- Drop all tables that will be created below\n"
+          + "{3}GO\n\n"
+          + "-- Create all tables\n"
+          + "{4}GO\n\n"
+          + "-- Create constraints for tables that were created above\n"
+          + "{5}GO\n\n"
+          + "-- Create a view for every class\n"
+          + "{6}GO\n", 
+          GetDatabaseName (), 
+          viewBuilder.GetDropViewScript (),
+          constraintBuilder.GetDropConstraintScript (), 
+          tableBuilder.GetDropTableScript (),
+          tableBuilder.GetCreateTableScript (),
+          constraintBuilder.GetAddConstraintScript (), 
+          viewBuilder.GetCreateViewScript ());
     }
   }
 }

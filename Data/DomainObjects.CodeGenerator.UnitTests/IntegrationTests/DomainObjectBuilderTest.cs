@@ -31,18 +31,18 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, companyClass, DomainObjectBuilder.DefaultBaseClass, true, false);
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\Company.cs"), writer.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"Company.cs"), writer.ToString ());
       }
     }
 
     [Test]
-    public void BuildCustomer () //WithMultilingualResourceAttribute
+    public void BuildCustomer () //TODO: WithMultilingualResourceAttribute
     {
       ClassDefinition customerClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Customer");
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, customerClass, DomainObjectBuilder.DefaultBaseClass, false, false);
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\Customer.cs"), writer.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"Customer.cs"), writer.ToString ());
       }
     }
 
@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, ceoClass, DomainObjectBuilder.DefaultBaseClass, false, false);
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\Ceo.cs"), writer.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"Ceo.cs"), writer.ToString ());
       }
     }
 
@@ -64,7 +64,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, officialClass, DomainObjectBuilder.DefaultBaseClass, false, false);
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\Official.cs"), writer.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"Official.cs"), writer.ToString ());
       }
     }
 
@@ -75,7 +75,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, orderClass, DomainObjectBuilder.DefaultBaseClass, false, false);
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\Order.cs"), writer.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"Order.cs"), writer.ToString ());
       }
     }
 
@@ -86,7 +86,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, orderItemClass, DomainObjectBuilder.DefaultBaseClass, false, false);
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\OrderItem.cs"), writer.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"OrderItem.cs"), writer.ToString ());
       }
     }
 
@@ -97,10 +97,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests
       using (StringWriter writer = new StringWriter ())
       {
         DomainObjectBuilder.Build (MappingConfiguration, writer, classWithAllDataTypesClass, DomainObjectBuilder.DefaultBaseClass, false, false);
-        Assert.AreEqual (File.ReadAllText (@"..\..\TestDomain\ClassWithAllDataTypes.cs"), writer.ToString ());
+        Assert.AreEqual (File.ReadAllText (@"ClassWithAllDataTypes.cs"), writer.ToString ());
       }
     }
-
-
   }
 }

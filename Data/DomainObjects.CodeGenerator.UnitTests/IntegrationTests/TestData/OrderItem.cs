@@ -6,7 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 
-namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.TestDomain
+namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain
 {
 public class OrderItem : BindableDomainObject
 {

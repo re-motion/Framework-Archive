@@ -18,6 +18,18 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     private StorageProviderConfiguration _storageProviderConfiguration;
     private MappingConfiguration _mappingConfiguration;
 
+    private ClassDefinition _orderItemClass;
+    private ClassDefinition _orderClass;
+    private ClassDefinition _companyClass;
+    private ClassDefinition _customerClass;
+    private ClassDefinition _abstractWithoutConcreteClass;
+    private ClassDefinition _concreteClass;
+    private ClassDefinition _derivedClass;
+    private ClassDefinition _secondDerivedClass;
+    private ClassDefinition _derivedOfDerivedClass;
+    private ClassDefinition _ceoClass;
+    private ClassDefinition _classWithRelations;
+
     // construction and disposing
 
     public MappingBaseTest ()
@@ -36,6 +48,18 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     {
       _storageProviderConfiguration = new StorageProviderConfiguration ("storageProviders.xml", "storageProviders.xsd");
       _mappingConfiguration = new MappingConfiguration ("mapping.xml", "mapping.xsd", false);
+
+      _orderItemClass = MappingConfiguration.ClassDefinitions.GetMandatory ("OrderItem");
+      _orderClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Order");
+      _companyClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Company");
+      _customerClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Customer");
+      _abstractWithoutConcreteClass = MappingConfiguration.ClassDefinitions.GetMandatory ("AbstractWithoutConcreteClass");
+      _concreteClass = MappingConfiguration.ClassDefinitions.GetMandatory ("ConcreteClass");
+      _derivedClass = MappingConfiguration.ClassDefinitions.GetMandatory ("DerivedClass");
+      _secondDerivedClass = MappingConfiguration.ClassDefinitions.GetMandatory ("SecondDerivedClass");
+      _derivedOfDerivedClass = MappingConfiguration.ClassDefinitions.GetMandatory ("DerivedOfDerivedClass");
+      _ceoClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Ceo");
+      _classWithRelations = MappingConfiguration.ClassDefinitions.GetMandatory ("ClassWithRelations");
     }
 
     [TearDown]
@@ -51,6 +75,61 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     protected MappingConfiguration MappingConfiguration
     {
       get { return _mappingConfiguration; }
+    }
+
+    protected ClassDefinition OrderItemClass
+    {
+      get { return _orderItemClass; }
+    }
+
+    protected ClassDefinition OrderClass
+    {
+      get { return _orderClass; }
+    }
+
+    protected ClassDefinition CompanyClass
+    {
+      get { return _companyClass; }
+    }
+
+    protected ClassDefinition CustomerClass
+    {
+      get { return _customerClass; }
+    }
+
+    public ClassDefinition AbstractWithoutConcreteClass
+    {
+      get { return _abstractWithoutConcreteClass; }
+    }
+
+    protected ClassDefinition ConcreteClass
+    {
+      get { return _concreteClass; }
+    }
+
+    public ClassDefinition DerivedClass
+    {
+      get { return _derivedClass; }
+    }
+
+    protected ClassDefinition SecondDerivedClass
+    {
+      get { return _secondDerivedClass; }
+    }
+
+    protected ClassDefinition DerivedOfDerivedClass
+    {
+      get { return _derivedOfDerivedClass; }
+    }
+
+    protected ClassDefinition CeoClass
+    {
+      get { return _ceoClass; }
+    }
+
+    protected ClassDefinition ClassWithRelations
+    {
+      get { return _classWithRelations; }
     }
   }
 }
