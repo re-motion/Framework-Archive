@@ -63,6 +63,16 @@ public class UrlMappingSchemaTest
   {
     UrlMappingConfiguration.CreateUrlMappingConfiguration (@"Res\UrlMappingWithFunctionTypeHavingNoAssembly.xml");
   }
+
+  [Test]
+  public void GetSchemaSet ()
+  {
+    UrlMappingSchema urlMappingSchema = new UrlMappingSchema ();
+    XmlSchemaSet xmlSchemaSet = urlMappingSchema.GetSchemaSet ();
+    Assert.AreEqual (1, xmlSchemaSet.Count);
+    Assert.IsTrue (xmlSchemaSet.Contains (urlMappingSchema.SchemaUri));
+  }
+
 }
 
 }
