@@ -14,7 +14,6 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
   [TestFixture]
   public class SecurityTestWithEnabled
   {
-    private WebButton _button;
     private Mockery _mocks;
     private IWebSecurityProvider _mockWebSecurityProvider;
     private ISecurableObject _mockSecurableObject;
@@ -27,21 +26,34 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
       _mockSecurableObject = _mocks.NewMock<ISecurableObject> ();
 
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_mockWebSecurityProvider);
-      _button = new WebButton ();
-      _button.SecurityDependentProperty = SecurityDependentProperty.Enabled;
-      _button.SecurableObject = _mockSecurableObject;
     }
 
     [Test]
-    public void SecurityDepenedentPropertySetToEnabled ()
+    public void EvaluateTrue_FromTrueAndWithSecurityDepenedentPropertySetToVisible ()
     {
       Expect.Never.On (_mockWebSecurityProvider);
 
-      _button.Click += TestHandler;
-      _button.Visible = true;
-      bool isVisible = _button.Visible;
+      WebButton button = CreateButtonWithClickEventHandler ();
+      button.SecurityDependentProperty = SecurityDependentProperty.Visible;
+      button.Enabled = true;
+      bool enabled = button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsTrue (enabled);
+    }
+
+    [Test]
+    public void EvaluateFalse_FromFalseAndWithSecurityDepenedentPropertySetToVisible ()
+    {
+      Expect.Never.On (_mockWebSecurityProvider);
+
+      WebButton button = CreateButtonWithClickEventHandler ();
+      button.SecurityDependentProperty = SecurityDependentProperty.Visible;
+      button.Enabled = false;
+      bool enabled = button.Enabled;
+
+      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsFalse (enabled);
     }
 
     [Test]
@@ -51,9 +63,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 
       Expect.Never.On (_mockWebSecurityProvider);
 
-      _button.Click += TestHandler;
-      _button.Enabled = true;
-      bool enabled = _button.Enabled;
+      WebButton button = CreateButtonWithClickEventHandler ();
+      button.Enabled = true;
+      bool enabled = button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsTrue (enabled);
@@ -66,9 +78,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 
       Expect.Never.On (_mockWebSecurityProvider);
 
-      _button.Click += TestHandler;
-      _button.Enabled = false;
-      bool enabled = _button.Enabled;
+      WebButton button = CreateButtonWithClickEventHandler ();
+      button.Enabled = false;
+      bool enabled = button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsFalse (enabled);
@@ -79,8 +91,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     {
       Expect.Never.On (_mockWebSecurityProvider);
 
-      _button.Enabled = true;
-      bool enabled = _button.Enabled;
+      WebButton button = CreateButtonWithoutClickEventHandler ();
+      button.Enabled = true;
+      bool enabled = button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsTrue (enabled);
@@ -91,8 +104,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     {
       Expect.Never.On (_mockWebSecurityProvider);
 
-      _button.Enabled = false;
-      bool enabled = _button.Enabled;
+      WebButton button = CreateButtonWithoutClickEventHandler ();
+      button.Enabled = false;
+      bool enabled = button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsFalse (enabled);
@@ -106,9 +120,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
           .With (_mockSecurableObject, new EventHandler (TestHandler))
           .Will (Return.Value (true));
 
-      _button.Click += TestHandler;
-      _button.Enabled = true;
-      bool enabled = _button.Enabled;
+      WebButton button = CreateButtonWithClickEventHandler ();
+      button.Enabled = true;
+      bool enabled = button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsTrue (enabled);
@@ -122,9 +136,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
           .With (_mockSecurableObject, new EventHandler (TestHandler))
           .Will (Return.Value (false));
 
-      _button.Click += TestHandler;
-      _button.Enabled = true;
-      bool enabled = _button.Enabled;
+      WebButton button = CreateButtonWithClickEventHandler ();
+      button.Enabled = true;
+      bool enabled = button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsFalse (enabled);
@@ -135,9 +149,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
     {
       Expect.Never.On (_mockWebSecurityProvider);
 
-      _button.Click += TestHandler;
-      _button.Enabled = false;
-      bool enabled = _button.Enabled;
+      WebButton button = CreateButtonWithClickEventHandler ();
+      button.Enabled = false;
+      bool enabled = button.Enabled;
 
       _mocks.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsFalse (enabled);
@@ -145,6 +159,25 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 
     private void TestHandler (object sender, EventArgs e)
     {
+    }
+
+    private WebButton CreateButtonWithClickEventHandler ()
+    {
+      WebButton button = new WebButton ();
+      button.SecurityDependentProperty = SecurityDependentProperty.Enabled;
+      button.SecurableObject = _mockSecurableObject;
+      button.Click += TestHandler;
+
+      return button;
+    }
+
+    private WebButton CreateButtonWithoutClickEventHandler ()
+    {
+      WebButton button = new WebButton ();
+      button.SecurityDependentProperty = SecurityDependentProperty.Enabled;
+      button.SecurableObject = _mockSecurableObject;
+
+      return button;
     }
   }
 }
