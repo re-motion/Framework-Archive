@@ -7,6 +7,29 @@ namespace Rubicon.Security
 {
   public struct EnumWrapper
   {
+    /// <summary> Parses strings in the format <c>Name|TypeName</c>. </summary>
+    /// <param name="value"> A <see cref="String"/> in the format <c>Name|TypeName</c>. Must not be <see langword="null"/> or emtpy. </param>
+    /// <returns> A new instance of the <see cref="EnumWrapper"/> type initalized with the specified <b>Name</b> and <b>TypeName</b>. </returns>
+    public static EnumWrapper Parse (string value)
+    {
+      ArgumentUtility.CheckNotNullOrEmpty ("value", value);
+      string[] parts = value.Split (new char[] { '|' }, 2);
+
+      if (parts.Length == 1)
+        throw new ArgumentException (string.Format ("The value '{0}' did not contain the type name of the enumerated value. Expected format: 'Name|TypeName'", value), "value");
+
+      string name = parts[0];
+      string typeName = parts[1];
+
+      if (name.Length == 0)
+        throw new ArgumentException (string.Format ("The value '{0}' did not contain the name of the enumerated value. Expected format: 'Name|TypeName'", value), "value");
+
+      if (typeName.Length == 0)
+        throw new ArgumentException (string.Format ("The value '{0}' did not contain the type name of the enumerated value. Expected format: 'Name|TypeName'", value), "value");
+
+      return new EnumWrapper (name, typeName);
+    }
+
     private readonly string _typeName;
     private readonly string _name;
     private Enum _enumValue;
@@ -30,13 +53,13 @@ namespace Rubicon.Security
       _enumValue = enumValue;
     }
 
-    public EnumWrapper (string typeName, string name)
+    public EnumWrapper (string name, string typeName)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
+      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
 
-      _typeName = TypeUtility.ParseAbbreviatedTypeName (typeName);
       _name = name;
+      _typeName = TypeUtility.ParseAbbreviatedTypeName (typeName);
       _enumValue = null;
     }
 
@@ -105,6 +128,15 @@ namespace Rubicon.Security
     public override int GetHashCode ()
     {
       return _name.GetHashCode () ^ _typeName.GetHashCode ();
+    }
+
+    /// <summary> 
+    ///   Formats the <see cref="EnumWrapper"/> instance's <see cref="TypeName"/> and <see cref="Name"/> properties into a <see cref="String"/>
+    ///   of the format <c>Name|TypeName</c>. 
+    /// </summary>
+    public override string ToString ()
+    {
+      return _name + "|" + _typeName;
     }
   }
 

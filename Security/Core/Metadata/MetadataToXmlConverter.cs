@@ -79,17 +79,14 @@ namespace Rubicon.Security.Metadata
       XmlAttribute enumValueIDAttribute = document.CreateAttribute ("id");
       enumValueIDAttribute.Value = enumValueInfo.ID;
 
-      XmlAttribute enumValueTypeNameAttribute = document.CreateAttribute ("typeName");
-      enumValueTypeNameAttribute.Value = enumValueInfo.TypeName;
-
+      EnumWrapper enumWrapper = new EnumWrapper (enumValueInfo.Name, enumValueInfo.TypeName);
       XmlAttribute enumValueNameAttribute = document.CreateAttribute ("name");
-      enumValueNameAttribute.Value = enumValueInfo.Name;
+      enumValueNameAttribute.Value = enumWrapper.ToString ();
 
       XmlAttribute enumValueValueAttribute = document.CreateAttribute ("value");
       enumValueValueAttribute.Value = enumValueInfo.Value.ToString ();
 
       enumValueElement.Attributes.Append (enumValueIDAttribute);
-      enumValueElement.Attributes.Append (enumValueTypeNameAttribute);
       enumValueElement.Attributes.Append (enumValueNameAttribute);
       enumValueElement.Attributes.Append (enumValueValueAttribute);
     }

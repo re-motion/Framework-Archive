@@ -6,7 +6,7 @@ using Rubicon.Security;
 namespace Rubicon.SecurityManager.Domain.UnitTests.TestDomain
 {
   [AbstractRole]
-  public enum ProjectRoles
+  public enum ProjectRole
   {
     QualityManager,
     Developer

@@ -37,7 +37,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       SecurityToken token = SecurityToken.Create (transaction, context);
 
       Assert.AreEqual (1, token.AbstractRoles.Count);
-      Assert.AreEqual ("QualityManager", token.AbstractRoles[0].Name);
+      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.Domain.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.Domain.UnitTests", token.AbstractRoles[0].Name);
     }
 
     [Test]
@@ -60,12 +60,12 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
 
     private SecurityContext CreateContextWithQualityManagerRole ()
     {
-      return CreateContextWithAbstractRoles (ProjectRoles.QualityManager);
+      return CreateContextWithAbstractRoles (ProjectRole.QualityManager);
     }
 
     private SecurityContext CreateContextWithQualityManagerAndDeveloperRoles ()
     {
-      return CreateContextWithAbstractRoles (ProjectRoles.QualityManager, ProjectRoles.Developer);
+      return CreateContextWithAbstractRoles (ProjectRole.QualityManager, ProjectRole.Developer);
     }
 
     private SecurityContext CreateContextWithAbstractRoles (params Enum[] abstractRoles)

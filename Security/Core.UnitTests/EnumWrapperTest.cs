@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void InitializeFromString ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("Rubicon.Security.UnitTests::SampleDomain.TestAccessType", "First");
+      EnumWrapper wrapper = new EnumWrapper ("First", "Rubicon.Security.UnitTests::SampleDomain.TestAccessType");
 
       Assert.AreEqual ("First", wrapper.Name);
       Assert.AreEqual ("Rubicon.Security.UnitTests.SampleDomain.TestAccessType, Rubicon.Security.UnitTests", wrapper.TypeName);
@@ -48,7 +48,7 @@ namespace Rubicon.Security.UnitTests
       Assert.IsFalse (expected.Equals (new EnumWrapper (TestAccessType.Second)));
       Assert.IsFalse (new EnumWrapper (TestAccessType.Second).Equals (expected));
       Assert.IsFalse (expected.Equals (null));
-      
+
       Assert.AreEqual (expected, new EnumWrapper (TestAccessType.First));
       Assert.AreNotEqual (expected, new EnumWrapper (TestAccessType.Second));
     }
@@ -60,26 +60,10 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
-    public void GetEnum_InitializedWithEnum ()
-    {
-      EnumWrapper wrapper = new EnumWrapper (TestAccessType.First);
-
-      Assert.AreEqual (TestAccessType.First, wrapper.GetEnum ());
-    }
-
-    [Test]
-    public void GetEnum_InitializedWithString ()
-    {
-      EnumWrapper wrapper = new EnumWrapper ("Rubicon.Security.UnitTests::SampleDomain.TestAccessType", "First");
-
-      Assert.AreEqual (TestAccessType.First, wrapper.GetEnum ());
-    }
-
-    [Test]
     [ExpectedException (typeof (TypeLoadException))]
     public void GetEnum_FromInvalidTypeName ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("Rubicon.Security.UnitTests::SampleDomain.Invalid", "First");
+      EnumWrapper wrapper = new EnumWrapper ("First", "Rubicon.Security.UnitTests::SampleDomain.Invalid");
 
       wrapper.GetEnum ();
     }
@@ -88,7 +72,7 @@ namespace Rubicon.Security.UnitTests
     [ExpectedException (typeof (InvalidOperationException), "The type 'Rubicon.Security.UnitTests.SampleDomain.SimpleType, Rubicon.Security.UnitTests' is not an enumerated type.")]
     public void GetEnum_FromTypeNotEnum ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("Rubicon.Security.UnitTests::SampleDomain.SimpleType", "First");
+      EnumWrapper wrapper = new EnumWrapper ("First", "Rubicon.Security.UnitTests::SampleDomain.SimpleType");
 
       wrapper.GetEnum ();
     }
@@ -97,10 +81,47 @@ namespace Rubicon.Security.UnitTests
     [ExpectedException (typeof (InvalidOperationException), "The enumerated type 'Rubicon.Security.UnitTests.SampleDomain.TestAccessType, Rubicon.Security.UnitTests' does not define the value 'Invalid'.")]
     public void GetEnum_FromInvalidName ()
     {
-      EnumWrapper wrapper = new EnumWrapper ("Rubicon.Security.UnitTests::SampleDomain.TestAccessType", "Invalid");
+      EnumWrapper wrapper = new EnumWrapper ("Invalid", "Rubicon.Security.UnitTests::SampleDomain.TestAccessType");
 
       wrapper.GetEnum ();
     }
 
+    [Test]
+    public void ConvertToString ()
+    {
+      EnumWrapper wrapper = new EnumWrapper ("Name", "Namespace.TypeName, Assembly");
+
+      Assert.AreEqual ("Name|Namespace.TypeName, Assembly", wrapper.ToString ());
+    }
+
+    [Test]
+    public void Parse ()
+    {
+      EnumWrapper wrapper = EnumWrapper.Parse ("Name|Namespace.TypeName, Assembly");
+
+      Assert.AreEqual ("Namespace.TypeName, Assembly", wrapper.TypeName);
+      Assert.AreEqual ("Name", wrapper.Name);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), "The value 'Name' did not contain the type name of the enumerated value. Expected format: 'Name|TypeName'\r\nParameter name: value")]
+    public void Parse_WithMissingPipe ()
+    {
+      EnumWrapper.Parse ("Name");
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), "The value '|Namespace.TypeName, Assembly' did not contain the name of the enumerated value. Expected format: 'Name|TypeName'\r\nParameter name: value")]
+    public void Parse_WithMissingName ()
+    {
+      EnumWrapper.Parse ("|Namespace.TypeName, Assembly");
+    }
+
+    [Test]
+    [ExpectedException (typeof (ArgumentException), "The value 'Name|' did not contain the type name of the enumerated value. Expected format: 'Name|TypeName'\r\nParameter name: value")]
+    public void Parse_WithMissingTypeName ()
+    {
+      EnumWrapper.Parse ("Name|");
+    }
   }
 }

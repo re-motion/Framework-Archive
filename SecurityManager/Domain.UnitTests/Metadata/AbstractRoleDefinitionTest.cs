@@ -31,10 +31,10 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
       dbFixtures.CreateTwoAbstractRoleDefinitions ();
       ClientTransaction transaction = new ClientTransaction ();
 
-      DomainObjectCollection result = AbstractRoleDefinition.Find (transaction, new EnumWrapper[] { new EnumWrapper (ProjectRoles.QualityManager) });
+      DomainObjectCollection result = AbstractRoleDefinition.Find (transaction, new EnumWrapper[] { new EnumWrapper (ProjectRole.QualityManager) });
 
       Assert.AreEqual (1, result.Count);
-      Assert.AreEqual ("QualityManager", ((AbstractRoleDefinition) result[0]).Name);
+      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.Domain.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.Domain.UnitTests", ((AbstractRoleDefinition) result[0]).Name);
     }
   }
 }

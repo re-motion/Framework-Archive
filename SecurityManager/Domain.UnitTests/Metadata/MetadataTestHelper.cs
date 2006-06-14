@@ -37,32 +37,32 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
 
     public AbstractRoleDefinition CreateClerkAbstractRole ()
     {
-      return new AbstractRoleDefinition (_transaction, new Guid ("00000003-0001-0000-0000-000000000000"), "Clerk", 0);
+      return new AbstractRoleDefinition (_transaction, new Guid ("00000003-0001-0000-0000-000000000000"), "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain", 0);
     }
 
     public AbstractRoleDefinition CreateSecretaryAbstractRole ()
     {
-      return new AbstractRoleDefinition (_transaction, new Guid ("00000003-0002-0000-0000-000000000000"), "Secretary", 1);
+      return new AbstractRoleDefinition (_transaction, new Guid ("00000003-0002-0000-0000-000000000000"), "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain", 1);
     }
 
     public AbstractRoleDefinition CreateAdministratorAbstractRole ()
     {
-      return new AbstractRoleDefinition (_transaction, new Guid ("00000004-0001-0000-0000-000000000000"), "Administrator", 0);
+      return new AbstractRoleDefinition (_transaction, new Guid ("00000004-0001-0000-0000-000000000000"), "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRole, Rubicon.Security.UnitTests.TestDomain", 0);
     }
 
     public AccessTypeDefinition CreateAccessTypeCreate ()
     {
-      return new AccessTypeDefinition (_transaction, new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"), "Create", 0);
+      return new AccessTypeDefinition (_transaction, new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"), "Create|Rubicon.Security.GeneralAccessType, Rubicon.Security", 0);
     }
 
     public AccessTypeDefinition CreateAccessTypeRead ()
     {
-      return new AccessTypeDefinition (_transaction, new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"), "Read", 1);
+      return new AccessTypeDefinition (_transaction, new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"), "Read|Rubicon.Security.GeneralAccessType, Rubicon.Security", 1);
     }
 
     public AccessTypeDefinition CreateAccessTypeEdit ()
     {
-      return new AccessTypeDefinition (_transaction, new Guid ("11186122-6de0-4194-b434-9979230c41fd"), "Edit", 2);
+      return new AccessTypeDefinition (_transaction, new Guid ("11186122-6de0-4194-b434-9979230c41fd"), "Edit|Rubicon.Security.GeneralAccessType, Rubicon.Security", 2);
     }
 
     public StatePropertyDefinition CreateConfidentialityProperty ()

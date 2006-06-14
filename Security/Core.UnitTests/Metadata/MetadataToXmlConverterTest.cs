@@ -95,7 +95,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <accessTypes>
-              <accessType id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" typeName=""Domain.AccessType, Domain"" name=""Archive"" value=""0"" />
+              <accessType id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Archive|Domain.AccessType, Domain"" value=""0"" />
             </accessTypes>
           </securityMetadata>";
 
@@ -114,7 +114,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <abstractRoles>
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" typeName=""Domain.SpecialAbstractRole, Domain"" name=""Administrator"" value=""0"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRole, Domain"" value=""0"" />
             </abstractRoles>
           </securityMetadata>";
 
@@ -251,8 +251,8 @@ namespace Rubicon.Security.UnitTests.Metadata
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <accessTypes>
-              <accessType id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" typeName=""Domain.AccessType, Domain"" name=""Archive"" value=""0"" />
-              <accessType id=""c6995b9b-7fed-42df-a2d1-897600b00fb0"" typeName=""Domain.AccessType, Domain"" name=""Journalize"" value=""1"" />
+              <accessType id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Archive|Domain.AccessType, Domain"" value=""0"" />
+              <accessType id=""c6995b9b-7fed-42df-a2d1-897600b00fb0"" name=""Journalize|Domain.AccessType, Domain"" value=""1"" />
             </accessTypes>
           </securityMetadata>";
 
@@ -275,8 +275,8 @@ namespace Rubicon.Security.UnitTests.Metadata
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <abstractRoles>
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" typeName=""Domain.SpecialAbstractRole, Domain"" name=""Administrator"" value=""0"" />
-              <abstractRole id=""3b84739a-7f35-4224-989f-3d5b05047cbb"" typeName=""Domain.SpecialAbstractRole, Domain"" name=""PowerUser"" value=""1"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRole, Domain"" value=""0"" />
+              <abstractRole id=""3b84739a-7f35-4224-989f-3d5b05047cbb"" name=""PowerUser|Domain.SpecialAbstractRole, Domain"" value=""1"" />
             </abstractRoles>
           </securityMetadata>";
 
@@ -361,8 +361,8 @@ namespace Rubicon.Security.UnitTests.Metadata
             </classes>
 
             <accessTypes>
-              <accessType id=""64d8f74e-685f-44ab-9705-1fda9ff836a4"" typeName=""Domain.AccessType, Domain"" name=""Archive"" value=""0"" />
-              <accessType id=""c6995b9b-7fed-42df-a2d1-897600b00fb0"" typeName=""Domain.AccessType, Domain"" name=""Journalize"" value=""1"" />
+              <accessType id=""64d8f74e-685f-44ab-9705-1fda9ff836a4"" name=""Archive|Domain.AccessType, Domain"" value=""0"" />
+              <accessType id=""c6995b9b-7fed-42df-a2d1-897600b00fb0"" name=""Journalize|Domain.AccessType, Domain"" value=""1"" />
             </accessTypes>
           </securityMetadata>";
 
@@ -472,13 +472,13 @@ namespace Rubicon.Security.UnitTests.Metadata
             </stateProperties>
 
             <accessTypes>
-              <accessType id=""64d8f74e-685f-44ab-9705-1fda9ff836a4"" typeName=""Domain.AccessType, Domain"" name=""Archive"" value=""0"" />
-              <accessType id=""c6995b9b-7fed-42df-a2d1-897600b00fb0"" typeName=""Domain.AccessType, Domain"" name=""Journalize"" value=""1"" />
+              <accessType id=""64d8f74e-685f-44ab-9705-1fda9ff836a4"" name=""Archive|Domain.AccessType, Domain"" value=""0"" />
+              <accessType id=""c6995b9b-7fed-42df-a2d1-897600b00fb0"" name=""Journalize|Domain.AccessType, Domain"" value=""1"" />
             </accessTypes>
 
             <abstractRoles>
-              <abstractRole id=""00000004-0001-0000-0000-000000000000"" typeName=""Domain.AbstractRole, Domain"" name=""Administrator"" value=""0"" />
-              <abstractRole id=""3b84739a-7f35-4224-989f-3d5b05047cbb"" typeName=""Domain.AbstractRole, Domain"" name=""PowerUser"" value=""1"" />
+              <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.AbstractRole, Domain"" value=""0"" />
+              <abstractRole id=""3b84739a-7f35-4224-989f-3d5b05047cbb"" name=""PowerUser|Domain.AbstractRole, Domain"" value=""1"" />
             </abstractRoles>
           </securityMetadata>";
 

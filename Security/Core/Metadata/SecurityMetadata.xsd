@@ -104,7 +104,6 @@
 
   <xs:complexType name="enumValue">
     <xs:attribute name="id" use="required" type="sm:requiredStringType" />
-    <xs:attribute name="typeName" use="required" type="sm:dotNetType" />
     <xs:attribute name="name" use="required" type="sm:requiredStringType" />
     <xs:attribute name="value" use="required" type="xs:int" />
   </xs:complexType>

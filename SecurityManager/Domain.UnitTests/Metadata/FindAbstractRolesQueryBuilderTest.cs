@@ -16,10 +16,10 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     public void CreateQuery_OneRole ()
     {
       FindAbstractRolesQueryBuilder queryBuilder = new FindAbstractRolesQueryBuilder ();
-      Query query = queryBuilder.CreateQuery (new EnumWrapper[] { new EnumWrapper (ProjectRoles.QualityManager) });
+      Query query = queryBuilder.CreateQuery (new EnumWrapper[] { new EnumWrapper (ProjectRole.QualityManager) });
 
       Assert.AreEqual (1, query.Parameters.Count);
-      Assert.AreEqual ("QualityManager", query.Parameters[0].Value);
+      Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.Domain.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.Domain.UnitTests", query.Parameters[0].Value);
     }
   }
 }
