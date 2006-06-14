@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Globalization;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -113,11 +114,9 @@ public class NavigationCommand: Command
 
     Type functionType = WxeFunctionCommand.ResolveFunctionType();
     WxeParameterDeclaration[] parameterDeclarations = WxeFunction.GetParameterDeclarations (functionType);
-    object[] parameterValues = WxeFunction.ParseActualParameters (
-        parameterDeclarations, WxeFunctionCommand.Parameters, System.Globalization.CultureInfo.InvariantCulture);   
+    object[] parameterValues = WxeFunction.ParseActualParameters (parameterDeclarations, WxeFunctionCommand.Parameters, CultureInfo.InvariantCulture);   
     
-    NameValueCollection queryString = 
-        WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
+    NameValueCollection queryString = WxeFunction.SerializeParametersForQueryString (parameterDeclarations, parameterValues);
     queryString.Set (WxeHandler.Parameters.WxeReturnToSelf, NaBoolean.True.ToString());
     NameValueCollectionUtility.Append (queryString, additionalUrlParameters);
     
