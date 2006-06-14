@@ -178,6 +178,7 @@
     <Compile Include="Utilities\EnumUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\FileUtilityTest.cs" />
     <Compile Include="Utilities\ListUtilityTest.cs">
       <SubType>Code</SubType>
     </Compile>

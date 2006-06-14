@@ -283,6 +283,7 @@
     <Compile Include="Text\SeparatedStringBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\TypeNameConverter.cs" />
     <Compile Include="Utilities\AdvancedEnumConverter.cs">
       <SubType>Code</SubType>
