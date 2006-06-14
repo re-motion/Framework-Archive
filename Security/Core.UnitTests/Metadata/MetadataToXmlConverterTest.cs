@@ -59,9 +59,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       StatePropertyInfo propertyInfo = new StatePropertyInfo ();
       propertyInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       propertyInfo.Name = "Confidentiality";
-      propertyInfo.Values.Add (new EnumValueInfo ("Normal", 0, "Domain.Confidentiality, Domain"));
-      propertyInfo.Values.Add (new EnumValueInfo ("Confidential", 1, "Domain.Confidentiality, Domain"));
-      propertyInfo.Values.Add (new EnumValueInfo ("Private", 2, "Domain.Confidentiality, Domain"));
+      propertyInfo.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Normal", 0));
+      propertyInfo.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Confidential", 1));
+      propertyInfo.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Private", 2));
 
       Type type = typeof (File);
       PropertyInfo property = type.GetProperty ("Confidentiality");
@@ -86,7 +86,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void OneAccessType ()
     {
-      EnumValueInfo accessType = new EnumValueInfo ("Archive", 0, "Domain.AccessType, Domain");
+      EnumValueInfo accessType = new EnumValueInfo ("Domain.AccessType, Domain", "Archive", 0);
       accessType.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       _cache.AddAccessType (DomainAccessType.Archive, accessType);
 
@@ -105,7 +105,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void OneAbstractRole ()
     {
-      EnumValueInfo abstractRole = new EnumValueInfo ("Administrator", 0, "Domain.SpecialAbstractRole, Domain");
+      EnumValueInfo abstractRole = new EnumValueInfo ("Domain.SpecialAbstractRole, Domain", "Administrator", 0);
       abstractRole.ID = "00000004-0001-0000-0000-000000000000";
       _cache.AddAbstractRole (SpecialAbstractRole.Administrator, abstractRole);
 
@@ -196,16 +196,16 @@ namespace Rubicon.Security.UnitTests.Metadata
       StatePropertyInfo propertyInfo1 = new StatePropertyInfo ();
       propertyInfo1.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       propertyInfo1.Name = "Confidentiality";
-      propertyInfo1.Values.Add (new EnumValueInfo ("Normal", 0, "Domain.Confidentiality, Domain"));
-      propertyInfo1.Values.Add (new EnumValueInfo ("Confidential", 1, "Domain.Confidentiality, Domain"));
-      propertyInfo1.Values.Add (new EnumValueInfo ("Private", 2, "Domain.Confidentiality, Domain"));
+      propertyInfo1.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Normal", 0));
+      propertyInfo1.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Confidential", 1));
+      propertyInfo1.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Private", 2));
 
       StatePropertyInfo propertyInfo2 = new StatePropertyInfo ();
       propertyInfo2.ID = "40749391-5c45-4fdd-a698-53a6cf167ae7";
       propertyInfo2.Name = "SomeEnum";
-      propertyInfo2.Values.Add (new EnumValueInfo ("First", 0, "Namespace.TypeName, Assembly"));
-      propertyInfo2.Values.Add (new EnumValueInfo ("Second", 1, "Namespace.TypeName, Assembly"));
-      propertyInfo2.Values.Add (new EnumValueInfo ("Third", 2, "Namespace.TypeName, Assembly"));
+      propertyInfo2.Values.Add (new EnumValueInfo ("Namespace.TypeName, Assembly", "First", 0));
+      propertyInfo2.Values.Add (new EnumValueInfo ("Namespace.TypeName, Assembly", "Second", 1));
+      propertyInfo2.Values.Add (new EnumValueInfo ("Namespace.TypeName, Assembly", "Third", 2));
 
       Type type = typeof (File);
       PropertyInfo property1 = type.GetProperty ("Confidentiality");
@@ -238,11 +238,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void MultipleAccessTypes ()
     {
-      EnumValueInfo accessType1 = new EnumValueInfo ("Archive", 0, "Domain.AccessType, Domain");
+      EnumValueInfo accessType1 = new EnumValueInfo ("Domain.AccessType, Domain", "Archive", 0);
       accessType1.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       _cache.AddAccessType (DomainAccessType.Archive, accessType1);
 
-      EnumValueInfo accessType2 = new EnumValueInfo ("Journalize", 1, "Domain.AccessType, Domain");
+      EnumValueInfo accessType2 = new EnumValueInfo ("Domain.AccessType, Domain", "Journalize", 1);
       accessType2.ID = "c6995b9b-7fed-42df-a2d1-897600b00fb0";
       _cache.AddAccessType (DomainAccessType.Journalize, accessType2);
 
@@ -262,11 +262,11 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void MultipleAbstractRoles ()
     {
-      EnumValueInfo abstractRole1 = new EnumValueInfo ("Administrator", 0, "Domain.SpecialAbstractRole, Domain");
+      EnumValueInfo abstractRole1 = new EnumValueInfo ("Domain.SpecialAbstractRole, Domain", "Administrator", 0);
       abstractRole1.ID = "00000004-0001-0000-0000-000000000000";
       _cache.AddAbstractRole (SpecialAbstractRole.Administrator, abstractRole1);
 
-      EnumValueInfo abstractRole2 = new EnumValueInfo ("PowerUser", 1, "Domain.SpecialAbstractRole, Domain");
+      EnumValueInfo abstractRole2 = new EnumValueInfo ("Domain.SpecialAbstractRole, Domain", "PowerUser", 1);
       abstractRole2.ID = "3b84739a-7f35-4224-989f-3d5b05047cbb";
       _cache.AddAbstractRole (SomeEnum.First, abstractRole2);
 
@@ -294,9 +294,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       StatePropertyInfo propertyInfo = new StatePropertyInfo ();
       propertyInfo.ID = "4bbb1bab-8d37-40c0-918d-7a07cc7de44f";
       propertyInfo.Name = "Confidentiality";
-      propertyInfo.Values.Add (new EnumValueInfo ("Normal", 0, "Domain.Confidentiality, Domain"));
-      propertyInfo.Values.Add (new EnumValueInfo ("Confidential", 1, "Domain.Confidentiality, Domain"));
-      propertyInfo.Values.Add (new EnumValueInfo ("Private", 2, "Domain.Confidentiality, Domain"));
+      propertyInfo.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Normal", 0));
+      propertyInfo.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Confidential", 1));
+      propertyInfo.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Private", 2));
 
       Type type = typeof (File);
       PropertyInfo property = type.GetProperty ("Confidentiality");
@@ -336,11 +336,11 @@ namespace Rubicon.Security.UnitTests.Metadata
       classInfo.Name = "File";
       _cache.AddSecurableClassInfo (typeof (File), classInfo);
 
-      EnumValueInfo accessType1 = new EnumValueInfo ("Archive", 0, "Domain.AccessType, Domain");
+      EnumValueInfo accessType1 = new EnumValueInfo ("Domain.AccessType, Domain", "Archive", 0);
       accessType1.ID = "64d8f74e-685f-44ab-9705-1fda9ff836a4";
       _cache.AddAccessType (DomainAccessType.Archive, accessType1);
 
-      EnumValueInfo accessType2 = new EnumValueInfo ("Journalize", 1, "Domain.AccessType, Domain");
+      EnumValueInfo accessType2 = new EnumValueInfo ("Domain.AccessType, Domain", "Journalize", 1);
       accessType2.ID = "c6995b9b-7fed-42df-a2d1-897600b00fb0";
       _cache.AddAccessType (DomainAccessType.Journalize, accessType2);
 
@@ -388,16 +388,16 @@ namespace Rubicon.Security.UnitTests.Metadata
       StatePropertyInfo propertyInfo1 = new StatePropertyInfo ();
       propertyInfo1.ID = "d81b1521-ea06-4338-af6f-ff8510394efd";
       propertyInfo1.Name = "Confidentiality";
-      propertyInfo1.Values.Add (new EnumValueInfo ("Normal", 0, "Domain.Confidentiality, Domain"));
-      propertyInfo1.Values.Add (new EnumValueInfo ("Confidential", 1, "Domain.Confidentiality, Domain"));
-      propertyInfo1.Values.Add (new EnumValueInfo ("Private", 2, "Domain.Confidentiality, Domain"));
+      propertyInfo1.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Normal", 0));
+      propertyInfo1.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Confidential", 1));
+      propertyInfo1.Values.Add (new EnumValueInfo ("Domain.Confidentiality, Domain", "Private", 2));
 
       StatePropertyInfo propertyInfo2 = new StatePropertyInfo ();
       propertyInfo2.ID = "40749391-5c45-4fdd-a698-53a6cf167ae7";
       propertyInfo2.Name = "SomeEnum";
-      propertyInfo2.Values.Add (new EnumValueInfo ("First", 0, "Namespace.TypeName, Assembly"));
-      propertyInfo2.Values.Add (new EnumValueInfo ("Second", 1, "Namespace.TypeName, Assembly"));
-      propertyInfo2.Values.Add (new EnumValueInfo ("Third", 2, "Namespace.TypeName, Assembly"));
+      propertyInfo2.Values.Add (new EnumValueInfo ("Namespace.TypeName, Assembly", "First", 0));
+      propertyInfo2.Values.Add (new EnumValueInfo ("Namespace.TypeName, Assembly", "Second", 1));
+      propertyInfo2.Values.Add (new EnumValueInfo ("Namespace.TypeName, Assembly", "Third", 2));
 
       Type type = typeof (File);
       PropertyInfo property1 = type.GetProperty ("Confidentiality");
@@ -409,11 +409,11 @@ namespace Rubicon.Security.UnitTests.Metadata
       derivedClassInfo.Properties.Add (propertyInfo1);
       derivedClassInfo.Properties.Add (propertyInfo2);
 
-      EnumValueInfo accessType1 = new EnumValueInfo ("Archive", 0, "Domain.AccessType, Domain");
+      EnumValueInfo accessType1 = new EnumValueInfo ("Domain.AccessType, Domain", "Archive", 0);
       accessType1.ID = "64d8f74e-685f-44ab-9705-1fda9ff836a4";
       _cache.AddAccessType (DomainAccessType.Archive, accessType1);
 
-      EnumValueInfo accessType2 = new EnumValueInfo ("Journalize", 1, "Domain.AccessType, Domain");
+      EnumValueInfo accessType2 = new EnumValueInfo ("Domain.AccessType, Domain", "Journalize", 1);
       accessType2.ID = "c6995b9b-7fed-42df-a2d1-897600b00fb0";
       _cache.AddAccessType (DomainAccessType.Journalize, accessType2);
 
@@ -421,11 +421,11 @@ namespace Rubicon.Security.UnitTests.Metadata
       derivedClassInfo.AccessTypes.Add (accessType1);
       derivedClassInfo.AccessTypes.Add (accessType2);
 
-      EnumValueInfo abstractRole1 = new EnumValueInfo ("Administrator", 0, "Domain.AbstractRole, Domain");
+      EnumValueInfo abstractRole1 = new EnumValueInfo ("Domain.AbstractRole, Domain", "Administrator", 0);
       abstractRole1.ID = "00000004-0001-0000-0000-000000000000";
       _cache.AddAbstractRole (SpecialAbstractRole.Administrator, abstractRole1);
 
-      EnumValueInfo abstractRole2 = new EnumValueInfo ("PowerUser", 1, "Domain.AbstractRole, Domain");
+      EnumValueInfo abstractRole2 = new EnumValueInfo ("Domain.AbstractRole, Domain", "PowerUser", 1);
       abstractRole2.ID = "3b84739a-7f35-4224-989f-3d5b05047cbb";
       _cache.AddAbstractRole (SomeEnum.First, abstractRole2);
 

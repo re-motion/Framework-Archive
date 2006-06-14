@@ -9,9 +9,9 @@ namespace Rubicon.Security.UnitTests.Metadata
 
   public static class AccessTypes
   {
-    public static readonly EnumValueInfo Read = new EnumValueInfo ("Read", 0, "Security.GeneralAccessType, Rubicon.Core");
-    public static readonly EnumValueInfo Write = new EnumValueInfo ("Write", 1, "Security.Security.GeneralAccessType, Rubicon.Core");
-    public static readonly EnumValueInfo Journalize = new EnumValueInfo ("Journalize", 0, "Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain");
-    public static readonly EnumValueInfo Archive = new EnumValueInfo ("Archive", 1, "Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain");
+    public static readonly EnumValueInfo Read = new EnumValueInfo ("Security.GeneralAccessType, Rubicon.Core", "Read", 0);
+    public static readonly EnumValueInfo Write = new EnumValueInfo ("Security.Security.GeneralAccessType, Rubicon.Core", "Write", 1);
+    public static readonly EnumValueInfo Journalize = new EnumValueInfo ("Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain", "Journalize", 0);
+    public static readonly EnumValueInfo Archive = new EnumValueInfo ("Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain", "Archive", 1);
   }
 }

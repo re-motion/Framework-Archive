@@ -53,7 +53,7 @@ namespace Rubicon.Security.Metadata
       if (info == null)
       {
         string name = value.ToString ();
-        info = new EnumValueInfo (name, Convert.ToInt32 (value), TypeUtility.GetPartialAssemblyQualifiedName (value.GetType ()));
+        info = new EnumValueInfo (TypeUtility.GetPartialAssemblyQualifiedName (value.GetType ()), name, Convert.ToInt32 (value));
         FieldInfo fieldInfo = value.GetType ().GetField (name, BindingFlags.Static | BindingFlags.Public);
         PermanentGuidAttribute attribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (fieldInfo, typeof (PermanentGuidAttribute), false);
         if (attribute != null)

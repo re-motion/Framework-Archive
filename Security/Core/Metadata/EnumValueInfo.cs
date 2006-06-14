@@ -22,7 +22,7 @@ namespace Rubicon.Security.Metadata
 
     // construction and disposing
 
-    public EnumValueInfo (string name, int value, string typeName)
+    public EnumValueInfo (string typeName, string name, int value)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
