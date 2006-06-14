@@ -660,89 +660,66 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Rubicon.Data.DomainObjects.UnitTests.build" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidNamespace.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInTwoBaseClasses.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml" />
-    <Content Include="Configuration\Mapping\TestMappings\entireMappingWithUnresolvedTypes.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithCollectionTypeAndOneToOneRelation.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithColumnAndCardinalityMany.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDerivationAndDuplicateColumnName.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDuplicateColumnName.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithDuplicateColumnNameAndRelationProperty.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidDerivation.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithInvalidDerivationAcrossStorageProviders.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithMoreThanTwoEndPoints.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithNonExistingBaseClass.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithOnlyOneEndPoint.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassAndCardinalityMany.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassAndTwoRelationProperties.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithOppositeClassReferringToItself.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInBaseAndDerivedClass.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithRelationAndIdenticalPropertyNames.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithResolvedTypes.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithSchemaException.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithUnresolvedTypes.xml">
-    </Content>
-    <Content Include="Configuration\Mapping\TestMappings\mappingWithXmlException.xml">
-    </Content>
-    <Content Include="queriesWithInvalidNamespace.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="storageProvidersWithInvalidNamespace.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Configuration\Mapping\TestMappings\EntireMappingWithUnresolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithCollectionTypeAndOneToOneRelation.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithColumnAndCardinalityMany.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithDerivationAndDuplicateColumnName.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithDerivationAndDuplicateColumnNameInBaseOfBaseClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithDuplicateColumnName.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithDuplicateColumnNameAndRelationProperty.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidDerivation.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidDerivationAcrossStorageProviders.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithInvalidNamespace.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithMoreThanTwoEndPoints.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithNonExistingBaseClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithOnlyOneEndPoint.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassAndCardinalityMany.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassAndTwoRelationProperties.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithOppositeClassReferringToItself.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInBaseAndDerivedClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInBaseOfBaseClassAndDerivedClass.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithPropertyDefinedInTwoBaseClasses.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithRelationAndIdenticalPropertyNames.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithResolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithSchemaException.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithUnresolvedTypes.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithXmlException.xml" />
     <Content Include="Database\CreateTableInheritanceTestData.sql" />
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\CreateTestData.sql">
     </Content>
     <Content Include="Database\SetupDB.sql" />
-    <Content Include="mapping.xml">
+    <Content Include="Mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="mappingWithMinimumData.xml">
+    <Content Include="MappingWithMinimumData.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="queries.xml">
+    <Content Include="Queries.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="queriesForLoaderTest.xml">
+    <Content Include="QueriesForLoaderTest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="scalarQueryWithCollectionType.xml">
+    <Content Include="QueriesWithInvalidNamespace.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="storageProviders.xml">
+    <Content Include="ScalarQueryWithCollectionType.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="storageProvidersForLoaderTest.xml">
+    <Content Include="StorageProviders.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="storageProvidersWithSchemaException.xml">
+    <Content Include="StorageProvidersForLoaderTest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="storageProvidersWithXmlException.xml">
+    <Content Include="StorageProvidersWithInvalidNamespace.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StorageProvidersWithSchemaException.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StorageProvidersWithXmlException.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TableInheritance\TableInheritanceMappingWithNonAbstractClassWithoutEntity.xml" />

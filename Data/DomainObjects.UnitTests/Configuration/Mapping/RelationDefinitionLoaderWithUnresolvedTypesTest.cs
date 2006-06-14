@@ -34,7 +34,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       base.SetUp ();
 
       XmlDocument mappingDocument = new XmlDocument ();
-      mappingDocument.Load ("mappingWithUnresolvedTypes.xml");
+      mappingDocument.Load ("MappingWithUnresolvedTypes.xml");
 
       PrefixNamespace[] namespaces = new PrefixNamespace[] { PrefixNamespace.MappingNamespace };
       ConfigurationNamespaceManager namespaceManager = new ConfigurationNamespaceManager (mappingDocument, namespaces);

@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     [Test]
     public void Loading ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"queriesForLoaderTest.xml");
+      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesForLoaderTest.xml");
       QueryDefinitionCollection actualQueries = loader.GetQueryDefinitions ();
       QueryDefinitionCollection expectedQueries = CreateExpectedQueryDefinitions ();
 
@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
         "A scalar query 'OrderSumQuery' must not specify a collectionType.")]
     public void ScalarQueryWithCollectionType ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"scalarQueryWithCollectionType.xml");
+      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"ScalarQueryWithCollectionType.xml");
       loader.GetQueryDefinitions ();
     }
 
@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
         + " but was expected to have 'http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0'.")]
     public void QueryConfigurationWithInvalidNamespace ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"queriesWithInvalidNamespace.xml");
+      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesWithInvalidNamespace.xml");
     }
 
     [Test]
@@ -62,9 +62,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
       try
       {
         QueryConfiguration.SetCurrent (
-            new QueryConfiguration (@"queriesForLoaderTest.xml"));
+            new QueryConfiguration (@"QueriesForLoaderTest.xml"));
 
-        string configurationFile = Path.GetFullPath (@"queriesForLoaderTest.xml");
+        string configurationFile = Path.GetFullPath (@"QueriesForLoaderTest.xml");
 
         Assert.AreEqual (configurationFile, QueryConfiguration.Current.ConfigurationFile);
       }

@@ -30,7 +30,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ClassDefinition personClass = new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
 
-      MappingConfiguration mappingConfiguration = new MappingConfiguration ("mappingWithMinimumData.xml");
+      MappingConfiguration mappingConfiguration = new MappingConfiguration ("MappingWithMinimumData.xml");
       mappingConfiguration.ClassDefinitions.Add (personClass);
       mappingConfiguration.Validate ();
     }
@@ -40,7 +40,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
     {
       ClassDefinition personClass = new ClassDefinition ("Person", null, c_testDomainProviderID, typeof (Person));
 
-      MappingConfiguration mappingConfiguration = new MappingConfiguration ("mappingWithMinimumData.xml");
+      MappingConfiguration mappingConfiguration = new MappingConfiguration ("MappingWithMinimumData.xml");
       mappingConfiguration.ClassDefinitions.Add (personClass);
 
       try

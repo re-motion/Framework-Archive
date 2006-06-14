@@ -26,7 +26,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [Test]
     public void ReadAndValidateStorageProviderFile ()
     {
-      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"storageProviders.xml");
+      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProviders.xml");
 
       // expectation: no exception
     }
@@ -35,7 +35,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     [ExpectedException (typeof (StorageProviderConfigurationException))]
     public void StorageProvidersWithSchemaException ()
     {
-      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"storageProvidersWithSchemaException.xml");
+      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersWithSchemaException.xml");
     }
 
     [Test]
@@ -44,7 +44,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         + " '<', hexadecimal value 0x3C, is an invalid attribute character. Line 10, position 3.")]
     public void StorageProvidersWithXmlException ()
     {
-      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"storageProvidersWithXmlException.xml");
+      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersWithXmlException.xml");
     }
 
     [Test]
@@ -53,7 +53,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         + " but was expected to have 'http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0'.")]
     public void StorageProvidersWithInvalidNamespace ()
     {
-      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"storageProvidersWithInvalidNamespace.xml");
+      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersWithInvalidNamespace.xml");
     }
   }
 

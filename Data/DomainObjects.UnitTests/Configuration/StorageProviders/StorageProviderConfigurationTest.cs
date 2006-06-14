@@ -28,7 +28,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
     [Test]
     public void Loading ()
     {
-      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"storageProvidersForLoaderTest.xml");
+      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersForLoaderTest.xml");
 
       StorageProviderDefinitionCollection actualProviders = loader.GetStorageProviderDefinitions ();
       StorageProviderDefinitionCollection expectedProviders = StorageProviderDefinitionFactory.Create ();
@@ -42,8 +42,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.StorageProviders
     {
       try
       {
-        StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"storageProvidersForLoaderTest.xml"));
-        string configurationFile = Path.GetFullPath (@"storageProvidersForLoaderTest.xml");
+        StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"StorageProvidersForLoaderTest.xml"));
+        string configurationFile = Path.GetFullPath (@"StorageProvidersForLoaderTest.xml");
 
         Assert.AreEqual (configurationFile, StorageProviderConfiguration.Current.ConfigurationFile);
       }

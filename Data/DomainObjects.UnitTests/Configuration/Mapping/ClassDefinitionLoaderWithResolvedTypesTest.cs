@@ -32,7 +32,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       base.SetUp ();
 
       XmlDocument mappingDocument = new XmlDocument ();
-      mappingDocument.Load (@"mappingWithMinimumData.xml");
+      mappingDocument.Load (@"MappingWithMinimumData.xml");
 
       PrefixNamespace[] namespaces = new PrefixNamespace[] { PrefixNamespace.MappingNamespace };
       ConfigurationNamespaceManager namespaceManager = new ConfigurationNamespaceManager (mappingDocument, namespaces);
