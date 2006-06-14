@@ -70,7 +70,7 @@ public class WxeParameterConverter
       if (_parameter.Required)
       {
         throw new WxeException (string.Format (
-            "Requried IN parameter '{0}' is a Variable Reference but no caller variables have been provided.", 
+            "Required IN parameter '{0}' is a Variable Reference but no caller variables have been provided.", 
             _parameter.Name));
       }
       return null;
@@ -83,7 +83,7 @@ public class WxeParameterConverter
       if (_parameter.Required)
       {
         throw new WxeException (string.Format (
-            "Requried IN parameter '{0}' is a Variable Reference but no caller variables have been provided.", 
+            "Required IN parameter '{0}' is a Variable Reference but no caller variables have been provided.", 
             _parameter.Name));
       }
       return null;
@@ -141,7 +141,7 @@ public class WxeParameterConverter
     if (_parameter.Required && _parameter.Direction == WxeParameterDirection.Out)
     {
       throw new WxeException (string.Format (
-          "Requried OUT parameters cannot be converted to a string. Parameter: '{0}'", _parameter.Name));
+          "Required OUT parameters cannot be converted to a string. Parameter: '{0}'", _parameter.Name));
     }
   }
 }
