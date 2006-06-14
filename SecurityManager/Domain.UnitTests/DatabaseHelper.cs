@@ -13,8 +13,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests
 {
   public class DatabaseHelper
   {
-    public const string DBScriptPath = @"..\..\..\Domain\Database";
-    public const string SetupDBScript = "SetupDB.sql";
+    public const string SetupDBScript = "SecurityManagerSetupDB.sql";
 
     public void SetupDB ()
     {
@@ -23,7 +22,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests
 
       try
       {
-        ExecuteSql (ReadFile (Path.Combine (DBScriptPath, SetupDBScript)), connection, transaction);
+        ExecuteSql (ReadFile (SetupDBScript), connection, transaction);
       }
       catch
       {

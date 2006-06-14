@@ -48,6 +48,8 @@
     <Compile Include="AccessControl\UserSelection.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Database\SecurityManagerCreateDB.sql" />
+    <None Include="Database\SecurityManagerSetupDB.sql" />
     <Compile Include="BaseSecurityManagerObject.cs" />
     <Compile Include="Configuration\DomainConfiguration.cs" />
     <Compile Include="Metadata\AbstractRoleDefinition.cs" />
@@ -81,8 +83,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SecurityManager.Domain.build" />
-    <Content Include="Database\CreateDB.sql" />
-    <Content Include="Database\SetupDB.sql" />
     <Content Include="SecurityManagerMapping.xml" />
     <Content Include="SecurityManagerStorageProviders.xml" />
   </ItemGroup>

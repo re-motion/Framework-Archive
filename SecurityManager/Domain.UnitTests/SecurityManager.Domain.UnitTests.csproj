@@ -92,6 +92,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <DatabaseFiles Include="..\Domain\Database\SecurityManagerCreateDB.sql" />
+    <DatabaseFiles Include="..\Domain\Database\SecurityManagerSetupDB.sql" />
     <MappingFiles Include="..\Domain\SecurityManagerMapping.xml" />
     <MappingFiles Include="..\Domain\SecurityManagerQueries.xml" />
     <MappingFiles Include="..\Domain\SecurityManagerStorageProviders.xml" />
@@ -102,6 +104,7 @@
   </Target>
   -->
   <Target Name="AfterBuild">
+    <Copy SourceFiles="@(DatabaseFiles->'%(Fullpath)')" DestinationFiles="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
     <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
   </Target>
 </Project>

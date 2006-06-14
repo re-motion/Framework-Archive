@@ -8,7 +8,7 @@ namespace Rubicon.Security
   public struct EnumWrapper
   {
     private readonly string _typeName;
-    private readonly string _value;
+    private readonly string _name;
 
     public EnumWrapper (Enum value)
     {
@@ -17,13 +17,15 @@ namespace Rubicon.Security
       Type type = value.GetType ();
       if (Attribute.IsDefined (type, typeof (FlagsAttribute), false))
       {
-        throw new ArgumentException (
-            string.Format ("Enumerated type '{0}' cannot be wrapped. Only enumerated types without the {1} can be wrapped.", type.FullName, typeof (FlagsAttribute).FullName),
+        throw new ArgumentException (string.Format (
+                "Enumerated type '{0}' cannot be wrapped. Only enumerated types without the {1} can be wrapped.", 
+                type.FullName, 
+                typeof (FlagsAttribute).FullName),
             "value");
       }
       
       _typeName = TypeUtility.GetPartialAssemblyQualifiedName (type);
-      _value = value.ToString();
+      _name = value.ToString();
     }
 
     public string TypeName
@@ -31,9 +33,9 @@ namespace Rubicon.Security
       get { return _typeName; }
     }	
 
-    public string Value
+    public string Name
     {
-      get { return _value; }
+      get { return _name; }
     }
 
     /// <summary>
@@ -48,7 +50,7 @@ namespace Rubicon.Security
     public override bool Equals (object obj)
     {
       if (!(obj is EnumWrapper))
-        return false; // obj is a null reference or another type then NaBoolean
+        return false;
 
       return Equals ((EnumWrapper) obj);
     }
@@ -63,12 +65,12 @@ namespace Rubicon.Security
     /// </returns>
     public bool Equals (EnumWrapper value)
     {
-      return this._value == value._value && String.Equals (this._typeName, value._typeName, StringComparison.Ordinal);
+      return this._name == value._name && String.Equals (this._typeName, value._typeName, StringComparison.Ordinal);
     }
 
     public override int GetHashCode ()
     {
-      return _value.GetHashCode () ^ _typeName.GetHashCode ();
+      return _name.GetHashCode () ^ _typeName.GetHashCode ();
     }
   }
 

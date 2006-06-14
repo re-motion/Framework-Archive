@@ -1,3 +1,9 @@
+USE master
+
+IF EXISTS (SELECT * FROM sysdatabases WHERE name = 'RubiconSecurityManager')
+  DROP DATABASE RubiconSecurityManager
+GO  
+
 CREATE DATABASE RubiconSecurityManager
 ON PRIMARY (
 	Name = 'RubiconSecurityManager_Data',
@@ -12,4 +18,5 @@ LOG ON (
 GO
 
 ALTER DATABASE RubiconSecurityManager SET RECOVERY SIMPLE
+BACKUP LOG RubiconSecurityManager WITH TRUNCATE_ONLY
 GO

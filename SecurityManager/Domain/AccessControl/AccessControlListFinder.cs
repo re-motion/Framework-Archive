@@ -45,13 +45,13 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
         EnumWrapper enumWrapper = context.GetState (property.Name);
 
-        if (!property.ContainsState (enumWrapper.Value))
+        if (!property.ContainsState (enumWrapper.Name))
         {
           throw CreateAccessControlException ("The state '{0}' is not defined for the property '{1}' of securable class '{2}'.",
-              enumWrapper.Value, property.Name, classDefinition.Name);
+              enumWrapper.Name, property.Name, classDefinition.Name);
         }
 
-        states.Add (property.GetState (enumWrapper.Value));
+        states.Add (property.GetState (enumWrapper.Name));
       }
 
       if (context.GetNumberOfStates () > classDefinition.StateProperties.Count)

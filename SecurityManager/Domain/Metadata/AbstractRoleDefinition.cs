@@ -45,7 +45,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         whereClauseBuilder.Append ("Name = ");
         whereClauseBuilder.Append (parameterName);
 
-        parameterCollection.Add (parameterName, roleWrapper.Value);
+        parameterCollection.Add (parameterName, roleWrapper.Name);
       }
 
       QueryDefinition abstractRoleQueryDefinition = new QueryDefinition ("AbstractRoleQuery", GetStorageProviderIDFromType (typeof (AbstractRoleDefinition)), string.Format (sql, whereClauseBuilder.ToString ()), QueryType.Collection);

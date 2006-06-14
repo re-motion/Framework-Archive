@@ -15,8 +15,10 @@
     
       <sources failonempty="true">
         <include name="*.cs" />
+        <include name="AccessControl/**/*.cs" />
         <include name="Configuration/**/*.cs" />
         <include name="Metadata/**/*.cs" />
+        <include name="TestDomain/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
      
@@ -35,8 +37,8 @@
    
     <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
       <fileset basedir="${build.outputdir}">
-        <include name="SecurityManagerMapping.xml" />
-        <include name="SecurityManagerStorageProviders.xml" />
+        <include name="SecurityManager*.xml" />
+        <include name="SecurityManager*.sql" />
       </fileset>
     </copy>
 

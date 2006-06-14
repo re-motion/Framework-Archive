@@ -38,7 +38,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         whereClauseBuilder.Append ("Name = ");
         whereClauseBuilder.Append (parameterName);
 
-        Parameters.Add (parameterName, roleWrapper.Value);
+        Parameters.Add (parameterName, roleWrapper.Name);
       }
 
       return string.Format (sql, whereClauseBuilder.ToString ());
