@@ -236,19 +236,19 @@
     <Content Include="Global.asax">
       <SubType>Component</SubType>
     </Content>
-    <Content Include="mapping.xml">
+    <Content Include="Mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="NewObject.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="queries.xml">
+    <Content Include="Queries.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SearchObject.aspx">
       <SubType>Form</SubType>
     </Content>
-    <Content Include="storageProviders.xml">
+    <Content Include="StorageProviders.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="UndefinedEnumTest.aspx">
