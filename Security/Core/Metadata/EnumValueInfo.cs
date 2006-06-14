@@ -18,14 +18,17 @@ namespace Rubicon.Security.Metadata
     private string _id;
     private int _value;
     private string _name;
+    private string _typeName;
 
     // construction and disposing
 
-    public EnumValueInfo (int value, string name)
+    public EnumValueInfo (string name, int value, string typeName)
     {
+      ArgumentUtility.CheckNotNullOrEmpty ("typeName", typeName);
       ArgumentUtility.CheckNotNullOrEmpty ("name", name);
 
       _value = value;
+      _typeName = typeName;
       _name = name;
     }
 
@@ -41,6 +44,19 @@ namespace Rubicon.Security.Metadata
     {
       get { return _value; }
       set { _value = value; }
+    }
+
+    public string TypeName
+    {
+      get
+      {
+        return _typeName;
+      }
+      set
+      {
+        ArgumentUtility.CheckNotNullOrEmpty ("TypeName", value);
+        _typeName = value;
+      }
     }
 
     public string Name

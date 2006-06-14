@@ -169,7 +169,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       AbstractRoleDefinition roleDefinition = new AbstractRoleDefinition (_clientTransaction);
       roleDefinition.Name = abstractRoleDefinitionNode.Attributes["name"].Value;
       roleDefinition.MetadataItemID = new Guid (abstractRoleDefinitionNode.Attributes["id"].Value);
-      roleDefinition.Value = long.Parse (abstractRoleDefinitionNode.Attributes["value"].Value);
+      roleDefinition.Value = int.Parse (abstractRoleDefinitionNode.Attributes["value"].Value);
 
       return roleDefinition;
     }
@@ -179,7 +179,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       AccessTypeDefinition accessTypeDefinition = new AccessTypeDefinition (_clientTransaction);
       accessTypeDefinition.Name = accessTypeDefinitionNode.Attributes["name"].Value;
       accessTypeDefinition.MetadataItemID = new Guid (accessTypeDefinitionNode.Attributes["id"].Value);
-      accessTypeDefinition.Value = long.Parse (accessTypeDefinitionNode.Attributes["value"].Value);
+      accessTypeDefinition.Value = int.Parse (accessTypeDefinitionNode.Attributes["value"].Value);
 
       return accessTypeDefinition;
     }
@@ -201,7 +201,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       StateDefinition stateDefinition = new StateDefinition (_clientTransaction);
       stateDefinition.Name = stateDefinitionNode.Attributes["name"].Value;
-      stateDefinition.Value = long.Parse (stateDefinitionNode.Attributes["value"].Value);
+      stateDefinition.Value = int.Parse (stateDefinitionNode.Attributes["value"].Value);
 
       return stateDefinition;
     }

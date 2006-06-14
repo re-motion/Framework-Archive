@@ -19,7 +19,7 @@
                     <xs:element name="stateProperties" minOccurs="0">
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element name="statePropertyRef" type="xs:string" maxOccurs="unbounded" />
+                          <xs:element name="statePropertyRef" type="sm:requiredStringType" maxOccurs="unbounded" />
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
@@ -27,15 +27,15 @@
                     <xs:element name="accessTypes" minOccurs="0">
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element name="accessTypeRef" type="xs:string" maxOccurs="unbounded" />
+                          <xs:element name="accessTypeRef" type="sm:requiredStringType" maxOccurs="unbounded" />
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
 
-                  <xs:attribute name="id" use="required" type="xs:string" />
-                  <xs:attribute name="name" use="required" type="xs:string" />
-                  <xs:attribute name="base" use="optional" type="xs:string" />
+                  <xs:attribute name="id" use="required" type="sm:requiredStringType" />
+                  <xs:attribute name="name" use="required" type="sm:requiredStringType" />
+                  <xs:attribute name="base" use="optional" type="sm:requiredStringType" />
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -50,13 +50,13 @@
                   <xs:sequence>
                     <xs:element name="state" minOccurs="0" maxOccurs="unbounded">
                       <xs:complexType>
-                        <xs:attribute name="name" use="required" type="xs:string" />
-                        <xs:attribute name="value" use="required" type="xs:long" />
+                        <xs:attribute name="name" use="required" type="sm:requiredStringType" />
+                        <xs:attribute name="value" use="required" type="xs:int" />
                       </xs:complexType>
                     </xs:element>
                   </xs:sequence>
-                  <xs:attribute name="id" use="required" type="xs:string" />
-                  <xs:attribute name="name" use="required" type="xs:string" />
+                  <xs:attribute name="id" use="required" type="sm:requiredStringType" />
+                  <xs:attribute name="name" use="required" type="sm:requiredStringType" />
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
@@ -103,8 +103,27 @@
   </xs:element>
 
   <xs:complexType name="enumValue">
-    <xs:attribute name="id" use="required" type="xs:string" />
-    <xs:attribute name="name" use="required" type="xs:string" />
-    <xs:attribute name="value" use="required" type="xs:long" />
+    <xs:attribute name="id" use="required" type="sm:requiredStringType" />
+    <xs:attribute name="typeName" use="required" type="sm:dotNetType" />
+    <xs:attribute name="name" use="required" type="sm:requiredStringType" />
+    <xs:attribute name="value" use="required" type="xs:int" />
   </xs:complexType>
+
+  <xs:simpleType name="requiredStringType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:whiteSpace value="collapse" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="dotNetType">
+    <xs:restriction base="sm:requiredStringType">
+      <!--  Class, Assembly; Namespace.Class, Assembly; Namespace.Namespace.Class, Assembly; 
+            Class+Class, Assembly; Namespace.Class+Class, Assembly; Namespace.Namespace.Class+Class, Assembly
+            Class,Assembly; Namespace.Class,Assembly; Namespace.Namespace.Class,Assembly; 
+            Class+Class,Assembly; Namespace.Class+Class,Assembly; Namespace.Namespace.Class+Class,Assembly -->
+      <xs:pattern value="(\p{L}[\p{L}\d]*\.)*(\p{L}[\p{L}\d]*\+)*(\p{L}[\p{L}\d]*),\s?([\p{L}\d]+\.)*([\p{L}\d]+)" />
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>

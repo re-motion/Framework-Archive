@@ -79,6 +79,9 @@ namespace Rubicon.Security.Metadata
       XmlAttribute enumValueIDAttribute = document.CreateAttribute ("id");
       enumValueIDAttribute.Value = enumValueInfo.ID;
 
+      XmlAttribute enumValueTypeNameAttribute = document.CreateAttribute ("typeName");
+      enumValueTypeNameAttribute.Value = enumValueInfo.TypeName;
+
       XmlAttribute enumValueNameAttribute = document.CreateAttribute ("name");
       enumValueNameAttribute.Value = enumValueInfo.Name;
 
@@ -86,6 +89,7 @@ namespace Rubicon.Security.Metadata
       enumValueValueAttribute.Value = enumValueInfo.Value.ToString ();
 
       enumValueElement.Attributes.Append (enumValueIDAttribute);
+      enumValueElement.Attributes.Append (enumValueTypeNameAttribute);
       enumValueElement.Attributes.Append (enumValueNameAttribute);
       enumValueElement.Attributes.Append (enumValueValueAttribute);
     }
@@ -118,7 +122,7 @@ namespace Rubicon.Security.Metadata
       
       XmlAttribute propertyValueValueAttribute = document.CreateAttribute ("value");
       propertyValueValueAttribute.Value = enumValueInfo.Value.ToString ();
-      
+
       propertyValueElement.Attributes.Append (propertyValueNameAttribute);
       propertyValueElement.Attributes.Append (propertyValueValueAttribute);
       

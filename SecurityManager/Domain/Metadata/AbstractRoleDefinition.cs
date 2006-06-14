@@ -78,7 +78,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
     }
 
-    public AbstractRoleDefinition (ClientTransaction clientTransaction, Guid metadataItemID, string name, long value)
+    public AbstractRoleDefinition (ClientTransaction clientTransaction, Guid metadataItemID, string name, int value)
       : base (clientTransaction)
     {
       DataContainer["MetadataItemID"] = metadataItemID;

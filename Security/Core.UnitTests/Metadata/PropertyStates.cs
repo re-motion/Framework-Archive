@@ -8,8 +8,11 @@ namespace Rubicon.Security.UnitTests.Metadata
 {
   public static class PropertyStates
   {
-    public static readonly EnumValueInfo Normal = new EnumValueInfo (0, "Normal");
-    public static readonly EnumValueInfo Confidential = new EnumValueInfo (1, "Confidential");
-    public static readonly EnumValueInfo Private = new EnumValueInfo (2, "Private");
+    public static readonly EnumValueInfo FileStateNew = new EnumValueInfo ("New", 0, "Rubicon.Security.UnitTests.TestDomain.FileState, Rubicon.Security.UnitTests.TestDomain");
+    public static readonly EnumValueInfo FileStateNormal = new EnumValueInfo ("Normal", 1, "Rubicon.Security.UnitTests.TestDomain.FileState, Rubicon.Security.UnitTests.TestDomain");
+    public static readonly EnumValueInfo FileStateArchived = new EnumValueInfo ("Archived", 2, "Rubicon.Security.UnitTests.TestDomain.FileState, Rubicon.Security.UnitTests.TestDomain");
+    public static readonly EnumValueInfo ConfidentialityNormal = new EnumValueInfo ("Normal", 0, "Rubicon.Security.UnitTests.TestDomain.Confidentiality, Rubicon.Security.UnitTests.TestDomain");
+    public static readonly EnumValueInfo ConfidentialityConfidential = new EnumValueInfo ("Confidential", 1, "Rubicon.Security.UnitTests.TestDomain.Confidentiality, Rubicon.Security.UnitTests.TestDomain");
+    public static readonly EnumValueInfo ConfidentialityPrivate = new EnumValueInfo ("Private", 2, "Rubicon.Security.UnitTests.TestDomain.Confidentiality, Rubicon.Security.UnitTests.TestDomain");
   }
 }

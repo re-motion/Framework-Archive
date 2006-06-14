@@ -173,10 +173,10 @@
         <property name="Name">
           <type>string</type>
           <column>Name</column>
-          <maxLength>100</maxLength>
+          <maxLength>200</maxLength>
         </property>
         <property name="Value">
-          <type>int64</type>
+          <type>int32</type>
           <column>Value</column>
         </property>
       </properties>
@@ -194,7 +194,7 @@
         <property name="Name">
           <type>string</type>
           <column>Name</column>
-          <maxLength>100</maxLength>
+          <maxLength>200</maxLength>
         </property>
         <relationProperty name="BaseClass" relationID="DerivedToBaseClass" cardinality="one" isMandatory="false">
           <column>BaseClassID</column>
@@ -233,7 +233,7 @@
         <property name="Name">
           <type>string</type>
           <column>Name</column>
-          <maxLength>100</maxLength>
+          <maxLength>200</maxLength>
         </property>
         <relationProperty name="References" relationID="StatePropertyToStatePropertyReference" cardinality="many" isMandatory="false" />
         <relationProperty name="DefinedStates" relationID="StatePropertyToState" cardinality="many" isMandatory="true" />

@@ -90,20 +90,17 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void CacheEnumValueInfos ()
     {
-      EnumValueInfo fileStateNewEnumValueInfo = new EnumValueInfo (0, "New");
-      EnumValueInfo fileStateNormalEnumValueInfo = new EnumValueInfo (1, "Normal");
-
       Assert.IsFalse (_cache.ContainsEnumValueInfo (FileState.New));
       Assert.IsNull (_cache.GetEnumValueInfo (FileState.New));
 
-      _cache.AddEnumValueInfo (FileState.New, fileStateNewEnumValueInfo);
-      Assert.AreSame (fileStateNewEnumValueInfo, _cache.GetEnumValueInfo (FileState.New));
+      _cache.AddEnumValueInfo (FileState.New, PropertyStates.FileStateNew);
+      Assert.AreSame (PropertyStates.FileStateNew, _cache.GetEnumValueInfo (FileState.New));
       Assert.IsFalse (_cache.ContainsEnumValueInfo (FileState.Normal));
       Assert.IsNull (_cache.GetEnumValueInfo (FileState.Normal));
 
-      _cache.AddEnumValueInfo (FileState.Normal, fileStateNormalEnumValueInfo);
-      Assert.AreSame (fileStateNewEnumValueInfo, _cache.GetEnumValueInfo (FileState.New));
-      Assert.AreSame (fileStateNormalEnumValueInfo, _cache.GetEnumValueInfo (FileState.Normal));
+      _cache.AddEnumValueInfo (FileState.Normal, PropertyStates.FileStateNormal);
+      Assert.AreSame (PropertyStates.FileStateNew, _cache.GetEnumValueInfo (FileState.New));
+      Assert.AreSame (PropertyStates.FileStateNormal, _cache.GetEnumValueInfo (FileState.Normal));
     }
 
     [Test]
@@ -195,18 +192,15 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void GetCachedAbstractRoles ()
     {
-      EnumValueInfo valueDomainAbstractRoleClerk = new EnumValueInfo (0, "Clerk");
-      EnumValueInfo valueDomainAbstractRoleSecretary = new EnumValueInfo (1, "Secretary");
-
-      _cache.AddAbstractRole (DomainAbstractRole.Clerk, valueDomainAbstractRoleClerk);
-      _cache.AddAbstractRole (DomainAbstractRole.Secretary, valueDomainAbstractRoleSecretary);
+      _cache.AddAbstractRole (DomainAbstractRole.Clerk, AbstractRoles.Clerk);
+      _cache.AddAbstractRole (DomainAbstractRole.Secretary, AbstractRoles.Secretary);
 
       List<EnumValueInfo> infos = _cache.GetAbstractRoles ();
 
       Assert.IsNotNull (infos);
       Assert.AreEqual (2, infos.Count);
-      Assert.Contains (valueDomainAbstractRoleClerk, infos);
-      Assert.Contains (valueDomainAbstractRoleSecretary, infos);
+      Assert.Contains (AbstractRoles.Clerk, infos);
+      Assert.Contains (AbstractRoles.Secretary, infos);
     }
   }
 }

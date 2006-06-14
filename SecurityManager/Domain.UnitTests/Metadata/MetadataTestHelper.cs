@@ -14,7 +14,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.Metadata
     public const string Confidentiality_ConfidentialName = "Confidential";
     public const int Confidentiality_ConfidentialValue = 1;
     public const string Confidentiality_PrivateName = "Private";
-    public const int Confidentiality_PrivateValue = 4;
+    public const int Confidentiality_PrivateValue = 2;
 
     public const string State_NewName = "New";
     public const int State_NewValue = 0;

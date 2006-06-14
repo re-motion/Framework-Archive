@@ -193,8 +193,8 @@ CREATE TABLE [EnumValueDefinition]
 
   -- EnumValueDefinition columns
   [MetadataItemID] uniqueidentifier NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
-  [Value] bigint NOT NULL,
+  [Name] nvarchar (200) NOT NULL,
+  [Value] int NOT NULL,
 
   CONSTRAINT [PK_EnumValueDefinition] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -208,7 +208,7 @@ CREATE TABLE [SecurableClassDefinition]
 
   -- SecurableClassDefinition columns
   [MetadataItemID] uniqueidentifier NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
+  [Name] nvarchar (200) NOT NULL,
   [BaseClassID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_SecurableClassDefinition] PRIMARY KEY CLUSTERED ([ID])
@@ -237,7 +237,7 @@ CREATE TABLE [StatePropertyDefinition]
 
   -- StatePropertyDefinition columns
   [MetadataItemID] uniqueidentifier NOT NULL,
-  [Name] nvarchar (100) NOT NULL,
+  [Name] nvarchar (200) NOT NULL,
 
   CONSTRAINT [PK_StatePropertyDefinition] PRIMARY KEY CLUSTERED ([ID])
 )

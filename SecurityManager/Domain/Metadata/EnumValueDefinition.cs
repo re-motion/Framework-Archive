@@ -53,9 +53,9 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // methods and properties
 
-    public long Value
+    public int Value
     {
-      get { return (long) DataContainer["Value"]; }
+      get { return (int) DataContainer["Value"]; }
       set { DataContainer["Value"] = value; }
     }
 

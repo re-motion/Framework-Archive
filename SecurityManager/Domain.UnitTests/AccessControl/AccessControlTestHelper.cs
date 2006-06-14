@@ -190,7 +190,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       return property;
     }
 
-    public void AttachAccessType (SecurableClassDefinition classDefinition, Guid metadataItemID, string name, long value)
+    public void AttachAccessType (SecurableClassDefinition classDefinition, Guid metadataItemID, string name, int value)
     {
       AccessTypeDefinition accessType = new AccessTypeDefinition (_transaction, metadataItemID, name, value);
       classDefinition.AddAccessType (accessType);

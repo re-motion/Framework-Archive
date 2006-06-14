@@ -31,8 +31,8 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void SetUp ()
     {
       _list = new List<EnumValueInfo> ();
-      _list.Add (new EnumValueInfo (1, "First"));
-      _list.Add (new EnumValueInfo (2, "Second"));
+      _list.Add (new EnumValueInfo ("First", 1, "TypeName"));
+      _list.Add (new EnumValueInfo ("Second", 2, "TypeName"));
     }
 
     [Test]

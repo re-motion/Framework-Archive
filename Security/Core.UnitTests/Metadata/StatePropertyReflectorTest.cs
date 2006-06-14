@@ -55,9 +55,9 @@ namespace Rubicon.Security.UnitTests.Metadata
     public void GetMetadata ()
     {
       Dictionary<Enum, EnumValueInfo> values = new Dictionary<Enum, EnumValueInfo> ();
-      values.Add (Confidentiality.Normal, PropertyStates.Normal);
-      values.Add (Confidentiality.Confidential, PropertyStates.Confidential);
-      values.Add (Confidentiality.Private, PropertyStates.Private);
+      values.Add (Confidentiality.Normal, PropertyStates.ConfidentialityNormal);
+      values.Add (Confidentiality.Confidential, PropertyStates.ConfidentialityConfidential);
+      values.Add (Confidentiality.Private, PropertyStates.ConfidentialityPrivate);
 
       Expect.Once.On (_enumeratedTypeReflectorMock)
           .Method ("GetValues")
@@ -74,9 +74,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       
       Assert.IsNotNull (info.Values);
       Assert.AreEqual (3, info.Values.Count);
-      Assert.Contains (PropertyStates.Normal, info.Values);
-      Assert.Contains (PropertyStates.Private, info.Values);
-      Assert.Contains (PropertyStates.Confidential, info.Values);
+      Assert.Contains (PropertyStates.ConfidentialityNormal, info.Values);
+      Assert.Contains (PropertyStates.ConfidentialityPrivate, info.Values);
+      Assert.Contains (PropertyStates.ConfidentialityConfidential, info.Values);
     }
 
     [Test]
