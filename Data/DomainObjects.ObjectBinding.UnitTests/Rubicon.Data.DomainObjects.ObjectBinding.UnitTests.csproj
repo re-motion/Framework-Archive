@@ -162,15 +162,20 @@
     <Content Include="Database\CreateDB.sql" />
     <Content Include="Database\CreateTestData.sql" />
     <Content Include="Database\SetupDB.sql" />
-    <Content Include="mapping.xml" />
-    <Content Include="queries.xml" />
-    <Content Include="storageProviders.xml" />
+    <Content Include="Mapping.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Queries.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="StorageProviders.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>copy "$(ProjectDir)*.xml" "$(TargetDir)*.xml"
-copy "$(ProjectDir)Database\*.sql" "$(TargetDir)*.sql"</PostBuildEvent>
+    <PostBuildEvent>copy "$(ProjectDir)Database\*.sql" "$(TargetDir)*.sql"</PostBuildEvent>
   </PropertyGroup>
 </Project>

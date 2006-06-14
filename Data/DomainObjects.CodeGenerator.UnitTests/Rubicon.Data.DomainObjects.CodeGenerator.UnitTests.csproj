@@ -81,15 +81,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="emptyStorageProviders.xml">
+    <Content Include="EmptyStorageProviders.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="mapping.xml">
+    <Content Include="Mapping.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sql\TestData\SetupDB_FirstStorageProvider.sql" />
     <Content Include="Sql\TestData\SetupDB_SecondStorageProvider.sql" />
-    <Content Include="storageProviders.xml">
+    <Content Include="StorageProviders.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
