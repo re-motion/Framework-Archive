@@ -32,11 +32,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void IsActive_FromWxeFunctionCommandAndWithoutWebSeucrityProvider ()
+    public void IsActive_WithoutSeucrityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
-      _testHelper.ExpectWxeSecurityProviderToBeNeverCalled ();
+       _testHelper.ExpectWxeSecurityProviderToBeNeverCalled ();
 
       bool isActive = _command.IsActive ();
 
@@ -45,7 +43,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void IsActive_FromWxeFunctionCommandAndAccessGranted ()
+    public void IsActive_WithAccessGranted ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
@@ -58,7 +56,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void IsActive_FromWxeFunctionCommandAndAccessDenied ()
+    public void IsActive_WithAccessDenied ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
@@ -71,8 +69,10 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void RenderWxeFunctionCommand ()
+    public void Render_WithoutSeucrityProvider ()
     {
+      _testHelper.ExpectWxeSecurityProviderToBeNeverCalled ();
+      
       _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 
       string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick;
@@ -92,6 +92,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       Assert.AreEqual (_testHelper.ToolTip, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
 
       Assert.IsNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Has Target");
+
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
     }
   }
 }

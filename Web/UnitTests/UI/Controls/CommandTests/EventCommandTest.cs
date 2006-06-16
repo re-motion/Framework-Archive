@@ -32,10 +32,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void IsActive_FromEventCommandAndWithoutWebSeucrityProvider ()
+    public void IsActive_WithoutSeucrityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (null);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
       _testHelper.ExpectWebSecurityProviderToBeNeverCalled ();
 
       bool isActive = _command.IsActive ();
@@ -45,7 +43,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void IsActive_FromEventCommandAndAccessGranted ()
+    public void IsActive_WithAccessGranted ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
@@ -59,7 +57,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void IsActive_FromEventCommandAndAccessDenied ()
+    public void IsActive_WithAccessDenied ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
@@ -73,8 +71,10 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void RenderEventCommand ()
-    {      
+    public void Render_WithoutSeucrityProvider ()
+    {
+      _testHelper.ExpectWebSecurityProviderToBeNeverCalled ();
+      
       string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick;
       _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 

@@ -568,21 +568,15 @@ namespace Rubicon.Web.UI.Controls
       switch (Type)
       {
         case CommandType.Href:
-          {
-            if (HrefCommand != null)
-              stringBuilder.AppendFormat (": {0}", HrefCommand.ToString ());
-            break;
-          }
+          if (HrefCommand != null)
+            stringBuilder.AppendFormat (": {0}", HrefCommand.ToString ());
+          break;
         case CommandType.WxeFunction:
-          {
-            if (WxeFunctionCommand != null)
-              stringBuilder.AppendFormat (": {0}", WxeFunctionCommand.ToString ());
-            break;
-          }
+          if (WxeFunctionCommand != null)
+            stringBuilder.AppendFormat (": {0}", WxeFunctionCommand.ToString ());
+          break;
         default:
-          {
-            break;
-          }
+          break;
       }
 
       return stringBuilder.ToString ();
@@ -815,20 +809,30 @@ namespace Rubicon.Web.UI.Controls
         case CommandType.Href:
           return true;
         case CommandType.Event:
-          IWebSecurityProvider webSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWebSecurityProvider> ();
-          if (webSecurityProvider == null)
-            return true;
-          return webSecurityProvider.HasAccess (null, Click);
+          return HasAccessForEventCommand ();
         case CommandType.WxeFunction:
-          IWxeSecurityProvider wxeSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWxeSecurityProvider> ();
-          if (wxeSecurityProvider == null)
-            return true;
-          return wxeSecurityProvider.HasStatelessAccess (WxeFunctionCommand.ResolveFunctionType ());
+          return HasAccessForWxeFunctionCommand ();
         case CommandType.None:
           return true;
         default:
           throw new InvalidOperationException (string.Format ("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).FullName));
       }
+    }
+
+    private bool HasAccessForEventCommand ()
+    {
+      IWebSecurityProvider webSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWebSecurityProvider> ();
+      if (webSecurityProvider == null)
+        return true;
+      return webSecurityProvider.HasAccess (null, Click);
+    }
+
+    private bool HasAccessForWxeFunctionCommand ()
+    {
+      IWxeSecurityProvider wxeSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWxeSecurityProvider> ();
+      if (wxeSecurityProvider == null)
+        return true;
+      return wxeSecurityProvider.HasStatelessAccess (WxeFunctionCommand.ResolveFunctionType ());
     }
   }
 

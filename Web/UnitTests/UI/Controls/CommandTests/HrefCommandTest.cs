@@ -32,13 +32,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void IsActive_FromHrefCommand ()
+    public void IsActive_WithoutSeucrityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
-      _testHelper.ExpectWxeSecurityProviderToBeNeverCalled ();
-      _testHelper.ExpectWebSecurityProviderToBeNeverCalled ();
-
       bool isActive = _command.IsActive ();
 
       _testHelper.VerifyAllExpectationsHaveBeenMet ();
@@ -46,7 +41,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void RenderHrefCommand ()
+    public void Render_WithoutSeucrityProvider ()
     {
       string[] parameters = new string[] { "Value1", "Value2" };
 
@@ -76,6 +71,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 
       Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Missing Target");
       Assert.AreEqual (_testHelper.Target, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Wrong Target");
+
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
     }
   }
 }

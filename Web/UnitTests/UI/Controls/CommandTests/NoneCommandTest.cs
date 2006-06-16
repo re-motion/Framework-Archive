@@ -32,13 +32,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void IsActive_FromNoneCommand ()
+    public void IsActive_WithoutSeucrityProvider ()
     {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
-      _testHelper.ExpectWxeSecurityProviderToBeNeverCalled ();
-      _testHelper.ExpectWebSecurityProviderToBeNeverCalled ();
-      
       bool isActive = _command.IsActive ();
 
       _testHelper.VerifyAllExpectationsHaveBeenMet ();
@@ -46,7 +41,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void RenderNoneCommand ()
+    public void Render_WithoutSeucrityProvider ()
     {
       _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 
@@ -55,6 +50,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
       Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
+    
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
     }
   }
 }

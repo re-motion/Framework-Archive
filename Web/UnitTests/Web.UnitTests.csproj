@@ -214,9 +214,14 @@
     <Compile Include="StringCollectionCheckerTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\CommandTests\CommandTest.cs" />
+    <Compile Include="UI\Controls\CommandTests\CommandTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UI\Controls\CommandTests\CommandTestHelper.cs" />
-    <Compile Include="UI\Controls\CommandTests\SecurityTests.cs" />
+    <Compile Include="UI\Controls\CommandTests\WxeFunctionCommandTest.cs" />
+    <Compile Include="UI\Controls\CommandTests\EventCommandTest.cs" />
+    <Compile Include="UI\Controls\CommandTests\NoneCommandTest.cs" />
+    <Compile Include="UI\Controls\CommandTests\HrefCommandTest.cs" />
     <Compile Include="UI\Controls\ControlInvoker.cs">
       <SubType>Code</SubType>
     </Compile>
