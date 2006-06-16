@@ -18,7 +18,7 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 {
   [TestFixture]
-  public class NoneCommandTest
+  public class NoneCommandTest : CommandTest
   {
     private CommandTestHelper _testHelper;
     private Command _command;
@@ -29,16 +29,6 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _testHelper = new CommandTestHelper ();
       _command = _testHelper.CreateNoneCommand ();
       HttpContextHelper.SetCurrent (_testHelper.HttpContext);
-    }
-
-    [TearDown]
-    public virtual void TearDown ()
-    {
-      HttpContextHelper.SetCurrent (null);
-      WebConfigurationMock.Current = null;
-      Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (null);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
     }
 
     [Test]
