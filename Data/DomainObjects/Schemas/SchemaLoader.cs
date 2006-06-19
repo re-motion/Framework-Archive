@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.Schemas
 {
-  public class SchemaLoader : SchemaBase
+  public class SchemaLoader : SchemaLoaderBase
   {
     // types
 

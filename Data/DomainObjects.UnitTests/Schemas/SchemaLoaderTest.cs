@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
     [Test]
     public void IsDerivedFromSchemaBase ()
     {
-      Assert.IsNotNull (_schemaLoaderWithMapping as SchemaBase);
+      Assert.IsNotNull (_schemaLoaderWithMapping as SchemaLoaderBase);
     }
 
     [Test]
