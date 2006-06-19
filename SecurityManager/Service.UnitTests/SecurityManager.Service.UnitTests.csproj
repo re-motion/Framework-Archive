@@ -48,9 +48,15 @@
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="DomainTest.cs" />
     <Compile Include="SecurityServiceTest.cs" />
-    <Compile Include="TestDomain\AbstractRoles.cs" />
-    <Compile Include="TestDomain\Order.cs" />
-    <Compile Include="TestDomain\SecurityStates.cs" />
+    <Compile Include="TestDomain\AbstractRoles.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\Order.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TestDomain\SecurityStates.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Service.UnitTests.build" />
   </ItemGroup>
