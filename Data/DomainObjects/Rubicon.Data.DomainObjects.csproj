@@ -401,7 +401,8 @@
     <Compile Include="ReflectionUtility.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Schemas\SchemaRetriever.cs" />
+    <Compile Include="Schemas\SchemaLoader.cs" />
+    <Compile Include="Schemas\SchemaType.cs" />
     <Compile Include="StateType.cs">
       <SubType>Code</SubType>
     </Compile>

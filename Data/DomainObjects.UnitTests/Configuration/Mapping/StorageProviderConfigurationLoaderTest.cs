@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.ConfigurationLoader;
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
+using System.IO;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 {
@@ -39,21 +40,45 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (StorageProviderConfigurationException),
-        "Error while reading storage provider configuration:"
-        + " '<', hexadecimal value 0x3C, is an invalid attribute character. Line 10, position 3.")]
     public void StorageProvidersWithXmlException ()
     {
-      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersWithXmlException.xml");
+      string configurationFile = "StorageProvidersWithXmlException.xml";
+      try
+      {
+        StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (configurationFile);
+
+        Assert.Fail ("StorageProviderConfigurationException was expected");
+      }
+      catch (StorageProviderConfigurationException ex)
+      {
+        string expectedMessage = string.Format (
+            "Error while reading storage provider configuration: '<', hexadecimal value 0x3C, is an invalid attribute character."
+            + " Line 10, position 3. File: '{0}'.",  
+            Path.GetFullPath (configurationFile));
+
+        Assert.AreEqual (expectedMessage, ex.Message);
+      }
     }
 
     [Test]
-    [ExpectedException (typeof (StorageProviderConfigurationException),
-        "Error while reading storage provider configuration: The root element has namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidMappingNamespace'"
-        + " but was expected to have 'http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0'.")]
     public void StorageProvidersWithInvalidNamespace ()
     {
-      StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (@"StorageProvidersWithInvalidNamespace.xml");
+      string configurationFile = "StorageProvidersWithInvalidNamespace.xml";
+      try
+      {
+        StorageProviderConfigurationLoader loader = new StorageProviderConfigurationLoader (configurationFile);
+
+        Assert.Fail ("StorageProviderConfigurationException was expected");
+      }
+      catch (StorageProviderConfigurationException ex)
+      {
+        string expectedMessage = string.Format (
+            "Error while reading storage provider configuration: The namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidNamespace' of"
+            + " the root element is invalid. Expected namespace: 'http://www.rubicon-it.com/Data/DomainObjects/Persistence/1.0'. File: '{0}'.",
+            Path.GetFullPath (configurationFile));
+
+        Assert.AreEqual (expectedMessage, ex.Message);
+      }
     }
   }
 

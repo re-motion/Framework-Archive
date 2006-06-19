@@ -39,9 +39,9 @@ namespace Rubicon.Core.UnitTests.Xml
       get { return _schemaUri; }
     }
 
-    public new XmlSchema GetSchema (string schemaFileName)
+    public new XmlSchema LoadSchema (string schemaFileName)
     {
-      return base.GetSchema (schemaFileName);
+      return base.LoadSchema (schemaFileName);
     }
   }
 }

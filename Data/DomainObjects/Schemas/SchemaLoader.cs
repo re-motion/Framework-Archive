@@ -8,16 +8,9 @@ using Rubicon.Data.DomainObjects.ConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.Schemas
 {
-  public class SchemaRetriever : SchemaBase
+  public class SchemaLoader : SchemaBase
   {
     // types
-
-    public enum SchemaType
-    {
-      Mapping,
-      Queries,
-      StorageProviders
-    }
 
     // static members and constants
 
@@ -29,7 +22,7 @@ namespace Rubicon.Data.DomainObjects.Schemas
 
     // construction and disposing
 
-    public SchemaRetriever (SchemaType type)
+    public SchemaLoader (SchemaType type)
     {
       ArgumentUtility.CheckValidEnumValue (type, "type");
 
@@ -63,11 +56,11 @@ namespace Rubicon.Data.DomainObjects.Schemas
       get { return _schemaUri; }
     }
 
-    public override XmlSchemaSet GetSchemaSet ()
+    public override XmlSchemaSet LoadSchemaSet ()
     {
-      XmlSchemaSet schemaSet = new XmlSchemaSet ();
-      schemaSet.Add (GetSchema ("Types.xsd"));
-      schemaSet.Add (GetSchema (_schemaFile));
+      XmlSchemaSet schemaSet = base.LoadSchemaSet ();
+      schemaSet.Add (LoadSchema ("Types.xsd"));
+
       return schemaSet;
     }
 

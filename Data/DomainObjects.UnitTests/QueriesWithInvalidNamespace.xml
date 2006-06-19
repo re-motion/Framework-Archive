@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <queries 
     application="UnitTests" 
-    xmlns="http://www.rubicon-it.com/Data/DomainObjects/InvalidMappingNamespace" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/InvalidNamespace" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" />

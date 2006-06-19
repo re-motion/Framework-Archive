@@ -35,22 +35,21 @@ public class MappingLoader : BaseFileLoader
     {
       base.Initialize (
           configurationFile,
-          new SchemaRetriever (SchemaRetriever.SchemaType.Mapping),
+          SchemaType.Mapping,
           resolveTypes,
-          new PrefixNamespace[] { PrefixNamespace.MappingNamespace },
           PrefixNamespace.MappingNamespace);
     }
     catch (ConfigurationException e)
     {
-      throw CreateMappingException (e, "Error while reading mapping: {0}", e.Message);
+      throw CreateMappingException (e, "Error while reading mapping: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
     catch (XmlSchemaException e)
     {
-      throw CreateMappingException (e, "Error while reading mapping: {0}", e.Message);
+      throw CreateMappingException (e, "Error while reading mapping: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
     catch (XmlException e)
     {
-      throw CreateMappingException (e, "Error while reading mapping: {0}", e.Message);
+      throw CreateMappingException (e, "Error while reading mapping: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
   }
 

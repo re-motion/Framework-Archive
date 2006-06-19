@@ -1,3 +1,8 @@
+1.7.6
+=====
+
+- Neuer Overload für Rubicon.Utilities.ArgumentUtility.CheckValidEnumValue mit Parameter-Reihenfolge analog zu allen anderen Check*-Methoden.
+
 1.7.1
 =====
 - Rubicon.Utilities.TypeNameConverter: Neuer TypeConverter um .net Typnamen bzw die abgekürzte Form ("::") in Typen zu konvertieren.

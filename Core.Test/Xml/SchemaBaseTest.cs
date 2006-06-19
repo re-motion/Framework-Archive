@@ -26,21 +26,21 @@ namespace Rubicon.Core.UnitTests.Xml
     // methods and properties
 
     [Test]
-    public void GetSchemaWithSchemaFile ()
+    public void LoadSchemaWithSchemaFile ()
     {
       SchemaBaseMock schemaBaseMock = new SchemaBaseMock ("http://www.rubicon-it.com/Core/Test/Xml/SchemaBaseMock");
-      XmlSchema xmlSchema = schemaBaseMock.GetSchema ("SchemaBaseMock.xsd");
+      XmlSchema xmlSchema = schemaBaseMock.LoadSchema ("SchemaBaseMock.xsd");
       Assert.IsNotNull (xmlSchema);
       Assert.AreEqual ("http://www.rubicon-it.com/Core/Test/Xml/SchemaBaseMock", xmlSchema.TargetNamespace);
     }
 
     [Test]
-    public void GetSchemaReaderWithInvalidFileName ()
+    public void LoadSchemaReaderWithInvalidFileName ()
     {
       try
       {
         SchemaBaseMock schemaBaseMock = new SchemaBaseMock ("http://www.rubicon-it.com/Core/Test/Xml/SchemaBaseMock");
-        schemaBaseMock.GetSchema ("invalidSchemaFileName.xsd");
+        schemaBaseMock.LoadSchema ("invalidSchemaFileName.xsd");
 
         Assert.Fail ("ApplicationException was expected.");
       }
@@ -54,10 +54,10 @@ namespace Rubicon.Core.UnitTests.Xml
     }
 
     [Test]
-    public void GetSchemaSet ()
+    public void LoadSchemaSet ()
     {
       SchemaBase schemaBaseMock = new SchemaBaseMock ("http://www.rubicon-it.com/Core/Test/Xml/SchemaBaseMock");
-      XmlSchemaSet xmlSchemaSet = schemaBaseMock.GetSchemaSet ();
+      XmlSchemaSet xmlSchemaSet = schemaBaseMock.LoadSchemaSet ();
       Assert.AreEqual (1, xmlSchemaSet.Count);
       Assert.IsTrue (xmlSchemaSet.Contains ("http://www.rubicon-it.com/Core/Test/Xml/SchemaBaseMock"));
     }

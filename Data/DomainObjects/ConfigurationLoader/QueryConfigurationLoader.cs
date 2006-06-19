@@ -5,6 +5,7 @@ using System.Xml.Schema;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Queries.Configuration;
 using Rubicon.Data.DomainObjects.Schemas;
+using System.IO;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
@@ -33,22 +34,24 @@ public class QueryConfigurationLoader : BaseFileLoader
     {
       base.Initialize (
           configurationFile, 
-          new SchemaRetriever (SchemaRetriever.SchemaType.Queries), 
+          SchemaType.Queries, 
           true,
-          new PrefixNamespace[] {PrefixNamespace.QueryConfigurationNamespace}, 
           PrefixNamespace.QueryConfigurationNamespace);
     }
     catch (ConfigurationException e)
     {
-      throw CreateQueryConfigurationException (e, "Error while reading query configuration: {0}", e.Message);
+      throw CreateQueryConfigurationException (
+          e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
     catch (XmlSchemaException e)
     {
-      throw CreateQueryConfigurationException (e, "Error while reading query configuration: {0}", e.Message);
+      throw CreateQueryConfigurationException (
+          e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
     catch (XmlException e)
     {
-      throw CreateQueryConfigurationException (e, "Error while reading query configuration: {0}", e.Message);
+      throw CreateQueryConfigurationException (
+          e, "Error while reading query configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
   }
   

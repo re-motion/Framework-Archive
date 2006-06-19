@@ -160,6 +160,11 @@ namespace Rubicon.Utilities
       }
     }
 
+    public static void CheckValidEnumValue (string argumentName, System.Enum enumValue)
+    {
+      CheckValidEnumValue (enumValue, argumentName);
+    }
+
     public static void CheckValidEnumValue (System.Enum enumValue, string argumentName)
     {
       if (enumValue == null)

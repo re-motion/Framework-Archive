@@ -30,19 +30,19 @@ namespace Rubicon.Xml
       return new XmlTextReader (schemaStream);
     }
 
-    /// <summary> Gets an <see cref="XmlSchemaSet"/> for the schema specified with property <see cref="SchemaFile"/> that is embedded in the assembly. </summary>
-    /// <remarks> Overwrite this method if the Schema includes other schemas that need to be loaded first. </remarks>
+    /// <summary> Loads an <see cref="XmlSchemaSet"/> for the schema specified with property <see cref="SchemaFile"/> that is embedded in the assembly. </summary>
+    /// <remarks> Override this method if the Schema to be loaded includes other schemas. </remarks>
     /// <exception cref="ApplicationException"> Thrown if the schema file could not be loaded. </exception>
-    public virtual XmlSchemaSet GetSchemaSet ()
+    public virtual XmlSchemaSet LoadSchemaSet ()
     {
       XmlSchemaSet xmlSchemaSet = new XmlSchemaSet ();
-      xmlSchemaSet.Add (GetSchema (SchemaFile));
+      xmlSchemaSet.Add (LoadSchema (SchemaFile));
       return xmlSchemaSet;
     }
 
-    /// <summary> Gets an <see cref="XmlSchema"/> for a schema embedded in the assembly. </summary>
+    /// <summary> Loads an <see cref="XmlSchema"/> for a schema embedded in the assembly. </summary>
     /// <exception cref="ApplicationException"> Thrown if the schema file could not be loaded. </exception>
-    protected XmlSchema GetSchema (string schemaFileName)
+    protected XmlSchema LoadSchema (string schemaFileName)
     {
       Type type = GetType ();
       Assembly assembly = type.Assembly;

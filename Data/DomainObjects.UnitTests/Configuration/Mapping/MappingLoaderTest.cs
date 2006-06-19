@@ -161,12 +161,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        "Error while reading mapping:"
-       + " '<', hexadecimal value 0x3C, is an invalid attribute character. Line 10, position 4.")]
     public void MappingWithXmlException ()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithXmlException.xml", true);
+      string configurationFile = "MappingWithXmlException.xml";
+      try
+      {
+        MappingLoader loader = new MappingLoader (configurationFile, true);
+
+        Assert.Fail ("MappingException was expected");
+      }
+      catch (MappingException ex)
+      {
+        string expectedMessage = string.Format (
+            "Error while reading mapping: '<', hexadecimal value 0x3C, is an invalid attribute character. Line 10, position 4. File: '{0}'.", 
+            Path.GetFullPath (configurationFile));
+
+        Assert.AreEqual (expectedMessage, ex.Message);
+      }
     }
 
     [Test]
@@ -307,12 +318,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException), 
-        "Error while reading mapping: The root element has namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidMappingNamespace'"
-        + " but was expected to have 'http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0'.")]
     public void MappingWithInvalidNamespace ()
     {
-      MappingLoader loader = new MappingLoader (@"MappingWithInvalidNamespace.xml", true);
+      string configurationFile = "MappingWithInvalidNamespace.xml";
+      try
+      {
+        MappingLoader loader = new MappingLoader (configurationFile, true);
+
+        Assert.Fail ("MappingException was expected");
+      }
+      catch (MappingException ex)
+      {
+        string expectedMessage = string.Format (
+            "Error while reading mapping: The namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidNamespace' of the root element is invalid."
+            + " Expected namespace: 'http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0'. File: '{0}'.",
+            Path.GetFullPath (configurationFile));
+
+        Assert.AreEqual (expectedMessage, ex.Message);
+      }
     }
   }
 }

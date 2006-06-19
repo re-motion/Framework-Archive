@@ -11,7 +11,7 @@ using Rubicon.Data.DomainObjects.Schemas;
 namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
 {
   [TestFixture]
-  public class SchemaRetrieverTest
+  public class SchemaLoaderTest
   {
     // types
 
@@ -19,13 +19,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
 
     // member fields
 
-    private SchemaRetriever _schemaRetrieverWithMapping;
-    private SchemaRetriever _schemaRetrieverWithQueries;
-    private SchemaRetriever _schemaRetrieverWithStorageProviders;
+    private SchemaLoader _schemaLoaderWithMapping;
+    private SchemaLoader _schemaLoaderWithQueries;
+    private SchemaLoader _schemaLoaderWithStorageProviders;
 
     // construction and disposing
 
-    public SchemaRetrieverTest ()
+    public SchemaLoaderTest ()
     {
     }
 
@@ -34,42 +34,42 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
     [SetUp]
     public void SetUp ()
     {
-      _schemaRetrieverWithMapping = new SchemaRetriever (SchemaRetriever.SchemaType.Mapping);
-      _schemaRetrieverWithQueries = new SchemaRetriever (SchemaRetriever.SchemaType.Queries);
-      _schemaRetrieverWithStorageProviders = new SchemaRetriever (SchemaRetriever.SchemaType.StorageProviders);
+      _schemaLoaderWithMapping = new SchemaLoader (SchemaType.Mapping);
+      _schemaLoaderWithQueries = new SchemaLoader (SchemaType.Queries);
+      _schemaLoaderWithStorageProviders = new SchemaLoader (SchemaType.StorageProviders);
     }
 
     [Test]
     public void InitializeWithMapping ()
     {
-      Assert.AreEqual (SchemaRetriever.SchemaType.Mapping, _schemaRetrieverWithMapping.Type);
-      Assert.AreEqual (PrefixNamespace.MappingNamespace.Uri, _schemaRetrieverWithMapping.SchemaUri);
+      Assert.AreEqual (SchemaType.Mapping, _schemaLoaderWithMapping.Type);
+      Assert.AreEqual (PrefixNamespace.MappingNamespace.Uri, _schemaLoaderWithMapping.SchemaUri);
     }
 
     [Test]
     public void InitializeWithQueries ()
     {
-      Assert.AreEqual (SchemaRetriever.SchemaType.Queries, _schemaRetrieverWithQueries.Type);
-      Assert.AreEqual (PrefixNamespace.QueryConfigurationNamespace.Uri, _schemaRetrieverWithQueries.SchemaUri);
+      Assert.AreEqual (SchemaType.Queries, _schemaLoaderWithQueries.Type);
+      Assert.AreEqual (PrefixNamespace.QueryConfigurationNamespace.Uri, _schemaLoaderWithQueries.SchemaUri);
     }
 
     [Test]
     public void InitializeWithStorageProviders ()
     {
-      Assert.AreEqual (SchemaRetriever.SchemaType.StorageProviders, _schemaRetrieverWithStorageProviders.Type);
-      Assert.AreEqual (PrefixNamespace.StorageProviderConfigurationNamespace.Uri, _schemaRetrieverWithStorageProviders.SchemaUri);
+      Assert.AreEqual (SchemaType.StorageProviders, _schemaLoaderWithStorageProviders.Type);
+      Assert.AreEqual (PrefixNamespace.StorageProviderConfigurationNamespace.Uri, _schemaLoaderWithStorageProviders.SchemaUri);
     }
 
     [Test]
     public void IsDerivedFromSchemaBase ()
     {
-      Assert.IsNotNull (_schemaRetrieverWithMapping as SchemaBase);
+      Assert.IsNotNull (_schemaLoaderWithMapping as SchemaBase);
     }
 
     [Test]
-    public void GetSchemaSetWithMapping ()
+    public void LoadSchemaSetWithMapping ()
     {
-      XmlSchemaSet schemaSet = _schemaRetrieverWithMapping.GetSchemaSet ();
+      XmlSchemaSet schemaSet = _schemaLoaderWithMapping.LoadSchemaSet ();
 
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (2, schemaSet.Count);
@@ -78,9 +78,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
     }
 
     [Test]
-    public void GetSchemaSetWithQueries ()
+    public void LoadSchemaSetWithQueries ()
     {
-      XmlSchemaSet schemaSet = _schemaRetrieverWithQueries.GetSchemaSet ();
+      XmlSchemaSet schemaSet = _schemaLoaderWithQueries.LoadSchemaSet ();
 
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (2, schemaSet.Count);
@@ -89,9 +89,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Schemas
     }
 
     [Test]
-    public void GetSchemaSetWithStorageProviders ()
+    public void LoadSchemaSetWithStorageProviders ()
     {
-      XmlSchemaSet schemaSet = _schemaRetrieverWithStorageProviders.GetSchemaSet ();
+      XmlSchemaSet schemaSet = _schemaLoaderWithStorageProviders.LoadSchemaSet ();
 
       Assert.IsNotNull (schemaSet);
       Assert.AreEqual (2, schemaSet.Count);

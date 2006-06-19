@@ -48,12 +48,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Queries
     }
 
     [Test]
-    [ExpectedException (typeof (QueryConfigurationException), 
-        "Error while reading query configuration: The root element has namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidMappingNamespace'"
-        + " but was expected to have 'http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0'.")]
     public void QueryConfigurationWithInvalidNamespace ()
     {
-      QueryConfigurationLoader loader = new QueryConfigurationLoader (@"QueriesWithInvalidNamespace.xml");
+      string configurationFile = "QueriesWithInvalidNamespace.xml";
+      try
+      {
+        QueryConfigurationLoader loader = new QueryConfigurationLoader (configurationFile);
+
+        Assert.Fail ("QueryConfigurationException was expected");
+      }
+      catch (QueryConfigurationException ex)
+      {
+        string expectedMessage = string.Format (
+            "Error while reading query configuration: The namespace 'http://www.rubicon-it.com/Data/DomainObjects/InvalidNamespace' of"
+            + " the root element is invalid. Expected namespace: 'http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0'. File: '{0}'.",
+            Path.GetFullPath (configurationFile));
+
+        Assert.AreEqual (expectedMessage, ex.Message);
+      }
     }
 
     [Test]

@@ -30,14 +30,12 @@ public class BaseFileLoader
 
   protected void Initialize (
       string configurationFile,
-      SchemaRetriever schemaRetriever,
+      SchemaType schemaType,
       bool resolveTypes,
-      PrefixNamespace[] namespaces,
       PrefixNamespace schemaNamespace)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
-    ArgumentUtility.CheckNotNull ("schemaRetriever", schemaRetriever);
-    ArgumentUtility.CheckNotNull ("namespaces", namespaces);
+    ArgumentUtility.CheckValidEnumValue ("schemaType", schemaType);
     ArgumentUtility.CheckNotNull ("schemaNamespace", schemaNamespace);
 
     if (!File.Exists (configurationFile))
@@ -46,22 +44,22 @@ public class BaseFileLoader
     _configurationFile = Path.GetFullPath (configurationFile);
     _resolveTypes = resolveTypes;
 
-    _document = LoadConfigurationFile (_configurationFile, schemaRetriever, schemaNamespace.Uri);
-    _namespaceManager = new ConfigurationNamespaceManager (_document, namespaces);
+    _document = LoadConfigurationFile (_configurationFile, new SchemaLoader (schemaType), schemaNamespace.Uri);
+    _namespaceManager = new ConfigurationNamespaceManager (_document, new PrefixNamespace[] { schemaNamespace });
   }
 
   // methods and properties
 
   private XmlDocument LoadConfigurationFile (
       string configurationFile,
-      SchemaRetriever schemaRetriever,
+      SchemaLoader schemaLoader,
       string schemaNamespace)
   {
     using (XmlTextReader textReader = new XmlTextReader (configurationFile))
     {
       XmlReaderSettings validatingReaderSettings = new XmlReaderSettings ();
       validatingReaderSettings.ValidationType = ValidationType.Schema;
-      validatingReaderSettings.Schemas.Add (schemaRetriever.GetSchemaSet ());
+      validatingReaderSettings.Schemas.Add (schemaLoader.LoadSchemaSet ());
 
       using (XmlReader validatingReader = XmlReader.Create (textReader, validatingReaderSettings))
       {
@@ -71,9 +69,8 @@ public class BaseFileLoader
         if (document.DocumentElement.NamespaceURI != schemaNamespace)
         {
           throw CreateConfigurationException (
-              "The root element has namespace '{0}' but was expected to have '{1}'.",
-              document.DocumentElement.NamespaceURI,
-              schemaNamespace);
+              "The namespace '{0}' of the root element is invalid. Expected namespace: '{1}'.",
+              document.DocumentElement.NamespaceURI, schemaNamespace);
         }
 
         return document;

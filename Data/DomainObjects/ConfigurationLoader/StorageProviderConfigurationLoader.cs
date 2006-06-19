@@ -4,6 +4,7 @@ using System.Xml.Schema;
 
 using Rubicon.Data.DomainObjects.Persistence.Configuration;
 using Rubicon.Data.DomainObjects.Schemas;
+using System.IO;
 
 namespace Rubicon.Data.DomainObjects.ConfigurationLoader
 {
@@ -31,23 +32,25 @@ public class StorageProviderConfigurationLoader : BaseFileLoader
     {
       base.Initialize (
           configurationFile, 
-          new SchemaRetriever (SchemaRetriever.SchemaType.StorageProviders), 
+          SchemaType.StorageProviders, 
           true,
-          new PrefixNamespace[] {PrefixNamespace.StorageProviderConfigurationNamespace}, 
           PrefixNamespace.StorageProviderConfigurationNamespace);
 
     }
     catch (ConfigurationException e)
     {
-      throw CreateStorageProviderConfigurationException (e, "Error while reading storage provider configuration: {0}", e.Message);
+      throw CreateStorageProviderConfigurationException (
+          e, "Error while reading storage provider configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
     catch (XmlSchemaException e)
     {
-      throw CreateStorageProviderConfigurationException (e, "Error while reading storage provider configuration: {0}", e.Message);
+      throw CreateStorageProviderConfigurationException (
+          e, "Error while reading storage provider configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
     catch (XmlException e)
     {
-      throw CreateStorageProviderConfigurationException (e, "Error while reading storage provider configuration: {0}", e.Message);
+      throw CreateStorageProviderConfigurationException (
+          e, "Error while reading storage provider configuration: {0} File: '{1}'.", e.Message, Path.GetFullPath (configurationFile));
     }
   }
   

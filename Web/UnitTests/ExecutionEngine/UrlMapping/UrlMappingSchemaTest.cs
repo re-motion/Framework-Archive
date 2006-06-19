@@ -65,10 +65,10 @@ public class UrlMappingSchemaTest
   }
 
   [Test]
-  public void GetSchemaSet ()
+  public void LoadSchemaSet ()
   {
     UrlMappingSchema urlMappingSchema = new UrlMappingSchema ();
-    XmlSchemaSet xmlSchemaSet = urlMappingSchema.GetSchemaSet ();
+    XmlSchemaSet xmlSchemaSet = urlMappingSchema.LoadSchemaSet ();
     Assert.AreEqual (1, xmlSchemaSet.Count);
     Assert.IsTrue (xmlSchemaSet.Contains (urlMappingSchema.SchemaUri));
   }
