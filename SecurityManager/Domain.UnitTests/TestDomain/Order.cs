@@ -4,7 +4,7 @@ using System.Text;
 
 using Rubicon.Security;
 
-namespace Rubicon.SecurityManager.Domain.UnitTests.TestDomain
+namespace Rubicon.SecurityManager.Service.UnitTests.TestDomain
 {
   public class Order : ISecurableObject
   {
