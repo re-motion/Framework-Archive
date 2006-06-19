@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Rubicon.Core.UnitTests.Xml
 {
-  public class SchemaBaseMock : SchemaBase
+  public class SchemaLoaderBaseMock : SchemaLoaderBase
   {
     // types
 
@@ -20,7 +20,7 @@ namespace Rubicon.Core.UnitTests.Xml
 
     // construction and disposing
 
-    public SchemaBaseMock (string schemaUri)
+    public SchemaLoaderBaseMock (string schemaUri)
     {
       ArgumentUtility.CheckNotNull ("schemaUri", schemaUri);
 
@@ -31,7 +31,7 @@ namespace Rubicon.Core.UnitTests.Xml
 
     protected override string SchemaFile
     {
-      get { return "SchemaBaseMock.xsd"; }
+      get { return "SchemaLoaderBaseMock.xsd"; }
     }
 
     public override string SchemaUri
@@ -39,7 +39,7 @@ namespace Rubicon.Core.UnitTests.Xml
       get { return _schemaUri; }
     }
 
-    public new XmlSchema LoadSchema (string schemaFileName)
+    public new XmlSchema GetSchema (string schemaFileName)
     {
       return base.LoadSchema (schemaFileName);
     }

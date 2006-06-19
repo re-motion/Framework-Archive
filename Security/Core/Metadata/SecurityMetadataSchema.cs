@@ -6,7 +6,7 @@ using Rubicon.Xml;
 
 namespace Rubicon.Security.Metadata
 {
-  public class SecurityMetadataSchema : SchemaBase
+  public class SecurityMetadataSchema : SchemaLoaderBase
   {
     protected override string SchemaFile
     {

@@ -204,11 +204,13 @@
     <Compile Include="Utilities\WorkContextTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Xml\SchemaBaseMock.cs" />
-    <Compile Include="Xml\SchemaBaseTest.cs" />
+    <Compile Include="Xml\SchemaLoaderBaseMock.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Xml\SchemaLoaderBaseTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Core.Test.build" />
-    <EmbeddedResource Include="Xml\SchemaBaseMock.xsd">
+    <EmbeddedResource Include="Xml\SchemaLoaderBaseMock.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\strings.en-US.resx" />

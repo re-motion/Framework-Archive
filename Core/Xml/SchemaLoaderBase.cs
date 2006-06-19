@@ -10,7 +10,7 @@ using System.Xml.Schema;
 
 namespace Rubicon.Xml
 {
-  public abstract class SchemaBase
+  public abstract class SchemaLoaderBase
   {
     protected abstract string SchemaFile { get; }
     public abstract string SchemaUri { get; }
@@ -30,8 +30,8 @@ namespace Rubicon.Xml
       return new XmlTextReader (schemaStream);
     }
 
-    /// <summary> Loads an <see cref="XmlSchemaSet"/> for the schema specified with property <see cref="SchemaFile"/> that is embedded in the assembly. </summary>
-    /// <remarks> Override this method if the Schema to be loaded includes other schemas. </remarks>
+    /// <summary> Gets an <see cref="XmlSchemaSet"/> for the schema specified with property <see cref="SchemaFile"/> that is embedded in the assembly. </summary>
+    /// <remarks> Overwrite this method if the Schema includes other schemas that need to be loaded first. </remarks>
     /// <exception cref="ApplicationException"> Thrown if the schema file could not be loaded. </exception>
     public virtual XmlSchemaSet LoadSchemaSet ()
     {
@@ -40,7 +40,7 @@ namespace Rubicon.Xml
       return xmlSchemaSet;
     }
 
-    /// <summary> Loads an <see cref="XmlSchema"/> for a schema embedded in the assembly. </summary>
+    /// <summary> Gets an <see cref="XmlSchema"/> for a schema embedded in the assembly. </summary>
     /// <exception cref="ApplicationException"> Thrown if the schema file could not be loaded. </exception>
     protected XmlSchema LoadSchema (string schemaFileName)
     {

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?> 
-<xs:schema id="SchemaBaseTestSchema" 
-                  targetNamespace="http://www.rubicon-it.com/Core/Test/Xml/SchemaBaseMock"
-                  elementFormDefault="qualified"
-                  attributeFormDefault="unqualified"
-                  xmlns="http://www.rubicon-it.com/Core/Test/Xml/SchemaBaseMock"
-                  xmlns:xs="http://www.w3.org/2001/XMLSchema">
-</xs:schema>

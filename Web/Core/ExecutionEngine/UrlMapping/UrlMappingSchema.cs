@@ -12,7 +12,7 @@ using Rubicon.Web.Configuration;
 namespace Rubicon.Web.ExecutionEngine.UrlMapping
 {
 
-public class UrlMappingSchema: SchemaBase
+public class UrlMappingSchema: SchemaLoaderBase
 {
   public UrlMappingSchema()
   {

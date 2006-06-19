@@ -36,7 +36,7 @@ public class UrlMappingLoader
     return (UrlMappingConfiguration) LoadConfiguration (_configurationFile, _type, _schemas);
   }
 
-  protected void Initialize (string configurationFile, Type type, params SchemaBase[] schemas)
+  protected void Initialize (string configurationFile, Type type, params SchemaLoaderBase[] schemas)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("configurationFile", configurationFile);
     ArgumentUtility.CheckNotNull ("type", type);
@@ -79,12 +79,12 @@ public class UrlMappingLoader
 //    }
   }
 
-  protected virtual XmlSchemaSet GetSchemas (SchemaBase[] schemas)
+  protected virtual XmlSchemaSet GetSchemas (SchemaLoaderBase[] schemas)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("schemas", schemas);
 
     XmlSchemaSet schemaSet = new XmlSchemaSet();
-    foreach (SchemaBase schema in schemas)
+    foreach (SchemaLoaderBase schema in schemas)
       schemaSet.Add (schema.SchemaUri, schema.GetSchemaReader());
     return schemaSet;
   }
