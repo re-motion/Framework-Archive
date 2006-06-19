@@ -18,6 +18,10 @@
   Bei der Generierung der SQL Skripts mit DoGen wird dies berücksichtigt. Weiters wird eine View pro Klasse erstellt, 
   die alle Objekte dieser und ihrere abgeleiteten Klassen zurückgibt. Diese können für Datenbankabfragen verwendet werden.
   
+- Neue Methode ClassDefinition.IsSameOrBaseClassOf eingeführt.
+
+- Beim Setzen einer Beziehung über SetRelatedObject wird nun auch der Typ des übergebenen Objekts kontrolliert.
+
 
 1.7.2.0
 =======
