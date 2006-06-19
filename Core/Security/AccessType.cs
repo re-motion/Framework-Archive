@@ -47,13 +47,13 @@ namespace Rubicon.Security
 
     private AccessType (EnumWrapper accessType)
     {
-      Type type = TypeUtility.GetType (accessType.TypeName);
-      if (!Attribute.IsDefined (type, typeof (AccessTypeAttribute), false))
-      {
-        throw new ArgumentException (string.Format ("Enumerated type '{0}' cannot be used as an access type. Valid access types must have the {1} applied.",
-                type.FullName, typeof (AccessTypeAttribute).FullName),
-            "accessType");
-      }
+      //Type type = TypeUtility.GetType (accessType.TypeName);
+      //if (!Attribute.IsDefined (type, typeof (AccessTypeAttribute), false))
+      //{
+      //  throw new ArgumentException (string.Format ("Enumerated type '{0}' cannot be used as an access type. Valid access types must have the {1} applied.",
+      //          type.FullName, typeof (AccessTypeAttribute).FullName),
+      //      "accessType");
+      //}
 
       _value = accessType;
     }

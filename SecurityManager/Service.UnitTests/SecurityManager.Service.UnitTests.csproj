@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{65B86B2E-D54D-425B-B681-82449E31BA01}</ProjectGuid>
+    <ProjectGuid>{954FE3C3-8706-47A1-A30C-E76EAB6B3FF8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.SecurityManager.Domain.UnitTests</RootNamespace>
-    <AssemblyName>Rubicon.SecurityManager.Domain.UnitTests</AssemblyName>
+    <RootNamespace>Rubicon.SecurityManager.Service.UnitTests</RootNamespace>
+    <AssemblyName>Rubicon.SecurityManager.Service.UnitTests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,33 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessControl\AccessControlEntryPriorityComparerTest.cs" />
-    <Compile Include="AccessControl\AccessControlEntryTest.cs" />
-    <Compile Include="AccessControl\AccessControlListFinderTest.cs" />
-    <Compile Include="AccessControl\AccessControlListTest.cs" />
-    <Compile Include="AccessControl\AccessControlObjectAssert.cs" />
-    <Compile Include="AccessControl\AccessControlTestHelper.cs" />
-    <Compile Include="AccessControl\SecurityTokenBuilderTest.cs" />
-    <Compile Include="AccessControl\StateCombinationTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Configuration\DomainConfigurationTest.cs" />
-    <Compile Include="Configuration\TestDomainConfiguration.cs" />
-    <Compile Include="Configuration\TestOrganizationalStructureFactory.cs" />
     <Compile Include="DatabaseFixtures.cs" />
     <Compile Include="DatabaseHelper.cs" />
-    <Compile Include="Metadata\AbstractRoleDefinitionTest.cs" />
-    <Compile Include="Metadata\FindAbstractRolesQueryBuilderTest.cs" />
-    <Compile Include="Metadata\MetadataObjectAssert.cs" />
-    <Compile Include="Metadata\MetadataImporterTest.cs" />
-    <Compile Include="Metadata\MetadataTestHelper.cs" />
-    <Compile Include="Metadata\SecurableClassDefinitionTest.cs" />
-    <Compile Include="Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="DomainTest.cs" />
+    <Compile Include="SecurityServiceTest.cs" />
     <Compile Include="TestDomain\AbstractRoles.cs" />
     <Compile Include="TestDomain\Order.cs" />
     <Compile Include="TestDomain\SecurityStates.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
-    <None Include="SecurityManager.Domain.UnitTests.build" />
+    <None Include="SecurityManager.Service.UnitTests.build" />
+  </ItemGroup>
+  <ItemGroup>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
@@ -91,6 +76,10 @@
     <ProjectReference Include="..\Domain\SecurityManager.Domain.csproj">
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
       <Name>SecurityManager.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Service\SecurityManager.Service.csproj">
+      <Project>{744D25D8-EBB8-419C-ABF0-5042DC9D5A84}</Project>
+      <Name>SecurityManager.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

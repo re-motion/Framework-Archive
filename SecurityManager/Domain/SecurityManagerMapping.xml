@@ -350,6 +350,7 @@
         <property name="Priority">
           <type>int32</type>
           <column>Priority</column>
+          <nullable>true</nullable>
         </property>
         <relationProperty name="AccessControlList" relationID="AccessControlListToAccessControlEntries" cardinality="one" isMandatory="true">
           <column>AccessControlListID</column>

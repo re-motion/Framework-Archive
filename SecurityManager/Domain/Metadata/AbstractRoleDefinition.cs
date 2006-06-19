@@ -25,38 +25,8 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       if (abstractRoles.Length == 0)
         return new DomainObjectCollection ();
 
-      return transaction.QueryManager.GetCollection (CreateFindAbstractRolesQuery (abstractRoles));
-    }
-
-    private static Query CreateFindAbstractRolesQuery (EnumWrapper[] abstractRoleNames)
-    {
-      QueryParameterCollection parameterCollection = new QueryParameterCollection ();
-      string sql = "SELECT * FROM [EnumValueDefinition] WHERE ClassID='AbstractRoleDefinition' AND ({0});";
-      StringBuilder whereClauseBuilder = new StringBuilder (abstractRoleNames.Length * 50);
-
-      for (int i = 0; i < abstractRoleNames.Length; i++)
-      {
-        EnumWrapper roleWrapper = abstractRoleNames[i];
-
-        if (whereClauseBuilder.Length > 0)
-          whereClauseBuilder.Append (" OR ");
-
-        string parameterName = "@p" + i.ToString ();
-        whereClauseBuilder.Append ("Name = ");
-        whereClauseBuilder.Append (parameterName);
-
-        parameterCollection.Add (parameterName, roleWrapper.ToString());
-      }
-
-      QueryDefinition abstractRoleQueryDefinition = new QueryDefinition ("AbstractRoleQuery", GetStorageProviderIDFromType (typeof (AbstractRoleDefinition)), string.Format (sql, whereClauseBuilder.ToString ()), QueryType.Collection);
-
-      return new Query (abstractRoleQueryDefinition, parameterCollection);
-    }
-
-    private static string GetStorageProviderIDFromType (Type type)
-    {
-      ClassDefinition classDefinition = MappingConfiguration.Current.ClassDefinitions.GetMandatory (type);
-      return classDefinition.StorageProviderID;
+      FindAbstractRolesQueryBuilder queryBuilder = new FindAbstractRolesQueryBuilder ();
+      return transaction.QueryManager.GetCollection (queryBuilder.CreateQuery (abstractRoles));
     }
 
     public static new AbstractRoleDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)

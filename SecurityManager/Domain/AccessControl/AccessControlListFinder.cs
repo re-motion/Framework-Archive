@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
-  public class AccessControlListFinder
+  public class AccessControlListFinder : IAccessControlListFinder
   {
     public AccessControlList Find (ClientTransaction transaction, SecurityContext context)
     {

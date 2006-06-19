@@ -7,6 +7,7 @@ using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.UnitTests.TestDomain;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
 {
@@ -53,7 +54,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       return classDefinition;
     }
 
-    public AccessControlList CreateAccessControlList (SecurableClassDefinition classDefinition, params StateDefinition[] states)
+    public AccessControlList CreateAcl (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
       AccessControlList acl = new AccessControlList (_transaction);
       acl.ClassDefinition = classDefinition;
@@ -76,7 +77,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
 
     public StateCombination CreateStateCombination (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
-      AccessControlList acl = CreateAccessControlList (classDefinition, states);
+      AccessControlList acl = CreateAcl (classDefinition, states);
       return (StateCombination) acl.StateCombinations[0];
     }
 
@@ -138,30 +139,30 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       return stateCombinations[4];
     }
 
-    public List<AccessControlList> CreateAccessControlLists (SecurableClassDefinition classDefinition)
+    public List<AccessControlList> CreateAcls (SecurableClassDefinition classDefinition)
     {
       StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
       StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
 
       List<AccessControlList> acls = new List<AccessControlList> ();
-      acls.Add (CreateAccessControlList (classDefinition, orderState["Received"], paymentState["None"]));
-      acls.Add (CreateAccessControlList (classDefinition, orderState["Received"], paymentState["Paid"]));
-      acls.Add (CreateAccessControlList (classDefinition, orderState["Delivered"], paymentState["None"]));
-      acls.Add (CreateAccessControlList (classDefinition, orderState["Delivered"], paymentState["Paid"]));
-      acls.Add (CreateAccessControlList (classDefinition));
+      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"]));
+      acls.Add (CreateAcl (classDefinition));
 
       return acls;
     }
 
     public AccessControlList GetAclForDeliveredAndUnpaidStates (SecurableClassDefinition classDefinition)
     {
-      List<AccessControlList> acls = CreateAccessControlLists (classDefinition);
+      List<AccessControlList> acls = CreateAcls (classDefinition);
       return acls[2];
     }
 
     public AccessControlList GetAclForStateless (SecurableClassDefinition classDefinition)
     {
-      List<AccessControlList> acls = CreateAccessControlLists (classDefinition);
+      List<AccessControlList> acls = CreateAcls (classDefinition);
       return acls[4];
     }
 
@@ -204,6 +205,77 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     public AccessTypeDefinition CreateJournalizeAccessType ()
     {
       return new AccessTypeDefinition (_transaction, Guid.NewGuid (), "Journalize", 42);
+    }
+
+    public SecurityToken CreateEmptyToken ()
+    {
+      return new SecurityToken (new List<AbstractRoleDefinition> ());
+    }
+
+    public SecurityToken CreateTokenWithAbstractRole (params AbstractRoleDefinition[] roleDefinitions)
+    {
+      List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
+      roles.AddRange (roleDefinitions);
+
+      return new SecurityToken (roles);
+    }
+
+    public AbstractRoleDefinition CreateTestAbstractRole ()
+    {
+      return CreateAbstractRoleDefinition ("Test", 42);
+    }
+
+    public AbstractRoleDefinition CreateAbstractRoleDefinition (string name, int value)
+    {
+      return new AbstractRoleDefinition (_transaction, Guid.NewGuid (), name, value);
+    }
+
+    public AccessControlEntry CreateAceWithAbstractRole ()
+    {
+      AccessControlEntry entry = new AccessControlEntry (_transaction);
+      entry.SpecificAbstractRole = CreateTestAbstractRole ();
+
+      return entry;
+    }
+
+    public AccessControlList CreateAcl (params AccessControlEntry[] aces)
+    {
+      AccessControlList acl = new AccessControlList (_transaction);
+
+      foreach (AccessControlEntry ace in aces)
+        acl.AccessControlEntries.Add (ace);
+
+      return acl;
+    }
+
+    public void AttachAccessType (AccessControlEntry ace, AccessTypeDefinition accessType, bool? allowed)
+    {
+      ace.AttachAccessType (accessType);
+      if (allowed.HasValue && allowed.Value)
+        ace.AllowAccess (accessType);
+    }
+
+    public AccessTypeDefinition CreateReadAccessType (AccessControlEntry ace, bool? allowAccess)
+    {
+      return CreateAccessTypeForAce (ace, allowAccess, Guid.NewGuid (), "Read", 0);
+    }
+
+    public AccessTypeDefinition CreateWriteAccessType (AccessControlEntry ace, bool? allowAccess)
+    {
+      return CreateAccessTypeForAce (ace, allowAccess, Guid.NewGuid (), "Write", 1);
+    }
+
+    public AccessTypeDefinition CreateDeleteAccessType (AccessControlEntry ace, bool? allowAccess)
+    {
+      return CreateAccessTypeForAce (ace, allowAccess, Guid.NewGuid (), "Delete", 2);
+    }
+
+    public AccessTypeDefinition CreateAccessTypeForAce (AccessControlEntry ace, bool? allowAccess, Guid metadataItemID, string name, int value)
+    {
+      AccessTypeDefinition accessType = new AccessTypeDefinition (_transaction, metadataItemID, name, value);
+      AttachAccessType (ace, accessType, allowAccess);
+
+      return accessType;
     }
   }
 }

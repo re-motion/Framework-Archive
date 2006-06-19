@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     public void Find_SecurableClassDefinitionWithoutStateProperties ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
-      AccessControlList acl = _testHelper.CreateAccessControlList (classDefinition);
+      AccessControlList acl = _testHelper.CreateAcl (classDefinition);
       SecurityContext context = CreateStatelessContext ();
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
@@ -66,7 +66,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     public void Find_SecurityContextDoesNotContainAllStates ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
-      _testHelper.CreateAccessControlLists (classDefinition);
+      _testHelper.CreateAcls (classDefinition);
       SecurityContext context = CreateContextWithoutPaymentState ();
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
@@ -78,7 +78,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     public void Find_SecurityContextContainsStateWithInvalidValue ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
-      _testHelper.CreateAccessControlLists (classDefinition);
+      _testHelper.CreateAcls (classDefinition);
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("State", PaymentState.None);
       SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
@@ -92,7 +92,7 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
     public void Find_SecurityContextContainsInvalidState ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
-      _testHelper.CreateAccessControlLists (classDefinition);
+      _testHelper.CreateAcls (classDefinition);
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("State", OrderState.Delivered);
       states.Add ("Payment", PaymentState.None);

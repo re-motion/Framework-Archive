@@ -15,16 +15,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static new EnumValueDefinition GetObject (ObjectID id)
-    {
-      return (EnumValueDefinition) DomainObject.GetObject (id);
-    }
-
-    public static new EnumValueDefinition GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (EnumValueDefinition) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new EnumValueDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (EnumValueDefinition) DomainObject.GetObject (id, clientTransaction);

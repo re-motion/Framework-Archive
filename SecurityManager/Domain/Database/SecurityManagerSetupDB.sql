@@ -313,7 +313,7 @@ CREATE TABLE [AccessControlEntry]
   [ClientSelection] int NOT NULL,
   [GroupSelection] int NOT NULL,
   [UserSelection] int NOT NULL,
-  [Priority] int NOT NULL,
+  [Priority] int NULL,
   [AccessControlListID] uniqueidentifier NULL,
   [GroupID] uniqueidentifier NULL,
   [GroupTypeID] uniqueidentifier NULL,

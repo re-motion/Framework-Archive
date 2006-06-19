@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Service", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Client.Web", "..\SecurityManager\Client.Web\SecurityManager.Client.Web.csproj", "{558839F6-D762-47BA-A26C-1D4AA75D0994}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Service.UnitTests", "..\SecurityManager\Service.UnitTests\SecurityManager.Service.UnitTests.csproj", "{954FE3C3-8706-47A1-A30C-E76EAB6B3FF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -154,6 +156,10 @@ Global
 		{558839F6-D762-47BA-A26C-1D4AA75D0994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{558839F6-D762-47BA-A26C-1D4AA75D0994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{558839F6-D762-47BA-A26C-1D4AA75D0994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{954FE3C3-8706-47A1-A30C-E76EAB6B3FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{954FE3C3-8706-47A1-A30C-E76EAB6B3FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{954FE3C3-8706-47A1-A30C-E76EAB6B3FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{954FE3C3-8706-47A1-A30C-E76EAB6B3FF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

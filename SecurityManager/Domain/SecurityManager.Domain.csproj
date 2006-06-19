@@ -35,14 +35,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessControl\AccessControlEntry.cs" />
+    <Compile Include="AccessControl\AccessControlEntryPriorityComparer.cs" />
     <Compile Include="AccessControl\AccessControlException.cs" />
     <Compile Include="AccessControl\AccessControlList.cs" />
     <Compile Include="AccessControl\AccessControlListFinder.cs" />
     <Compile Include="AccessControl\ClientSelection.cs" />
     <Compile Include="AccessControl\AccessControlObject.cs" />
     <Compile Include="AccessControl\GroupSelection.cs" />
+    <Compile Include="AccessControl\IAccessControlListFinder.cs" />
+    <Compile Include="AccessControl\ISecurityTokenBuilder.cs" />
     <Compile Include="AccessControl\Permission.cs" />
     <Compile Include="AccessControl\SecurityToken.cs" />
+    <Compile Include="AccessControl\SecurityTokenBuilder.cs" />
     <Compile Include="AccessControl\StateCombination.cs" />
     <Compile Include="AccessControl\StateUsage.cs" />
     <Compile Include="AccessControl\UserSelection.cs" />

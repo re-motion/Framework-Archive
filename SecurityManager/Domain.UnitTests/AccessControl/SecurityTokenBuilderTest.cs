@@ -11,7 +11,7 @@ using Rubicon.SecurityManager.Domain.Metadata;
 namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
 {
   [TestFixture]
-  public class SecurityTokenTest
+  public class SecurityTokenBuilderTest
   {
     [Test]
     public void Create_AbstractRolesEmpty ()
@@ -21,7 +21,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
 
-      SecurityToken token = SecurityToken.Create (transaction, context);
+      SecurityTokenBuilder builder = new SecurityTokenBuilder ();
+      SecurityToken token = builder.CreateToken (transaction, context);
 
       Assert.AreEqual (0, token.AbstractRoles.Count);
     }
@@ -34,7 +35,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithQualityManagerRole ();
 
-      SecurityToken token = SecurityToken.Create (transaction, context);
+      SecurityTokenBuilder builder = new SecurityTokenBuilder ();
+      SecurityToken token = builder.CreateToken (transaction, context);
 
       Assert.AreEqual (1, token.AbstractRoles.Count);
       Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.Domain.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.Domain.UnitTests", token.AbstractRoles[0].Name);
@@ -48,7 +50,8 @@ namespace Rubicon.SecurityManager.Domain.UnitTests.AccessControl
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithQualityManagerAndDeveloperRoles ();
 
-      SecurityToken token = SecurityToken.Create (transaction, context);
+      SecurityTokenBuilder builder = new SecurityTokenBuilder ();
+      SecurityToken token = builder.CreateToken (transaction, context);
 
       Assert.AreEqual (2, token.AbstractRoles.Count);
     }

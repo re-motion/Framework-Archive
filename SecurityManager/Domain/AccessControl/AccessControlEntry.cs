@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
@@ -18,15 +19,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // static members and constants
 
-    public static new AccessControlEntry GetObject (ObjectID id)
-    {
-      return (AccessControlEntry) DomainObject.GetObject (id);
-    }
-
-    public static new AccessControlEntry GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (AccessControlEntry) DomainObject.GetObject (id, includeDeleted);
-    }
+    public const int UserPriority = 8;
+    public const int AbstractRolePriority = 4;
+    public const int GroupPriority = 2;
+    public const int ClientPriority = 1;
 
     public static new AccessControlEntry GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
@@ -74,10 +70,21 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       set { DataContainer["User"] = value; }
     }
 
-    public int Priority
+    public NaInt32 Priority
     {
-      get { return (int) DataContainer["Priority"]; }
+      get { return (NaInt32) DataContainer["Priority"]; }
       set { DataContainer["Priority"] = value; }
+    }
+
+    public int ActualPriority
+    {
+      get
+      {
+        if (Priority.IsNull)
+          return CalculatePriority ();
+
+        return Priority.Value;
+      }
     }
 
     public Group SpecificGroup
@@ -120,6 +127,104 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("Permissions"); }
       set { } // marks property Permissions as modifiable
+    }
+
+    public bool MatchesToken (SecurityToken token)
+    {
+      ArgumentUtility.CheckNotNull ("token", token);
+
+      if (SpecificAbstractRole == null)
+        return true;
+
+      foreach (AbstractRoleDefinition role in token.AbstractRoles)
+      {
+        if (role.ID == SpecificAbstractRole.ID)
+          return true;
+      }
+
+      return false;
+    }
+
+    public AccessTypeDefinition[] GetAllowedAccessTypes ()
+    {
+      List<AccessTypeDefinition> allowedAccessTypes = new List<AccessTypeDefinition>();
+
+      foreach (Permission permission in Permissions)
+      {
+        if (permission.Allowed.IsTrue)
+          allowedAccessTypes.Add (permission.AccessType);
+      }
+
+      return allowedAccessTypes.ToArray ();
+    }
+
+    public void AttachAccessType (AccessTypeDefinition accessType)
+    {
+      ArgumentUtility.CheckNotNull ("accessType", accessType);
+
+      if (FindPermission (accessType) != null)
+        throw new ArgumentException (string.Format ("The access type '{0}' has already been attached to this access control entry.", accessType.Name), "accessType");
+
+      Permission permission = new Permission (ClientTransaction);
+      permission.AccessType = accessType;
+      permission.Allowed = NaBoolean.Null;
+
+      Permissions.Add (permission);
+    }
+
+    public void AllowAccess (AccessTypeDefinition accessType)
+    {
+      ArgumentUtility.CheckNotNull ("accessType", accessType);
+
+      Permission permission = GetPermission (accessType);
+      permission.Allowed = NaBoolean.True;
+    }
+
+    public void RemoveAccess (AccessTypeDefinition accessType)
+    {
+      ArgumentUtility.CheckNotNull ("accessType", accessType);
+
+      Permission permission = GetPermission (accessType);
+      permission.Allowed = NaBoolean.Null;
+    }
+
+    private Permission GetPermission (AccessTypeDefinition accessType)
+    {
+      Permission permission = FindPermission (accessType);
+      if (permission == null)
+        throw new ArgumentException (string.Format ("The access type '{0}' is not assigned to this access control entry.", accessType.Name), "accessType");
+
+      return permission;
+    }
+
+    private Permission FindPermission (AccessTypeDefinition accessType)
+    {
+      foreach (Permission permission in Permissions)
+      {
+        if (permission.AccessType.ID == accessType.ID)
+          return permission;
+      }
+
+      return null;
+    }
+
+    private int CalculatePriority ()
+    {
+      int priority = 0;
+
+      if (User != UserSelection.All)
+        priority += UserPriority;
+
+      if (SpecificAbstractRole != null)
+        priority += AbstractRolePriority;
+
+      if (Group != GroupSelection.All)
+        priority += GroupPriority;
+
+      if (Client != ClientSelection.All)
+        priority += ClientPriority;
+
+      return priority;
     }
   }
 }
