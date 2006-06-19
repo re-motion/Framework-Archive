@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects.UnitTests.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -466,10 +467,32 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException))]
-    public void SetInvalidRelatedObject ()
+    public void SetRelatedObjectWithInvalidObjectClassOnRelationEndPoint ()
+    {
+      try
+      {
+        OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket1);
+        orderTicket.SetRelatedObject ("Order", Customer.GetObject (DomainObjectIDs.Customer1));
+
+        Assert.Fail ("DataManagementException was expected");
+      }
+      catch (DataManagementException ex)
+      {
+        string expectedMessage = string.Format (
+            "DomainObject '{0}' cannot be assigned to property '{1}' of DomainObject '{2}',"
+            + " because it is not compatible with the type of the property.",
+            DomainObjectIDs.Customer1, "Order", DomainObjectIDs.OrderTicket1);
+
+        Assert.AreEqual (expectedMessage, ex.Message);
+      }
+    }
+
+    [Test]
+    [ExpectedException (typeof (DataManagementException))]
+    public void SetRelatedObjectWithInvalidObjectClassOnVirtualRelationEndPoint ()
     {
       _order.SetRelatedObject ("OrderTicket", new Ceo ());
     }
+
   }
 }

@@ -139,6 +139,25 @@ public class ClassDefinition : ISerializable, IObjectReference
 
   // methods and properties
 
+  public bool IsSameOrBaseClassOf (ClassDefinition classDefinition)
+  {
+    ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
+
+    if (object.ReferenceEquals (this, classDefinition))
+      return true;
+
+    ClassDefinition baseClassOfProvidedClassDefinition = classDefinition.BaseClass;
+    while (baseClassOfProvidedClassDefinition != null)
+    {
+      if (object.ReferenceEquals (this, baseClassOfProvidedClassDefinition))
+        return true;
+
+      baseClassOfProvidedClassDefinition = baseClassOfProvidedClassDefinition.BaseClass;
+    }
+
+    return false;
+  }
+
   public string[] GetAllConcreteEntityNames ()
   {
     if (GetEntityName () != null)

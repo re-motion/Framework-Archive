@@ -201,23 +201,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance
       Assert.AreEqual (_fileInFolder1ID, derivedClassWithEntityFromBaseClass1.FileSystemItemFromDerivedClassWithEntityFromBaseClass.ID);
     }
 
-    [Test]
-    [Ignore ("TODO: Review this problem with ML")]
-    [ExpectedException (typeof (DomainObjectException))]
-    public void SetRelationPropertyToObjectOfInvalidTypeForThisRelation()
-    {
-      DerivedClassWithEntityWithHierarchy derivedClass = DerivedClassWithEntityWithHierarchy.GetObject (_derivedClassWithEntity1ID);
-      Address address = new Address ();
-      address.Person = new Person ();
-
-      //TODO: change property type of DerivedClassWithEntityWithHierarchy.ClientFromDerivedClassWithEntity back to "Client"
-      derivedClass.ClientFromDerivedClassWithEntity = address;
-
-      //Note: abgesehen von SQL-Exceptions (DateTime.MinValue) würde der folgende Code keinen Fehler werfen:
-      //Assert.AreSame(address, object1.ClientFromDerivedClassWithEntity);
-      //ClientTransaction.Current.Commit ();
-    }
-
     private ObjectID CreateFolderObjectID (string guid)
     {
       return CreateObjectID (typeof (Folder), guid);

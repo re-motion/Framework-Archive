@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
+using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
 {
@@ -355,6 +356,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       DomainObjectCollection orderItems = order.OrderItems;
 
       orderItems.Add (new Customer ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (DataManagementException))]
+    public void SetRelatedObjectWithInvalidObjectClass ()
+    {
+      _order.SetRelatedObject ("Customer", Company.GetObject (DomainObjectIDs.Company1));  
     }
   }
 }

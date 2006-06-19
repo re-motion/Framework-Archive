@@ -765,6 +765,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
       Assert.IsTrue (allDerivedClasses.Contains (typeof (Distributor)));
     }
 
+    [Test]
+    public void IsSameOrBaseClassOfFalse ()
+    {
+      Assert.IsFalse (_orderClass.IsSameOrBaseClassOf (_distributorClass));
+    }
+
+    [Test]
+    public void IsSameOrBaseClassOfTrueWithSameClass ()
+    {
+      Assert.IsTrue (_orderClass.IsSameOrBaseClassOf (_orderClass));
+    }
+
+    [Test]
+    public void IsSameOrBaseClassOfTrueWithBaseClass ()
+    {
+      ClassDefinition companyClass = TestMappingConfiguration.Current.ClassDefinitions[typeof (Company)];
+
+      Assert.IsTrue (companyClass.IsSameOrBaseClassOf (_distributorClass));
+    }
+
     private bool Contains (IRelationEndPointDefinition[] endPointDefinitions, string propertyName)
     {
       foreach (IRelationEndPointDefinition endPointDefinition in endPointDefinitions)

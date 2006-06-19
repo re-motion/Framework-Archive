@@ -152,7 +152,8 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
     CheckCardinality (endPointID, CardinalityType.One, "SetRelatedObject", "endPointID");
     CheckDeleted (newRelatedObject);
     CheckClientTransactionForObjectEndPoint (endPointID, newRelatedObject);
- 
+    CheckType (endPointID, newRelatedObject);
+
     RelationEndPoint endPoint = GetRelationEndPointWithLazyLoad (endPointID);
     CheckDeleted (endPoint);
     
@@ -485,6 +486,25 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
           "Cannot remove DomainObject '{0}' from RelationEndPointMap, because it belongs to a different ClientTransaction.",
           domainObject.ID);
     }
+  }
+
+  private void CheckType (RelationEndPointID endPointID, DomainObject newRelatedObject)
+  {
+    if (newRelatedObject == null)
+      return;
+
+    if (!endPointID.OppositeEndPointDefinition.ClassDefinition.IsSameOrBaseClassOf (newRelatedObject.ID.ClassDefinition))
+    {
+      throw CreateDataManagementException (
+          "DomainObject '{0}' cannot be assigned to property '{1}' of DomainObject '{2}',"
+          + " because it is not compatible with the type of the property.",
+          newRelatedObject.ID, endPointID.PropertyName, endPointID.ObjectID);
+    }
+  }
+
+  private DataManagementException CreateDataManagementException (string message, params object[] args)
+  {
+    return new DataManagementException (string.Format (message, args));
   }
 
   private ArgumentException CreateArgumentException (string argumentName, string message, params object[] args)

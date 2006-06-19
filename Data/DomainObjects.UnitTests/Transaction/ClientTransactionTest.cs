@@ -309,7 +309,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException))]
+    [ExpectedException (typeof (DataManagementException))]
     public void SetRelatedObjectWithInvalidType ()
     {
       DomainObject order = ClientTransactionMock.GetObject (DomainObjectIDs.Order1);
@@ -318,9 +318,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransactionMock.SetRelatedObject (new RelationEndPointID (order.ID, "OrderTicket"), customer);
     }
 
-
     [Test]
-    [ExpectedException (typeof (MappingException))]
+    [ExpectedException (typeof (DataManagementException))]
     public void SetRelatedObjectWithBaseType ()
     {
       DomainObject person = ClientTransactionMock.GetObject (DomainObjectIDs.Person1);
