@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="nant-schema" name="Rubicon.SecurityManager.Core.UnitTests">  
+
+  <target name="build" description="perform a build">
+
+    <csc  target="library" 
+          output="${build.test.outputdir}/${project.output}.${project.extension}" 
+          unsafe="true" 
+          debug="${build.debug}"
+          define="${build.csc.define}">
+    
+      <nowarn>
+      </nowarn> 
+    
+      <sources failonempty="true">
+        <include name="*.cs" />
+        <include name="Configuration/**/*.cs" />
+        <include name="Domain/**/*.cs" />
+        <include name="TestDomain/**/*.cs" />
+        <exclude name="AssemblyInfoTemplate.cs" />
+      </sources>
+     
+      <references failonempty="true">
+        <include name="${build.test.outputdir}/Rubicon.Core.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll" />
+        <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll" />
+        <include name="${build.test.outputdir}/Rubicon.SecurityManager.dll" />
+        <include name="${build.test.outputdir}/NMock2.dll" />
+        <include name="${build.test.outputdir}/nunit.framework.dll" />
+        <include asis="true" name="System.dll"/>
+        <include asis="true" name="System.Configuration.dll"/>
+        <include asis="true" name="System.Xml.dll"/>
+      </references>
+    </csc>
+   
+    <copy todir="${build.test.outputdir}" flatten="true" overwrite="true">
+      <fileset basedir="${build.outputdir}">
+        <include name="SecurityManager*.xml" />
+        <include name="SecurityManager*.sql" />
+      </fileset>
+    </copy>
+
+  </target>
+
+</project>

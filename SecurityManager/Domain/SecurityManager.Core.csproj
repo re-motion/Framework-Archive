@@ -1,0 +1,143 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rubicon.SecurityManager</RootNamespace>
+    <AssemblyName>Rubicon.SecurityManager</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <None Include="AssemblyInfoTemplate.cs" />
+    <EmbeddedResource Include="Configuration\SecurityManagerConfiguration.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="Database\SecurityManagerCreateDB.sql" />
+    <None Include="Database\SecurityManagerSetupDB.sql" />
+    <None Include="SecurityManager.Core.build" />
+    <Compile Include="Configuration\SecurityManagerConfiguration.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Domain\AccessControl\AccessControlEntry.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlEntryPriorityComparer.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlException.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlList.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlListFinder.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlObject.cs" />
+    <Compile Include="Domain\AccessControl\ClientSelection.cs" />
+    <Compile Include="Domain\AccessControl\GroupSelection.cs" />
+    <Compile Include="Domain\AccessControl\IAccessControlListFinder.cs" />
+    <Compile Include="Domain\AccessControl\ISecurityTokenBuilder.cs" />
+    <Compile Include="Domain\AccessControl\Permission.cs" />
+    <Compile Include="Domain\AccessControl\SecurityToken.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenBuilder.cs" />
+    <Compile Include="Domain\AccessControl\StateCombination.cs" />
+    <Compile Include="Domain\AccessControl\StateUsage.cs" />
+    <Compile Include="Domain\AccessControl\UserSelection.cs" />
+    <Compile Include="Domain\BaseSecurityManagerObject.cs" />
+    <Compile Include="Domain\Metadata\AbstractRoleDefinition.cs" />
+    <Compile Include="Domain\Metadata\AccessTypeDefinition.cs" />
+    <Compile Include="Domain\Metadata\AccessTypeReference.cs" />
+    <Compile Include="Domain\Metadata\EnumValueDefinition.cs" />
+    <Compile Include="Domain\Metadata\FindAbstractRolesQueryBuilder.cs" />
+    <Compile Include="Domain\Metadata\MetadataImporter.cs" />
+    <Compile Include="Domain\Metadata\MetadataObject.cs" />
+    <Compile Include="Domain\Metadata\SecurableClassDefinition.cs" />
+    <Compile Include="Domain\Metadata\StateDefinition.cs" />
+    <Compile Include="Domain\Metadata\StatePropertyDefinition.cs" />
+    <Compile Include="Domain\Metadata\StatePropertyReference.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Client.cs" />
+    <Compile Include="Domain\OrganizationalStructure\ConcretePosition.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Group.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupType.cs" />
+    <Compile Include="Domain\OrganizationalStructure\IOrganizationalStructureFactory.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureFactory.cs" />
+    <Compile Include="Domain\OrganizationalStructure\OrganizationalStructureObject.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Position.cs" />
+    <Compile Include="Domain\OrganizationalStructure\Role.cs" />
+    <Compile Include="Domain\OrganizationalStructure\User.cs" />
+    <Compile Include="Domain\QueryBuilder.cs" />
+    <Compile Include="SecurityService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Client.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\ConcretePosition.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Group.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\GroupType.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Position.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Role.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\User.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
+      <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj">
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Name>Rubicon.Data.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Domain\SecurityManagerMapping.xml" />
+    <Content Include="Domain\SecurityManagerQueries.xml" />
+    <Content Include="Domain\SecurityManagerStorageProviders.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

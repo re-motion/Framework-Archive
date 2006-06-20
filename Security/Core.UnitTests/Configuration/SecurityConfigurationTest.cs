@@ -91,6 +91,18 @@ namespace Rubicon.Security.UnitTests.Configuration
     }
 
     [Test]
+    [Explicit]
+    public void DeserializeSecurityConfigurationWithSecurityManagerService ()
+    {
+      string xmlFragment = @"<rubicon.security service=""SecurityManagerService"" />";
+      _configuration.DeserializeSection (xmlFragment);
+      ISecurityService securityService = _configuration.SecurityService;
+      Assert.IsNotNull (securityService);
+      Assert.AreEqual ("Rubicon.SecurityManager.SecurityService", securityService.GetType ().FullName);
+      StringAssert.StartsWith ("Rubicon.SecurityManager", securityService.GetType ().Assembly.GetName().FullName);
+    }
+
+    [Test]
     public void DeserializeSecurityConfigurationWithCustomService ()
     {
       string xmlFragment = @"

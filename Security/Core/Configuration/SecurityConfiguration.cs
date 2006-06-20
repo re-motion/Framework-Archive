@@ -64,6 +64,7 @@ namespace Rubicon.Security.Configuration
     private readonly ConfigurationProperty _customPermissionProviderProperty;
     private readonly ConfigurationProperty _customFunctionalSecurityStrategyProperty;
     private Type _httpContextUserProviderType;
+    private Type _securityManagerServiceType;
 
     // construction and disposing
 
@@ -162,6 +163,10 @@ namespace Rubicon.Security.Configuration
       {
         case SecurityServiceType.None:
           return null;
+        case SecurityServiceType.SecurityManagerService:
+          if (_securityManagerServiceType == null)
+            _securityManagerServiceType = GetSecurityManagerServiceType ();
+          return (ISecurityService) Activator.CreateInstance (_securityManagerServiceType);
         case SecurityServiceType.Custom:
           return (ISecurityService) Activator.CreateInstance (CustomService.Type);
         default:
@@ -204,6 +209,26 @@ namespace Rubicon.Security.Configuration
       return (IFunctionalSecurityStrategy) Activator.CreateInstance (CustomFunctionalSecurityStrategy.Type);
     }
 
+    private Type GetSecurityManagerServiceType ()
+    {
+      AssemblyName securityManagerAssemblyName = new AssemblyName ("Rubicon.SecurityManager");
+
+      try
+      {
+        Assembly.Load (securityManagerAssemblyName);
+      }
+      catch (FileNotFoundException e)
+      {
+        throw new ConfigurationErrorsException (string.Format ("The current value of property 'securityService' requires that the assembly "
+                + "'Rubicon.SecurityManager' must be placed within the CLR's probing path for this application. The error is: {0}", e.Message),
+            e,
+            ElementInformation.Properties[_securityServiceTypeProperty.Name].Source,
+            ElementInformation.Properties[_securityServiceTypeProperty.Name].LineNumber);
+      }
+
+      return Type.GetType (Assembly.CreateQualifiedName (securityManagerAssemblyName.FullName, "Rubicon.SecurityManager.SecurityService"), true, false);
+    }
+
     private Type GetHttpContextUserProviderType ()
     {
       AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
@@ -229,6 +254,9 @@ namespace Rubicon.Security.Configuration
     protected override void PostDeserialize ()
     {
       base.PostDeserialize ();
+
+      if (SecurityServiceType == SecurityServiceType.SecurityManagerService)
+        _securityManagerServiceType = GetSecurityManagerServiceType ();
 
       if (UserProviderType == UserProviderType.HttpContext)
         _httpContextUserProviderType = GetHttpContextUserProviderType ();
@@ -279,7 +307,7 @@ namespace Rubicon.Security.Configuration
   public enum SecurityServiceType
   {
     None,
-    //SecurityManagerService,
+    SecurityManagerService,
     //SecurityManagerWebService,
     Custom
   }

@@ -150,14 +150,14 @@
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, 
       Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Web,
       Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web,
-      SecurityManager.Domain">
+      SecurityManager.Core">
     <echo message="Target has executed."/>
   </target>
 
   <target name="all-test" depends="prereq, CoreTest, Development.CoreTest, Web.UnitTests, ObjectBinding.Web.UnitTests, 
       Data.DomainObjects.UnitTests, Data.DomainObjects.ObjectBinding.UnitTests, Data.DomainObjects.CodeGenerator.UnitTests, 
       Security.UnitTests.TestDomain, Security.UnitTests, Security.Web.UnitTests,
-      SecurityManager.Domain.UnitTests">
+      SecurityManager.Core.UnitTests">
     <echo message="Target has executed."/>
   </target>
 
@@ -306,10 +306,10 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="SecurityManager.Domain" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
-    <property name="project.name" value="SecurityManager.Domain" />
+  <target name="SecurityManager.Core" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding">
+    <property name="project.name" value="SecurityManager.Core" />
     <property name="project.dir" value="SecurityManager/Domain" />
-    <property name="project.output" value="Rubicon.SecurityManager.Domain" />
+    <property name="project.output" value="Rubicon.SecurityManager" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
   </target>
@@ -549,15 +549,15 @@
     </if>
   </target>
 
-  <target name="SecurityManager.Domain.UnitTests">
+  <target name="SecurityManager.Core.UnitTests">
     <call target="Core" cascade="false"/>
     <call target="Data.DomainObjects" cascade="false"/>
     <call target="Data.DomainObjects.ObjectBinding" cascade="false"/>
-    <call target="SecurityManager.Domain" cascade="false"/>
+    <call target="SecurityManager.Core" cascade="false"/>
 
-    <property name="project.name" value="SecurityManager.Domain.UnitTests" />
+    <property name="project.name" value="SecurityManager.Core.UnitTests" />
     <property name="project.dir" value="SecurityManager/Domain.UnitTests" />
-    <property name="project.output" value="Rubicon.SecurityManager.Domain.UnitTests" />
+    <property name="project.output" value="Rubicon.SecurityManager.UnitTests" />
     <property name="project.extension" value="dll" />
     <call target="buildtest" />
     <if test="${build.step.run-tests}">

@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle ("Rubicon Security Manager Domain Layer Unittests")]
+[assembly: AssemblyTitle ("Rubicon Security Manager Core Components Unittests")]
 [assembly: AssemblyConfiguration ("@buildinfo@")]
 [assembly: AssemblyCompany("@company@")]
 [assembly: AssemblyProduct ("Rubicon Security Manager")]
