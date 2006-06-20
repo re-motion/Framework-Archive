@@ -47,6 +47,7 @@
     <Compile Include="Configuration\SecurityManagerConfigurationTest.cs" />
     <Compile Include="Configuration\TestOrganizationalStructureFactory.cs" />
     <Compile Include="Configuration\TestSecurityManagerConfiguration.cs" />
+    <Compile Include="DomainTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryPriorityComparerTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlListFinderTest.cs" />
@@ -57,7 +58,6 @@
     <Compile Include="Domain\AccessControl\StateCombinationTest.cs" />
     <Compile Include="Domain\DatabaseFixtures.cs" />
     <Compile Include="Domain\DatabaseHelper.cs" />
-    <Compile Include="Domain\DomainTest.cs" />
     <Compile Include="Domain\Metadata\AbstractRoleDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\FindAbstractRolesQueryBuilderTest.cs" />
     <Compile Include="Domain\Metadata\MetadataImporterTest.cs" />
@@ -89,22 +89,22 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Domain\SecurityManager.Core.csproj">
+    <ProjectReference Include="..\Core\SecurityManager.Core.csproj">
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
       <Name>SecurityManager.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DatabaseFiles Include="..\Domain\Database\SecurityManagerCreateDB.sql">
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerCreateDB.sql">
     </DatabaseFiles>
-    <DatabaseFiles Include="..\Domain\Database\SecurityManagerSetupDB.sql">
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDB.sql">
     </DatabaseFiles>
-    <MappingFiles Include="..\Domain\Domain\SecurityManagerMapping.xml">
+    <MappingFiles Include="..\Core\Domain\SecurityManagerMapping.xml">
     </MappingFiles>
-    <MappingFiles Include="..\Domain\Domain\SecurityManagerQueries.xml">
+    <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml">
     </MappingFiles>
-    <MappingFiles Include="..\Domain\Domain\SecurityManagerStorageProviders.xml">
+    <MappingFiles Include="..\Core\Domain\SecurityManagerStorageProviders.xml">
     </MappingFiles>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -14,7 +14,7 @@ using System.Security.Principal;
 namespace Rubicon.SecurityManager.UnitTests
 {
   [TestFixture]
-  public class SecurityServiceTest : Domain.DomainTest
+  public class SecurityServiceTest : DomainTest
   {
     [Test]
     public void GetAccess_WithoutAccess ()

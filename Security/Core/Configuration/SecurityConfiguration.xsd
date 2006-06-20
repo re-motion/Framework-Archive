@@ -38,6 +38,7 @@
   <xs:simpleType name="SecurityServiceType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="None" />
+      <xs:enumeration value="SecurityManagerService" />
       <xs:enumeration value="Custom" />
     </xs:restriction>
   </xs:simpleType>
