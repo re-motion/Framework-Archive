@@ -53,7 +53,7 @@ namespace Rubicon.SecurityManager.Domain
       get { return _parameters; }
     }
 
-    protected virtual Query CreateQuery (string statement)
+    protected virtual Query CreateQueryFromStatement (string statement)
     {
       string storageProviderID = GetStorageProviderID ();
       QueryDefinition queryDefinition = new QueryDefinition (_queryName, storageProviderID, statement, _queryType, _collectionType);

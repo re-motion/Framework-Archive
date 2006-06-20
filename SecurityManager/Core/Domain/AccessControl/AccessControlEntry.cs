@@ -133,16 +133,13 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       ArgumentUtility.CheckNotNull ("token", token);
 
-      if (SpecificAbstractRole == null)
-        return true;
+      if (!MatchesAbstractRole (token))
+        return false;
 
-      foreach (AbstractRoleDefinition role in token.AbstractRoles)
-      {
-        if (role.ID == SpecificAbstractRole.ID)
-          return true;
-      }
+      if (!MatchesUserOrPosition (token))
+        return false;
 
-      return false;
+      return true;
     }
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()
@@ -186,6 +183,35 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       Permission permission = GetPermission (accessType);
       permission.Allowed = NaBoolean.Null;
+    }
+
+    private bool MatchesAbstractRole (SecurityToken token)
+    {
+      if (SpecificAbstractRole == null)
+        return true;
+
+      foreach (AbstractRoleDefinition role in token.AbstractRoles)
+      {
+        if (role.ID == SpecificAbstractRole.ID)
+          return true;
+      }
+
+      return false;
+    }
+
+    private bool MatchesUserOrPosition (SecurityToken token)
+    {
+      switch (User)
+      {
+        case UserSelection.All:
+          return true;
+
+        case UserSelection.SpecificPosition:
+          return token.ContainsRoleForPosition (SpecificPosition);
+
+        default:
+          return false;
+      }
     }
 
     private Permission GetPermission (AccessTypeDefinition accessType)

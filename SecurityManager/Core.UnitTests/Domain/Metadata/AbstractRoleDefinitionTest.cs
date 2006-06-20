@@ -16,7 +16,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void Find_EmptyResult ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTwoAbstractRoleDefinitions ();
+      dbFixtures.CreateTestData ();
       ClientTransaction transaction = new ClientTransaction ();
 
       DomainObjectCollection result = AbstractRoleDefinition.Find (transaction, new EnumWrapper[0]);
@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void Find_ValidAbstractRole ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTwoAbstractRoleDefinitions ();
+      dbFixtures.CreateTestData ();
       ClientTransaction transaction = new ClientTransaction ();
 
       DomainObjectCollection result = AbstractRoleDefinition.Find (transaction, new EnumWrapper[] { new EnumWrapper (ProjectRole.QualityManager) });

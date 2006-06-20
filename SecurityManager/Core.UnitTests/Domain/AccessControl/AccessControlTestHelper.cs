@@ -8,6 +8,7 @@ using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.UnitTests.TestDomain;
 using Rubicon.NullableValueTypes;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {
@@ -16,10 +17,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public const int OrderClassPropertyCount = 2;
 
     private ClientTransaction _transaction;
+    private OrganizationalStructureFactory _factory;
 
     public AccessControlTestHelper ()
     {
       _transaction = new ClientTransaction ();
+      _factory = new OrganizationalStructureFactory ();
     }
 
     public ClientTransaction Transaction
@@ -209,15 +212,31 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurityToken CreateEmptyToken ()
     {
-      return new SecurityToken (new List<AbstractRoleDefinition> ());
+      return CreateToken (null, null, null);
     }
 
     public SecurityToken CreateTokenWithAbstractRole (params AbstractRoleDefinition[] roleDefinitions)
     {
-      List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
-      roles.AddRange (roleDefinitions);
+      return CreateToken (null, null, roleDefinitions);
+    }
 
-      return new SecurityToken (roles);
+    public SecurityToken CreateTokenWithGroups (User user, params Group[] groups)
+    {
+      return CreateToken (user, groups, null);
+    }
+
+    public SecurityToken CreateToken (User user, Group[] groups, AbstractRoleDefinition[] abstractRoleDefinitions)
+    {
+      List<Group> groupList = new List<Group> ();
+      List<AbstractRoleDefinition> abstractRoles = new List<AbstractRoleDefinition> ();
+
+      if (groups != null)
+        groupList.AddRange (groups);
+
+      if (abstractRoleDefinitions != null)
+        abstractRoles.AddRange (abstractRoleDefinitions);
+
+      return new SecurityToken (user, groupList, abstractRoles);
     }
 
     public AbstractRoleDefinition CreateTestAbstractRole ()
@@ -234,6 +253,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntry entry = new AccessControlEntry (_transaction);
       entry.SpecificAbstractRole = CreateTestAbstractRole ();
+
+      return entry;
+    }
+
+    public AccessControlEntry CreateAceWithPosition (Position position)
+    {
+      AccessControlEntry entry = new AccessControlEntry (_transaction);
+      entry.User = UserSelection.SpecificPosition;
+      entry.SpecificPosition = position;
 
       return entry;
     }
@@ -276,6 +304,56 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AttachAccessType (ace, accessType, allowAccess);
 
       return accessType;
+    }
+
+    public Client CreateClient (string name)
+    {
+      Client client = new Client (_transaction);
+      client.Name = name;
+
+      return client;
+    }
+
+    public Group CreateGroup (string name, Group parent, Client client)
+    {
+      Group group = _factory.CreateGroup (_transaction);
+      group.Name = name;
+      group.Parent = parent;
+      group.Client = client;
+
+      return group;
+    }
+
+    public User CreateUser (string userName, string firstName, string lastName, string title, Group group, Client client)
+    {
+      User user = _factory.CreateUser (_transaction);
+      user.UserName = userName;
+      user.FirstName = firstName;
+      user.LastName = lastName;
+      user.Title = title;
+      user.Client = client;
+      user.Group = group;
+
+      return user;
+    }
+
+    public Position CreatePosition (string name, Client client)
+    {
+      Position position = _factory.CreatePosition (_transaction);
+      position.Name = name;
+      position.Client = client;
+
+      return position;
+    }
+
+    public Role CreateRole (User user, Group group, Position position)
+    {
+      Role role = new Role (_transaction);
+      role.User = user;
+      role.Group = group;
+      role.Position = position;
+
+      return role;
     }
   }
 }

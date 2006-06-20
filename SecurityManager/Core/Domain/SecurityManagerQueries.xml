@@ -12,10 +12,17 @@
     </statement>
   </query>
 
-  <query id="Rubicon.SecurityManager.Domain.AccessControl.SecurityToken.FindAbstractRoles" type="collection">
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindUser" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [EnumValueDefinition] WHERE ClassID='AbstractRoleDefinition';
+      SELECT * FROM [User] WHERE UserName = @userName;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindGroup" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [Group] WHERE Name = @name;
     </statement>
   </query>
 </queries>

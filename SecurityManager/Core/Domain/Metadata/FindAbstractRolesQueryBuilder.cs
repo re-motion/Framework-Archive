@@ -19,7 +19,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       ArgumentUtility.CheckNotNullOrEmpty ("abstractRoles", abstractRoles);
 
-      return CreateQuery (GetStatement (abstractRoles));
+      return CreateQueryFromStatement (GetStatement (abstractRoles));
     }
 
     protected string GetStatement (EnumWrapper[] abstractRoles)

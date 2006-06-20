@@ -109,12 +109,12 @@ namespace Rubicon.Security.UnitTests.Metadata
       _mocks.VerifyAllExpectationsHaveBeenMet ();
 
       Assert.IsNotNull (info);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.PaperFile", info.Name);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.PaperFile, Rubicon.Security.UnitTests.TestDomain", info.Name);
       Assert.AreEqual ("00000000-0000-0000-0002-000000000000", info.ID);
       
       Assert.AreEqual (0, info.DerivedClasses.Count);
       Assert.IsNotNull (info.BaseClass);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", info.BaseClass.Name);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain", info.BaseClass.Name);
       Assert.AreEqual (1, info.BaseClass.DerivedClasses.Count);
       Assert.Contains (info, info.BaseClass.DerivedClasses);
 
@@ -138,7 +138,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       SecurableClassInfo fileInfo = _cache.GetSecurableClassInfo (typeof (File));
       Assert.IsNotNull (fileInfo);
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", fileInfo.Name);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain", fileInfo.Name);
     }
 
     [Test]

@@ -59,7 +59,7 @@ namespace Rubicon.Security.Metadata
       if (info == null)
       {
         info = new SecurableClassInfo ();
-        info.Name = type.FullName;
+        info.Name = TypeUtility.GetPartialAssemblyQualifiedName (type);
         PermanentGuidAttribute guidAttribute = (PermanentGuidAttribute) Attribute.GetCustomAttribute (type, typeof (PermanentGuidAttribute), true);
         if (guidAttribute != null)
           info.ID = guidAttribute.Value.ToString ();

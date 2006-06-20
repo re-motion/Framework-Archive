@@ -58,7 +58,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain"">
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                 </stateProperties>
@@ -74,7 +74,7 @@ namespace Rubicon.Security.UnitTests.Metadata
                 </accessTypes>
               </class>
 
-              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.PaperFile"" base=""00000000-0000-0000-0001-000000000000"">
+              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.PaperFile, Rubicon.Security.UnitTests.TestDomain"" base=""00000000-0000-0000-0001-000000000000"">
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                   <statePropertyRef>00000000-0000-0000-0002-000000000001</statePropertyRef>
@@ -140,7 +140,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       string expectedXml = @"
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
-              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain"">
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                 </stateProperties>
@@ -156,7 +156,7 @@ namespace Rubicon.Security.UnitTests.Metadata
                 </accessTypes>
               </class>
 
-              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.PaperFile"" base=""00000000-0000-0000-0001-000000000000"">
+              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.PaperFile, Rubicon.Security.UnitTests.TestDomain"" base=""00000000-0000-0000-0001-000000000000"">
                 <stateProperties>
                   <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
                   <statePropertyRef>00000000-0000-0000-0002-000000000001</statePropertyRef>

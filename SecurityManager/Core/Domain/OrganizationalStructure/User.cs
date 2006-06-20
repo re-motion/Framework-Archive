@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -16,14 +18,16 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static new User GetObject (ObjectID id)
+    public static User Find (ClientTransaction transaction, string userName)
     {
-      return (User) DomainObject.GetObject (id);
-    }
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindUser");
+      query.Parameters.Add ("@userName", userName);
 
-    public static new User GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (User) DomainObject.GetObject (id, includeDeleted);
+      DomainObjectCollection users = transaction.QueryManager.GetCollection (query);
+      if (users.Count == 0)
+        return null;
+
+      return (User) users[0];
     }
 
     public static new User GetObject (ObjectID id, ClientTransaction clientTransaction)
@@ -100,6 +104,21 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
       set { } // marks property AccessControlEntries as modifiable
+    }
+
+    public List<Role> GetRolesForGroup (Group group)
+    {
+      ArgumentUtility.CheckNotNull ("group", group);
+
+      List<Role> roles = new List<Role>();
+
+      foreach (Role role in Roles)
+      {
+        if (role.Group.ID == group.ID)
+          roles.Add (role);
+      }
+
+      return roles;
     }
   }
 }

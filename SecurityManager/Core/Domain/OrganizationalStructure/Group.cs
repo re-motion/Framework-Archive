@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -16,14 +17,16 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static new Group GetObject (ObjectID id)
+    public static Group Find (ClientTransaction transaction, string name)
     {
-      return (Group) DomainObject.GetObject (id);
-    }
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindGroup");
+      query.Parameters.Add ("@name", name);
 
-    public static new Group GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (Group) DomainObject.GetObject (id, includeDeleted);
+      DomainObjectCollection groups = transaction.QueryManager.GetCollection (query);
+      if (groups.Count == 0)
+        return null;
+
+      return (Group) groups[0];
     }
 
     public static new Group GetObject (ObjectID id, ClientTransaction clientTransaction)

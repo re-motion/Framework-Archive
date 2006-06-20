@@ -43,7 +43,7 @@ namespace Rubicon.SecurityManager
       ArgumentUtility.CheckNotNull ("user", user);
 
       AccessControlList acl = _accessControlListFinder.Find (_transaction, context);
-      SecurityToken token = _securityTokenBuilder.CreateToken (_transaction, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (_transaction, user, context);
 
       AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
       return Array.ConvertAll <AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition,AccessType> (ConvertToAccessType));

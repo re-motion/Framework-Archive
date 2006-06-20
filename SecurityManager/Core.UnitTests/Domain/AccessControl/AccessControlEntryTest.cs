@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {
@@ -53,6 +54,60 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityToken token = _testHelper.CreateTokenWithAbstractRole (_testHelper.CreateTestAbstractRole ());
 
       Assert.IsTrue (entry.MatchesToken (token));
+    }
+
+    [Test]
+    public void MatchesToken_EmptyTokenAndAceWithPosition ()
+    {
+      Client client = _testHelper.CreateClient ("Testclient");
+      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition);
+      SecurityToken token = _testHelper.CreateEmptyToken ();
+
+      Assert.IsFalse (entry.MatchesToken (token));
+    }
+
+    [Test]
+    public void MatchesToken_TokenWithRoleAndAceWithPosition ()
+    {
+      Client client = _testHelper.CreateClient ("Testclient");
+      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
+      User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
+      Role role = _testHelper.CreateRole (user, group, managerPosition);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition);
+      SecurityToken token = _testHelper.CreateTokenWithGroups (user, group);
+
+      Assert.IsTrue (entry.MatchesToken (token));
+    }
+
+    [Test]
+    public void MatchesToken_TokenWithRoleAndAbstractRoleAndAceWithPosition ()
+    {
+      Client client = _testHelper.CreateClient ("Testclient");
+      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
+      User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
+      Role role = _testHelper.CreateRole (user, group, managerPosition);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition);
+      SecurityToken token = _testHelper.CreateToken (user, new Group[] { group }, new AbstractRoleDefinition[] { _testHelper.CreateTestAbstractRole() });
+
+      Assert.IsTrue (entry.MatchesToken (token));
+    }
+
+    [Test]
+    public void MatchesToken_TokenWithRoleAndAceWithPositionAndAbstractRole ()
+    {
+      Client client = _testHelper.CreateClient ("Testclient");
+      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
+      User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
+      Role role = _testHelper.CreateRole (user, group, managerPosition);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition);
+      entry.SpecificAbstractRole = _testHelper.CreateTestAbstractRole ();
+      SecurityToken token = _testHelper.CreateTokenWithGroups (user, group);
+
+      Assert.IsFalse (entry.MatchesToken (token));
     }
 
     [Test]

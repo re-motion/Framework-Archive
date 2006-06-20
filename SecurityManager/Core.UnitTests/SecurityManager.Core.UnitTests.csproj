@@ -55,6 +55,7 @@
     <Compile Include="Domain\AccessControl\AccessControlObjectAssert.cs" />
     <Compile Include="Domain\AccessControl\AccessControlTestHelper.cs" />
     <Compile Include="Domain\AccessControl\SecurityTokenBuilderTest.cs" />
+    <Compile Include="Domain\AccessControl\SecurityTokenTest.cs" />
     <Compile Include="Domain\AccessControl\StateCombinationTest.cs" />
     <Compile Include="Domain\DatabaseFixtures.cs" />
     <Compile Include="Domain\DatabaseHelper.cs" />
@@ -65,6 +66,8 @@
     <Compile Include="Domain\Metadata\MetadataTestHelper.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\UserTest.cs" />
     <Compile Include="SecurityServiceTest.cs" />
     <Compile Include="TestDomain\AbstractRoles.cs" />
     <Compile Include="TestDomain\Order.cs" />

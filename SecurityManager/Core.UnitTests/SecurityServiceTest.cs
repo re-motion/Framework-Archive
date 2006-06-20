@@ -10,6 +10,7 @@ using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
 using System.Security.Principal;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.UnitTests
 {
@@ -26,13 +27,14 @@ namespace Rubicon.SecurityManager.UnitTests
       ClientTransaction transaction = new ClientTransaction ();
       SecurityService service = new SecurityService (transaction, aclFinder, tokenBuilder);
       SecurityContext context = new SecurityContext (typeof (Order), "Owner", "OwnerGroup", "OwnerClient", null, null);
-      SecurityToken token = new SecurityToken (new List<AbstractRoleDefinition> ());
+      SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
       AccessControlEntry ace = CreateAce (transaction);
+      IPrincipal principal = CreateUser ();
 
-      Expect.Once.On (tokenBuilder).Method ("CreateToken").With (transaction, context).Will (Return.Value (token));
+      Expect.Once.On (tokenBuilder).Method ("CreateToken").With (transaction, principal, context).Will (Return.Value (token));
       Expect.Once.On (aclFinder).Method ("Find").With (transaction, context).Will (Return.Value (CreateAcl (transaction, ace)));
 
-      AccessType[] accessTypes = service.GetAccess (context, CreateUser ());
+      AccessType[] accessTypes = service.GetAccess (context, principal);
 
       Assert.AreEqual (0, accessTypes.Length);
 
@@ -50,15 +52,16 @@ namespace Rubicon.SecurityManager.UnitTests
       SecurityService service = new SecurityService (transaction, aclFinder, tokenBuilder);
       SecurityContext context = new SecurityContext (typeof (Order), "Owner", "OwnerGroup", "OwnerClient", null, null);
       AccessControlEntry ace = CreateAce (transaction);
+      IPrincipal principal = CreateUser ();
 
       List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
       roles.Add (ace.SpecificAbstractRole);
-      SecurityToken token = new SecurityToken (roles);
+      SecurityToken token = new SecurityToken (null, new List<Group> (), roles);
 
-      Expect.Once.On (tokenBuilder).Method ("CreateToken").With (transaction, context).Will (Return.Value (token));
+      Expect.Once.On (tokenBuilder).Method ("CreateToken").With (transaction, principal, context).Will (Return.Value (token));
       Expect.Once.On (aclFinder).Method ("Find").With (transaction, context).Will (Return.Value (CreateAcl (transaction, ace)));
 
-      AccessType[] accessTypes = service.GetAccess (context, CreateUser ());
+      AccessType[] accessTypes = service.GetAccess (context, principal);
 
       Assert.AreEqual (1, accessTypes.Length);
       Assert.Contains (AccessType.Get (EnumWrapper.Parse ("Read|MyTypeName")), accessTypes);
