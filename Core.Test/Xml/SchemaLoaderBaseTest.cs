@@ -29,7 +29,7 @@ namespace Rubicon.Core.UnitTests.Xml
     public void GetSchemaWithSchemaFile ()
     {
       SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.rubicon-it.com/Core/Test/Xml/SchemaLoaderBaseMock");
-      XmlSchema xmlSchema = schemaBaseMock.GetSchema ("SchemaLoaderBaseMock.xsd");
+      XmlSchema xmlSchema = schemaBaseMock.LoadSchema ("SchemaLoaderBaseMock.xsd");
       Assert.IsNotNull (xmlSchema);
       Assert.AreEqual ("http://www.rubicon-it.com/Core/Test/Xml/SchemaLoaderBaseMock", xmlSchema.TargetNamespace);
     }
@@ -40,7 +40,7 @@ namespace Rubicon.Core.UnitTests.Xml
       try
       {
         SchemaLoaderBaseMock schemaBaseMock = new SchemaLoaderBaseMock ("http://www.rubicon-it.com/Core/Test/Xml/SchemaLoaderBaseMock");
-        schemaBaseMock.GetSchema ("invalidSchemaFileName.xsd");
+        schemaBaseMock.LoadSchema ("invalidSchemaFileName.xsd");
 
         Assert.Fail ("ApplicationException was expected.");
       }
