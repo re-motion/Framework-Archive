@@ -117,25 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="User" xml:space="preserve">
-    <value>Benutzer</value>
+  <data name="auto:PositionListLabel:Text" xml:space="preserve">
+    <value>Stellen verwalten</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Speichern</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Abbrechen</value>
-  </data>
-  <data name="ErrorMessage" xml:space="preserve">
-    <value>Diese Seite enthält ungültige Eingaben (markiert durch rote Rufzeichen).</value>
-  </data>
-  <data name="GroupType" xml:space="preserve">
-    <value>Struktureinheit</value>
-  </data>
-  <data name="Group" xml:space="preserve">
-    <value>Gruppe</value>
-  </data>
-  <data name="Position" xml:space="preserve">
-    <value>Stelle</value>
-  </data>
+  <data name="auto:NewPositionButton:Text" xml:space="preserve">
+    <value>Neuen Stelle anlegen</value>
+  </data> 
 </root>

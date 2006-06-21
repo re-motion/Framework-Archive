@@ -12,15 +12,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   [TestFixture]
   public class GroupTypeTest : DomainTest
   {
-    // types
-
-    // static members and constants
-
-    // member fields
-
-    // construction and disposing
-
-    // methods and properties
     [Test]
     public void Find_GroupTypesByClientID ()
     {

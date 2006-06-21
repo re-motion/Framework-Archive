@@ -104,6 +104,23 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       transaction.Commit ();
     }
 
+    public void CreatePositionsWithDifferentClients ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+
+      _currentClient = CreateClient (transaction, "client 1");
+      Client client2 = CreateClient (transaction, "client 2");
+
+      Position position1 = CreatePosition (transaction, "position 1", _currentClient);
+      Position position2 = CreatePosition (transaction, "position 2", _currentClient);
+      Position position3 = CreatePosition (transaction, "position 3", client2);
+
+      transaction.Commit ();
+    }
+
     private Group CreateGroup (ClientTransaction transaction, string name, Group parent, Client client)
     {
       Group group = _factory.CreateGroup (transaction);

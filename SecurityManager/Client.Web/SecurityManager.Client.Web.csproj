@@ -44,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfoTemplate.cs" />
+    <Content Include="OrganizationalStructure\UI\EditPositionControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\EditPositionForm.aspx" />
+    <Content Include="OrganizationalStructure\UI\SearchPositionControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\SearchPositionForm.aspx" />
     <Content Include="OrganizationalStructure\UI\EditGroupControl.ascx" />
     <Content Include="OrganizationalStructure\UI\EditGroupForm.aspx" />
     <Content Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx" />
@@ -67,6 +71,26 @@
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditPositionFormResources.Designer.cs">
+      <DependentUpon>EditPositionFormResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\SearchPositionControlResources.Designer.cs">
+      <DependentUpon>SearchPositionControlResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditPositionControlResources.Designer.cs">
+      <DependentUpon>EditPositionControlResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\SearchPositionFormResources.Designer.cs">
+      <DependentUpon>SearchPositionFormResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Globalization\OrganizationalStructure\UI\EditGroupControlResources.Designer.cs">
       <DependentUpon>EditGroupControlResources.resx</DependentUpon>
@@ -141,6 +165,34 @@
     </Compile>
     <Compile Include="OrganizationalStructure\Classes\BaseTransactedFunction.cs" />
     <Compile Include="OrganizationalStructure\Classes\FormFunction.cs" />
+    <Compile Include="OrganizationalStructure\UI\EditPositionControl.ascx.cs">
+      <DependentUpon>EditPositionControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditPositionControl.ascx.designer.cs">
+      <DependentUpon>EditPositionControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditPositionForm.aspx.cs">
+      <DependentUpon>EditPositionForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditPositionForm.aspx.designer.cs">
+      <DependentUpon>EditPositionForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchPositionControl.ascx.cs">
+      <DependentUpon>SearchPositionControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchPositionControl.ascx.designer.cs">
+      <DependentUpon>SearchPositionControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchPositionForm.aspx.cs">
+      <DependentUpon>SearchPositionForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchPositionForm.aspx.designer.cs">
+      <DependentUpon>SearchPositionForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OrganizationalStructure\UI\EditGroupControl.ascx.cs">
       <DependentUpon>EditGroupControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -239,6 +291,8 @@
     <Compile Include="OrganizationalStructure\UI\SearchUserForm.aspx.designer.cs">
       <DependentUpon>SearchUserForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OrganizationalStructure\WxeFunctions\EditPositionFormFunction.cs" />
+    <Compile Include="OrganizationalStructure\WxeFunctions\SearchPositionFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupTypeFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupFormFunction.cs" />
@@ -285,6 +339,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditPositionFormResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditPositionFormResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\SearchPositionControlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchPositionControlResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditPositionControlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditPositionControlResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\SearchPositionFormResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchPositionFormResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditGroupControlResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EditGroupControlResources.Designer.cs</LastGenOutput>

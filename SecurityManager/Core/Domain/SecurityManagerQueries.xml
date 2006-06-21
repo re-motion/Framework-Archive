@@ -44,4 +44,10 @@
       SELECT * FROM [GroupType] WHERE ClientID = @clientID ORDER BY Name;
     </statement>
   </query>
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [Position] WHERE ClientID = @clientID ORDER BY Name;
+    </statement>
+  </query>
 </queries>

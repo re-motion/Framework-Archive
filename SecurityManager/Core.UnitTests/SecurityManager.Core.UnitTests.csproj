@@ -68,6 +68,7 @@
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTypeTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\PositionTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\UserTest.cs" />
     <Compile Include="SecurityServiceTest.cs" />
     <Compile Include="TestDomain\AbstractRoles.cs" />

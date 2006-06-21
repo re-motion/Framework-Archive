@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GlobalResources {
+    internal class EditPositionControlResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GlobalResources() {
+        internal EditPositionControlResources() {
         }
         
         /// <summary>
@@ -39,8 +39,8 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI.Globa" +
-                            "lResources", typeof(GlobalResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI.EditP" +
+                            "ositionControlResources", typeof(EditPositionControlResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,65 +62,47 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Abbrechen.
+        ///   Looks up a localized string similar to Konkrete Stelle.
         /// </summary>
-        internal static string Cancel {
+        internal static string auto_ConcretePositionsField_FixedColumns_ConcretePositionsNameItem_ColumnTitle {
             get {
-                return ResourceManager.GetString("Cancel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Diese Seite enthält ungültige Eingaben (markiert durch rote Rufzeichen)..
-        /// </summary>
-        internal static string ErrorMessage {
-            get {
-                return ResourceManager.GetString("ErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gruppe.
-        /// </summary>
-        internal static string Group {
-            get {
-                return ResourceManager.GetString("Group", resourceCulture);
+                return ResourceManager.GetString("auto:ConcretePositionsField:FixedColumns:ConcretePositionsNameItem:ColumnTitle", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Struktureinheit.
         /// </summary>
-        internal static string GroupType {
+        internal static string auto_ConcretePositionsField_FixedColumns_GroupTypeNameItem_ColumnTitle {
             get {
-                return ResourceManager.GetString("GroupType", resourceCulture);
+                return ResourceManager.GetString("auto:ConcretePositionsField:FixedColumns:GroupTypeNameItem:ColumnTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stelle.
+        ///   Looks up a localized string similar to Stelle bearbeiten.
         /// </summary>
-        internal static string Position {
+        internal static string auto_PositionLabel_Text {
             get {
-                return ResourceManager.GetString("Position", resourceCulture);
+                return ResourceManager.GetString("auto:PositionLabel:Text", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speichern.
+        ///   Looks up a localized string similar to Gruppe.
         /// </summary>
-        internal static string Save {
+        internal static string auto_RolesField_FixedColumns_GroupNameItem_ColumnTitle {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("auto:RolesField:FixedColumns:GroupNameItem:ColumnTitle", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Benutzer.
         /// </summary>
-        internal static string User {
+        internal static string auto_RolesField_FixedColumns_UserNameItem_ColumnTitle {
             get {
-                return ResourceManager.GetString("User", resourceCulture);
+                return ResourceManager.GetString("auto:RolesField:FixedColumns:UserNameItem:ColumnTitle", resourceCulture);
             }
         }
     }
