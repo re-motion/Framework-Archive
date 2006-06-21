@@ -52,7 +52,7 @@ public class DataContainerCollection : CommonCollection
 
   public DataContainerCollection GetByState (StateType state)
   {
-    ArgumentUtility.CheckValidEnumValue (state, "state");
+    ArgumentUtility.CheckValidEnumValue ("state", state);
 
     DataContainerCollection collection = new DataContainerCollection ();
 

@@ -75,7 +75,7 @@ public class EnumerationProperty : BaseProperty, IBusinessObjectEnumerationPrope
   public override object FromInternalType (object internalValue)
   {
     ArgumentUtility.CheckNotNullAndType ("internalValue", internalValue, typeof (Enum));
-    ArgumentUtility.CheckValidEnumValue ((Enum) internalValue, "internalValue");
+    ArgumentUtility.CheckValidEnumValue ("internalValue", (Enum) internalValue);
 
     object undefinedValue = GetUndefinedValue ();
     if ((undefinedValue != null) && internalValue.Equals (undefinedValue))

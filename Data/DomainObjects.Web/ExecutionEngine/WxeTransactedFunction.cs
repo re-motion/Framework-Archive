@@ -38,7 +38,7 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
   /// <param name="actualParameters">Parameters that are passed to the <see cref="WxeFunction"/>.</param>
   public WxeTransactedFunction (WxeTransactionMode transactionMode, params object[] actualParameters) : base (actualParameters)
   {
-    ArgumentUtility.CheckValidEnumValue (transactionMode, "transactionMode");
+    ArgumentUtility.CheckValidEnumValue ("transactionMode", transactionMode);
 
     _transactionMode = transactionMode;
   }
@@ -64,7 +64,7 @@ public class WxeTransactedFunction : WxeTransactedFunctionBase
     }
     set 
     {
-      ArgumentUtility.CheckValidEnumValue (value, "transactionMode");
+      ArgumentUtility.CheckValidEnumValue ("transactionMode", value);
 
       if (ExecutionStarted)
         throw new InvalidOperationException ("CreateTransactionMode must not be set after execution of this function has started.");

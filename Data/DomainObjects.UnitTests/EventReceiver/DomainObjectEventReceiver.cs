@@ -19,8 +19,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
     private bool _hasChangedEventBeenCalled = false;
     private PropertyValue _changingPropertyValue;
     private PropertyValue _changedPropertyValue;
-    private object _oldValue;
-    private object _newValue;
+    private object _changingOldValue;
+    private object _changingNewValue;
+    private object _changedOldValue;
+    private object _changedNewValue;
     private bool _hasDeletingEventBeenCalled = false;
     private bool _hasDeletedEventBeenCalled = false;
 
@@ -46,8 +48,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       _domainObject = domainObject;
       _cancel = cancel;
 
-      _domainObject.PropertyChanging += new PropertyChangingEventHandler (DomainObject_PropertyChanging);
-      _domainObject.PropertyChanged += new PropertyChangedEventHandler (DomainObject_PropertyChanged);
+      _domainObject.PropertyChanging += new PropertyChangeEventHandler (DomainObject_PropertyChanging);
+      _domainObject.PropertyChanged += new PropertyChangeEventHandler (DomainObject_PropertyChanged);
       _domainObject.RelationChanging += new RelationChangingEventHandler (DomainObject_RelationChanging);
       _domainObject.RelationChanged += new RelationChangedEventHandler (DomainObject_RelationChanged);
       _domainObject.Deleting += new EventHandler (domainObject_Deleting);
@@ -84,14 +86,24 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       get { return _changedPropertyValue; }
     }
 
-    public object OldValue
+    public object ChangingOldValue
     {
-      get { return _oldValue; }
+      get { return _changingOldValue; }
     }
 
-    public object NewValue
+    public object ChangingNewValue
     {
-      get { return _newValue; }
+      get { return _changingNewValue; }
+    }
+
+    public object ChangedOldValue
+    {
+      get { return _changedOldValue; }
+    }
+
+    public object ChangedNewValue
+    {
+      get { return _changedNewValue; }
     }
 
     public bool HasRelationChangingEventBeenCalled
@@ -144,21 +156,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       get { return _hasCommittedEventBeenCalled; }
     }
 
-    private void DomainObject_PropertyChanging (object sender, PropertyChangingEventArgs args)
+    private void DomainObject_PropertyChanging (object sender, PropertyChangeEventArgs args)
     {
       _hasChangingEventBeenCalled = true;
       _changingPropertyValue = args.PropertyValue;
-      _oldValue = args.OldValue;
-      _newValue = args.NewValue;
+      _changingOldValue = args.OldValue;
+      _changingNewValue = args.NewValue;
 
       if (_cancel)
         CancelOperation ();
     }
 
-    private void DomainObject_PropertyChanged (object sender, PropertyChangedEventArgs args)
+    private void DomainObject_PropertyChanged (object sender, PropertyChangeEventArgs args)
     {
       _hasChangedEventBeenCalled = true;
       _changedPropertyValue = args.PropertyValue;
+      _changedOldValue = args.OldValue;
+      _changedNewValue = args.NewValue;
     }
 
     protected virtual void DomainObject_RelationChanging (object sender, RelationChangingEventArgs args)

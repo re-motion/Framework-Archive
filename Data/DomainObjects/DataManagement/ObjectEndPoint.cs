@@ -126,8 +126,8 @@ public class ObjectEndPoint : RelationEndPoint, INullableObject
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
 
-    _newEndPoint = newEndPoint;
     base.BeginRelationChange (oldEndPoint, newEndPoint);
+    _newEndPoint = newEndPoint;
   }
 
   public override void PerformRelationChange ()

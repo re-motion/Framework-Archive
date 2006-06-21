@@ -86,7 +86,7 @@ public class QueryDefinition : ISerializable, IObjectReference
     ArgumentUtility.CheckNotNullOrEmpty ("queryID", queryID);
     ArgumentUtility.CheckNotNullOrEmpty ("storageProviderID", storageProviderID);
     ArgumentUtility.CheckNotNullOrEmpty ("statement", statement);
-    ArgumentUtility.CheckValidEnumValue (queryType, "queryType");
+    ArgumentUtility.CheckValidEnumValue ("queryType", queryType);
 
     if (queryType == QueryType.Scalar && collectionType != null)
       throw new ArgumentException (string.Format ("The scalar query '{0}' must not specify a collectionType.", queryID), "collectionType");

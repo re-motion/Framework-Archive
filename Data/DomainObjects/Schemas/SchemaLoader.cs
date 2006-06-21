@@ -24,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.Schemas
 
     public SchemaLoader (SchemaType type)
     {
-      ArgumentUtility.CheckValidEnumValue (type, "type");
+      ArgumentUtility.CheckValidEnumValue ("type", type);
 
       _type = type;
       switch (type)

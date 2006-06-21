@@ -160,17 +160,18 @@ namespace Rubicon.Utilities
       }
     }
 
-    public static void CheckValidEnumValue (string argumentName, System.Enum enumValue)
-    {
-      CheckValidEnumValue (enumValue, argumentName);
-    }
-
-    public static void CheckValidEnumValue (System.Enum enumValue, string argumentName)
+    public static void CheckValidEnumValue (string argumentName, Enum enumValue)
     {
       if (enumValue == null)
         throw new ArgumentNullException (argumentName);
       else if (!EnumUtility.IsValidEnumValue (enumValue))
         throw new ArgumentOutOfRangeException (argumentName);
+    }
+
+    [Obsolete ("Use CheckValidEnumValue (string, Enum) instead.")]
+    public static void CheckValidEnumValue (Enum enumValue, string argumentName)
+    {
+      CheckValidEnumValue (argumentName, enumValue);
     }
 
     private ArgumentUtility ()

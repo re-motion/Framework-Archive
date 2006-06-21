@@ -43,7 +43,7 @@ public class QueryParameter
   public QueryParameter (string name, object value, QueryParameterType parameterType)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("name", name);
-    ArgumentUtility.CheckValidEnumValue (parameterType, "parameterType");
+    ArgumentUtility.CheckValidEnumValue ("parameterType", parameterType);
 
     _name = name;
     _value = value;

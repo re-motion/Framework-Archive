@@ -77,7 +77,7 @@ public class QueryParameterCollection : CommonCollection
   public void Add (string parameterName, object parameterValue, QueryParameterType parameterType)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
-    ArgumentUtility.CheckValidEnumValue (parameterType, "parameterType");
+    ArgumentUtility.CheckValidEnumValue ("parameterType", parameterType);
 
     Add (new QueryParameter (parameterName, parameterValue, parameterType));
   }

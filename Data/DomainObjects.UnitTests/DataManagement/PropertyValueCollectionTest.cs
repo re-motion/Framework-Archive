@@ -50,9 +50,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       _collection["Property 2"].Value = "Zaphod Beeblebrox";
 
       Assert.AreSame (propertyValue2, eventReceiver.ChangingPropertyValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.ChangingOldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangingNewValue);
+
       Assert.AreSame (propertyValue2, eventReceiver.ChangedPropertyValue);
-      Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.ChangedOldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangedNewValue);
     }
 
     [Test]
@@ -76,9 +79,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       catch (EventReceiverCancelException)
       {
         Assert.AreSame (propertyValue2, eventReceiver.ChangingPropertyValue);
+        Assert.AreEqual ("Arthur Dent", eventReceiver.ChangingOldValue);
+        Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangingNewValue);
         Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
-        Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-        Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
       }
     }
 

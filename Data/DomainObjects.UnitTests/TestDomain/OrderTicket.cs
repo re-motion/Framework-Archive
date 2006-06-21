@@ -20,6 +20,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
 
     // construction and disposing
 
+    // Default constructor for testing purposes.
+    public OrderTicket ()
+    {
+    }
+
     // New OrderTickets need an associated order for correct initialization.
     public OrderTicket (Order order)
       : this (order, ClientTransaction.Current)

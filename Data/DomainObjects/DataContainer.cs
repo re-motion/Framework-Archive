@@ -72,12 +72,12 @@ public class DataContainer
   /// Occurs before a <see cref="PropertyValue"/> is changed.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event PropertyChangingEventHandler PropertyChanging;
+  public event PropertyChangeEventHandler PropertyChanging;
   /// <summary>
   /// Occurs after a <see cref="PropertyValue"/> is changed.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event PropertyChangedEventHandler PropertyChanged;
+  public event PropertyChangeEventHandler PropertyChanged;
 
   private ClientTransaction _clientTransaction;
   private ObjectID _id;
@@ -376,13 +376,9 @@ public class DataContainer
   /// <summary>
   /// Raises the <see cref="PropertyChanging"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="PropertyChangingEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
+  /// <param name="args">A <see cref="PropertyChangeEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnPropertyChanging (PropertyChangeEventArgs args)
   {
-    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-    // Therefore notification of DomainObject when changing property values is not organized through events.
-    DomainObject.DataContainer_PropertyChanging (this, args);
-
     if (PropertyChanging != null)
       PropertyChanging (this, args);
   }
@@ -390,13 +386,9 @@ public class DataContainer
   /// <summary>
   /// Raises the <see cref="PropertyChanged"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="PropertyChangedEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
+  /// <param name="args">A <see cref="PropertyChangeEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnPropertyChanged (PropertyChangeEventArgs args)
   {
-    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-    // Therefore notification of DomainObject when changing property values is not organized through events.
-    DomainObject.DataContainer_PropertyChanged (this, args);
-
     if (PropertyChanged != null)
       PropertyChanged (this, args);
   }
@@ -470,17 +462,43 @@ public class DataContainer
     return StateType.Unchanged;
   }
 
-  internal void PropertyValues_PropertyChanging (object sender, PropertyChangingEventArgs args)
+  internal void PropertyValue_Changing (PropertyValueCollection propertyValueCollection, PropertyChangeEventArgs args)
   {
     if (_state == DataContainerStateType.Deleted)
       throw new ObjectDeletedException (_id);
 
+    if (_clientTransaction != null)
+      _clientTransaction.PropertyValue_Changing (this, args.PropertyValue, args.OldValue, args.NewValue);
+
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DomainObject when changing property values is not organized through events.
+    DomainObject.DataContainer_PropertyChanging (this, args);
+
     OnPropertyChanging (args);
   }
 
-  internal void PropertyValues_PropertyChanged (object sender, PropertyChangedEventArgs args)
+  internal void PropertyValue_Changed (PropertyValueCollection propertyValueCollection, PropertyChangeEventArgs args)
   {
     OnPropertyChanged (args);
+
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DomainObject when changing property values is not organized through events.
+    DomainObject.DataContainer_PropertyChanged (this, args);
+
+    if (_clientTransaction != null)
+      _clientTransaction.PropertyValue_Changed (this, args.PropertyValue, args.OldValue, args.NewValue);
+  }
+
+  internal void PropertyValue_Reading (PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  {
+    if (_clientTransaction != null)
+      _clientTransaction.PropertyValue_Reading (this, propertyValue, value, retrievalType);
+  }
+
+  internal void PropertyValue_Read (PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  {
+    if (_clientTransaction != null)
+      _clientTransaction.PropertyValue_Read (this, propertyValue, value, retrievalType);
   }
 
   private void Discard ()

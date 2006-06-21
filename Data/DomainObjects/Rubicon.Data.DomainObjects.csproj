@@ -213,6 +213,7 @@
     <Compile Include="Events.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IClientTransactionExtension.cs" />
     <Compile Include="INullableObject.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -401,6 +402,7 @@
     <Compile Include="ReflectionUtility.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RetrievalType.cs" />
     <Compile Include="Schemas\SchemaLoader.cs" />
     <Compile Include="Schemas\SchemaType.cs" />
     <Compile Include="StateType.cs">

@@ -55,8 +55,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       {
         domainObject.Deleting += new EventHandler (DomainObject_Deleting);
         domainObject.Deleted += new EventHandler (DomainObject_Deleted);
-        domainObject.PropertyChanging += new PropertyChangingEventHandler (DomainObject_PropertyChanging);
-        domainObject.PropertyChanged += new PropertyChangedEventHandler (DomainObject_PropertyChanged);
+        domainObject.PropertyChanging += new PropertyChangeEventHandler (DomainObject_PropertyChanging);
+        domainObject.PropertyChanged += new PropertyChangeEventHandler (DomainObject_PropertyChanged);
         domainObject.RelationChanging += new RelationChangingEventHandler (DomainObject_RelationChanging);
         domainObject.RelationChanged += new RelationChangedEventHandler (DomainObject_RelationChanged);
       }
@@ -114,8 +114,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       {
         domainObject.Deleting -= new EventHandler (DomainObject_Deleting);
         domainObject.Deleted -= new EventHandler (DomainObject_Deleted);
-        domainObject.PropertyChanging -= new PropertyChangingEventHandler (DomainObject_PropertyChanging);
-        domainObject.PropertyChanged -= new PropertyChangedEventHandler (DomainObject_PropertyChanged);
+        domainObject.PropertyChanging -= new PropertyChangeEventHandler (DomainObject_PropertyChanging);
+        domainObject.PropertyChanged -= new PropertyChangeEventHandler (DomainObject_PropertyChanged);
         domainObject.RelationChanging -= new RelationChangingEventHandler (DomainObject_RelationChanging);
         domainObject.RelationChanged -= new RelationChangedEventHandler (DomainObject_RelationChanged);
       }
@@ -129,12 +129,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       }
     }
 
-    public void DomainObject_PropertyChanged (object sender, PropertyChangedEventArgs args)
+    public void DomainObject_PropertyChanged (object sender, PropertyChangeEventArgs args)
     {
-      _states.Add (new PropertyChangeState (sender, args.PropertyValue, null, null));
+      _states.Add (new PropertyChangeState (sender, args.PropertyValue, args.OldValue, args.NewValue));
     }
 
-    public void DomainObject_PropertyChanging (object sender, PropertyChangingEventArgs args)
+    public void DomainObject_PropertyChanging (object sender, PropertyChangeEventArgs args)
     {
       _states.Add (new PropertyChangeState (sender, args.PropertyValue, args.OldValue, args.NewValue));
 

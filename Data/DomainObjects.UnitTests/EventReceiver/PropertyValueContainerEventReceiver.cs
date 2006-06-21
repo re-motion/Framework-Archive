@@ -15,8 +15,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
     private bool _cancel;
     private PropertyValue _changingPropertyValue;
     private PropertyValue _changedPropertyValue;
-    private object _oldValue;
-    private object _newValue;
+    private object _changingOldValue;
+    private object _changingNewValue;
+    private object _changedOldValue;
+    private object _changedNewValue;
 
     // construction and disposing
 
@@ -24,10 +26,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
     {
       _cancel = cancel;
 
-      propertyValueCollection.PropertyChanging += new PropertyChangingEventHandler (
+      propertyValueCollection.PropertyChanging += new PropertyChangeEventHandler (
           PropertyValueContainer_PropertyChanging);
 
-      propertyValueCollection.PropertyChanged += new PropertyChangedEventHandler (
+      propertyValueCollection.PropertyChanged += new PropertyChangeEventHandler (
           PropertyValueContainer_PropertyChanged);
     }
 
@@ -35,8 +37,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
     {
       _cancel = cancel;
 
-      dataContainer.PropertyChanging += new PropertyChangingEventHandler (PropertyValueContainer_PropertyChanging);
-      dataContainer.PropertyChanged += new PropertyChangedEventHandler (PropertyValueContainer_PropertyChanged);
+      dataContainer.PropertyChanging += new PropertyChangeEventHandler (PropertyValueContainer_PropertyChanging);
+      dataContainer.PropertyChanged += new PropertyChangeEventHandler (PropertyValueContainer_PropertyChanged);
     }
 
     // methods and properties
@@ -51,29 +53,41 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       get { return _changedPropertyValue; }
     }
 
-    public object OldValue
+    public object ChangingOldValue
     {
-      get { return _oldValue; }
+      get { return _changingOldValue; }
     }
 
-    public object NewValue
+    public object ChangingNewValue
     {
-      get { return _newValue; }
+      get { return _changingNewValue; }
     }
 
-    private void PropertyValueContainer_PropertyChanging (object sender, PropertyChangingEventArgs args)
+    public object ChangedOldValue
+    {
+      get { return _changedOldValue; }
+    }
+
+    public object ChangedNewValue
+    {
+      get { return _changedNewValue; }
+    }
+
+    private void PropertyValueContainer_PropertyChanging (object sender, PropertyChangeEventArgs args)
     {
       _changingPropertyValue = args.PropertyValue;
-      _oldValue = args.OldValue;
-      _newValue = args.NewValue;
+      _changingOldValue = args.OldValue;
+      _changingNewValue = args.NewValue;
 
       if (_cancel)
         CancelOperation ();
     }
 
-    private void PropertyValueContainer_PropertyChanged (object sender, PropertyChangedEventArgs args)
+    private void PropertyValueContainer_PropertyChanged (object sender, PropertyChangeEventArgs args)
     {
       _changedPropertyValue = args.PropertyValue;
+      _changedOldValue = args.OldValue;
+      _changedNewValue = args.NewValue;
     }
   }
 }

@@ -94,7 +94,7 @@ public class CollectionEndPointChangeAgent
     ArgumentUtility.CheckNotNull ("oppositeDomainObjects", oppositeDomainObjects);
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
     ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
-    ArgumentUtility.CheckValidEnumValue (operation, "operation");
+    ArgumentUtility.CheckValidEnumValue ("operation", operation);
 
     _oppositeDomainObjects = oppositeDomainObjects;
     _operation = operation;

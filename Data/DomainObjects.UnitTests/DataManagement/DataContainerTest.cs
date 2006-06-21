@@ -88,9 +88,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
       Assert.AreEqual (StateType.New, _newDataContainer.State);
       Assert.AreEqual ("Zaphod Beeblebrox", _newDataContainer["Name"]);
       Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.ChangingOldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangingNewValue);
+
       Assert.AreSame (_nameProperty, eventReceiver.ChangedPropertyValue);
-      Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.ChangedOldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangedNewValue);
     }
 
     [Test]
@@ -111,9 +114,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         Assert.AreEqual (StateType.New, _newDataContainer.State);
         Assert.AreEqual ("Arthur Dent", _newDataContainer["Name"]);
         Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
+        Assert.AreEqual ("Arthur Dent", eventReceiver.ChangingOldValue);
+        Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangingNewValue);
         Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
-        Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-        Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
       }
     }
 
@@ -129,10 +132,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
 
       Assert.AreEqual (StateType.Changed, _existingDataContainer.State);
       Assert.AreEqual ("Zaphod Beeblebrox", _existingDataContainer["Name"]);
+
       Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.ChangingOldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangingNewValue);
+
       Assert.AreSame (_nameProperty, eventReceiver.ChangedPropertyValue);
-      Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
+      Assert.AreEqual ("Arthur Dent", eventReceiver.ChangedOldValue);
+      Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangedNewValue);
     }
 
     [Test]
@@ -153,9 +160,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
         Assert.AreEqual (StateType.Unchanged, _existingDataContainer.State);
         Assert.AreEqual ("Arthur Dent", _existingDataContainer["Name"]);
         Assert.AreSame (_nameProperty, eventReceiver.ChangingPropertyValue);
+        Assert.AreEqual ("Arthur Dent", eventReceiver.ChangingOldValue);
+        Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.ChangingNewValue);
         Assert.AreSame (null, eventReceiver.ChangedPropertyValue);
-        Assert.AreEqual ("Arthur Dent", eventReceiver.OldValue);
-        Assert.AreEqual ("Zaphod Beeblebrox", eventReceiver.NewValue);
       }
     }
 

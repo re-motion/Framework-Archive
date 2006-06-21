@@ -23,12 +23,12 @@ public class PropertyValueCollection : CommonCollection
   /// Occurs before the <see cref="PropertyValue.Value"/> of a <see cref="PropertyValue"/> in the <see cref="PropertyValueCollection"/> is changed.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event PropertyChangingEventHandler PropertyChanging;
+  public event PropertyChangeEventHandler PropertyChanging;
   /// <summary>
   /// Occurs after the <see cref="PropertyValue.Value"/> of a <see cref="PropertyValue"/> in the <see cref="PropertyValueCollection"/> is changed.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event PropertyChangedEventHandler PropertyChanged;
+  public event PropertyChangeEventHandler PropertyChanged;
 
   private DataContainer _dataContainer;
   private bool _isDiscarded = false;
@@ -256,14 +256,9 @@ public class PropertyValueCollection : CommonCollection
   /// <summary>
   /// Raises the <see cref="PropertyChanging"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="PropertyChangingEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
+  /// <param name="args">A <see cref="PropertyChangeEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnPropertyChanging (PropertyChangeEventArgs args)
   {
-    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-    // Therefore notification of DataContainer when changing property values is not organized through events.
-    if (_dataContainer != null)
-      _dataContainer.PropertyValues_PropertyChanging (this, args);
-
     if (PropertyChanging != null)
       PropertyChanging (this, args);
   }
@@ -271,14 +266,9 @@ public class PropertyValueCollection : CommonCollection
   /// <summary>
   /// Raises the <see cref="PropertyChanged"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="PropertyChangedEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
+  /// <param name="args">A <see cref="PropertyChangeEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnPropertyChanged (PropertyChangeEventArgs args)
   {
-    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-    // Therefore notification of DataContainer when changing property values is not organized through events.
-    if (_dataContainer != null)
-      _dataContainer.PropertyValues_PropertyChanged (this, args);
-
     if (PropertyChanged != null)
       PropertyChanged (this, args);
   }
@@ -299,15 +289,39 @@ public class PropertyValueCollection : CommonCollection
     _dataContainer = dataContainer;
   }
 
-  internal void PropertyValue_Changing (object sender, ValueChangingEventArgs e)
+  internal void PropertyValue_Changing (PropertyValue propertyValue, ValueChangeEventArgs e)
   {
-    PropertyChangingEventArgs eventArgs = new PropertyChangingEventArgs ((PropertyValue) sender, e.OldValue, e.NewValue);
+    PropertyChangeEventArgs eventArgs = new PropertyChangeEventArgs (propertyValue, e.OldValue, e.NewValue);
+
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DataContainer when changing property values is not organized through events.
+    if (_dataContainer != null)
+      _dataContainer.PropertyValue_Changing (this, eventArgs);
+
     OnPropertyChanging (eventArgs);
   }
 
-  internal void PropertyValue_Changed (object sender, EventArgs e)
+  internal void PropertyValue_Changed (PropertyValue propertyValue, ValueChangeEventArgs e)
   {
-    OnPropertyChanged (new PropertyChangedEventArgs ((PropertyValue) sender));
+    PropertyChangeEventArgs eventArgs = new PropertyChangeEventArgs (propertyValue, e.OldValue, e.NewValue);
+    OnPropertyChanged (eventArgs);
+
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DataContainer when changing property values is not organized through events.
+    if (_dataContainer != null)
+      _dataContainer.PropertyValue_Changed (this, eventArgs);
+  }
+
+  internal void PropertyValue_Reading (PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  {
+    if (_dataContainer != null)
+      _dataContainer.PropertyValue_Reading (propertyValue, value, retrievalType);
+  }
+
+  internal void PropertyValue_Read (PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  {
+    if (_dataContainer != null)
+      _dataContainer.PropertyValue_Read (propertyValue, value, retrievalType);
   }
 
   private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)

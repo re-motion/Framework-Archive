@@ -103,7 +103,7 @@ public class DomainObject
   /// This event does not fire when a <see cref="PropertyValue"/> has been changed due to a relation change.
   /// </remarks>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event PropertyChangingEventHandler PropertyChanging;
+  public event PropertyChangeEventHandler PropertyChanging;
 
   /// <summary>
   /// Occurs after a <see cref="PropertyValue"/> of the <b>DomainObject</b> is changed.
@@ -112,7 +112,7 @@ public class DomainObject
   /// This event does not fire when a <see cref="PropertyValue"/> has been changed due to a relation change.
   /// </remarks>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event PropertyChangedEventHandler PropertyChanged;
+  public event PropertyChangeEventHandler PropertyChanged;
 
   /// <summary>
   /// Occurs before a Relation of the <b>DomainObject</b> is changed.
@@ -407,8 +407,8 @@ public class DomainObject
   /// <summary>
   /// Raises the <see cref="PropertyChanging"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="PropertyChangingEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnPropertyChanging (PropertyChangingEventArgs args)
+  /// <param name="args">A <see cref="PropertyChangeEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnPropertyChanging (PropertyChangeEventArgs args)
   {
     if (PropertyChanging != null)
       PropertyChanging (this, args);
@@ -417,8 +417,8 @@ public class DomainObject
   /// <summary>
   /// Raises the <see cref="PropertyChanged"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="PropertyChangedEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
+  /// <param name="args">A <see cref="PropertyChangeEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnPropertyChanged (PropertyChangeEventArgs args)
   {
     if (PropertyChanged != null)
       PropertyChanged (this, args);
@@ -451,6 +451,8 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
+    this.ClientTransaction.Relation_Changing (this, propertyName, oldRelatedObject, newRelatedObject);
+
     RelationChangingEventArgs args = new RelationChangingEventArgs (propertyName, oldRelatedObject, newRelatedObject);
     OnRelationChanging (args);
   }
@@ -463,6 +465,8 @@ public class DomainObject
   internal void EndRelationChange (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+    this.ClientTransaction.Relation_Changed (this, propertyName);
 
     OnRelationChanged (new RelationChangedEventArgs (propertyName));
   }
@@ -487,12 +491,12 @@ public class DomainObject
     OnCommitted (new EventArgs ());
   }
 
-  internal void DataContainer_PropertyChanging (object sender, PropertyChangingEventArgs args)
+  internal void DataContainer_PropertyChanging (object sender, PropertyChangeEventArgs args)
   {
     OnPropertyChanging (args);
   }
 
-  internal void DataContainer_PropertyChanged (object sender, PropertyChangedEventArgs args)
+  internal void DataContainer_PropertyChanged (object sender, PropertyChangeEventArgs args)
   {
     OnPropertyChanged (args);
   }

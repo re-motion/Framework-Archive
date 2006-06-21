@@ -180,10 +180,10 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
     if (_changeAgent == null)
       throw new InvalidOperationException ("BeginRelationChange must be called before EndRelationChange.");
 
+    base.EndRelationChange ();
+
     _changeAgent.EndRelationChange ();
     _changeAgent = null;
-
-    base.EndRelationChange ();
   }
 
   public DomainObjectCollection OriginalOppositeDomainObjects
@@ -203,8 +203,8 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
 
   private void BeginRelationChange ()
   {
-    _changeAgent.BeginRelationChange ();
     base.BeginRelationChange (_changeAgent.OldEndPoint, _changeAgent.NewEndPoint);
+    _changeAgent.BeginRelationChange ();
   }
 
   #region ICollectionChangeDelegate Members

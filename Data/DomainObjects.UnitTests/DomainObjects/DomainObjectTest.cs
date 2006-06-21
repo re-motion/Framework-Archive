@@ -192,8 +192,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled);
       Assert.AreEqual (true, eventReceiver.HasChangedEventBeenCalled);
       Assert.AreEqual ("New name", customer.Name);
-      Assert.AreEqual ("Kunde 1", eventReceiver.OldValue);
-      Assert.AreEqual ("New name", eventReceiver.NewValue);
+      Assert.AreEqual ("Kunde 1", eventReceiver.ChangingOldValue);
+      Assert.AreEqual ("New name", eventReceiver.ChangingNewValue);
+      Assert.AreEqual ("Kunde 1", eventReceiver.ChangedOldValue);
+      Assert.AreEqual ("New name", eventReceiver.ChangedNewValue);
     }
 
     [Test]
@@ -213,8 +215,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.AreEqual (true, eventReceiver.HasChangingEventBeenCalled);
         Assert.AreEqual (false, eventReceiver.HasChangedEventBeenCalled);
         Assert.AreEqual ("Kunde 1", customer.Name);
-        Assert.AreEqual ("Kunde 1", eventReceiver.OldValue);
-        Assert.AreEqual ("New name", eventReceiver.NewValue);
+        Assert.AreEqual ("Kunde 1", eventReceiver.ChangingOldValue);
+        Assert.AreEqual ("New name", eventReceiver.ChangingNewValue);
       }
     }
 

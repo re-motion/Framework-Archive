@@ -297,7 +297,7 @@ public abstract class RdbmsProvider : StorageProvider
   {
     CheckDisposed ();
     ArgumentUtility.CheckNotNull ("command", command);
-    ArgumentUtility.CheckValidEnumValue (behavior, "behavior");
+    ArgumentUtility.CheckValidEnumValue ("behavior", behavior);
 
     try
     {

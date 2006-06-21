@@ -9,16 +9,12 @@ namespace Rubicon.Data.DomainObjects
 /// <summary>
 /// Represents the method that will handle the <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
 /// </summary>
-public delegate void ValueChangingEventHandler (object sender, ValueChangingEventArgs args);
+public delegate void ValueChangeEventHandler (object sender, ValueChangeEventArgs args);
 
 /// <summary>
 /// Represents the method that will handle a <b>PropertyChanging</b> event.
 /// </summary>
-public delegate void PropertyChangingEventHandler (object sender, PropertyChangingEventArgs args);
-/// <summary>
-/// Represents the method that will handle a <b>PropertyChanged</b> event.
-/// </summary>
-public delegate void PropertyChangedEventHandler (object sender, PropertyChangedEventArgs args);
+public delegate void PropertyChangeEventHandler (object sender, PropertyChangeEventArgs args);
 
 /// <summary>
 /// Represents the method that will handle a <b>RelationChanging</b> event.
@@ -38,7 +34,7 @@ public delegate void ClientTransactionEventHandler (object sender, ClientTransac
 /// Provides data for a <see cref="PropertyValue.Changing"/> event of the <see cref="PropertyValue"/> class.
 /// </summary>
 [Serializable]
-public class ValueChangingEventArgs : EventArgs
+public class ValueChangeEventArgs : EventArgs
 {
   private object _oldValue;
   private object _newValue;
@@ -48,7 +44,7 @@ public class ValueChangingEventArgs : EventArgs
   /// </summary>
   /// <param name="oldValue">The old value.</param>
   /// <param name="newValue">The new value.</param>
-  public ValueChangingEventArgs (object oldValue, object newValue)
+  public ValueChangeEventArgs (object oldValue, object newValue)
   {
     _oldValue = oldValue;
     _newValue = newValue;
@@ -75,7 +71,7 @@ public class ValueChangingEventArgs : EventArgs
 /// Provides data for a <b>PropertyChanging</b> event.
 /// </summary>
 [Serializable]
-public class PropertyChangingEventArgs : ValueChangingEventArgs
+public class PropertyChangeEventArgs : ValueChangeEventArgs
 {
   private PropertyValue _propertyValue;
 
@@ -86,7 +82,7 @@ public class PropertyChangingEventArgs : ValueChangingEventArgs
   /// <param name="oldValue">The old value.</param>
   /// <param name="newValue">The new value.</param>
   /// <exception cref="System.ArgumentNullException"><paramref name="propertyValue"/> is <see langword="null"/>.</exception>
-  public PropertyChangingEventArgs (PropertyValue propertyValue, object oldValue, object newValue) 
+  public PropertyChangeEventArgs (PropertyValue propertyValue, object oldValue, object newValue) 
       : base (oldValue, newValue)
   {
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
@@ -95,35 +91,6 @@ public class PropertyChangingEventArgs : ValueChangingEventArgs
 
   /// <summary>
   /// Gets the <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> object that is being changed.
-  /// </summary>
-  public PropertyValue PropertyValue
-  {
-    get { return _propertyValue; }
-  }
-}
-
-/// <summary>
-/// Provides data for a <b>PropertyChanged</b> event.
-/// </summary>
-[Serializable]
-public class PropertyChangedEventArgs : EventArgs
-{
-  private PropertyValue _propertyValue;
-
-  /// <summary>
-  /// Initializes a new instance of the <b>ValueChangingEventArgs</b> class.
-  /// </summary>
-  /// <param name="propertyValue">The <see cref="PropertyValue"/> that has been changed. Must not be <see langword="null"/>.</param>
-  /// <exception cref="System.ArgumentNullException"><paramref name="propertyValue"/> is <see langword="null"/>.</exception>
-  public PropertyChangedEventArgs (PropertyValue propertyValue)
-  {
-    ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
-
-    _propertyValue = propertyValue;
-  }
-
-  /// <summary>
-  /// Gets the <see cref="Rubicon.Data.DomainObjects.PropertyValue"/> object that has been changed.
   /// </summary>
   public PropertyValue PropertyValue
   {

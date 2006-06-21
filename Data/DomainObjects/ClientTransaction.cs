@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 
 using Rubicon.Data.DomainObjects.Mapping;
@@ -6,6 +7,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Utilities;
+using System.ComponentModel;
 
 
 namespace Rubicon.Data.DomainObjects
@@ -100,6 +102,7 @@ public class ClientTransaction : ITransaction
 
   private DataManager _dataManager;
   private QueryManager _queryManager;
+  private Dictionary<string, IClientTransactionExtension> _extensions;
 
   // construction and disposing
 
@@ -109,6 +112,7 @@ public class ClientTransaction : ITransaction
   public ClientTransaction ()
   {
     _dataManager = new DataManager (this);
+    _extensions = new Dictionary<string, IClientTransactionExtension> ();
   }
 
   // methods and properties
@@ -176,6 +180,7 @@ public class ClientTransaction : ITransaction
   public virtual DomainObject GetObject (ObjectID id, bool includeDeleted)
   {
     ArgumentUtility.CheckNotNull ("id", id);
+
     return _dataManager.DataContainerMap.GetObject (id, includeDeleted);
   }
 
@@ -637,5 +642,74 @@ public class ClientTransaction : ITransaction
   }
 
   #endregion
+
+  // TODO ES: DOC
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public void RegisterExtension (string extensionName, IClientTransactionExtension extension)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
+    ArgumentUtility.CheckNotNull ("extension", extension);
+    if (_extensions.ContainsKey (extensionName))
+      throw new ArgumentException (string.Format ("An extension with name '{0}' is already registered.", extensionName), "extensionName");
+
+    _extensions.Add (extensionName, extension);
+  }
+
+  // TODO ES: DOC
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public IClientTransactionExtension GetExtension (string extensionName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
+
+    if (!_extensions.ContainsKey (extensionName))
+      return null;
+
+    return _extensions[extensionName];
+  }
+
+  // TODO ES: DOC
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public void UnregisterExtension (string extensionName)
+  {
+    ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
+
+    _extensions.Remove (extensionName);
+  }
+
+  internal void PropertyValue_Changing (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.PropertyChanging (dataContainer, propertyValue, oldValue, newValue);
+  }
+
+  internal void PropertyValue_Changed (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.PropertyChanged (dataContainer, propertyValue, oldValue, newValue);    
+  }
+
+  internal void PropertyValue_Reading (DataContainer dataContainer, PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.PropertyReading (dataContainer, propertyValue, value, retrievalType);        
+  }
+
+  internal void PropertyValue_Read (DataContainer dataContainer, PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.PropertyRead (dataContainer, propertyValue, value, retrievalType);
+  }
+
+  internal void Relation_Changing (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
+  }
+
+  internal void Relation_Changed (DomainObject domainObject, string propertyName)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.RelationChanged (domainObject, propertyName);
+  }
 }
 }

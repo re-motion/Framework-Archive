@@ -27,8 +27,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 
     public PropertyValueEventReceiver (PropertyValue propertyValue, bool cancel)
     {
-      propertyValue.Changing += new ValueChangingEventHandler (PropertyValue_Changing);
-      propertyValue.Changed += new EventHandler (PropertyValue_Changed);
+      propertyValue.Changing += new ValueChangeEventHandler (PropertyValue_Changing);
+      propertyValue.Changed += new ValueChangeEventHandler (PropertyValue_Changed);
       _cancel = cancel;
     }
 
@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       get { return _newValue; }
     }
 
-    private void PropertyValue_Changing (object sender, ValueChangingEventArgs e)
+    private void PropertyValue_Changing (object sender, ValueChangeEventArgs e)
     {
       _hasChangingEventBeenCalled = true;
       _oldValue = e.OldValue;

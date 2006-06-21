@@ -49,7 +49,7 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition, IS
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    ArgumentUtility.CheckValidEnumValue (cardinality, "cardinality");
+    ArgumentUtility.CheckValidEnumValue ("cardinality", cardinality);
     ArgumentUtility.CheckNotNull ("propertyType", propertyType);
 
     Initialize (classDefinition, propertyName, isMandatory, cardinality, propertyType, null, sortExpression);
@@ -65,7 +65,7 @@ public class VirtualRelationEndPointDefinition : IRelationEndPointDefinition, IS
   {
     ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-    ArgumentUtility.CheckValidEnumValue (cardinality, "cardinality");
+    ArgumentUtility.CheckValidEnumValue ("cardinality", cardinality);
     ArgumentUtility.CheckNotNullOrEmpty ("propertyTypeName", propertyTypeName);
 
     Initialize (classDefinition, propertyName, isMandatory, cardinality, null, propertyTypeName, sortExpression);

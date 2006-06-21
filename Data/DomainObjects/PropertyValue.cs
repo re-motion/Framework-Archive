@@ -34,12 +34,12 @@ public class PropertyValue
   /// Occurs before the <see cref="Value"/> of the <see cref="PropertyValue"/> is changed.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event ValueChangingEventHandler Changing;
+  public event ValueChangeEventHandler Changing;
   /// <summary>
   /// Occurs after the <see cref="Value"/> of the <see cref="PropertyValue"/> is changed.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
-  public event EventHandler Changed;
+  public event ValueChangeEventHandler Changed;
 
   private PropertyDefinition _definition;
   private object _value;
@@ -130,6 +130,12 @@ public class PropertyValue
     get
     {
       CheckDiscarded ();
+
+      // Note: A ClientTransaction extension could possibly raise an exception during BeginValueGet.
+      //       If another ClientTransaction extension only wants to be notified on success it should use EndValueGet.
+      BeginValueGet ();
+      EndValueGet ();
+      
       return _value;
     }
     set
@@ -140,12 +146,12 @@ public class PropertyValue
       if (AreValuesDifferent (_value, value))
       {
         CheckValue (value, _definition);
+        BeginValueSet (value);
 
-        ValueChangingEventArgs changingArgs = new ValueChangingEventArgs (_value, value);
-        OnChanging (changingArgs);
-
+        object oldValue = _value;
         _value = value;
-        OnChanged (new EventArgs ());
+
+        EndValueSet (oldValue);
       }
     }
   }
@@ -159,6 +165,12 @@ public class PropertyValue
     get 
     { 
       CheckDiscarded ();
+
+      // Note: A ClientTransaction extension could possibly raise an exception during BeginOriginalValueGet.
+      //       If another ClientTransaction extension only wants to be notified on success it should use EndOriginalValueGet.
+      BeginOriginalValueGet ();
+      EndOriginalValueGet ();
+
       return _originalValue; 
     }
   }
@@ -217,8 +229,8 @@ public class PropertyValue
 
     if (propertyValue != null)
     {
-       return this.Value.Equals (propertyValue.Value)
-          && this.OriginalValue.Equals (propertyValue.OriginalValue)
+       return this._value.Equals (propertyValue._value)
+          && this._originalValue.Equals (propertyValue._originalValue)
           && this.HasChanged.Equals (propertyValue.HasChanged)
           && this.Definition.Equals (propertyValue.Definition);
     }
@@ -252,14 +264,9 @@ public class PropertyValue
   /// <summary>
   /// Raises the <see cref="Changing"/> event.
   /// </summary>
-  /// <param name="args">A <see cref="ValueChangingEventArgs"/> object that contains the event data.</param>
-  protected virtual void OnChanging (ValueChangingEventArgs args)
+  /// <param name="args">A <see cref="ValueChangeEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnChanging (ValueChangeEventArgs args)
   {
-    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-    // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
-    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Changing (this, args);
-
     if (Changing != null)
       Changing (this, args);
   }
@@ -268,13 +275,8 @@ public class PropertyValue
   /// Raises the <see cref="Changed"/> event.
   /// </summary>
   /// <param name="args">A <see cref="EventArgs"/> object that contains the event data.</param>
-  protected virtual void OnChanged (EventArgs args)
+  protected virtual void OnChanged (ValueChangeEventArgs args)
   {
-    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-    // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
-    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Changed (this, args);
-
     if (Changed != null)
       Changed (this, args);
   }
@@ -370,6 +372,59 @@ public class PropertyValue
     return !value1.Equals (value2);
   }
 
+  private void BeginValueGet ()
+  {
+    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
+      changeNotificationReceiver.PropertyValue_Reading (this, _value, RetrievalType.CurrentValue);
+  }
+
+  private void BeginOriginalValueGet ()
+  {
+    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
+      changeNotificationReceiver.PropertyValue_Reading (this, _originalValue, RetrievalType.OriginalValue);
+  }
+
+  private void EndValueGet ()
+  {
+    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
+      changeNotificationReceiver.PropertyValue_Read (this, _value, RetrievalType.CurrentValue);
+  }
+
+  private void EndOriginalValueGet ()
+  {
+    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
+      changeNotificationReceiver.PropertyValue_Read (this, _originalValue, RetrievalType.OriginalValue);
+  }
+
+  private void BeginValueSet (object newValue)
+  {
+    ValueChangeEventArgs changingArgs = new ValueChangeEventArgs (_value, newValue);
+
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
+    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
+      changeNotificationReceiver.PropertyValue_Changing (this, changingArgs);
+
+    OnChanging (changingArgs);
+  }
+
+  private void EndValueSet (object oldValue)
+  {
+    ValueChangeEventArgs changedArgs = new ValueChangeEventArgs (oldValue, _value);
+    OnChanged (changedArgs);
+
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
+    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
+      changeNotificationReceiver.PropertyValue_Changed (this, changedArgs);
+  }
+
+  private void CheckForRelationProperty ()
+  {
+    if (_definition.PropertyType == typeof (ObjectID))
+      throw new InvalidOperationException (string.Format ("The relation property '{0}' cannot be set directly.", _definition.PropertyName));
+  }
+
   private ArgumentException CreateArgumentException (string message, params object[] args)
   {
     return new ArgumentException (string.Format (message, args));
@@ -379,12 +434,6 @@ public class PropertyValue
   {
     if (_isDiscarded)
       throw new ObjectDiscardedException ();
-  }
-
-  private void CheckForRelationProperty ()
-  {
-    if (_definition.PropertyType == typeof (ObjectID))
-      throw new InvalidOperationException (string.Format ("The relation property '{0}' cannot be set directly.", _definition.PropertyName));
   }
 }
 }

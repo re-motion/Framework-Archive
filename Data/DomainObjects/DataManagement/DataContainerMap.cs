@@ -100,7 +100,7 @@ public class DataContainerMap : IEnumerable
 
   public DomainObjectCollection GetByState (StateType state)
   {
-    ArgumentUtility.CheckValidEnumValue (state, "state");
+    ArgumentUtility.CheckValidEnumValue ("state", state);
 
     DomainObjectCollection domainObjects = new DomainObjectCollection ();
 

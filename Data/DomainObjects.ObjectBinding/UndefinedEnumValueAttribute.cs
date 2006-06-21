@@ -36,7 +36,7 @@ public sealed class UndefinedEnumValueAttribute : Attribute
   public UndefinedEnumValueAttribute (object value)
   {
     ArgumentUtility.CheckNotNullAndType ("value", value, typeof (Enum));
-    ArgumentUtility.CheckValidEnumValue ((Enum) value, "value");
+    ArgumentUtility.CheckValidEnumValue ("value", (Enum) value);
 
     _value = (Enum) value;
   }
