@@ -8,10 +8,6 @@
     * Alle Vorkommnisse von PropertyChangingEventHandler und PropertyChangedEventHandler durch PropertyChangeEventHandler ersetzen.
     * Alle Vorkommnisse von PropertyChangingEventArgs und PropertyChangedEventArgs durch PropertyChangeEventArgs ersetzen.
   
-- Für ClientTransaction-Extension-Infrastruktur wurde die Event-Reihenfolge bei 1:n-Beziehungen geändert:
-  ALT: Collection löst Remove- bzw. Add- Events vor dem zugehörigen DomainObject auf der 1-Seite aus.
-  NEU: DomainObject auf der 1-Seite löste Relation-Events vor den Remove- bzw. Add- Events  der zugehörigen Collection aus.
-  
 - Für ClientTransaction-Extension-Infrastruktur wurde die Event-Reihenfolge von DataContainer.PropertyChanged und DomainObject.PropertyChanged geändert.
   ALT: DomainObject vor DataContainer.
   NEU: DataContainer vor DomainObject.
