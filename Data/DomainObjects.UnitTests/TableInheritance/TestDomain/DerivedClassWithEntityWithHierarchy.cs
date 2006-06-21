@@ -41,11 +41,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TableInheritance.TestDomain
       get { return GetRelatedObjects ("ChildDerivedClassesWithEntityWithHierarchy"); }
     }
 
-    //TODO: change property type back to "Client" after the problem described in 
-    //      IntegrationTest.SetRelationPropertyToObjectOfInvalidTypeForThisRelation is resolved 
-    public DomainObject ClientFromDerivedClassWithEntity
+    public Client ClientFromDerivedClassWithEntity
     {
-      get { return (DomainObject) GetRelatedObject ("ClientFromDerivedClassWithEntity"); }
+      get { return (Client) GetRelatedObject ("ClientFromDerivedClassWithEntity"); }
       set { SetRelatedObject ("ClientFromDerivedClassWithEntity", value); }
     }
 

@@ -54,15 +54,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       ChangeState[] expectedChangeStates = new ChangeState[]
     {
       new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-      new RelationChangeState (_oldCustomer, "Orders", _order, null, "2. Changing event of old customer"),
-      new CollectionChangeState (_oldCustomer.Orders, _order, "3. Removing of orders of old customer"),
-      new RelationChangeState (_newCustomer, "Orders", null, _order, "4. Changing event of new customer"),
-      new CollectionChangeState (_newCustomer.Orders, _order, "5. Adding event of new customer's order collection"),
+      new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
+      new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
+      new CollectionChangeState (_newCustomer.Orders, _order, "4. Adding event of new customer's order collection"),
+      new RelationChangeState (_newCustomer, "Orders", null, _order, "5. Changing event of new customer"),
       new RelationChangeState (_order, "Customer", null, null, "6. Changed event of order from old to new customer"),
-      new RelationChangeState (_oldCustomer, "Orders", null, null, "7. Changed event of old customer"),
-      new CollectionChangeState (_oldCustomer.Orders, _order, "8. Removed event of old customer's order collection"),
-      new RelationChangeState (_newCustomer, "Orders", null, null, "9. Changed event of new customer"),
-      new CollectionChangeState (_newCustomer.Orders, _order, "10. Added event of new customer's order collection")
+      new CollectionChangeState (_oldCustomer.Orders, _order, "7. Removed event of old customer's order collection"),
+      new RelationChangeState (_oldCustomer, "Orders", null, null, "8. Changed event of old customer"),
+      new CollectionChangeState (_newCustomer.Orders, _order, "9. Added event of new customer's order collection"),
+      new RelationChangeState (_newCustomer, "Orders", null, null, "10. Changed event of new customer")
     };
 
       eventReceiver.Check (expectedChangeStates);
@@ -106,7 +106,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void OldCustomerCancelsChangeEvent ()
+    public void OldCustomerCollectionCancelsChangeEvent ()
     {
       DomainObject[] domainObjectEventSources = new DomainObject[] {
         _oldCustomer, _newCustomer, _order};
@@ -126,7 +126,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ChangeState[] expectedChangeStates = new ChangeState[]
             {
               new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-              new RelationChangeState (_oldCustomer, "Orders", _order, null, "2. Changing event of old customer")
+              new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer")
             };
 
         eventReceiver.Check (expectedChangeStates);
@@ -142,7 +142,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     }
 
     [Test]
-    public void OldCustomerCollectionCancelsChangeEvent ()
+    public void OldCustomerCancelsChangeEvent ()
     {
       DomainObject[] domainObjectEventSources = new DomainObject[] {
         _oldCustomer, _newCustomer, _order};
@@ -162,46 +162,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ChangeState[] expectedChangeStates = new ChangeState[]
             {
               new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-              new RelationChangeState (_oldCustomer, "Orders", _order, null, "2. Changing event of old customer"),
-              new CollectionChangeState (_oldCustomer.Orders, _order, "3. Removing of orders of old customer")
-            };
-
-        eventReceiver.Check (expectedChangeStates);
-
-        Assert.AreEqual (StateType.Unchanged, _order.State);
-        Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
-        Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
-
-        Assert.AreSame (_oldCustomer, _order.Customer);
-        Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
-        Assert.IsNull (_newCustomer.Orders[_order.ID]);
-      }
-    }
-
-    [Test]
-    public void NewCustomerCancelsChangeEvent ()
-    {
-      DomainObject[] domainObjectEventSources = new DomainObject[] {
-        _oldCustomer, _newCustomer, _order};
-
-      DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {
-        _oldCustomer.Orders, _newCustomer.Orders};
-
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 4);
-
-      try
-      {
-        _newCustomer.Orders.Add (_order);
-        Assert.Fail ("EventReceiverCancelException should be raised.");
-      }
-      catch (EventReceiverCancelException)
-      {
-        ChangeState[] expectedChangeStates = new ChangeState[]
-            {
-              new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-              new RelationChangeState (_oldCustomer, "Orders", _order, null, "2. Changing event of old customer"),
-              new CollectionChangeState (_oldCustomer.Orders, _order, "3. Removing of orders of old customer"),
-              new RelationChangeState (_newCustomer, "Orders", null, _order, "4. Changing event of new customer")
+              new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
+              new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
             };
 
         eventReceiver.Check (expectedChangeStates);
@@ -225,6 +187,44 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {
         _oldCustomer.Orders, _newCustomer.Orders};
 
+      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 4);
+
+      try
+      {
+        _newCustomer.Orders.Add (_order);
+        Assert.Fail ("EventReceiverCancelException should be raised.");
+      }
+      catch (EventReceiverCancelException)
+      {
+        ChangeState[] expectedChangeStates = new ChangeState[]
+            {
+              new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
+              new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
+              new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
+              new CollectionChangeState (_newCustomer.Orders, _order, "4. Adding event of new customer's order collection")
+            };
+
+        eventReceiver.Check (expectedChangeStates);
+
+        Assert.AreEqual (StateType.Unchanged, _order.State);
+        Assert.AreEqual (StateType.Unchanged, _oldCustomer.State);
+        Assert.AreEqual (StateType.Unchanged, _newCustomer.State);
+
+        Assert.AreSame (_oldCustomer, _order.Customer);
+        Assert.AreSame (_order, _oldCustomer.Orders[_order.ID]);
+        Assert.IsNull (_newCustomer.Orders[_order.ID]);
+      }
+    }
+
+    [Test]
+    public void NewCustomerCancelsChangeEvent ()
+    {
+      DomainObject[] domainObjectEventSources = new DomainObject[] {
+        _oldCustomer, _newCustomer, _order};
+
+      DomainObjectCollection[] collectionEventSources = new DomainObjectCollection[] {
+        _oldCustomer.Orders, _newCustomer.Orders};
+
       SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjectEventSources, collectionEventSources, 5);
 
       try
@@ -237,10 +237,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         ChangeState[] expectedChangeStates = new ChangeState[]
             {
               new RelationChangeState (_order, "Customer", _oldCustomer, _newCustomer, "1. Changing event of order from old to new customer"),
-              new RelationChangeState (_oldCustomer, "Orders", _order, null, "2. Changing event of old customer"),
-              new CollectionChangeState (_oldCustomer.Orders, _order, "3. Removing of orders of old customer"),
-              new RelationChangeState (_newCustomer, "Orders", null, _order, "4. Changing event of new customer"),
-              new CollectionChangeState (_newCustomer.Orders, _order, "5. Adding event of new customer's order collection")
+              new CollectionChangeState (_oldCustomer.Orders, _order, "2. Removing of orders of old customer"),
+              new RelationChangeState (_oldCustomer, "Orders", _order, null, "3. Changing event of old customer"),
+              new CollectionChangeState (_newCustomer.Orders, _order, "4. Adding event of new customer's order collection"),
+              new RelationChangeState (_newCustomer, "Orders", null, _order, "5. Changing event of new customer")
             };
 
         eventReceiver.Check (expectedChangeStates);

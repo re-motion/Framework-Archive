@@ -170,8 +170,12 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNull ("clientTransaction", clientTransaction);
 
+    clientTransaction.DomainObject_NewObjectCreating (this.GetType ());
+
     _dataContainer = clientTransaction.CreateNewDataContainer (this.GetType ());
     _dataContainer.SetDomainObject (this);
+
+    clientTransaction.DomainObject_NewObjectCreated (this);
   }
 
   /// <summary>
@@ -246,7 +250,16 @@ public class DomainObject
   public void Delete ()
   {
     CheckDiscarded ();
-    ClientTransaction.Delete (this);
+
+    // Note: The call to DomainObject_ObjectDeleting is not in ClientTransaction.Delete because this method is virtual and therefore the 
+    //       application developer could accidentially disable notification of ClientTransaction extensions by overriding without calling base.
+    
+    // Cache ClientTransaction, because property cannot be read after deletion of newly created DomainObject (ObjectDiscardedException).
+    ClientTransaction clientTransaction = ClientTransaction;
+
+    clientTransaction.DomainObject_ObjectDeleting (this);
+    clientTransaction.Delete (this);
+    clientTransaction.DomainObject_ObjectDeleted (this);
   }
 
   /// <summary>
@@ -451,6 +464,7 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
+    // TODO: Ensure ClientTransaction extension is notified, before ANY events are raised.
     this.ClientTransaction.Relation_Changing (this, propertyName, oldRelatedObject, newRelatedObject);
 
     RelationChangingEventArgs args = new RelationChangingEventArgs (propertyName, oldRelatedObject, newRelatedObject);
@@ -466,6 +480,7 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
+    // TODO: Ensure ClientTransaction extension is notified, after ALL events are raised.
     this.ClientTransaction.Relation_Changed (this, propertyName);
 
     OnRelationChanged (new RelationChangedEventArgs (propertyName));

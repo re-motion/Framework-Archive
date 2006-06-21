@@ -163,9 +163,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], orderNumber, RetrievalType.CurrentValue);
+        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], RetrievalType.CurrentValue);
         _extension.PropertyRead (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], orderNumber, RetrievalType.CurrentValue);
-        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], orderNumber, RetrievalType.OriginalValue);
+        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], RetrievalType.OriginalValue);
         _extension.PropertyRead (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], orderNumber, RetrievalType.OriginalValue);
       }
 
@@ -189,9 +189,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _extension.PropertyChanging (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
         _extension.PropertyChanged (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
 
-        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], newOrderNumber, RetrievalType.CurrentValue);
+        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], RetrievalType.CurrentValue);
         _extension.PropertyRead (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], newOrderNumber, RetrievalType.CurrentValue);
-        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, RetrievalType.OriginalValue);
+        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], RetrievalType.OriginalValue);
         _extension.PropertyRead (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, RetrievalType.OriginalValue);
       }
 
@@ -238,6 +238,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Order order = new Order ();
       OrderTicket orderTicket = new OrderTicket ();
       _mockRepository.BackToRecord (_extension);
+      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (orderTicket.DataContainer.PropertyValues["Order"]);
 
       using (_mockRepository.Ordered ())
       {
@@ -245,6 +246,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _extension.RelationChanging (orderTicket, "Order", null, order);
         _extension.RelationChanged (order, "OrderTicket");
         _extension.RelationChanged (orderTicket, "Order");
+
+        //Note: no events are expected on propertyValueMockEventReceiver
       }
 
       _mockRepository.ReplayAll ();
@@ -264,6 +267,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       OrderTicket oldRelatedOrderTicket = order.OrderTicket;
 
       _mockRepository.BackToRecord (_extension);
+      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (orderTicket.DataContainer.PropertyValues["Order"]);
 
       using (_mockRepository.Ordered ())
       {
@@ -276,6 +280,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _extension.RelationChanged (oldRelatedOrderTicket, "Order");
         _extension.RelationChanged (orderTicket, "Order");
         _extension.RelationChanged (oldRelatedOrder, "OrderTicket");
+
+        //Note: no events are expected on propertyValueMockEventReceiver
       }
 
       _mockRepository.ReplayAll ();
@@ -292,11 +298,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Client client = new Client ();
 
       _mockRepository.BackToRecord (_extension);
+      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (location.DataContainer.PropertyValues["Client"]);
 
       using (_mockRepository.Ordered ())
       {
         _extension.RelationChanging (location, "Client", null, client);
         _extension.RelationChanged (location, "Client");
+
+        //Note: no events are expected on propertyValueMockEventReceiver
       }
 
       _mockRepository.ReplayAll ();
@@ -318,6 +327,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       Customer oldRelatedCustomerOfNewOrder = newOrder.Customer;
 
       _mockRepository.BackToRecord (_extension);
+      PropertyValueMockEventReceiver orderPropertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (order.DataContainer.PropertyValues["Customer"]);
+      PropertyValueMockEventReceiver newOrderPropertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (newOrder.DataContainer.PropertyValues["Customer"]);
 
       using (_mockRepository.Ordered ())
       {
@@ -339,5 +350,60 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.VerifyAll ();
     }
 
+    [Test]
+    public void ReadObjectIDProperty ()
+    {
+      PropertyValue customerPropertyValue = _order.DataContainer.PropertyValues["Customer"];
+      ObjectID customerID = (ObjectID) _order.DataContainer.PropertyValues["Customer"].Value;
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.PropertyReading (_order.DataContainer, customerPropertyValue, RetrievalType.CurrentValue);
+        _extension.PropertyRead (_order.DataContainer, customerPropertyValue, customerID, RetrievalType.CurrentValue);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      customerID = (ObjectID) _order.DataContainer.PropertyValues["Customer"].Value;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void NewObjectCreation ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension.NewObjectCreating (typeof (Order));
+        _extension.NewObjectCreated (null);
+        LastCall.Constraints (Is.TypeOf<Order> ());
+      }
+
+      _mockRepository.ReplayAll ();
+
+      new Order ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ObjectDelete ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.ObjectDeleting (computer);
+        _extension.ObjectDeleted (computer);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      computer.Delete ();
+
+      _mockRepository.VerifyAll ();
+    }
   }
 }

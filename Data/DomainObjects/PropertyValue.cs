@@ -133,7 +133,7 @@ public class PropertyValue
 
       // Note: A ClientTransaction extension could possibly raise an exception during BeginValueGet.
       //       If another ClientTransaction extension only wants to be notified on success it should use EndValueGet.
-      BeginValueGet ();
+      BeginValueGet (RetrievalType.CurrentValue);
       EndValueGet ();
       
       return _value;
@@ -168,7 +168,7 @@ public class PropertyValue
 
       // Note: A ClientTransaction extension could possibly raise an exception during BeginOriginalValueGet.
       //       If another ClientTransaction extension only wants to be notified on success it should use EndOriginalValueGet.
-      BeginOriginalValueGet ();
+      BeginValueGet (RetrievalType.OriginalValue);
       EndOriginalValueGet ();
 
       return _originalValue; 
@@ -372,16 +372,10 @@ public class PropertyValue
     return !value1.Equals (value2);
   }
 
-  private void BeginValueGet ()
+  private void BeginValueGet (RetrievalType retrievalType)
   {
     foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Reading (this, _value, RetrievalType.CurrentValue);
-  }
-
-  private void BeginOriginalValueGet ()
-  {
-    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Reading (this, _originalValue, RetrievalType.OriginalValue);
+      changeNotificationReceiver.PropertyValue_Reading (this, retrievalType);
   }
 
   private void EndValueGet ()

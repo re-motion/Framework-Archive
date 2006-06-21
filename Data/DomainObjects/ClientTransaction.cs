@@ -643,7 +643,12 @@ public class ClientTransaction : ITransaction
 
   #endregion
 
-  // TODO ES: DOC
+  /// <summary>
+  /// Registers an <see cref="IClientTransactionExtension"/> on the <see cref="ClientTransaction"/>. 
+  /// </summary>
+  /// <param name="extensionName">A name identifying the extension. Must not be <see langword="null"/>.</param>
+  /// <param name="extension">The extension to register. Must not be <see langword="null"/>.</param>
+  /// <exception cref="ArgumentException">An <see cref="IClientTransactionExtension"/> with the given <paramref name="extensionName"/> is already registered.</exception>
   [EditorBrowsable (EditorBrowsableState.Never)]
   public void RegisterExtension (string extensionName, IClientTransactionExtension extension)
   {
@@ -667,7 +672,12 @@ public class ClientTransaction : ITransaction
     return _extensions[extensionName];
   }
 
-  // TODO ES: DOC
+  /// <summary>
+  /// Unregisteres an <see cref="IClientTransactionExtension"/> on the <see cref="ClientTransaction"/>. 
+  /// </summary>
+  /// <param name="extensionName">The name of the extension to unregister. Must not be <see langword="null"/>.</param>
+  /// <remarks>This method does not throw an exception if no <see cref="IClientTransactionExtension"/> with the given 
+  ///   <paramref name="extensionName"/> is registered.</remarks>
   [EditorBrowsable (EditorBrowsableState.Never)]
   public void UnregisterExtension (string extensionName)
   {
@@ -688,10 +698,10 @@ public class ClientTransaction : ITransaction
       extension.PropertyChanged (dataContainer, propertyValue, oldValue, newValue);    
   }
 
-  internal void PropertyValue_Reading (DataContainer dataContainer, PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  internal void PropertyValue_Reading (DataContainer dataContainer, PropertyValue propertyValue, RetrievalType retrievalType)
   {
     foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.PropertyReading (dataContainer, propertyValue, value, retrievalType);        
+      extension.PropertyReading (dataContainer, propertyValue, retrievalType);        
   }
 
   internal void PropertyValue_Read (DataContainer dataContainer, PropertyValue propertyValue, object value, RetrievalType retrievalType)
@@ -710,6 +720,30 @@ public class ClientTransaction : ITransaction
   {
     foreach (IClientTransactionExtension extension in _extensions.Values)
       extension.RelationChanged (domainObject, propertyName);
+  }
+
+  internal void DomainObject_NewObjectCreating (Type type)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.NewObjectCreating (type);
+  }
+
+  internal void DomainObject_NewObjectCreated (DomainObject domainObject)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.NewObjectCreated (domainObject);
+  }
+
+  internal void DomainObject_ObjectDeleting (DomainObject domainObject)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.ObjectDeleting (domainObject);
+  }
+
+  internal void DomainObject_ObjectDeleted (DomainObject domainObject)
+  {
+    foreach (IClientTransactionExtension extension in _extensions.Values)
+      extension.ObjectDeleted (domainObject);
   }
 }
 }

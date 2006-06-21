@@ -312,10 +312,10 @@ public class PropertyValueCollection : CommonCollection
       _dataContainer.PropertyValue_Changed (this, eventArgs);
   }
 
-  internal void PropertyValue_Reading (PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  internal void PropertyValue_Reading (PropertyValue propertyValue, RetrievalType retrievalType)
   {
     if (_dataContainer != null)
-      _dataContainer.PropertyValue_Reading (propertyValue, value, retrievalType);
+      _dataContainer.PropertyValue_Reading (propertyValue, retrievalType);
   }
 
   internal void PropertyValue_Read (PropertyValue propertyValue, object value, RetrievalType retrievalType)

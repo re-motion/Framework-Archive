@@ -145,11 +145,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.RemovingDomainObjects[0]);
         Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovedDomainObjects.Count);
 
-        Assert.IsTrue (_supervisorEventReceiver.HasRelationChangingEventBeenCalled);
+        Assert.IsFalse (_supervisorEventReceiver.HasRelationChangingEventBeenCalled);
         Assert.IsFalse (_supervisorEventReceiver.HasRelationChangedEventBeenCalled);
-        Assert.AreEqual ("Subordinates", _supervisorEventReceiver.ChangingRelationPropertyName);
+        Assert.IsNull (_supervisorEventReceiver.ChangingRelationPropertyName);
         Assert.IsNull (_supervisorEventReceiver.ChangedRelationPropertyName);
-        Assert.AreSame (_subordinate, _supervisorEventReceiver.OldRelatedObject);
+        Assert.IsNull (_supervisorEventReceiver.OldRelatedObject);
         Assert.IsNull (_supervisorEventReceiver.NewRelatedObject);
 
         Assert.AreEqual (StateType.Unchanged, _subordinate.State);
@@ -180,9 +180,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
         Assert.AreSame (_supervisor, _subordinateEventReceiver.OldRelatedObject);
         Assert.IsNull (_subordinateEventReceiver.NewRelatedObject);
 
-        Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovingEventBeenCalled);
+        Assert.IsTrue (_subordinateCollectionEventReceiver.HasRemovingEventBeenCalled);
         Assert.IsFalse (_subordinateCollectionEventReceiver.HasRemovedEventBeenCalled);
-        Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovingDomainObjects.Count);
+        Assert.AreSame (_subordinate, _subordinateCollectionEventReceiver.RemovingDomainObjects[0]);
         Assert.AreEqual (0, _subordinateCollectionEventReceiver.RemovedDomainObjects.Count);
 
         Assert.AreEqual (true, _supervisorEventReceiver.HasRelationChangingEventBeenCalled);

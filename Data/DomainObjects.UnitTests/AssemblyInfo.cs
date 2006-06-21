@@ -57,6 +57,5 @@ using System.Runtime.CompilerServices;
 //       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
-// TODO: Reactivate strong naming after NMock2.dll is strongly named:
-//[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
+[assembly: AssemblyKeyFile(@"\Development\global/rubicon.snk")]
 [assembly: AssemblyKeyName("")]

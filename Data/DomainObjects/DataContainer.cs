@@ -489,10 +489,10 @@ public class DataContainer
       _clientTransaction.PropertyValue_Changed (this, args.PropertyValue, args.OldValue, args.NewValue);
   }
 
-  internal void PropertyValue_Reading (PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  internal void PropertyValue_Reading (PropertyValue propertyValue, RetrievalType retrievalType)
   {
     if (_clientTransaction != null)
-      _clientTransaction.PropertyValue_Reading (this, propertyValue, value, retrievalType);
+      _clientTransaction.PropertyValue_Reading (this, propertyValue, retrievalType);
   }
 
   internal void PropertyValue_Read (PropertyValue propertyValue, object value, RetrievalType retrievalType)
