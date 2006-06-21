@@ -105,6 +105,9 @@ public class QueryManager
     {
       StorageProvider provider = storageProviderManager.GetMandatory (query.StorageProviderID);
       DataContainerCollection dataContainers = provider.ExecuteCollectionQuery (query);
+
+      // TODO: Call ICTxExtension.FilterQueryResult before passing it back to client
+
       return _clientTransaction.MergeLoadedDomainObjects (dataContainers, query.CollectionType);  
     }    
   }

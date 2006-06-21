@@ -145,7 +145,11 @@ public class ClientTransaction : ITransaction
   /// </summary>
   public virtual void Rollback ()
   {
+    // TODO: Notify extensions
+
     _dataManager.Rollback ();
+
+    // TODO: Notify extensions
   }
 
   /// <summary>
@@ -514,6 +518,8 @@ public class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitting (ClientTransactionEventArgs args)
   {
+    // TODO: Notify extensions
+
     if (Committing != null)
       Committing (this, args);
   }
@@ -526,6 +532,8 @@ public class ClientTransaction : ITransaction
   {
     if (Committed != null)
       Committed (this, args);
+
+    // TODO: Notify extensions
   }
 
   /// <summary>

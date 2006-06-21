@@ -256,7 +256,7 @@ public class DomainObject
     
     // Cache ClientTransaction, because property cannot be read after deletion of newly created DomainObject (ObjectDiscardedException).
     ClientTransaction clientTransaction = ClientTransaction;
-
+    //TODO: move to ClientTransaction.Delete
     clientTransaction.DomainObject_ObjectDeleting (this);
     clientTransaction.Delete (this);
     clientTransaction.DomainObject_ObjectDeleted (this);
