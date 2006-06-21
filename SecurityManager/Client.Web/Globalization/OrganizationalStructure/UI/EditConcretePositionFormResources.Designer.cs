@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EditGroupTypeControlResources {
+    internal class EditConcretePositionFormResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EditGroupTypeControlResources() {
+        internal EditConcretePositionFormResources() {
         }
         
         /// <summary>
@@ -39,8 +39,8 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI.EditG" +
-                            "roupTypeControlResources", typeof(EditGroupTypeControlResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI.EditC" +
+                            "oncretePositionFormResources", typeof(EditConcretePositionFormResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,29 +62,11 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Konkrete Stelle.
+        ///   Looks up a localized string similar to Konkrete Stelle bearbeiten.
         /// </summary>
-        internal static string auto_ConcretePositionsField_FixedColumns_ConcretePositionNameItem_ColumnTitle {
+        internal static string auto_this_Title {
             get {
-                return ResourceManager.GetString("auto:ConcretePositionsField:FixedColumns:ConcretePositionNameItem:ColumnTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Gruppe.
-        /// </summary>
-        internal static string auto_GroupsField_FixedColumns_GroupNameItem_ColumnTitle {
-            get {
-                return ResourceManager.GetString("auto:GroupsField:FixedColumns:GroupNameItem:ColumnTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Struktureinheit bearbeiten.
-        /// </summary>
-        internal static string auto_GroupTypeLabel_Text {
-            get {
-                return ResourceManager.GetString("auto:GroupTypeLabel:Text", resourceCulture);
+                return ResourceManager.GetString("auto:this:Title", resourceCulture);
             }
         }
     }

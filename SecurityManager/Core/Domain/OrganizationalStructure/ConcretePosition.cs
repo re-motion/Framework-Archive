@@ -72,5 +72,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { SetRelatedObject ("Position", value); }
     }
 
+    public override string DisplayName
+    {
+      get { return Name; }
+    }
   }
 }

@@ -17,7 +17,7 @@ using Rubicon.SecurityManager.Configuration;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunctions
 {
-  public class EditUserFormFunction : FormFunction
+  public class EditConcretePositionFormFunction : FormFunction
   {
     // types
 
@@ -27,24 +27,24 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
 
     // construction and disposing
 
-    public EditUserFormFunction ()
+    public EditConcretePositionFormFunction ()
     {
     }
 
-    public EditUserFormFunction (params object[] args)
+    public EditConcretePositionFormFunction (params object[] args)
       : base (args)
     {
     }
 
-    public EditUserFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID)
+    public EditConcretePositionFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID)
       : base (clientID, organizationalStructureObjectID)
     {
     }
 
     // methods and properties
-    public User User
+    public ConcretePosition ConcretePosition
     {
-      get { return (User) OrganizationalStructureObject; }
+      get { return (ConcretePosition) OrganizationalStructureObject; }
       set { OrganizationalStructureObject = value; }
     }
 
@@ -52,12 +52,9 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
       // TODO check CurrentTransaction
       if (OrganizationalStructureObject == null)
-      {
-        User = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser (CurrentTransaction);
-        User.Client = Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.GetObject (ClientID, CurrentTransaction);
-      }
+        ConcretePosition = new ConcretePosition (CurrentTransaction);
     }
 
-    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditUserForm), "OrganizationalStructure/UI/EditUserForm.aspx");
+    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditConcretePositionForm), "OrganizationalStructure/UI/EditConcretePositionForm.aspx");
   }
 }

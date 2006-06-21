@@ -16,6 +16,7 @@ using Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.U
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
@@ -59,6 +60,62 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       isValid &= FormGridManager.Validate ();
 
       return isValid;
+    }
+
+    protected void RolesField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    {
+      if (e.Item.ItemID == "NewItem")
+      {
+        if (!Page.IsReturningPostBack)
+        {
+          Role role = new Role (CurrentFunction.CurrentTransaction);
+          role.Position = CurrentFunction.Position;
+
+          EditRoleFormFunction editRoleFormFunction = new EditRoleFormFunction (CurrentFunction.ClientID, role.ID);
+          editRoleFormFunction.TransactionMode = WxeTransactionMode.None;
+          Page.ExecuteFunction (editRoleFormFunction);
+        }
+      }
+
+      if (e.Item.ItemID == "DeleteItem")
+      {
+        foreach (Role role in RolesField.GetSelectedBusinessObjects ())
+        {
+          RolesField.RemoveRow (role);
+          role.Delete ();
+        }
+
+        RolesField.ClearSelectedRows ();
+      }
+    }
+
+    protected void ConcretePositionsField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
+    {
+      if (e.Item.ItemID == "NewItem")
+      {
+        if (!Page.IsReturningPostBack)
+        {
+          ConcretePosition concretePosition = new ConcretePosition (CurrentFunction.CurrentTransaction);
+          concretePosition.Position = CurrentFunction.Position;
+
+          EditConcretePositionFormFunction editConcretePositionFormFunction = 
+            new EditConcretePositionFormFunction (CurrentFunction.ClientID, concretePosition.ID);
+
+          editConcretePositionFormFunction.TransactionMode = WxeTransactionMode.None;
+          Page.ExecuteFunction (editConcretePositionFormFunction);
+        }
+      }
+
+      if (e.Item.ItemID == "DeleteItem")
+      {
+        foreach (ConcretePosition concretePosition in ConcretePositionsField.GetSelectedBusinessObjects ())
+        {
+          ConcretePositionsField.RemoveRow (concretePosition);
+          concretePosition.Delete ();
+        }
+
+        ConcretePositionsField.ClearSelectedRows ();
+      }
     }
   }
 }

@@ -124,6 +124,6 @@
     <value>Gruppe</value>
   </data>  
   <data name="auto:ConcretePositionsField:FixedColumns:ConcretePositionNameItem:ColumnTitle" xml:space="preserve">
-    <value>Stellen</value>
+    <value>Konkrete Stelle</value>
   </data>  
 </root>

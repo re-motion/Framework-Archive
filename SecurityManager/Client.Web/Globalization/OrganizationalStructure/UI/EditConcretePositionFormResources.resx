@@ -98,13 +98,7 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-  <data name="property:Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="property:GroupType" xml:space="preserve">
-    <value>Struktureinheit</value>
-  </data>
-  <data name="property:Position" xml:space="preserve">
-    <value>Stelle</value>
+  <data name="auto:this:Title" xml:space="preserve">
+    <value>Konkrete Stelle bearbeiten</value>
   </data>
 </root>

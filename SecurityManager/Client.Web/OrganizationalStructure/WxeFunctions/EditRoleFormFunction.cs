@@ -8,16 +8,14 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
-using Rubicon.SecurityManager.Configuration;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunctions
 {
-  public class EditUserFormFunction : FormFunction
+  public class EditRoleFormFunction : FormFunction
   {
     // types
 
@@ -27,24 +25,24 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
 
     // construction and disposing
 
-    public EditUserFormFunction ()
+    public EditRoleFormFunction ()
     {
     }
 
-    public EditUserFormFunction (params object[] args)
+    public EditRoleFormFunction (params object[] args)
       : base (args)
     {
     }
 
-    public EditUserFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID)
+    public EditRoleFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID)
       : base (clientID, organizationalStructureObjectID)
     {
     }
 
     // methods and properties
-    public User User
+    public Role Role
     {
-      get { return (User) OrganizationalStructureObject; }
+      get { return (Role) OrganizationalStructureObject; }
       set { OrganizationalStructureObject = value; }
     }
 
@@ -52,12 +50,10 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
       // TODO check CurrentTransaction
       if (OrganizationalStructureObject == null)
-      {
-        User = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser (CurrentTransaction);
-        User.Client = Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.GetObject (ClientID, CurrentTransaction);
-      }
+        Role = new Role (CurrentTransaction);
     }
 
-    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditUserForm), "OrganizationalStructure/UI/EditUserForm.aspx");
+    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditRoleForm), "OrganizationalStructure/UI/EditRoleForm.aspx");
+
   }
 }

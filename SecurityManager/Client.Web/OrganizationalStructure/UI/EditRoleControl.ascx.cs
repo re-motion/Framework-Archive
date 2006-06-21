@@ -9,17 +9,19 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunctions;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI;
-using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using System.Collections.Generic;
+using Rubicon.Data.DomainObjects;
+using Rubicon.NullableValueTypes;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
-  [WebMultiLingualResources (typeof (EditUserControlResources))]
-  public partial class EditUserControl : BaseControl
+  [WebMultiLingualResources (typeof (EditRoleControlResources))]
+  public partial class EditRoleControl : BaseControl
   {
     // types
 
@@ -35,22 +37,45 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       get { return CurrentObject; }
     }
 
-    protected new EditUserFormFunction CurrentFunction
+    protected new EditRoleFormFunction CurrentFunction
     {
-      get { return (EditUserFormFunction) base.CurrentFunction; }
+      get { return (EditRoleFormFunction) base.CurrentFunction; }
     }
 
     public override Control FocusControl
     {
-      get { return FirstnameField; }
+      get { return GroupField; }
     }
 
     protected void Page_Load (object sender, EventArgs e)
     {
-      CurrentObject.BusinessObject = CurrentFunction.User;
+      CurrentObject.BusinessObject = CurrentFunction.Role;
       CurrentObject.LoadValues (IsPostBack);
 
-      FillGroupField ();
+      if (CurrentFunction.Role.User != null)
+        UserField.ReadOnly = NaBoolean.True;
+      else
+        FillUserField ();
+
+      if (CurrentFunction.Role.Group != null)
+        GroupField.ReadOnly = NaBoolean.True;
+      else
+        FillGroupField ();
+
+      if (CurrentFunction.Role.Position != null)
+        PositionField.ReadOnly = NaBoolean.True;
+      else
+        FillPositionField ();
+    }
+
+    private void FillUserField ()
+    {
+      UserField.SetBusinessObjectList (User.FindByClientID (CurrentFunction.ClientID));
+    }
+
+    private void FillPositionField ()
+    {
+      PositionField.SetBusinessObjectList (Position.FindByClientID (CurrentFunction.ClientID));
     }
 
     private void FillGroupField ()
@@ -65,33 +90,6 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       isValid &= FormGridManager.Validate ();
 
       return isValid;
-    }
-
-    protected void RolesField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
-    {
-      if (e.Item.ItemID == "NewItem")
-      {
-        if (!Page.IsReturningPostBack)
-        {
-          Role role = new Role (CurrentFunction.CurrentTransaction);
-          role.User = CurrentFunction.User;
-
-          EditRoleFormFunction editRoleFormFunction = new EditRoleFormFunction (CurrentFunction.ClientID, role.ID);
-          editRoleFormFunction.TransactionMode = WxeTransactionMode.None;
-          Page.ExecuteFunction (editRoleFormFunction);
-        }
-      }
-
-      if (e.Item.ItemID == "DeleteItem")
-      {
-        foreach (Role role in RolesField.GetSelectedBusinessObjects ())
-        {
-          RolesField.RemoveRow (role);
-          role.Delete ();
-        }
-
-        RolesField.ClearSelectedRows ();
-      }
     }
   }
 }

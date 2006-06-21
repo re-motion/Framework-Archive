@@ -44,6 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfoTemplate.cs" />
+    <Content Include="OrganizationalStructure\UI\EditConcretePositionControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\EditConcretePositionForm.aspx" />
+    <Content Include="OrganizationalStructure\UI\EditRoleControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\EditRoleForm.aspx" />
     <Content Include="OrganizationalStructure\UI\EditPositionControl.ascx" />
     <Content Include="OrganizationalStructure\UI\EditPositionForm.aspx" />
     <Content Include="OrganizationalStructure\UI\SearchPositionControl.ascx" />
@@ -71,6 +75,26 @@
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditConcretePositionControlResources.Designer.cs">
+      <DependentUpon>EditConcretePositionControlResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditConcretePositionFormResources.Designer.cs">
+      <DependentUpon>EditConcretePositionFormResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditRoleControlResources.Designer.cs">
+      <DependentUpon>EditRoleControlResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditRoleFormResources.Designer.cs">
+      <DependentUpon>EditRoleFormResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Globalization\OrganizationalStructure\UI\EditPositionFormResources.Designer.cs">
       <DependentUpon>EditPositionFormResources.resx</DependentUpon>
@@ -165,6 +189,34 @@
     </Compile>
     <Compile Include="OrganizationalStructure\Classes\BaseTransactedFunction.cs" />
     <Compile Include="OrganizationalStructure\Classes\FormFunction.cs" />
+    <Compile Include="OrganizationalStructure\UI\EditConcretePositionControl.ascx.cs">
+      <DependentUpon>EditConcretePositionControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditConcretePositionControl.ascx.designer.cs">
+      <DependentUpon>EditConcretePositionControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditConcretePositionForm.aspx.cs">
+      <DependentUpon>EditConcretePositionForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditConcretePositionForm.aspx.designer.cs">
+      <DependentUpon>EditConcretePositionForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditRoleControl.ascx.cs">
+      <DependentUpon>EditRoleControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditRoleControl.ascx.designer.cs">
+      <DependentUpon>EditRoleControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditRoleForm.aspx.cs">
+      <DependentUpon>EditRoleForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditRoleForm.aspx.designer.cs">
+      <DependentUpon>EditRoleForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OrganizationalStructure\UI\EditPositionControl.ascx.cs">
       <DependentUpon>EditPositionControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -291,7 +343,9 @@
     <Compile Include="OrganizationalStructure\UI\SearchUserForm.aspx.designer.cs">
       <DependentUpon>SearchUserForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OrganizationalStructure\WxeFunctions\EditConcretePositionFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditPositionFormFunction.cs" />
+    <Compile Include="OrganizationalStructure\WxeFunctions\EditRoleFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\SearchPositionFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupTypeFormFunction.cs" />
@@ -339,6 +393,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditConcretePositionControlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditConcretePositionControlResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditConcretePositionFormResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditConcretePositionFormResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditRoleControlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditRoleControlResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditRoleFormResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditRoleFormResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditPositionFormResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EditPositionFormResources.Designer.cs</LastGenOutput>

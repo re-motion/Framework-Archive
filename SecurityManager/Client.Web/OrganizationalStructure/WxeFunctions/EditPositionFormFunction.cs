@@ -52,9 +52,10 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
       // TODO check CurrentTransaction
       if (OrganizationalStructureObject == null)
+      {
         Position = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreatePosition (CurrentTransaction);
-
-      Position.Client = Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.GetObject (ClientID, CurrentTransaction);
+        Position.Client = Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.GetObject (ClientID, CurrentTransaction);
+      }
     }
 
     WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditPositionForm), "OrganizationalStructure/UI/EditPositionForm.aspx");

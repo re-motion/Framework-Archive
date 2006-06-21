@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rolle.
+        ///   Looks up a localized string similar to Stelle.
         /// </summary>
         internal static string auto_RolesField_FixedColumns_PositionNameItem_ColumnTitle {
             get {

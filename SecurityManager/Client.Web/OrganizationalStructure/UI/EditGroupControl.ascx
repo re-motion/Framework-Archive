@@ -52,7 +52,7 @@
   <tr>
     <td></td>
     <td>
-      &nbsp;<rubicon:BocList ID="ChildrenField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Children">
+      &nbsp;<rubicon:BocList ID="ChildrenField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Children" OnMenuItemClick="ChildrenField_MenuItemClick" Selection="Multiple">
         <FixedColumns>
           <rubicon:BocSimpleColumnDefinition ItemID="GroupNameItem" PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
@@ -60,13 +60,25 @@
             </PersistedCommand>
           </rubicon:BocSimpleColumnDefinition>
         </FixedColumns>
+        <ListMenuItems>
+          <rubicon:BocMenuItem ItemID="AddItem" Text="$res:Add">
+            <PersistedCommand>
+              <rubicon:BocMenuItemCommand />
+            </PersistedCommand>
+          </rubicon:BocMenuItem>
+          <rubicon:BocMenuItem ItemID="RemoveItem" RequiredSelection="OneOrMore" Text="$res:Remove">
+            <PersistedCommand>
+              <rubicon:BocMenuItemCommand />
+            </PersistedCommand>
+          </rubicon:BocMenuItem>
+        </ListMenuItems>
       </rubicon:BocList>
     </td>
   </tr>
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="RolesField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles">
+      <rubicon:BocList ID="RolesField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesField_MenuItemClick" Selection="Multiple">
         <FixedColumns>
           <rubicon:BocSimpleColumnDefinition ItemID="UserNameItem" PropertyPathIdentifier="User.DisplayName">
             <PersistedCommand>
@@ -79,6 +91,18 @@
             </PersistedCommand>
           </rubicon:BocSimpleColumnDefinition>
         </FixedColumns>
+        <ListMenuItems>
+          <rubicon:BocMenuItem ItemID="NewItem" Text="$res:New">
+            <PersistedCommand>
+              <rubicon:BocMenuItemCommand />
+            </PersistedCommand>
+          </rubicon:BocMenuItem>
+          <rubicon:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
+            <PersistedCommand>
+              <rubicon:BocMenuItemCommand />
+            </PersistedCommand>
+          </rubicon:BocMenuItem>
+        </ListMenuItems>
       </rubicon:BocList>
     </td>
   </tr>
