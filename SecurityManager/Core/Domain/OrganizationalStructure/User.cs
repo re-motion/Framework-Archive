@@ -40,6 +40,17 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (User) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
+    public static DomainObjectCollection GetByClientID (ObjectID clientID)
+    {
+      ClientTransaction clientTransaction = new ClientTransaction ();
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID");
+
+      query.Parameters.Add ("@clientID", clientID);
+
+      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+    }
+
     // member fields
 
     // construction and disposing
@@ -119,6 +130,24 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       }
 
       return roles;
+    }
+
+    public override string DisplayName
+    {
+      get { return GetFormattedName (); }
+    }
+
+    private string GetFormattedName ()
+    {
+      string formattedName = LastName;
+
+      if (!StringUtility.IsNullOrEmpty (FirstName))
+        formattedName += " " + FirstName;
+
+      if (!StringUtility.IsNullOrEmpty (Title))
+        formattedName += ", " + Title;
+
+      return formattedName;
     }
   }
 }

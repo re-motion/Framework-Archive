@@ -52,7 +52,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Client.Web"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core", "..\SecurityManager\Core\SecurityManager.Core.csproj", "{990B8638-A08F-4A94-B01A-E7DAEF089F27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core.Domain.Data.SetupDB", "..\SecurityManager\Domain.Data.SetupDB\SecurityManager.Core.Domain.Data.SetupDB.csproj", "{F9D890F8-EB08-4D58-BDFA-6C6540F15795}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Core.UnitTests", "..\SecurityManager\Core.UnitTests\SecurityManager.Core.UnitTests.csproj", "{65B86B2E-D54D-425B-B681-82449E31BA01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.Web", "..\Data\DomainObjects.Web\Rubicon.Data.DomainObjects.Web.csproj", "{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web", "..\ObjectBinding\Web\ObjectBinding.Web.csproj", "{390FBB93-A757-47A7-B769-A64A7465FF84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rubicon.Data.DomainObjects.ObjectBinding.Web", "..\Data\DomainObjects.ObjectBinding.Web\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj", "{9246E440-009C-44BE-A801-C66D8DE04A8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -144,10 +152,26 @@ Global
 		{990B8638-A08F-4A94-B01A-E7DAEF089F27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{990B8638-A08F-4A94-B01A-E7DAEF089F27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{990B8638-A08F-4A94-B01A-E7DAEF089F27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D890F8-EB08-4D58-BDFA-6C6540F15795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D890F8-EB08-4D58-BDFA-6C6540F15795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D890F8-EB08-4D58-BDFA-6C6540F15795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D890F8-EB08-4D58-BDFA-6C6540F15795}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65B86B2E-D54D-425B-B681-82449E31BA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65B86B2E-D54D-425B-B681-82449E31BA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65B86B2E-D54D-425B-B681-82449E31BA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65B86B2E-D54D-425B-B681-82449E31BA01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{390FBB93-A757-47A7-B769-A64A7465FF84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9246E440-009C-44BE-A801-C66D8DE04A8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

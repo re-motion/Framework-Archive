@@ -5,6 +5,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -34,6 +35,17 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public static new GroupType GetObject (ObjectID id, ClientTransaction clientTransaction, bool includeDeleted)
     {
       return (GroupType) DomainObject.GetObject (id, clientTransaction, includeDeleted);
+    }
+
+    public static DomainObjectCollection GetByClientID (ObjectID clientID)
+    {
+      ClientTransaction clientTransaction = new ClientTransaction ();
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindByClientID");
+
+      query.Parameters.Add ("@clientID", clientID);
+
+      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
 
     // member fields

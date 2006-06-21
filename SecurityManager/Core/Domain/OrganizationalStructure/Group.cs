@@ -39,6 +39,17 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Group) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
+    public static DomainObjectCollection GetByClientID (ObjectID clientID)
+    {
+      ClientTransaction clientTransaction = new ClientTransaction ();
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID");
+
+      query.Parameters.Add ("@clientID", clientID);
+
+      return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
+    }
+
     // member fields
 
     // construction and disposing
@@ -103,6 +114,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
       set { } // marks property AccessControlEntries as modifiable
+    }
+
+    public override string DisplayName
+    {
+      get { return string.Format ("{0} ({1})", ShortName, Name); }
     }
   }
 }

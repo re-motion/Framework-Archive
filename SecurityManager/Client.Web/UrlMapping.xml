@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlMapping
+    xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
+
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.EditUserFormFunction" resource="EditUser.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchUserFormFunction" resource="SearchUser.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.EditGroupTypeFormFunction" resource="EditGroupType.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchGroupTypeFormFunction" resource="SearchGroupType.wxe" />
+</urlMapping>
+

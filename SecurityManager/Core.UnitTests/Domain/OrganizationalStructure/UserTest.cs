@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects;
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   [TestFixture]
-  public class UserTest
+  public class UserTest : DomainTest
   {
     [Test]
     public void Find_ValidUser ()
@@ -60,6 +60,18 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       List<Role> roles = testUser.GetRolesForGroup (testgroup);
 
       Assert.AreEqual (2, roles.Count);
+    }
+
+    [Test]
+    public void Find_UsersByClientID ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateUsersWithDifferentClients ();
+      ClientTransaction transaction = new ClientTransaction ();
+
+      DomainObjectCollection users = User.GetByClientID (dbFixtures.CurrentClient.ID);
+
+      Assert.AreEqual (2, users.Count);
     }
   }
 }

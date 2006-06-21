@@ -66,6 +66,7 @@
     <Compile Include="Domain\Metadata\MetadataTestHelper.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTypeTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\UserTest.cs" />
     <Compile Include="SecurityServiceTest.cs" />

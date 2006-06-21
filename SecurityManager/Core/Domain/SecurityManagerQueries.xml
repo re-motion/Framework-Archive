@@ -25,4 +25,23 @@
       SELECT * FROM [Group] WHERE Name = @name;
     </statement>
   </query>
+
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [User] WHERE ClientID = @clientID ORDER BY LastName;
+    </statement>
+  </query>
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [Group] WHERE ClientID = @clientID ORDER BY Name;
+    </statement>
+  </query>
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [GroupType] WHERE ClientID = @clientID ORDER BY Name;
+    </statement>
+  </query>
 </queries>

@@ -30,20 +30,260 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="OrganizationalStructure\UI\EditUserForm.aspx" />
+    <Content Include="OrganizationalStructure\UI\NavigationTabs.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfoTemplate.cs" />
+    <Content Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\EditGroupTypeForm.aspx" />
+    <Content Include="OrganizationalStructure\UI\OrganizationalStructure.Master" />
+    <Content Include="OrganizationalStructure\UI\EditUserControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\SearchGroupTypeControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\SearchGroupTypeForm.aspx" />
+    <Content Include="OrganizationalStructure\UI\SearchUserControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\SearchUserForm.aspx" />
+    <Content Include="UrlMapping.xml" />
+    <Content Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="default.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditGroupTypeControlResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditGroupTypeControlResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditGroupTypeFormResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditGroupTypeFormResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditUserControlResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditUserControlResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditUserFormResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditUserFormResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\GlobalResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GlobalResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\SearchGroupTypeControlResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchGroupTypeControlResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\SearchGroupTypeFormResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchGroupTypeFormResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\SearchUserControlResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchUserControlResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\SearchUserFormResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SearchUserFormResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\Classes\BaseControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\Classes\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\Classes\BaseTransactedFunction.cs" />
+    <Compile Include="OrganizationalStructure\Classes\FormFunction.cs" />
+    <Compile Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx.cs">
+      <DependentUpon>EditGroupTypeControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx.designer.cs">
+      <DependentUpon>EditGroupTypeControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditGroupTypeForm.aspx.cs">
+      <DependentUpon>EditGroupTypeForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditGroupTypeForm.aspx.designer.cs">
+      <DependentUpon>EditGroupTypeForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditUserControl.ascx.cs">
+      <DependentUpon>EditUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditUserControl.ascx.designer.cs">
+      <DependentUpon>EditUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditUserForm.aspx.cs">
+      <DependentUpon>EditUserForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditUserForm.aspx.designer.cs">
+      <DependentUpon>EditUserForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\NavigationTabs.ascx.cs">
+      <DependentUpon>NavigationTabs.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\NavigationTabs.ascx.designer.cs">
+      <DependentUpon>NavigationTabs.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\OrganizationalStructure.Master.cs">
+      <DependentUpon>OrganizationalStructure.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\OrganizationalStructure.Master.designer.cs">
+      <DependentUpon>OrganizationalStructure.Master</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchGroupTypeControl.ascx.cs">
+      <DependentUpon>SearchGroupTypeControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchGroupTypeControl.ascx.designer.cs">
+      <DependentUpon>SearchGroupTypeControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchGroupTypeForm.aspx.cs">
+      <DependentUpon>SearchGroupTypeForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchGroupTypeForm.aspx.designer.cs">
+      <DependentUpon>SearchGroupTypeForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchUserControl.ascx.cs">
+      <DependentUpon>SearchUserControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchUserControl.ascx.designer.cs">
+      <DependentUpon>SearchUserControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchUserForm.aspx.cs">
+      <DependentUpon>SearchUserForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchUserForm.aspx.designer.cs">
+      <DependentUpon>SearchUserForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupTypeFormFunction.cs" />
+    <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupTypeFormFunction.cs" />
+    <Compile Include="OrganizationalStructure\WxeFunctions\SearchUserFormFunction.cs" />
+    <Compile Include="OrganizationalStructure\WxeFunctions\EditUserFormFunction.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{2AA369EC-A4E7-4D75-9101-EFA90E902625}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\DomainObjects.ObjectBinding.Web\Rubicon.Data.DomainObjects.ObjectBinding.Web.csproj">
+      <Project>{9246E440-009C-44BE-A801-C66D8DE04A8F}</Project>
+      <Name>Rubicon.Data.DomainObjects.ObjectBinding.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\DomainObjects.ObjectBinding\Rubicon.Data.DomainObjects.ObjectBinding.csproj">
+      <Project>{D06C0145-A94A-48AE-B186-BC3C8E8F3650}</Project>
+      <Name>Rubicon.Data.DomainObjects.ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\DomainObjects.Web\Rubicon.Data.DomainObjects.Web.csproj">
+      <Project>{9A8C29F9-8D50-457A-9730-57EB33C1D7CC}</Project>
+      <Name>Rubicon.Data.DomainObjects.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj">
+      <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
+      <Name>Rubicon.Data.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Core\ObjectBinding.csproj">
+      <Project>{FDCCDB1E-0962-41DA-99A1-2DB390C48748}</Project>
+      <Name>ObjectBinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObjectBinding\Web\ObjectBinding.Web.csproj">
+      <Project>{390FBB93-A757-47A7-B769-A64A7465FF84}</Project>
+      <Name>ObjectBinding.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.csproj">
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Name>Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\SecurityManager.Core.csproj">
+      <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
+      <Name>SecurityManager.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditGroupTypeControlResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupTypeControlResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditGroupTypeFormResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupTypeFormResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditUserControlResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditUserControlResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditUserFormResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditUserFormResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\GlobalResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GlobalResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\SearchGroupTypeControlResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchGroupTypeControlResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\SearchGroupTypeFormResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchGroupTypeFormResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\SearchUserControlResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchUserControlResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\SearchUserFormResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchUserFormResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ItemGroup>
+    <MappingFiles Include="..\Core\Domain\SecurityManagerMapping.xml" />
+    <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml" />
+    <MappingFiles Include="..\Core\Domain\SecurityManagerStorageProviders.xml" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -51,16 +291,18 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>3039</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/dev/libraries/Commons/trunk/SecurityManager/Client.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
         </WebProjectProperties>
       </FlavorProperties>

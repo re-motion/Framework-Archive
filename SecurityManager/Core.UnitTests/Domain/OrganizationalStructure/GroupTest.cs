@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects;
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
   [TestFixture]
-  public class GroupTest
+  public class GroupTest : DomainTest
   {
     [Test]
     public void Find_ValidGroup ()
@@ -32,6 +32,18 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       Group foundGroup = Group.Find (transaction, "NotExistingGroup");
 
       Assert.IsNull (foundGroup);
+    }
+
+    [Test]
+    public void Find_GroupsByClientID ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateGroupsWithDifferentClients ();
+      ClientTransaction transaction = new ClientTransaction ();
+
+      DomainObjectCollection groups = Group.GetByClientID (dbFixtures.CurrentClient.ID);
+
+      Assert.AreEqual (2, groups.Count);
     }
   }
 }

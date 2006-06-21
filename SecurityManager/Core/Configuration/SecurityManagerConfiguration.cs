@@ -10,6 +10,28 @@ namespace Rubicon.SecurityManager.Configuration
 {
   public class SecurityManagerConfiguration : ConfigurationSection
   {
+    private static SecurityManagerConfiguration s_current;
+
+    public static SecurityManagerConfiguration Current
+    {
+      get
+      {
+        if (s_current == null)
+        {
+          lock (typeof (SecurityManagerConfiguration))
+          {
+            if (s_current == null)
+            {
+              s_current = (SecurityManagerConfiguration) ConfigurationManager.GetSection ("rubicon.securityManager.domain");
+              if (s_current == null)
+                s_current = new SecurityManagerConfiguration ();
+            }
+          }
+        }
+
+        return s_current;
+      }
+    }
 
     private IOrganizationalStructureFactory _organizationalStructureFactory;
 
