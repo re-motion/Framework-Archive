@@ -41,7 +41,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       dbFixtures.CreateGroupsWithDifferentClients ();
       ClientTransaction transaction = new ClientTransaction ();
 
-      DomainObjectCollection groups = Group.GetByClientID (dbFixtures.CurrentClient.ID);
+      DomainObjectCollection groups = Group.FindByClientID (dbFixtures.CurrentClient.ID);
 
       Assert.AreEqual (2, groups.Count);
     }

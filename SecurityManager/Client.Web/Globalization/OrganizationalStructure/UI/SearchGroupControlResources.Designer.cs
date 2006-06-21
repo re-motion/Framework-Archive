@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EditUserControlResources {
+    internal class SearchGroupControlResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EditUserControlResources() {
+        internal SearchGroupControlResources() {
         }
         
         /// <summary>
@@ -39,8 +39,8 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI.EditU" +
-                            "serControlResources", typeof(EditUserControlResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI.Searc" +
+                            "hGroupControlResources", typeof(SearchGroupControlResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,29 +62,20 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gruppe.
+        ///   Looks up a localized string similar to Gruppen verwalten.
         /// </summary>
-        internal static string auto_RolesField_FixedColumns_GroupNameItem_ColumnTitle {
+        internal static string auto_GroupListLabel_Text {
             get {
-                return ResourceManager.GetString("auto:RolesField:FixedColumns:GroupNameItem:ColumnTitle", resourceCulture);
+                return ResourceManager.GetString("auto:GroupListLabel:Text", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rolle.
+        ///   Looks up a localized string similar to Neuen Gruppe anlegen.
         /// </summary>
-        internal static string auto_RolesField_FixedColumns_PositionNameItem_ColumnTitle {
+        internal static string auto_NewGroupButton_Text {
             get {
-                return ResourceManager.GetString("auto:RolesField:FixedColumns:PositionNameItem:ColumnTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Benutzer bearbeiten.
-        /// </summary>
-        internal static string auto_UserLabel_Text {
-            get {
-                return ResourceManager.GetString("auto:UserLabel:Text", resourceCulture);
+                return ResourceManager.GetString("auto:NewGroupButton:Text", resourceCulture);
             }
         }
     }

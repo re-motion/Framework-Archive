@@ -24,6 +24,11 @@
         <rubicon:NavigationCommand HrefCommand-Href="SearchGroupType.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid" />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
+    <rubicon:MainMenuTab ItemID="GroupTab" Text="$res:Group">
+      <PersistedCommand>
+        <rubicon:NavigationCommand HrefCommand-Href="SearchGroup.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid" />
+      </PersistedCommand>
+    </rubicon:MainMenuTab>  
   </Tabs>
 </rubicon:TabbedMenu>
  

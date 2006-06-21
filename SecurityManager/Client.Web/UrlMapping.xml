@@ -8,5 +8,7 @@
   <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchUserFormFunction" resource="SearchUser.wxe" />
   <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.EditGroupTypeFormFunction" resource="EditGroupType.wxe" />
   <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchGroupTypeFormFunction" resource="SearchGroupType.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.EditGroupFormFunction" resource="EditGroup.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchGroupFormFunction" resource="SearchGroup.wxe" />
 </urlMapping>
 

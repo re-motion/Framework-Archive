@@ -10,16 +10,16 @@
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI {
     
-    public partial class EditUserControl {
+    public partial class EditGroupControl {
         protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
         protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
         protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-        protected Rubicon.Web.UI.Controls.SmartLabel UserLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue UserNameField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue TitleField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue FirstnameField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue LastNameField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue GroupField;
+        protected Rubicon.Web.UI.Controls.SmartLabel GroupLabel;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue ShortName;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue GroupTypeField;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue ParentField;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ChildrenField;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocList RolesField;
     }
 }

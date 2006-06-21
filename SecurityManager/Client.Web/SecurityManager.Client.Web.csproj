@@ -44,10 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfoTemplate.cs" />
+    <Content Include="OrganizationalStructure\UI\EditGroupControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\EditGroupForm.aspx" />
     <Content Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx" />
     <Content Include="OrganizationalStructure\UI\EditGroupTypeForm.aspx" />
     <Content Include="OrganizationalStructure\UI\OrganizationalStructure.Master" />
     <Content Include="OrganizationalStructure\UI\EditUserControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\SearchGroupControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\SearchGroupForm.aspx" />
     <Content Include="OrganizationalStructure\UI\SearchGroupTypeControl.ascx" />
     <Content Include="OrganizationalStructure\UI\SearchGroupTypeForm.aspx" />
     <Content Include="OrganizationalStructure\UI\SearchUserControl.ascx" />
@@ -63,6 +67,26 @@
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditGroupControlResources.Designer.cs">
+      <DependentUpon>EditGroupControlResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\EditGroupFormResources.Designer.cs">
+      <DependentUpon>EditGroupFormResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\SearchGroupControlResources.Designer.cs">
+      <DependentUpon>SearchGroupControlResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Globalization\OrganizationalStructure\UI\SearchGroupFormResources.Designer.cs">
+      <DependentUpon>SearchGroupFormResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Globalization\OrganizationalStructure\UI\EditGroupTypeControlResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -117,6 +141,20 @@
     </Compile>
     <Compile Include="OrganizationalStructure\Classes\BaseTransactedFunction.cs" />
     <Compile Include="OrganizationalStructure\Classes\FormFunction.cs" />
+    <Compile Include="OrganizationalStructure\UI\EditGroupControl.ascx.cs">
+      <DependentUpon>EditGroupControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditGroupControl.ascx.designer.cs">
+      <DependentUpon>EditGroupControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditGroupForm.aspx.cs">
+      <DependentUpon>EditGroupForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\EditGroupForm.aspx.designer.cs">
+      <DependentUpon>EditGroupForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx.cs">
       <DependentUpon>EditGroupTypeControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -159,6 +197,20 @@
     <Compile Include="OrganizationalStructure\UI\OrganizationalStructure.Master.designer.cs">
       <DependentUpon>OrganizationalStructure.Master</DependentUpon>
     </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchGroupControl.ascx.cs">
+      <DependentUpon>SearchGroupControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchGroupControl.ascx.designer.cs">
+      <DependentUpon>SearchGroupControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchGroupForm.aspx.cs">
+      <DependentUpon>SearchGroupForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchGroupForm.aspx.designer.cs">
+      <DependentUpon>SearchGroupForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OrganizationalStructure\UI\SearchGroupTypeControl.ascx.cs">
       <DependentUpon>SearchGroupTypeControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -187,7 +239,9 @@
     <Compile Include="OrganizationalStructure\UI\SearchUserForm.aspx.designer.cs">
       <DependentUpon>SearchUserForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupTypeFormFunction.cs" />
+    <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupTypeFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\SearchUserFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditUserFormFunction.cs" />
@@ -231,6 +285,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditGroupControlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupControlResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditGroupFormResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditGroupFormResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\SearchGroupControlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchGroupControlResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\SearchGroupFormResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SearchGroupFormResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\OrganizationalStructure\UI\EditGroupTypeControlResources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>

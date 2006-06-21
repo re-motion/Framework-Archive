@@ -20,4 +20,32 @@
       </rubicon:BocTextValue>
     </td>
   </tr>
+  <tr>
+    <td></td>
+    <td>
+      <rubicon:BocList ID="GroupsField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Groups">
+        <FixedColumns>
+          <rubicon:BocSimpleColumnDefinition ItemID="GroupNameItem" PropertyPathIdentifier="DisplayName">
+            <PersistedCommand>
+              <rubicon:BocListItemCommand />
+            </PersistedCommand>
+          </rubicon:BocSimpleColumnDefinition>
+        </FixedColumns>
+      </rubicon:BocList>
+    </td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>
+      <rubicon:BocList ID="ConcretePositionsField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ConcretePositions">
+        <FixedColumns>
+          <rubicon:BocSimpleColumnDefinition ItemID="ConcretePositionNameItem" PropertyPathIdentifier="Name">
+            <PersistedCommand>
+              <rubicon:BocListItemCommand />
+            </PersistedCommand>
+          </rubicon:BocSimpleColumnDefinition>
+        </FixedColumns>
+      </rubicon:BocList>
+    </td>
+  </tr>
 </table>

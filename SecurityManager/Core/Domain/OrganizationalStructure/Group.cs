@@ -39,7 +39,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Group) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
-    public static DomainObjectCollection GetByClientID (ObjectID clientID)
+    public static DomainObjectCollection FindByClientID (ObjectID clientID)
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
 
@@ -112,7 +112,13 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     public override string DisplayName
     {
-      get { return string.Format ("{0} ({1})", ShortName, Name); }
+      get 
+      { 
+        if (StringUtility.IsNullOrEmpty (ShortName))
+          return Name; 
+        else
+          return string.Format ("{0} ({1})", ShortName, Name); 
+      }
     }
   }
 }

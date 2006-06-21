@@ -62,6 +62,24 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stellen.
+        /// </summary>
+        internal static string auto_ConcretePositionsField_FixedColumns_ConcretePositionNameItem_ColumnTitle {
+            get {
+                return ResourceManager.GetString("auto:ConcretePositionsField:FixedColumns:ConcretePositionNameItem:ColumnTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gruppe.
+        /// </summary>
+        internal static string auto_GroupsField_FixedColumns_GroupNameItem_ColumnTitle {
+            get {
+                return ResourceManager.GetString("auto:GroupsField:FixedColumns:GroupNameItem:ColumnTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Struktureinheit bearbeiten.
         /// </summary>
         internal static string auto_GroupTypeLabel_Text {

@@ -37,7 +37,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (GroupType) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
-    public static DomainObjectCollection GetByClientID (ObjectID clientID)
+    public static DomainObjectCollection FindByClientID (ObjectID clientID)
     {
       ClientTransaction clientTransaction = new ClientTransaction ();
 
@@ -94,6 +94,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
       set { } // marks property AccessControlEntries as modifiable
+    }
+
+    public override string DisplayName
+    {
+      get { return Name; }
     }
   }
 }

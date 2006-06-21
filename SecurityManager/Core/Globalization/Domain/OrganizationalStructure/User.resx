@@ -116,4 +116,7 @@
   <data name="property:Group" xml:space="preserve">
     <value>Gruppe</value>
   </data>
+  <data name="property:Roles" xml:space="preserve">
+    <value>Rollen</value>
+  </data>
 </root>

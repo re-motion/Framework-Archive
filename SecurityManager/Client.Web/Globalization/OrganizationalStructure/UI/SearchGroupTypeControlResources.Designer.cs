@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Struktureinheit verwalten.
+        ///   Looks up a localized string similar to Struktureinheiten verwalten.
         /// </summary>
         internal static string auto_GroupTypeListLabel_Text {
             get {

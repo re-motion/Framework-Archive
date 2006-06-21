@@ -10,13 +10,12 @@
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI {
     
-    public partial class EditGroupTypeControl {
-        protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+    public partial class SearchGroupControl {
         protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+        protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
         protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-        protected Rubicon.Web.UI.Controls.SmartLabel GroupTypeLabel;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList GroupsField;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList ConcretePositionsField;
+        protected Rubicon.Web.UI.Controls.SmartLabel GroupListLabel;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList GroupList;
+        protected Rubicon.Web.UI.Controls.WebButton NewGroupButton;
     }
 }

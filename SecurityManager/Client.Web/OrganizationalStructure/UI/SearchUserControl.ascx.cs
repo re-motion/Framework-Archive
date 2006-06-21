@@ -42,7 +42,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 
     protected void Page_Load (object sender, EventArgs e)
     {
-      UserList.LoadUnboundValue (User.GetByClientID (CurrentFunction.ClientID), false);
+      UserList.LoadUnboundValue (User.FindByClientID (CurrentFunction.ClientID), false);
     }
 
     protected void UserList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
@@ -56,7 +56,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       else
       {
         if (!((EditUserFormFunction) Page.ReturningFunction).HasUserCancelled)
-          UserList.LoadUnboundValue (User.GetByClientID (CurrentFunction.ClientID), false);
+          UserList.LoadUnboundValue (User.FindByClientID (CurrentFunction.ClientID), false);
       }
     }
 
@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       else
       {
         if (!((EditUserFormFunction) Page.ReturningFunction).HasUserCancelled)
-          UserList.LoadUnboundValue (User.GetByClientID (CurrentFunction.ClientID), false);
+          UserList.LoadUnboundValue (User.FindByClientID (CurrentFunction.ClientID), false);
       }
     }
   }
