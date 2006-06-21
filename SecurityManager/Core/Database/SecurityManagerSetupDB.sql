@@ -257,6 +257,7 @@ CREATE TABLE [AccessTypeReference]
   -- AccesTypeReference columns
   [SecurableClassID] uniqueidentifier NULL,
   [AccessTypeID] uniqueidentifier NULL,
+  [AccessTypeIDClassID] varchar (100) NULL,
 
   CONSTRAINT [PK_AccessTypeReference] PRIMARY KEY CLUSTERED ([ID])
 )

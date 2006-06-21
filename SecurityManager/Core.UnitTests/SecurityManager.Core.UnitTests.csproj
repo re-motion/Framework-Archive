@@ -73,7 +73,9 @@
     <Compile Include="SecurityServiceTest.cs" />
     <Compile Include="TestDomain\AbstractRoles.cs" />
     <Compile Include="TestDomain\Order.cs" />
+    <Compile Include="TestDomain\PremiumOrder.cs" />
     <Compile Include="TestDomain\SecurityStates.cs" />
+    <Compile Include="TestDomain\SpecialOrder.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Core.UnitTests.build" />
   </ItemGroup>

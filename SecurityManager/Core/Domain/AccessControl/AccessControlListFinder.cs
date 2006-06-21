@@ -5,6 +5,7 @@ using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Security;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects;
+using System.Collections;
 
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
@@ -27,18 +28,37 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);
       ArgumentUtility.CheckNotNull ("context", context);
 
-      StateCombination foundStateCombination = classDefinition.FindStateCombination (GetStates (classDefinition, context));
+      StateCombination foundStateCombination = null;
+
+      while (foundStateCombination == null && classDefinition != null)
+      {
+        foundStateCombination = FindStateCombination (classDefinition, context);
+        classDefinition = classDefinition.BaseClass;
+      }
+
+      if (foundStateCombination == null)
+        throw CreateAccessControlException ("The ACL for the class '{0}' could not be found.", context.Class);
+
       return foundStateCombination.AccessControlList;
     }
 
-    private List<StateDefinition> GetStates (SecurableClassDefinition classDefinition, SecurityContext context)
+    private StateCombination FindStateCombination (SecurableClassDefinition classDefinition, SecurityContext context)
+    {
+      List<StateDefinition> states = GetStates (classDefinition.StateProperties, context);
+      if (states == null)
+        return null;
+
+      return classDefinition.FindStateCombination (states);
+    }
+
+    private List<StateDefinition> GetStates (IList stateProperties, SecurityContext context)
     {
       List<StateDefinition> states = new List<StateDefinition> ();
 
       if (context.IsStateless)
         return states;
 
-      foreach (StatePropertyDefinition property in classDefinition.StateProperties)
+      foreach (StatePropertyDefinition property in stateProperties)
       {
         if (!context.ContainsState (property.Name))
           throw CreateAccessControlException ("The state '{0}' is missing in the security context.", property.Name);
@@ -47,15 +67,15 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
         if (!property.ContainsState (enumWrapper.Name))
         {
-          throw CreateAccessControlException ("The state '{0}' is not defined for the property '{1}' of securable class '{2}'.",
-              enumWrapper.Name, property.Name, classDefinition.Name);
+          throw CreateAccessControlException ("The state '{0}' is not defined for the property '{1}' of the securable class '{2}' or its base classes.",
+              enumWrapper.Name, property.Name, context.Class);
         }
 
         states.Add (property.GetState (enumWrapper.Name));
       }
 
-      if (context.GetNumberOfStates () > classDefinition.StateProperties.Count)
-        throw CreateAccessControlException ("The security context contains at least one state not defined by securable class '{0}'.", classDefinition.Name);
+      if (context.GetNumberOfStates () > stateProperties.Count)
+        return null;
 
       return states;
     }

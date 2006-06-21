@@ -35,6 +35,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return CreateClassDefinition ("Rubicon.SecurityManager.UnitTests.TestDomain.Order");
     }
 
+    public SecurableClassDefinition CreateSpecialOrderClassDefinition (SecurableClassDefinition orderClassDefinition)
+    {
+      return CreateClassDefinition ("Rubicon.SecurityManager.UnitTests.TestDomain.SpecialOrder", orderClassDefinition);
+    }
+
+    public SecurableClassDefinition CreatePremiumOrderClassDefinition (SecurableClassDefinition orderClassDefinition)
+    {
+      return CreateClassDefinition ("Rubicon.SecurityManager.UnitTests.TestDomain.PremiumOrder", orderClassDefinition);
+    }
+
     public SecurableClassDefinition CreateInvoiceClassDefinition ()
     {
       return CreateClassDefinition ("Rubicon.SecurityManager.UnitTests.TestDomain.Invoice");
@@ -42,8 +52,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     public SecurableClassDefinition CreateClassDefinition (string name)
     {
+      return CreateClassDefinition (name, null);
+    }
+
+    public SecurableClassDefinition CreateClassDefinition (string name, SecurableClassDefinition baseClass)
+    {
       SecurableClassDefinition classDefinition = new SecurableClassDefinition (_transaction);
       classDefinition.Name = name;
+      classDefinition.BaseClass = baseClass;
 
       return classDefinition;
     }
@@ -109,6 +125,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return paymentStateProperty;
     }
 
+    public StatePropertyDefinition CreateDeliveryStateProperty (SecurableClassDefinition classDefinition)
+    {
+      StatePropertyDefinition deliveryStateProperty = CreateStateProperty ("Delivery");
+      deliveryStateProperty.AddState ("Dhl", 0);
+      deliveryStateProperty.AddState ("Post", 1);
+      classDefinition.AddStateProperty (deliveryStateProperty);
+
+      return deliveryStateProperty;
+    }
+
     public List<StateCombination> CreateStateCombinationsForOrder ()
     {
       SecurableClassDefinition orderClass = CreateOrderClassDefinition ();
@@ -142,7 +168,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return stateCombinations[4];
     }
 
-    public List<AccessControlList> CreateAcls (SecurableClassDefinition classDefinition)
+    public List<AccessControlList> CreateAclsForOrderAndPaymentStates (SecurableClassDefinition classDefinition)
     {
       StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
       StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
@@ -157,15 +183,41 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return acls;
     }
 
+    public List<AccessControlList> CreateAclsForOrderAndPaymentAndDeliveryStates (SecurableClassDefinition classDefinition)
+    {
+      StatePropertyDefinition orderState = CreateOrderStateProperty (classDefinition);
+      StatePropertyDefinition paymentState = CreatePaymentStateProperty (classDefinition);
+      StatePropertyDefinition deliveryState = CreateDeliveryStateProperty (classDefinition);
+
+      List<AccessControlList> acls = new List<AccessControlList> ();
+      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"], deliveryState["Dhl"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"], deliveryState["Dhl"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"], deliveryState["Dhl"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"], deliveryState["Dhl"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["None"], deliveryState["Post"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Received"], paymentState["Paid"], deliveryState["Post"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["None"], deliveryState["Post"]));
+      acls.Add (CreateAcl (classDefinition, orderState["Delivered"], paymentState["Paid"], deliveryState["Post"]));
+      acls.Add (CreateAcl (classDefinition));
+
+      return acls;
+    }
+
+    public AccessControlList GetAclForDeliveredAndUnpaidAndDhlStates (SecurableClassDefinition classDefinition)
+    {
+      List<AccessControlList> acls = CreateAclsForOrderAndPaymentAndDeliveryStates (classDefinition);
+      return acls[2];
+    }
+
     public AccessControlList GetAclForDeliveredAndUnpaidStates (SecurableClassDefinition classDefinition)
     {
-      List<AccessControlList> acls = CreateAcls (classDefinition);
+      List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
       return acls[2];
     }
 
     public AccessControlList GetAclForStateless (SecurableClassDefinition classDefinition)
     {
-      List<AccessControlList> acls = CreateAcls (classDefinition);
+      List<AccessControlList> acls = CreateAclsForOrderAndPaymentStates (classDefinition);
       return acls[4];
     }
 

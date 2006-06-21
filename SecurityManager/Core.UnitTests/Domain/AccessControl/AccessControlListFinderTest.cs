@@ -66,7 +66,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Find_SecurityContextDoesNotContainAllStates ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
-      _testHelper.CreateAcls (classDefinition);
+      _testHelper.CreateAclsForOrderAndPaymentStates (classDefinition);
       SecurityContext context = CreateContextWithoutPaymentState ();
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
@@ -74,11 +74,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The state 'None' is not defined for the property 'State' of securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order'.")]
+    [ExpectedException (typeof (AccessControlException),
+        "The state 'None' is not defined for the property 'State' of the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' or its base classes.")]
     public void Find_SecurityContextContainsStateWithInvalidValue ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
-      _testHelper.CreateAcls (classDefinition);
+      _testHelper.CreateAclsForOrderAndPaymentStates (classDefinition);
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("State", PaymentState.None);
       SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
@@ -88,11 +89,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (AccessControlException), "The security context contains at least one state not defined by securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order'.")]
+    [ExpectedException (typeof (AccessControlException),
+        "The ACL for the class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' could not be found.")]
     public void Find_SecurityContextContainsInvalidState ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
-      _testHelper.CreateAcls (classDefinition);
+      _testHelper.CreateAclsForOrderAndPaymentStates (classDefinition);
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("State", OrderState.Delivered);
       states.Add ("Payment", PaymentState.None);
@@ -100,7 +102,67 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityContext context = new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
 
       AccessControlListFinder aclFinder = new AccessControlListFinder ();
-      aclFinder.Find (classDefinition, context);
+      AccessControlList acl = aclFinder.Find (classDefinition, context);
+
+      Assert.IsNull (acl);
+    }
+
+    [Test]
+    public void Find_DerivedClassDefinitionWithPropertiesInBaseClass ()
+    {
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition specialOrderClass = _testHelper.CreateSpecialOrderClassDefinition (orderClass);
+      AccessControlList acl = _testHelper.GetAclForDeliveredAndUnpaidStates (orderClass);
+      SecurityContext context = CreateContextForDeliveredAndUnpaidOrder (typeof (SpecialOrder));
+
+      AccessControlListFinder aclFinder = new AccessControlListFinder ();
+      AccessControlList foundAcl = aclFinder.Find (specialOrderClass, context);
+
+      Assert.AreSame (acl, foundAcl);
+    }
+
+    [Test]
+    public void Find_DerivedClassDefinitionWithSameProperties ()
+    {
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition specialOrderClass = _testHelper.CreateSpecialOrderClassDefinition (orderClass);
+      AccessControlList aclForOrder = _testHelper.GetAclForDeliveredAndUnpaidStates (orderClass);
+      AccessControlList aclForSpecialOrder = _testHelper.GetAclForDeliveredAndUnpaidStates (specialOrderClass);
+      SecurityContext context = CreateContextForDeliveredAndUnpaidOrder (typeof (SpecialOrder));
+
+      AccessControlListFinder aclFinder = new AccessControlListFinder ();
+      AccessControlList foundAcl = aclFinder.Find (specialOrderClass, context);
+
+      Assert.AreSame (aclForSpecialOrder, foundAcl);
+    }
+
+    [Test]
+    public void Find_DerivedClassDefinitionWithAdditionalProperty ()
+    {
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition premiumOrderClass = _testHelper.CreatePremiumOrderClassDefinition (orderClass);
+      AccessControlList aclForOrder = _testHelper.GetAclForDeliveredAndUnpaidStates (orderClass);
+      AccessControlList aclForPremiumOrder = _testHelper.GetAclForDeliveredAndUnpaidAndDhlStates (premiumOrderClass);
+      SecurityContext context = CreateContextForDeliveredAndUnpaidAndDhlOrder (typeof (SpecialOrder));
+
+      AccessControlListFinder aclFinder = new AccessControlListFinder ();
+      AccessControlList foundAcl = aclFinder.Find (premiumOrderClass, context);
+
+      Assert.AreSame (aclForPremiumOrder, foundAcl);
+    }
+
+    [Test]
+    [ExpectedException (typeof (AccessControlException), "The state 'Delivery' is missing in the security context.")]
+    public void Find_DerivedClassDefinitionWithAdditionalPropertyAndWrongSecurityContext ()
+    {
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition premiumOrderClass = _testHelper.CreatePremiumOrderClassDefinition (orderClass);
+      AccessControlList aclForOrder = _testHelper.GetAclForDeliveredAndUnpaidStates (orderClass);
+      AccessControlList aclForPremiumOrder = _testHelper.GetAclForDeliveredAndUnpaidAndDhlStates (premiumOrderClass);
+      SecurityContext context = CreateContextForDeliveredAndUnpaidOrder (typeof (SpecialOrder));
+
+      AccessControlListFinder aclFinder = new AccessControlListFinder ();
+      aclFinder.Find (premiumOrderClass, context);
     }
 
     private SecurityContext CreateStatelessContext ()
@@ -110,11 +172,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private SecurityContext CreateContextForDeliveredAndUnpaidOrder ()
     {
+      return CreateContextForDeliveredAndUnpaidOrder (typeof (Order));
+    }
+
+    private SecurityContext CreateContextForDeliveredAndUnpaidOrder (Type type)
+    {
       Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
       states.Add ("State", OrderState.Delivered);
       states.Add ("Payment", PaymentState.None);
 
-      return new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
+      return new SecurityContext (type, "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
+    }
+
+    private SecurityContext CreateContextForDeliveredAndUnpaidAndDhlOrder (Type type)
+    {
+      Dictionary<string, Enum> states = new Dictionary<string, Enum> ();
+      states.Add ("State", OrderState.Delivered);
+      states.Add ("Payment", PaymentState.None);
+      states.Add ("Delivery", Delivery.Dhl);
+
+      return new SecurityContext (type, "owner", "ownerGroup", "ownerClient", states, new Enum[0]);
     }
 
     private SecurityContext CreateContextWithoutPaymentState ()

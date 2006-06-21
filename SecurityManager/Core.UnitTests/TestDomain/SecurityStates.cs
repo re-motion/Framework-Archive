@@ -19,4 +19,11 @@ namespace Rubicon.SecurityManager.UnitTests.TestDomain
     None,
     Paid
   }
+
+  [SecurityState]
+  public enum Delivery
+  {
+    Dhl,
+    Post
+  }
 }

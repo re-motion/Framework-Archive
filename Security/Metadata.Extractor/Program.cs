@@ -32,9 +32,7 @@ namespace Rubicon.Security.Metadata.Extractor
       {
         MetadataExtractor extractor = new MetadataExtractor (new MetadataToXmlConverter ());
 
-        foreach (string assemblyName in arguments.DomainAssemblyName)
-          extractor.AddAssembly (assemblyName);
-
+        extractor.AddAssembly (arguments.DomainAssemblyName);
         extractor.Save (arguments.MetadataOutputFile);
       }
       catch (Exception e)
