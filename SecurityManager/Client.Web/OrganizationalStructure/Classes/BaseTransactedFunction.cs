@@ -18,7 +18,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
     // types
 
     // static members and constants
-    private const string c_ClientID = "00000001-0000-0000-0000-000000000001";
+
     // member fields
 
     // construction and disposing
@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
       Initialize ();
     }
 
-    public BaseTransactedFunction (params object[] args)
+    protected BaseTransactedFunction (params object[] args)
       : base (args)
     {
       Initialize ();
@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
     [WxeParameter (1, true, WxeParameterDirection.In)]
     public ObjectID ClientID
     {
-      get { return new ObjectID (typeof (Rubicon.SecurityManager.Domain.OrganizationalStructure.Client), new Guid (c_ClientID)); }
+      get { return (ObjectID) Variables["ClientID"]; }
       set { Variables["ClientID"] = value; }
     }
 

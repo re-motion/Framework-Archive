@@ -12,26 +12,26 @@
   </tr>
 </table>
           
-<rubicon:TabbedMenu ID="TabbedMenu" runat="server" >
+<Rubicon:TabbedMenu ID="TabbedMenu" runat="server" >
   <Tabs>
     <rubicon:MainMenuTab ItemID="UserTab" Text="$res:User">
       <PersistedCommand>
-        <rubicon:NavigationCommand HrefCommand-Href="SearchUser.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid" />
+        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="SearchUser" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
     <rubicon:MainMenuTab ItemID="GroupTab" Text="$res:Group">
       <PersistedCommand>
-        <rubicon:NavigationCommand HrefCommand-Href="SearchGroup.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid" />
+        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="SearchGroup" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
     <rubicon:MainMenuTab ItemID="PositionTab" Text="$res:Position">
       <PersistedCommand>
-        <rubicon:NavigationCommand HrefCommand-Href="SearchPosition.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid" />
+        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="SearchPosition" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
     <rubicon:MainMenuTab ItemID="GroupTypeTab" Text="$res:GroupType">
       <PersistedCommand>
-        <rubicon:NavigationCommand HrefCommand-Href="SearchGroupType.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid" />
+        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="SearchGroupType" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
   </Tabs>

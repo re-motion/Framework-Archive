@@ -17,6 +17,7 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects;
 using Rubicon.NullableValueTypes;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
@@ -42,27 +43,26 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       get { return (EditRoleFormFunction) base.CurrentFunction; }
     }
 
-    public override Control FocusControl
+    public override IFocusableControl InitialFocusControl
     {
-      get { return GroupField; }
+      get { return UserField; }
     }
 
-    protected void Page_Load (object sender, EventArgs e)
+    protected override void OnLoad (EventArgs e)
     {
-      CurrentObject.BusinessObject = CurrentFunction.Role;
-      CurrentObject.LoadValues (IsPostBack);
+      base.OnLoad (e);
 
-      if (CurrentFunction.Role.User != null)
+      if (CurrentFunction.User != null)
         UserField.ReadOnly = NaBoolean.True;
       else
         FillUserField ();
 
-      if (CurrentFunction.Role.Group != null)
+      if (CurrentFunction.Group != null)
         GroupField.ReadOnly = NaBoolean.True;
       else
         FillGroupField ();
 
-      if (CurrentFunction.Role.Position != null)
+      if (CurrentFunction.Position != null)
         PositionField.ReadOnly = NaBoolean.True;
       else
         FillPositionField ();

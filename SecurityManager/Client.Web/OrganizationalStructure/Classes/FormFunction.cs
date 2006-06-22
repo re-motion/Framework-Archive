@@ -27,7 +27,8 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
     {
     }
 
-    public FormFunction(params object[] args) : base(args)
+    protected FormFunction (params object[] args)
+      : base (args)
     {
     }
 

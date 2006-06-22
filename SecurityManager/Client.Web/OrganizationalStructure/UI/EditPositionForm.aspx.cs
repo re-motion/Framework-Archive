@@ -12,11 +12,12 @@ using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes;
 using Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
   [WebMultiLingualResources (typeof (EditPositionFormResources))]
-  public partial class EditPositionForm : BasePage
+  public partial class EditPositionForm : BaseEditPage
   {
 
     // types
@@ -28,38 +29,27 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     // construction and disposing
 
     // methods and properties
-    protected override Control FocusControl
+    protected override IFocusableControl InitialFocusControl
     {
-      get { return EditPositionControl.FocusControl; }
+      get { return EditPositionControl.InitialFocusControl; }
     }
 
-    protected void Page_Load (object sender, EventArgs e)
+    protected override void OnLoad (EventArgs e)
     {
+      RegisterDataEditUserControl (EditPositionControl);
       ErrorsOnPageLabel.Text = GlobalResources.ErrorMessage;
+
+      base.OnLoad (e);
     }
 
-    protected void SaveButton_Click (object sender, EventArgs e)
+    protected override void ShowErrors ()
     {
-      if (EditPositionControl.Validate ())
-      {
-        SaveData ();
-        CurrentFunction.CurrentTransaction.Commit ();
-
-        ExecuteNextStep ();
-      }
-      else
-      {
-        ErrorsOnPageLabel.Visible = true;
-      }
-    }
-
-    private void SaveData ()
-    {
-      EditPositionControl.SaveValues (false);
+      ErrorsOnPageLabel.Visible = true;
     }
 
     protected void CancelButton_Click (object sender, EventArgs e)
     {
+      CurrentFunction.CurrentTransaction.Rollback ();
       throw new WxeUserCancelException ();
     }
   }

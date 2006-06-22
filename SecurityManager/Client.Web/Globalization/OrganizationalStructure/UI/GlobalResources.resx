@@ -126,8 +126,11 @@
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>Schließen</value>
+  <data name="Apply" xml:space="preserve">
+    <value>Übernehmen</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
     <value>Diese Seite enthält ungültige Eingaben (markiert durch rote Rufzeichen).</value>

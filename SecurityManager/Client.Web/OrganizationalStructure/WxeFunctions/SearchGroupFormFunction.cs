@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
     }
 
-    public SearchGroupFormFunction (params object[] args)
+    protected SearchGroupFormFunction (params object[] args)
       : base (args)
     {
     }

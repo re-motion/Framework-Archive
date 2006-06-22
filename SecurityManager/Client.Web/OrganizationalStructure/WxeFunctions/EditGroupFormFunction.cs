@@ -31,7 +31,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
     }
 
-    public EditGroupFormFunction (params object[] args)
+    protected EditGroupFormFunction (params object[] args)
       : base (args)
     {
     }

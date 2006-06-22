@@ -30,7 +30,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
     }
 
-    public SearchPositionFormFunction (params object[] args)
+    protected SearchPositionFormFunction (params object[] args)
       : base (args)
     {
     }

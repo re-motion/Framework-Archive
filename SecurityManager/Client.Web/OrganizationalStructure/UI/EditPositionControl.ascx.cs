@@ -17,6 +17,7 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using System.Collections.Generic;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
@@ -42,15 +43,9 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       get { return (EditPositionFormFunction) base.CurrentFunction; }
     }
 
-    public override Control FocusControl
+    public override IFocusableControl InitialFocusControl
     {
       get { return NameField; }
-    }
-
-    protected void Page_Load (object sender, EventArgs e)
-    {
-      CurrentObject.BusinessObject = CurrentFunction.Position;
-      CurrentObject.LoadValues (IsPostBack);
     }
 
     public override bool Validate ()
@@ -68,15 +63,31 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       {
         if (!Page.IsReturningPostBack)
         {
-          Role role = new Role (CurrentFunction.CurrentTransaction);
-          role.Position = CurrentFunction.Position;
+          EditRole (null, null, null, CurrentFunction.Position);
+        }
+        else
+        {
+          EditRoleFormFunction returningFunction = (EditRoleFormFunction) Page.ReturningFunction;
 
-          EditRoleFormFunction editRoleFormFunction = new EditRoleFormFunction (CurrentFunction.ClientID, role.ID);
-          editRoleFormFunction.TransactionMode = WxeTransactionMode.None;
-          Page.ExecuteFunction (editRoleFormFunction);
+          if (!returningFunction.HasUserCancelled)
+            RolesField.IsDirty = true;
         }
       }
 
+      if (e.Item.ItemID == "EditItem")
+      {
+        if (!Page.IsReturningPostBack)
+        {
+          EditRole ((Role) RolesField.GetSelectedBusinessObjects ()[0], null, null, CurrentFunction.Position);
+        }
+        else
+        {
+          EditRoleFormFunction returningFunction = (EditRoleFormFunction) Page.ReturningFunction;
+
+          if (!returningFunction.HasUserCancelled)
+            RolesField.IsDirty = true;
+        }
+      }
       if (e.Item.ItemID == "DeleteItem")
       {
         foreach (Role role in RolesField.GetSelectedBusinessObjects ())
@@ -84,9 +95,18 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
           RolesField.RemoveRow (role);
           role.Delete ();
         }
-
-        RolesField.ClearSelectedRows ();
       }
+
+      RolesField.ClearSelectedRows ();
+    }
+
+    private void EditRole (Role role, User user, Group group, Position position)
+    {
+      EditRoleFormFunction editRoleFormFunction = new EditRoleFormFunction (
+          CurrentFunction.ClientID, role == null ? null : role.ID, user, group, position);
+
+      editRoleFormFunction.TransactionMode = WxeTransactionMode.None;
+      Page.ExecuteFunction (editRoleFormFunction);
     }
 
     protected void ConcretePositionsField_MenuItemClick (object sender, Rubicon.Web.UI.Controls.WebMenuItemClickEventArgs e)
@@ -95,14 +115,30 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       {
         if (!Page.IsReturningPostBack)
         {
-          ConcretePosition concretePosition = new ConcretePosition (CurrentFunction.CurrentTransaction);
-          concretePosition.Position = CurrentFunction.Position;
+          EditConcretePosition (null, CurrentFunction.Position, null);
+        }
+        else
+        {
+          EditConcretePositionFormFunction returningFunction = (EditConcretePositionFormFunction) Page.ReturningFunction;
 
-          EditConcretePositionFormFunction editConcretePositionFormFunction = 
-            new EditConcretePositionFormFunction (CurrentFunction.ClientID, concretePosition.ID);
+          if (returningFunction.HasUserCancelled)
+            returningFunction.ConcretePosition.Delete ();
+          else
+            ConcretePositionsField.Value = CurrentFunction.Position.ConcretePositions;
+        }
+      }
+      if (e.Item.ItemID == "EditItem")
+      {
+        if (!Page.IsReturningPostBack)
+        {
+          EditConcretePosition ((ConcretePosition) ConcretePositionsField.GetSelectedBusinessObjects ()[0], CurrentFunction.Position, null);
+        }
+        else
+        {
+          EditConcretePositionFormFunction returningFunction = (EditConcretePositionFormFunction) Page.ReturningFunction;
 
-          editConcretePositionFormFunction.TransactionMode = WxeTransactionMode.None;
-          Page.ExecuteFunction (editConcretePositionFormFunction);
+          if (!returningFunction.HasUserCancelled)
+            ConcretePositionsField.IsDirty = true;
         }
       }
 
@@ -113,9 +149,18 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
           ConcretePositionsField.RemoveRow (concretePosition);
           concretePosition.Delete ();
         }
-
-        ConcretePositionsField.ClearSelectedRows ();
       }
+
+      ConcretePositionsField.ClearSelectedRows ();
+    }
+
+    private void EditConcretePosition (ConcretePosition concretePosition, Position position, GroupType groupType)
+    {
+      EditConcretePositionFormFunction editConcretePositionFormFunction =
+        new EditConcretePositionFormFunction (CurrentFunction.ClientID, concretePosition == null ? null : concretePosition.ID, position, groupType);
+
+      editConcretePositionFormFunction.TransactionMode = WxeTransactionMode.None;
+      Page.ExecuteFunction (editConcretePositionFormFunction);
     }
   }
 }

@@ -31,7 +31,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
     }
 
-    public EditPositionFormFunction (params object[] args)
+    protected EditPositionFormFunction (params object[] args)
       : base (args)
     {
     }

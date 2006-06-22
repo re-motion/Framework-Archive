@@ -13,11 +13,12 @@ using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunctions;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI;
 using Rubicon.Web.ExecutionEngine;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
   [WebMultiLingualResources (typeof (EditUserFormResources))]
-  public partial class EditUserForm : BasePage
+  public partial class EditUserForm : BaseEditPage
   {
 
     // types
@@ -29,39 +30,28 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     // construction and disposing
 
     // methods and properties
-    protected override Control FocusControl
+    protected override IFocusableControl InitialFocusControl
     {
-      get { return EditUserControl.FocusControl; }
+      get { return EditUserControl.InitialFocusControl; }
     }
 
-    protected void Page_Load (object sender, EventArgs e)
+    protected override void OnLoad (EventArgs e)
     {
+      RegisterDataEditUserControl (EditUserControl);
       ErrorsOnPageLabel.Text = GlobalResources.ErrorMessage;
-    }
 
-    protected void SaveButton_Click (object sender, EventArgs e)
-    {
-      if (EditUserControl.Validate ())
-      {
-        SaveData ();
-        CurrentFunction.CurrentTransaction.Commit ();
-
-        ExecuteNextStep ();
-      }
-      else
-      {
-        ErrorsOnPageLabel.Visible = true;
-      }
-    }
-
-    private void SaveData ()
-    {
-      EditUserControl.SaveValues (false);
+      base.OnLoad (e);
     }
 
     protected void CancelButton_Click (object sender, EventArgs e)
     {
+      CurrentFunction.CurrentTransaction.Rollback ();
       throw new WxeUserCancelException ();
+    }
+
+    protected override void ShowErrors ()
+    {
+      ErrorsOnPageLabel.Visible = true;
     }
   }
 }

@@ -42,6 +42,11 @@
               <rubicon:BocMenuItemCommand />
             </PersistedCommand>
           </rubicon:BocMenuItem>
+          <rubicon:BocMenuItem ItemID="EditItem" RequiredSelection="ExactlyOne" Text="$res:Edit">
+            <PersistedCommand>
+              <rubicon:BocMenuItemCommand />
+            </PersistedCommand>
+          </rubicon:BocMenuItem>
           <rubicon:BocMenuItem ItemID="DeleteItem" RequiredSelection="OneOrMore" Text="$res:Delete">
             <PersistedCommand>
               <rubicon:BocMenuItemCommand />
@@ -69,6 +74,11 @@
         </FixedColumns>
         <ListMenuItems>
           <rubicon:BocMenuItem ItemID="NewItem" Text="$res:New">
+            <PersistedCommand>
+              <rubicon:BocMenuItemCommand />
+            </PersistedCommand>
+          </rubicon:BocMenuItem>
+          <rubicon:BocMenuItem ItemID="EditItem" RequiredSelection="ExactlyOne" Text="$res:Edit">
             <PersistedCommand>
               <rubicon:BocMenuItemCommand />
             </PersistedCommand>

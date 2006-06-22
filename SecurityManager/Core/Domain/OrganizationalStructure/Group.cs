@@ -6,6 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects.Queries;
+using System.Collections.Generic;
 
 namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 {
@@ -119,6 +120,18 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
         else
           return string.Format ("{0} ({1})", ShortName, Name); 
       }
+    }
+
+    public List<Group> GetPossibleParentGroups (ObjectID clientID)
+    {
+      List<Group> groups = new List<Group> ();
+
+      foreach (Group group in Group.FindByClientID (clientID))
+      {
+        if ((!Children.Contains (group.ID)) && (group.ID != this.ID))
+          groups.Add (group);
+      }
+      return groups;
     }
   }
 }

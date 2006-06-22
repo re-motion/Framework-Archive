@@ -71,6 +71,15 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Übernehmen.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Abbrechen.
         /// </summary>
         internal static string Cancel {
@@ -80,20 +89,20 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Schließen.
-        /// </summary>
-        internal static string Close {
-            get {
-                return ResourceManager.GetString("Close", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Löschen.
         /// </summary>
         internal static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bearbeiten.
+        /// </summary>
+        internal static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
         

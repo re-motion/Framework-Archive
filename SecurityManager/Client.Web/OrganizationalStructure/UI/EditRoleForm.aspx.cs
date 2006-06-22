@@ -13,11 +13,12 @@ using Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.U
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
   [WebMultiLingualResources (typeof (EditRoleFormResources))]
-  public partial class EditRoleForm : BasePage
+  public partial class EditRoleForm : BaseEditPage
   {
 
     // types
@@ -29,23 +30,24 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     // construction and disposing
 
     // methods and properties
-    protected override Control FocusControl
+    protected override IFocusableControl InitialFocusControl
     {
-      get { return EditRoleControl.FocusControl; }
+      get { return EditRoleControl.InitialFocusControl; }
     }
 
-    protected void Page_Load (object sender, EventArgs e)
+    protected override void OnLoad (EventArgs e)
     {
+      RegisterDataEditUserControl (EditRoleControl);
       ErrorsOnPageLabel.Text = GlobalResources.ErrorMessage;
+
+      base.OnLoad (e);
     }
 
-    protected void CloseButton_Click (object sender, EventArgs e)
+    protected void ApplyButton_Click (object sender, EventArgs e)
     {
       if (EditRoleControl.Validate ())
       {
         SaveData ();
-//        CurrentFunction.CurrentTransaction.Commit ();
-
         ExecuteNextStep ();
       }
       else
@@ -61,8 +63,6 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 
     protected void CancelButton_Click (object sender, EventArgs e)
     {
-      Role role = (Role) EditRoleControl.DataSource.BusinessObject;
-      role.Delete ();
       throw new WxeUserCancelException ();
     }
   }

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditConcreteConcretePositionForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditConcretePositionForm" MasterPageFile="~/OrganizationalStructure/UI/OrganizationalStructure.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditConcretePositionForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditConcretePositionForm" MasterPageFile="~/OrganizationalStructure/UI/OrganizationalStructure.Master" %>
 <%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
 <%@ Register TagPrefix="SecurityManager" Src="EditConcretePositionControl.ascx" TagName="EditConcretePositionControl" %>
 
@@ -12,7 +12,7 @@
   <table cellpadding="0" cellspacing="0">
     <tr>
       <td>
-        <rubicon:WebButton ID="CloseButton" runat="server" Text="$res:Close" OnClick="CloseButton_Click" CausesValidation="false"/>
+        <rubicon:WebButton ID="CloseButton" runat="server" Text="$res:Apply" OnClick="ApplyButton_Click" CausesValidation="false"/>
       </td>
       <td>
         <rubicon:WebButton ID="CancelButton" runat="server" Text="$res:Cancel" style="margin-left: 5px;" 

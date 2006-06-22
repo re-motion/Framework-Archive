@@ -40,13 +40,10 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       get { return (SearchGroupFormFunction) base.CurrentFunction; }
     }
 
-    public override Control FocusControl
+    protected override void OnLoad (EventArgs e)
     {
-      get { return null; }
-    }
+      base.OnLoad (e);
 
-    protected void Page_Load (object sender, EventArgs e)
-    {
       GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID), false);
     }
 
@@ -69,7 +66,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     {
       if (!Page.IsReturningPostBack)
       {
-        EditGroupFormFunction editGroupFormFunction = new EditGroupFormFunction (CurrentFunction.ClientID);
+        EditGroupFormFunction editGroupFormFunction = new EditGroupFormFunction (CurrentFunction.ClientID, null);
         editGroupFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editGroupFormFunction);
       }

@@ -50,8 +50,6 @@
     <Content Include="OrganizationalStructure\UI\EditRoleForm.aspx" />
     <Content Include="OrganizationalStructure\UI\EditPositionControl.ascx" />
     <Content Include="OrganizationalStructure\UI\EditPositionForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\SearchPositionControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\SearchPositionForm.aspx" />
     <Content Include="OrganizationalStructure\UI\EditGroupControl.ascx" />
     <Content Include="OrganizationalStructure\UI\EditGroupForm.aspx" />
     <Content Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx" />
@@ -62,6 +60,8 @@
     <Content Include="OrganizationalStructure\UI\SearchGroupForm.aspx" />
     <Content Include="OrganizationalStructure\UI\SearchGroupTypeControl.ascx" />
     <Content Include="OrganizationalStructure\UI\SearchGroupTypeForm.aspx" />
+    <Content Include="OrganizationalStructure\UI\SearchPositionControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\SearchPositionForm.aspx" />
     <Content Include="OrganizationalStructure\UI\SearchUserControl.ascx" />
     <Content Include="OrganizationalStructure\UI\SearchUserForm.aspx" />
     <Content Include="UrlMapping.xml" />
@@ -184,6 +184,9 @@
     <Compile Include="OrganizationalStructure\Classes\BaseControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="OrganizationalStructure\Classes\BaseEditPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="OrganizationalStructure\Classes\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -230,20 +233,6 @@
     </Compile>
     <Compile Include="OrganizationalStructure\UI\EditPositionForm.aspx.designer.cs">
       <DependentUpon>EditPositionForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\SearchPositionControl.ascx.cs">
-      <DependentUpon>SearchPositionControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\SearchPositionControl.ascx.designer.cs">
-      <DependentUpon>SearchPositionControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\SearchPositionForm.aspx.cs">
-      <DependentUpon>SearchPositionForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\SearchPositionForm.aspx.designer.cs">
-      <DependentUpon>SearchPositionForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="OrganizationalStructure\UI\EditGroupControl.ascx.cs">
       <DependentUpon>EditGroupControl.ascx</DependentUpon>
@@ -329,6 +318,20 @@
     <Compile Include="OrganizationalStructure\UI\SearchGroupTypeForm.aspx.designer.cs">
       <DependentUpon>SearchGroupTypeForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchPositionControl.ascx.cs">
+      <DependentUpon>SearchPositionControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchPositionControl.ascx.designer.cs">
+      <DependentUpon>SearchPositionControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchPositionForm.aspx.cs">
+      <DependentUpon>SearchPositionForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SearchPositionForm.aspx.designer.cs">
+      <DependentUpon>SearchPositionForm.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OrganizationalStructure\UI\SearchUserControl.ascx.cs">
       <DependentUpon>SearchUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -346,13 +349,21 @@
     <Compile Include="OrganizationalStructure\WxeFunctions\EditConcretePositionFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditPositionFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditRoleFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\SearchPositionFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupTypeFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupTypeFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\SearchUserFormFunction.cs" />
     <Compile Include="OrganizationalStructure\WxeFunctions\EditUserFormFunction.cs" />
+    <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupFormFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupTypeFormFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\WxeFunctions\SearchPositionFormFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\WxeFunctions\SearchUserFormFunction.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

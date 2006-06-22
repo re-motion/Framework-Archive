@@ -29,17 +29,38 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
     }
 
-    public EditRoleFormFunction (params object[] args)
+    protected EditRoleFormFunction (params object[] args)
       : base (args)
     {
     }
 
-    public EditRoleFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID)
+    public EditRoleFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID, User user, Group group, Position position)
       : base (clientID, organizationalStructureObjectID)
     {
+      User = user;
+      Group = group;
+      Position = position;
     }
 
     // methods and properties
+    public User User
+    {
+      get { return (User) Variables["User"]; }
+      set { Variables["User"] = value; }
+    }
+
+    public Group Group
+    {
+      get { return (Group) Variables["Group"]; }
+      set { Variables["Group"] = value; }
+    }
+
+    public Position Position
+    {
+      get { return (Position) Variables["Position"]; }
+      set { Variables["Position"] = value; }
+    }
+
     public Role Role
     {
       get { return (Role) OrganizationalStructureObject; }
@@ -50,7 +71,12 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
       // TODO check CurrentTransaction
       if (OrganizationalStructureObject == null)
+      {
         Role = new Role (CurrentTransaction);
+        Role.User = User;
+        Role.Group = Group;
+        Role.Position = Position;
+      }
     }
 
     WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditRoleForm), "OrganizationalStructure/UI/EditRoleForm.aspx");

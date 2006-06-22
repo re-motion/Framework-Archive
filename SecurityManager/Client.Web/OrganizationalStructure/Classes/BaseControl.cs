@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using Rubicon.Globalization;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
 {
@@ -23,10 +24,6 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
 
     // construction and disposing
 
-    public BaseControl ()
-    {
-    }
-
     // methods and properties
     public new BasePage Page
     {
@@ -39,16 +36,9 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
       get { return (BaseTransactedFunction) Page.CurrentFunction; }
     }
 
-    public virtual Control FocusControl
+    public virtual IFocusableControl InitialFocusControl
     {
       get { return null; }
-    }
-
-    protected override void OnInit (EventArgs e)
-    {
-      base.OnInit (e);
-
-      RegisterEventHandlers ();
     }
 
     protected override void OnPreRender (EventArgs e)
@@ -71,10 +61,6 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
         return MultiLingualResourcesAttribute.GetResourceManager (type, true);
       else
         return null;
-    }
-
-    protected virtual void RegisterEventHandlers ()
-    {
     }
   }
 }

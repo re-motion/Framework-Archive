@@ -71,6 +71,15 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stelle.
+        /// </summary>
+        internal static string auto_ConcretePositionsField_FixedColumns_PositionNameItem_ColumnTitle {
+            get {
+                return ResourceManager.GetString("auto:ConcretePositionsField:FixedColumns:PositionNameItem:ColumnTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gruppe.
         /// </summary>
         internal static string auto_GroupsField_FixedColumns_GroupNameItem_ColumnTitle {

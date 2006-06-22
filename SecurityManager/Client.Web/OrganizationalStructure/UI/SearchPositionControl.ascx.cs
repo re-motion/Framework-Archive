@@ -40,13 +40,10 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       get { return (SearchPositionFormFunction) base.CurrentFunction; }
     }
 
-    public override Control FocusControl
+    protected override void OnLoad (EventArgs e)
     {
-      get { return null; }
-    }
+      base.OnLoad (e);
 
-    protected void Page_Load (object sender, EventArgs e)
-    {
       PositionList.LoadUnboundValue (Position.FindByClientID (CurrentFunction.ClientID), false);
     }
 
@@ -69,7 +66,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     {
       if (!Page.IsReturningPostBack)
       {
-        EditPositionFormFunction editPositionFormFunction = new EditPositionFormFunction (CurrentFunction.ClientID);
+        EditPositionFormFunction editPositionFormFunction = new EditPositionFormFunction (CurrentFunction.ClientID,null);
         editPositionFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editPositionFormFunction);
       }

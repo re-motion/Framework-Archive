@@ -56,9 +56,19 @@
               <rubicon:BocListItemCommand />
             </PersistedCommand>
           </rubicon:BocSimpleColumnDefinition>
+          <rubicon:BocSimpleColumnDefinition ItemID="PositionNameItem" PropertyPathIdentifier="Position.Name">
+            <PersistedCommand>
+              <rubicon:BocListItemCommand />
+            </PersistedCommand>
+          </rubicon:BocSimpleColumnDefinition>
         </FixedColumns>
         <ListMenuItems>
           <rubicon:BocMenuItem ItemID="NewItem" Text="$res:New">
+            <PersistedCommand>
+              <rubicon:BocMenuItemCommand />
+            </PersistedCommand>
+          </rubicon:BocMenuItem>
+          <rubicon:BocMenuItem ItemID="EditItem" RequiredSelection="OneOrMore" Text="$res:Edit">
             <PersistedCommand>
               <rubicon:BocMenuItemCommand />
             </PersistedCommand>

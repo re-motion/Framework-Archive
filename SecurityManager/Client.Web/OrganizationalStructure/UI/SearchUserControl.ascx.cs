@@ -40,8 +40,10 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       get { return (SearchUserFormFunction) base.CurrentFunction; }
     }
 
-    protected void Page_Load (object sender, EventArgs e)
+    protected override void OnLoad (EventArgs e)
     {
+      base.OnLoad (e);
+
       UserList.LoadUnboundValue (User.FindByClientID (CurrentFunction.ClientID), false);
     }
 
@@ -64,7 +66,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     {
       if (!Page.IsReturningPostBack)
       {
-        EditUserFormFunction editUserFormFunction = new EditUserFormFunction (CurrentFunction.ClientID);
+        EditUserFormFunction editUserFormFunction = new EditUserFormFunction (CurrentFunction.ClientID, null);
         editUserFormFunction.TransactionMode = WxeTransactionMode.None;
         Page.ExecuteFunction (editUserFormFunction);
       }

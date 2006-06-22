@@ -24,8 +24,10 @@ namespace Rubicon.Kis.Client.Web.UI.AdministrationUI
     // construction and disposing
 
     // methods and properties
-    protected void Page_Load (object sender, EventArgs e)
+    protected override void OnLoad (EventArgs e)
     {
+      base.OnLoad (e);
+
       if (!IsPostBack)
         UserFullNameTextValue.Text = Page.Request.LogonUserIdentity.Name;
     }

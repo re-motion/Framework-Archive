@@ -31,17 +31,31 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
     }
 
-    public EditConcretePositionFormFunction (params object[] args)
+    protected EditConcretePositionFormFunction (params object[] args)
       : base (args)
     {
     }
 
-    public EditConcretePositionFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID)
+    public EditConcretePositionFormFunction (ObjectID clientID, ObjectID organizationalStructureObjectID, Position position, GroupType groupType)
       : base (clientID, organizationalStructureObjectID)
     {
+      GroupType = groupType;
+      Position = position;
     }
 
     // methods and properties
+    public GroupType GroupType
+    {
+      get { return (GroupType) Variables["GroupType"]; }
+      set { Variables["GroupType"] = value; }
+    }
+
+    public Position Position
+    {
+      get { return (Position) Variables["Position"]; }
+      set { Variables["Position"] = value; }
+    }
+
     public ConcretePosition ConcretePosition
     {
       get { return (ConcretePosition) OrganizationalStructureObject; }
@@ -52,7 +66,11 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.WxeFunction
     {
       // TODO check CurrentTransaction
       if (OrganizationalStructureObject == null)
+      {
         ConcretePosition = new ConcretePosition (CurrentTransaction);
+        ConcretePosition.GroupType = GroupType;
+        ConcretePosition.Position = Position;
+      }
     }
 
     WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditConcretePositionForm), "OrganizationalStructure/UI/EditConcretePositionForm.aspx");

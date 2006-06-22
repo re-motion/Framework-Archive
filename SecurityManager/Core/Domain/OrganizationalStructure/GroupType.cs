@@ -17,16 +17,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static new GroupType GetObject (ObjectID id)
-    {
-      return (GroupType) DomainObject.GetObject (id);
-    }
-
-    public static new GroupType GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (GroupType) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new GroupType GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (GroupType) DomainObject.GetObject (id, clientTransaction);

@@ -12,11 +12,12 @@ using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes;
 using Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI.Globalization;
+using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
   [WebMultiLingualResources (typeof (EditGroupTypeFormResources))]
-  public partial class EditGroupTypeForm : BasePage
+  public partial class EditGroupTypeForm : BaseEditPage
   {
 
     // types
@@ -28,38 +29,27 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     // construction and disposing
 
     // methods and properties
-    protected override Control FocusControl
+    protected override IFocusableControl InitialFocusControl
     {
-      get { return EditGroupTypeControl.FocusControl; }
+      get { return EditGroupTypeControl.InitialFocusControl; }
     }
 
-    protected void Page_Load (object sender, EventArgs e)
+    protected override void OnLoad (EventArgs e)
     {
+      RegisterDataEditUserControl (EditGroupTypeControl);
       ErrorsOnPageLabel.Text = GlobalResources.ErrorMessage;
+
+      base.OnLoad (e);
     }
 
-    protected void SaveButton_Click (object sender, EventArgs e)
+    protected override void ShowErrors ()
     {
-      if (EditGroupTypeControl.Validate ())
-      {
-        SaveData ();
-        CurrentFunction.CurrentTransaction.Commit ();
-
-        ExecuteNextStep ();
-      }
-      else
-      {
-        ErrorsOnPageLabel.Visible = true;
-      }
-    }
-
-    private void SaveData ()
-    {
-      EditGroupTypeControl.SaveValues (false);
+      ErrorsOnPageLabel.Visible = true;
     }
 
     protected void CancelButton_Click (object sender, EventArgs e)
     {
+      CurrentFunction.CurrentTransaction.Rollback ();
       throw new WxeUserCancelException ();
     }
   }

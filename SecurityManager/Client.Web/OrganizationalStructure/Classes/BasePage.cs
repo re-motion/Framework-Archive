@@ -32,10 +32,6 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
 
     // construction and disposing
 
-    public BasePage ()
-    {
-    }
-
     // methods and properties
 
     protected new BaseTransactedFunction CurrentFunction
@@ -43,7 +39,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
       get { return (BaseTransactedFunction) base.CurrentFunction; }
     }
 
-    protected virtual Control FocusControl
+    protected virtual IFocusableControl InitialFocusControl
     {
       get { return null; }
     }
@@ -51,8 +47,6 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
     protected override void OnInit (EventArgs e)
     {
       base.OnInit (e);
-
-      RegisterEventHandlers ();
 
       if (Request.UserLanguages.Length > 0)
       {
@@ -81,6 +75,9 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
 
       ResourceDispatcher.Dispatch (this, ResourceManagerUtility.GetResourceManager (this));
 
+      if (!IsPostBack && InitialFocusControl != null)
+        SetFocus (InitialFocusControl);
+
       base.OnPreRender (e);
     }
 
@@ -106,10 +103,6 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
         return MultiLingualResourcesAttribute.GetResourceManager (type, true);
       else
         return null;
-    }
-
-    protected virtual void RegisterEventHandlers ()
-    {
     }
   }
 }

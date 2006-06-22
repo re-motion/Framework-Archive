@@ -16,16 +16,6 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static new Client GetObject (ObjectID id)
-    {
-      return (Client) DomainObject.GetObject (id);
-    }
-
-    public static new Client GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (Client) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new Client GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (Client) DomainObject.GetObject (id, clientTransaction);

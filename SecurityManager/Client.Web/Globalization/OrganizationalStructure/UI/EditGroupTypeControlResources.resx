@@ -125,5 +125,8 @@
   </data>  
   <data name="auto:ConcretePositionsField:FixedColumns:ConcretePositionNameItem:ColumnTitle" xml:space="preserve">
     <value>Konkrete Stelle</value>
-  </data>  
+  </data>
+  <data name="auto:ConcretePositionsField:FixedColumns:PositionNameItem:ColumnTitle" xml:space="preserve">
+    <value>Stelle</value>
+  </data>
 </root>
