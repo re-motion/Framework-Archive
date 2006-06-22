@@ -66,12 +66,12 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 
     private void FillGroupTypeField ()
     {
-      GroupTypeField.SetBusinessObjectList (GroupType.FindByClientID (CurrentFunction.ClientID));
+      GroupTypeField.SetBusinessObjectList (GroupType.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
     }
 
     private void FillPositionField ()
     {
-      PositionField.SetBusinessObjectList (Position.FindByClientID (CurrentFunction.ClientID));
+      PositionField.SetBusinessObjectList (Position.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
     }
 
     public override bool Validate ()

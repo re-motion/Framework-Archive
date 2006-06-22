@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     {
       base.OnLoad (e);
 
-      GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID), false);
+      GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
     }
 
     protected void GroupList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
@@ -58,7 +58,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       else
       {
         if (!((EditGroupFormFunction) Page.ReturningFunction).HasUserCancelled)
-          GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID), false);
+          GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
       }
     }
 
@@ -73,7 +73,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       else
       {
         if (!((EditGroupFormFunction) Page.ReturningFunction).HasUserCancelled)
-          GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID), false);
+          GroupList.LoadUnboundValue (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction), false);
       }
     }
   }

@@ -17,7 +17,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       dbFixtures.CreatePositionsWithDifferentClients ();
       ClientTransaction transaction = new ClientTransaction ();
 
-      DomainObjectCollection positions = Position.FindByClientID (dbFixtures.CurrentClient.ID);
+      DomainObjectCollection positions = Position.FindByClientID (dbFixtures.CurrentClient.ID, transaction);
 
       Assert.AreEqual (2, positions.Count);
     }

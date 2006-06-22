@@ -40,10 +40,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Group) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
-    public static DomainObjectCollection FindByClientID (ObjectID clientID)
+    public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID");
 
       query.Parameters.Add ("@clientID", clientID);
@@ -126,7 +124,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     {
       List<Group> groups = new List<Group> ();
 
-      foreach (Group group in Group.FindByClientID (clientID))
+      foreach (Group group in Group.FindByClientID (clientID, this.ClientTransaction))
       {
         if ((!Children.Contains (group.ID)) && (group.ID != this.ID))
           groups.Add (group);

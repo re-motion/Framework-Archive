@@ -58,7 +58,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 
     private void FillGroupTypeField ()
     {
-      GroupTypeField.SetBusinessObjectList (GroupType.FindByClientID (CurrentFunction.ClientID));
+      GroupTypeField.SetBusinessObjectList (GroupType.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
     }
 
     private void FillParentField ()
@@ -135,15 +135,24 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       {
         if (!Page.IsReturningPostBack)
         {
-          GroupListFormFunction searchGroupFormFunction = new GroupListFormFunction (CurrentFunction.ClientID);
+          SearchGroupFormFunction searchGroupFormFunction = new SearchGroupFormFunction (CurrentFunction.ClientID);
           searchGroupFormFunction.TransactionMode = WxeTransactionMode.None;
 
-          //Page.ExecuteFunction (searchGroupFormFunction);
+          Page.ExecuteFunction (searchGroupFormFunction);
+        }
+        else
+        {
+          SearchGroupFormFunction returningFunction = (SearchGroupFormFunction) Page.ReturningFunction;
+
+          if (!returningFunction.HasUserCancelled)
+            ChildrenField.AddRow (returningFunction.SelectedGroup);
         }
       }
 
       if (e.Item.ItemID == "RemoveItem")
         ChildrenField.RemoveRows (ChildrenField.GetSelectedBusinessObjects ());
+
+      ChildrenField.ClearSelectedRows ();
     }
   }
 }

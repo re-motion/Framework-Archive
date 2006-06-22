@@ -27,10 +27,8 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (Position) DomainObject.GetObject (id, clientTransaction, includeDeleted);
     }
 
-    public static DomainObjectCollection FindByClientID (ObjectID clientID)
+    public static DomainObjectCollection FindByClientID (ObjectID clientID, ClientTransaction clientTransaction)
     {
-      ClientTransaction clientTransaction = new ClientTransaction ();
-
       Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindByClientID");
 
       query.Parameters.Add ("@clientID", clientID);

@@ -69,7 +69,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       dbFixtures.CreateUsersWithDifferentClients ();
       ClientTransaction transaction = new ClientTransaction ();
 
-      DomainObjectCollection users = User.FindByClientID (dbFixtures.CurrentClient.ID);
+      DomainObjectCollection users = User.FindByClientID (dbFixtures.CurrentClient.ID, transaction);
 
       Assert.AreEqual (2, users.Count);
     }

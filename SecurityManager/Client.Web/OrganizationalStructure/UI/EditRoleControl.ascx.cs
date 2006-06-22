@@ -70,17 +70,17 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 
     private void FillUserField ()
     {
-      UserField.SetBusinessObjectList (User.FindByClientID (CurrentFunction.ClientID));
+      UserField.SetBusinessObjectList (User.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
     }
 
     private void FillPositionField ()
     {
-      PositionField.SetBusinessObjectList (Position.FindByClientID (CurrentFunction.ClientID));
+      PositionField.SetBusinessObjectList (Position.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
     }
 
     private void FillGroupField ()
     {
-      GroupField.SetBusinessObjectList (Group.FindByClientID (CurrentFunction.ClientID));
+      GroupField.SetBusinessObjectList (Group.FindByClientID (CurrentFunction.ClientID, CurrentFunction.CurrentTransaction));
     }
 
     public override bool Validate ()
