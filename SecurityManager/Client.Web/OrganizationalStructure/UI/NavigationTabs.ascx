@@ -16,22 +16,22 @@
   <Tabs>
     <rubicon:MainMenuTab ItemID="UserTab" Text="$res:User">
       <PersistedCommand>
-        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="SearchUser" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
+        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="UserList" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
     <rubicon:MainMenuTab ItemID="GroupTab" Text="$res:Group">
       <PersistedCommand>
-        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="SearchGroup" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
+        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="GroupList" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
     <rubicon:MainMenuTab ItemID="PositionTab" Text="$res:Position">
       <PersistedCommand>
-        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="SearchPosition" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
+        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="PositionList" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
     <rubicon:MainMenuTab ItemID="GroupTypeTab" Text="$res:GroupType">
       <PersistedCommand>
-        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="SearchGroupType" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
+        <rubicon:NavigationCommand Type="WxeFunction" WxeFunctionCommand-MappingID="GroupTypeList" WxeFunctionCommand-Parameters="&quot;Client|00000001-0000-0000-0000-000000000001|System.Guid&quot;"  />
       </PersistedCommand>
     </rubicon:MainMenuTab>  
   </Tabs>

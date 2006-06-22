@@ -116,7 +116,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
       {
         if (!Page.IsReturningPostBack)
         {
-          SearchGroupFormFunction searchGroupFormFunction = new SearchGroupFormFunction (CurrentFunction.ClientID);
+          GroupListFormFunction searchGroupFormFunction = new GroupListFormFunction (CurrentFunction.ClientID);
           searchGroupFormFunction.TransactionMode = WxeTransactionMode.None;
 
           //Page.ExecuteFunction (searchGroupFormFunction);

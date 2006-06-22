@@ -10,7 +10,7 @@
 </head>
 <body>
   <form id="ThisForm" runat="server">
-    <a href="SearchUser.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid">Aufbauorganisation verwalten</a>
+    <a href="UserList.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid">Aufbauorganisation verwalten</a>
   </form>
 </body>
 </html>

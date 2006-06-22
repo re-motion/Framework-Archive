@@ -5,12 +5,12 @@
     xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
 
   <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.EditUserFormFunction" resource="EditUser.wxe" />
-  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchUserFormFunction" resource="SearchUser.wxe" id="SearchUser" />
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.UserListFormFunction" resource="UserList.wxe" id="UserList" />
   <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.EditGroupTypeFormFunction" resource="EditGroupType.wxe" />
-  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchGroupTypeFormFunction" resource="SearchGroupType.wxe" id="SearchGroupType"/>
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.GroupTypeListFormFunction" resource="GroupTypeList.wxe" id="GroupTypeList"/>
   <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.EditGroupFormFunction" resource="EditGroup.wxe" />
-  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchGroupFormFunction" resource="SearchGroup.wxe" id="SearchGroup"/>
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.GroupListFormFunction" resource="GroupList.wxe" id="GroupList"/>
   <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.EditPositionFormFunction" resource="EditPosition.wxe" />
-  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.SearchPositionFormFunction" resource="SearchPosition.wxe" id="SearchPosition"/>
+  <add type="Rubicon.SecurityManager.Client.Web::OrganizationalStructure.WxeFunctions.PositionListFormFunction" resource="PositionList.wxe" id="PositionList"/>
 </urlMapping>
 
