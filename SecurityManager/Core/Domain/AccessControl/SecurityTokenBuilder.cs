@@ -29,6 +29,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     private User GetUser (ClientTransaction transaction, string userName)
     {
+      if (StringUtility.IsNullOrEmpty (userName))
+        return null;
+
       User user = User.Find (transaction, userName);
       if (user == null)
         throw new ArgumentException (string.Format ("The user '{0}' could not be found.", userName), "userName");
@@ -39,6 +42,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     private List<Group> GetGroups (ClientTransaction transaction, string groupName)
     {
       List<Group> groups = new List<Group> ();
+
+      if (StringUtility.IsNullOrEmpty (groupName))
+        return groups;
 
       Group group = Group.Find (transaction, groupName);
       if (group == null)

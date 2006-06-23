@@ -103,6 +103,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
+    public void Create_WithoutGroup ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateTestData ();
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurityContext context = CreateContextWithoutOwnerGroup ();
+      IPrincipal user = CreateTestUser ();
+
+      SecurityTokenBuilder builder = new SecurityTokenBuilder ();
+      SecurityToken token = builder.CreateToken (transaction, user, context);
+
+      Assert.AreEqual (0, token.Groups.Count);
+    }
+
+    [Test]
     [ExpectedException (typeof (ArgumentException), "The group 'NotExistingGroup' could not be found.\r\nParameter name: groupName")]
     public void Create_WithNotExistingGroup ()
     {
@@ -149,6 +164,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     private SecurityContext CreateStatelessContext ()
     {
       return new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
+    }
+
+    private SecurityContext CreateContextWithoutOwnerGroup ()
+    {
+      return new SecurityContext (typeof (Order), "owner", null, "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithNotExistingOwnerGroup ()
