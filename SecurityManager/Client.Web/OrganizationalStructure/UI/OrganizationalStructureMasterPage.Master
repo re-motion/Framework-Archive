@@ -11,7 +11,7 @@
       <tr>
         <td class="contentViewNavigation">
           <div class="contentViewNavigation">
-            <SecurityManager:SecurityManagerNavigationTabs ID="NavigationTabs" runat="server" />
+            <SecurityManager:SecurityManagerNavigationTabs ID="SecurityManagerNavigationTabs" runat="server" />
           </div>
         </td>
       </tr>

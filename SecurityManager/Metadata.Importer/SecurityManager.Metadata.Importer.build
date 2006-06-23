@@ -26,7 +26,7 @@
       </references>
     </csc>
 
-    <copy file="App.Config" tofile="${build.outputdir}/${project.output}.config" overwrite="true" />
+    <copy file="App.Config" tofile="${build.outputdir}/${project.output}.exe.config" overwrite="true" />
     
   </target>
 

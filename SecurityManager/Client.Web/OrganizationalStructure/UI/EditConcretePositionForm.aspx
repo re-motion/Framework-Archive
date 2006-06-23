@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditConcretePositionForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditConcretePositionForm" MasterPageFile="~/OrganizationalStructure/UI/OrganizationalStructureMasterPage.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditConcretePositionForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditConcretePositionForm" MasterPageFile="OrganizationalStructureMasterPage.Master" %>
 <%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
 <%@ Register TagPrefix="SecurityManager" Src="EditConcretePositionControl.ascx" TagName="EditConcretePositionControl" %>
 <%@ Register TagPrefix="SecurityManager" Src="ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>

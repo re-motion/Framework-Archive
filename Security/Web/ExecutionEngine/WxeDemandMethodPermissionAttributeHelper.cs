@@ -76,6 +76,13 @@ namespace Rubicon.Security.Web.ExecutionEngine
             _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
       }
 
+      //TODO:
+      // if (SecurableClass != null)
+      //{
+      //  if (!parameterDeclaration.Type.IsAssignableFrom (SecurableClass))
+      //    throw new InvalidOperationException ();
+      //  return SecurableClass;
+      //}
       return parameterDeclaration.Type;
     }
 
