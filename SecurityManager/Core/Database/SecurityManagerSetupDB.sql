@@ -333,6 +333,7 @@ CREATE TABLE [Permission]
   [Timestamp] rowversion NOT NULL,
 
   -- Permission columns
+  [Allowed] bit NULL,
   [AccessControlEntryID] uniqueidentifier NULL,
   [AccessTypeDefinitionID] uniqueidentifier NULL,
 
