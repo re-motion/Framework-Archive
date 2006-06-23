@@ -9,7 +9,8 @@
           debug="${build.debug}"
           define="${build.csc.define}">
       <nowarn>
-        <warning number="1591" /> <!-- missing XML comment -->
+        <!-- missing XML comment -->
+        <warning number="1591" /> 
       </nowarn> 
       <sources failonempty="true">
         <include name="*.cs" />
@@ -26,7 +27,7 @@
     </csc>
 
     <copy file="App.Config" tofile="${build.outputdir}/${project.output}.config" overwrite="true" />
-
+    
   </target>
 
 </project>
