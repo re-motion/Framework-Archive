@@ -13,7 +13,7 @@ using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes;
 
 namespace Rubicon.Kis.Client.Web.UI.AdministrationUI
 {
-  public partial class NavigationTabs : UserControl
+  public partial class SecurityManagerNavigationTabs : UserControl
   {
     // types
 

@@ -38,7 +38,6 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="OrganizationalStructure\UI\EditUserForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\NavigationTabs.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -65,6 +64,7 @@
     <Content Include="OrganizationalStructure\UI\PositionListForm.aspx" />
     <Content Include="OrganizationalStructure\UI\SearchGroupControl.ascx" />
     <Content Include="OrganizationalStructure\UI\SearchGroupForm.aspx" />
+    <Content Include="OrganizationalStructure\UI\SecurityManagerNavigationTabs.ascx" />
     <Content Include="OrganizationalStructure\UI\UserListControl.ascx" />
     <Content Include="OrganizationalStructure\UI\UserListForm.aspx" />
     <Content Include="SecurityManagerUrlMapping.xml" />
@@ -326,13 +326,6 @@
     <Compile Include="OrganizationalStructure\UI\GroupTypeListForm.aspx.designer.cs">
       <DependentUpon>GroupTypeListForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\NavigationTabs.ascx.cs">
-      <DependentUpon>NavigationTabs.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\NavigationTabs.ascx.designer.cs">
-      <DependentUpon>NavigationTabs.ascx</DependentUpon>
-    </Compile>
     <Compile Include="OrganizationalStructure\UI\OrganizationalStructureMasterPage.Master.cs">
       <DependentUpon>OrganizationalStructureMasterPage.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -367,6 +360,13 @@
     </Compile>
     <Compile Include="OrganizationalStructure\UI\SearchGroupForm.aspx.designer.cs">
       <DependentUpon>SearchGroupForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SecurityManagerNavigationTabs.ascx.cs">
+      <DependentUpon>SecurityManagerNavigationTabs.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\SecurityManagerNavigationTabs.ascx.designer.cs">
+      <DependentUpon>SecurityManagerNavigationTabs.ascx</DependentUpon>
     </Compile>
     <Compile Include="OrganizationalStructure\UI\UserListControl.ascx.cs">
       <DependentUpon>UserListControl.ascx</DependentUpon>

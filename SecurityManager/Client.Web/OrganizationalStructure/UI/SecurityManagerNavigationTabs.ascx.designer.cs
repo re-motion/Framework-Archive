@@ -10,7 +10,7 @@
 
 namespace Rubicon.Kis.Client.Web.UI.AdministrationUI {
     
-    public partial class NavigationTabs {
+    public partial class SecurityManagerNavigationTabs {
         protected System.Web.UI.HtmlControls.HtmlGenericControl UserNameLabel;
         protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
     }

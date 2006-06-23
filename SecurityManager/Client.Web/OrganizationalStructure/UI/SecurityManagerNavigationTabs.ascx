@@ -1,4 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="NavigationTabs.ascx.cs" Inherits="Rubicon.Kis.Client.Web.UI.AdministrationUI.NavigationTabs" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="SecurityManagerNavigationTabs.ascx.cs" Inherits="Rubicon.Kis.Client.Web.UI.AdministrationUI.SecurityManagerNavigationTabs" %>
 <%@ Register TagPrefix="Rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
   
 <div id="UserNameLabel" runat="server" style="text-align:right">
