@@ -13,7 +13,7 @@ using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes;
 
 namespace Rubicon.Kis.Client.Web.UI.AdministrationUI
 {
-  public partial class NavigationTabs : BaseControl
+  public partial class NavigationTabs : UserControl
   {
     // types
 
@@ -28,8 +28,7 @@ namespace Rubicon.Kis.Client.Web.UI.AdministrationUI
     {
       base.OnLoad (e);
 
-      if (!IsPostBack)
-        UserFullNameTextValue.Text = Page.Request.LogonUserIdentity.Name;
+      UserNameLabel.InnerText = Page.Request.LogonUserIdentity.Name;
     }
   }
 }

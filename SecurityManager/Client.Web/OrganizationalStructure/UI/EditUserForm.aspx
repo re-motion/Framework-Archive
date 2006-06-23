@@ -1,9 +1,10 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditUserForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditUserForm" MasterPageFile="~/OrganizationalStructure/UI/OrganizationalStructure.Master" %>
-<%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditUserForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditUserForm" MasterPageFile="~/OrganizationalStructure/UI/OrganizationalStructureMasterPage.Master" %>
+<%@ Register TagPrefix="rubicon" Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" %>
 <%@ Register TagPrefix="SecurityManager" Src="EditUserControl.ascx" TagName="EditUserControl" %>
+<%@ Register TagPrefix="SecurityManager" Src="ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 
 <asp:Content ID="ActualTopControlsPlaceHolder" runat="server" ContentPlaceHolderID="TopControlsPlaceHolder">
-  <asp:Label ID="ErrorsOnPageLabel" runat="server" Text="###" CssClass="errorMessage" Visible="false" EnableViewState="false" />  
+  <SecurityManager:ErrorMessageControl id="ErrorMessageControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActaulMainContentPlaceHolder" runat="server" ContentPlaceHolderID="MainContentPlaceHolder">
   <SecurityManager:EditUserControl id="EditUserControl" runat="server"></SecurityManager:EditUserControl>

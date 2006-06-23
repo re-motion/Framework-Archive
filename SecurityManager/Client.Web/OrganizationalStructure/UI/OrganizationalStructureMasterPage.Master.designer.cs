@@ -10,11 +10,12 @@
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI {
     
-    public partial class OrganizationalStructure {
+    public partial class OrganizationalStructureMasterPage {
         protected System.Web.UI.HtmlControls.HtmlHead Head;
         protected System.Web.UI.HtmlControls.HtmlForm ThisForm;
         protected Rubicon.Kis.Client.Web.UI.AdministrationUI.NavigationTabs NavigationTabs;
         protected System.Web.UI.WebControls.ContentPlaceHolder TopControlsPlaceHolder;
+        protected System.Web.UI.WebControls.Label ErrorsOnPageLabel;
         protected System.Web.UI.WebControls.ContentPlaceHolder MainContentPlaceHolder;
         protected System.Web.UI.WebControls.ContentPlaceHolder BottomControlsPlaceHolder;
     }

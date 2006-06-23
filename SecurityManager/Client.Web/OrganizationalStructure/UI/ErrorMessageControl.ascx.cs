@@ -8,16 +8,12 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes;
-using Rubicon.Web.UI.Globalization;
 using Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
-  [WebMultiLingualResources (typeof (GroupTypeListFormResources))]
-  public partial class GroupTypeListForm : BasePage
+  public partial class ErrorMessageControl : UserControl
   {
-
     // types
 
     // static members and constants
@@ -27,5 +23,16 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     // construction and disposing
 
     // methods and properties
+
+    protected override void OnLoad (EventArgs e)
+    {
+      base.OnLoad (e);
+      ErrorsOnPageLabel.Text = GlobalResources.ErrorMessage;
+    }
+
+    public void ShowError ()
+    {
+      ErrorsOnPageLabel.Visible = true;
+    }
   }
 }

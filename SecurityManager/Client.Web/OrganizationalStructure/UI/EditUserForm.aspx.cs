@@ -38,7 +38,6 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     protected override void OnLoad (EventArgs e)
     {
       RegisterDataEditUserControl (EditUserControl);
-      ErrorsOnPageLabel.Text = GlobalResources.ErrorMessage;
 
       base.OnLoad (e);
     }
@@ -51,7 +50,7 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 
     protected override void ShowErrors ()
     {
-      ErrorsOnPageLabel.Visible = true;
+      ErrorMessageControl.ShowError ();
     }
   }
 }

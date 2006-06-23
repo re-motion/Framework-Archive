@@ -44,6 +44,8 @@
   <ItemGroup>
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Client.Web.build" />
+    <Content Include="OrganizationalStructure\UI\ErrorMessageControl.ascx" />
+    <Content Include="OrganizationalStructure\UI\OrganizationalStructureMasterPage.Master" />
     <Content Include="OrganizationalStructure\UI\EditConcretePositionControl.ascx" />
     <Content Include="OrganizationalStructure\UI\EditConcretePositionForm.aspx" />
     <Content Include="OrganizationalStructure\UI\EditRoleControl.ascx" />
@@ -58,7 +60,6 @@
     <Content Include="OrganizationalStructure\UI\GroupListForm.aspx" />
     <Content Include="OrganizationalStructure\UI\GroupTypeListControl.ascx" />
     <Content Include="OrganizationalStructure\UI\GroupTypeListForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\OrganizationalStructure.Master" />
     <Content Include="OrganizationalStructure\UI\EditUserControl.ascx" />
     <Content Include="OrganizationalStructure\UI\PositionListControl.ascx" />
     <Content Include="OrganizationalStructure\UI\PositionListForm.aspx" />
@@ -67,6 +68,8 @@
     <Content Include="OrganizationalStructure\UI\UserListControl.ascx" />
     <Content Include="OrganizationalStructure\UI\UserListForm.aspx" />
     <Content Include="SecurityManagerUrlMapping.xml" />
+    <Content Include="res\Html\ContentViewStyle.css" />
+    <Content Include="res\Html\Style.css" />
     <Content Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +291,13 @@
     <Compile Include="OrganizationalStructure\UI\EditUserForm.aspx.designer.cs">
       <DependentUpon>EditUserForm.aspx</DependentUpon>
     </Compile>
+    <Compile Include="OrganizationalStructure\UI\ErrorMessageControl.ascx.cs">
+      <DependentUpon>ErrorMessageControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrganizationalStructure\UI\ErrorMessageControl.ascx.designer.cs">
+      <DependentUpon>ErrorMessageControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="OrganizationalStructure\UI\GroupListControl.ascx.cs">
       <DependentUpon>GroupListControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -323,12 +333,12 @@
     <Compile Include="OrganizationalStructure\UI\NavigationTabs.ascx.designer.cs">
       <DependentUpon>NavigationTabs.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\OrganizationalStructure.Master.cs">
-      <DependentUpon>OrganizationalStructure.Master</DependentUpon>
+    <Compile Include="OrganizationalStructure\UI\OrganizationalStructureMasterPage.Master.cs">
+      <DependentUpon>OrganizationalStructureMasterPage.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\OrganizationalStructure.Master.designer.cs">
-      <DependentUpon>OrganizationalStructure.Master</DependentUpon>
+    <Compile Include="OrganizationalStructure\UI\OrganizationalStructureMasterPage.Master.designer.cs">
+      <DependentUpon>OrganizationalStructureMasterPage.Master</DependentUpon>
     </Compile>
     <Compile Include="OrganizationalStructure\UI\PositionListControl.ascx.cs">
       <DependentUpon>PositionListControl.ascx</DependentUpon>
@@ -538,6 +548,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>UserListFormResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="res\Rubicon.SecurityManager.Client.Web\OrganizationalStructure\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" />

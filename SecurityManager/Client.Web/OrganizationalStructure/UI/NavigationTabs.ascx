@@ -1,16 +1,9 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="NavigationTabs.ascx.cs" Inherits="Rubicon.Kis.Client.Web.UI.AdministrationUI.NavigationTabs" %>
 <%@ Register TagPrefix="Rubicon" Namespace="Rubicon.Web.UI.Controls" Assembly="Rubicon.Web" %>
-<%@ Register TagPrefix="obw" Assembly="Rubicon.ObjectBinding.Web" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" %>
   
-<table cellpadding="0" cellspacing="0" border="0" style="width: 100%">
-  <tr>
-    <td style="width: 50%" align="right">
-      <obw:BocTextValue ID="UserFullNameTextValue" CssClass="headerAreaTitleLabel" runat="server" ReadOnly="True">
-        <TextBoxStyle />
-      </obw:BocTextValue>
-    </td>
-  </tr>
-</table>
+<div id="UserNameLabel" runat="server" style="text-align:right">
+###
+</div>
           
 <Rubicon:TabbedMenu ID="TabbedMenu" runat="server" >
   <Tabs>

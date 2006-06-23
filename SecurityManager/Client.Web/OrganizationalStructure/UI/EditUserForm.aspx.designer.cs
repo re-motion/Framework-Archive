@@ -11,7 +11,7 @@
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI {
     
     public partial class EditUserForm {
-        protected System.Web.UI.WebControls.Label ErrorsOnPageLabel;
+        protected Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.ErrorMessageControl ErrorMessageControl;
         protected Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditUserControl EditUserControl;
         protected Rubicon.Web.UI.Controls.WebButton SaveButton;
         protected Rubicon.Web.UI.Controls.WebButton CancelButton;

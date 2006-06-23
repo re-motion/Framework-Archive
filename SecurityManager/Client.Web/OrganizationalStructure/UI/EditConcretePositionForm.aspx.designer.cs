@@ -11,7 +11,7 @@
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI {
     
     public partial class EditConcretePositionForm {
-        protected System.Web.UI.WebControls.Label ErrorsOnPageLabel;
+        protected Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.ErrorMessageControl ErrorMessageControl;
         protected Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditConcretePositionControl EditConcretePositionControl;
         protected Rubicon.Web.UI.Controls.WebButton CloseButton;
         protected Rubicon.Web.UI.Controls.WebButton CancelButton;

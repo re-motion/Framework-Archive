@@ -1,0 +1,7 @@
+﻿div#ErrorContainer
+{
+  color: Red;
+  font-size: 1.1em;
+  font-weight: bold; 
+  height: 1.1em;
+}

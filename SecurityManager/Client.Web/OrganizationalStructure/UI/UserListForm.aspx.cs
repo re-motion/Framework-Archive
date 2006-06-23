@@ -28,11 +28,5 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 
     // methods and properties
 
-    protected override void OnLoad (EventArgs e)
-    {
-      base.OnLoad (e);
-
-      ErrorsOnPageLabel.Text = GlobalResources.ErrorMessage;
-    }
   }
 }

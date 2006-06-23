@@ -14,11 +14,13 @@ using Rubicon.Web.UI.Controls;
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
 {
-  public partial class OrganizationalStructure : System.Web.UI.MasterPage
+  public partial class OrganizationalStructureMasterPage : System.Web.UI.MasterPage
   {
     // types
 
     // static members and constants
+    private const string c_contentViewStyleFileUrl = "ContentViewStyle.css";
+    private const string c_contentViewStyleFileKey = "SecurityManagerContentViewStyle";
 
     // member fields
 
@@ -30,14 +32,13 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI
     {
       base.OnPreRender (e);
 
-      string key = typeof (TabbedMultiView).FullName + "_Style";
-      if (!HtmlHeadAppender.Current.IsRegistered (key))
+      if (!HtmlHeadAppender.Current.IsRegistered (c_contentViewStyleFileKey))
       {
-        string styleSheetUrl = ResourceUrlResolver.GetResourceUrl (
-            this, Context, typeof (TabbedMultiView), ResourceType.Html, "TabbedMultiView.css");
-
-        HtmlHeadAppender.Current.RegisterStylesheetLink (key, styleSheetUrl, HtmlHeadAppender.Priority.Library);
+        string styleUrl = ResourceUrlResolver.GetResourceUrl (
+            this, typeof (OrganizationalStructureMasterPage), ResourceType.Html, c_contentViewStyleFileUrl);
+        HtmlHeadAppender.Current.RegisterStylesheetLink (c_contentViewStyleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
       }
+
     }
   }
 }

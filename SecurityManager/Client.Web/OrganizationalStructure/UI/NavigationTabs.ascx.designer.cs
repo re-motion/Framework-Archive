@@ -11,7 +11,7 @@
 namespace Rubicon.Kis.Client.Web.UI.AdministrationUI {
     
     public partial class NavigationTabs {
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue UserFullNameTextValue;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl UserNameLabel;
         protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
     }
 }

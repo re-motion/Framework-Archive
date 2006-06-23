@@ -25,6 +25,8 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
   public abstract class BasePage : WxePage, IObjectWithResources 
   {
     // types
+    private const string c_globalStyleFileUrl = "Style.css";
+    private const string c_globalStyleFileKey = "SecurityManagerGlobalStyle";
 
     // static members and constants
 
@@ -83,11 +85,15 @@ namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.Classes
 
     private void RegisterStyleSheets ()
     {
-      string url = ResourceUrlResolver.GetResourceUrl (
-          this, typeof (ResourceUrlResolver), ResourceType.Html, "style.css");
+      string url = ResourceUrlResolver.GetResourceUrl (this, typeof (ResourceUrlResolver), ResourceType.Html, "style.css");
 
       HtmlHeadAppender.Current.RegisterStylesheetLink (this.GetType () + "style", url);
 
+      if (!HtmlHeadAppender.Current.IsRegistered (c_globalStyleFileKey))
+      {
+        string styleUrl = ResourceUrlResolver.GetResourceUrl (this, typeof (BasePage), ResourceType.Html, c_globalStyleFileUrl);
+        HtmlHeadAppender.Current.RegisterStylesheetLink (c_globalStyleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
+      }
     }
 
     IResourceManager IObjectWithResources.GetResourceManager ()

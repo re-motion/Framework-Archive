@@ -10,10 +10,7 @@
 
 namespace Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI {
     
-    public partial class EditPositionForm {
-        protected Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.ErrorMessageControl ErrorMessageControl;
-        protected Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditPositionControl EditPositionControl;
-        protected Rubicon.Web.UI.Controls.WebButton SaveButton;
-        protected Rubicon.Web.UI.Controls.WebButton CancelButton;
+    public partial class ErrorMessageControl {
+        protected System.Web.UI.WebControls.Label ErrorsOnPageLabel;
     }
 }
