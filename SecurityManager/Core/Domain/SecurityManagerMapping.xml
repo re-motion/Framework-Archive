@@ -130,11 +130,13 @@
         <property name="Title">
           <type>string</type>
           <column>Title</column>
+          <nullable>true</nullable>
           <maxLength>100</maxLength>
         </property>
         <property name="FirstName">
           <type>string</type>
           <column>FirstName</column>
+          <nullable>true</nullable>
           <maxLength>100</maxLength>
         </property>
         <property name="LastName">

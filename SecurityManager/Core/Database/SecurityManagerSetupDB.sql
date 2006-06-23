@@ -174,8 +174,8 @@ CREATE TABLE [User]
   [Timestamp] rowversion NOT NULL,
 
   -- User columns
-  [Title] nvarchar (100) NOT NULL,
-  [FirstName] nvarchar (100) NOT NULL,
+  [Title] nvarchar (100) NULL,
+  [FirstName] nvarchar (100) NULL,
   [LastName] nvarchar (100) NOT NULL,
   [UserName] nvarchar (100) NOT NULL,
   [ClientID] uniqueidentifier NULL,
