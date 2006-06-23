@@ -15,7 +15,7 @@
       <sources failonempty="true">
         <include name="*.cs" />
         <include name="Globalization/**/*.cs" />
-        <include name="OrgranizationalStructure/**/*.cs" />
+        <include name="OrganizationalStructure/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
