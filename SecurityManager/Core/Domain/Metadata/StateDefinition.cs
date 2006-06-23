@@ -15,16 +15,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static new StateDefinition GetObject (ObjectID id)
-    {
-      return (StateDefinition) DomainObject.GetObject (id);
-    }
-
-    public static new StateDefinition GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (StateDefinition) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new StateDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (StateDefinition) DomainObject.GetObject (id, clientTransaction);

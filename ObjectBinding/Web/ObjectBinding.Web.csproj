@@ -338,8 +338,12 @@
     <Content Include="Res\Image\SortAscending.gif" />
     <Content Include="Res\Image\SortDescending.gif" />
     <Content Include="Res\Image\ValidationError.gif" />
-    <EmbeddedResource Include="Globalization\BocBooleanValue.de.resx" />
-    <EmbeddedResource Include="Globalization\BocBooleanValue.resx" />
+    <EmbeddedResource Include="Globalization\BocBooleanValue.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\BocBooleanValue.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\BocCheckBox.de.resx" />
     <EmbeddedResource Include="Globalization\BocCheckBox.resx" />
     <EmbeddedResource Include="Globalization\BocDateTimeValue.de.resx" />

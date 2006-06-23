@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -12,14 +13,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static new MetadataObject GetObject (ObjectID id)
+    public static MetadataObject Find (ClientTransaction transaction, string metadataID)
     {
-      return (MetadataObject) DomainObject.GetObject (id);
-    }
+      FindMetadataObjectQueryBuilder queryBuilder = new FindMetadataObjectQueryBuilder ();
+      DomainObjectCollection metadataObjects = transaction.QueryManager.GetCollection (queryBuilder.CreateQuery (metadataID));
+      if (metadataObjects.Count == 0)
+        return null;
 
-    public static new MetadataObject GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (MetadataObject) DomainObject.GetObject (id, includeDeleted);
+      return (MetadataObject) metadataObjects[0];
     }
 
     public static new MetadataObject GetObject (ObjectID id, ClientTransaction clientTransaction)

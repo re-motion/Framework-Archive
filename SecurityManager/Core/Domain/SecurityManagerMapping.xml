@@ -28,6 +28,7 @@
         <property name="ShortName">
           <type>string</type>
           <column>ShortName</column>
+          <nullable>true</nullable>
           <maxLength>10</maxLength>
         </property>
         <relationProperty name="Client" relationID="ClientToGroup" cardinality="one" isMandatory="true">
@@ -163,9 +164,8 @@
     </class>
 
     <!-- Metadata -->
-    <class id="EnumValueDefinition">
-      <type>Rubicon.SecurityManager.Domain.Metadata.EnumValueDefinition, Rubicon.SecurityManager</type>
-      <entity name="EnumValueDefinition"/>
+    <class id="MetadataObject">
+      <type>Rubicon.SecurityManager.Domain.Metadata.MetadataObject, Rubicon.SecurityManager</type>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
         <property name="MetadataItemID">
@@ -177,6 +177,15 @@
           <column>Name</column>
           <maxLength>200</maxLength>
         </property>
+        <relationProperty name="LocalizedNames" relationID="MetadataObjectToLocalizedName" isMandatory="false" cardinality="many" />
+      </properties>
+    </class>
+    
+    <class id="EnumValueDefinition" baseClass="MetadataObject">
+      <type>Rubicon.SecurityManager.Domain.Metadata.EnumValueDefinition, Rubicon.SecurityManager</type>
+      <entity name="EnumValueDefinition"/>
+      <storageProviderID>SecurityManager</storageProviderID>
+      <properties>
         <property name="Value">
           <type>int32</type>
           <column>Value</column>
@@ -184,20 +193,11 @@
       </properties>
     </class>
     
-    <class id="SecurableClassDefinition">
+    <class id="SecurableClassDefinition" baseClass="MetadataObject">
       <type>Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager</type>
       <entity name="SecurableClassDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
-        <property name="MetadataItemID">
-          <type>guid</type>
-          <column>MetadataItemID</column>
-        </property>
-        <property name="Name">
-          <type>string</type>
-          <column>Name</column>
-          <maxLength>200</maxLength>
-        </property>
         <relationProperty name="BaseClass" relationID="DerivedToBaseClass" cardinality="one" isMandatory="false">
           <column>BaseClassID</column>
         </relationProperty>
@@ -223,20 +223,11 @@
       </properties>
     </class>
 
-    <class id="StatePropertyDefinition">
+    <class id="StatePropertyDefinition" baseClass="MetadataObject">
       <type>Rubicon.SecurityManager.Domain.Metadata.StatePropertyDefinition, Rubicon.SecurityManager</type>
       <entity name="StatePropertyDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
-        <property name="MetadataItemID">
-          <type>guid</type>
-          <column>MetadataItemID</column>
-        </property>
-        <property name="Name">
-          <type>string</type>
-          <column>Name</column>
-          <maxLength>200</maxLength>
-        </property>
         <relationProperty name="References" relationID="StatePropertyToStatePropertyReference" cardinality="many" isMandatory="false" />
         <relationProperty name="DefinedStates" relationID="StatePropertyToState" cardinality="many" isMandatory="true" />
       </properties>
@@ -391,6 +382,40 @@
         </relationProperty>
         <relationProperty name="AccessType" relationID="AccessTypeDefinitionToPermission" cardinality="one" isMandatory="true">
           <column>AccessTypeDefinitionID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
+    <!-- Metadata localization classes -->
+    <class id="Culture">
+      <type>Rubicon.SecurityManager.Domain.Metadata.Culture, Rubicon.SecurityManager</type>
+      <entity name="Culture"/>
+      <storageProviderID>SecurityManager</storageProviderID>
+      <properties>
+        <property name="CultureName">
+          <type>string</type>
+          <column>CultureName</column>
+          <maxLength>10</maxLength>
+        </property>
+      </properties>
+    </class>
+
+    <class id="LocalizedName">
+      <type>Rubicon.SecurityManager.Domain.Metadata.LocalizedName, Rubicon.SecurityManager</type>
+      <entity name="LocalizedName"/>
+      <storageProviderID>SecurityManager</storageProviderID>
+      <properties>
+        <property name="Text">
+          <type>string</type>
+          <column>Text</column>
+          <maxLength>2147483647</maxLength>
+        </property>
+        <relationProperty name="Culture" relationID="CultureToLocalizedName" isMandatory="true" cardinality="one">
+          <column>CultureID</column>
+          <oppositeClass>Culture</oppositeClass>
+        </relationProperty>
+        <relationProperty name="MetadataObject" relationID="MetadataObjectToLocalizedName" isMandatory="true" cardinality="one">
+          <column>MetadataObjectID</column>
         </relationProperty>
       </properties>
     </class>

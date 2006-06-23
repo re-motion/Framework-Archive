@@ -65,8 +65,14 @@
     <Compile Include="Domain\Metadata\AbstractRoleDefinition.cs" />
     <Compile Include="Domain\Metadata\AccessTypeDefinition.cs" />
     <Compile Include="Domain\Metadata\AccessTypeReference.cs" />
+    <Compile Include="Domain\Metadata\Culture.cs" />
+    <Compile Include="Domain\Metadata\CultureImporter.cs" />
     <Compile Include="Domain\Metadata\EnumValueDefinition.cs" />
     <Compile Include="Domain\Metadata\FindAbstractRolesQueryBuilder.cs" />
+    <Compile Include="Domain\Metadata\FindMetadataObjectQueryBuilder.cs" />
+    <Compile Include="Domain\Metadata\ImportException.cs" />
+    <Compile Include="Domain\Metadata\LocalizedName.cs" />
+    <Compile Include="Domain\Metadata\MetadataException.cs" />
     <Compile Include="Domain\Metadata\MetadataImporter.cs" />
     <Compile Include="Domain\Metadata\MetadataObject.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinition.cs" />

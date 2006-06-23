@@ -24,7 +24,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     protected string GetStatement (EnumWrapper[] abstractRoles)
     {
-      string sql = "SELECT * FROM [EnumValueDefinition] WHERE ClassID='AbstractRoleDefinition' AND ({0});";
       StringBuilder whereClauseBuilder = new StringBuilder (abstractRoles.Length * 50);
 
       for (int i = 0; i < abstractRoles.Length; i++)
@@ -41,7 +40,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         Parameters.Add (parameterName, roleWrapper.ToString());
       }
 
-      return string.Format (sql, whereClauseBuilder.ToString ());
+      return "SELECT * FROM [AbstractRoleDefinitionView] WHERE " + whereClauseBuilder.ToString ();
     }
   }
 }

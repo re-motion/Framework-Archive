@@ -36,6 +36,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
+    <None Include="Metadata\SecurityMetadataLocalization.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Security.build" />
     <Compile Include="BaseSecurityStrategy.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
@@ -59,6 +62,7 @@
     <Compile Include="Metadata\MetadataToXmlConverter.cs" />
     <Compile Include="Metadata\PermissionReflector.cs" />
     <Compile Include="Metadata\SecurableClassInfo.cs" />
+    <Compile Include="Metadata\SecurityMetadataLocalizationSchema.cs" />
     <Compile Include="Metadata\SecurityMetadataSchema.cs" />
     <Compile Include="Metadata\StatePropertyInfo.cs" />
     <Compile Include="Metadata\StatePropertyReflector.cs" />

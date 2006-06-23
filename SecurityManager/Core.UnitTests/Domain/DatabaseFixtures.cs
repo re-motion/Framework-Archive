@@ -50,6 +50,24 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       transaction.Commit ();
     }
 
+    public void CreateSecurableClassDefinitionWithStates ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
+          transaction,
+          new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
+          "Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager.Domain");
+
+      classDefinition.AddStateProperty (CreateFileStateProperty (transaction));
+      classDefinition.AddStateProperty (CreateConfidentialityProperty (transaction));
+
+      transaction.Commit ();
+    }
+
     public void CreateUsersWithDifferentClients ()
     {
       DatabaseHelper dbHelper = new DatabaseHelper ();
@@ -178,6 +196,37 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       role.Position = position;
 
       return role;
+    }
+
+    private SecurableClassDefinition CreateSecurableClassDefinition (ClientTransaction transaction, Guid metadataItemID, string name)
+    {
+      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      classDefinition.MetadataItemID = metadataItemID;
+      classDefinition.Name = name;
+
+      return classDefinition;
+    }
+
+    private StatePropertyDefinition CreateFileStateProperty (ClientTransaction transaction)
+    {
+      StatePropertyDefinition fileStateProperty = new StatePropertyDefinition (transaction, new Guid ("9e689c4c-3758-436e-ac86-23171289fa5e"), "FileState");
+      fileStateProperty.AddState ("Open", 0);
+      fileStateProperty.AddState ("Cancelled", 1);
+      fileStateProperty.AddState ("Reaccounted", 2);
+      fileStateProperty.AddState ("HandledBy", 3);
+      fileStateProperty.AddState ("Approved", 4);
+
+      return fileStateProperty;
+    }
+
+    private StatePropertyDefinition CreateConfidentialityProperty (ClientTransaction transaction)
+    {
+      StatePropertyDefinition confidentialityProperty = new StatePropertyDefinition (transaction, new Guid ("93969f13-65d7-49f4-a456-a1686a4de3de"), "Confidentiality");
+      confidentialityProperty.AddState ("Public", 0);
+      confidentialityProperty.AddState ("Secret", 1);
+      confidentialityProperty.AddState ("TopSecret", 2);
+
+      return confidentialityProperty;
     }
   }
 }

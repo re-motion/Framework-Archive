@@ -60,9 +60,11 @@
     <Compile Include="Domain\DatabaseFixtures.cs" />
     <Compile Include="Domain\DatabaseHelper.cs" />
     <Compile Include="Domain\Metadata\AbstractRoleDefinitionTest.cs" />
+    <Compile Include="Domain\Metadata\CultureImporterTest.cs" />
     <Compile Include="Domain\Metadata\FindAbstractRolesQueryBuilderTest.cs" />
     <Compile Include="Domain\Metadata\MetadataImporterTest.cs" />
     <Compile Include="Domain\Metadata\MetadataObjectAssert.cs" />
+    <Compile Include="Domain\Metadata\MetadataObjectTest.cs" />
     <Compile Include="Domain\Metadata\MetadataTestHelper.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
@@ -100,6 +102,9 @@
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
       <Name>SecurityManager.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\SecurityManagerSetupDB.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

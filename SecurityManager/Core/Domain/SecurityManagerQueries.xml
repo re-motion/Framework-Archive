@@ -8,46 +8,66 @@
   <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [SecurableClassDefinition] WHERE Name = @name;
+      SELECT * FROM [SecurableClassDefinitionView] WHERE Name = @name;
     </statement>
   </query>
 
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindUser" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [User] WHERE UserName = @userName;
+      SELECT * FROM [UserView] WHERE UserName = @userName;
     </statement>
   </query>
 
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindGroup" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [Group] WHERE Name = @name;
+      SELECT * FROM [GroupView] WHERE Name = @name;
     </statement>
   </query>
 
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [User] WHERE ClientID = @clientID ORDER BY LastName;
+      SELECT * FROM [UserView] WHERE ClientID = @clientID ORDER BY LastName;
     </statement>
   </query>
+  
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [Group] WHERE ClientID = @clientID ORDER BY Name;
+      SELECT * FROM [GroupView] WHERE ClientID = @clientID ORDER BY Name;
     </statement>
   </query>
+  
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [GroupType] WHERE ClientID = @clientID ORDER BY Name;
+      SELECT * FROM [GroupTypeView] WHERE ClientID = @clientID ORDER BY Name;
     </statement>
   </query>
+  
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [Position] WHERE ClientID = @clientID ORDER BY Name;
+      SELECT * FROM [PositionView] WHERE ClientID = @clientID ORDER BY Name;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [MetadataObjectView] WHERE MetadataItemID = @metadataItemID;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find.StateDefinition" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM StateDefinitionView
+          INNER JOIN StatePropertyDefinitionView ON StateDefinitionView.StatePropertyID = StatePropertyDefinitionView.ID
+      WHERE StatePropertyDefinitionView.MetadataItemID = @metadataItemID
+          AND StateDefinitionView.Value = @stateValue;
     </statement>
   </query>
 </queries>
