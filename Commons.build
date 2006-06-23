@@ -150,7 +150,7 @@
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, 
       Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Web,
       Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web,
-      SecurityManager.Core">
+      SecurityManager.Core, SecurityManager.Metadata.Importer">
     <echo message="Target has executed."/>
   </target>
 
@@ -314,6 +314,14 @@
     <call target="execute-buildstep" />
   </target>
 
+  <target name="SecurityManager.Metadata.Importer" depends="Core, Data.DomainObjects, Data.DomainObjects.ObjectBinding, SecurityManager.Core">
+    <property name="project.name" value="SecurityManager.Metadata.Importer" />
+    <property name="project.dir" value="SecurityManager/Metadata.Importer" />
+    <property name="project.output" value="Rubicon.SecurityManager.Metadata.Importer" />
+    <property name="project.extension" value="exe" />
+    <call target="execute-buildstep" />
+  </target>
+  
   <!--======================= UNIT TESTS =======================-->
 
   <target name="CoreTest">

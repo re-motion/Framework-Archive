@@ -128,9 +128,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Domain\SecurityManagerMapping.xml" />
-    <Content Include="Domain\SecurityManagerQueries.xml" />
-    <Content Include="Domain\SecurityManagerStorageProviders.xml" />
+    <None Include="Domain\SecurityManagerMapping.xml">
+    </None>
+    <None Include="Domain\SecurityManagerQueries.xml">
+    </None>
+    <None Include="Domain\SecurityManagerStorageProviders.xml">
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

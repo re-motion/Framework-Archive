@@ -33,8 +33,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <None Include="App.config" />
     <None Include="AssemblyInfoTemplate.cs" />
-    <None Include="SecurityMananger.Metadata.Importer.build" />
+    <None Include="SecurityManager.Metadata.Importer.build" />
     <Compile Include="CommandLineArguments.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

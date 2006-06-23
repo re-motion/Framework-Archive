@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using System.Xml;
 
-using Rubicon.Security;
-using Rubicon.Text.CommandLine;
-using Rubicon.Data.DomainObjects.Mapping;
-using Rubicon.Data.DomainObjects.Persistence.Configuration;
-using Rubicon.Data.DomainObjects.Queries.Configuration;
-using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Security;
+using Rubicon.SecurityManager.Domain.Metadata;
+using Rubicon.Text.CommandLine;
 
 namespace Rubicon.SecurityManager.Metadata.Importer
 {
@@ -18,6 +12,8 @@ namespace Rubicon.SecurityManager.Metadata.Importer
   {
     public static int Main (string[] args)
     {
+      ClientTransaction transaction = new ClientTransaction ();
+
       CommandLineArguments arguments = GetArguments (args);
       if (arguments == null)
         return 1;
@@ -50,19 +46,10 @@ namespace Rubicon.SecurityManager.Metadata.Importer
       Console.WriteLine (parser.GetAsciiSynopsis (commandName, Console.BufferWidth));
     }
 
-    private static void SetUpDomain ()
-    {
-      MappingConfiguration.SetCurrent (new MappingConfiguration (@"SecurityManagerMapping.xml"));
-      StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"SecurityManagerStorageProviders.xml"));
-      QueryConfiguration.SetCurrent (new QueryConfiguration (@"SecurityManagerQueries.xml"));
-    }
-
     private static int ImportMetadata (CommandLineArguments arguments)
     {
       try
       {
-        SetUpDomain ();
-
         XmlDocument metadataXmlDocument = new XmlDocument ();
         metadataXmlDocument.Load (arguments.MetadataFile);
 

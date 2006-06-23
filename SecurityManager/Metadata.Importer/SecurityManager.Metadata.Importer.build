@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="nant-schema" name="Rubicon.SecurityManager.Metadata.Importer">  
+<project xmlns="nant-schema" name="Rubicon.SecurityMananger.Metadata.Importer">  
 
   <target name="build" description="perform a build">
 
@@ -17,11 +17,16 @@
       </sources>
       <references failonempty="true">
         <include name="${build.outputdir}/Rubicon.Core.dll" />
+        <include name="${build.outputdir}/Rubicon.Data.DomainObjects.dll" />
+        <include name="${build.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll" />
+        <include name="${build.outputdir}/Rubicon.SecurityManager.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Xml.dll"/>
       </references>
     </csc>
-        
+
+    <copy file="App.Config" tofile="${build.outputdir}/${project.output}.config" overwrite="true" />
+
   </target>
 
 </project>
