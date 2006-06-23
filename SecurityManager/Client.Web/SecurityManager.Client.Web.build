@@ -35,7 +35,7 @@
         <include asis="true" name="System.Xml.dll"/>
       </references>
 
-      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.SecurityManager">
+      <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.SecurityManager.Client.Web">
         <include name="Globalization/**/*.resx" />
       </resources>
     </csc>
