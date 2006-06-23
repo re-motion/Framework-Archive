@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle ("Rubicon Security Metadata Extractor")]
+[assembly: AssemblyTitle ("Rubicon Security Manager Metadata Importer")]
 //[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration (".NET Framework: net-2.0, build type: debug")]
 [assembly: AssemblyCompany("rubicon informationstechnologie gmbh")]
@@ -27,7 +27,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.7.5.202")]
+[assembly: AssemblyVersion("1.7.7.202")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
