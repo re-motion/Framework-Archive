@@ -141,6 +141,7 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+      ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
 
       foreach (IClientTransactionExtension extension in this)
         extension.PropertyValueReading (dataContainer, propertyValue, valueAccess);
@@ -151,6 +152,7 @@ namespace Rubicon.Data.DomainObjects
     {
       ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
       ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
+      ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
 
       foreach (IClientTransactionExtension extension in this)
         extension.PropertyValueRead (dataContainer, propertyValue, value, valueAccess);
@@ -174,6 +176,40 @@ namespace Rubicon.Data.DomainObjects
 
       foreach (IClientTransactionExtension extension in this)
         extension.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess)
+    {
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
+
+      foreach (IClientTransactionExtension extension in this)
+        extension.RelationReading (domainObject, propertyName, valueAccess);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess)
+    {
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
+
+      foreach (IClientTransactionExtension extension in this)
+        extension.RelationRead (domainObject, propertyName, relatedObject, valueAccess);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess)
+    {
+      ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+      ArgumentUtility.CheckNotNull ("relatedObjects", relatedObjects);
+      ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
+
+      foreach (IClientTransactionExtension extension in this)
+        extension.RelationRead (domainObject, propertyName, relatedObjects, valueAccess);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]

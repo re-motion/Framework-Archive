@@ -225,7 +225,14 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObject GetRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    return _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
+
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+
+    _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
+    DomainObject relatedObject = _dataManager.RelationEndPointMap.GetRelatedObject (relationEndPointID);
+    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Current);
+
+    return relatedObject;
   }
 
   /// <summary>
@@ -238,7 +245,14 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObject GetOriginalRelatedObject (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    return _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
+
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+
+    _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
+    DomainObject relatedObject = _dataManager.RelationEndPointMap.GetOriginalRelatedObject (relationEndPointID);
+    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObject, ValueAccess.Original);
+
+    return relatedObject;
   }
 
   /// <summary>
@@ -251,7 +265,14 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    return _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
+
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+
+    _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
+    DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
+    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects, ValueAccess.Current);
+
+    return relatedObjects;
   }
 
   /// <summary>
@@ -264,7 +285,14 @@ public class ClientTransaction : ITransaction
   internal protected virtual DomainObjectCollection GetOriginalRelatedObjects (RelationEndPointID relationEndPointID)
   {
     ArgumentUtility.CheckNotNull ("relationEndPointID", relationEndPointID);
-    return _dataManager.RelationEndPointMap.GetOriginalRelatedObjects (relationEndPointID);
+
+    DomainObject domainObject = GetObject (relationEndPointID.ObjectID, true);
+
+    _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Original);
+    DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetOriginalRelatedObjects (relationEndPointID);
+    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects, ValueAccess.Original);
+
+    return relatedObjects;
   }  
 
   /// <summary>

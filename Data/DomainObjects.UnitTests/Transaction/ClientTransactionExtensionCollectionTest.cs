@@ -398,5 +398,58 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.VerifyAll ();
     }
+
+    [Test]
+    public void RelationReading ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension1.RelationReading (_order, "OrderItems", ValueAccess.Current);
+        _extension2.RelationReading (_order, "OrderItems", ValueAccess.Current);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      _collectionWithExtensions.RelationReading (_order, "OrderItems", ValueAccess.Current);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void RelationReadWithOneToOneRelation ()
+    {
+      OrderTicket orderTicket = _order.OrderTicket;
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension1.RelationRead (_order, "OrderTicket", orderTicket, ValueAccess.Original);
+        _extension2.RelationRead (_order, "OrderTicket", orderTicket, ValueAccess.Original);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      _collectionWithExtensions.RelationRead (_order, "OrderTicket", orderTicket, ValueAccess.Original);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void RelationReadWithOneToManyRelation ()
+    {
+      DomainObjectCollection orderItems = _order.OrderItems;
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension1.RelationRead (_order, "OrderItems", orderItems, ValueAccess.Original);
+        _extension2.RelationRead (_order, "OrderItems", orderItems, ValueAccess.Original);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      _collectionWithExtensions.RelationRead (_order, "OrderItems", orderItems, ValueAccess.Original);
+
+      _mockRepository.VerifyAll ();
+    }
+
   }
 }

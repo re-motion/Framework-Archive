@@ -21,6 +21,16 @@ public class NullObjectEndPoint : ObjectEndPoint
 
   // methods and properties
 
+  public override void NotifyClientTransactionOfBeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
+  {
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
+  }
+
+  public override void NotifyClientTransactionOfEndRelationChange ()
+  {
+  }
+
   public override void BeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
   {
     ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);

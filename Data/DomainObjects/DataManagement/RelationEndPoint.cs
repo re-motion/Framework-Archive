@@ -103,6 +103,28 @@ public abstract class RelationEndPoint : IEndPoint
 
   // methods and properties
 
+  public void NotifyClientTransactionOfBeginRelationChange (IEndPoint oldEndPoint)
+  {
+    NotifyClientTransactionOfBeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));
+  }
+
+  public virtual void NotifyClientTransactionOfBeginRelationChange (IEndPoint oldEndPoint, IEndPoint newEndPoint)
+  {
+    ArgumentUtility.CheckNotNull ("oldEndPoint", oldEndPoint);
+    ArgumentUtility.CheckNotNull ("newEndPoint", newEndPoint);
+
+    _clientTransaction.RelationChanging (
+        GetDomainObject (), 
+        _definition.PropertyName, 
+        oldEndPoint.GetDomainObject (), 
+        newEndPoint.GetDomainObject ());
+  }
+
+  public virtual void NotifyClientTransactionOfEndRelationChange ()
+  {
+    _clientTransaction.RelationChanged (GetDomainObject (), _definition.PropertyName);
+  }
+
   public void BeginRelationChange (IEndPoint oldEndPoint)
   {
     BeginRelationChange (oldEndPoint, RelationEndPoint.CreateNullRelationEndPoint (oldEndPoint.Definition));    

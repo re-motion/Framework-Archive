@@ -456,9 +456,6 @@ public class DomainObject
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-    // TODO: Ensure ClientTransaction extension is notified, before ANY events are raised.
-    this.ClientTransaction.RelationChanging (this, propertyName, oldRelatedObject, newRelatedObject);
-
     RelationChangingEventArgs args = new RelationChangingEventArgs (propertyName, oldRelatedObject, newRelatedObject);
     OnRelationChanging (args);
   }
@@ -471,9 +468,6 @@ public class DomainObject
   internal void EndRelationChange (string propertyName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
-
-    // TODO: Ensure ClientTransaction extension is notified, after ALL events are raised.
-    this.ClientTransaction.RelationChanged (this, propertyName);
 
     OnRelationChanged (new RelationChangedEventArgs (propertyName));
   }

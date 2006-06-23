@@ -12,6 +12,7 @@ using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
+  // TODO ES: Move relation change tests to fixture ClientTransactionExtensionRelationChangesTest
   [TestFixture]
   public class ClientTransactionExtensionTest : ClientTransactionBaseTest
   {
@@ -285,8 +286,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     public void ReplaceInOneToManyRelation ()
     {
       Customer customer = _order1.Customer;
+      OrderCollection ordersOfCustomer = customer.Orders;
 
-      int replaceIndex = customer.Orders.IndexOf (_order1);
+      int replaceIndex = ordersOfCustomer.IndexOf (_order1);
 
       Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
       Customer oldRelatedCustomerOfNewOrder = newOrder.Customer;
@@ -300,6 +302,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
+        _extension.RelationReading (customer, "Orders", ValueAccess.Current);
+        _extension.RelationRead (customer, "Orders", ordersOfCustomer, ValueAccess.Current);
+
         _extension.RelationChanging (_order1, "Customer", customer, null);
         _extension.RelationChanging (newOrder, "Customer", oldRelatedCustomerOfNewOrder, customer);
         _extension.RelationChanging (customer, "Orders", _order1, newOrder);
@@ -584,6 +589,82 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         IRelationEndPointDefinition orderTicketEndPointDefinition = orderDefinition.GetRelationEndPointDefinition ("OrderTicket");
         persistenceManager.LoadRelatedDataContainer (_order1.DataContainer, new RelationEndPointID (_order1.ID, orderTicketEndPointDefinition));
       }
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetRelatedObject ()
+    {
+      OrderTicket orderTicket = _order1.OrderTicket;
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationReading (_order1, "OrderTicket", ValueAccess.Current);
+        _extension.RelationRead (_order1, "OrderTicket", orderTicket, ValueAccess.Current);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      orderTicket = _order1.OrderTicket;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetOriginalRelatedObject ()
+    {
+      OrderTicket originalOrderTicket = (OrderTicket) _order1.GetOriginalRelatedObject ("OrderTicket");
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationReading (_order1, "OrderTicket", ValueAccess.Original);
+        _extension.RelationRead (_order1, "OrderTicket", originalOrderTicket, ValueAccess.Original);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      originalOrderTicket = (OrderTicket) _order1.GetOriginalRelatedObject ("OrderTicket");
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetRelatedObjects ()
+    {
+      DomainObjectCollection orderItems = _order1.OrderItems;
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
+        _extension.RelationRead (_order1, "OrderItems", orderItems, ValueAccess.Current);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      orderItems = _order1.OrderItems;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetOriginalRelatedObjects ()
+    {
+      DomainObjectCollection originalOrderItems = _order1.GetOriginalRelatedObjects ("OrderItems");
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Original);
+        _extension.RelationRead (_order1, "OrderItems", originalOrderItems, ValueAccess.Original);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      originalOrderItems = _order1.GetOriginalRelatedObjects ("OrderItems");
 
       _mockRepository.VerifyAll ();
     }
