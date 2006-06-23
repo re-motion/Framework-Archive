@@ -193,7 +193,7 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
         {
           if (classDefinition.IsRelationEndPoint (endPointDefinition))
           {
-            ObjectID oppositeObjectID = dataContainer.GetObjectID (endPointDefinition.PropertyName);
+            ObjectID oppositeObjectID = (ObjectID) dataContainer.GetFieldValue (endPointDefinition.PropertyName, ValueAccess.Current);
             ObjectEndPoint endPoint = new ObjectEndPoint (dataContainer, endPointDefinition, oppositeObjectID);
             Add (endPoint);
 

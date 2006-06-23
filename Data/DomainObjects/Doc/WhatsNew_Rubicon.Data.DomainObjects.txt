@@ -1,3 +1,9 @@
+1.7.9.0
+=======
+
+- Event ClientTransaction.Loaded wird nicht mehr gefeuert, wenn beim Navigieren über eine Beziehung kein Objekt geladen wird.
+
+
 1.7.7.0
 =======
 
@@ -11,6 +17,7 @@
 - Für ClientTransaction-Extension-Infrastruktur wurde die Event-Reihenfolge von DataContainer.PropertyChanged und DomainObject.PropertyChanged geändert.
   ALT: DomainObject vor DataContainer.
   NEU: DataContainer vor DomainObject.
+
   
 1.7.6.0
 =======

@@ -102,7 +102,7 @@ public class ClientTransaction : ITransaction
 
   private DataManager _dataManager;
   private QueryManager _queryManager;
-  private Dictionary<string, IClientTransactionExtension> _extensions;
+  private ClientTransactionExtensionCollection _extensions;
 
   // construction and disposing
 
@@ -112,7 +112,7 @@ public class ClientTransaction : ITransaction
   public ClientTransaction ()
   {
     _dataManager = new DataManager (this);
-    _extensions = new Dictionary<string, IClientTransactionExtension> ();
+    _extensions = new ClientTransactionExtensionCollection ();
   }
 
   // methods and properties
@@ -145,11 +145,9 @@ public class ClientTransaction : ITransaction
   /// </summary>
   public virtual void Rollback ()
   {
-    // TODO: Notify extensions
-
+    _extensions.RollingBack ();
     _dataManager.Rollback ();
-
-    // TODO: Notify extensions
+    _extensions.RolledBack ();
   }
 
   /// <summary>
@@ -297,10 +295,14 @@ public class ClientTransaction : ITransaction
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <paramref name="domainObject"/> belongs to a different <see cref="ClientTransaction"/>. 
   /// </exception>
+  //TODO Doc: Extension_ObjectDeleting and ObjectDeleted must be called if overridden and base is not called.
   public virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    _extensions.ObjectDeleting (domainObject);
     _dataManager.Delete (domainObject);
+    _extensions.ObjectDeleted (domainObject);
   }
   
   /// <summary>
@@ -508,8 +510,13 @@ public class ClientTransaction : ITransaction
     foreach (DomainObject loadedDomainObject in args.DomainObjects)
       loadedDomainObject.EndObjectLoading ();
 
-    if (Loaded != null)
-      Loaded (this, args);
+    if (args.DomainObjects.Count != 0)
+    {
+      _extensions.ObjectsLoaded (args.DomainObjects);
+
+      if (Loaded != null)
+        Loaded (this, args);
+    }
   }
 
   /// <summary>
@@ -518,7 +525,7 @@ public class ClientTransaction : ITransaction
   /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
   protected virtual void OnCommitting (ClientTransactionEventArgs args)
   {
-    // TODO: Notify extensions
+    _extensions.Committing (args.DomainObjects);
 
     if (Committing != null)
       Committing (this, args);
@@ -533,7 +540,7 @@ public class ClientTransaction : ITransaction
     if (Committed != null)
       Committed (this, args);
 
-    // TODO: Notify extensions
+    _extensions.Committed (args.DomainObjects);
   }
 
   /// <summary>
@@ -651,107 +658,55 @@ public class ClientTransaction : ITransaction
 
   #endregion
 
-  /// <summary>
-  /// Registers an <see cref="IClientTransactionExtension"/> on the <see cref="ClientTransaction"/>. 
-  /// </summary>
-  /// <param name="extensionName">A name identifying the extension. Must not be <see langword="null"/>.</param>
-  /// <param name="extension">The extension to register. Must not be <see langword="null"/>.</param>
-  /// <exception cref="ArgumentException">An <see cref="IClientTransactionExtension"/> with the given <paramref name="extensionName"/> is already registered.</exception>
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public void RegisterExtension (string extensionName, IClientTransactionExtension extension)
+  //TODO: doc
+  public ClientTransactionExtensionCollection Extensions
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
-    ArgumentUtility.CheckNotNull ("extension", extension);
-    if (_extensions.ContainsKey (extensionName))
-      throw new ArgumentException (string.Format ("An extension with name '{0}' is already registered.", extensionName), "extensionName");
-
-    _extensions.Add (extensionName, extension);
+    get { return _extensions; }
   }
 
-  // TODO ES: DOC
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public IClientTransactionExtension GetExtension (string extensionName)
+  internal void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
-
-    if (!_extensions.ContainsKey (extensionName))
-      return null;
-
-    return _extensions[extensionName];
+    _extensions.PropertyValueReading (dataContainer, propertyValue, valueAccess);
   }
 
-  /// <summary>
-  /// Unregisteres an <see cref="IClientTransactionExtension"/> on the <see cref="ClientTransaction"/>. 
-  /// </summary>
-  /// <param name="extensionName">The name of the extension to unregister. Must not be <see langword="null"/>.</param>
-  /// <remarks>This method does not throw an exception if no <see cref="IClientTransactionExtension"/> with the given 
-  ///   <paramref name="extensionName"/> is registered.</remarks>
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public void UnregisterExtension (string extensionName)
+  internal void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess)
   {
-    ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
-
-    _extensions.Remove (extensionName);
+    _extensions.PropertyValueRead (dataContainer, propertyValue, value, valueAccess);
   }
 
-  internal void PropertyValue_Changing (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+  internal void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
   {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.PropertyChanging (dataContainer, propertyValue, oldValue, newValue);
+    _extensions.PropertyValueChanging (dataContainer, propertyValue, oldValue, newValue);
   }
 
-  internal void PropertyValue_Changed (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
+  internal void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue)
   {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.PropertyChanged (dataContainer, propertyValue, oldValue, newValue);    
+    _extensions.PropertyValueChanged (dataContainer, propertyValue, oldValue, newValue);
   }
 
-  internal void PropertyValue_Reading (DataContainer dataContainer, PropertyValue propertyValue, RetrievalType retrievalType)
+  internal void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
   {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.PropertyReading (dataContainer, propertyValue, retrievalType);        
+    _extensions.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
   }
 
-  internal void PropertyValue_Read (DataContainer dataContainer, PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  internal void RelationChanged (DomainObject domainObject, string propertyName)
   {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.PropertyRead (dataContainer, propertyValue, value, retrievalType);
+    _extensions.RelationChanged (domainObject, propertyName);
   }
 
-  internal void Relation_Changing (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject)
+  internal void NewObjectCreating (Type type)
   {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.RelationChanging (domainObject, propertyName, oldRelatedObject, newRelatedObject);
+    _extensions.NewObjectCreating (type);
   }
 
-  internal void Relation_Changed (DomainObject domainObject, string propertyName)
+  internal void NewObjectCreated (DomainObject domainObject)
   {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.RelationChanged (domainObject, propertyName);
+    _extensions.NewObjectCreated (domainObject);
   }
 
-  internal void DomainObject_NewObjectCreating (Type type)
+  internal void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
   {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.NewObjectCreating (type);
-  }
-
-  internal void DomainObject_NewObjectCreated (DomainObject domainObject)
-  {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.NewObjectCreated (domainObject);
-  }
-
-  internal void DomainObject_ObjectDeleting (DomainObject domainObject)
-  {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.ObjectDeleting (domainObject);
-  }
-
-  internal void DomainObject_ObjectDeleted (DomainObject domainObject)
-  {
-    foreach (IClientTransactionExtension extension in _extensions.Values)
-      extension.ObjectDeleted (domainObject);
+    _extensions.FilterQueryResult (queryResult, query);
   }
 }
 }

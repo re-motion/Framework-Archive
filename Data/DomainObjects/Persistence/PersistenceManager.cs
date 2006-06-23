@@ -205,7 +205,7 @@ namespace Rubicon.Data.DomainObjects.Persistence
 
     private DataContainer GetOppositeDataContainerForEndPoint (DataContainer dataContainer, RelationEndPointID relationEndPointID)
     {
-      ObjectID oppositeID = dataContainer.GetObjectID (relationEndPointID.PropertyName);
+      ObjectID oppositeID = (ObjectID) dataContainer.GetFieldValue (relationEndPointID.PropertyName, ValueAccess.Current);
       if (oppositeID == null)
         return GetNullDataContainerWithRelationCheck (relationEndPointID);
 
@@ -229,17 +229,16 @@ namespace Rubicon.Data.DomainObjects.Persistence
         RelationEndPointID relationEndPointID,
         DataContainer oppositeDataContainer)
     {
-      string oppositeClassID = oppositeDataContainer.GetObjectID (
-          relationEndPointID.OppositeEndPointDefinition.PropertyName).ClassID;
+      ObjectID objectID = (ObjectID) oppositeDataContainer.GetFieldValue (relationEndPointID.OppositeEndPointDefinition.PropertyName, ValueAccess.Current);
 
-      if (relationEndPointID.ObjectID.ClassID != oppositeClassID)
+      if (relationEndPointID.ObjectID.ClassID != objectID.ClassID)
       {
         throw CreatePersistenceException (
             "The property '{0}' of the loaded DataContainer '{1}'"
             + " refers to ClassID '{2}', but the actual ClassID is '{3}'.",
             relationEndPointID.OppositeEndPointDefinition.PropertyName,
             oppositeDataContainer.ID,
-            oppositeClassID,
+            objectID.ClassID,
             relationEndPointID.ObjectID.ClassID);
       }
     }
@@ -249,7 +248,7 @@ namespace Rubicon.Data.DomainObjects.Persistence
         RelationEndPointID relationEndPointID,
         DataContainer oppositeDataContainer)
     {
-      ObjectID id = dataContainer.GetObjectID (relationEndPointID.PropertyName);
+      ObjectID id = (ObjectID) dataContainer.GetFieldValue (relationEndPointID.PropertyName, ValueAccess.Current);
       if (id.ClassID != oppositeDataContainer.ID.ClassID)
       {
         throw CreatePersistenceException (

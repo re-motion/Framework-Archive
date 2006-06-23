@@ -48,7 +48,7 @@ public abstract class CommandBuilder
     ArgumentUtility.CheckNotNullOrEmpty ("parameterName", parameterName);
     ArgumentUtility.CheckNotNull ("propertyValue", propertyValue);
 
-    IDataParameter commandParameter = AddCommandParameter (command, parameterName, propertyValue.Value);
+    IDataParameter commandParameter = AddCommandParameter (command, parameterName, propertyValue.GetFieldValue (ValueAccess.Current));
 
     if (propertyValue.PropertyType == typeof (byte[]))
       commandParameter.DbType = DbType.Binary;
@@ -102,9 +102,9 @@ public abstract class CommandBuilder
 
     ClassDefinition relatedClassDefinition = null;
     object relatedIDValue = null;
-    if (propertyValue.Value != null)
+    if (propertyValue.GetFieldValue(ValueAccess.Current) != null)
     {
-      ObjectID relatedID = (ObjectID) propertyValue.Value;
+      ObjectID relatedID = (ObjectID) propertyValue.GetFieldValue (ValueAccess.Current);
       relatedClassDefinition = relatedID.ClassDefinition;
       relatedIDValue = GetObjectIDValueForParameter (relatedID);
     }
@@ -135,7 +135,7 @@ public abstract class CommandBuilder
       AppendColumn (classIDColumnName, classIDColumnName);
 
       string classID = null;
-      if (propertyValue.Value != null)
+      if (propertyValue.GetFieldValue (ValueAccess.Current) != null)
         classID = relatedClassDefinition.ID;
 
       AddCommandParameter (command, classIDColumnName, classID);

@@ -45,7 +45,7 @@ public class PropertyValue
   private object _value;
   private object _originalValue;
   private bool _isDiscarded = false;
-  private ArrayList _changeNotificationReceivers;
+  private ArrayList _accessObservers;
 
   // construction and disposing
 
@@ -75,7 +75,7 @@ public class PropertyValue
     _definition = definition;
     _value = value;
     _originalValue = value;
-    _changeNotificationReceivers = new ArrayList ();
+    _accessObservers = new ArrayList ();
   }
 
   // methods and properties
@@ -133,7 +133,7 @@ public class PropertyValue
 
       // Note: A ClientTransaction extension could possibly raise an exception during BeginValueGet.
       //       If another ClientTransaction extension only wants to be notified on success it should use EndValueGet.
-      BeginValueGet (RetrievalType.CurrentValue);
+      BeginValueGet (ValueAccess.Current);
       EndValueGet ();
       
       return _value;
@@ -168,7 +168,7 @@ public class PropertyValue
 
       // Note: A ClientTransaction extension could possibly raise an exception during BeginOriginalValueGet.
       //       If another ClientTransaction extension only wants to be notified on success it should use EndOriginalValueGet.
-      BeginValueGet (RetrievalType.OriginalValue);
+      BeginValueGet (ValueAccess.Original);
       EndOriginalValueGet ();
 
       return _originalValue; 
@@ -281,10 +281,18 @@ public class PropertyValue
       Changed (this, args);
   }
 
-  internal void RegisterForChangeNotification (PropertyValueCollection propertyValueCollection)
+  internal object GetFieldValue (ValueAccess valueAccess)
+  {
+    if (valueAccess == ValueAccess.Current)
+      return _value;
+    else
+      return _originalValue;
+  }
+
+  internal void RegisterForAccessObservation (PropertyValueCollection propertyValueCollection)
   {
     ArgumentUtility.CheckNotNull ("propertyValueCollection", propertyValueCollection);
-    _changeNotificationReceivers.Add (propertyValueCollection);
+    _accessObservers.Add (propertyValueCollection);
   }
 
   internal void Commit ()
@@ -372,22 +380,22 @@ public class PropertyValue
     return !value1.Equals (value2);
   }
 
-  private void BeginValueGet (RetrievalType retrievalType)
+  private void BeginValueGet (ValueAccess valueAccess)
   {
-    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Reading (this, retrievalType);
+    foreach (PropertyValueCollection accessObserver in _accessObservers)
+      accessObserver.PropertyValueReading (this, valueAccess);
   }
 
   private void EndValueGet ()
   {
-    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Read (this, _value, RetrievalType.CurrentValue);
+    foreach (PropertyValueCollection accessObserver in _accessObservers)
+      accessObserver.PropertyValueRead (this, _value, ValueAccess.Current);
   }
 
   private void EndOriginalValueGet ()
   {
-    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Read (this, _originalValue, RetrievalType.OriginalValue);
+    foreach (PropertyValueCollection accessObserver in _accessObservers)
+      accessObserver.PropertyValueRead (this, _originalValue, ValueAccess.Original);
   }
 
   private void BeginValueSet (object newValue)
@@ -396,8 +404,8 @@ public class PropertyValue
 
     // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
     // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
-    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Changing (this, changingArgs);
+    foreach (PropertyValueCollection accessObserver in _accessObservers)
+      accessObserver.PropertyValueChanging (this, changingArgs);
 
     OnChanging (changingArgs);
   }
@@ -409,8 +417,8 @@ public class PropertyValue
 
     // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
     // Therefore notification of PropertyValueCollection when changing property values is not organized through events.
-    foreach (PropertyValueCollection changeNotificationReceiver in _changeNotificationReceivers)
-      changeNotificationReceiver.PropertyValue_Changed (this, changedArgs);
+    foreach (PropertyValueCollection accessObserver in _accessObservers)
+      accessObserver.PropertyValueChanged (this, changedArgs);
   }
 
   private void CheckForRelationProperty ()

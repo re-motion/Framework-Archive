@@ -93,6 +93,7 @@
     <Compile Include="ClientTransaction.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientTransactionExtensionCollection.cs" />
     <Compile Include="CommonCollection.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -402,12 +403,12 @@
     <Compile Include="ReflectionUtility.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="RetrievalType.cs" />
     <Compile Include="Schemas\SchemaLoader.cs" />
     <Compile Include="Schemas\SchemaType.cs" />
     <Compile Include="StateType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ValueAccess.cs" />
     <Compile Include="ValueTooLongException.cs">
       <SubType>Code</SubType>
     </Compile>

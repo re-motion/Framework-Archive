@@ -104,6 +104,15 @@ public abstract class StorageProvider : IDisposable
     }
   }
 
+  protected object GetFieldValue (DataContainer dataContainer, string propertyName, ValueAccess valueAccess)
+  {
+    ArgumentUtility.CheckNotNull ("dataContainer", dataContainer);
+    ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+    ArgumentUtility.CheckValidEnumValue ("valueAccess", valueAccess);
+
+    return dataContainer.GetFieldValue (propertyName, valueAccess);
+  }
+
   protected bool IsDisposed 
   {
     get { return _disposed; }

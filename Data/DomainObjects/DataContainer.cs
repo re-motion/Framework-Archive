@@ -451,6 +451,50 @@ public class DataContainer
     _domainObject = domainObject;
   }
 
+  internal object GetFieldValue (string propertyName, ValueAccess valueAccess)
+  {
+    return _propertyValues[propertyName].GetFieldValue (valueAccess);
+  }
+
+  internal void PropertyValueChanging (PropertyValueCollection propertyValueCollection, PropertyChangeEventArgs args)
+  {
+    if (_state == DataContainerStateType.Deleted)
+      throw new ObjectDeletedException (_id);
+
+    if (_clientTransaction != null)
+      _clientTransaction.PropertyValueChanging (this, args.PropertyValue, args.OldValue, args.NewValue);
+
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DomainObject when changing property values is not organized through events.
+    DomainObject.PropertyValueChanging (this, args);
+
+    OnPropertyChanging (args);
+  }
+
+  internal void PropertyValueChanged (PropertyValueCollection propertyValueCollection, PropertyChangeEventArgs args)
+  {
+    OnPropertyChanged (args);
+
+    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
+    // Therefore notification of DomainObject when changing property values is not organized through events.
+    DomainObject.PropertyValueChanged (this, args);
+
+    if (_clientTransaction != null)
+      _clientTransaction.PropertyValueChanged (this, args.PropertyValue, args.OldValue, args.NewValue);
+  }
+
+  internal void PropertyValueReading (PropertyValue propertyValue, ValueAccess valueAccess)
+  {
+    if (_clientTransaction != null)
+      _clientTransaction.PropertyValueReading (this, propertyValue, valueAccess);
+  }
+
+  internal void PropertyValueRead (PropertyValue propertyValue, object value, ValueAccess valueAccess)
+  {
+    if (_clientTransaction != null)
+      _clientTransaction.PropertyValueRead (this, propertyValue, value, valueAccess);
+  }
+
   private StateType GetStateForPropertyValues ()
   {
     foreach (PropertyValue propertyValue in _propertyValues)
@@ -460,45 +504,6 @@ public class DataContainer
     }
 
     return StateType.Unchanged;
-  }
-
-  internal void PropertyValue_Changing (PropertyValueCollection propertyValueCollection, PropertyChangeEventArgs args)
-  {
-    if (_state == DataContainerStateType.Deleted)
-      throw new ObjectDeletedException (_id);
-
-    if (_clientTransaction != null)
-      _clientTransaction.PropertyValue_Changing (this, args.PropertyValue, args.OldValue, args.NewValue);
-
-    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-    // Therefore notification of DomainObject when changing property values is not organized through events.
-    DomainObject.DataContainer_PropertyChanging (this, args);
-
-    OnPropertyChanging (args);
-  }
-
-  internal void PropertyValue_Changed (PropertyValueCollection propertyValueCollection, PropertyChangeEventArgs args)
-  {
-    OnPropertyChanged (args);
-
-    // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
-    // Therefore notification of DomainObject when changing property values is not organized through events.
-    DomainObject.DataContainer_PropertyChanged (this, args);
-
-    if (_clientTransaction != null)
-      _clientTransaction.PropertyValue_Changed (this, args.PropertyValue, args.OldValue, args.NewValue);
-  }
-
-  internal void PropertyValue_Reading (PropertyValue propertyValue, RetrievalType retrievalType)
-  {
-    if (_clientTransaction != null)
-      _clientTransaction.PropertyValue_Reading (this, propertyValue, retrievalType);
-  }
-
-  internal void PropertyValue_Read (PropertyValue propertyValue, object value, RetrievalType retrievalType)
-  {
-    if (_clientTransaction != null)
-      _clientTransaction.PropertyValue_Read (this, propertyValue, value, retrievalType);
   }
 
   private void Discard ()
@@ -530,20 +535,7 @@ public class DataContainer
     ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
     CheckDiscarded ();
 
-    object value = _propertyValues[propertyName].Value;
-    
-    if (value == null)
-      return null;
-
-    ObjectID objectIDValue = value as ObjectID;
-    if (objectIDValue == null)
-    {
-      throw new InvalidCastException (
-          string.Format ("Property '{0}' is of type '{1}', but must be 'Rubicon.Data.DomainObjects.ObjectID'.", 
-              propertyName, value.GetType ()));
-    }
-
-    return objectIDValue;
+    return (ObjectID) this[propertyName];
   }
 
   /// <summary>

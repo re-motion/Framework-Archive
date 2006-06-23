@@ -153,7 +153,7 @@ public class PropertyValueCollection : CommonCollection
       throw CreateArgumentException ("Property '{0}' already exists in collection.", "value", value.Name);
 
     int position = BaseAdd (value.Name, value);
-    value.RegisterForChangeNotification (this);
+    value.RegisterForAccessObservation (this);
 
     return position;
   }
@@ -289,19 +289,19 @@ public class PropertyValueCollection : CommonCollection
     _dataContainer = dataContainer;
   }
 
-  internal void PropertyValue_Changing (PropertyValue propertyValue, ValueChangeEventArgs e)
+  internal void PropertyValueChanging (PropertyValue propertyValue, ValueChangeEventArgs e)
   {
     PropertyChangeEventArgs eventArgs = new PropertyChangeEventArgs (propertyValue, e.OldValue, e.NewValue);
 
     // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
     // Therefore notification of DataContainer when changing property values is not organized through events.
     if (_dataContainer != null)
-      _dataContainer.PropertyValue_Changing (this, eventArgs);
+      _dataContainer.PropertyValueChanging (this, eventArgs);
 
     OnPropertyChanging (eventArgs);
   }
 
-  internal void PropertyValue_Changed (PropertyValue propertyValue, ValueChangeEventArgs e)
+  internal void PropertyValueChanged (PropertyValue propertyValue, ValueChangeEventArgs e)
   {
     PropertyChangeEventArgs eventArgs = new PropertyChangeEventArgs (propertyValue, e.OldValue, e.NewValue);
     OnPropertyChanged (eventArgs);
@@ -309,19 +309,19 @@ public class PropertyValueCollection : CommonCollection
     // Note: .NET 1.1 will not deserialize delegates to non-public (that means internal, protected, private) methods. 
     // Therefore notification of DataContainer when changing property values is not organized through events.
     if (_dataContainer != null)
-      _dataContainer.PropertyValue_Changed (this, eventArgs);
+      _dataContainer.PropertyValueChanged (this, eventArgs);
   }
 
-  internal void PropertyValue_Reading (PropertyValue propertyValue, RetrievalType retrievalType)
+  internal void PropertyValueReading (PropertyValue propertyValue, ValueAccess valueAccess)
   {
     if (_dataContainer != null)
-      _dataContainer.PropertyValue_Reading (propertyValue, retrievalType);
+      _dataContainer.PropertyValueReading (propertyValue, valueAccess);
   }
 
-  internal void PropertyValue_Read (PropertyValue propertyValue, object value, RetrievalType retrievalType)
+  internal void PropertyValueRead (PropertyValue propertyValue, object value, ValueAccess valueAccess)
   {
     if (_dataContainer != null)
-      _dataContainer.PropertyValue_Read (propertyValue, value, retrievalType);
+      _dataContainer.PropertyValueRead (propertyValue, value, valueAccess);
   }
 
   private ArgumentException CreateArgumentException (string message, string parameterName, params object[] args)

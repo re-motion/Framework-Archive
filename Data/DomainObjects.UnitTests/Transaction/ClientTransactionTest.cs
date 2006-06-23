@@ -272,6 +272,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void LoadedEventDoesNotFireWithEmptyDomainObjectCollection ()
+    {
+      Customer customer = Customer.GetObject (DomainObjectIDs.Customer2);
+      _eventReceiver.Clear ();
+
+      DomainObjectCollection orders = ClientTransactionMock.GetRelatedObjects (new RelationEndPointID (customer.ID, "Orders"));
+
+      Assert.IsNotNull (orders);
+      Assert.IsEmpty (orders);
+      Assert.AreEqual (0, _eventReceiver.LoadedDomainObjects.Count);
+    }
+
+    [Test]
     public void GetRelatedObjectsWithLazyLoad ()
     {
       Customer customer = Customer.GetObject (DomainObjectIDs.Customer1);

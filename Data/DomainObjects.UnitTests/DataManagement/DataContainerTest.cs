@@ -198,8 +198,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
-    [ExpectedException (typeof (InvalidCastException),
-        "Property 'OrderNumber' is of type 'System.Int32', but must be 'Rubicon.Data.DomainObjects.ObjectID'.")]
+    [ExpectedException (typeof (InvalidCastException))]
     public void GetObjectIDForPropertyWithWrongType ()
     {
       DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();

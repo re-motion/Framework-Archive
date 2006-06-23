@@ -6,6 +6,9 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.Queries;
+using Rubicon.Data.DomainObjects.Persistence;
+using Rubicon.Data.DomainObjects.DataManagement;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -21,7 +24,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     private MockRepository _mockRepository;
     private IClientTransactionExtension _extension;
 
-    private Order _order;
+    private Order _order1;
 
     // construction and disposing
 
@@ -35,44 +38,33 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
       base.SetUp ();
 
-      _order = Order.GetObject (DomainObjectIDs.Order1);
+      _order1 = Order.GetObject (DomainObjectIDs.Order1);
       _mockRepository = new MockRepository ();
       _extension = _mockRepository.CreateMock<IClientTransactionExtension> ();
 
-      ClientTransaction.Current.RegisterExtension ("Name", _extension);
+      ClientTransaction.Current.Extensions.Add ("Name", _extension);
     }
 
     [Test]
-    public void ManageExtensions ()
+    public void Extensions ()
     {
-      Assert.AreSame (_extension, ClientTransaction.Current.GetExtension ("Name"));
-
-      ClientTransaction.Current.UnregisterExtension ("Name");
-      Assert.IsNull (ClientTransaction.Current.GetExtension ("Name"));
-    }
-
-    [Test]
-    [ExpectedException (typeof (ArgumentException), "An extension with name 'Name' is already registered.\r\nParameter name: extensionName")]
-    public void RegisterExtensionTwice ()
-    {
-      ClientTransaction.Current.RegisterExtension ("Name", _extension);
+      Assert.IsNotNull (ClientTransaction.Current.Extensions);
     }
 
     [Test]
     public void PropertyChange ()
     {
-      _order = Order.GetObject (DomainObjectIDs.Order1);
-      int oldOrderNumber = _order.OrderNumber;
+      int oldOrderNumber = _order1.OrderNumber;
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.PropertyChanging (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-        _extension.PropertyChanged (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
+        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
+        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
       }
 
       _mockRepository.ReplayAll ();
-      _order.OrderNumber = oldOrderNumber + 1;
+      _order1.OrderNumber = oldOrderNumber + 1;
 
       _mockRepository.VerifyAll ();
     }
@@ -80,21 +72,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void PropertyChangeWithEvents ()
     {
-      _order = Order.GetObject (DomainObjectIDs.Order1);
-      int oldOrderNumber = _order.OrderNumber;
+      int oldOrderNumber = _order1.OrderNumber;
       _mockRepository.BackToRecord (_extension);
 
-      DomainObjectMockEventReceiver domainObjectMockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (_order);
-      DataContainerMockEventReceiver dataContainerMockEventReceiver = _mockRepository.CreateMock<DataContainerMockEventReceiver> (_order.DataContainer);
-      PropertyValueCollectionMockEventReceiver propertyValueCollectionMockEventReceiver = _mockRepository.CreateMock<PropertyValueCollectionMockEventReceiver> (_order.DataContainer.PropertyValues);
-      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (_order.DataContainer.PropertyValues["OrderNumber"]);
+      DomainObjectMockEventReceiver domainObjectMockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (_order1);
+      DataContainerMockEventReceiver dataContainerMockEventReceiver = _mockRepository.CreateMock<DataContainerMockEventReceiver> (_order1.DataContainer);
+      PropertyValueCollectionMockEventReceiver propertyValueCollectionMockEventReceiver = _mockRepository.CreateMock<PropertyValueCollectionMockEventReceiver> (_order1.DataContainer.PropertyValues);
+      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (_order1.DataContainer.PropertyValues["OrderNumber"]);
 
       using (_mockRepository.Ordered ())
       {
         // "Changing" notifications
 
-        _extension.PropertyChanging (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-        
+        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
+
         domainObjectMockEventReceiver.PropertyChanging (null, null);
         LastCall.IgnoreArguments ();
 
@@ -122,35 +113,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         domainObjectMockEventReceiver.PropertyChanged (null, null);
         LastCall.IgnoreArguments ();
 
-        _extension.PropertyChanged (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
+        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
       }
 
       _mockRepository.ReplayAll ();
-      _order.OrderNumber = oldOrderNumber + 1;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void PropertyChangeWith2Extensions ()
-    {
-      int oldOrderNumber = _order.OrderNumber;
-      _mockRepository.BackToRecord (_extension);
-
-      IClientTransactionExtension extension2 = _mockRepository.CreateMock<IClientTransactionExtension> ();
-      ClientTransaction.Current.RegisterExtension ("Name2", extension2);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.PropertyChanging (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-        extension2.PropertyChanging (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-
-        _extension.PropertyChanged (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-        extension2.PropertyChanged (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-      }
-
-      _mockRepository.ReplayAll ();
-      _order.OrderNumber = oldOrderNumber + 1;
+      _order1.OrderNumber = oldOrderNumber + 1;
 
       _mockRepository.VerifyAll ();
     }
@@ -158,20 +125,20 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void PropertyRead ()
     {
-      int orderNumber = _order.OrderNumber;
+      int orderNumber = _order1.OrderNumber;
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], RetrievalType.CurrentValue);
-        _extension.PropertyRead (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], orderNumber, RetrievalType.CurrentValue);
-        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], RetrievalType.OriginalValue);
-        _extension.PropertyRead (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], orderNumber, RetrievalType.OriginalValue);
+        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Current);
+        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], orderNumber, ValueAccess.Current);
+        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Original);
+        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], orderNumber, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
-      orderNumber = _order.OrderNumber;
-      orderNumber = (int) _order.DataContainer.PropertyValues["OrderNumber"].OriginalValue;
+      orderNumber = _order1.OrderNumber;
+      orderNumber = (int) _order1.DataContainer.PropertyValues["OrderNumber"].OriginalValue;
 
       _mockRepository.VerifyAll ();
     }
@@ -179,26 +146,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ChangeAndReadProperty ()
     {
-      int oldOrderNumber = _order.OrderNumber;
+      int oldOrderNumber = _order1.OrderNumber;
       int newOrderNumber = oldOrderNumber + 1;
 
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.PropertyChanging (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
-        _extension.PropertyChanged (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
+        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
+        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
 
-        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], RetrievalType.CurrentValue);
-        _extension.PropertyRead (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], newOrderNumber, RetrievalType.CurrentValue);
-        _extension.PropertyReading (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], RetrievalType.OriginalValue);
-        _extension.PropertyRead (_order.DataContainer, _order.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, RetrievalType.OriginalValue);
+        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Current);
+        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], newOrderNumber, ValueAccess.Current);
+        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Original);
+        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
-      _order.OrderNumber = newOrderNumber;
-      newOrderNumber = _order.OrderNumber;
-      oldOrderNumber = (int) _order.DataContainer.PropertyValues["OrderNumber"].OriginalValue;
+      _order1.OrderNumber = newOrderNumber;
+      newOrderNumber = _order1.OrderNumber;
+      oldOrderNumber = (int) _order1.DataContainer.PropertyValues["OrderNumber"].OriginalValue;
 
       _mockRepository.VerifyAll ();
     }
@@ -206,13 +173,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void PropertySetToSameValue ()
     {
-      int orderNumber = _order.OrderNumber;
+      int orderNumber = _order1.OrderNumber;
 
       _mockRepository.BackToRecord (_extension);
       // Note: No method call on the extension is expected.
       _mockRepository.ReplayAll ();
 
-      _order.OrderNumber = orderNumber;
+      _order1.OrderNumber = orderNumber;
 
       _mockRepository.VerifyAll ();
     }
@@ -260,23 +227,22 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ChangeOneToOneRelationWithOldRelatedObject ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
       OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket3);
 
       Order oldRelatedOrder = orderTicket.Order;
-      OrderTicket oldRelatedOrderTicket = order.OrderTicket;
+      OrderTicket oldRelatedOrderTicket = _order1.OrderTicket;
 
       _mockRepository.BackToRecord (_extension);
       PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (orderTicket.DataContainer.PropertyValues["Order"]);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (order, "OrderTicket", oldRelatedOrderTicket, orderTicket);
-        _extension.RelationChanging (oldRelatedOrderTicket, "Order", order, null);
-        _extension.RelationChanging (orderTicket, "Order", oldRelatedOrder, order);
+        _extension.RelationChanging (_order1, "OrderTicket", oldRelatedOrderTicket, orderTicket);
+        _extension.RelationChanging (oldRelatedOrderTicket, "Order", _order1, null);
+        _extension.RelationChanging (orderTicket, "Order", oldRelatedOrder, _order1);
         _extension.RelationChanging (oldRelatedOrder, "OrderTicket", orderTicket, null);
 
-        _extension.RelationChanged (order, "OrderTicket");
+        _extension.RelationChanged (_order1, "OrderTicket");
         _extension.RelationChanged (oldRelatedOrderTicket, "Order");
         _extension.RelationChanged (orderTicket, "Order");
         _extension.RelationChanged (oldRelatedOrder, "OrderTicket");
@@ -286,7 +252,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
-      order.OrderTicket = orderTicket;
+      _order1.OrderTicket = orderTicket;
 
       _mockRepository.VerifyAll ();
     }
@@ -318,26 +284,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ReplaceInOneToManyRelation ()
     {
-      Order order = Order.GetObject (DomainObjectIDs.Order1);
-      Customer customer = order.Customer;
+      Customer customer = _order1.Customer;
 
-      int replaceIndex = customer.Orders.IndexOf (order);
+      int replaceIndex = customer.Orders.IndexOf (_order1);
 
       Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
       Customer oldRelatedCustomerOfNewOrder = newOrder.Customer;
 
+      //Note: this relation must be preloaded in order to prevent ObjectLoaded calls on the extension
+      OrderCollection ordersOfOldRelatedCustomerOfNewOrder = oldRelatedCustomerOfNewOrder.Orders;
+
       _mockRepository.BackToRecord (_extension);
-      PropertyValueMockEventReceiver orderPropertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (order.DataContainer.PropertyValues["Customer"]);
+      PropertyValueMockEventReceiver orderPropertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (_order1.DataContainer.PropertyValues["Customer"]);
       PropertyValueMockEventReceiver newOrderPropertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (newOrder.DataContainer.PropertyValues["Customer"]);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RelationChanging (order, "Customer", customer, null);
+        _extension.RelationChanging (_order1, "Customer", customer, null);
         _extension.RelationChanging (newOrder, "Customer", oldRelatedCustomerOfNewOrder, customer);
-        _extension.RelationChanging (customer, "Orders", order, newOrder);
+        _extension.RelationChanging (customer, "Orders", _order1, newOrder);
         _extension.RelationChanging (oldRelatedCustomerOfNewOrder, "Orders", newOrder, null);
 
-        _extension.RelationChanged (order, "Customer");
+        _extension.RelationChanged (_order1, "Customer");
         _extension.RelationChanged (newOrder, "Customer");
         _extension.RelationChanged (customer, "Orders");
         _extension.RelationChanged (oldRelatedCustomerOfNewOrder, "Orders");
@@ -353,19 +321,19 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void ReadObjectIDProperty ()
     {
-      PropertyValue customerPropertyValue = _order.DataContainer.PropertyValues["Customer"];
-      ObjectID customerID = (ObjectID) _order.DataContainer.PropertyValues["Customer"].Value;
+      PropertyValue customerPropertyValue = _order1.DataContainer.PropertyValues["Customer"];
+      ObjectID customerID = (ObjectID) _order1.DataContainer.PropertyValues["Customer"].Value;
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.PropertyReading (_order.DataContainer, customerPropertyValue, RetrievalType.CurrentValue);
-        _extension.PropertyRead (_order.DataContainer, customerPropertyValue, customerID, RetrievalType.CurrentValue);
+        _extension.PropertyValueReading (_order1.DataContainer, customerPropertyValue, ValueAccess.Current);
+        _extension.PropertyValueRead (_order1.DataContainer, customerPropertyValue, customerID, ValueAccess.Current);
       }
 
       _mockRepository.ReplayAll ();
 
-      customerID = (ObjectID) _order.DataContainer.PropertyValues["Customer"].Value;
+      customerID = (ObjectID) _order1.DataContainer.PropertyValues["Customer"].Value;
 
       _mockRepository.VerifyAll ();
     }
@@ -402,6 +370,220 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.ReplayAll ();
 
       computer.Delete ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void CommitWithChangedPropertyValue ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      computer.SerialNumber = "newSerialNumber";
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.Committing (null);
+        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+        _extension.Committed (null);
+        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Commit ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void CommitWithChangedRelationValue ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
+      computer.Employee = employee;
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.Committing (null);
+        LastCall.Constraints (Property.Value ("Count", 2) & List.IsIn (computer) & List.IsIn (employee));
+        _extension.Committed (null);
+        LastCall.Constraints (Property.Value ("Count", 2) & List.IsIn (computer) & List.IsIn (employee));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Commit ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void CommitWithChangedRelationValueWithClassIDColumn ()
+    {
+      Customer oldCustomer = _order1.Customer;
+      Customer newCustomer = Customer.GetObject (DomainObjectIDs.Customer2);
+      _order1.Customer = newCustomer;
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.Committing (null);
+        LastCall.Constraints (Property.Value ("Count", 3) & List.IsIn (_order1) & List.IsIn (newCustomer) & List.IsIn (oldCustomer));
+        _extension.Committed (null);
+        LastCall.Constraints (Property.Value ("Count", 3) & List.IsIn (_order1) & List.IsIn (newCustomer) & List.IsIn (oldCustomer));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Commit ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void Rollback ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      computer.SerialNumber = "newSerialNumber";
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RollingBack ();
+        _extension.RolledBack ();
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Rollback ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ObjectsLoaded ()
+    {
+      _extension.ObjectsLoaded (null);
+      LastCall.Constraints (Property.Value ("Count", 1));
+
+      _mockRepository.ReplayAll ();
+
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ObjectsLoadedWithRelations ()
+    {
+      _extension.ObjectsLoaded (null);
+      LastCall.Constraints (Property.Value ("Count", 1));
+
+      _mockRepository.ReplayAll ();
+
+      Order order = Order.GetObject (DomainObjectIDs.Order2);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void FilterQueryResult ()
+    {
+      Query query = new Query ("OrderQuery");
+      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
+
+      ClientTransaction.Current.QueryManager.GetCollection (query);
+      _mockRepository.BackToRecord (_extension);
+
+      _extension.FilterQueryResult (null, null);
+      LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.QueryManager.GetCollection (query);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void FilterQueryResultWithLoad ()
+    {
+      Query query = new Query ("OrderQuery");
+      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer4);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 2));
+        _extension.FilterQueryResult (null, null);
+        LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.QueryManager.GetCollection (query);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void StorageProviderGetFieldValue()
+    {
+      int originalOrderNumber = _order1.OrderNumber;
+      _order1.OrderNumber = originalOrderNumber + 1;
+
+      _mockRepository.BackToRecord (_extension);
+
+      using (StorageProviderManager storageProviderManager = new StorageProviderManager ())
+      {
+        using (UnitTestStorageProviderStub storageProvider = 
+            (UnitTestStorageProviderStub) storageProviderManager.GetMandatory (c_unitTestStorageProviderStubID))
+        {
+          _mockRepository.ReplayAll ();
+
+          Assert.AreEqual (originalOrderNumber + 1, storageProvider.GetFieldValue (_order1.DataContainer, "OrderNumber", ValueAccess.Current));
+          Assert.AreEqual (originalOrderNumber, storageProvider.GetFieldValue (_order1.DataContainer, "OrderNumber", ValueAccess.Original));
+
+          _mockRepository.VerifyAll ();
+        }
+      }
+    }
+
+    [Test]
+    public void LoadRelatedDataContainerForEndPoint ()
+    {
+      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket2);
+
+      _mockRepository.BackToRecord (_extension);
+
+      //Note: no reading notification must be performed
+
+      _mockRepository.ReplayAll ();
+
+      using (PersistenceManager persistanceManager = new PersistenceManager ())
+      {
+        ClassDefinition orderTicketDefinition = MappingConfiguration.Current.ClassDefinitions[typeof (OrderTicket)];
+        IRelationEndPointDefinition orderEndPointDefinition = orderTicketDefinition.GetRelationEndPointDefinition ("Order");
+        persistanceManager.LoadRelatedDataContainer (orderTicket.DataContainer, new RelationEndPointID (orderTicket.ID, orderEndPointDefinition));
+      }
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void LoadRelatedDataContainerForVirtualEndPoint ()
+    {
+      //Note: no reading notification must be performed
+      _mockRepository.ReplayAll ();
+
+      using (PersistenceManager persistenceManager = new PersistenceManager ())
+      {
+        ClassDefinition orderDefinition = MappingConfiguration.Current.ClassDefinitions[typeof (Order)];
+        IRelationEndPointDefinition orderTicketEndPointDefinition = orderDefinition.GetRelationEndPointDefinition ("OrderTicket");
+        persistenceManager.LoadRelatedDataContainer (_order1.DataContainer, new RelationEndPointID (_order1.ID, orderTicketEndPointDefinition));
+      }
 
       _mockRepository.VerifyAll ();
     }

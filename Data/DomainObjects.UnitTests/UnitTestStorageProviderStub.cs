@@ -73,5 +73,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     {
       return null;
     }
+
+    public new object GetFieldValue (DataContainer dataContainer, string propertyName, ValueAccess valueAccess)
+    {
+      return base.GetFieldValue (dataContainer, propertyName, valueAccess);
+    }
   }
 }

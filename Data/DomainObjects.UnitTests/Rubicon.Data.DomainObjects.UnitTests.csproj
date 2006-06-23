@@ -350,6 +350,7 @@
     <Compile Include="EventReceiver\CollectionChangeState.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EventReceiver\DomainObjectCollectionMockEventReceiver.cs" />
     <Compile Include="EventReceiver\DomainObjectCollectionEventReceiver.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -648,6 +649,7 @@
     <Compile Include="TestDomain\TestDomainBase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Transaction\ClientTransactionExtensionCollectionTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionTest.cs" />
     <Compile Include="Transaction\ClientTransactionTest.cs">
       <SubType>Code</SubType>
