@@ -9,6 +9,7 @@ using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.Queries;
 using Rubicon.Data.DomainObjects.Persistence;
 using Rubicon.Data.DomainObjects.DataManagement;
+using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -303,7 +304,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RelationReading (customer, "Orders", ValueAccess.Current);
-        _extension.RelationRead (customer, "Orders", ordersOfCustomer, ValueAccess.Current);
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (customer), Is.Equal ("Orders"), Property.Value("Count", ordersOfCustomer.Count) & new ContainsConstraint (ordersOfCustomer), Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (_order1, "Customer", customer, null);
         _extension.RelationChanging (newOrder, "Customer", oldRelatedCustomerOfNewOrder, customer);
@@ -374,6 +376,26 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       _mockRepository.ReplayAll ();
 
+      computer.Delete ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ObjectDeleteTwice ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.ObjectDeleting (computer);
+        _extension.ObjectDeleted (computer);
+      }
+
+      _mockRepository.ReplayAll ();
+
+      computer.Delete ();
       computer.Delete ();
 
       _mockRepository.VerifyAll ();
@@ -640,12 +662,18 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
-        _extension.RelationRead (_order1, "OrderItems", orderItems, ValueAccess.Current);
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+
+        LastCall.Constraints (
+            Is.Same (_order1), 
+            Is.Equal ("OrderItems"),
+            Property.Value ("IsReadOnly", true) & Property.Value ("Count", 2) & List.IsIn (orderItems[0]) & List.IsIn (orderItems[1]), 
+            Is.Equal (ValueAccess.Current));
       }
 
       _mockRepository.ReplayAll ();
 
-      orderItems = _order1.OrderItems;
+       orderItems = _order1.OrderItems;
 
       _mockRepository.VerifyAll ();
     }
@@ -659,7 +687,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Original);
-        _extension.RelationRead (_order1, "OrderItems", originalOrderItems, ValueAccess.Original);
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Original);
+
+        LastCall.Constraints (
+            Is.Same (_order1),
+            Is.Equal ("OrderItems"),
+            Property.Value ("IsReadOnly", true) & Property.Value ("Count", 2) & List.IsIn (originalOrderItems[0]) & List.IsIn (originalOrderItems[1]),
+            Is.Equal (ValueAccess.Original));
       }
 
       _mockRepository.ReplayAll ();

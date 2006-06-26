@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 using Rhino.Mocks;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
+using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
@@ -201,7 +202,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
-        _extension.RelationRead (_order1, "OrderItems", preloadedOrderItems, ValueAccess.Current);
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (orderItem, "Order", _order1, null);
         _extension.RelationChanging (_order1, "OrderItems", orderItem, null);
@@ -241,7 +243,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
-        _extension.RelationRead (_order1, "OrderItems", preloadedOrderItems, ValueAccess.Current);
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (orderItem, "Order", null, _order1);
         _extension.RelationChanging (_order1, "OrderItems", null, orderItem);
@@ -284,7 +287,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
-        _extension.RelationRead (_order1, "OrderItems", preloadedOrderItemsOfOrder1, ValueAccess.Current);
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);
         _extension.RelationChanging (oldOrderOfNewOrderItem, "OrderItems", newOrderItem, null);
@@ -336,7 +340,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
-        _extension.RelationRead (_order1, "OrderItems", preloadedOrderItems, ValueAccess.Current);
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItems.Count) & new ContainsConstraint (preloadedOrderItems), Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (oldOrderItem, "Order", _order1, null);
         _extension.RelationChanging (newOrderItem, "Order", null, _order1);
@@ -391,7 +396,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       using (_mockRepository.Ordered ())
       {
         _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
-        _extension.RelationRead (_order1, "OrderItems", preloadedOrderItemsOfOrder1, ValueAccess.Current);
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (oldOrderItem, "Order", _order1, null);
         _extension.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);

@@ -109,16 +109,6 @@ namespace Rubicon.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
-    {
-      ArgumentUtility.CheckNotNull ("queryResult", query);
-      ArgumentUtility.CheckNotNull ("queryResult", query);
-
-      foreach (IClientTransactionExtension extension in this)
-        extension.FilterQueryResult (queryResult, query);
-    }
-
-    [EditorBrowsable (EditorBrowsableState.Never)]
     public void ObjectDeleting (DomainObject domainObject)
     {
       ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -230,6 +220,16 @@ namespace Rubicon.Data.DomainObjects
 
       foreach (IClientTransactionExtension extension in this)
         extension.RelationChanged (domainObject, propertyName);
+    }
+
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    public void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)
+    {
+      ArgumentUtility.CheckNotNull ("queryResult", query);
+      ArgumentUtility.CheckNotNull ("queryResult", query);
+
+      foreach (IClientTransactionExtension extension in this)
+        extension.FilterQueryResult (queryResult, query);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]

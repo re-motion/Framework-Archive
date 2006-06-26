@@ -411,6 +411,7 @@
     <Compile Include="IntegrationTests\SerializationTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MockConstraints\Contains.cs" />
     <Compile Include="ObjectIDs\ObjectIDTest.cs">
       <SubType>Code</SubType>
     </Compile>

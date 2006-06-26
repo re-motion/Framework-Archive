@@ -270,7 +270,7 @@ public class ClientTransaction : ITransaction
 
     _extensions.RelationReading (domainObject, relationEndPointID.PropertyName, ValueAccess.Current);
     DomainObjectCollection relatedObjects = _dataManager.RelationEndPointMap.GetRelatedObjects (relationEndPointID);
-    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects, ValueAccess.Current);
+    _extensions.RelationRead (domainObject, relationEndPointID.PropertyName, relatedObjects.Clone (true), ValueAccess.Current);
 
     return relatedObjects;
   }
@@ -328,11 +328,9 @@ public class ClientTransaction : ITransaction
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
 
-    _extensions.ObjectDeleting (domainObject);
     _dataManager.Delete (domainObject);
-    _extensions.ObjectDeleted (domainObject);
   }
-  
+
   /// <summary>
   /// Loads an object from the datasource.
   /// </summary>
@@ -692,6 +690,26 @@ public class ClientTransaction : ITransaction
     get { return _extensions; }
   }
 
+  internal void NewObjectCreating (Type type)
+  {
+    _extensions.NewObjectCreating (type);
+  }
+
+  internal void NewObjectCreated (DomainObject domainObject)
+  {
+    _extensions.NewObjectCreated (domainObject);
+  }
+
+  internal void ObjectDeleting (DomainObject domainObject)
+  {
+    _extensions.ObjectDeleting (domainObject);
+  }
+
+  internal void ObjectDeleted (DomainObject domainObject)
+  {
+    _extensions.ObjectDeleted (domainObject);
+  }
+
   internal void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess)
   {
     _extensions.PropertyValueReading (dataContainer, propertyValue, valueAccess);
@@ -720,16 +738,6 @@ public class ClientTransaction : ITransaction
   internal void RelationChanged (DomainObject domainObject, string propertyName)
   {
     _extensions.RelationChanged (domainObject, propertyName);
-  }
-
-  internal void NewObjectCreating (Type type)
-  {
-    _extensions.NewObjectCreating (type);
-  }
-
-  internal void NewObjectCreated (DomainObject domainObject)
-  {
-    _extensions.NewObjectCreated (domainObject);
   }
 
   internal void FilterQueryResult (DomainObjectCollection queryResult, IQuery query)

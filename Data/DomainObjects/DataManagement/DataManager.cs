@@ -121,16 +121,16 @@ public class DataManager
     if (domainObject.State == StateType.Deleted)
       return;
 
-    RelationEndPointCollection allAffectedRelationEndPoints = 
-        _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
+    _clientTransaction.ObjectDeleting (domainObject);
 
+    RelationEndPointCollection allAffectedRelationEndPoints = _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
     BeginDelete (domainObject, allAffectedRelationEndPoints);
 
-    RelationEndPointCollection allOppositeRelationEndPoints = 
-        allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
-
+    RelationEndPointCollection allOppositeRelationEndPoints = allAffectedRelationEndPoints.GetOppositeRelationEndPoints (domainObject);
     PerformDelete (domainObject);
+
     EndDelete (domainObject, allOppositeRelationEndPoints);
+    _clientTransaction.ObjectDeleted (domainObject);
   }
 
   private void PerformDelete (DomainObject domainObject)
