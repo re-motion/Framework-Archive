@@ -218,6 +218,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Controls\CommandTests\CommandTestHelper.cs" />
+    <Compile Include="UI\Controls\CommandTests\TestCommand.cs" />
     <Compile Include="UI\Controls\CommandTests\WxeFunctionCommandTest.cs" />
     <Compile Include="UI\Controls\CommandTests\EventCommandTest.cs" />
     <Compile Include="UI\Controls\CommandTests\NoneCommandTest.cs" />

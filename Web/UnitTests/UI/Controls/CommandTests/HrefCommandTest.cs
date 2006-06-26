@@ -21,7 +21,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
   public class HrefCommandTest : CommandTest
   {
     private CommandTestHelper _testHelper;
-    private Command _command;
+    private TestCommand _command;
 
     [SetUp]
     public virtual void SetUp ()
@@ -41,8 +41,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithoutSeucrityProvider ()
+    public void Render_WithIsActiveTrue ()
     {
+      _command.Active = true;
       string[] parameters = new string[] { "Value1", "Value2" };
 
       NameValueCollection additionalUrlParameters = new NameValueCollection ();
@@ -54,6 +55,8 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       string expectedOnClick = _testHelper.OnClick;
 
       _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, parameters, _testHelper.OnClick, additionalUrlParameters, true, new Style ());
+
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
 
       Assert.IsTrue (_command.IsActive (), "Not active");
 
@@ -71,8 +74,24 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 
       Assert.IsNotNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Missing Target");
       Assert.AreEqual (_testHelper.Target, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Wrong Target");
+    }
+
+    [Test]
+    public void Render_WithIsActiveFalse ()
+    {
+      _command.Active = false;
+      string[] parameters = new string[] { "Value1", "Value2" };
+
+      NameValueCollection additionalUrlParameters = new NameValueCollection ();
+      additionalUrlParameters.Add ("Parameter3", "Value3");
+
+      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, parameters, _testHelper.OnClick, additionalUrlParameters, true, new Style ());
 
       _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsFalse (_command.IsActive (), "Active");
+      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
     }
   }
 }

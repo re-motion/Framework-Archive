@@ -365,21 +365,24 @@ namespace Rubicon.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("style", style);
 
-      switch (_type)
+      if (IsActive ())
       {
-        case CommandType.Href:
-          AddAttributesToRenderForHrefCommand (writer, parameters, onClick, additionalUrlParameters, includeNavigationUrlParameters);
-          break;
-        case CommandType.Event:
-          AddAttributesToRenderForEventCommand (writer, postBackEvent, onClick);
-          break;
-        case CommandType.WxeFunction:
-          AddAttributesToRenderForWxeFunctionCommand (writer, postBackEvent, onClick, additionalUrlParameters, includeNavigationUrlParameters);
-          break;
-        case CommandType.None:
-          break;
-        default:
-          throw new InvalidOperationException (string.Format ("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).FullName));
+        switch (_type)
+        {
+          case CommandType.Href:
+            AddAttributesToRenderForHrefCommand (writer, parameters, onClick, additionalUrlParameters, includeNavigationUrlParameters);
+            break;
+          case CommandType.Event:
+            AddAttributesToRenderForEventCommand (writer, postBackEvent, onClick);
+            break;
+          case CommandType.WxeFunction:
+            AddAttributesToRenderForWxeFunctionCommand (writer, postBackEvent, onClick, additionalUrlParameters, includeNavigationUrlParameters);
+            break;
+          case CommandType.None:
+            break;
+          default:
+            throw new InvalidOperationException (string.Format ("The CommandType '{0}' is not supported by the '{1}'.", _type, typeof (Command).FullName));
+        }
       }
       style.AddAttributesToRender (writer);
       writer.RenderBeginTag (HtmlTextWriterTag.A);
@@ -796,7 +799,7 @@ namespace Rubicon.Web.UI.Controls
         ToolTip = resourceManager.GetString (key);
     }
 
-    public bool IsActive ()
+    public virtual bool IsActive ()
     {
       return HasAccess ();
     }

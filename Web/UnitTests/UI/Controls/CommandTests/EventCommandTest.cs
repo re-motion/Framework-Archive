@@ -21,7 +21,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
   public class EventCommandTest : CommandTest
   {
     private CommandTestHelper _testHelper;
-    private Command _command;
+    private TestCommand _command;
 
     [SetUp]
     public virtual void SetUp ()
@@ -71,12 +71,15 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithoutSeucrityProvider ()
+    public void Render_WithIsActiveTrue ()
     {
-      _testHelper.ExpectWebSecurityProviderToBeNeverCalled ();
-      
+      _command.Active = true;
+      _command.Click += TestHandler;
       string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick;
+  
       _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
 
       Assert.IsTrue (_command.IsActive (), "Not active");
 
@@ -93,8 +96,21 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       Assert.AreEqual (_testHelper.ToolTip, _testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Title], "Wrong Title");
 
       Assert.IsNull (_testHelper.HtmlWriter.Attributes[HtmlTextWriterAttribute.Target], "Has Target");
+    }
+
+    [Test]
+    public void Render_WithIsActiveFalse ()
+    {
+      _command.Active = false;
+      _command.Click += TestHandler;
+
+      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 
       _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsFalse (_command.IsActive (), "Active");
+      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
     }
 
     private void TestHandler (object sender, CommandClickEventArgs e)

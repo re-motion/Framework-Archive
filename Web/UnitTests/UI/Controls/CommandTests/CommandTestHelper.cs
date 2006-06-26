@@ -139,9 +139,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       get { return _onClick; }
     }
 
-    public Command CreateHrefCommand ()
+    public TestCommand CreateHrefCommand ()
     {
-      Command command = new Command ();
+      TestCommand command = new TestCommand ();
       command.Type = CommandType.Href;
       command.ToolTip = _toolTip;
       command.HrefCommand.Href = _href;
@@ -150,18 +150,18 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateEventCommand ()
+    public TestCommand CreateEventCommand ()
     {
-      Command command = new Command ();
+      TestCommand command = new TestCommand ();
       command.Type = CommandType.Event;
       command.ToolTip = _toolTip;
 
       return command;
     }
 
-    public Command CreateWxeFunctionCommand ()
+    public TestCommand CreateWxeFunctionCommand ()
     {
-      Command command = new Command ();
+      TestCommand command = new TestCommand ();
       command.Type = CommandType.WxeFunction;
       command.ToolTip = _toolTip;
       command.WxeFunctionCommand.TypeName = _functionTypeName;
@@ -171,10 +171,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       return command;
     }
 
-    public Command CreateNoneCommand ()
+    public TestCommand CreateNoneCommand ()
     {
-      Command command = new Command ();
-      command = new Command ();
+      TestCommand command = new TestCommand ();
       command.Type = CommandType.None;
 
       return command;

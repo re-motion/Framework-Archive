@@ -21,7 +21,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
   public class NoneCommandTest : CommandTest
   {
     private CommandTestHelper _testHelper;
-    private Command _command;
+    private TestCommand _command;
 
     [SetUp]
     public virtual void SetUp ()
@@ -41,17 +41,32 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithoutSeucrityProvider ()
+    public void Render_WithIsActiveTrue ()
     {
+      _command.Active = true;
+
       _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
       Assert.IsTrue (_command.IsActive (), "Not active");
-
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
       Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
     
+    }
+
+    [Test]
+    public void Render_WithIsActiveFalse ()
+    {
+      _command.Active = false;
+
+      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+
       _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsFalse (_command.IsActive (), "Active");
+      Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
+      Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
+      Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
     }
   }
 }
