@@ -6,9 +6,9 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Web.UI.Controls
 {
-  public enum SecurityDependentProperty
+  public enum MissingPermissionBehavior
   {
-    Visible,
-    Enabled
+    Invisible,
+    Disabled
   }
 }

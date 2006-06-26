@@ -248,7 +248,7 @@ public class WebTabStrip :
     ArrayList visibleTabs = new ArrayList();
     foreach (WebTab tab in tabs)
     {
-      if (tab.EvaluateVisibile() || ControlHelper.IsDesignMode (this, Context))
+      if (tab.EvaluateVisible() || ControlHelper.IsDesignMode (this, Context))
         visibleTabs.Add (tab);
     }
 
@@ -317,7 +317,7 @@ public class WebTabStrip :
       cssClass = CssClassTabSelected;
     else
       cssClass = CssClassTab;
-    if (tab.EvaluateDisabled())
+    if (!tab.EvaluateEnabled ())
       cssClass += " " + CssClassDisabled;
     writer.AddAttribute (HtmlTextWriterAttribute.Class, cssClass);
     writer.RenderBeginTag (HtmlTextWriterTag.Span); // Begin tab span

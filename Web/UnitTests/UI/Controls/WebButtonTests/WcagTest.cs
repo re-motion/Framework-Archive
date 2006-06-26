@@ -10,14 +10,14 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 {
 
 [TestFixture]
-public class WcagTest: WebControlTest
+public class WcagTest : WebButtonTest
 {
-  private WebButtonMock _webButton;
+  private TestWebButton _webButton;
 
   protected override void SetUpPage()
   {
     base.SetUpPage();
-    _webButton = new WebButtonMock();
+    _webButton = new TestWebButton();
     _webButton.ID = "WebButton";
   }
 

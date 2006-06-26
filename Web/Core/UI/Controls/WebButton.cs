@@ -35,7 +35,7 @@ namespace Rubicon.Web.UI.Controls
     private NaBooleanEnum _useLegacyButton = NaBooleanEnum.Undefined;
 
     private ISecurableObject _securableObject;
-    private SecurityDependentProperty _securityDependentProperty = SecurityDependentProperty.Visible;
+    private MissingPermissionBehavior _missingPermissionBehavior = MissingPermissionBehavior.Invisible;
 
     public WebButton ()
     {
@@ -408,17 +408,14 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
-        if (_securityDependentProperty == SecurityDependentProperty.Visible)
+        if (_missingPermissionBehavior == MissingPermissionBehavior.Invisible)
         {
           if (base.Visible)
             return HasAccess ();
-          else
-            return false;
+          return false;
         }
-        else
-        {
-          return base.Visible;
-        }
+
+        return base.Visible;
       }
       set
       {
@@ -430,17 +427,14 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
-        if (_securityDependentProperty == SecurityDependentProperty.Enabled)
+        if (_missingPermissionBehavior == MissingPermissionBehavior.Disabled)
         {
           if (base.Enabled)
             return HasAccess ();
-          else
-            return false;
+          return false;
         }
-        else
-        {
-          return base.Enabled;
-        }
+
+        return base.Enabled;
       }
       set
       {
@@ -479,11 +473,11 @@ namespace Rubicon.Web.UI.Controls
     }
 
     [Category ("Behavior")]
-    [DefaultValue (SecurityDependentProperty.Visible)]
-    public SecurityDependentProperty SecurityDependentProperty
+    [DefaultValue (MissingPermissionBehavior.Invisible)]
+    public MissingPermissionBehavior MissingPermissionBehavior
     {
-      get { return _securityDependentProperty; }
-      set { _securityDependentProperty = value; }
+      get { return _missingPermissionBehavior; }
+      set { _missingPermissionBehavior = value; }
     }
 	
     #region protected virtual string CssClass...

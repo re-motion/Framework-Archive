@@ -21,44 +21,46 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
   public class HrefCommandTest : CommandTest
   {
     private CommandTestHelper _testHelper;
-    private TestCommand _command;
 
     [SetUp]
     public virtual void SetUp ()
     {
       _testHelper = new CommandTestHelper ();
-      _command = _testHelper.CreateHrefCommand ();
       HttpContextHelper.SetCurrent (_testHelper.HttpContext);
     }
 
     [Test]
-    public void IsActive_WithoutSeucrityProvider ()
+    public void HasAccess_WithoutSeucrityProvider ()
     {
-      bool isActive = _command.IsActive ();
+      Command command = _testHelper.CreateHrefCommand ();
+      _testHelper.ReplayAll ();
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (isActive);
+      bool hasAccess = command.HasAccess ();
+
+      _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
     }
 
     [Test]
     public void Render_WithIsActiveTrue ()
     {
-      _command.Active = true;
+      Command command = _testHelper.CreateHrefCommandAsPartialMock ();
       string[] parameters = new string[] { "Value1", "Value2" };
 
       NameValueCollection additionalUrlParameters = new NameValueCollection ();
       additionalUrlParameters.Add ("Parameter3", "Value3");
 
-      string expectedHref = _command.HrefCommand.FormatHref (parameters);
+      string expectedHref = command.HrefCommand.FormatHref (parameters);
       expectedHref = UrlUtility.AddParameter (expectedHref, additionalUrlParameters.GetKey (0), additionalUrlParameters.Get (0));
       expectedHref = UrlUtility.GetAbsoluteUrl (_testHelper.HttpContext, expectedHref);
       string expectedOnClick = _testHelper.OnClick;
 
-      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, parameters, _testHelper.OnClick, additionalUrlParameters, true, new Style ());
+      _testHelper.ExpectOnceOnHasAccess (command, true);
+      _testHelper.ReplayAll ();
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, parameters, _testHelper.OnClick, additionalUrlParameters, true, new Style ());
 
-      Assert.IsTrue (_command.IsActive (), "Not active");
+      _testHelper.VerifyAll ();
 
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
@@ -79,16 +81,16 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     [Test]
     public void Render_WithIsActiveFalse ()
     {
-      _command.Active = false;
+      Command command = _testHelper.CreateHrefCommandAsPartialMock ();
       string[] parameters = new string[] { "Value1", "Value2" };
-
       NameValueCollection additionalUrlParameters = new NameValueCollection ();
       additionalUrlParameters.Add ("Parameter3", "Value3");
+      _testHelper.ExpectOnceOnHasAccess (command, false);
+      _testHelper.ReplayAll ();
 
-      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, parameters, _testHelper.OnClick, additionalUrlParameters, true, new Style ());
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, parameters, _testHelper.OnClick, additionalUrlParameters, true, new Style ());
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (_command.IsActive (), "Active");
+      _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
       Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");

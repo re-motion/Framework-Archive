@@ -21,34 +21,36 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
   public class NoneCommandTest : CommandTest
   {
     private CommandTestHelper _testHelper;
-    private TestCommand _command;
 
     [SetUp]
     public virtual void SetUp ()
     {
       _testHelper = new CommandTestHelper ();
-      _command = _testHelper.CreateNoneCommand ();
       HttpContextHelper.SetCurrent (_testHelper.HttpContext);
     }
 
     [Test]
-    public void IsActive_WithoutSeucrityProvider ()
+    public void HasAccess_WithoutSeucrityProvider ()
     {
-      bool isActive = _command.IsActive ();
+      Command command = _testHelper.CreateNoneCommand ();
+      _testHelper.ReplayAll ();
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (isActive);
+      bool hasAccess = command.HasAccess ();
+
+      _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
     }
 
     [Test]
     public void Render_WithIsActiveTrue ()
     {
-      _command.Active = true;
+      Command command = _testHelper.CreateNoneCommandAsPartialMock ();
+      _testHelper.ExpectOnceOnHasAccess (command, true);
+      _testHelper.ReplayAll ();
 
-      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (_command.IsActive (), "Not active");
+      _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
       Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");
@@ -58,12 +60,13 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     [Test]
     public void Render_WithIsActiveFalse ()
     {
-      _command.Active = false;
+      Command command = _testHelper.CreateNoneCommandAsPartialMock ();
+      _testHelper.ExpectOnceOnHasAccess (command, false);
+      _testHelper.ReplayAll ();
 
-      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (_command.IsActive (), "Active");
+      _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
       Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");

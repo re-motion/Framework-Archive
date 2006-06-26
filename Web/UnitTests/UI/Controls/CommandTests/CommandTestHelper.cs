@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 
-using NMock2;
+using Rhino.Mocks;
 
 using Rubicon.Security;
 using Rubicon.Web.ExecutionEngine;
@@ -22,7 +22,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 
     // member fields
 
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IWebSecurityProvider _mockWebSecurityProvider;
     private IWxeSecurityProvider _mockWxeSecurityProvider;
 
@@ -45,9 +45,9 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _functionType = typeof (ExecutionEngine.TestFunction);
       _functionTypeName = WebTypeUtility.GetQualifiedName (_functionType);
 
-      _mocks = new Mockery ();
-      _mockWebSecurityProvider = _mocks.NewMock<IWebSecurityProvider> ();
-      _mockWxeSecurityProvider = _mocks.NewMock<IWxeSecurityProvider> ();
+      _mocks = new MockRepository ();
+      _mockWebSecurityProvider = _mocks.CreateMock<IWebSecurityProvider> ();
+      _mockWxeSecurityProvider = _mocks.CreateMock<IWxeSecurityProvider> ();
 
       _httpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
       _httpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
@@ -64,7 +64,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 
     public HtmlTextWriterSingleTagMock HtmlWriter
     {
-      get { return _htmlWriter;}
+      get { return _htmlWriter; }
     }
 
     public IWebSecurityProvider WebSecurityProvider
@@ -77,35 +77,24 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       get { return _mockWxeSecurityProvider; }
     }
 
-    public void VerifyAllExpectationsHaveBeenMet ()
+    public void ReplayAll ()
     {
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.ReplayAll ();
     }
 
-    public void ExpectWebSecurityProviderToBeNeverCalled ()
+    public void VerifyAll ()
     {
-      Expect.Never.On (_mockWebSecurityProvider);
-    }
-
-    public void ExpectWxeSecurityProviderToBeNeverCalled ()
-    {
-      Expect.Never.On (_mockWxeSecurityProvider);
+      _mocks.VerifyAll ();
     }
 
     public void ExpectWebSecurityProviderHasAccess (ISecurableObject securableObject, Delegate handler, bool returnValue)
     {
-      Expect.Once.On (_mockWebSecurityProvider)
-         .Method ("HasAccess")
-         .With (securableObject, handler)
-         .Will (Return.Value (returnValue));
+      Expect.Call (_mockWebSecurityProvider.HasAccess (securableObject, handler)).Return (returnValue).Repeat.Once ();
     }
 
     public void ExpectWxeSecurityProviderHasStatelessAccess (Type functionType, bool returnValue)
     {
-      Expect.Once.On (_mockWxeSecurityProvider)
-         .Method ("HasStatelessAccess")
-         .With (functionType)
-         .Will (Return.Value (returnValue));
+      Expect.Call (_mockWxeSecurityProvider.HasStatelessAccess (functionType)).Return (returnValue).Repeat.Once ();
     }
 
 
@@ -139,44 +128,103 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       get { return _onClick; }
     }
 
-    public TestCommand CreateHrefCommand ()
+    public Command CreateHrefCommand ()
     {
-      TestCommand command = new TestCommand ();
+      Command command = new Command ();
+      InitializeHrefCommand (command);
+
+      return command;
+    }
+
+    public Command CreateHrefCommandAsPartialMock ()
+    {
+      Command command = _mocks.PartialMock<Command> ();
+      SetupResult.For (command.HrefCommand).CallOriginalMethod ();
+      InitializeHrefCommand (command);
+
+      return command;
+    }
+
+    private void InitializeHrefCommand (Command command)
+    {
       command.Type = CommandType.Href;
       command.ToolTip = _toolTip;
       command.HrefCommand.Href = _href;
       command.HrefCommand.Target = _target;
+    }
+
+    public Command CreateEventCommand ()
+    {
+      Command command = new Command ();
+      InitializeEventCommand (command);
 
       return command;
     }
 
-    public TestCommand CreateEventCommand ()
+    public Command CreateEventCommandAsPartialMock ()
     {
-      TestCommand command = new TestCommand ();
+      Command command = _mocks.PartialMock<Command> ();
+      InitializeEventCommand (command);
+
+      return command;
+    }
+
+    private void InitializeEventCommand (Command command)
+    {
       command.Type = CommandType.Event;
       command.ToolTip = _toolTip;
+    }
+
+    public Command CreateWxeFunctionCommand ()
+    {
+      Command command = new Command ();
+      InitializeWxeFunctionCommand (command);
 
       return command;
     }
 
-    public TestCommand CreateWxeFunctionCommand ()
+    public Command CreateWxeFunctionCommandAsPartialMock ()
     {
-      TestCommand command = new TestCommand ();
+      Command command = _mocks.PartialMock<Command> ();
+      SetupResult.For (command.WxeFunctionCommand).CallOriginalMethod();
+      InitializeWxeFunctionCommand (command);
+
+      return command;
+    }
+
+    private void InitializeWxeFunctionCommand (Command command)
+    {
       command.Type = CommandType.WxeFunction;
       command.ToolTip = _toolTip;
       command.WxeFunctionCommand.TypeName = _functionTypeName;
       command.WxeFunctionCommand.Parameters = _wxeFunctionParameters;
       command.WxeFunctionCommand.Target = _target;
+    }
+
+    public Command CreateNoneCommand ()
+    {
+      Command command = new Command ();
+      InitializeNoneCommand (command);
 
       return command;
     }
 
-    public TestCommand CreateNoneCommand ()
+    public Command CreateNoneCommandAsPartialMock ()
     {
-      TestCommand command = new TestCommand ();
-      command.Type = CommandType.None;
+      Command command = _mocks.PartialMock<Command> ();
+      InitializeNoneCommand (command);
 
       return command;
+    }
+
+    private void InitializeNoneCommand (Command command)
+    {
+      command.Type = CommandType.None;
+    }
+
+    public void ExpectOnceOnHasAccess (Command command, bool returnValue)
+    {
+      Expect.Call (command.HasAccess ()).Return (returnValue);
     }
   }
 }

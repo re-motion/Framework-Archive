@@ -21,67 +21,70 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
   public class EventCommandTest : CommandTest
   {
     private CommandTestHelper _testHelper;
-    private TestCommand _command;
 
     [SetUp]
     public virtual void SetUp ()
     {
       _testHelper = new CommandTestHelper ();
-      _command = _testHelper.CreateEventCommand ();
       HttpContextHelper.SetCurrent (_testHelper.HttpContext);
     }
 
     [Test]
-    public void IsActive_WithoutSeucrityProvider ()
+    public void HasAccess_WithoutSeucrityProvider ()
     {
-      _testHelper.ExpectWebSecurityProviderToBeNeverCalled ();
+      Command command = _testHelper.CreateEventCommand ();
+      _testHelper.ReplayAll ();
 
-      bool isActive = _command.IsActive ();
+      bool hasAccess = command.HasAccess ();
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (isActive);
+      _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void IsActive_WithAccessGranted ()
+    public void HasAccess_WithAccessGranted ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
+      Command command = _testHelper.CreateEventCommand ();
+      command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (null, new CommandClickEventHandler (TestHandler), true);
-      _command.Click += TestHandler;
+      _testHelper.ReplayAll ();
 
-      bool isActive = _command.IsActive ();
+      bool hasAccess = command.HasAccess ();
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsTrue (isActive);
+      _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void IsActive_WithAccessDenied ()
+    public void HasAccess_WithAccessDenied ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
+      Command command = _testHelper.CreateEventCommand ();
+      command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (null, new CommandClickEventHandler (TestHandler), false);
-      _command.Click += TestHandler;
+      _testHelper.ReplayAll ();
 
-      bool isActive = _command.IsActive ();
+      bool hasAccess = command.HasAccess ();
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (isActive);
+      _testHelper.VerifyAll ();
+      Assert.IsFalse (hasAccess);
     }
 
     [Test]
     public void Render_WithIsActiveTrue ()
     {
-      _command.Active = true;
-      _command.Click += TestHandler;
+      Command command = _testHelper.CreateEventCommandAsPartialMock ();
+      command.Click += TestHandler;
       string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick;
-  
-      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+      _testHelper.ExpectOnceOnHasAccess (command, true);
+      _testHelper.ReplayAll ();
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 
-      Assert.IsTrue (_command.IsActive (), "Not active");
+      _testHelper.VerifyAll ();
 
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
@@ -101,13 +104,14 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     [Test]
     public void Render_WithIsActiveFalse ()
     {
-      _command.Active = false;
-      _command.Click += TestHandler;
+      Command command = _testHelper.CreateEventCommandAsPartialMock ();
+      command.Click += TestHandler;
+      _testHelper.ExpectOnceOnHasAccess (command, false);
+      _testHelper.ReplayAll ();
 
-      _command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
 
-      _testHelper.VerifyAllExpectationsHaveBeenMet ();
-      Assert.IsFalse (_command.IsActive (), "Active");
+      _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
       Assert.AreEqual (HtmlTextWriterTag.A, _testHelper.HtmlWriter.Tag, "Wrong Tag");
       Assert.AreEqual (0, _testHelper.HtmlWriter.Attributes.Count, "Has Attributes");

@@ -97,6 +97,6 @@
  <rwc:tabview id="second" title="Second">
  </rwc:tabview>
 </Views>
-</rwc:tabbedmultiview><rwc:smarthyperlink id=SmartHyperLink1 runat="server" NavigateUrl="~/Start.aspx">test</rwc:smarthyperlink></form>
+</rwc:tabbedmultiview><rwc:smarthyperlink id=SmartHyperLink1 runat="server" NavigateUrl="~/Start.aspx">test</rwc:smarthyperlink>&nbsp;</form>
   </body>
 </html>

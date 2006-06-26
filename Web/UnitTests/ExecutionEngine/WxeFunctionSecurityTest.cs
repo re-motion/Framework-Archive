@@ -1,7 +1,7 @@
 using System;
 using System.Security.Principal;
 
-using NMock2;
+using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security;
@@ -14,7 +14,7 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
   [TestFixture]
   public class WxeFunctionSecurityTest : WxeTest
   {
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private IWxeSecurityProvider _mockWxeSecurityProvider;
 
     [SetUp]
@@ -22,8 +22,8 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     {
       base.SetUp ();
 
-      _mocks = new Mockery ();
-      _mockWxeSecurityProvider = _mocks.NewMock<IWxeSecurityProvider> ();
+      _mocks = new MockRepository ();
+      _mockWxeSecurityProvider = _mocks.CreateMock<IWxeSecurityProvider> ();
 
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_mockWxeSecurityProvider);
     }
@@ -32,13 +32,12 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     public void ExecuteFunctionWithAccessGranted ()
     {
       TestFunction function = new TestFunction ();
-      Expect.Once.On (_mockWxeSecurityProvider)
-          .Method ("CheckAccess")
-          .With (function);
+      _mockWxeSecurityProvider.CheckAccess (function);
+      _mocks.ReplayAll ();
 
       function.Execute ();
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
     }
 
     [Test]
@@ -46,54 +45,49 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     public void ExecuteFunctionWithAccessDenied ()
     {
       TestFunction function = new TestFunction ();
-      Expect.Once.On (_mockWxeSecurityProvider)
-          .Method ("CheckAccess")
-          .With (function)
-          .Will (Throw.Exception (new PermissionDeniedException ("Test Exception")));
+      _mockWxeSecurityProvider.CheckAccess (function);
+      LastCall.Throw (new PermissionDeniedException ("Test Exception"));
+      _mocks.ReplayAll ();
 
       function.Execute ();
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
     }
-    
+
     [Test]
     public void ExecuteFunctionWithoutWxeSecurityProvider ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
 
       TestFunction function = new TestFunction ();
-      Expect.Never.On (_mockWxeSecurityProvider);
+      _mocks.ReplayAll ();
 
       function.Execute ();
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
     }
 
     [Test]
     public void HasStatelessAccessGranted ()
     {
-      Expect.Once.On (_mockWxeSecurityProvider)
-          .Method ("HasStatelessAccess")
-          .With (typeof (TestFunction))
-          .Will (Return.Value (true));
+      Expect.Call (_mockWxeSecurityProvider.HasStatelessAccess (typeof (TestFunction))).Return (true);
+      _mocks.ReplayAll ();
 
       bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
     public void HasStatelessAccessDenied ()
     {
-      Expect.Once.On (_mockWxeSecurityProvider)
-      .Method ("HasStatelessAccess")
-      .With (typeof (TestFunction))
-      .Will (Return.Value (false));
+      Expect.Call (_mockWxeSecurityProvider.HasStatelessAccess (typeof (TestFunction))).Return (false);
+      _mocks.ReplayAll ();
 
       bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
     }
 
@@ -101,12 +95,11 @@ namespace Rubicon.Web.UnitTests.ExecutionEngine
     public void HasStatelessAccessGrantedWithoutWxeSecurityProvider ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
-
-      Expect.Never.On (_mockWxeSecurityProvider);
+      _mocks.ReplayAll ();
 
       bool hasAccess = WxeFunction.HasAccess (typeof (TestFunction));
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
   }

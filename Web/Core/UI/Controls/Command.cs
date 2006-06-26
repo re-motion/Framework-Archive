@@ -365,7 +365,7 @@ namespace Rubicon.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("style", style);
 
-      if (IsActive ())
+      if (HasAccess ())
       {
         switch (_type)
         {
@@ -799,14 +799,8 @@ namespace Rubicon.Web.UI.Controls
         ToolTip = resourceManager.GetString (key);
     }
 
-    public virtual bool IsActive ()
+    public virtual bool HasAccess ()
     {
-      return HasAccess ();
-    }
-
-    protected bool HasAccess ()
-    {
-
       switch (_type)
       {
         case CommandType.Href:
