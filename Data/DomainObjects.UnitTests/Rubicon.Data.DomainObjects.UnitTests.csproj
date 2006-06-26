@@ -402,12 +402,10 @@
     <Compile Include="Factories\TestMappingConfiguration.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IntegrationTests\DomainObjectEventRelationsTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="IntegrationTests\DomainObjectTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IntegrationTests\RelationsTest.cs" />
     <Compile Include="IntegrationTests\SerializationTest.cs">
       <SubType>Code</SubType>
     </Compile>

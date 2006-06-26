@@ -202,130 +202,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void ChangeOneToOneRelationWithoutOldRelatedObject ()
-    {
-      Order order = new Order ();
-      OrderTicket orderTicket = new OrderTicket ();
-      _mockRepository.BackToRecord (_extension);
-      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (orderTicket.DataContainer.PropertyValues["Order"]);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.RelationChanging (order, "OrderTicket", null, orderTicket);
-        _extension.RelationChanging (orderTicket, "Order", null, order);
-        _extension.RelationChanged (order, "OrderTicket");
-        _extension.RelationChanged (orderTicket, "Order");
-
-        //Note: no events are expected on propertyValueMockEventReceiver
-      }
-
-      _mockRepository.ReplayAll ();
-      
-      order.OrderTicket = orderTicket;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void ChangeOneToOneRelationWithOldRelatedObject ()
-    {
-      OrderTicket orderTicket = OrderTicket.GetObject (DomainObjectIDs.OrderTicket3);
-
-      Order oldRelatedOrder = orderTicket.Order;
-      OrderTicket oldRelatedOrderTicket = _order1.OrderTicket;
-
-      _mockRepository.BackToRecord (_extension);
-      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (orderTicket.DataContainer.PropertyValues["Order"]);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.RelationChanging (_order1, "OrderTicket", oldRelatedOrderTicket, orderTicket);
-        _extension.RelationChanging (oldRelatedOrderTicket, "Order", _order1, null);
-        _extension.RelationChanging (orderTicket, "Order", oldRelatedOrder, _order1);
-        _extension.RelationChanging (oldRelatedOrder, "OrderTicket", orderTicket, null);
-
-        _extension.RelationChanged (_order1, "OrderTicket");
-        _extension.RelationChanged (oldRelatedOrderTicket, "Order");
-        _extension.RelationChanged (orderTicket, "Order");
-        _extension.RelationChanged (oldRelatedOrder, "OrderTicket");
-
-        //Note: no events are expected on propertyValueMockEventReceiver
-      }
-
-      _mockRepository.ReplayAll ();
-
-      _order1.OrderTicket = orderTicket;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void ChangeUnidirectionalRelation ()
-    {
-      Location location = new Location ();
-      Client client = new Client ();
-
-      _mockRepository.BackToRecord (_extension);
-      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (location.DataContainer.PropertyValues["Client"]);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.RelationChanging (location, "Client", null, client);
-        _extension.RelationChanged (location, "Client");
-
-        //Note: no events are expected on propertyValueMockEventReceiver
-      }
-
-      _mockRepository.ReplayAll ();
-
-      location.Client = client;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void ReplaceInOneToManyRelation ()
-    {
-      Customer customer = _order1.Customer;
-      OrderCollection ordersOfCustomer = customer.Orders;
-
-      int replaceIndex = ordersOfCustomer.IndexOf (_order1);
-
-      Order newOrder = Order.GetObject (DomainObjectIDs.Order2);
-      Customer oldRelatedCustomerOfNewOrder = newOrder.Customer;
-
-      //Note: this relation must be preloaded in order to prevent ObjectLoaded calls on the extension
-      OrderCollection ordersOfOldRelatedCustomerOfNewOrder = oldRelatedCustomerOfNewOrder.Orders;
-
-      _mockRepository.BackToRecord (_extension);
-      PropertyValueMockEventReceiver orderPropertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (_order1.DataContainer.PropertyValues["Customer"]);
-      PropertyValueMockEventReceiver newOrderPropertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (newOrder.DataContainer.PropertyValues["Customer"]);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.RelationReading (customer, "Orders", ValueAccess.Current);
-        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
-        LastCall.Constraints (Is.Same (customer), Is.Equal ("Orders"), Property.Value("Count", ordersOfCustomer.Count) & new ContainsConstraint (ordersOfCustomer), Is.Equal (ValueAccess.Current));
-
-        _extension.RelationChanging (_order1, "Customer", customer, null);
-        _extension.RelationChanging (newOrder, "Customer", oldRelatedCustomerOfNewOrder, customer);
-        _extension.RelationChanging (customer, "Orders", _order1, newOrder);
-        _extension.RelationChanging (oldRelatedCustomerOfNewOrder, "Orders", newOrder, null);
-
-        _extension.RelationChanged (_order1, "Customer");
-        _extension.RelationChanged (newOrder, "Customer");
-        _extension.RelationChanged (customer, "Orders");
-        _extension.RelationChanged (oldRelatedCustomerOfNewOrder, "Orders");
-      }
-
-      _mockRepository.ReplayAll ();
-
-      customer.Orders[replaceIndex] = newOrder;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
     public void ReadObjectIDProperty ()
     {
       PropertyValue customerPropertyValue = _order1.DataContainer.PropertyValues["Customer"];
@@ -378,6 +254,50 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       computer.Delete ();
 
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ObjectDeleteWithOldRelatedObjects ()
+    {
+      OrderItem orderItem1 = (OrderItem) _order1.OrderItems[0];
+      OrderItem orderItem2 = (OrderItem) _order1.OrderItems[1];
+      OrderTicket orderTicket = _order1.OrderTicket;
+      Official official = _order1.Official;
+      Customer customer = _order1.Customer;
+      OrderCollection preloadedOrders1 = customer.Orders;
+      DomainObjectCollection preloadedOrders2 = official.Orders;
+      Order preloadedOrder1 = orderTicket.Order;
+
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.ObjectDeleting (_order1);
+
+        _extension.RelationChanging (customer, "Orders", _order1, null);
+        _extension.RelationChanging (orderTicket, "Order", _order1, null);
+        using (_mockRepository.Unordered ())
+        {
+          _extension.RelationChanging (orderItem1, "Order", _order1, null);
+          _extension.RelationChanging (orderItem2, "Order", _order1, null);
+        }
+        _extension.RelationChanging (official, "Orders", _order1, null);
+
+        _extension.RelationChanged (customer, "Orders");
+        _extension.RelationChanged (orderTicket, "Order");
+        using (_mockRepository.Unordered ())
+        {
+          _extension.RelationChanged (orderItem1, "Order");
+          _extension.RelationChanged (orderItem2, "Order");
+        }
+        _extension.RelationChanged (official, "Orders");
+
+        _extension.ObjectDeleted (_order1);
+      }
+
+      _mockRepository.ReplayAll ();
+      _order1.Delete ();
       _mockRepository.VerifyAll ();
     }
 

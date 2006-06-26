@@ -142,6 +142,62 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
+    public void OneToOneRelationFromVirtualEndPointWithBothOldRelatedObjects ()
+    {
+      OrderTicket orderTicket3 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket3);
+      Order oldOrderOfOrderTicket3 = orderTicket3.Order;
+
+      DomainObjectMockEventReceiver orderTicket3EventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderTicket3);
+      DomainObjectMockEventReceiver oldOrderOfOrderTicket3EventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (oldOrderOfOrderTicket3);
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationChanging (orderTicket3, "Order", oldOrderOfOrderTicket3, _order1);
+        _extension.RelationChanging (oldOrderOfOrderTicket3, "OrderTicket", orderTicket3, null);
+        _extension.RelationChanging (_order1, "OrderTicket", _orderTicket1, orderTicket3);
+        _extension.RelationChanging (_orderTicket1, "Order", _order1, null);
+
+        orderTicket3EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (orderTicket3), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", oldOrderOfOrderTicket3) & Property.Value ("NewRelatedObject", _order1));
+
+        oldOrderOfOrderTicket3EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (oldOrderOfOrderTicket3), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", orderTicket3) & Property.Value ("NewRelatedObject", null));
+
+        _order1EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", _orderTicket1) & Property.Value ("NewRelatedObject", orderTicket3));
+
+        _orderTicket1EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (_orderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
+
+
+        orderTicket3EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (orderTicket3), Property.Value ("PropertyName", "Order"));
+
+        oldOrderOfOrderTicket3EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (oldOrderOfOrderTicket3), Property.Value ("PropertyName", "OrderTicket"));
+
+        _order1EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderTicket"));
+
+        _orderTicket1EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (_orderTicket1), Property.Value ("PropertyName", "Order"));
+
+
+        _extension.RelationChanged (orderTicket3, "Order");
+        _extension.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
+        _extension.RelationChanged (_order1, "OrderTicket");
+        _extension.RelationChanged (_orderTicket1, "Order");
+      }
+
+      _mockRepository.ReplayAll ();
+
+      orderTicket3.Order = _order1;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
     public void OneToOneRelationFromEndPointWithSameObject ()
     {
       // no calls on the extension are expected
@@ -149,6 +205,62 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.ReplayAll ();
 
       _orderTicket1.Order = _order1;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void OneToOneRelationFromEndPointWithBothOldRelatedObjects ()
+    {
+      OrderTicket orderTicket3 = OrderTicket.GetObject (DomainObjectIDs.OrderTicket3);
+      Order oldOrderOfOrderTicket3 = orderTicket3.Order;
+
+      DomainObjectMockEventReceiver orderTicket3EventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (orderTicket3);
+      DomainObjectMockEventReceiver oldOrderOfOrderTicket3EventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (oldOrderOfOrderTicket3);
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationChanging (_order1, "OrderTicket", _orderTicket1, orderTicket3);
+        _extension.RelationChanging (_orderTicket1, "Order", _order1, null);
+        _extension.RelationChanging (orderTicket3, "Order", oldOrderOfOrderTicket3, _order1);
+        _extension.RelationChanging (oldOrderOfOrderTicket3, "OrderTicket", orderTicket3, null);
+
+        _order1EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", _orderTicket1) & Property.Value ("NewRelatedObject", orderTicket3));
+
+        _orderTicket1EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (_orderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", _order1) & Property.Value ("NewRelatedObject", null));
+
+        orderTicket3EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (orderTicket3), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", oldOrderOfOrderTicket3) & Property.Value ("NewRelatedObject", _order1));
+
+        oldOrderOfOrderTicket3EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (oldOrderOfOrderTicket3), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", orderTicket3) & Property.Value ("NewRelatedObject", null));
+
+
+        _order1EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderTicket"));
+
+        _orderTicket1EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (_orderTicket1), Property.Value ("PropertyName", "Order"));
+
+        orderTicket3EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (orderTicket3), Property.Value ("PropertyName", "Order"));
+
+        oldOrderOfOrderTicket3EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (oldOrderOfOrderTicket3), Property.Value ("PropertyName", "OrderTicket"));
+
+
+        _extension.RelationChanged (_order1, "OrderTicket");
+        _extension.RelationChanged (_orderTicket1, "Order");
+        _extension.RelationChanged (orderTicket3, "Order");
+        _extension.RelationChanged (oldOrderOfOrderTicket3, "OrderTicket");
+      }
+
+      _mockRepository.ReplayAll ();
+
+      _order1.OrderTicket = orderTicket3;
 
       _mockRepository.VerifyAll ();
     }
@@ -184,6 +296,62 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.ReplayAll ();
 
       _location1.Client = null;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void UnidirectionalRelationWithOldNull ()
+    {
+      Location newLocation = new Location ();
+
+      DomainObjectMockEventReceiver newLocationEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (newLocation);
+
+      _mockRepository.BackToRecord (_extension);
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationChanging (newLocation, "Client", null, _client1);
+
+        newLocationEventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (newLocation), Property.Value ("PropertyName", "Client") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", _client1));
+
+        newLocationEventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (newLocation), Property.Value ("PropertyName", "Client"));
+
+        _extension.RelationChanged (newLocation, "Client");
+      }
+
+      _mockRepository.ReplayAll ();
+
+      newLocation.Client = _client1;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void UnidirectionalRelationWithOldRelatedObject ()
+    {
+      Client newClient = new Client ();
+      DomainObjectMockEventReceiver newClientEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (newClient);
+
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationChanging (_location1, "Client", _client1, newClient);
+
+        _location1EventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (_location1), Property.Value ("PropertyName", "Client") & Property.Value ("OldRelatedObject", _client1) & Property.Value ("NewRelatedObject", newClient));
+
+        _location1EventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (_location1), Property.Value ("PropertyName", "Client"));
+
+        _extension.RelationChanged (_location1, "Client");
+      }
+
+      _mockRepository.ReplayAll ();
+
+      _location1.Client = newClient;
 
       _mockRepository.VerifyAll ();
     }
@@ -320,6 +488,23 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.ReplayAll ();
 
       _order1.OrderItems.Add (newOrderItem);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ReplaceInOneToManyRelationWithSameObject ()
+    {
+      DomainObjectCollection orderItems = _order1.OrderItems;
+      OrderItem oldOrderItem = (OrderItem) _order1.OrderItems[0];
+
+      _mockRepository.BackToRecord (_extension);
+
+      // no calls on the extension are expected
+
+      _mockRepository.ReplayAll ();
+
+      orderItems[0] = oldOrderItem;
 
       _mockRepository.VerifyAll ();
     }

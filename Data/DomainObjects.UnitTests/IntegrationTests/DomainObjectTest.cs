@@ -11,6 +11,7 @@ using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.DataManagement;
 using Rubicon.Data.DomainObjects.UnitTests.DomainObjects;
 using Rhino.Mocks;
+using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 {
@@ -41,285 +42,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
     }
 
     // methods and properties
-
-    [Test]
-    public void RelationEventTest ()
-    {
-      Customer newCustomer1 = new Customer ();
-      newCustomer1.Name = "NewCustomer1";
-
-      Customer newCustomer2 = new Customer ();
-      newCustomer2.Name = "NewCustomer2";
-
-      Official official2 = Official.GetObject (DomainObjectIDs.Official2);
-      Ceo newCeo1 = new Ceo ();
-      Ceo newCeo2 = new Ceo ();
-      Order newOrder1 = new Order ();
-      newOrder1.DeliveryDate = new DateTime (2006, 1, 1);
-
-      Order newOrder2 = new Order ();
-      newOrder2.DeliveryDate = new DateTime (2006, 2, 2);
-
-      OrderItem newOrderItem1 = new OrderItem ();
-      OrderItem newOrderItem2 = new OrderItem ();
-
-      DomainObject[] domainObjects = new DomainObject[] 
-    { 
-      newCustomer1, 
-      newCustomer2, 
-      official2, 
-      newCeo1, 
-      newCeo2, 
-      newOrder1,  
-      newOrder2, 
-      newOrderItem1, 
-      newOrderItem2 
-    };
-
-      DomainObjectCollection[] collections = new DomainObjectCollection[] 
-    { 
-      newCustomer1.Orders, 
-      newCustomer2.Orders, 
-      official2.Orders, 
-      newOrder1.OrderItems,
-      newOrder2.OrderItems 
-    };
-
-      SequenceEventReceiver eventReceiver = new SequenceEventReceiver (domainObjects, collections);
-
-      //1
-      newCeo1.Company = newCustomer1;
-      //2
-      newCeo2.Company = newCustomer1;
-      //3
-      newCeo1.Company = newCustomer2;
-      //4
-      newCeo1.Company = null;
-
-      //5
-      newCustomer1.Orders.Add (newOrder1);
-      //6
-      newCustomer1.Orders.Add (newOrder2);
-      //7
-      newCustomer1.Orders.Remove (newOrder2);
-
-      //8
-      newOrderItem1.Order = newOrder1;
-      //9
-      newOrderItem2.Order = newOrder1;
-      //10
-      newOrderItem1.Order = null;
-      //11
-      newOrderItem1.Order = newOrder2;
-
-      //12
-      newOrder1.Official = official2;
-
-      //13
-      OrderTicket newOrderTicket1 = new OrderTicket (newOrder1);
-
-      ChangeState[] expectedChangeStates = new ChangeState[]
-    { 
-      new RelationChangeState (newCeo1, "Company", null, newCustomer1, "1: 1. Changing event of newCeo from null to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Ceo", null, newCeo1, "1: 2. Changing event of newCustomer1 from null to newCeo1"),
-      new RelationChangeState (newCeo1, "Company", null, null, "1: 3. Changed event of newCeo from null to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Ceo", null, null, "1: 4. Changed event of newCustomer1 from null to newCeo1"),
-
-      new RelationChangeState (newCeo2, "Company", null, newCustomer1, "2: 1. Changing event of newCeo2 from null to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Ceo", newCeo1, newCeo2, "2: 2. Changing event of newCustomer1 from newCeo1 to newCeo2"),
-      new RelationChangeState (newCeo1, "Company", newCustomer1, null, "2: 3. Changing event of newCeo1 from newCustomer1 to null"),
-      new RelationChangeState (newCeo2, "Company", null, null, "2: 4. Changed event of newCeo2 from null to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Ceo", null, null, "2: 5. Changed event of newCustomer1 from newCeo1 to newCeo2"),
-      new RelationChangeState (newCeo1, "Company", null, null, "2: 6. Changed event of newCeo1 from newCustomer1 to null"),
-
-      new RelationChangeState (newCeo1, "Company", null, newCustomer2, "3: 1. Changing event of newCeo from null to newCustomer1"),
-      new RelationChangeState (newCustomer2, "Ceo", null, newCeo1, "3: 2. Changing event of newCustomer2 from null to newCeo1"),
-      new RelationChangeState (newCeo1, "Company", null, null, "3: 3. Changed event of newCeo from null to newCustomer1"),
-      new RelationChangeState (newCustomer2, "Ceo", null, null, "3: 4. Changed event of newCustomer2 from null to newCeo1"),
-
-      new RelationChangeState (newCeo1, "Company", newCustomer2, null, "4: 1. Changing event of newCeo from newCustomer1 to null"),
-      new RelationChangeState (newCustomer2, "Ceo", newCeo1, null, "4: 2. Changing event of newCustomer2 from newCeo1 to null"),
-      new RelationChangeState (newCeo1, "Company", null, null, "4: 3. Changed event of newCeo from newCustomer1 to null"),
-      new RelationChangeState (newCustomer2, "Ceo", null, null, "4: 4. Changed event of newCustomer2 from newCeo1 to null"),
-
-      new RelationChangeState (newOrder1, "Customer", null, newCustomer1, "5: 1. Changing event of newOrder1 from null to newCustomer1"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder1, "5: 2. Adding of newOrder1 to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", null, newOrder1, "5: 3. Changing event of newCustomer1 from null to newOrder1"),
-      new RelationChangeState (newOrder1, "Customer", null, null, "5: 4. Changed event of newOrder1 from null to newCustomer1"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder1, "5: 5. Added of newOrder1 to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", null, null, "5: 6. Changed event of newCustomer1 from null to newOrder1"),
-
-      new RelationChangeState (newOrder2, "Customer", null, newCustomer1, "6: 1. Changing event of newOrder2 from null to newCustomer1"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder2, "6: 2. Adding of newOrder2 to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", null, newOrder2, "6: 3. Changing event of newCustomer1 from null to newOrder2"),
-      new RelationChangeState (newOrder2, "Customer", null, null, "6: 4. Changed event of newOrder2 from null to newCustomer1"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder2, "6: 5. Added of newOrder2 to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", null, null, "6: 6. Changed event of newCustomer1 from null to newOrder2"),
-
-      new RelationChangeState (newOrder2, "Customer", newCustomer1, null, "7: 1. Changing event of newOrder2 from newCustomer1 to null"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder2, "7: 2. Removing of newOrder2 from newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", newOrder2, null, "7: 3. Changing event of newCustomer1 from newOrder2 to null"),
-      new RelationChangeState (newOrder2, "Customer", null, null, "7: 4. Changed event of newOrder2 from newCustomer1 to null"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder2, "7: 5. Removed of newOrder2 from newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", null, null, "7: 6. Changed event of newCustomer1 from newOrder2 to null"),
-
-      new RelationChangeState (newOrderItem1, "Order", null, newOrder1, "8: 1. Changing event of newOrderItem1 from null to newOrder1"),
-      new CollectionChangeState (newOrder1.OrderItems, newOrderItem1, "8: 2. Adding of newOrderItem1 to newOrder1"),
-      new RelationChangeState (newOrder1, "OrderItems", null, newOrderItem1, "8: 3. Changing event of newOrder1 from null to newOrderItem1"),
-      new RelationChangeState (newOrderItem1, "Order", null, null, "8: 4. Changed event of newOrderItem1 from null to newOrder1"),
-      new CollectionChangeState (newOrder1.OrderItems, newOrderItem1, "8: 5. Added of newOrderItem1 to newOrder1"),
-      new RelationChangeState (newOrder1, "OrderItems", null, null, "8: 6. Changed event of newOrder1 from null to newOrderItem1"),
-
-      new RelationChangeState (newOrderItem2, "Order", null, newOrder1, "9: 1. Changing event of newOrderItem2 from null to newOrder1"),
-      new CollectionChangeState (newOrder1.OrderItems, newOrderItem2, "9: 2. Adding of newOrderItem2 to newOrder1"),
-      new RelationChangeState (newOrder1, "OrderItems", null, newOrderItem2, "9: 3. Changing event of newOrder1 from null to newOrderItem2"),
-      new RelationChangeState (newOrderItem2, "Order", null, null, "9: 4. Changed event of newOrderItem2 from null to newOrder1"),
-      new CollectionChangeState (newOrder1.OrderItems, newOrderItem2, "9: 5. Added of newOrderItem2 to newOrder1"),
-      new RelationChangeState (newOrder1, "OrderItems", null, null, "9: 6. Changed event of newOrder1 from null to newOrderItem2"),
-
-      new RelationChangeState (newOrderItem1, "Order", newOrder1, null, "10: 1. Changing event of newOrderItem1 from newOrder1 to null"),
-      new CollectionChangeState (newOrder1.OrderItems, newOrderItem1, "10: 2. Removing of newOrderItem1 from newOrder1"),
-      new RelationChangeState (newOrder1, "OrderItems", newOrderItem1, null, "10: 3. Changing event of newOrder1 from newOrderItem1 to null"),
-      new RelationChangeState (newOrderItem1, "Order", null, null, "10: 4. Changed event of newOrderItem2 from newOrder1 to null"),
-      new CollectionChangeState (newOrder1.OrderItems, newOrderItem1, "10: 5. Removed of newOrderItem1 from newOrder1"),
-      new RelationChangeState (newOrder1, "OrderItems", null, null, "10: 6. Changed event of newOrder1 from newOrderItem1 to null"),
-
-      new RelationChangeState (newOrderItem1, "Order", null, newOrder2, "11: 1. Changing event of newOrderItem1 from null to newOrder2"),
-      new CollectionChangeState (newOrder2.OrderItems, newOrderItem1, "11: 2. Adding of newOrderItem1 to newOrder2"),
-      new RelationChangeState (newOrder2, "OrderItems", null, newOrderItem1, "11: 3. Changing event of newOrder2 from null to newOrderItem1"),
-      new RelationChangeState (newOrderItem1, "Order", null, null, "11: 4. Changed event of newOrderItem2 from null to newOrder2"),
-      new CollectionChangeState (newOrder2.OrderItems, newOrderItem1, "11: 5. Adding of newOrderItem1 to newOrder2"),
-      new RelationChangeState (newOrder2, "OrderItems", null, null, "11: 6. Changed event of newOrder2 from null to newOrderItem1"),
-
-      new RelationChangeState (newOrder1, "Official", null, official2, "12: 1. Changing event of newOrder1 from null to official2"),
-      new CollectionChangeState (official2.Orders, newOrder1, "12: 2. Adding of newOrder1 to official2"),
-      new RelationChangeState (official2, "Orders", null, newOrder1, "12: 3. Changing event of official2 from null to newOrder1"),
-      new RelationChangeState (newOrder1, "Official", null, null, "12: 4. Changed event of newOrder1 from null to official2"),
-      new CollectionChangeState (official2.Orders, newOrder1, "12: 5. Adding of newOrder1 to official2"),
-      new RelationChangeState (official2, "Orders", null, null, "12: 6. Changed event of official2 from null to newOrder1"),
-
-      new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "13: 1. Changing event of newOrder1 from null to newOrderTicket1"),
-      new RelationChangeState (newOrder1, "OrderTicket", null, null, "13: 2. Changed event of newOrder1 from null to newOrderTicket1")
-    };
-
-      eventReceiver.Check (expectedChangeStates);
-      eventReceiver.Unregister ();
-
-      eventReceiver = new SequenceEventReceiver (
-          new DomainObject[] { newCustomer1, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-          new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders });
-
-      //14
-      newOrderTicket1.Order = newOrder2;
-
-
-      expectedChangeStates = new ChangeState[]
-    { 
-      new RelationChangeState (newOrderTicket1, "Order", newOrder1, newOrder2, "14: 1. Changing event of newOrderTicket1 from newOrder1 to newOrder2"),
-      new RelationChangeState (newOrder1, "OrderTicket", newOrderTicket1, null, "14: 2. Changing event of newOrder1 from newOrderTicket1 to null"),
-      new RelationChangeState (newOrder2, "OrderTicket", null, newOrderTicket1, "14: 3. Changing event of newOrder1 from null to newOrderTicket1"),
-      new RelationChangeState (newOrderTicket1, "Order", null, null, "14: 4. Changed event of newOrderTicket1 from newOrder1 to newOrder2"),
-      new RelationChangeState (newOrder1, "OrderTicket", null, null, "14: 5. Changed event of newOrder1 from newOrderTicket1 to null"),
-      new RelationChangeState (newOrder2, "OrderTicket", null, null, "14: 6. Changed event of newOrder1 from null to newOrderTicket1"),
-    };
-
-      eventReceiver.Check (expectedChangeStates);
-      eventReceiver.Unregister ();
-
-      //15a
-      eventReceiver = new SequenceEventReceiver (
-          new DomainObject[] { newCustomer1, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-          new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders });
-
-      newOrder2.Customer = newCustomer1;
-
-      expectedChangeStates = new ChangeState[]
-    { 
-      new RelationChangeState (newOrder2, "Customer", null, newCustomer1, "15a: 1. Changing event of newOrder2 from null to newCustomer1.Orders"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder2, "15a: 2. Adding of newOrder2 to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", null, newOrder2, "15a: 3. Changing event of newCustomer1 from null to newOrder2"),
-      new RelationChangeState (newOrder2, "Customer", null, null, "15a: 4. Changed event of newOrder2 from null to newCustomer1.Orders"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder2, "15a: 5. Added of newOrder2 to newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", null, null, "15a: 6. Changed event of newCustomer2 from null to newOrder2"),
-    };
-
-      eventReceiver.Check (expectedChangeStates);
-      eventReceiver.Unregister ();
-
-      //15b
-      eventReceiver = new SequenceEventReceiver (
-          new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-          new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders });
-
-      newOrder2.Customer = newCustomer2;
-
-      expectedChangeStates = new ChangeState[]
-    { 
-      new RelationChangeState (newOrder2, "Customer", newCustomer1, newCustomer2, "15b: 1. Changing event of newOrder2 from null to newCustomer2.Orders"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder2, "15b: 2. Removing of newOrder2 from newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", newOrder2, null, "15b: 3. Changing event of newCustomer1 from newOrder2 to null"),
-      new CollectionChangeState (newCustomer2.Orders, newOrder2, "15b: 4. Adding of newOrder2 to newCustomer2"),
-      new RelationChangeState (newCustomer2, "Orders", null, newOrder2, "15b: 5. Changing event of newCustomer2 from null to newOrder2"),
-      new RelationChangeState (newOrder2, "Customer", null, null, "15b: 6. Changed event of newOrder2 from null to newCustomer2.Orders"),
-      new CollectionChangeState (newCustomer1.Orders, newOrder2, "15b: 7. Removed of newOrder2 from newCustomer1"),
-      new RelationChangeState (newCustomer1, "Orders", null, null, "15b: 8. Changed event of newCustomer1 from newOrder2 to null"),
-      new CollectionChangeState (newCustomer2.Orders, newOrder2, "15b: 9. Added of newOrder2 to newCustomer2"),
-      new RelationChangeState (newCustomer2, "Orders", null, null, "15b: 10. Changed event of newCustomer2 from null to newOrder2"),
-    };
-
-      eventReceiver.Check (expectedChangeStates);
-      eventReceiver.Unregister ();
-
-      //16
-      eventReceiver = new SequenceEventReceiver (
-          new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder2, newOrder1, newOrderItem1 },
-          new DomainObjectCollection[] { newOrder2.OrderItems, newCustomer1.Orders, newCustomer2.Orders });
-
-      newOrder2.Delete ();
-
-      expectedChangeStates = new ChangeState[]
-    { 
-      new ObjectDeletionState (newOrder2, "16: 1. Deleting event of newOrder2"),
-      new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 2. Removing of newOrder2 from newCustomer2"),
-      new RelationChangeState (newCustomer2, "Orders", newOrder2, null, "16: 3. Changing event of newCustomer2 from newOrder2 to null"),
-      new RelationChangeState (newOrderTicket1, "Order", newOrder2, null, "16: 4. Changing event of newOrderTicket1 from newOrder2 to null"),
-      new RelationChangeState (newOrderItem1, "Order", newOrder2, null, "16: 5. Changing event of newOrderItem1 from newOrder2 to null"),
-
-      new ObjectDeletionState (newOrder2, "16: 6. Deleted event of newOrder2"),
-      new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 7. Removed of newOrder2 from newCustomer2"),
-      new RelationChangeState (newCustomer2, "Orders", null, null, "16: 8. Changed event of newCustomer2 from newOrder2 to null"),
-      new RelationChangeState (newOrderTicket1, "Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
-      new RelationChangeState (newOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
-    };
-
-      eventReceiver.Check (expectedChangeStates);
-      eventReceiver.Unregister ();
-
-      //17
-      eventReceiver = new SequenceEventReceiver (
-          new DomainObject[] { newCustomer1, newCustomer2, newOrderTicket1, newOrder1, newOrderItem1 },
-          new DomainObjectCollection[] { newCustomer1.Orders, newCustomer2.Orders });
-
-      newOrderTicket1.Order = newOrder1;
-
-      expectedChangeStates = new ChangeState[]
-    { 
-      new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
-      new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
-      new RelationChangeState (newOrderTicket1, "Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
-      new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
-    };
-
-      eventReceiver.Check (expectedChangeStates);
-      eventReceiver.Unregister ();
-
-      //cleanup for commit
-      newCustomer2.Delete ();
-      newCeo1.Delete ();
-      newOrderItem1.Delete ();
-
-      ClientTransaction.Current.Commit ();
-    }
 
     [Test]
     public void RelationEventTestWithMockObject ()
@@ -366,297 +88,354 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       DomainObjectCollectionMockEventReceiver newOrder1OrderItemsEventReceiver = mockRepository.CreateMock<DomainObjectCollectionMockEventReceiver> (newOrder1.OrderItems);
       DomainObjectCollectionMockEventReceiver newOrder2OrderItemsEventReceiver = mockRepository.CreateMock<DomainObjectCollectionMockEventReceiver> (newOrder2.OrderItems);
 
-      //TODO: add ICtxExt mock and the events
+      IClientTransactionExtension extension = mockRepository.CreateMock<IClientTransactionExtension> ();
 
       using (mockRepository.Ordered ())
       {
-        // 1
+        //1
+        //newCeo1.Company = newCustomer1;
+        extension.RelationChanging (newCeo1, "Company", null, newCustomer1);
+        extension.RelationChanging (newCustomer1, "Ceo", null, newCeo1);
+
         newCeo1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCustomer1));
-        //new RelationChangeState (newCeo1, "Company", null, newCustomer1, "1: 1. Changing event of newCeo from null to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Ceo") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCeo1));
-        //new RelationChangeState (newCustomer1, "Ceo", null, newCeo1, "1: 2. Changing event of newCustomer1 from null to newCeo1"),
 
         newCeo1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company"));
-        //new RelationChangeState (newCeo1, "Company", null, null, "1: 3. Changed event of newCeo from null to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Ceo"));
-        //new RelationChangeState (newCustomer1, "Ceo", null, null, "1: 4. Changed event of newCustomer1 from null to newCeo1"),
 
-        // 2
+        extension.RelationChanged (newCeo1, "Company");
+        extension.RelationChanged (newCustomer1, "Ceo");
+
+
+        //2
+        //newCeo2.Company = newCustomer1;
+        extension.RelationChanging (newCeo2, "Company", null, newCustomer1);
+        extension.RelationChanging (newCustomer1, "Ceo", newCeo1, newCeo2);
+        extension.RelationChanging (newCeo1, "Company", newCustomer1, null);
+
         newCeo2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCeo2), Property.Value ("PropertyName", "Company") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCustomer1));
-        //new RelationChangeState (newCeo2, "Company", null, newCustomer1, "2: 1. Changing event of newCeo2 from null to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Ceo") & Property.Value ("OldRelatedObject", newCeo1) & Property.Value ("NewRelatedObject", newCeo2));
-        //new RelationChangeState (newCustomer1, "Ceo", newCeo1, newCeo2, "2: 2. Changing event of newCustomer1 from newCeo1 to newCeo2"),
 
         newCeo1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company") & Property.Value ("OldRelatedObject", newCustomer1) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newCeo1, "Company", newCustomer1, null, "2: 3. Changing event of newCeo1 from newCustomer1 to null"),
 
         newCeo2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo2), Property.Value ("PropertyName", "Company"));
-        //new RelationChangeState (newCeo2, "Company", null, null, "2: 4. Changed event of newCeo2 from null to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Ceo"));
-        //new RelationChangeState (newCustomer1, "Ceo", null, null, "2: 5. Changed event of newCustomer1 from newCeo1 to newCeo2"),
 
         newCeo1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company"));
-        //new RelationChangeState (newCeo1, "Company", null, null, "2: 6. Changed event of newCeo1 from newCustomer1 to null"),
 
+        extension.RelationChanged (newCeo2, "Company");
+        extension.RelationChanged (newCustomer1, "Ceo");
+        extension.RelationChanged (newCeo1, "Company");
+
+
+        //3
+        //newCeo1.Company = newCustomer2;
+        extension.RelationChanging (newCeo1, "Company", null, newCustomer2);
+        extension.RelationChanging (newCustomer2, "Ceo", null, newCeo1);
 
         newCeo1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCustomer2));
-        //new RelationChangeState (newCeo1, "Company", null, newCustomer2, "3: 1. Changing event of newCeo from null to newCustomer1"),
 
         newCustomer2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Ceo") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCeo1));
-        //new RelationChangeState (newCustomer2, "Ceo", null, newCeo1, "3: 2. Changing event of newCustomer2 from null to newCeo1"),
 
         newCeo1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company"));
-        //new RelationChangeState (newCeo1, "Company", null, null, "3: 3. Changed event of newCeo from null to newCustomer1"),
 
         newCustomer2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Ceo"));
-        //new RelationChangeState (newCustomer2, "Ceo", null, null, "3: 4. Changed event of newCustomer2 from null to newCeo1"),
 
+        extension.RelationChanged (newCeo1, "Company");
+        extension.RelationChanged (newCustomer2, "Ceo");
+
+
+        //4
+        //newCeo1.Company = null;
+        extension.RelationChanging (newCeo1, "Company", newCustomer2, null);
+        extension.RelationChanging (newCustomer2, "Ceo", newCeo1, null);
 
         newCeo1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company") & Property.Value ("OldRelatedObject", newCustomer2) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newCeo1, "Company", newCustomer2, null, "4: 1. Changing event of newCeo from newCustomer1 to null"),
 
         newCustomer2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Ceo") & Property.Value ("OldRelatedObject", newCeo1) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newCustomer2, "Ceo", newCeo1, null, "4: 2. Changing event of newCustomer2 from newCeo1 to null"),
 
         newCeo1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Property.Value ("PropertyName", "Company"));
-        //new RelationChangeState (newCeo1, "Company", null, null, "4: 3. Changed event of newCeo from newCustomer1 to null"),
 
         newCustomer2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Ceo"));
-        //new RelationChangeState (newCustomer2, "Ceo", null, null, "4: 4. Changed event of newCustomer2 from newCeo1 to null"),
 
+        extension.RelationChanged (newCeo1, "Company");
+        extension.RelationChanged (newCustomer2, "Ceo");
+
+
+        //5
+        //newCustomer1.Orders.Add (newOrder1);
+        extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
+        extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (newCustomer1), Is.Equal ("Orders"), Property.Value ("Count", 0), Is.Equal (ValueAccess.Current));
+
+        extension.RelationChanging (newOrder1, "Customer", null, newCustomer1);
+        extension.RelationChanging (newCustomer1, "Orders", null, newOrder1);
 
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "Customer") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCustomer1));
-        //new RelationChangeState (newOrder1, "Customer", null, newCustomer1, "5: 1. Changing event of newOrder1 from null to newCustomer1"),
 
         newCustomer1OrdersEventReceiver.Adding (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder1));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder1, "5: 2. Adding of newOrder1 to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder1));
-        //new RelationChangeState (newCustomer1, "Orders", null, newOrder1, "5: 3. Changing event of newCustomer1 from null to newOrder1"),
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "Customer"));
-        //new RelationChangeState (newOrder1, "Customer", null, null, "5: 4. Changed event of newOrder1 from null to newCustomer1"),
 
         newCustomer1OrdersEventReceiver.Added (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder1));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder1, "5: 5. Added of newOrder1 to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-        //new RelationChangeState (newCustomer1, "Orders", null, null, "5: 6. Changed event of newCustomer1 from null to newOrder1"),
 
+        extension.RelationChanged (newOrder1, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+
+
+        //6
+        //newCustomer1.Orders.Add (newOrder2);
+        extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
+        extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (newCustomer1), Is.Equal ("Orders"), Property.Value ("Count", 1) & List.IsIn (newOrder1), Is.Equal (ValueAccess.Current));
+
+        extension.RelationChanging (newOrder2, "Customer", null, newCustomer1);
+        extension.RelationChanging (newCustomer1, "Orders", null, newOrder2);
 
         newOrder2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCustomer1));
-        //new RelationChangeState (newOrder2, "Customer", null, newCustomer1, "6: 1. Changing event of newOrder2 from null to newCustomer1"),
 
         newCustomer1OrdersEventReceiver.Adding (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder2, "6: 2. Adding of newOrder2 to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder2));
-        //new RelationChangeState (newCustomer1, "Orders", null, newOrder2, "6: 3. Changing event of newCustomer1 from null to newOrder2"),
 
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer"));
-        //new RelationChangeState (newOrder2, "Customer", null, null, "6: 4. Changed event of newOrder2 from null to newCustomer1"),
 
         newCustomer1OrdersEventReceiver.Added (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder2, "6: 5. Added of newOrder2 to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-        //new RelationChangeState (newCustomer1, "Orders", null, null, "6: 6. Changed event of newCustomer1 from null to newOrder2"),
 
+        extension.RelationChanged (newOrder2, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+
+
+        //7
+        //newCustomer1.Orders.Remove (newOrder2);
+        extension.RelationReading (newCustomer1, "Orders", ValueAccess.Current);
+        extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (newCustomer1), Is.Equal ("Orders"), Property.Value ("Count", 2) & List.IsIn (newOrder1) & List.IsIn (newOrder2), Is.Equal (ValueAccess.Current));
+
+        extension.RelationChanging (newOrder2, "Customer", newCustomer1, null);
+        extension.RelationChanging (newCustomer1, "Orders", newOrder2, null);
 
         newOrder2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer") & Property.Value ("OldRelatedObject", newCustomer1) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newOrder2, "Customer", newCustomer1, null, "7: 1. Changing event of newOrder2 from newCustomer1 to null"),
 
         newCustomer1OrdersEventReceiver.Removing (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder2, "7: 2. Removing of newOrder2 from newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newCustomer1, "Orders", newOrder2, null, "7: 3. Changing event of newCustomer1 from newOrder2 to null"),
 
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer"));
-        //new RelationChangeState (newOrder2, "Customer", null, null, "7: 4. Changed event of newOrder2 from newCustomer1 to null"),
 
         newCustomer1OrdersEventReceiver.Removed (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder2, "7: 5. Removed of newOrder2 from newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-        //new RelationChangeState (newCustomer1, "Orders", null, null, "7: 6. Changed event of newCustomer1 from newOrder2 to null"),
 
+        extension.RelationChanged (newOrder2, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+
+
+        //8
+        //newOrderItem1.Order = newOrder1;
+        extension.RelationChanging (newOrderItem1, "Order", null, newOrder1);
+        extension.RelationChanging (newOrder1, "OrderItems", null, newOrderItem1);
 
         newOrderItem1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder1));
-        //new RelationChangeState (newOrderItem1, "Order", null, newOrder1, "8: 1. Changing event of newOrderItem1 from null to newOrder1"),
 
         newOrder1OrderItemsEventReceiver.Adding (null, null);
         LastCall.Constraints (Is.Same (newOrder1OrderItems), Property.Value ("DomainObject", newOrderItem1));
-        //new CollectionChangeState (newOrder1.OrderItems, newOrderItem1, "8: 2. Adding of newOrderItem1 to newOrder1"),
 
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderItem1));
-        //new RelationChangeState (newOrder1, "OrderItems", null, newOrderItem1, "8: 3. Changing event of newOrder1 from null to newOrderItem1"),
 
         newOrderItem1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
-        //new RelationChangeState (newOrderItem1, "Order", null, null, "8: 4. Changed event of newOrderItem1 from null to newOrder1"),
 
         newOrder1OrderItemsEventReceiver.Added (null, null);
         LastCall.Constraints (Is.Same (newOrder1OrderItems), Property.Value ("DomainObject", newOrderItem1));
-        //new CollectionChangeState (newOrder1.OrderItems, newOrderItem1, "8: 5. Added of newOrderItem1 to newOrder1"),
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems"));
-        //new RelationChangeState (newOrder1, "OrderItems", null, null, "8: 6. Changed event of newOrder1 from null to newOrderItem1"),
 
+        extension.RelationChanged (newOrderItem1, "Order");
+        extension.RelationChanged (newOrder1, "OrderItems");
+
+
+        //9
+        //newOrderItem2.Order = newOrder1;
+        extension.RelationChanging (newOrderItem2, "Order", null, newOrder1);
+        extension.RelationChanging (newOrder1, "OrderItems", null, newOrderItem2);
 
         newOrderItem2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderItem2), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder1));
-        //new RelationChangeState (newOrderItem2, "Order", null, newOrder1, "9: 1. Changing event of newOrderItem2 from null to newOrder1"),
 
         newOrder1OrderItemsEventReceiver.Adding (null, null);
         LastCall.Constraints (Is.Same (newOrder1OrderItems), Property.Value ("DomainObject", newOrderItem2));
-        //new CollectionChangeState (newOrder1.OrderItems, newOrderItem2, "9: 2. Adding of newOrderItem2 to newOrder1"),
 
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderItem2));
-        //new RelationChangeState (newOrder1, "OrderItems", null, newOrderItem2, "9: 3. Changing event of newOrder1 from null to newOrderItem2"),
 
         newOrderItem2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem2), Property.Value ("PropertyName", "Order"));
-        //new RelationChangeState (newOrderItem2, "Order", null, null, "9: 4. Changed event of newOrderItem2 from null to newOrder1"),
 
         newOrder1OrderItemsEventReceiver.Added (null, null);
         LastCall.Constraints (Is.Same (newOrder1OrderItems), Property.Value ("DomainObject", newOrderItem2));
-        //new CollectionChangeState (newOrder1.OrderItems, newOrderItem2, "9: 5. Added of newOrderItem2 to newOrder1"),
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems"));
-        //new RelationChangeState (newOrder1, "OrderItems", null, null, "9: 6. Changed event of newOrder1 from null to newOrderItem2"),
 
+        extension.RelationChanged (newOrderItem2, "Order");
+        extension.RelationChanged (newOrder1, "OrderItems");
+
+
+        //10
+        //newOrderItem1.Order = null;
+        extension.RelationChanging (newOrderItem1, "Order", newOrder1, null);
+        extension.RelationChanging (newOrder1, "OrderItems", newOrderItem1, null);
 
         newOrderItem1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", newOrder1) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newOrderItem1, "Order", newOrder1, null, "10: 1. Changing event of newOrderItem1 from newOrder1 to null"),
 
         newOrder1OrderItemsEventReceiver.Removing (null, null);
         LastCall.Constraints (Is.Same (newOrder1OrderItems), Property.Value ("DomainObject", newOrderItem1));
-        //new CollectionChangeState (newOrder1.OrderItems, newOrderItem1, "10: 2. Removing of newOrderItem1 from newOrder1"),
 
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", newOrderItem1) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newOrder1, "OrderItems", newOrderItem1, null, "10: 3. Changing event of newOrder1 from newOrderItem1 to null"),
 
         newOrderItem1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
-        //new RelationChangeState (newOrderItem1, "Order", null, null, "10: 4. Changed event of newOrderItem2 from newOrder1 to null"),
 
         newOrder1OrderItemsEventReceiver.Removed (null, null);
         LastCall.Constraints (Is.Same (newOrder1OrderItems), Property.Value ("DomainObject", newOrderItem1));
-        //new CollectionChangeState (newOrder1.OrderItems, newOrderItem1, "10: 5. Removed of newOrderItem1 from newOrder1"),
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderItems"));
-        //new RelationChangeState (newOrder1, "OrderItems", null, null, "10: 6. Changed event of newOrder1 from newOrderItem1 to null"),
 
+        extension.RelationChanged (newOrderItem1, "Order");
+        extension.RelationChanged (newOrder1, "OrderItems");
+
+
+        //11
+        //newOrderItem1.Order = newOrder2;
+        extension.RelationChanging (newOrderItem1, "Order", null, newOrder2);
+        extension.RelationChanging (newOrder2, "OrderItems", null, newOrderItem1);
 
         newOrderItem1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder2));
-        //new RelationChangeState (newOrderItem1, "Order", null, newOrder2, "11: 1. Changing event of newOrderItem1 from null to newOrder2"),
 
         newOrder2OrderItemsEventReceiver.Adding (null, null);
         LastCall.Constraints (Is.Same (newOrder2OrderItems), Property.Value ("DomainObject", newOrderItem1));
-        //new CollectionChangeState (newOrder2.OrderItems, newOrderItem1, "11: 2. Adding of newOrderItem1 to newOrder2"),
 
         newOrder2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderItem1));
-        //new RelationChangeState (newOrder2, "OrderItems", null, newOrderItem1, "11: 3. Changing event of newOrder2 from null to newOrderItem1"),
 
         newOrderItem1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
-        //new RelationChangeState (newOrderItem1, "Order", null, null, "11: 4. Changed event of newOrderItem2 from null to newOrder2"),
 
         newOrder2OrderItemsEventReceiver.Added (null, null);
         LastCall.Constraints (Is.Same (newOrder2OrderItems), Property.Value ("DomainObject", newOrderItem1));
-        //new CollectionChangeState (newOrder2.OrderItems, newOrderItem1, "11: 5. Adding of newOrderItem1 to newOrder2"),
 
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "OrderItems"));
-        //new RelationChangeState (newOrder2, "OrderItems", null, null, "11: 6. Changed event of newOrder2 from null to newOrderItem1"),
 
-        
+        extension.RelationChanged (newOrderItem1, "Order");
+        extension.RelationChanged (newOrder2, "OrderItems");
+
+
+        //12
+        //newOrder1.Official = official2;
+        extension.RelationChanging (newOrder1, "Official", null, official2);
+        extension.RelationChanging (official2, "Orders", null, newOrder1);
+
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "Official") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", official2));
-        //new RelationChangeState (newOrder1, "Official", null, official2, "12: 1. Changing event of newOrder1 from null to official2"),
 
         official2OrdersEventReceiver.Adding (null, null);
         LastCall.Constraints (Is.Same (official2Orders), Property.Value ("DomainObject", newOrder1));
-        //new CollectionChangeState (official2.Orders, newOrder1, "12: 2. Adding of newOrder1 to official2"),
 
         official2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (official2), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder1));
-        //new RelationChangeState (official2, "Orders", null, newOrder1, "12: 3. Changing event of official2 from null to newOrder1"),
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "Official"));
-        //new RelationChangeState (newOrder1, "Official", null, null, "12: 4. Changed event of newOrder1 from null to official2"),
 
         official2OrdersEventReceiver.Added (null, null);
         LastCall.Constraints (Is.Same (official2Orders), Property.Value ("DomainObject", newOrder1));
-        //new CollectionChangeState (official2.Orders, newOrder1, "12: 5. Adding of newOrder1 to official2"),
 
         official2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (official2), Property.Value ("PropertyName", "Orders"));
-        //new RelationChangeState (official2, "Orders", null, null, "12: 6. Changed event of official2 from null to newOrder1"),
 
+        extension.RelationChanged (newOrder1, "Official");
+        extension.RelationChanged (official2, "Orders");
+
+
+        //13
+        //OrderTicket newOrderTicket1 = new OrderTicket (newOrder1);
+
+        extension.NewObjectCreating (typeof (OrderTicket));
+        extension.NewObjectCreated (null);
+        LastCall.Constraints (Is.TypeOf<OrderTicket> ());
+
+        extension.RelationChanging (null, null, null, null);
+        LastCall.Constraints (Is.TypeOf<OrderTicket> (), Is.Equal ("Order"), Is.Null (), Is.Same (newOrder1));
+        extension.RelationChanging (null, null, null, null);
+        LastCall.Constraints (Is.Same (newOrder1), Is.Equal ("OrderTicket"), Is.Null (), Is.TypeOf<OrderTicket> ());
 
         newOrder1EventReceiver.RelationChanging (null, null);
-        LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", null));
-        // Note: NewRelatedObject cannot be checked easily here.
-        //new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "13: 1. Changing event of newOrder1 from null to newOrderTicket1"),
+        LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", null) & Property.ValueConstraint ("NewRelatedObject", Is.TypeOf<OrderTicket> ()));
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket"));
-        //new RelationChangeState (newOrder1, "OrderTicket", null, null, "13: 2. Changed event of newOrder1 from null to newOrderTicket1")
+
+        extension.RelationChanged (null, null);
+        LastCall.Constraints (Is.TypeOf<OrderTicket> (), Is.Equal ("Order"));
+        extension.RelationChanged (newOrder1, "OrderTicket");
       }
 
+      ClientTransaction.Current.Extensions.Add ("Extension", extension);
       mockRepository.ReplayAll ();
 
       //1
@@ -688,194 +467,218 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
       mockRepository.VerifyAll ();
 
-      mockRepository.BackToRecord (newCustomer1EventReceiver);
-      mockRepository.BackToRecord (newCustomer2EventReceiver);
-      mockRepository.BackToRecord (official2EventReceiver);
-      mockRepository.BackToRecord (newCeo1EventReceiver);
-      mockRepository.BackToRecord (newCeo2EventReceiver);
-      mockRepository.BackToRecord (newOrder1EventReceiver);
-      mockRepository.BackToRecord (newOrder2EventReceiver);
-      mockRepository.BackToRecord (newOrderItem1EventReceiver);
-      mockRepository.BackToRecord (newOrderItem2EventReceiver);
+      BackToRecord (mockRepository, extension, newCustomer1EventReceiver, newCustomer2EventReceiver, official2EventReceiver, newCeo1EventReceiver,
+          newCeo2EventReceiver, newOrder1EventReceiver, newOrder2EventReceiver, newOrderItem1EventReceiver, newOrderItem2EventReceiver,
+          newCustomer1OrdersEventReceiver, newCustomer2OrdersEventReceiver, official2OrdersEventReceiver,
+          newOrder1OrderItemsEventReceiver, newOrder2OrderItemsEventReceiver);
 
-      mockRepository.BackToRecord (newCustomer1OrdersEventReceiver);
-      mockRepository.BackToRecord (newCustomer2OrdersEventReceiver);
-      mockRepository.BackToRecord (official2OrdersEventReceiver);
-      mockRepository.BackToRecord (newOrder1OrderItemsEventReceiver);
-      mockRepository.BackToRecord (newOrder2OrderItemsEventReceiver);
       DomainObjectMockEventReceiver newOrderTicket1EventReceiver = mockRepository.CreateMock<DomainObjectMockEventReceiver> (newOrderTicket1);
 
       using (mockRepository.Ordered ())
       {
+        //14
+        //newOrderTicket1.Order = newOrder2;
+        extension.RelationChanging (newOrderTicket1, "Order", newOrder1, newOrder2);
+        extension.RelationChanging (newOrder1, "OrderTicket", newOrderTicket1, null);
+        extension.RelationChanging (newOrder2, "OrderTicket", null, newOrderTicket1);
+
         newOrderTicket1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", newOrder1) & Property.Value ("NewRelatedObject", newOrder2));
-        //new RelationChangeState (newOrderTicket1, "Order", newOrder1, newOrder2, "14: 1. Changing event of newOrderTicket1 from newOrder1 to newOrder2"),
 
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", newOrderTicket1) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newOrder1, "OrderTicket", newOrderTicket1, null, "14: 2. Changing event of newOrder1 from newOrderTicket1 to null"),
 
         newOrder2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderTicket1));
-        //new RelationChangeState (newOrder2, "OrderTicket", null, newOrderTicket1, "14: 3. Changing event of newOrder1 from null to newOrderTicket1"),
 
         newOrderTicket1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order"));
-        //new RelationChangeState (newOrderTicket1, "Order", null, null, "14: 4. Changed event of newOrderTicket1 from newOrder1 to newOrder2"),
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket"));
-        //new RelationChangeState (newOrder1, "OrderTicket", null, null, "14: 5. Changed event of newOrder1 from newOrderTicket1 to null"),
 
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "OrderTicket"));
-        //new RelationChangeState (newOrder2, "OrderTicket", null, null, "14: 6. Changed event of newOrder1 from null to newOrderTicket1"),
 
+        extension.RelationChanged (newOrderTicket1, "Order");
+        extension.RelationChanged (newOrder1, "OrderTicket");
+        extension.RelationChanged (newOrder2, "OrderTicket");
+
+
+        //15a
+        //newOrder2.Customer = newCustomer1;
+        extension.RelationChanging (newOrder2, "Customer", null, newCustomer1);
+        extension.RelationChanging (newCustomer1, "Orders", null, newOrder2);
 
         newOrder2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newCustomer1));
-        //new RelationChangeState (newOrder2, "Customer", null, newCustomer1, "15a: 1. Changing event of newOrder2 from null to newCustomer1.Orders"),
 
         newCustomer1OrdersEventReceiver.Adding (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder2, "15a: 2. Adding of newOrder2 to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder2));
-        //new RelationChangeState (newCustomer1, "Orders", null, newOrder2, "15a: 3. Changing event of newCustomer1 from null to newOrder2"),
 
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer"));
-        //new RelationChangeState (newOrder2, "Customer", null, null, "15a: 4. Changed event of newOrder2 from null to newCustomer1.Orders"),
 
         newCustomer1OrdersEventReceiver.Added (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder2, "15a: 5. Added of newOrder2 to newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-        //new RelationChangeState (newCustomer1, "Orders", null, null, "15a: 6. Changed event of newCustomer2 from null to newOrder2"),
+
+        extension.RelationChanged (newOrder2, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+
+
+        //15b
+        //newOrder2.Customer = newCustomer2;
+        extension.RelationChanging (newOrder2, "Customer", newCustomer1, newCustomer2);
+        extension.RelationChanging (newCustomer1, "Orders", newOrder2, null);
+        extension.RelationChanging (newCustomer2, "Orders", null, newOrder2);
 
         newOrder2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer") & Property.Value ("OldRelatedObject", newCustomer1) & Property.Value ("NewRelatedObject", newCustomer2));
-        //new RelationChangeState (newOrder2, "Customer", newCustomer1, newCustomer2, "15b: 1. Changing event of newOrder2 from null to newCustomer2.Orders"),
 
         newCustomer1OrdersEventReceiver.Removing (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder2, "15b: 2. Removing of newOrder2 from newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newCustomer1, "Orders", newOrder2, null, "15b: 3. Changing event of newCustomer1 from newOrder2 to null"),
 
         newCustomer2OrdersEventReceiver.Adding (null, null);
         LastCall.Constraints (Is.Same (newCustomer2Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer2.Orders, newOrder2, "15b: 4. Adding of newOrder2 to newCustomer2"),
 
         newCustomer2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder2));
-        //new RelationChangeState (newCustomer2, "Orders", null, newOrder2, "15b: 5. Changing event of newCustomer2 from null to newOrder2"),
 
         newOrder2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Property.Value ("PropertyName", "Customer"));
-        //new RelationChangeState (newOrder2, "Customer", null, null, "15b: 6. Changed event of newOrder2 from null to newCustomer2.Orders"),
 
         newCustomer1OrdersEventReceiver.Removed (null, null);
         LastCall.Constraints (Is.Same (newCustomer1Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer1.Orders, newOrder2, "15b: 7. Removed of newOrder2 from newCustomer1"),
 
         newCustomer1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer1), Property.Value ("PropertyName", "Orders"));
-        //new RelationChangeState (newCustomer1, "Orders", null, null, "15b: 8. Changed event of newCustomer1 from newOrder2 to null"),
 
         newCustomer2OrdersEventReceiver.Added (null, null);
         LastCall.Constraints (Is.Same (newCustomer2Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer2.Orders, newOrder2, "15b: 9. Added of newOrder2 to newCustomer2"),
 
         newCustomer2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Orders"));
-        //new RelationChangeState (newCustomer2, "Orders", null, null, "15b: 10. Changed event of newCustomer2 from null to newOrder2"),
+
+        extension.RelationChanged (newOrder2, "Customer");
+        extension.RelationChanged (newCustomer1, "Orders");
+        extension.RelationChanged (newCustomer2, "Orders");
+
+
+        //16
+        //newOrder2.Delete ();
+        extension.ObjectDeleting (newOrder2);
+        extension.RelationChanging (newCustomer2, "Orders", newOrder2, null);
+        extension.RelationChanging (newOrderTicket1, "Order", newOrder2, null);
+        extension.RelationChanging (newOrderItem1, "Order", newOrder2, null);
 
         newOrder2EventReceiver.Deleting (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Is.NotNull ());
-        //new ObjectDeletionState (newOrder2, "16: 1. Deleting event of newOrder2"),
 
         newCustomer2OrdersEventReceiver.Removing (null, null);
         LastCall.Constraints (Is.Same (newCustomer2Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 2. Removing of newOrder2 from newCustomer2"),
 
         newCustomer2EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Orders") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newCustomer2, "Orders", newOrder2, null, "16: 3. Changing event of newCustomer2 from newOrder2 to null"),
 
         newOrderTicket1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newOrderTicket1, "Order", newOrder2, null, "16: 4. Changing event of newOrderTicket1 from newOrder2 to null"),
 
         newOrderItem1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", newOrder2) & Property.Value ("NewRelatedObject", null));
-        //new RelationChangeState (newOrderItem1, "Order", newOrder2, null, "16: 5. Changing event of newOrderItem1 from newOrder2 to null"),
 
+        //TODO: this event should be raised at last before extension is notified
         newOrder2EventReceiver.Deleted (null, null);
         LastCall.Constraints (Is.Same (newOrder2), Is.NotNull ());
-        //new ObjectDeletionState (newOrder2, "16: 6. Deleted event of newOrder2"),
 
         newCustomer2OrdersEventReceiver.Removed (null, null);
         LastCall.Constraints (Is.Same (newCustomer2Orders), Property.Value ("DomainObject", newOrder2));
-        //new CollectionChangeState (newCustomer2.Orders, newOrder2, "16: 7. Removed of newOrder2 from newCustomer2"),
 
         newCustomer2EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Property.Value ("PropertyName", "Orders"));
-        //new RelationChangeState (newCustomer2, "Orders", null, null, "16: 8. Changed event of newCustomer2 from newOrder2 to null"),
 
         newOrderTicket1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order"));
-        //new RelationChangeState (newOrderTicket1, "Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
 
         newOrderItem1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Property.Value ("PropertyName", "Order"));
-        //new RelationChangeState (newOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
 
+        extension.RelationChanged (newCustomer2, "Orders");
+        extension.RelationChanged (newOrderTicket1, "Order");
+        extension.RelationChanged (newOrderItem1, "Order");
+        extension.ObjectDeleted (newOrder2);
+
+        //17
+        //newOrderTicket1.Order = newOrder1;
+        extension.RelationChanging (newOrderTicket1, "Order", null, newOrder1);
+        extension.RelationChanging (newOrder1, "OrderTicket", null, newOrderTicket1);
 
         newOrderTicket1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrder1));
-        //new RelationChangeState (newOrderTicket1, "Order", null, newOrder1, "17: 1. Changing event of newOrderTicket1 from null to newOrder1"),
 
         newOrder1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderTicket1));
-        //new RelationChangeState (newOrder1, "OrderTicket", null, newOrderTicket1, "17: 2. Changing event of newOrder1 from null to newOrderTicket1"),
 
         newOrderTicket1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderTicket1), Property.Value ("PropertyName", "Order"));
-        //new RelationChangeState (newOrderTicket1, "Order", null, null, "17: 3. Changed event of newOrderTicket1 from null to newOrder1"),
 
         newOrder1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrder1), Property.Value ("PropertyName", "OrderTicket"));
-        //new RelationChangeState (newOrder1, "OrderTicket", null, null, "17: 4. Changed event of newOrder1 from null to newOrderTicket1"),
 
+        extension.RelationChanged (newOrderTicket1, "Order");
+        extension.RelationChanged (newOrder1, "OrderTicket");
+
+
+        //cleanup for commit
+        //18
+        //newCustomer2.Delete ();
+        extension.ObjectDeleting (newCustomer2);
 
         newCustomer2EventReceiver.Deleting (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Is.NotNull ());
         newCustomer2EventReceiver.Deleted (null, null);
         LastCall.Constraints (Is.Same (newCustomer2), Is.NotNull ());
-        //newCustomer2.Delete (); // 18
+
+        extension.ObjectDeleted (newCustomer2);
+
+
+        //19
+        //newCeo1.Delete ();
+        extension.ObjectDeleting (newCeo1);
 
         newCeo1EventReceiver.Deleting (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Is.NotNull ());
         newCeo1EventReceiver.Deleted (null, null);
         LastCall.Constraints (Is.Same (newCeo1), Is.NotNull ());
-        //newCeo1.Delete (); // 19
+
+        extension.ObjectDeleted (newCeo1);
+
+        //20
+        //newOrderItem1.Delete ();
+        extension.ObjectDeleting (newOrderItem1);
 
         newOrderItem1EventReceiver.Deleting (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Is.NotNull ());
         newOrderItem1EventReceiver.Deleted (null, null);
         LastCall.Constraints (Is.Same (newOrderItem1), Is.NotNull ());
-        //newOrderItem1.Delete (); // 20
 
+        extension.ObjectDeleted (newOrderItem1);
+
+
+        //21
+        //ClientTransaction.Current.Commit ();
         using (mockRepository.Unordered ())
         {
           newCustomer1EventReceiver.Committing (null, null);
-          LastCall.Constraints (Is.Same(newCustomer1), Is.NotNull ());
+          LastCall.Constraints (Is.Same (newCustomer1), Is.NotNull ());
 
           official2EventReceiver.Committing (null, null);
           LastCall.Constraints (Is.Same (official2), Is.NotNull ());
@@ -892,6 +695,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
           newOrderTicket1EventReceiver.Committing (null, null);
           LastCall.Constraints (Is.Same (newOrderTicket1), Is.NotNull ());
         }
+        extension.Committing (null);
+        LastCall.Constraints (new ContainsConstraint (new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 }));
 
         using (mockRepository.Unordered ())
         {
@@ -913,6 +718,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
           newOrderTicket1EventReceiver.Committed (null, null);
           LastCall.Constraints (Is.Same (newOrderTicket1), Is.NotNull ());
         }
+        extension.Committed (null);
+        LastCall.Constraints (Property.Value ("Count", 6) & new ContainsConstraint (new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 }));
       }
 
       mockRepository.ReplayAll ();
@@ -935,6 +742,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       //20
       newOrderItem1.Delete ();
 
+      //21
       ClientTransaction.Current.Commit ();
 
       mockRepository.VerifyAll ();
@@ -1144,6 +952,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.IsTrue (_orderDomainObjectEventReceiver.HasChangedEventBeenCalled);
       Assert.AreSame (propertyValue, _orderDomainObjectEventReceiver.ChangingPropertyValue);
       Assert.AreSame (propertyValue, _orderDomainObjectEventReceiver.ChangedPropertyValue);
+    }
+
+    private void BackToRecord (MockRepository mockRepository, params object[] objects)
+    {
+      foreach (object obj in objects)
+        mockRepository.BackToRecord (obj);
     }
   }
 }

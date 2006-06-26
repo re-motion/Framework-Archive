@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
 namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 {
   [TestFixture]
-  public class DomainObjectEventRelationsTest : ClientTransactionBaseTest
+  public class RelationsTest : ClientTransactionBaseTest
   {
     // types
 
@@ -18,7 +18,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 
     // construction and disposing
 
-    public DomainObjectEventRelationsTest ()
+    public RelationsTest ()
     {
     }
 
@@ -45,6 +45,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.AreSame (null, orderEventReceiver.GetChangedRelatedDomainObject ("OrderTicket"));
       Assert.AreSame (null, orderTicketEventReceiver.GetChangedRelatedDomainObject ("Order"));
     }
-
   }
 }

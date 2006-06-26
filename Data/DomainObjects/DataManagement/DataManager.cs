@@ -121,8 +121,6 @@ public class DataManager
     if (domainObject.State == StateType.Deleted)
       return;
 
-    _clientTransaction.ObjectDeleting (domainObject);
-
     RelationEndPointCollection allAffectedRelationEndPoints = _relationEndPointMap.GetAllRelationEndPointsWithLazyLoad (domainObject);
     BeginDelete (domainObject, allAffectedRelationEndPoints);
 
@@ -130,7 +128,6 @@ public class DataManager
     PerformDelete (domainObject);
 
     EndDelete (domainObject, allOppositeRelationEndPoints);
-    _clientTransaction.ObjectDeleted (domainObject);
   }
 
   private void PerformDelete (DomainObject domainObject)
@@ -142,6 +139,11 @@ public class DataManager
 
   private void BeginDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)
   {
+    //TODO: Start here when implementing oldRelatedObject and NewRelatedObject on IClientTransactionExtension.RelationChanged () 
+    //      and RelationChanged events of ClientTransaction and DomainObject
+    _clientTransaction.ObjectDeleting (domainObject);
+    allAffectedRelationEndPoints.NotifyClientTransactionOfBeginDelete (domainObject);
+
     domainObject.BeginDelete ();
     allAffectedRelationEndPoints.BeginDelete (domainObject);
   }
@@ -150,6 +152,9 @@ public class DataManager
   {
     domainObject.EndDelete ();
     allOppositeRelationEndPoints.EndDelete ();
+
+    allOppositeRelationEndPoints.NotifyClientTransactionOfEndDelete ();
+    _clientTransaction.ObjectDeleted (domainObject);
   }
 
   private void CheckClientTransactionForDeletion (DomainObject domainObject)

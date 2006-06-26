@@ -44,6 +44,19 @@ public class RelationEndPointCollection : CommonCollection
     }
   }
 
+  public void NotifyClientTransactionOfBeginDelete (DomainObject domainObject)
+  {
+    ArgumentUtility.CheckNotNull ("domainObject", domainObject);
+
+    foreach (RelationEndPoint oppositeEndPoint in GetOppositeRelationEndPoints (domainObject))
+    {
+      IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
+      RelationEndPoint oldEndPoint = this[new RelationEndPointID (domainObject.ID, endPointDefinition)];
+
+      oppositeEndPoint.NotifyClientTransactionOfBeginRelationChange (oldEndPoint);
+    }
+  }
+
   public void BeginDelete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -52,10 +65,15 @@ public class RelationEndPointCollection : CommonCollection
     {
       IRelationEndPointDefinition endPointDefinition = oppositeEndPoint.OppositeEndPointDefinition;
       RelationEndPoint oldEndPoint = this[new RelationEndPointID (domainObject.ID, endPointDefinition)];
-      RelationEndPoint newEndPoint = RelationEndPoint.CreateNullRelationEndPoint (endPointDefinition);
 
-      oppositeEndPoint.BeginRelationChange (oldEndPoint, newEndPoint);
+      oppositeEndPoint.BeginRelationChange (oldEndPoint);
     }
+  }
+
+  public void NotifyClientTransactionOfEndDelete ()
+  {
+    foreach (RelationEndPoint endPoint in this)
+      endPoint.NotifyClientTransactionOfEndRelationChange ();
   }
 
   public void EndDelete ()
