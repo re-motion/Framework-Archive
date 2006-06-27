@@ -304,7 +304,8 @@
         Only the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the value is cached between postbacks. 
         In order to return a value, the control requires the <see cref="Property"/> to be set. 
         The <see cref="Property"/>'s <see cref="IBusinessObjectReferenceProperty.ReferenceClass"/> is then used to get 
-        the <see cref="IBusinessObjectWithIdentity"/> for the cached <b>ID</b>.
+        the <see cref="IBusinessObjectWithIdentity"/> for the cached <b>ID</b>. If it is not possible to assign a <see cref="Property"/>, 
+        you can use <see cref="BusinessObjectID"/> to get the <see cref="IBusinessObjectWithIdentity.UniqueIdentifier"/> of the current object.
       </para><para>
         The dirty state is reset when the value is set.
       </para>
