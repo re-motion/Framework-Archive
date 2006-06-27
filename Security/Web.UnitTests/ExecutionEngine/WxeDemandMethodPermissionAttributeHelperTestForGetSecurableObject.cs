@@ -75,8 +75,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (WxeException), "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
-        + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObject' is null or does not implement"
-        + " interface 'Rubicon.Security.ISecurableObject'.")]
+        + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObject' is null.")]
     public void TestWithParameterNull ()
     {
       _attribute.ParameterName = "ThisObject";
@@ -91,7 +90,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
     [Test]
     [ExpectedException (typeof (WxeException), "The parameter 'SomeObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
-        + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is null or does not implement"
+        + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' does not implement"
         + " interface 'Rubicon.Security.ISecurableObject'.")]
     public void TestWithParameterNotImplementingISecurableObject ()
     {
@@ -100,6 +99,22 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
           _functionWithThisObjectAsSecondParamter.GetType (),
           _attribute);
+
+      helper.GetSecurableObject (_functionWithThisObjectAsSecondParamter);
+    }
+
+    [Test]
+    [ExpectedException (typeof (WxeException), "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
+        + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is not derived from type"
+        + " 'Rubicon.Security.Web.UnitTests.Domain.OtherSecurableObject'.")]
+    public void TestWithParameterNotOfMatchingType ()
+    {
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute ("Show", typeof (OtherSecurableObject));
+      attribute.ParameterName = "ThisObject";
+
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+          _functionWithThisObjectAsSecondParamter.GetType (),
+          attribute);
 
       helper.GetSecurableObject (_functionWithThisObjectAsSecondParamter);
     }

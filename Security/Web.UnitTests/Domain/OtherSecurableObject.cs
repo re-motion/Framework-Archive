@@ -7,34 +7,17 @@ using Rubicon.Web.UnitTests.ExecutionEngine;
 
 namespace Rubicon.Security.Web.UnitTests.Domain
 {
-  public class SecurableObject : ISecurableObject
+  public class OtherSecurableObject : ISecurableObject
   {
-    public enum Method
-    {
-      Delete,
-      Show,
-      Search
-    }
-
-    [DemandMethodPermission (GeneralAccessType.Search)]
-    public static void Search ()
-    {
-    }
-
     private IObjectSecurityStrategy _securityStrategy;
 
-    public SecurableObject (IObjectSecurityStrategy securityStrategy)
+    public OtherSecurableObject (IObjectSecurityStrategy securityStrategy)
     {
       _securityStrategy = securityStrategy;
     }
 
     [DemandMethodPermission (GeneralAccessType.Read)]
     public void Show ()
-    {
-    }
-
-    [DemandMethodPermission (GeneralAccessType.Delete)]
-    public void Delete ()
     {
     }
 

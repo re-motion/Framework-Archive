@@ -135,9 +135,8 @@ namespace Rubicon.Security.Metadata
       foreach (MethodBase methodbase in methodBases)
       {
         Enum[] values = _permissionReflector.GetRequiredMethodPermissions (methodbase);
-        for (int i = 0; i < values.Length; i++)
+        foreach (Enum value in values)
         {
-          Enum value = values[i];
           EnumValueInfo accessType = _enumerationReflector.GetValue (value, cache);
 
           if (!cache.ContainsAccessType (value))

@@ -45,14 +45,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Domain\NestedMethodNameEnum.cs" />
+    <Compile Include="Domain\MethodNameEnum.cs" />
+    <Compile Include="Domain\OtherSecurableObject.cs" />
     <Compile Include="Domain\DerivedSecurableObject.cs" />
     <Compile Include="Domain\SecurableObject.cs" />
+    <Compile Include="ExecutionEngine\WxeDemandCreatePermissionAttributeTest.cs" />
+    <Compile Include="UI\DemandTargetWxeFunctionPermissionAttributeTest.cs" />
+    <Compile Include="UI\DemandTargetMethodPermissionAttributeTest.cs" />
+    <Compile Include="ExecutionEngine\WxeDemandTargetStaticMethodPermissionAttributeTest.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithThisObjectAsSecondParameter.cs" />
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTest.cs" />
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetSecurableObject.cs" />
     <Compile Include="ExecutionEngine\WxeDemandMethodPermissionAttributeHelperTestForGetTypeOfSecurableObject.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithoutParameters.cs" />
     <Compile Include="ExecutionEngine\TestFunctionWithThisObject.cs" />
+    <Compile Include="ExecutionEngine\WxeDemandTargetMethodPermissionAttributeTest.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromStaticMethod.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromInstanceMethod.cs" />
     <Compile Include="ExecutionEngine\WxeSecurityProviderTestWithPermissionsFromConstructor.cs" />

@@ -48,7 +48,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
           securityClient.CheckConstructorAccess (helper.SecurableClass);
           break;
         default:
-          throw new ArgumentException (string.Format (
+          throw new InvalidOperationException (string.Format (
               "Value '{0}' is not supported by the MethodType property of the WxeDemandMethodPermissionAttribute.",
               helper.MethodType));
       }
@@ -74,7 +74,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
         case MethodType.Constructor:
           return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
-          throw new ArgumentException (string.Format (
+          throw new InvalidOperationException (string.Format (
               "Value '{0}' is not supported by the MethodType property of the WxeDemandMethodPermissionAttribute.",
               helper.MethodType));
       }
@@ -100,7 +100,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
         case MethodType.Constructor:
           return securityClient.HasConstructorAccess (helper.SecurableClass);
         default:
-          throw new ArgumentException (string.Format (
+          throw new InvalidOperationException (string.Format (
               "Value '{0}' is not supported by the MethodType property of the WxeDemandMethodPermissionAttribute.",
               helper.MethodType));
       }

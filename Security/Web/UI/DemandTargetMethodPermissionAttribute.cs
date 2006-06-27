@@ -16,6 +16,16 @@ namespace Rubicon.Security.Web.UI
 
     // construction and disposing
 
+    public DemandTargetMethodPermissionAttribute (object methodEnum)
+      : base (methodEnum)
+    {
+    }
+
+    public DemandTargetMethodPermissionAttribute (object methodEnum, Type securableClass)
+      : base (methodEnum, securableClass)
+    {
+    }
+
     public DemandTargetMethodPermissionAttribute (string methodName)
       : base (methodName)
     {
@@ -23,11 +33,6 @@ namespace Rubicon.Security.Web.UI
 
     public DemandTargetMethodPermissionAttribute (string methodName, Type securableClass)
       : base (methodName, securableClass)
-    {
-    }
-
-    public DemandTargetMethodPermissionAttribute (object methodEnum)
-      : base (methodEnum)
     {
     }
 

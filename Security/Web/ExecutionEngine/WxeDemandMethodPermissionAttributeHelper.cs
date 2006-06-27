@@ -76,14 +76,17 @@ namespace Rubicon.Security.Web.ExecutionEngine
             _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
       }
 
-      //TODO:
-      // if (SecurableClass != null)
-      //{
-      //  if (!parameterDeclaration.Type.IsAssignableFrom (SecurableClass))
-      //    throw new InvalidOperationException ();
-      //  return SecurableClass;
-      //}
-      return parameterDeclaration.Type;
+      if (SecurableClass == null)
+        return parameterDeclaration.Type;
+
+      if (!parameterDeclaration.Type.IsAssignableFrom (SecurableClass))
+      {
+        throw new WxeException (string.Format (
+            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is of type '{3}', which is not a base type of type '{4}'.",
+            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, parameterDeclaration.Type.FullName, SecurableClass.FullName));
+      }
+
+      return SecurableClass;
     }
 
     public ISecurableObject GetSecurableObject (WxeFunction function)
@@ -91,12 +94,27 @@ namespace Rubicon.Security.Web.ExecutionEngine
       ArgumentUtility.CheckNotNullAndType ("function", function, _functionType);
 
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration (function.ParameterDeclarations);
-      ISecurableObject securableObject = function.Variables[parameterDeclaration.Name] as ISecurableObject;
+      object parameterValue = function.Variables[parameterDeclaration.Name];
+      if (parameterValue == null)
+      {
+        throw new WxeException (string.Format (
+           "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is null.",
+           _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName));
+      }
+
+      ISecurableObject securableObject = parameterValue as ISecurableObject;
       if (securableObject == null)
       {
         throw new WxeException (string.Format (
-            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is null or does not implement interface '{3}'.",
+            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' does not implement interface '{3}'.",
             _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, typeof (ISecurableObject).FullName));
+      }
+
+      if (SecurableClass != null && !parameterDeclaration.Type.IsAssignableFrom (SecurableClass))
+      {
+        throw new WxeException (string.Format (
+            "The parameter '{1}' specified by the {0} applied to WxeFunction '{2}' is not derived from type '{3}'.",
+            _attribute.GetType ().Name, parameterDeclaration.Name, _functionType.FullName, SecurableClass.FullName));
       }
 
       return securableObject;
@@ -112,16 +130,12 @@ namespace Rubicon.Security.Web.ExecutionEngine
       }
 
       if (StringUtility.IsNullOrEmpty (_attribute.ParameterName))
-      {
         return parameterDeclarations[0];
-      }
-      else
+
+      for (int i = 0; i < parameterDeclarations.Length; i++)
       {
-        for (int i = 0; i < parameterDeclarations.Length; i++)
-        {
-          if (string.Equals (parameterDeclarations[i].Name, _attribute.ParameterName, StringComparison.Ordinal))
-            return parameterDeclarations[i];
-        }
+        if (string.Equals (parameterDeclarations[i].Name, _attribute.ParameterName, StringComparison.Ordinal))
+          return parameterDeclarations[i];
       }
 
       throw new WxeException (string.Format (

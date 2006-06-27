@@ -37,6 +37,33 @@ namespace Rubicon.Security.Web.UI
       _functionType = functionType;
     }
 
+    protected DemandTargetPermissionAttribute (object methodEnum)
+    {
+      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
+
+      Enum enumValue = (Enum) methodEnum;
+
+      CheckDeclaringTypeOfMethodNameEnum (enumValue);
+
+      _permissionSource = PermissionSource.SecurableObject;
+      _securableClass = enumValue.GetType ().DeclaringType;
+      _methodName = enumValue.ToString ();
+    }
+
+    protected DemandTargetPermissionAttribute (object methodEnum, Type securableClass)
+    {
+      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
+      ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
+
+      Enum enumValue = (Enum) methodEnum;
+
+      CheckDeclaringTypeOfMethodNameEnum (enumValue, securableClass);
+
+      _permissionSource = PermissionSource.SecurableObject;
+      _securableClass = securableClass;
+      _methodName = enumValue.ToString ();
+    }
+
     protected DemandTargetPermissionAttribute (string methodName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
@@ -53,28 +80,6 @@ namespace Rubicon.Security.Web.UI
       _permissionSource = PermissionSource.SecurableObject;
       _methodName = methodName;
       _securableClass = securableClass;
-    }
-
-    protected DemandTargetPermissionAttribute (object methodEnum)
-    {
-      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
-
-      Enum enumValue = (Enum) methodEnum;
-      Type enumType = enumValue.GetType ();
-
-      // TODO: rewrite with test
-      if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
-      {
-        throw new ArgumentException (string.Format (
-                "Enumerated type '{0}' is not declared as a nested type or the declaring type does not implement interface '{1}'.",
-                enumType.FullName,
-                typeof (ISecurableObject).FullName),
-            "methodEnum");
-      }
-
-      _permissionSource = PermissionSource.SecurableObject;
-      _securableClass = enumType.DeclaringType;
-      _methodName = enumValue.ToString ();
     }
 
     // methods and properties
@@ -97,6 +102,38 @@ namespace Rubicon.Security.Web.UI
     public Type SecurableClass
     {
       get { return _securableClass; }
+    }
+
+    protected void CheckDeclaringTypeOfMethodNameEnum (Enum methodNameEnum)
+    {
+      ArgumentUtility.CheckNotNull ("methodNameEnum", methodNameEnum);
+
+      Type enumType = methodNameEnum.GetType ();
+
+      if (enumType.DeclaringType == null)
+        throw new ArgumentException (string.Format ("Enumerated type '{0}' is not declared as a nested type.", enumType.FullName), "methodNameEnum");
+
+      if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
+      {
+        throw new ArgumentException (string.Format (
+                "The declaring type of enumerated type '{0}' does not implement interface '{1}'.",
+                enumType.FullName,
+                typeof (ISecurableObject).FullName),
+            "methodNameEnum");
+      }
+    }
+
+    protected void CheckDeclaringTypeOfMethodNameEnum (Enum enumValue, Type securableClass)
+    {
+      CheckDeclaringTypeOfMethodNameEnum (enumValue);
+
+      Type enumType = enumValue.GetType ();
+      if (!enumType.DeclaringType.IsAssignableFrom (securableClass))
+      {
+        throw new ArgumentException (
+            string.Format ("Type '{0}' cannot be assigned to the declaring type of enumerated type '{1}'.", securableClass, enumType),
+            "securableClass");
+      }
     }
   }
 }

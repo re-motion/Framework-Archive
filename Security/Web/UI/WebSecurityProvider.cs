@@ -49,7 +49,7 @@ namespace Rubicon.Security.Web.UI
               hasAccess &= securityClient.HasMethodAccess (securableObject, attribute.MethodName);
             break;
           default:
-            throw new ArgumentException (string.Format (
+            throw new InvalidOperationException (string.Format (
                 "Value '{0}' is not supported by the PermissionSource property of the DemandTargetPermissionAttribute.",
                 attribute.PermissionSource));
         }

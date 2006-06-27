@@ -10,6 +10,14 @@ namespace Rubicon.Security.Web.UnitTests.Domain
   {
     // types
 
+    public new enum Method
+    {
+      Create,
+      Delete,
+      Show,
+      Search
+    }
+
     // static members
 
     // member fields
@@ -22,5 +30,10 @@ namespace Rubicon.Security.Web.UnitTests.Domain
     }
 
     // methods and properties
+
+    [DemandMethodPermission (GeneralAccessType.Read)]
+    public void ShowSpecial ()
+    {
+    }
   }
 }

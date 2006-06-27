@@ -27,15 +27,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
       Enum enumValue = (Enum) methodNameEnum;
       Type enumType = enumValue.GetType();
 
-      // TODO: rewrite with test
-      if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
-      {
-        throw new ArgumentException (string.Format (
-                "Enumerated type '{0}' is not declared as a nested type or the declaring type does not implement interface '{1}'.", 
-                enumType.FullName, 
-                typeof (ISecurableObject).FullName),
-            "methodNameEnum");
-      }
+      CheckDeclaringTypeOfMethodNameEnum (enumValue);
 
       Initialize (enumValue.ToString (), enumType.DeclaringType);
     }
@@ -47,27 +39,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
 
       Enum enumValue = (Enum) methodNameEnum;
-      Type enumType = enumValue.GetType ();
 
-      // TODO: rewrite with test
-      if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
-      {
-        throw new ArgumentException (string.Format (
-                "Enumerated type '{0}' is not declared as a nested type or the declaring type does not implement interface '{1}'.",
-                enumType.FullName,
-                typeof (ISecurableObject).FullName),
-            "methodNameEnum");
-      }
-
-      // TODO: rewrite with test
-      if (!enumType.DeclaringType.IsAssignableFrom (securableClass))
-      {
-        throw new ArgumentException (string.Format (
-                "Type '{0}' cannot be assigned to the declaring type '{1}' of the enum value specified by parameter 'methodNameEnum'.",
-                securableClass,
-                enumType.DeclaringType),
-            "securableClass");
-      }
+      CheckDeclaringTypeOfMethodNameEnum (enumValue, securableClass);
 
       Initialize (enumValue.ToString (), securableClass);
     }

@@ -83,7 +83,7 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
       Assert.IsFalse (hasAccess);
     }
 
-    [DemandTargetMethodPermission (SecurableObject.Methods.Show)]
+    [DemandTargetMethodPermission (SecurableObject.Method.Show)]
     private void TestEventHandler (object sender, EventArgs args)
     {
     }

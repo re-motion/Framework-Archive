@@ -35,7 +35,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     public void SetUp ()
     {
       _mocks = new Mockery ();
-      _attribute = new WxeDemandTargetMethodPermissionAttribute ("Read");
+      _attribute = new WxeDemandTargetMethodPermissionAttribute ("Show");
     }
 
     [Test]
@@ -44,7 +44,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       _attribute.ParameterName = "ThisObject";
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
-          typeof (TestFunctionWithThisObjectAsSecondParameter), 
+          typeof (TestFunctionWithThisObjectAsSecondParameter),
           _attribute);
 
       Assert.AreSame (typeof (SecurableObject), helper.GetTypeOfSecurableObject ());
@@ -54,10 +54,36 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     public void TestWithDefaultParameter ()
     {
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
-          typeof (TestFunctionWithThisObject), 
+          typeof (TestFunctionWithThisObject),
           _attribute);
 
       Assert.AreSame (typeof (SecurableObject), helper.GetTypeOfSecurableObject ());
+    }
+
+    [Test]
+    public void TestWithParameterTypeIsBaseType ()
+    {
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute ("ShowSpecial", typeof (DerivedSecurableObject));
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+          typeof (TestFunctionWithThisObject),
+          attribute);
+
+      Assert.AreSame (typeof (DerivedSecurableObject), helper.GetTypeOfSecurableObject ());
+    }
+
+    [Test]
+    [ExpectedException (typeof (WxeException), "The parameter 'ThisObject' specified by the WxeDemandTargetMethodPermissionAttribute applied to"
+       + " WxeFunction 'Rubicon.Security.Web.UnitTests.ExecutionEngine.TestFunctionWithThisObjectAsSecondParameter' is of type 'Rubicon.Security.Web.UnitTests.Domain.SecurableObject',"
+        + " which is not a base type of type 'Rubicon.Security.Web.UnitTests.Domain.OtherSecurableObject'.")]
+    public void TestWithParameterNotOfNotMatchingType ()
+    {
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute ("Show", typeof (OtherSecurableObject));
+      attribute.ParameterName = "ThisObject";
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+          typeof (TestFunctionWithThisObjectAsSecondParameter),
+          attribute);
+    
+      helper.GetTypeOfSecurableObject ();
     }
 
     [Test]
@@ -69,7 +95,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
       _attribute.ParameterName = "SomeObject";
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
-          typeof (TestFunctionWithThisObjectAsSecondParameter), 
+          typeof (TestFunctionWithThisObjectAsSecondParameter),
           _attribute);
 
       helper.GetTypeOfSecurableObject ();

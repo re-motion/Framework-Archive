@@ -15,20 +15,6 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
   [TestFixture]
   public class WxeDemandMethodPermissionAttributeHelperTest
   {
-    // types
-
-    // static members
-
-    // member fields
-
-    // construction and disposing
-
-    public WxeDemandMethodPermissionAttributeHelperTest ()
-    {
-    }
-
-    // methods and properties
-
     [Test]
     public void InitializeWithMethodTypeInstance ()
     {
@@ -45,9 +31,24 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     }
 
     [Test]
+    public void InitializeWithMethodTypeInstanceAndSecurableClass ()
+    {
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute ("ShowSpecial", typeof (DerivedSecurableObject));
+
+      WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
+          typeof (TestFunctionWithThisObject),
+          attribute);
+
+      Assert.AreSame (typeof (TestFunctionWithThisObject), helper.FunctionType);
+      Assert.AreEqual (MethodType.Instance, helper.MethodType);
+      Assert.AreSame (typeof (DerivedSecurableObject), helper.SecurableClass);
+      Assert.AreEqual ("ShowSpecial", helper.MethodName);
+    }
+
+    [Test]
     public void InitializeWithMethodTypeInstanceAndMethodEnum ()
     {
-      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute (SecurableObject.Methods.Show);
+      WxeDemandTargetMethodPermissionAttribute attribute = new WxeDemandTargetMethodPermissionAttribute (SecurableObject.Method.Show);
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
           typeof (TestFunctionWithThisObject),
@@ -78,7 +79,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     [Test]
     public void InitializeWithMethodTypeStaticAndMethodEnum ()
     {
-      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Methods.Search);
+      WxeDemandTargetStaticMethodPermissionAttribute attribute = new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Method.Search);
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
           typeof (TestFunctionWithThisObject),
@@ -94,7 +95,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
     public void InitializeWithMethodTypeStaticAndMethodEnumFromBaseClass ()
     {
       WxeDemandTargetStaticMethodPermissionAttribute attribute = 
-          new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Methods.Search, typeof (DerivedSecurableObject));
+          new WxeDemandTargetStaticMethodPermissionAttribute (SecurableObject.Method.Search, typeof (DerivedSecurableObject));
 
       WxeDemandMethodPermissionAttributeHelper helper = new WxeDemandMethodPermissionAttributeHelper (
           typeof (TestFunctionWithThisObject),

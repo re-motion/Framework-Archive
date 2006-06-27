@@ -70,5 +70,37 @@ namespace Rubicon.Security.Web.ExecutionEngine
       get { return _methodName; }
       protected set { _methodName = value; }
     }
+
+    protected void CheckDeclaringTypeOfMethodNameEnum (Enum methodNameEnum)
+    {
+      ArgumentUtility.CheckNotNull ("methodNameEnum", methodNameEnum);
+
+      Type enumType = methodNameEnum.GetType ();
+
+      if (enumType.DeclaringType == null)
+        throw new ArgumentException (string.Format ("Enumerated type '{0}' is not declared as a nested type.", enumType.FullName), "methodNameEnum");
+
+      if (!typeof (ISecurableObject).IsAssignableFrom (enumType.DeclaringType))
+      {
+        throw new ArgumentException (string.Format (
+                "The declaring type of enumerated type '{0}' does not implement interface '{1}'.",
+                enumType.FullName,
+                typeof (ISecurableObject).FullName),
+            "methodNameEnum");
+      }
+    }
+
+    protected void CheckDeclaringTypeOfMethodNameEnum (Enum enumValue, Type securableClass)
+    {
+      CheckDeclaringTypeOfMethodNameEnum (enumValue);
+
+      Type enumType = enumValue.GetType ();
+      if (!enumType.DeclaringType.IsAssignableFrom (securableClass))
+      {
+        throw new ArgumentException (
+            string.Format ("Type '{0}' cannot be assigned to the declaring type of enumerated type '{1}'.", securableClass, enumType),
+            "securableClass");
+      }
+    }
   }
 }
