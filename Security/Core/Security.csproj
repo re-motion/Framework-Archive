@@ -36,9 +36,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
-    <None Include="Metadata\SecurityMetadataLocalization.xsd">
+    <EmbeddedResource Include="Metadata\SecurityMetadataLocalization.xsd">
       <SubType>Designer</SubType>
-    </None>
+    </EmbeddedResource>
     <None Include="Security.build" />
     <Compile Include="BaseSecurityStrategy.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
@@ -46,7 +46,11 @@
     <Compile Include="FunctionalSecurityStrategy.cs" />
     <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
+    <Compile Include="Metadata\IMetadataLocalizationConverter.cs" />
     <Compile Include="Metadata\IPermissionProvider.cs" />
+    <Compile Include="Metadata\LocalizationFileNameStrategy.cs" />
+    <Compile Include="Metadata\LocalizedName.cs" />
+    <Compile Include="Metadata\LocalizingMetadataConverter.cs" />
     <Compile Include="Metadata\MetadataExtractor.cs" />
     <Compile Include="Metadata\ClassReflector.cs" />
     <Compile Include="Metadata\AbstractRoleReflector.cs" />
@@ -59,6 +63,7 @@
     <Compile Include="Metadata\IMetadataConverter.cs" />
     <Compile Include="Metadata\IStatePropertyReflector.cs" />
     <Compile Include="Metadata\MetadataCache.cs" />
+    <Compile Include="Metadata\MetadataLocalizationToXmlConverter.cs" />
     <Compile Include="Metadata\MetadataToXmlConverter.cs" />
     <Compile Include="Metadata\PermissionReflector.cs" />
     <Compile Include="Metadata\SecurableClassInfo.cs" />

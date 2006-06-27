@@ -29,6 +29,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +38,7 @@
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Metadata.Importer.build" />
     <Compile Include="CommandLineArguments.cs" />
+    <Compile Include="OperationMode.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +53,10 @@
     <ProjectReference Include="..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Rubicon.Data.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\SecurityManager.Core.csproj">
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>

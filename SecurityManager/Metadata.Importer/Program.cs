@@ -5,6 +5,8 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Security;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Text.CommandLine;
+using Rubicon.Utilities;
+using Rubicon.Security.Metadata;
 
 namespace Rubicon.SecurityManager.Metadata.Importer
 {
@@ -18,7 +20,8 @@ namespace Rubicon.SecurityManager.Metadata.Importer
       if (arguments == null)
         return 1;
 
-      return ImportMetadata (arguments);
+      Program program = new Program (arguments);
+      return program.Run ();
     }
 
     private static CommandLineArguments GetArguments (string[] args)
@@ -41,35 +44,61 @@ namespace Rubicon.SecurityManager.Metadata.Importer
     private static void WriteUsage (CommandLineClassParser parser)
     {
       Console.WriteLine ("Usage:");
-      
+
       string commandName = Environment.GetCommandLineArgs ()[0];
       Console.WriteLine (parser.GetAsciiSynopsis (commandName, Console.BufferWidth));
     }
 
-    private static int ImportMetadata (CommandLineArguments arguments)
+    CommandLineArguments _arguments;
+
+    private Program (CommandLineArguments arguments)
+    {
+      ArgumentUtility.CheckNotNull ("arguments", arguments);
+      _arguments = arguments;
+    }
+
+    public int Run ()
     {
       try
       {
-        XmlDocument metadataXmlDocument = new XmlDocument ();
-        metadataXmlDocument.Load (arguments.MetadataFile);
-
         ClientTransaction transaction = new ClientTransaction ();
-        MetadataImporter importer = new MetadataImporter (transaction);
-        importer.Import (metadataXmlDocument);
+        
+        if (_arguments.ImportMetadata)
+          ImportMetadata (transaction);
+
+        if (_arguments.ImportLocalization)
+          ImportLocalization (transaction);
+
         transaction.Commit ();
 
         return 0;
       }
       catch (Exception e)
       {
-        HandleException (e, arguments.Verbose);
+        HandleException (e);
         return 1;
       }
     }
 
-    private static void HandleException (Exception exception, bool verbose)
+    private void ImportMetadata (ClientTransaction transaction)
     {
-      if (verbose)
+      MetadataImporter importer = new MetadataImporter (transaction);
+      importer.Import (_arguments.MetadataFile);
+    }
+
+    private void ImportLocalization (ClientTransaction transaction)
+    {
+      CultureImporter importer = new CultureImporter (transaction);
+      LocalizationFileNameStrategy localizationFileNameStrategy = new LocalizationFileNameStrategy ();
+      string[] localizationFileNames = localizationFileNameStrategy.GetLocalizationFileNames (_arguments.MetadataFile);
+
+      foreach (string localizationFileName in localizationFileNames)
+        importer.Import (localizationFileName);
+    }
+
+    private void HandleException (Exception exception)
+    {
+      if (_arguments.Verbose)
       {
         Console.Error.WriteLine ("Execution aborted. Exception stack:");
 

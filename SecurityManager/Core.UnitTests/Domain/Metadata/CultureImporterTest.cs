@@ -32,8 +32,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       _importer.Import (GetXmlDocument (cultureXml));
 
       Assert.AreEqual (0, _importer.LocalizedNames.Count, "LocalizedNames count");
-      Assert.IsNotNull (_importer.Culture, "Culture");
-      Assert.AreEqual ("de", _importer.Culture.CultureName);
+      Assert.IsNotNull (_importer.Cultures, "Cultures");
+      Assert.AreEqual (1, _importer.Cultures.Count);
+      Assert.AreEqual ("de", _importer.Cultures[0].CultureName);
     }
 
     [Test]
@@ -124,6 +125,27 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual ("Vertraulichkeit", _importer.LocalizedNames[1].Text);
       Assert.AreEqual (new Guid ("93969f13-65d7-49f4-a456-a1686a4de3de"), _importer.LocalizedNames[1].MetadataObject.MetadataItemID);
       Assert.AreEqual ("Öffentlich", _importer.LocalizedNames[2].Text);
+    }
+
+    [Test]
+    [ExpectedException (typeof (System.Xml.Schema.XmlSchemaValidationException))]
+    public void Import_InvalidXml ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateSecurableClassDefinitionWithStates ();
+
+      string cultureXml = @"
+          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
+            <localizedName rf=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"">
+              Beamter
+            </localizedName>,
+            <localizedName ref=""93969f13-65d7-49f4-a456-a1686a4de3de"" comment=""Confidentiality"">
+              Vertraulichkeit
+            </localizedName>
+          </localizedNames>
+          ";
+
+      _importer.Import (GetXmlDocument (cultureXml));
     }
 
     private XmlDocument GetXmlDocument (string xml)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using Rubicon.Utilities;
 
@@ -132,6 +133,26 @@ namespace Rubicon.Core.UnitTests.Utilities
     public void CheckTypeIsAssignableFrom_Succeed ()
     {
       ArgumentUtility.CheckTypeIsAssignableFrom ("arg", typeof (string), typeof (object));
+    }
+
+    [Test]
+    public void CheckNotNullOrItemsNull_SucceedICollection ()
+    {
+      ArgumentUtility.CheckNotNullOrItemsNull ("arg", new ArrayList ());
+    }
+    [Test]
+    [ExpectedException (typeof (ArgumentNullException))]
+    public void CheckNotNullOrItemsNull_FailNullICollection ()
+    {
+      ArgumentUtility.CheckNotNullOrItemsNull ("arg", null);
+    }
+    [Test]
+    [ExpectedException (typeof (ArgumentItemNullException))]
+    public void CheckNotNullOrItemsNull_FailItemNullICollection ()
+    {
+      ArrayList list = new ArrayList ();
+      list.Add (null);
+      ArgumentUtility.CheckNotNullOrItemsNull ("arg", list);
     }
   }
 

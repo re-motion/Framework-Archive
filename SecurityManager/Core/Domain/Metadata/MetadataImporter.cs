@@ -64,11 +64,19 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return _accessTypes; }
     }
 
+    public void Import (string metadataFilePath)
+    {
+      XmlDocument metadataXmlDocument = new XmlDocument ();
+      metadataXmlDocument.Load (metadataFilePath);
+
+      Import (metadataXmlDocument);
+    }
+
     public void Import (XmlDocument metadataXmlDocument)
     {
       SecurityMetadataSchema metadataSchema = new SecurityMetadataSchema ();
       if (!metadataXmlDocument.Schemas.Contains (metadataSchema.SchemaUri))
-        metadataXmlDocument.Schemas.Add (metadataSchema.SchemaUri, metadataSchema.GetSchemaReader ());
+        metadataXmlDocument.Schemas.Add (metadataSchema.LoadSchemaSet ());
 
       metadataXmlDocument.Validate (null);
 

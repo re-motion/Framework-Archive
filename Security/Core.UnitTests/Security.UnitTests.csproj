@@ -37,6 +37,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Rhino.Mocks, Version=2.8.7.11026, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -60,6 +64,10 @@
     <Compile Include="Metadata\AccessTypeReflectorTest.cs" />
     <Compile Include="Metadata\AbstractRoleReflectorTest.cs" />
     <Compile Include="Metadata\AbstractRoles.cs" />
+    <Compile Include="Metadata\LocalizationFileNameStrategyTest.cs" />
+    <Compile Include="Metadata\LocalizingMetadataConverterTest.cs" />
+    <Compile Include="Metadata\MetadataLocalizationToXmlConverterTest.cs" />
+    <Compile Include="Metadata\MetadataToXmlConverterTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTest.cs" />
     <Compile Include="Metadata\PropertyStates.cs" />
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
@@ -68,7 +76,6 @@
     <Compile Include="Metadata\EnumValueInfoListContentsAsserterTest.cs" />
     <Compile Include="Metadata\MetadataCacheTest.cs" />
     <Compile Include="Metadata\MetadataExtractorTest.cs" />
-    <Compile Include="Metadata\MetadataToXmlConverterTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredInstanceMethods.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredStaticMethods.cs" />
@@ -129,6 +136,13 @@
       <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
       <Name>Security.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml" />
+    <Content Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml" />
+    <Content Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml" />
+    <Content Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml" />
+    <Content Include="Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
