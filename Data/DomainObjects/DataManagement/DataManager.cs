@@ -150,8 +150,8 @@ public class DataManager
 
   private void EndDelete (DomainObject domainObject, RelationEndPointCollection allOppositeRelationEndPoints)
   {
-    domainObject.EndDelete ();
     allOppositeRelationEndPoints.EndDelete ();
+    domainObject.EndDelete ();
 
     allOppositeRelationEndPoints.NotifyClientTransactionOfEndDelete ();
     _clientTransaction.ObjectDeleted (domainObject);

@@ -323,7 +323,6 @@ public class ClientTransaction : ITransaction
   /// <exception cref="DataManagement.ClientTransactionsDifferException">
   ///   <paramref name="domainObject"/> belongs to a different <see cref="ClientTransaction"/>. 
   /// </exception>
-  //TODO Doc: Extension_ObjectDeleting and ObjectDeleted must be called if overridden and base is not called.
   public virtual void Delete (DomainObject domainObject)
   {
     ArgumentUtility.CheckNotNull ("domainObject", domainObject);
@@ -684,7 +683,18 @@ public class ClientTransaction : ITransaction
 
   #endregion
 
-  //TODO: doc
+  /// <summary>
+  /// Gets the collection of <see cref="IClientTransactionExtension"/>s of this <see cref="ClientTransaction"/>.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  ///   Use <see cref="ClientTransactionExtensionCollection.Add"/> and <see cref="ClientTransactionExtensionCollection.Remove"/> 
+  ///   to register and unregister an extension.
+  /// </para>
+  /// <para>
+  ///   The order of the extensions in this collection is the order in which they are notified.
+  /// </para>
+  /// </remarks>
   public ClientTransactionExtensionCollection Extensions
   {
     get { return _extensions; }
@@ -693,11 +703,6 @@ public class ClientTransaction : ITransaction
   internal void NewObjectCreating (Type type)
   {
     _extensions.NewObjectCreating (type);
-  }
-
-  internal void NewObjectCreated (DomainObject domainObject)
-  {
-    _extensions.NewObjectCreated (domainObject);
   }
 
   internal void ObjectDeleting (DomainObject domainObject)

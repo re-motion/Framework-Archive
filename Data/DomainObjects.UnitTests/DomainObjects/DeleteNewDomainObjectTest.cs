@@ -484,8 +484,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
     {
       new ObjectDeletionState (_newOrder, "1. Deleting event of order"),
       new RelationChangeState (_newOrderTicket, "Order", _newOrder, null, "2. Relation changing event of orderTicket"),
-      new ObjectDeletionState (_newOrder, "3. Deleted event of order"),
-      new RelationChangeState (_newOrderTicket, "Order", null, null, "4. Relation changed event of orderTicket")
+      new RelationChangeState (_newOrderTicket, "Order", null, null, "3. Relation changed event of orderTicket"),
+      new ObjectDeletionState (_newOrder, "4. Deleted event of order")
     };
 
       eventReceiver.Check (expectedStates);

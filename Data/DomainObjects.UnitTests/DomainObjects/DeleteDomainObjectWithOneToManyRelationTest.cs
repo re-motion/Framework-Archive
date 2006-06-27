@@ -51,9 +51,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       new ObjectDeletionState (_supervisor, "1. Deleting of supervisor"),
       new RelationChangeState (_subordinate1, "Supervisor", _supervisor, null, "2. Relation changing of subordinate1"),
       new RelationChangeState (_subordinate2, "Supervisor", _supervisor, null, "3. Relation changing of subordinate2"),
-      new ObjectDeletionState (_supervisor, "4. Deleted of supervisor"),
-      new RelationChangeState (_subordinate1, "Supervisor", null, null, "5. Relation changed of subordinate1"),
-      new RelationChangeState (_subordinate2, "Supervisor", null, null, "6. Relation changed of subordinate2")
+      new RelationChangeState (_subordinate1, "Supervisor", null, null, "4. Relation changed of subordinate1"),
+      new RelationChangeState (_subordinate2, "Supervisor", null, null, "5. Relation changed of subordinate2"),
+      new ObjectDeletionState (_supervisor, "6. Deleted of supervisor")
     };
 
       _eventReceiver.Check (expectedStates);

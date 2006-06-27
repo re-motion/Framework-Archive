@@ -551,27 +551,25 @@ public class RelationEndPointMap : ICollectionEndPointChangeDelegate
 
     RelationEndPoint oldRelatedNullEndPoint = RelationEndPoint.CreateNullRelationEndPoint (addingEndPoint.Definition);
 
-    // TODO: PerformReplace raises events and ICtxExt in different order (endPoint before oldRelatedEntPoint) 
-    //       => Make the event and ICtxExt order equal
     addingEndPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedOfAddingEndPoint, endPoint);
-    oldRelatedOfAddingEndPoint.NotifyClientTransactionOfBeginRelationChange (addingEndPoint);
     endPoint.NotifyClientTransactionOfBeginRelationChange (oldRelatedNullEndPoint, addingEndPoint);
+    oldRelatedOfAddingEndPoint.NotifyClientTransactionOfBeginRelationChange (addingEndPoint);
 
     addingEndPoint.BeginRelationChange (oldRelatedOfAddingEndPoint, endPoint);
-    oldRelatedOfAddingEndPoint.BeginRelationChange (addingEndPoint);
     endPoint.BeginInsert (oldRelatedNullEndPoint, addingEndPoint, index);
+    oldRelatedOfAddingEndPoint.BeginRelationChange (addingEndPoint);
 
     addingEndPoint.PerformRelationChange ();
-    oldRelatedOfAddingEndPoint.PerformRelationChange ();
     endPoint.PerformRelationChange ();
+    oldRelatedOfAddingEndPoint.PerformRelationChange ();
 
     addingEndPoint.EndRelationChange ();
-    oldRelatedOfAddingEndPoint.EndRelationChange ();
     endPoint.EndRelationChange ();
+    oldRelatedOfAddingEndPoint.EndRelationChange ();
 
     addingEndPoint.NotifyClientTransactionOfEndRelationChange ();
-    oldRelatedOfAddingEndPoint.NotifyClientTransactionOfEndRelationChange ();
     endPoint.NotifyClientTransactionOfEndRelationChange ();
+    oldRelatedOfAddingEndPoint.NotifyClientTransactionOfEndRelationChange ();
   }
 
   void ICollectionEndPointChangeDelegate.PerformReplace  (

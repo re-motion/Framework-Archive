@@ -45,5 +45,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       Assert.AreSame (null, orderEventReceiver.GetChangedRelatedDomainObject ("OrderTicket"));
       Assert.AreSame (null, orderTicketEventReceiver.GetChangedRelatedDomainObject ("Order"));
     }
+
   }
 }

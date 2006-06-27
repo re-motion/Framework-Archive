@@ -347,6 +347,7 @@
     <Compile Include="EventReceiver\ClientTransactionEventReceiver.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="EventReceiver\ClientTransactionMockEventReceiver.cs" />
     <Compile Include="EventReceiver\CollectionChangeState.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -651,6 +652,7 @@
     <Compile Include="Transaction\ClientTransactionExtensionCollectionTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionRelationChangesTest.cs" />
     <Compile Include="Transaction\ClientTransactionExtensionTest.cs" />
+    <Compile Include="Transaction\ClientTransactionExtensionWithQueryFiltering.cs" />
     <Compile Include="Transaction\ClientTransactionTest.cs">
       <SubType>Code</SubType>
     </Compile>

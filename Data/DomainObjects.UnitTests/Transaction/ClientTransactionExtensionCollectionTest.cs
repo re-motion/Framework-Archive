@@ -248,22 +248,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void NewObjectCreated ()
-    {
-      using (_mockRepository.Ordered ())
-      {
-        _extension1.NewObjectCreated (_order);
-        _extension2.NewObjectCreated (_order);
-      }
-
-      _mockRepository.ReplayAll ();
-
-      _collectionWithExtensions.NewObjectCreated (_order);
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
     public void ObjectDeleting ()
     {
       using (_mockRepository.Ordered ())

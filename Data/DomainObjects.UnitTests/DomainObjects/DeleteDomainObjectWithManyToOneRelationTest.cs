@@ -49,9 +49,9 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       new ObjectDeletionState (_orderItem, "1. Deleting event of orderItem"),
       new CollectionChangeState (_order.OrderItems, _orderItem, "2. Removing event of order.OrderItems"),
       new RelationChangeState (_order, "OrderItems", _orderItem, null, "3. Relation changing event of order"),
-      new ObjectDeletionState (_orderItem, "4. Deleted event of orderItem"),
-      new CollectionChangeState (_order.OrderItems, _orderItem, "5. Removed event of order.OrderItems"),
-      new RelationChangeState (_order, "OrderItems", null, null, "6. Relation changed event of order"),
+      new CollectionChangeState (_order.OrderItems, _orderItem, "4. Removed event of order.OrderItems"),
+      new RelationChangeState (_order, "OrderItems", null, null, "5. Relation changed event of order"),
+      new ObjectDeletionState (_orderItem, "6. Deleted event of orderItem"),
     };
 
       _eventReceiver.Check (expectedStates);

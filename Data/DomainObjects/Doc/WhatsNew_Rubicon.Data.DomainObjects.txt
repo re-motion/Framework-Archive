@@ -1,3 +1,26 @@
+1.7.10.0
+========
+
+- Reihenfolge der Events beim Löschen eines Objekts geändert:
+  ALT: Deleting, RelationChanging, Deleted, RelationChanged
+  NEU: Deleting, RelationChanging, RelationChanged, Deleted
+
+- Reihenfolge der Events beim Einfügen in eine 1:n Beziehung geändert, ist jetzt identisch mit Ersetzen eines Objekts:
+  ALT: Neues Objekt (n-Seite), altes Objekt (1-Seite) des neuen Objektes, bestendes Objekt (1-Seite)
+  NEU: Neues Objekt (n-Seite), bestendes Objekt (1-Seite), altes Objekt (1-Seite) des neuen Objektes
+
+- Auf der ClientTransaction können Extensions registriert werden. Dafür gibt es ein neues Interface IClientTransactionExtension und 
+  eine neue Property ClientTransaction.Extensions. 
+  Die Extensions werden über die folgende Vorgänge notifiziert:
+  * Instanzieren neuer Objekte
+  * Laden von Objekten
+  * Löschen von Objekten
+  * Auslesen und Ändern von Properties
+  * Auslesen und Ändern von Beziehungen
+  * Ausführen von Queries
+  * Commit und Rollback
+  
+
 1.7.9.0
 =======
 

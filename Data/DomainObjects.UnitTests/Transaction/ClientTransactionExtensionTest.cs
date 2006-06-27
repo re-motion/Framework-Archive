@@ -13,7 +13,6 @@ using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 {
-  // TODO ES: Move relation change tests to fixture ClientTransactionExtensionRelationChangesTest
   [TestFixture]
   public class ClientTransactionExtensionTest : ClientTransactionBaseTest
   {
@@ -54,186 +53,64 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void PropertyChange ()
-    {
-      int oldOrderNumber = _order1.OrderNumber;
-      _mockRepository.BackToRecord (_extension);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-      }
-
-      _mockRepository.ReplayAll ();
-      _order1.OrderNumber = oldOrderNumber + 1;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void PropertyChangeWithEvents ()
-    {
-      int oldOrderNumber = _order1.OrderNumber;
-      _mockRepository.BackToRecord (_extension);
-
-      DomainObjectMockEventReceiver domainObjectMockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (_order1);
-      DataContainerMockEventReceiver dataContainerMockEventReceiver = _mockRepository.CreateMock<DataContainerMockEventReceiver> (_order1.DataContainer);
-      PropertyValueCollectionMockEventReceiver propertyValueCollectionMockEventReceiver = _mockRepository.CreateMock<PropertyValueCollectionMockEventReceiver> (_order1.DataContainer.PropertyValues);
-      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (_order1.DataContainer.PropertyValues["OrderNumber"]);
-
-      using (_mockRepository.Ordered ())
-      {
-        // "Changing" notifications
-
-        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-
-        domainObjectMockEventReceiver.PropertyChanging (null, null);
-        LastCall.IgnoreArguments ();
-
-        dataContainerMockEventReceiver.PropertyChanging (null, null);
-        LastCall.IgnoreArguments ();
-
-        propertyValueCollectionMockEventReceiver.PropertyChanging (null, null);
-        LastCall.IgnoreArguments ();
-
-        propertyValueMockEventReceiver.Changing (null, null);
-        LastCall.IgnoreArguments ();
-
-
-        // "Changed" notifications
-
-        propertyValueMockEventReceiver.Changed (null, null);
-        LastCall.IgnoreArguments ();
-
-        propertyValueCollectionMockEventReceiver.PropertyChanged (null, null);
-        LastCall.IgnoreArguments ();
-
-        dataContainerMockEventReceiver.PropertyChanged (null, null);
-        LastCall.IgnoreArguments ();
-
-        domainObjectMockEventReceiver.PropertyChanged (null, null);
-        LastCall.IgnoreArguments ();
-
-        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
-      }
-
-      _mockRepository.ReplayAll ();
-      _order1.OrderNumber = oldOrderNumber + 1;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void PropertyRead ()
-    {
-      int orderNumber = _order1.OrderNumber;
-      _mockRepository.BackToRecord (_extension);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Current);
-        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], orderNumber, ValueAccess.Current);
-        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Original);
-        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], orderNumber, ValueAccess.Original);
-      }
-
-      _mockRepository.ReplayAll ();
-      orderNumber = _order1.OrderNumber;
-      orderNumber = (int) _order1.DataContainer.PropertyValues["OrderNumber"].OriginalValue;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void ChangeAndReadProperty ()
-    {
-      int oldOrderNumber = _order1.OrderNumber;
-      int newOrderNumber = oldOrderNumber + 1;
-
-      _mockRepository.BackToRecord (_extension);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
-        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
-
-        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Current);
-        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], newOrderNumber, ValueAccess.Current);
-        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Original);
-        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, ValueAccess.Original);
-      }
-
-      _mockRepository.ReplayAll ();
-      _order1.OrderNumber = newOrderNumber;
-      newOrderNumber = _order1.OrderNumber;
-      oldOrderNumber = (int) _order1.DataContainer.PropertyValues["OrderNumber"].OriginalValue;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void PropertySetToSameValue ()
-    {
-      int orderNumber = _order1.OrderNumber;
-
-      _mockRepository.BackToRecord (_extension);
-      // Note: No method call on the extension is expected.
-      _mockRepository.ReplayAll ();
-
-      _order1.OrderNumber = orderNumber;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void PropertyReadWithoutDataContainer ()
-    {
-      ClassDefinition orderClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof(Order));
-      PropertyDefinition orderNumberDefinition = orderClass.MyPropertyDefinitions["OrderNumber"];
-
-      PropertyValue propertyValue = new PropertyValue (orderNumberDefinition);
-      PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
-      propertyValueCollection.Add (propertyValue);
-
-      int orderNumber = (int) propertyValue.Value;
-
-      // Expectation: no exception
-    }
-
-    [Test]
-    public void ReadObjectIDProperty ()
-    {
-      PropertyValue customerPropertyValue = _order1.DataContainer.PropertyValues["Customer"];
-      ObjectID customerID = (ObjectID) _order1.DataContainer.PropertyValues["Customer"].Value;
-      _mockRepository.BackToRecord (_extension);
-
-      using (_mockRepository.Ordered ())
-      {
-        _extension.PropertyValueReading (_order1.DataContainer, customerPropertyValue, ValueAccess.Current);
-        _extension.PropertyValueRead (_order1.DataContainer, customerPropertyValue, customerID, ValueAccess.Current);
-      }
-
-      _mockRepository.ReplayAll ();
-
-      customerID = (ObjectID) _order1.DataContainer.PropertyValues["Customer"].Value;
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
     public void NewObjectCreation ()
     {
       using (_mockRepository.Ordered ())
       {
         _extension.NewObjectCreating (typeof (Order));
-        _extension.NewObjectCreated (null);
-        LastCall.Constraints (Is.TypeOf<Order> ());
       }
 
       _mockRepository.ReplayAll ();
 
       new Order ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ObjectsLoaded ()
+    {
+      _extension.ObjectsLoaded (null);
+      LastCall.Constraints (Property.Value ("Count", 1));
+
+      _mockRepository.ReplayAll ();
+
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ObjectsLoadedWithRelations ()
+    {
+      _extension.ObjectsLoaded (null);
+      LastCall.Constraints (Property.Value ("Count", 1));
+
+      _mockRepository.ReplayAll ();
+
+      Order order = Order.GetObject (DomainObjectIDs.Order2);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ObjectsLoadedWithEvents ()
+    {
+      ClientTransactionMockEventReceiver clientTransactionEventReceiver = 
+          _mockRepository.CreateMock<ClientTransactionMockEventReceiver> (ClientTransaction.Current);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 1));
+
+        clientTransactionEventReceiver.Loaded (null, null);
+        LastCall.Constraints (Is.Same (ClientTransaction.Current), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 1)));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
 
       _mockRepository.VerifyAll ();
     }
@@ -322,180 +199,171 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     }
 
     [Test]
-    public void CommitWithChangedPropertyValue ()
+    public void PropertyRead ()
     {
-      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
-      computer.SerialNumber = "newSerialNumber";
+      int orderNumber = _order1.OrderNumber;
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.Committing (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
-        _extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Current);
+        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], orderNumber, ValueAccess.Current);
+        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Original);
+        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], orderNumber, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
-
-      ClientTransaction.Current.Commit ();
+      orderNumber = _order1.OrderNumber;
+      orderNumber = (int) _order1.DataContainer.PropertyValues["OrderNumber"].OriginalValue;
 
       _mockRepository.VerifyAll ();
     }
 
     [Test]
-    public void CommitWithChangedRelationValue ()
+    public void PropertyReadWithoutDataContainer ()
     {
-      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
-      Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
-      computer.Employee = employee;
+      ClassDefinition orderClass = MappingConfiguration.Current.ClassDefinitions.GetMandatory (typeof (Order));
+      PropertyDefinition orderNumberDefinition = orderClass.MyPropertyDefinitions["OrderNumber"];
+
+      PropertyValue propertyValue = new PropertyValue (orderNumberDefinition);
+      PropertyValueCollection propertyValueCollection = new PropertyValueCollection ();
+      propertyValueCollection.Add (propertyValue);
+
+      int orderNumber = (int) propertyValue.Value;
+
+      // Expectation: no exception
+    }
+
+    [Test]
+    public void ReadObjectIDProperty ()
+    {
+      PropertyValue customerPropertyValue = _order1.DataContainer.PropertyValues["Customer"];
+      ObjectID customerID = (ObjectID) _order1.DataContainer.PropertyValues["Customer"].Value;
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.Committing (null);
-        LastCall.Constraints (Property.Value ("Count", 2) & List.IsIn (computer) & List.IsIn (employee));
-        _extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 2) & List.IsIn (computer) & List.IsIn (employee));
+        _extension.PropertyValueReading (_order1.DataContainer, customerPropertyValue, ValueAccess.Current);
+        _extension.PropertyValueRead (_order1.DataContainer, customerPropertyValue, customerID, ValueAccess.Current);
       }
 
       _mockRepository.ReplayAll ();
 
-      ClientTransaction.Current.Commit ();
+      customerID = (ObjectID) _order1.DataContainer.PropertyValues["Customer"].Value;
 
       _mockRepository.VerifyAll ();
     }
 
     [Test]
-    public void CommitWithChangedRelationValueWithClassIDColumn ()
+    public void PropertySetToSameValue ()
     {
-      Customer oldCustomer = _order1.Customer;
-      Customer newCustomer = Customer.GetObject (DomainObjectIDs.Customer2);
-      _order1.Customer = newCustomer;
+      int orderNumber = _order1.OrderNumber;
+
+      _mockRepository.BackToRecord (_extension);
+      // Note: No method call on the extension is expected.
+      _mockRepository.ReplayAll ();
+
+      _order1.OrderNumber = orderNumber;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void ChangeAndReadProperty ()
+    {
+      int oldOrderNumber = _order1.OrderNumber;
+      int newOrderNumber = oldOrderNumber + 1;
+
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.Committing (null);
-        LastCall.Constraints (Property.Value ("Count", 3) & List.IsIn (_order1) & List.IsIn (newCustomer) & List.IsIn (oldCustomer));
-        _extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 3) & List.IsIn (_order1) & List.IsIn (newCustomer) & List.IsIn (oldCustomer));
+        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
+        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, newOrderNumber);
+
+        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Current);
+        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], newOrderNumber, ValueAccess.Current);
+        _extension.PropertyValueReading (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], ValueAccess.Original);
+        _extension.PropertyValueRead (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, ValueAccess.Original);
       }
 
       _mockRepository.ReplayAll ();
-
-      ClientTransaction.Current.Commit ();
+      _order1.OrderNumber = newOrderNumber;
+      newOrderNumber = _order1.OrderNumber;
+      oldOrderNumber = (int) _order1.DataContainer.PropertyValues["OrderNumber"].OriginalValue;
 
       _mockRepository.VerifyAll ();
     }
 
     [Test]
-    public void Rollback ()
+    public void PropertyChange ()
     {
-      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
-      computer.SerialNumber = "newSerialNumber";
+      int oldOrderNumber = _order1.OrderNumber;
       _mockRepository.BackToRecord (_extension);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RollingBack ();
-        _extension.RolledBack ();
+        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
+        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
       }
 
       _mockRepository.ReplayAll ();
-
-      ClientTransaction.Current.Rollback ();
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void ObjectsLoaded ()
-    {
-      _extension.ObjectsLoaded (null);
-      LastCall.Constraints (Property.Value ("Count", 1));
-
-      _mockRepository.ReplayAll ();
-
-      ClassWithAllDataTypes classWithAllDataTypes = ClassWithAllDataTypes.GetObject (DomainObjectIDs.ClassWithAllDataTypes1);
+      _order1.OrderNumber = oldOrderNumber + 1;
 
       _mockRepository.VerifyAll ();
     }
 
     [Test]
-    public void ObjectsLoadedWithRelations ()
+    public void PropertyChangeWithEvents ()
     {
-      _extension.ObjectsLoaded (null);
-      LastCall.Constraints (Property.Value ("Count", 1));
-
-      _mockRepository.ReplayAll ();
-
-      Order order = Order.GetObject (DomainObjectIDs.Order2);
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void FilterQueryResult ()
-    {
-      Query query = new Query ("OrderQuery");
-      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
-
-      ClientTransaction.Current.QueryManager.GetCollection (query);
+      int oldOrderNumber = _order1.OrderNumber;
       _mockRepository.BackToRecord (_extension);
 
-      _extension.FilterQueryResult (null, null);
-      LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
-
-      _mockRepository.ReplayAll ();
-
-      ClientTransaction.Current.QueryManager.GetCollection (query);
-
-      _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void FilterQueryResultWithLoad ()
-    {
-      Query query = new Query ("OrderQuery");
-      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer4);
+      DomainObjectMockEventReceiver domainObjectMockEventReceiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (_order1);
+      DataContainerMockEventReceiver dataContainerMockEventReceiver = _mockRepository.CreateMock<DataContainerMockEventReceiver> (_order1.DataContainer);
+      PropertyValueCollectionMockEventReceiver propertyValueCollectionMockEventReceiver = _mockRepository.CreateMock<PropertyValueCollectionMockEventReceiver> (_order1.DataContainer.PropertyValues);
+      PropertyValueMockEventReceiver propertyValueMockEventReceiver = _mockRepository.CreateMock<PropertyValueMockEventReceiver> (_order1.DataContainer.PropertyValues["OrderNumber"]);
 
       using (_mockRepository.Ordered ())
       {
-        _extension.ObjectsLoaded (null);
-        LastCall.Constraints (Property.Value ("Count", 2));
-        _extension.FilterQueryResult (null, null);
-        LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+        // "Changing" notifications
+
+        _extension.PropertyValueChanging (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
+
+        domainObjectMockEventReceiver.PropertyChanging (null, null);
+        LastCall.IgnoreArguments ();
+
+        dataContainerMockEventReceiver.PropertyChanging (null, null);
+        LastCall.IgnoreArguments ();
+
+        propertyValueCollectionMockEventReceiver.PropertyChanging (null, null);
+        LastCall.IgnoreArguments ();
+
+        propertyValueMockEventReceiver.Changing (null, null);
+        LastCall.IgnoreArguments ();
+
+
+        // "Changed" notifications
+
+        propertyValueMockEventReceiver.Changed (null, null);
+        LastCall.IgnoreArguments ();
+
+        propertyValueCollectionMockEventReceiver.PropertyChanged (null, null);
+        LastCall.IgnoreArguments ();
+
+        dataContainerMockEventReceiver.PropertyChanged (null, null);
+        LastCall.IgnoreArguments ();
+
+        domainObjectMockEventReceiver.PropertyChanged (null, null);
+        LastCall.IgnoreArguments ();
+
+        _extension.PropertyValueChanged (_order1.DataContainer, _order1.DataContainer.PropertyValues["OrderNumber"], oldOrderNumber, oldOrderNumber + 1);
       }
 
       _mockRepository.ReplayAll ();
-
-      ClientTransaction.Current.QueryManager.GetCollection (query);
+      _order1.OrderNumber = oldOrderNumber + 1;
 
       _mockRepository.VerifyAll ();
-    }
-
-    [Test]
-    public void StorageProviderGetFieldValue()
-    {
-      int originalOrderNumber = _order1.OrderNumber;
-      _order1.OrderNumber = originalOrderNumber + 1;
-
-      _mockRepository.BackToRecord (_extension);
-
-      using (StorageProviderManager storageProviderManager = new StorageProviderManager ())
-      {
-        using (UnitTestStorageProviderStub storageProvider = 
-            (UnitTestStorageProviderStub) storageProviderManager.GetMandatory (c_unitTestStorageProviderStubID))
-        {
-          _mockRepository.ReplayAll ();
-
-          Assert.AreEqual (originalOrderNumber + 1, storageProvider.GetFieldValue (_order1.DataContainer, "OrderNumber", ValueAccess.Current));
-          Assert.AreEqual (originalOrderNumber, storageProvider.GetFieldValue (_order1.DataContainer, "OrderNumber", ValueAccess.Original));
-
-          _mockRepository.VerifyAll ();
-        }
-      }
     }
 
     [Test]
@@ -585,15 +453,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
 
         LastCall.Constraints (
-            Is.Same (_order1), 
+            Is.Same (_order1),
             Is.Equal ("OrderItems"),
-            Property.Value ("IsReadOnly", true) & Property.Value ("Count", 2) & List.IsIn (orderItems[0]) & List.IsIn (orderItems[1]), 
+            Property.Value ("IsReadOnly", true) & Property.Value ("Count", 2) & List.IsIn (orderItems[0]) & List.IsIn (orderItems[1]),
             Is.Equal (ValueAccess.Current));
       }
 
       _mockRepository.ReplayAll ();
 
-       orderItems = _order1.OrderItems;
+      orderItems = _order1.OrderItems;
 
       _mockRepository.VerifyAll ();
     }
@@ -619,6 +487,303 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _mockRepository.ReplayAll ();
 
       originalOrderItems = _order1.GetOriginalRelatedObjects ("OrderItems");
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetRelatedObjectWithLazyLoad ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationReading (_order1, "OrderTicket", ValueAccess.Current);
+        _extension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 1));
+        _extension.RelationRead (null, null, (DomainObject) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderTicket"), Is.NotNull (), Is.Equal (ValueAccess.Current));
+      }
+      _mockRepository.ReplayAll ();
+
+      OrderTicket orderTicket = _order1.OrderTicket;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetRelatedObjectsWithLazyLoad ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Current);
+        _extension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 2));
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Is.NotNull (), Is.Equal (ValueAccess.Current));
+      }
+      _mockRepository.ReplayAll ();
+
+      DomainObjectCollection orderItems = _order1.OrderItems;
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetOriginalRelatedObjectWithLazyLoad ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationReading (_order1, "OrderTicket", ValueAccess.Original);
+        _extension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 1));
+        _extension.RelationRead (null, null, (DomainObject) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderTicket"), Is.NotNull (), Is.Equal (ValueAccess.Original));
+      }
+      _mockRepository.ReplayAll ();
+
+      OrderTicket orderTicket = (OrderTicket) _order1.GetOriginalRelatedObject ("OrderTicket");
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void GetOriginalRelatedObjectsWithLazyLoad ()
+    {
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RelationReading (_order1, "OrderItems", ValueAccess.Original);
+        _extension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 2));
+        _extension.RelationRead (null, null, (DomainObjectCollection) null, ValueAccess.Current);
+        LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Is.NotNull (), Is.Equal (ValueAccess.Original));
+      }
+      _mockRepository.ReplayAll ();
+
+      DomainObjectCollection orderItems = _order1.GetOriginalRelatedObjects ("OrderItems");
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void FilterQueryResult ()
+    {
+      Query query = new Query ("OrderQuery");
+      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer1);
+
+      ClientTransaction.Current.QueryManager.GetCollection (query);
+      _mockRepository.BackToRecord (_extension);
+
+      _extension.FilterQueryResult (null, null);
+      LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.QueryManager.GetCollection (query);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void FilterQueryResultWithLoad ()
+    {
+      Query query = new Query ("OrderQuery");
+      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer4);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 2));
+        _extension.FilterQueryResult (null, null);
+        LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.QueryManager.GetCollection (query);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void FilterQueryResultWithFiltering ()
+    {
+      Query query = new Query ("OrderQuery");
+      query.Parameters.Add ("@customerID", DomainObjectIDs.Customer4);
+      IClientTransactionExtension filteringExtension = _mockRepository.CreateMock<ClientTransactionExtensionWithQueryFiltering> ();
+      ClientTransaction.Current.Extensions.Add ("FilteringExtension", filteringExtension);
+      IClientTransactionExtension lastExtension = _mockRepository.CreateMock<IClientTransactionExtension> ();
+      ClientTransaction.Current.Extensions.Add ("LastExtension", lastExtension);
+
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 2));
+        filteringExtension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 2));
+        lastExtension.ObjectsLoaded (null);
+        LastCall.Constraints (Property.Value ("Count", 2));
+
+        _extension.FilterQueryResult (null, null);
+        LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query));
+        filteringExtension.FilterQueryResult (null, null);
+        LastCall.Constraints (Property.Value ("Count", 2), Is.Same (query)).CallOriginalMethod ();
+        lastExtension.FilterQueryResult (null, null);
+        LastCall.Constraints (Property.Value ("Count", 1), Is.Same (query));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      DomainObjectCollection queryResult = ClientTransaction.Current.QueryManager.GetCollection (query);
+      Assert.AreEqual (1, queryResult.Count);
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void CommitWithChangedPropertyValue ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      computer.SerialNumber = "newSerialNumber";
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.Committing (null);
+        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+        _extension.Committed (null);
+        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Commit ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void CommitWithChangedRelationValue ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      Employee employee = Employee.GetObject (DomainObjectIDs.Employee1);
+      computer.Employee = employee;
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.Committing (null);
+        LastCall.Constraints (Property.Value ("Count", 2) & List.IsIn (computer) & List.IsIn (employee));
+        _extension.Committed (null);
+        LastCall.Constraints (Property.Value ("Count", 2) & List.IsIn (computer) & List.IsIn (employee));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Commit ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void CommitWithChangedRelationValueWithClassIDColumn ()
+    {
+      Customer oldCustomer = _order1.Customer;
+      Customer newCustomer = Customer.GetObject (DomainObjectIDs.Customer2);
+      _order1.Customer = newCustomer;
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.Committing (null);
+        LastCall.Constraints (Property.Value ("Count", 3) & List.IsIn (_order1) & List.IsIn (newCustomer) & List.IsIn (oldCustomer));
+        _extension.Committed (null);
+        LastCall.Constraints (Property.Value ("Count", 3) & List.IsIn (_order1) & List.IsIn (newCustomer) & List.IsIn (oldCustomer));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Commit ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void CommitWithEvents ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      computer.SerialNumber = "newSerialNumber";
+      _mockRepository.BackToRecord (_extension);
+
+      ClientTransactionMockEventReceiver clientTransactionMockEventReceiver = 
+          _mockRepository.CreateMock<ClientTransactionMockEventReceiver> (ClientTransaction.Current);
+
+      DomainObjectMockEventReceiver computerEventReveiver = _mockRepository.CreateMock<DomainObjectMockEventReceiver> (computer);
+
+      using (_mockRepository.Ordered ())
+      {
+        computerEventReveiver.Committing (computer, EventArgs.Empty);
+
+        _extension.Committing (null);
+        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+
+        clientTransactionMockEventReceiver.Committing (null, null);
+        LastCall.Constraints (Is.Same (ClientTransaction.Current), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 1)));
+
+        computerEventReveiver.Committed (computer, EventArgs.Empty);
+
+        clientTransactionMockEventReceiver.Committed (null, null);
+        LastCall.Constraints (Is.Same (ClientTransaction.Current), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 1)));
+
+        _extension.Committed (null);
+        LastCall.Constraints (Property.Value ("Count", 1) & List.IsIn (computer));
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Commit ();
+
+      _mockRepository.VerifyAll ();
+    }
+
+    [Test]
+    public void StorageProviderGetFieldValue ()
+    {
+      int originalOrderNumber = _order1.OrderNumber;
+      _order1.OrderNumber = originalOrderNumber + 1;
+
+      _mockRepository.BackToRecord (_extension);
+
+      using (StorageProviderManager storageProviderManager = new StorageProviderManager ())
+      {
+        using (UnitTestStorageProviderStub storageProvider =
+            (UnitTestStorageProviderStub) storageProviderManager.GetMandatory (c_unitTestStorageProviderStubID))
+        {
+          _mockRepository.ReplayAll ();
+
+          Assert.AreEqual (originalOrderNumber + 1, storageProvider.GetFieldValue (_order1.DataContainer, "OrderNumber", ValueAccess.Current));
+          Assert.AreEqual (originalOrderNumber, storageProvider.GetFieldValue (_order1.DataContainer, "OrderNumber", ValueAccess.Original));
+
+          _mockRepository.VerifyAll ();
+        }
+      }
+    }
+
+    [Test]
+    public void Rollback ()
+    {
+      Computer computer = Computer.GetObject (DomainObjectIDs.Computer4);
+      computer.SerialNumber = "newSerialNumber";
+      _mockRepository.BackToRecord (_extension);
+
+      using (_mockRepository.Ordered ())
+      {
+        _extension.RollingBack ();
+        _extension.RolledBack ();
+      }
+
+      _mockRepository.ReplayAll ();
+
+      ClientTransaction.Current.Rollback ();
 
       _mockRepository.VerifyAll ();
     }

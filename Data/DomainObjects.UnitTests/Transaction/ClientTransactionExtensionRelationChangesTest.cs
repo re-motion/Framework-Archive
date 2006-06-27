@@ -459,30 +459,30 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         LastCall.Constraints (Is.Same (_order1), Is.Equal ("OrderItems"), Property.Value ("Count", preloadedOrderItemsOfOrder1.Count) & new ContainsConstraint (preloadedOrderItemsOfOrder1), Is.Equal (ValueAccess.Current));
 
         _extension.RelationChanging (newOrderItem, "Order", oldOrderOfNewOrderItem, _order1);
-        _extension.RelationChanging (oldOrderOfNewOrderItem, "OrderItems", newOrderItem, null);
         _extension.RelationChanging (_order1, "OrderItems", null, newOrderItem);
+        _extension.RelationChanging (oldOrderOfNewOrderItem, "OrderItems", newOrderItem, null);
 
         newOrderItemEventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (newOrderItem), Property.Value ("PropertyName", "Order") & Property.Value ("OldRelatedObject", oldOrderOfNewOrderItem) & Property.Value ("NewRelatedObject", _order1));
 
-        oldOrderOfNewOrderItemEventReceiver.RelationChanging (null, null);
-        LastCall.Constraints (Is.Same (oldOrderOfNewOrderItem), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", newOrderItem) & Property.Value ("NewRelatedObject", null));
-
         _order1EventReceiver.RelationChanging (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", null) & Property.Value ("NewRelatedObject", newOrderItem));
+
+        oldOrderOfNewOrderItemEventReceiver.RelationChanging (null, null);
+        LastCall.Constraints (Is.Same (oldOrderOfNewOrderItem), Property.Value ("PropertyName", "OrderItems") & Property.Value ("OldRelatedObject", newOrderItem) & Property.Value ("NewRelatedObject", null));
 
         newOrderItemEventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (newOrderItem), Property.Value ("PropertyName", "Order"));
 
-        oldOrderOfNewOrderItemEventReceiver.RelationChanged (null, null);
-        LastCall.Constraints (Is.Same (oldOrderOfNewOrderItem), Property.Value ("PropertyName", "OrderItems"));
-
         _order1EventReceiver.RelationChanged (null, null);
         LastCall.Constraints (Is.Same (_order1), Property.Value ("PropertyName", "OrderItems"));
 
+        oldOrderOfNewOrderItemEventReceiver.RelationChanged (null, null);
+        LastCall.Constraints (Is.Same (oldOrderOfNewOrderItem), Property.Value ("PropertyName", "OrderItems"));
+
         _extension.RelationChanged (newOrderItem, "Order");
-        _extension.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
         _extension.RelationChanged (_order1, "OrderItems");
+        _extension.RelationChanged (oldOrderOfNewOrderItem, "OrderItems");
       }
 
       _mockRepository.ReplayAll ();

@@ -174,8 +174,6 @@ public class DomainObject
 
     _dataContainer = clientTransaction.CreateNewDataContainer (this.GetType ());
     _dataContainer.SetDomainObject (this);
-
-    clientTransaction.NewObjectCreated (this);
   }
 
   /// <summary>
@@ -474,22 +472,22 @@ public class DomainObject
 
   internal void BeginDelete ()
   {
-    OnDeleting (new EventArgs ());
+    OnDeleting (EventArgs.Empty);
   }
 
   internal void EndDelete ()
   {
-    OnDeleted (new EventArgs ());
+    OnDeleted (EventArgs.Empty);
   }
 
   internal void BeginCommit ()
   {
-    OnCommitting (new EventArgs ());
+    OnCommitting (EventArgs.Empty);
   }
 
   internal void EndCommit ()
   {
-    OnCommitted (new EventArgs ());
+    OnCommitted (EventArgs.Empty);
   }
 
   internal void PropertyValueChanging (object sender, PropertyChangeEventArgs args)

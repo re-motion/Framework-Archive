@@ -6,6 +6,9 @@ using Rubicon.Data.DomainObjects.Mapping;
 using Rubicon.Data.DomainObjects.UnitTests.EventReceiver;
 using Rubicon.Data.DomainObjects.UnitTests.Factories;
 using Rubicon.Data.DomainObjects.UnitTests.TestDomain;
+using Rhino.Mocks;
+using Rubicon.Data.DomainObjects.UnitTests.MockConstraints;
+using Rubicon.Data.DomainObjects.UnitTests.Transaction;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
 {
@@ -133,6 +136,21 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       IRelationEndPointDefinition deserializedClientToLocationSecondEndPoint = (IRelationEndPointDefinition) deserializedClientObjects[7];
       Assert.AreSame (clientToLocationRelationDefinition.EndPointDefinitions[1], deserializedClientToLocationSecondEndPoint);
     }
+
+    [Test]
+    public void Extensions ()
+    {
+      ClientTransactionExtensionWithQueryFiltering extension = new ClientTransactionExtensionWithQueryFiltering ();
+      ClientTransaction.Current.Extensions.Add ("Name", extension);
+
+      ClientTransaction deserializedClientTransaction = (ClientTransaction) SerializeAndDeserialize (ClientTransaction.Current);
+
+      Assert.IsNotNull (deserializedClientTransaction);
+      Assert.IsNotNull (deserializedClientTransaction.Extensions);
+      Assert.AreEqual (1, deserializedClientTransaction.Extensions.Count);
+      Assert.IsInstanceOfType (typeof (ClientTransactionExtensionWithQueryFiltering), deserializedClientTransaction.Extensions[0]);
+    }
+
 
     [Test]
     public void EventsAfterDeserializationWithRegisteredEvents ()
@@ -371,15 +389,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       expectedChangeStates = new ChangeState[]
     { 
       new RelationChangeState (desNewOrder2, "Customer", desNewCustomer1, desNewCustomer2, "15b: 1. Changing event of newOrder2 from null to newCustomer2.Orders"),
-      new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "15b: 2. Removing of newOrder2 from newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", desNewOrder2, null, "15b: 3. Changing event of newCustomer1 from newOrder2 to null"),
       new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "15b: 4. Adding of newOrder2 to newCustomer2"),
       new RelationChangeState (desNewCustomer2, "Orders", null, desNewOrder2, "15b: 5. Changing event of newCustomer2 from null to newOrder2"),
+      new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "15b: 2. Removing of newOrder2 from newCustomer1"),
+      new RelationChangeState (desNewCustomer1, "Orders", desNewOrder2, null, "15b: 3. Changing event of newCustomer1 from newOrder2 to null"),
       new RelationChangeState (desNewOrder2, "Customer", null, null, "15b: 6. Changed event of newOrder2 from null to newCustomer2.Orders"),
-      new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "15b: 7. Removed of newOrder2 from newCustomer1"),
-      new RelationChangeState (desNewCustomer1, "Orders", null, null, "15b: 8. Changed event of newCustomer1 from newOrder2 to null"),
       new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "15b: 9. Added of newOrder2 to newCustomer2"),
       new RelationChangeState (desNewCustomer2, "Orders", null, null, "15b: 10. Changed event of newCustomer2 from null to newOrder2"),
+      new CollectionChangeState (desNewCustomer1.Orders, desNewOrder2, "15b: 7. Removed of newOrder2 from newCustomer1"),
+      new RelationChangeState (desNewCustomer1, "Orders", null, null, "15b: 8. Changed event of newCustomer1 from newOrder2 to null"),
     };
 
       eventReceiver.Check (expectedChangeStates);
@@ -400,11 +418,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
       new RelationChangeState (desNewOrderTicket1, "Order", desNewOrder2, null, "16: 4. Changing event of newOrderTicket1 from newOrder2 to null"),
       new RelationChangeState (desNewOrderItem1, "Order", desNewOrder2, null, "16: 5. Changing event of newOrderItem1 from newOrder2 to null"),
 
-      new ObjectDeletionState (desNewOrder2, "16: 6. Deleted event of newOrder2"),
       new CollectionChangeState (desNewCustomer2.Orders, desNewOrder2, "16: 7. Removed of newOrder2 from newCustomer2"),
       new RelationChangeState (desNewCustomer2, "Orders", null, null, "16: 8. Changed event of newCustomer2 from newOrder2 to null"),
       new RelationChangeState (desNewOrderTicket1, "Order", null, null, "16: 9. Changed event of newOrderTicket1 from newOrder2 to null"),
       new RelationChangeState (desNewOrderItem1, "Order", null, null, "16: 10. Changed event of newOrderItem1 from newOrder2 to null"),
+      new ObjectDeletionState (desNewOrder2, "16: 6. Deleted event of newOrder2")
     };
 
       eventReceiver.Check (expectedChangeStates);
@@ -560,6 +578,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
         Assert.Fail ("One reference is null.");
 
       Assert.AreEqual (expected.ID, actual.ID);
+    }
+
+    private void BackToRecord (MockRepository mockRepository, params object[] objects)
+    {
+      foreach (object obj in objects)
+        mockRepository.BackToRecord (obj);
     }
   }
 }

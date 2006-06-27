@@ -7,7 +7,9 @@ using System.ComponentModel;
 
 namespace Rubicon.Data.DomainObjects
 {
-  //TODO: Doc
+  /// <summary>
+  /// A collection of <see cref="IClientTransactionExtension"/>s.
+  /// </summary>
   [Serializable]
   public class ClientTransactionExtensionCollection : CommonCollection
   {
@@ -19,12 +21,20 @@ namespace Rubicon.Data.DomainObjects
 
     // construction and disposing
 
+    /// <summary>
+    /// Creates a new object.
+    /// </summary>
     public ClientTransactionExtensionCollection ()
     {
     }
 
     // methods and properties
 
+    /// <summary>
+    /// Gets an <see cref="IClientTransactionExtension"/> by the extension name.
+    /// </summary>
+    /// <param name="extensionName">The name of the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
+    /// <returns>The <see cref="IClientTransactionExtension"/> of the given <paramref name="extensionName"/> or <see langword="null"/> if the name was not found.</returns>
     public IClientTransactionExtension this[string extensionName]
     {
       get 
@@ -35,11 +45,23 @@ namespace Rubicon.Data.DomainObjects
       }
     }
 
+    /// <summary>
+    /// Gets the <see cref="IClientTransactionExtension"/> of a given <paramref name="index"/>.
+    /// </summary>
+    /// <param name="index">The index of the extension to be retrieved.</param>
+    /// <returns>The <see cref="IClientTransactionExtension"/> of the given <paramref name="index"/>.</returns>
     public IClientTransactionExtension this[int index]
     {
       get { return (IClientTransactionExtension) BaseGetObject (index); }
     }
 
+    /// <summary>
+    /// Adds an <see cref="IClientTransactionExtension"/> to the collection.
+    /// </summary>
+    /// <param name="extensionName">A name for the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
+    /// <param name="clientTransactionExtension">The extension to add. Must not be <see langword="null"/>.</param>
+    /// <exception cref="System.ArgumentException">An extension with the given <paramref name="extensionName"/> is already part of the collection.</exception>
+    /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Add (string extensionName, IClientTransactionExtension clientTransactionExtension)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
@@ -50,6 +72,10 @@ namespace Rubicon.Data.DomainObjects
       BaseAdd (extensionName, clientTransactionExtension);
     }
 
+    /// <summary>
+    /// Removes an <see cref="IClientTransactionExtension"/> from the collection.
+    /// </summary>
+    /// <param name="extensionName">The name of the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
     public void Remove (string extensionName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
@@ -57,6 +83,11 @@ namespace Rubicon.Data.DomainObjects
       BaseRemove (extensionName);
     }
 
+    /// <summary>
+    /// Gets the index of an <see cref="IClientTransactionExtension"/> with a given <paramref name="extensionName"/>.
+    /// </summary>
+    /// <param name="extensionName">The name of the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
+    /// <returns>The index of the extension, or -1 if <paramref name="extensionName"/> is not found.</returns>
     public int IndexOf (string extensionName)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
@@ -64,6 +95,14 @@ namespace Rubicon.Data.DomainObjects
       return BaseIndexOfKey (extensionName);
     }
 
+    /// <summary>
+    /// Inserts an <see cref="IClientTransactionExtension"/> intto the collection at a specified index.
+    /// </summary>
+    /// <param name="extensionName">A name for the extension. Must not be <see langword="null"/> or <see cref="System.String.Empty"/>.</param>
+    /// <param name="clientTransactionExtension">The extension to insert. Must not be <see langword="null"/>.</param>
+    /// <param name="index">The index where the extension should be inserted.</param>
+    /// <exception cref="System.ArgumentException">An extension with the given <paramref name="extensionName"/> is already part of the collection.</exception>
+    /// <remarks>The order of the extensions in the collection is the order in which they are notified.</remarks>
     public void Insert (int index, string extensionName, IClientTransactionExtension clientTransactionExtension)
     {
       ArgumentUtility.CheckNotNullOrEmpty ("extensionName", extensionName);
@@ -88,15 +127,6 @@ namespace Rubicon.Data.DomainObjects
 
       foreach (IClientTransactionExtension extension in this)
         extension.NewObjectCreating (type);
-    }
-
-    [EditorBrowsable (EditorBrowsableState.Never)]
-    public void NewObjectCreated (DomainObject newDomainObject)
-    {
-      ArgumentUtility.CheckNotNull ("newDomainObject", newDomainObject);
-
-      foreach (IClientTransactionExtension extension in this)
-        extension.NewObjectCreated (newDomainObject);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
