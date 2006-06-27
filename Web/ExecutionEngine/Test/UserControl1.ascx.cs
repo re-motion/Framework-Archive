@@ -62,12 +62,12 @@ public class UserControl1 : WxeUserControl
   private void Sub_Click (object sender, System.EventArgs e)
   {
     ViewState["Counter"] += " Sub_Click";
-    Page.ExecuteFunctionNoRepost (new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"), (Control) sender);  
+    WxePage.ExecuteFunctionNoRepost (new WebForm1.SubFunction ("usercontrol var1", "usercontrol var2"), (Control) sender);  
   }
 
   private void Next_Click (object sender, System.EventArgs e)
   {
-    Page.ExecuteNextStep ();
+    WxePage.ExecuteNextStep ();
   }
 
 }

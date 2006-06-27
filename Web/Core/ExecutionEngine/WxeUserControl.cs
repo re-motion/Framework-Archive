@@ -38,7 +38,7 @@ public class WxeUserControl: UserControl, IWxeTemplateControl
     get { return _wxeInfo.Variables; }
   }
 
-  public new IWxePage Page
+  public IWxePage WxePage
   {
     get { return (IWxePage) base.Page; }
   }

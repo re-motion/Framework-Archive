@@ -3,6 +3,9 @@
 - WebTab
   * Methode EvaluateDisabled zu EvaluateEnabled umgebaut und Semantik invertiert.
 
+- WxeUserControl: inherited "Page" property of type "Page" was hidden by new "Page" property of type "IWxePage". The new property
+  was renamed to "WxePage". 
+  
 1.7.3
 =====
 - WxeFunction
