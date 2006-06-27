@@ -1,13 +1,13 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditConcretePositionForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.OrganizationalStructure.UI.EditConcretePositionForm" MasterPageFile="OrganizationalStructureMasterPage.Master" %>
 <%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
-<%@ Register TagPrefix="SecurityManager" Src="EditConcretePositionControl.ascx" TagName="EditConcretePositionControl" %>
-<%@ Register TagPrefix="SecurityManager" Src="ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
+<%@ Register TagPrefix="securityManager" Src="EditConcretePositionControl.ascx" TagName="EditConcretePositionControl" %>
+<%@ Register TagPrefix="securityManager" Src="ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 
 <asp:Content ID="ActualTopControlsPlaceHolder" runat="server" ContentPlaceHolderID="TopControlsPlaceHolder">
-  <SecurityManager:ErrorMessageControl id="ErrorMessageControl" runat="server" />
+  <securityManager:ErrorMessageControl id="ErrorMessageControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActaulMainContentPlaceHolder" runat="server" ContentPlaceHolderID="MainContentPlaceHolder">
-  <SecurityManager:EditConcretePositionControl id="EditConcretePositionControl" runat="server"></SecurityManager:EditConcretePositionControl>
+  <securityManager:EditConcretePositionControl id="EditConcretePositionControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActualBottomControlsPlaceHolder" runat="server" ContentPlaceHolderID="BottomControlsPlaceHolder">
   <table cellpadding="0" cellspacing="0">
