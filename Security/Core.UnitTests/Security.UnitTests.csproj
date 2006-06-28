@@ -140,11 +140,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml" />
-    <Content Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml" />
-    <Content Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml" />
-    <Content Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml" />
-    <Content Include="Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml" />
+    <None Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml" />
+    <None Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml" />
+    <None Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml" />
+    <None Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml" />
+    <None Include="Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <LocalizationFiles Include="Metadata\LocalizationFiles\*.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -154,4 +157,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild">
+    <Copy SourceFiles="@(LocalizationFiles->'%(Fullpath)')" DestinationFiles="@(LocalizationFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\Metadata\LocalizationFiles\%(FileName)%(Extension)')" />
+  </Target>
 </Project>

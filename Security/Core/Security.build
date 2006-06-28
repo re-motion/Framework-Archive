@@ -27,6 +27,7 @@
       <resources failonempty="true" dynamicprefix="true" prefix="Rubicon.Security">
         <include name="Configuration/SecurityConfiguration.xsd" />
         <include name="Metadata/SecurityMetadata.xsd" />
+        <include name="Metadata/SecurityMetadataLocalization.xsd" />
       </resources>
     </csc>
 
