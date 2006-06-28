@@ -67,7 +67,9 @@
     <Compile Include="Metadata\LocalizationFileNameStrategyTest.cs" />
     <Compile Include="Metadata\LocalizingMetadataConverterTest.cs" />
     <Compile Include="Metadata\MetadataLocalizationToXmlConverterTest.cs" />
-    <Compile Include="Metadata\MetadataToXmlConverterTest.cs" />
+    <Compile Include="Metadata\MetadataToXmlConverterTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Metadata\PermissionReflectorTest.cs" />
     <Compile Include="Metadata\PropertyStates.cs" />
     <Compile Include="Metadata\EnumerationReflectorTest.cs" />
