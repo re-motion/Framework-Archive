@@ -382,17 +382,17 @@
     <Compile Include="UI\OrganizationalStructure\UserListForm.aspx.designer.cs">
       <DependentUpon>UserListForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WxeFunctions\WxeFunctions\EditConcretePositionFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\EditGroupFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\EditGroupTypeFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\EditPositionFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\EditRoleFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\EditUserFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\GroupListFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\GroupTypeListFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\PositionListFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\SearchGroupFormFunction.cs" />
-    <Compile Include="WxeFunctions\WxeFunctions\UserListFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\EditConcretePositionFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupTypeFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\EditPositionFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\EditRoleFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\EditUserFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\GroupListFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\GroupTypeListFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\PositionListFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\SearchGroupFormFunction.cs" />
+    <Compile Include="WxeFunctions\OrganizationalStructure\UserListFormFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

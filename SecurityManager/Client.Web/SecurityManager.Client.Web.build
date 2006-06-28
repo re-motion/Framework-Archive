@@ -14,8 +14,10 @@
       </nowarn>
       <sources failonempty="true">
         <include name="*.cs" />
+        <include name="Classes/**/*.cs" />
         <include name="Globalization/**/*.cs" />
-        <include name="OrganizationalStructure/**/*.cs" />
+        <include name="UI/**/*.cs" />
+        <include name="WxeFunctions/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
