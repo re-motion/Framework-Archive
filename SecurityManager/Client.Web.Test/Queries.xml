@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<queries 
+    application="Rubicon.SecurityManager" 
+    xmlns="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Queries/1.0 ..\DomainObjects\queries.xsd">
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindByName" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [SecurableClassDefinitionView] WHERE Name = @name;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindUser" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [UserView] WHERE UserName = @userName;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindGroup" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [GroupView] WHERE Name = @name;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [UserView] WHERE ClientID = @clientID ORDER BY LastName;
+    </statement>
+  </query>
+  
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [GroupView] WHERE ClientID = @clientID ORDER BY Name;
+    </statement>
+  </query>
+  
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.GroupType.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [GroupTypeView] WHERE ClientID = @clientID ORDER BY Name;
+    </statement>
+  </query>
+  
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindByClientID" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [PositionView] WHERE ClientID = @clientID ORDER BY Name;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [MetadataObjectView] WHERE MetadataItemID = @metadataItemID;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find.StateDefinition" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM StateDefinitionView
+          INNER JOIN StatePropertyDefinitionView ON StateDefinitionView.StatePropertyID = StatePropertyDefinitionView.ID
+      WHERE StatePropertyDefinitionView.MetadataItemID = @metadataItemID
+          AND StateDefinitionView.Value = @stateValue;
+    </statement>
+  </query>
+</queries>

@@ -140,14 +140,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml" />
-    <None Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml" />
-    <None Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml" />
-    <None Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml" />
-    <None Include="Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <LocalizationFiles Include="Metadata\LocalizationFiles\*.xml" />
+    <LocalizationFiles Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.de.xml" />
+    <LocalizationFiles Include="Metadata\LocalizationFiles\TwoLocalizationFiles.Localization.en.xml" />
+    <LocalizationFiles Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml" />
+    <LocalizationFiles Include="Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml" />
+    <LocalizationFiles Include="Metadata\LocalizationFiles\OneLocalizationFile.Localization.de.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

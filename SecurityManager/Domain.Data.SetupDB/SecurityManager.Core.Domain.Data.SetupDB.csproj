@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CreateDB.sql" />
+    <None Include="SetupDB.sql" />
     <None Include="TestData\Client.csv" />
     <None Include="TestData\ConcretePosition.csv" />
     <None Include="TestData\Group.csv" />

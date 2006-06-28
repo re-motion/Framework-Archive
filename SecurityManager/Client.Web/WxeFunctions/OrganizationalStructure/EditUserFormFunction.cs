@@ -58,6 +58,6 @@ namespace Rubicon.SecurityManager.Client.Web.WxeFunctions.OrganizationalStructur
       }
     }
 
-    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditUserForm), "OrganizationalStructure/UI/EditUserForm.aspx");
+    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditUserForm), "UI/OrganizationalStructure/EditUserForm.aspx");
   }
 }

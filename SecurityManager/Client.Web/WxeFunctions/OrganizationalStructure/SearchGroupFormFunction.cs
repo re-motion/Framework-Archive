@@ -47,6 +47,6 @@ namespace Rubicon.SecurityManager.Client.Web.WxeFunctions.OrganizationalStructur
       set { Variables["Group"] = value; }
     }
 
-    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (SearchGroupForm), "OrganizationalStructure/UI/SearchGroupForm.aspx");
+    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (SearchGroupForm), "UI/OrganizationalStructure/SearchGroupForm.aspx");
   }
 }

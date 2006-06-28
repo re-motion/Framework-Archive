@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<urlMapping
+    xmlns="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.rubicon-it.com/Commons/Web/ExecutionEngine/UrlMapping/1.0 UrlMapping.xsd">
+
+  <add type="Rubicon.SecurityManager.Client.Web::WxeFunctions.OrganizationalStructure.EditUserFormFunction" resource="EditUser.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::WxeFunctions.OrganizationalStructure.UserListFormFunction" resource="UserList.wxe" id="UserList" />
+  <add type="Rubicon.SecurityManager.Client.Web::WxeFunctions.OrganizationalStructure.EditGroupTypeFormFunction" resource="EditGroupType.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::WxeFunctions.OrganizationalStructure.GroupTypeListFormFunction" resource="GroupTypeList.wxe" id="GroupTypeList"/>
+  <add type="Rubicon.SecurityManager.Client.Web::WxeFunctions.OrganizationalStructure.EditGroupFormFunction" resource="EditGroup.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::WxeFunctions.OrganizationalStructure.GroupListFormFunction" resource="GroupList.wxe" id="GroupList"/>
+  <add type="Rubicon.SecurityManager.Client.Web::WxeFunctions.OrganizationalStructure.EditPositionFormFunction" resource="EditPosition.wxe" />
+  <add type="Rubicon.SecurityManager.Client.Web::WxeFunctions.OrganizationalStructure.PositionListFormFunction" resource="PositionList.wxe" id="PositionList"/>
+</urlMapping>
+

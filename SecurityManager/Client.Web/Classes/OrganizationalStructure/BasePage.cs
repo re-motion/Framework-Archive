@@ -14,7 +14,7 @@ using System.Globalization;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Web.Utilities;
-using Rubicon.SecurityManager.Client.Web.Globalization.UI.OrganizationalStructure;
+using Rubicon.SecurityManager.Client.Web.Globalization.UI;
 using Rubicon.Web;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;

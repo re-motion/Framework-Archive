@@ -85,7 +85,7 @@ public class UrlMappingLoader
 
     XmlSchemaSet schemaSet = new XmlSchemaSet();
     foreach (SchemaLoaderBase schema in schemas)
-      schemaSet.Add (schema.SchemaUri, schema.GetSchemaReader());
+      schemaSet.Add (schema.LoadSchemaSet());
     return schemaSet;
   }
 

@@ -8,8 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure {
+namespace Rubicon.SecurityManager.Client.Web.UI
+{
     
-    public partial class OrganizationalStructureMasterPage {
+    public partial class SecurityManagerNavigationTabs {
+        protected System.Web.UI.HtmlControls.HtmlGenericControl UserNameLabel;
+        protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
     }
 }

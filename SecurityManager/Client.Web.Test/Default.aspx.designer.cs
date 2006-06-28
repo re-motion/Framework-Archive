@@ -8,10 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.Kis.Client.Web.UI.AdministrationUI {
-    
-    public partial class SecurityManagerNavigationTabs {
-        protected System.Web.UI.HtmlControls.HtmlGenericControl UserNameLabel;
-        protected Rubicon.Web.UI.Controls.TabbedMenu TabbedMenu;
-    }
+namespace SecurityManager.Client.Web.Test
+{
+
+  public partial class _Default
+  {
+    protected System.Web.UI.HtmlControls.HtmlForm form1;
+  }
 }

@@ -1,17 +1,7 @@
 using System;
-using System.Data;
-using System.Configuration;
-using System.Collections;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using Rubicon.Web.UI.Globalization;
-using Rubicon.SecurityManager.Client.Web.Classes.OrganizationalStructure;
 
-namespace Rubicon.Kis.Client.Web.UI.AdministrationUI
+namespace Rubicon.SecurityManager.Client.Web.UI
 {
   public partial class SecurityManagerNavigationTabs : UserControl
   {

@@ -17,7 +17,7 @@ namespace Rubicon.Xml
 
     /// <summary> Gets an <see cref="XmlReader"/> reader for the schema embedded in the assembly. </summary>
     /// <exception cref="ApplicationException"> Thrown if the schema file could not be loaded. </exception>
-    [Obsolete ("Use GetSchemaSet instead.")]
+    [Obsolete ("Use LoadSchemaSet instead.")]
     public XmlReader GetSchemaReader ()
     {
       Type type = GetType ();

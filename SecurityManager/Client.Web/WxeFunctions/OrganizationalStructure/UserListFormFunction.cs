@@ -41,6 +41,6 @@ namespace Rubicon.SecurityManager.Client.Web.WxeFunctions.OrganizationalStructur
     }
     // methods and properties
 
-    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (UserListForm), "OrganizationalStructure/UI/UserListForm.aspx");
+    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (UserListForm), "UI/OrganizationalStructure/UserListForm.aspx");
   }
 }
