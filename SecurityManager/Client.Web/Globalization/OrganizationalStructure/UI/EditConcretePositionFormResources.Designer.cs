@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI {
+namespace Rubicon.SecurityManager.Client.Web.Globalization.UI.OrganizationalStructure {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructu
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Client.Web.Globalization.OrganizationalStructure.UI.EditC" +
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Client.Web.Globalization.UI.OrganizationalStructure.EditC" +
                             "oncretePositionFormResources", typeof(EditConcretePositionFormResources).Assembly);
                     resourceMan = temp;
                 }

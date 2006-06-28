@@ -37,43 +37,54 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
-    <Content Include="OrganizationalStructure\UI\EditUserForm.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Client.Web.build" />
-    <Content Include="OrganizationalStructure\UI\ErrorMessageControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\OrganizationalStructureMasterPage.Master" />
-    <Content Include="OrganizationalStructure\UI\EditConcretePositionControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\EditConcretePositionForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\EditRoleControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\EditRoleForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\EditPositionControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\EditPositionForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\EditGroupControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\EditGroupForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\EditGroupTypeForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\GroupListControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\GroupListForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\GroupTypeListControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\GroupTypeListForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\EditUserControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\PositionListControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\PositionListForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\SearchGroupControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\SearchGroupForm.aspx" />
-    <Content Include="OrganizationalStructure\UI\SecurityManagerNavigationTabs.ascx" />
-    <Content Include="OrganizationalStructure\UI\UserListControl.ascx" />
-    <Content Include="OrganizationalStructure\UI\UserListForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\OrganizationalStructureMasterPage.Master" />
     <Content Include="SecurityManagerUrlMapping.xml" />
     <Content Include="res\Html\ContentViewStyle.css" />
     <Content Include="res\Html\Style.css" />
+    <Content Include="UI\OrganizationalStructure\EditConcretePositionControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\EditConcretePositionForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\EditGroupControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\EditGroupForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\EditGroupTypeControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\EditGroupTypeForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\EditPositionControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\EditPositionForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\EditRoleControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\EditRoleForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\EditUserControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\EditUserForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\ErrorMessageControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\GroupListControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\GroupListForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\GroupTypeListControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\GroupTypeListForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\PositionListControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\PositionListForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\SearchGroupControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\SearchGroupForm.aspx" />
+    <Content Include="UI\OrganizationalStructure\SecurityManagerNavigationTabs.ascx" />
+    <Content Include="UI\OrganizationalStructure\UserListControl.ascx" />
+    <Content Include="UI\OrganizationalStructure\UserListForm.aspx" />
     <Content Include="WxeHandler.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Classes\BaseControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Classes\BaseEditPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Classes\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Classes\BaseTransactedFunction.cs" />
+    <Compile Include="Classes\FormFunction.cs" />
     <Compile Include="default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
@@ -196,203 +207,192 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>UserListFormResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\Classes\BaseControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\Classes\BaseEditPage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\Classes\BasePage.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\Classes\BaseTransactedFunction.cs" />
-    <Compile Include="OrganizationalStructure\Classes\FormFunction.cs" />
-    <Compile Include="OrganizationalStructure\UI\EditConcretePositionControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\EditConcretePositionControl.ascx.cs">
       <DependentUpon>EditConcretePositionControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditConcretePositionControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\EditConcretePositionControl.ascx.designer.cs">
       <DependentUpon>EditConcretePositionControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditConcretePositionForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\EditConcretePositionForm.aspx.cs">
       <DependentUpon>EditConcretePositionForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditConcretePositionForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\EditConcretePositionForm.aspx.designer.cs">
       <DependentUpon>EditConcretePositionForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditRoleControl.ascx.cs">
-      <DependentUpon>EditRoleControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditRoleControl.ascx.designer.cs">
-      <DependentUpon>EditRoleControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditRoleForm.aspx.cs">
-      <DependentUpon>EditRoleForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditRoleForm.aspx.designer.cs">
-      <DependentUpon>EditRoleForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditPositionControl.ascx.cs">
-      <DependentUpon>EditPositionControl.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditPositionControl.ascx.designer.cs">
-      <DependentUpon>EditPositionControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditPositionForm.aspx.cs">
-      <DependentUpon>EditPositionForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditPositionForm.aspx.designer.cs">
-      <DependentUpon>EditPositionForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditGroupControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\EditGroupControl.ascx.cs">
       <DependentUpon>EditGroupControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditGroupControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\EditGroupControl.ascx.designer.cs">
       <DependentUpon>EditGroupControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditGroupForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\EditGroupForm.aspx.cs">
       <DependentUpon>EditGroupForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditGroupForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\EditGroupForm.aspx.designer.cs">
       <DependentUpon>EditGroupForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\EditGroupTypeControl.ascx.cs">
       <DependentUpon>EditGroupTypeControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditGroupTypeControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\EditGroupTypeControl.ascx.designer.cs">
       <DependentUpon>EditGroupTypeControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditGroupTypeForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\EditGroupTypeForm.aspx.cs">
       <DependentUpon>EditGroupTypeForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditGroupTypeForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\EditGroupTypeForm.aspx.designer.cs">
       <DependentUpon>EditGroupTypeForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditUserControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\EditPositionControl.ascx.cs">
+      <DependentUpon>EditPositionControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\OrganizationalStructure\EditPositionControl.ascx.designer.cs">
+      <DependentUpon>EditPositionControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OrganizationalStructure\EditPositionForm.aspx.cs">
+      <DependentUpon>EditPositionForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\OrganizationalStructure\EditPositionForm.aspx.designer.cs">
+      <DependentUpon>EditPositionForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OrganizationalStructure\EditRoleControl.ascx.cs">
+      <DependentUpon>EditRoleControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\OrganizationalStructure\EditRoleControl.ascx.designer.cs">
+      <DependentUpon>EditRoleControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OrganizationalStructure\EditRoleForm.aspx.cs">
+      <DependentUpon>EditRoleForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\OrganizationalStructure\EditRoleForm.aspx.designer.cs">
+      <DependentUpon>EditRoleForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OrganizationalStructure\EditUserControl.ascx.cs">
       <DependentUpon>EditUserControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditUserControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\EditUserControl.ascx.designer.cs">
       <DependentUpon>EditUserControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditUserForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\EditUserForm.aspx.cs">
       <DependentUpon>EditUserForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\EditUserForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\EditUserForm.aspx.designer.cs">
       <DependentUpon>EditUserForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\ErrorMessageControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\ErrorMessageControl.ascx.cs">
       <DependentUpon>ErrorMessageControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\ErrorMessageControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\ErrorMessageControl.ascx.designer.cs">
       <DependentUpon>ErrorMessageControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\GroupListControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\GroupListControl.ascx.cs">
       <DependentUpon>GroupListControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\GroupListControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\GroupListControl.ascx.designer.cs">
       <DependentUpon>GroupListControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\GroupListForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\GroupListForm.aspx.cs">
       <DependentUpon>GroupListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\GroupListForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\GroupListForm.aspx.designer.cs">
       <DependentUpon>GroupListForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\GroupTypeListControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\GroupTypeListControl.ascx.cs">
       <DependentUpon>GroupTypeListControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\GroupTypeListControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\GroupTypeListControl.ascx.designer.cs">
       <DependentUpon>GroupTypeListControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\GroupTypeListForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\GroupTypeListForm.aspx.cs">
       <DependentUpon>GroupTypeListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\GroupTypeListForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\GroupTypeListForm.aspx.designer.cs">
       <DependentUpon>GroupTypeListForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\OrganizationalStructureMasterPage.Master.cs">
+    <Compile Include="UI\OrganizationalStructure\OrganizationalStructureMasterPage.Master.cs">
       <DependentUpon>OrganizationalStructureMasterPage.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\OrganizationalStructureMasterPage.Master.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\OrganizationalStructureMasterPage.Master.designer.cs">
       <DependentUpon>OrganizationalStructureMasterPage.Master</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\PositionListControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\PositionListControl.ascx.cs">
       <DependentUpon>PositionListControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\PositionListControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\PositionListControl.ascx.designer.cs">
       <DependentUpon>PositionListControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\PositionListForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\PositionListForm.aspx.cs">
       <DependentUpon>PositionListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\PositionListForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\PositionListForm.aspx.designer.cs">
       <DependentUpon>PositionListForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\SearchGroupControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\SearchGroupControl.ascx.cs">
       <DependentUpon>SearchGroupControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\SearchGroupControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\SearchGroupControl.ascx.designer.cs">
       <DependentUpon>SearchGroupControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\SearchGroupForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\SearchGroupForm.aspx.cs">
       <DependentUpon>SearchGroupForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\SearchGroupForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\SearchGroupForm.aspx.designer.cs">
       <DependentUpon>SearchGroupForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\SecurityManagerNavigationTabs.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\SecurityManagerNavigationTabs.ascx.cs">
       <DependentUpon>SecurityManagerNavigationTabs.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\SecurityManagerNavigationTabs.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\SecurityManagerNavigationTabs.ascx.designer.cs">
       <DependentUpon>SecurityManagerNavigationTabs.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\UserListControl.ascx.cs">
+    <Compile Include="UI\OrganizationalStructure\UserListControl.ascx.cs">
       <DependentUpon>UserListControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\UserListControl.ascx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\UserListControl.ascx.designer.cs">
       <DependentUpon>UserListControl.ascx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\UserListForm.aspx.cs">
+    <Compile Include="UI\OrganizationalStructure\UserListForm.aspx.cs">
       <DependentUpon>UserListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrganizationalStructure\UI\UserListForm.aspx.designer.cs">
+    <Compile Include="UI\OrganizationalStructure\UserListForm.aspx.designer.cs">
       <DependentUpon>UserListForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrganizationalStructure\WxeFunctions\SearchGroupFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\EditConcretePositionFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\EditPositionFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\EditRoleFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\EditGroupTypeFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\EditUserFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\GroupListFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\GroupTypeListFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\PositionListFormFunction.cs" />
-    <Compile Include="OrganizationalStructure\WxeFunctions\UserListFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\EditConcretePositionFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\EditGroupFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\EditGroupTypeFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\EditPositionFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\EditRoleFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\EditUserFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\GroupListFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\GroupTypeListFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\PositionListFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\SearchGroupFormFunction.cs" />
+    <Compile Include="WxeFunctions\WxeFunctions\UserListFormFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
