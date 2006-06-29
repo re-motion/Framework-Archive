@@ -11,7 +11,7 @@
 namespace Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure {
     
     public partial class PositionListForm {
-        protected Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.ErrorMessageControl ErrorMessageControl;
+        protected Rubicon.SecurityManager.Client.Web.UI.ErrorMessageControl ErrorMessageControl;
         protected Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.PositionListControl PositionListControl;
     }
 }

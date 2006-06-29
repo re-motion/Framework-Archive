@@ -1,5 +1,5 @@
-<%@ Master Language="C#" AutoEventWireup="true" Codebehind="OrganizationalStructureMasterPage.Master.cs" Inherits="Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.OrganizationalStructureMasterPage" %>
-<%@ Register TagPrefix="securityManager" Src="../SecurityManagerNavigationTabs.ascx" TagName="SecurityManagerNavigationTabs" %>
+<%@ Master Language="C#" AutoEventWireup="true" Codebehind="OrganizationalStructureMasterPage.Master.cs" Inherits="Rubicon.SecurityManager.Client.Web.UI.SecurityManagerMasterPage" %>
+<%@ Register TagPrefix="securityManager" Src="SecurityManagerNavigationTabs.ascx" TagName="SecurityManagerNavigationTabs" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head id="Head" runat="server">
@@ -18,11 +18,7 @@
       <tr>
         <td class="contentViewTopControls">
           <div class="contentViewTopControls">
-            <asp:ContentPlaceHolder ID="TopControlsPlaceHolder" runat="server">
-              <div id="ErrorContainer">
-                <asp:Label ID="ErrorsOnPageLabel" runat="server" Text="###" Visible="false" EnableViewState="false" />
-              </div>
-            </asp:ContentPlaceHolder>
+            <asp:ContentPlaceHolder ID="TopControlsPlaceHolder" runat="server" />
           </div>
         </td>
       </tr>

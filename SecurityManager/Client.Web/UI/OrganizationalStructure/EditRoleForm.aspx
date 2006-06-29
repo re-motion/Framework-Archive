@@ -1,7 +1,7 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditRoleForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.EditRoleForm" MasterPageFile="OrganizationalStructureMasterPage.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditRoleForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.EditRoleForm" MasterPageFile="../SecurityManagerMasterPage.Master"  %>
 <%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
 <%@ Register TagPrefix="securityManager" Src="EditRoleControl.ascx" TagName="EditRoleControl" %>
-<%@ Register TagPrefix="securityManager" Src="ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
+<%@ Register TagPrefix="securityManager" Src="../ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>
 
 <asp:Content ID="ActualTopControlsPlaceHolder" runat="server" ContentPlaceHolderID="TopControlsPlaceHolder">
   <securityManager:ErrorMessageControl id="ErrorMessageControl" runat="server" />

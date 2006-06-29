@@ -11,7 +11,7 @@
 namespace Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure {
     
     public partial class SearchGroupForm {
-        protected Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.ErrorMessageControl ErrorMessageControl;
+        protected Rubicon.SecurityManager.Client.Web.UI.ErrorMessageControl ErrorMessageControl;
         protected Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.SearchGroupControl SearchGroupControl;
         protected Rubicon.Web.UI.Controls.WebButton CloseButton;
     }

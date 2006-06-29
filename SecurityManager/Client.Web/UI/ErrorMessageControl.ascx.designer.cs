@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure {
+namespace Rubicon.SecurityManager.Client.Web.UI {
     
     public partial class ErrorMessageControl {
         protected System.Web.UI.WebControls.Label ErrorsOnPageLabel;

@@ -12,9 +12,9 @@ using Rubicon.Web.UI;
 using Rubicon.Web;
 using Rubicon.Web.UI.Controls;
 
-namespace Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure
+namespace Rubicon.SecurityManager.Client.Web.UI
 {
-  public partial class OrganizationalStructureMasterPage : System.Web.UI.MasterPage
+  public partial class SecurityManagerMasterPage : System.Web.UI.MasterPage
   {
     // types
 
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure
       if (!HtmlHeadAppender.Current.IsRegistered (c_contentViewStyleFileKey))
       {
         string styleUrl = ResourceUrlResolver.GetResourceUrl (
-            this, typeof (OrganizationalStructureMasterPage), ResourceType.Html, c_contentViewStyleFileUrl);
+            this, typeof (SecurityManagerMasterPage), ResourceType.Html, c_contentViewStyleFileUrl);
         HtmlHeadAppender.Current.RegisterStylesheetLink (c_contentViewStyleFileKey, styleUrl, HtmlHeadAppender.Priority.Library);
       }
 
