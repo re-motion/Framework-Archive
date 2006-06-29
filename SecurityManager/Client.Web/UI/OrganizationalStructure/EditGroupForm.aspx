@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditGroupForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.EditGroupForm" MasterPageFile="~/OrganizationalStructure/UI/OrganizationalStructureMasterPage.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditGroupForm.aspx.cs" Inherits="Rubicon.SecurityManager.Client.Web.UI.OrganizationalStructure.EditGroupForm" MasterPageFile="OrganizationalStructureMasterPage.Master" %>
 <%@ Register Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" TagPrefix="rubicon" %>
 <%@ Register TagPrefix="securityManager" Src="EditGroupControl.ascx" TagName="EditGroupControl" %>
 <%@ Register TagPrefix="securityManager" Src="ErrorMessageControl.ascx" TagName="ErrorMessageControl" %>

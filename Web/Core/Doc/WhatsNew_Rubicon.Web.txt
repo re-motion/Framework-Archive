@@ -5,7 +5,12 @@
 
 - WxeUserControl: inherited "Page" property of type "Page" was hidden by new "Page" property of type "IWxePage". The new property
   was renamed to "WxePage". 
-  
+
+- WxeFunction
+  * Exception Logik geändert. Nicht abgefangene Exceptions werden nun in einer WxeUnhandledException gekapselt, damit ASP.NET in der Lage ist,
+    bessere Fehlermeldungen anzuzeigen. Bis jetzt wurde immer nur ein Fehler auf der ausführenden Seite angezeigt, nicht aber die eigentliche 
+    Ursache des Problems.
+    
 1.7.3
 =====
 - WxeFunction

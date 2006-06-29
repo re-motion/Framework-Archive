@@ -15,6 +15,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Utilities;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Security;
+using System.Threading;
 
 namespace Rubicon.Web.ExecutionEngine
 {
@@ -308,7 +309,7 @@ namespace Rubicon.Web.ExecutionEngine
       }
       catch (Exception e)
       {
-        if (!_catchExceptions)
+        if (e is ThreadAbortException)
           throw;
 
         if (e is HttpException && e.InnerException != null)
@@ -316,9 +317,9 @@ namespace Rubicon.Web.ExecutionEngine
         if (e is HttpUnhandledException && e.InnerException != null)
           e = e.InnerException;
 
-        if (_catchExceptionTypes != null)
+        bool match = false;
+        if (_catchExceptions && _catchExceptionTypes != null)
         {
-          bool match = false;
           foreach (Type exceptionType in _catchExceptionTypes)
           {
             if (exceptionType.IsAssignableFrom (e.GetType ()))
@@ -327,8 +328,13 @@ namespace Rubicon.Web.ExecutionEngine
               break;
             }
           }
-          if (!match)
-            throw;
+        }
+
+        if (!_catchExceptions || !match)
+        {
+          if (e is WxeUnhandledException)
+            throw e;
+          throw new WxeUnhandledException (string.Format ("An unhandled exception ocured while executing WxeFunction  '{0}': {1}", GetType ().FullName, e.Message), e);
         }
 
         _exception = e;
