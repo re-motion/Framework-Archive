@@ -12,5 +12,6 @@
   <add type="Rubicon.SecurityManager.Clients.Web::WxeFunctions.OrganizationalStructure.GroupListFormFunction" resource="GroupList.wxe" id="GroupList"/>
   <add type="Rubicon.SecurityManager.Clients.Web::WxeFunctions.OrganizationalStructure.EditPositionFormFunction" resource="EditPosition.wxe" />
   <add type="Rubicon.SecurityManager.Clients.Web::WxeFunctions.OrganizationalStructure.PositionListFormFunction" resource="PositionList.wxe" id="PositionList"/>
+  <add type="Rubicon.SecurityManager.Clients.Web::WxeFunctions.AccessControl.SecurableClassDefinitionListFormFunction" resource="SecurableClassDefinitionList.wxe" id="SecurableClassDefinitionList"/>
 </urlMapping>
 

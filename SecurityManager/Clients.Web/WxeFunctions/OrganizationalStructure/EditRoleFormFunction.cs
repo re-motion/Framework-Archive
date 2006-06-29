@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
+using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Web.ExecutionEngine;
@@ -63,14 +63,14 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
 
     public Role Role
     {
-      get { return (Role) OrganizationalStructureObject; }
-      set { OrganizationalStructureObject = value; }
+      get { return (Role) CurrentObject; }
+      set { CurrentObject = value; }
     }
 
     private void Step1 ()
     {
       // TODO check CurrentTransaction
-      if (OrganizationalStructureObject == null)
+      if (CurrentObject == null)
       {
         Role = new Role (CurrentTransaction);
         Role.User = User;

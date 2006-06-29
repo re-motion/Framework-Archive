@@ -156,4 +156,13 @@
   <data name="Remove" xml:space="preserve">
     <value>Entfernen</value>
   </data>
+  <data name="AccessControl" xml:space="preserve">
+    <value>Berechtigungen</value>
+  </data>
+  <data name="OrganizationalStructure" xml:space="preserve">
+    <value>Aufbauorganisation</value>
+  </data>
+  <data name="SecurableClassDefinition" xml:space="preserve">
+    <value>Klassen</value>
+  </data>
 </root>

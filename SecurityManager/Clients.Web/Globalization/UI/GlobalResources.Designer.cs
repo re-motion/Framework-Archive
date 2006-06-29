@@ -61,6 +61,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Berechtigungen.
+        /// </summary>
+        internal static string AccessControl {
+            get {
+                return ResourceManager.GetString("AccessControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hinzufügen.
         /// </summary>
         internal static string Add {
@@ -142,6 +151,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aufbauorganisation.
+        /// </summary>
+        internal static string OrganizationalStructure {
+            get {
+                return ResourceManager.GetString("OrganizationalStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stelle.
         /// </summary>
         internal static string Position {
@@ -165,6 +183,15 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Klassen.
+        /// </summary>
+        internal static string SecurableClassDefinition {
+            get {
+                return ResourceManager.GetString("SecurableClassDefinition", resourceCulture);
             }
         }
         

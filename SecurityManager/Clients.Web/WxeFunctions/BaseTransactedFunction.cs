@@ -11,7 +11,7 @@ using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure
+namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 {
   public abstract class BaseTransactedFunction : WxeTransactedFunction
   {

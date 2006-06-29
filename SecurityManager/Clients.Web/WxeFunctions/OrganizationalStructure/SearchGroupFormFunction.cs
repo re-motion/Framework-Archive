@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
+using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure;

@@ -150,7 +150,7 @@
   <target name="all" depends="prereq, Core, Development.Core, Development.CodeDom, Web, ObjectBinding, ObjectBinding.Web, ObjectBinding.Reflection, 
       Data.DomainObjects.ObjectBinding.Web, Data.DomainObjects.CodeGenerator, Data.DomainObjects.CodeGenerator.Console, Data.DomainObjects.Web,
       Security, Security.Metadata.Extractor, Security.MSBuild.Tasks, Security.Web,
-      SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Client.Web">
+      SecurityManager.Core, SecurityManager.Metadata.Importer, SecurityManager.Clients.Web">
     <echo message="Target has executed."/>
   </target>
 
@@ -322,12 +322,12 @@
     <call target="execute-buildstep" />
   </target>
 
-  <target name="SecurityManager.Client.Web" depends="Core, Web, ObjectBinding, ObjectBinding.Web, 
+  <target name="SecurityManager.Clients.Web" depends="Core, Web, ObjectBinding, ObjectBinding.Web, 
         Data.DomainObjects, Data.DomainObjects.ObjectBinding, Data.DomainObjects.Web, Data.DomainObjects.ObjectBinding.Web, 
         SecurityManager.Core">
-    <property name="project.name" value="SecurityManager.Client.Web" />
-    <property name="project.dir" value="SecurityManager/Client.Web" />
-    <property name="project.output" value="Rubicon.SecurityManager.Client.Web" />
+    <property name="project.name" value="SecurityManager.Clients.Web" />
+    <property name="project.dir" value="SecurityManager/Clients.Web" />
+    <property name="project.output" value="Rubicon.SecurityManager.Clients.Web" />
     <property name="project.extension" value="dll" />
     <call target="execute-buildstep" />
   </target>

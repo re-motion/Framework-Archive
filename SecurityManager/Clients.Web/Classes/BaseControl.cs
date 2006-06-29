@@ -11,8 +11,9 @@ using Rubicon.Globalization;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.UI.Controls;
+using Rubicon.SecurityManager.Clients.Web.WxeFunctions;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure
+namespace Rubicon.SecurityManager.Clients.Web.Classes
 {
   public abstract class BaseControl : DataEditUserControl, IObjectWithResources
   {

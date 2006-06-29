@@ -52,6 +52,9 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Domain\DomainAbstractRole.cs" />
+    <Compile Include="Domain\BaseObject.cs" />
+    <Compile Include="Domain\BaseSecurableObject.cs" />
     <Compile Include="Domain\Confidentiality.cs" />
     <Compile Include="Domain\File.cs" />
     <Compile Include="Domain\FileItem.cs" />
@@ -77,6 +80,10 @@
     <ProjectReference Include="..\..\Data\DomainObjects\Rubicon.Data.DomainObjects.csproj">
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Rubicon.Data.DomainObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Security\Core\Security.csproj">
+      <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
+      <Name>Security</Name>
     </ProjectReference>
     <ProjectReference Include="..\Clients.Web\SecurityManager.Clients.Web.csproj">
       <Project>{558839F6-D762-47BA-A26C-1D4AA75D0994}</Project>

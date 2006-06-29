@@ -11,7 +11,7 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 {
   [PermanentGuid ("BAA77408-32E6-4979-9914-8A12B71808F2")]
-  public class File : BindableDomainObject
+  public class File : BaseSecurableObject
   {
     // types
 
@@ -81,6 +81,23 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
     {
       get { return (Rubicon.Data.DomainObjects.DomainObjectCollection) GetRelatedObjects ("Files"); }
       set { } // marks property Files as modifiable
+    }
+
+    public override User GetOwner ()
+    {
+      return Clerk;
+    }
+
+    public override Group GetOwnerGroup ()
+    {
+      if (Clerk == null)
+        return null;
+      return Clerk.Group;
+    }
+
+    public override Client GetOwnerClient ()
+    {
+      return Client;
     }
   }
 }

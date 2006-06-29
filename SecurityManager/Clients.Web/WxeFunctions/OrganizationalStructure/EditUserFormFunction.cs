@@ -7,7 +7,6 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure;
@@ -44,14 +43,14 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     // methods and properties
     public User User
     {
-      get { return (User) OrganizationalStructureObject; }
-      set { OrganizationalStructureObject = value; }
+      get { return (User) CurrentObject; }
+      set { CurrentObject = value; }
     }
 
     private void Step1 ()
     {
       // TODO check CurrentTransaction
-      if (OrganizationalStructureObject == null)
+      if (CurrentObject == null)
       {
         User = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateUser (CurrentTransaction);
         User.Client = Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.GetObject (ClientID, CurrentTransaction);

@@ -59,6 +59,7 @@
     <Compile Include="Domain\AccessControl\SecurityToken.cs" />
     <Compile Include="Domain\AccessControl\SecurityTokenBuilder.cs" />
     <Compile Include="Domain\AccessControl\StateCombination.cs" />
+    <Compile Include="Domain\AccessControl\StateCombinationBuilder.cs" />
     <Compile Include="Domain\AccessControl\StateUsage.cs" />
     <Compile Include="Domain\AccessControl\UserSelection.cs" />
     <Compile Include="Domain\BaseSecurityManagerObject.cs" />

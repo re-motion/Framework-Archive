@@ -42,6 +42,10 @@
   <ItemGroup>
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Client.Web.build" />
+    <Content Include="UI\AccessControl\EditPermissionsControl.ascx" />
+    <Content Include="UI\AccessControl\EditPermissionsForm.aspx" />
+    <Content Include="UI\AccessControl\SecurableClassDefinitionListControl.ascx" />
+    <Content Include="UI\AccessControl\SecurableClassDefinitionListForm.aspx" />
     <Content Include="UI\SecurityManagerMasterPage.Master" />
     <Content Include="UI\ErrorMessageControl.ascx" />
     <Content Include="SecurityManagerUrlMapping.xml" />
@@ -74,23 +78,41 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Classes\OrganizationalStructure\BaseControl.cs">
+    <Compile Include="Classes\BaseControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Classes\OrganizationalStructure\BaseEditPage.cs">
+    <Compile Include="Classes\BaseEditPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Classes\OrganizationalStructure\BasePage.cs">
+    <Compile Include="Classes\BasePage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Classes\OrganizationalStructure\BaseTransactedFunction.cs" />
-    <Compile Include="Classes\OrganizationalStructure\FormFunction.cs" />
     <Compile Include="default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\UI\AccessControl\EditPermissionsControlResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditPermissionsControlResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\UI\AccessControl\EditPermissionsFormResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EditPermissionsFormResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\UI\AccessControl\SecurableClassDefinitionListControlResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SecurableClassDefinitionListControlResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SecurableClassDefinitionListFormResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Globalization\UI\OrganizationalStructure\EditConcretePositionControlResources.Designer.cs">
       <DependentUpon>EditConcretePositionControlResources.resx</DependentUpon>
@@ -206,6 +228,34 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UserListFormResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditPermissionsControl.ascx.cs">
+      <DependentUpon>EditPermissionsControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditPermissionsControl.ascx.designer.cs">
+      <DependentUpon>EditPermissionsControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditPermissionsForm.aspx.cs">
+      <DependentUpon>EditPermissionsForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditPermissionsForm.aspx.designer.cs">
+      <DependentUpon>EditPermissionsForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AccessControl\SecurableClassDefinitionListControl.ascx.cs">
+      <DependentUpon>SecurableClassDefinitionListControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\AccessControl\SecurableClassDefinitionListControl.ascx.designer.cs">
+      <DependentUpon>SecurableClassDefinitionListControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AccessControl\SecurableClassDefinitionListForm.aspx.cs">
+      <DependentUpon>SecurableClassDefinitionListForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\AccessControl\SecurableClassDefinitionListForm.aspx.designer.cs">
+      <DependentUpon>SecurableClassDefinitionListForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\ErrorMessageControl.ascx.cs">
       <DependentUpon>ErrorMessageControl.ascx</DependentUpon>
@@ -382,6 +432,10 @@
     <Compile Include="UI\SecurityManagerNavigationTabs.ascx.designer.cs">
       <DependentUpon>SecurityManagerNavigationTabs.ascx</DependentUpon>
     </Compile>
+    <Compile Include="WxeFunctions\AccessControl\EditPermissionsFormFunction.cs" />
+    <Compile Include="WxeFunctions\AccessControl\SecurableClassDefinitionListFormFunction.cs" />
+    <Compile Include="WxeFunctions\BaseTransactedFunction.cs" />
+    <Compile Include="WxeFunctions\FormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditConcretePositionFormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupFormFunction.cs" />
     <Compile Include="WxeFunctions\OrganizationalStructure\EditGroupTypeFormFunction.cs" />
@@ -433,6 +487,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Globalization\UI\AccessControl\EditPermissionsControlResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditPermissionsControlResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\AccessControl\EditPermissionsFormResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EditPermissionsFormResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListControlResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SecurableClassDefinitionListControlResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SecurableClassDefinitionListFormResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\OrganizationalStructure\EditConcretePositionControlResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EditConcretePositionControlResources.Designer.cs</LastGenOutput>
@@ -551,10 +625,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Classes\AccessControl\" />
-    <Folder Include="Globalization\UI\AccessControl\" />
+    <Folder Include="Classes\OrganizationalStructure\" />
     <Folder Include="res\Rubicon.SecurityManager.Client.Web\OrganizationalStructure\" />
-    <Folder Include="UI\AccessControl\" />
-    <Folder Include="WxeFunctions\AccessControl\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v8.0\WebApplications\Microsoft.WebApplication.targets" />

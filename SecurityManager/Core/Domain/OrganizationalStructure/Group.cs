@@ -109,6 +109,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { } // marks property Roles as modifiable
     }
 
+    //TODO: UnitTests
     public override string DisplayName
     {
       get 

@@ -8,9 +8,12 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
+    <p>
     <a href="UserList.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid">Aufbauorganisation verwalten</a>
-    </div>
+    </p>
+    <p>
+    <a href="SecurableClassDefinitionList.wxe?ClientID=Client|00000001-0000-0000-0000-000000000001|System.Guid&WxeReturnToSelf=True&TabbedMenuSelection=AccessControlTab">Berechtigungen verwalten</a>
+    </p>
     </form>
 </body>
 </html>

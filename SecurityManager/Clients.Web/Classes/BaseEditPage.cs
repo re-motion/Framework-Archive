@@ -9,8 +9,9 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using System.Collections.Generic;
+using Rubicon.SecurityManager.Clients.Web.WxeFunctions;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure
+namespace Rubicon.SecurityManager.Clients.Web.Classes
 {
   public abstract class BaseEditPage : BasePage
   {
@@ -35,7 +36,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure
 
       foreach (DataEditUserControl control in _dataEditUserControls)
       {
-        control.DataSource.BusinessObject = CurrentFunction.OrganizationalStructureObject;
+        control.DataSource.BusinessObject = CurrentFunction.CurrentObject;
         control.LoadValues (IsPostBack);
       }
       LoadValues (IsPostBack);

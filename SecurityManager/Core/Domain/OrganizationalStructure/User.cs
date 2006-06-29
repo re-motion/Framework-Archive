@@ -124,6 +124,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return roles;
     }
 
+    //TODO: UnitTests
     public override string DisplayName
     {
       get { return GetFormattedName (); }

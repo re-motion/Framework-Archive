@@ -198,5 +198,46 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       Assert.IsNull (foundClass);
     }
+
+    [Test]
+    public void FindAll_NoneFound ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      DomainObjectCollection foundClasses = SecurableClassDefinition.FindAll (transaction);
+
+      Assert.AreEqual (0, foundClasses.Count);
+    }
+
+    [Test]
+    public void FindAll_TwoFound ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+
+      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
+      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+      SecurableClassDefinition invoiceClass = testHelper.CreateInvoiceClassDefinition ();
+      testHelper.Transaction.Commit ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      DomainObjectCollection foundClasses = SecurableClassDefinition.FindAll (transaction);
+
+      Assert.AreEqual (2, foundClasses.Count);
+    }
+
+    [Test]
+    public void Get_DisplayName ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      classDefinition.Name = "Namespace.TypeName, AssemblyName";
+
+      Assert.AreEqual ("Namespace.TypeName, AssemblyName", classDefinition.DisplayName);
+      
+    }
+
   }
 }

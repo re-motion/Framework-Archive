@@ -9,9 +9,9 @@ using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Data.DomainObjects;
-using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.SecurityManager.Domain;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure
+namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions
 {
   public abstract class FormFunction : BaseTransactedFunction
   {
@@ -32,34 +32,34 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure
     {
     }
 
-    public FormFunction (ObjectID ClientID, ObjectID OrganizationalStructureObjectID)
-      : base (ClientID, OrganizationalStructureObjectID)
+    public FormFunction (ObjectID ClientID, ObjectID CurrentObjectID)
+      : base (ClientID, CurrentObjectID)
     {
     }
 
     // methods and properties
     [WxeParameter (2, false, WxeParameterDirection.In)]
-    public ObjectID OrganizationalStructureObjectID
+    public ObjectID CurrentObjectID
     {
-      get { return (ObjectID) Variables["OrganizationalStructureObjectID"]; }
-      set { Variables["OrganizationalStructureObjectID"] = value; }
+      get { return (ObjectID) Variables["CurrentObjectID"]; }
+      set { Variables["CurrentObjectID"] = value; }
     }
 
-    public OrganizationalStructureObject OrganizationalStructureObject
+    public BaseSecurityManagerObject CurrentObject
     {
       get
       {
-        if (OrganizationalStructureObjectID != null)
-          return (OrganizationalStructureObject) ClientTransaction.Current.GetObject (OrganizationalStructureObjectID);
+        if (CurrentObjectID != null)
+          return (BaseSecurityManagerObject) ClientTransaction.Current.GetObject (CurrentObjectID);
 
         return null;
       }
       set
       {
         if (value != null)
-          OrganizationalStructureObjectID = value.ID;
+          CurrentObjectID = value.ID;
         else
-          OrganizationalStructureObjectID = null;
+          CurrentObjectID = null;
       }
     }
   }

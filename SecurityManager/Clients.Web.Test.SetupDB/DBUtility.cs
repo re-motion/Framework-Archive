@@ -78,6 +78,8 @@ public class DBUtility
   public static void LoadAllCsvFiles (string directory, bool resetTables, SqlConnection connection, SqlTransaction transaction)
   {
     string[] tables = {
+        "File",
+        "FileItem",
         "Client", 
         "Group", 
         "GroupType", 
@@ -85,7 +87,12 @@ public class DBUtility
         "Position", 
         "Role", 
         "User", 
-    };
+        "SecurableClassDefinition",
+        "StatePropertyDefinition",
+        "EnumValueDefinition",
+        "StatePropertyReference",
+        "AccessTypeReference"
+   };
 
     if (resetTables)
     {

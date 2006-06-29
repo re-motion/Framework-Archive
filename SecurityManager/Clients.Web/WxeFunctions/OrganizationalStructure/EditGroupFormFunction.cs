@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure;
+using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.SecurityManager.Clients.Web.UI.OrganizationalStructure;
@@ -44,14 +44,14 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     // methods and properties
     public Group Group
     {
-      get { return (Group) OrganizationalStructureObject; }
-      set { OrganizationalStructureObject = value; }
+      get { return (Group) CurrentObject; }
+      set { CurrentObject = value; }
     }
 
     private void Step1 ()
     {
       // TODO check CurrentTransaction
-      if (OrganizationalStructureObject == null)
+      if (CurrentObject == null)
       {
         Group = SecurityManagerConfiguration.Current.OrganizationalStructureFactory.CreateGroup (CurrentTransaction);
         Group.Client = Rubicon.SecurityManager.Domain.OrganizationalStructure.Client.GetObject (ClientID, CurrentTransaction);

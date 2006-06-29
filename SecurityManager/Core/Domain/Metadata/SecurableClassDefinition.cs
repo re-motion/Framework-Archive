@@ -34,6 +34,15 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return (SecurableClassDefinition) result[0];
     }
 
+    public static DomainObjectCollection FindAll (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll");
+
+      return transaction.QueryManager.GetCollection (query);
+    }
+
     public static new SecurableClassDefinition GetObject (ObjectID id)
     {
       return (SecurableClassDefinition) DomainObject.GetObject (id);
@@ -85,6 +94,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("DerivedClasses"); }
       set { } // marks property DerivedClasses as modifiable
+    }
+
+    public override string DisplayName
+    {
+      get
+      {
+        return Name;
+      }
     }
 
     public DomainObjectCollection StateProperties

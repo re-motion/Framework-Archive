@@ -18,8 +18,9 @@ using Rubicon.SecurityManager.Clients.Web.Globalization.UI;
 using Rubicon.Web;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.SecurityManager.Clients.Web.WxeFunctions;
 
-namespace Rubicon.SecurityManager.Clients.Web.Classes.OrganizationalStructure
+namespace Rubicon.SecurityManager.Clients.Web.Classes
 {
   [WebMultiLingualResources (typeof (GlobalResources))]
   public abstract class BasePage : WxePage, IObjectWithResources 

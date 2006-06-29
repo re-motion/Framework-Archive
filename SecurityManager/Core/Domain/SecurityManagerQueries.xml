@@ -12,6 +12,13 @@
     </statement>
   </query>
 
+  <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [SecurableClassDefinitionView];
+    </statement>
+  </query>
+
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindUser" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>

@@ -7,11 +7,12 @@ using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 {
   [PermanentGuid ("DF0A8DB4-943C-4bd1-8B3B-276C8AA16BDB")]
-  public class FileItem : BindableDomainObject
+  public class FileItem : BaseSecurableObject
   {
     // types
 
@@ -58,5 +59,25 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
       set { SetRelatedObject ("File", value); }
     }
 
+    public override User GetOwner ()
+    {
+      if (File == null)
+        return null;
+      return File.GetOwner();
+    }
+
+    public override Group GetOwnerGroup ()
+    {
+      if (File == null)
+        return null;
+      return File.GetOwnerGroup ();
+    }
+
+    public override Client GetOwnerClient ()
+    {
+      if (File == null)
+        return null;
+      return File.GetOwnerClient ();
+    }
   }
 }

@@ -84,6 +84,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { } // marks property AccessControlEntries as modifiable
     }
 
+    //TODO: UnitTests
     public override string DisplayName
     {
       get { return Name; }
