@@ -1,6 +1,54 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <mapping application="Rubicon.SecurityManager" xmlns="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.rubicon-it.com/Data/DomainObjects/Mapping/1.0 ..\DomainObjects\mapping.xsd">
   <classes>
+    <!-- Application domain -->
+    <class id="File">
+      <type>Rubicon.SecurityManager.Client.Web.Test.Domain.File, Rubicon.SecurityManager.Client.Web.Test</type>
+      <entity name="File"/>
+      <storageProviderID>SecurityManager</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <property name="Confidentiality">
+          <type>Rubicon.SecurityManager.Client.Web.Test.Domain.Confidentiality, Rubicon.SecurityManager.Client.Web.Test</type>
+          <column>Confidentiality</column>
+        </property>
+
+        <relationProperty name="Owner" relationID="OwnerUserToFile" cardinality="one" isMandatory="true">
+          <column>OwnerUserID</column>
+          <oppositeClass>User</oppositeClass>
+        </relationProperty>
+        <relationProperty name="Clerk" relationID="ClerkUserToFile" cardinality="one" isMandatory="false">
+          <column>ClerkUserID</column>
+          <oppositeClass>User</oppositeClass>
+        </relationProperty>
+        <relationProperty name="Group" relationID="GroupToFile" cardinality="one" isMandatory="false">
+          <column>GroupID</column>
+          <oppositeClass>Group</oppositeClass>
+        </relationProperty>
+        <relationProperty name="Files" relationID="FileItemToFile" cardinality="many" isMandatory="false" />
+      </properties>
+    </class>
+
+    <class id="FileItem">
+      <type>Rubicon.SecurityManager.Client.Web.Test.Domain.FileItem, Rubicon.SecurityManager.Client.Web.Test</type>
+      <entity name="FileItem"/>
+      <storageProviderID>SecurityManager</storageProviderID>
+      <properties>
+        <property name="Name">
+          <type>string</type>
+          <column>Name</column>
+          <maxLength>100</maxLength>
+        </property>
+        <relationProperty name="File" relationID="FileItemToFile" cardinality="one" isMandatory="true">
+          <column>FileID</column>
+        </relationProperty>
+      </properties>
+    </class>
+
     <!-- Organizational structure -->
     <class id="Client">
       <type>Rubicon.SecurityManager.Domain.OrganizationalStructure.Client, Rubicon.SecurityManager</type>
