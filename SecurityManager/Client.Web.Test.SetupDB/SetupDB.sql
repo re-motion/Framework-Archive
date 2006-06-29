@@ -1,7 +1,13 @@
-USE <Database>
+USE RubiconSecurityManagerWebClientTest
 GO
 
 -- Drop all views that will be created below
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FileView')
+  DROP VIEW [dbo].[FileView]
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'FileItemView')
+  DROP VIEW [dbo].[FileItemView]
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Views WHERE TABLE_NAME = 'ClientView')
   DROP VIEW [dbo].[ClientView]
 
@@ -77,12 +83,18 @@ DECLARE @statement nvarchar (4000)
 SET @statement = ''
 SELECT @statement = @statement + 'ALTER TABLE [dbo].[' + t.name + '] DROP CONSTRAINT [' + fk.name + ']; ' 
     FROM sysobjects fk INNER JOIN sysobjects t ON fk.parent_obj = t.id 
-    WHERE fk.xtype = 'F' AND t.name IN ('Client', 'Group', 'GroupType', 'ConcretePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'AccessTypeReference', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission', 'Culture', 'LocalizedName')
+    WHERE fk.xtype = 'F' AND t.name IN ('File', 'FileItem', 'Client', 'Group', 'GroupType', 'ConcretePosition', 'Position', 'Role', 'User', 'EnumValueDefinition', 'SecurableClassDefinition', 'StatePropertyReference', 'StatePropertyDefinition', 'AccessTypeReference', 'StateCombination', 'StateUsage', 'AccessControlList', 'AccessControlEntry', 'Permission', 'Culture', 'LocalizedName')
     ORDER BY t.name, fk.name
 exec sp_executesql @statement
 GO
 
 -- Drop all tables that will be created below
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'File')
+  DROP TABLE [dbo].[File]
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'FileItem')
+  DROP TABLE [dbo].[FileItem]
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Client')
   DROP TABLE [dbo].[Client]
 
@@ -142,6 +154,35 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Tables WHERE TABLE_NAME = 'Localized
 GO
 
 -- Create all tables
+CREATE TABLE [dbo].[File]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- File columns
+  [Name] nvarchar (100) NOT NULL,
+  [Confidentiality] int NOT NULL,
+  [OwnerUserID] uniqueidentifier NULL,
+  [ClerkUserID] uniqueidentifier NULL,
+  [GroupID] uniqueidentifier NULL,
+
+  CONSTRAINT [PK_File] PRIMARY KEY CLUSTERED ([ID])
+)
+
+CREATE TABLE [dbo].[FileItem]
+(
+  [ID] uniqueidentifier NOT NULL,
+  [ClassID] varchar (100) NOT NULL,
+  [Timestamp] rowversion NOT NULL,
+
+  -- FileItem columns
+  [Name] nvarchar (100) NOT NULL,
+  [FileID] uniqueidentifier NULL,
+
+  CONSTRAINT [PK_FileItem] PRIMARY KEY CLUSTERED ([ID])
+)
+
 CREATE TABLE [dbo].[Client]
 (
   [ID] uniqueidentifier NOT NULL,
@@ -424,7 +465,7 @@ CREATE TABLE [dbo].[LocalizedName]
   [Timestamp] rowversion NOT NULL,
 
   -- LocalizedName columns
-  [Text] text NOT NULL,
+  [Text] nvarchar (2147483647) NOT NULL,
   [CultureID] uniqueidentifier NULL,
   [MetadataObjectID] uniqueidentifier NULL,
   [MetadataObjectIDClassID] varchar (100) NULL,
@@ -434,6 +475,14 @@ CREATE TABLE [dbo].[LocalizedName]
 GO
 
 -- Create constraints for tables that were created above
+ALTER TABLE [dbo].[File] ADD
+  CONSTRAINT [FK_OwnerUserToFile] FOREIGN KEY ([OwnerUserID]) REFERENCES [dbo].[User] ([ID]),
+  CONSTRAINT [FK_ClerkUserToFile] FOREIGN KEY ([ClerkUserID]) REFERENCES [dbo].[User] ([ID]),
+  CONSTRAINT [FK_GroupToFile] FOREIGN KEY ([GroupID]) REFERENCES [dbo].[Group] ([ID])
+
+ALTER TABLE [dbo].[FileItem] ADD
+  CONSTRAINT [FK_FileItemToFile] FOREIGN KEY ([FileID]) REFERENCES [dbo].[File] ([ID])
+
 ALTER TABLE [dbo].[Group] ADD
   CONSTRAINT [FK_ClientToGroup] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID]),
   CONSTRAINT [FK_ChildrenToParentGroup] FOREIGN KEY ([ParentID]) REFERENCES [dbo].[Group] ([ID]),
@@ -500,6 +549,22 @@ ALTER TABLE [dbo].[LocalizedName] ADD
 GO
 
 -- Create a view for every class
+CREATE VIEW [dbo].[FileView] ([ID], [ClassID], [Timestamp], [Name], [Confidentiality], [OwnerUserID], [ClerkUserID], [GroupID])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Name], [Confidentiality], [OwnerUserID], [ClerkUserID], [GroupID]
+    FROM [dbo].[File]
+    WHERE [ClassID] IN ('File')
+  WITH CHECK OPTION
+GO
+
+CREATE VIEW [dbo].[FileItemView] ([ID], [ClassID], [Timestamp], [Name], [FileID])
+  WITH SCHEMABINDING AS
+  SELECT [ID], [ClassID], [Timestamp], [Name], [FileID]
+    FROM [dbo].[FileItem]
+    WHERE [ClassID] IN ('FileItem')
+  WITH CHECK OPTION
+GO
+
 CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [Name]
