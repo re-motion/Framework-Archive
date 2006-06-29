@@ -39,8 +39,8 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStr
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure.EditR" +
-                            "oleFormResources", typeof(EditRoleFormResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.OrganizationalStructure.Edit" +
+                            "RoleFormResources", typeof(EditRoleFormResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

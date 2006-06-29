@@ -6,6 +6,7 @@ using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data;
+using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 
 namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 {

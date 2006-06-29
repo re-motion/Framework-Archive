@@ -8,8 +8,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubicon.SecurityManager.Client.Web.Test</RootNamespace>
-    <AssemblyName>Rubicon.SecurityManager.Client.Web.Test</AssemblyName>
+    <RootNamespace>Rubicon.SecurityManager.Clients.Web.Test</RootNamespace>
+    <AssemblyName>Rubicon.SecurityManager.Clients.Web.Test</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,9 +78,9 @@
       <Project>{C2D4102A-6DB9-4997-85BE-AFA6ECF42F1A}</Project>
       <Name>Rubicon.Data.DomainObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Client.Web\SecurityManager.Client.Web.csproj">
+    <ProjectReference Include="..\Clients.Web\SecurityManager.Clients.Web.csproj">
       <Project>{558839F6-D762-47BA-A26C-1D4AA75D0994}</Project>
-      <Name>SecurityManager.Client.Web</Name>
+      <Name>SecurityManager.Clients.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\SecurityManager.Core.csproj">
       <Project>{990B8638-A08F-4A94-B01A-E7DAEF089F27}</Project>
@@ -108,7 +108,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/dev/libraries/commons/trunk/SecurityManager/Client.Web.Test/</IISUrl>
+          <IISUrl>http://localhost/dev/libraries/commons/trunk/SecurityManager/Clients.Web.Test/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
         </WebProjectProperties>
       </FlavorProperties>

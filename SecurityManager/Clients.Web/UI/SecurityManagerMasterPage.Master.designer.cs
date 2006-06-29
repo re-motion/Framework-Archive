@@ -13,7 +13,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI {
     public partial class SecurityManagerMasterPage {
         protected System.Web.UI.HtmlControls.HtmlHead Head;
         protected System.Web.UI.HtmlControls.HtmlForm ThisForm;
-        protected Rubicon.SecurityManager.Client.Web.UI.SecurityManagerNavigationTabs SecurityManagerNavigationTabs;
+        protected Rubicon.SecurityManager.Clients.Web.UI.SecurityManagerNavigationTabs SecurityManagerNavigationTabs;
         protected System.Web.UI.WebControls.ContentPlaceHolder TopControlsPlaceHolder;
         protected System.Web.UI.WebControls.ContentPlaceHolder MainContentPlaceHolder;
         protected System.Web.UI.WebControls.ContentPlaceHolder BottomControlsPlaceHolder;
