@@ -67,7 +67,7 @@
 			</properties>
 		</class>
 		<!-- Partner is defined after its derivations Supplier and Distributor thus showing that there is no specific order
-		     assumed when mapping.xml is read. -->
+		     assumed when Mapping.xml is read. -->
 		<class id="Partner" baseClass="Company">
 			<type>UndefinedNamespace.Partner, UnknownAssembly</type>
 			<entity name="Company"/>

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using Rubicon.Text.CommandLine;
+using Rubicon.Data.DomainObjects.ConfigurationLoader;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.Console
 {
@@ -38,6 +39,16 @@ public class Arguments
       Description = "Search for XML files in this directory (default: current).",
       Placeholder = "directory")]
   public string ConfigDirectory = string.Empty;
+
+  [CommandLineStringArgument ("mappingFile", true,
+      Description = "Load this mapping file name (default: Mapping.xml).",
+      Placeholder = "filename")]
+  public string MappingFileName = MappingLoader.DefaultConfigurationFile;
+
+  [CommandLineStringArgument ("storageProvidersFile", true,
+      Description = "Load this mapping file name (default: StorageProviders.xml).",
+      Placeholder = "filename")]
+  public string StorageProviderFileName = StorageProviderConfigurationLoader.DefaultConfigurationFile;
 
   [CommandLineStringArgument ("dobase", true, 
       Description = "Create domain object classes derived from this class (default: " + DomainObjectBuilder.DefaultBaseClass + ")",

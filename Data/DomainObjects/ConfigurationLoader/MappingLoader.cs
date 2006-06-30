@@ -18,7 +18,7 @@ public class MappingLoader : BaseFileLoader
   // static members and constants
  
   public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Mapping.ConfigurationFile";
-  public const string DefaultConfigurationFile = "mapping.xml";
+  public const string DefaultConfigurationFile = "Mapping.xml";
   
   public static MappingLoader Create ()
   {

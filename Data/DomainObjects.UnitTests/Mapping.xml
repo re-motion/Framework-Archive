@@ -70,7 +70,7 @@
 			</properties>
 		</class>
 		<!-- Partner is defined after its derivations Supplier and Distributor thus showing that there is no specific order
-		     assumed when mapping.xml is read. -->
+		     assumed when Mapping.xml is read. -->
 		<class id="Partner" baseClass="Company">
 			<type>Rubicon.Data.DomainObjects.UnitTests.TestDomain.Partner, Rubicon.Data.DomainObjects.UnitTests</type>
 			<entity name="Company"/>

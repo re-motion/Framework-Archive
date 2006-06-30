@@ -90,10 +90,11 @@ public class DomainObjectDataSourceControl : BusinessObjectDataSourceControl
 
   private string GetMappingFilePath (string projectPath)
   {
+    //TODO: use MappingLoader.DefaultConfigurationFile here
     return GetFilePathFromWebConfig (
         projectPath,
         MappingLoader.ConfigurationAppSettingKey,
-        projectPath + @"\bin\mapping.xml");
+        projectPath + @"\bin\" + MappingLoader.DefaultConfigurationFile);
   }
 
   private string GetFilePathFromWebConfig (string projectPath, string configurationKey, string defaultPath)

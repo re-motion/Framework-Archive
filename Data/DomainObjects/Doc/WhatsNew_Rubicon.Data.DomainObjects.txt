@@ -1,7 +1,10 @@
 1.7.11.0
 ========
 
-- Die von DOGen erstellten Views für abstrakte Klassen sind jetzt mit SQL Server 2000 kompatibel.
+- DOGen:
+  * Die erstellten Views für abstrakte Klassen sind jetzt mit SQL Server 2000 kompatibel.
+  * Neue optionale Kommandozeilen-Parameter mappingFile und storageProvidersFile, mit denen man eigene Dateinamen für die 
+    Konfigurationsdateien angeben kann.
 
 
 1.7.10.0

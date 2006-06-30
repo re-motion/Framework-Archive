@@ -15,11 +15,11 @@
    4.	Get Latest Version auf die Solution durchführen.
    5.	Überprüfen dass die Solution immer noch fehlerfrei kompiliert.
    6.	Unit-Tests nochmal ausführen (müssen wieder alle erfolgreich durchlaufen).
-   7.	.net Kommandozeile öffnen, aktuelles Verzeichnis auf C:\Development\libraries\Commons\Data setzen
+   7.	.net Kommandozeile öffnen, aktuelles Verzeichnis auf C:\Development\libraries\Commons\Data\trunk setzen
    8.	Solution schließen
    9.	.net Kommandozeile: nant clean
   10.	.net Kommandozeile: nant -D:version=<VERSION> package
   11.   Source Safe Label mit der Versionsnummer vergeben.
-  12.	C:\Development\libraries\Commons\Data\build\bin\DomainObjects_debug_<VERSION>.zip und
-		C:\Development\libraries\Commons\Data\build\bin\DomainObjects_release_<VERSION>.zip
+  12.	C:\Development\libraries\Commons\trunk\Data\build\bin\DomainObjects_debug_<VERSION>.zip und
+		C:\Development\libraries\Commons\trunk\Data\build\bin\DomainObjects_release_<VERSION>.zip
 		nach \\At-vie-dc-02\Install\Rubicon.Data.DomainObjects kopieren

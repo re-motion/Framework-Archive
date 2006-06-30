@@ -18,7 +18,7 @@ Vorgehensweise für das Hinzufügen eines neuen Datentyps für Eigenschaftenswerte:
 
 7. Enumeration in Definition von "simpleType" in Mapping.xsd erweitern.
  
-8. mapping.xml um neue Datentypen in ClassWithAllDataTypes ergänzen und gegen Mapping.xsd prüfen.
+8. Mapping.xml um neue Datentypen in ClassWithAllDataTypes ergänzen und gegen Mapping.xsd prüfen.
 
 9. Tests im Namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping müssen wieder grün sein.
 
@@ -63,9 +63,9 @@ Neue Datentypen in RPA ergänzen:
 16. Neue Datentypen in Rubicon.Data.DomainObjects.ObjectBinding.DomainObjectProperty.Create ergänzen.
 
 17. Rubicon.Data.DomainObjects.ObjectBinding.Web.Test ergänzen:
-    - Mapping.xsd von Rubicon.Data.DomainObjects nach "C:\development\libraries\Commons\Data\DomainObjects.Web.Test\bin" kopieren
+    - Mapping.xsd von Rubicon.Data.DomainObjects nach "C:\development\libraries\Commons\trunk\Data\DomainObjects.Web.Test\bin" kopieren
     - SetupDB.sql erweitern und ausführen
     - CreateTestData.sql erweitern und ausführen
-    - mapping.xml erweitern
+    - Mapping.xml erweitern
     - ClassWithAllDataTypes erweitern
     - default.aspx erweitern und testen

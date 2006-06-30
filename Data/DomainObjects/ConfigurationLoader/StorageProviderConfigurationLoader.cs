@@ -15,7 +15,7 @@ public class StorageProviderConfigurationLoader : BaseFileLoader
   // static members and constants
 
   public const string ConfigurationAppSettingKey = "Rubicon.Data.DomainObjects.Persistence.Configuration.ConfigurationFile";
-  public const string DefaultConfigurationFile = "storageProviders.xml";
+  public const string DefaultConfigurationFile = "StorageProviders.xml";
 
   public static StorageProviderConfigurationLoader Create ()
   {
