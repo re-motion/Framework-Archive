@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
+  //TODO: add support for closed generics
   public class TypeName : IComparable
   {
     // types

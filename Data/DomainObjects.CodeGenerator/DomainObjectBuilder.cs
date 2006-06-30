@@ -54,7 +54,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
     #region templates
 
     private static readonly string s_getObjectContent =
-        "    return (%classname%) DomainObject.GetObject (%parameterlist%);\r\n";
+        "      return (%classname%) DomainObject.GetObject (%parameterlist%);\r\n";
 
     private static readonly string s_getObjectParameters = "ObjectID id";
     private static readonly string s_getObjectParametersForContent = "id";
@@ -63,25 +63,26 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
     private static readonly string s_getObjectParametersWithTransactionForContent = "id, clientTransaction";
 
     private static readonly string s_nestedEnum =
-        "  public enum %enumname%\r\n"
-        + "  {\r\n"
-        + "    DummyEntry = 0\r\n"
-        + "  }\r\n"
+        "    public enum %enumname%\r\n"
+        + "    {\r\n"
+        + "      DummyEntry = 0\r\n"
+        + "    }\r\n"
         + "\r\n";
 
     private static readonly string s_valuePropertyGetStatement = 
-        "    get { return (%propertytype%) DataContainer[\"%propertyname%\"]; }\r\n";
+        "      get { return (%propertytype%) DataContainer[\"%propertyname%\"]; }\r\n";
     private static readonly string s_valuePropertySetStatement = 
-        "    set { DataContainer[\"%propertyname%\"] = value; }\r\n";
+        "      set { DataContainer[\"%propertyname%\"] = value; }\r\n";
 
     private static readonly string s_relationPropertyCardinalityOneGetStatement = 
-        "    get { return (%propertytype%) GetRelatedObject (\"%propertyname%\"); }\r\n";
+        "      get { return (%propertytype%) GetRelatedObject (\"%propertyname%\"); }\r\n";
     private static readonly string s_relationPropertyCardinalityOneSetStatement = 
-        "    set { SetRelatedObject (\"%propertyname%\", value); }\r\n";
+        "      set { SetRelatedObject (\"%propertyname%\", value); }\r\n";
 
     private static readonly string s_relationPropertyCardinalityManyGetStatement = 
-        "    get { return (%propertytype%) GetRelatedObjects (\"%propertyname%\"); }\r\n";
-    private static readonly string s_relationPropertyCardinalityManySetStatement = "    set { } // marks property %propertyname% as modifiable\r\n";
+        "      get { return (%propertytype%) GetRelatedObjects (\"%propertyname%\"); }\r\n";
+    private static readonly string s_relationPropertyCardinalityManySetStatement = 
+        "      set { } // marks property %propertyname% as modifiable\r\n";
 
     #endregion
 

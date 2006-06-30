@@ -8,8 +8,8 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.IntegrationTests.TestDomain
 {
-public enum OrderPriority
-{
-  DummyEntry = 0
-}
+  public enum OrderPriority
+  {
+    DummyEntry = 0
+  }
 }

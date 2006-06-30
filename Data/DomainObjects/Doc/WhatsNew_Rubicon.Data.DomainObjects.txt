@@ -5,7 +5,7 @@
   * Die erstellten Views für abstrakte Klassen sind jetzt mit SQL Server 2000 kompatibel.
   * Neue optionale Kommandozeilen-Parameter mappingFile und storageProvidersFile, mit denen man eigene Dateinamen für die 
     Konfigurationsdateien angeben kann.
-
+  * Klassen werden nach dem neuen Styleguide erstellt.
 
 1.7.10.0
 ========

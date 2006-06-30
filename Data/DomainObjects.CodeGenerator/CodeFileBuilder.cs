@@ -8,7 +8,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.CodeGenerator
 {
-
 public class CodeFileBuilder: FileBuilder
 {
   // types
@@ -61,7 +60,7 @@ public class CodeFileBuilder: FileBuilder
   private static readonly string s_indentation = "  ";
 
   private static readonly string s_comment =
-      "  // %comment%\r\n";
+      "    // %comment%\r\n";
   private static readonly string s_fileHeader = 
       "using System;\r\n"
       + "\r\n" 
@@ -72,11 +71,11 @@ public class CodeFileBuilder: FileBuilder
       + "using Rubicon.Utilities;\r\n"
       + "\r\n";
   private static readonly string s_serializableAttribute = 
-      "[Serializable]\r\n";
+      "  [Serializable]\r\n";
   private static readonly string s_multilingualResourcesAttribute = 
-      "[MultiLingualResources(\"%namespace%.Globalization.%typename%\")]\r\n";
+      "  [MultiLingualResources(\"%namespace%.Globalization.%typename%\")]\r\n";
   private static readonly string s_enumDescriptionResourceAttribute = 
-      "[EnumDescriptionResource(\"%namespace%.Globalization.%typename%\")]\r\n";
+      "  [EnumDescriptionResource(\"%namespace%.Globalization.%typename%\")]\r\n";
 
   private static readonly string s_namespaceHeader = 
       "namespace %namespace%\r\n"
@@ -84,10 +83,10 @@ public class CodeFileBuilder: FileBuilder
   private static readonly string s_namespaceFooter = "}\r\n";
 
   private static readonly string s_classHeader = 
-      "public %modifier%class %classname% : %baseclassname%\r\n"
-      + "{\r\n";
+      "  public %modifier%class %classname% : %baseclassname%\r\n"
+      + "  {\r\n";
   private static readonly string s_classFooter = 
-      "}\r\n";
+      "  }\r\n";
 
   protected static readonly string s_modifierStatic = "static ";
   protected static readonly string s_modifierNew = "new ";
@@ -100,26 +99,26 @@ public class CodeFileBuilder: FileBuilder
   protected static readonly string s_returntypeVoid = "void";
 
   private static readonly string s_methodHeader = 
-      "  %accessibility%%modifier%%returntype% %methodname% (%parameterlist%)\r\n"
-      + "  {\r\n";
+      "    %accessibility%%modifier%%returntype% %methodname% (%parameterlist%)\r\n"
+      + "    {\r\n";
   private static readonly string s_methodFooter =
-      "  }\r\n"
+      "    }\r\n"
       + "\r\n";
 
   private static readonly string s_constructorHeader = 
-      "  %accessibility%%classname% (%parameterlist%)%baseconstructor%\r\n"
-      + "  {\r\n";
+      "    %accessibility%%classname% (%parameterlist%)%baseconstructor%\r\n"
+      + "    {\r\n";
   private static readonly string s_constructorFooter =
-      "  }\r\n"
+      "    }\r\n"
       + "\r\n";
 
-  private readonly string s_baseConstructorCall = " : base (%parameterlist%)";
+  private readonly string s_baseConstructorCall = "\r\n      : base (%parameterlist%)";
 
   private static readonly string s_propertyHeader = 
-      "  %accessibility%%propertytype% %propertyname%\r\n"
-      + "  {\r\n";
+      "    %accessibility%%propertytype% %propertyname%\r\n"
+      + "    {\r\n";
   private static readonly string s_propertyFooter =
-      "  }\r\n"
+      "    }\r\n"
       + "\r\n";
 
   #endregion
@@ -218,6 +217,7 @@ public class CodeFileBuilder: FileBuilder
     Write (s_serializableAttribute);
   }
 
+  //TODO: "Ressources" should not be inserted before the type name, but after the assembly name in the namespace
   protected void WriteMultiLingualResourcesAttribute (TypeName typeName)
   {
     string attributeString = s_multilingualResourcesAttribute;
@@ -226,6 +226,7 @@ public class CodeFileBuilder: FileBuilder
     Write (attributeString);
   }
 
+  //TODO: "Ressources" should not be inserted before the type name, but after the assembly name in the namespace
   protected void WriteEnumDescriptionResourceAttribute (TypeName typeName)
   {
     string attributeString = s_enumDescriptionResourceAttribute;

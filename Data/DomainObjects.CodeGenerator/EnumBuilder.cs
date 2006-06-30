@@ -33,10 +33,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
     #region Templates
 
     private static readonly string s_enum =
-        "public enum %enumname%\r\n"
-        + "{\r\n"
-        + "  DummyEntry = 0\r\n"
-        + "}\r\n";
+        "  public enum %enumname%\r\n"
+        + "  {\r\n"
+        + "    DummyEntry = 0\r\n"
+        + "  }\r\n";
 
     #endregion
 

@@ -22,14 +22,14 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
     #region templates
 
     private static readonly string s_indexer =
-        "  %accessibility%%modifier%%returntype% this[%parameterlist%]\r\n"
-        + "  {\r\n"
-        + "    get { return (%returntype%) base[%baseparameterlist%]; }\r\n"
-        + "%setter%  }\r\n"
+        "    %accessibility%%modifier%%returntype% this[%parameterlist%]\r\n"
+        + "    {\r\n"
+        + "      get { return (%returntype%) base[%baseparameterlist%]; }\r\n"
+        + "%setter%    }\r\n"
         + "\r\n";
 
     private static readonly string s_indexerSetStatement =
-        "    set { base[%baseparameterlist%] = value; }\r\n";
+        "      set { base[%baseparameterlist%] = value; }\r\n";
 
     #endregion
 
