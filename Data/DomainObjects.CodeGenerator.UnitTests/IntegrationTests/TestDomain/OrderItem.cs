@@ -40,6 +40,7 @@ public class OrderItem : BindableDomainObject
   {
     // This infrastructure constructor is necessary for the DomainObjects framework.
     // Do not remove the constructor or place any code here.
+    // For any code that should run when a DomainObject is loaded, OnLoaded () should be overridden.
   }
 
   // methods and properties

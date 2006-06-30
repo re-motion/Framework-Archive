@@ -211,6 +211,8 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator
       WriteComment ("This infrastructure constructor is necessary for the DomainObjects framework.");
       WriteIndentation (1);
       WriteComment ("Do not remove the constructor or place any code here.");
+      WriteIndentation (1);
+      WriteComment ("For any code that should run when a DomainObject is loaded, OnLoaded () should be overridden.");
       EndConstructor ();
     }
 
