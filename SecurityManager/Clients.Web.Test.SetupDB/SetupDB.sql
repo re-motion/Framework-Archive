@@ -164,7 +164,7 @@ CREATE TABLE [dbo].[File]
   [Name] nvarchar (100) NOT NULL,
   [Confidentiality] int NOT NULL,
   [ClientID] uniqueidentifier NULL,
-  [OwnerUserID] uniqueidentifier NULL,
+  [CreatorUserID] uniqueidentifier NULL,
   [ClerkUserID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_File] PRIMARY KEY CLUSTERED ([ID])
@@ -478,7 +478,7 @@ GO
 -- Create constraints for tables that were created above
 ALTER TABLE [dbo].[File] ADD
   CONSTRAINT [FK_ClientToFile] FOREIGN KEY ([ClientID]) REFERENCES [dbo].[Client] ([ID]),
-  CONSTRAINT [FK_OwnerUserToFile] FOREIGN KEY ([OwnerUserID]) REFERENCES [dbo].[User] ([ID]),
+  CONSTRAINT [FK_OwnerUserToFile] FOREIGN KEY ([CreatorUserID]) REFERENCES [dbo].[User] ([ID]),
   CONSTRAINT [FK_ClerkUserToFile] FOREIGN KEY ([ClerkUserID]) REFERENCES [dbo].[User] ([ID])
 
 ALTER TABLE [dbo].[FileItem] ADD
@@ -551,9 +551,9 @@ ALTER TABLE [dbo].[LocalizedName] ADD
 GO
 
 -- Create a view for every class
-CREATE VIEW [dbo].[FileView] ([ID], [ClassID], [Timestamp], [Name], [Confidentiality], [ClientID], [OwnerUserID], [ClerkUserID])
+CREATE VIEW [dbo].[FileView] ([ID], [ClassID], [Timestamp], [Name], [Confidentiality], [ClientID], [CreatorUserID], [ClerkUserID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [Confidentiality], [ClientID], [OwnerUserID], [ClerkUserID]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [Confidentiality], [ClientID], [CreatorUserID], [ClerkUserID]
     FROM [dbo].[File]
     WHERE [ClassID] IN ('File')
   WITH CHECK OPTION

@@ -11,6 +11,10 @@ using System.Web.UI.HtmlControls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.SecurityManager.Clients.Web.Classes;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
+using Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl;
+using Rubicon.SecurityManager.Domain.Metadata;
+using Rubicon.ObjectBinding.Web.UI.Controls;
+using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -28,5 +32,31 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     // methods and properties
 
+    protected new SecurableClassDefinitionListFormFunction CurrentFunction
+    {
+      get { return (SecurableClassDefinitionListFormFunction) base.CurrentFunction; }
+    }
+
+    protected override void OnLoad (EventArgs e)
+    {
+      base.OnLoad (e);
+
+      SecurableClassDefinitionList.LoadUnboundValue (SecurableClassDefinition.FindAll (CurrentFunction.CurrentTransaction), false);
+    }
+
+    protected void SecurableClassDefinitionList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
+    {
+      if (!IsReturningPostBack)
+      {
+        EditPermissionsFormFunction function = new EditPermissionsFormFunction (CurrentFunction.ClientID, ((SecurableClassDefinition) e.BusinessObject).ID);
+        function.TransactionMode = WxeTransactionMode.None;
+        ExecuteFunction (function);
+      }
+      else
+      {
+        if (!((EditPermissionsFormFunction) ReturningFunction).HasUserCancelled)
+          SecurableClassDefinitionList.LoadUnboundValue (SecurableClassDefinition.FindAll (CurrentFunction.CurrentTransaction), false);
+      }
+    }
   }
 }

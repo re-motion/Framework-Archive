@@ -49,15 +49,6 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl
       set { CurrentObject = value; }
     }
 
-    private void Step1 ()
-    {
-      // TODO check CurrentTransaction
-      if (SecurableClassDefinition.StateCombinations.Count == 0)
-        return;
-
-      //if (SecurableClassDefinition.
-    }
-
-    WxeResourcePageStep Step2 = new WxeResourcePageStep (typeof (EditPermissionsForm), "UI/AccessControl/EditPermissionsForm.aspx");
+    WxeResourcePageStep Step1 = new WxeResourcePageStep (typeof (EditPermissionsForm), "UI/AccessControl/EditPermissionsForm.aspx");
   }
 }

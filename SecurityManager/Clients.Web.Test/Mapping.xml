@@ -21,8 +21,8 @@
           <column>ClientID</column>
           <oppositeClass>Client</oppositeClass>
         </relationProperty>
-        <relationProperty name="Owner" relationID="OwnerUserToFile" cardinality="one" isMandatory="true">
-          <column>OwnerUserID</column>
+        <relationProperty name="Creator" relationID="CreatorUserToFile" cardinality="one" isMandatory="true">
+          <column>CreatorUserID</column>
           <oppositeClass>User</oppositeClass>
         </relationProperty>
         <relationProperty name="Clerk" relationID="ClerkUserToFile" cardinality="one" isMandatory="false">

@@ -59,10 +59,10 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
       set { DataContainer["Confidentiality"] = value; }
     }
 
-    public User Owner
+    public User Creator
     {
-      get { return (Rubicon.SecurityManager.Domain.OrganizationalStructure.User) GetRelatedObject ("Owner"); }
-      set { SetRelatedObject ("Owner", value); }
+      get { return (Rubicon.SecurityManager.Domain.OrganizationalStructure.User) GetRelatedObject ("Creator"); }
+      set { SetRelatedObject ("Creator", value); }
     }
 
     public User Clerk

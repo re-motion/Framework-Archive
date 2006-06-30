@@ -12,6 +12,10 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
     
     public partial class SecurableClassDefinitionListForm {
         protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
-        protected Rubicon.SecurityManager.Clients.Web.UI.AccessControl.SecurableClassDefinitionListControl SecurableClassDefinitionListControl;
+        protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
+        protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
+        protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
+        protected Rubicon.Web.UI.Controls.SmartLabel UserListLabel;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocList SecurableClassDefinitionList;
     }
 }

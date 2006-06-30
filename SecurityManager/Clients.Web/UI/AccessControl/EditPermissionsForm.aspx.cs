@@ -13,6 +13,7 @@ using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.UI.Controls;
 using Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl;
+using Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -29,34 +30,34 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     // construction and disposing
 
     // methods and properties
-    protected override IFocusableControl InitialFocusControl
+
+
+    protected new EditPermissionsFormFunction CurrentFunction
     {
-      get { return EditPermissionsControl.InitialFocusControl; }
+      get { return (EditPermissionsFormFunction) base.CurrentFunction; }
     }
 
-    protected override void OnLoad (EventArgs e)
+    protected override void LoadValues (bool interim)
     {
-      RegisterDataEditUserControl (EditPermissionsControl);
+      base.LoadValues (interim);
 
-      base.OnLoad (e);
+      CurrentObject.BusinessObject = CurrentFunction.SecurableClassDefinition;
+      CurrentObject.LoadValues (interim);
     }
 
-    protected void ApplyButton_Click (object sender, EventArgs e)
+    protected override bool ValidatePage ()
     {
-      if (EditPermissionsControl.Validate ())
-      {
-        SaveData ();
-        ExecuteNextStep ();
-      }
-      else
-      {
-        ErrorMessageControl.ShowError ();
-      }
+      bool isValid = true;
+      isValid &= base.ValidatePage ();
+      isValid &= CurrentObject.Validate ();
+
+      return isValid;
     }
 
-    private void SaveData ()
+    protected override void SaveValues (bool interim)
     {
-      EditPermissionsControl.SaveValues (false);
+      base.SaveValues (interim);
+      CurrentObject.SaveValues (interim);
     }
 
     protected void CancelButton_Click (object sender, EventArgs e)

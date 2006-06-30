@@ -10,13 +10,8 @@
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
     
-    public partial class EditPermissionsForm {
-        protected Rubicon.SecurityManager.Clients.Web.UI.ErrorMessageControl ErrorMessageControl;
+    public partial class EditAccessControlListControl {
         protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
         protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
-        protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
-        protected Rubicon.Web.UI.Controls.WebButton SaveButton;
-        protected Rubicon.Web.UI.Controls.WebButton CancelButton;
     }
 }
