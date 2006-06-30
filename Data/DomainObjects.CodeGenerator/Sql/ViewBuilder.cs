@@ -92,10 +92,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
             GetViewName (classDefinition),
             GetColumnList (allPropertyDefinitions));
 
-        bool isFirstSelect = true;
+        int numberOfSelects = 0;
         foreach (ClassDefinition tableRootClass in concreteClasses)
         {
-          if (!isFirstSelect)
+          if (numberOfSelects > 0)
             _createViewBuilder.AppendFormat ("  UNION\n");
 
           _createViewBuilder.AppendFormat (
@@ -107,9 +107,10 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
               tableRootClass.MyEntityName,
               classIDListForWhereClause);
 
-          isFirstSelect = false;
+          numberOfSelects++;
         }
-        _createViewBuilder.Append ("  WITH CHECK OPTION\n");
+        if (numberOfSelects == 1)
+          _createViewBuilder.Append ("  WITH CHECK OPTION\n");
       }
     }
 
@@ -182,7 +183,9 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
     {
       ClassDefinitionCollection classDefinitionsForWhereClause = new ClassDefinitionCollection (false);
 
-      classDefinitionsForWhereClause.Add (classDefinition);
+      if (classDefinition.GetEntityName () != null)
+        classDefinitionsForWhereClause.Add (classDefinition);
+
       FillClassDefinitionsForWhereClauseWithDerivedClasses (classDefinition, classDefinitionsForWhereClause);
 
       return classDefinitionsForWhereClause;
@@ -190,12 +193,14 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
 
     private void FillClassDefinitionsForWhereClauseWithDerivedClasses (
         ClassDefinition classDefinition, 
-        ClassDefinitionCollection classDefinitionsforWhereClause)
+        ClassDefinitionCollection classDefinitionsForWhereClause)
     {
       foreach (ClassDefinition derivedClass in classDefinition.DerivedClasses)
       {
-        classDefinitionsforWhereClause.Add (derivedClass);
-        FillClassDefinitionsForWhereClauseWithDerivedClasses (derivedClass, classDefinitionsforWhereClause);
+        if (derivedClass.GetEntityName () != null)
+          classDefinitionsForWhereClause.Add (derivedClass);
+  
+        FillClassDefinitionsForWhereClauseWithDerivedClasses (derivedClass, classDefinitionsForWhereClause);
       }
     }
 

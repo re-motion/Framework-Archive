@@ -317,12 +317,11 @@ CREATE VIEW [dbo].[CompanyView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNum
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID], null, null, null
     FROM [dbo].[Customer]
-    WHERE [ClassID] IN ('Company', 'Customer', 'Partner', 'DevelopmentPartner', 'AbstractWithoutConcreteClass')
+    WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')
   UNION
   SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], null, null, null, [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]
     FROM [dbo].[DevelopmentPartner]
-    WHERE [ClassID] IN ('Company', 'Customer', 'Partner', 'DevelopmentPartner', 'AbstractWithoutConcreteClass')
-  WITH CHECK OPTION
+    WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')
 GO
 
 CREATE VIEW [dbo].[CustomerView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID])
@@ -337,7 +336,7 @@ CREATE VIEW [dbo].[PartnerView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNum
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]
     FROM [dbo].[DevelopmentPartner]
-    WHERE [ClassID] IN ('Partner', 'DevelopmentPartner')
+    WHERE [ClassID] IN ('DevelopmentPartner')
   WITH CHECK OPTION
 GO
 

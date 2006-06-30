@@ -22,6 +22,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     private ClassDefinition _orderClass;
     private ClassDefinition _companyClass;
     private ClassDefinition _customerClass;
+    private ClassDefinition _partnerClass;
     private ClassDefinition _abstractWithoutConcreteClass;
     private ClassDefinition _concreteClass;
     private ClassDefinition _derivedClass;
@@ -53,6 +54,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
       _orderClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Order");
       _companyClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Company");
       _customerClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Customer");
+      _partnerClass = MappingConfiguration.ClassDefinitions.GetMandatory ("Partner");
       _abstractWithoutConcreteClass = MappingConfiguration.ClassDefinitions.GetMandatory ("AbstractWithoutConcreteClass");
       _concreteClass = MappingConfiguration.ClassDefinitions.GetMandatory ("ConcreteClass");
       _derivedClass = MappingConfiguration.ClassDefinitions.GetMandatory ("DerivedClass");
@@ -95,6 +97,11 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests
     protected ClassDefinition CustomerClass
     {
       get { return _customerClass; }
+    }
+
+    protected ClassDefinition PartnerClass
+    {
+      get { return _partnerClass; }
     }
 
     public ClassDefinition AbstractWithoutConcreteClass

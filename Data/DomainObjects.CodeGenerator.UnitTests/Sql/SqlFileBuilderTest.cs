@@ -62,7 +62,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
       Assert.IsTrue (classes.Contains (CeoClass));
       Assert.IsTrue (classes.Contains (CompanyClass));
       Assert.IsTrue (classes.Contains (CustomerClass));
-      Assert.IsTrue (classes.Contains (MappingConfiguration.ClassDefinitions.GetMandatory ("Partner")));
+      Assert.IsTrue (classes.Contains (PartnerClass));
       Assert.IsTrue (classes.Contains (MappingConfiguration.ClassDefinitions.GetMandatory ("DevelopmentPartner")));
       Assert.IsTrue (classes.Contains (AbstractWithoutConcreteClass));
       Assert.IsTrue (classes.Contains (MappingConfiguration.ClassDefinitions.GetMandatory ("Address")));

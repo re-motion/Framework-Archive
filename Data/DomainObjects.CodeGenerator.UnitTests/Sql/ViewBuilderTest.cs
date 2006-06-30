@@ -92,12 +92,26 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.UnitTests.Sql
           + "  WITH SCHEMABINDING AS\n"
           + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [CustomerType], [CustomerPropertyWithIdenticalNameInDifferentInheritanceBranches], [PrimaryOfficialID], null, null, null\n"
           + "    FROM [dbo].[Customer]\n"
-          + "    WHERE [ClassID] IN ('Company', 'Customer', 'Partner', 'DevelopmentPartner', 'AbstractWithoutConcreteClass')\n"
+          + "    WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')\n"
           + "  UNION\n"
           + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], null, null, null, [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]\n"
           + "    FROM [dbo].[DevelopmentPartner]\n"
-          + "    WHERE [ClassID] IN ('Company', 'Customer', 'Partner', 'DevelopmentPartner', 'AbstractWithoutConcreteClass')\n"
-          + "  WITH CHECK OPTION\n";
+          + "    WHERE [ClassID] IN ('Customer', 'DevelopmentPartner')\n";
+
+      Assert.AreEqual (expectedScript, _createViewBuilder.GetCreateViewScript ());
+    }
+
+    [Test]
+    public void AddViewWithAbstractClassWithSingleConcreteConcrete ()
+    {
+      _createViewBuilder.AddView (PartnerClass);
+
+      string expectedScript = "CREATE VIEW [dbo].[PartnerView] ([ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences])\n"
+        + "  WITH SCHEMABINDING AS\n"
+        + "  SELECT [ID], [ClassID], [Timestamp], [Name], [PhoneNumber], [AddressID], [Description], [PartnerPropertyWithIdenticalNameInDifferentInheritanceBranches], [Competences]\n"
+        + "    FROM [dbo].[DevelopmentPartner]\n"
+        + "    WHERE [ClassID] IN ('DevelopmentPartner')\n"
+        + "  WITH CHECK OPTION\n";
 
       Assert.AreEqual (expectedScript, _createViewBuilder.GetCreateViewScript ());
     }
