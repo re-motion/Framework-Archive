@@ -23,6 +23,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       _factory = new OrganizationalStructureFactory ();
     }
 
+    public void CreateEmptyTestData ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+    }
+
     public void CreateTestData ()
     {
       DatabaseHelper dbHelper = new DatabaseHelper ();

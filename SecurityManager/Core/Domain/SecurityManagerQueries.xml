@@ -77,4 +77,18 @@
           AND StateDefinitionView.Value = @stateValue;
     </statement>
   </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [AbstractRoleDefinitionView];
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Role.FindAll" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [RoleView];
+    </statement>
+  </query>
 </queries>

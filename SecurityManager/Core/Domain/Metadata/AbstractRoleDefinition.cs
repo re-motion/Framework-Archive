@@ -29,6 +29,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return transaction.QueryManager.GetCollection (queryBuilder.CreateQuery (abstractRoles));
     }
 
+    public static DomainObjectCollection FindAll (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll");
+      return transaction.QueryManager.GetCollection (query);
+    }
+
     public static new AbstractRoleDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (AbstractRoleDefinition) DomainObject.GetObject (id, clientTransaction);

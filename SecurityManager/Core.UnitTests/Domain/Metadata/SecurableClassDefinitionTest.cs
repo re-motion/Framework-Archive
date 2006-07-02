@@ -200,15 +200,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    public void FindAll_NoneFound ()
+    public void FindAll_EmptyResult ()
     {
       DatabaseHelper dbHelper = new DatabaseHelper ();
       dbHelper.SetupDB ();
 
       ClientTransaction transaction = new ClientTransaction ();
-      DomainObjectCollection foundClasses = SecurableClassDefinition.FindAll (transaction);
+      DomainObjectCollection result = SecurableClassDefinition.FindAll (transaction);
 
-      Assert.AreEqual (0, foundClasses.Count);
+      Assert.AreEqual (0, result.Count);
     }
 
     [Test]
@@ -223,9 +223,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       testHelper.Transaction.Commit ();
 
       ClientTransaction transaction = new ClientTransaction ();
-      DomainObjectCollection foundClasses = SecurableClassDefinition.FindAll (transaction);
+      DomainObjectCollection result = SecurableClassDefinition.FindAll (transaction);
 
-      Assert.AreEqual (2, foundClasses.Count);
+      Assert.AreEqual (2, result.Count);
     }
 
     [Test]

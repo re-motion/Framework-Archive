@@ -38,6 +38,30 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
+    public void FindAll_EmptyResult ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyTestData ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      DomainObjectCollection result = AbstractRoleDefinition.FindAll (transaction);
+
+      Assert.AreEqual (0, result.Count);
+    }
+
+    [Test]
+    public void FindAll_TwoFound ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateTestData ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      DomainObjectCollection result = AbstractRoleDefinition.FindAll (transaction);
+
+      Assert.AreEqual (2, result.Count);
+    }
+
+    [Test]
     public void Get_DisplayName ()
     {
       ClientTransaction transaction = new ClientTransaction ();

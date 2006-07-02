@@ -39,7 +39,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       ArgumentUtility.CheckNotNull ("transaction", transaction);
 
       Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll");
-
       return transaction.QueryManager.GetCollection (query);
     }
 

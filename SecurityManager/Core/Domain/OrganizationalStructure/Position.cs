@@ -36,6 +36,15 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       return (DomainObjectCollection) clientTransaction.QueryManager.GetCollection (query);
     }
 
+    //TODO: Rewrite with test
+    public static DomainObjectCollection FindAll (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll");
+      return transaction.QueryManager.GetCollection (query);
+    }
+
     // member fields
 
     // construction and disposing
