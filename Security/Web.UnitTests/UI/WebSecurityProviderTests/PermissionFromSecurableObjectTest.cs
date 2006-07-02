@@ -40,6 +40,17 @@ namespace Rubicon.Security.Web.UnitTests.UI.WebSecurityProviderTests
     }
 
     [Test]
+    public void HasAccessGranted_WithoutHandler ()
+    {
+      _testHelper.ExpectObjectSecurityStrategyToBeNeverCalled ();
+
+      bool hasAccess = _securityProvider.HasAccess (_testHelper.CreateSecurableObject (), null);
+
+      _testHelper.VerifyAllExpectationsHaveBeenMet ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
     public void HasAccessGranted ()
     {
       _testHelper.ExpectHasAccess (new Enum[] { GeneralAccessType.Read }, true);

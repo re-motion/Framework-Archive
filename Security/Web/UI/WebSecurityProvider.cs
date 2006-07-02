@@ -29,7 +29,8 @@ namespace Rubicon.Security.Web.UI
 
     public bool HasAccess (ISecurableObject securableObject, Delegate handler)
     {
-      ArgumentUtility.CheckNotNull ("handler", handler);
+      if (handler == null)
+        return true;
 
       List<DemandTargetPermissionAttribute> attributes = GetPermissionAttributes (handler.GetInvocationList ());
 
