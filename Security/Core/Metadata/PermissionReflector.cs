@@ -8,12 +8,17 @@ namespace Rubicon.Security.Metadata
 {
   public class PermissionReflector : IPermissionProvider
   {
+    private const string c_memberNotFoundMessage = "The member '{0}' could not be found.";
+    private const string c_memberHasMultipleAttributesMessage = "The member '{0}' has multiple {1} defined.";
+    private const string c_memberPermissionsOnlyInBaseClassMessage = "The {2} must not be defined on members overriden or redefined in derived classes. "
+      + "A member '{0}' exists in class '{1}' and its base class.";
+
     public Enum[] GetRequiredMethodPermissions (Type type, string methodName)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-      return GetRequiredMethodPermissions (type, methodName, BindingFlags.Public | BindingFlags.Instance);
+      return GetRequiredPermissions<DemandMethodPermissionAttribute> (type, methodName, BindingFlags.Public | BindingFlags.Instance);
     }
 
     public Enum[] GetRequiredStaticMethodPermissions (Type type, string methodName)
@@ -21,67 +26,92 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-      return GetRequiredMethodPermissions (type, methodName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+      return GetRequiredPermissions<DemandMethodPermissionAttribute> (type, methodName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
     }
 
-    public Enum[] GetRequiredMethodPermissions (MethodBase methodInfo)
+    public Enum[] GetRequiredPropertyReadPermissions (Type type, string propertyName)
     {
-      if (!methodInfo.IsDefined (typeof (DemandMethodPermissionAttribute), true))
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+      return GetRequiredPermissions<DemandPropertyReadPermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.Instance);
+    }
+
+    public Enum[] GetRequiredPropertyWritePermissions (Type type, string propertyName)
+    {
+      ArgumentUtility.CheckNotNull ("type", type);
+      ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
+
+      return GetRequiredPermissions<DemandPropertyWritePermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.Instance);
+    }
+
+    public Enum[] GetPermissions<T> (MemberInfo methodInfo) where T : BaseDemandPermissionAttribute
+    {
+      if (!methodInfo.IsDefined (typeof (T), true))
         return new Enum[0];
 
-      DemandMethodPermissionAttribute[] demandPermissionAttributes =
-          (DemandMethodPermissionAttribute[]) methodInfo.GetCustomAttributes (typeof (DemandMethodPermissionAttribute), true);
+      T[] permissionAttributes = (T[]) methodInfo.GetCustomAttributes (typeof (T), true);
 
-      DemandMethodPermissionAttribute demandPermission = demandPermissionAttributes[0];
+      T permission = permissionAttributes[0];
 
       List<Enum> permissions = new List<Enum> ();
-      foreach (Enum accessTypeEnum in demandPermission.AccessTypes)
+      foreach (Enum accessTypeEnum in permission.AccessTypes)
       {
         if (!permissions.Contains (accessTypeEnum))
           permissions.Add (accessTypeEnum);
       }
 
-      return permissions.ToArray();
+      return permissions.ToArray ();
     }
 
-    private bool IsSecuredMethod (MemberInfo member, object filterCriteria)
+    private bool IsSecuredMethod<T> (MemberInfo member, object filterCriteria) where T : BaseDemandPermissionAttribute
     {
-      string methodName = (string) filterCriteria;
-      MethodInfo methodInfo = (MethodInfo) member;
-
-      return methodInfo.Name == methodName && methodInfo.IsDefined (typeof (DemandMethodPermissionAttribute), true);
+      string memberName = (string) filterCriteria;
+      return member.Name == memberName && member.IsDefined (typeof (T), true);
     }
 
-    private Enum[] GetRequiredMethodPermissions (Type type, string methodName, BindingFlags bindingFlags)
+    private Enum[] GetRequiredPermissions<T> (Type type, string memberName, BindingFlags bindingFlags) where T : BaseDemandPermissionAttribute
     {
-      if (!TypeHasMethod (type, methodName, bindingFlags))
-        throw new ArgumentException (string.Format ("The method '{0}' could not be found.", methodName), "methodName");
+      MemberTypes memberType = GetApplicableMemberTypesFromAttributeType (typeof (T));
+      string attributeName = typeof (T).Name;
 
-      MemberInfo[] foundMethods = type.FindMembers (MemberTypes.Method, bindingFlags, IsSecuredMethod, methodName);
-      if (foundMethods.Length == 0)
+      if (!TypeHasMember (type, memberType, memberName, bindingFlags))
+        throw new ArgumentException (string.Format (c_memberNotFoundMessage, memberName), "memberName");
+
+      MemberInfo[] foundMembers = type.FindMembers (memberType, bindingFlags, IsSecuredMethod<T>, memberName);
+      if (foundMembers.Length == 0)
         return new Enum[0];
 
-      if (foundMethods.Length > 1)
-      {
-        throw new ArgumentException (string.Format (
-            "The method '{0}' has multiple RequiredMethodPermissionAttributes defined.", methodName), "methodName");
-      }
+      if (foundMembers.Length > 1)
+        throw new ArgumentException (string.Format (c_memberHasMultipleAttributesMessage, memberName, attributeName), "memberName");
 
-      MethodInfo foundMethod = (MethodInfo) foundMethods[0];
-      if (type.BaseType != null && foundMethod.DeclaringType == type && TypeHasMethod (type.BaseType, methodName, bindingFlags))
-      {
-        throw new ArgumentException (string.Format (
-            "The RequiredMethodPermissionAttributes must not be defined on methods overriden or redefined in derived classes. "
-            + "A method '{0}' exists in class '{1}' and its base class.", methodName, type.FullName), "methodName");
-      }
+      MemberInfo foundMember = (MemberInfo) foundMembers[0];
+      if (type.BaseType != null && foundMember.DeclaringType == type && TypeHasMember (type.BaseType, memberType, memberName, bindingFlags))
+        throw new ArgumentException (string.Format (c_memberPermissionsOnlyInBaseClassMessage, memberName, type.FullName, attributeName), "memberName");
 
-      return GetRequiredMethodPermissions (foundMethod);
+      return GetPermissions<T> (foundMember);
     }
 
-    private bool TypeHasMethod (Type type, string methodName, BindingFlags bindingFlags)
+    private bool TypeHasMember (Type type, MemberTypes memberType, string methodName, BindingFlags bindingFlags)
     {
-      MemberInfo[] existingMembers = type.GetMember (methodName, MemberTypes.Method, bindingFlags);
+      MemberInfo[] existingMembers = type.GetMember (methodName, memberType, bindingFlags);
       return existingMembers.Length > 0;
+    }
+
+    private MemberTypes GetApplicableMemberTypesFromAttributeType (Type attributeType)
+    {
+      AttributeUsageAttribute[] attributeUsageAttributes = (AttributeUsageAttribute[]) attributeType.GetCustomAttributes (typeof (AttributeUsageAttribute), false);
+      AttributeTargets targets = attributeUsageAttributes[0].ValidOn;
+
+      MemberTypes memberTypes = 0;
+
+      if ((targets & AttributeTargets.Method) != 0)
+        memberTypes |= MemberTypes.Method;
+
+      if ((targets & AttributeTargets.Property) != 0)
+        memberTypes |= MemberTypes.Property;
+
+      return memberTypes;
     }
   }
 }

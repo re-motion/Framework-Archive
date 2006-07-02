@@ -17,5 +17,15 @@ namespace Rubicon.Security.UnitTests.Configuration
     {
       throw new Exception ("The method or operation is not implemented.");
     }
+
+    public Enum[] GetRequiredPropertyReadPermissions (Type type, string methodName)
+    {
+      throw new Exception ("The method or operation is not implemented.");
+    }
+
+    public Enum[] GetRequiredPropertyWritePermissions (Type type, string methodName)
+    {
+      throw new Exception ("The method or operation is not implemented.");
+    }
   }
 }

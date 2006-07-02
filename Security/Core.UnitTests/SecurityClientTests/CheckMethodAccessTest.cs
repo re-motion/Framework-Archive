@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 using NUnit.Framework;
-using NMock2;
 
 using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
 using Rubicon.Security.Metadata;
@@ -51,7 +50,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The method 'Save' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+    [ExpectedException (typeof (ArgumentException), "The member 'Save' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void InstanceMethodWithoutDefinedPermissions_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectGetRequiredMethodPermissions ("Save", new Enum[0]);
@@ -82,7 +81,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
     [Test]
     [ExpectedException (typeof (ArgumentException),
-        "The method 'CreateForSpecialCase' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
+        "The member 'CreateForSpecialCase' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void StaticMethodWithoutDefinedPermissions_ShouldThrowArgumentException ()
     {
       _testHelper.ExpectGetRequiredStaticMethodPermissions ("CreateForSpecialCase", new Enum[0]);

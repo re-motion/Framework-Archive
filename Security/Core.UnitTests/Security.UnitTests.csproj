@@ -96,9 +96,13 @@
     <Compile Include="ObjectSecurityStrategyTest.cs" />
     <Compile Include="SecurityClientTests\CheckConstructorAccessTest.cs" />
     <Compile Include="SecurityClientTests\CheckMethodAccessTest.cs" />
+    <Compile Include="SecurityClientTests\CheckPropertyReadAccessTest.cs" />
+    <Compile Include="SecurityClientTests\CheckPropertyWriteAccessTest.cs" />
+    <Compile Include="SecurityClientTests\HasPropertyWriteAccessTest.cs" />
     <Compile Include="SecurityClientTests\HasAccessTest.cs" />
     <Compile Include="SecurityClientTests\HasConstructorAccessTest.cs" />
     <Compile Include="SecurityClientTests\HasMethodAccessTest.cs" />
+    <Compile Include="SecurityClientTests\HasPropertyReadAccessTest.cs" />
     <Compile Include="SecurityClientTests\SecurityClientTestHelper.cs" />
     <Compile Include="SecurityContextTest.cs" />
     <Compile Include="ObjectSecurityProviderTest.cs" />

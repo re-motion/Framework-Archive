@@ -134,7 +134,7 @@ namespace Rubicon.Security.Metadata
       Dictionary<Enum, EnumValueInfo> accessTypes = new Dictionary<Enum, EnumValueInfo> ();
       foreach (MethodBase methodbase in methodBases)
       {
-        Enum[] values = _permissionReflector.GetRequiredMethodPermissions (methodbase);
+        Enum[] values = _permissionReflector.GetPermissions<DemandMethodPermissionAttribute> (methodbase);
         foreach (Enum value in values)
         {
           EnumValueInfo accessType = _enumerationReflector.GetValue (value, cache);

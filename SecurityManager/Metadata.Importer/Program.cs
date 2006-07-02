@@ -14,8 +14,6 @@ namespace Rubicon.SecurityManager.Metadata.Importer
   {
     public static int Main (string[] args)
     {
-      ClientTransaction transaction = new ClientTransaction ();
-
       CommandLineArguments arguments = GetArguments (args);
       if (arguments == null)
         return 1;

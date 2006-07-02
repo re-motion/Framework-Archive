@@ -98,5 +98,17 @@ namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
     public void Close ()
     {
     }
+
+    public bool IsEnabled
+    {
+      get { return true; }
+    }
+
+    [DemandPropertyReadPermission (GeneralAccessType.Create)]
+    [DemandPropertyWritePermission (GeneralAccessType.Find)]
+    public bool IsVisible
+    {
+      get { return true; }
+    }
   }
 }

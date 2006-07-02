@@ -18,6 +18,15 @@ namespace Rubicon.Security.Metadata.Extractor
         Placeholder = "metadata")]
     public string MetadataOutputFile;
 
+    [CommandLineStringArgument ("languages", true,
+        Description="A comma separated list of the language codes for the multilingual descriptions of the metadata objects.",
+        Placeholder="languageList")]
+    public string Languages = string.Empty;
+
+    [CommandLineFlagArgument ("suppress", false,
+        Description = "Suppress export of metadata file.")]
+    public bool SuppressMetadata = false;
+
     [CommandLineFlagArgument ("verbose", false,
         Description = "Verbose output")]
     public bool Verbose;

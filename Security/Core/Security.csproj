@@ -40,9 +40,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Security.build" />
+    <Compile Include="BaseDemandPermissionAttribute.cs" />
     <Compile Include="BaseSecurityStrategy.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
+    <Compile Include="DemandPropertyReadPermissionAttribute.cs" />
+    <Compile Include="DemandPropertyWritePermissionAttribute.cs" />
     <Compile Include="FunctionalSecurityStrategy.cs" />
     <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
