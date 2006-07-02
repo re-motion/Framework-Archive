@@ -8,8 +8,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.Metadata
 {
-
-  public class AccessTypeReflector : Rubicon.Security.Metadata.IAccessTypeReflector
+  public class AccessTypeReflector : IAccessTypeReflector
   {
     // types
 
@@ -74,24 +73,23 @@ namespace Rubicon.Security.Metadata
           cache.AddAccessType (entry.Key, entry.Value);
       }
 
-      foreach (KeyValuePair<Enum, EnumValueInfo> entry in GetAccessTypesForMethods (type, cache))
-      {
-        if (!accessTypes.ContainsKey (entry.Key))
-          accessTypes.Add (entry.Key, entry.Value);
-      }
+      AddAccessTypes (type, accessTypes, cache);
 
       return new List<EnumValueInfo> (accessTypes.Values);
     }
 
 
-    private Dictionary<Enum, EnumValueInfo> GetAccessTypesForMethods (Type type, MetadataCache cache)
+    private void AddAccessTypes (Type type, Dictionary<Enum, EnumValueInfo> accessTypes, MetadataCache cache)
     {
       MemberInfo[] instanceMethods = GetInstanceMethods (type);
       MemberInfo[] staticMethods = GetStaticMethods (type);
       MemberInfo[] constructors = GetConstructors (type);
-
       MemberInfo[] memberInfos = (MemberInfo[]) ArrayUtility.Combine (instanceMethods, staticMethods, constructors);
-      return GetAccessTypesFromRequiredMethodPermissions ((MethodBase[]) ArrayUtility.Convert (memberInfos, typeof (MethodBase)), cache);
+      AddAccessTypesFromAttribute<DemandMethodPermissionAttribute> (memberInfos, accessTypes, cache);
+      
+      MemberInfo[] properties = GetProperties (type);
+      AddAccessTypesFromAttribute<DemandPropertyReadPermissionAttribute> (properties, accessTypes, cache);
+      AddAccessTypesFromAttribute<DemandPropertyWritePermissionAttribute> (properties, accessTypes, cache);
     }
 
     private MemberInfo[] GetConstructors (Type type)
@@ -99,8 +97,8 @@ namespace Rubicon.Security.Metadata
       MemberInfo[] constructors = type.FindMembers (
           MemberTypes.Constructor,
           BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public,
-          FindRequriedPermissionsFilter,
-          null);
+          FindSecuredMembersFilter,
+          new Type[] { typeof (DemandMethodPermissionAttribute) });
       return constructors;
     }
 
@@ -109,8 +107,8 @@ namespace Rubicon.Security.Metadata
       MemberInfo[] staticMethods = type.FindMembers (
           MemberTypes.Method,
           BindingFlags.Static | BindingFlags.Public | BindingFlags.FlattenHierarchy,
-          FindRequriedPermissionsFilter,
-          null);
+          FindSecuredMembersFilter,
+          new Type[] { typeof (DemandMethodPermissionAttribute) });
       return staticMethods;
     }
 
@@ -119,22 +117,39 @@ namespace Rubicon.Security.Metadata
       MemberInfo[] instanceMethods = type.FindMembers (
           MemberTypes.Method,
           BindingFlags.Instance | BindingFlags.Public,
-          FindRequriedPermissionsFilter,
-          null);
+          FindSecuredMembersFilter,
+          new Type[] { typeof (DemandMethodPermissionAttribute) });
       return instanceMethods;
     }
 
-    private bool FindRequriedPermissionsFilter (MemberInfo member, object filterCriteria)
+    private MemberInfo[] GetProperties (Type type)
     {
-      return Attribute.IsDefined (member, typeof (DemandMethodPermissionAttribute), true);
+      MemberInfo[] instanceMethods = type.FindMembers (
+          MemberTypes.Property,
+          BindingFlags.Instance | BindingFlags.Public,
+          FindSecuredMembersFilter,
+          new Type[] { typeof (DemandPropertyReadPermissionAttribute), typeof (DemandPropertyWritePermissionAttribute) });
+      return instanceMethods;
+    }
+
+    private bool FindSecuredMembersFilter (MemberInfo member, object filterCriteria)
+    {
+      Type[] requiredPermissionAttributes = (Type[]) filterCriteria;
+
+      foreach (Type requiredPermissionAttribute in requiredPermissionAttributes)
+      {
+        if (Attribute.IsDefined (member, requiredPermissionAttribute, true))
+          return true;
+      }
+
+      return false;
     }  
 
-    private Dictionary<Enum, EnumValueInfo> GetAccessTypesFromRequiredMethodPermissions (MethodBase[] methodBases, MetadataCache cache)
+    private void AddAccessTypesFromAttribute<T> (MemberInfo[] memberInfos, Dictionary<Enum, EnumValueInfo> accessTypes, MetadataCache cache) where T : BaseDemandPermissionAttribute
     {
-      Dictionary<Enum, EnumValueInfo> accessTypes = new Dictionary<Enum, EnumValueInfo> ();
-      foreach (MethodBase methodbase in methodBases)
+      foreach (MemberInfo memberInfo in memberInfos)
       {
-        Enum[] values = _permissionReflector.GetPermissions<DemandMethodPermissionAttribute> (methodbase);
+        Enum[] values = _permissionReflector.GetPermissions<T> (memberInfo);
         foreach (Enum value in values)
         {
           EnumValueInfo accessType = _enumerationReflector.GetValue (value, cache);
@@ -146,7 +161,6 @@ namespace Rubicon.Security.Metadata
             accessTypes.Add (value, accessType);
         }
       }
-      return accessTypes;
     }
   }
 }

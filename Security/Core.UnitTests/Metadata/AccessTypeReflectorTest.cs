@@ -13,7 +13,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Metadata
 {
-
   [TestFixture]
   public class AccessTypeReflectorTest
   {
@@ -144,6 +143,23 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.AreEqual (7, expectedAccessTypes.Count);
       foreach (EnumValueInfo expected in expectedAccessTypes)
         Assert.Contains (expected, actualAccessTypes);
+    }
+
+    [Test]
+    public void GetAccessTypesFromType_SecuredProperties ()
+    {
+      List<EnumValueInfo> actualAccessTypes = _accessTypeReflector.GetAccessTypesFromType (typeof (SecurableObjectWithSecuredProperties), _cache);
+
+      Assert.IsNotNull (actualAccessTypes);
+      Assert.AreEqual (8, actualAccessTypes.Count);
+      EnumValueInfoAssert.Contains ("Create", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Read", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Edit", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Delete", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Search", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("Find", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("ReadSecret", actualAccessTypes);
+      EnumValueInfoAssert.Contains ("WriteSecret", actualAccessTypes);
     }
   }
 }

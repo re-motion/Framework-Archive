@@ -84,6 +84,7 @@
     <Compile Include="SampleDomain\PermissionReflection\DerivedSecurableObject.cs" />
     <Compile Include="SampleDomain\PermissionReflection\SecurableObject.cs" />
     <Compile Include="SampleDomain\SecurableObjectWithSecuredInstanceMethods.cs" />
+    <Compile Include="SampleDomain\SecurableObjectWithSecuredProperties.cs" />
     <Compile Include="SampleDomain\SecurableObjectWithSecuredStaticMethods.cs" />
     <Compile Include="SampleDomain\SimpleEnum.cs" />
     <Compile Include="SampleDomain\SimpleType.cs" />
