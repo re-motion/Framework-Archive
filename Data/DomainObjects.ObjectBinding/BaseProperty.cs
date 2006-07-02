@@ -126,8 +126,8 @@ public class BaseProperty : IBusinessObjectProperty
     IObjectSecurityProvider objectSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IObjectSecurityProvider> ();
     if (objectSecurityProvider == null)
       return true;
-
-    return objectSecurityProvider.HasAccessOnGetAccessor (securableObject);
+    
+    return objectSecurityProvider.HasAccessOnGetAccessor (securableObject, _propertyInfo.Name);
   }
 
   /// <summary> Indicates whether this property can be accessed by the user. </summary>
@@ -156,7 +156,7 @@ public class BaseProperty : IBusinessObjectProperty
     if (objectSecurityProvider == null)
       return false;
 
-    return !objectSecurityProvider.HasAccessOnSetAccessor (securableObject);
+    return !objectSecurityProvider.HasAccessOnSetAccessor (securableObject, _propertyInfo.Name);
   }
 
   /// <summary>

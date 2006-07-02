@@ -104,7 +104,7 @@ namespace Rubicon.Security
 
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName)
     {
-      return HasPropertyReadAccess (securableObject, propertyName, _userProvider.GetUser ());
+      return HasPropertyWriteAccess (securableObject, propertyName, _userProvider.GetUser ());
     }
 
     public bool HasPropertyWriteAccess (ISecurableObject securableObject, string propertyName, IPrincipal user)

@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-using NMock2;
+using Rhino.Mocks;
 using NUnit.Framework;
 
 using Rubicon.Security;
 using Rubicon.Security.UnitTests.SampleDomain;
 using System.Security.Principal;
 using Rubicon.Security.Configuration;
+using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -22,12 +23,13 @@ namespace Rubicon.Security.UnitTests
     // member fields
 
     private IObjectSecurityProvider _securityProvider;
-    private Mockery _mocks;
+    private MockRepository _mocks;
     private ISecurableObject _mockSecurableObject;
     private IObjectSecurityStrategy _mockObjectSecurityStrategy;
     private ISecurityService _securityService;
     private IUserProvider _userProvider;
     private IPrincipal _user;
+    private IPermissionProvider _permissionProvider;
 
     // construction and disposing
 
@@ -42,85 +44,100 @@ namespace Rubicon.Security.UnitTests
     {
       _securityProvider = new ObjectSecurityProvider ();
 
-      _mocks = new Mockery ();
+      _mocks = new MockRepository ();
 
-      _securityService = _mocks.NewMock<ISecurityService> ();
+      _securityService = _mocks.CreateMock<ISecurityService> ();
+      _userProvider = _mocks.CreateMock<IUserProvider> ();
+      _permissionProvider = _mocks.CreateMock<IPermissionProvider> ();
+
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _userProvider = _mocks.NewMock<IUserProvider> ();
-      Stub.On (_userProvider)
-          .Method ("GetUser")
-          .WithNoArguments ()
-          .Will (Return.Value (_user));
+      SetupResult.For (_userProvider.GetUser ()).Return (_user);
       
       SecurityConfiguration.Current.SecurityService = _securityService;
       SecurityConfiguration.Current.UserProvider = _userProvider;
-      
-      _mockObjectSecurityStrategy = _mocks.NewMock<IObjectSecurityStrategy> ();
-      _mockSecurableObject = _mocks.NewMock<ISecurableObject> ();
-      Stub.On (_mockSecurableObject)
-          .Method ("GetSecurityStrategy")
-          .WithNoArguments ()
-          .Will (Return.Value (_mockObjectSecurityStrategy));
+      SecurityConfiguration.Current.PermissionProvider = _permissionProvider;
+
+      _mockObjectSecurityStrategy = _mocks.CreateMock<IObjectSecurityStrategy> ();
+      _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
+      SetupResult.For (_mockSecurableObject.GetSecurityStrategy ()).Return (_mockObjectSecurityStrategy);
     }
 
     [Test]
-    public void HasAccessOnGetAccessorWithValidAccessType ()
+    public void HasAccessOnGetAccessor_ValidAccessType ()
     {
-      Expect.Once.On (_mockObjectSecurityStrategy)
-          .Method ("HasAccess")
-          .With (_securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Read) })
-          .Will (Return.Value (true));
+      SetupAccessForRead (true);
+      SetupNamePropertyReadPermissions ();
+      _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_mockSecurableObject);
+      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_mockSecurableObject, "Name");
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-
+      _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasAccessOnGetAccessorWithInvalidAccessType ()
+    public void HasAccessOnGetAccessor_InvalidAccessType ()
     {
-      Expect.Once.On (_mockObjectSecurityStrategy)
-          .Method ("HasAccess")
-          .With (_securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Read) })
-          .Will (Return.Value (false));
+      SetupAccessForRead (false);
+      SetupNamePropertyReadPermissions ();
+      _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_mockSecurableObject);
+      bool hasAccess = _securityProvider.HasAccessOnGetAccessor (_mockSecurableObject, "Name");
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-
+      _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
     }
 
     [Test]
-    public void HasAccessOnSetAccessorWithValidAccessType ()
+    public void HasAccessOnSetAccessor_ValidAccessType ()
     {
-      Expect.Once.On (_mockObjectSecurityStrategy)
-          .Method ("HasAccess")
-          .With (_securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Edit) })
-          .Will (Return.Value (true));
+      SetupAccessForWrite (true);
+      SetupNamePropertyWritePermissions ();
+      _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_mockSecurableObject);
+      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_mockSecurableObject, "Name");
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-
+      _mocks.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasAccessOnSetAccessorWithInvalidAccessType ()
+    public void HasAccessOnSetAccessor_InvalidAccessType ()
     {
-      Expect.Once.On (_mockObjectSecurityStrategy)
-          .Method ("HasAccess")
-          .With (_securityService, _user, new AccessType[] { AccessType.Get (GeneralAccessType.Edit) })
-          .Will (Return.Value (false));
+      SetupAccessForWrite (false);
+      SetupNamePropertyWritePermissions ();
+      _mocks.ReplayAll ();
 
-      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_mockSecurableObject);
+      bool hasAccess = _securityProvider.HasAccessOnSetAccessor (_mockSecurableObject, "Name");
 
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-
+      _mocks.VerifyAll ();
       Assert.IsFalse (hasAccess);
+    }
+
+    private void SetupAccessForRead (bool accessAllowed)
+    {
+      SetupAccess (accessAllowed, GeneralAccessType.Read);
+    }
+
+    private void SetupAccessForWrite (bool accessAllowed)
+    {
+      SetupAccess (accessAllowed, GeneralAccessType.Edit);
+    }
+
+    private void SetupAccess (bool accessAllowed, params Enum[] expectedAccessTypes)
+    {
+      AccessType[] accessTypes = Array.ConvertAll<Enum, AccessType> (expectedAccessTypes, new Converter<Enum, AccessType> (AccessType.Get));
+      Expect.Call (_mockObjectSecurityStrategy.HasAccess (_securityService, _user, accessTypes)).Return (accessAllowed);
+    }
+
+    private void SetupNamePropertyReadPermissions (params Enum[] accessTypes)
+    {
+      Expect.Call (_permissionProvider.GetRequiredPropertyReadPermissions (typeof (object), "Name")).IgnoreArguments ().Return (accessTypes);
+    }
+
+    private void SetupNamePropertyWritePermissions (params Enum[] accessTypes)
+    {
+      Expect.Call (_permissionProvider.GetRequiredPropertyWritePermissions (typeof (object), "Name")).IgnoreArguments ().Return (accessTypes);
     }
   }
 }

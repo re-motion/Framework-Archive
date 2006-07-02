@@ -22,20 +22,20 @@ namespace Rubicon.Security
 
     // methods and properties
 
-    public bool HasAccessOnGetAccessor (ISecurableObject securableObject)
+    public bool HasAccessOnGetAccessor (ISecurableObject securableObject, string propertyName)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      return securityClient.HasAccess (securableObject, AccessType.Get (GeneralAccessType.Read));
+      return securityClient.HasPropertyReadAccess (securableObject, propertyName);
     }
 
-    public bool HasAccessOnSetAccessor (ISecurableObject securableObject)
+    public bool HasAccessOnSetAccessor (ISecurableObject securableObject, string propertyName)
     {
       ArgumentUtility.CheckNotNull ("securableObject", securableObject);
 
       SecurityClient securityClient = SecurityClient.CreateSecurityClientFromConfiguration ();
-      return securityClient.HasAccess (securableObject, AccessType.Get (GeneralAccessType.Edit));
+      return securityClient.HasPropertyWriteAccess (securableObject, propertyName);
     }
   }
 }
