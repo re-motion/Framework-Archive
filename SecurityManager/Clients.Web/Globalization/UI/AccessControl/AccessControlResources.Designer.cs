@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EditAccessControlListControlResources {
+    internal class AccessControlResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EditAccessControlListControlResources() {
+        internal AccessControlResources() {
         }
         
         /// <summary>
@@ -39,8 +39,8 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl.EditAccessCont" +
-                            "rolListControlResources", typeof(EditAccessControlListControlResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl.AccessControlR" +
+                            "esources", typeof(AccessControlResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -58,6 +58,33 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Berechtigung anlegen.
+        /// </summary>
+        internal static string NewAccessControlEntryButton {
+            get {
+                return ResourceManager.GetString("NewAccessControlEntryButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status zuordnen.
+        /// </summary>
+        internal static string NewStateCombinationButton {
+            get {
+                return ResourceManager.GetString("NewStateCombinationButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Berechtigungen.
+        /// </summary>
+        internal static string PermissionsLabel {
+            get {
+                return ResourceManager.GetString("PermissionsLabel", resourceCulture);
             }
         }
     }

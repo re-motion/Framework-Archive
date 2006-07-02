@@ -356,6 +356,11 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
       Controls.Add (_repeaterInternal);
     }
 
+    protected override void OnDataBinding (EventArgs e)
+    {
+      base.OnDataBinding (e);
+    }
+
     public override ControlCollection Controls
     {
       get

@@ -43,6 +43,9 @@
   <ItemGroup>
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="SecurityManager.Clients.Web.build" />
+    <Content Include="UI\AccessControl\EditPermissionControl.ascx" />
+    <Content Include="UI\AccessControl\EditAccessControlEntryControl.ascx" />
+    <Content Include="UI\AccessControl\EditStateCombinationControl.ascx" />
     <Content Include="UI\AccessControl\EditAccessControlListControl.ascx" />
     <Content Include="UI\AccessControl\EditPermissionsForm.aspx" />
     <Content Include="UI\AccessControl\SecurableClassDefinitionListForm.aspx" />
@@ -95,10 +98,10 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Globalization\UI\AccessControl\EditAccessControlListControlResources.Designer.cs">
+    <Compile Include="Globalization\UI\AccessControl\AccessControlResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EditAccessControlListControlResources.resx</DependentUpon>
+      <DependentUpon>AccessControlResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Globalization\UI\AccessControl\EditPermissionsControlResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -234,6 +237,27 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>UserListFormResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditPermissionControl.ascx.cs">
+      <DependentUpon>EditPermissionControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditPermissionControl.ascx.designer.cs">
+      <DependentUpon>EditPermissionControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditAccessControlEntryControl.ascx.cs">
+      <DependentUpon>EditAccessControlEntryControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditAccessControlEntryControl.ascx.designer.cs">
+      <DependentUpon>EditAccessControlEntryControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditStateCombinationControl.ascx.cs">
+      <DependentUpon>EditStateCombinationControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\AccessControl\EditStateCombinationControl.ascx.designer.cs">
+      <DependentUpon>EditStateCombinationControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="UI\AccessControl\EditAccessControlListControl.ascx.cs">
       <DependentUpon>EditAccessControlListControl.ascx</DependentUpon>
@@ -486,10 +510,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Globalization\UI\AccessControl\EditAccessControlListControlResources.resx">
+    <EmbeddedResource Include="Globalization\UI\AccessControl\AccessControlResources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EditAccessControlListControlResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>AccessControlResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\AccessControl\EditPermissionsControlResources.resx">
       <SubType>Designer</SubType>

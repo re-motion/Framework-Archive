@@ -10,11 +10,8 @@
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
     
-    public partial class EditAccessControlListControl {
+    public partial class EditStateCombinationControl {
         protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
-        protected System.Web.UI.HtmlControls.HtmlGenericControl StateCombinationControls;
-        protected System.Web.UI.HtmlControls.HtmlGenericControl AccessControlEntryControls;
-        protected Rubicon.Web.UI.Controls.WebButton NewStateCombinationButton;
-        protected Rubicon.Web.UI.Controls.WebButton NewAccessControlEntryButton;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue StateDefinitionField;
     }
 }

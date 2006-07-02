@@ -1,4 +1,4 @@
-<%@ Master Language="C#" AutoEventWireup="true" Codebehind="OrganizationalStructureMasterPage.Master.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.SecurityManagerMasterPage" %>
+<%@ Master Language="C#" AutoEventWireup="true" Codebehind="SecurityManagerMasterPage.Master.cs" Inherits="Rubicon.SecurityManager.Clients.Web.UI.SecurityManagerMasterPage" %>
 <%@ Register TagPrefix="securityManager" Src="SecurityManagerNavigationTabs.ascx" TagName="SecurityManagerNavigationTabs" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -24,7 +24,7 @@
       </tr>
       <tr>
         <td class="contentViewActiveView">
-          <div class="contentViewActiveView">
+          <div id="contentViewActiveView" class="contentViewActiveView">
             <asp:ContentPlaceHolder ID="MainContentPlaceHolder" runat="server" />
           </div>
         </td>

@@ -85,6 +85,14 @@
       <Project>{FBE0CBDD-82FF-4173-8536-47D3B5BC2E98}</Project>
       <Name>Security</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Security\Web\Security.Web.csproj">
+      <Project>{9B6F6D1A-A7EA-4EE8-B36E-E31CF7E518E3}</Project>
+      <Name>Security.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Web\Core\Web.csproj">
+      <Project>{DF8BA786-9679-4879-8757-16AE2709D83A}</Project>
+      <Name>Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Clients.Web\SecurityManager.Clients.Web.csproj">
       <Project>{558839F6-D762-47BA-A26C-1D4AA75D0994}</Project>
       <Name>SecurityManager.Clients.Web</Name>

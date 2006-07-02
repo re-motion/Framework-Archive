@@ -7,6 +7,7 @@ using Rubicon.Globalization;
 using Rubicon.Utilities;
 using Rubicon.Data;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 {
@@ -15,6 +16,10 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
   {
     // types
 
+    public enum Method
+    {
+      CreateFileItem
+    }
     // static members and constants
 
     public static new File GetObject (ObjectID id, ClientTransaction clientTransaction)
@@ -46,6 +51,8 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
       set { SetRelatedObject ("Client", value); }
     }
 
+    //[DemandPropertyGetterPermission (DomainAccessType.ReadName)]
+    //[DemandPropertySetterPermission (DomainAccessType.WriteName)]
     public string Name
     {
       get { return (string) DataContainer["Name"]; }

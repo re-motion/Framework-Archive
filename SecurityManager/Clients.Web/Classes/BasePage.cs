@@ -68,8 +68,6 @@ namespace Rubicon.SecurityManager.Clients.Web.Classes
           // if cultureInfo contains a invalid value we just ignore it
         }
       }
-
-      this.DataBind ();
     }
 
     protected override void OnPreRender (EventArgs e)

@@ -17,8 +17,7 @@
       <td class="formGridTitleCell" style="white-space: nowrap;">
         <rubicon:SmartLabel runat="server" ID="UserListLabel" Text="###" />
       </td>
-      <td style="display: none; width: 100%">
-      </td>
+      <td style="display: none; width: 100%"></td>
     </tr>
     <tr>
       <td style="height: 100%; vertical-align: top;">
