@@ -23,6 +23,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
 
       XmlDocument document = Convert (localizedNames, culture.Name);
+      document.PreserveWhitespace = true;
       document.Save (_fileNameStrategy.GetLocalizationFileName (filename, culture));
     }
 

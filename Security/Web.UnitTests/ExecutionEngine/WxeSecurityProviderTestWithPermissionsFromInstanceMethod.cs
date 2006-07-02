@@ -12,6 +12,7 @@ using Rubicon.Security.Web.ExecutionEngine;
 using Rubicon.Security.Web.UnitTests.Domain;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UnitTests.ExecutionEngine;
+using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 {
@@ -60,6 +61,7 @@ namespace Rubicon.Security.Web.UnitTests.ExecutionEngine
 
       SecurityConfiguration.Current.SecurityService = _securityService;
       SecurityConfiguration.Current.UserProvider = _userProvider;
+      SecurityConfiguration.Current.PermissionProvider = new PermissionReflector ();
       SecurityConfiguration.Current.FunctionalSecurityStrategy = _mockFunctionalSecurityStrategy;
     }
 

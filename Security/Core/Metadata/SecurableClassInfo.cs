@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.Metadata
 {
 
-  public class SecurableClassInfo
+  public class SecurableClassInfo : MetadataInfo
   {
     // types
 
@@ -15,8 +15,6 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private string _id;
-    private string _name;
     private List<StatePropertyInfo> _properties = new List<StatePropertyInfo>();
     private List<EnumValueInfo> _accessTypes = new List<EnumValueInfo>();
     private SecurableClassInfo _baseClass;
@@ -29,18 +27,6 @@ namespace Rubicon.Security.Metadata
     }
 
     // methods and properties
-
-    public string ID
-    {
-      get { return _id; }
-      set { _id = value; }
-    }
-
-    public string Name
-    {
-      get { return _name; }
-      set { _name = value; }
-    }
 
     public List<StatePropertyInfo> Properties
     {

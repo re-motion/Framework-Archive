@@ -66,6 +66,7 @@
     <Compile Include="Metadata\IMetadataConverter.cs" />
     <Compile Include="Metadata\IStatePropertyReflector.cs" />
     <Compile Include="Metadata\MetadataCache.cs" />
+    <Compile Include="Metadata\MetadataInfo.cs" />
     <Compile Include="Metadata\MetadataLocalizationToXmlConverter.cs" />
     <Compile Include="Metadata\MetadataToXmlConverter.cs" />
     <Compile Include="Metadata\PermissionReflector.cs" />

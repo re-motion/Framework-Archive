@@ -4,6 +4,8 @@ using System.Text;
 
 using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
+using System.Globalization;
+using System.Threading;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -61,9 +63,25 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       set { DataContainer["Name"] = value; }
     }
 
+    public DomainObjectCollection LocalizedNames
+    {
+      get { return GetRelatedObjects ("LocalizedNames"); }
+    }
+
     public override string DisplayName
     {
-      get { return Name; }
+      get
+      {
+        CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+
+        foreach (LocalizedName localizedName in LocalizedNames)
+        {
+          if (localizedName.Culture.CultureName == cultureInfo.TwoLetterISOLanguageName)
+            return localizedName.Text;
+        }
+
+        return Name;
+      }
     }
   }
 }

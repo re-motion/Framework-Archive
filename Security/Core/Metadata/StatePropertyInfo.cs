@@ -8,7 +8,7 @@ using System.Reflection;
 namespace Rubicon.Security.Metadata
 {
 
-  public class StatePropertyInfo
+  public class StatePropertyInfo : MetadataInfo
   {
     // types
 
@@ -16,8 +16,6 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private string _id;	
-    private string _name;
     private List<EnumValueInfo> _values = new List<EnumValueInfo>();
 	
     // construction and disposing
@@ -27,18 +25,6 @@ namespace Rubicon.Security.Metadata
     }
 
     // methods and properties
-
-    public string ID
-    {
-      get { return _id; }
-      set { _id = value; }
-    }
-   
-    public string Name
-    {
-      get { return _name; }
-      set { _name = value; }
-    }
 
     public List<EnumValueInfo> Values
     {

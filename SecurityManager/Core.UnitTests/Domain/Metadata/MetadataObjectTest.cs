@@ -4,6 +4,8 @@ using System.Text;
 using NUnit.Framework;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
+using System.Globalization;
+using System.Threading;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 {
@@ -87,6 +89,28 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       ClientTransaction transaction = new ClientTransaction ();
       MetadataObject metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+    }
+
+    [Test]
+    public void DisplayName_German ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateSecurableClassDefinitionWithStates ();
+      string metadataObjectID = "b8621bc9-9ab3-4524-b1e4-582657d6b420";
+      ClientTransaction transaction = new ClientTransaction ();
+      MetadataObject metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+      Culture culture = new Culture (transaction, "de");
+      LocalizedName name = new LocalizedName (transaction, "Testklasse", culture, metadataObject);
+      transaction.Commit ();
+
+      CultureInfo threadCulture = Thread.CurrentThread.CurrentCulture;
+      CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture ("de");
+      Thread.CurrentThread.CurrentCulture = cultureInfo;
+
+      transaction = new ClientTransaction ();
+      metadataObject = MetadataObject.Find (transaction, metadataObjectID);
+
+      Assert.AreEqual ("Testklasse", metadataObject.DisplayName);
     }
   }
 }

@@ -7,7 +7,7 @@ using Rubicon.Utilities;
 namespace Rubicon.Security.Metadata
 {
 
-  public class EnumValueInfo
+  public class EnumValueInfo : MetadataInfo
   {
     // types
 
@@ -15,9 +15,7 @@ namespace Rubicon.Security.Metadata
 
     // member fields
 
-    private string _id;
     private int _value;
-    private string _name;
     private string _typeName;
 
     // construction and disposing
@@ -29,16 +27,10 @@ namespace Rubicon.Security.Metadata
 
       _value = value;
       _typeName = typeName;
-      _name = name;
+      Name = name;
     }
 
     // methods and properties
-
-    public string ID
-    {
-      get { return _id; }
-      set { _id = value; }
-    }
 
     public int Value
     {
@@ -59,17 +51,9 @@ namespace Rubicon.Security.Metadata
       }
     }
 
-    public string Name
+    public override string Description
     {
-      get
-      {
-        return _name;
-      }
-      set
-      {
-        ArgumentUtility.CheckNotNullOrEmpty ("Name", value);
-        _name = value;
-      }
+      get { return TypeName; }
     }
   }
 }

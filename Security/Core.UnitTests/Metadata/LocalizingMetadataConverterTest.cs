@@ -68,9 +68,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       MetadataCache cache = new MetadataCache ();
       SecurableClassInfo classInfo = AddSecurableClassInfo (cache, typeof (SecurableObject), "21df1db3-affd-4c1a-b14e-340c1405bd69");
 
-      LocalizedName expectedGermanName = CreateLocalizedName (classInfo, string.Empty);
+      LocalizedName expectedGermanName = CreateLocalizedName (classInfo, classInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedGermanName }, cultures[0], filename);
-      LocalizedName expectedEnglishName = CreateLocalizedName (classInfo, string.Empty);
+      LocalizedName expectedEnglishName = CreateLocalizedName (classInfo, classInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedEnglishName }, cultures[1], filename);
       _mocks.ReplayAll ();
 
@@ -88,9 +88,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       MetadataCache cache = new MetadataCache ();
       EnumValueInfo abstractRoleInfo = AddAbstractRoleInfo (cache, TestAbstractRole.Developer, "6aba5c1a-cf54-4a12-9523-204fe0b56fd5", "Developer", "Rubicon.Security.UnitTests.SampleDomain.TestAbstractRole", 0);
 
-      LocalizedName expectedGermanName = CreateLocalizedName (abstractRoleInfo, string.Empty);
+      LocalizedName expectedGermanName = CreateLocalizedName (abstractRoleInfo, abstractRoleInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedGermanName }, cultures[0], filename);
-      LocalizedName expectedEnglishName = CreateLocalizedName (abstractRoleInfo, string.Empty);
+      LocalizedName expectedEnglishName = CreateLocalizedName (abstractRoleInfo, abstractRoleInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedEnglishName }, cultures[1], filename);
       _mocks.ReplayAll ();
 
@@ -108,9 +108,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       MetadataCache cache = new MetadataCache ();
       EnumValueInfo accessTypeInfo = AddAccessTypeInfo (cache, TestAccessType.First, "31ba143f-bef0-442b-a6dd-3b36a390e639", "First", "Rubicon.Security.UnitTests.SampleDomain.TestAccessType", 1);
 
-      LocalizedName expectedGermanName = CreateLocalizedName (accessTypeInfo, string.Empty);
+      LocalizedName expectedGermanName = CreateLocalizedName (accessTypeInfo, accessTypeInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedGermanName }, cultures[0], filename);
-      LocalizedName expectedEnglishName = CreateLocalizedName (accessTypeInfo, string.Empty);
+      LocalizedName expectedEnglishName = CreateLocalizedName (accessTypeInfo, accessTypeInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedEnglishName }, cultures[1], filename);
       _mocks.ReplayAll ();
 
@@ -128,9 +128,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       MetadataCache cache = new MetadataCache ();
       StatePropertyInfo propertyInfo = AddStatePropertyInfo (cache, typeof (PaperFile), "State", "00000000-0000-0000-0002-000000000001", new List<EnumValueInfo> ());
 
-      LocalizedName expectedGermanName = CreateLocalizedName (propertyInfo, string.Empty);
+      LocalizedName expectedGermanName = CreateLocalizedName (propertyInfo, propertyInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedGermanName }, cultures[0], filename);
-      LocalizedName expectedEnglishName = CreateLocalizedName (propertyInfo, string.Empty);
+      LocalizedName expectedEnglishName = CreateLocalizedName (propertyInfo, propertyInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedEnglishName }, cultures[1], filename);
       _mocks.ReplayAll ();
 
@@ -150,16 +150,17 @@ namespace Rubicon.Security.UnitTests.Metadata
       states.Add (new EnumValueInfo ("Rubicon.Security.UnitTests.TestDomain.FileState", "Archived", 2));
       StatePropertyInfo propertyInfo = AddStatePropertyInfo (cache, typeof (PaperFile), "State", "00000000-0000-0000-0002-000000000001", states);
 
+      string stateDescription = propertyInfo.Description + "|Archived";
       LocalizedName[] expectedGermanNames = new LocalizedName[] {
-          CreateLocalizedName (propertyInfo, string.Empty),
-          CreateLocalizedName (propertyInfo, 0, string.Empty)
+          CreateLocalizedName (propertyInfo, propertyInfo.Description),
+          CreateLocalizedName (propertyInfo, 0, stateDescription)
         };
 
       _localizationConverter.ConvertAndSave (expectedGermanNames, cultures[0], filename);
 
       LocalizedName[] expectedEnglishNames = new LocalizedName[] {
-          CreateLocalizedName (propertyInfo, string.Empty),
-          CreateLocalizedName (propertyInfo, 0, string.Empty)
+          CreateLocalizedName (propertyInfo, propertyInfo.Description),
+          CreateLocalizedName (propertyInfo, 0, stateDescription)
         };
       _localizationConverter.ConvertAndSave (expectedEnglishNames, cultures[1], filename);
       _mocks.ReplayAll ();
@@ -180,9 +181,9 @@ namespace Rubicon.Security.UnitTests.Metadata
       SecurableClassInfo classInfo = AddSecurableClassInfo (cache, typeof (SecurableObject), "21df1db3-affd-4c1a-b14e-340c1405bd69");
 
       _metadataConverter.ConvertAndSave (cache, filename);
-      LocalizedName expectedGermanName = CreateLocalizedName (classInfo, string.Empty);
+      LocalizedName expectedGermanName = CreateLocalizedName (classInfo, classInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedGermanName }, cultures[0], filename);
-      LocalizedName expectedEnglishName = CreateLocalizedName (classInfo, string.Empty);
+      LocalizedName expectedEnglishName = CreateLocalizedName (classInfo, classInfo.Description);
       _localizationConverter.ConvertAndSave (new LocalizedName[] { expectedEnglishName }, cultures[1], filename);
       _mocks.ReplayAll ();
 

@@ -8,8 +8,6 @@ namespace Rubicon.Security.Metadata
 {
   public class LocalizingMetadataConverter : IMetadataConverter
   {
-    private delegate LocalizedName CreateLocalizedName<T> (T item, string text);
-
     private CultureInfo[] _cultures;
     private IMetadataConverter _metadataConverter;
     private IMetadataLocalizationConverter _localizationConverter;
@@ -42,33 +40,34 @@ namespace Rubicon.Security.Metadata
     {
       List<LocalizedName> localizedNames = new List<LocalizedName> ();
 
-      AddNames (localizedNames, cache.GetSecurableClassInfos (), CreateLocalizedNameFromClassInfo);
-      AddNames (localizedNames, cache.GetAbstractRoles (), CreateLocalizedNameFromEnumValueInfo);
-      AddNames (localizedNames, cache.GetAccessTypes (), CreateLocalizedNameFromEnumValueInfo);
+      AddNames (localizedNames, cache.GetSecurableClassInfos ());
+      AddNames (localizedNames, cache.GetAbstractRoles ());
+      AddNames (localizedNames, cache.GetAccessTypes ());
       AddStateNames (localizedNames, cache.GetStatePropertyInfos ());
 
       return localizedNames.ToArray ();
     }
 
-    private void AddNames<T> (List<LocalizedName> localizedNames, List<T> items, CreateLocalizedName<T> createLocalizedNameDelegate)
+    private void AddNames<T> (List<LocalizedName> localizedNames, List<T> items) where T : MetadataInfo
     {
-      foreach (T item in items)
-        localizedNames.Add (createLocalizedNameDelegate (item, string.Empty));
+      foreach (MetadataInfo item in items)
+        localizedNames.Add (CreateLocalizedName (item, string.Empty));
     }
 
-    private LocalizedName CreateLocalizedNameFromClassInfo (SecurableClassInfo classInfo, string text)
+    private LocalizedName CreateLocalizedName (MetadataInfo metadataInfo, string text)
     {
-      return new LocalizedName (classInfo.ID, classInfo.Name, text);
-    }
-
-    private LocalizedName CreateLocalizedNameFromEnumValueInfo (EnumValueInfo enumValueInfo, string text)
-    {
-      return new LocalizedName (enumValueInfo.ID, enumValueInfo.TypeName, text);
+      return new LocalizedName (metadataInfo.ID, metadataInfo.Description, metadataInfo.Description);
     }
 
     private LocalizedName CreateLocalizedNameFromStatePropertyInfo (StatePropertyInfo propertyInfo, string text)
     {
-      return new LocalizedName (propertyInfo.ID, propertyInfo.Name, text);
+      return new LocalizedName (propertyInfo.ID, propertyInfo.Name, propertyInfo.Description);
+    }
+
+    private LocalizedName CreateLocalizedNameForState (StatePropertyInfo property, EnumValueInfo state, string text)
+    {
+      string description = property.Name + "|" + state.Name;
+      return new LocalizedName (property.ID + "|" + state.Value, property.Name + "|" + state.Name, description);
     }
 
     private void AddStateNames (List<LocalizedName> localizedNames, List<StatePropertyInfo> properties)
@@ -80,11 +79,6 @@ namespace Rubicon.Security.Metadata
         foreach (EnumValueInfo stateInfo in property.Values)
           localizedNames.Add (CreateLocalizedNameForState (property, stateInfo, string.Empty));
       }
-    }
-
-    private LocalizedName CreateLocalizedNameForState (StatePropertyInfo property, EnumValueInfo state, string text)
-    {
-      return new LocalizedName (property.ID + "|" + state.Value, property.Name + "|" + state.Name, text);
     }
   }
 }
