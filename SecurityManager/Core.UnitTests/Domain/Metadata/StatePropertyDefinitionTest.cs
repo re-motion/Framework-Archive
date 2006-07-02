@@ -122,5 +122,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (1, stateProperty.DefinedStates.Count);
       MetadataObjectAssert.AreEqual (newState, stateProperty.GetState ("NewState"));
     }
+
+    [Test]
+    public void Get_DisplayName ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      StatePropertyDefinition stateProperty = new StatePropertyDefinition (transaction);
+      stateProperty.Name = "Value|Namespace.TypeName, Assembly";
+
+      Assert.AreEqual ("Value|Namespace.TypeName, Assembly", stateProperty.DisplayName);
+    }
   }
 }

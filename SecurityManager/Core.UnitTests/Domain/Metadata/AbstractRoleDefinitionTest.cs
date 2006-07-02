@@ -36,5 +36,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (1, result.Count);
       Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", ((AbstractRoleDefinition) result[0]).Name);
     }
+
+    [Test]
+    public void Get_DisplayName ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      AbstractRoleDefinition abstractRole = new AbstractRoleDefinition (transaction);
+      abstractRole.Name = "Value|Namespace.TypeName, Assembly";
+
+      Assert.AreEqual ("Value|Namespace.TypeName, Assembly", abstractRole.DisplayName);
+    }
   }
 }

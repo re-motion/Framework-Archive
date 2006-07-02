@@ -560,16 +560,15 @@ CREATE VIEW [dbo].[MetadataObjectView] ([ID], [ClassID], [Timestamp], [MetadataI
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], null, null
     FROM [dbo].[EnumValueDefinition]
-    WHERE [ClassID] IN ('MetadataObject', 'EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
+    WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
   UNION
   SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, [BaseClassID], [BaseClassIDClassID]
     FROM [dbo].[SecurableClassDefinition]
-    WHERE [ClassID] IN ('MetadataObject', 'EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
+    WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
   UNION
   SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, null, null
     FROM [dbo].[StatePropertyDefinition]
-    WHERE [ClassID] IN ('MetadataObject', 'EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
-  WITH CHECK OPTION
+    WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
 GO
 
 CREATE VIEW [dbo].[EnumValueDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID])

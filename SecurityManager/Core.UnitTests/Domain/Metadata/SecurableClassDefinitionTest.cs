@@ -236,8 +236,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       classDefinition.Name = "Namespace.TypeName, AssemblyName";
 
       Assert.AreEqual ("Namespace.TypeName, AssemblyName", classDefinition.DisplayName);
-      
     }
-
   }
 }

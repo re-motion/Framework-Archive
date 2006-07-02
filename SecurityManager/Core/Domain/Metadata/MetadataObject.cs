@@ -60,5 +60,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return (string) DataContainer["Name"]; }
       set { DataContainer["Name"] = value; }
     }
+
+    public override string DisplayName
+    {
+      get { return Name; }
+    }
   }
 }

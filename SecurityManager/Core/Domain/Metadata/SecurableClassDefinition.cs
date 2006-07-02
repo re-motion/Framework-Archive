@@ -96,14 +96,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       set { } // marks property DerivedClasses as modifiable
     }
 
-    public override string DisplayName
-    {
-      get
-      {
-        return Name;
-      }
-    }
-
     public DomainObjectCollection StateProperties
     {
       get

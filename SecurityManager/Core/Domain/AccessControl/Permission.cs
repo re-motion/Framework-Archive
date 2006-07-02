@@ -55,6 +55,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // methods and properties
 
+    public bool BinaryAllowed
+    {
+      get { return Allowed.IsTrue; }
+      set { Allowed = value ? NaBoolean.True : NaBoolean.Null;  }
+    }
+
     public NaBoolean Allowed
     {
       get { return (NaBoolean) DataContainer["Allowed"]; }

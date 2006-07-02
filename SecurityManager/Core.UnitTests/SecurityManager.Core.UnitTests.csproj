@@ -54,6 +54,7 @@
     <Compile Include="Domain\AccessControl\AccessControlListTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlObjectAssert.cs" />
     <Compile Include="Domain\AccessControl\AccessControlTestHelper.cs" />
+    <Compile Include="Domain\AccessControl\PermissionTest.cs" />
     <Compile Include="Domain\AccessControl\SecurityTokenBuilderTest.cs" />
     <Compile Include="Domain\AccessControl\SecurityTokenTest.cs" />
     <Compile Include="Domain\AccessControl\StateCombinationBuilderTest.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Domain\DatabaseFixtures.cs" />
     <Compile Include="Domain\DatabaseHelper.cs" />
     <Compile Include="Domain\Metadata\AbstractRoleDefinitionTest.cs" />
+    <Compile Include="Domain\Metadata\AccessTypeDefinitionTest.cs" />
+    <Compile Include="Domain\Metadata\StateDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\CultureImporterTest.cs" />
     <Compile Include="Domain\Metadata\FindAbstractRolesQueryBuilderTest.cs" />
     <Compile Include="Domain\Metadata\MetadataImporterTest.cs" />

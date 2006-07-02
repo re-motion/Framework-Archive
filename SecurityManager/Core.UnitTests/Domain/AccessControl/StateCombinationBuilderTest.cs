@@ -29,7 +29,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [Ignore]
+    [Ignore ("Most likely obsolete")]
     public void CreateAndAttach_FromClassWithSingleStateProperties ()
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
