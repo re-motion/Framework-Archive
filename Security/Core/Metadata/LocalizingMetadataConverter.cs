@@ -8,6 +8,8 @@ namespace Rubicon.Security.Metadata
 {
   public class LocalizingMetadataConverter : IMetadataConverter
   {
+    private delegate LocalizedName CreateLocalizedName<T> (T item, string text);
+
     private CultureInfo[] _cultures;
     private IMetadataConverter _metadataConverter;
     private IMetadataLocalizationConverter _localizationConverter;
@@ -40,23 +42,29 @@ namespace Rubicon.Security.Metadata
     {
       List<LocalizedName> localizedNames = new List<LocalizedName> ();
 
-      AddNames (localizedNames, cache.GetSecurableClassInfos ());
-      AddNames (localizedNames, cache.GetAbstractRoles ());
-      AddNames (localizedNames, cache.GetAccessTypes ());
+      AddNames (localizedNames, cache.GetSecurableClassInfos (), CreateLocalizedNameFromClassInfo);
+      AddNames (localizedNames, cache.GetAbstractRoles (), CreateLocalizedNameFromEnumValueInfo);
+      AddNames (localizedNames, cache.GetAccessTypes (), CreateLocalizedNameFromEnumValueInfo);
       AddStateNames (localizedNames, cache.GetStatePropertyInfos ());
 
       return localizedNames.ToArray ();
     }
 
-    private void AddNames<T> (List<LocalizedName> localizedNames, List<T> items) where T : MetadataInfo
+    private void AddNames<T> (List<LocalizedName> localizedNames, List<T> items, CreateLocalizedName<T> createLocalizedNameDelegate) where T : MetadataInfo
     {
-      foreach (MetadataInfo item in items)
-        localizedNames.Add (CreateLocalizedName (item, string.Empty));
+      foreach (T item in items)
+        localizedNames.Add (createLocalizedNameDelegate (item, string.Empty));
     }
 
-    private LocalizedName CreateLocalizedName (MetadataInfo metadataInfo, string text)
+    private LocalizedName CreateLocalizedNameFromClassInfo (SecurableClassInfo classInfo, string text)
     {
-      return new LocalizedName (metadataInfo.ID, metadataInfo.Description, metadataInfo.Description);
+      return new LocalizedName (classInfo.ID, classInfo.Name, classInfo.Description);
+    }
+
+    private LocalizedName CreateLocalizedNameFromEnumValueInfo (EnumValueInfo enumValueInfo, string text)
+    {
+      EnumWrapper enumWrapper = new EnumWrapper (enumValueInfo.Name, enumValueInfo.TypeName);
+      return new LocalizedName (enumValueInfo.ID, enumWrapper.ToString (), enumValueInfo.Name);
     }
 
     private LocalizedName CreateLocalizedNameFromStatePropertyInfo (StatePropertyInfo propertyInfo, string text)

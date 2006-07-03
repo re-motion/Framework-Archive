@@ -105,7 +105,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       CultureInfo threadCulture = Thread.CurrentThread.CurrentCulture;
       CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture ("de");
-      Thread.CurrentThread.CurrentCulture = cultureInfo;
+      Thread.CurrentThread.CurrentUICulture = cultureInfo;
 
       transaction = new ClientTransaction ();
       metadataObject = MetadataObject.Find (transaction, metadataObjectID);
