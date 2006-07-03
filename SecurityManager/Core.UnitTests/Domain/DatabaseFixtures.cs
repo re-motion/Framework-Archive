@@ -23,16 +23,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       _factory = new OrganizationalStructureFactory ();
     }
 
-    public void CreateEmptyTestData ()
+    public void CreateEmptyDomain ()
     {
       DatabaseHelper dbHelper = new DatabaseHelper ();
       dbHelper.SetupDB ();
     }
 
-    public void CreateTestData ()
+    public void CreateOrganizationalStructure ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
 
@@ -58,8 +57,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     public void CreateSecurableClassDefinitionWithStates ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
 
@@ -76,8 +74,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     public void CreateUsersWithDifferentClients ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
 
@@ -96,8 +93,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     public void CreateGroupsWithDifferentClients ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
 
@@ -113,8 +109,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     public void CreateGroupTypesWithDifferentClients ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
 
@@ -130,8 +125,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     public void CreatePositionsWithDifferentClients ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
 

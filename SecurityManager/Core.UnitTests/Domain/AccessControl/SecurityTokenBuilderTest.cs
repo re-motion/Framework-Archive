@@ -19,7 +19,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_AbstractRolesEmpty ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
 
@@ -33,7 +33,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithValidAbstractRole ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithQualityManagerRole ();
 
@@ -48,7 +48,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithValidAbstractRoles ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithQualityManagerAndDeveloperRoles ();
 
@@ -62,7 +62,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithValidUser ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
       IPrincipal user = CreateTestUser ();
@@ -78,7 +78,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithNotExistingUser ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
       IPrincipal user = CreateNotExistingUser ();
@@ -91,7 +91,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithValidGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
       IPrincipal user = CreateTestUser ();
@@ -106,7 +106,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithoutGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithoutOwnerGroup ();
       IPrincipal user = CreateTestUser ();
@@ -122,7 +122,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithNotExistingGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithNotExistingOwnerGroup ();
       IPrincipal user = CreateTestUser ();
@@ -135,7 +135,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Create_WithParentGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
       IPrincipal user = CreateTestUser ();

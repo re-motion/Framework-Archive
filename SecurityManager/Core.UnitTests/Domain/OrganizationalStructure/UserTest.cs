@@ -10,14 +10,23 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   [TestFixture]
   public class UserTest : DomainTest
   {
+    private DatabaseFixtures _dbFixtures;
+    private ClientTransaction _transaction;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      _dbFixtures = new DatabaseFixtures ();
+      _transaction = new ClientTransaction ();
+    }
+
     [Test]
     public void Find_ValidUser ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      User foundUser = User.Find (transaction, "test.user");
+      User foundUser = User.Find (_transaction, "test.user");
 
       Assert.AreEqual ("test.user", foundUser.UserName);
     }
@@ -25,11 +34,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_NotExistingUser ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      User foundUser = User.Find (transaction, "not.existing");
+      User foundUser = User.Find (_transaction, "not.existing");
 
       Assert.IsNull (foundUser);
     }
@@ -37,12 +44,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_Empty ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      User testUser = User.Find (transaction, "test.user");
-      Group parentOfOwnerGroup = Group.Find (transaction, "parentOfOwnerGroup");
+      User testUser = User.Find (_transaction, "test.user");
+      Group parentOfOwnerGroup = Group.Find (_transaction, "parentOfOwnerGroup");
       List<Role> roles = testUser.GetRolesForGroup (parentOfOwnerGroup);
 
       Assert.AreEqual (0, roles.Count);
@@ -51,12 +56,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_TwoRoles ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      User testUser = User.Find (transaction, "test.user");
-      Group testgroup = Group.Find (transaction, "Testgroup");
+      User testUser = User.Find (_transaction, "test.user");
+      Group testgroup = Group.Find (_transaction, "Testgroup");
       List<Role> roles = testUser.GetRolesForGroup (testgroup);
 
       Assert.AreEqual (2, roles.Count);
@@ -65,11 +68,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_UsersByClientID ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateUsersWithDifferentClients ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateUsersWithDifferentClients ();
 
-      DomainObjectCollection users = User.FindByClientID (dbFixtures.CurrentClient.ID, transaction);
+      DomainObjectCollection users = User.FindByClientID (_dbFixtures.CurrentClient.ID, _transaction);
 
       Assert.AreEqual (2, users.Count);
     }

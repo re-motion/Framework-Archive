@@ -10,14 +10,23 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   [TestFixture]
   public class GroupTest : DomainTest
   {
+    private DatabaseFixtures _dbFixtures;
+    private ClientTransaction _transaction;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+
+      _dbFixtures = new DatabaseFixtures ();
+      _transaction = new ClientTransaction ();
+    }
+
     [Test]
     public void Find_ValidGroup ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      Group foundGroup = Group.Find (transaction, "Testgroup");
+      Group foundGroup = Group.Find (_transaction, "Testgroup");
 
       Assert.AreEqual ("Testgroup", foundGroup.Name);
     }
@@ -25,11 +34,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_NotExistingGroup ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      Group foundGroup = Group.Find (transaction, "NotExistingGroup");
+      Group foundGroup = Group.Find (_transaction, "NotExistingGroup");
 
       Assert.IsNull (foundGroup);
     }
@@ -37,11 +44,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_GroupsByClientID ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateGroupsWithDifferentClients ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateGroupsWithDifferentClients ();
 
-      DomainObjectCollection groups = Group.FindByClientID (dbFixtures.CurrentClient.ID, transaction);
+      DomainObjectCollection groups = Group.FindByClientID (_dbFixtures.CurrentClient.ID, _transaction);
 
       Assert.AreEqual (2, groups.Count);
     }

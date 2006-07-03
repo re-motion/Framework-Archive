@@ -12,14 +12,23 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
   [TestFixture]
   public class AbstractRoleDefinitionTest : DomainTest
   {
+    private DatabaseFixtures _dbFixtures;
+    private ClientTransaction _transaction;
+
+    public override void SetUp ()
+    {
+      base.SetUp ();
+      
+      _dbFixtures = new DatabaseFixtures ();
+      _transaction = new ClientTransaction ();
+    }
+
     [Test]
     public void Find_EmptyResult ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      DomainObjectCollection result = AbstractRoleDefinition.Find (transaction, new EnumWrapper[0]);
+      DomainObjectCollection result = AbstractRoleDefinition.Find (_transaction, new EnumWrapper[0]);
 
       Assert.IsEmpty (result);
     }
@@ -27,11 +36,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Find_ValidAbstractRole ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
-      ClientTransaction transaction = new ClientTransaction ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      DomainObjectCollection result = AbstractRoleDefinition.Find (transaction, new EnumWrapper[] { new EnumWrapper (ProjectRole.QualityManager) });
+      DomainObjectCollection result = AbstractRoleDefinition.Find (_transaction, new EnumWrapper[] { new EnumWrapper (ProjectRole.QualityManager) });
 
       Assert.AreEqual (1, result.Count);
       Assert.AreEqual ("QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", ((AbstractRoleDefinition) result[0]).Name);
@@ -40,11 +47,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void FindAll_EmptyResult ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateEmptyTestData ();
+      _dbFixtures.CreateEmptyDomain ();
 
-      ClientTransaction transaction = new ClientTransaction ();
-      DomainObjectCollection result = AbstractRoleDefinition.FindAll (transaction);
+      DomainObjectCollection result = AbstractRoleDefinition.FindAll (_transaction);
 
       Assert.AreEqual (0, result.Count);
     }
@@ -52,11 +57,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void FindAll_TwoFound ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateTestData ();
+      _dbFixtures.CreateOrganizationalStructure ();
 
-      ClientTransaction transaction = new ClientTransaction ();
-      DomainObjectCollection result = AbstractRoleDefinition.FindAll (transaction);
+      DomainObjectCollection result = AbstractRoleDefinition.FindAll (_transaction);
 
       Assert.AreEqual (2, result.Count);
     }
@@ -64,8 +67,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Get_DisplayName ()
     {
-      ClientTransaction transaction = new ClientTransaction ();
-      AbstractRoleDefinition abstractRole = new AbstractRoleDefinition (transaction);
+      AbstractRoleDefinition abstractRole = new AbstractRoleDefinition (_transaction);
       abstractRole.Name = "Value|Namespace.TypeName, Assembly";
 
       Assert.AreEqual ("Value|Namespace.TypeName, Assembly", abstractRole.DisplayName);
