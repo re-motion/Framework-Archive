@@ -117,31 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="auto:AccessControlEntryTitle:InnerText" xml:space="preserve">
-    <value>ACE (Access Control Entry)</value>
-  </data>
-  <data name="auto:AccessControlListTitle:InnerText" xml:space="preserve">
-    <value>ACL (Access Control List)</value>
-  </data>
-  <data name="auto:PermissionsLabel:Text" xml:space="preserve">
-    <value>Permissions</value>
-  </data>
-  <data name="DeleteAccessControlEntryButton" xml:space="preserve">
-    <value>Delete ACE</value>
-  </data>
-  <data name="DeleteAccessControlListButton" xml:space="preserve">
-    <value>Delete ACL</value>
-  </data>
-  <data name="DeleteStateCombinationCommand" xml:space="preserve">
-    <value>Remove State</value>
-  </data>
-  <data name="NewAccessControlEntryButton" xml:space="preserve">
-    <value>New ACE</value>
-  </data>
-  <data name="NewAccessControlListButton" xml:space="preserve">
-    <value>New ACL</value>
-  </data>
-  <data name="NewStateCombinationButton" xml:space="preserve">
-    <value>Assign State</value>
+  <data name="SecurableClassDefinitionListLabel" xml:space="preserve">
+    <value>Klassen</value>
   </data>
 </root>

@@ -35,10 +35,5 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     {
       get { return CurrentObject; }
     }
-
-    protected override void OnLoad (EventArgs e)
-    {
-      base.OnLoad (e);
-    }
   }
 }

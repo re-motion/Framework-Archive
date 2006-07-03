@@ -64,18 +64,27 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         /// <summary>
         ///   Looks up a localized string similar to ACE (Access Control Entry).
         /// </summary>
-        internal static string AccessControlEntryTitle {
+        internal static string auto_AccessControlEntryTitle_InnerText {
             get {
-                return ResourceManager.GetString("AccessControlEntryTitle", resourceCulture);
+                return ResourceManager.GetString("auto:AccessControlEntryTitle:InnerText", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ACL (Access Control List).
         /// </summary>
-        internal static string AccessControlListTitle {
+        internal static string auto_AccessControlListTitle_InnerText {
             get {
-                return ResourceManager.GetString("AccessControlListTitle", resourceCulture);
+                return ResourceManager.GetString("auto:AccessControlListTitle:InnerText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permissions.
+        /// </summary>
+        internal static string auto_PermissionsLabel_Text {
+            get {
+                return ResourceManager.GetString("auto:PermissionsLabel:Text", resourceCulture);
             }
         }
         
@@ -130,15 +139,6 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         internal static string NewStateCombinationButton {
             get {
                 return ResourceManager.GetString("NewStateCombinationButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Permissions.
-        /// </summary>
-        internal static string PermissionsLabel {
-            get {
-                return ResourceManager.GetString("PermissionsLabel", resourceCulture);
             }
         }
     }

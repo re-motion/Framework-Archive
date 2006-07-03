@@ -54,7 +54,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     {
       base.OnPreRender (e);
 
-      AccessControlListTitle.InnerText = AccessControlResources.AccessControlListTitle;
       EnableNewStateCombinationButton ();
     }
 

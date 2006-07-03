@@ -44,12 +44,18 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       SecurableClassDefinitionList.LoadUnboundValue (SecurableClassDefinition.FindAll (CurrentFunction.CurrentTransaction), false);
     }
 
+    protected override void OnPreRender (EventArgs e)
+    {
+      SecurableClassDefinitionListLabel.Text = SecurableClassDefinitionListFormResources.SecurableClassDefinitionListLabel;
+      base.OnPreRender (e);
+    }
+
     protected void SecurableClassDefinitionList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
     {
       if (!IsReturningPostBack)
       {
         EditPermissionsFormFunction function = new EditPermissionsFormFunction (CurrentFunction.ClientID, ((SecurableClassDefinition) e.BusinessObject).ID);
-        string features = "width=1000, height=700, menubar=no, toolbar=no, location=no, status=no";
+        string features = "width=1000, height=700, resizable=yes, menubar=no, toolbar=no, location=no, status=no";
         ExecuteFunctionExternal (function, "_blank", features, (Control) sender, false);
       }
     }

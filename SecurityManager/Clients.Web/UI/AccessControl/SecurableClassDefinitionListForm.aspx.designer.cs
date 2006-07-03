@@ -15,7 +15,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
         protected Rubicon.Web.UI.Controls.FormGridManager FormGridManager;
         protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
-        protected Rubicon.Web.UI.Controls.SmartLabel UserListLabel;
+        protected Rubicon.Web.UI.Controls.SmartLabel SecurableClassDefinitionListLabel;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocList SecurableClassDefinitionList;
     }
 }

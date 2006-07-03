@@ -15,7 +15,7 @@
   <table id="FormGrid" runat="server" cellpadding="0" cellspacing="0" style="width: 100%; height: 100%;">
     <tr class="underlinedMarkerCellRow">
       <td class="formGridTitleCell" style="white-space: nowrap;">
-        <rubicon:SmartLabel runat="server" ID="UserListLabel" Text="###" />
+        <rubicon:SmartLabel runat="server" ID="SecurableClassDefinitionListLabel" Text="###" />
       </td>
       <td style="display: none; width: 100%"></td>
     </tr>

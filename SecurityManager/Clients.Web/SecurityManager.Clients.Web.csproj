@@ -103,11 +103,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessControlResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Globalization\UI\AccessControl\SecurableClassDefinitionListControlResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SecurableClassDefinitionListControlResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -508,10 +503,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AccessControlResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListControlResources.resx">
+    <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.de.resx">
       <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SecurableClassDefinitionListControlResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\UI\AccessControl\SecurableClassDefinitionListFormResources.resx">
       <SubType>Designer</SubType>
