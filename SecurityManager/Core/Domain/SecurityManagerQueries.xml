@@ -61,6 +61,13 @@
     </statement>
   </query>
 
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [PositionView];
+    </statement>
+  </query>
+
   <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
@@ -72,9 +79,9 @@
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
       SELECT * FROM StateDefinitionView
-          INNER JOIN StatePropertyDefinitionView ON StateDefinitionView.StatePropertyID = StatePropertyDefinitionView.ID
+      INNER JOIN StatePropertyDefinitionView ON StateDefinitionView.StatePropertyID = StatePropertyDefinitionView.ID
       WHERE StatePropertyDefinitionView.MetadataItemID = @metadataItemID
-          AND StateDefinitionView.Value = @stateValue;
+      AND StateDefinitionView.Value = @stateValue;
     </statement>
   </query>
 
@@ -82,13 +89,6 @@
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
       SELECT * FROM [AbstractRoleDefinitionView];
-    </statement>
-  </query>
-
-  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Role.FindAll" type="collection">
-    <storageProviderID>SecurityManager</storageProviderID>
-    <statement>
-      SELECT * FROM [RoleView];
     </statement>
   </query>
 </queries>

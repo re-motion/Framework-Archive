@@ -22,7 +22,7 @@ namespace Rubicon.SecurityManager.Configuration
           {
             if (s_current == null)
             {
-              s_current = (SecurityManagerConfiguration) ConfigurationManager.GetSection ("rubicon.securityManager.domain");
+              s_current = (SecurityManagerConfiguration) ConfigurationManager.GetSection ("rubicon.securityManager");
               if (s_current == null)
                 s_current = new SecurityManagerConfiguration ();
             }

@@ -13,7 +13,10 @@
       <sources failonempty="true">
         <include name="*.cs" />
         <include name="NullableValueTypes/**/*.cs" />
+        <include name="ObjectBinding/**/*.cs" />
         <include name="Text/**/*.cs" />
+        <include name="Utilities/**/*.cs" />
+        <include name="Xml/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
       <references failonempty="true">
