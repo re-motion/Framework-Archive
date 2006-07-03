@@ -4,6 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using Rubicon.Security.Metadata;
 using System.Globalization;
+using System.IO;
 
 namespace Rubicon.Security.UnitTests.Metadata
 {
@@ -61,6 +62,24 @@ namespace Rubicon.Security.UnitTests.Metadata
       Assert.AreEqual (2, localizationFileNames.Length);
       Assert.Contains (@"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml", localizationFileNames);
       Assert.Contains (@"Metadata\LocalizationFiles\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml", localizationFileNames);
+    }
+
+    [Test]
+    public void GetLocalizationFileNames_WithoutBaseDirectory ()
+    {
+      LocalizationFileNameStrategy nameStrategy = new LocalizationFileNameStrategy ();
+      string wd = Directory.GetCurrentDirectory ();
+      Directory.SetCurrentDirectory (@"Metadata\LocalizationFiles");
+      string metadataFileName = "TwoLocalizationFilesIncludingInvariantCulture.xml";
+
+      string[] localizationFileNames = nameStrategy.GetLocalizationFileNames (metadataFileName);
+
+      Directory.SetCurrentDirectory (wd);
+
+      Assert.IsNotNull (localizationFileNames);
+      Assert.AreEqual (2, localizationFileNames.Length);
+      Assert.Contains (@".\TwoLocalizationFilesIncludingInvariantCulture.Localization.de.xml", localizationFileNames);
+      Assert.Contains (@".\TwoLocalizationFilesIncludingInvariantCulture.Localization.xml", localizationFileNames);
     }
 
     [Test]

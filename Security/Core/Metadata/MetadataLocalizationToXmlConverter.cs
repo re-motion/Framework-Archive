@@ -23,7 +23,6 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNullOrEmpty ("filename", filename);
 
       XmlDocument document = Convert (localizedNames, culture.Name);
-      document.PreserveWhitespace = true;
       document.Save (_fileNameStrategy.GetLocalizationFileName (filename, culture));
     }
 
@@ -33,6 +32,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNullOrEmpty ("culture", culture);
 
       XmlDocument document = new XmlDocument ();
+      document.PreserveWhitespace = true;
       
       XmlElement rootElement = document.CreateElement ("localizedNames", _schema.SchemaUri);
       XmlAttribute cultureAttribute = document.CreateAttribute ("culture");

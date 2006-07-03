@@ -26,6 +26,9 @@ namespace Rubicon.Security.Metadata
       string basePath = Path.GetDirectoryName (metadataFilename);
       string searchPattern = baseFileName + ".Localization.*xml";
 
+      if (basePath == string.Empty)
+        basePath = ".";
+
       return Directory.GetFiles (basePath, searchPattern, SearchOption.TopDirectoryOnly);
     }
   }
