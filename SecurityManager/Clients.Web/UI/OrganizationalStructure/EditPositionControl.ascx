@@ -23,7 +23,7 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="RolesField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesField_MenuItemClick" Selection="Multiple">
+      <rubicon:BocList ID="RolesField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesField_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
           <rubicon:BocSimpleColumnDefinition ItemID="UserNameItem" PropertyPathIdentifier="User.DisplayName">
             <PersistedCommand>
@@ -59,7 +59,7 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="ConcretePositionsField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ConcretePositions" OnMenuItemClick="ConcretePositionsField_MenuItemClick" Selection="Multiple">
+      <rubicon:BocList ID="ConcretePositionsField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="ConcretePositions" OnMenuItemClick="ConcretePositionsField_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
           <rubicon:BocSimpleColumnDefinition ItemID="ConcretePositionsNameItem" PropertyPathIdentifier="Name">
             <PersistedCommand>

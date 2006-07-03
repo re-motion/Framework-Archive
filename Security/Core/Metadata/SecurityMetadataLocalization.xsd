@@ -22,7 +22,7 @@
         </xs:element>
       </xs:sequence>
 
-      <xs:attribute name="culture" use="required" type="sml:requiredStringType" />
+      <xs:attribute name="culture" use="required" type="xs:string" />
       <xs:attribute name="version" use="optional" type="sml:requiredStringType" />
     </xs:complexType>
   </xs:element>

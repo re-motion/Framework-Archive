@@ -21,7 +21,7 @@
     </tr>
     <tr>
       <td style="height: 100%; vertical-align: top;">
-        <rubicon:BocList ID="SecurableClassDefinitionList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="SecurableClassDefinitionList_ListItemCommandClick">
+        <rubicon:BocList ID="SecurableClassDefinitionList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="SecurableClassDefinitionList_ListItemCommandClick" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
           <FixedColumns>
             <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
               <PersistedCommand>

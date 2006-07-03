@@ -58,7 +58,7 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="RolesField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesField_MenuItemClick" Selection="Multiple">
+      <rubicon:BocList ID="RolesField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Roles" OnMenuItemClick="RolesField_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
         <FixedColumns>
           <rubicon:BocSimpleColumnDefinition ItemID="GroupNameItem" PropertyPathIdentifier="Group.DisplayName">
             <PersistedCommand>

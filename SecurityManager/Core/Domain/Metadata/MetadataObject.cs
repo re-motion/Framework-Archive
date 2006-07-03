@@ -68,15 +68,27 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return GetRelatedObjects ("LocalizedNames"); }
     }
 
+    //TODO: Rewrite with Test
+    //TODO: FourLetterLanguageNames
     public override string DisplayName
     {
       get
       {
-        CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+        foreach (LocalizedName localizedName in LocalizedNames)
+        {
+          if (localizedName.Culture.CultureName == CultureInfo.CurrentUICulture.Name)
+            return localizedName.Text;
+        }
 
         foreach (LocalizedName localizedName in LocalizedNames)
         {
-          if (localizedName.Culture.CultureName == cultureInfo.TwoLetterISOLanguageName)
+          if (localizedName.Culture.CultureName == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)
+            return localizedName.Text;
+        }
+
+        foreach (LocalizedName localizedName in LocalizedNames)
+        {
+          if (localizedName.Culture.CultureName == CultureInfo.InvariantCulture.Name)
             return localizedName.Text;
         }
 

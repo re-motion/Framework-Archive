@@ -17,7 +17,7 @@
         </tr>
         <tr>
           <td style="height: 100%; vertical-align: top;">
-            <rubicon:BocList ID="GroupList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="GroupList_ListItemCommandClick">
+            <rubicon:BocList ID="GroupList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="GroupList_ListItemCommandClick" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
               <FixedColumns>
                 <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
                   <PersistedCommand>

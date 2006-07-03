@@ -9,9 +9,11 @@ using System.Web.UI.HtmlControls;
 
 using Rubicon.Utilities;
 using Rubicon.Data;
+using Rubicon.Security;
 
 namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
 {
+  [AbstractRole]
 	public enum DomainAbstractRole
 	{
     [PermanentGuid ("448355F7-FD2F-41b0-9871-EE3075A4FF73")]

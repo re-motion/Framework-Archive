@@ -17,7 +17,7 @@
         </tr>
         <tr>
           <td style="height: 100%; vertical-align: top;">
-            <rubicon:BocList ID="UserList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="UserList_ListItemCommandClick">
+            <rubicon:BocList ID="UserList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="UserList_ListItemCommandClick" ShowEmptyListMessage="True" ShowEmptyListReadOnlyMode="True">
               <FixedColumns>
                 <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
                   <PersistedCommand>

@@ -23,7 +23,7 @@
   <tr>
     <td></td>
     <td>
-      <rubicon:BocList ID="GroupsField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Groups" OnMenuItemClick="GroupsField_MenuItemClick" Selection="Multiple">
+      <rubicon:BocList ID="GroupsField" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Groups" OnMenuItemClick="GroupsField_MenuItemClick" Selection="Multiple" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
         <FixedColumns>
           <rubicon:BocSimpleColumnDefinition ItemID="GroupNameItem" PropertyPathIdentifier="DisplayName">
             <PersistedCommand>
