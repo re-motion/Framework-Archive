@@ -14,7 +14,10 @@
         <rubicon:BocCommand />
       </PersistedCommand>
     </rubicon:BocReferenceValue></td>
-  </tr>
+   <td style="text-align: right">
+     <rubicon:WebButton ID="DeleteAccessControlEntryButton" runat="server" Text="$res:DeleteAccessControlEntryButton" OnClick="DeleteAccessControlEntryButton_Click" CausesValidation="false" />
+   </td>
+ </tr>
   <tr>
     <td></td>
     <td><rubicon:BocReferenceValue ID="SpecificPositionField" runat="server" PropertyIdentifier="SpecificPosition" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll" >
@@ -22,27 +25,25 @@
         <rubicon:BocCommand />
       </PersistedCommand>
     </rubicon:BocReferenceValue></td>
+    <td></td>
   </tr>
   <tr>
+    <td><rubicon:SmartLabel ID="PriorityLabel" runat="server" ForControl="PriorityField"/></td>
+    <td>
+      <rubicon:BocTextValue ID="PriorityField" runat="server" PropertyIdentifier="Priority" DataSourceControl="CurrentObject" Width="10em" />
+      / <rubicon:BocTextValue ID="ActualPriority" runat="server" PropertyIdentifier="ActualPriority" DataSourceControl="CurrentObject" />
+    </td>
     <td></td>
-    <td><rubicon:BocTextValue ID="PriorityField" runat="server" PropertyIdentifier="Priority" DataSourceControl="CurrentObject" /></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td><rubicon:BocTextValue ID="ActualPriority" runat="server" PropertyIdentifier="ActualPriority" DataSourceControl="CurrentObject" /></td>
   </tr>
   <tr>
     <td><rubicon:FormGridLabel ID="PermissionsLabel" runat="server" Text="###" /></td>
-    <td></td>
-  </tr>
-  <tr>
     <td colspan="2">
       <asp:PlaceHolder ID="PermissionsPlaceHolder" runat="server" />
       <%--
       <securityManager:ObjectBoundRepeater ID="PermissionsRepeater" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Permissions">
-        <HeaderTemplate><table><tr><td></HeaderTemplate>
-        <SeparatorTemplate></td></tr><tr><td></SeparatorTemplate>
-        <FooterTemplate></td></tr></table></FooterTemplate>
+        <HeaderTemplate><ul class="permissionsList"><li class="permissionsList"></HeaderTemplate>
+        <SeparatorTemplate></li><li class="permissionsList"></SeparatorTemplate>
+        <FooterTemplate></li></ul></FooterTemplate>
         <ItemTemplate><securityManager:EditPermissionControl id="EditPermissionControl" runat="server"/></ItemTemplate>
       </securityManager:ObjectBoundRepeater>
       --%>

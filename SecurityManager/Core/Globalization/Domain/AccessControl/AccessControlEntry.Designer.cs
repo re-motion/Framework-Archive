@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
+namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "2.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class EditPermissionsControlResources {
+    internal class AccessControlEntry {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal EditPermissionsControlResources() {
+        internal AccessControlEntry() {
         }
         
         /// <summary>
@@ -39,8 +39,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl.EditPermission" +
-                            "sControlResources", typeof(EditPermissionsControlResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Rubicon.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry", typeof(AccessControlEntry).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -58,6 +57,33 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        internal static string property_Priority {
+            get {
+                return ResourceManager.GetString("property:Priority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Abstract Role.
+        /// </summary>
+        internal static string property_SpecificAbstractRole {
+            get {
+                return ResourceManager.GetString("property:SpecificAbstractRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        internal static string property_SpecificPosition {
+            get {
+                return ResourceManager.GetString("property:SpecificPosition", resourceCulture);
             }
         }
     }

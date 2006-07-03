@@ -117,4 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DeleteAccessControlEntryButton" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="DeleteAccessControlListButton" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="DeleteStateCombinationCommand" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="NewAccessControlEntryButton" xml:space="preserve">
+    <value>Neue Berechtigung anlegen</value>
+  </data>
+  <data name="NewAccessControlListButton" xml:space="preserve">
+    <value>Neue ACL anlegen</value>
+  </data>
+  <data name="NewStateCombinationButton" xml:space="preserve">
+    <value>Status zuordnen</value>
+  </data>
+  <data name="PermissionsLabel" xml:space="preserve">
+    <value>Berechtigungen</value>
+  </data>
 </root>

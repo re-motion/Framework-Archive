@@ -62,7 +62,34 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Berechtigung anlegen.
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string DeleteAccessControlEntryButton {
+            get {
+                return ResourceManager.GetString("DeleteAccessControlEntryButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string DeleteAccessControlListButton {
+            get {
+                return ResourceManager.GetString("DeleteAccessControlListButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string DeleteStateCombinationCommand {
+            get {
+                return ResourceManager.GetString("DeleteStateCombinationCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New ACE.
         /// </summary>
         internal static string NewAccessControlEntryButton {
             get {
@@ -71,7 +98,16 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status zuordnen.
+        ///   Looks up a localized string similar to New ACL.
+        /// </summary>
+        internal static string NewAccessControlListButton {
+            get {
+                return ResourceManager.GetString("NewAccessControlListButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assign State.
         /// </summary>
         internal static string NewStateCombinationButton {
             get {
@@ -80,7 +116,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Berechtigungen.
+        ///   Looks up a localized string similar to Permissions.
         /// </summary>
         internal static string PermissionsLabel {
             get {

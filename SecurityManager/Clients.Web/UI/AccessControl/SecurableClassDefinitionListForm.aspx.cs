@@ -49,13 +49,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       if (!IsReturningPostBack)
       {
         EditPermissionsFormFunction function = new EditPermissionsFormFunction (CurrentFunction.ClientID, ((SecurableClassDefinition) e.BusinessObject).ID);
-        function.TransactionMode = WxeTransactionMode.None;
-        ExecuteFunction (function);
-      }
-      else
-      {
-        if (!((EditPermissionsFormFunction) ReturningFunction).HasUserCancelled)
-          SecurableClassDefinitionList.LoadUnboundValue (SecurableClassDefinition.FindAll (CurrentFunction.CurrentTransaction), false);
+        string features = "width=1000, height=700, menubar=no, toolbar=no, location=no, status=no";
+        ExecuteFunctionExternal (function, "_blank", features, (Control) sender, false);
       }
     }
   }

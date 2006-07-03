@@ -3,15 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head id="Head" runat="server">
-  <title></title>
 </head>
 <body>
   <form id="ThisForm" runat="server">
     <table class="contentView">
       <tr>
-        <td class="contentViewNavigation">
-          <div class="contentViewNavigation">
+        <td class="contentViewHeaderControls">
+          <div class="contentViewHeaderControls">
+            <asp:ContentPlaceHolder ID="HeaderControlsPlaceHolder" runat="server">
             <securityManager:SecurityManagerNavigationTabs ID="SecurityManagerNavigationTabs" runat="server" />
+            </asp:ContentPlaceHolder>
           </div>
         </td>
       </tr>

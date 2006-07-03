@@ -13,6 +13,7 @@ using Rubicon.SecurityManager.Domain.Metadata;
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   [Serializable]
+  [MultiLingualResources ("Rubicon.SecurityManager.Globalization.Domain.AccessControl.AccessControlEntry")]
   public class AccessControlEntry : AccessControlObject
   {
     // types
@@ -251,6 +252,15 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
         priority += ClientPriority;
 
       return priority;
+    }
+
+    //TODO: Rewrite with test
+    protected override void OnDeleting (EventArgs args)
+    {
+      base.OnDeleting (args);
+
+      while (Permissions.Count > 0)
+        Permissions[0].Delete ();
     }
   }
 }

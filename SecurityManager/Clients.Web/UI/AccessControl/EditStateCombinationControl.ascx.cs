@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Web;
@@ -30,6 +29,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     // static members and constants
 
+    private static readonly object s_deleteEvent = new object ();
+
     // member fields
 
     // construction and disposing
@@ -43,6 +44,18 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     protected StateCombination CurrentStateCombination
     {
       get { return (StateCombination) CurrentObject.BusinessObject; }
+    }
+
+    protected override void OnInit (EventArgs e)
+    {
+      base.OnInit (e);
+
+      BocMenuItem deleteMenuItem = new BocMenuItem ();
+      deleteMenuItem.ItemID = "Delete";
+      deleteMenuItem.Text = "$res:DeleteStateCombinationCommand";
+      deleteMenuItem.Command.Type = CommandType.Event;
+      deleteMenuItem.Command.Click += new CommandClickEventHandler (DeleteStateCombinationCommand_Click);
+      StateDefinitionField.OptionsMenuItems.Add (deleteMenuItem);
     }
 
     public override void LoadValues (bool interim)
@@ -127,6 +140,19 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         if (stateUsage.StateDefinition != stateDefinition)
           stateUsage.StateDefinition = stateDefinition;
       }
+    }
+
+    protected void DeleteStateCombinationCommand_Click (object sender, CommandClickEventArgs e)
+    {
+      EventHandler handler = (EventHandler) Events[s_deleteEvent];
+      if (handler != null)
+        handler (this, EventArgs.Empty);
+    }
+
+    public event EventHandler Delete
+    {
+      add { Events.AddHandler (s_deleteEvent, value); }
+      remove { Events.RemoveHandler (s_deleteEvent, value); }
     }
   }
 }

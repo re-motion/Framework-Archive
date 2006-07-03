@@ -96,5 +96,14 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       usage.StateDefinition = state;
       StateUsages.Add (usage);
     }
+
+    //TODO: Rewrite with test
+    protected override void OnDeleting (EventArgs args)
+    {
+      base.OnDeleting (args);
+
+      while (StateUsages.Count > 0)
+        StateUsages[0].Delete ();
+    }
   }
 }

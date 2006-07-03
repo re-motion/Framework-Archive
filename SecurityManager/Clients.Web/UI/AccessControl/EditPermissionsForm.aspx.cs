@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 {
-  [WebMultiLingualResources (typeof (EditPermissionsFormResources))]
+  [WebMultiLingualResources (typeof (AccessControlResources))]
   public partial class EditPermissionsForm : BaseEditPage
   {
 
@@ -48,6 +48,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
       LoadAccessControlLists (interim);
 
+      CurrentObjectHeaderControls.BusinessObject = CurrentFunction.SecurableClassDefinition;
+      CurrentObjectHeaderControls.LoadValues (interim);
+
       CurrentObject.BusinessObject = CurrentFunction.SecurableClassDefinition;
       CurrentObject.LoadValues (interim);
     }
@@ -70,8 +73,10 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         EditAccessControlListControl editAccessControlListControl = (EditAccessControlListControl) LoadControl ("EditAccessControlListControl.ascx");
         editAccessControlListControl.ID = "Acl_" + i.ToString ();
         editAccessControlListControl.BusinessObject = accessControlList;
+        editAccessControlListControl.Delete += new EventHandler (EditAccessControlListControl_Delete);
 
         HtmlGenericControl div = new HtmlGenericControl ("div");
+        div.Attributes.Add ("class", "accessControlList");
         AccessControlListsPlaceHolder.Controls.Add (div);
         div.Controls.Add (editAccessControlListControl);
 
@@ -85,6 +90,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
       SaveAccessControlLists (interim);
 
+      CurrentObjectHeaderControls.SaveValues (interim);
       CurrentObject.SaveValues (interim);
     }
 
@@ -99,16 +105,22 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       bool isValid = true;
       isValid &= base.ValidatePage ();
       isValid &= ValidateAccessControlLists ();
+      isValid &= CurrentObjectHeaderControls.Validate ();
       isValid &= CurrentObject.Validate ();
 
       return isValid;
     }
 
-    private bool ValidateAccessControlLists ()
+    private bool ValidateAccessControlLists (params EditAccessControlListControl[] excludedControls)
     {
+      List<EditAccessControlListControl> excludedControlList = new List<EditAccessControlListControl> (excludedControls);
+
       bool isValid = true;
       foreach (EditAccessControlListControl control in _editAccessControlListControls)
-        isValid &= control.Validate ();
+      {
+        if (!excludedControlList.Contains (control))
+          isValid &= control.Validate ();
+      }
       
       return isValid;
     }
@@ -119,8 +131,16 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       throw new WxeUserCancelException ();
     }
 
-    protected void NewButton_Click (object sender, EventArgs e)
+    protected void NewAccessControlListButton_Click (object sender, EventArgs e)
     {
+      PrepareValidation ();
+      bool isValid = ValidateAccessControlLists ();
+      if (!isValid)
+        return;
+
+      SaveAccessControlLists (false);
+      IsDirty = true;
+
       SecurableClassDefinition classDefinition = CurrentFunction.SecurableClassDefinition;
 
       AccessControlList accessControlList = new AccessControlList (classDefinition.ClientTransaction);
@@ -131,14 +151,32 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       //AccessControlListsRepeater.IsDirty = true;
     }
 
+    private void EditAccessControlListControl_Delete (object sender, EventArgs e)
+    {
+      EditAccessControlListControl editAccessControlListControl = (EditAccessControlListControl) sender;
+      PrepareValidation ();
+      bool isValid = ValidateAccessControlLists (editAccessControlListControl);
+      if (!isValid)
+        return;
+
+      _editAccessControlListControls.Remove (editAccessControlListControl);
+      AccessControlList accessControlList = (AccessControlList) editAccessControlListControl.DataSource.BusinessObject;
+      accessControlList.Delete ();
+
+      SaveAccessControlLists (false);
+      IsDirty = true;
+
+      LoadAccessControlLists (false);
+    }
+
     protected override void OnPreRender (EventArgs e)
     {
       base.OnPreRender (e);
 
-      EnableNewButton ();
+      EnableNewAccessControlListButton ();
     }
 
-    private void EnableNewButton ()
+    private void EnableNewAccessControlListButton ()
     {
       DomainObjectCollection stateProperties = CurrentFunction.SecurableClassDefinition.StateProperties;
       if (stateProperties.Count > 1)
@@ -148,10 +186,10 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       if (stateProperties.Count > 0)
         possibleStateCombinations += ((StatePropertyDefinition) stateProperties[0]).DefinedStates.Count;
 
-      if (CurrentFunction.SecurableClassDefinition.AccessControlLists.Count < possibleStateCombinations)
-        NewButton.Enabled = true;
+      if (CurrentFunction.SecurableClassDefinition.StateCombinations.Count < possibleStateCombinations)
+        NewAccessControlListButton.Enabled = true;
       else
-        NewButton.Enabled = false;
+        NewAccessControlListButton.Enabled = false;
     }
   }
 }

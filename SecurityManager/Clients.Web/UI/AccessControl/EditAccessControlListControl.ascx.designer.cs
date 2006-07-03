@@ -16,5 +16,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         protected System.Web.UI.HtmlControls.HtmlGenericControl AccessControlEntryControls;
         protected Rubicon.Web.UI.Controls.WebButton NewStateCombinationButton;
         protected Rubicon.Web.UI.Controls.WebButton NewAccessControlEntryButton;
+        protected Rubicon.Web.UI.Controls.WebButton DeleteAccessControlListButton;
     }
 }

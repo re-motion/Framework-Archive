@@ -122,5 +122,17 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       return accessTypes.ToArray ();
     }
+
+    //TODO: Rewrite with test
+    protected override void OnDeleting (EventArgs args)
+    {
+      base.OnDeleting (args);
+
+      while (AccessControlEntries.Count > 0)
+        AccessControlEntries[0].Delete ();
+
+      while (StateCombinations.Count > 0)
+        StateCombinations[0].Delete ();
+    }
   }
 }

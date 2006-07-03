@@ -26,8 +26,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     // types
 
     // static members and constants
+    
+    private static readonly object s_deleteEvent = new object ();
 
     // member fields
+
     private List<EditPermissionControl> _editPermissionControls = new List<EditPermissionControl> ();
 
     // construction and disposing
@@ -70,8 +73,9 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       PermissionsPlaceHolder.Controls.Clear ();
       _editPermissionControls.Clear ();
 
-      HtmlTable table = new HtmlTable ();
-      PermissionsPlaceHolder.Controls.Add (table);
+      HtmlGenericControl ul = new HtmlGenericControl ("ul");
+      ul.Attributes.Add ("class", "permissionsList");
+      PermissionsPlaceHolder.Controls.Add (ul);
 
       for (int i = 0; i < permissions.Count; i++)
       {
@@ -81,11 +85,10 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         control.ID = "P_" + i.ToString ();
         control.BusinessObject = permission;
 
-        HtmlTableRow row = new HtmlTableRow ();
-        table.Rows.Add (row);
-        HtmlTableCell cell = new HtmlTableCell ();
-        row.Cells.Add (cell);
-        cell.Controls.Add (control);
+        HtmlGenericControl li = new HtmlGenericControl ("li");
+        li.Attributes.Add ("class", "permissionsList");
+        ul.Controls.Add (li);
+        li.Controls.Add (control);
 
         _editPermissionControls.Add (control);
       }
@@ -126,6 +129,19 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         isValid &= control.Validate ();
 
       return isValid;
+    }
+
+    protected void DeleteAccessControlEntryButton_Click (object sender, EventArgs e)
+    {
+      EventHandler handler = (EventHandler) Events[s_deleteEvent];
+      if (handler != null)
+        handler (this, e);
+    }
+
+    public event EventHandler Delete
+    {
+      add { Events.AddHandler (s_deleteEvent, value); }
+      remove { Events.RemoveHandler (s_deleteEvent, value); }
     }
   }
 }

@@ -69,7 +69,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     //TODO: Rewrite with Test
-    //TODO: FourLetterLanguageNames
     public override string DisplayName
     {
       get

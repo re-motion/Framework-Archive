@@ -20,14 +20,22 @@ html>body table.contentMultiView
 }
 /* End Non-IE Browsers hack\*/
 
-td.contentViewNavigation
+td.contentViewHeaderControls
 {
   padding: 0;
   height: 0%;
+	border-bottom: solid 1px #005588;	
 }
 
-div.contentViewNavigation
+div.contentViewHeaderControls
 {
+}
+
+div.contentViewHeaderControls h1
+{
+  font-size: 125%;
+  width: 100%;
+  border-bottom: solid 2px black;
 }
 
 /* Applied to the top section of the content view. Height cannot be provided in percent. */

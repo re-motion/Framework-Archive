@@ -7,10 +7,10 @@
 <%@ Register TagPrefix="securityManager" Src="EditAccessControlEntryControl.ascx" TagName="EditAccessControlEntryControl" %>
 
 <rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.AccessControl.AccessControlList, Rubicon.SecurityManager" />
-<table style="height:100%; width: 100%;">
+<table class="accessControlList">
   <tr>
-    <td style="height: 100%;">
-      <div id="StateCombinationControls" runat="server" style="overflow: auto;	height: 100%; width: 100%;"><%-- 
+    <td class="stateCombinationsContainer">
+      <div id="StateCombinationControls" runat="server" class="stateCombinationsContainer"><%-- 
         <securityManager:ObjectBoundRepeater ID="StateCombinationsRepeater" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StateCombinations">
           <HeaderTemplate><table><tr><td></HeaderTemplate>
           <SeparatorTemplate></td></tr><tr><td></SeparatorTemplate>
@@ -19,8 +19,8 @@
         </securityManager:ObjectBoundRepeater>
         --%></div>
     </td>
-    <td style="height: 100%;">
-      <div id="AccessControlEntryControls" runat="server" style="overflow: auto;	height: 100%; width: 100%;"><%-- 
+    <td class="accessControlEntriesContainer">
+      <div id="AccessControlEntryControls" runat="server" class="accessControlEntriesContainer"><%-- 
         <securityManager:ObjectBoundRepeater ID="AccessControlEntriesRepeater" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="AccessControlEntries">
           <HeaderTemplate><table><tr><td></HeaderTemplate>
           <SeparatorTemplate></td></tr><tr><td></SeparatorTemplate>
@@ -31,9 +31,10 @@
    </td>
   </tr>
   <tr>
-  <td colspan="2" style="height: 0%">
+  <td colspan="2" class="accessControlListButtons">
     <rubicon:WebButton ID="NewStateCombinationButton" runat="server" Text="$res:NewStateCombinationButton" OnClick="NewStateCombinationButton_Click" CausesValidation="false" />
     <rubicon:WebButton ID="NewAccessControlEntryButton" runat="server" Text="$res:NewAccessControlEntryButton" Style="margin-left: 1em;" OnClick="NewAccessControlEntryButton_Click" CausesValidation="false" />
+    <rubicon:WebButton ID="DeleteAccessControlListButton" runat="server" Text="$res:DeleteAccessControlListButton" Style="margin-left: 1em;" OnClick="DeleteAccessControlListButton_Click" CausesValidation="false" />
   </td>
   </tr>
 </table>

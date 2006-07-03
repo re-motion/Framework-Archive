@@ -29,7 +29,10 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     // static members and constants
 
+    private static readonly object s_deleteEvent = new object ();
+
     // member fields
+    
     private List<EditStateCombinationControl> _editStateCombinationControls = new List<EditStateCombinationControl> ();
     private List<EditAccessControlEntryControl> _editAccessControlEntryControls = new List<EditAccessControlEntryControl> ();
 
@@ -64,7 +67,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       if (stateProperties.Count > 0)
         possibleStateCombinations += ((StatePropertyDefinition) stateProperties[0]).DefinedStates.Count;
 
-      if (CurrentAccessControlList.StateCombinations.Count < possibleStateCombinations)
+      if (CurrentAccessControlList.ClassDefinition.StateCombinations.Count < possibleStateCombinations)
         NewStateCombinationButton.Enabled = true;
       else
         NewStateCombinationButton.Enabled = false;
@@ -90,9 +93,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       StateCombinationControls.Controls.Clear ();
       _editStateCombinationControls.Clear ();
 
-      HtmlTable table = new HtmlTable ();
-      StateCombinationControls.Controls.Add (table);
-
       for (int i = 0; i < stateCombinations.Count; i++)
       {
         StateCombination stateCombination = (StateCombination) stateCombinations[i];
@@ -100,12 +100,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl) LoadControl ("EditStateCombinationControl.ascx");
         editStateCombinationControl.ID = "SC_" + i.ToString ();
         editStateCombinationControl.BusinessObject = stateCombination;
+        editStateCombinationControl.Delete += new EventHandler (EditStateCombinationControl_Delete);
 
-        HtmlTableRow row = new HtmlTableRow ();
-        table.Rows.Add (row);
-        HtmlTableCell cell = new HtmlTableCell ();
-        row.Cells.Add (cell);
-        cell.Controls.Add (editStateCombinationControl);
+        HtmlGenericControl div = new HtmlGenericControl ("div");
+        div.Attributes.Add ("class", "stateCombinationContainer");
+        StateCombinationControls.Controls.Add (div);
+        div.Controls.Add (editStateCombinationControl);
 
         _editStateCombinationControls.Add (editStateCombinationControl);
       }
@@ -123,22 +123,21 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       AccessControlEntryControls.Controls.Clear ();
       _editAccessControlEntryControls.Clear ();
 
-      HtmlTable table = new HtmlTable ();
-      AccessControlEntryControls.Controls.Add (table);
-
       for (int i = 0; i < accessControlEntries.Count; i++)
       {
         AccessControlEntry accessControlEntry = (AccessControlEntry) accessControlEntries[i];
 
-        EditAccessControlEntryControl control = (EditAccessControlEntryControl) LoadControl ("EditAccessControlEntryControl.ascx");
-        control.ID = "Ace_" + i.ToString ();
-        control.BusinessObject = accessControlEntry;
-        HtmlTableRow row = new HtmlTableRow ();
-        table.Rows.Add (row);
-        HtmlTableCell cell = new HtmlTableCell ();
-        row.Cells.Add (cell);
-        cell.Controls.Add (control);
-        _editAccessControlEntryControls.Add (control);
+        EditAccessControlEntryControl editAccessControlEntryControl = (EditAccessControlEntryControl) LoadControl ("EditAccessControlEntryControl.ascx");
+        editAccessControlEntryControl.ID = "Ace_" + i.ToString ();
+        editAccessControlEntryControl.BusinessObject = accessControlEntry;
+        editAccessControlEntryControl.Delete += new EventHandler(EditAccessControlEntryControl_Delete);
+
+        HtmlGenericControl div = new HtmlGenericControl ("div");
+        div.Attributes.Add ("class", "accessControlEntryContainer");
+        AccessControlEntryControls.Controls.Add (div);
+        div.Controls.Add (editAccessControlEntryControl);
+
+        _editAccessControlEntryControls.Add (editAccessControlEntryControl);
       }
     }
 
@@ -172,20 +171,30 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       return isValid;
     }
 
-    private bool ValidateStateCombinations ()
+    private bool ValidateStateCombinations (params EditStateCombinationControl[] excludedControls)
     {
+      List<EditStateCombinationControl> excludedControlList = new List<EditStateCombinationControl> (excludedControls);
+
       bool isValid = true;
       foreach (EditStateCombinationControl control in _editStateCombinationControls)
-        isValid &= control.Validate ();
+      {
+        if (!excludedControlList.Contains (control))
+          isValid &= control.Validate ();
+      }
 
       return isValid;
     }
 
-    private bool ValidateAccessControlEntries ()
+    private bool ValidateAccessControlEntries (params EditAccessControlEntryControl[] excludedControls)
     {
+      List<EditAccessControlEntryControl> excludedControlList = new List<EditAccessControlEntryControl> (excludedControls);
+
       bool isValid = true;
       foreach (EditAccessControlEntryControl control in _editAccessControlEntryControls)
-        isValid &= control.Validate ();
+      {
+        if (!excludedControlList.Contains (control))
+          isValid &= control.Validate ();
+      }
 
       return isValid;
     }
@@ -233,6 +242,55 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       LoadAccessControlEntries (false);
       //AccessControlEntriesRepeater.LoadValue (false);
       //AccessControlEntriesRepeater.IsDirty = true;
+    }
+
+    void EditStateCombinationControl_Delete (object sender, EventArgs e)
+    {
+      EditStateCombinationControl editStateCombinationControl = (EditStateCombinationControl) sender;
+      Page.PrepareValidation ();
+      bool isValid = ValidateStateCombinations (editStateCombinationControl);
+      if (!isValid)
+        return;
+
+      _editStateCombinationControls.Remove (editStateCombinationControl);
+      StateCombination accessControlEntry = (StateCombination) editStateCombinationControl.DataSource.BusinessObject;
+      accessControlEntry.Delete ();
+
+      SaveStateCombinations (false);
+      Page.IsDirty = true;
+
+      LoadStateCombinations (false);
+    }
+
+    private void EditAccessControlEntryControl_Delete (object sender, EventArgs e)
+    {
+      EditAccessControlEntryControl editAccessControlEntryControl = (EditAccessControlEntryControl) sender;
+      Page.PrepareValidation ();
+      bool isValid = ValidateAccessControlEntries (editAccessControlEntryControl);
+      if (!isValid)
+        return;
+
+      _editAccessControlEntryControls.Remove (editAccessControlEntryControl);
+      AccessControlEntry accessControlEntry = (AccessControlEntry) editAccessControlEntryControl.DataSource.BusinessObject;
+      accessControlEntry.Delete ();
+
+      SaveAccessControlEntries (false);
+      Page.IsDirty = true;
+
+      LoadAccessControlEntries (false);
+    }
+
+    protected void DeleteAccessControlListButton_Click (object sender, EventArgs e)
+    {
+      EventHandler handler = (EventHandler) Events[s_deleteEvent];
+      if (handler != null)
+        handler (this, e);
+    }
+
+    public event EventHandler Delete
+    {
+      add { Events.AddHandler (s_deleteEvent, value); }
+      remove { Events.RemoveHandler (s_deleteEvent, value); }
     }
   }
 }
