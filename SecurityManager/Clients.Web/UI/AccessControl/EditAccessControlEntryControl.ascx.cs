@@ -46,10 +46,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       get { return (AccessControlEntry) CurrentObject.BusinessObject; }
     }
 
-    protected override void OnInit (EventArgs e)
+    protected override void OnPreRender (EventArgs e)
     {
-      base.OnInit (e);
+      base.OnPreRender (e);
       PermissionsLabel.Text = AccessControlResources.PermissionsLabel;
+      AccessControlEntryTitle.InnerText = AccessControlResources.AccessControlEntryTitle;
     }
 
     public override void LoadValues (bool interim)

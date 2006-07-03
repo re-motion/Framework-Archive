@@ -13,7 +13,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
     public partial class EditPermissionControl {
         protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BusinessObjectReferenceDataSourceControl AccessType;
-        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocBooleanValue AllowedField;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue NameField;
     }
 }

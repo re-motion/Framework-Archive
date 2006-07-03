@@ -6,15 +6,40 @@
   height: 1.1em;
 }
 
-div.accessControlList
+div.accessControlListContainer
 {
   width: 100%;
   margin-top: 1em;
-  border: solid 1px #005588;
+}
+
+td.accessControlListTitleCell,
+td.accessControlEntryTitleCell
+{
+  border-bottom: solid 2px black;
+}
+
+td.accessControlListTitleCell h2,
+td.accessControlEntryTitleCell h3
+{
+  font-size: 125%;
+  float: left;
+}
+
+div.accessControlListButtons,
+div.accessControlEntryButtons
+{
+  text-align: right;
+}
+
+div.accessControlListButtons button,
+div.accessControlEntryButtons button
+{
+  margin-left: 1em;  
 }
 
 table.accessControlList
 {
+  width: 100%;
   height: auto;
   border-collapse: collapse;
   border-spacing: 0;
@@ -48,12 +73,7 @@ div.accessControlEntriesContainer
 
 div.accessControlEntryContainer
 {
-  border-bottom: solid 1px #005588;
-}
-
-td.accessControlListButtons
-{
-  height: 0%;
+  margin-top: 1em;
 }
 
 ul.permissionsList
@@ -67,4 +87,5 @@ li.permissionsList
 {
   float: left;
   white-space: nowrap;
+  margin-right: 2em;
 }

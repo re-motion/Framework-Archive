@@ -9,6 +9,16 @@
 <rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.AccessControl.AccessControlList, Rubicon.SecurityManager" />
 <table class="accessControlList">
   <tr>
+  <td class="accessControlListTitleCell" colspan="2">
+    <h2 ID="AccessControlListTitle" runat="server">###</h2>
+    <div class="accessControlListButtons">
+      <rubicon:WebButton ID="NewStateCombinationButton" runat="server" Text="$res:NewStateCombinationButton" OnClick="NewStateCombinationButton_Click" CausesValidation="false" />
+      <rubicon:WebButton ID="NewAccessControlEntryButton" runat="server" Text="$res:NewAccessControlEntryButton" OnClick="NewAccessControlEntryButton_Click" CausesValidation="false" />
+      <rubicon:WebButton ID="DeleteAccessControlListButton" runat="server" Text="$res:DeleteAccessControlListButton" OnClick="DeleteAccessControlListButton_Click" CausesValidation="false" />
+    </div>
+  </td>
+  </tr>
+  <tr>
     <td class="stateCombinationsContainer">
       <div id="StateCombinationControls" runat="server" class="stateCombinationsContainer"><%-- 
         <securityManager:ObjectBoundRepeater ID="StateCombinationsRepeater" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StateCombinations">
@@ -29,13 +39,6 @@
         </securityManager:ObjectBoundRepeater>
         --%></div>
    </td>
-  </tr>
-  <tr>
-  <td colspan="2" class="accessControlListButtons">
-    <rubicon:WebButton ID="NewStateCombinationButton" runat="server" Text="$res:NewStateCombinationButton" OnClick="NewStateCombinationButton_Click" CausesValidation="false" />
-    <rubicon:WebButton ID="NewAccessControlEntryButton" runat="server" Text="$res:NewAccessControlEntryButton" Style="margin-left: 1em;" OnClick="NewAccessControlEntryButton_Click" CausesValidation="false" />
-    <rubicon:WebButton ID="DeleteAccessControlListButton" runat="server" Text="$res:DeleteAccessControlListButton" Style="margin-left: 1em;" OnClick="DeleteAccessControlListButton_Click" CausesValidation="false" />
-  </td>
   </tr>
 </table>
 

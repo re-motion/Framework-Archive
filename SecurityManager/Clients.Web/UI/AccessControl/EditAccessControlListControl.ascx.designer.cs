@@ -12,10 +12,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
     
     public partial class EditAccessControlListControl {
         protected Rubicon.Data.DomainObjects.ObjectBinding.Web.DomainObjectDataSourceControl CurrentObject;
-        protected System.Web.UI.HtmlControls.HtmlGenericControl StateCombinationControls;
-        protected System.Web.UI.HtmlControls.HtmlGenericControl AccessControlEntryControls;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl AccessControlListTitle;
         protected Rubicon.Web.UI.Controls.WebButton NewStateCombinationButton;
         protected Rubicon.Web.UI.Controls.WebButton NewAccessControlEntryButton;
         protected Rubicon.Web.UI.Controls.WebButton DeleteAccessControlListButton;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl StateCombinationControls;
+        protected System.Web.UI.HtmlControls.HtmlGenericControl AccessControlEntryControls;
     }
 }

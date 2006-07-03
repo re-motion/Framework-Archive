@@ -62,7 +62,25 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to ACE (Access Control Entry).
+        /// </summary>
+        internal static string AccessControlEntryTitle {
+            get {
+                return ResourceManager.GetString("AccessControlEntryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ACL (Access Control List).
+        /// </summary>
+        internal static string AccessControlListTitle {
+            get {
+                return ResourceManager.GetString("AccessControlListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete ACE.
         /// </summary>
         internal static string DeleteAccessControlEntryButton {
             get {
@@ -71,7 +89,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to Delete ACL.
         /// </summary>
         internal static string DeleteAccessControlListButton {
             get {
@@ -80,7 +98,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to Remove State.
         /// </summary>
         internal static string DeleteStateCombinationCommand {
             get {

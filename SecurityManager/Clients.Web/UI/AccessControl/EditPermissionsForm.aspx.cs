@@ -76,7 +76,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
         editAccessControlListControl.Delete += new EventHandler (EditAccessControlListControl_Delete);
 
         HtmlGenericControl div = new HtmlGenericControl ("div");
-        div.Attributes.Add ("class", "accessControlList");
+        div.Attributes.Add ("class", "accessControlListContainer");
         AccessControlListsPlaceHolder.Controls.Add (div);
         div.Controls.Add (editAccessControlListControl);
 
@@ -141,10 +141,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       SaveAccessControlLists (false);
       IsDirty = true;
 
-      SecurableClassDefinition classDefinition = CurrentFunction.SecurableClassDefinition;
-
-      AccessControlList accessControlList = new AccessControlList (classDefinition.ClientTransaction);
-      accessControlList.ClassDefinition = classDefinition;
+      CurrentFunction.SecurableClassDefinition.CreateAccessControlList ();
 
       LoadAccessControlLists (false);
       //AccessControlListsRepeater.LoadValue (false);

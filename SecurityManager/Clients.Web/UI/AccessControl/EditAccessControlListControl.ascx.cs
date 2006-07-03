@@ -54,6 +54,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     {
       base.OnPreRender (e);
 
+      AccessControlListTitle.InnerText = AccessControlResources.AccessControlListTitle;
       EnableNewStateCombinationButton ();
     }
 
@@ -209,10 +210,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       }
       SaveValues (false);
       Page.IsDirty = true;
-      
-      StateCombination stateCombination = new StateCombination (CurrentAccessControlList.ClientTransaction);
-      stateCombination.ClassDefinition = CurrentAccessControlList.ClassDefinition;
-      stateCombination.AccessControlList = CurrentAccessControlList;
+
+      CurrentAccessControlList.CreateStateCombination ();
 
       LoadStateCombinations (false);
       //StateCombinationsRepeater.LoadValue (false);
@@ -230,14 +229,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       SaveValues (false);
       Page.IsDirty = true;
 
-      AccessControlEntry accessControlEntry = new AccessControlEntry (CurrentAccessControlList.ClientTransaction);
-      foreach (AccessTypeDefinition accessTypeDefinition in CurrentAccessControlList.ClassDefinition.AccessTypes)
-      {
-        Permission permission = new Permission (CurrentAccessControlList.ClientTransaction);
-        permission.AccessType = accessTypeDefinition;
-        permission.AccessControlEntry = accessControlEntry;
-      }
-      accessControlEntry.AccessControlList = CurrentAccessControlList;
+      CurrentAccessControlList.CreateAccessControlEntry ();
 
       LoadAccessControlEntries (false);
       //AccessControlEntriesRepeater.LoadValue (false);

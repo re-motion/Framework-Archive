@@ -6,7 +6,15 @@
 <%@ Register TagPrefix="securityManager" Src="EditPermissionControl.ascx" TagName="EditPermissionControl" %>
 <rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.AccessControl.AccessControlEntry, Rubicon.SecurityManager" />
 <rubicon:FormGridManager ID="FormGridManager" runat="server" />
-<table id="FormGrid" runat="server" cellpadding="0" cellspacing="0">
+<table id="FormGrid" runat="server" class="accessControlEntry">
+  <tr>
+    <td class="accessControlEntryTitleCell" colspan="2">
+      <h3 ID="AccessControlEntryTitle" runat="server">###</h3>
+      <div class="accessControlEntryButtons">
+        <rubicon:WebButton ID="DeleteAccessControlEntryButton" runat="server" Text="$res:DeleteAccessControlEntryButton" OnClick="DeleteAccessControlEntryButton_Click" CausesValidation="false" />
+      </div>
+    </td>
+  </tr>
   <tr>
     <td></td>
     <td><rubicon:BocReferenceValue ID="SpecificAbstractRoleField" runat="server" PropertyIdentifier="SpecificAbstractRole" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" >
@@ -14,9 +22,6 @@
         <rubicon:BocCommand />
       </PersistedCommand>
     </rubicon:BocReferenceValue></td>
-   <td style="text-align: right">
-     <rubicon:WebButton ID="DeleteAccessControlEntryButton" runat="server" Text="$res:DeleteAccessControlEntryButton" OnClick="DeleteAccessControlEntryButton_Click" CausesValidation="false" />
-   </td>
  </tr>
   <tr>
     <td></td>
@@ -25,7 +30,6 @@
         <rubicon:BocCommand />
       </PersistedCommand>
     </rubicon:BocReferenceValue></td>
-    <td></td>
   </tr>
   <tr>
     <td><rubicon:SmartLabel ID="PriorityLabel" runat="server" ForControl="PriorityField"/></td>
@@ -33,11 +37,10 @@
       <rubicon:BocTextValue ID="PriorityField" runat="server" PropertyIdentifier="Priority" DataSourceControl="CurrentObject" Width="10em" />
       / <rubicon:BocTextValue ID="ActualPriority" runat="server" PropertyIdentifier="ActualPriority" DataSourceControl="CurrentObject" />
     </td>
-    <td></td>
   </tr>
   <tr>
     <td><rubicon:FormGridLabel ID="PermissionsLabel" runat="server" Text="###" /></td>
-    <td colspan="2">
+    <td>
       <asp:PlaceHolder ID="PermissionsPlaceHolder" runat="server" />
       <%--
       <securityManager:ObjectBoundRepeater ID="PermissionsRepeater" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="Permissions">
