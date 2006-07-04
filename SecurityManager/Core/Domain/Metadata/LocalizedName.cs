@@ -60,6 +60,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public string Text
     {
       get { return (string) DataContainer["Text"]; }
+      set { DataContainer["Text"] = value; }
     }
 
     public Culture Culture

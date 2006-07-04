@@ -81,6 +81,7 @@ namespace Rubicon.SecurityManager.Metadata.Importer
     private void ImportMetadata (ClientTransaction transaction)
     {
       MetadataImporter importer = new MetadataImporter (transaction);
+      WriteInfo ("Importing metadata file '{0}'.", _arguments.MetadataFile);
       importer.Import (_arguments.MetadataFile);
     }
 
@@ -91,7 +92,13 @@ namespace Rubicon.SecurityManager.Metadata.Importer
       string[] localizationFileNames = localizationFileNameStrategy.GetLocalizationFileNames (_arguments.MetadataFile);
 
       foreach (string localizationFileName in localizationFileNames)
+      {
+        WriteInfo ("Importing localization file '{0}'.", localizationFileName);
         importer.Import (localizationFileName);
+      }
+
+      if (localizationFileNames.Length == 0)
+        WriteInfo ("Localization files not found.");
     }
 
     private void HandleException (Exception exception)
@@ -109,6 +116,12 @@ namespace Rubicon.SecurityManager.Metadata.Importer
       {
         Console.Error.WriteLine ("Execution aborted: {0}", exception.Message);
       }
+    }
+
+    private void WriteInfo (string text, params object[] args)
+    {
+      if (_arguments.Verbose)
+        Console.WriteLine (text, args);
     }
   }
 }

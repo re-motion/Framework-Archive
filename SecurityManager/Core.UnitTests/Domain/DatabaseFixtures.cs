@@ -29,6 +29,27 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       dbHelper.SetupDB ();
     }
 
+    public void CreateSecurableClassDefinitionWithLocalizedNames ()
+    {
+      CreateEmptyDomain ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
+          transaction,
+          new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
+          "Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager.Domain");
+
+      Culture germanCulture = new Culture (transaction, "de");
+      Culture englishCulture = new Culture (transaction, "en");
+      Culture russianCulture = new Culture (transaction, "ru");
+
+      LocalizedName classInGerman = new LocalizedName (transaction, "Klasse", germanCulture, classDefinition);
+      LocalizedName classInEnglish = new LocalizedName (transaction, "Class", englishCulture, classDefinition);
+
+      transaction.Commit ();
+    }
+
     public void CreateOrganizationalStructure ()
     {
       CreateEmptyDomain ();
@@ -135,6 +156,18 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       Position position1 = CreatePosition (transaction, "position 1", _currentClient);
       Position position2 = CreatePosition (transaction, "position 2", _currentClient);
       Position position3 = CreatePosition (transaction, "position 3", client2);
+
+      transaction.Commit ();
+    }
+
+    public void CreateAdministratorAbstractRole ()
+    {
+      CreateEmptyDomain ();
+      ClientTransaction transaction = new ClientTransaction ();
+
+      Guid metadataItemID = new Guid ("00000004-0001-0000-0000-000000000000");
+      string abstractRoleName = "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRole, Rubicon.Security.UnitTests.TestDomain";
+      AbstractRoleDefinition administratorAbstractRole = new AbstractRoleDefinition (transaction, metadataItemID, abstractRoleName, 0);
 
       transaction.Commit ();
     }

@@ -112,5 +112,65 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       Assert.AreEqual ("Testklasse", metadataObject.DisplayName);
     }
+
+    [Test]
+    public void GetLocalizedName_ExistingCulture ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      Culture culture = Culture.Find (transaction, "de");
+      MetadataObject metadataObject = MetadataObject.Find (transaction, "b8621bc9-9ab3-4524-b1e4-582657d6b420");
+
+      LocalizedName localizedName = metadataObject.GetLocalizedName (culture);
+
+      Assert.IsNotNull (localizedName);
+      Assert.AreEqual ("Klasse", localizedName.Text);
+    }
+
+    [Test]
+    public void GetLocalizedName_NotExistingCulture ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      Culture culture = Culture.Find (transaction, "ru");
+      MetadataObject metadataObject = MetadataObject.Find (transaction, "b8621bc9-9ab3-4524-b1e4-582657d6b420");
+
+      LocalizedName localizedName = metadataObject.GetLocalizedName (culture);
+
+      Assert.IsNull (localizedName);
+    }
+
+    [Test]
+    public void GetLocalizedName_ExistingCultureName ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      MetadataObject metadataObject = MetadataObject.Find (transaction, "b8621bc9-9ab3-4524-b1e4-582657d6b420");
+
+      LocalizedName localizedName = metadataObject.GetLocalizedName ("de");
+
+      Assert.IsNotNull (localizedName);
+      Assert.AreEqual ("Klasse", localizedName.Text);
+    }
+
+    [Test]
+    public void GetLocalizedName_NotExistingCultureName ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      MetadataObject metadataObject = MetadataObject.Find (transaction, "b8621bc9-9ab3-4524-b1e4-582657d6b420");
+
+      LocalizedName localizedName = metadataObject.GetLocalizedName ("ru");
+
+      Assert.IsNull (localizedName);
+    }
   }
 }

@@ -73,12 +73,12 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
       foreach (XmlNode nameNode in nameNodes)
       {
-        LocalizedName localizedName = CreateLocalizedName (culture, namespaceManager, nameNode);
+        LocalizedName localizedName = ImportLocalizedName (culture, namespaceManager, nameNode);
         _localizedNames.Add (localizedName);
       }
     }
 
-    private LocalizedName CreateLocalizedName (Culture culture, XmlNamespaceManager namespaceManager, XmlNode nameNode)
+    private LocalizedName ImportLocalizedName (Culture culture, XmlNamespaceManager namespaceManager, XmlNode nameNode)
     {
       string metadataID = nameNode.Attributes["ref"].Value;
       XmlAttribute commentAttribute = nameNode.Attributes["comment"];
@@ -90,7 +90,16 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         throw new ImportException (string.Format ("The metadata object with the ID '{0}' {1}could not be found.", metadataID, objectDetails));
       }
 
-      return new LocalizedName (_transaction, nameNode.InnerText.Trim (), culture, metadataObject);
+      string text = nameNode.InnerText.Trim ();
+
+      LocalizedName localizedName = metadataObject.GetLocalizedName (culture);
+      if (localizedName != null)
+      {
+        localizedName.Text = text;
+        return localizedName;
+      }
+
+      return new LocalizedName (_transaction, text, culture, metadataObject);
     }
   }
 }

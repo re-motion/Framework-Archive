@@ -73,26 +73,36 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       get
       {
-        foreach (LocalizedName localizedName in LocalizedNames)
-        {
-          if (localizedName.Culture.CultureName == CultureInfo.CurrentUICulture.Name)
-            return localizedName.Text;
-        }
+        LocalizedName localizedName = GetLocalizedName (CultureInfo.CurrentUICulture.Name);
+        if (localizedName != null)
+          return localizedName.Text;
 
-        foreach (LocalizedName localizedName in LocalizedNames)
-        {
-          if (localizedName.Culture.CultureName == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)
-            return localizedName.Text;
-        }
+        localizedName = GetLocalizedName (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+        if (localizedName != null)
+          return localizedName.Text;
 
-        foreach (LocalizedName localizedName in LocalizedNames)
-        {
-          if (localizedName.Culture.CultureName == CultureInfo.InvariantCulture.Name)
-            return localizedName.Text;
-        }
+        localizedName = GetLocalizedName (CultureInfo.InvariantCulture.Name);
+        if (localizedName != null)
+          return localizedName.Text;
 
         return Name;
       }
+    }
+
+    public LocalizedName GetLocalizedName (Culture culture)
+    {
+      return GetLocalizedName (culture.CultureName);
+    }
+
+    public LocalizedName GetLocalizedName (string cultureName)
+    {
+      foreach (LocalizedName localizedName in LocalizedNames)
+      {
+        if (localizedName.Culture.CultureName == cultureName)
+          return localizedName;
+      }
+
+      return null;
     }
   }
 }

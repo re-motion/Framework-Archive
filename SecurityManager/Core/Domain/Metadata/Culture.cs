@@ -7,6 +7,7 @@ using Rubicon.Data.DomainObjects.ObjectBinding;
 using Rubicon.NullableValueTypes;
 using Rubicon.Globalization;
 using Rubicon.Utilities;
+using Rubicon.Data.DomainObjects.Queries;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -16,6 +17,18 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     // types
 
     // static members and constants
+
+    public static Culture Find (ClientTransaction transaction, string name)
+    {
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.Culture.Find");
+      query.Parameters.Add ("@cultureName", name);
+
+      DomainObjectCollection result = transaction.QueryManager.GetCollection (query);
+      if (result.Count == 0)
+        return null;
+
+      return (Culture) result[0];
+    }
 
     public static new Culture GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
