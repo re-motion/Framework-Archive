@@ -2913,7 +2913,9 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
   {
     Image spacer = new Image();
     spacer.ImageUrl = GetImageUrl (FormGridImage.Spacer);
-
+#if !NET11
+    spacer.GenerateEmptyAlternateText = true;
+#endif
     return spacer;  
   }
 
