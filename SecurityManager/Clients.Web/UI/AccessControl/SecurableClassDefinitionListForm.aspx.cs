@@ -18,6 +18,7 @@ using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Data.DomainObjects;
 using Rubicon.Web.UI;
+using System.Collections.Generic;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -45,7 +46,8 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       base.OnLoad (e);
 
       LoadTree (IsPostBack, false);
-      ExpandTreeNodes (SecurableClassDefinitionTree.Nodes);
+      if (!IsPostBack)
+        ExpandTreeNodes (SecurableClassDefinitionTree.Nodes);
     }
 
     protected override void OnPreRenderComplete (EventArgs e)
