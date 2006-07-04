@@ -1,3 +1,9 @@
+1.7.11
+======
+- BocTreeView
+  * protected virtual string GetToolTip (IBusinessObject) geändert zu protected virtual string GetToolTip (IBusinessObjectWithIdentity)
+  * Neue Methode protected virtual string GetText (IBusinessObjectWithIdentity)
+
 1.4.56
 ======
 - BocList

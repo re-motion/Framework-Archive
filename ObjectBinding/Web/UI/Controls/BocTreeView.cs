@@ -336,27 +336,27 @@ public class BocTreeView: BusinessObjectBoundWebControl
     IBusinessObjectWithIdentity businessObject)
   {
     string id = businessObject.UniqueIdentifier;
-    string text = businessObject.DisplayName;
+    string text = GetText (businessObject);
     string toolTip = GetToolTip (businessObject);
-    IconInfo icon = BusinessObjectBoundWebControl.GetIcon (
-        businessObject, 
-        businessObject.BusinessObjectClass.BusinessObjectProvider);
+    IconInfo icon = BusinessObjectBoundWebControl.GetIcon (businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
     BusinessObjectTreeNode node = new BusinessObjectTreeNode (id, text, toolTip, icon, property, businessObject);
     node.IsEvaluated = false;
     return node;
   }
 
-  protected virtual string GetToolTip (IBusinessObject businessObject)
+  protected virtual string GetText (IBusinessObjectWithIdentity businessObject)
   {
     ArgumentUtility.CheckNotNull ("businessObject", businessObject);
-    return BusinessObjectBoundWebControl.GetToolTip (
-        businessObject, 
-        businessObject.BusinessObjectClass.BusinessObjectProvider);
+    return businessObject.DisplayName;
   }
 
-  protected virtual IBusinessObjectWithIdentity[] GetBusinessObjects (
-      IBusinessObjectWithIdentity parent,
-      IBusinessObjectReferenceProperty property)
+  protected virtual string GetToolTip (IBusinessObjectWithIdentity businessObject)
+  {
+    ArgumentUtility.CheckNotNull ("businessObject", businessObject);
+    return BusinessObjectBoundWebControl.GetToolTip (businessObject, businessObject.BusinessObjectClass.BusinessObjectProvider);
+  }
+
+  protected virtual IBusinessObjectWithIdentity[] GetBusinessObjects (IBusinessObjectWithIdentity parent, IBusinessObjectReferenceProperty property)
   {
     ArgumentUtility.CheckNotNull ("parent", parent);
 
