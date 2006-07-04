@@ -55,6 +55,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   private IWxePage _page;
   private WxeForm _wxeForm;
   private bool _postbackCollectionInitialized = false;
+  private bool _isPostDataHandled = false;
   private NameValueCollection _postbackCollection = null;
   /// <summary> The <see cref="WxeFunctionState"/> designated by <b>WxeForm.ReturningToken</b>. </summary>
   private WxeFunctionState _returningFunctionState = null;
@@ -75,6 +76,14 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   {
     ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));
     _page = page;
+  }
+
+  public Control FindControl (string id)
+  {
+    if (_wxeForm != null && !StringUtility.IsNullOrEmpty(_wxeForm.ID) && id == _wxeForm.UniqueID)
+      return _wxeForm;
+
+    return _page.FindControl (id);
   }
 
   public override void Initialize (HttpContext context)
@@ -106,6 +115,8 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     {
       _postbackCollection = DeterminePostBackMode (context);
       _postbackCollectionInitialized = true;
+      if (_postbackCollection != null)
+        EnsurePostDataHandled (_postbackCollection);
     }
     return _postbackCollection;
   }  
@@ -140,6 +151,18 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
     NameValueCollection postBackCollection = _page.GetPostBackCollection();
     if (postBackCollection == null)
       throw new InvalidOperationException ("The IWxePage has no PostBackCollection even though this is a post back.");
+    EnsurePostDataHandled (postBackCollection);
+    
+    if (WxeContext.Current.IsOutOfSequencePostBack && ! _page.AreOutOfSequencePostBacksEnabled)
+      throw new WxePostbackOutOfSequenceException();
+  }
+
+  protected void EnsurePostDataHandled (NameValueCollection postBackCollection)
+  {
+    if (_isPostDataHandled)
+      return;
+
+    _isPostDataHandled = true;
     HandleLoadPostData (postBackCollection);
   }
 
@@ -154,11 +177,7 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
 
     int postBackID = int.Parse (postBackCollection[WxePageInfo.PostBackSequenceNumberID]);
     if (postBackID != wxeContext.PostBackID)
-    {
       wxeContext.SetIsOutOfSequencePostBack (true);
-      if (! _page.AreOutOfSequencePostBacksEnabled)
-        throw new WxePostbackOutOfSequenceException();
-    }
 
     string returningToken = postBackCollection[WxePageInfo.ReturningTokenID];
     if (! StringUtility.IsNullOrEmpty (returningToken))
