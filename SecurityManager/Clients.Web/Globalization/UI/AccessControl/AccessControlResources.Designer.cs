@@ -141,5 +141,14 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
                 return ResourceManager.GetString("NewStateCombinationButton", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} - Edit Permissions.
+        /// </summary>
+        internal static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
     }
 }

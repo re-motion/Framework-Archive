@@ -18,6 +18,7 @@ using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
 using System.Collections.Generic;
+using Rubicon.Web.UI;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -40,6 +41,12 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     protected new EditPermissionsFormFunction CurrentFunction
     {
       get { return (EditPermissionsFormFunction) base.CurrentFunction; }
+    }
+
+    protected override void OnPreRenderComplete (EventArgs e)
+    {
+      HtmlHeadAppender.Current.SetTitle (string.Format (AccessControlResources.Title, CurrentFunction.SecurableClassDefinition.DisplayName));
+      base.OnPreRenderComplete (e);
     }
 
     protected override void LoadValues (bool interim)

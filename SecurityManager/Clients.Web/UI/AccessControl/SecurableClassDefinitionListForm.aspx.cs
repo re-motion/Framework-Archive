@@ -17,6 +17,7 @@ using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Web.UI;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -44,6 +45,13 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       base.OnLoad (e);
 
       LoadTree (IsPostBack, false);
+      ExpandTreeNodes (SecurableClassDefinitionTree.Nodes);
+    }
+
+    protected override void OnPreRenderComplete (EventArgs e)
+    {
+      HtmlHeadAppender.Current.SetTitle (SecurableClassDefinitionListFormResources.Title);
+      base.OnPreRenderComplete (e);
     }
 
     private void LoadTree (bool interim, bool refreshTreeNodes)
@@ -51,7 +59,6 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       SecurableClassDefinitionTree.LoadUnboundValue (SecurableClassDefinition.FindAllBaseClasses (new ClientTransaction ()), interim);
       if (refreshTreeNodes)
         SecurableClassDefinitionTree.RefreshTreeNodes ();
-      ExpandTreeNodes (SecurableClassDefinitionTree.Nodes);
     }
 
     private void ExpandTreeNodes (WebTreeNodeCollection webTreeNodeCollection)

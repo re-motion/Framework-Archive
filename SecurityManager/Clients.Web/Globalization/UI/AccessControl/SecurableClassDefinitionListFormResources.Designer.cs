@@ -69,5 +69,14 @@ namespace Rubicon.SecurityManager.Clients.Web.Globalization.UI.AccessControl {
                 return ResourceManager.GetString("SecurableClassDefinitionListLabel", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Classes.
+        /// </summary>
+        internal static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
     }
 }

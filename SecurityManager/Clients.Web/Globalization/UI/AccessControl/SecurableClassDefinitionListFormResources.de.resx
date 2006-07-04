@@ -120,4 +120,7 @@
   <data name="SecurableClassDefinitionListLabel" xml:space="preserve">
     <value>Klassen</value>
   </data>
+  <data name="Title" xml:space="preserve">
+    <value>Klassen</value>
+  </data>
 </root>
