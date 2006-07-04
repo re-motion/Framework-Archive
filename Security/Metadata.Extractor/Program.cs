@@ -83,30 +83,20 @@ namespace Rubicon.Security.Metadata.Extractor
 
     private static IMetadataConverter GetMetadataConverter (CommandLineArguments arguments)
     {
-      if (string.IsNullOrEmpty (arguments.Languages) && !arguments.SuppressMetadata)
-        return new MetadataToXmlConverter ();
+      MetadataConverterBuilder converterBuilder = new MetadataConverterBuilder ();
 
-      if (string.IsNullOrEmpty (arguments.Languages) && arguments.SuppressMetadata)
-        throw new ArgumentException ("You must export at least a localization file or a metadata file.");
+      if (arguments.Languages.Length > 0)
+      {
+        string[] languages = arguments.Languages.Split (',');
+        foreach (string language in languages)
+          converterBuilder.AddLocalization (language);
+      }
 
-      CultureInfo[] cultures = GetCultureInfos (arguments);
-      LocalizingMetadataConverter converter = new LocalizingMetadataConverter (new MetadataLocalizationToXmlConverter (), cultures);
+      if (arguments.InvariantCulture)
+        converterBuilder.AddLocalization (CultureInfo.InvariantCulture);
 
-      if (!arguments.SuppressMetadata)
-        converter.MetadataConverter = new MetadataToXmlConverter ();
-
-      return converter;
-    }
-
-    private static CultureInfo[] GetCultureInfos (CommandLineArguments arguments)
-    {
-      string[] languages = arguments.Languages.Split (',');
-      CultureInfo[] cultures = new CultureInfo[languages.Length];
-
-      for (int i = 0; i < languages.Length; i++)
-        cultures[i] = new CultureInfo (languages[i].Trim ());
-
-      return cultures;
+      converterBuilder.ConvertMetadataToXml = !arguments.SuppressMetadata;
+      return converterBuilder.Create ();
     }
   }
 }

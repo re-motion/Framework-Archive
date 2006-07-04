@@ -29,6 +29,11 @@ namespace Rubicon.Security.Metadata
       set { _metadataConverter = value; }
     }
 
+    public CultureInfo[] Cultures
+    {
+      get { return _cultures; }
+    }
+
     public void ConvertAndSave (MetadataCache cache, string filename)
     {
       if (_metadataConverter != null)

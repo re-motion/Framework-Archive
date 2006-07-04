@@ -69,6 +69,25 @@ namespace Rubicon.Security.UnitTests.Metadata
     }
 
     [Test]
+    public void Convert_OneLocalizedNameForInvariantCulture ()
+    {
+      LocalizedName[] localizedNames = new LocalizedName[1];
+      localizedNames[0] = new LocalizedName ("b8621bc9-9ab3-4524-b1e4-582657d6b420", "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain", "Beamter");
+
+      MetadataLocalizationToXmlConverter converter = new MetadataLocalizationToXmlConverter ();
+
+      XmlDocument document = converter.Convert (localizedNames, CultureInfo.InvariantCulture.Name);
+
+      string expectedXml = @"
+          <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture="""">
+            <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"">Beamter</localizedName>
+          </localizedNames>
+          ";
+
+      XmlAssert.AreDocumentsEqual (expectedXml, document);
+    }
+
+    [Test]
     public void ConvertAndSave_NewFile ()
     {
       string testOutputPath = @"Metadata\Testoutput";

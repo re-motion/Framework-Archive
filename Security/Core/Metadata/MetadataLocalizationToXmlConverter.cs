@@ -29,7 +29,7 @@ namespace Rubicon.Security.Metadata
     public XmlDocument Convert (LocalizedName[] localizedNames, string culture)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("localizedNames", localizedNames);
-      ArgumentUtility.CheckNotNullOrEmpty ("culture", culture);
+      ArgumentUtility.CheckNotNull ("culture", culture);
 
       XmlDocument document = new XmlDocument ();
       document.PreserveWhitespace = true;

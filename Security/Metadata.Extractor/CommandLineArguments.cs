@@ -27,8 +27,18 @@ namespace Rubicon.Security.Metadata.Extractor
         Description = "Suppress export of metadata file.")]
     public bool SuppressMetadata = false;
 
+    [CommandLineFlagArgument ("invariant", false,
+        Description = "Export multilingual descriptions of the metadata objects for the invariant culture.")]
+    public bool InvariantCulture;
+
     [CommandLineFlagArgument ("verbose", false,
         Description = "Verbose output")]
     public bool Verbose;
+
+    public void CheckArguments ()
+    {
+      if (string.IsNullOrEmpty (Languages) && SuppressMetadata && !InvariantCulture)
+        throw new CommandLineArgumentApplicationException ("You must export at least a localization file or a metadata file.");
+    }
   }
 }

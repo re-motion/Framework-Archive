@@ -66,6 +66,7 @@
     <Compile Include="Metadata\AbstractRoles.cs" />
     <Compile Include="Metadata\LocalizationFileNameStrategyTest.cs" />
     <Compile Include="Metadata\LocalizingMetadataConverterTest.cs" />
+    <Compile Include="Metadata\MetadataConverterBuilderTest.cs" />
     <Compile Include="Metadata\MetadataLocalizationToXmlConverterTest.cs" />
     <Compile Include="Metadata\MetadataToXmlConverterTest.cs">
       <SubType>Code</SubType>

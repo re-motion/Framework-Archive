@@ -54,6 +54,7 @@
     <Compile Include="Metadata\LocalizationFileNameStrategy.cs" />
     <Compile Include="Metadata\LocalizedName.cs" />
     <Compile Include="Metadata\LocalizingMetadataConverter.cs" />
+    <Compile Include="Metadata\MetadataConverterBuilder.cs" />
     <Compile Include="Metadata\MetadataExtractor.cs" />
     <Compile Include="Metadata\ClassReflector.cs" />
     <Compile Include="Metadata\AbstractRoleReflector.cs" />
