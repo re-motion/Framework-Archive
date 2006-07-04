@@ -15,6 +15,8 @@ using Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.ObjectBinding.Web.UI.Controls;
 using Rubicon.Data.DomainObjects.Web.ExecutionEngine;
+using Rubicon.Web.UI.Controls;
+using Rubicon.Data.DomainObjects;
 
 namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 {
@@ -41,22 +43,38 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
     {
       base.OnLoad (e);
 
-      SecurableClassDefinitionList.LoadUnboundValue (SecurableClassDefinition.FindAll (CurrentFunction.CurrentTransaction), false);
+      LoadTree (IsPostBack, false);
     }
 
-    protected override void OnPreRender (EventArgs e)
+    private void LoadTree (bool interim, bool refreshTreeNodes)
     {
-      SecurableClassDefinitionListLabel.Text = SecurableClassDefinitionListFormResources.SecurableClassDefinitionListLabel;
-      base.OnPreRender (e);
+      SecurableClassDefinitionTree.LoadUnboundValue (SecurableClassDefinition.FindAllBaseClasses (new ClientTransaction ()), interim);
+      if (refreshTreeNodes)
+        SecurableClassDefinitionTree.RefreshTreeNodes ();
+      ExpandTreeNodes (SecurableClassDefinitionTree.Nodes);
     }
 
-    protected void SecurableClassDefinitionList_ListItemCommandClick (object sender, BocListItemCommandClickEventArgs e)
+    private void ExpandTreeNodes (WebTreeNodeCollection webTreeNodeCollection)
+    {
+      foreach (WebTreeNode treeNode in webTreeNodeCollection)
+      {
+        treeNode.EvaluateExpand ();
+        ExpandTreeNodes (treeNode.Children);
+      }
+    }
+
+    protected void SecurableClassDefinitionTree_Click (object sender, BocTreeNodeClickEventArgs e)
     {
       if (!IsReturningPostBack)
       {
-        EditPermissionsFormFunction function = new EditPermissionsFormFunction (CurrentFunction.ClientID, ((SecurableClassDefinition) e.BusinessObject).ID);
+        SecurableClassDefinition classDefinition = (SecurableClassDefinition) e.BusinessObjectTreeNode.BusinessObject;
+        EditPermissionsFormFunction function = new EditPermissionsFormFunction (CurrentFunction.ClientID, classDefinition.ID);
         string features = "width=1000, height=700, resizable=yes, menubar=no, toolbar=no, location=no, status=no";
-        ExecuteFunctionExternal (function, "_blank", features, (Control) sender, false);
+        ExecuteFunctionExternal (function, "_blank", features, (Control) sender, true);
+      }
+      else
+      {
+        LoadTree (false, true);
       }
     }
   }

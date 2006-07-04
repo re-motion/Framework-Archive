@@ -5,32 +5,12 @@
 <%@ Register TagPrefix="rubicon" Assembly="Rubicon.Web" Namespace="Rubicon.Web.UI.Controls" %>
 <%@ Register TagPrefix="rubicon" Assembly="Rubicon.Data.DomainObjects.ObjectBinding.Web" Namespace="Rubicon.Data.DomainObjects.ObjectBinding.Web" %>
 <%@ Register TagPrefix="rubicon" Assembly="Rubicon.ObjectBinding.Web" Namespace="Rubicon.ObjectBinding.Web.UI.Controls" %>
+<%@ Register TagPrefix="securityManager" Assembly="Rubicon.SecurityManager.Clients.Web" Namespace="Rubicon.SecurityManager.Clients.Web.Classes" %>
 
 <asp:Content ID="ActualTopControlsPlaceHolder" runat="server" ContentPlaceHolderID="TopControlsPlaceHolder">
   <securityManager:ErrorMessageControl ID="ErrorMessageControl" runat="server" />
 </asp:Content>
 <asp:Content ID="ActaulMainContentPlaceHolder" runat="server" ContentPlaceHolderID="MainContentPlaceHolder">
   <rubicon:DomainObjectDataSourceControl ID="CurrentObject" runat="server" TypeName="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager" />
-  <rubicon:FormGridManager ID="FormGridManager" runat="server" ValidatorVisibility="HideValidators" />
-  <table id="FormGrid" runat="server" cellpadding="0" cellspacing="0" style="width: 100%; height: 100%;">
-    <tr class="underlinedMarkerCellRow">
-      <td class="formGridTitleCell" style="white-space: nowrap;">
-        <rubicon:SmartLabel runat="server" ID="SecurableClassDefinitionListLabel" Text="###" />
-      </td>
-      <td style="display: none; width: 100%"></td>
-    </tr>
-    <tr>
-      <td style="height: 100%; vertical-align: top;">
-        <rubicon:BocList ID="SecurableClassDefinitionList" runat="server" DataSourceControl="CurrentObject" OnListItemCommandClick="SecurableClassDefinitionList_ListItemCommandClick" ShowEmptyListMessage="true" ShowEmptyListReadOnlyMode="true">
-          <FixedColumns>
-            <rubicon:BocSimpleColumnDefinition PropertyPathIdentifier="DisplayName">
-              <PersistedCommand>
-                <rubicon:BocListItemCommand Type="Event" />
-              </PersistedCommand>
-            </rubicon:BocSimpleColumnDefinition>
-          </FixedColumns>
-        </rubicon:BocList>
-      </td>
-    </tr>
-  </table>
+  <securityManager:SecurableClassDefinitionTreeView ID="SecurableClassDefinitionTree" runat="server" DataSourceControl="CurrentObject" EnableLookAheadEvaluation="True" EnableTopLevelExpander="False" OnClick="SecurableClassDefinitionTree_Click" PropertyIdentifier="DerivedClasses" />
 </asp:Content>

@@ -19,6 +19,37 @@
     </statement>
   </query>
 
+  <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [SecurableClassDefinitionView] WHERE BaseClassID IS NULL;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [MetadataObjectView] WHERE MetadataItemID = @metadataItemID;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find.StateDefinition" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM StateDefinitionView
+      INNER JOIN StatePropertyDefinitionView ON StateDefinitionView.StatePropertyID = StatePropertyDefinitionView.ID
+      WHERE StatePropertyDefinitionView.MetadataItemID = @metadataItemID
+      AND StateDefinitionView.Value = @stateValue;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [AbstractRoleDefinitionView];
+    </statement>
+  </query>
+
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindUser" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
@@ -39,7 +70,7 @@
       SELECT * FROM [UserView] WHERE ClientID = @clientID ORDER BY LastName;
     </statement>
   </query>
-  
+
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
@@ -65,30 +96,6 @@
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
       SELECT * FROM [PositionView];
-    </statement>
-  </query>
-
-  <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find" type="collection">
-    <storageProviderID>SecurityManager</storageProviderID>
-    <statement>
-      SELECT * FROM [MetadataObjectView] WHERE MetadataItemID = @metadataItemID;
-    </statement>
-  </query>
-
-  <query id="Rubicon.SecurityManager.Domain.Metadata.MetadataObject.Find.StateDefinition" type="collection">
-    <storageProviderID>SecurityManager</storageProviderID>
-    <statement>
-      SELECT * FROM StateDefinitionView
-      INNER JOIN StatePropertyDefinitionView ON StateDefinitionView.StatePropertyID = StatePropertyDefinitionView.ID
-      WHERE StatePropertyDefinitionView.MetadataItemID = @metadataItemID
-      AND StateDefinitionView.Value = @stateValue;
-    </statement>
-  </query>
-
-  <query id="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" type="collection">
-    <storageProviderID>SecurityManager</storageProviderID>
-    <statement>
-      SELECT * FROM [AbstractRoleDefinitionView];
     </statement>
   </query>
 </queries>

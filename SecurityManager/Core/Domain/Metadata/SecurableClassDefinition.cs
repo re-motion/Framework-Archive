@@ -42,6 +42,15 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return transaction.QueryManager.GetCollection (query);
     }
 
+    //TODO: Write Test
+    public static DomainObjectCollection FindAllBaseClasses (ClientTransaction transaction)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
+
+      Query query = new Query ("Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses");
+      return transaction.QueryManager.GetCollection (query);
+    }
+
     public static new SecurableClassDefinition GetObject (ObjectID id)
     {
       return (SecurableClassDefinition) DomainObject.GetObject (id);
