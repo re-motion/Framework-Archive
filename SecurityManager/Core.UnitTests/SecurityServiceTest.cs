@@ -24,21 +24,21 @@ namespace Rubicon.SecurityManager.UnitTests
       IAccessControlListFinder aclFinder = mocks.NewMock<IAccessControlListFinder> ();
       ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
 
-      ClientTransaction transaction = new ClientTransaction ();
-      SecurityService service = new SecurityService (transaction, aclFinder, tokenBuilder);
+      SecurityService service = new SecurityService (aclFinder, tokenBuilder);
       SecurityContext context = new SecurityContext (typeof (Order), "Owner", "OwnerGroup", "OwnerClient", null, null);
-      SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
+      ClientTransaction transaction = new ClientTransaction ();
       AccessControlEntry ace = CreateAce (transaction);
       IPrincipal principal = CreateUser ();
+      SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
 
       Expect.Once.On (tokenBuilder).Method ("CreateToken").With (transaction, principal, context).Will (Return.Value (token));
       Expect.Once.On (aclFinder).Method ("Find").With (transaction, context).Will (Return.Value (CreateAcl (transaction, ace)));
 
-      AccessType[] accessTypes = service.GetAccess (context, principal);
-
-      Assert.AreEqual (0, accessTypes.Length);
+      AccessType[] accessTypes = service.GetAccess (transaction, context, principal);
 
       mocks.VerifyAllExpectationsHaveBeenMet ();
+
+      Assert.AreEqual (0, accessTypes.Length);
     }
 
     [Test]
@@ -48,9 +48,9 @@ namespace Rubicon.SecurityManager.UnitTests
       IAccessControlListFinder aclFinder = mocks.NewMock<IAccessControlListFinder> ();
       ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
 
-      ClientTransaction transaction = new ClientTransaction ();
-      SecurityService service = new SecurityService (transaction, aclFinder, tokenBuilder);
+      SecurityService service = new SecurityService (aclFinder, tokenBuilder);
       SecurityContext context = new SecurityContext (typeof (Order), "Owner", "OwnerGroup", "OwnerClient", null, null);
+      ClientTransaction transaction = new ClientTransaction ();
       AccessControlEntry ace = CreateAce (transaction);
       IPrincipal principal = CreateUser ();
 
@@ -61,12 +61,40 @@ namespace Rubicon.SecurityManager.UnitTests
       Expect.Once.On (tokenBuilder).Method ("CreateToken").With (transaction, principal, context).Will (Return.Value (token));
       Expect.Once.On (aclFinder).Method ("Find").With (transaction, context).Will (Return.Value (CreateAcl (transaction, ace)));
 
-      AccessType[] accessTypes = service.GetAccess (context, principal);
+      AccessType[] accessTypes = service.GetAccess (transaction, context, principal);
+
+      mocks.VerifyAllExpectationsHaveBeenMet ();
 
       Assert.AreEqual (1, accessTypes.Length);
       Assert.Contains (AccessType.Get (EnumWrapper.Parse ("Read|MyTypeName")), accessTypes);
+    }
+
+    [Test]
+    public void GetAccess_WithReadAccessFromInterface ()
+    {
+      Mockery mocks = new Mockery ();
+      IAccessControlListFinder aclFinder = mocks.NewMock<IAccessControlListFinder> ();
+      ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
+
+      ISecurityService service = new SecurityService (aclFinder, tokenBuilder);
+      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "OwnerGroup", "OwnerClient", null, null);
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlEntry ace = CreateAce (transaction);
+      IPrincipal principal = CreateUser ();
+
+      List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
+      roles.Add (ace.SpecificAbstractRole);
+      SecurityToken token = new SecurityToken (null, new List<Group> (), roles);
+
+      Expect.Once.On (tokenBuilder).Method ("CreateToken").With (Is.NotNull, Is.Same (principal), Is.Same (context)).Will (Return.Value (token));
+      Expect.Once.On (aclFinder).Method ("Find").With (Is.NotNull, Is.Same (context)).Will (Return.Value (CreateAcl (transaction, ace)));
+
+      AccessType[] accessTypes = service.GetAccess (context, principal);
 
       mocks.VerifyAllExpectationsHaveBeenMet ();
+
+      Assert.AreEqual (1, accessTypes.Length);
+      Assert.Contains (AccessType.Get (EnumWrapper.Parse ("Read|MyTypeName")), accessTypes);
     }
 
     private AccessControlList CreateAcl (ClientTransaction transaction, AccessControlEntry ace)

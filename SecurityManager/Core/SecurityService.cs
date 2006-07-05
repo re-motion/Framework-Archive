@@ -12,38 +12,36 @@ namespace Rubicon.SecurityManager
 {
   public class SecurityService : ISecurityService
   {
-    private ClientTransaction _transaction;
     private IAccessControlListFinder _accessControlListFinder;
     private ISecurityTokenBuilder _securityTokenBuilder;
 
     public SecurityService ()
-      : this (new ClientTransaction())
+      : this (new AccessControlListFinder (), new SecurityTokenBuilder ())
     {
     }
 
-    public SecurityService (ClientTransaction transaction)
-      : this (transaction, new AccessControlListFinder (), new SecurityTokenBuilder ())
+    public SecurityService (IAccessControlListFinder accessControlListFinder, ISecurityTokenBuilder securityTokenBuilder)
     {
-    }
-
-    public SecurityService (ClientTransaction transaction, IAccessControlListFinder accessControlListFinder, ISecurityTokenBuilder securityTokenBuilder)
-    {
-      ArgumentUtility.CheckNotNull ("transaction", transaction);
       ArgumentUtility.CheckNotNull ("accessControlListFinder", accessControlListFinder);
       ArgumentUtility.CheckNotNull ("securityTokenBuilder", securityTokenBuilder);
 
-      _transaction = transaction;
       _accessControlListFinder = accessControlListFinder;
       _securityTokenBuilder = securityTokenBuilder;
     }
 
     public AccessType[] GetAccess (SecurityContext context, IPrincipal user)
     {
+      return GetAccess (new ClientTransaction (), context, user);
+    }
+
+    public AccessType[] GetAccess (ClientTransaction transaction, SecurityContext context, IPrincipal user)
+    {
+      ArgumentUtility.CheckNotNull ("transaction", transaction);
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      AccessControlList acl = _accessControlListFinder.Find (_transaction, context);
-      SecurityToken token = _securityTokenBuilder.CreateToken (_transaction, user, context);
+      AccessControlList acl = _accessControlListFinder.Find (transaction, context);
+      SecurityToken token = _securityTokenBuilder.CreateToken (transaction, user, context);
 
       AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
       return Array.ConvertAll <AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition,AccessType> (ConvertToAccessType));
