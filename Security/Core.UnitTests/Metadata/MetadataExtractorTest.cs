@@ -38,7 +38,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       XmlDocument xmlDocument = new XmlDocument ();
       xmlDocument.Load (_xmlTempFilename);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"" />";
 
       XmlAssert.AreDocumentsEqual (expectedXml, xmlDocument);
@@ -55,7 +55,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       XmlDocument xmlDocument = new XmlDocument ();
       xmlDocument.Load (_xmlTempFilename);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain"">
@@ -137,7 +137,7 @@ namespace Rubicon.Security.UnitTests.Metadata
       XmlDocument xmlDocument = new XmlDocument ();
       xmlDocument.Load (_xmlTempFilename);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File, Rubicon.Security.UnitTests.TestDomain"">

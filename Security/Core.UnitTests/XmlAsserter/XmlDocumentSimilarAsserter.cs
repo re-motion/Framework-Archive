@@ -19,16 +19,27 @@ namespace Rubicon.Security.UnitTests.XmlAsserter
 
     protected override bool CompareDocuments (XmlDocument expectedDocument, XmlDocument actualDocument)
     {
-      if (!ContainsNodeStack (expectedDocument.FirstChild, actualDocument))
+      XmlNode expectedFirstChild = expectedDocument.FirstChild;
+      if (expectedFirstChild.NodeType == XmlNodeType.XmlDeclaration)
+        expectedFirstChild = expectedDocument.ChildNodes[1];
+
+      if (!ContainsNodeStack (expectedFirstChild, actualDocument))
         return false;
 
-      return ContainsNodeStack (actualDocument.FirstChild, expectedDocument);
+      XmlNode actualFirstChild = actualDocument.FirstChild;
+      if (actualFirstChild.NodeType == XmlNodeType.XmlDeclaration)
+        actualFirstChild = actualDocument.ChildNodes[1];
+
+      return ContainsNodeStack (actualFirstChild, expectedDocument);
     }
 
     private bool ContainsNodeStack (XmlNode node, XmlDocument testDocument)
     {
       Stack<XmlNode> nodeStack = GetNodeStack (node);
       string xPathExpression = _nodeStackToXPathConverter.GetXPathExpression (nodeStack);
+      if (string.IsNullOrEmpty (xPathExpression))
+        return true;
+
       XmlNodeList nodes = testDocument.SelectNodes (xPathExpression, _nodeStackToXPathConverter.NamespaceManager);
       if (nodes.Count == 0)
       {

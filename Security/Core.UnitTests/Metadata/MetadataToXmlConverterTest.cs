@@ -33,7 +33,9 @@ namespace Rubicon.Security.UnitTests.Metadata
     {
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"<securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"" />";
+      string expectedXml = @"<?xml version=""1.0""?>
+          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"" />";
+
       XmlAssert.AreDocumentsEqual (expectedXml, document);
     }
 
@@ -47,7 +49,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"" />
@@ -73,7 +75,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <stateProperties>
               <stateProperty id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Confidentiality"">
@@ -96,7 +98,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <accessTypes>
               <accessType id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Archive|Domain.AccessType, Domain"" value=""0"" />
@@ -115,7 +117,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <abstractRoles>
               <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRole, Domain"" value=""0"" />
@@ -145,7 +147,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"" />
@@ -182,7 +184,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"" />
@@ -219,7 +221,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <stateProperties>
               <stateProperty id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Confidentiality"">
@@ -252,7 +254,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <accessTypes>
               <accessType id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""Archive|Domain.AccessType, Domain"" value=""0"" />
@@ -276,7 +278,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <abstractRoles>
               <abstractRole id=""00000004-0001-0000-0000-000000000000"" name=""Administrator|Domain.SpecialAbstractRole, Domain"" value=""0"" />
@@ -310,7 +312,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"">
@@ -353,7 +355,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"">
@@ -435,7 +437,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
       XmlDocument document = _converter.Convert (_cache);
 
-      string expectedXml = @"
+      string expectedXml = @"<?xml version=""1.0""?>
           <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
             <classes>
               <class id=""4bbb1bab-8d37-40c0-918d-7a07cc7de44f"" name=""File"">

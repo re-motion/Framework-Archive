@@ -32,7 +32,12 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("culture", culture);
 
       XmlDocument document = new XmlDocument ();
-      document.PreserveWhitespace = true;
+
+      if (!document.Schemas.Contains (_schema.SchemaUri))
+        document.Schemas.Add (_schema.LoadSchemaSet ());
+
+      XmlDeclaration declaration = document.CreateXmlDeclaration ("1.0", string.Empty, string.Empty);
+      document.AppendChild (declaration);
       
       XmlElement rootElement = document.CreateElement ("localizedNames", _schema.SchemaUri);
       XmlAttribute cultureAttribute = document.CreateAttribute ("culture");
@@ -47,7 +52,7 @@ namespace Rubicon.Security.Metadata
         refAttribute.Value = localizedName.ReferencedObjectID;
         XmlAttribute commentAttribute = document.CreateAttribute ("comment");
         commentAttribute.Value = localizedName.Comment;
-        XmlText text = document.CreateTextNode (localizedName.Text);
+        XmlText text = document.CreateTextNode ("\r\n    " + localizedName.Text + "\r\n  ");
 
         localizedNameElement.Attributes.Append (refAttribute);
         localizedNameElement.Attributes.Append (commentAttribute);

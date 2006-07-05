@@ -64,6 +64,8 @@ namespace Rubicon.SecurityManager.Metadata.Importer
         if (_arguments.ImportMetadata)
           ImportMetadata (transaction);
 
+        transaction.Commit ();
+
         if (_arguments.ImportLocalization)
           ImportLocalization (transaction);
 

@@ -31,6 +31,9 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("cache", cache);
 
       XmlDocument document = new XmlDocument ();
+      XmlDeclaration declaration = document.CreateXmlDeclaration ("1.0", string.Empty, string.Empty);
+      document.AppendChild (declaration);
+
       XmlElement rootElement = document.CreateElement ("securityMetadata", _metadataSchema.SchemaUri);
 
       AppendCollection (document, rootElement, "classes", cache.GetSecurableClassInfos (), CreateClassNode);
