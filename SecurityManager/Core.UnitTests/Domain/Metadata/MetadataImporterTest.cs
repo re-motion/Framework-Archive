@@ -418,6 +418,89 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       _importer.Import (GetXmlDocument (metadataXml));
     }
 
+    [Test]
+    [ExpectedException (typeof (ImportException),
+       "The base class '00000000-0000-0000-0001-000000000000' referenced by the class '00000000-0000-0000-0002-000000000000' could not be found.")]
+    public void Import_MissingBaseClass ()
+    {
+      string metadataXml = @"
+          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+            <classes>
+              <class id=""00000000-0000-0000-0002-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.Directory"" base=""00000000-0000-0000-0001-000000000000"" />
+            </classes>
+            <stateProperties />
+            <accessTypes />
+            <abstractRoles />
+          </securityMetadata>
+          ";
+
+      _importer.Import (GetXmlDocument (metadataXml));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ImportException),
+       "The state property '00000000-0000-0000-0001-000000000001' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found.")]
+    public void Import_MissingStateProperty ()
+    {
+      string metadataXml = @"
+          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+            <classes>
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+                <stateProperties>
+                  <statePropertyRef>00000000-0000-0000-0001-000000000001</statePropertyRef>
+                </stateProperties>
+              </class>
+            </classes>
+
+            <stateProperties>
+              <stateProperty id=""00000000-0000-0000-0002-000000000001"" name=""State"">
+                <state name=""New"" value=""0"" />
+                <state name=""Normal"" value=""1"" />
+                <state name=""Archived"" value=""2"" />
+              </stateProperty>
+            </stateProperties>
+            <accessTypes />
+            <abstractRoles />
+          </securityMetadata>
+          ";
+
+      _importer.Import (GetXmlDocument (metadataXml));
+    }
+
+    [Test]
+    [ExpectedException (typeof (ImportException),
+        "The access type '62dfcd92-a480-4d57-95f1-28c0f5996b3a' referenced by the class '00000000-0000-0000-0001-000000000000' could not be found.")]
+    public void Import_MissingAccessType ()
+    {
+      string metadataXml = @"
+          <securityMetadata xmlns=""http://www.rubicon-it.com/Security/Metadata/1.0"">
+            <classes>
+              <class id=""00000000-0000-0000-0001-000000000000"" name=""Rubicon.Security.UnitTests.TestDomain.File"">
+                <accessTypes>
+                  <accessTypeRef>62dfcd92-a480-4d57-95f1-28c0f5996b3a</accessTypeRef>
+                </accessTypes>
+              </class>
+            </classes>
+
+            <stateProperties />
+
+            <accessTypes>
+              <accessType id=""1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"" name=""Create|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""0"" />
+              <accessType id=""11186122-6de0-4194-b434-9979230c41fd"" name=""Edit|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""2"" />
+              <accessType id=""305fbb40-75c8-423a-84b2-b26ea9e7cae7"" name=""Delete|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""3"" />
+              <accessType id=""67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6"" name=""Search|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""4"" />
+              <accessType id=""203b7478-96f1-4bf1-b4ea-5bdd1206252c"" name=""Find|Rubicon.Security.GeneralAccessType, Rubicon.Security"" value=""5"" />
+              <accessType id=""00000002-0001-0000-0000-000000000000"" name=""Journalize|Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain"" value=""0"" />
+              <accessType id=""00000002-0002-0000-0000-000000000000"" name=""Archive|Rubicon.Security.UnitTests.TestDomain.DomainAccessType, Rubicon.Security.UnitTests.TestDomain"" value=""1"" />
+            </accessTypes>
+            
+            <abstractRoles />
+          </securityMetadata>
+          ";
+
+      _importer.Import (GetXmlDocument (metadataXml));
+    }
+
     private XmlDocument GetXmlDocument (string metadataXml)
     {
       XmlDocument metadataXmlDocument = new XmlDocument ();

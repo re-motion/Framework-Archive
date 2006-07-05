@@ -113,6 +113,11 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       foreach (Guid classID in _baseClassReferences.Keys)
       {
         SecurableClassDefinition securableClass = _classes[classID];
+        Guid baseClassID = _baseClassReferences[classID];
+
+        if (!_classes.ContainsKey (baseClassID))
+          throw new ImportException (string.Format ("The base class '{0}' referenced by the class '{1}' could not be found.", baseClassID, classID));
+
         SecurableClassDefinition baseClass = _classes[_baseClassReferences[classID]];
         securableClass.BaseClass = baseClass;
       }
@@ -125,7 +130,12 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         List<Guid> statePropertyReferences = _statePropertyReferences[classID];
 
         foreach (Guid statePropertyID in statePropertyReferences)
+        {
+          if (!_stateProperties.ContainsKey (statePropertyID))
+            throw new ImportException (string.Format ("The state property '{0}' referenced by the class '{1}' could not be found.", statePropertyID, classID));
+
           _classes[classID].AddStateProperty (_stateProperties[statePropertyID]);
+        }
       }
     }
 
@@ -136,7 +146,12 @@ namespace Rubicon.SecurityManager.Domain.Metadata
         List<Guid> accessTypeReferences = _accessTypeReferences[classID];
 
         foreach (Guid accessTypeID in accessTypeReferences)
+        {
+          if (!_accessTypes.ContainsKey (accessTypeID))
+            throw new ImportException (string.Format ("The access type '{0}' referenced by the class '{1}' could not be found.", accessTypeID, classID));
+
           _classes[classID].AddAccessType (_accessTypes[accessTypeID]);
+        }
       }
     }
 
