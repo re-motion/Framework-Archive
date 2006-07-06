@@ -149,10 +149,10 @@
     <Compile Include="NullableValueTypes\SerializationTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\BusinessObjectPropertyPathSecurityTest.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\BusinessObjectPropertyPathTestHelper.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\CascadedPropertyPathTest.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\CascadedListPropertyPathTest.cs" />
+    <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\SingleValuePropertyPathTest.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\StubBusinessObjectProvider.cs" />
     <Compile Include="ObjectBidning\BusinessObjectPropertyPathTests\TestBusinessObjectPropertyPath.cs" />
     <Compile Include="Text\CommandLine\CommandLineClassParserTest.cs">
