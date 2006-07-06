@@ -23,10 +23,7 @@ namespace Rubicon.ObjectBinding
   {
     private const string c_notAccessible = "×";
 
-    /// <summary>
-    ///   Property path formatters can be passed to <see cref="String.Format"/> for full 
-    ///   <see cref="IFormattable"/> support.
-    /// </summary>
+    /// <summary> Property path formatters can be passed to <see cref="String.Format"/> for full <see cref="IFormattable"/> support. </summary>
     public class Formatter : IFormattable
     {
       private IBusinessObject _object;
@@ -52,18 +49,10 @@ namespace Rubicon.ObjectBinding
     private IBusinessObjectProperty[] _properties;
 
     /// <summary> Parses the string representation of a property path into a list of properties. </summary>
-    /// <param name="objectClass"> 
-    ///   The <see cref="IBusinessObjectClass"/> containing the first property in the path. 
-    ///   Must no be <see langword="null"/>.
-    /// </param>
-    /// <param name="propertyPathIdentifier"> 
-    ///   A string with a valid property path syntax. 
-    ///   Must no be <see langword="null"/> or empty.
-    /// </param>
+    /// <param name="objectClass"> The <see cref="IBusinessObjectClass"/> containing the first property in the path. Must no be <see langword="null"/>. </param>
+    /// <param name="propertyPathIdentifier"> A string with a valid property path syntax. Must no be <see langword="null"/> or empty. </param>
     /// <returns> A <see cref="BusinessObjectPropertyPath"/>. </returns>
-    public static BusinessObjectPropertyPath Parse (
-        IBusinessObjectClass objectClass,
-        string propertyPathIdentifier)
+    public static BusinessObjectPropertyPath Parse (IBusinessObjectClass objectClass, string propertyPathIdentifier)
     {
       ArgumentUtility.CheckNotNull ("objectClass", objectClass);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyPathIdentifier", propertyPathIdentifier);
@@ -83,7 +72,7 @@ namespace Rubicon.ObjectBinding
 
         IBusinessObjectReferenceProperty referenceProperty = properties[i] as IBusinessObjectReferenceProperty;
         if (referenceProperty == null)
-          throw new ArgumentException ("Each property in a property path except the last one must be a reference property.", "properties");
+          throw new ArgumentException (string.Format ("Each property in a property path except the last one must be a reference property. Property {0} is of type {1}.", i, properties[i].GetType().FullName));
 
         objectClass = referenceProperty.ReferenceClass;
       }
@@ -103,15 +92,13 @@ namespace Rubicon.ObjectBinding
     /// </param>
     protected internal BusinessObjectPropertyPath (IBusinessObjectProperty[] properties)
     {
-      ArgumentUtility.CheckNotNullOrEmpty ("properties", properties); // ItemsNull checked later
+      ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("properties", properties);
+
       for (int i = 0; i < properties.Length - 1; ++i)
       {
         if (!(properties[i] is IBusinessObjectReferenceProperty))
-          throw new ArgumentException ("Each property in a property path except the last one must be a reference property.", "properties");
+          throw new ArgumentItemTypeException ("properties", i, typeof (IBusinessObjectReferenceProperty), properties[i].GetType());
       }
-
-      if (properties[properties.Length - 1] == null)
-        throw new ArgumentNullException ("properties[properties.Length - 1]", "A property path must not contain null references.");
 
       _properties = properties;
     }
@@ -129,9 +116,7 @@ namespace Rubicon.ObjectBinding
     }
 
     /// <summary> Gets the value of this property path for the specified object. </summary>
-    /// <param name="obj">
-    ///   The object that has the first property in the path. Must not be <see langword="null"/>. 
-    /// </param>
+    /// <param name="obj"> The object that has the first property in the path. Must not be <see langword="null"/>. </param>
     /// <param name="throwExceptionIfNotReachable"> 
     ///   If <see langword="true"/>, an <see cref="InvalidOperationException"/> is thrown if any but the last property 
     ///   in the path is <see langword="null"/>. If <see langword="false"/>, <see langword="null"/> is returned instead. 
@@ -139,95 +124,59 @@ namespace Rubicon.ObjectBinding
     /// <param name="getFirstListEntry">
     ///   If <see langword="true"/>, the first value of each list property is processed.
     ///   If <see langword="false"/>, evaluation of list properties causes an <see cref="InvalidOperationException"/>.
-    ///   (This does not apply to the last property in the path. If the last property is a list property, 
-    ///   the return value is always a list.)
+    ///   (This does not apply to the last property in the path. If the last property is a list property, the return value is always a list.)
     /// </param>
     /// <exception cref="InvalidOperationException"> 
-    ///   Thrown if any but the last property in the path is <see langword="null"/>, 
-    ///   or is not a single-value reference property. 
+    ///   Thrown if any but the last property in the path is <see langword="null"/>, or is not a single-value reference property. 
     /// </exception>
     public virtual object GetValue (IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
     {
-      try
-      {
-        if (!IsAccessible (obj, throwExceptionIfNotReachable, getFirstListEntry))
-          return null;
+      ArgumentUtility.CheckNotNull ("obj", obj);
 
-        IBusinessObject obj2 = GetValueWithoutLast (obj, throwExceptionIfNotReachable, getFirstListEntry);
-        if (obj2 == null)
-          return null;
-
-        return obj2.GetProperty (LastProperty);
-      }
-      catch (PermissionDeniedException)
-      {
+      if (!IsAccessible (obj, throwExceptionIfNotReachable, getFirstListEntry))
         return null;
-      }
+
+      IBusinessObject obj2 = GetValueWithoutLast (obj, throwExceptionIfNotReachable, getFirstListEntry);
+      if (obj2 == null)
+        return null;
+
+      return obj2.GetProperty (LastProperty);
     }
 
     /// <summary> Gets the string representation of the value of this property path for the specified object. </summary>
     /// <param name="obj"> The object that has the first property in the path. Must not be <see langword="null"/>. </param>
-    /// <param name="format"> 
-    ///   The format string passed to 
-    ///   <see cref="IBusinessObject.GetPropertyString">IBusinessObject.GetPropertyString</see>.
-    /// </param>
+    /// <param name="format"> The format string passed to <see cref="IBusinessObject.GetPropertyString">IBusinessObject.GetPropertyString</see>. </param>
     public virtual string GetString (IBusinessObject obj, string format)
     {
-      try
-      {
-        if (!IsAccessible (obj, false, true))
-          return c_notAccessible;
-
-        IBusinessObject obj2 = GetValueWithoutLast (obj, false, true);
-        if (obj2 == null)
-          return null;
-
-        return obj2.GetPropertyString (LastProperty, format);
-      }
-      catch (PermissionDeniedException)
-      {
+      ArgumentUtility.CheckNotNull ("obj", obj);
+      
+      if (!IsAccessible (obj, false, true))
         return c_notAccessible;
-      }
+
+      IBusinessObject obj2 = GetValueWithoutLast (obj, false, true);
+      if (obj2 == null)
+        return string.Empty;
+
+      return obj2.GetPropertyString (LastProperty, format);
     }
 
-    //TODO: Rewrite with Test
     private bool IsAccessible (IBusinessObject obj, bool throwExceptionIfNotReachable, bool getFirstListEntry)
     {
       for (int i = 0; i < (_properties.Length - 1); ++i)
       {
-        IBusinessObjectProperty property = _properties[i];
-        if (!(property is IBusinessObjectReferenceProperty))
-          throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is not a reference property.", i, this));
+        IBusinessObjectReferenceProperty property = (IBusinessObjectReferenceProperty) _properties[i];
 
         if (!property.IsAccessible (obj.BusinessObjectClass, obj))
           return false;
 
-        if (property.IsList)
-        {
-          if (getFirstListEntry)
-          {
-            IList list = (IList) obj.GetProperty (property);
-            if (list.Count > 0)
-              obj = (IBusinessObject) list[0];
-            else
-              obj = null;
-          }
-          else
-          {
-            throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is a not a single-value property.", i, this));
-          }
-        }
-        else
-        {
-          obj = (IBusinessObject) obj.GetProperty (property);
-        }
+        obj = GetProperty (obj, property, getFirstListEntry, i);
 
         if (obj == null)
         {
           if (throwExceptionIfNotReachable)
             throw new InvalidOperationException (string.Format ("A null value was detected in element {0} of property path {1}. Cannot evaluate rest of path.", i, this));
-          else
-            return true;
+
+          return true;
         }
       }
       return LastProperty.IsAccessible (obj.BusinessObjectClass, obj);
@@ -238,36 +187,36 @@ namespace Rubicon.ObjectBinding
     {
       for (int i = 0; i < (_properties.Length - 1); ++i)
       {
-        IBusinessObjectProperty property = _properties[i];
-        if (!(property is IBusinessObjectReferenceProperty))
-          throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is not a reference property.", i, this));
-        if (property.IsList)
-        {
-          if (getFirstListEntry)
-          {
-            IList list = (IList) obj.GetProperty (property);
-            if (list.Count > 0)
-              obj = (IBusinessObject) list[0];
-            else
-              obj = null;
-          }
-          else
-          {
-            throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is a not a single-value property.", i, this));
-          }
-        }
-        else
-        {
-          obj = (IBusinessObject) obj.GetProperty (property);
-        }
+        IBusinessObjectReferenceProperty property = (IBusinessObjectReferenceProperty) _properties[i];
+        obj = GetProperty (obj, property, getFirstListEntry, i);
 
         if (obj == null)
         {
           if (throwExceptionIfNotReachable)
             throw new InvalidOperationException (string.Format ("A null value was detected in element {0} of property path {1}. Cannot evaluate rest of path.", i, this));
-          else
-            return null;
+
+          return null;
         }
+      }
+      return obj;
+    }
+
+    private IBusinessObject GetProperty (IBusinessObject obj, IBusinessObjectProperty property, bool getFirstListEntry, int propertyIndex)
+    {
+      if (property.IsList)
+      {
+        if (!getFirstListEntry)
+          throw new InvalidOperationException (string.Format ("Element {0} of property path {1} is a not a single-value property.", propertyIndex, this));
+
+        IList list = (IList) obj.GetProperty (property);
+        if (list.Count > 0)
+          obj = (IBusinessObject) list[0];
+        else
+          obj = null;
+      }
+      else
+      {
+        obj = (IBusinessObject) obj.GetProperty (property);
       }
       return obj;
     }
