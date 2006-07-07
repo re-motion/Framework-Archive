@@ -25,6 +25,18 @@ namespace Rubicon.Web.UI.Controls
   [TypeConverter (typeof (ExpandableObjectConverter))]
   public class Command : IControlItem
   {
+    //[TypeConverter (typeof (ExpandableObjectConverter))]
+    //public class EventCommandInfo
+    //{
+    //  EventPermissionProvider; //None, EventHandler, Properties
+    //  public class Permission
+    //  {
+    //    WxeFunctionType;
+    //    Method;
+    //    AccessTypes;
+    //  }
+    //}
+
     /// <summary> Wraps the properties required for rendering a hyperlink. </summary>
     [TypeConverter (typeof (ExpandableObjectConverter))]
     public class HrefCommandInfo
