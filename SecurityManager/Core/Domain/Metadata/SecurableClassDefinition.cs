@@ -191,7 +191,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return (DomainObjectCollection) GetRelatedObjects ("AccessTypeReferences"); }
     }
 
-    //TODO: Rewrite with test
     public AccessControlList CreateAccessControlList ()
     {
       AccessControlList accessControlList = new AccessControlList (ClientTransaction);

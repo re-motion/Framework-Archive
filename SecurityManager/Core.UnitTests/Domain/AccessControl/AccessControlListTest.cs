@@ -214,5 +214,36 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Assert.Contains (ace2, entries);
       Assert.Contains (ace3, entries);
     }
+
+    [Test]
+    public void CreateStateCombination ()
+    {
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinitionWithProperties ();
+      AccessControlList acl = _testHelper.CreateAcl (classDefinition);
+
+      StateCombination stateCombination = acl.CreateStateCombination ();
+
+      Assert.AreSame (acl, stateCombination.AccessControlList);
+      Assert.AreEqual (acl.ClassDefinition, stateCombination.ClassDefinition);
+      Assert.IsEmpty (stateCombination.StateUsages);
+    }
+
+    [Test]
+    public void CreateAccessControlEntry ()
+    {
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinitionWithProperties ();
+      AccessTypeDefinition readAccessType = _testHelper.AttachAccessType (classDefinition, Guid.NewGuid(), "Read", 0);
+      AccessTypeDefinition deleteAccessType = _testHelper.AttachAccessType (classDefinition, Guid.NewGuid (), "Delete", 1);
+      AccessControlList acl = _testHelper.CreateAcl (classDefinition);
+
+      AccessControlEntry entry = acl.CreateAccessControlEntry ();
+
+      Assert.AreSame (acl, entry.AccessControlList);
+      Assert.AreEqual (2, entry.Permissions.Count);
+      Assert.AreSame (readAccessType, ((Permission) entry.Permissions[0]).AccessType);
+      Assert.AreSame (entry, ((Permission) entry.Permissions[0]).AccessControlEntry);
+      Assert.AreSame (deleteAccessType, ((Permission) entry.Permissions[1]).AccessType);
+      Assert.AreSame (entry, ((Permission) entry.Permissions[1]).AccessControlEntry);
+    }
   }
 }

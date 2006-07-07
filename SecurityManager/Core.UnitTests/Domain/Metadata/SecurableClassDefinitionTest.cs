@@ -13,37 +13,30 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
   [TestFixture]
   public class SecurableClassDefinitionTest : DomainTest
   {
-    private ClientTransaction _transaction;
-    private SecurableClassDefinition _classDefinition;
-
-    public override void SetUp ()
-    {
-      base.SetUp ();
-
-      _transaction = new ClientTransaction ();
-      _classDefinition = new SecurableClassDefinition (_transaction);
-    }
-
     [Test]
     public void AddAccessType ()
     {
-      AccessTypeDefinition accessType = new AccessTypeDefinition (_transaction);
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessTypeDefinition accessType = new AccessTypeDefinition (transaction);
+      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
 
-      _classDefinition.AddAccessType (accessType);
+      classDefinition.AddAccessType (accessType);
 
-      Assert.AreEqual (1, _classDefinition.AccessTypes.Count);
-      Assert.AreSame (accessType, _classDefinition.AccessTypes[0]);
+      Assert.AreEqual (1, classDefinition.AccessTypes.Count);
+      Assert.AreSame (accessType, classDefinition.AccessTypes[0]);
     }
 
     [Test]
     public void AddStateProperty ()
     {
-      StatePropertyDefinition stateProperty = new StatePropertyDefinition (_transaction);
+      ClientTransaction transaction = new ClientTransaction ();
+      StatePropertyDefinition stateProperty = new StatePropertyDefinition (transaction);
+      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
 
-      _classDefinition.AddStateProperty (stateProperty);
+      classDefinition.AddStateProperty (stateProperty);
 
-      Assert.AreEqual (1, _classDefinition.StateProperties.Count);
-      Assert.AreSame (stateProperty, _classDefinition.StateProperties[0]);
+      Assert.AreEqual (1, classDefinition.StateProperties.Count);
+      Assert.AreSame (stateProperty, classDefinition.StateProperties[0]);
     }
 
     [Test]
@@ -236,6 +229,19 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       classDefinition.Name = "Namespace.TypeName, AssemblyName";
 
       Assert.AreEqual ("Namespace.TypeName, AssemblyName", classDefinition.DisplayName);
+    }
+
+    [Test]
+    public void CreateAccessControlList ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+
+      AccessControlList accessControlList = classDefinition.CreateAccessControlList ();
+
+      Assert.AreSame (classDefinition, accessControlList.ClassDefinition);
+      Assert.IsNotEmpty (accessControlList.AccessControlEntries);
+      Assert.IsNotEmpty (accessControlList.StateCombinations);
     }
   }
 }

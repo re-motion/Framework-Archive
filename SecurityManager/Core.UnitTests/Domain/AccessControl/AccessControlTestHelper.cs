@@ -246,15 +246,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return property;
     }
 
-    public void AttachAccessType (SecurableClassDefinition classDefinition, Guid metadataItemID, string name, int value)
+    public AccessTypeDefinition AttachAccessType (SecurableClassDefinition classDefinition, Guid metadataItemID, string name, int value)
     {
       AccessTypeDefinition accessType = new AccessTypeDefinition (_transaction, metadataItemID, name, value);
       classDefinition.AddAccessType (accessType);
+      
+      return accessType;
     }
 
-    public void AttachJournalizeAccessType (SecurableClassDefinition classDefinition)
+    public AccessTypeDefinition AttachJournalizeAccessType (SecurableClassDefinition classDefinition)
     {
-      classDefinition.AddAccessType (CreateJournalizeAccessType ());
+      AccessTypeDefinition accessType = CreateJournalizeAccessType ();
+      classDefinition.AddAccessType (accessType);
+     
+      return accessType;
     }
 
     public AccessTypeDefinition CreateJournalizeAccessType ()

@@ -135,7 +135,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
         StateCombinations[0].Delete ();
     }
 
-    //TODO: Rewrite with test
     public StateCombination CreateStateCombination ()
     {
       StateCombination stateCombination = new StateCombination (ClientTransaction);
@@ -145,7 +144,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       return stateCombination;
     }
 
-    //TODO: Rewrite with test
     public AccessControlEntry CreateAccessControlEntry ()
     {
       AccessControlEntry accessControlEntry = new AccessControlEntry (ClientTransaction);
