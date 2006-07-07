@@ -66,6 +66,8 @@ namespace Rubicon.Security.Configuration
     private Type _httpContextUserProviderType;
     private Type _securityManagerServiceType;
 
+    private readonly object _lock = new object ();
+
     // construction and disposing
 
     public SecurityConfiguration ()
@@ -82,8 +84,7 @@ namespace Rubicon.Security.Configuration
       _customPermissionProviderProperty =
           new ConfigurationProperty ("customPermissionProvider", typeof (TypeElement<IPermissionProvider>), null, ConfigurationPropertyOptions.None);
       _customFunctionalSecurityStrategyProperty =
-          new ConfigurationProperty (
-              "customFunctionalSecurityStrategy", typeof (TypeElement<IFunctionalSecurityStrategy>), null, ConfigurationPropertyOptions.None);
+          new ConfigurationProperty ("customFunctionalSecurityStrategy", typeof (TypeElement<IFunctionalSecurityStrategy>), null, ConfigurationPropertyOptions.None);
 
       _properties = new ConfigurationPropertyCollection ();
       _properties.Add (_xmlnsProperty);
@@ -103,6 +104,7 @@ namespace Rubicon.Security.Configuration
       {
         if (_securityService == null)
           _securityService = GetSecurityServiceFromConfiguration ();
+        
         return _securityService;
       }
       set
@@ -117,6 +119,7 @@ namespace Rubicon.Security.Configuration
       {
         if (_userProvider == null)
           _userProvider = GetUserProviderFromConfiguration ();
+       
         return _userProvider;
       }
       set
@@ -164,8 +167,7 @@ namespace Rubicon.Security.Configuration
         case SecurityServiceType.None:
           return null;
         case SecurityServiceType.SecurityManagerService:
-          if (_securityManagerServiceType == null)
-            _securityManagerServiceType = GetSecurityManagerServiceType ();
+          EnsureSecurityManagerServiceTypeInitialized ();
           return (ISecurityService) Activator.CreateInstance (_securityManagerServiceType);
         case SecurityServiceType.Custom:
           return (ISecurityService) Activator.CreateInstance (CustomService.Type);
@@ -183,8 +185,7 @@ namespace Rubicon.Security.Configuration
         case UserProviderType.Thread:
           return new ThreadUserProvider ();
         case UserProviderType.HttpContext:
-          if (_httpContextUserProviderType == null)
-            _httpContextUserProviderType = GetHttpContextUserProviderType ();
+          EnsureHttpContextUserProviderTypeInitialized ();
           return (IUserProvider) Activator.CreateInstance (_httpContextUserProviderType);
         case UserProviderType.Custom:
           return (IUserProvider) Activator.CreateInstance (CustomUserProvider.Type);
@@ -195,18 +196,44 @@ namespace Rubicon.Security.Configuration
 
     private IPermissionProvider GetPermissionProviderFromConfiguration ()
     {
-      if (CustomPermissionProvider.Type == null)
+      Type customPermissionProviderType = CustomPermissionProvider.Type;
+      if (customPermissionProviderType == null)
         return new PermissionReflector ();
 
-      return (IPermissionProvider) Activator.CreateInstance (CustomPermissionProvider.Type);
+      return (IPermissionProvider) Activator.CreateInstance (customPermissionProviderType);
     }
 
     private IFunctionalSecurityStrategy GetFunctionalSecurityStrategyFromConfiguration ()
     {
-      if (CustomFunctionalSecurityStrategy.Type == null)
+      Type customFunctionalSecurityStrategyType = CustomFunctionalSecurityStrategy.Type;
+      if (customFunctionalSecurityStrategyType == null)
         return new FunctionalSecurityStrategy ();
 
-      return (IFunctionalSecurityStrategy) Activator.CreateInstance (CustomFunctionalSecurityStrategy.Type);
+      return (IFunctionalSecurityStrategy) Activator.CreateInstance (customFunctionalSecurityStrategyType);
+    }
+
+    private void EnsureSecurityManagerServiceTypeInitialized ()
+    {
+      if (_securityManagerServiceType == null)
+      {
+        lock (_lock)
+        {
+          if (_securityManagerServiceType == null)
+            _securityManagerServiceType = GetSecurityManagerServiceType ();
+        }
+      }
+    }
+
+    private void EnsureHttpContextUserProviderTypeInitialized ()
+    {
+      if (_httpContextUserProviderType == null)
+      {
+        lock (_lock)
+        {
+          if (_httpContextUserProviderType == null)
+            _httpContextUserProviderType = GetHttpContextUserProviderType ();
+        }
+      }
     }
 
     private Type GetSecurityManagerServiceType ()
@@ -219,11 +246,12 @@ namespace Rubicon.Security.Configuration
       }
       catch (FileNotFoundException e)
       {
+        PropertyInformation propertyInformation = ElementInformation.Properties[_securityServiceTypeProperty.Name];
         throw new ConfigurationErrorsException (string.Format ("The current value of property 'securityService' requires that the assembly "
                 + "'Rubicon.SecurityManager' must be placed within the CLR's probing path for this application. The error is: {0}", e.Message),
             e,
-            ElementInformation.Properties[_securityServiceTypeProperty.Name].Source,
-            ElementInformation.Properties[_securityServiceTypeProperty.Name].LineNumber);
+            propertyInformation.Source,
+            propertyInformation.LineNumber);
       }
 
       return Type.GetType (Assembly.CreateQualifiedName (securityManagerAssemblyName.FullName, "Rubicon.SecurityManager.SecurityService"), true, false);
@@ -241,11 +269,12 @@ namespace Rubicon.Security.Configuration
       }
       catch (FileNotFoundException e)
       {
+        PropertyInformation propertyInformation = ElementInformation.Properties[_userProviderTypeProperty.Name];
         throw new ConfigurationErrorsException (string.Format ("The current value of property 'userProvider' requires that the assembly "
                 + "'Rubicon.Security.Web' must be placed within the CLR's probing path for this application. The error is: {0}", e.Message),
             e,
-            ElementInformation.Properties[_userProviderTypeProperty.Name].Source,
-            ElementInformation.Properties[_userProviderTypeProperty.Name].LineNumber);
+            propertyInformation.Source,
+            propertyInformation.LineNumber);
       }
 
       return Type.GetType (Assembly.CreateQualifiedName (securityWebAssemblyName.FullName, "Rubicon.Security.Web.HttpContextUserProvider"), true, false);
@@ -256,10 +285,10 @@ namespace Rubicon.Security.Configuration
       base.PostDeserialize ();
 
       if (SecurityServiceType == SecurityServiceType.SecurityManagerService)
-        _securityManagerServiceType = GetSecurityManagerServiceType ();
+        EnsureSecurityManagerServiceTypeInitialized ();
 
       if (UserProviderType == UserProviderType.HttpContext)
-        _httpContextUserProviderType = GetHttpContextUserProviderType ();
+        EnsureHttpContextUserProviderTypeInitialized ();
     }
 
     protected override ConfigurationPropertyCollection Properties

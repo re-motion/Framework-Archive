@@ -43,7 +43,8 @@ namespace Rubicon.SecurityManager.Configuration
     {
       _properties = new ConfigurationPropertyCollection ();
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
-      _customOrganizationalStructureFactoryProperty = new ConfigurationProperty ("customOrganizationalStructureFactory",
+      _customOrganizationalStructureFactoryProperty = new ConfigurationProperty (
+          "customOrganizationalStructureFactory",
           typeof (TypeElement<IOrganizationalStructureFactory>), null, ConfigurationPropertyOptions.None);
 
       _properties.Add (_xmlnsProperty);
@@ -61,7 +62,7 @@ namespace Rubicon.SecurityManager.Configuration
       {
         if (_organizationalStructureFactory == null)
           _organizationalStructureFactory = GetOrganizationalStructureFactory ();
-
+        
         return _organizationalStructureFactory;
       }
       set
@@ -75,10 +76,11 @@ namespace Rubicon.SecurityManager.Configuration
       TypeElement<IOrganizationalStructureFactory> customOrganizationalStructureFactoryElement =
           (TypeElement<IOrganizationalStructureFactory>) this[_customOrganizationalStructureFactoryProperty];
 
-      if (customOrganizationalStructureFactoryElement.Type == null)
+      Type customOrganizationalStructureFactoryType = customOrganizationalStructureFactoryElement.Type;
+      if (customOrganizationalStructureFactoryType == null)
         return new OrganizationalStructureFactory ();
 
-      return (IOrganizationalStructureFactory) Activator.CreateInstance (customOrganizationalStructureFactoryElement.Type);
+      return (IOrganizationalStructureFactory) Activator.CreateInstance (customOrganizationalStructureFactoryType);
     }
   }
 }
