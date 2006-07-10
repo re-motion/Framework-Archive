@@ -56,9 +56,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private static void CheckStateCombination (SecurableClassDefinition orderClass,StateCombination actualStateCombination, string message, params object[] parameters)
     {
-      Assert.AreSame (orderClass, actualStateCombination.ClassDefinition, message, parameters);
+      Assert.AreSame (orderClass, actualStateCombination.Class, message, parameters);
       Assert.IsNotNull (actualStateCombination.AccessControlList, message, parameters);
-      Assert.AreSame (orderClass, actualStateCombination.AccessControlList.ClassDefinition, message, parameters);
+      Assert.AreSame (orderClass, actualStateCombination.AccessControlList.Class, message, parameters);
       Assert.Contains (actualStateCombination, actualStateCombination.AccessControlList.StateCombinations, message, parameters);
     }
 

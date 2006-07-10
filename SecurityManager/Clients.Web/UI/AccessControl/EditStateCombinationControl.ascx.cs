@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     private void FillStateDefinitionField ()
     {
-      DomainObjectCollection stateProperties = CurrentStateCombination.ClassDefinition.StateProperties;
+      DomainObjectCollection stateProperties = CurrentStateCombination.Class.StateProperties;
       if (stateProperties.Count > 1)
         throw new NotSupportedException ("Only classes with a zero or one StatePropertyDefinition are supported.");
 

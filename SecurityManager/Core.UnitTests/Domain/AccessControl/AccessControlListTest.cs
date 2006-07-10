@@ -224,7 +224,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       StateCombination stateCombination = acl.CreateStateCombination ();
 
       Assert.AreSame (acl, stateCombination.AccessControlList);
-      Assert.AreEqual (acl.ClassDefinition, stateCombination.ClassDefinition);
+      Assert.AreEqual (acl.Class, stateCombination.Class);
       Assert.IsEmpty (stateCombination.StateUsages);
     }
 

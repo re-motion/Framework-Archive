@@ -250,6 +250,7 @@
     <Compile Include="UI\Controls\TabbedMenuMock.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\TabbedMenuTest.cs" />
     <Compile Include="UI\Controls\WebButtonTests\WebButtonTest.cs" />
     <Compile Include="UI\Controls\WebButtonTests\SecurityTestWithEnabled.cs" />
     <Compile Include="UI\Controls\WebButtonTests\SecurityTestWithVisible.cs" />

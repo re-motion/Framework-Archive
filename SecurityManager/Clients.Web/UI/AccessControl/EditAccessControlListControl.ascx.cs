@@ -59,7 +59,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
 
     private void EnableNewStateCombinationButton ()
     {
-      DomainObjectCollection stateProperties = CurrentAccessControlList.ClassDefinition.StateProperties;
+      DomainObjectCollection stateProperties = CurrentAccessControlList.Class.StateProperties;
       if (stateProperties.Count > 1)
         throw new NotSupportedException ("Only classes with a zero or one StatePropertyDefinition are supported.");
 
@@ -67,7 +67,7 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl
       if (stateProperties.Count > 0)
         possibleStateCombinations += ((StatePropertyDefinition) stateProperties[0]).DefinedStates.Count;
 
-      if (CurrentAccessControlList.ClassDefinition.StateCombinations.Count < possibleStateCombinations)
+      if (CurrentAccessControlList.Class.StateCombinations.Count < possibleStateCombinations)
         NewStateCombinationButton.Enabled = true;
       else
         NewStateCombinationButton.Enabled = false;

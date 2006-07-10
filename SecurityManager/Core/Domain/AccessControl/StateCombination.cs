@@ -56,10 +56,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // methods and properties
 
-    public SecurableClassDefinition ClassDefinition
+    public SecurableClassDefinition Class
     {
-      get { return (SecurableClassDefinition) GetRelatedObject ("ClassDefinition"); }
-      set { SetRelatedObject ("ClassDefinition", value); }
+      get { return (SecurableClassDefinition) GetRelatedObject ("Class"); }
+      set { SetRelatedObject ("Class", value); }
     }
 
     public DomainObjectCollection StateUsages

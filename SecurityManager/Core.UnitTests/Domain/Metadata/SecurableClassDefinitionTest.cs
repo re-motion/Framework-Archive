@@ -44,7 +44,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
       StateCombination expectedCombination = testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
-      SecurableClassDefinition orderClass = expectedCombination.ClassDefinition;
+      SecurableClassDefinition orderClass = expectedCombination.Class;
       List<StateDefinition> states = testHelper.GetDeliveredAndUnpaidStateList (orderClass);
 
       StateCombination stateCombination = orderClass.FindStateCombination (states);
@@ -239,7 +239,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       AccessControlList accessControlList = classDefinition.CreateAccessControlList ();
 
-      Assert.AreSame (classDefinition, accessControlList.ClassDefinition);
+      Assert.AreSame (classDefinition, accessControlList.Class);
       Assert.IsNotEmpty (accessControlList.AccessControlEntries);
       Assert.IsNotEmpty (accessControlList.StateCombinations);
     }

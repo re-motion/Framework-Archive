@@ -76,7 +76,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public AccessControlList CreateAcl (SecurableClassDefinition classDefinition, params StateDefinition[] states)
     {
       AccessControlList acl = new AccessControlList (_transaction);
-      acl.ClassDefinition = classDefinition;
+      acl.Class = classDefinition;
       StateCombination stateCombination = CreateStateCombination (acl);
 
       foreach (StateDefinition state in states)
@@ -89,7 +89,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       StateCombination stateCombination = new StateCombination (_transaction);
       stateCombination.AccessControlList = acl;
-      stateCombination.ClassDefinition = acl.ClassDefinition;
+      stateCombination.Class = acl.Class;
 
       return stateCombination;
     }

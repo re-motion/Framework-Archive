@@ -46,10 +46,10 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // methods and properties
 
-    public SecurableClassDefinition ClassDefinition
+    public SecurableClassDefinition Class
     {
-      get { return (SecurableClassDefinition) GetRelatedObject ("ClassDefinition"); }
-      set { SetRelatedObject ("ClassDefinition", value); }
+      get { return (SecurableClassDefinition) GetRelatedObject ("Class"); }
+      set { SetRelatedObject ("Class", value); }
     }
 
     public DomainObjectCollection StateCombinations
@@ -138,7 +138,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public StateCombination CreateStateCombination ()
     {
       StateCombination stateCombination = new StateCombination (ClientTransaction);
-      stateCombination.ClassDefinition = ClassDefinition;
+      stateCombination.Class = Class;
       stateCombination.AccessControlList = this;
 
       return stateCombination;
@@ -147,7 +147,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public AccessControlEntry CreateAccessControlEntry ()
     {
       AccessControlEntry accessControlEntry = new AccessControlEntry (ClientTransaction);
-      foreach (AccessTypeDefinition accessTypeDefinition in ClassDefinition.AccessTypes)
+      foreach (AccessTypeDefinition accessTypeDefinition in Class.AccessTypes)
       {
         Permission permission = new Permission (ClientTransaction);
         permission.AccessType = accessTypeDefinition;

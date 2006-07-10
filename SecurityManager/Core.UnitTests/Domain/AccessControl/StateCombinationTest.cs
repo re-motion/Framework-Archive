@@ -51,7 +51,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       StateCombination deliverdAndUnpaidCombination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
       List<StateDefinition> states = CreateStateListFromCombination (deliverdAndUnpaidCombination);
-      StateCombination statelessCombination = GetStatelessCombinationForClass (deliverdAndUnpaidCombination.ClassDefinition);
+      StateCombination statelessCombination = GetStatelessCombinationForClass (deliverdAndUnpaidCombination.Class);
 
       Assert.IsFalse (statelessCombination.MatchesStates (states));
     }

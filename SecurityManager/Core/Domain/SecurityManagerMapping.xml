@@ -199,7 +199,7 @@
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
         <relationProperty name="BaseClass" relationID="DerivedToBaseClass" cardinality="one" isMandatory="false">
-          <column>BaseClassID</column>
+          <column>BaseSecurableClassID</column>
         </relationProperty>
         <relationProperty name="DerivedClasses" relationID="DerivedToBaseClass" cardinality="many" isMandatory="false" />
         <relationProperty name="AccessTypeReferences" relationID="ClassToAccessTypeReference" cardinality="many" isMandatory="false" />
@@ -285,8 +285,8 @@
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
         <relationProperty name="StateUsages" relationID="StateCombinationToStateUsage" cardinality="many" isMandatory="false" />
-        <relationProperty name="ClassDefinition" relationID="ClassToStateCombination" cardinality="one" isMandatory="true">
-          <column>ClassDefinitionID</column>
+        <relationProperty name="Class" relationID="ClassToStateCombination" cardinality="one" isMandatory="true">
+          <column>SecurableClassID</column>
         </relationProperty>
         <relationProperty name="AccessControlList" relationID="AccessControlListToStateCombination" cardinality="one" isMandatory="true">
           <column>AccessControlListID</column>
@@ -313,8 +313,8 @@
       <entity name="AccessControlList"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
-        <relationProperty name="ClassDefinition" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
-          <column>ClassDefinitionID</column>
+        <relationProperty name="Class" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
+          <column>SecurableClassID</column>
         </relationProperty>
         <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="false" />
         <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true">

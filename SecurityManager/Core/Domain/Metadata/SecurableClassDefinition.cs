@@ -194,7 +194,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public AccessControlList CreateAccessControlList ()
     {
       AccessControlList accessControlList = new AccessControlList (ClientTransaction);
-      accessControlList.ClassDefinition = this;
+      accessControlList.Class = this;
       accessControlList.CreateStateCombination ();
       accessControlList.CreateAccessControlEntry ();
 

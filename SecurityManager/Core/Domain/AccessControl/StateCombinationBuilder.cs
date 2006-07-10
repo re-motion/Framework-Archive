@@ -31,8 +31,8 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       StateCombination stateCombination = new StateCombination (classDefinition.ClientTransaction);
       stateCombination.AccessControlList = new AccessControlList (classDefinition.ClientTransaction);
-      stateCombination.AccessControlList.ClassDefinition = classDefinition;
-      stateCombination.ClassDefinition = classDefinition;
+      stateCombination.AccessControlList.Class = classDefinition;
+      stateCombination.Class = classDefinition;
 
       List<StateCombination> stateCombinations = new List<StateCombination> ();
       stateCombinations.Add (stateCombination);

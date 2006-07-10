@@ -318,8 +318,8 @@ CREATE TABLE [dbo].[SecurableClassDefinition]
   [Name] nvarchar (200) NOT NULL,
 
   -- SecurableClassDefinition columns
-  [BaseClassID] uniqueidentifier NULL,
-  [BaseClassIDClassID] varchar (100) NULL,
+  [BaseSecurableClassID] uniqueidentifier NULL,
+  [BaseSecurableClassIDClassID] varchar (100) NULL,
 
   CONSTRAINT [PK_SecurableClassDefinition] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -376,8 +376,8 @@ CREATE TABLE [dbo].[StateCombination]
   [Timestamp] rowversion NOT NULL,
 
   -- StateCombination columns
-  [ClassDefinitionID] uniqueidentifier NULL,
-  [ClassDefinitionIDClassID] varchar (100) NULL,
+  [SecurableClassID] uniqueidentifier NULL,
+  [SecurableClassIDClassID] varchar (100) NULL,
   [AccessControlListID] uniqueidentifier NULL,
 
   CONSTRAINT [PK_StateCombination] PRIMARY KEY CLUSTERED ([ID])
@@ -404,8 +404,8 @@ CREATE TABLE [dbo].[AccessControlList]
   [Timestamp] rowversion NOT NULL,
 
   -- AccessControlList columns
-  [ClassDefinitionID] uniqueidentifier NULL,
-  [ClassDefinitionIDClassID] varchar (100) NULL,
+  [SecurableClassID] uniqueidentifier NULL,
+  [SecurableClassIDClassID] varchar (100) NULL,
 
   CONSTRAINT [PK_AccessControlList] PRIMARY KEY CLUSTERED ([ID])
 )
@@ -513,7 +513,7 @@ ALTER TABLE [dbo].[EnumValueDefinition] ADD
   CONSTRAINT [FK_StatePropertyToState] FOREIGN KEY ([StatePropertyID]) REFERENCES [dbo].[StatePropertyDefinition] ([ID])
 
 ALTER TABLE [dbo].[SecurableClassDefinition] ADD
-  CONSTRAINT [FK_DerivedToBaseClass] FOREIGN KEY ([BaseClassID]) REFERENCES [dbo].[SecurableClassDefinition] ([ID])
+  CONSTRAINT [FK_DerivedToBaseClass] FOREIGN KEY ([BaseSecurableClassID]) REFERENCES [dbo].[SecurableClassDefinition] ([ID])
 
 ALTER TABLE [dbo].[StatePropertyReference] ADD
   CONSTRAINT [FK_ClassToStatePropertyReference] FOREIGN KEY ([SecurableClassID]) REFERENCES [dbo].[SecurableClassDefinition] ([ID]),
@@ -524,7 +524,7 @@ ALTER TABLE [dbo].[AccessTypeReference] ADD
   CONSTRAINT [FK_AccessTypeToAccessTypeReference] FOREIGN KEY ([AccessTypeID]) REFERENCES [dbo].[EnumValueDefinition] ([ID])
 
 ALTER TABLE [dbo].[StateCombination] ADD
-  CONSTRAINT [FK_ClassToStateCombination] FOREIGN KEY ([ClassDefinitionID]) REFERENCES [dbo].[SecurableClassDefinition] ([ID]),
+  CONSTRAINT [FK_ClassToStateCombination] FOREIGN KEY ([SecurableClassID]) REFERENCES [dbo].[SecurableClassDefinition] ([ID]),
   CONSTRAINT [FK_AccessControlListToStateCombination] FOREIGN KEY ([AccessControlListID]) REFERENCES [dbo].[AccessControlList] ([ID])
 
 ALTER TABLE [dbo].[StateUsage] ADD
@@ -532,7 +532,7 @@ ALTER TABLE [dbo].[StateUsage] ADD
   CONSTRAINT [FK_StateCombinationToStateUsage] FOREIGN KEY ([StateCombinationID]) REFERENCES [dbo].[StateCombination] ([ID])
 
 ALTER TABLE [dbo].[AccessControlList] ADD
-  CONSTRAINT [FK_ClassToAccessControlList] FOREIGN KEY ([ClassDefinitionID]) REFERENCES [dbo].[SecurableClassDefinition] ([ID])
+  CONSTRAINT [FK_ClassToAccessControlList] FOREIGN KEY ([SecurableClassID]) REFERENCES [dbo].[SecurableClassDefinition] ([ID])
 
 ALTER TABLE [dbo].[AccessControlEntry] ADD
   CONSTRAINT [FK_GroupToAccessControlEntry] FOREIGN KEY ([GroupID]) REFERENCES [dbo].[Group] ([ID]),
@@ -623,13 +623,13 @@ CREATE VIEW [dbo].[UserView] ([ID], [ClassID], [Timestamp], [Title], [FirstName]
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[MetadataObjectView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [BaseClassID], [BaseClassIDClassID])
+CREATE VIEW [dbo].[MetadataObjectView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [BaseSecurableClassID], [BaseSecurableClassIDClassID])
   WITH SCHEMABINDING AS
   SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], null, null
     FROM [dbo].[EnumValueDefinition]
     WHERE [ClassID] IN ('MetadataObject', 'EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
   UNION
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, [BaseClassID], [BaseClassIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, [BaseSecurableClassID], [BaseSecurableClassIDClassID]
     FROM [dbo].[SecurableClassDefinition]
     WHERE [ClassID] IN ('MetadataObject', 'EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
   UNION
@@ -647,9 +647,9 @@ CREATE VIEW [dbo].[EnumValueDefinitionView] ([ID], [ClassID], [Timestamp], [Meta
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[SecurableClassDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [BaseClassID], [BaseClassIDClassID])
+CREATE VIEW [dbo].[SecurableClassDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [BaseSecurableClassID], [BaseSecurableClassIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [BaseClassID], [BaseClassIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [BaseSecurableClassID], [BaseSecurableClassIDClassID]
     FROM [dbo].[SecurableClassDefinition]
     WHERE [ClassID] IN ('SecurableClassDefinition')
   WITH CHECK OPTION
@@ -703,9 +703,9 @@ CREATE VIEW [dbo].[AbstractRoleDefinitionView] ([ID], [ClassID], [Timestamp], [M
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[StateCombinationView] ([ID], [ClassID], [Timestamp], [ClassDefinitionID], [ClassDefinitionIDClassID], [AccessControlListID])
+CREATE VIEW [dbo].[StateCombinationView] ([ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID], [AccessControlListID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [ClassDefinitionID], [ClassDefinitionIDClassID], [AccessControlListID]
+  SELECT [ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID], [AccessControlListID]
     FROM [dbo].[StateCombination]
     WHERE [ClassID] IN ('StateCombination')
   WITH CHECK OPTION
@@ -719,9 +719,9 @@ CREATE VIEW [dbo].[StateUsageView] ([ID], [ClassID], [Timestamp], [StateCombinat
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[AccessControlListView] ([ID], [ClassID], [Timestamp], [ClassDefinitionID], [ClassDefinitionIDClassID])
+CREATE VIEW [dbo].[AccessControlListView] ([ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [ClassDefinitionID], [ClassDefinitionIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID]
     FROM [dbo].[AccessControlList]
     WHERE [ClassID] IN ('AccessControlList')
   WITH CHECK OPTION
