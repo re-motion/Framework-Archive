@@ -47,6 +47,8 @@ namespace Rubicon.Web.UI.Controls
       base.Controls.Add (_lazyContainer);
     }
 
+		#pragma warning disable 809 // Obsolete member overrides non-obsolete member
+
     [EditorBrowsable (EditorBrowsableState.Never)]
     [Obsolete ("Use LazyControls instead")]
     public override ControlCollection Controls
@@ -57,6 +59,8 @@ namespace Rubicon.Web.UI.Controls
         return base.Controls;
       }
     }
+
+		#pragma warning restore 809
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
     [PersistenceMode (PersistenceMode.InnerProperty)]

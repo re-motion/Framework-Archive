@@ -11,23 +11,25 @@ using Rubicon.Web.ExecutionEngine;
 
 namespace Test
 {
+	//[WxePageFunction ("AutoPage.aspx", typeof (WxeFunction))]
+	//[WxePageParameter (1, "InArg", typeof (string), true)]
+	//[WxePageParameter (2, "InOutArg", typeof (string), true, WxeParameterDirection.InOut)]
+	//[WxePageParameter (3, "OutArg", typeof (string), WxeParameterDirection.Out, IsReturnValue = true)]
+	//[WxePageVariable ("Suffix", typeof (string))]
 
-  //...
+	[WxeFunctionTargetPage (typeof (AutoPage))]
+	public class AutoPageFunction
+	{
+	}
 
-  [WxePageFunction ("AutoPage.aspx", typeof (WxeFunction))]
-  [WxePageParameter (1, "InArg", typeof (string), true)]
-  [WxePageParameter (2, "InOutArg", typeof (string), true, WxeParameterDirection.InOut)]
-  [WxePageParameter (3, "OutArg", typeof (string), WxeParameterDirection.Out, IsReturnValue = true)]
-  [WxePageVariable ("Suffix", typeof (string))]
+	// <WxePageFunction pageType="Test.AutoPage" aspxFile="AutoPage.aspx" functionBaseType="WxeFunction">
+	//   <Parameter name="InArg" type="String" required="true" />
+	//   <Parameter name="InOutArg" type="String" required="true" direction="InOut" />
+	//   <Parameter name="OutArg" type="String" direction="Out" returnValue="true" />
+	//   <Variable name="Suffix" type="String" />
+	// </WxePageFunction>
   public partial class AutoPage: WxePage
   {
-    //[WxeGenerateFunction("AutoPage.aspx")]
-    //[WxePageVariable ("Suffix", typeof (string))]
-    private string CallPage (string InArg, ref string InOutArg) 
-    {
-      throw new NotImplementedException ();
-    }
-
     protected void Page_Load (object sender, EventArgs e)
     {
       if (!IsPostBack)
@@ -40,13 +42,13 @@ namespace Test
     protected void ExecSelfButton_Click (object sender, EventArgs e)
     {
       string inOutParam = InOutArgField.Text + Suffix;
-      OutArgField.Text = AutoPageFunction.Call (this, InArgField.Text + Suffix, ref inOutParam);
+      OutArgField.Text = AutoPage.Call (this, InArgField.Text + Suffix, ref inOutParam);
       InOutArgField.Text = inOutParam;
     }
 
     protected void ExecCalledPageButton_Click (object sender, EventArgs e)
     {
-      InArgField.Text = CalledPageFunction.Call (this, "hallo");
+      InArgField.Text = CalledPage.Call (this, "hallo");
     }
 
     protected void ReturnButton_Click (object sender, EventArgs e)

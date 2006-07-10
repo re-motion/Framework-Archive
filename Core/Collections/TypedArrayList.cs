@@ -10,6 +10,7 @@ namespace Rubicon.Collections
 /// A strongly typed version of <see cref="ArrayList"/>.
 /// </summary>
 [Serializable]
+[Obsolete ("Use System.Collections.Generic.List<T> instead.")]
 public class TypedArrayList: ArrayList, ISerializable
 {
   private Type _elementType;

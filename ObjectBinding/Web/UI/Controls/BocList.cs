@@ -4421,10 +4421,10 @@ public class BocList:
     get { return (IBusinessObjectReferenceProperty) base.Property; }
     set 
     {
-      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectReferenceProperty));
+      IBusinessObjectReferenceProperty property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty> ("value", value);
       if (value.IsList == false)
         throw new ArgumentException ("Only properties supporting IList can be assigned to the BocList.", "value");
-      base.Property = (IBusinessObjectReferenceProperty) value; 
+      base.Property = property;
     }
   }
 

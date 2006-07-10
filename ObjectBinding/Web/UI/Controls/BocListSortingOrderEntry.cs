@@ -181,10 +181,9 @@ public class BocListSortingOrderEntryConverter: TypeConverter
 
   public override object ConvertTo (ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (BocListSortingOrderEntry));
+    BocListSortingOrderEntry entry = ArgumentUtility.CheckNotNullAndType<BocListSortingOrderEntry> ("value", value);
     if(destinationType == typeof (string))
     {
-      BocListSortingOrderEntry entry = (BocListSortingOrderEntry) value;
       if (entry.IsEmpty)
         return c_empty;
       else

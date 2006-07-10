@@ -664,12 +664,7 @@ public class BocEnumValue: BusinessObjectBoundEditableWebControl, IPostBackDataH
   public new IBusinessObjectEnumerationProperty Property
   {
     get { return (IBusinessObjectEnumerationProperty) base.Property; }
-    set 
-    {
-      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectEnumerationProperty));
-
-      base.Property = (IBusinessObjectEnumerationProperty) value; 
-    }
+    set { base.Property = ArgumentUtility.CheckType<IBusinessObjectEnumerationProperty> ("value", value); }
   }
   
   /// <summary> Gets or sets the current value. </summary>

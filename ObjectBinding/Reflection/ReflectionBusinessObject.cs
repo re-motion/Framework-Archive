@@ -44,8 +44,7 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
 
   public override object GetProperty (IBusinessObjectProperty property)
   {
-    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (ReflectionBusinessObjectProperty));
-    ReflectionBusinessObjectProperty reflectionProperty = (ReflectionBusinessObjectProperty) property;
+    ReflectionBusinessObjectProperty reflectionProperty = ArgumentUtility.CheckNotNullAndType<ReflectionBusinessObjectProperty> ("property", property);
     PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
     object internalValue = propertyInfo.GetValue (this, new object[0]);
@@ -54,8 +53,7 @@ public abstract class ReflectionBusinessObject: BusinessObject, IBusinessObjectW
 
   public override void SetProperty (IBusinessObjectProperty property, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (ReflectionBusinessObjectProperty));
-    ReflectionBusinessObjectProperty reflectionProperty = (ReflectionBusinessObjectProperty) property;
+    ReflectionBusinessObjectProperty reflectionProperty = ArgumentUtility.CheckNotNullAndType<ReflectionBusinessObjectProperty> ("property", property);
     PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
     object internalValue = reflectionProperty.ToInternalType (value);

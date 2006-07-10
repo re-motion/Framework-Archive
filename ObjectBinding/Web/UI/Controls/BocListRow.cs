@@ -68,8 +68,8 @@ public class BocListRow: IComparable
   {
     if (obj == null)
       return 1;
-    ArgumentUtility.CheckType ("obj", obj, typeof (BocListRow));
-    return CompareTo ((BocListRow) obj);
+    BocListRow row = ArgumentUtility.CheckType<BocListRow> ("obj", obj);
+    return CompareTo (row);
   }
 
   /// <summary>

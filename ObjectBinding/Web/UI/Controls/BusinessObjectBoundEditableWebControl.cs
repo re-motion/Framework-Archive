@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Drawing.Design;
+using System.Collections.Generic;
 using Rubicon.NullableValueTypes;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
@@ -53,7 +54,7 @@ public abstract class BusinessObjectBoundEditableWebControl:
 {
   private NaBooleanEnum _required = NaBooleanEnum.Undefined;
   private NaBooleanEnum _readOnly = NaBooleanEnum.Undefined;
-  private TypedArrayList _validators;
+  private List<BaseValidator> _validators;
   private bool _isDirty = false;
   private bool _hasBeenRenderedInPreviousLifecycle = false;
   private bool _isRenderedInCurrentLifecycle = false;
@@ -256,7 +257,7 @@ public abstract class BusinessObjectBoundEditableWebControl:
   public virtual void RegisterValidator (BaseValidator validator)
   {
     if (_validators == null)
-      _validators = new TypedArrayList (typeof (BaseValidator));
+      _validators = new List<BaseValidator>();
 
     _validators.Add (validator);
   }

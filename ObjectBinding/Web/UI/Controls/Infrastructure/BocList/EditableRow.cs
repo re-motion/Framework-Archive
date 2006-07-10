@@ -170,11 +170,11 @@ public class EditableRow : PlaceHolder, INamingContainer
 
   protected void SetEditControl (int index, IBusinessObjectBoundEditableWebControl control)
   {
-    ArgumentUtility.CheckNotNullAndType ("control", control, typeof (Control));
+    Control webControl = ArgumentUtility.CheckNotNullAndType<Control> ("control", control);
 
     ControlCollection cellControls = GetEditControls (index);
     cellControls.Clear();
-    cellControls.Add ((Control) control);
+    cellControls.Add (webControl);
   }
 
   private ControlCollection GetEditControls (int columnIndex)

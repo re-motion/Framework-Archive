@@ -23,7 +23,7 @@ public class WxeTemplateControlInfo
 
   public WxeTemplateControlInfo (IWxeTemplateControl control)
   {
-    ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TemplateControl));
+    ArgumentUtility.CheckNotNullAndType<TemplateControl> ("control", control);
     _control = control;
   }
 

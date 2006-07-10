@@ -66,19 +66,17 @@ public class SubMenuTabCollection: WebTabCollection
 
   protected override void OnInsertComplete (int index, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (SubMenuTab));
+    SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab> ("value", value);
 
     base.OnInsertComplete (index, value);
-    SubMenuTab tab = (SubMenuTab) value;
     tab.SetParent (_parent);
   }
 
   protected override void OnSetComplete(int index, object oldValue, object newValue)
   {
-    ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (SubMenuTab));
+    SubMenuTab tab = ArgumentUtility.CheckNotNullAndType<SubMenuTab> ("newValue", newValue);
 
     base.OnSetComplete (index, oldValue, newValue);
-    SubMenuTab tab = (SubMenuTab) newValue;
     tab.SetParent (_parent);
   }
 

@@ -478,11 +478,7 @@ public class BocMultilineTextValue: BusinessObjectBoundEditableWebControl, IPost
   public new IBusinessObjectStringProperty Property
   {
     get { return (IBusinessObjectStringProperty) base.Property; }
-    set 
-    {
-      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectStringProperty));
-      base.Property = (IBusinessObjectStringProperty) value; 
-    }
+    set { base.Property = ArgumentUtility.CheckType<IBusinessObjectStringProperty> ("value", value); }
   }
   
   /// <summary> Gets or sets the current value. </summary>

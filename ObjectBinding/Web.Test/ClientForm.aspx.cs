@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -40,7 +41,7 @@ public class ClientForm : TestWxeBasePage
 
 	private void Page_Load(object sender, System.EventArgs e)
 	{
-    TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
+    List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
     // load editor pages
     IDataEditControl dataEditControl;
     dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/OBRTest.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");

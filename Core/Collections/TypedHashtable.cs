@@ -5,12 +5,16 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Collections
 {
+  public class Hashtable<TKey, TValue>: System.Collections.Generic.Dictionary<TKey, TValue>
+    where TValue: class
+  {
+  }
 
   /// <summary>
   /// A strongly typed version of <see cref="Hashtable"/>.
   /// </summary>
   [Serializable]
-  [Obsolete ("TypedHashtable is obsolete. Please use the System.Collections.Generic.Dictionary<TKey, TValue> type instead.")]
+  [Obsolete ("Use System.Collections.Generic.Dictionary<TKey, TValue> instead. (Note one major difference between Hashtable and Dictionary: Hashtable returns a null reference is a key is not found, while Dictionary throws an exception. Consider using Dictionary.TryGetValue where the Hashtable indexer is used now.")]
   public class TypedHashtable : Hashtable, ISerializable
   {
     private Type _keyType;

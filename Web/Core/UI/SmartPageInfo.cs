@@ -67,7 +67,7 @@ public class SmartPageInfo
 
 	public SmartPageInfo (ISmartPage page)
 	{
-    ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));
+    ArgumentUtility.CheckNotNullAndType<Page> ("page", page);
     _page = page;
     _page.Init += new EventHandler (Page_Init);
     _page.PreRender +=new EventHandler(Page_PreRender);

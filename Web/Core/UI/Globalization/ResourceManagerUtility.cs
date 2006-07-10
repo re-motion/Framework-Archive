@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Web.UI;
 using Rubicon.Globalization;
 using Rubicon.Collections;
@@ -55,7 +56,7 @@ public class ResourceManagerUtility
     if (control == null)
       return null;
 
-    TypedArrayList resourceManagers = new TypedArrayList (typeof (IResourceManager));
+    List<IResourceManager> resourceManagers = new List<IResourceManager>();
 
     GetResourceManagersRecursive (control, resourceManagers, alwaysIncludeParents);
 
@@ -67,7 +68,7 @@ public class ResourceManagerUtility
       return new ResourceManagerSet ((IResourceManager[]) resourceManagers.ToArray());
   }
 
-  private static void GetResourceManagersRecursive (Control control, TypedArrayList resourceManagers, bool alwaysIncludeParents)
+  private static void GetResourceManagersRecursive (Control control, List<IResourceManager> resourceManagers, bool alwaysIncludeParents)
   {
     if (control == null)
       return;

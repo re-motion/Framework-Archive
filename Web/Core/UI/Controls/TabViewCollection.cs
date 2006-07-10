@@ -21,24 +21,21 @@ public class TabViewCollection: ViewCollection
 
   public override void Add (Control control)
   {
-    ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TabView));
-    TabView view = (TabView) control;
+    TabView view = ArgumentUtility.CheckNotNullAndType<TabView> ("control", control);
     base.Add (view);
     Owner.OnTabViewInserted (view);
   }
 
   public override void AddAt(int index, Control control)
   {
-    ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TabView));
-    TabView view = (TabView) control;
+    TabView view = ArgumentUtility.CheckNotNullAndType<TabView> ("control", control);
     base.AddAt (index, view);
     Owner.OnTabViewInserted (view);
   }
 
   public override void Remove (Control control)
   {
-    ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TabView));
-    TabView view = (TabView) control;
+    TabView view = ArgumentUtility.CheckNotNullAndType<TabView> ("control", control);
     Owner.OnTabViewRemove (view);
     base.Remove (control);
     Owner.OnTabViewRemoved (view);

@@ -274,9 +274,6 @@ public interface IWxePage: ISmartPage, IWxeTemplateControl
   /// <summary> Gets or sets the <see cref="WxeHandler"/> of the current request. </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
   WxeHandler WxeHandler { get; }
-
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  Control FindControl (string id);
 }
 
 /// <summary>
@@ -669,12 +666,12 @@ public class WxePage: SmartPage, IWxePage, IWindowStateManager
 
   public override Control FindControl (string id)
   {
-    return _wxePageInfo.FindControl (id);
-  }
-
-  Control IWxePage.FindControl (string id)
-  {
-    return base.FindControl (id);
+    bool callBaseMethod;
+    Control control = _wxePageInfo.FindControl (id, out callBaseMethod);
+    if (callBaseMethod)
+      return base.FindControl (id);
+    else 
+      return control;
   }
 
   /// <summary> Overrides <see cref="Page.DeterminePostBackMode"/>. </summary>

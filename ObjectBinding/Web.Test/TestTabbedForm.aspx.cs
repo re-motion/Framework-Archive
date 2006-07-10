@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
@@ -60,7 +61,7 @@ public class TestTabbedForm : TestWxeBasePage
 //    AddMainMenuTab ("6", "Main Tab 6 foo", null);
 //    AddMainMenuTab ("7", "Main Tab 7 foo foo bar", null);
 
-    TypedArrayList dataEditControls = new TypedArrayList (typeof (IDataEditControl));
+    List<IDataEditControl> dataEditControls = new List<IDataEditControl>();
     // load editor pages
     IDataEditControl dataEditControl;
     dataEditControl = AddPage ("TestTabbedPersonDetailsUserControl", "Person Details", new IconInfo ("Images/OBRTest.Person.gif"), "TestTabbedPersonDetailsUserControl.ascx");

@@ -80,7 +80,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     BocTreeNodeClickEventHandler handler = (BocTreeNodeClickEventHandler) Events[s_clickEvent];
     if (handler != null)
     {
-      ArgumentUtility.CheckNotNullAndType ("node", node, typeof (BocTreeNode));
+      ArgumentUtility.CheckNotNullAndType<BocTreeNode> ("node", node);
       BusinessObjectTreeNode businessObjectNode = node as BusinessObjectTreeNode;
       BusinessObjectPropertyTreeNode propertyNode = node as BusinessObjectPropertyTreeNode;
     
@@ -106,7 +106,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
     BocTreeNodeEventHandler handler = (BocTreeNodeEventHandler) Events[s_selectionChangedEvent];
     if (handler != null)
     {
-      ArgumentUtility.CheckNotNullAndType ("node", node, typeof (BocTreeNode));
+      ArgumentUtility.CheckNotNullAndType<BocTreeNode> ("node", node);
       BusinessObjectTreeNode businessObjectNode = node as BusinessObjectTreeNode;
       BusinessObjectPropertyTreeNode propertyNode = node as BusinessObjectPropertyTreeNode;
     
@@ -260,7 +260,7 @@ public class BocTreeView: BusinessObjectBoundWebControl
 
   private void EvaluateTreeNode (WebTreeNode node)
   {
-    ArgumentUtility.CheckNotNullAndType ("node", node, typeof (BocTreeNode));
+    ArgumentUtility.CheckNotNullAndType<BocTreeNode> ("node", node);
 
     if (node.IsEvaluated)
       return;
@@ -568,10 +568,10 @@ public class BocTreeView: BusinessObjectBoundWebControl
     get { return (IBusinessObjectReferenceProperty) base.Property; }
     set 
     {
-      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectReferenceProperty));
+      IBusinessObjectReferenceProperty property = ArgumentUtility.CheckType<IBusinessObjectReferenceProperty> ("value", value);
       if (value.IsList == false)
         throw new ArgumentException ("Only properties supporting IList can be assigned to the BocTreeView.", "value");
-      base.Property = (IBusinessObjectReferenceProperty) value; 
+      base.Property = property; 
     }
   }
 

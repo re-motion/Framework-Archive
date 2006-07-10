@@ -5,8 +5,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Xml;
+using System.Xml.Serialization;
+using System.Xml.Schema;
 using Rubicon.Text.CommandLine;
 using Rubicon.Web.ExecutionEngine;
+using WxeFunctionGenerator.Schema;
+
+// for DeserializeUsingSchema only
+using Rubicon.Utilities;
+using Rubicon.Xml;
+using log4net;
 
 namespace WxeFunctionGenerator
 {
@@ -17,20 +26,28 @@ namespace WxeFunctionGenerator
 
   public class Arguments
   {
-    [CommandLineStringArgument (false, 
-        Description = "File name of the assembly containing the ASP.NET page classes", 
-        Placeholder = "assemblyfile")]
-    public string AssemblyFile;
+		[CommandLineStringArgument(false,
+				Description = "File name or file mask for the input file(s)",
+				Placeholder = "filemask")]
+		public string FileMask;
 
     [CommandLineStringArgument (false,
         Description = "Output file",
         Placeholder = "outputfile")]
     public string OutputFile;
 
+		[CommandLineFlagArgument ("recursive", false,
+				Description = "Resolve file mask recursively (default is off)")]
+		public bool Recursive;
+
     [CommandLineEnumArgument ("language", true, 
         Description = "Language (default is CSharp)",
         Placeholder = "{CSharp|VB}")]
     public Language Language = Language.CSharp;
+
+		[CommandLineStringArgument("lineprefix", true,
+				Description = "Line prefix for WxePageFunction elements (default is // for C#, ' for VB.NET")]
+		public string LinePrefix = null;
 
     [CommandLineFlagArgument ("verbose", false,
         Description = "Verbose error information (default is off)")]
@@ -59,16 +76,23 @@ namespace WxeFunctionGenerator
 
       try
       {
-        // select correct CodeDOM provider
+				if (arguments.Verbose)
+					log4net.Config.BasicConfigurator.Configure ();
+				
+				// select correct CodeDOM provider
         CodeDomProvider provider;
         switch (arguments.Language)
         {
           case Language.CSharp:
             provider = new Microsoft.CSharp.CSharpCodeProvider ();
+						if (arguments.LinePrefix == null)
+							arguments.LinePrefix = "//";
             break;
           case Language.VB:
             provider = new Microsoft.VisualBasic.VBCodeProvider ();
-            break;
+						if (arguments.LinePrefix == null)
+							arguments.LinePrefix = "'";
+						break;
           default:
             throw new Exception ();
         }
@@ -76,23 +100,67 @@ namespace WxeFunctionGenerator
         // generate classes for each [WxePageFunction] class
         CodeCompileUnit unit = new CodeCompileUnit ();
 
-        Assembly assembly = Assembly.LoadFrom (arguments.AssemblyFile);
-        foreach (Type type in assembly.GetTypes ())
-        {
-          object[] pageAttributes = type.GetCustomAttributes (typeof (WxePageFunctionAttribute), false);
-          if (pageAttributes != null && pageAttributes.Length > 0)
-          {
-            WxePageFunctionAttribute pageAttribute = (WxePageFunctionAttribute) pageAttributes[0];
-            GenerateClass (unit, type, pageAttribute);
-          }
-        }
+				string fileMask = Path.Combine (Directory.GetCurrentDirectory (), arguments.FileMask);
+				DirectoryInfo directory = new DirectoryInfo (Path.GetDirectoryName (fileMask));
+				FileInfo[] files = directory.GetFiles (
+						Path.GetFileName (fileMask), 
+						arguments.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
 
-        if (unit.Namespaces.Count == 0)
-        {
-          Console.Error.WriteLine ("No classes with [WxePageFunction] attribute found. Possible mismatch of "
-           + "assembly versions: check that wxegen.exe and Rubicon.Web.dll versions match. Generation aborted.");
-          return 1;
-        }
+				char[] whitespace = new char[] {' ', '\t'};
+				foreach (FileInfo file in files)
+				{
+					StreamReader reader = new StreamReader (file.FullName, true);
+					string line = reader.ReadLine();
+					int lineNumber = 1;
+					int firstLineNumber = -1;
+					StringBuilder xmlFragment = null;
+					while (line != null)
+					{
+						line = line.TrimStart (whitespace);
+						if (line.StartsWith (arguments.LinePrefix))
+						{
+							line = line.Substring (arguments.LinePrefix.Length);
+							if (xmlFragment == null)
+							{
+								if (line.TrimStart (whitespace).StartsWith ("<" + FunctionDeclaration.ElementName))
+								{
+									xmlFragment = new StringBuilder (1000);
+									xmlFragment.AppendFormat ("<{0} xmlns=\"{1}\"", FunctionDeclaration.ElementName, FunctionDeclaration.SchemaUri);
+									xmlFragment.Append (line.TrimStart(whitespace).Substring (FunctionDeclaration.ElementName.Length + 1));
+
+									firstLineNumber = lineNumber;
+								}
+							}
+							else
+							{
+								xmlFragment.AppendLine ();
+								xmlFragment.Append (line);
+								if (line.TrimEnd (whitespace).EndsWith ("</" + FunctionDeclaration.ElementName + ">"))
+								{
+									// fragment complete, process it
+									StringReader stringReader = new StringReader (xmlFragment.ToString());
+									XmlSchemaSet schemas = new XmlSchemaSet ();
+									schemas.Add (FunctionDeclaration.SchemaUri, FunctionDeclaration.GetSchemaReader ());
+									XmlReaderSettings settings = new XmlReaderSettings ();
+									settings.LineNumberOffset = firstLineNumber - 1;
+									settings.Schemas = schemas;
+									settings.ValidationType = ValidationType.Schema;
+									FunctionDeclaration declaration = (FunctionDeclaration) XmlSerializationUtility.DeserializeUsingSchema (
+											stringReader, file.Name, 
+											typeof (FunctionDeclaration), settings);
+
+									// XmlTextReader xmlReader = new XmlTextReader (stringReader);
+									// XmlSerializer serializer = new XmlSerializer (typeof (FunctionDeclaration), FunctionDeclaration.SchemaUri);
+									// FunctionDeclaration declaration = (FunctionDeclaration) serializer.Deserialize(xmlReader);
+
+									GenerateClass (unit, declaration);
+								}
+							}
+						}
+						line = reader.ReadLine();
+						++ lineNumber;
+					}
+				}
 
         // write generated code
 			  using (TextWriter writer = new StreamWriter (arguments.OutputFile, false, Encoding.Unicode))
@@ -122,11 +190,37 @@ namespace WxeFunctionGenerator
       }
     }
 
+		private static void SpliTypeName (string fullTypeName, out string nameSpace, out string typeName)
+		{
+			int pos = fullTypeName.LastIndexOf ('.');
+			if (pos < 0)
+			{
+				nameSpace = null;
+				typeName = fullTypeName;
+			}
+			else
+			{
+				nameSpace = fullTypeName.Substring (0, pos);
+				typeName = fullTypeName.Substring (pos + 1);
+			}
+		}
+
     // generate output classes for [WxePageFunction] page class
-    static void GenerateClass (CodeCompileUnit unit, Type type, WxePageFunctionAttribute pageAttribute)
+    static void GenerateClass (CodeCompileUnit unit, FunctionDeclaration functionDeclaration)
     {
-      CodeNamespace ns = new CodeNamespace (type.Namespace);
+			string nameSpace;
+			string typeName;
+			SpliTypeName (functionDeclaration.PageType, out nameSpace, out typeName);
+
+			string functionName = functionDeclaration.FunctionName;
+			if (functionName == null)
+				functionName = typeName + "Function";
+
+      CodeNamespace ns = new CodeNamespace (nameSpace);
       unit.Namespaces.Add (ns);
+
+			ns.Imports.Add (new CodeNamespaceImport ("System"));
+			ns.Imports.Add (new CodeNamespaceImport ("Rubicon.Web.ExecutionEngine"));
 
       #if NET11
         // for ASP.NET 1.1, generate a "<page>Variables" class for each page that allows access to parameters and 
@@ -155,7 +249,7 @@ namespace WxeFunctionGenerator
       #else
         // for ASP.NET above 1.1, generate a partial class for the page that allows access to parameters and
         // local variables from page code
-        CodeTypeDeclaration partialPageClass = new CodeTypeDeclaration (type.Name);
+        CodeTypeDeclaration partialPageClass = new CodeTypeDeclaration (typeName);
         ns.Types.Add (partialPageClass);
         partialPageClass.IsPartial = true;
         partialPageClass.Attributes = MemberAttributes.Public;
@@ -174,16 +268,16 @@ namespace WxeFunctionGenerator
         //// add Return (outPar1, outPar2, ...) method 
         //// -- removed (unneccessary, possibly confusing)
         //CodeMemberMethod returnParametersMethod = new CodeMemberMethod ();
-        //foreach (WxePageParameterAttribute parameterAttribute in GetPageParameterAttributesOrdered (type))
+        //foreach (WxePageParameterAttribute parameterDeclaration in GetPageParameterAttributesOrdered (type))
         //{
-        //  if (parameterAttribute.Direction != WxeParameterDirection.In)
+        //  if (parameterDeclaration.Direction != WxeParameterDirection.In)
         //  {
         //    returnParametersMethod.Parameters.Add (new CodeParameterDeclarationExpression (
-        //        new CodeTypeReference (parameterAttribute.Type),
-        //        parameterAttribute.Name));
+        //        new CodeTypeReference (parameterDeclaration.Type),
+        //        parameterDeclaration.Name));
         //    returnParametersMethod.Statements.Add (new CodeAssignStatement (
-        //        new CodePropertyReferenceExpression (new CodeThisReferenceExpression (), parameterAttribute.Name),
-        //        new CodeArgumentReferenceExpression (parameterAttribute.Name)));
+        //        new CodePropertyReferenceExpression (new CodeThisReferenceExpression (), parameterDeclaration.Name),
+        //        new CodeArgumentReferenceExpression (parameterDeclaration.Name)));
         //  }
         //}
         //if (returnParametersMethod.Parameters.Count > 0)
@@ -196,18 +290,18 @@ namespace WxeFunctionGenerator
       #endif
 
       // generate a WxeFunction class
-      CodeTypeDeclaration functionClass = new CodeTypeDeclaration (type.Name + "Function");
+      CodeTypeDeclaration functionClass = new CodeTypeDeclaration (functionName);
       ns.Types.Add (functionClass);
       functionClass.Attributes = MemberAttributes.Public;
-      functionClass.BaseTypes.Add (pageAttribute.BaseClass);
+      functionClass.BaseTypes.Add (new CodeTypeReference (functionDeclaration.FunctionBaseType));
 
       // generate local variables in partial/variables class, and
       // generate function parameters in partial/variables class and function class
-      foreach (WxePageVariableAttribute variableAttribute in type.GetCustomAttributes (typeof (WxePageVariableAttribute), false))
+			foreach (VariableDeclaration variableDeclaration in functionDeclaration.ParametersAndVariables)
       {
         CodeMemberProperty localProperty = new CodeMemberProperty ();
-        localProperty.Name = variableAttribute.Name;
-        localProperty.Type = new CodeTypeReference (variableAttribute.Type);
+        localProperty.Name = variableDeclaration.Name;
+        localProperty.Type = new CodeTypeReference (variableDeclaration.TypeName);
         #if NET11
           variablesClass.Members.Add (localProperty);
           localProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
@@ -216,26 +310,26 @@ namespace WxeFunctionGenerator
           localProperty.Attributes = MemberAttributes.Family | MemberAttributes.Final;
         #endif
 
-        WxePageParameterAttribute parameterAttribute = variableAttribute as WxePageParameterAttribute;
+        ParameterDeclaration parameterDeclaration = variableDeclaration as ParameterDeclaration;
         CodeMemberProperty functionProperty = null;
-        if (parameterAttribute != null)
+        if (parameterDeclaration != null)
         {
           functionProperty = new CodeMemberProperty ();
           functionClass.Members.Add (functionProperty);
-          functionProperty.Name = parameterAttribute.Name;
-          functionProperty.Type = new CodeTypeReference (parameterAttribute.Type);
+          functionProperty.Name = parameterDeclaration.Name;
+          functionProperty.Type = new CodeTypeReference (parameterDeclaration.TypeName);
           functionProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
         }
 
         // <variable> := Variables["<parameterName>"]
         CodeExpression variable = new CodeIndexerExpression (
             new CodePropertyReferenceExpression (new CodeThisReferenceExpression (), "Variables"),
-            new CodePrimitiveExpression (variableAttribute.Name));
+            new CodePrimitiveExpression (variableDeclaration.Name));
 
         // <getStatement> := get { return (<type>) <variable>; }
         CodeStatement getStatement = new CodeMethodReturnStatement (
             new CodeCastExpression (
-                new CodeTypeReference (variableAttribute.Type),
+                new CodeTypeReference (variableDeclaration.TypeName),
                 variable));
 
         // <setStatement> := set { <variable> = value; }
@@ -243,17 +337,17 @@ namespace WxeFunctionGenerator
             variable,
             new CodePropertySetValueReferenceExpression ());
 
-        if (parameterAttribute != null)
+        if (parameterDeclaration != null)
         {
           // add get/set accessors according to parameter direction
-          if (parameterAttribute.Direction != WxeParameterDirection.Out)
+          if (parameterDeclaration.Direction != WxeParameterDirection.Out)
           {
             // In or InOut: get from page, set from function
             localProperty.GetStatements.Add (getStatement);
             functionProperty.SetStatements.Add (setStatement);
           }
 
-          if (parameterAttribute.Direction != WxeParameterDirection.In)
+          if (parameterDeclaration.Direction != WxeParameterDirection.In)
           {
             // Out or InOut: set from page, get from function
             localProperty.SetStatements.Add (setStatement);
@@ -274,16 +368,16 @@ namespace WxeFunctionGenerator
               new CodeTypeReference (typeof (WxeParameterAttribute)));
           functionProperty.CustomAttributes.Add (wxeParameterAttribute);
           wxeParameterAttribute.Arguments.Add (new CodeAttributeArgument (
-              new CodePrimitiveExpression (parameterAttribute.Index)));
-          if (!parameterAttribute.Required.IsNull)
+              new CodePrimitiveExpression (parameterDeclaration.Index)));
+          if (parameterDeclaration.IsRequired.HasValue)
           {
             wxeParameterAttribute.Arguments.Add (new CodeAttributeArgument (
-                new CodePrimitiveExpression (parameterAttribute.Required.Value)));
+                new CodePrimitiveExpression (parameterDeclaration.IsRequired.Value)));
           }
           wxeParameterAttribute.Arguments.Add (new CodeAttributeArgument (
               new CodeFieldReferenceExpression (
                   new CodeTypeReferenceExpression (typeof (WxeParameterDirection)),
-                  parameterAttribute.Direction.ToString ())));
+                  parameterDeclaration.Direction.ToString ())));
         }
       }
 
@@ -308,7 +402,7 @@ namespace WxeFunctionGenerator
       functionClass.Members.Add (step1);
       step1.InitExpression = new CodeObjectCreateExpression (
           new CodeTypeReference (typeof (WxePageStep)),
-          new CodePrimitiveExpression (pageAttribute.AspxPageName));
+          new CodePrimitiveExpression (functionDeclaration.AspxFile));
 
       // add constructors to WXE function
 
@@ -331,43 +425,42 @@ namespace WxeFunctionGenerator
       // ctor (<type1> inarg1, <type2> inarg2, ...): base (inarg1, inarg2, ...) {}
       CodeConstructor typedCtor = new CodeConstructor ();
       typedCtor.Attributes = MemberAttributes.Public;
-      WxePageParameterAttribute[] parameterAttributes = GetPageParameterAttributesOrdered (type);
-      foreach (WxePageParameterAttribute parameterAttribute in parameterAttributes)
+      foreach (ParameterDeclaration parameterDeclaration in functionDeclaration.Parameters)
       {
-        if (parameterAttribute.Direction == WxeParameterDirection.Out)
+        if (parameterDeclaration.Direction == WxeParameterDirection.Out)
           break;
 
         typedCtor.Parameters.Add (new CodeParameterDeclarationExpression (
-            new CodeTypeReference (parameterAttribute.Type),
-            parameterAttribute.Name));
+            new CodeTypeReference (parameterDeclaration.TypeName),
+            parameterDeclaration.Name));
 
-        typedCtor.BaseConstructorArgs.Add (new CodeArgumentReferenceExpression (parameterAttribute.Name));
+        typedCtor.BaseConstructorArgs.Add (new CodeArgumentReferenceExpression (parameterDeclaration.Name));
       }
       if (typedCtor.Parameters.Count > 0)
         functionClass.Members.Add (typedCtor);
 
       // <returnType> Call (IWxePage page, <type> [ref|out] param1, <type> [ref|out] param2, ...)
       CodeMemberMethod callMethod = new CodeMemberMethod ();
-      functionClass.Members.Add (callMethod);
+      partialPageClass.Members.Add (callMethod);
       callMethod.Name = "Call";
       callMethod.Attributes = MemberAttributes.Static | MemberAttributes.Public;
       callMethod.Parameters.Add (new CodeParameterDeclarationExpression (
           new CodeTypeReference (typeof (IWxePage)), "currentPage"));
-      foreach (WxePageParameterAttribute parameterAttribute in parameterAttributes)
+      foreach (ParameterDeclaration parameterDeclaration in functionDeclaration.Parameters)
       {
-        if (parameterAttribute.IsReturnValue)
+        if (parameterDeclaration.IsReturnValue)
         {
-          callMethod.ReturnType = new CodeTypeReference (parameterAttribute.Type);
+          callMethod.ReturnType = new CodeTypeReference (parameterDeclaration.TypeName);
         }
         else
         {
           CodeParameterDeclarationExpression parameter = new CodeParameterDeclarationExpression (
-              new CodeTypeReference (parameterAttribute.Type),
-              parameterAttribute.Name);
+              new CodeTypeReference (parameterDeclaration.TypeName),
+              parameterDeclaration.Name);
           callMethod.Parameters.Add (parameter);
-          if (parameterAttribute.Direction == WxeParameterDirection.InOut)
+          if (parameterDeclaration.Direction == WxeParameterDirection.InOut)
             parameter.Direction = FieldDirection.Ref;
-          else if (parameterAttribute.Direction == WxeParameterDirection.Out)
+          else if (parameterDeclaration.Direction == WxeParameterDirection.Out)
             parameter.Direction = FieldDirection.Out;
         }
       }
@@ -391,13 +484,13 @@ namespace WxeFunctionGenerator
           function, 
           new CodeObjectCreateExpression (new CodeTypeReference (functionClass.Name))));
       //   function.ParamN = ParamN;
-      foreach (WxePageParameterAttribute parameterAttribute in parameterAttributes)
+      foreach (ParameterDeclaration parameterDeclaration in functionDeclaration.Parameters)
       {
-        if (parameterAttribute.Direction != WxeParameterDirection.Out)
+        if (parameterDeclaration.Direction != WxeParameterDirection.Out)
         {
           ifNotIsReturningPostBack.TrueStatements.Add (new CodeAssignStatement (
-              new CodePropertyReferenceExpression (function, parameterAttribute.Name),
-              new CodeArgumentReferenceExpression (parameterAttribute.Name)));
+              new CodePropertyReferenceExpression (function, parameterDeclaration.Name),
+              new CodeArgumentReferenceExpression (parameterDeclaration.Name)));
         }
       }
       //   currentPage.ExecuteFunction (function);
@@ -417,42 +510,21 @@ namespace WxeFunctionGenerator
               new CodeTypeReference (functionClass.Name),
               new CodePropertyReferenceExpression (currentPage, "ReturningFunction"))));
       //   ParamN = function.ParamN;
-      foreach (WxePageParameterAttribute parameterAttribute in parameterAttributes)
+			foreach (ParameterDeclaration parameterDeclaration in functionDeclaration.Parameters)
       {
-        if (parameterAttribute.Direction != WxeParameterDirection.In && !parameterAttribute.IsReturnValue)
+        if (parameterDeclaration.Direction != WxeParameterDirection.In && !parameterDeclaration.IsReturnValue)
         {
           ifNotIsReturningPostBack.FalseStatements.Add (new CodeAssignStatement (
-              new CodeArgumentReferenceExpression (parameterAttribute.Name),
-              new CodePropertyReferenceExpression (function, parameterAttribute.Name)));
+              new CodeArgumentReferenceExpression (parameterDeclaration.Name),
+              new CodePropertyReferenceExpression (function, parameterDeclaration.Name)));
         }
-        else if (parameterAttribute.IsReturnValue)
+        else if (parameterDeclaration.IsReturnValue)
         {
           ifNotIsReturningPostBack.FalseStatements.Add (new CodeMethodReturnStatement (
-              new CodePropertyReferenceExpression (function, parameterAttribute.Name)));
+              new CodePropertyReferenceExpression (function, parameterDeclaration.Name)));
         }
       }
 
-    }
-
-    static WxePageParameterAttribute[] GetPageParameterAttributesOrdered (Type type)
-    {
-      WxePageParameterAttribute[] attributes = 
-          (WxePageParameterAttribute[]) type.GetCustomAttributes (typeof (WxePageParameterAttribute), false);
-      int[] indices = new int[attributes.Length];
-      for (int i = 0; i < attributes.Length; ++i)
-      {
-        indices[i] = attributes[i].Index;
-      }
-      Array.Sort (indices, attributes);
-      for (int i = 0; i < attributes.Length - 1; ++i)
-      {
-        if (attributes[i].IsReturnValue)
-          throw new ApplicationException ("Class " + type.FullName + ": Only last WXE parameter can have IsReturnValue = true.");
-      }
-      WxePageParameterAttribute lastAttribute = attributes[attributes.Length - 1];
-      if (lastAttribute.IsReturnValue && lastAttribute.Direction != WxeParameterDirection.Out)
-        throw new ApplicationException ("Class " + type.FullName + ": Only WXE parameter with direction WxeParameterDirection.Out can have IsReturnValue = true.");
-      return attributes;
     }
   }
 }

@@ -74,16 +74,25 @@ public class WxePageInfo: WxeTemplateControlInfo, IDisposable
   public WxePageInfo (IWxePage page)
     : base (page)
   {
-    ArgumentUtility.CheckNotNullAndType ("page", page, typeof (Page));
+    ArgumentUtility.CheckNotNullAndType<Page> ("page", page);
     _page = page;
   }
 
-  public Control FindControl (string id)
+  /// <summary>
+  /// Finds the control if it is the page's form. Otherwise, call the find method of the page's base class.
+  /// </summary>
+  public Control FindControl (string id, out bool callBaseMethod)
   {
     if (_wxeForm != null && !StringUtility.IsNullOrEmpty(_wxeForm.ID) && id == _wxeForm.UniqueID)
+    {
+      callBaseMethod = false;
       return _wxeForm;
-
-    return _page.FindControl (id);
+    }
+    else
+    {
+      callBaseMethod = true;
+      return null;
+    }
   }
 
   public override void Initialize (HttpContext context)

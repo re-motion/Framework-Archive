@@ -1,3 +1,11 @@
+1.7.12
+======
+- Rubicon.Utilities.ArgumentUtility.CheckType und .CheckNotNullAndType: Sind jetzt generische Methoden, Typ ist jetzt ein Typ-Argument. 
+  Verwendung: statt
+		MyControl myControl = (MyControl) ArgumentUtility.CheckType ("control", control, typeof (MyControl));
+	neu:
+		MyControl myControl = ArgumentUtility.CheckType<MyControl> ("control", control);
+
 1.7.6
 =====
 

@@ -9,7 +9,8 @@ namespace Rubicon.Collections
 ///   A hashtable that automatically creates new value objects when queried for a specific key.
 /// </summary>
 /// <remarks>
-///   Use this hashtable for ...  
+///		This collection cannot be modified using <see cref="Add"/> and setting values through the indexer. Getting values through the indexer
+///		will assign a new object to the specified key if none exists.
 /// </remarks>
 public class AutoInitHashtable: Hashtable
 {
@@ -59,12 +60,13 @@ public class AutoInitHashtable: Hashtable
     }
   }
 
+#pragma warning disable 809 // specifying obsolete for overridden methods causes a warning, but this is intended here.
   [Obsolete ("Explicitly adding or setting keys or values is not supported.")]
   public override void Add(object key, object value)
   {
     throw new NotSupportedException();
   }
-
+#pragma warning restore 809
 }
 
 }

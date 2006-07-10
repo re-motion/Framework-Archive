@@ -116,7 +116,7 @@ public class BocMenuItem: WebMenuItem
   protected override void OnOwnerControlChanged()
   {
     base.OnOwnerControlChanged ();
-    ArgumentUtility.CheckNotNullAndType ("OwnerControl", OwnerControl, typeof (IBocMenuItemContainer));
+    ArgumentUtility.CheckNotNullAndType<IBocMenuItemContainer> ("OwnerControl", OwnerControl);
   }
 
   protected IBocMenuItemContainer BocMenuItemContainer

@@ -104,9 +104,8 @@ public class ControlItemCollection: CollectionBase
 
   protected virtual void ValidateNewValue (object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (IControlItem));
+    IControlItem controlItem = ArgumentUtility.CheckNotNullAndType<IControlItem> ("value", value);
     
-    IControlItem controlItem = (IControlItem) value;
     if (! IsSupportedType (controlItem)) 
       throw new ArgumentTypeException ("value", controlItem.GetType());
     if (Find (controlItem.ItemID) != null)

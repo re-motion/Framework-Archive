@@ -39,8 +39,7 @@ public class WebTreeNodeCollection: ControlItemCollection
 
   protected override void ValidateNewValue (object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTreeNode));
-    WebTreeNode node = (WebTreeNode) value;
+    WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value);
     
     EnsureDesignModeTreeNodeInitialized (node);
     if (StringUtility.IsNullOrEmpty (node.ItemID))
@@ -74,19 +73,17 @@ public class WebTreeNodeCollection: ControlItemCollection
 
   protected override void OnInsertComplete (int index, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (WebTreeNode));
+    WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("value", value);
 
     base.OnInsertComplete (index, value);
-    WebTreeNode node = (WebTreeNode) value;
     node.SetParent (_treeView, _parentNode);
   }
 
   protected override void OnSetComplete (int index, object oldValue, object newValue)
   {
-    ArgumentUtility.CheckNotNullAndType ("newValue", newValue, typeof (WebTreeNode));
+    WebTreeNode node = ArgumentUtility.CheckNotNullAndType<WebTreeNode> ("newValue", newValue);
 
     base.OnSetComplete (index, oldValue, newValue);
-    WebTreeNode node = (WebTreeNode) newValue;
     node.SetParent (_treeView, _parentNode);
   }
 

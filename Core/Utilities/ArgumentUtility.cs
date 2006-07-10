@@ -24,29 +24,11 @@ namespace Rubicon.Utilities
         throw new ArgumentEmptyException (argumentName);
     }
 
-    public static void CheckNotNullOrEmpty (string argumentName, System.Array array)
-    {
-      CheckNotNull (argumentName, array);
-      if (array.Length == 0)
-        throw new ArgumentEmptyException (argumentName);
-    }
-
     public static void CheckNotNullOrEmpty (string argumentName, ICollection collection)
     {
       CheckNotNull (argumentName, collection);
       if (collection.Count == 0)
         throw new ArgumentEmptyException (argumentName);
-    }
-
-    public static void CheckNotNullOrItemsNull (string argumentName, System.Array array)
-    {
-      CheckNotNull (argumentName, array);
-
-      for (int i = 0; i < array.LongLength; ++i)
-      {
-        if (array.GetValue (i) == null)
-          throw new ArgumentItemNullException (argumentName, i);
-      }
     }
 
     public static void CheckNotNullOrItemsNull (string argumentName, ICollection collection)
@@ -60,13 +42,6 @@ namespace Rubicon.Utilities
           throw new ArgumentItemNullException (argumentName, i);
         ++i;
       }
-    }
-
-    public static void CheckNotNullOrEmptyOrItemsNull (string argumentName, System.Array array)
-    {
-      CheckNotNullOrItemsNull (argumentName, array);
-      if (array.Length == 0)
-        throw new ArgumentEmptyException (argumentName);
     }
 
     public static void CheckNotNullOrEmptyOrItemsNull (string argumentName, ICollection collection)
@@ -83,34 +58,62 @@ namespace Rubicon.Utilities
       throw new ArgumentOutOfRangeException (argumentName, actualValue, message);
     }
 
-    /// <summary>Returns the value itself if it is not <see langword="null"/> and of the specified type.</summary>
-    /// <exception cref="ArgumentNullException">The <paramref name="actualValue"/> is a <see langword="null"/>.</exception>
-    /// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of the <paramref name="expectedType"/>).</exception>
-    public static T CheckNotNullAndType<T> (string argumentName, T actualValue, Type expectedType)
-    {
-      if (actualValue == null)
-        throw new ArgumentNullException (argumentName);
-      return CheckType<T> (argumentName, actualValue, expectedType);
-    }
+		[Obsolete (@"Use CheckNotNullAndType<ExpectedType> instead. Example: "
+							 + @"Dog d = (Dog) ArgumentUtility.CheckNotNullAndType (""animal"", animal, typeof(Dog));  "
+							 + @"-->  Dog d = ArgumentUtility.CheckNotNullAndType<Dog> (""animal"", animal);" )]
+		public static object CheckNotNullAndType (string argumentName, object actualValue, Type expectedType)
+		{
+			if (actualValue == null)
+				throw new ArgumentNullException (argumentName);
+			return CheckType (argumentName, actualValue, expectedType);
+		}
 
-    /// <summary>Returns the value itself if it is of the specified reference type.</summary>
-    /// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of the <paramref name="expectedType"/>).</exception>
-    /// <exception cref="NotSupportedException">The <paramref name="expectedType"/> is a value type.</exception>
-    /// <remarks>For value types, use <see cref="CheckNotNullAndType{T}"/> instead.</remarks>
-    public static T CheckType<T> (string argumentName, T actualValue, Type expectedType)
-    {
-      if (expectedType.IsValueType)
-        throw new NotSupportedException ("Cannot use ArgumentUtility.CheckType<T> for value types. Use CheckNotNullAndType<T> instead.");
+		/// <summary>Returns the value itself if it is not <see langword="null"/> and of the specified type.</summary>
+		/// <typeparam name="TExpected"> The type that <param name="actualValue"/> must have. </typeparam>
+		/// <exception cref="ArgumentNullException">The <paramref name="actualValue"/> is a <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of <typeparamref name="TExpected"/>).</exception>
+		public static TExpected CheckNotNullAndType<TExpected> (string argumentName, object actualValue)
+			where TExpected: class
+		{
+			if (actualValue == null)
+				throw new ArgumentNullException (argumentName);
+			return CheckType<TExpected> (argumentName, actualValue);
+		}
 
-      if (!typeof (T).IsValueType && actualValue == null)
-        return default (T);
+		[Obsolete (@"Use CheckType<ExpectedType> instead. Example: "
+							 + @"Dog d = (Dog) ArgumentUtility.CheckType (""animal"", animal, typeof(Dog));  "
+							 + @"-->  Dog d = ArgumentUtility.CheckType<Dog> (""animal"", animal);" )]
+		public static object CheckType (string argumentName, object actualValue, Type expectedType)
+		{
+			if (expectedType.IsValueType)
+				throw new NotSupportedException ("Cannot use ArgumentUtility.CheckType for value types. Use CheckNotNullAndType instead.");
 
-      if (!expectedType.IsAssignableFrom (actualValue.GetType ()))
-        throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType ());
-      return actualValue;
-    }
+			if (actualValue == null)
+				return null;
 
-    /// <summary>Checks whether <paramref name="actualType"/> is not <see langword="null"/> and can be assigned to <paramref name="expectedType"/>.</summary>
+			if (!expectedType.IsAssignableFrom (actualValue.GetType ()))
+				throw new ArgumentTypeException (argumentName, expectedType, actualValue.GetType ());
+			return actualValue;
+		}
+
+		/// <summary>Returns the value itself if it is of the specified reference type.</summary>
+		/// <typeparam name="TExpected"> The type that <param name="actualValue"/> must have. </typeparam>
+		/// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of the <paramref name="expectedType"/>).</exception>
+		/// <exception cref="NotSupportedException">The <paramref name="expectedType"/> is a value type.</exception>
+		/// <remarks>For value types, use <see cref="CheckNotNullAndType{T}"/> instead.</remarks>
+		public static TExpected CheckType<TExpected> (string argumentName, object actualValue)
+			where TExpected: class
+		{
+			if (actualValue == null)
+				return default (TExpected); // TODO: return null?
+
+			TExpected result = actualValue as TExpected;
+			if (result == null)
+				throw new ArgumentTypeException (argumentName, typeof (TExpected), actualValue.GetType ());
+			return result;
+		}
+
+		/// <summary>Checks whether <paramref name="actualType"/> is not <see langword="null"/> and can be assigned to <paramref name="expectedType"/>.</summary>
     /// <exception cref="ArgumentNullException">The <paramref name="actualType"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
     public static void CheckNotNullAndTypeIsAssignableFrom (string argumentName, Type actualType, Type expectedType)
@@ -124,6 +127,7 @@ namespace Rubicon.Utilities
     /// <exception cref="ArgumentTypeException">The <paramref name="actualType"/> cannot be assigned to <paramref name="expectedType"/>.</exception>
     public static void CheckTypeIsAssignableFrom (string argumentName, Type actualType, Type expectedType)
     {
+      ArgumentUtility.CheckNotNull ("expectedType", expectedType);
       if (actualType == null)
         return;
 

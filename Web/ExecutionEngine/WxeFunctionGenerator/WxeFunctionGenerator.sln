@@ -11,16 +11,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{2ADC369A-4CE5-4378-B72E-4FBEDD8FA724}"
 EndProject
 Global
-	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 3
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Test\\Test.csproj
-		SccLocalPath1 = .
-		SccProjectFilePathRelativizedFromConnection1 = Test\\
-		SccProjectUniqueName2 = WxeFunctionGenerator\\WxeFunctionGenerator.csproj
-		SccLocalPath2 = .
-		SccProjectFilePathRelativizedFromConnection2 = WxeFunctionGenerator\\
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU

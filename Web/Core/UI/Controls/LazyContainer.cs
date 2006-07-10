@@ -157,9 +157,8 @@ namespace Rubicon.Web.UI.Controls
 
     protected override void LoadControlState (object savedState)
     {
-      ArgumentUtility.CheckNotNullAndType ("savedState", savedState, typeof (Triplet));
+      Triplet values = ArgumentUtility.CheckNotNullAndType<Triplet> ("savedState", savedState);
 
-      Triplet values = (Triplet) savedState;
       base.LoadControlState (savedState);
       bool hasChildControlStatesBackUp = (bool) values.Second;
 

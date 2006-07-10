@@ -521,12 +521,7 @@ public class BocCheckBox: BusinessObjectBoundEditableWebControl, IPostBackDataHa
   public new IBusinessObjectBooleanProperty Property
   {
     get { return (IBusinessObjectBooleanProperty) base.Property; }
-    set 
-    {
-      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectBooleanProperty));
-
-      base.Property = (IBusinessObjectBooleanProperty) value; 
-    }
+    set { base.Property = ArgumentUtility.CheckType<IBusinessObjectBooleanProperty> ("value", value); }
   }
 
   /// <summary> Gets a flag that determines whether the control is to be treated as a required value. </summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using Rubicon.NullableValueTypes;
@@ -150,7 +151,7 @@ public interface IBusinessObjectDataSource
 /// <seealso cref="IBusinessObjectDataSource"/>
 public abstract class BusinessObjectDataSource: Component, IBusinessObjectDataSource
 {
-  private TypedArrayList _boundControls = new TypedArrayList (typeof (IBusinessObjectBoundControl));
+  private List<IBusinessObjectBoundControl> _boundControls = new List<IBusinessObjectBoundControl>();
   private DataSourceMode _mode = DataSourceMode.Edit;
 
   /// <summary> Gets or sets the current <see cref="DataSourceMode"/>. </summary>

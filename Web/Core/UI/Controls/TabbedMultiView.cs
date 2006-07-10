@@ -47,9 +47,8 @@ namespace Rubicon.Web.UI.Controls
 
       protected override void AddedControl (Control control, int index)
       {
-        ArgumentUtility.CheckNotNullAndType ("control", control, typeof (TabView));
+        TabView tabView = ArgumentUtility.CheckNotNullAndType<TabView> ("control", control);
 
-        TabView tabView = (TabView) control;
         tabView.IsLazyLoadingEnabled = Parent.EnableLazyLoading;
         if (!Parent.EnableLazyLoading)
           tabView.EnsureLazyControls ();

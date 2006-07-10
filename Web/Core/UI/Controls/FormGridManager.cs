@@ -406,8 +406,8 @@ public class FormGridManager : Control, IControl, IResourceDispatchTarget, ISupp
     protected override void OnInsert(int index, object value)
     {
       ArgumentUtility.CheckNotNull ("value", value);
-      ArgumentUtility.CheckType ("value", value, typeof (FormGridRow));
-      FormGridRow formGridRow = (FormGridRow) value; 
+      FormGridRow formGridRow = ArgumentUtility.CheckType<FormGridRow> ("value", value);
+
       if (formGridRow.HtmlTableRows[0].Parent != _ownerFormGrid.Table)
         throw new InvalidOperationException ("The FormGridRow that attempted to be inserted at position " + index + " contains HtmlTableRows belonging to the table '" + formGridRow.HtmlTableRows[0].Parent.ID + "', but the FormGrid encapsulates the table '" +_ownerFormGrid.Table.ID + "'.");
       formGridRow._formGrid = _ownerFormGrid;

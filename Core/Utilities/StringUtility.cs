@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Runtime.Serialization;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 using Rubicon.Collections;
 
 namespace Rubicon.Utilities
@@ -91,7 +92,7 @@ public sealed class StringUtility
     string specialCharacterResults = "\r\n\t";
 
     StringBuilder current = new StringBuilder();
-    TypedArrayList items = new TypedArrayList (typeof (ParsedItem));
+    List<ParsedItem> items = new List<ParsedItem>();
     // ArrayList argsArray = new ArrayList();
 
     bool isQuoted = false;

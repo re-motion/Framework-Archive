@@ -1,6 +1,8 @@
 using System;
 using System.Text;
 using System.Collections;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using Rubicon.Utilities;
@@ -14,7 +16,7 @@ namespace Rubicon.Globalization
 /// <summary>
 ///   Combines one or more <see cref="IResourceManager"/> instances to a set that can be accessed using a single interface.
 /// </summary>
-public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
+public class ResourceManagerSet: ReadOnlyCollection<IResourceManager>, IResourceManager
 {
 	private static readonly ILog s_log = LogManager.GetLogger (typeof (ResourceManagerWrapper));
 
@@ -39,34 +41,31 @@ public class ResourceManagerSet: ReadOnlyCollectionBase, IResourceManager
   /// </example>
   /// <param name="resourceManagers"> The resource manager, starting with the least specific. </param>
 	public ResourceManagerSet (params IResourceManager[] resourceManagers)
+    : base (CreateFlatList(resourceManagers))
 	{
     ArgumentUtility.CheckNotNullOrEmpty ("resourceManagers", resourceManagers);
 
-    TypedArrayList list = new TypedArrayList (typeof (IResourceManager));
+    SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * this.Count);
+    foreach (IResourceManager rm in this)
+      sb.Append (rm.Name);
+    _name = sb.ToString();
+	}
+
+  private static IList<IResourceManager> CreateFlatList (IEnumerable<IResourceManager> resourceManagers)
+  {
+    List<IResourceManager> list = new List<IResourceManager>();
     foreach (IResourceManager rm in resourceManagers)
     {
       ResourceManagerSet rmset = rm as ResourceManagerSet;
       if (rmset != null)
-        list.AddRange (rmset.InnerList);
+        list.AddRange (rmset);
       else if (rm != null)
         list.Add (rm);
     }
 
-    IResourceManager[] concreteResourceManagers = (IResourceManager[]) list.ToArray ();
-
-    SeparatedStringBuilder sb = new SeparatedStringBuilder (", ", 30 * concreteResourceManagers.Length);
-    foreach (IResourceManager rm in concreteResourceManagers)
-      sb.Append (rm.Name);
-    _name = sb.ToString();
-
-    InnerList.AddRange (concreteResourceManagers);
-	}
-
-  public IResourceManager this[int index]
-  {
-    get { return (IResourceManager) InnerList[index]; }
+    return list;
   }
-  
+
   public NameValueCollection GetAllStrings()
   {
     return GetAllStrings (string.Empty);

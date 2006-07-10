@@ -533,12 +533,7 @@ public class BocBooleanValue: BusinessObjectBoundEditableWebControl, IPostBackDa
   public new IBusinessObjectBooleanProperty Property
   {
     get { return (IBusinessObjectBooleanProperty) base.Property; }
-    set 
-    {
-      ArgumentUtility.CheckType ("value", value, typeof (IBusinessObjectBooleanProperty));
-
-      base.Property = (IBusinessObjectBooleanProperty) value; 
-    }
+    set { base.Property = ArgumentUtility.CheckType<IBusinessObjectBooleanProperty> ("value", value); }
   }
   
   /// <summary> Gets or sets the current value. </summary>
