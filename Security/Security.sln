@@ -68,6 +68,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityManager.Clients.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Web.UnitTests", "..\ObjectBinding\Web.UnitTests\ObjectBinding.Web.UnitTests.csproj", "{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects", "Data.DomainObjects\Security.Data.DomainObjects.csproj", "{D4397460-CE03-43E6-87F7-3A4E50B8250E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects.UnitTests", "Data.DomainObjects.UnitTests\Security.Data.DomainObjects.UnitTests.csproj", "{60F06986-924D-4543-ADB8-239D0E1365A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -368,6 +372,26 @@ Global
 		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E2E224E5-FE66-4E67-A0D4-D5DB7662F63D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|.NET.ActiveCfg = Release|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D4397460-CE03-43E6-87F7-3A4E50B8250E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|.NET.ActiveCfg = Release|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
