@@ -1,11 +1,11 @@
-ID,ClassID,MetadataItemID,Name,Value,StatePropertyID,StatePropertyIDClassID
-{62c715b9-7231-4aa9-82a5-236655a0c90d},AccessTypeDefinition,{203b7478-96f1-4bf1-b4ea-5bdd1206252c},"Find|Rubicon.Security.GeneralAccessType, Rubicon.Security",5,,
-{8aa5c812-02f0-482f-bf17-4f06d359668e},StateDefinition,{00000000-0000-0000-0000-000000000000},Classified,1,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
-{d58b8270-7b71-4d99-84da-a7419704d2df},AccessTypeDefinition,{305fbb40-75c8-423a-84b2-b26ea9e7cae7},"Delete|Rubicon.Security.GeneralAccessType, Rubicon.Security",3,,
-{bedfb5f2-f88b-4493-9ca4-b430d24fd827},StateDefinition,{00000000-0000-0000-0000-000000000000},Secret,2,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
-{c441b704-c521-47c7-894e-c4c9f754577a},AccessTypeDefinition,{67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6},"Search|Rubicon.Security.GeneralAccessType, Rubicon.Security",4,,
-{0a2be60a-46fa-4899-93e5-d42fbd0e89df},AccessTypeDefinition,{1d6d25bc-4e85-43ab-a42d-fb5a829c30d5},"Create|Rubicon.Security.GeneralAccessType, Rubicon.Security",0,,
-{c71bc5a5-3217-4550-94fb-dd123faa69dc},StateDefinition,{00000000-0000-0000-0000-000000000000},Normal,0,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
-{0904b027-0979-4851-80e4-e3ba82c9e1e5},AccessTypeDefinition,{11186122-6de0-4194-b434-9979230c41fd},"Edit|Rubicon.Security.GeneralAccessType, Rubicon.Security",2,,
-{737a3810-39d4-4ee3-b8a3-fb5b13daa154},AccessTypeDefinition,{62dfcd92-a480-4d57-95f1-28c0f5996b3a},"Read|Rubicon.Security.GeneralAccessType, Rubicon.Security",1,,
-{22D70637-7BFB-485d-827A-7C5A48B30E80},AbstractRoleDefinition,{448355F7-FD2F-41b0-9871-EE3075A4FF73},"Creator|Rubicon.SecurityManager.Clients.Web.Test.Domain.DomainAbstractRole, Rubicon.SecurityManager.Clients.Web.Test.Domain",0,,
+ID,ClassID,MetadataItemID,Index,Name,Value,StatePropertyID,StatePropertyIDClassID
+{62c715b9-7231-4aa9-82a5-236655a0c90d},AccessTypeDefinition,{203b7478-96f1-4bf1-b4ea-5bdd1206252c},0,"Find|Rubicon.Security.GeneralAccessType, Rubicon.Security",5,,
+{8aa5c812-02f0-482f-bf17-4f06d359668e},StateDefinition,{00000000-0000-0000-0000-000000000000},,Classified,1,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
+{d58b8270-7b71-4d99-84da-a7419704d2df},AccessTypeDefinition,{305fbb40-75c8-423a-84b2-b26ea9e7cae7},1,"Delete|Rubicon.Security.GeneralAccessType, Rubicon.Security",3,,
+{bedfb5f2-f88b-4493-9ca4-b430d24fd827},StateDefinition,{00000000-0000-0000-0000-000000000000},,Secret,2,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
+{c441b704-c521-47c7-894e-c4c9f754577a},AccessTypeDefinition,{67cea479-0be7-4e2f-b2e0-bb1fcc9ea1d6},2,"Search|Rubicon.Security.GeneralAccessType, Rubicon.Security",4,,
+{0a2be60a-46fa-4899-93e5-d42fbd0e89df},AccessTypeDefinition,{1d6d25bc-4e85-43ab-a42d-fb5a829c30d5},3,"Create|Rubicon.Security.GeneralAccessType, Rubicon.Security",0,,
+{c71bc5a5-3217-4550-94fb-dd123faa69dc},StateDefinition,{00000000-0000-0000-0000-000000000000},,Normal,0,{1929df7a-ae89-417e-ab90-4459b6a090a3},StatePropertyDefinition
+{0904b027-0979-4851-80e4-e3ba82c9e1e5},AccessTypeDefinition,{11186122-6de0-4194-b434-9979230c41fd},4,"Edit|Rubicon.Security.GeneralAccessType, Rubicon.Security",2,,
+{737a3810-39d4-4ee3-b8a3-fb5b13daa154},AccessTypeDefinition,{62dfcd92-a480-4d57-95f1-28c0f5996b3a},5,"Read|Rubicon.Security.GeneralAccessType, Rubicon.Security",1,,
+{22D70637-7BFB-485d-827A-7C5A48B30E80},AbstractRoleDefinition,{448355F7-FD2F-41b0-9871-EE3075A4FF73},,"Creator|Rubicon.SecurityManager.Clients.Web.Test.Domain.DomainAbstractRole, Rubicon.SecurityManager.Clients.Web.Test.Domain",0,,

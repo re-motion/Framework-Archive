@@ -9,21 +9,11 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class AccessTypeReference : MetadataObject
+  public class AccessTypeReference : BaseSecurityManagerObject
   {
     // types
 
     // static members and constants
-
-    public static new AccessTypeReference GetObject (ObjectID id)
-    {
-      return (AccessTypeReference) DomainObject.GetObject (id);
-    }
-
-    public static new AccessTypeReference GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (AccessTypeReference) DomainObject.GetObject (id, includeDeleted);
-    }
 
     public static new AccessTypeReference GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
@@ -53,6 +43,12 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // methods and properties
 
+    public int Index
+    {
+      get { return (int) DataContainer["Index"]; }
+      set { DataContainer["Index"] = value; }
+    }
+
     public SecurableClassDefinition Class
     {
       get { return (SecurableClassDefinition) GetRelatedObject ("Class"); }
@@ -64,6 +60,5 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return (AccessTypeDefinition) GetRelatedObject ("AccessType"); }
       set { SetRelatedObject ("AccessType", value); }
     }
-
   }
 }

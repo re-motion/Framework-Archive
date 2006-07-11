@@ -15,16 +15,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // static members and constants
 
-    public static new AccessTypeDefinition GetObject (ObjectID id)
-    {
-      return (AccessTypeDefinition) DomainObject.GetObject (id);
-    }
-
-    public static new AccessTypeDefinition GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (AccessTypeDefinition) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new AccessTypeDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (AccessTypeDefinition) DomainObject.GetObject (id, clientTransaction);
@@ -60,6 +50,12 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     // methods and properties
+
+    public int Index
+    {
+      get { return (int) DataContainer["Index"]; }
+      set { DataContainer["Index"] = value; }
+    }
 
     public DomainObjectCollection References
     {

@@ -156,6 +156,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       AccessTypeReference reference = new AccessTypeReference (ClientTransaction);
       reference.AccessType = accessType;
+      reference.Index = AccessTypeReferences.Count;
 
       AccessTypeReferences.Add (reference);
       _accessTypes = null;
@@ -181,16 +182,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return null;
     }
 
-    private DomainObjectCollection StatePropertyReferences
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("StatePropertyReferences"); }
-    }
-
-    private DomainObjectCollection AccessTypeReferences
-    {
-      get { return (DomainObjectCollection) GetRelatedObjects ("AccessTypeReferences"); }
-    }
-
     public AccessControlList CreateAccessControlList ()
     {
       AccessControlList accessControlList = new AccessControlList (ClientTransaction);
@@ -199,6 +190,16 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       accessControlList.CreateAccessControlEntry ();
 
       return accessControlList;
+    }
+
+    private DomainObjectCollection StatePropertyReferences
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("StatePropertyReferences"); }
+    }
+
+    private DomainObjectCollection AccessTypeReferences
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("AccessTypeReferences"); }
     }
   }
 }

@@ -22,5 +22,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       Assert.AreEqual ("Value|Namespace.TypeName, Assembly", accessType.DisplayName);
     }
+
+    [Test]
+    public void SetAndGet_Index ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessTypeDefinition accessType = new AccessTypeDefinition (transaction);
+
+      accessType.Index = 1;
+      Assert.AreEqual (1, accessType.Index);
+    }
   }
 }

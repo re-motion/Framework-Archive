@@ -10,7 +10,7 @@ using System.Threading;
 namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 {
   [TestFixture]
-  public class MetadataObjectTest
+  public class MetadataObjectTest : DomainTest
   {
     [Test]
     public void Find_ValidSimpleMetadataObjectID ()

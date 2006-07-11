@@ -126,8 +126,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public DomainObjectCollection Permissions
     {
-      get { return (DomainObjectCollection) GetRelatedObjects ("Permissions"); }
-      set { } // marks property Permissions as modifiable
+      get { return new DomainObjectCollection (GetPermissions(), true); }
     }
 
     public bool MatchesToken (SecurityToken token)
@@ -166,8 +165,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       Permission permission = new Permission (ClientTransaction);
       permission.AccessType = accessType;
       permission.Allowed = NaBoolean.Null;
+      permission.Index = Permissions.Count;
 
-      Permissions.Add (permission);
+      GetPermissions ().Add (permission);
     }
 
     public void AllowAccess (AccessTypeDefinition accessType)
@@ -252,6 +252,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
         priority += ClientPriority;
 
       return priority;
+    }
+
+    private DomainObjectCollection GetPermissions ()
+    {
+      return GetRelatedObjects ("Permissions");
     }
 
     //TODO: Rewrite with test

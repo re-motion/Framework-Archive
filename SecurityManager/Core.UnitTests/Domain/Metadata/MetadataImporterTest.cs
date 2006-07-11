@@ -155,12 +155,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (3, _importer.AccessTypes.Count, "Access type count");
 
       AccessTypeDefinition expectedAccessType = _testHelper.CreateAccessTypeCreate ();
+      expectedAccessType.Index = 0;
       MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Create");
 
       expectedAccessType = _testHelper.CreateAccessTypeRead ();
+      expectedAccessType.Index = 1;
       MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Read");
 
       expectedAccessType = _testHelper.CreateAccessTypeEdit ();
+      expectedAccessType.Index = 2;
       MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Edit");
     }
 

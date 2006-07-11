@@ -39,14 +39,16 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // construction and disposing
 
-    public MetadataObject (ClientTransaction clientTransaction) : base (clientTransaction)
+    public MetadataObject (ClientTransaction clientTransaction)
+      : base (clientTransaction)
     {
     }
 
-    protected MetadataObject (DataContainer dataContainer) : base (dataContainer)
+    protected MetadataObject (DataContainer dataContainer)
+      : base (dataContainer)
     {
-    // This infrastructure constructor is necessary for the DomainObjects framework.
-    // Do not remove the constructor or place any code here.
+      // This infrastructure constructor is necessary for the DomainObjects framework.
+      // Do not remove the constructor or place any code here.
     }
 
     // methods and properties

@@ -170,16 +170,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void AttachAccessType_NewAccessType ()
+    public void AttachAccessType_TwoNewAccessType ()
     {
       AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
-      AccessTypeDefinition accessType = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid (), "Test", 42);
+      AccessTypeDefinition accessType0 = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid (), "Access Type 0", 0);
+      AccessTypeDefinition accessType1 = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid (), "Access Type 1", 1);
 
-      ace.AttachAccessType (accessType);
+      ace.AttachAccessType (accessType0);
+      ace.AttachAccessType (accessType1);
 
-      Assert.AreEqual (1, ace.Permissions.Count);
-      Permission permission = (Permission) ace.Permissions[0];
-      Assert.AreSame (accessType, permission.AccessType);
+      Assert.AreEqual (2, ace.Permissions.Count);
+      Permission permission0 = (Permission) ace.Permissions[0];
+      Assert.AreSame (accessType0, permission0.AccessType);
+      Assert.AreEqual (0, permission0.Index);
+      Permission permission1 = (Permission) ace.Permissions[1];
+      Assert.AreSame (accessType1, permission1.AccessType);
+      Assert.AreEqual (1, permission1.Index);
     }
 
     [Test]
@@ -270,6 +276,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
           + AccessControlEntry.ClientPriority;
 
       Assert.AreEqual (expectedPriority, ace.ActualPriority);
+    }
+
+    [Test]
+    public void Get_Permissions ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      ObjectID aceID = dbFixtures.CreateAccessControlEntryWith10Permissions ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlEntry ace = AccessControlEntry.GetObject (aceID, transaction);
+
+      Assert.AreEqual (10, ace.Permissions.Count);
+      for (int i = 0; i < 10; i++)
+        Assert.AreEqual (string.Format ("Access Type {0}", i), ((Permission) ace.Permissions[i]).AccessType.Name);
     }
   }
 }

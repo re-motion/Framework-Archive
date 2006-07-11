@@ -24,6 +24,8 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     private Dictionary<Guid, List<Guid>> _statePropertyReferences;
     private Dictionary<Guid, List<Guid>> _accessTypeReferences;
 
+    private int _accessTypeDefinitionCount;
+
     public MetadataImporter (ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
@@ -204,6 +206,8 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       accessTypeDefinition.Name = accessTypeDefinitionNode.Attributes["name"].Value;
       accessTypeDefinition.MetadataItemID = new Guid (accessTypeDefinitionNode.Attributes["id"].Value);
       accessTypeDefinition.Value = int.Parse (accessTypeDefinitionNode.Attributes["value"].Value);
+      accessTypeDefinition.Index = _accessTypeDefinitionCount;
+      _accessTypeDefinitionCount++;
 
       return accessTypeDefinition;
     }

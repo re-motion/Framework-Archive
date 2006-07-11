@@ -5,6 +5,8 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.SecurityManager.Configuration;
+using Rubicon.SecurityManager.Globalization.Domain.AccessControl;
+using Rubicon.SecurityManager.Domain.AccessControl;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain
 {
@@ -72,7 +74,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       Role managerInGroup = CreateRole (transaction, user, group, managerPosition);
       Role managerInOwnerGroup = CreateRole (transaction, user, ownerGroup, managerPosition);
       Role officialInRootGroup = CreateRole (transaction, user, rootGroup, officialPosition);
-      
+
       transaction.Commit ();
     }
 
@@ -91,6 +93,35 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       classDefinition.AddStateProperty (CreateConfidentialityProperty (transaction));
 
       transaction.Commit ();
+    }
+
+    public ObjectID CreateSecurableClassDefinitionWith10AccessTypes ()
+    {
+      CreateEmptyDomain ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWith10AccessTypes (transaction);
+
+      transaction.Commit ();
+
+      return classDefinition.ID;
+    }
+
+    private SecurableClassDefinition CreateSecurableClassDefinitionWith10AccessTypes (ClientTransaction transaction)
+    {
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
+          transaction,
+          new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
+          "Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager.Domain");
+
+      for (int i = 0; i < 10; i++)
+      {
+        AccessTypeDefinition accessType = CreateAccessType (transaction, Guid.NewGuid (), string.Format ("Access Type {0}", i));
+        accessType.Index = i;
+        classDefinition.AddAccessType (accessType);
+      }
+      return classDefinition;
     }
 
     public void CreateUsersWithDifferentClients ()
@@ -172,6 +203,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       transaction.Commit ();
     }
 
+    public ObjectID CreateAccessControlEntryWith10Permissions ()
+    {
+      CreateEmptyDomain ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWith10AccessTypes (transaction);
+      AccessControlList acl = classDefinition.CreateAccessControlList();
+      StateCombination stateCombination = acl.CreateStateCombination ();
+      AccessControlEntry ace = acl.CreateAccessControlEntry ();
+
+      transaction.Commit ();
+
+      return ace.ID;
+    }
+
     private Group CreateGroup (ClientTransaction transaction, string name, Group parent, Client client)
     {
       Group group = _factory.CreateGroup (transaction);
@@ -189,7 +236,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
       return client;
     }
-    
+
     private User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Client client)
     {
       User user = _factory.CreateUser (transaction);
@@ -260,6 +307,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       confidentialityProperty.AddState ("TopSecret", 2);
 
       return confidentialityProperty;
+    }
+
+    private static AccessTypeDefinition CreateAccessType (ClientTransaction transaction, Guid metadataItemID, string name)
+    {
+      AccessTypeDefinition accessType = new AccessTypeDefinition (transaction);
+      accessType.MetadataItemID = metadataItemID;
+      accessType.Name = name;
+
+      return accessType;
     }
   }
 }

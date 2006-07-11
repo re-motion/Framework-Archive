@@ -39,8 +39,10 @@
     <EmbeddedResource Include="Configuration\SecurityManagerConfiguration.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Database\SecurityManagerCreateDB.sql" />
-    <None Include="Database\SecurityManagerSetupDB.sql" />
+    <None Include="Database\SecurityManagerCreateDB.sql">
+    </None>
+    <None Include="Database\SecurityManagerSetupDB.sql">
+    </None>
     <None Include="SecurityManager.Core.build" />
     <Compile Include="Configuration\SecurityManagerConfiguration.cs">
       <SubType>Code</SubType>

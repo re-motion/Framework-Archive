@@ -14,16 +14,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
   public class SecurableClassDefinitionTest : DomainTest
   {
     [Test]
-    public void AddAccessType ()
+    public void AddAccessType_TwoNewAccessTypes ()
     {
       ClientTransaction transaction = new ClientTransaction ();
-      AccessTypeDefinition accessType = new AccessTypeDefinition (transaction);
-      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      AccessTypeDefinition accessType0 = new AccessTypeDefinition (transaction);
+      AccessTypeDefinition accessType1 = new AccessTypeDefinition (transaction);
+      SecurableClassDefinitionWrapper classDefinitionWrapper = new SecurableClassDefinitionWrapper (new SecurableClassDefinition (transaction));
 
-      classDefinition.AddAccessType (accessType);
+      classDefinitionWrapper.SecurableClassDefinition.AddAccessType (accessType0);
+      classDefinitionWrapper.SecurableClassDefinition.AddAccessType (accessType1);
 
-      Assert.AreEqual (1, classDefinition.AccessTypes.Count);
-      Assert.AreSame (accessType, classDefinition.AccessTypes[0]);
+      Assert.AreEqual (2, classDefinitionWrapper.SecurableClassDefinition.AccessTypes.Count);
+      Assert.AreSame (accessType0, classDefinitionWrapper.SecurableClassDefinition.AccessTypes[0]);
+      Assert.AreSame (accessType1, classDefinitionWrapper.SecurableClassDefinition.AccessTypes[1]);
+      DomainObjectCollection references = classDefinitionWrapper.AccessTypeReferences;
+      Assert.AreEqual (0, ((AccessTypeReference) references[0]).Index);
+      Assert.AreEqual (1, ((AccessTypeReference) references[1]).Index);
     }
 
     [Test]
@@ -242,6 +248,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreSame (classDefinition, accessControlList.Class);
       Assert.IsNotEmpty (accessControlList.AccessControlEntries);
       Assert.IsNotEmpty (accessControlList.StateCombinations);
+    }
+
+    [Test]
+    public void Get_AccessTypes ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      ObjectID classDefinitionID = dbFixtures.CreateSecurableClassDefinitionWith10AccessTypes ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition classDefinition = SecurableClassDefinition.GetObject (classDefinitionID, transaction);
+
+      Assert.AreEqual (10, classDefinition.AccessTypes.Count);
+      for (int i = 0; i < 10; i++)
+        Assert.AreEqual (string.Format ("Access Type {0}", i), ((AccessTypeDefinition) classDefinition.AccessTypes[i]).Name);
     }
   }
 }

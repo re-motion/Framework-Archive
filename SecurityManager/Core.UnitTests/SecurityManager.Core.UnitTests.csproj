@@ -63,6 +63,7 @@
     <Compile Include="Domain\DatabaseHelper.cs" />
     <Compile Include="Domain\Metadata\AbstractRoleDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\AccessTypeDefinitionTest.cs" />
+    <Compile Include="Domain\Metadata\AccessTypeReferenceTest.cs" />
     <Compile Include="Domain\Metadata\CultureTest.cs" />
     <Compile Include="Domain\Metadata\StateDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\CultureImporterTest.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Domain\Metadata\MetadataTestHelper.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
+    <Compile Include="Domain\Metadata\SecurableClassDefinitionWrapper.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTypeTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\PositionTest.cs" />
@@ -130,6 +132,8 @@
   </Target>
   -->
   <Target Name="AfterBuild">
+    <Delete Files="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Delete Files="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
     <Copy SourceFiles="@(DatabaseFiles->'%(Fullpath)')" DestinationFiles="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
     <Copy SourceFiles="@(MappingFiles->'%(Fullpath)')" DestinationFiles="@(MappingFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
   </Target>

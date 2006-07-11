@@ -65,5 +65,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
       Assert.AreEqual (NaBoolean.Null, permission.Allowed);
     }
+
+    [Test]
+    public void SetAndGet_Index ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      Permission permission = new Permission (transaction);
+
+      permission.Index = 1;
+      Assert.AreEqual (1, permission.Index);
+    }
   }
 }

@@ -21,6 +21,19 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (expected.Value, actual.Value, message);
     }
 
+    public static void AreEqual (AccessTypeDefinition expected, AccessTypeDefinition actual)
+    {
+      AreEqual (expected, actual, string.Empty);
+    }
+
+    public static void AreEqual (AccessTypeDefinition expected, AccessTypeDefinition actual, string message)
+    {
+      AreEqual ((EnumValueDefinition) expected, (EnumValueDefinition) actual, message);
+
+      Assert.AreEqual (expected.Index, actual.Index, message);
+    }
+
+
     public static void AreEqual (StateDefinition expected, StateDefinition actual)
     {
       AreEqual (expected, actual, string.Empty);

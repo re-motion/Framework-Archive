@@ -148,11 +148,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     {
       AccessControlEntry accessControlEntry = new AccessControlEntry (ClientTransaction);
       foreach (AccessTypeDefinition accessTypeDefinition in Class.AccessTypes)
-      {
-        Permission permission = new Permission (ClientTransaction);
-        permission.AccessType = accessTypeDefinition;
-        permission.AccessControlEntry = accessControlEntry;
-      }
+        accessControlEntry.AttachAccessType (accessTypeDefinition);
       accessControlEntry.AccessControlList = this;
 
       return accessControlEntry;

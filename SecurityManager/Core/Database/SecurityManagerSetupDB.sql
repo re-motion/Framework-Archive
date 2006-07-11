@@ -259,6 +259,7 @@ CREATE TABLE [dbo].[EnumValueDefinition]
   [StatePropertyIDClassID] varchar (100) NULL,
 
   -- AccessTypeDefinition columns
+  [Index] int NULL,
 
   -- AbstractRoleDefinition columns
 
@@ -319,6 +320,7 @@ CREATE TABLE [dbo].[AccessTypeReference]
   [Timestamp] rowversion NOT NULL,
 
   -- AccesTypeReference columns
+  [Index] int NOT NULL,
   [SecurableClassID] uniqueidentifier NULL,
   [SecurableClassIDClassID] varchar (100) NULL,
   [AccessTypeID] uniqueidentifier NULL,
@@ -397,6 +399,7 @@ CREATE TABLE [dbo].[Permission]
   [Timestamp] rowversion NOT NULL,
 
   -- Permission columns
+  [Index] int NOT NULL,
   [Allowed] bit NULL,
   [AccessControlEntryID] uniqueidentifier NULL,
   [AccessTypeDefinitionID] uniqueidentifier NULL,
@@ -556,24 +559,24 @@ CREATE VIEW [dbo].[UserView] ([ID], [ClassID], [Timestamp], [Title], [FirstName]
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[MetadataObjectView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [BaseSecurableClassID], [BaseSecurableClassIDClassID])
+CREATE VIEW [dbo].[MetadataObjectView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [Index], [BaseSecurableClassID], [BaseSecurableClassIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], null, null
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [Index], null, null
     FROM [dbo].[EnumValueDefinition]
     WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
   UNION
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, [BaseSecurableClassID], [BaseSecurableClassIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, null, [BaseSecurableClassID], [BaseSecurableClassIDClassID]
     FROM [dbo].[SecurableClassDefinition]
     WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
   UNION
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, null, null
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, null, null, null
     FROM [dbo].[StatePropertyDefinition]
     WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
 GO
 
-CREATE VIEW [dbo].[EnumValueDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID])
+CREATE VIEW [dbo].[EnumValueDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [Index])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [Index]
     FROM [dbo].[EnumValueDefinition]
     WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition')
   WITH CHECK OPTION
@@ -611,17 +614,17 @@ CREATE VIEW [dbo].[StateDefinitionView] ([ID], [ClassID], [Timestamp], [Metadata
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[AccesTypeReferenceView] ([ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID], [AccessTypeID], [AccessTypeIDClassID])
+CREATE VIEW [dbo].[AccesTypeReferenceView] ([ID], [ClassID], [Timestamp], [Index], [SecurableClassID], [SecurableClassIDClassID], [AccessTypeID], [AccessTypeIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID], [AccessTypeID], [AccessTypeIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [Index], [SecurableClassID], [SecurableClassIDClassID], [AccessTypeID], [AccessTypeIDClassID]
     FROM [dbo].[AccessTypeReference]
     WHERE [ClassID] IN ('AccesTypeReference')
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[AccessTypeDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value])
+CREATE VIEW [dbo].[AccessTypeDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [Index])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value]
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [Index]
     FROM [dbo].[EnumValueDefinition]
     WHERE [ClassID] IN ('AccessTypeDefinition')
   WITH CHECK OPTION
@@ -667,9 +670,9 @@ CREATE VIEW [dbo].[AccessControlEntryView] ([ID], [ClassID], [Timestamp], [Clien
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[PermissionView] ([ID], [ClassID], [Timestamp], [Allowed], [AccessControlEntryID], [AccessTypeDefinitionID], [AccessTypeDefinitionIDClassID])
+CREATE VIEW [dbo].[PermissionView] ([ID], [ClassID], [Timestamp], [Index], [Allowed], [AccessControlEntryID], [AccessTypeDefinitionID], [AccessTypeDefinitionIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Allowed], [AccessControlEntryID], [AccessTypeDefinitionID], [AccessTypeDefinitionIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [Index], [Allowed], [AccessControlEntryID], [AccessTypeDefinitionID], [AccessTypeDefinitionIDClassID]
     FROM [dbo].[Permission]
     WHERE [ClassID] IN ('Permission')
   WITH CHECK OPTION

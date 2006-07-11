@@ -9,7 +9,7 @@ using Rubicon.Utilities;
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
   [Serializable]
-  public class StatePropertyReference : MetadataObject
+  public class StatePropertyReference : BaseSecurityManagerObject
   {
     // types
 

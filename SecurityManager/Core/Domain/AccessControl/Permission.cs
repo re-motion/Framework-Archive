@@ -55,6 +55,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // methods and properties
 
+    public int Index
+    {
+      get { return (int) DataContainer["Index"]; }
+      set { DataContainer["Index"] = value; }
+    }
+
     public bool BinaryAllowed
     {
       get { return Allowed.IsTrue; }
@@ -76,7 +82,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public AccessControlEntry AccessControlEntry
     {
       get { return (AccessControlEntry) GetRelatedObject ("AccessControlEntry"); }
-      set { SetRelatedObject ("AccessControlEntry", value); }
     }
   }
 }
