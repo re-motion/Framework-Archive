@@ -236,7 +236,7 @@
         <relationProperty name="LocalizedNames" relationID="MetadataObjectToLocalizedName" isMandatory="false" cardinality="many" />
       </properties>
     </class>
-    
+
     <class id="EnumValueDefinition" baseClass="MetadataObject">
       <type>Rubicon.SecurityManager.Domain.Metadata.EnumValueDefinition, Rubicon.SecurityManager</type>
       <entity name="EnumValueDefinition"/>
@@ -248,17 +248,19 @@
         </property>
       </properties>
     </class>
-    
+
     <class id="SecurableClassDefinition" baseClass="MetadataObject">
       <type>Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager</type>
       <entity name="SecurableClassDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
         <relationProperty name="BaseClass" relationID="DerivedToBaseClass" cardinality="one" isMandatory="false">
-          <column>BaseClassID</column>
+          <column>BaseSecurableClassID</column>
         </relationProperty>
         <relationProperty name="DerivedClasses" relationID="DerivedToBaseClass" cardinality="many" isMandatory="false" />
-        <relationProperty name="AccessTypeReferences" relationID="ClassToAccessTypeReference" cardinality="many" isMandatory="false" />
+        <relationProperty name="AccessTypeReferences" relationID="ClassToAccessTypeReference" cardinality="many" isMandatory="false" >
+          <sortExpression>[Index] ASC</sortExpression>
+        </relationProperty>
         <relationProperty name="StatePropertyReferences" relationID="ClassToStatePropertyReference" cardinality="many" isMandatory="false" />
         <relationProperty name="StateCombinations" relationID="ClassToStateCombination" cardinality="many" isMandatory="false" />
         <relationProperty name="AccessControlLists" relationID="ClassToAccessControlList" cardinality="many" isMandatory="false" />
@@ -306,6 +308,10 @@
       <entity name="AccessTypeReference"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
+        </property>
         <relationProperty name="Class" relationID="ClassToAccessTypeReference" cardinality="one" isMandatory="true">
           <column>SecurableClassID</column>
         </relationProperty>
@@ -320,6 +326,10 @@
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
+        </property>
         <relationProperty name="References" relationID="AccessTypeToAccessTypeReference" cardinality="many" isMandatory="false" />
         <relationProperty name="Permissions" relationID="AccessTypeDefinitionToPermission" cardinality="many" isMandatory="false" />
       </properties>
@@ -341,8 +351,8 @@
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
         <relationProperty name="StateUsages" relationID="StateCombinationToStateUsage" cardinality="many" isMandatory="false" />
-        <relationProperty name="ClassDefinition" relationID="ClassToStateCombination" cardinality="one" isMandatory="true">
-          <column>ClassDefinitionID</column>
+        <relationProperty name="Class" relationID="ClassToStateCombination" cardinality="one" isMandatory="true">
+          <column>SecurableClassID</column>
         </relationProperty>
         <relationProperty name="AccessControlList" relationID="AccessControlListToStateCombination" cardinality="one" isMandatory="true">
           <column>AccessControlListID</column>
@@ -369,8 +379,8 @@
       <entity name="AccessControlList"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
-        <relationProperty name="ClassDefinition" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
-          <column>ClassDefinitionID</column>
+        <relationProperty name="Class" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
+          <column>SecurableClassID</column>
         </relationProperty>
         <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="false" />
         <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true">
@@ -419,7 +429,9 @@
         <relationProperty name="SpecificAbstractRole" relationID="AbstractRoleToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>AbstractRoleID</column>
         </relationProperty>
-        <relationProperty name="Permissions" relationID="AccessControlEntryToPermission" cardinality="many" isMandatory="false" />
+        <relationProperty name="Permissions" relationID="AccessControlEntryToPermission" cardinality="many" isMandatory="false" >
+          <sortExpression>[Index] ASC</sortExpression>
+        </relationProperty>
       </properties>
     </class>
 
@@ -428,6 +440,10 @@
       <entity name="Permission"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
+        </property>
         <property name="Allowed">
           <type>boolean</type>
           <column>Allowed</column>
@@ -464,7 +480,7 @@
         <property name="Text">
           <type>string</type>
           <column>Text</column>
-          <maxLength>1000</maxLength>
+          <maxLength>2147483647</maxLength>
         </property>
         <relationProperty name="Culture" relationID="CultureToLocalizedName" isMandatory="true" cardinality="one">
           <column>CultureID</column>

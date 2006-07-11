@@ -22,7 +22,7 @@
   <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [SecurableClassDefinitionView] WHERE BaseClassID IS NULL;
+      SELECT * FROM [SecurableClassDefinitionView] WHERE BaseSecurableClassID IS NULL;
     </statement>
   </query>
 

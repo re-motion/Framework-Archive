@@ -41,6 +41,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="CreateDB.sql" />
+    <None Include="SecurityManagerSetupDB.sql" />
     <None Include="SetupDB.sql" />
     <None Include="TestData\Client.csv" />
     <None Include="TestData\ConcretePosition.csv" />
@@ -52,11 +53,17 @@
     <None Include="TestData\_TestData.xls" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!--<ItemGroup>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDB.sql">
+    </DatabaseFiles>
+  </ItemGroup>-->
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
+    <Delete Files="@(DatabaseFiles->'$(MSBuildProjectDirectory)\$(OutputPath)\%(FileName)%(Extension)')" />
+    <Copy SourceFiles="@(DatabaseFiles->'%(Fullpath)')" DestinationFiles="@(DatabaseFiles->'$(MSBuildProjectDirectory)\%(FileName)%(Extension)')" />
   </Target>
   -->
 </Project>
