@@ -12,8 +12,7 @@ public class RdbmsProviderDefinition : StorageProviderDefinition
 
   // static members and constants
 
-  private static string c_rdbmsConfigurationNamespace = 
-      "http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms";
+  private static string c_rdbmsConfigurationNamespace = "http://www.rubicon-it.com/Data/DomainObjects/Persistence/Rdbms";
 
   // member fields
 

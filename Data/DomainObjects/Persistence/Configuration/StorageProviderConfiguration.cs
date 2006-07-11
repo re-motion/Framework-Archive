@@ -18,15 +18,16 @@ public class StorageProviderConfiguration : ConfigurationBase
   {
     get 
     {
-      lock (typeof (StorageProviderConfiguration))
+      if (s_storageProviderConfiguration == null)
       {
-        if (s_storageProviderConfiguration == null)
+        lock (typeof (StorageProviderConfiguration))
         {
-          s_storageProviderConfiguration = new StorageProviderConfiguration (StorageProviderConfigurationLoader.Create ());
+          if (s_storageProviderConfiguration == null)
+            s_storageProviderConfiguration = new StorageProviderConfiguration (StorageProviderConfigurationLoader.Create ());
         }
-        
-        return s_storageProviderConfiguration;
       }
+
+      return s_storageProviderConfiguration;
     }
   }
 

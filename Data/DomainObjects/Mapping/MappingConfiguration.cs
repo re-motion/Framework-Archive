@@ -18,15 +18,16 @@ namespace Rubicon.Data.DomainObjects.Mapping
     {
       get
       {
-        lock (typeof (MappingConfiguration))
+        if (s_mappingConfiguration == null)
         {
-          if (s_mappingConfiguration == null)
+          lock (typeof (MappingConfiguration))
           {
-            s_mappingConfiguration = new MappingConfiguration (MappingLoader.Create ());
+            if (s_mappingConfiguration == null)
+              s_mappingConfiguration = new MappingConfiguration (MappingLoader.Create ());
           }
-
-          return s_mappingConfiguration;
         }
+
+        return s_mappingConfiguration;
       }
     }
 
@@ -50,7 +51,6 @@ namespace Rubicon.Data.DomainObjects.Mapping
 
       lock (typeof (MappingConfiguration))
       {
-
         s_mappingConfiguration = mappingConfiguration;
       }
     }

@@ -40,15 +40,16 @@ public class QueryConfiguration : ConfigurationBase
   {
     get 
     {
-      lock (typeof (QueryConfiguration))
+      if (s_queryConfiguration == null)
       {
-        if (s_queryConfiguration == null)
+        lock (typeof (QueryConfiguration))
         {
-          s_queryConfiguration = new QueryConfiguration (QueryConfigurationLoader.Create ());
+          if (s_queryConfiguration == null)
+            s_queryConfiguration = new QueryConfiguration (QueryConfigurationLoader.Create ());
         }
-        
-        return s_queryConfiguration;
       }
+
+      return s_queryConfiguration;
     }
   }
 
