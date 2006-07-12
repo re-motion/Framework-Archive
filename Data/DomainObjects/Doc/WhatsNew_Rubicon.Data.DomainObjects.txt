@@ -5,9 +5,16 @@
   * RollingBack
   * RolledBack
 
-- IClientTransactionExtension.RollingBack und IClientTransactionExtension.RolledBack bekommen jetzt ebenfalls die betroffenen DomainObjects übergeben.
+- IClientTransactionExtension.RollingBack und IClientTransactionExtension.RolledBack bekommen jetzt ebenfalls 
+  die betroffenen DomainObjects übergeben.
 
-
+- Mapping.xml:
+  * Die Reihenfolge der Subelemente von class- und property-Elementen ist ab sofort frei wählbar. 
+    -> Beim Element relationProperty bleibt die Reihenfolge relevant, damit das Schema deterministisch bleibt.
+  * Das Element "column" ist bei property-Elementen nun optional. Wird es ausgelassen, wird der selbe Wert wie in propertyName angenommen.
+    -> Bei relationProperties muss "column" weiterhin angegeben werden, damit das Framework erkennt welche Seite einer Beziehung den Foreign Key speichert.
+    
+    
 1.7.11.0
 ========
 

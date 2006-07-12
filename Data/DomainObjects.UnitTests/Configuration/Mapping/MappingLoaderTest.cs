@@ -337,5 +337,28 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
         Assert.AreEqual (expectedMessage, ex.Message);
       }
     }
+
+    [Test]
+    public void MappingWithUnorderedElements ()
+    {
+      MappingLoader loader = new MappingLoader ("MappingWithUnorderedElements.xml", true);
+
+      loader.GetClassDefinitions ();
+
+      // expectation: no exception
+    }
+
+    [Test]
+    public void MappingWithoutColumnElement ()
+    {
+      MappingLoader loader = new MappingLoader ("MappingWithoutColumnElement.xml", true);
+
+      ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
+
+      ClassDefinition customerDefinition = classDefinitions.GetMandatory (typeof (Customer));
+      PropertyDefinition customerSinceDefinition = customerDefinition.GetMandatoryPropertyDefinition ("CustomerSince");
+
+      Assert.AreEqual (customerSinceDefinition.PropertyName, customerSinceDefinition.ColumnName);
+    }
   }
 }

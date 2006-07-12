@@ -132,7 +132,12 @@ public class ClassDefinitionLoader
   private PropertyDefinition GetPropertyDefinition (ClassDefinition classDefinition, XmlNode propertyNode)
   {
     string propertyName = propertyNode.SelectSingleNode ("@name", _namespaceManager).InnerText;
-    string columnName = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager).InnerText;
+
+    string columnName = propertyName;
+    XmlNode columnNameNode = propertyNode.SelectSingleNode (FormatXPath ("{0}:column"), _namespaceManager);
+    if (columnNameNode != null)
+      columnName = columnNameNode.InnerText;
+    
     string mappingType = propertyNode.SelectSingleNode (FormatXPath ("{0}:type"), _namespaceManager).InnerText.Trim ();
 
     bool isNullable = false;

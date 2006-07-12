@@ -675,6 +675,8 @@
       <SubType>Code</SubType>
     </None>
     <None Include="Rubicon.Data.DomainObjects.UnitTests.build" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithoutColumnElement.xml" />
+    <Content Include="Configuration\Mapping\TestMappings\MappingWithUnorderedElements.xml" />
     <Content Include="Configuration\Mapping\TestMappings\EntireMappingWithUnresolvedTypes.xml" />
     <Content Include="Configuration\Mapping\TestMappings\MappingWithCollectionTypeAndOneToOneRelation.xml" />
     <Content Include="Configuration\Mapping\TestMappings\MappingWithColumnAndCardinalityMany.xml" />

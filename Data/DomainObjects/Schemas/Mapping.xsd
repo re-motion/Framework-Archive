@@ -44,7 +44,7 @@
   </xs:element>
 
   <xs:complexType name="classType">
-    <xs:sequence>
+    <xs:all>
       <xs:element name="type" type="t:dotNetType" />
       <xs:element name="entity" minOccurs="0">
         <xs:complexType>
@@ -58,25 +58,25 @@
             <xs:element name="property" type="m:propertyType" />
             <xs:element name="relationProperty" type="m:relationPropertyType">
               <xs:keyref name="oppositeClassToClass" refer="m:classKey">
-					 		<xs:selector xpath="." />
-							<xs:field xpath="m:oppositeClass" />
- 					 </xs:keyref>
+                <xs:selector xpath="." />
+                <xs:field xpath="m:oppositeClass" />
+              </xs:keyref>
             </xs:element>
           </xs:choice>
         </xs:complexType>
       </xs:element>
-    </xs:sequence>
+    </xs:all>
     <xs:attribute name="id" type="t:requiredStringType" use="required" />
     <xs:attribute name="baseClass" type="t:requiredStringType" use="optional" />
   </xs:complexType>
 
   <xs:complexType name="propertyType">
-    <xs:sequence>
+    <xs:all>
       <xs:element name="type" type="m:simpleTypeOrDotNetType" />
-      <xs:element name="column" type="t:requiredStringType" />
+      <xs:element name="column" type="t:requiredStringType" minOccurs="0" />
       <xs:element name="nullable" type="xs:boolean" minOccurs="0" />
       <xs:element name="maxLength" type="m:positiveIntType" minOccurs="0" />
-    </xs:sequence>
+    </xs:all>
     <xs:attribute name="name" type="t:requiredStringType" use="required" />
   </xs:complexType>
 
