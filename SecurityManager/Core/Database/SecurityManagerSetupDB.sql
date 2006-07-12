@@ -163,6 +163,7 @@ CREATE TABLE [dbo].[Group]
   -- Group columns
   [Name] nvarchar (100) NOT NULL,
   [ShortName] nvarchar (10) NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
   [ClientID] uniqueidentifier NULL,
   [ParentID] uniqueidentifier NULL,
   [GroupTypeID] uniqueidentifier NULL,
@@ -512,9 +513,9 @@ CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name])
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[GroupView] ([ID], [ClassID], [Timestamp], [Name], [ShortName], [ClientID], [ParentID], [GroupTypeID])
+CREATE VIEW [dbo].[GroupView] ([ID], [ClassID], [Timestamp], [Name], [ShortName], [UniqueIdentifier], [ClientID], [ParentID], [GroupTypeID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [ShortName], [ClientID], [ParentID], [GroupTypeID]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [ShortName], [UniqueIdentifier], [ClientID], [ParentID], [GroupTypeID]
     FROM [dbo].[Group]
     WHERE [ClassID] IN ('Group')
   WITH CHECK OPTION

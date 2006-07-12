@@ -105,5 +105,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       while (StateUsages.Count > 0)
         StateUsages[0].Delete ();
     }
+
+    protected override void OnCommitting (EventArgs args)
+    {
+      base.OnCommitting (args);
+      //Class.Touch ();
+    }
   }
 }

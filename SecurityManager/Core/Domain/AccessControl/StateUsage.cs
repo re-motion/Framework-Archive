@@ -66,5 +66,13 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       get { return (StateCombination) GetRelatedObject ("StateCombination"); }
       set { SetRelatedObject ("StateCombination", value); }
     }
+
+    protected override void OnCommitting (EventArgs args)
+    {
+      base.OnCommitting (args);
+
+      if (StateCombination != null && StateCombination.Class != null)
+        StateCombination.Class.Touch ();
+    }
   }
 }

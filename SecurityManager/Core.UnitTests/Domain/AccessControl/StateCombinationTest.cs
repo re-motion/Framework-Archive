@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.Metadata;
+using Rubicon.SecurityManager.Domain;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {
@@ -41,7 +42,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void MatchesStates_DeliveredAndUnpaid ()
     {
       StateCombination combination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
-      List<StateDefinition> states = CreateStateListFromCombination (combination);
+      List<StateDefinition> states = combination.GetStates ();
 
       Assert.IsTrue (combination.MatchesStates (states));
     }
@@ -50,7 +51,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void MatchesStates_StatelessAndDemandDeliveredAndUnpaid ()
     {
       StateCombination deliverdAndUnpaidCombination = _testHelper.GetStateCombinationForDeliveredAndUnpaidOrder ();
-      List<StateDefinition> states = CreateStateListFromCombination (deliverdAndUnpaidCombination);
+      List<StateDefinition> states = deliverdAndUnpaidCombination.GetStates ();
       StateCombination statelessCombination = GetStatelessCombinationForClass (deliverdAndUnpaidCombination.Class);
 
       Assert.IsFalse (statelessCombination.MatchesStates (states));
@@ -112,6 +113,60 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Assert.Contains (deliveredState, states);
     }
 
+    [Test]
+    [ExpectedException (typeof (ConstraintViolationException),
+       "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
+    public void Commit_TouchClassFromUsage ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
+      StateDefinition paidState = paymentProperty["Paid"];
+      StateDefinition notPaidState = paymentProperty["None"];
+      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paidState);
+      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, notPaidState);
+      StateCombination combination3 = _testHelper.CreateStateCombination (orderClass);
+      combination1.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
+      combination2.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
+      combination3.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
+
+      _testHelper.Transaction.Commit ();
+
+      StateUsage stateUsage = (StateUsage) combination2.StateUsages[0];
+      stateUsage.StateDefinition = paidState;
+
+      _testHelper.Transaction.Commit ();
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConstraintViolationException),
+       "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
+    public void Commit_TouchClass ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+
+      SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
+      StateDefinition paidState = paymentProperty["Paid"];
+      StateDefinition notPaidState = paymentProperty["None"];
+      StateCombination combination1 = _testHelper.CreateStateCombination (orderClass, paidState);
+      StateCombination combination2 = _testHelper.CreateStateCombination (orderClass, notPaidState);
+      StateCombination combination3 = _testHelper.CreateStateCombination (orderClass);
+      combination1.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
+      combination2.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
+      combination3.AccessControlList.AccessControlEntries.Add (new AccessControlEntry (_testHelper.Transaction));
+
+      _testHelper.Transaction.Commit ();
+
+      combination2.StateUsages.Remove (combination2.StateUsages[0]);
+      combination2.AttachState (paidState);
+
+      _testHelper.Transaction.Commit ();
+    }
+
     private StateCombination GetStatelessCombinationForClass (SecurableClassDefinition classDefinition)
     {
       foreach (StateCombination currentCombination in classDefinition.StateCombinations)
@@ -121,16 +176,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       }
 
       return null;
-    }
-
-    private List<StateDefinition> CreateStateListFromCombination (StateCombination stateCombination)
-    {
-      List<StateDefinition> states = new List<StateDefinition> ();
-
-      foreach (StateUsage usage in stateCombination.StateUsages)
-        states.Add (usage.StateDefinition);
-
-      return states;
     }
 
     private static List<StateDefinition> CreateEmptyStateList ()
