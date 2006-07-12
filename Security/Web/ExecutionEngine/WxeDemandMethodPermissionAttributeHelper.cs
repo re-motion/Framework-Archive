@@ -91,8 +91,9 @@ namespace Rubicon.Security.Web.ExecutionEngine
 
     public ISecurableObject GetSecurableObject (WxeFunction function)
     {
-      ArgumentUtility.CheckNotNullAndType ("function", function, _functionType);
-
+      ArgumentUtility.CheckNotNull ("function", function);
+      ArgumentUtility.CheckTypeIsAssignableFrom ("function", function.GetType (), _functionType);
+      
       WxeParameterDeclaration parameterDeclaration = GetParameterDeclaration (function.ParameterDeclarations);
       object parameterValue = function.Variables[parameterDeclaration.Name];
       if (parameterValue == null)

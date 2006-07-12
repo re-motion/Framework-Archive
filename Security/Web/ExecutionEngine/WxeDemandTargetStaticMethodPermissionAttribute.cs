@@ -22,9 +22,7 @@ namespace Rubicon.Security.Web.ExecutionEngine
     public WxeDemandTargetStaticMethodPermissionAttribute (object methodNameEnum)
       : base (MethodType.Static)
     {
-      ArgumentUtility.CheckNotNullAndType ("methodNameEnum", methodNameEnum, typeof (Enum));
-
-      Enum enumValue = (Enum) methodNameEnum;
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodNameEnum", methodNameEnum);
       Type enumType = enumValue.GetType();
 
       CheckDeclaringTypeOfMethodNameEnum (enumValue);
@@ -35,10 +33,8 @@ namespace Rubicon.Security.Web.ExecutionEngine
     public WxeDemandTargetStaticMethodPermissionAttribute (object methodNameEnum, Type securableClass)
       : base (MethodType.Static)
     {
-      ArgumentUtility.CheckNotNullAndType ("methodNameEnum", methodNameEnum, typeof (Enum));
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodNameEnum", methodNameEnum);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
-
-      Enum enumValue = (Enum) methodNameEnum;
 
       CheckDeclaringTypeOfMethodNameEnum (enumValue, securableClass);
 

@@ -47,7 +47,7 @@ namespace Rubicon.Web.UI.Controls
       base.Controls.Add (_lazyContainer);
     }
 
-		#pragma warning disable 809 // Obsolete member overrides non-obsolete member
+    //  #pragma warning disable 809 // C# 3.0: specifying obsolete for overridden methods causes a warning, but this is intended here.
 
     [EditorBrowsable (EditorBrowsableState.Never)]
     [Obsolete ("Use LazyControls instead")]
@@ -60,7 +60,7 @@ namespace Rubicon.Web.UI.Controls
       }
     }
 
-		#pragma warning restore 809
+		//#pragma warning restore 809
 
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
     [PersistenceMode (PersistenceMode.InnerProperty)]

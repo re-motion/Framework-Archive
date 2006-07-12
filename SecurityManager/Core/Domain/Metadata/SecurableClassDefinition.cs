@@ -157,6 +157,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       AccessTypeReference reference = new AccessTypeReference (ClientTransaction);
       reference.AccessType = accessType;
       reference.Index = AccessTypeReferences.Count;
+      //TODO: Touch SecurableClassDefinition
 
       AccessTypeReferences.Add (reference);
       _accessTypes = null;

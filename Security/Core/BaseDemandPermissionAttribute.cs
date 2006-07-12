@@ -10,7 +10,13 @@ namespace Rubicon.Security
   {
     private Enum[] _accessTypes;
 
-    protected BaseDemandPermissionAttribute (params object[] accessTypes)
+    [Obsolete ("Do not use this constructor to initialize a new instance. It is required only for making the Attribute class CLS complient.")]
+    public BaseDemandPermissionAttribute ()
+    {
+      _accessTypes = new Enum[0];
+    }
+
+    protected BaseDemandPermissionAttribute (object[] accessTypes)
     {
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("accessTypes", accessTypes);
       ArgumentUtility.CheckItemsType ("accessTypes", accessTypes, typeof (Enum));

@@ -39,10 +39,7 @@ namespace Rubicon.Security.Web.UI
 
     protected DemandTargetPermissionAttribute (object methodEnum)
     {
-      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
-
-      Enum enumValue = (Enum) methodEnum;
-
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodEnum", methodEnum);
       CheckDeclaringTypeOfMethodNameEnum (enumValue);
 
       _permissionSource = PermissionSource.SecurableObject;
@@ -52,10 +49,8 @@ namespace Rubicon.Security.Web.UI
 
     protected DemandTargetPermissionAttribute (object methodEnum, Type securableClass)
     {
-      ArgumentUtility.CheckNotNullAndType ("methodEnum", methodEnum, typeof (Enum));
+      Enum enumValue = ArgumentUtility.CheckNotNullAndType<Enum> ("methodEnum", methodEnum);
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("securableClass", securableClass, typeof (ISecurableObject));
-
-      Enum enumValue = (Enum) methodEnum;
 
       CheckDeclaringTypeOfMethodNameEnum (enumValue, securableClass);
 

@@ -98,9 +98,7 @@ namespace Rubicon.Security.Metadata
 
     protected bool FindStatePropertiesFilter (MemberInfo member, object filterCriteria)
     {
-      ArgumentUtility.CheckNotNullAndType ("member", member, typeof (PropertyInfo));
-
-      PropertyInfo property = (PropertyInfo) member;
+      PropertyInfo property = ArgumentUtility.CheckNotNullAndType<PropertyInfo> ("member", member);
       return property.PropertyType.IsEnum && Attribute.IsDefined (property.PropertyType, typeof (SecurityStateAttribute), false);
     }
   }
