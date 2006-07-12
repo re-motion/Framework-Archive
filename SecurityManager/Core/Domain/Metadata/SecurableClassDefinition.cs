@@ -51,16 +51,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return transaction.QueryManager.GetCollection (query);
     }
 
-    public static new SecurableClassDefinition GetObject (ObjectID id)
-    {
-      return (SecurableClassDefinition) DomainObject.GetObject (id);
-    }
-
-    public static new SecurableClassDefinition GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (SecurableClassDefinition) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new SecurableClassDefinition GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (SecurableClassDefinition) DomainObject.GetObject (id, clientTransaction);
@@ -81,6 +71,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public SecurableClassDefinition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
+      DataContainer["ChangedAt"] = DateTime.Now;
     }
 
     protected SecurableClassDefinition (DataContainer dataContainer)
@@ -102,6 +93,11 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("DerivedClasses"); }
       set { } // marks property DerivedClasses as modifiable
+    }
+
+    public DateTime ChangedAt
+    {
+      get { return (DateTime) DataContainer["ChangedAt"]; }
     }
 
     public DomainObjectCollection StateProperties
@@ -191,6 +187,50 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       accessControlList.CreateAccessControlEntry ();
 
       return accessControlList;
+    }
+
+    public void Touch ()
+    {
+      DataContainer["ChangedAt"] = DateTime.Now;
+    }
+
+    public SecurableClassValidationResult Validate ()
+    {
+      SecurableClassValidationResult result = new SecurableClassValidationResult ();
+      
+      ValidateUniqueStateCombinations (result);
+
+      return result;
+    }
+
+    public void ValidateUniqueStateCombinations (SecurableClassValidationResult result)
+    {
+      Dictionary<StateCombination, StateCombination> stateCombinations = new Dictionary<StateCombination, StateCombination> (new StateCombinationComparer ());
+
+      foreach (StateCombination stateCombination in StateCombinations)
+      {
+        if (stateCombinations.ContainsKey (stateCombination))
+        {
+          result.AddInvalidStateCombination (stateCombinations[stateCombination]);
+          result.AddInvalidStateCombination (stateCombination);
+        }
+        else
+        {
+          stateCombinations.Add (stateCombination, stateCombination);
+        }
+      }
+    }
+
+    protected override void OnCommitting (EventArgs args)
+    {
+      SecurableClassValidationResult result = Validate ();
+      if (!result.IsValid)
+      {
+        throw new ConstraintViolationException (string.Format (
+            "The securable class definition '{0}' contains at least one state combination, which has been defined twice.", Name));
+      }
+
+      base.OnCommitting (args);
     }
 
     private DomainObjectCollection StatePropertyReferences

@@ -70,6 +70,48 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Assert.AreSame (property["Test1"], stateUsage.StateDefinition);
     }
 
+    [Test]
+    public void GetStates_Empty ()
+    {
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
+      StateCombination combination = _testHelper.CreateStateCombination (classDefinition);
+
+      List<StateDefinition> states = combination.GetStates ();
+
+      Assert.AreEqual (0, states.Count);
+    }
+
+    [Test]
+    public void GetStates_OneState ()
+    {
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition property = _testHelper.CreatePaymentStateProperty (classDefinition);
+      StateDefinition state = (StateDefinition) property.DefinedStates[1];
+      StateCombination combination = _testHelper.CreateStateCombination (classDefinition, state);
+
+      List<StateDefinition> states = combination.GetStates ();
+
+      Assert.AreEqual (1, states.Count);
+      Assert.AreSame (state, states[0]);
+    }
+
+    [Test]
+    public void GetStates_MultipleStates ()
+    {
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (classDefinition);
+      StateDefinition paidState = (StateDefinition) paymentProperty.DefinedStates[1];
+      StatePropertyDefinition orderStateProperty = _testHelper.CreateOrderStateProperty (classDefinition);
+      StateDefinition deliveredState = (StateDefinition) orderStateProperty.DefinedStates[1];
+      StateCombination combination = _testHelper.CreateStateCombination (classDefinition, paidState, deliveredState);
+
+      List<StateDefinition> states = combination.GetStates ();
+
+      Assert.AreEqual (2, states.Count);
+      Assert.Contains (paidState, states);
+      Assert.Contains (deliveredState, states);
+    }
+
     private StateCombination GetStatelessCombinationForClass (SecurableClassDefinition classDefinition)
     {
       foreach (StateCombination currentCombination in classDefinition.StateCombinations)

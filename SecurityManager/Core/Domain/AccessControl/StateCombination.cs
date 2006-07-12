@@ -18,16 +18,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     // static members and constants
 
-    public static new StateCombination GetObject (ObjectID id)
-    {
-      return (StateCombination) DomainObject.GetObject (id);
-    }
-
-    public static new StateCombination GetObject (ObjectID id, bool includeDeleted)
-    {
-      return (StateCombination) DomainObject.GetObject (id, includeDeleted);
-    }
-
     public static new StateCombination GetObject (ObjectID id, ClientTransaction clientTransaction)
     {
       return (StateCombination) DomainObject.GetObject (id, clientTransaction);
@@ -95,6 +85,16 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       StateUsage usage = new StateUsage (ClientTransaction);
       usage.StateDefinition = state;
       StateUsages.Add (usage);
+    }
+
+    public List<StateDefinition> GetStates ()
+    {
+      List<StateDefinition> states = new List<StateDefinition> ();
+
+      foreach (StateUsage stateUsage in StateUsages)
+        states.Add (stateUsage.StateDefinition);
+
+      return states;
     }
 
     //TODO: Rewrite with test

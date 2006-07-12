@@ -7,6 +7,7 @@ using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
 using Rubicon.Data.DomainObjects;
+using Rubicon.SecurityManager.Domain;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 {
@@ -262,6 +263,121 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (10, classDefinition.AccessTypes.Count);
       for (int i = 0; i < 10; i++)
         Assert.AreEqual (string.Format ("Access Type {0}", i), ((AccessTypeDefinition) classDefinition.AccessTypes[i]).Name);
+    }
+
+    [Test]
+    public void GetChangedAt_AfterCreation ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+
+      Assert.AreNotEqual (DateTime.MinValue, classDefinition.ChangedAt);
+    }
+
+    [Test]
+    public void Touch_AfterCreation ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+
+      DateTime creationDate = classDefinition.ChangedAt;
+
+      System.Threading.Thread.Sleep (500);
+      classDefinition.Touch ();
+
+      Assert.AreNotEqual (creationDate, classDefinition.ChangedAt);
+    }
+
+    [Test]
+    public void Validate_Valid ()
+    {
+      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
+      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+      List<StateCombination> stateCombinations = testHelper.CreateOrderStateAndPaymentStateCombinations (orderClass);
+
+      SecurableClassValidationResult result = orderClass.Validate ();
+
+      Assert.IsTrue (result.IsValid);
+    }
+
+    [Test]
+    public void Validate_DoubleStateCombination ()
+    {
+      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
+      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+      List<StateCombination> stateCombinations = testHelper.CreateOrderStateAndPaymentStateCombinations (orderClass);
+      StatePropertyDefinition orderStateProperty = ((StateUsage) stateCombinations[0].StateUsages[0]).StateDefinition.StateProperty;
+      StatePropertyDefinition paymentProperty = ((StateUsage) stateCombinations[0].StateUsages[1]).StateDefinition.StateProperty;
+      testHelper.CreateStateCombination (orderClass, orderStateProperty["Received"], paymentProperty["Paid"]);
+
+      SecurableClassValidationResult result = orderClass.Validate ();
+
+      Assert.IsFalse (result.IsValid);
+    }
+
+    [Test]
+    public void ValidateUniqueStateCombinations_NoStateCombinations ()
+    {
+      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
+      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+
+      SecurableClassValidationResult result = new SecurableClassValidationResult ();
+      orderClass.ValidateUniqueStateCombinations (result);
+
+      Assert.IsTrue (result.IsValid);
+    }
+
+    [Test]
+    public void ValidateUniqueStateCombinations_TwoStatelessCombinations ()
+    {
+      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
+      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+      StateCombination statelessCombination1 = testHelper.CreateStateCombination (orderClass);
+      StateCombination statelessCombination2 = testHelper.CreateStateCombination (orderClass);
+
+      SecurableClassValidationResult result = new SecurableClassValidationResult ();
+      orderClass.ValidateUniqueStateCombinations (result);
+
+      Assert.IsFalse (result.IsValid);
+      Assert.Contains (statelessCombination1, result.InvalidStateCombinations);
+      Assert.Contains (statelessCombination2, result.InvalidStateCombinations);
+    }
+
+    [Test]
+    public void ValidateUniqueStateCombinations_TwoStateCombinations ()
+    {
+      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
+      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
+      StateCombination paidCombination1 = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      StateCombination paidCombination2 = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      StateCombination notPaidCombination = testHelper.CreateStateCombination (orderClass, paymentProperty["None"]);
+
+      SecurableClassValidationResult result = new SecurableClassValidationResult ();
+      orderClass.ValidateUniqueStateCombinations (result);
+
+      Assert.IsFalse (result.IsValid);
+      Assert.AreEqual (2, result.InvalidStateCombinations.Count);
+      Assert.Contains (paidCombination1, result.InvalidStateCombinations);
+      Assert.Contains (paidCombination2, result.InvalidStateCombinations);
+    }
+
+    [Test]
+    [ExpectedException (typeof (ConstraintViolationException),
+       "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
+    public void Commit_TwoStateCombinations ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+
+      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
+      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
+      StatePropertyDefinition paymentProperty = testHelper.CreatePaymentStateProperty (orderClass);
+      StateCombination paidCombination1 = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      StateCombination paidCombination2 = testHelper.CreateStateCombination (orderClass, paymentProperty["Paid"]);
+      StateCombination notPaidCombination = testHelper.CreateStateCombination (orderClass, paymentProperty["None"]);
+
+      testHelper.Transaction.Commit ();
     }
   }
 }

@@ -45,5 +45,10 @@ namespace Rubicon.Security.Metadata
 
       return otherName._comment.Equals (_comment) && otherName._referencedObjectID.Equals (_referencedObjectID) && otherName._text.Equals (_text);
     }
+
+    public override int GetHashCode ()
+    {
+      return _comment.GetHashCode () ^ _referencedObjectID.GetHashCode () ^ _text.GetHashCode ();
+    }
   }
 }

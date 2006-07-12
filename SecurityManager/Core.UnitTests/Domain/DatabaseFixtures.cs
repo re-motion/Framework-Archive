@@ -210,7 +210,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWith10AccessTypes (transaction);
       AccessControlList acl = classDefinition.CreateAccessControlList();
-      StateCombination stateCombination = acl.CreateStateCombination ();
       AccessControlEntry ace = acl.CreateAccessControlEntry ();
 
       transaction.Commit ();

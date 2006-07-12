@@ -62,9 +62,11 @@
     <Compile Include="Domain\AccessControl\SecurityTokenBuilder.cs" />
     <Compile Include="Domain\AccessControl\StateCombination.cs" />
     <Compile Include="Domain\AccessControl\StateCombinationBuilder.cs" />
+    <Compile Include="Domain\AccessControl\StateCombinationComparer.cs" />
     <Compile Include="Domain\AccessControl\StateUsage.cs" />
     <Compile Include="Domain\AccessControl\UserSelection.cs" />
     <Compile Include="Domain\BaseSecurityManagerObject.cs" />
+    <Compile Include="Domain\ConstraintViolationException.cs" />
     <Compile Include="Domain\Metadata\AbstractRoleDefinition.cs" />
     <Compile Include="Domain\Metadata\AccessTypeDefinition.cs" />
     <Compile Include="Domain\Metadata\AccessTypeReference.cs" />
@@ -93,6 +95,8 @@
     <Compile Include="Domain\OrganizationalStructure\Role.cs" />
     <Compile Include="Domain\OrganizationalStructure\User.cs" />
     <Compile Include="Domain\QueryBuilder.cs" />
+    <Compile Include="Domain\Metadata\SecurableClassValidationResult.cs" />
+    <Compile Include="Domain\SecurityManagerException.cs" />
     <Compile Include="Globalization\Domain\AccessControl\AccessControlEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -156,6 +160,9 @@
     </None>
     <None Include="Domain\SecurityManagerStorageProviders.xml">
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Database\SecurityManagerSetupConstraints.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

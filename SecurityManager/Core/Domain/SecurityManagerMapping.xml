@@ -198,6 +198,11 @@
       <entity name="SecurableClassDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="ChangedAt">
+          <type>dateTime</type>
+          <column>ChangedAt</column>
+          <nullable>false</nullable>
+        </property>
         <relationProperty name="BaseClass" relationID="DerivedToBaseClass" cardinality="one" isMandatory="false">
           <column>BaseSecurableClassID</column>
         </relationProperty>
