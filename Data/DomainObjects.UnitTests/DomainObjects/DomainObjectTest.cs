@@ -52,6 +52,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DomainObjects
       Assert.AreEqual (9223372036854775807, classWithAllDataTypes.Int64Property, "Int64Property");
       Assert.AreEqual (6789.321, classWithAllDataTypes.SingleProperty, "SingleProperty");
       Assert.AreEqual ("abcdeföäü", classWithAllDataTypes.StringProperty, "StringProperty");
+      Assert.AreEqual ("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", classWithAllDataTypes.StringPropertyWithoutMaxLength, "StringPropertyWithoutMaxLength");
       ResourceManager.IsEqualToImage1 (classWithAllDataTypes.BinaryProperty, "BinaryProperty");
 
       Assert.AreEqual (new NaBoolean (true), classWithAllDataTypes.NaBooleanProperty, "NaBooleanProperty");

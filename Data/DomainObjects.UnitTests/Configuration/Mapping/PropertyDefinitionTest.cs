@@ -69,11 +69,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
     }
 
     [Test]
-    [ExpectedException (typeof (MappingException),
-        "Property 'PropertyName' of type 'System.String' must have MaxLength defined.")]
     public void StringPropertyWithoutMaxLength ()
     {
       PropertyDefinition definition = new PropertyDefinition ("PropertyName", "ColumnName", "string");
+      Assert.AreEqual (NaInt32.Null, definition.MaxLength);
     }
 
     [Test]

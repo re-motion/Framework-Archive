@@ -74,6 +74,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       classWithAllDataTypes["Int64Property"] = 424242424242424242;
       classWithAllDataTypes["SingleProperty"] = (float) 42.42;
       classWithAllDataTypes["StringProperty"] = "zyxwvuZaphodBeeblebrox";
+      classWithAllDataTypes["StringPropertyWithoutMaxLength"] = "123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876";
       classWithAllDataTypes["BinaryProperty"] = ResourceManager.GetImage1 ();
 
       classWithAllDataTypes["NaBooleanProperty"] = new NaBoolean (false);
@@ -110,6 +111,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.AreEqual (424242424242424242, classWithAllDataTypes["Int64Property"]);
         Assert.AreEqual (42.42, classWithAllDataTypes["SingleProperty"]);
         Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["StringProperty"]);
+        Assert.AreEqual ("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876", classWithAllDataTypes["StringPropertyWithoutMaxLength"]);
         ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("BinaryProperty"));
 
         Assert.AreEqual (new NaBoolean (false), classWithAllDataTypes["NaBooleanProperty"]);

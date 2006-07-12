@@ -132,6 +132,12 @@ namespace Rubicon.Data.DomainObjects.UnitTests.TestDomain
       set { DataContainer.SetValue ("StringProperty", value); }
     }
 
+    public string StringPropertyWithoutMaxLength
+    {
+      get { return DataContainer.GetString ("StringPropertyWithoutMaxLength"); }
+      set { DataContainer.SetValue ("StringPropertyWithoutMaxLength", value); }
+    }
+
     public byte[] BinaryProperty
     {
       get { return DataContainer.GetBytes ("BinaryProperty"); }

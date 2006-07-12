@@ -76,6 +76,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.AreEqual (9223372036854775807, classWithAllDataTypes["Int64Property"]);
         Assert.AreEqual (6789.321, classWithAllDataTypes["SingleProperty"]);
         Assert.AreEqual ("abcdeföäü", classWithAllDataTypes["StringProperty"]);
+        Assert.AreEqual ("12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890", classWithAllDataTypes["StringPropertyWithoutMaxLength"]);
         ResourceManager.IsEqualToImage1 (classWithAllDataTypes.GetBytes ("BinaryProperty"));
 
         classWithAllDataTypes["BooleanProperty"] = true;
@@ -91,6 +92,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         classWithAllDataTypes["Int64Property"] = 424242424242424242;
         classWithAllDataTypes["SingleProperty"] = (float) 42.42;
         classWithAllDataTypes["StringProperty"] = "zyxwvuZaphodBeeblebrox";
+        classWithAllDataTypes["StringPropertyWithoutMaxLength"] = "123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876";
         classWithAllDataTypes["BinaryProperty"] = ResourceManager.GetImage2 ();
 
         DataContainerCollection collection = new DataContainerCollection ();
@@ -116,6 +118,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
         Assert.AreEqual (424242424242424242, classWithAllDataTypes["Int64Property"]);
         Assert.AreEqual (42.42, classWithAllDataTypes["SingleProperty"]);
         Assert.AreEqual ("zyxwvuZaphodBeeblebrox", classWithAllDataTypes["StringProperty"]);
+        Assert.AreEqual ("123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876123450987612345098761234509876", classWithAllDataTypes["StringPropertyWithoutMaxLength"]);
         ResourceManager.IsEqualToImage2 (classWithAllDataTypes.GetBytes ("BinaryProperty"));
       }
     }

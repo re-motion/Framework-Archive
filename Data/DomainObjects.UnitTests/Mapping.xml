@@ -334,7 +334,11 @@
 					<column>String</column>
 					<maxLength>100</maxLength>
 				</property>
-				<property name="BinaryProperty">
+        <property name="StringPropertyWithoutMaxLength">
+          <type>string</type>
+          <column>StringWithoutMaxLength</column>
+        </property>
+        <property name="BinaryProperty">
 					<type>binary</type>
 					<column>Binary</column>
 				</property>

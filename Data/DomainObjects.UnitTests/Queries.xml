@@ -72,7 +72,8 @@
 	        [Int32] = @int32 and
 	        [Int64] = @int64 and
 	        [Single] > @singleLowerBound and [Single] < @singleUpperBound and
-	        [String] = @string and 
+	        [String] = @string and
+          -- Note: StringWithoutMaxLength cannot be used here, because it is of type 'text'.
 	        [NaBoolean] = @naBoolean and
 	        [NaByte] = @naByte and
 	        [NaDate] = @naDate and

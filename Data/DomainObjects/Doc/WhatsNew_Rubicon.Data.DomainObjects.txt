@@ -14,7 +14,11 @@
   * Das Element "column" ist bei property-Elementen nun optional. Wird es ausgelassen, wird der selbe Wert wie in propertyName angenommen.
     -> Bei relationProperties muss "column" weiterhin angegeben werden, damit das Framework erkennt welche Seite einer Beziehung den Foreign Key speichert.
     
-    
+- MaxLength Element ist jetzt im Mapping optional:
+  * Damit können string-Eigenschaften beliebiger Länge gespeichert werden.
+  * DoGen generiert für diesen Fall Spalten vom Typ text. Achtung: Diese können im SQL Server nicht bei einer Query mit dem = Operator abgefragt werden!     
+
+
 1.7.11.0
 ========
 

@@ -313,6 +313,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("Int64Property", "Int64", "int64"));
       classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("SingleProperty", "Single", "single"));
       classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringProperty", "String", "string", 100));
+      classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("StringPropertyWithoutMaxLength", "StringWithoutMaxLength", "string"));
       classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("BinaryProperty", "Binary", "binary"));
 
       classWithAllDataTypes.MyPropertyDefinitions.Add (new PropertyDefinition ("NaBooleanProperty", "NaBoolean", "boolean", true));

@@ -112,6 +112,12 @@ beachten!</FONT></STRONG></P>
       </obc:boctextvalue></TD>
   </TR>
   <TR>
+    <td></td>
+    <TD><obc:boctextvalue id="BocTextValue30" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="StringPropertyWithoutMaxLength">
+        <TextBoxStyle TextMode="MultiLine"></TextBoxStyle>
+      </obc:boctextvalue></TD>
+  </TR>
+  <TR>
     <TD></TD>
     <TD><obc:BocMultilineTextValue id="BocMultilineTextValue1" runat="server" PropertyIdentifier="StringArray" DataSourceControl="CurrentObject">
 <TextBoxStyle TextMode="MultiLine">

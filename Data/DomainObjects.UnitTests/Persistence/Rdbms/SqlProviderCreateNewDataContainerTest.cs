@@ -68,6 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Persistence.Rdbms
       Assert.AreEqual (long.MinValue, newContainer["Int64Property"]);
       Assert.AreEqual (float.MinValue, newContainer["SingleProperty"]);
       Assert.AreEqual (string.Empty, newContainer["StringProperty"]);
+      Assert.AreEqual (string.Empty, newContainer["StringPropertyWithoutMaxLength"]);
       ResourceManager.IsEmptyImage ((byte[]) newContainer["BinaryProperty"]);
 
       Assert.AreEqual (NaBoolean.Null, newContainer["NaBooleanProperty"]);

@@ -68,6 +68,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["Int64Property"], (long) 9223372036854775807));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["SingleProperty"], (float) 6789.321));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringProperty"], "abcdeföäü"));
+      dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["StringPropertyWithoutMaxLength"], "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"));
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["BinaryProperty"], ResourceManager.GetImage1 ()));
 
       dataContainer.PropertyValues.Add (new PropertyValue (classDefinition["NaBooleanProperty"], new NaBoolean (true)));

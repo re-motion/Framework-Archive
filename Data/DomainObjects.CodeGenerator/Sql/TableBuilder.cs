@@ -53,6 +53,7 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
       s_sqlTypeMapping.Add ("int64", "bigint");
       s_sqlTypeMapping.Add ("single", "real");
       s_sqlTypeMapping.Add ("string", "nvarchar");
+      s_sqlTypeMapping.Add ("stringWithoutMaxLength", "text");
       s_sqlTypeMapping.Add ("binary", "image");
       s_sqlTypeMapping.Add (TypeInfo.ObjectIDMappingTypeName, "uniqueidentifier");
       s_sqlTypeMapping.Add ("SerializedObjectID", "varchar (255)");
@@ -74,12 +75,16 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
           return s_sqlTypeMapping["SerializedObjectID"];
       }
 
-      string sqlDataType = s_sqlTypeMapping[propertyDefinition.MappingTypeName];
+      // TODO: Review with ES!
+      if (propertyDefinition.MappingTypeName == "string")
+      {
+        if (propertyDefinition.MaxLength.IsNull)
+          return s_sqlTypeMapping["stringWithoutMaxLength"];
+        else
+          return s_sqlTypeMapping[propertyDefinition.MappingTypeName] +  " (" + propertyDefinition.MaxLength.ToString () + ")";
+      }
 
-      if (propertyDefinition.MappingTypeName == "string" && !propertyDefinition.MaxLength.IsNull)
-        sqlDataType += " (" + propertyDefinition.MaxLength.ToString () + ")";
-
-      return sqlDataType;
+      return s_sqlTypeMapping[propertyDefinition.MappingTypeName];
     }
 
     // member fields

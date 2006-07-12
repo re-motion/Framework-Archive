@@ -63,7 +63,11 @@
 					<column>String</column>
 					<maxLength>100</maxLength>
 				</property>
-				<property name="DelimitedStringArrayProperty">
+        <property name="StringPropertyWithoutMaxLength">
+          <type>string</type>
+          <column>StringWithoutMaxLength</column>
+        </property>
+        <property name="DelimitedStringArrayProperty">
 					<type>string</type>
 					<column>DelimitedStringArray</column>
 					<maxLength>1000</maxLength>

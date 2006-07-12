@@ -385,6 +385,7 @@ CREATE TABLE [TableWithAllDataTypes] (
   [Int64] bigint NOT NULL,
   [Single] real NOT NULL,
   [String] nvarchar (100) NOT NULL,
+  [StringWithoutMaxLength] text NOT NULL,
   [Binary] image NOT NULL,
   
   [NaBoolean] bit NULL,

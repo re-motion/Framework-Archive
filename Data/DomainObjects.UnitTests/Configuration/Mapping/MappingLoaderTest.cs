@@ -347,18 +347,5 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration.Mapping
 
       // expectation: no exception
     }
-
-    [Test]
-    public void MappingWithoutColumnElement ()
-    {
-      MappingLoader loader = new MappingLoader ("MappingWithoutColumnElement.xml", true);
-
-      ClassDefinitionCollection classDefinitions = loader.GetClassDefinitions ();
-
-      ClassDefinition customerDefinition = classDefinitions.GetMandatory (typeof (Customer));
-      PropertyDefinition customerSinceDefinition = customerDefinition.GetMandatoryPropertyDefinition ("CustomerSince");
-
-      Assert.AreEqual (customerSinceDefinition.PropertyName, customerSinceDefinition.ColumnName);
-    }
   }
 }
