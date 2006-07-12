@@ -22,7 +22,10 @@
   * DomainObject = Objekt bei dem die MandatoryRelationNotSetException aufgetreten ist.
   * PropertyName = Eigenschaft bei der die MandatoryRelationNotSetException aufgetreten ist.
   
+- Neue Methode in ClientTransaction:
+  * bool HasChanged ... Gibt zurück, ob sich mindestens ein Objekt im Zuge dieser Transaktion geändert hat.
   
+    
 1.7.11.0
 ========
 

@@ -593,5 +593,15 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
         Assert.AreSame (newIndustrialSector, ex.DomainObject);
       }
     }
+
+    [Test]
+    public void HasChanged ()
+    {
+      Assert.IsFalse (ClientTransaction.Current.HasChanged ());
+      Order order1 = Order.GetObject (DomainObjectIDs.Order1);
+      order1.OrderNumber = order1.OrderNumber + 1;
+      Assert.IsTrue (ClientTransaction.Current.HasChanged ());
+    }
+
   }
 }

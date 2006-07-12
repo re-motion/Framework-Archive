@@ -130,6 +130,35 @@ public class ClientTransaction : ITransaction
   // methods and properties
 
   /// <summary>
+  /// Gets the collection of <see cref="IClientTransactionExtension"/>s of this <see cref="ClientTransaction"/>.
+  /// </summary>
+  /// <remarks>
+  /// <para>
+  ///   Use <see cref="ClientTransactionExtensionCollection.Add"/> and <see cref="ClientTransactionExtensionCollection.Remove"/> 
+  ///   to register and unregister an extension.
+  /// </para>
+  /// <para>
+  ///   The order of the extensions in this collection is the order in which they are notified.
+  /// </para>
+  /// </remarks>
+  public ClientTransactionExtensionCollection Extensions
+  {
+    get { return _extensions; }
+  }
+
+  /// <summary>
+  /// Returns whether at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed.
+  /// </summary>
+  /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
+  public virtual bool HasChanged ()
+  {
+    // TODO: Review with ES!
+
+    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
+    return changedDomainObjects.Count > 0;
+  }
+
+  /// <summary>
   /// Commits all changes within the <b>ClientTransaction</b> to the persistent datasources.
   /// </summary>
   /// <exception cref="Persistence.PersistenceException">Changes to objects from multiple storage providers were made.</exception>
@@ -798,23 +827,6 @@ public class ClientTransaction : ITransaction
   }
 
   #endregion
-
-  /// <summary>
-  /// Gets the collection of <see cref="IClientTransactionExtension"/>s of this <see cref="ClientTransaction"/>.
-  /// </summary>
-  /// <remarks>
-  /// <para>
-  ///   Use <see cref="ClientTransactionExtensionCollection.Add"/> and <see cref="ClientTransactionExtensionCollection.Remove"/> 
-  ///   to register and unregister an extension.
-  /// </para>
-  /// <para>
-  ///   The order of the extensions in this collection is the order in which they are notified.
-  /// </para>
-  /// </remarks>
-  public ClientTransactionExtensionCollection Extensions
-  {
-    get { return _extensions; }
-  }
 
   internal void NewObjectCreating (Type type)
   {
