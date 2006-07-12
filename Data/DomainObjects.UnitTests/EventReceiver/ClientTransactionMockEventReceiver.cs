@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
 {
-  public class ClientTransactionMockEventReceiver
+  public abstract class ClientTransactionMockEventReceiver
   {
     // types
 
@@ -22,20 +22,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.EventReceiver
       clientTransaction.Loaded += new ClientTransactionEventHandler (Loaded);
       clientTransaction.Committing += new ClientTransactionEventHandler (Committing);
       clientTransaction.Committed += new ClientTransactionEventHandler (Committed);
+      clientTransaction.RollingBack += new ClientTransactionEventHandler (RollingBack);
+      clientTransaction.RolledBack += new ClientTransactionEventHandler (RolledBack);
     }
 
     // methods and properties
 
-    public virtual void Loaded (object sender, ClientTransactionEventArgs args)
-    {
-    }
-
-    public virtual void Committing (object sender, ClientTransactionEventArgs args)
-    {
-    }
-
-    public virtual void Committed (object sender, ClientTransactionEventArgs args)
-    {
-    }
+    public abstract void Loaded (object sender, ClientTransactionEventArgs args);
+    public abstract void Committing (object sender, ClientTransactionEventArgs args);
+    public abstract void Committed (object sender, ClientTransactionEventArgs args);
+    public abstract void RollingBack (object sender, ClientTransactionEventArgs args);
+    public abstract void RolledBack (object sender, ClientTransactionEventArgs args);
   }
 }

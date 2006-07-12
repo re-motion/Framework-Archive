@@ -693,7 +693,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
     }
     set 
     {
-      ArgumentUtility.CheckType ("value", value, typeof (DomainObject));
+      ArgumentUtility.CheckType<DomainObject> ("value", value);
 
       this[index] = (DomainObject) value; 
     } 
@@ -713,7 +713,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="value"/> is not of type <see cref="DomainObject"/> or a derived type.</exception>
   void IList.Insert (int index, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
+    ArgumentUtility.CheckNotNullAndType<DomainObject> ("value", value);
 
     Insert (index, (DomainObject) value);
   }
@@ -777,7 +777,7 @@ public class DomainObjectCollection : CommonCollection, ICloneable, IList
   /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="value"/> is not of type <see cref="DomainObject"/> or a derived type.</exception>
   int IList.Add (object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (DomainObject));
+    ArgumentUtility.CheckNotNullAndType<DomainObject> ("value", value);
 
     return Add ((DomainObject) value);
   }

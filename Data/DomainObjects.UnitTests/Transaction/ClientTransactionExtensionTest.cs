@@ -777,8 +777,13 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
       using (_mockRepository.Ordered ())
       {
-        _extension.RollingBack ();
-        _extension.RolledBack ();
+        _extension.RollingBack (null);
+        LastCall.IgnoreArguments ();
+        LastCall.Constraints (List.IsIn (computer));
+
+        _extension.RolledBack (null);
+        LastCall.IgnoreArguments ();
+        LastCall.Constraints (List.IsIn (computer));
       }
 
       _mockRepository.ReplayAll ();

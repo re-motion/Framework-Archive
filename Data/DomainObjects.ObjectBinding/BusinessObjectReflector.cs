@@ -103,7 +103,7 @@ public class BusinessObjectReflector
   /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
   public object GetProperty (IBusinessObjectProperty property)
   {
-    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (BaseProperty));
+    ArgumentUtility.CheckNotNullAndType<BaseProperty> ("property", property);
     BaseProperty reflectionProperty = (BaseProperty) property;
     PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 
@@ -120,7 +120,7 @@ public class BusinessObjectReflector
   /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not of type <see cref="BaseProperty"/> or derived from it.</exception>
   public void SetProperty (IBusinessObjectProperty property, object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("property", property, typeof (BaseProperty));
+    ArgumentUtility.CheckNotNullAndType <BaseProperty> ("property", property);
     BaseProperty reflectionProperty = (BaseProperty) property;
     PropertyInfo propertyInfo = reflectionProperty.PropertyInfo;
 

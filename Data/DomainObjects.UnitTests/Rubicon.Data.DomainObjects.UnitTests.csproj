@@ -663,6 +663,8 @@
     <Compile Include="EventReceiver\DomainObjectMockEventReceiver.cs" />
     <Compile Include="EventReceiver\PropertyValueCollectionMockEventReceiver.cs" />
     <Compile Include="EventReceiver\PropertyValueMockEventReceiver.cs" />
+    <Compile Include="Transaction\RollbackEventsWithExistingObjectTest.cs" />
+    <Compile Include="Transaction\RollbackEventsWithNewObjectTest.cs" />
     <Compile Include="UnitTestStorageProviderStub.cs">
       <SubType>Code</SubType>
     </Compile>

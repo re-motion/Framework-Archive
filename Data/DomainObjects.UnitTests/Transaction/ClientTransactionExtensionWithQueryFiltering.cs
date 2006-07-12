@@ -77,11 +77,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     {
     }
 
-    public virtual void RollingBack ()
+    public virtual void RollingBack (DomainObjectCollection changedDomainObjects)
     {
     }
 
-    public virtual void RolledBack ()
+    public virtual void RolledBack (DomainObjectCollection changedDomainObjects)
     {
     }
   }

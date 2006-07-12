@@ -35,7 +35,7 @@ public sealed class UndefinedEnumValueAttribute : Attribute
   // => Use object instead, because this does not produce a compiler error.
   public UndefinedEnumValueAttribute (object value)
   {
-    ArgumentUtility.CheckNotNullAndType ("value", value, typeof (Enum));
+    ArgumentUtility.CheckNotNullAndType<Enum> ("value", value);
     ArgumentUtility.CheckValidEnumValue ("value", (Enum) value);
 
     _value = (Enum) value;

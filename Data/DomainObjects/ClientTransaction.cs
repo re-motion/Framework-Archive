@@ -100,6 +100,18 @@ public class ClientTransaction : ITransaction
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
   public event ClientTransactionEventHandler Committed;
 
+  /// <summary>
+  /// Occurs immediately before the <b>ClientTransaction</b> performs a <see cref="Rollback"/> operation.
+  /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
+  public event ClientTransactionEventHandler RollingBack;
+
+  /// <summary>
+  /// Occurs immediately after the <b>ClientTransaction</b> has successfully performed a <see cref="Rollback"/> operation.
+  /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
+  public event ClientTransactionEventHandler RolledBack;
+
   private DataManager _dataManager;
   private QueryManager _queryManager;
   private ClientTransactionExtensionCollection _extensions;
@@ -125,7 +137,7 @@ public class ClientTransaction : ITransaction
   public virtual void Commit ()
   {
     BeginCommit ();
-    DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetChangedDomainObjects (false); 
+    DomainObjectCollection changedButNotDeletedDomainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Changed, StateType.New }); 
 
     DataContainerCollection changedDataContainers = _dataManager.GetChangedDataContainersForCommit ();
     if (changedDataContainers.Count > 0)
@@ -141,13 +153,18 @@ public class ClientTransaction : ITransaction
   }
 
   /// <summary>
-  /// Performs a rollback of all changes withing the <b>ClientTransaction</b>.
+  /// Performs a rollback of all changes within the <b>ClientTransaction</b>.
   /// </summary>
   public virtual void Rollback ()
   {
-    _extensions.RollingBack ();
+    // TODO: Review with ES!
+
+    BeginRollback ();
+    DomainObjectCollection changedButNotNewDomainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Changed, StateType.Deleted });
+    
     _dataManager.Rollback ();
-    _extensions.RolledBack ();
+
+    EndRollback (changedButNotNewDomainObjects);
   }
 
   /// <summary>
@@ -569,6 +586,30 @@ public class ClientTransaction : ITransaction
   }
 
   /// <summary>
+  /// Raises the <see cref="RollingBack"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnRollingBack (ClientTransactionEventArgs args)
+  {
+    _extensions.RollingBack (args.DomainObjects);
+
+    if (RollingBack != null)
+      RollingBack (this, args);
+  }
+
+  /// <summary>
+  /// Raises the <see cref="RolledBack"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="ClientTransactionEventArgs"/> object that contains the event data.</param>
+  protected virtual void OnRolledBack (ClientTransactionEventArgs args)
+  {
+    if (RolledBack != null)
+      RolledBack (this, args);
+
+    _extensions.RolledBack (args.DomainObjects);
+  }
+
+  /// <summary>
   /// Gets the <see cref="DataManager"/> of the <b>ClientTransaction</b>.
   /// </summary>
   protected DataManager DataManager
@@ -592,6 +633,19 @@ public class ClientTransaction : ITransaction
 
   private void BeginCommit ()
   {
+    // TODO: Review with ES!
+    
+    // Note regarding to Committing: 
+    // Every object raises a Committing event even another object's Committing event changes the first object's state back to original 
+    // during its own Committing event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
+    // Every object changed during a ClientTransaction raises a Committing event regardless of the Committing event order of specific objects.  
+    // But: The same object is not included in the ClientTransaction's Committing event, because this order (DomainObject Committing events are raised
+    // before the ClientTransaction Committing events) IS deterministic.
+    
+    // Note regarding to Committed: 
+    // If an object is changed back to its original state during the Committing phase, no Committed event will be raised,
+    // because in this case the object won't be committed to the underlying backend (e.g. database).
+
     DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
     DomainObjectCollection domainObjectComittingEventRaised = new DomainObjectCollection ();
     DomainObjectCollection clientTransactionCommittingEventRaised = new DomainObjectCollection ();
@@ -638,7 +692,69 @@ public class ClientTransaction : ITransaction
     
     OnCommitted (new ClientTransactionEventArgs (changedDomainObjects.Clone (true)));
   }
- 
+
+  private void BeginRollback ()
+  {
+    // TODO: Review with ES!
+
+    // Note regarding to RollingBack: 
+    // Every object raises a RollingBack event even another object's RollingBack event changes the first object's state back to original 
+    // during its own RollingBack event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
+    // Every object changed during a ClientTransaction raises a RollingBack event regardless of the RollingBack event order of specific objects.  
+    // But: The same object is not included in the ClientTransaction's RollingBack event, because this order (DomainObject RollingBack events are raised
+    // before the ClientTransaction RollingBack events) IS deterministic.
+
+    // Note regarding to RolledBack: 
+    // If an object is changed back to its original state during the RollingBack phase, no RolledBack event will be raised,
+    // because the object actually has never been changed from a ClientTransaction's perspective.
+
+    DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
+    DomainObjectCollection domainObjectRollingBackEventRaised = new DomainObjectCollection ();
+    DomainObjectCollection clientTransactionRollingBackEventRaised = new DomainObjectCollection ();
+
+    DomainObjectCollection clientTransactionRollingBackEventNotRaised = changedDomainObjects;
+    do
+    {
+      DomainObjectCollection domainObjectRollingBackEventNotRaised = domainObjectRollingBackEventRaised.GetItemsNotInCollection (changedDomainObjects);
+      while (domainObjectRollingBackEventNotRaised.Count > 0)
+      {
+        foreach (DomainObject domainObject in domainObjectRollingBackEventNotRaised)
+        {
+          if (!domainObject.IsDiscarded)
+          {
+            domainObject.BeginRollback ();
+
+          if (!domainObject.IsDiscarded)
+              domainObjectRollingBackEventRaised.Add (domainObject);
+          }
+        }
+
+        changedDomainObjects = _dataManager.GetChangedDomainObjects ();
+        domainObjectRollingBackEventNotRaised = domainObjectRollingBackEventRaised.GetItemsNotInCollection (changedDomainObjects);
+      }
+
+      clientTransactionRollingBackEventNotRaised = clientTransactionRollingBackEventRaised.GetItemsNotInCollection (changedDomainObjects);
+
+      OnRollingBack (new ClientTransactionEventArgs (clientTransactionRollingBackEventNotRaised.Clone (true)));
+      foreach (DomainObject domainObject in clientTransactionRollingBackEventNotRaised)
+      {
+        if (!domainObject.IsDiscarded)
+          clientTransactionRollingBackEventRaised.Add (domainObject);
+      }
+
+      changedDomainObjects = _dataManager.GetChangedDomainObjects ();
+      clientTransactionRollingBackEventNotRaised = clientTransactionRollingBackEventRaised.GetItemsNotInCollection (changedDomainObjects);
+    } while (clientTransactionRollingBackEventNotRaised.Count > 0);
+  }
+
+  private void EndRollback (DomainObjectCollection changedDomainObjects)
+  {
+    foreach (DomainObject changedDomainObject in changedDomainObjects)
+      changedDomainObject.EndRollback ();
+
+    OnRolledBack (new ClientTransactionEventArgs (changedDomainObjects.Clone (true)));
+  }
+
   #region ITransaction Members
 
   /// <summary>

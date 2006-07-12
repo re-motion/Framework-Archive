@@ -281,17 +281,21 @@ namespace Rubicon.Data.DomainObjects
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RollingBack ()
+    public void RollingBack (DomainObjectCollection changedDomainObjects)
     {
+      ArgumentUtility.CheckNotNull ("changedDomainObjects", changedDomainObjects);
+
       foreach (IClientTransactionExtension extension in this)
-        extension.RollingBack ();
+        extension.RollingBack (changedDomainObjects);
     }
 
     [EditorBrowsable (EditorBrowsableState.Never)]
-    public void RolledBack ()
+    public void RolledBack (DomainObjectCollection changedDomainObjects)
     {
+      ArgumentUtility.CheckNotNull ("changedDomainObjects", changedDomainObjects);
+
       foreach (IClientTransactionExtension extension in this)
-        extension.RolledBack ();
+        extension.RolledBack (changedDomainObjects);
     }
 
     #endregion

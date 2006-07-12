@@ -34,6 +34,98 @@ namespace Rubicon.Data.DomainObjects.UnitTests.DataManagement
     }
 
     [Test]
+    public void GetEmptyDomainObjectsFromStateTypeOverload ()
+    {
+      DomainObjectCollection domainObjects = _dataManager.GetDomainObjects (StateType.Unchanged);
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (0, domainObjects.Count);
+    }
+
+    [Test]
+    public void GetUnchangedDomainObjectsFromStateTypeOverload ()
+    {
+      DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
+      _dataManager.RegisterExistingDataContainer (container);
+
+      DomainObjectCollection domainObjects = _dataManager.GetDomainObjects (StateType.Unchanged);
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (1, domainObjects.Count);
+      Assert.AreSame (container.DomainObject, domainObjects[0]);
+    }
+
+    [Test]
+    public void GetUnchangedDomainObjects ()
+    {
+      DataContainer container = TestDataContainerFactory.CreateOrder1DataContainer ();
+      _dataManager.RegisterExistingDataContainer (container);
+
+      DomainObjectCollection domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Unchanged });
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (1, domainObjects.Count);
+      Assert.AreSame (container.DomainObject, domainObjects[0]);
+    }
+
+    [Test]
+    public void GetChangedAndUnchangedDomainObjects ()
+    {
+      DataContainer container1 = TestDataContainerFactory.CreateOrder1DataContainer ();
+      DataContainer container2 = TestDataContainerFactory.CreateOrder2DataContainer ();
+      _dataManager.RegisterExistingDataContainer (container1);
+      _dataManager.RegisterExistingDataContainer (container2);
+
+      container1.SetValue ("OrderNumber", container1.GetInt32 ("OrderNumber") + 1);
+
+      DomainObjectCollection domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Changed });
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (1, domainObjects.Count);
+      Assert.AreSame (container1.DomainObject, domainObjects[0]);
+
+      domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Unchanged });
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (1, domainObjects.Count);
+      Assert.AreSame (container2.DomainObject, domainObjects[0]);    
+    }
+
+    [Test]
+    public void GetDeletedAndUnchangedDomainObjects ()
+    {
+      DataContainer container1 = TestDataContainerFactory.CreateClassWithAllDataTypesDataContainer ();
+      DataContainer container2 = TestDataContainerFactory.CreateOrder2DataContainer ();
+      _dataManager.RegisterExistingDataContainer (container1);
+      _dataManager.RegisterExistingDataContainer (container2);
+
+      _dataManager.Delete (container1.DomainObject);
+
+      DomainObjectCollection domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Deleted });
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (1, domainObjects.Count);
+      Assert.AreSame (container1.DomainObject, domainObjects[0]);
+
+      domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Unchanged });
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (1, domainObjects.Count);
+      Assert.AreSame (container2.DomainObject, domainObjects[0]);
+    }
+
+    [Test]
+    public void GetNewAndUnchangedDomainObjects ()
+    {
+      DataContainer container1 = new Order ().DataContainer;
+      DataContainer container2 = TestDataContainerFactory.CreateOrder2DataContainer ();
+      _dataManager.RegisterExistingDataContainer (container2);
+
+      DomainObjectCollection domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.New });
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (1, domainObjects.Count);
+      Assert.AreSame (container1.DomainObject, domainObjects[0]);
+
+      domainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Unchanged });
+      Assert.IsNotNull (domainObjects);
+      Assert.AreEqual (1, domainObjects.Count);
+      Assert.AreSame (container2.DomainObject, domainObjects[0]);
+    }
+
+    [Test]
     public void GetEmptyChangedDomainObjects ()
     {
       Assert.AreEqual (0, _dataManager.GetChangedDomainObjects ().Count);

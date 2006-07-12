@@ -13,7 +13,7 @@ namespace Rubicon.Data.DomainObjects
     /// The operation may be cancelled at this point.
     /// </summary>
     /// <param name="type">The <see cref="System.Type"/> of the new <see cref="DomainObject"/>.</param>
-    /// <note type="implementnotes">Throw an exception to cancel the operation.</note>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     void NewObjectCreating (Type type);
 
     /// <summary>
@@ -23,7 +23,7 @@ namespace Rubicon.Data.DomainObjects
     /// <remarks>
     ///   <see cref="DomainObject.OnLoaded"/> is called before this method is invoked, whereas <see cref="ClientTransaction.Loaded"/> is fired after it.
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception.</note>
     void ObjectsLoaded (DomainObjectCollection loadedDomainObjects);
 
     /// <summary>
@@ -43,7 +43,7 @@ namespace Rubicon.Data.DomainObjects
     ///     The events <see cref="DomainObject.Deleting"/> and <see cref="DomainObject.RelationChanging"/> are fired after this method was invoked.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Throw an exception to cancel the operation.</note>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     void ObjectDeleting (DomainObject domainObject);
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace Rubicon.Data.DomainObjects
     ///     The events <see cref="DomainObject.RelationChanged"/> and <see cref="DomainObject.Deleted"/> are fired before this method is invoked.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="ObjectDeleting"/> instead.</note>
     void ObjectDeleted (DomainObject domainObject);
 
     /// <summary>
@@ -79,7 +79,7 @@ namespace Rubicon.Data.DomainObjects
     /// <remarks>
     ///   Use this method to cancel the operation, whereas <see cref="PropertyValueRead"/> should be used to perform actions on its successful execution.
     /// </remarks>
-    /// <note type="implementnotes">Throw an exception to cancel the operation.</note>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     void PropertyValueReading (DataContainer dataContainer, PropertyValue propertyValue, ValueAccess valueAccess);
 
     /// <summary>
@@ -95,7 +95,7 @@ namespace Rubicon.Data.DomainObjects
     /// <remarks>
     ///   Use this method to perform actions on a successful execution, whereas <see cref="PropertyValueReading"/> should be used to cancel the operation.
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="PropertyValueReading"/> instead.</note>
     void PropertyValueRead (DataContainer dataContainer, PropertyValue propertyValue, object value, ValueAccess valueAccess);
 
     /// <summary>
@@ -117,7 +117,7 @@ namespace Rubicon.Data.DomainObjects
     ///     The events <see cref="DataContainer.PropertyChanging"/> and <see cref="DomainObject.PropertyChanging"/> are fired after this method was invoked.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Throw an exception to cancel the operation.</note>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     void PropertyValueChanging (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue);
 
     /// <summary>
@@ -138,7 +138,7 @@ namespace Rubicon.Data.DomainObjects
     ///     The events <see cref="DataContainer.PropertyChanged"/> and <see cref="DomainObject.PropertyChanged"/> are fired before this method is invoked.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="PropertyValueChanging"/> instead.</note>
     void PropertyValueChanged (DataContainer dataContainer, PropertyValue propertyValue, object oldValue, object newValue);
 
     /// <summary>
@@ -151,7 +151,7 @@ namespace Rubicon.Data.DomainObjects
     /// <remarks>
     ///   Use this method to cancel the operation, whereas <see cref="RelationRead"/> should be used to perform actions on its successful execution.
     /// </remarks>
-    /// <note type="implementnotes">Throw an exception to cancel the operation.</note>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     void RelationReading (DomainObject domainObject, string propertyName, ValueAccess valueAccess);
 
     /// <summary>
@@ -169,7 +169,7 @@ namespace Rubicon.Data.DomainObjects
     ///     If the opposite object was not loaded yet, <see cref="ObjectsLoaded"/> is invoked before this method.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationReading"/> instead.</note>
     void RelationRead (DomainObject domainObject, string propertyName, DomainObject relatedObject, ValueAccess valueAccess);
 
     /// <summary>
@@ -189,7 +189,7 @@ namespace Rubicon.Data.DomainObjects
     ///     If the opposite objects were not loaded yet, <see cref="ObjectsLoaded"/> is invoked before this method.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationReading"/> instead.</note>
     void RelationRead (DomainObject domainObject, string propertyName, DomainObjectCollection relatedObjects, ValueAccess valueAccess);
 
     /// <summary>
@@ -229,7 +229,7 @@ namespace Rubicon.Data.DomainObjects
     ///     If the opposite object(s) was/were not loaded yet, <see cref="ObjectsLoaded"/> is invoked before this method.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Throw an exception to cancel the operation.</note>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     void RelationChanging (DomainObject domainObject, string propertyName, DomainObject oldRelatedObject, DomainObject newRelatedObject);
 
     /// <summary>
@@ -245,7 +245,7 @@ namespace Rubicon.Data.DomainObjects
     ///     The <see cref="DomainObject.RelationChanged"/> events are fired before this method is invoked.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RelationChanging"/> instead.</note>
     void RelationChanged (DomainObject domainObject, string propertyName);
 
     /// <summary>
@@ -259,7 +259,7 @@ namespace Rubicon.Data.DomainObjects
     ///     If some objects that were returned by the query were not loaded yet, <see cref="ObjectsLoaded"/> is invoked before this method.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception.</note>
     void FilterQueryResult (DomainObjectCollection queryResult, IQuery query);
 
     /// <summary>
@@ -274,7 +274,7 @@ namespace Rubicon.Data.DomainObjects
     ///     whereas <see cref="ClientTransaction.Committing"/> is fired after it.
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Throw an exception to cancel the operation.</note>
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
     void Committing (DomainObjectCollection changedDomainObjects);
 
     /// <summary>
@@ -289,26 +289,28 @@ namespace Rubicon.Data.DomainObjects
     ///     The events <see cref="DomainObject.Committed"/> and <see cref="ClientTransaction.Committed"/> are fired before this method is invoked. 
     ///   </para>
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
+    /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="Committing"/> instead.</note>
     void Committed (DomainObjectCollection changedDomainObjects);
 
     /// <summary>
     /// This method is invoked before a <see cref="ClientTransaction"/> is rolled back.
     /// The operation may be cancelled at this point.
     /// </summary>
+    /// <param name="changedDomainObjects">A read-only <see cref="DomainObjectCollection"/> holding all changed <see cref="DomainObject"/>s that are being rolled back.</param>
     /// <remarks>
     ///   <para>Use this method to cancel the operation, whereas <see cref="RolledBack"/> should be used to perform actions on its successful execution.</para>
     /// </remarks>
-    /// <note type="implementnotes">Throw an exception to cancel the operation.</note>
-    void RollingBack ();
+    /// <note type="implementnotes">The implementation of this method should throw an exception if the operation must be cancelled.</note>
+    void RollingBack (DomainObjectCollection changedDomainObjects);
 
     /// <summary>
     /// This method is invoked after a <see cref="ClientTransaction"/> was rolled back.
     /// </summary>
+    /// <param name="changedDomainObjects">A read-only <see cref="DomainObjectCollection"/> holding all changed <see cref="DomainObject"/>s that are being rolled back.</param>
     /// <remarks>
     ///   Use this method to perform actions on a successful execution, whereas <see cref="RollingBack"/> should be used to cancel the operation.
     /// </remarks>
-    /// <note type="implementnotes">Do not throw an exception in this method!</note>
-    void RolledBack ();
+    /// <note type="implementnotes">The implementation of this method must not throw an exception. To cancel the operation use <see cref="RollingBack"/> instead.</note>
+    void RolledBack (DomainObjectCollection changedDomainObjects);
   }
 }

@@ -316,15 +316,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void RollingBack ()
     {
+      DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
       using (_mockRepository.Ordered ())
       {
-        _extension1.RollingBack ();
-        _extension2.RollingBack ();
+        _extension1.RollingBack (domainObjectCollection);
+        _extension2.RollingBack (domainObjectCollection);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RollingBack ();
+      _collectionWithExtensions.RollingBack (domainObjectCollection);
 
       _mockRepository.VerifyAll ();
     }
@@ -332,15 +333,16 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
     [Test]
     public void RolledBack ()
     {
+      DomainObjectCollection domainObjectCollection = new DomainObjectCollection ();
       using (_mockRepository.Ordered ())
       {
-        _extension1.RolledBack ();
-        _extension2.RolledBack ();
+        _extension1.RolledBack (domainObjectCollection);
+        _extension2.RolledBack (domainObjectCollection);
       }
 
       _mockRepository.ReplayAll ();
 
-      _collectionWithExtensions.RolledBack ();
+      _collectionWithExtensions.RolledBack (domainObjectCollection);
 
       _mockRepository.VerifyAll ();
     }

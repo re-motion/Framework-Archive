@@ -48,23 +48,52 @@ public class DataManager
 
   public DomainObjectCollection GetChangedDomainObjects ()
   {
-    return GetChangedDomainObjects (true);
+    return GetDomainObjects (new StateType[] { StateType.Changed, StateType.Deleted, StateType.New });
   }
-  
-  public DomainObjectCollection GetChangedDomainObjects (bool includeDeleted)
+
+  public DomainObjectCollection GetDomainObjects (StateType stateType)
   {
-    DomainObjectCollection changedDomainObjects = new DomainObjectCollection ();
+    ArgumentUtility.CheckValidEnumValue ("stateType", stateType);
+
+    return GetDomainObjects (new StateType[] { stateType });
+  }
+
+  public DomainObjectCollection GetDomainObjects (StateType[] states)
+  {
+    DomainObjectCollection domainObjects = new DomainObjectCollection ();
+
+    bool includeChanged = ContainsState (states, StateType.Changed);
+    bool includeDeleted = ContainsState (states, StateType.Deleted);
+    bool includeNew = ContainsState (states, StateType.New);
+    bool includeUnchanged = ContainsState (states, StateType.Unchanged);
 
     foreach (DataContainer dataContainer in _dataContainerMap)
     {
-      if (dataContainer.DomainObject.State == StateType.New || dataContainer.DomainObject.State == StateType.Changed)
-        changedDomainObjects.Add (dataContainer.DomainObject);
+      if (includeChanged && dataContainer.DomainObject.State == StateType.Changed)
+        domainObjects.Add (dataContainer.DomainObject);
 
       if (includeDeleted && dataContainer.DomainObject.State == StateType.Deleted)
-        changedDomainObjects.Add (dataContainer.DomainObject);
+        domainObjects.Add (dataContainer.DomainObject);
+
+      if (includeNew && dataContainer.DomainObject.State == StateType.New)
+        domainObjects.Add (dataContainer.DomainObject);
+
+      if (includeUnchanged && dataContainer.DomainObject.State == StateType.Unchanged)
+        domainObjects.Add (dataContainer.DomainObject);
     }
 
-    return changedDomainObjects;
+    return domainObjects;
+  }
+
+  private bool ContainsState (StateType[] states, StateType state)
+  {
+    foreach (StateType arrayState in states)
+    {
+      if (arrayState == state)
+        return true;
+    }
+
+    return false;
   }
 
   public void RegisterExistingDataContainers (DataContainerCollection dataContainers)

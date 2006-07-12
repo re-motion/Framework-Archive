@@ -145,6 +145,18 @@ public class DomainObject
   public event EventHandler Committed;
 
   /// <summary>
+  /// Occurs before the changes of a <b>DomainObject</b> are rolled back.
+  /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
+  public event EventHandler RollingBack;
+
+  /// <summary>
+  /// Occurs after the changes of a <b>DomainObject</b> are successfully rolled back.
+  /// </summary>
+  /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
+  public event EventHandler RolledBack;
+
+  /// <summary>
   /// Occurs after the <b>DomainObject</b> has been deleted.
   /// </summary>
   /// <include file='Doc\include\DomainObjects.xml' path='documentation/allEvents/remarks'/>
@@ -388,6 +400,26 @@ public class DomainObject
   }
 
   /// <summary>
+  /// Raises the <see cref="RollingBack"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="System.EventArgs"/> object that contains the event data.</param>
+  protected virtual void OnRollingBack (EventArgs args)
+  {
+    if (RollingBack != null)
+      RollingBack (this, args);
+  }
+
+  /// <summary>
+  /// Raises the <see cref="RolledBack"/> event.
+  /// </summary>
+  /// <param name="args">A <see cref="System.EventArgs"/> object that contains the event data.</param>
+  protected virtual void OnRolledBack (EventArgs args)
+  {
+    if (RolledBack != null)
+      RolledBack (this, args);
+  }
+
+  /// <summary>
   /// Raises the <see cref="RelationChanging"/> event.
   /// </summary>
   /// <param name="args">A <see cref="RelationChangingEventArgs"/> object that contains the event data.</param>
@@ -488,6 +520,16 @@ public class DomainObject
   internal void EndCommit ()
   {
     OnCommitted (EventArgs.Empty);
+  }
+
+  internal void BeginRollback ()
+  {
+    OnRollingBack (EventArgs.Empty);
+  }
+
+  internal void EndRollback ()
+  {
+    OnRolledBack (EventArgs.Empty);
   }
 
   internal void PropertyValueChanging (object sender, PropertyChangeEventArgs args)
