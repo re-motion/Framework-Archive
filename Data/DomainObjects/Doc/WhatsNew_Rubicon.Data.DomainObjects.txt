@@ -1,3 +1,13 @@
+1.7.12.0
+========
+
+- Klassen DomainObject und ClientTransaction stellen neue Events zur Verfügung:
+  * RollingBack
+  * RolledBack
+
+- IClientTransactionExtension.RollingBack und IClientTransactionExtension.RolledBack bekommen jetzt ebenfalls die betroffenen DomainObjects übergeben.
+
+
 1.7.11.0
 ========
 
@@ -6,6 +16,7 @@
   * Neue optionale Kommandozeilen-Parameter mappingFile und storageProvidersFile, mit denen man eigene Dateinamen für die 
     Konfigurationsdateien angeben kann.
   * Klassen werden nach dem neuen Styleguide erstellt.
+
 
 1.7.10.0
 ========
