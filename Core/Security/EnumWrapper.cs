@@ -101,8 +101,8 @@ namespace Rubicon.Security
     /// <summary> Compares the supplied object parameter to the <see cref="TypeName"/> and  <see cref="Name"/> properties. </summary>
     /// <param name="obj"> The object to be compared. </param>
     /// <returns>
-    /// <see langword="true"/> if object is an instance of <see cref="EnumWrapper"/> and the two are equal; otherwise <see langword="false"/>.
-    /// If object is a null reference, <see langword="false"/> is returned.
+    ///   <see langword="true"/> if object is an instance of <see cref="EnumWrapper"/> and the two are equal; otherwise <see langword="false"/>.
+    ///   If object is a null reference, <see langword="false"/> is returned.
     /// </returns>
     public override bool Equals (object obj)
     {
@@ -113,13 +113,11 @@ namespace Rubicon.Security
     }
 
     /// <summary>
-    ///   Compares the supplied object parameter to the <see cref="Value"/> and <see cref="TypeName"/> property of the <see cref="EnumWrapper"/> 
+    ///   Compares the supplied object parameter to the <see cref="Name"/> and <see cref="TypeName"/> property of the <see cref="EnumWrapper"/> 
     ///   object.
     /// </summary>
     /// <param name="value"> The <see cref="EnumWrapper"/> instance to be compared. </param>
-    /// <returns>
-    /// <see langword="true"/> if the two are equal; otherwise <see langword="false"/>.
-    /// </returns>
+    /// <returns> <see langword="true"/> if the two are equal; otherwise <see langword="false"/>. </returns>
     public bool Equals (EnumWrapper value)
     {
       return this._name == value._name && String.Equals (this._typeName, value._typeName, StringComparison.Ordinal);
