@@ -14,6 +14,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
   public class DatabaseHelper
   {
     public const string SetupDBScript = "SecurityManagerSetupDB.sql";
+    public const string SetupConstraints = "SecurityManagerSetupConstraints.sql";
 
     public void SetupDB ()
     {
@@ -23,6 +24,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       try
       {
         ExecuteSql (ReadFile (SetupDBScript), connection, transaction);
+        ExecuteSql (ReadFile (SetupConstraints), connection, transaction);
       }
       catch
       {

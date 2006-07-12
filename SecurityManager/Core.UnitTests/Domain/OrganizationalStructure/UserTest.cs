@@ -4,6 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 {
@@ -73,6 +74,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       DomainObjectCollection users = User.FindByClientID (_dbFixtures.CurrentClient.ID, _transaction);
 
       Assert.AreEqual (2, users.Count);
+    }
+
+    [Test]
+    [ExpectedException (typeof (RdbmsProviderException))]
+    public void UserName_SameNameTwice ()
+    {
+      _dbFixtures.CreateOrganizationalStructure ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      Client client = _dbFixtures.CreateClient (transaction, "Testclient");
+      Group group = _dbFixtures.CreateGroup (transaction, "TestGroup", null, client);
+      User newUser = _dbFixtures.CreateUser (transaction, "test.user", "Test", "User", "Ing.", group, client);
+
+      transaction.Commit ();
     }
   }
 }

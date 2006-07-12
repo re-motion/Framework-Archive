@@ -109,6 +109,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { } // marks property Roles as modifiable
     }
 
+    public string UniqueIdentifier
+    {
+      get { return (string) DataContainer["UniqueIdentifier"]; }
+    }
+
     //TODO: UnitTests
     public override string DisplayName
     {

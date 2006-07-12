@@ -121,6 +121,8 @@
     </DatabaseFiles>
     <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupDB.sql">
     </DatabaseFiles>
+    <DatabaseFiles Include="..\Core\Database\SecurityManagerSetupConstraints.sql">
+    </DatabaseFiles>
     <MappingFiles Include="..\Core\Domain\SecurityManagerMapping.xml">
     </MappingFiles>
     <MappingFiles Include="..\Core\Domain\SecurityManagerQueries.xml">

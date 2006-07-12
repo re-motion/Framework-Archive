@@ -217,7 +217,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return ace.ID;
     }
 
-    private Group CreateGroup (ClientTransaction transaction, string name, Group parent, Client client)
+    public Group CreateGroup (ClientTransaction transaction, string name, Group parent, Client client)
     {
       Group group = _factory.CreateGroup (transaction);
       group.Name = name;
@@ -227,7 +227,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return group;
     }
 
-    private Client CreateClient (ClientTransaction transaction, string name)
+    public Client CreateClient (ClientTransaction transaction, string name)
     {
       Client client = new Client (transaction);
       client.Name = name;
@@ -235,7 +235,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return client;
     }
 
-    private User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Client client)
+    public User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Client client)
     {
       User user = _factory.CreateUser (transaction);
       user.UserName = userName;
