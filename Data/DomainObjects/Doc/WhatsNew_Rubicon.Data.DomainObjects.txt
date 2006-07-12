@@ -18,7 +18,11 @@
   * Damit können string-Eigenschaften beliebiger Länge gespeichert werden.
   * DoGen generiert für diesen Fall Spalten vom Typ text. Achtung: Diese können im SQL Server nicht bei einer Query mit dem = Operator abgefragt werden!     
 
-
+- MandatoryRelationNotSetException beinhaltet ab sofort 2 neue Properties:
+  * DomainObject = Objekt bei dem die MandatoryRelationNotSetException aufgetreten ist.
+  * PropertyName = Eigenschaft bei der die MandatoryRelationNotSetException aufgetreten ist.
+  
+  
 1.7.11.0
 ========
 

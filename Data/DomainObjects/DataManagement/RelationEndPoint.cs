@@ -199,10 +199,12 @@ public abstract class RelationEndPoint : IEndPoint
   }
 
   protected MandatoryRelationNotSetException CreateMandatoryRelationNotSetException (
+      DomainObject domainObject,
+      string propertyName,
       string formatString, 
       params object[] args)
   {
-    return new MandatoryRelationNotSetException (string.Format (formatString, args));
+    return new MandatoryRelationNotSetException (domainObject, propertyName, string.Format (formatString, args));
   }
 
   #region INullableObject Members

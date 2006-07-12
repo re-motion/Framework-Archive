@@ -3,23 +3,46 @@ using System.Runtime.Serialization;
 
 namespace Rubicon.Data.DomainObjects.DataManagement
 {
-[Serializable]
-public class MandatoryRelationNotSetException : DataManagementException
-{
-  // types
+  [Serializable]
+  public class MandatoryRelationNotSetException : DataManagementException
+  {
+    // types
 
-  // static members and constants
+    // static members and constants
 
-  // member fields
+    // member fields
 
-  // construction and disposing
+    private DomainObject _domainObject;
+    private string _propertyName;
 
-  public MandatoryRelationNotSetException () : this ("A mandatory relation was not set.") {}
-  public MandatoryRelationNotSetException (string message) : base (message) {}
-  public MandatoryRelationNotSetException (string message, Exception inner) : base (message, inner) {}
-  protected MandatoryRelationNotSetException (SerializationInfo info, StreamingContext context) : base (info, context) {}
+    // construction and disposing
 
-  // methods and properties
+    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message) 
+        : this (domainObject, propertyName, message, null) 
+    { 
+    }
 
-}
+    public MandatoryRelationNotSetException (DomainObject domainObject, string propertyName, string message, Exception inner) 
+        : base (message, inner) 
+    {
+      _domainObject = domainObject;
+      _propertyName = propertyName;
+    }
+    
+    protected MandatoryRelationNotSetException (SerializationInfo info, StreamingContext context) : base (info, context) 
+    { 
+    }
+
+    // methods and properties
+
+    public DomainObject DomainObject
+    {
+      get { return _domainObject; }
+    }
+
+    public string PropertyName
+    {
+      get { return _propertyName; }
+    }
+  }
 }

@@ -555,5 +555,43 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       ClientTransaction.SetCurrent (null);
       Assert.IsFalse (ClientTransaction.HasCurrent);
     }
+
+    [Test]
+    public void MandatoryRelationNotSetExceptionForOneToOneRelation ()
+    {
+      OrderTicket newOrderTicket = new OrderTicket ();
+
+      try
+      {
+        ClientTransaction.Current.Commit ();
+        Assert.Fail ("MandatoryRelationNotSetException was expected");
+      }
+      catch (MandatoryRelationNotSetException ex)
+      {
+        string expectedMessage = string.Format ("Mandatory relation property 'Order' of domain object '{0}' cannot be null.", newOrderTicket.ID);
+        Assert.AreEqual (expectedMessage, ex.Message);
+        Assert.AreEqual ("Order", ex.PropertyName);
+        Assert.AreSame (newOrderTicket, ex.DomainObject);
+      }
+    }
+
+    [Test]
+    public void MandatoryRelationNotSetExceptionForOneToManyRelation ()
+    {
+      IndustrialSector newIndustrialSector = new IndustrialSector ();
+
+      try
+      {
+        ClientTransaction.Current.Commit ();
+        Assert.Fail ("MandatoryRelationNotSetException was expected");
+      }
+      catch (MandatoryRelationNotSetException ex)
+      {
+        string expectedMessage = string.Format ("Mandatory relation property 'Companies' of domain object '{0}' contains no items.", newIndustrialSector.ID);
+        Assert.AreEqual (expectedMessage, ex.Message);
+        Assert.AreEqual ("Companies", ex.PropertyName);
+        Assert.AreSame (newIndustrialSector, ex.DomainObject);
+      }
+    }
   }
 }

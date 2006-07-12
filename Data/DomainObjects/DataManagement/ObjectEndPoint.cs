@@ -116,7 +116,11 @@ public class ObjectEndPoint : RelationEndPoint, INullableObject
   {
     if (_oppositeObjectID == null)
     {
+      // TODO: Review with ES!
+
       throw CreateMandatoryRelationNotSetException (
+          GetDomainObject (),
+          PropertyName, 
           "Mandatory relation property '{0}' of domain object '{1}' cannot be null.", PropertyName, ObjectID);
     }    
   }
