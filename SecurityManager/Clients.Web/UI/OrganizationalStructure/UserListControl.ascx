@@ -32,7 +32,7 @@
     </td>
   </tr>
   <tr>
-    <td style="padding-top: 5px;">
+    <td style="padding-left: 5px; padding-top: 5px;">
       <rubicon:WebButton ID="NewUserButton" runat="server" OnClick="NewUserButton_Click" />
     </td>
   </tr>
