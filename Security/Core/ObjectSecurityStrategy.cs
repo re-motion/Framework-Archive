@@ -10,20 +10,30 @@ namespace Rubicon.Security
   public class ObjectSecurityStrategy : IObjectSecurityStrategy
   {
     private ISecurityStrategy _securityStrategy;
-    private ISecurityContextFactory _contextFactory;
+    private ISecurityContextFactory _securityContextFactory;
 
     public ObjectSecurityStrategy (ISecurityContextFactory securityContextFactory, ISecurityStrategy securityStrategy)
     {
       ArgumentUtility.CheckNotNull ("securityContextFactory", securityContextFactory);
       ArgumentUtility.CheckNotNull ("securityStrategy", securityStrategy);
       
-      _contextFactory = securityContextFactory;
+      _securityContextFactory = securityContextFactory;
       _securityStrategy = securityStrategy;
     }
 
     public ObjectSecurityStrategy (ISecurityContextFactory securityContextFactory)
-      : this (securityContextFactory, new SecurityStrategy (new NullAccessTypeCache ()))
+      : this (securityContextFactory, new SecurityStrategy (new NullAccessTypeCache<string> (), new NullGlobalAccessTypeCacheProvider()))
     {
+    }
+
+    public ISecurityStrategy SecurityStrategy
+    {
+      get { return _securityStrategy; }
+    }
+
+    public ISecurityContextFactory SecurityContextFactory
+    {
+      get { return _securityContextFactory; }
     }
 
     public bool HasAccess (ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
@@ -32,7 +42,7 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
-      return _securityStrategy.HasAccess (_contextFactory.GetSecurityContext (), securityService, user, requiredAccessTypes);
+      return _securityStrategy.HasAccess (_securityContextFactory.GetSecurityContext (), securityService, user, requiredAccessTypes);
     }
   }
 }

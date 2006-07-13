@@ -19,8 +19,13 @@ namespace Rubicon.Security
     }
 
     public FunctionalSecurityStrategy ()
-      : this (new SecurityStrategy (new NullAccessTypeCache ()))
+      : this (new SecurityStrategy (new NullAccessTypeCache<string> (), new NullGlobalAccessTypeCacheProvider()))
     {
+    }
+
+    public ISecurityStrategy SecurityStrategy
+    {
+      get { return _securityStrategy; }
     }
 
     public bool HasAccess (Type type, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)

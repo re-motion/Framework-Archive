@@ -7,32 +7,28 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  public interface IAccessTypeCache
-  {
-    void Add (string key, AccessType[] accessTypes);
-    AccessType[] Get (string key);
-  }
-
-  public class NullAccessTypeCache : IAccessTypeCache
-  {
-    public void Add (string key, AccessType[] accessTypes)
-    {
-    }
-
-    public AccessType[] Get (string key)
-    {
-      return null;
-    }
-  }
-
   public class SecurityStrategy : ISecurityStrategy
   {
-    private IAccessTypeCache _accessTypeCache;
+    private IAccessTypeCache<string> _localCache;
+    private IGlobalAccessTypeCacheProvider _globalCacheProvider;
 
-    public SecurityStrategy (IAccessTypeCache accessTypeCache)
+    public SecurityStrategy (IAccessTypeCache<string> localCache, IGlobalAccessTypeCacheProvider globalCacheProvider)
     {
-      ArgumentUtility.CheckNotNull ("accessTypeCache", accessTypeCache);
-      _accessTypeCache = accessTypeCache;
+      ArgumentUtility.CheckNotNull ("localCache", localCache);
+      ArgumentUtility.CheckNotNull ("globalCacheProvider", globalCacheProvider);
+
+      _localCache = localCache;
+      _globalCacheProvider = globalCacheProvider;
+    }
+
+    public IAccessTypeCache<string> LocalCache
+    {
+      get { return _localCache; }
+    }
+
+    public IGlobalAccessTypeCacheProvider GlobalCacheProvider
+    {
+      get { return _globalCacheProvider; }
     }
 
     public bool HasAccess (SecurityContext context, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
@@ -42,14 +38,7 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
-      AccessType[] actualAccessTypes = _accessTypeCache.Get (user.Identity.Name);
-      if (actualAccessTypes == null)
-      {
-        actualAccessTypes = securityService.GetAccess (context, user);
-        if (actualAccessTypes == null)
-          actualAccessTypes = new AccessType[0];
-        _accessTypeCache.Add (user.Identity.Name, actualAccessTypes);
-      }
+      AccessType[] actualAccessTypes = GetAccessFromLocalCache (context, securityService, user);
 
       foreach (AccessType requiredAccessType in requiredAccessTypes)
       {
@@ -58,6 +47,37 @@ namespace Rubicon.Security
       }
 
       return true;
+    }
+
+    private AccessType[] GetAccessFromLocalCache (SecurityContext context, ISecurityService securityService, IPrincipal user)
+    {
+      AccessType[] actualAccessTypes = _localCache.Get (user.Identity.Name);
+      if (actualAccessTypes == null)
+      {
+        actualAccessTypes = GetAccessFromGlobalCache (context, securityService, user);
+        _localCache.Add (user.Identity.Name, actualAccessTypes);
+      }
+      return actualAccessTypes;
+    }
+
+    private AccessType[] GetAccessFromGlobalCache (SecurityContext context, ISecurityService securityService, IPrincipal user)
+    {
+      IAccessTypeCache<SecurityContext> globalAccessTypeCache = _globalCacheProvider.GetAccessTypeCache ();
+      AccessType[] actualAccessTypes = globalAccessTypeCache.Get (context);
+      if (actualAccessTypes == null)
+      {
+        actualAccessTypes = GetAccessFromSecurityService (securityService, context, user);
+        globalAccessTypeCache.Add (context, actualAccessTypes);
+      }
+      return actualAccessTypes;
+    }
+
+    private AccessType[] GetAccessFromSecurityService (ISecurityService securityService, SecurityContext context, IPrincipal user)
+    {
+      AccessType[] actualAccessTypes = securityService.GetAccess (context, user);
+      if (actualAccessTypes == null)
+        actualAccessTypes = new AccessType[0];
+      return actualAccessTypes;
     }
   }
 }

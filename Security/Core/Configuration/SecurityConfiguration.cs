@@ -54,6 +54,7 @@ namespace Rubicon.Security.Configuration
     private IUserProvider _userProvider;
     private IFunctionalSecurityStrategy _functionalSecurityStrategy;
     private IPermissionProvider _permissionProvider;
+    private IGlobalAccessTypeCacheProvider _globalAccessTypeCacheProvider;
 
     private ConfigurationPropertyCollection _properties;
     private readonly ConfigurationProperty _xmlnsProperty;
@@ -63,8 +64,11 @@ namespace Rubicon.Security.Configuration
     private readonly ConfigurationProperty _userProviderTypeProperty;
     private readonly ConfigurationProperty _customPermissionProviderProperty;
     private readonly ConfigurationProperty _customFunctionalSecurityStrategyProperty;
+    private readonly ConfigurationProperty _customGlobalAccessTypeCacheProviderProperty;
+    private readonly ConfigurationProperty _globalAccessTypeCacheProviderTypeProperty;
     private Type _httpContextUserProviderType;
     private Type _securityManagerServiceType;
+    private Type _clientTransactionGlobalAccessTypeCacheProviderType;
 
     private readonly object _lock = new object ();
 
@@ -73,18 +77,39 @@ namespace Rubicon.Security.Configuration
     public SecurityConfiguration ()
     {
       _xmlnsProperty = new ConfigurationProperty ("xmlns", typeof (string), null, ConfigurationPropertyOptions.None);
+      
       _customSecurityServiceProperty =
           new ConfigurationProperty ("customService", typeof (TypeElement<ISecurityService>), null, ConfigurationPropertyOptions.None);
+      
       _securityServiceTypeProperty =
           new ConfigurationProperty ("service", typeof (SecurityServiceType), SecurityServiceType.None, ConfigurationPropertyOptions.None);
+      
       _customUserProviderProperty =
           new ConfigurationProperty ("customUserProvider", typeof (TypeElement<IUserProvider>), null, ConfigurationPropertyOptions.None);
+      
       _userProviderTypeProperty =
           new ConfigurationProperty ("userProvider", typeof (UserProviderType), UserProviderType.Thread, ConfigurationPropertyOptions.None);
+      
       _customPermissionProviderProperty =
           new ConfigurationProperty ("customPermissionProvider", typeof (TypeElement<IPermissionProvider>), null, ConfigurationPropertyOptions.None);
-      _customFunctionalSecurityStrategyProperty =
-          new ConfigurationProperty ("customFunctionalSecurityStrategy", typeof (TypeElement<IFunctionalSecurityStrategy>), null, ConfigurationPropertyOptions.None);
+      
+      _customFunctionalSecurityStrategyProperty = new ConfigurationProperty (
+          "customFunctionalSecurityStrategy", 
+          typeof (TypeElement<IFunctionalSecurityStrategy>), 
+          null, 
+          ConfigurationPropertyOptions.None);
+      
+      _customGlobalAccessTypeCacheProviderProperty = new ConfigurationProperty (
+          "customGlobalAccessTypeCacheProvider", 
+          typeof (TypeElement<IGlobalAccessTypeCacheProvider>), 
+          null, 
+          ConfigurationPropertyOptions.None);
+
+      _globalAccessTypeCacheProviderTypeProperty = new ConfigurationProperty (
+          "globalAccessTypeCacheProvider", 
+          typeof (GlobalAccessTypeCacheProviderType), 
+          GlobalAccessTypeCacheProviderType.None, 
+          ConfigurationPropertyOptions.None);
 
       _properties = new ConfigurationPropertyCollection ();
       _properties.Add (_xmlnsProperty);
@@ -94,6 +119,8 @@ namespace Rubicon.Security.Configuration
       _properties.Add (_userProviderTypeProperty);
       _properties.Add (_customPermissionProviderProperty);
       _properties.Add (_customFunctionalSecurityStrategyProperty);
+      _properties.Add (_customGlobalAccessTypeCacheProviderProperty);
+      _properties.Add (_globalAccessTypeCacheProviderTypeProperty);
     }
 
     // methods and properties
@@ -160,6 +187,89 @@ namespace Rubicon.Security.Configuration
       }
     }
 
+    public IGlobalAccessTypeCacheProvider GlobalAccessTypeCacheProvider
+    {
+      get
+      {
+        if (_globalAccessTypeCacheProvider == null)
+          _globalAccessTypeCacheProvider = GetGlobalAccessTypeCacheProviderFromConfiguration ();
+
+        return _globalAccessTypeCacheProvider;
+      }
+      set
+      {
+        ArgumentUtility.CheckNotNull ("value", value);
+        _globalAccessTypeCacheProvider = value;
+      }
+    }
+
+    protected override void PostDeserialize ()
+    {
+      base.PostDeserialize ();
+
+      if (SecurityServiceType == SecurityServiceType.SecurityManagerService)
+        EnsureSecurityManagerServiceTypeInitialized ();
+
+      if (UserProviderType == UserProviderType.HttpContext)
+        EnsureHttpContextUserProviderTypeInitialized ();
+
+      if (GlobalAccessTypeCacheProviderType == GlobalAccessTypeCacheProviderType.ClientTransaction)
+        EnsureClientTransactionAccessTypeCacheProviderTypeInitialized ();
+    }
+
+    protected override ConfigurationPropertyCollection Properties
+    {
+      get { return _properties; }
+    }
+
+    protected TypeElement<ISecurityService> CustomService
+    {
+      get { return (TypeElement<ISecurityService>) this[_customSecurityServiceProperty]; }
+      set { this[_customSecurityServiceProperty] = value; }
+    }
+
+    protected SecurityServiceType SecurityServiceType
+    {
+      get { return (SecurityServiceType) this[_securityServiceTypeProperty]; }
+      set { this[_securityServiceTypeProperty] = value; }
+    }
+
+    protected TypeElement<IUserProvider> CustomUserProvider
+    {
+      get { return (TypeElement<IUserProvider>) this[_customUserProviderProperty]; }
+      set { this[_customUserProviderProperty] = value; }
+    }
+
+    protected UserProviderType UserProviderType
+    {
+      get { return (UserProviderType) this[_userProviderTypeProperty]; }
+      set { this[_userProviderTypeProperty] = value; }
+    }
+
+    protected TypeElement<IPermissionProvider> CustomPermissionProvider
+    {
+      get { return (TypeElement<IPermissionProvider>) this[_customPermissionProviderProperty]; }
+      set { this[_customPermissionProviderProperty] = value; }
+    }
+
+    protected TypeElement<IFunctionalSecurityStrategy> CustomFunctionalSecurityStrategy
+    {
+      get { return (TypeElement<IFunctionalSecurityStrategy>) this[_customFunctionalSecurityStrategyProperty]; }
+      set { this[_customFunctionalSecurityStrategyProperty] = value; }
+    }
+
+    protected TypeElement<IGlobalAccessTypeCacheProvider> CustomGlobalAccessTypeCacheProvider
+    {
+      get { return (TypeElement<IGlobalAccessTypeCacheProvider>) this[_customGlobalAccessTypeCacheProviderProperty]; }
+      set { this[_customGlobalAccessTypeCacheProviderProperty] = value; }
+    }
+
+    protected GlobalAccessTypeCacheProviderType GlobalAccessTypeCacheProviderType
+    {
+      get { return (GlobalAccessTypeCacheProviderType) this[_globalAccessTypeCacheProviderTypeProperty]; }
+      set { this[_globalAccessTypeCacheProviderTypeProperty] = value; }
+    }
+
     private ISecurityService GetSecurityServiceFromConfiguration ()
     {
       switch (SecurityServiceType)
@@ -212,6 +322,22 @@ namespace Rubicon.Security.Configuration
       return (IFunctionalSecurityStrategy) Activator.CreateInstance (customFunctionalSecurityStrategyType);
     }
 
+    private IGlobalAccessTypeCacheProvider GetGlobalAccessTypeCacheProviderFromConfiguration ()
+    {
+      switch (GlobalAccessTypeCacheProviderType)
+      {
+        case GlobalAccessTypeCacheProviderType.None:
+          return new NullGlobalAccessTypeCacheProvider ();
+        case GlobalAccessTypeCacheProviderType.ClientTransaction:
+          EnsureClientTransactionAccessTypeCacheProviderTypeInitialized ();
+          return (IGlobalAccessTypeCacheProvider) Activator.CreateInstance (_clientTransactionGlobalAccessTypeCacheProviderType);
+        case GlobalAccessTypeCacheProviderType.Custom:
+          return (IGlobalAccessTypeCacheProvider) Activator.CreateInstance (CustomGlobalAccessTypeCacheProvider.Type);
+        default:
+          throw new InvalidOperationException (string.Format ("Choice '{0}' is not supported when selecting the GlobalAccessTypeCacheProvider.", GlobalAccessTypeCacheProviderType));
+      }
+    }
+
     private void EnsureSecurityManagerServiceTypeInitialized ()
     {
       if (_securityManagerServiceType == null)
@@ -219,7 +345,12 @@ namespace Rubicon.Security.Configuration
         lock (_lock)
         {
           if (_securityManagerServiceType == null)
-            _securityManagerServiceType = GetSecurityManagerServiceType ();
+          {
+            _securityManagerServiceType = GetType (
+                _securityServiceTypeProperty, 
+                new AssemblyName ("Rubicon.SecurityManager"), 
+                "Rubicon.SecurityManager.SecurityService");
+          }
         }
       }
     }
@@ -231,105 +362,59 @@ namespace Rubicon.Security.Configuration
         lock (_lock)
         {
           if (_httpContextUserProviderType == null)
-            _httpContextUserProviderType = GetHttpContextUserProviderType ();
+          {
+            _httpContextUserProviderType = GetTypeWithMatchingVersionNumber (
+                "Rubicon.Security.Web", 
+                "Rubicon.Security.Web.HttpContextUserProvider", 
+                _userProviderTypeProperty);
+          }
         }
       }
     }
 
-    private Type GetSecurityManagerServiceType ()
+    private void EnsureClientTransactionAccessTypeCacheProviderTypeInitialized ()
     {
-      AssemblyName securityManagerAssemblyName = new AssemblyName ("Rubicon.SecurityManager");
-
-      try
+      if (_clientTransactionGlobalAccessTypeCacheProviderType == null)
       {
-        Assembly.Load (securityManagerAssemblyName);
+        lock (_lock)
+        {
+          if (_clientTransactionGlobalAccessTypeCacheProviderType == null)
+          {
+            _clientTransactionGlobalAccessTypeCacheProviderType = GetTypeWithMatchingVersionNumber (
+               "Rubicon.Security.Data.DomainObjects",
+               "Rubicon.Security.Data.DomainObjects.ClientTransactionAccessTypeCacheProvider",
+               _globalAccessTypeCacheProviderTypeProperty);
+          }
+        }
       }
-      catch (FileNotFoundException e)
-      {
-        PropertyInformation propertyInformation = ElementInformation.Properties[_securityServiceTypeProperty.Name];
-        throw new ConfigurationErrorsException (string.Format ("The current value of property 'securityService' requires that the assembly "
-                + "'Rubicon.SecurityManager' must be placed within the CLR's probing path for this application. The error is: {0}", e.Message),
-            e,
-            propertyInformation.Source,
-            propertyInformation.LineNumber);
-      }
-
-      return Type.GetType (Assembly.CreateQualifiedName (securityManagerAssemblyName.FullName, "Rubicon.SecurityManager.SecurityService"), true, false);
     }
 
-    private Type GetHttpContextUserProviderType ()
+    private Type GetTypeWithMatchingVersionNumber (string assemblyName, string typeName, ConfigurationProperty property)
     {
       AssemblyName securityAssemblyName = typeof (SecurityConfiguration).Assembly.GetName ();
-      AssemblyName securityWebAssemblyName = new AssemblyName (securityAssemblyName.FullName);
-      securityWebAssemblyName.Name = "Rubicon.Security.Web";
+      AssemblyName realAssemblyName = new AssemblyName (securityAssemblyName.FullName);
+      realAssemblyName.Name = assemblyName;
 
+      return GetType (property, realAssemblyName, typeName);
+    }
+
+    private Type GetType (ConfigurationProperty property, AssemblyName assemblyName, string typeName)
+    {
       try
       {
-        Assembly.Load (securityWebAssemblyName);
+        Assembly.Load (assemblyName);
       }
       catch (FileNotFoundException e)
       {
-        PropertyInformation propertyInformation = ElementInformation.Properties[_userProviderTypeProperty.Name];
-        throw new ConfigurationErrorsException (string.Format ("The current value of property 'userProvider' requires that the assembly "
-                + "'Rubicon.Security.Web' must be placed within the CLR's probing path for this application. The error is: {0}", e.Message),
+        PropertyInformation propertyInformation = ElementInformation.Properties[property.Name];
+        throw new ConfigurationErrorsException (string.Format ("The current value of property '{0}' requires that the assembly '{1}' is placed "
+                + "within the CLR's probing path for this application.", property.Name, assemblyName.FullName),
             e,
             propertyInformation.Source,
             propertyInformation.LineNumber);
       }
 
-      return Type.GetType (Assembly.CreateQualifiedName (securityWebAssemblyName.FullName, "Rubicon.Security.Web.HttpContextUserProvider"), true, false);
-    }
-
-    protected override void PostDeserialize ()
-    {
-      base.PostDeserialize ();
-
-      if (SecurityServiceType == SecurityServiceType.SecurityManagerService)
-        EnsureSecurityManagerServiceTypeInitialized ();
-
-      if (UserProviderType == UserProviderType.HttpContext)
-        EnsureHttpContextUserProviderTypeInitialized ();
-    }
-
-    protected override ConfigurationPropertyCollection Properties
-    {
-      get { return _properties; }
-    }
-
-    protected TypeElement<ISecurityService> CustomService
-    {
-      get { return (TypeElement<ISecurityService>) this[_customSecurityServiceProperty]; }
-      set { this[_customSecurityServiceProperty] = value; }
-    }
-
-    protected SecurityServiceType SecurityServiceType
-    {
-      get { return (SecurityServiceType) this[_securityServiceTypeProperty]; }
-      set { this[_securityServiceTypeProperty] = value; }
-    }
-
-    protected TypeElement<IUserProvider> CustomUserProvider
-    {
-      get { return (TypeElement<IUserProvider>) this[_customUserProviderProperty]; }
-      set { this[_customUserProviderProperty] = value; }
-    }
-
-    protected UserProviderType UserProviderType
-    {
-      get { return (UserProviderType) this[_userProviderTypeProperty]; }
-      set { this[_userProviderTypeProperty] = value; }
-    }
-
-    protected TypeElement<IPermissionProvider> CustomPermissionProvider
-    {
-      get { return (TypeElement<IPermissionProvider>) this[_customPermissionProviderProperty]; }
-      set { this[_customPermissionProviderProperty] = value; }
-    }
-
-    protected TypeElement<IFunctionalSecurityStrategy> CustomFunctionalSecurityStrategy
-    {
-      get { return (TypeElement<IFunctionalSecurityStrategy>) this[_customFunctionalSecurityStrategyProperty]; }
-      set { this[_customFunctionalSecurityStrategyProperty] = value; }
+      return Type.GetType (Assembly.CreateQualifiedName (assemblyName.FullName, typeName), true, false);
     }
   }
 
@@ -346,6 +431,13 @@ namespace Rubicon.Security.Configuration
     None,
     Thread,
     HttpContext,
+    Custom
+  }
+
+  public enum GlobalAccessTypeCacheProviderType
+  {
+    None,
+    ClientTransaction,
     Custom
   }
 }

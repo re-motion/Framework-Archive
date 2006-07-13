@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Principal;
 using System.Text;
 
 using Rubicon.Utilities;
 
 namespace Rubicon.Security.UnitTests.Configuration
 {
-
-  public class UserProviderMock : IUserProvider
+  public class GlobalAccessTypeCacheProviderMock : IGlobalAccessTypeCacheProvider
   {
     // types
 
@@ -18,13 +16,13 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // construction and disposing
 
-    public UserProviderMock ()
+    public GlobalAccessTypeCacheProviderMock ()
     {
     }
 
     // methods and properties
 
-    public IPrincipal GetUser ()
+    public IAccessTypeCache<SecurityContext> GetAccessTypeCache ()
     {
       throw new NotImplementedException ();
     }

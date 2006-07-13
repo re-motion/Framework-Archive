@@ -29,9 +29,15 @@
             <xs:attribute name="type" type="c:DotNetType" default="None" />
           </xs:complexType>
         </xs:element>
+        <xs:element name="customGlobalAccessTypeCacheProvider" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="type" type="c:DotNetType" default="None" />
+          </xs:complexType>
+        </xs:element>
       </xs:all>
       <xs:attribute name="service" type="c:SecurityServiceType" default="None" />
       <xs:attribute name="userProvider" type="c:UserProviderType" default="Thread" />
+      <xs:attribute name="globalAccessTypeCacheProvider" type="c:GlobalAccessTypeCacheProviderType" default="None" />
     </xs:complexType>
   </xs:element>
 
@@ -48,6 +54,14 @@
       <xs:enumeration value="None" />
       <xs:enumeration value="Thread" />
       <xs:enumeration value="HttpContext" />
+      <xs:enumeration value="Custom" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GlobalAccessTypeCacheProviderType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="ClientTransaction" />
       <xs:enumeration value="Custom" />
     </xs:restriction>
   </xs:simpleType>

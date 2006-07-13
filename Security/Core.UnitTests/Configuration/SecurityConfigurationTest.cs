@@ -96,10 +96,9 @@ namespace Rubicon.Security.UnitTests.Configuration
     {
       string xmlFragment = @"<rubicon.security service=""SecurityManagerService"" />";
       _configuration.DeserializeSection (xmlFragment);
-      ISecurityService securityService = _configuration.SecurityService;
-      Assert.IsNotNull (securityService);
-      Assert.AreEqual ("Rubicon.SecurityManager.SecurityService", securityService.GetType ().FullName);
-      StringAssert.StartsWith ("Rubicon.SecurityManager", securityService.GetType ().Assembly.GetName().FullName);
+      Type expectedType = TypeUtility.GetType ("Rubicon.SecurityManager::SecurityService", true, false);
+      
+      Assert.IsInstanceOfType (expectedType, _configuration.SecurityService);
     }
 
     [Test]
@@ -229,6 +228,46 @@ namespace Rubicon.Security.UnitTests.Configuration
       _configuration.DeserializeSection (xmlFragment);
 
       Assert.IsInstanceOfType (typeof (FunctionalSecurityStrategyMock), _configuration.FunctionalSecurityStrategy);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithDefaultGlobalAccessTypeCacheProvider ()
+    {
+      string xmlFragment = @"<rubicon.security />";
+      _configuration.DeserializeSection (xmlFragment);
+      Assert.IsInstanceOfType (typeof (NullGlobalAccessTypeCacheProvider), _configuration.GlobalAccessTypeCacheProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithNoGlobalAccessTypeCacheProvider ()
+    {
+      string xmlFragment = @"<rubicon.security globalAccessTypeCacheProvider=""None"" />";
+      _configuration.DeserializeSection (xmlFragment);
+      Assert.IsInstanceOfType (typeof (NullGlobalAccessTypeCacheProvider), _configuration.GlobalAccessTypeCacheProvider);
+    }
+
+    [Test]
+    [Explicit]
+    public void DeserializeSecurityConfigurationWithDomainObjectGlobalAccessTypeCacheProvider ()
+    {
+      string xmlFragment = @"<rubicon.security globalAccessTypeCacheProvider=""ClientTransaction"" />";
+      _configuration.DeserializeSection (xmlFragment);
+      Type expectedType = TypeUtility.GetType ("Rubicon.Security.Data.DomainObjects::ClientTransactionAccessTypeCacheProvider", true, false);
+
+      Assert.IsInstanceOfType (expectedType, _configuration.GlobalAccessTypeCacheProvider);
+    }
+
+    [Test]
+    public void DeserializeSecurityConfigurationWithCustomGlobalAccessTypeCacheProvider ()
+    {
+      string xmlFragment = @"
+          <rubicon.security globalAccessTypeCacheProvider=""Custom"">
+            <customGlobalAccessTypeCacheProvider type=""Rubicon.Security.UnitTests::Configuration.GlobalAccessTypeCacheProviderMock"" />
+          </rubicon.security>";
+
+      _configuration.DeserializeSection (xmlFragment);
+
+      Assert.IsInstanceOfType (typeof (GlobalAccessTypeCacheProviderMock), _configuration.GlobalAccessTypeCacheProvider);
     }
   }
 }

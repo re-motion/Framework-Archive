@@ -36,6 +36,12 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.PropertyTypes
       _property = new StringProperty (stringPropertyInfo, false, typeof (string), false, new NaInt32 (200));
     }
 
+    [TearDown]
+    public void TearDown ()
+    {
+      SecurityProviderRegistry.Instance.SetProvider<IObjectSecurityProvider> (null);
+    }
+
     [Test]
     public void IsAccessibleWithoutObjectSecurityProvider ()
     {

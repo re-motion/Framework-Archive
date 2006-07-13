@@ -40,6 +40,22 @@ namespace Rubicon.Security.UnitTests
     }
 
     [Test]
+    public void Initialize ()
+    {
+      Assert.AreSame (_stubContextFactory, _strategy.SecurityContextFactory);
+      Assert.AreSame (_mockSecurityStrategy, _strategy.SecurityStrategy);
+    }
+
+    [Test]
+    public void Initialize_WithDefaults ()
+    {
+      ObjectSecurityStrategy strategy = new ObjectSecurityStrategy (_stubContextFactory);
+      Assert.AreSame (_stubContextFactory, strategy.SecurityContextFactory);
+      Assert.IsInstanceOfType (typeof (SecurityStrategy), strategy.SecurityStrategy);
+      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<string>), ((SecurityStrategy)strategy.SecurityStrategy).LocalCache);
+    }
+
+    [Test]
     public void HasAccess_WithAccessGranted ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (_context, _stubSecurityService, _user, _accessTypeResult)).Return (true);
@@ -47,8 +63,8 @@ namespace Rubicon.Security.UnitTests
 
       bool hasAccess = _strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
 
-      Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (true, hasAccess);
     }
 
     [Test]
@@ -59,8 +75,8 @@ namespace Rubicon.Security.UnitTests
 
       bool hasAccess = _strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
 
-      Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (false, hasAccess);
     }
   }
 }

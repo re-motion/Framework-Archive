@@ -28,7 +28,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _user = new GenericPrincipal (new GenericIdentity ("user"), new string[0]);
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
 
-      _strategy = new SecurityStrategy (new NullAccessTypeCache ());
+      _strategy = new SecurityStrategy (new NullAccessTypeCache<string> (), new NullGlobalAccessTypeCacheProvider ());
     }
 
     [Test]
@@ -39,8 +39,8 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 
       bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
 
-      Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (true, hasAccess);
     }
 
     [Test]
@@ -51,8 +51,8 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 
       bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Create));
 
-      Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (false, hasAccess);
     }
 
     [Test]
@@ -68,8 +68,8 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 
       bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Read));
 
-      Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (true, hasAccess);
     }
 
     [Test]
@@ -86,8 +86,8 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user,
           AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Create));
 
-      Assert.AreEqual (true, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (true, hasAccess);
     }
 
     [Test]
@@ -104,8 +104,8 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user,
           AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Find));
 
-      Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (false, hasAccess);
     }
 
     [Test]
@@ -117,8 +117,8 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user,
           AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
 
-      Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (false, hasAccess);
     }
 
     [Test]
@@ -130,8 +130,8 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user,
           AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
 
-      Assert.AreEqual (false, hasAccess);
       _mocks.VerifyAll ();
+      Assert.AreEqual (false, hasAccess);
     }
   }
 }

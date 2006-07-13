@@ -8,7 +8,7 @@ namespace Rubicon.Security.UnitTests.Configuration
   {
     public bool HasAccess (Type type, ISecurityService securityService, System.Security.Principal.IPrincipal user, params AccessType[] requiredAccessTypes)
     {
-      throw new Exception ("The method or operation is not implemented.");
+      throw new NotImplementedException ();
     }
   }
 }

@@ -16,6 +16,8 @@
         <include name="Configuration/**/*.cs" />
         <include name="Metadata/**/*.cs" />
         <include name="SampleDomain/**/*.cs" />
+        <include name="SecurityClientTests/**/*.cs" />
+        <include name="SecurityStrategyTests/**/*.cs" />
         <include name="XmlAsserter/**/*.cs" />
         <exclude name="AssemblyInfoTemplate.cs" />
       </sources>
