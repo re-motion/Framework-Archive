@@ -56,6 +56,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     protected internal Group (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
+      UniqueIdentifier = Guid.NewGuid ().ToString ();
     }
 
     protected Group (DataContainer dataContainer)
@@ -112,6 +113,7 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
     public string UniqueIdentifier
     {
       get { return (string) DataContainer["UniqueIdentifier"]; }
+      set { DataContainer["UniqueIdentifier"] = value; }
     }
 
     //TODO: UnitTests

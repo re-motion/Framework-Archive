@@ -87,6 +87,7 @@ public class SetupDB
         {
           Console.WriteLine ("SetupDB...");
           DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "SecurityManagerSetupDB.sql"), connection, _databaseName, databaseFilesPath);
+          DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "SecurityManagerSetupConstraints.sql"), connection, _databaseName, databaseFilesPath);
           DBUtility.ExecuteSqlFile (Path.Combine (databaseSetupFilesPath, "SetupDB.sql"), connection, _databaseName, databaseFilesPath);
         }
 

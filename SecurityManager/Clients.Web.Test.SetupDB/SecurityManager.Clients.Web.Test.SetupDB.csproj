@@ -42,6 +42,7 @@
     <None Include="App.config" />
     <None Include="CreateDB.sql" />
     <None Include="SecurityManagerSetupDB.sql" />
+    <None Include="SecurityManagerSetupDBConstraints.sql" />
     <None Include="SetupDB.sql" />
     <None Include="TestData\Client.csv" />
     <None Include="TestData\ConcretePosition.csv" />

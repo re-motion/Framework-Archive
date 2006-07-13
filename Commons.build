@@ -592,7 +592,13 @@
         <arg value="-n" />
         <arg line="-i ${build.test.outputdir}\SecurityManagerSetupDB.sql" />
       </exec>
-      
+      <exec program="${sql.exe}">
+        <arg line="-S ${sql.instance}" />
+        <arg value="-E" />
+        <arg value="-n" />
+        <arg line="-i ${build.test.outputdir}\SecurityManagerSetupContraints.sql" />
+      </exec>
+
       <echo message="Running unit tests..." />
       <nunit2>
         <formatter type="Plain" />

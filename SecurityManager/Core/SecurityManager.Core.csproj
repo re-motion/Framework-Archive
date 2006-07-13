@@ -160,6 +160,7 @@
     </None>
     <None Include="Domain\SecurityManagerStorageProviders.xml">
     </None>
+    <None Include="GenerateSetupDBScript.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Database\SecurityManagerSetupConstraints.sql" />
