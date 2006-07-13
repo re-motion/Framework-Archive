@@ -1,8 +1,9 @@
 1.7.13.0
 ========
 
-- Folgende Framework-interne Methoden/Properties in BindableDomainObject wurden entweder zu privaten Methoden/Properties oder 
-  zu expliziten Interface-Implementierungen umgewandelt, um das Interface von BindableDomainObject einfacher zu machen:
+- Folgende Framework-interne Methoden/Properties in BindableDomainObject und BindableSearchObject 
+  wurden entweder zu privaten Methoden/Properties oder zu expliziten Interface-Implementierungen umgewandelt, 
+  um das Interface einfacher zu machen:
   * GetBusinessObjectProperty -> privat
   * BusinessObjectClass -> explizite Interface-Implementierung
   * this[IBusinessObjectProperty] Indexer -> explizite Interface-Implementierung

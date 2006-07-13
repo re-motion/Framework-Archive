@@ -63,7 +63,7 @@ public class SerializationTest : DatabaseTest
 
     TestSearchObject deserializedTestSearchObject = (TestSearchObject) SerializeAndDeserialize (testSearchObject);
 
-    Assert.AreEqual (testSearchObject.GetProperty ("StringProperty"), deserializedTestSearchObject.GetProperty ("StringProperty"));
+    Assert.AreEqual (((IBusinessObject) testSearchObject).GetProperty ("StringProperty"), ((IBusinessObject) deserializedTestSearchObject).GetProperty ("StringProperty"));
   }
 
   private object SerializeAndDeserialize  (object graph)
