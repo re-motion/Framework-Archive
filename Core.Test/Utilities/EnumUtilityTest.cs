@@ -65,7 +65,7 @@ namespace Rubicon.Core.UnitTests.Utilities
 		[Test]
 		public void TestIsValidEnumFlags3 ()
 		{
-			Assert.AreEqual (true, EnumUtility.IsValidEnumValue ( TestFlags.Flag1 | TestFlags.Flag3 ));
+			 Assert.AreEqual (true, EnumUtility.IsValidEnumValue ( TestFlags.Flag1 | TestFlags.Flag3 ));
 		}
 		[Test]
 		public void TestIsValidEnumFlags4 ()

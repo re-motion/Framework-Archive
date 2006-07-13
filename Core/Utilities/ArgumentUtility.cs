@@ -9,7 +9,7 @@ namespace Rubicon.Utilities
   /// <summary>
   /// This utility class provides methods for checking arguments.
   /// </summary>
-  public sealed class ArgumentUtility
+  public static class ArgumentUtility
   {
     public static void CheckNotNull (string argumentName, object actualValue)
     {
@@ -68,7 +68,7 @@ namespace Rubicon.Utilities
 			return CheckType (argumentName, actualValue, expectedType);
 		}
 
-		/// <summary>Returns the value itself if it is not <see langword="null"/> and of the specified type.</summary>
+		/// <summary>Returns the value itself if it is not <see langword="null"/> and of the specified value type.</summary>
 		/// <typeparam name="TExpected"> The type that <paramref name="actualValue"/> must have. </typeparam>
 		/// <exception cref="ArgumentNullException">The <paramref name="actualValue"/> is a <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of <typeparamref name="TExpected"/>).</exception>
@@ -79,6 +79,21 @@ namespace Rubicon.Utilities
 				throw new ArgumentNullException (argumentName);
 			return CheckType<TExpected> (argumentName, actualValue);
 		}
+
+		/// <summary>Returns the value itself if it is not <see langword="null"/> and of the specified value type.</summary>
+		/// <typeparam name="TExpected"> The type that <param name="actualValue"/> must have. </typeparam>
+		/// <exception cref="ArgumentNullException">The <paramref name="actualValue"/> is a <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type.</exception>
+		public static TExpected CheckNotNullAndValueType<TExpected> (string argumentName, object actualValue)
+			where TExpected: struct
+		{
+			if (actualValue == null)
+				throw new ArgumentNullException (argumentName);
+
+      if (! (actualValue is TExpected))
+				throw new ArgumentTypeException (argumentName, typeof (TExpected), actualValue.GetType ());
+			return (TExpected) actualValue;
+    }
 
 		[Obsolete (@"Use CheckType<ExpectedType> instead. Example: "
 							 + @"Dog d = (Dog) ArgumentUtility.CheckType (""animal"", animal, typeof(Dog));  "
@@ -99,18 +114,32 @@ namespace Rubicon.Utilities
 		/// <summary>Returns the value itself if it is of the specified reference type.</summary>
 		/// <typeparam name="TExpected"> The type that <paramref name="actualValue"/> must have. </typeparam>
     /// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of the <paramref name="expectedType"/>).</exception>
-		/// <exception cref="NotSupportedException">The <paramref name="expectedType"/> is a value type.</exception>
-		/// <remarks>For value types, use <see cref="CheckNotNullAndType{T}"/> instead.</remarks>
+		/// <remarks>For value types, use <see cref="CheckValueType{T}"/> instead.</remarks>
 		public static TExpected CheckType<TExpected> (string argumentName, object actualValue)
 			where TExpected: class
 		{
 			if (actualValue == null)
-				return default (TExpected); // TODO: return null?
+				return default (TExpected); 
 
 			TExpected result = actualValue as TExpected;
 			if (result == null)
 				throw new ArgumentTypeException (argumentName, typeof (TExpected), actualValue.GetType ());
 			return result;
+		}
+
+		/// <summary>Returns the value itself if it is of the specified value type.</summary>
+		/// <typeparam name="TExpected"> The type that <param name="actualValue"/> must have. </typeparam>
+		/// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type.</exception>
+		/// <remarks>For reference types, use <see cref="CheckType{T}"/> instead.</remarks>
+		public static TExpected? CheckValueType<TExpected> (string argumentName, object actualValue)
+			where TExpected: struct
+		{
+			if (actualValue == null)
+				return default (TExpected?); 
+
+      if (! (actualValue is TExpected))
+				throw new ArgumentTypeException (argumentName, typeof (TExpected), actualValue.GetType ());
+			return (TExpected?) actualValue;
 		}
 
 		/// <summary>Checks whether <paramref name="actualType"/> is not <see langword="null"/> and can be assigned to <paramref name="expectedType"/>.</summary>
@@ -135,6 +164,8 @@ namespace Rubicon.Utilities
         throw new ArgumentTypeException (string.Format ("Argument {0} is a {2}, which is cannot be assigned to type {1}.", argumentName, expectedType, actualType));
     }
 
+    /// <summary>Checks whether all items in <paramref name="collection"/> are of type <paramref name="itemType"/> or a null reference.</summary>
+    /// <exception cref="ArgumentItemTypeException"> If at least one element is not of the specified type or a derived type. </exception>
     public static void CheckItemsType (string argumentName, ICollection collection, Type itemType)
     {
       if (collection == null)
@@ -149,6 +180,9 @@ namespace Rubicon.Utilities
       }
     }
 
+    /// <summary>Checks whether all items in <paramref name="collection"/> are of type <paramref name="itemType"/> and not null references.</summary>
+    /// <exception cref="ArgumentItemTypeException"> If at least one element is not of the specified type or a derived type. </exception>
+    /// <exception cref="ArgumentItemNullException"> If at least one element is a null reference. </exception>
     public static void CheckItemsNotNullAndType (string argumentName, ICollection collection, Type itemType)
     {
       if (collection == null)
@@ -165,22 +199,70 @@ namespace Rubicon.Utilities
       }
     }
 
+    /// <summary>Checks whether <paramref name="enumValue"/> is defined within its enumeration type.</summary>
+    /// <exception cref="ArgumentNullException"> If <paramref name="enumValue"/> is a null reference. </exception>
+    /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
+    /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
     public static void CheckValidEnumValue (string argumentName, Enum enumValue)
     {
       if (enumValue == null)
         throw new ArgumentNullException (argumentName);
-      else if (!EnumUtility.IsValidEnumValue (enumValue))
+
+      if (! EnumUtility.IsValidEnumValue (enumValue))
         throw new ArgumentOutOfRangeException (argumentName);
     }
 
-    [Obsolete ("Use CheckValidEnumValue (string, Enum) instead.")]
+    /// <summary>Checks whether <paramref name="enumValue"/> is of the enumeration type <typeparamref name="TEnum"/> and defined within this type.</summary>
+    /// <remarks>
+    /// When successful, the value is returned as a <c>Nullable</c> of the specified type for direct assignment. 
+    /// </remarks>
+    /// <exception cref="ArgumentTypeException"> If <paramref name="enumValue"/> is not of the specified type. </exception>
+    /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
+    /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
+    public static TEnum? CheckValidEnumValueAndType <TEnum> (string argumentName, object enumValue)
+      where TEnum: struct
+    {
+      if (enumValue == null)
+        return default (TEnum?);
+
+      if (! (enumValue is TEnum))
+        throw new ArgumentTypeException (argumentName, typeof(TEnum), enumValue.GetType());
+
+      if (! EnumUtility.IsValidEnumValue (enumValue))
+        throw new ArgumentOutOfRangeException (argumentName);
+
+      return (TEnum?) enumValue;
+    }
+
+    /// <summary>Checks whether <paramref name="enumValue"/> is of the enumeration type <typeparamref name="TEnum"/>, is defined within this 
+    /// type, and is not a null reference.</summary>
+    /// <remarks>
+    /// When successful, the value is returned as the specified type for direct assignment. 
+    /// </remarks>
+    /// <exception cref="ArgumentNullException"> If <paramref name="enumValue"/> is a null reference. </exception>
+    /// <exception cref="ArgumentTypeException"> If <paramref name="enumValue"/> is not of the specified type. </exception>
+    /// <exception cref="ArgumentOutOfRangeException"> If <paramref name="enumValue"/> has a numeric value that is not completely defined within its 
+    /// enumeration type. For flag types, every bit must correspond to at least one enumeration value. </exception>
+    public static TEnum CheckValidEnumValueAndTypeAndNotNull <TEnum> (string argumentName, object enumValue)
+      where TEnum: struct
+    {
+      if (enumValue == null)
+        throw new ArgumentNullException (argumentName);
+
+      if (! (enumValue is TEnum))
+        throw new ArgumentTypeException (argumentName, typeof(TEnum), enumValue.GetType());
+
+      if (!EnumUtility.IsValidEnumValue (enumValue))
+        throw new ArgumentOutOfRangeException (argumentName);
+
+      return (TEnum) enumValue;
+    }
+
+    [System.ComponentModel.EditorBrowsable (System.ComponentModel.EditorBrowsableState.Never)]
+    [Obsolete ("Use CheckValidEnumValue (string argumentName, Enum enumValue) instead.")]
     public static void CheckValidEnumValue (Enum enumValue, string argumentName)
     {
       CheckValidEnumValue (argumentName, enumValue);
-    }
-
-    private ArgumentUtility ()
-    {
     }
   }
 
