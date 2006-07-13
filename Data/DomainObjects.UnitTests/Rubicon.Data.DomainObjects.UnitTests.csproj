@@ -673,7 +673,6 @@
     <Compile Include="UnitTestStorageProviderStubDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="App.config" />
     <None Include="AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>

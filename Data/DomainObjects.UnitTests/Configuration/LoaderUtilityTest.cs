@@ -28,6 +28,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     [Test]
     public void GetConfigurationFileName ()
     {
+      ConfigurationManager.AppSettings["ConfigurationFileThatDoesNotExist"] = @"C:\NonExistingConfigurationFile.xml";
+
       Assert.AreEqual (
           ConfigurationManager.AppSettings["ConfigurationFileThatDoesNotExist"],
           LoaderUtility.GetConfigurationFileName ("ConfigurationFileThatDoesNotExist", "Mapping.xml"));
@@ -36,6 +38,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Configuration
     [Test]
     public void GetEmptyConfigurationFileName ()
     {
+      ConfigurationManager.AppSettings["EmptyConfigurationFileName"] = string.Empty;
+
       Assert.AreEqual (string.Empty, LoaderUtility.GetConfigurationFileName ("EmptyConfigurationFileName", "Mapping.xml"));
     }
 
