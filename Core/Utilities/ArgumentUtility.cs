@@ -69,7 +69,7 @@ namespace Rubicon.Utilities
 		}
 
 		/// <summary>Returns the value itself if it is not <see langword="null"/> and of the specified type.</summary>
-		/// <typeparam name="TExpected"> The type that <param name="actualValue"/> must have. </typeparam>
+		/// <typeparam name="TExpected"> The type that <paramref name="actualValue"/> must have. </typeparam>
 		/// <exception cref="ArgumentNullException">The <paramref name="actualValue"/> is a <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of <typeparamref name="TExpected"/>).</exception>
 		public static TExpected CheckNotNullAndType<TExpected> (string argumentName, object actualValue)
@@ -97,8 +97,8 @@ namespace Rubicon.Utilities
 		}
 
 		/// <summary>Returns the value itself if it is of the specified reference type.</summary>
-		/// <typeparam name="TExpected"> The type that <param name="actualValue"/> must have. </typeparam>
-		/// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of the <paramref name="expectedType"/>).</exception>
+		/// <typeparam name="TExpected"> The type that <paramref name="actualValue"/> must have. </typeparam>
+    /// <exception cref="ArgumentTypeException">The <paramref name="actualValue"/> is an instance of another type (which is not a subclass of the <paramref name="expectedType"/>).</exception>
 		/// <exception cref="NotSupportedException">The <paramref name="expectedType"/> is a value type.</exception>
 		/// <remarks>For value types, use <see cref="CheckNotNullAndType{T}"/> instead.</remarks>
 		public static TExpected CheckType<TExpected> (string argumentName, object actualValue)

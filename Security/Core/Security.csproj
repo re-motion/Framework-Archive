@@ -41,12 +41,12 @@
     </EmbeddedResource>
     <None Include="Security.build" />
     <Compile Include="BaseDemandPermissionAttribute.cs" />
-    <Compile Include="BaseSecurityStrategy.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />
     <Compile Include="DemandPropertyReadPermissionAttribute.cs" />
     <Compile Include="DemandPropertyWritePermissionAttribute.cs" />
     <Compile Include="FunctionalSecurityStrategy.cs" />
+    <Compile Include="ISecurityStrategy.cs" />
     <Compile Include="Metadata\AccessTypeReflector.cs" />
     <Compile Include="Metadata\AssemblyReflector.cs" />
     <Compile Include="Metadata\IMetadataLocalizationConverter.cs" />
@@ -82,6 +82,7 @@
     <Compile Include="SecurityException.cs" />
     <Compile Include="ObjectSecurityProvider.cs" />
     <Compile Include="ObjectSecurityStrategy.cs" />
+    <Compile Include="SecurityStrategy.cs" />
     <Compile Include="ThreadUserProvider.cs" />
     <EmbeddedResource Include="Configuration\SecurityConfiguration.xsd">
       <SubType>Designer</SubType>

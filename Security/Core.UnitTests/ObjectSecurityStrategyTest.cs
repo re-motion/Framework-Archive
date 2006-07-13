@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text;
 using NUnit.Framework;
-using NMock2;
+using Rhino.Mocks;
 
 using Rubicon.Security;
 using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
@@ -13,145 +13,54 @@ namespace Rubicon.Security.UnitTests
   [TestFixture]
   public class ObjectSecurityStrategyTest
   {
-    private Mockery _mocks;
-    private ISecurityService _securityServiceMock;
-    private ISecurityContextFactory _contextFactoryMock;
+    private MockRepository _mocks;
+    private ISecurityStrategy _mockSecurityStrategy;
+    private ISecurityService _stubSecurityService;
+    private ISecurityContextFactory _stubContextFactory;
     private IPrincipal _user;
     private SecurityContext _context;
+    private AccessType[] _accessTypeResult;
     private ObjectSecurityStrategy _strategy;
 
     [SetUp]
     public void SetUp ()
     {
-      _mocks = new Mockery ();
-      _securityServiceMock = _mocks.NewMock<ISecurityService> ();
-      _contextFactoryMock = _mocks.NewMock<ISecurityContextFactory> ();
+      _mocks = new MockRepository ();
+      _mockSecurityStrategy = _mocks.CreateMock<ISecurityStrategy> ();
+      _stubSecurityService = _mocks.CreateMock<ISecurityService> ();
+      _stubContextFactory = _mocks.CreateMock<ISecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
+      _accessTypeResult = new AccessType[] { AccessType.Get (GeneralAccessType.Read), AccessType.Get (GeneralAccessType.Edit) };
 
-      Expect.Once.On (_contextFactoryMock)
-          .Method ("GetSecurityContext")
-          .Will (Return.Value (_context));
+      SetupResult.For (_stubContextFactory.GetSecurityContext ()).Return (_context);
 
-      _strategy = new ObjectSecurityStrategy (_contextFactoryMock);
+      _strategy = new ObjectSecurityStrategy (_stubContextFactory, _mockSecurityStrategy);
     }
 
     [Test]
-    public void HasAccess ()
+    public void HasAccess_WithAccessGranted ()
     {
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
+      Expect.Call (_mockSecurityStrategy.HasAccess (_context, _stubSecurityService, _user, _accessTypeResult)).Return (true);
+      _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_securityServiceMock, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
 
       Assert.AreEqual (true, hasAccess);
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
     }
 
     [Test]
-    public void HasNotAccess ()
+    public void HasAccess_WithAccessDenied ()
     {
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) }));
+      Expect.Call (_mockSecurityStrategy.HasAccess (_context, _stubSecurityService, _user, _accessTypeResult)).Return (false);
+      _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_securityServiceMock, _user, AccessType.Get (GeneralAccessType.Create));
+      bool hasAccess = _strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
 
       Assert.AreEqual (false, hasAccess);
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-    }
-
-    [Test]
-    public void HasAccessWithMultipleAllowedAccessResults ()
-    {
-      AccessType[] mockResult = new AccessType[] { 
-          AccessType.Get (GeneralAccessType.Create),
-          AccessType.Get (GeneralAccessType.Delete),
-          AccessType.Get (GeneralAccessType.Read) };
-
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (mockResult));
-
-      bool hasAccess = _strategy.HasAccess (_securityServiceMock, _user, AccessType.Get (GeneralAccessType.Read));
-
-      Assert.AreEqual (true, hasAccess);
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-    }
-
-    [Test]
-    public void HasAccessWithMultipleRequiredAccessTypes ()
-    {
-      AccessType[] mockResult = new AccessType[] { 
-          AccessType.Get (GeneralAccessType.Create),
-          AccessType.Get (GeneralAccessType.Delete),
-          AccessType.Get (GeneralAccessType.Read) };
-
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (mockResult));
-
-      bool hasAccess = _strategy.HasAccess (_securityServiceMock, _user, 
-          AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Create));
-
-      Assert.AreEqual (true, hasAccess);
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-    }
-
-    [Test]
-    public void HasNotAccessWithMultipleRequiredAccessTypes ()
-    {
-      AccessType[] mockResult = new AccessType[] { 
-          AccessType.Get (GeneralAccessType.Create),
-          AccessType.Get (GeneralAccessType.Delete),
-          AccessType.Get (GeneralAccessType.Read) };
-
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (mockResult));
-
-      bool hasAccess = _strategy.HasAccess (_securityServiceMock, _user,
-          AccessType.Get (GeneralAccessType.Delete), AccessType.Get (GeneralAccessType.Find));
-
-      Assert.AreEqual (false, hasAccess);
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-    }
-
-    [Test]
-    public void HasMultipleAccessWithoutAllowedAccessResults ()
-    {
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (new AccessType[0]));
-
-      bool hasAccess = _strategy.HasAccess (_securityServiceMock, _user,
-          AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
-
-      Assert.AreEqual (false, hasAccess);
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
-    }
-
-    [Test]
-    public void HasMultipleAccessWithNull ()
-    {
-      Expect.Once.On (_securityServiceMock)
-          .Method ("GetAccess")
-          .With (_context, _user)
-          .Will (Return.Value (null));
-
-      bool hasAccess = _strategy.HasAccess (_securityServiceMock, _user,
-          AccessType.Get (GeneralAccessType.Find), AccessType.Get (GeneralAccessType.Edit), AccessType.Get (GeneralAccessType.Read));
-
-      Assert.AreEqual (false, hasAccess);
-      _mocks.VerifyAllExpectationsHaveBeenMet ();
+      _mocks.VerifyAll ();
     }
   }
 }

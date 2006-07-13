@@ -7,8 +7,22 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  public class FunctionalSecurityStrategy : BaseSecurityStrategy, IFunctionalSecurityStrategy
+  public class FunctionalSecurityStrategy : IFunctionalSecurityStrategy
   {
+    private ISecurityStrategy _securityStrategy;
+
+    public FunctionalSecurityStrategy (ISecurityStrategy securityStrategy)
+    {
+      ArgumentUtility.CheckNotNull ("securityStrategy", securityStrategy);
+
+      _securityStrategy = securityStrategy;
+    }
+
+    public FunctionalSecurityStrategy ()
+      : this (new SecurityStrategy (new NullAccessTypeCache ()))
+    {
+    }
+
     public bool HasAccess (Type type, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("type", type, typeof (ISecurableObject));
@@ -16,7 +30,7 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
-      return HasAccess (new SecurityContext (type), securityService, user, requiredAccessTypes);
+      return _securityStrategy.HasAccess (new SecurityContext (type), securityService, user, requiredAccessTypes);
     }
   }
 }

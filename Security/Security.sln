@@ -72,6 +72,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security.Data.DomainObjects.UnitTests", "Data.DomainObjects.UnitTests\Security.Data.DomainObjects.UnitTests.csproj", "{60F06986-924D-4543-ADB8-239D0E1365A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectBinding.Reflection", "..\ObjectBinding\Reflection\ObjectBinding.Reflection.csproj", "{07113F20-C57A-4FB1-9E87-2BBE912F527B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -392,6 +394,16 @@ Global
 		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{60F06986-924D-4543-ADB8-239D0E1365A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Release|.NET.ActiveCfg = Release|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{07113F20-C57A-4FB1-9E87-2BBE912F527B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

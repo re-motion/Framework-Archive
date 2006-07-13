@@ -29,5 +29,5 @@
   <rubicon:WebButton ID="SaveButton" runat="server" Text="$res:Save" OnClick="SaveButton_Click" CausesValidation="false" />
   <rubicon:WebButton ID="CancelButton" runat="server" Text="$res:Cancel" Style="margin-left: 1em;" OnClick="CancelButton_Click" CausesValidation="false" />
   <rubicon:WebButton ID="NewAccessControlListButton" runat="server" Text="$res:NewAccessControlListButton" Style="margin-left: 1em;" OnClick="NewAccessControlListButton_Click" CausesValidation="false" />
-  <rubicon:WebButton ID="PostBackButton" runat="server" Text="PostBack" Style="margin-left: 1em;" CausesValidation="false" />
+  <%--<rubicon:WebButton ID="PostBackButton" runat="server" Text="PostBack" Style="margin-left: 1em;" CausesValidation="false" />--%>
 </asp:Content>
