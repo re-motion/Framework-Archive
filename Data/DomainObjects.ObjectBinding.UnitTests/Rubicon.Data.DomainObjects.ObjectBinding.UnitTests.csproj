@@ -120,6 +120,7 @@
     <Compile Include="Database\TestDataLoader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DomainObjectClassTest.cs" />
     <Compile Include="DomainObjectIDs.cs">
       <SubType>Code</SubType>
     </Compile>

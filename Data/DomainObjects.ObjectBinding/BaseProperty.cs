@@ -68,8 +68,8 @@ public class BaseProperty : IBusinessObjectProperty
 
   /// <summary> Gets the type of the property. </summary>
   /// <remarks> 
-  ///   This is the type of elements returned by the <see cref="BindableDomainObject.GetProperty"/> method
-  ///   and set via the <see cref="BindableDomainObject.SetProperty"/> method.
+  ///   This is the type of elements returned by the <see cref="Rubicon.ObjectBinding.IBusinessObject.GetProperty"/> method
+  ///   and set via the <see cref="Rubicon.ObjectBinding.IBusinessObject.SetProperty"/> method.
   /// </remarks>
   public virtual Type PropertyType
   {

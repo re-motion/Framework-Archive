@@ -3,6 +3,7 @@ using System;
 using Rubicon.Utilities;
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.Mapping;
+using System.Collections.Generic;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding
 {
@@ -19,6 +20,17 @@ namespace Rubicon.Data.DomainObjects.ObjectBinding
 /// </remarks>
 public class DomainObjectClass: IBusinessObjectClassWithIdentity
 {
+  private static List<string> s_frameworkPropertyNames;
+
+  static DomainObjectClass ()
+  {
+    s_frameworkPropertyNames = new List<string> ();
+    s_frameworkPropertyNames.Add ("IsDiscarded");
+    s_frameworkPropertyNames.Add ("State");
+    s_frameworkPropertyNames.Add ("ClientTransaction");
+    s_frameworkPropertyNames.Add ("ID");
+  }
+
   private BusinessObjectClassReflector _classReflector;
 
   /// <summary>
@@ -60,9 +72,21 @@ public class DomainObjectClass: IBusinessObjectClassWithIdentity
   /// Returns an array of <see cref="Rubicon.ObjectBinding.IBusinessObjectProperty"/> for all properties of the type that was passed in the constructor.
   /// </summary>
   /// <returns>An array of instances of <see cref="BaseProperty"/> or a derived type for each property. If no properties can be found, an empty array is returned.</returns>
-  public IBusinessObjectProperty[] GetPropertyDefinitions()
+  public IBusinessObjectProperty[] GetPropertyDefinitions ()
   {
-    return _classReflector.GetPropertyDefinitions ();
+    return GetFilteredPropertyDefinitions (_classReflector.GetPropertyDefinitions ());
+  }
+
+  private IBusinessObjectProperty[] GetFilteredPropertyDefinitions (IBusinessObjectProperty[] properties)
+  {
+    List<IBusinessObjectProperty> resultProperties = new List<IBusinessObjectProperty> ();
+    foreach (IBusinessObjectProperty property in properties)
+    {
+      if (!s_frameworkPropertyNames.Contains (property.Identifier))
+        resultProperties.Add (property);
+    }
+
+    return resultProperties.ToArray ();
   }
 
   /// <summary>

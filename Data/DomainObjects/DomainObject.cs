@@ -240,6 +240,25 @@ public class DomainObject
   }
 
   /// <summary>
+  /// Gets a value indicating the discarded status of the object.
+  /// </summary>
+  /// <remarks>
+  /// For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
+  /// </remarks>
+  public bool IsDiscarded
+  {
+    get { return _dataContainer.IsDiscarded; }
+  }
+
+  /// <summary>
+  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> to which the <b>DomainObject</b> belongs.
+  /// </summary>
+  public ClientTransaction ClientTransaction
+  {
+    get { return _dataContainer.ClientTransaction; }
+  }
+
+  /// <summary>
   /// Gets the <see cref="DataContainer"/> of the <b>DomainObject</b>.
   /// </summary>
   /// <exception cref="DataManagement.ObjectDiscardedException">The object is already discarded. See <see cref="DataManagement.ObjectDiscardedException"/> for further information.</exception>
@@ -348,25 +367,6 @@ public class DomainObject
     CheckDiscarded ();
 
     ClientTransaction.SetRelatedObject (new RelationEndPointID (ID, propertyName), newRelatedObject);
-  }
-
-  /// <summary>
-  /// Gets a value indicating the discarded status of the object.
-  /// </summary>
-  /// <remarks>
-  /// For more information why and when an object is discarded see <see cref="Rubicon.Data.DomainObjects.DataManagement.ObjectDiscardedException"/>.
-  /// </remarks>
-  public bool IsDiscarded 
-  {
-    get { return _dataContainer.IsDiscarded; }
-  }
-
-  /// <summary>
-  /// Gets the <see cref="Rubicon.Data.DomainObjects.ClientTransaction"/> to which the <b>DomainObject</b> belongs.
-  /// </summary>
-  public ClientTransaction ClientTransaction
-  {
-    get { return _dataContainer.ClientTransaction; }
   }
 
   /// <summary>

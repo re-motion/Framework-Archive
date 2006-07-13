@@ -22,7 +22,7 @@ beachten!</FONT></STRONG></P>
   <TR>
     <TD></TD>
     <TD><obc:bocenumvalue id="BocEnumValue2" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="BooleanProperty">
-        <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
+        <ListControlStyle RadioButtonListCellPadding="" RadioButtonListCellSpacing=""></ListControlStyle>
       </obc:bocenumvalue></TD>
   </TR>
   <TR>
@@ -70,7 +70,7 @@ beachten!</FONT></STRONG></P>
   <TR>
     <TD></TD>
     <TD><obc:bocenumvalue id="BocEnumValue1" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="EnumProperty">
-        <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
+        <ListControlStyle></ListControlStyle>
       </obc:bocenumvalue></TD>
   </TR>
   <TR>
@@ -78,7 +78,7 @@ beachten!</FONT></STRONG></P>
     <TD>
       <obc:bocenumvalue id="Bocenumvalue5" runat="server" PropertyIdentifier="EnumProperty" DataSourceControl="CurrentObject"
         ReadOnly="True">
-        <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
+        <ListControlStyle></ListControlStyle>
       </obc:bocenumvalue></TD>
   </TR>
   <TR>
@@ -137,7 +137,7 @@ beachten!</FONT></STRONG></P>
   <TR>
     <TD style="HEIGHT: 12px"></TD>
     <TD style="HEIGHT: 12px"><obc:bocenumvalue id="BocEnumValue3" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanProperty">
-        <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
+        <ListControlStyle></ListControlStyle>
       </obc:bocenumvalue></TD>
   </TR>
   <TR>
@@ -216,7 +216,7 @@ beachten!</FONT></STRONG></P>
   <TR>
     <TD></TD>
     <TD><obc:bocenumvalue id="BocEnumValue4" runat="server" DataSourceControl="CurrentObject" PropertyIdentifier="NaBooleanWithNullValueProperty">
-        <ListControlStyle RadioButtonListCellSpacing="" RadioButtonListCellPadding=""></ListControlStyle>
+        <ListControlStyle></ListControlStyle>
       </obc:bocenumvalue></TD>
   </TR>
   <TR>

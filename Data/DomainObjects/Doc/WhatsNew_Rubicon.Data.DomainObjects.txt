@@ -18,7 +18,14 @@
 - Bei Property IBusinessObjectWithIdentity.UniqueIdentifier wurde EditorBrowsable = Never entfernt, damit bei einem expliziten Cast auf
   das Interface die Property in der IntelliSense aufscheint.
   
+- Da die folgenden Framework-Properties der DomainObject-Klasse normalerweise nicht auf einer GUI-Maske angezeigt werden sollen, 
+  werden sie jetzt vom Property Picker zur Design Time nicht mehr angezeigt:
+  * IsDiscarded
+  * State
+  * ClientTransaction
+  * ID
   
+    
 1.7.12.0
 ========
 
