@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 
 using Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.TestDomain;
+using Rubicon.ObjectBinding;
 
 namespace Rubicon.Data.DomainObjects.ObjectBinding.UnitTests.Serialization
 {
@@ -41,7 +42,7 @@ public class SerializationTest : DatabaseTest
 
     Order deserializedOrder = (Order) SerializeAndDeserialize (order);
 
-    Assert.AreEqual (order.GetProperty ("OrderNumber"), deserializedOrder.GetProperty ("OrderNumber"));
+    Assert.AreEqual (((IBusinessObject) order).GetProperty ("OrderNumber"), ((IBusinessObject) deserializedOrder).GetProperty ("OrderNumber"));
   }
 
   [Test]

@@ -1,3 +1,24 @@
+1.7.13.0
+========
+
+- Folgende Framework-interne Methoden/Properties in BindableDomainObject wurden entweder zu privaten Methoden/Properties oder 
+  zu expliziten Interface-Implementierungen umgewandelt, um das Interface von BindableDomainObject einfacher zu machen:
+  * GetBusinessObjectProperty -> privat
+  * BusinessObjectClass -> explizite Interface-Implementierung
+  * this[IBusinessObjectProperty] Indexer -> explizite Interface-Implementierung
+  * this[string] Indexer -> explizite Interface-Implementierung
+  * GetPropertyString (string) -> explizite Interface-Implementierung
+  * GetPropertyString (IBusinessObjectProperty) -> explizite Interface-Implementierung 
+  * GetPropertyString (IBusinessObjectProperty, string) -> explizite Interface-Implementierung -> Methode ist jetzt nicht mehr virtual!
+  * GetProperty (string) -> explizite Interface-Implementierung  
+  * GetProperty (IBusinessObjectProperty) -> explizite Interface-Implementierung  
+  * SetProperty (string, object) -> explizite Interface-Implementierung  
+  * SetProperty (IBusinessObjectProperty, object) -> explizite Interface-Implementierung  
+
+- Bei Property IBusinessObjectWithIdentity.UniqueIdentifier wurde EditorBrowsable = Never entfernt, damit bei einem expliziten Cast auf
+  das Interface die Property in der IntelliSense aufscheint.
+  
+  
 1.7.12.0
 ========
 

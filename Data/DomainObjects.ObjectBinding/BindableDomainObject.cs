@@ -147,23 +147,13 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
 
   // methods and properties
 
-  /// <summary>
-  /// Returns the <see cref="IBusinessObjectProperty"/> for a given <paramref name="propertyIdentifier"/>.
-  /// </summary>
-  /// <param name="propertyIdentifier">The name of the property to return, as specified in the mapping file.</param>
-  /// <returns>An instance of <see cref="BaseProperty"/> or a derived class, depending on the <see cref="System.Type"/> of the propery.</returns>
-  // TODO Doc: exceptions
-  public IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
-  {
-    return BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
-  }
+  #region IBusinessObject Members
 
   /// <summary>
   /// Gets a <see cref="DomainObjectClass"/> representing the <see cref="BindableDomainObject"/>.
   /// </summary>
   // TODO Doc: exceptions
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public IBusinessObjectClass BusinessObjectClass
+  IBusinessObjectClass IBusinessObject.BusinessObjectClass
   {
     get { return new DomainObjectClass (this.GetType()); }
   }
@@ -176,10 +166,10 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="InvalidNullAssignmentException"><paramref name="value"/> is <see langword="null"/>, which is not valid for the property.</exception>
   /// <exception cref="ArgumentException"><paramref name="value"/> has an invalid type for the property.</exception>
   // TODO Doc: returns null if it is equal to the MinValue of the type
-  public object this [IBusinessObjectProperty property]
+  object IBusinessObject.this [IBusinessObjectProperty property]
   {
-    get { return GetProperty (property); }
-    set { SetProperty (property, value); }
+    get { return ((IBusinessObject) this).GetProperty (property); }
+    set { ((IBusinessObject) this).SetProperty (property, value); }
   }
 
   /// <summary>
@@ -192,10 +182,10 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
   // TODO Doc: exceptions
   // all exceptions from GetBusinessObjectProperty
-  public object this [string property]
+  object IBusinessObject.this [string property]
   {
-    get { return GetProperty (property); }
-    set { SetProperty (property, value); }
+    get { return ((IBusinessObject) this).GetProperty (property); }
+    set { ((IBusinessObject) this).SetProperty (property, value); }
   }
 
   /// <summary>
@@ -204,9 +194,9 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <param name="property">The name of the requested property.</param>
   /// <returns>A string representing the value of the given <paramref name="property"/></returns>
   // TODO Doc: Exceptions
-  public string GetPropertyString (string property)
+  string IBusinessObject.GetPropertyString (string property)
   {
-    return GetPropertyString (GetBusinessObjectProperty (property));
+    return ((IBusinessObject) this).GetPropertyString (GetBusinessObjectProperty (property));
   }
 
   /// <summary>
@@ -215,9 +205,9 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <param name="property">The requested property.</param>
   /// <returns>A string representing the value of the given <paramref name="property"/></returns>
   // TODO Doc: Exceptions
-  public string GetPropertyString (IBusinessObjectProperty property)
+  string IBusinessObject.GetPropertyString (IBusinessObjectProperty property)
   {
-    return GetPropertyString (property, null);
+    return ((IBusinessObject) this).GetPropertyString (property, null);
   }
 
   /// <summary>
@@ -227,7 +217,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <param name="format"> The format string applied by the <b>ToString</b> method. </param>
   /// <returns>A string representing the value of the given <paramref name="property"/></returns>
   // TODO Doc: Exceptions
-  public virtual string GetPropertyString (IBusinessObjectProperty property, string format)
+  string IBusinessObject.GetPropertyString (IBusinessObjectProperty property, string format)
   {
     return _objectReflector.GetPropertyString (property, format);
   }
@@ -241,9 +231,9 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   // TODO: throws an ArgumentNullException if the property with the given name does not exist. Throw better exception
   // TODO Doc: exceptions
   // all exceptions from GetBusinessObjectProperty
-  public object GetProperty (string property)
+  object IBusinessObject.GetProperty (string property)
   {
-    return GetProperty (GetBusinessObjectProperty (property));
+    return ((IBusinessObject) this).GetProperty (GetBusinessObjectProperty (property));
   }
 
   /// <summary>
@@ -253,7 +243,7 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <returns>The value of the property.</returns>
   /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
-  public object GetProperty (IBusinessObjectProperty property)
+  object IBusinessObject.GetProperty (IBusinessObjectProperty property)
   {
     return _objectReflector.GetProperty (property);
   }
@@ -268,9 +258,9 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   // TODO: throws an ArgumentNullException if the property with the given name does not exist. Throw better exception
   // TODO Doc: exceptions
   // all exceptions from GetBusinessObjectProperty
-  public void SetProperty (string property, object value)
+  void IBusinessObject.SetProperty (string property, object value)
   {
-    SetProperty (GetBusinessObjectProperty (property), value);
+    ((IBusinessObject) this).SetProperty (GetBusinessObjectProperty (property), value);
   }
 
   /// <summary>
@@ -281,28 +271,33 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   /// <exception cref="System.ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
   /// <exception cref="Rubicon.Utilities.ArgumentTypeException"><paramref name="property"/> is not derived from <see cref="BaseProperty"/>.</exception>
   /// <exception cref="ArgumentException"><paramref name="value"/> is of a type that is incompatible for the <paramref name="property"/>.</exception>
-  public void SetProperty (IBusinessObjectProperty property, object value)
+  void IBusinessObject.SetProperty (IBusinessObjectProperty property, object value)
   {
     _objectReflector.SetProperty (property, value);
   }
 
-  /// <summary>
-  /// Gets the <see cref="DomainObject.ID"/> of the <b>BindableDomainObject</b> as a string.
-  /// </summary>
-  [EditorBrowsable (EditorBrowsableState.Never)]
-  public virtual string DisplayName 
-  { 
-    get { return ID.ToString (); } 
-  }
+  #endregion
+
+  #region IBusinessObjectWithIdentity Members
 
   /// <summary>
   /// Gets the <see cref="DomainObject.ID"/> of the <b>BindableDomainObject</b> as a string.
   /// </summary>
   [EditorBrowsable (EditorBrowsableState.Never)]
+  public virtual string DisplayName
+  {
+    get { return ID.ToString (); }
+  }
+
+  /// <summary>
+  /// Gets the <see cref="DomainObject.ID"/> of the <b>BindableDomainObject</b> as a string.
+  /// </summary>
   string IBusinessObjectWithIdentity.UniqueIdentifier
   {
     get { return ID.ToString (); }
   }
+
+  #endregion
 
   #region IDeserializationCallback Members
 
@@ -319,5 +314,10 @@ public class BindableDomainObject: DomainObject, IBusinessObjectWithIdentity, ID
   }
 
   #endregion
+
+  private IBusinessObjectProperty GetBusinessObjectProperty (string propertyIdentifier)
+  {
+    return ((IBusinessObject) this).BusinessObjectClass.GetPropertyDefinition (propertyIdentifier);
+  }
 }
 }
