@@ -22,7 +22,7 @@ public class MappingLoader : BaseFileLoader
   
   public static MappingLoader Create ()
   {
-    return new MappingLoader (LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile), true);
+    return new MappingLoader (LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile), true);
   }
 
   // member fields

@@ -20,7 +20,7 @@ public class QueryConfigurationLoader : BaseFileLoader
 
   public static QueryConfigurationLoader Create ()
   {
-    return new QueryConfigurationLoader (LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile));
+    return new QueryConfigurationLoader (LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile));
   }
 
   // member fields

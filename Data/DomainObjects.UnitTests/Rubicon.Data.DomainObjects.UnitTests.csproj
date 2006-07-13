@@ -85,6 +85,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
@@ -118,6 +119,7 @@
     <Compile Include="CommonCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Configuration\LoaderUtilityTest.cs" />
     <Compile Include="Configuration\Mapping\ClassDefinitionChecker.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -671,6 +673,7 @@
     <Compile Include="UnitTestStorageProviderStubDefinition.cs">
       <SubType>Code</SubType>
     </Compile>
+    <None Include="App.config" />
     <None Include="AssemblyInfoTemplate.cs">
       <SubType>Code</SubType>
     </None>

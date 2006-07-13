@@ -25,7 +25,12 @@
 - Neue Methode in ClientTransaction:
   * bool HasChanged ... Gibt zurück, ob sich mindestens ein Objekt im Zuge dieser Transaktion geändert hat.
   
-    
+- Änderung des Verhaltens beim Laden der Konfigurationsdateien (Mapping, StorageProviders, Queries):
+  Wurde ein AppSetting (z.B. Rubicon.Data.DomainObjects.Mapping.ConfigurationFile) 
+  angegeben und existiert die angegebene Datei nicht, wird sofort ein Fehler gemeldet und kein Fallback mehr
+  auf den ExecutingAssemblyPath durchgeführt. Wurde kein AppSetting angegeben, ist das Verhalten wie bisher.
+  
+      
 1.7.11.0
 ========
 

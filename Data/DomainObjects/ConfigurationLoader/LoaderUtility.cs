@@ -52,14 +52,13 @@ public sealed class LoaderUtility
       return null;
   }
 
-  public static string GetXmlFileName (string appSettingKey, string defaultFileName)
+  public static string GetConfigurationFileName (string appSettingKey, string defaultFileName)
   {
     ArgumentUtility.CheckNotNullOrEmpty ("appSettingKey", appSettingKey);
     ArgumentUtility.CheckNotNullOrEmpty ("defaultFileName", defaultFileName);
 
     string fileName = ConfigurationManager.AppSettings[appSettingKey];
-
-    if (File.Exists (fileName))
+    if (fileName != null)
       return fileName;
 
     return Path.Combine (ReflectionUtility.GetExecutingAssemblyPath (), defaultFileName);

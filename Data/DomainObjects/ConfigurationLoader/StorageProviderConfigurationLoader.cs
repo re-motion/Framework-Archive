@@ -19,7 +19,7 @@ public class StorageProviderConfigurationLoader : BaseFileLoader
 
   public static StorageProviderConfigurationLoader Create ()
   {
-    return new StorageProviderConfigurationLoader (LoaderUtility.GetXmlFileName (ConfigurationAppSettingKey, DefaultConfigurationFile));
+    return new StorageProviderConfigurationLoader (LoaderUtility.GetConfigurationFileName (ConfigurationAppSettingKey, DefaultConfigurationFile));
   }
 
   // member fields
