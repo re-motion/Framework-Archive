@@ -596,7 +596,7 @@
         <arg line="-S ${sql.instance}" />
         <arg value="-E" />
         <arg value="-n" />
-        <arg line="-i ${build.test.outputdir}\SecurityManagerSetupContraints.sql" />
+        <arg line="-i ${build.test.outputdir}\SecurityManagerSetupConstraints.sql" />
       </exec>
 
       <echo message="Running unit tests..." />

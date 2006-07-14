@@ -494,7 +494,7 @@ namespace Rubicon.Security.UnitTests.Metadata
     [Test]
     public void ConvertAndSave_NewFile ()
     {
-      string testOutputPath = @"..\..\Metadata\Testoutput";
+      string testOutputPath = @"Metadata\Testoutput";
 
       if (!Directory.Exists (testOutputPath))
         Directory.CreateDirectory (testOutputPath);
