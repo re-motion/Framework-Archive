@@ -6,10 +6,13 @@ using NUnit.Framework;
 using Rhino.Mocks;
 
 using Rubicon.Security;
-using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
+using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Utilities;
+using Rubicon.Security.UnitTests.MockConstraints;
 
 namespace Rubicon.Security.UnitTests
 {
+
   [TestFixture]
   public class FunctionalSecurityStrategyTest
   {
@@ -51,8 +54,7 @@ namespace Rubicon.Security.UnitTests
     public void HasAccess_WithAccessGranted ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (true).Constraints (
-          Is.NotNull () 
-          & Property.Value ("Class", "Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableObject, Rubicon.Security.UnitTests"),
+          new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
           Is.Same (_stubSecurityService),
           Is.Same (_user),
           List.Equal (_accessTypeResult));
@@ -68,8 +70,7 @@ namespace Rubicon.Security.UnitTests
     public void HasAccess_WithAccessDenied ()
     {
       Expect.Call (_mockSecurityStrategy.HasAccess (null, null, null, null)).Return (false).Constraints (
-          Is.NotNull ()
-          & Property.Value ("Class", "Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.SecurableObject, Rubicon.Security.UnitTests"),
+          new FunctionalSecurityContextFactoryConstraint ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests"),
           Is.Same (_stubSecurityService),
           Is.Same (_user),
           List.Equal (_accessTypeResult));

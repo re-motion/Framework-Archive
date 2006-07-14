@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 
 using Rubicon.Security;
-using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
+using Rubicon.Security.UnitTests.SampleDomain;
 
 namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 {
@@ -18,6 +18,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     private IGlobalAccessTypeCacheProvider _mockGlobalAccessTypeCacheProvider;
     private IAccessTypeCache<SecurityContext> _mockGlobalAccessTypeCache;
     private IAccessTypeCache<string> _mockLocalAccessTypeCache;
+    private ISecurityContextFactory _mockContextFactory;
     private IPrincipal _user;
     private SecurityContext _context;
     private SecurityStrategy _strategy;
@@ -30,6 +31,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mockGlobalAccessTypeCacheProvider = _mocks.CreateMock<IGlobalAccessTypeCacheProvider> ();
       _mockGlobalAccessTypeCache = _mocks.CreateMock<IAccessTypeCache<SecurityContext>> ();
       _mockLocalAccessTypeCache = _mocks.CreateMock<IAccessTypeCache<string>> ();
+      _mockContextFactory = _mocks.CreateMock<ISecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("user"), new string[0]);
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
@@ -52,6 +54,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (null);
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
+        Expect.Call (_mockContextFactory.GetSecurityContext ()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.Get (_context)).Return (null);
         Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (accessTypeResult);
         _mockGlobalAccessTypeCache.Add (_context, accessTypeResult);
@@ -59,7 +62,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -73,6 +76,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (null);
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
+        Expect.Call (_mockContextFactory.GetSecurityContext ()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.Get (_context)).Return (null);
         Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (accessTypeResult);
         _mockGlobalAccessTypeCache.Add (_context, accessTypeResult);
@@ -80,7 +84,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
@@ -94,12 +98,13 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (null);
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
+        Expect.Call (_mockContextFactory.GetSecurityContext ()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.Get (_context)).Return (accessTypeResult);
         _mockLocalAccessTypeCache.Add ("user", accessTypeResult);
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -113,12 +118,13 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (null);
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
+        Expect.Call (_mockContextFactory.GetSecurityContext ()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.Get (_context)).Return (accessTypeResult);
         _mockLocalAccessTypeCache.Add ("user", accessTypeResult);
       }
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
@@ -130,7 +136,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (new AccessType[] { AccessType.Get (GeneralAccessType.Edit) });
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (true, hasAccess);
@@ -143,7 +149,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (accessTypeResult);
       _mocks.ReplayAll ();
 
-      bool hasAccess = _strategy.HasAccess (_context, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+      bool hasAccess = _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);

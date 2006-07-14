@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 
 using Rubicon.Security;
-using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
+using Rubicon.Security.UnitTests.SampleDomain;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -18,7 +18,6 @@ namespace Rubicon.Security.UnitTests
     private ISecurityService _stubSecurityService;
     private ISecurityContextFactory _stubContextFactory;
     private IPrincipal _user;
-    private SecurityContext _context;
     private AccessType[] _accessTypeResult;
     private ObjectSecurityStrategy _strategy;
 
@@ -31,10 +30,7 @@ namespace Rubicon.Security.UnitTests
       _stubContextFactory = _mocks.CreateMock<ISecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
-      _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
       _accessTypeResult = new AccessType[] { AccessType.Get (GeneralAccessType.Read), AccessType.Get (GeneralAccessType.Edit) };
-
-      SetupResult.For (_stubContextFactory.GetSecurityContext ()).Return (_context);
 
       _strategy = new ObjectSecurityStrategy (_stubContextFactory, _mockSecurityStrategy);
     }
@@ -58,7 +54,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void HasAccess_WithAccessGranted ()
     {
-      Expect.Call (_mockSecurityStrategy.HasAccess (_context, _stubSecurityService, _user, _accessTypeResult)).Return (true);
+      Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityService, _user, _accessTypeResult)).Return (true);
       _mocks.ReplayAll ();
 
       bool hasAccess = _strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);
@@ -70,7 +66,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void HasAccess_WithAccessDenied ()
     {
-      Expect.Call (_mockSecurityStrategy.HasAccess (_context, _stubSecurityService, _user, _accessTypeResult)).Return (false);
+      Expect.Call (_mockSecurityStrategy.HasAccess (_stubContextFactory, _stubSecurityService, _user, _accessTypeResult)).Return (false);
       _mocks.ReplayAll ();
 
       bool hasAccess = _strategy.HasAccess (_stubSecurityService, _user, _accessTypeResult);

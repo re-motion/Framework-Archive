@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 
-using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
+using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Security.Metadata;
 
 namespace Rubicon.Security.UnitTests.Metadata
@@ -88,8 +88,7 @@ namespace Rubicon.Security.UnitTests.Metadata
 
     [Test, ExpectedException (typeof (ArgumentException),
       "The DemandMethodPermissionAttribute must not be defined on members overriden or redefined in derived classes. "
-        + "A member 'Print' exists in class 'Rubicon.Security.UnitTests.SampleDomain.PermissionReflection.DerivedSecurableObject' and its "
-        + "base class."
+        + "A member 'Print' exists in class 'Rubicon.Security.UnitTests.SampleDomain.DerivedSecurableObject' and its base class."
         + "\r\nParameter name: memberName")]
     public void GetRequiredMethodPermissions_VirtualMethod ()
     {

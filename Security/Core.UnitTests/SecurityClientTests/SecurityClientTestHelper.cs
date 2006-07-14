@@ -6,7 +6,7 @@ using System.Text;
 using NMock2;
 
 using Rubicon.Security.Metadata;
-using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
+using Rubicon.Security.UnitTests.SampleDomain;
 
 namespace Rubicon.Security.UnitTests.SecurityClientTests
 {

@@ -35,7 +35,7 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
-      return _securityStrategy.HasAccess (new SecurityContext (type), securityService, user, requiredAccessTypes);
+      return _securityStrategy.HasAccess (new FunctionalSecurityContextFactory (type), securityService, user, requiredAccessTypes);
     }
   }
 }

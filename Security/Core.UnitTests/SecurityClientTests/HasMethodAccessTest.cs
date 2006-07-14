@@ -5,7 +5,7 @@ using System.Text;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-using Rubicon.Security.UnitTests.SampleDomain.PermissionReflection;
+using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Security.Metadata;
 using Rubicon.Utilities;
 

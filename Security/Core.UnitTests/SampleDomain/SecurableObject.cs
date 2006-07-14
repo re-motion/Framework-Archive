@@ -4,7 +4,7 @@ using System.Text;
 
 using Rubicon.Security;
 
-namespace Rubicon.Security.UnitTests.SampleDomain.PermissionReflection
+namespace Rubicon.Security.UnitTests.SampleDomain
 {
   public class SecurableObject : ISecurableObject
   {

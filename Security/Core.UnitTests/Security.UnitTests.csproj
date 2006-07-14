@@ -57,6 +57,8 @@
     <Compile Include="Configuration\SecurityConfigurationMock.cs" />
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
+    <Compile Include="FunctionalSecurityContextFactoryTest.cs" />
+    <Compile Include="MockConstraints\FunctionalSecurityContextFactoryConstraint.cs" />
     <Compile Include="NullGlobalAccessTypeCacheProviderTest.cs" />
     <Compile Include="FunctionalSecurityStrategyTest.cs" />
     <Compile Include="DemandMethodPermissionAttributeTest.cs" />
@@ -84,10 +86,10 @@
     <Compile Include="Metadata\MetadataExtractorTest.cs" />
     <Compile Include="Metadata\StatePropertyReflectorTest.cs" />
     <Compile Include="NullAccessTypeCacheTest.cs" />
+    <Compile Include="SampleDomain\DerivedSecurableObject.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredInstanceMethods.cs" />
     <Compile Include="SampleDomain\DerivedSecurableObjectWithSecuredStaticMethods.cs" />
-    <Compile Include="SampleDomain\PermissionReflection\DerivedSecurableObject.cs" />
-    <Compile Include="SampleDomain\PermissionReflection\SecurableObject.cs" />
+    <Compile Include="SampleDomain\SecurableObject.cs" />
     <Compile Include="SampleDomain\SecurableObjectWithSecuredInstanceMethods.cs" />
     <Compile Include="SampleDomain\SecurableObjectWithSecuredProperties.cs" />
     <Compile Include="SampleDomain\SecurableObjectWithSecuredStaticMethods.cs" />

@@ -31,14 +31,14 @@ namespace Rubicon.Security
       get { return _globalCacheProvider; }
     }
 
-    public bool HasAccess (SecurityContext context, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
+    public bool HasAccess (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
     {
-      ArgumentUtility.CheckNotNull ("context", context);
+      ArgumentUtility.CheckNotNull ("factory", factory);
       ArgumentUtility.CheckNotNull ("securityService", securityService);
       ArgumentUtility.CheckNotNull ("user", user);
       ArgumentUtility.CheckNotNullOrEmptyOrItemsNull ("requiredAccessTypes", requiredAccessTypes);
 
-      AccessType[] actualAccessTypes = GetAccessFromLocalCache (context, securityService, user);
+      AccessType[] actualAccessTypes = GetAccessFromLocalCache (factory, securityService, user);
 
       foreach (AccessType requiredAccessType in requiredAccessTypes)
       {
@@ -49,20 +49,21 @@ namespace Rubicon.Security
       return true;
     }
 
-    private AccessType[] GetAccessFromLocalCache (SecurityContext context, ISecurityService securityService, IPrincipal user)
+    private AccessType[] GetAccessFromLocalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
       AccessType[] actualAccessTypes = _localCache.Get (user.Identity.Name);
       if (actualAccessTypes == null)
       {
-        actualAccessTypes = GetAccessFromGlobalCache (context, securityService, user);
+        actualAccessTypes = GetAccessFromGlobalCache (factory, securityService, user);
         _localCache.Add (user.Identity.Name, actualAccessTypes);
       }
       return actualAccessTypes;
     }
 
-    private AccessType[] GetAccessFromGlobalCache (SecurityContext context, ISecurityService securityService, IPrincipal user)
+    private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
       IAccessTypeCache<SecurityContext> globalAccessTypeCache = _globalCacheProvider.GetAccessTypeCache ();
+      SecurityContext context = factory.GetSecurityContext ();
       AccessType[] actualAccessTypes = globalAccessTypeCache.Get (context);
       if (actualAccessTypes == null)
       {
