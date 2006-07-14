@@ -67,7 +67,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (null);
 
-      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<SecurityContext>), provider.GetAccessTypeCache ());
+      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<GlobalAccessTypeCacheKey>), provider.GetAccessTypeCache ());
     }
 
     [Test]
