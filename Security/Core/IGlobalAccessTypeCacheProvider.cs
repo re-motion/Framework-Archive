@@ -8,6 +8,6 @@ namespace Rubicon.Security
 {
   public interface IGlobalAccessTypeCacheProvider
   {
-    IAccessTypeCache<SecurityContext> GetAccessTypeCache ();
+    IAccessTypeCache<GlobalAccessTypeCacheKey> GetAccessTypeCache ();
   }
 }

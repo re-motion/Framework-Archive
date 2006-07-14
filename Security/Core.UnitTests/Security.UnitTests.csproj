@@ -58,6 +58,7 @@
     <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <Compile Include="Configuration\SecurityServiceMock.cs" />
     <Compile Include="FunctionalSecurityContextFactoryTest.cs" />
+    <Compile Include="GlobalAccessTypeCacheKeyTest.cs" />
     <Compile Include="MockConstraints\FunctionalSecurityContextFactoryConstraint.cs" />
     <Compile Include="NullGlobalAccessTypeCacheProviderTest.cs" />
     <Compile Include="FunctionalSecurityStrategyTest.cs" />

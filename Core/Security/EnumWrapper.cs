@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  public struct EnumWrapper
+  public struct EnumWrapper : IEquatable<EnumWrapper>
   {
     /// <summary> Parses strings in the format <c>Name|TypeName</c>. </summary>
     /// <param name="value"> A <see cref="String"/> in the format <c>Name|TypeName</c>. Must not be <see langword="null"/> or emtpy. </param>

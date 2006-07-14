@@ -29,12 +29,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessTypeCacheClientTransactionExtension.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ClientTransactionAccessTypeCacheProvider.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Data.DomainObjects.build" />
   </ItemGroup>

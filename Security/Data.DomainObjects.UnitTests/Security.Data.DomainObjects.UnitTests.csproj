@@ -34,9 +34,16 @@
       <HintPath>..\..\prereq\Assemblies\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessTypeCacheClientTransactionExtensionTest.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ClientTransactionAccessTypeCacheProviderTest.cs" />
+    <Compile Include="Configuration\SecurityConfigurationMock.cs" />
+    <Compile Include="Configuration\SecurityConfigurationTest.cs" />
     <None Include="AssemblyInfoTemplate.cs" />
     <None Include="Security.Data.DomainObjects.UnitTests.build" />
   </ItemGroup>

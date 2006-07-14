@@ -5,7 +5,7 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Security
 {
-  public sealed class SecurityContext
+  public sealed class SecurityContext : IEquatable<SecurityContext>
   {
     private readonly string _class;
     private readonly string _owner;
@@ -29,52 +29,12 @@ namespace Rubicon.Security
     {
       ArgumentUtility.CheckNotNullAndTypeIsAssignableFrom ("classType", classType, typeof (ISecurableObject));
 
-      List<EnumWrapper> abstractRoleList = new List<EnumWrapper> ();
-
-      if (abstractRoles != null)
-      {
-        foreach (Enum abstractRole in abstractRoles)
-        {
-          Type roleType = abstractRole.GetType ();
-          if (!Attribute.IsDefined (roleType, typeof (AbstractRoleAttribute), false))
-          {
-            string message = string.Format ("Enumerated Type '{0}' cannot be used as an abstract role. Valid abstract roles must have the {1} applied.",
-                roleType, typeof (AbstractRoleAttribute).FullName);
-
-            throw new ArgumentException (message, "abstractRoles");
-          }
-
-          abstractRoleList.Add (new EnumWrapper (abstractRole));
-        }
-      }
-
-      _abstractRoles = abstractRoleList.ToArray ();
-
-      Dictionary<string, EnumWrapper> securityStates = new Dictionary<string, EnumWrapper> ();
-
-      if (states != null)
-      {
-        foreach (KeyValuePair<string, Enum> valuePair in states)
-        {
-          Type stateType = valuePair.Value.GetType ();
-          if (!Attribute.IsDefined (stateType, typeof (SecurityStateAttribute), false))
-          {
-            string message = string.Format ("Enumerated Type '{0}' cannot be used as a security state. Valid security states must have the {1} applied.",
-                stateType, typeof (SecurityStateAttribute).FullName);
-
-            throw new ArgumentException (message, "states");
-          }
-
-          securityStates.Add (valuePair.Key, new EnumWrapper (valuePair.Value));
-        }
-      }
-
       _class = TypeUtility.GetPartialAssemblyQualifiedName (classType);
       _owner = owner;
       _ownerGroup = ownerGroup;
       _ownerClient = ownerClient;
-      _abstractRoles = abstractRoleList.ToArray ();
-      _states = securityStates;
+      _abstractRoles = InitializeAbstractRoles (abstractRoles);
+      _states = InitializeStates (states);;
     }
 
     public string Class
@@ -120,6 +80,136 @@ namespace Rubicon.Security
     public int GetNumberOfStates ()
     {
       return _states.Count;
+    }
+
+    public override int GetHashCode ()
+    {
+      int hashCode = _class.GetHashCode ();
+      if (_owner != null)
+        hashCode ^= _owner.GetHashCode ();
+      if (_ownerGroup != null)
+        hashCode ^= _ownerGroup.GetHashCode ();
+      if (_ownerClient != null)
+        hashCode ^= _ownerClient.GetHashCode ();
+
+      return hashCode;
+    }
+
+    public override bool Equals (object obj)
+    {
+      SecurityContext other = obj as SecurityContext;
+      if (other == null)
+        return false;
+      return Equals (other);
+    }
+
+    public bool Equals (SecurityContext other)
+    {
+      if (other == null)
+        return false;
+
+      if (!this._class.Equals (other._class, StringComparison.CurrentCulture))
+        return false;
+
+      if (!string.Equals (this._owner, other._owner, StringComparison.CurrentCulture))
+        return false;
+
+      if (!string.Equals (this._ownerGroup, other._ownerGroup, StringComparison.CurrentCulture))
+        return false;
+
+      if (!string.Equals (this._ownerClient, other._ownerClient, StringComparison.CurrentCulture))
+        return false;
+
+      if (!EqualsStates (this._states, other._states))
+        return false;
+
+      return EqualsAbstractRoles (this._abstractRoles, other._abstractRoles);
+    }
+
+    private bool EqualsStates (IDictionary<string,EnumWrapper> leftStates, IDictionary<string,EnumWrapper> rightStates)
+    {
+      if (leftStates.Count != rightStates.Count)
+        return false;
+
+      foreach (KeyValuePair<string, EnumWrapper> leftValuePair in leftStates)
+      {
+        EnumWrapper rightValue;
+        if (!rightStates.TryGetValue (leftValuePair.Key, out rightValue))
+          return false;
+        if (!leftValuePair.Value.Equals (rightValue))
+          return false;
+      }
+
+      return true;
+    }
+
+    private bool EqualsAbstractRoles (EnumWrapper[] leftAbstractRoles, EnumWrapper[] rightAbstractRoles)
+    {
+      if (leftAbstractRoles.Length != rightAbstractRoles.Length)
+        return false;
+
+      foreach (EnumWrapper leftAbstractRole in leftAbstractRoles)
+      {
+        bool isFound = false;
+        foreach (EnumWrapper rightAbstractRole in rightAbstractRoles)
+        {
+          if (leftAbstractRole.Equals (rightAbstractRole))
+          {
+            isFound = true;
+            break;
+          }
+        }
+        if (!isFound)
+          return false;
+      }
+
+      return true;
+    }
+
+    private EnumWrapper[] InitializeAbstractRoles (ICollection<Enum> abstractRoles)
+    {
+      List<EnumWrapper> abstractRoleList = new List<EnumWrapper> ();
+
+      if (abstractRoles != null)
+      {
+        foreach (Enum abstractRole in abstractRoles)
+        {
+          Type roleType = abstractRole.GetType ();
+          if (!Attribute.IsDefined (roleType, typeof (AbstractRoleAttribute), false))
+          {
+            string message = string.Format ("Enumerated Type '{0}' cannot be used as an abstract role. Valid abstract roles must have the {1} applied.",
+                roleType, typeof (AbstractRoleAttribute).FullName);
+
+            throw new ArgumentException (message, "abstractRoles");
+          }
+
+          abstractRoleList.Add (new EnumWrapper (abstractRole));
+        }
+      }
+      return abstractRoleList.ToArray ();
+    }
+
+    private Dictionary<string, EnumWrapper> InitializeStates (IDictionary<string, Enum> states)
+    {
+      Dictionary<string, EnumWrapper> securityStates = new Dictionary<string, EnumWrapper> ();
+
+      if (states != null)
+      {
+        foreach (KeyValuePair<string, Enum> valuePair in states)
+        {
+          Type stateType = valuePair.Value.GetType ();
+          if (!Attribute.IsDefined (stateType, typeof (SecurityStateAttribute), false))
+          {
+            string message = string.Format ("Enumerated Type '{0}' cannot be used as a security state. Valid security states must have the {1} applied.",
+                stateType, typeof (SecurityStateAttribute).FullName);
+
+            throw new ArgumentException (message, "states");
+          }
+
+          securityStates.Add (valuePair.Key, new EnumWrapper (valuePair.Value));
+        }
+      }
+      return securityStates;
     }
   }
 }

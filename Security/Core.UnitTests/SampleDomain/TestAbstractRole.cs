@@ -9,6 +9,7 @@ namespace Rubicon.Security.UnitTests.SampleDomain
   public enum TestAbstractRole
   {
     QualityEngineer,
-    Developer
+    Developer,
+    Manager
   }
 }
