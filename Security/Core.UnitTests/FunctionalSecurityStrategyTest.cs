@@ -9,6 +9,7 @@ using Rubicon.Security;
 using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Utilities;
 using Rubicon.Security.UnitTests.MockConstraints;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -36,6 +37,12 @@ namespace Rubicon.Security.UnitTests
       _strategy = new FunctionalSecurityStrategy (_mockSecurityStrategy);
     }
 
+    [TearDown]
+    public void TearDown ()
+    {
+      SecurityConfiguration.Current.GlobalAccessTypeCacheProvider = new NullGlobalAccessTypeCacheProvider ();
+    }
+
     [Test]
     public void Initialize ()
     {
@@ -45,9 +52,13 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void Initialize_WithDefaults ()
     {
+      IGlobalAccessTypeCacheProvider stubGlobalCacheProvider = _mocks.CreateMock<IGlobalAccessTypeCacheProvider> ();
+      SecurityConfiguration.Current.GlobalAccessTypeCacheProvider = stubGlobalCacheProvider;
       FunctionalSecurityStrategy strategy = new FunctionalSecurityStrategy ();
+
       Assert.IsInstanceOfType (typeof (SecurityStrategy), strategy.SecurityStrategy);
       Assert.IsInstanceOfType (typeof (NullAccessTypeCache<string>), ((SecurityStrategy) strategy.SecurityStrategy).LocalCache);
+      Assert.AreSame (stubGlobalCacheProvider, ((SecurityStrategy) strategy.SecurityStrategy).GlobalCacheProvider);
     }
 
     [Test]

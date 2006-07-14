@@ -7,7 +7,6 @@ using Rhino.Mocks;
 using Rubicon.Security.Metadata;
 using System.Globalization;
 using Rubicon.Security.UnitTests.SampleDomain;
-using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Security.UnitTests.TestDomain;
 using System.Reflection;
 

@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Text;
 
 using Rubicon.Utilities;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security
 {
@@ -22,7 +23,7 @@ namespace Rubicon.Security
     }
 
     public ObjectSecurityStrategy (ISecurityContextFactory securityContextFactory)
-      : this (securityContextFactory, new SecurityStrategy (new NullAccessTypeCache<string> (), new NullGlobalAccessTypeCacheProvider()))
+      : this (securityContextFactory, new SecurityStrategy ())
     {
     }
 
@@ -34,6 +35,11 @@ namespace Rubicon.Security
     public ISecurityContextFactory SecurityContextFactory
     {
       get { return _securityContextFactory; }
+    }
+
+    public void InvalidateLocalCache ()
+    {
+      _securityStrategy.InvalidateLocalCache ();
     }
 
     public bool HasAccess (ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)

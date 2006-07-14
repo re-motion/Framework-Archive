@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Rubicon.Utilities;
+using System.ComponentModel;
 
 namespace Rubicon.Security
 {
@@ -10,10 +11,11 @@ namespace Rubicon.Security
   {
     private Enum[] _accessTypes;
 
-    [Obsolete ("Do not use this constructor to initialize a new instance. It is required only for making the Attribute class CLS complient.")]
+    [EditorBrowsable (EditorBrowsableState.Never)]
+    [Obsolete ("Do not use this constructor to initialize a new instance. It is required only for making the Attribute class CLS complient.", true)]
     public BaseDemandPermissionAttribute ()
     {
-      _accessTypes = new Enum[0];
+      throw new NotSupportedException ("The default constructor is not supported by the BaseDemandPermissionAttribute. It is used only work around CLS compliancy issues of the C# compiler.");
     }
 
     protected BaseDemandPermissionAttribute (object[] accessTypes)

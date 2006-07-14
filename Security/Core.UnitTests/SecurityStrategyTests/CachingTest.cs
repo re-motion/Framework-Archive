@@ -7,6 +7,7 @@ using Rhino.Mocks;
 
 using Rubicon.Security;
 using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 {
@@ -44,6 +45,17 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     {
       Assert.AreSame (_mockLocalAccessTypeCache, _strategy.LocalCache);
       Assert.AreSame (_mockGlobalAccessTypeCacheProvider, _strategy.GlobalCacheProvider);
+    }
+
+    [Test]
+    public void Initialize_WithDefaults ()
+    {
+      IGlobalAccessTypeCacheProvider stubGlobalCacheProvider = _mocks.CreateMock<IGlobalAccessTypeCacheProvider> ();
+      SecurityConfiguration.Current.GlobalAccessTypeCacheProvider = stubGlobalCacheProvider;
+      SecurityStrategy strategy = new SecurityStrategy ();
+
+      Assert.IsInstanceOfType (typeof (AccessTypeCache<string>), strategy.LocalCache);
+      Assert.AreSame (stubGlobalCacheProvider, strategy.GlobalCacheProvider);
     }
 
     [Test]
@@ -178,5 +190,15 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
     }
 
+    [Test]
+    public void InvalidateLocalCache ()
+    {
+      _mockLocalAccessTypeCache.Clear ();
+      _mocks.ReplayAll ();
+
+      _strategy.InvalidateLocalCache ();
+
+      _mocks.VerifyAll ();
+    }
   }
 }

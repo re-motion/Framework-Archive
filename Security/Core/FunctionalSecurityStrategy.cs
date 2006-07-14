@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Text;
 
 using Rubicon.Utilities;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security
 {
@@ -19,7 +20,7 @@ namespace Rubicon.Security
     }
 
     public FunctionalSecurityStrategy ()
-      : this (new SecurityStrategy (new NullAccessTypeCache<string> (), new NullGlobalAccessTypeCacheProvider()))
+      : this (new SecurityStrategy (new NullAccessTypeCache<string> (), SecurityConfiguration.Current.GlobalAccessTypeCacheProvider))
     {
     }
 

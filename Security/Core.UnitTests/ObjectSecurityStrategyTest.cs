@@ -7,6 +7,7 @@ using Rhino.Mocks;
 
 using Rubicon.Security;
 using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -35,6 +36,12 @@ namespace Rubicon.Security.UnitTests
       _strategy = new ObjectSecurityStrategy (_stubContextFactory, _mockSecurityStrategy);
     }
 
+    [TearDown]
+    public void TearDown ()
+    {
+      SecurityConfiguration.Current.GlobalAccessTypeCacheProvider = new NullGlobalAccessTypeCacheProvider ();
+    }
+
     [Test]
     public void Initialize ()
     {
@@ -45,10 +52,14 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void Initialize_WithDefaults ()
     {
+      IGlobalAccessTypeCacheProvider stubGlobalCacheProvider = _mocks.CreateMock<IGlobalAccessTypeCacheProvider> ();
+      SecurityConfiguration.Current.GlobalAccessTypeCacheProvider = stubGlobalCacheProvider;
       ObjectSecurityStrategy strategy = new ObjectSecurityStrategy (_stubContextFactory);
+
       Assert.AreSame (_stubContextFactory, strategy.SecurityContextFactory);
       Assert.IsInstanceOfType (typeof (SecurityStrategy), strategy.SecurityStrategy);
-      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<string>), ((SecurityStrategy)strategy.SecurityStrategy).LocalCache);
+      Assert.IsInstanceOfType (typeof (AccessTypeCache<string>), ((SecurityStrategy) strategy.SecurityStrategy).LocalCache);
+      Assert.AreSame (stubGlobalCacheProvider, ((SecurityStrategy) strategy.SecurityStrategy).GlobalCacheProvider);
     }
 
     [Test]
@@ -73,6 +84,17 @@ namespace Rubicon.Security.UnitTests
 
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
+    }
+
+    [Test]
+    public void InvalidateLocalCache ()
+    {
+      _mockSecurityStrategy.InvalidateLocalCache ();
+      _mocks.ReplayAll ();
+
+      _strategy.InvalidateLocalCache ();
+
+      _mocks.VerifyAll ();
     }
   }
 }

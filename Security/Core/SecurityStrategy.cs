@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Text;
 
 using Rubicon.Utilities;
+using Rubicon.Security.Configuration;
 
 namespace Rubicon.Security
 {
@@ -11,6 +12,11 @@ namespace Rubicon.Security
   {
     private IAccessTypeCache<string> _localCache;
     private IGlobalAccessTypeCacheProvider _globalCacheProvider;
+
+    public SecurityStrategy ()
+      : this (new AccessTypeCache<string> (), SecurityConfiguration.Current.GlobalAccessTypeCacheProvider)
+    {
+    }
 
     public SecurityStrategy (IAccessTypeCache<string> localCache, IGlobalAccessTypeCacheProvider globalCacheProvider)
     {
@@ -29,6 +35,11 @@ namespace Rubicon.Security
     public IGlobalAccessTypeCacheProvider GlobalCacheProvider
     {
       get { return _globalCacheProvider; }
+    }
+
+    public void InvalidateLocalCache ()
+    {
+      _localCache.Clear ();
     }
 
     public bool HasAccess (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user, params AccessType[] requiredAccessTypes)
@@ -63,7 +74,7 @@ namespace Rubicon.Security
     private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
       IAccessTypeCache<SecurityContext> globalAccessTypeCache = _globalCacheProvider.GetAccessTypeCache ();
-      if (globalAccessTypeCache == null) 
+      if (globalAccessTypeCache == null)
         throw new InvalidOperationException ("IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.");
 
       SecurityContext context = factory.CreateSecurityContext ();
