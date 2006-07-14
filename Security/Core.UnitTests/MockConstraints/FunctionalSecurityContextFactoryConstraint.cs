@@ -27,7 +27,7 @@ namespace Rubicon.Security.UnitTests.MockConstraints
       }
       FunctionalSecurityContextFactory factory = (FunctionalSecurityContextFactory) obj;
 
-      SecurityContext context = factory.GetSecurityContext ();
+      SecurityContext context = factory.CreateSecurityContext ();
       if (context == null)
       {
         _message = "The FunctionalSecurityContextFactory.GetSecurityContext() evaluated and returned null.";

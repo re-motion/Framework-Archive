@@ -13,20 +13,11 @@ namespace Rubicon.Security.UnitTests
   public class FunctionalSecurityContextFactoryTest
   {
     [Test]
-    public void Initialize_WithSecurityContext ()
-    {
-      SecurityContext context = new SecurityContext (typeof (SecurableObject));
-      ISecurityContextFactory factory = new FunctionalSecurityContextFactory (context);
-
-      Assert.AreSame (context, factory.GetSecurityContext ());
-    }
-
-    [Test]
-    public void Initialize_WithType ()
+    public void Initialize ()
     {
       ISecurityContextFactory factory = new FunctionalSecurityContextFactory (typeof (SecurableObject));
 
-      SecurityContext context = factory.GetSecurityContext ();
+      SecurityContext context = factory.CreateSecurityContext ();
       Assert.IsNotNull (context);
       Assert.AreEqual ("Rubicon.Security.UnitTests.SampleDomain.SecurableObject, Rubicon.Security.UnitTests", context.Class);
     }

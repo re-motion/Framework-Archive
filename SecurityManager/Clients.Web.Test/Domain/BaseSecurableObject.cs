@@ -51,7 +51,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test.Domain
       return _objectSecurityStrategy;
     }
 
-    public SecurityContext GetSecurityContext ()
+    public SecurityContext CreateSecurityContext ()
     {
       return new SecurityContext (GetType (), GetOwnerName (), GetOwnerGroupName (), GetOwnerClientName (), GetStates (), GetAbstractRoles ());
     }

@@ -70,7 +70,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       ISecurityContextFactory securityContextFactoryStub = _mocks.NewMock<ISecurityContextFactory> ();
 
       Stub.On (securityContextFactoryStub)
-          .Method ("GetSecurityContext")
+          .Method ("CreateSecurityContext")
           .Will (Return.Value (_context));
 
       return securityContextFactoryStub;

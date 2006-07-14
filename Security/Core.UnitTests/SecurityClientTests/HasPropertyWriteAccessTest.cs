@@ -31,7 +31,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
       _user = CreateDummyUser ();
       _context = CreateSimpleContext ();
-      SetupResult.For (_contextFactoryMock.GetSecurityContext ()).Return (_context);
+      SetupResult.For (_contextFactoryMock.CreateSecurityContext ()).Return (_context);
 
       _securityClient = CreateSecurityClient ();
     }

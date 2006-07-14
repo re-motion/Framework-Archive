@@ -18,12 +18,6 @@ namespace Rubicon.Security
 
     // construction and disposing
 
-    public FunctionalSecurityContextFactory (SecurityContext context)
-    {
-      ArgumentUtility.CheckNotNull ("context", context);
-      _context = context;
-    }
-
     public FunctionalSecurityContextFactory (Type classType)
     {
       _context = new SecurityContext (classType);
@@ -31,7 +25,7 @@ namespace Rubicon.Security
     
     // methods and properties
 
-    public SecurityContext GetSecurityContext ()
+    public SecurityContext CreateSecurityContext ()
     {
       return _context;
     }

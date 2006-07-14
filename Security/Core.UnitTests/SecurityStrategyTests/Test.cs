@@ -29,7 +29,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 
       _user = new GenericPrincipal (new GenericIdentity ("user"), new string[0]);
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
-      SetupResult.For (_stubContextFactory.GetSecurityContext ()).Return (_context);
+      SetupResult.For (_stubContextFactory.CreateSecurityContext ()).Return (_context);
 
       _strategy = new SecurityStrategy (new NullAccessTypeCache<string> (), new NullGlobalAccessTypeCacheProvider ());
     }

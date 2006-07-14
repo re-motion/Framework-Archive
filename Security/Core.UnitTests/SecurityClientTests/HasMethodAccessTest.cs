@@ -33,7 +33,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       _user = new GenericPrincipal (new GenericIdentity ("owner"), new string[0]);
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
 
-      SetupResult.For (_contextFactoryMock.GetSecurityContext ()).Return (_context);
+      SetupResult.For (_contextFactoryMock.CreateSecurityContext ()).Return (_context);
 
       _securityClient = new SecurityClient (_securityServiceMock, _permissionReflectorMock, new ThreadUserProvider (), new FunctionalSecurityStrategy ());
     }

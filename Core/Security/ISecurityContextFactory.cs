@@ -6,6 +6,6 @@ namespace Rubicon.Security
 {
   public interface ISecurityContextFactory
   {
-    SecurityContext GetSecurityContext ();
+    SecurityContext CreateSecurityContext ();
   }
 }

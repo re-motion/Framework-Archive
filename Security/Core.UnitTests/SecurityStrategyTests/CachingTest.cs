@@ -54,7 +54,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (null);
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
-        Expect.Call (_mockContextFactory.GetSecurityContext ()).Return (_context);
+        Expect.Call (_mockContextFactory.CreateSecurityContext ()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.Get (_context)).Return (null);
         Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (accessTypeResult);
         _mockGlobalAccessTypeCache.Add (_context, accessTypeResult);
@@ -76,7 +76,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (null);
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
-        Expect.Call (_mockContextFactory.GetSecurityContext ()).Return (_context);
+        Expect.Call (_mockContextFactory.CreateSecurityContext ()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.Get (_context)).Return (null);
         Expect.Call (_mockSecurityService.GetAccess (_context, _user)).Return (accessTypeResult);
         _mockGlobalAccessTypeCache.Add (_context, accessTypeResult);
@@ -98,7 +98,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (null);
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
-        Expect.Call (_mockContextFactory.GetSecurityContext ()).Return (_context);
+        Expect.Call (_mockContextFactory.CreateSecurityContext ()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.Get (_context)).Return (accessTypeResult);
         _mockLocalAccessTypeCache.Add ("user", accessTypeResult);
       }
@@ -118,7 +118,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       {
         Expect.Call (_mockLocalAccessTypeCache.Get ("user")).Return (null);
         Expect.Call (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
-        Expect.Call (_mockContextFactory.GetSecurityContext ()).Return (_context);
+        Expect.Call (_mockContextFactory.CreateSecurityContext ()).Return (_context);
         Expect.Call (_mockGlobalAccessTypeCache.Get (_context)).Return (accessTypeResult);
         _mockLocalAccessTypeCache.Add ("user", accessTypeResult);
       }
@@ -154,5 +154,29 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mocks.VerifyAll ();
       Assert.AreEqual (false, hasAccess);
     }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.")]
+    public void HasAccess_WithGlobalCacheProviderReturningNull ()
+    {
+      SetupResult.For (_mockLocalAccessTypeCache.Get ("user")).Return (null);
+      SetupResult.For (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (null);
+      _mocks.ReplayAll ();
+
+      _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+    }
+
+    [Test]
+    [ExpectedException (typeof (InvalidOperationException), "ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.")]
+    public void HasAccess_WithSecurityContextFactoryReturningNull ()
+    {
+      SetupResult.For (_mockLocalAccessTypeCache.Get ("user")).Return (null);
+      SetupResult.For (_mockGlobalAccessTypeCacheProvider.GetAccessTypeCache ()).Return (_mockGlobalAccessTypeCache);
+      SetupResult.For (_mockContextFactory.CreateSecurityContext ()).Return (null);
+      _mocks.ReplayAll ();
+
+      _strategy.HasAccess (_mockContextFactory, _mockSecurityService, _user, AccessType.Get (GeneralAccessType.Edit));
+    }
+
   }
 }

@@ -63,7 +63,13 @@ namespace Rubicon.Security
     private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
       IAccessTypeCache<SecurityContext> globalAccessTypeCache = _globalCacheProvider.GetAccessTypeCache ();
-      SecurityContext context = factory.GetSecurityContext ();
+      if (globalAccessTypeCache == null) 
+        throw new InvalidOperationException ("IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.");
+
+      SecurityContext context = factory.CreateSecurityContext ();
+      if (context == null)
+        throw new InvalidOperationException ("ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
+
       AccessType[] actualAccessTypes = globalAccessTypeCache.Get (context);
       if (actualAccessTypes == null)
       {
