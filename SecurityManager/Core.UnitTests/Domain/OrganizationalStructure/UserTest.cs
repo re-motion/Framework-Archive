@@ -23,21 +23,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    public void Find_ValidUser ()
+    public void FindByUserName_ValidUser ()
     {
       _dbFixtures.CreateOrganizationalStructure ();
 
-      User foundUser = User.Find (_transaction, "test.user");
+      User foundUser = User.FindByUserName (_transaction, "test.user");
 
       Assert.AreEqual ("test.user", foundUser.UserName);
     }
 
     [Test]
-    public void Find_NotExistingUser ()
+    public void FindByUserName_NotExistingUser ()
     {
       _dbFixtures.CreateOrganizationalStructure ();
 
-      User foundUser = User.Find (_transaction, "not.existing");
+      User foundUser = User.FindByUserName (_transaction, "not.existing");
 
       Assert.IsNull (foundUser);
     }
@@ -47,8 +47,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       _dbFixtures.CreateOrganizationalStructure ();
 
-      User testUser = User.Find (_transaction, "test.user");
-      Group parentOfOwnerGroup = Group.Find (_transaction, "parentOfOwnerGroup");
+      User testUser = User.FindByUserName (_transaction, "test.user");
+      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier (_transaction, "UnqiueIdentifier: parentOfOwnerGroup");
       List<Role> roles = testUser.GetRolesForGroup (parentOfOwnerGroup);
 
       Assert.AreEqual (0, roles.Count);
@@ -59,8 +59,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     {
       _dbFixtures.CreateOrganizationalStructure ();
 
-      User testUser = User.Find (_transaction, "test.user");
-      Group testgroup = Group.Find (_transaction, "Testgroup");
+      User testUser = User.FindByUserName (_transaction, "test.user");
+      Group testgroup = Group.FindByUnqiueIdentifier (_transaction, "UnqiueIdentifier: Testgroup");
       List<Role> roles = testUser.GetRolesForGroup (testgroup);
 
       Assert.AreEqual (2, roles.Count);
@@ -84,7 +84,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
 
       ClientTransaction transaction = new ClientTransaction ();
       Client client = _dbFixtures.CreateClient (transaction, "Testclient");
-      Group group = _dbFixtures.CreateGroup (transaction, "TestGroup", null, client);
+      Group group = _dbFixtures.CreateGroup (transaction, "TestGroup", "UnqiueIdentifier: TestGroup", null, client);
       User newUser = _dbFixtures.CreateUser (transaction, "test.user", "Test", "User", "Ing.", group, client);
 
       transaction.Commit ();

@@ -32,23 +32,23 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       if (StringUtility.IsNullOrEmpty (userName))
         return null;
 
-      User user = User.Find (transaction, userName);
+      User user = User.FindByUserName (transaction, userName);
       if (user == null)
         throw new ArgumentException (string.Format ("The user '{0}' could not be found.", userName), "userName");
 
       return user;
     }
 
-    private List<Group> GetGroups (ClientTransaction transaction, string groupName)
+    private List<Group> GetGroups (ClientTransaction transaction, string groupUniqueIdentifier)
     {
       List<Group> groups = new List<Group> ();
 
-      if (StringUtility.IsNullOrEmpty (groupName))
+      if (StringUtility.IsNullOrEmpty (groupUniqueIdentifier))
         return groups;
 
-      Group group = Group.Find (transaction, groupName);
+      Group group = Group.FindByUnqiueIdentifier (transaction, groupUniqueIdentifier);
       if (group == null)
-        throw new ArgumentException (string.Format ("The group '{0}' could not be found.", groupName), "groupName");
+        throw new ArgumentException (string.Format ("The group '{0}' could not be found.", groupUniqueIdentifier), "groupUnqiueIdentifier");
 
       groups.Add (group);
 

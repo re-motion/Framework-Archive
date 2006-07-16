@@ -99,7 +99,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      AccessControlObjectAssert.ContainsGroup ("ownerGroup", token.Groups);
+      AccessControlObjectAssert.ContainsGroup ("UnqiueIdentifier: ownerGroup", token.Groups);
     }
 
     [Test]
@@ -118,7 +118,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The group 'NotExistingGroup' could not be found.\r\nParameter name: groupName")]
+    [ExpectedException (typeof (ArgumentException), "The group 'UnqiueIdentifier: NotExistingGroup' could not be found.\r\nParameter name: groupUnqiueIdentifier")]
     public void Create_WithNotExistingGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
@@ -143,7 +143,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      AccessControlObjectAssert.ContainsGroup ("rootGroup", token.Groups);
+      AccessControlObjectAssert.ContainsGroup ("UnqiueIdentifier: rootGroup", token.Groups);
     }
 
     private IPrincipal CreateTestUser ()
@@ -163,7 +163,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private SecurityContext CreateStatelessContext ()
     {
-      return new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "UnqiueIdentifier: ownerGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithoutOwnerGroup ()
@@ -173,7 +173,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private SecurityContext CreateContextWithNotExistingOwnerGroup ()
     {
-      return new SecurityContext (typeof (Order), "owner", "NotExistingGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
+      return new SecurityContext (typeof (Order), "owner", "UnqiueIdentifier: NotExistingGroup", "ownerClient", new Dictionary<string, Enum> (), new Enum[0]);
     }
 
     private SecurityContext CreateContextWithQualityManagerRole ()
@@ -188,7 +188,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     private SecurityContext CreateContextWithAbstractRoles (params Enum[] abstractRoles)
     {
-      return new SecurityContext (typeof (Order), "owner", "ownerGroup", "ownerClient", new Dictionary<string, Enum> (), abstractRoles);
+      return new SecurityContext (typeof (Order), "owner", "UnqiueIdentifier: ownerGroup", "ownerClient", new Dictionary<string, Enum> (), abstractRoles);
     }
   }
 }

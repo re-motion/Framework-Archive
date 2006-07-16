@@ -61,10 +61,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       AbstractRoleDefinition developerRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "Developer|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", 1);
 
       Client client = CreateClient (transaction, "Testclient");
-      Group rootGroup = CreateGroup (transaction, "rootGroup", null, client);
-      Group parentOfOwnerGroup = CreateGroup (transaction, "parentOfOwnerGroup", rootGroup, client);
-      Group ownerGroup = CreateGroup (transaction, "ownerGroup", parentOfOwnerGroup, client);
-      Group group = CreateGroup (transaction, "Testgroup", ownerGroup, client);
+      Group rootGroup = CreateGroup (transaction, "rootGroup", "UnqiueIdentifier: rootGroup", null, client);
+      Group parentOfOwnerGroup = CreateGroup (transaction, "parentOfOwnerGroup", "UnqiueIdentifier: parentOfOwnerGroup", rootGroup, client);
+      Group ownerGroup = CreateGroup (transaction, "ownerGroup", "UnqiueIdentifier: ownerGroup", parentOfOwnerGroup, client);
+      Group group = CreateGroup (transaction, "Testgroup", "UnqiueIdentifier: Testgroup", ownerGroup, client);
       User user = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", group, client);
       Position officialPosition = CreatePosition (transaction, "Official", client);
       Position managerPosition = CreatePosition (transaction, "Manager", client);
@@ -132,8 +132,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       _currentClient = CreateClient (transaction, "client 1");
       Client client2 = CreateClient (transaction, "client 2");
 
-      Group group1 = CreateGroup (transaction, "group 1", null, _currentClient);
-      Group group2 = CreateGroup (transaction, "group 2", null, client2);
+      Group group1 = CreateGroup (transaction, "group 1", "UnqiueIdentifier: group 1", null, _currentClient);
+      Group group2 = CreateGroup (transaction, "group 2", "UnqiueIdentifier: group 2", null, client2);
 
       User user1 = CreateUser (transaction, "Hans", "Huber", "Huber.Hans", string.Empty, group1, _currentClient);
       User user2 = CreateUser (transaction, "Martha", "Hauser", "Hauser.Martha", string.Empty, group1, _currentClient);
@@ -151,9 +151,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       _currentClient = CreateClient (transaction, "client 1");
       Client client2 = CreateClient (transaction, "client 2");
 
-      Group group1 = CreateGroup (transaction, "group 1", null, _currentClient);
-      Group group2 = CreateGroup (transaction, "group 2", null, _currentClient);
-      Group group3 = CreateGroup (transaction, "group 3", null, client2);
+      Group group1 = CreateGroup (transaction, "group 1", "UnqiueIdentifier: group 1", null, _currentClient);
+      Group group2 = CreateGroup (transaction, "group 2", "UnqiueIdentifier: group 2", null, _currentClient);
+      Group group3 = CreateGroup (transaction, "group 3", "UnqiueIdentifier: group 3", null, client2);
 
       transaction.Commit ();
     }
@@ -217,12 +217,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return ace.ID;
     }
 
-    public Group CreateGroup (ClientTransaction transaction, string name, Group parent, Client client)
+    public Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Client client)
     {
       Group group = _factory.CreateGroup (transaction);
       group.Name = name;
       group.Parent = parent;
       group.Client = client;
+      group.UniqueIdentifier = uniqueIdentifier;
 
       return group;
     }

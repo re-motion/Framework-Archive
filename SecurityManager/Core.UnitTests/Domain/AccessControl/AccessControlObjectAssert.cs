@@ -9,15 +9,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {
   public static class AccessControlObjectAssert
   {
-    public static void ContainsGroup (string groupName, IEnumerable<Group> groups)
+    public static void ContainsGroup (string groupUniqueIdentifier, IEnumerable<Group> groups)
     {
       foreach (Group group in groups)
       {
-        if (group.Name == groupName)
+        if (group.UniqueIdentifier == groupUniqueIdentifier)
           return;
       }
 
-      Assert.Fail ("The list does not contain the group '{0}'.", groupName);
+      Assert.Fail ("The list does not contain the group '{0}'.", groupUniqueIdentifier);
     }
   }
 }

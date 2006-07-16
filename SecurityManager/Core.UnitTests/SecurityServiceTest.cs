@@ -25,7 +25,7 @@ namespace Rubicon.SecurityManager.UnitTests
       ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
 
       SecurityService service = new SecurityService (aclFinder, tokenBuilder);
-      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "OwnerGroup", "OwnerClient", null, null);
+      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "UnqiueIdentifier: OwnerGroup", "OwnerClient", null, null);
       ClientTransaction transaction = new ClientTransaction ();
       AccessControlEntry ace = CreateAce (transaction);
       IPrincipal principal = CreateUser ();
@@ -49,7 +49,7 @@ namespace Rubicon.SecurityManager.UnitTests
       ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
 
       SecurityService service = new SecurityService (aclFinder, tokenBuilder);
-      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "OwnerGroup", "OwnerClient", null, null);
+      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "UnqiueIdentifier: OwnerGroup", "OwnerClient", null, null);
       ClientTransaction transaction = new ClientTransaction ();
       AccessControlEntry ace = CreateAce (transaction);
       IPrincipal principal = CreateUser ();
@@ -77,7 +77,7 @@ namespace Rubicon.SecurityManager.UnitTests
       ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
 
       ISecurityService service = new SecurityService (aclFinder, tokenBuilder);
-      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "OwnerGroup", "OwnerClient", null, null);
+      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "UnqiueIdentifier: OwnerGroup", "OwnerClient", null, null);
       ClientTransaction transaction = new ClientTransaction ();
       AccessControlEntry ace = CreateAce (transaction);
       IPrincipal principal = CreateUser ();

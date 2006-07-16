@@ -18,9 +18,9 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static User Find (ClientTransaction transaction, string userName)
+    public static User FindByUserName (ClientTransaction transaction, string userName)
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindUser");
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByUserName");
       query.Parameters.Add ("@userName", userName);
 
       DomainObjectCollection users = transaction.QueryManager.GetCollection (query);

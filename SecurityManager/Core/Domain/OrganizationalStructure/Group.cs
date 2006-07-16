@@ -18,10 +18,10 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
 
     // static members and constants
 
-    public static Group Find (ClientTransaction transaction, string name)
+    public static Group FindByUnqiueIdentifier (ClientTransaction transaction, string uniqueIdentifier)
     {
-      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindGroup");
-      query.Parameters.Add ("@name", name);
+      Query query = new Query ("Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier");
+      query.Parameters.Add ("@uniqueIdentifier", uniqueIdentifier);
 
       DomainObjectCollection groups = transaction.QueryManager.GetCollection (query);
       if (groups.Count == 0)

@@ -23,21 +23,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     }
 
     [Test]
-    public void Find_ValidGroup ()
+    public void FindByUnqiueIdentifier_ValidGroup ()
     {
       _dbFixtures.CreateOrganizationalStructure ();
 
-      Group foundGroup = Group.Find (_transaction, "Testgroup");
+      Group foundGroup = Group.FindByUnqiueIdentifier (_transaction, "UnqiueIdentifier: Testgroup");
 
-      Assert.AreEqual ("Testgroup", foundGroup.Name);
+      Assert.AreEqual ("UnqiueIdentifier: Testgroup", foundGroup.UniqueIdentifier);
     }
 
     [Test]
-    public void Find_NotExistingGroup ()
+    public void FindByUnqiueIdentifier_NotExistingGroup ()
     {
       _dbFixtures.CreateOrganizationalStructure ();
 
-      Group foundGroup = Group.Find (_transaction, "NotExistingGroup");
+      Group foundGroup = Group.FindByUnqiueIdentifier (_transaction, "UnqiueIdentifier: NotExistingGroup");
 
       Assert.IsNull (foundGroup);
     }
@@ -59,16 +59,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
       _dbFixtures.CreateEmptyDomain ();
 
       ClientTransaction transaction1 = new ClientTransaction ();
-      Client client1 = _dbFixtures.CreateClient (transaction1, "NewClient");
-      Group group1 = _dbFixtures.CreateGroup (transaction1, "NewGroup", null, client1);
-      group1.UniqueIdentifier = Guid.NewGuid ().ToString ();
+      Client client1 = _dbFixtures.CreateClient (transaction1, "NewClient1");
+      Group group1 = _dbFixtures.CreateGroup (transaction1, "NewGroup1", "UnqiueIdentifier: NewGroup", null, client1);
 
       transaction1.Commit ();
 
       ClientTransaction transaction2 = new ClientTransaction ();
-      Client client2 = _dbFixtures.CreateClient (transaction2, "NewClient");
-      Group group2 = _dbFixtures.CreateGroup (transaction2, "NewGroup", null, client2);
-      group2.UniqueIdentifier = group1.UniqueIdentifier;
+      Client client2 = _dbFixtures.CreateClient (transaction2, "NewClient2");
+      Group group2 = _dbFixtures.CreateGroup (transaction2, "NewGroup2", "UnqiueIdentifier: NewGroup", null, client2);
 
       transaction2.Commit ();
     }
