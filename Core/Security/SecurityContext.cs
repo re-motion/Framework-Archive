@@ -108,16 +108,16 @@ namespace Rubicon.Security
       if (other == null)
         return false;
 
-      if (!this._class.Equals (other._class, StringComparison.CurrentCulture))
+      if (!this._class.Equals (other._class, StringComparison.Ordinal))
         return false;
 
-      if (!string.Equals (this._owner, other._owner, StringComparison.CurrentCulture))
+      if (!string.Equals (this._owner, other._owner, StringComparison.Ordinal))
         return false;
 
-      if (!string.Equals (this._ownerGroup, other._ownerGroup, StringComparison.CurrentCulture))
+      if (!string.Equals (this._ownerGroup, other._ownerGroup, StringComparison.Ordinal))
         return false;
 
-      if (!string.Equals (this._ownerClient, other._ownerClient, StringComparison.CurrentCulture))
+      if (!string.Equals (this._ownerClient, other._ownerClient, StringComparison.Ordinal))
         return false;
 
       if (!EqualsStates (this._states, other._states))

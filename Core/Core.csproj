@@ -94,6 +94,9 @@
     <Compile Include="Collections\AutoInitHashtable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\TupelAbcd.cs" />
+    <Compile Include="Collections\TupelAbc.cs" />
+    <Compile Include="Collections\TupelAb.cs" />
     <Compile Include="Collections\NameObjectCollection.cs">
       <SubType>Code</SubType>
     </Compile>

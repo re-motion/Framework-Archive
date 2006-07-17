@@ -4,6 +4,7 @@ using System.Text;
 
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.Data.DomainObjects
 {
@@ -15,7 +16,7 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // member fields
 
-    private NullAccessTypeCache<GlobalAccessTypeCacheKey> _nullCache = new NullAccessTypeCache<GlobalAccessTypeCacheKey> ();
+    private NullAccessTypeCache<Tupel<SecurityContext, string>> _nullCache = new NullAccessTypeCache<Tupel<SecurityContext, string>> ();
 
     // construction and disposing
 
@@ -25,7 +26,7 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // methods and properties
 
-    public IAccessTypeCache<GlobalAccessTypeCacheKey> GetAccessTypeCache ()
+    public IAccessTypeCache<Tupel<SecurityContext, string>> GetAccessTypeCache ()
     {
       if (!ClientTransaction.HasCurrent)
         return _nullCache;

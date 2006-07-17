@@ -107,6 +107,9 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\TupelAbcdTest.cs" />
+    <Compile Include="Collections\TupelAbcTest.cs" />
+    <Compile Include="Collections\TupelAbTest.cs" />
     <Compile Include="NullableValueTypes\ArithmeticsTests.cs">
       <SubType>Code</SubType>
     </Compile>

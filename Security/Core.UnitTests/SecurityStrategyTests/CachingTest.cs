@@ -8,6 +8,7 @@ using Rhino.Mocks;
 using Rubicon.Security;
 using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Security.Configuration;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 {
@@ -17,12 +18,12 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
     private MockRepository _mocks;
     private ISecurityService _mockSecurityService;
     private IGlobalAccessTypeCacheProvider _mockGlobalAccessTypeCacheProvider;
-    private IAccessTypeCache<GlobalAccessTypeCacheKey> _mockGlobalAccessTypeCache;
+    private IAccessTypeCache<Tupel<SecurityContext, string>> _mockGlobalAccessTypeCache;
     private IAccessTypeCache<string> _mockLocalAccessTypeCache;
     private ISecurityContextFactory _mockContextFactory;
     private IPrincipal _user;
     private SecurityContext _context;
-    private GlobalAccessTypeCacheKey _globalAccessTypeCacheKey;
+    private Tupel<SecurityContext, string> _globalAccessTypeCacheKey;
     private SecurityStrategy _strategy;
 
     [SetUp]
@@ -31,13 +32,13 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _mocks = new MockRepository ();
       _mockSecurityService = _mocks.CreateMock<ISecurityService> ();
       _mockGlobalAccessTypeCacheProvider = _mocks.CreateMock<IGlobalAccessTypeCacheProvider> ();
-      _mockGlobalAccessTypeCache = _mocks.CreateMock<IAccessTypeCache<GlobalAccessTypeCacheKey>> ();
+      _mockGlobalAccessTypeCache = _mocks.CreateMock<IAccessTypeCache<Tupel<SecurityContext, string>>> ();
       _mockLocalAccessTypeCache = _mocks.CreateMock<IAccessTypeCache<string>> ();
       _mockContextFactory = _mocks.CreateMock<ISecurityContextFactory> ();
 
       _user = new GenericPrincipal (new GenericIdentity ("user"), new string[0]);
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
-      _globalAccessTypeCacheKey = new GlobalAccessTypeCacheKey (_context, _user);
+      _globalAccessTypeCacheKey = new Tupel<SecurityContext, string> (_context, _user.Identity.Name);
 
       _strategy = new SecurityStrategy (_mockLocalAccessTypeCache, _mockGlobalAccessTypeCacheProvider);
     }

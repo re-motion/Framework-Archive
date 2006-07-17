@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using NUnit.Framework;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -20,7 +21,7 @@ namespace Rubicon.Security.UnitTests
     [Test]
     public void GetAccessTypeCache ()
     {
-      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<GlobalAccessTypeCacheKey>), _provider.GetAccessTypeCache ());
+      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<Tupel<SecurityContext, string>>), _provider.GetAccessTypeCache ());
     }
   }
 }

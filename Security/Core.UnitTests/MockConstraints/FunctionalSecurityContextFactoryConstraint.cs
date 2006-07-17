@@ -34,7 +34,7 @@ namespace Rubicon.Security.UnitTests.MockConstraints
         return false;
       }
 
-      if (!string.Equals (_typeName, context.Class, StringComparison.CurrentCulture))
+      if (!string.Equals (_typeName, context.Class, StringComparison.Ordinal))
       {
         _message = string.Format ("Expected class {0}, but was {1}", _typeName, context.Class ?? "null");
         return false;

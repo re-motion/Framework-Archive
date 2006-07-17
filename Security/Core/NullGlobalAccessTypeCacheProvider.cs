@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 
 using Rubicon.Utilities;
+using Rubicon.Collections;
 
 namespace Rubicon.Security
 {
   public class NullGlobalAccessTypeCacheProvider : IGlobalAccessTypeCacheProvider
   {
-    private NullAccessTypeCache<GlobalAccessTypeCacheKey> _cache = new NullAccessTypeCache<GlobalAccessTypeCacheKey> ();
+    private NullAccessTypeCache<Tupel<SecurityContext, string>> _cache = new NullAccessTypeCache<Tupel<SecurityContext, string>> ();
 
     public NullGlobalAccessTypeCacheProvider ()
     {
     }
 
-    public IAccessTypeCache<GlobalAccessTypeCacheKey> GetAccessTypeCache ()
+    public IAccessTypeCache<Tupel<SecurityContext, string>> GetAccessTypeCache ()
     {
       return _cache;
     }

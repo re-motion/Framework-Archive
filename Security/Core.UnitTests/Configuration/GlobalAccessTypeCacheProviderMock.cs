@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Rubicon.Utilities;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.UnitTests.Configuration
 {
@@ -22,7 +23,7 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // methods and properties
 
-    public IAccessTypeCache<GlobalAccessTypeCacheKey> GetAccessTypeCache ()
+    public IAccessTypeCache<Tupel<SecurityContext, string>> GetAccessTypeCache ()
     {
       throw new NotImplementedException ();
     }

@@ -43,7 +43,6 @@
     <None Include="Security.build" />
     <Compile Include="BaseDemandPermissionAttribute.cs" />
     <Compile Include="FunctionalSecurityContextFactory.cs" />
-    <Compile Include="GlobalAccessTypeCacheKey.cs" />
     <Compile Include="NullGlobalAccessTypeCacheProvider.cs" />
     <Compile Include="DemandMethodPermissionAttribute.cs" />
     <Compile Include="Configuration\SecurityConfiguration.cs" />

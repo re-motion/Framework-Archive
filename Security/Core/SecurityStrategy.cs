@@ -5,6 +5,7 @@ using System.Text;
 
 using Rubicon.Utilities;
 using Rubicon.Security.Configuration;
+using Rubicon.Collections;
 
 namespace Rubicon.Security
 {
@@ -73,7 +74,7 @@ namespace Rubicon.Security
 
     private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
-      IAccessTypeCache<GlobalAccessTypeCacheKey> globalAccessTypeCache = _globalCacheProvider.GetAccessTypeCache ();
+      IAccessTypeCache<Tupel<SecurityContext, string>> globalAccessTypeCache = _globalCacheProvider.GetAccessTypeCache ();
       if (globalAccessTypeCache == null)
         throw new InvalidOperationException ("IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.");
 
@@ -81,7 +82,7 @@ namespace Rubicon.Security
       if (context == null)
         throw new InvalidOperationException ("ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
 
-      GlobalAccessTypeCacheKey key = new GlobalAccessTypeCacheKey (context, user);
+      Tupel<SecurityContext, string> key = new Tupel<SecurityContext, string> (context, user.Identity.Name);
       AccessType[] actualAccessTypes = globalAccessTypeCache.Get (key);
       if (actualAccessTypes == null)
       {

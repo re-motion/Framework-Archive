@@ -4,6 +4,7 @@ using System.Text;
 
 using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.Data.DomainObjects.UnitTests
 {
@@ -44,9 +45,9 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       ClientTransaction transaction = new ClientTransaction ();
       ClientTransaction.SetCurrent (transaction);
 
-      IAccessTypeCache<GlobalAccessTypeCacheKey> first = provider.GetAccessTypeCache ();
+      IAccessTypeCache<Tupel<SecurityContext, string>> first = provider.GetAccessTypeCache ();
       transaction.Rollback ();
-      IAccessTypeCache<GlobalAccessTypeCacheKey> second = provider.GetAccessTypeCache ();
+      IAccessTypeCache<Tupel<SecurityContext, string>> second = provider.GetAccessTypeCache ();
 
       Assert.AreSame (first, second);
     }
@@ -67,7 +68,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (null);
 
-      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<GlobalAccessTypeCacheKey>), provider.GetAccessTypeCache ());
+      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<Tupel<SecurityContext, string>>), provider.GetAccessTypeCache ());
     }
 
     [Test]
@@ -85,9 +86,9 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (new ClientTransaction ());
 
-      IAccessTypeCache<GlobalAccessTypeCacheKey> first = provider.GetAccessTypeCache ();
+      IAccessTypeCache<Tupel<SecurityContext, string>> first = provider.GetAccessTypeCache ();
       ClientTransaction.SetCurrent (new ClientTransaction ());
-      IAccessTypeCache<GlobalAccessTypeCacheKey> second = provider.GetAccessTypeCache ();
+      IAccessTypeCache<Tupel<SecurityContext, string>> second = provider.GetAccessTypeCache ();
 
       Assert.IsNotNull (first);
       Assert.IsNotNull (second);
