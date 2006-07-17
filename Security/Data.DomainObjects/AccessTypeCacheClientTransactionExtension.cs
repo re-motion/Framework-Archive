@@ -16,7 +16,7 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // member fields
 
-    private AccessTypeCache<Tupel<SecurityContext, string>> _cache = new AccessTypeCache<Tupel<SecurityContext, string>> ();
+    private Cache<Tupel<SecurityContext, string>, AccessType[]> _cache = new Cache<Tupel<SecurityContext, string>, AccessType[]> ();
 
     // construction and disposing
 
@@ -26,7 +26,7 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // methods and properties
 
-    public AccessTypeCache<Tupel<SecurityContext, string>> Cache
+    public Cache<Tupel<SecurityContext, string>, AccessType[]> Cache
     {
       get { return _cache; }
     }

@@ -11,15 +11,15 @@ namespace Rubicon.Security
 {
   public class SecurityStrategy : ISecurityStrategy
   {
-    private IAccessTypeCache<string> _localCache;
+    private ICache<string, AccessType[]> _localCache;
     private IGlobalAccessTypeCacheProvider _globalCacheProvider;
 
     public SecurityStrategy ()
-      : this (new AccessTypeCache<string> (), SecurityConfiguration.Current.GlobalAccessTypeCacheProvider)
+      : this (new Cache<string, AccessType[]> (), SecurityConfiguration.Current.GlobalAccessTypeCacheProvider)
     {
     }
 
-    public SecurityStrategy (IAccessTypeCache<string> localCache, IGlobalAccessTypeCacheProvider globalCacheProvider)
+    public SecurityStrategy (ICache<string, AccessType[]> localCache, IGlobalAccessTypeCacheProvider globalCacheProvider)
     {
       ArgumentUtility.CheckNotNull ("localCache", localCache);
       ArgumentUtility.CheckNotNull ("globalCacheProvider", globalCacheProvider);
@@ -28,7 +28,7 @@ namespace Rubicon.Security
       _globalCacheProvider = globalCacheProvider;
     }
 
-    public IAccessTypeCache<string> LocalCache
+    public ICache<string, AccessType[]> LocalCache
     {
       get { return _localCache; }
     }
@@ -63,8 +63,8 @@ namespace Rubicon.Security
 
     private AccessType[] GetAccessFromLocalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
-      AccessType[] actualAccessTypes = _localCache.Get (user.Identity.Name);
-      if (actualAccessTypes == null)
+      AccessType[] actualAccessTypes;
+      if (!_localCache.TryGet (user.Identity.Name, out actualAccessTypes))
       {
         actualAccessTypes = GetAccessFromGlobalCache (factory, securityService, user);
         _localCache.Add (user.Identity.Name, actualAccessTypes);
@@ -74,7 +74,7 @@ namespace Rubicon.Security
 
     private AccessType[] GetAccessFromGlobalCache (ISecurityContextFactory factory, ISecurityService securityService, IPrincipal user)
     {
-      IAccessTypeCache<Tupel<SecurityContext, string>> globalAccessTypeCache = _globalCacheProvider.GetAccessTypeCache ();
+      ICache<Tupel<SecurityContext, string>, AccessType[]> globalAccessTypeCache = _globalCacheProvider.GetCache ();
       if (globalAccessTypeCache == null)
         throw new InvalidOperationException ("IGlobalAccesTypeCacheProvider.GetAccessTypeCache() evaluated and returned null.");
 
@@ -83,8 +83,8 @@ namespace Rubicon.Security
         throw new InvalidOperationException ("ISecurityContextFactory.CreateSecurityContext() evaluated and returned null.");
 
       Tupel<SecurityContext, string> key = new Tupel<SecurityContext, string> (context, user.Identity.Name);
-      AccessType[] actualAccessTypes = globalAccessTypeCache.Get (key);
-      if (actualAccessTypes == null)
+      AccessType[] actualAccessTypes;
+      if (!globalAccessTypeCache.TryGet (key, out actualAccessTypes))
       {
         actualAccessTypes = GetAccessFromSecurityService (securityService, context, user);
         globalAccessTypeCache.Add (key, actualAccessTypes);

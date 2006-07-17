@@ -23,7 +23,7 @@ namespace Rubicon.Security.UnitTests.Configuration
 
     // methods and properties
 
-    public IAccessTypeCache<Tupel<SecurityContext, string>> GetAccessTypeCache ()
+    public ICache<Tupel<SecurityContext, string>, AccessType[]> GetCache ()
     {
       throw new NotImplementedException ();
     }

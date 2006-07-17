@@ -91,9 +91,12 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\Cache.cs" />
     <Compile Include="Collections\AutoInitHashtable.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\ICache.cs" />
+    <Compile Include="Collections\NullCache.cs" />
     <Compile Include="Collections\TupelAbcd.cs" />
     <Compile Include="Collections\TupelAbc.cs" />
     <Compile Include="Collections\TupelAb.cs" />

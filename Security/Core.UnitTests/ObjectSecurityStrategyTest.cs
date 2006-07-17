@@ -8,6 +8,7 @@ using Rhino.Mocks;
 using Rubicon.Security;
 using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Security.Configuration;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -58,7 +59,7 @@ namespace Rubicon.Security.UnitTests
 
       Assert.AreSame (_stubContextFactory, strategy.SecurityContextFactory);
       Assert.IsInstanceOfType (typeof (SecurityStrategy), strategy.SecurityStrategy);
-      Assert.IsInstanceOfType (typeof (AccessTypeCache<string>), ((SecurityStrategy) strategy.SecurityStrategy).LocalCache);
+      Assert.IsInstanceOfType (typeof (Cache<string, AccessType[]>), ((SecurityStrategy) strategy.SecurityStrategy).LocalCache);
       Assert.AreSame (stubGlobalCacheProvider, ((SecurityStrategy) strategy.SecurityStrategy).GlobalCacheProvider);
     }
 

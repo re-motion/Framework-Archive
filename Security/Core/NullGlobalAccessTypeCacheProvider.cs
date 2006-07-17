@@ -9,13 +9,13 @@ namespace Rubicon.Security
 {
   public class NullGlobalAccessTypeCacheProvider : IGlobalAccessTypeCacheProvider
   {
-    private NullAccessTypeCache<Tupel<SecurityContext, string>> _cache = new NullAccessTypeCache<Tupel<SecurityContext, string>> ();
+    private NullCache<Tupel<SecurityContext, string>, AccessType[]> _cache = new NullCache<Tupel<SecurityContext, string>, AccessType[]> ();
 
     public NullGlobalAccessTypeCacheProvider ()
     {
     }
 
-    public IAccessTypeCache<Tupel<SecurityContext, string>> GetAccessTypeCache ()
+    public ICache<Tupel<SecurityContext, string>, AccessType[]> GetCache ()
     {
       return _cache;
     }

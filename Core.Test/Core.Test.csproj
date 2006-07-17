@@ -107,6 +107,8 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\CacheTest.cs" />
+    <Compile Include="Collections\NullCacheTest.cs" />
     <Compile Include="Collections\TupelAbcdTest.cs" />
     <Compile Include="Collections\TupelAbcTest.cs" />
     <Compile Include="Collections\TupelAbTest.cs" />

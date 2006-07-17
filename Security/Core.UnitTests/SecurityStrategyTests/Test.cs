@@ -7,6 +7,7 @@ using Rhino.Mocks;
 
 using Rubicon.Security;
 using Rubicon.Security.UnitTests.SampleDomain;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.UnitTests.SecurityStrategyTests
 {
@@ -31,7 +32,7 @@ namespace Rubicon.Security.UnitTests.SecurityStrategyTests
       _context = new SecurityContext (typeof (SecurableObject), "owner", "group", "client", new Dictionary<string, Enum> (), new Enum[0]);
       SetupResult.For (_stubContextFactory.CreateSecurityContext ()).Return (_context);
 
-      _strategy = new SecurityStrategy (new NullAccessTypeCache<string> (), new NullGlobalAccessTypeCacheProvider ());
+      _strategy = new SecurityStrategy (new NullCache<string, AccessType[]> (), new NullGlobalAccessTypeCacheProvider ());
     }
 
     [Test]

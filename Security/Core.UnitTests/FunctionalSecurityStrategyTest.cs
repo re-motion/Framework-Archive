@@ -10,6 +10,7 @@ using Rubicon.Security.UnitTests.SampleDomain;
 using Rubicon.Utilities;
 using Rubicon.Security.UnitTests.MockConstraints;
 using Rubicon.Security.Configuration;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.UnitTests
 {
@@ -57,7 +58,7 @@ namespace Rubicon.Security.UnitTests
       FunctionalSecurityStrategy strategy = new FunctionalSecurityStrategy ();
 
       Assert.IsInstanceOfType (typeof (SecurityStrategy), strategy.SecurityStrategy);
-      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<string>), ((SecurityStrategy) strategy.SecurityStrategy).LocalCache);
+      Assert.IsInstanceOfType (typeof (NullCache<string, AccessType[]>), ((SecurityStrategy) strategy.SecurityStrategy).LocalCache);
       Assert.AreSame (stubGlobalCacheProvider, ((SecurityStrategy) strategy.SecurityStrategy).GlobalCacheProvider);
     }
 

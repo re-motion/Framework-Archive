@@ -18,7 +18,7 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
     }
 
     [Test]
-    public void GetAccessTypeCache_ExtensionIsRegistered ()
+    public void GetCache_ExtensionIsRegistered ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction transaction = new ClientTransaction ();
@@ -26,69 +26,69 @@ namespace Rubicon.Security.Data.DomainObjects.UnitTests
       transaction.Extensions.Add (typeof (AccessTypeCacheClientTransactionExtension).FullName, extension);
       ClientTransaction.SetCurrent (transaction);
 
-      Assert.AreSame (extension.Cache, provider.GetAccessTypeCache ());
+      Assert.AreSame (extension.Cache, provider.GetCache ());
     }
 
     [Test]
-    public void GetAccessTypeCache_GetSameCacheTwice ()
+    public void GetCache_GetSameCacheTwice ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (new ClientTransaction ());
 
-      Assert.AreSame (provider.GetAccessTypeCache (), provider.GetAccessTypeCache ());
+      Assert.AreSame (provider.GetCache (), provider.GetCache ());
     }
 
     [Test]
-    public void GetAccessTypeCache_GetSameCacheTwiceAfterRollback ()
+    public void GetCache_GetSameCacheTwiceAfterRollback ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       ClientTransaction.SetCurrent (transaction);
 
-      IAccessTypeCache<Tupel<SecurityContext, string>> first = provider.GetAccessTypeCache ();
+      ICache<Tupel<SecurityContext, string>, AccessType[]> first = provider.GetCache ();
       transaction.Rollback ();
-      IAccessTypeCache<Tupel<SecurityContext, string>> second = provider.GetAccessTypeCache ();
+      ICache<Tupel<SecurityContext, string>, AccessType[]> second = provider.GetCache ();
 
       Assert.AreSame (first, second);
     }
 
     [Test]
-    public void GetAccessTypeCache_ExtensionIsNotRegistered ()
+    public void GetCache_ExtensionIsNotRegistered ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction transaction = new ClientTransaction ();
       ClientTransaction.SetCurrent (transaction);
 
-      Assert.IsNotNull (provider.GetAccessTypeCache ());
+      Assert.IsNotNull (provider.GetCache ());
     }
 
     [Test]
-    public void GetAccessTypeCache_NoClientTransaction ()
+    public void GetCache_NoClientTransaction ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (null);
 
-      Assert.IsInstanceOfType (typeof (NullAccessTypeCache<Tupel<SecurityContext, string>>), provider.GetAccessTypeCache ());
+      Assert.IsInstanceOfType (typeof (NullCache<Tupel<SecurityContext, string>, AccessType[]>), provider.GetCache ());
     }
 
     [Test]
-    public void GetAccessTypeCache_GetSameCacheTwiceWithNoClientTransaction ()
+    public void GetCache_GetSameCacheTwiceWithNoClientTransaction ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (null);
 
-      Assert.AreSame (provider.GetAccessTypeCache (), provider.GetAccessTypeCache ());
+      Assert.AreSame (provider.GetCache (), provider.GetCache ());
     }
 
     [Test]
-    public void GetAccessTypeCache_GetNotSameCacheTwiceWhenCurrentTransactionIsReset ()
+    public void GetCache_GetNotSameCacheTwiceWhenCurrentTransactionIsReset ()
     {
       ClientTransactionAccessTypeCacheProvider provider = new ClientTransactionAccessTypeCacheProvider ();
       ClientTransaction.SetCurrent (new ClientTransaction ());
 
-      IAccessTypeCache<Tupel<SecurityContext, string>> first = provider.GetAccessTypeCache ();
+      ICache<Tupel<SecurityContext, string>, AccessType[]> first = provider.GetCache ();
       ClientTransaction.SetCurrent (new ClientTransaction ());
-      IAccessTypeCache<Tupel<SecurityContext, string>> second = provider.GetAccessTypeCache ();
+      ICache<Tupel<SecurityContext, string>, AccessType[]> second = provider.GetCache ();
 
       Assert.IsNotNull (first);
       Assert.IsNotNull (second);

@@ -16,7 +16,7 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // member fields
 
-    private NullAccessTypeCache<Tupel<SecurityContext, string>> _nullCache = new NullAccessTypeCache<Tupel<SecurityContext, string>> ();
+    private NullCache<Tupel<SecurityContext, string>, AccessType[]> _nullCache = new NullCache<Tupel<SecurityContext, string>, AccessType[]> ();
 
     // construction and disposing
 
@@ -26,7 +26,7 @@ namespace Rubicon.Security.Data.DomainObjects
 
     // methods and properties
 
-    public IAccessTypeCache<Tupel<SecurityContext, string>> GetAccessTypeCache ()
+    public ICache<Tupel<SecurityContext, string>, AccessType[]> GetCache ()
     {
       if (!ClientTransaction.HasCurrent)
         return _nullCache;
