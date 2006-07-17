@@ -51,5 +51,14 @@ namespace Rubicon.Core.UnitTests.Collections
       Assert.IsFalse (_cache.TryGet ("key1", out actual));
       Assert.IsNull (actual);
     }
+
+    [Test]
+    public void Add_Null ()
+    {
+      _cache.Add ("key1", null);
+      object actual;
+      Assert.IsTrue (_cache.TryGet ("key1", out actual));
+      Assert.IsNull (actual);
+    }
   }
 }

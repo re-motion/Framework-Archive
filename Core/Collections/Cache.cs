@@ -28,7 +28,6 @@ namespace Rubicon.Collections
     public void Add (TKey key, TValue value)
     {
       ArgumentUtility.CheckNotNull ("key", key);
-      ArgumentUtility.CheckNotNull ("value", value);
 
       _cache[key] = value;
     }
