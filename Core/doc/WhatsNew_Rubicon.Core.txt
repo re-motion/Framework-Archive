@@ -1,3 +1,12 @@
+1.7.13
+======
+- Rubicon.Collections.Tupel<TA, TB>: 2-wertige Tupel Klasse, z.B.: für Keys im Dictionary
+- Rubicon.Collections.Tupel<TA, TB, TC>: 3-wertige Tupel Klasse, z.B.: für Keys im Dictionary
+- Rubicon.Collections.Tupel<TA, TB, TC, TD>: 4-wertige Tupel Klasse, z.B.: für Keys im Dictionary
+- Rubicon.Collections.ICache<TKey, TValue>: Generic Cache 
+- Rubicon.Collections.Cache<TKey, TValue>: default Implementierung von ICache<TKey, TValue>
+- Rubicon.Collections.NullCache<TKey, TValue>: NullObject Implentierung von ICache<TKey, TValue>
+
 1.7.12
 ======
 - Rubicon.Utilities.ArgumentUtility.CheckType und .CheckNotNullAndType: Sind jetzt generische Methoden, Typ ist jetzt ein Typ-Argument. 
