@@ -248,7 +248,7 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNull ("user", user);
 
       Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyReadPermissions (securableObject.GetType (), propertyName);
-      CheckRequiredPropertyReadAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
+      CheckRequiredPropertyAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
     }
 
     public void CheckPropertyWriteAccess (ISecurableObject securableObject, string propertyName, IPrincipal user)
@@ -257,8 +257,8 @@ namespace Rubicon.Security
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyReadPermissions (securableObject.GetType (), propertyName);
-      CheckRequiredPropertyReadAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
+      Enum[] requiredAccessTypeEnums = _permissionProvider.GetRequiredPropertyWritePermissions (securableObject.GetType (), propertyName);
+      CheckRequiredPropertyAccess (securableObject, propertyName, requiredAccessTypeEnums, user);
     }
 
     private void CheckRequiredMethodAccess (ISecurableObject securableObject, string methodName, Enum[] requiredAccessTypeEnums, IPrincipal user)
@@ -279,7 +279,7 @@ namespace Rubicon.Security
       }
     }
 
-    private void CheckRequiredPropertyReadAccess (ISecurableObject securableObject, string propertyName, Enum[] requiredAccessTypeEnums, IPrincipal user)
+    private void CheckRequiredPropertyAccess (ISecurableObject securableObject, string propertyName, Enum[] requiredAccessTypeEnums, IPrincipal user)
     {
       if (!HasRequiredAccess (securableObject, propertyName, requiredAccessTypeEnums, user))
         throw new PermissionDeniedException (string.Format ("Access to property '{0}' for type '{1}' has been denied.", propertyName, securableObject.GetType ().FullName));

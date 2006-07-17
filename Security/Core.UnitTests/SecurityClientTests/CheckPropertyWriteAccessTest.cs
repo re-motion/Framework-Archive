@@ -87,7 +87,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
 
     private void SetupNamePropertyReadAccessTypes (params Enum[] accessTypes)
     {
-      Expect.Call (_permissionReflectorMock.GetRequiredPropertyReadPermissions (typeof (SecurableObject), "Name")).Return (accessTypes);
+      Expect.Call (_permissionReflectorMock.GetRequiredPropertyWritePermissions (typeof (SecurableObject), "Name")).Return (accessTypes);
     }
 
     private void SetupSecurityServiceResult (params Enum[] accessTypeEnums)

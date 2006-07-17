@@ -120,7 +120,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return false;
     }
 
-    public new StateDefinition this[string stateName]
+    public StateDefinition this[string stateName]
     {
       get { return GetState (stateName); }
     }
