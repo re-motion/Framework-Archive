@@ -3,22 +3,46 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Rubicon.Utilities;
+using Rubicon.Collections;
 
 namespace Rubicon.Security.Metadata
 {
   public class PermissionReflector : IPermissionProvider
   {
+    // constants
+
     private const string c_memberNotFoundMessage = "The member '{0}' could not be found.";
     private const string c_memberHasMultipleAttributesMessage = "The member '{0}' has multiple {1} defined.";
-    private const string c_memberPermissionsOnlyInBaseClassMessage = "The {2} must not be defined on members overriden or redefined in derived classes. "
-      + "A member '{0}' exists in class '{1}' and its base class.";
+    private const string c_memberPermissionsOnlyInBaseClassMessage =
+        "The {2} must not be defined on members overriden or redefined in derived classes. A member '{0}' exists in class '{1}' and its base class.";
+
+    // types
+
+    // static members
+
+    private static Cache<Tupel<Type, Type, string, BindingFlags>, Enum[]> s_cache = new Cache<Tupel<Type, Type, string, BindingFlags>, Enum[]> ();
+
+    protected static Cache<Tupel<Type, Type, string, BindingFlags>, Enum[]> Cache
+    {
+      get { return s_cache; }
+    }
+
+    // member fields
+
+    // construction and disposing
+
+    public PermissionReflector ()
+    {
+    }
+
+    // methods and properties
 
     public Enum[] GetRequiredMethodPermissions (Type type, string methodName)
     {
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-      return GetRequiredPermissions<DemandMethodPermissionAttribute> (type, methodName, BindingFlags.Public | BindingFlags.Instance);
+      return GetPermissionsFromCache<DemandMethodPermissionAttribute> (type, methodName, BindingFlags.Public | BindingFlags.Instance);
     }
 
     public Enum[] GetRequiredStaticMethodPermissions (Type type, string methodName)
@@ -26,7 +50,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("methodName", methodName);
 
-      return GetRequiredPermissions<DemandMethodPermissionAttribute> (type, methodName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+      return GetPermissionsFromCache<DemandMethodPermissionAttribute> (type, methodName, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
     }
 
     public Enum[] GetRequiredPropertyReadPermissions (Type type, string propertyName)
@@ -34,7 +58,7 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-      return GetRequiredPermissions<DemandPropertyReadPermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.Instance);
+      return GetPermissionsFromCache<DemandPropertyReadPermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.Instance);
     }
 
     public Enum[] GetRequiredPropertyWritePermissions (Type type, string propertyName)
@@ -42,17 +66,17 @@ namespace Rubicon.Security.Metadata
       ArgumentUtility.CheckNotNull ("type", type);
       ArgumentUtility.CheckNotNullOrEmpty ("propertyName", propertyName);
 
-      return GetRequiredPermissions<DemandPropertyWritePermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.Instance);
+      return GetPermissionsFromCache<DemandPropertyWritePermissionAttribute> (type, propertyName, BindingFlags.Public | BindingFlags.Instance);
     }
 
-    public Enum[] GetPermissions<T> (MemberInfo methodInfo) where T : BaseDemandPermissionAttribute
+    public Enum[] GetPermissions<TAttribute> (MemberInfo methodInfo) where TAttribute : BaseDemandPermissionAttribute
     {
-      if (!methodInfo.IsDefined (typeof (T), true))
+      if (!methodInfo.IsDefined (typeof (TAttribute), true))
         return new Enum[0];
 
-      T[] permissionAttributes = (T[]) methodInfo.GetCustomAttributes (typeof (T), true);
+      TAttribute[] permissionAttributes = (TAttribute[]) methodInfo.GetCustomAttributes (typeof (TAttribute), true);
 
-      T permission = permissionAttributes[0];
+      TAttribute permission = permissionAttributes[0];
 
       List<Enum> permissions = new List<Enum> ();
       foreach (Enum accessTypeEnum in permission.AccessTypes)
@@ -64,21 +88,34 @@ namespace Rubicon.Security.Metadata
       return permissions.ToArray ();
     }
 
-    private bool IsSecuredMethod<T> (MemberInfo member, object filterCriteria) where T : BaseDemandPermissionAttribute
+    private Enum[] GetPermissionsFromCache<TAttribute> (Type type, string memberName, BindingFlags bindingFlags) where TAttribute : BaseDemandPermissionAttribute
     {
-      string memberName = (string) filterCriteria;
-      return member.Name == memberName && member.IsDefined (typeof (T), true);
+      Tupel<Type, Type, string, BindingFlags> cacheKey = new Tupel<Type, Type, string, BindingFlags> (typeof (TAttribute), type, memberName, bindingFlags);
+      Enum[] cachedPermissions;
+      if (!s_cache.TryGet (cacheKey, out cachedPermissions))
+      {
+        Enum[] permissions = GetPermissions<TAttribute> (type, memberName, bindingFlags);
+        lock (s_cache)
+        {
+          if (!s_cache.TryGet (cacheKey, out cachedPermissions))
+          {
+            s_cache.Add (cacheKey, permissions);
+            cachedPermissions = permissions;
+          }
+        }
+      }
+      return cachedPermissions;
     }
 
-    private Enum[] GetRequiredPermissions<T> (Type type, string memberName, BindingFlags bindingFlags) where T : BaseDemandPermissionAttribute
+    private Enum[] GetPermissions<TAttribute> (Type type, string memberName, BindingFlags bindingFlags) where TAttribute : BaseDemandPermissionAttribute
     {
-      MemberTypes memberType = GetApplicableMemberTypesFromAttributeType (typeof (T));
-      string attributeName = typeof (T).Name;
+      MemberTypes memberType = GetApplicableMemberTypesFromAttributeType (typeof (TAttribute));
+      string attributeName = typeof (TAttribute).Name;
 
       if (!TypeHasMember (type, memberType, memberName, bindingFlags))
         throw new ArgumentException (string.Format (c_memberNotFoundMessage, memberName), "memberName");
 
-      MemberInfo[] foundMembers = type.FindMembers (memberType, bindingFlags, IsSecuredMethod<T>, memberName);
+      MemberInfo[] foundMembers = type.FindMembers (memberType, bindingFlags, IsSecuredMember<TAttribute>, memberName);
       if (foundMembers.Length == 0)
         return new Enum[0];
 
@@ -89,13 +126,7 @@ namespace Rubicon.Security.Metadata
       if (type.BaseType != null && foundMember.DeclaringType == type && TypeHasMember (type.BaseType, memberType, memberName, bindingFlags))
         throw new ArgumentException (string.Format (c_memberPermissionsOnlyInBaseClassMessage, memberName, type.FullName, attributeName), "memberName");
 
-      return GetPermissions<T> (foundMember);
-    }
-
-    private bool TypeHasMember (Type type, MemberTypes memberType, string methodName, BindingFlags bindingFlags)
-    {
-      MemberInfo[] existingMembers = type.GetMember (methodName, memberType, bindingFlags);
-      return existingMembers.Length > 0;
+      return GetPermissions<TAttribute> (foundMember);
     }
 
     private MemberTypes GetApplicableMemberTypesFromAttributeType (Type attributeType)
@@ -112,6 +143,18 @@ namespace Rubicon.Security.Metadata
         memberTypes |= MemberTypes.Property;
 
       return memberTypes;
+    }
+
+    private bool TypeHasMember (Type type, MemberTypes memberType, string methodName, BindingFlags bindingFlags)
+    {
+      MemberInfo[] existingMembers = type.GetMember (methodName, memberType, bindingFlags);
+      return existingMembers.Length > 0;
+    }
+
+    private bool IsSecuredMember<TAttribute> (MemberInfo member, object filterCriteria) where TAttribute : BaseDemandPermissionAttribute
+    {
+      string memberName = (string) filterCriteria;
+      return member.Name == memberName && member.IsDefined (typeof (TAttribute), true);
     }
   }
 }
