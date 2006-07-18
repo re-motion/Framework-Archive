@@ -59,8 +59,8 @@
     <Compile Include="FunctionalSecurityContextFactoryTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTests\GetRequiredMethodPermissionsTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTests\GetRequiredPropertyReadPermissionsTest.cs" />
+    <Compile Include="Metadata\PermissionReflectorTests\GetRequiredPropertyWritePermissionsTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTests\GetRequiredStaticMethodPermissionsTest.cs" />
-    <Compile Include="Metadata\PermissionReflectorTests\PermissionReflectorTest.cs" />
     <Compile Include="Metadata\PermissionReflectorTests\TestPermissionReflector.cs" />
     <Compile Include="MockConstraints\FunctionalSecurityContextFactoryConstraint.cs" />
     <Compile Include="NullGlobalAccessTypeCacheProviderTest.cs" />
