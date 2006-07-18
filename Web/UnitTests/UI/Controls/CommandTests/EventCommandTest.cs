@@ -42,7 +42,23 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void HasAccess_WithAccessGranted ()
+    public void HasAccess_WithAccessGrantedAndSecurableObjectNotNull ()
+    {
+      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
+      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
+      Command command = _testHelper.CreateEventCommandWithSecurableObject ();
+      command.Click += TestHandler;
+      _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), true);
+      _testHelper.ReplayAll ();
+
+      bool hasAccess = command.HasAccess ();
+
+      _testHelper.VerifyAll ();
+      Assert.IsTrue (hasAccess);
+    }
+
+    [Test]
+    public void HasAccess_WithAccessGrantedAndSecurableObjectNull ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
@@ -58,7 +74,23 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void HasAccess_WithAccessDenied ()
+    public void HasAccess_WithAccessDeniedAndSecurableObjectNotNull ()
+    {
+      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
+      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
+      Command command = _testHelper.CreateEventCommandWithSecurableObject ();
+      command.Click += TestHandler;
+      _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), false);
+      _testHelper.ReplayAll ();
+
+      bool hasAccess = command.HasAccess ();
+
+      _testHelper.VerifyAll ();
+      Assert.IsFalse (hasAccess);
+    }
+
+    [Test]
+    public void HasAccess_WithAccessDeniedAndSecurableObjectNull ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
@@ -74,7 +106,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithIsActiveTrue ()
+    public void Render_WithAccessGranted ()
     {
       Command command = _testHelper.CreateEventCommandAsPartialMock ();
       command.Click += TestHandler;
@@ -102,7 +134,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithIsActiveFalse ()
+    public void Render_WithAccessDenied ()
     {
       Command command = _testHelper.CreateEventCommandAsPartialMock ();
       command.Click += TestHandler;

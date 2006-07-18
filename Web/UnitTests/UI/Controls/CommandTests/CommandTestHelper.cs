@@ -25,6 +25,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     private MockRepository _mocks;
     private IWebSecurityProvider _mockWebSecurityProvider;
     private IWxeSecurityProvider _mockWxeSecurityProvider;
+    private ISecurableObject _mockSecurableObject;
 
     private HttpContext _httpContext;
     private HtmlTextWriterSingleTagMock _htmlWriter;
@@ -48,6 +49,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _mocks = new MockRepository ();
       _mockWebSecurityProvider = _mocks.CreateMock<IWebSecurityProvider> ();
       _mockWxeSecurityProvider = _mocks.CreateMock<IWxeSecurityProvider> ();
+      _mockSecurableObject = _mocks.CreateMock<ISecurableObject> ();
 
       _httpContext = HttpContextHelper.CreateHttpContext ("GET", "default.html", null);
       _httpContext.Response.ContentEncoding = System.Text.Encoding.UTF8;
@@ -75,6 +77,11 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     public IWxeSecurityProvider WxeSecurityProvider
     {
       get { return _mockWxeSecurityProvider; }
+    }
+
+    public ISecurableObject SecurableObject
+    {
+      get { return _mockSecurableObject; }
     }
 
     public void ReplayAll ()
@@ -156,7 +163,15 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     public Command CreateEventCommand ()
     {
       Command command = new Command ();
-      InitializeEventCommand (command);
+      InitializeEventCommand (command, null);
+
+      return command;
+    }
+
+    public Command CreateEventCommandWithSecurableObject ()
+    {
+      Command command = new Command ();
+      InitializeEventCommand (command, _mockSecurableObject);
 
       return command;
     }
@@ -164,15 +179,16 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     public Command CreateEventCommandAsPartialMock ()
     {
       Command command = _mocks.PartialMock<Command> ();
-      InitializeEventCommand (command);
+      InitializeEventCommand (command, null);
 
       return command;
     }
 
-    private void InitializeEventCommand (Command command)
+    private void InitializeEventCommand (Command command, ISecurableObject securableObject)
     {
       command.Type = CommandType.Event;
       command.ToolTip = _toolTip;
+      command.SecurableObject = securableObject;
     }
 
     public Command CreateWxeFunctionCommand ()

@@ -308,15 +308,11 @@ namespace Rubicon.Web.UI.Controls
     private CommandType _defaultType = CommandType.None;
     private CommandShow _show = CommandShow.Always;
     private HrefCommandInfo _hrefCommand = new HrefCommandInfo ();
+    private WxeFunctionCommandInfo _wxeFunctionCommand = new WxeFunctionCommandInfo ();
+    //private ScriptCommandInfo _scriptCommand = null;
     private bool _hasClickFired = false;
 
-    /// <summary>
-    ///   The <see cref="WxeFunctionCommandInfo"/> used when rendering the command as a <see cref="WxeFunction"/>.
-    /// </summary>
-    private WxeFunctionCommandInfo _wxeFunctionCommand = new WxeFunctionCommandInfo ();
-
-    //private ScriptCommandInfo _scriptCommand = null;
-
+    private ISecurableObject _securableObject;
     private Control _ownerControl = null;
 
     [Browsable (false)]
@@ -777,6 +773,14 @@ namespace Rubicon.Web.UI.Controls
       set { _wxeFunctionCommand = value; }
     }
 
+    [Browsable (false)]
+    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+    public ISecurableObject SecurableObject
+    {
+      get { return _securableObject; }
+      set { _securableObject = value; }
+    }
+
     /// <summary> Gets or sets the control to which this object belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
@@ -811,14 +815,19 @@ namespace Rubicon.Web.UI.Controls
         ToolTip = resourceManager.GetString (key);
     }
 
-    public virtual bool HasAccess ()
+    public bool HasAccess ()
+    {
+      return HasAccess (_securableObject);
+    }
+
+    protected virtual bool HasAccess (ISecurableObject securableObject)
     {
       switch (_type)
       {
         case CommandType.Href:
           return true;
         case CommandType.Event:
-          return HasAccessForEventCommand ();
+          return HasAccessForEventCommand (securableObject);
         case CommandType.WxeFunction:
           return HasAccessForWxeFunctionCommand ();
         case CommandType.None:
@@ -828,12 +837,12 @@ namespace Rubicon.Web.UI.Controls
       }
     }
 
-    private bool HasAccessForEventCommand ()
+    private bool HasAccessForEventCommand (ISecurableObject securableObject)
     {
       IWebSecurityProvider webSecurityProvider = SecurityProviderRegistry.Instance.GetProvider<IWebSecurityProvider> ();
       if (webSecurityProvider == null)
         return true;
-      return webSecurityProvider.HasAccess (null, Click);
+      return webSecurityProvider.HasAccess (securableObject, Click);
     }
 
     private bool HasAccessForWxeFunctionCommand ()

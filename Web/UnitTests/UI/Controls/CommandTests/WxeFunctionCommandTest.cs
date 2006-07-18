@@ -72,7 +72,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithIsActiveTrue ()
+    public void Render_WithAccessGranted ()
     {
       Command command = _testHelper.CreateWxeFunctionCommandAsPartialMock ();
       string expectedOnClick = _testHelper.PostBackEvent + _testHelper.OnClick;
@@ -99,7 +99,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithIsActiveFalse ()
+    public void Render_WithAccessDenied ()
     {
       Command command = _testHelper.CreateWxeFunctionCommandAsPartialMock ();
       _testHelper.ExpectOnceOnHasAccess (command, false);

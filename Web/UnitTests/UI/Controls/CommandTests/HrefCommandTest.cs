@@ -42,7 +42,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithIsActiveTrue ()
+    public void Render_WithAccessGranted ()
     {
       Command command = _testHelper.CreateHrefCommandAsPartialMock ();
       string[] parameters = new string[] { "Value1", "Value2" };
@@ -79,7 +79,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     }
 
     [Test]
-    public void Render_WithIsActiveFalse ()
+    public void Render_WithAccessDenied ()
     {
       Command command = _testHelper.CreateHrefCommandAsPartialMock ();
       string[] parameters = new string[] { "Value1", "Value2" };
