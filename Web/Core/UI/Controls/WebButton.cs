@@ -400,7 +400,7 @@ namespace Rubicon.Web.UI.Controls
       EventHandler clickHandler = (EventHandler) Events[s_clickEvent];
       if (clickHandler == null)
         return true;
-      
+
       return securityProvider.HasAccess (_securableObject, (EventHandler) Events[s_clickEvent]);
     }
 
@@ -408,14 +408,13 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
-        if (_missingPermissionBehavior == MissingPermissionBehavior.Invisible)
-        {
-          if (base.Visible)
-            return HasAccess ();
+        if (!base.Visible)
           return false;
-        }
 
-        return base.Visible;
+        if (_missingPermissionBehavior == MissingPermissionBehavior.Invisible)
+          return HasAccess ();
+
+        return true;
       }
       set
       {
@@ -427,14 +426,13 @@ namespace Rubicon.Web.UI.Controls
     {
       get
       {
-        if (_missingPermissionBehavior == MissingPermissionBehavior.Disabled)
-        {
-          if (base.Enabled)
-            return HasAccess ();
+        if (!base.Enabled)
           return false;
-        }
 
-        return base.Enabled;
+        if (_missingPermissionBehavior == MissingPermissionBehavior.Disabled)
+          return HasAccess ();
+
+        return true;
       }
       set
       {
@@ -472,14 +470,16 @@ namespace Rubicon.Web.UI.Controls
       set { _securableObject = value; }
     }
 
+    [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
+    [NotifyParentProperty (true)]
     [DefaultValue (MissingPermissionBehavior.Invisible)]
     public MissingPermissionBehavior MissingPermissionBehavior
     {
       get { return _missingPermissionBehavior; }
       set { _missingPermissionBehavior = value; }
     }
-	
+
     #region protected virtual string CssClass...
     /// <summary> Gets the CSS-Class applied to the <see cref="WebButton"/> itself. </summary>
     /// <remarks> 

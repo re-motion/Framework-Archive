@@ -786,7 +786,7 @@ public class BocReferenceValue:
 
     if (isCommandEnabled)
     {
-      Command.RenderBegin (writer, postBackEvent, onClick, objectID);
+      Command.RenderBegin (writer, postBackEvent, onClick, objectID, null);
       if (! StringUtility.IsNullOrEmpty (Command.ToolTip))
         _icon.ToolTip = Command.ToolTip;
     }
@@ -809,7 +809,7 @@ public class BocReferenceValue:
     writer.RenderBeginTag (HtmlTextWriterTag.Td); //  Begin td
 
     if (isCommandEnabled)
-      Command.RenderBegin (writer, postBackEvent, onClick, objectID);
+      Command.RenderBegin (writer, postBackEvent, onClick, objectID, null);
     if (_icon.Visible)
     {
       _icon.RenderControl (writer);

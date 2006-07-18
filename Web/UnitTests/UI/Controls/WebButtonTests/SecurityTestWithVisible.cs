@@ -12,7 +12,7 @@ using Rubicon.Web.UI.Controls;
 namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 {
   [TestFixture]
-  public class SecurityTestWithVisible : WebButtonTest
+  public class SecurityTestWithVisible : BaseTest
   {
     private MockRepository _mocks;
     private IWebSecurityProvider _mockWebSecurityProvider;

@@ -15,7 +15,7 @@ namespace Rubicon.Web.UI.Controls
     private SingleControlItemCollection _command = null;
     /// <summary> The command being rendered by this menu item. </summary>
     private NavigationCommand _renderingCommand = null;
-    private MissingPermissionBehavior _commandDependentProperty;
+    private MissingPermissionBehavior _missingPermissionBehavior;
 
     protected MenuTab (string itemID, string text, IconInfo icon)
       : base (itemID, text, icon)
@@ -125,7 +125,7 @@ namespace Rubicon.Web.UI.Controls
       if (isEnabled && _renderingCommand != null && EvaluateEnabled ())
       {
         NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
-        _renderingCommand.RenderBegin (writer, GetPostBackClientEvent (), new string[0], string.Empty, additionalUrlParameters, false, style);
+        _renderingCommand.RenderBegin (writer, GetPostBackClientEvent (), new string[0], string.Empty, null, additionalUrlParameters, false, style);
       }
       else
       {
@@ -158,6 +158,9 @@ namespace Rubicon.Web.UI.Controls
 
     public override bool EvaluateVisible ()
     {
+      if (!base.EvaluateVisible ())
+        return false;
+
       if (Command != null)
       {
         if (WcagHelper.Instance.IsWaiConformanceLevelARequired ()
@@ -166,37 +169,34 @@ namespace Rubicon.Web.UI.Controls
           return false;
         }
         if (MissingPermissionBehavior == MissingPermissionBehavior.Invisible)
-        {
-          if (base.EvaluateVisible ())
-            return Command.HasAccess ();
-          return false;
-        }
+          return Command.HasAccess (null);
       }
 
-      return base.EvaluateVisible ();
+      return true;
     }
 
     public override bool EvaluateEnabled ()
     {
+      if (!base.EvaluateEnabled ())
+        return false;
+
       if (Command != null)
       {
         if (MissingPermissionBehavior == MissingPermissionBehavior.Disabled)
-        {
-          if (base.EvaluateEnabled ())
-            return Command.HasAccess ();
-          return false;
-        }
+          return Command.HasAccess (null);
       }
 
-      return base.EvaluateEnabled ();
+      return true;
     }
 
+    [PersistenceMode (PersistenceMode.Attribute)]
     [Category ("Behavior")]
+    [NotifyParentProperty (true)]
     [DefaultValue (MissingPermissionBehavior.Invisible)]
     public MissingPermissionBehavior MissingPermissionBehavior
     {
-      get { return _commandDependentProperty; }
-      set { _commandDependentProperty = value; }
+      get { return _missingPermissionBehavior; }
+      set { _missingPermissionBehavior = value; }
     }
   }
 

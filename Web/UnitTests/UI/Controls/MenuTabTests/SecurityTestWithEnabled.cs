@@ -12,7 +12,7 @@ using Rubicon.Web.UI.Controls;
 namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
 {
   [TestFixture]
-  public class SecurityTestWithEnabled : MenuTabTest
+  public class SecurityTestWithEnabled : BaseTest
   {
     private MockRepository _mocks;
     private IWebSecurityProvider _mockWebSecurityProvider;
@@ -36,7 +36,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       mainMenuTab.IsDisabled = false;
-      Expect.Call (_mockNavigationCommand.HasAccess ()).Repeat.Never ();
+      Expect.Call (_mockNavigationCommand.HasAccess (null)).Repeat.Never ();
       _mocks.ReplayAll ();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
@@ -51,7 +51,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       mainMenuTab.IsDisabled = true;
-      Expect.Call (_mockNavigationCommand.HasAccess ()).Repeat.Never ();
+      Expect.Call (_mockNavigationCommand.HasAccess (null)).Repeat.Never ();
       _mocks.ReplayAll ();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
@@ -87,7 +87,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
     {
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.IsDisabled = false;
-      Expect.Call (_mockNavigationCommand.HasAccess ()).Return (true);
+      Expect.Call (_mockNavigationCommand.HasAccess (null)).Return (true);
       _mocks.ReplayAll ();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();
@@ -101,7 +101,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
     {
       MainMenuTab mainMenuTab = CreateMainMenuTab ();
       mainMenuTab.IsDisabled = false;
-      Expect.Call (_mockNavigationCommand.HasAccess ()).Return (false);
+      Expect.Call (_mockNavigationCommand.HasAccess (null)).Return (false);
       _mocks.ReplayAll ();
 
       bool isEnabled = mainMenuTab.EvaluateEnabled ();

@@ -10,7 +10,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
 {
 
 [TestFixture]
-public class WcagTest : WebButtonTest
+public class WcagTest : BaseTest
 {
   private TestWebButton _webButton;
 

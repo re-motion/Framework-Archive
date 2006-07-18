@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Specialized;
-using System.Web;
+using System.Collections.Generic;
+using System.Text;
 
 using NUnit.Framework;
 
@@ -10,14 +10,16 @@ using Rubicon.Web.UI;
 using Rubicon.Web.UnitTests.AspNetFramework;
 using Rubicon.Web.UnitTests.Configuration;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
+namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 {
-  public class MenuTabTest
+  public class BaseTest
   {
     [TearDown]
     public virtual void TearDown ()
     {
+      HttpContextHelper.SetCurrent (null);
       WebConfigurationMock.Current = null;
+      Rubicon.Web.ExecutionEngine.UrlMapping.UrlMappingConfiguration.SetCurrent (null);
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (null);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
     }

@@ -8,6 +8,7 @@ using Rubicon.Utilities;
 using Rubicon.Web.ExecutionEngine;
 using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
+using Rubicon.Security;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -121,25 +122,27 @@ public class BocCommand: Command
   /// <summary> Renders the opening tag for the command. </summary>
   /// <param name="writer"> The <see cref="HtmlTextWriter"/> object to use. </param>
   /// <param name="postBackLink">
-  ///   The string rendered in the <c>href</c> tag of the anchor element when the command type is
-  ///   <see cref="CommandType.Event"/> or <see cref="CommandType.WxeFunction"/>.
-  ///   This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
+  ///   The string rendered in the <c>href</c> tag of the anchor element when the command type is <see cref="CommandType.Event"/> or 
+  ///   <see cref="CommandType.WxeFunction"/>. This string is usually the call to the <c>__doPostBack</c> script function used by ASP.net
   ///   to force a post back.
   /// </param>
   /// <param name="onClick"> 
   ///   The string rendered in the <c>onClick</c> tag of the anchor element. 
   /// </param>
   /// <param name="businessObjectID">
-  ///   An identifier for the <see cref="IBusinessObject"/> to which the rendered command is 
-  ///   applied.
+  ///   An identifier for the <see cref="IBusinessObject"/> to which the rendered command is applied.
+  /// </param>
+  /// <param name="securableObject">
+  ///   The <see cref="ISecurableObject"/> for which security is evaluated. Use <see landword="null"/> if security is stateless or not evaluated.
   /// </param>
   public void RenderBegin (
       HtmlTextWriter writer,
       string postBackLink,
       string onClick, 
-      string businessObjectID)
+      string businessObjectID,
+      ISecurableObject securableObject)
   {
-    base.RenderBegin (writer, postBackLink, new string[] {businessObjectID}, onClick);
+    base.RenderBegin (writer, postBackLink, new string[] {businessObjectID}, onClick, securableObject);
   }
 
   /// <summary>

@@ -18,7 +18,7 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 {
   [TestFixture]
-  public class NoneCommandTest : CommandTest
+  public class NoneCommandTest : BaseTest
   {
     private CommandTestHelper _testHelper;
 
@@ -35,7 +35,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       Command command = _testHelper.CreateNoneCommand ();
       _testHelper.ReplayAll ();
 
-      bool hasAccess = command.HasAccess ();
+      bool hasAccess = command.HasAccess (null);
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -48,7 +48,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _testHelper.ExpectOnceOnHasAccess (command, true);
       _testHelper.ReplayAll ();
 
-      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");
@@ -64,7 +64,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _testHelper.ExpectOnceOnHasAccess (command, false);
       _testHelper.ReplayAll ();
 
-      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");

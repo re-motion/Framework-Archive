@@ -11,7 +11,7 @@ using Rubicon.Web.UnitTests.Configuration;
 namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
 {
   [TestFixture]
-  public class WcagTest : MenuTabTest
+  public class WcagTest : BaseTest
   {
     [Test]
     public void IsMainMenuTabSetToEventInvisibleWithWcagOverride ()

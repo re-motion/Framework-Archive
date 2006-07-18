@@ -312,7 +312,6 @@ namespace Rubicon.Web.UI.Controls
     //private ScriptCommandInfo _scriptCommand = null;
     private bool _hasClickFired = false;
 
-    private ISecurableObject _securableObject;
     private Control _ownerControl = null;
 
     [Browsable (false)]
@@ -353,6 +352,9 @@ namespace Rubicon.Web.UI.Controls
     /// <param name="onClick"> 
     ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
     /// </param>
+    /// <param name="securableObject">
+    ///   The <see cref="ISecurableObject"/> for which security is evaluated. Use <see landword="null"/> if security is stateless or not evaluated.
+    /// </param>
     /// <param name="additionalUrlParameters">
     ///   The <see cref="NameValueCollection"/> containing additional url parameters.
     ///   Must not be <see langword="null"/>.
@@ -366,6 +368,7 @@ namespace Rubicon.Web.UI.Controls
         string postBackEvent,
         string[] parameters,
         string onClick,
+        ISecurableObject securableObject,
         NameValueCollection additionalUrlParameters,
         bool includeNavigationUrlParameters,
         Style style)
@@ -373,7 +376,7 @@ namespace Rubicon.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("style", style);
 
-      if (HasAccess ())
+      if (HasAccess (securableObject))
       {
         switch (_type)
         {
@@ -410,9 +413,12 @@ namespace Rubicon.Web.UI.Controls
     /// <param name="onClick"> 
     ///   The string always rendered in the <c>onClick</c> tag of the anchor element. 
     /// </param>
-    public void RenderBegin (HtmlTextWriter writer, string postBackEvent, string[] parameters, string onClick)
+    /// <param name="securableObject">
+    ///   The <see cref="ISecurableObject"/> for which security is evaluated. Use <see landword="null"/> if security is stateless or not evaluated.
+    /// </param>
+    public void RenderBegin (HtmlTextWriter writer, string postBackEvent, string[] parameters, string onClick, ISecurableObject securableObject)
     {
-      RenderBegin (writer, postBackEvent, parameters, onClick, new NameValueCollection (0), true, new Style ());
+      RenderBegin (writer, postBackEvent, parameters, onClick, securableObject, new NameValueCollection (0), true, new Style ());
     }
 
     /// <summary> Adds the attributes for the Href command to the anchor tag. </summary>
@@ -773,14 +779,6 @@ namespace Rubicon.Web.UI.Controls
       set { _wxeFunctionCommand = value; }
     }
 
-    [Browsable (false)]
-    [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
-    public ISecurableObject SecurableObject
-    {
-      get { return _securableObject; }
-      set { _securableObject = value; }
-    }
-
     /// <summary> Gets or sets the control to which this object belongs. </summary>
     [DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
     [Browsable (false)]
@@ -815,12 +813,7 @@ namespace Rubicon.Web.UI.Controls
         ToolTip = resourceManager.GetString (key);
     }
 
-    public bool HasAccess ()
-    {
-      return HasAccess (_securableObject);
-    }
-
-    protected virtual bool HasAccess (ISecurableObject securableObject)
+    public virtual bool HasAccess (ISecurableObject securableObject)
     {
       switch (_type)
       {

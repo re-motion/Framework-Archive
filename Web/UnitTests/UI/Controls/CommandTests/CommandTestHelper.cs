@@ -163,15 +163,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     public Command CreateEventCommand ()
     {
       Command command = new Command ();
-      InitializeEventCommand (command, null);
-
-      return command;
-    }
-
-    public Command CreateEventCommandWithSecurableObject ()
-    {
-      Command command = new Command ();
-      InitializeEventCommand (command, _mockSecurableObject);
+      InitializeEventCommand (command);
 
       return command;
     }
@@ -179,16 +171,15 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
     public Command CreateEventCommandAsPartialMock ()
     {
       Command command = _mocks.PartialMock<Command> ();
-      InitializeEventCommand (command, null);
+      InitializeEventCommand (command);
 
       return command;
     }
 
-    private void InitializeEventCommand (Command command, ISecurableObject securableObject)
+    private void InitializeEventCommand (Command command)
     {
       command.Type = CommandType.Event;
       command.ToolTip = _toolTip;
-      command.SecurableObject = securableObject;
     }
 
     public Command CreateWxeFunctionCommand ()
@@ -240,7 +231,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 
     public void ExpectOnceOnHasAccess (Command command, bool returnValue)
     {
-      Expect.Call (command.HasAccess ()).Return (returnValue);
+      Expect.Call (command.HasAccess (_mockSecurableObject)).Return (returnValue);
     }
   }
 }

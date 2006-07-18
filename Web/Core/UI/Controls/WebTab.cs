@@ -27,7 +27,6 @@ public class WebTab: IControlItem, IControlStateManager
   private bool _isSelected = false;
   private int _selectDesired = 0;
   private bool _isControlStateRestored;
-  private EventHandler _ownerControlPreRender;
 
   /// <summary> Initalizes a new instance. </summary>
   public WebTab (string itemID, string text, IconInfo icon)
@@ -35,7 +34,6 @@ public class WebTab: IControlItem, IControlStateManager
     ItemID = itemID;
     Text = text;
     _icon = icon;
-    Initialize();
   }
 
   /// <summary> Initalizes a new instance. </summary>
@@ -56,12 +54,6 @@ public class WebTab: IControlItem, IControlStateManager
   public WebTab()
   {
     _icon = new IconInfo();
-    Initialize();
-  }
-
-  private void Initialize()
-  {
-    _ownerControlPreRender = new EventHandler(OwnerControl_PreRender);
   }
 
   /// <summary> Is called when the value of <see cref="OwnerControl"/> has changed. </summary>
@@ -296,16 +288,16 @@ public class WebTab: IControlItem, IControlStateManager
       if (_ownerControl != value)
       {
         if (OwnerControl != null)
-          OwnerControl.PreRender -= _ownerControlPreRender;
+          OwnerControl.PreRender -= new EventHandler (OwnerControl_PreRender);
         _ownerControl = value;
-        if (OwnerControl != null)          
-          OwnerControl.PreRender += _ownerControlPreRender;
+        if (OwnerControl != null)
+          OwnerControl.PreRender += new EventHandler (OwnerControl_PreRender);
         OnOwnerControlChanged();
       }
     }
   }
 
-  [Obsolete ("Use EvaluateVisible instead.")]
+  [Obsolete ("Use EvaluateVisible instead.", true)]
   [EditorBrowsable (EditorBrowsableState.Never)]
   public virtual bool EvaluateVisibile ()
   {
@@ -315,6 +307,13 @@ public class WebTab: IControlItem, IControlStateManager
   public virtual bool EvaluateVisible ()
   {
     return IsVisible;
+  }
+
+  [Obsolete ("Use EvaluateEnabled instead.")]
+  [EditorBrowsable (EditorBrowsableState.Never)]
+  public bool EvaluateDisabled ()
+  {
+    return !EvaluateEnabled ();
   }
 
   public virtual bool EvaluateEnabled ()

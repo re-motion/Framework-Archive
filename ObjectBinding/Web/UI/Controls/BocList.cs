@@ -25,6 +25,7 @@ using Rubicon.Web.UI;
 using Rubicon.Web.UI.Controls;
 using Rubicon.Web.UI.Globalization;
 using Rubicon.Web.Utilities;
+using Rubicon.Security;
 
 namespace Rubicon.ObjectBinding.Web.UI.Controls
 {
@@ -1953,7 +1954,7 @@ public class BocList:
       disabledIcon =  "'" + UrlUtility.ResolveUrl (menuItem.DisabledIcon.Url) + "'";
     string text = showText ? "'" +  menuItem.Text + "'" : "null";
 
-    bool isDisabled = menuItem.EvaluateDisabled() 
+    bool isDisabled = !menuItem.EvaluateEnabled() 
         || IsRowEditModeActive 
         || ! isCommandEnabled;
     stringBuilder.AppendFormat (
@@ -3115,7 +3116,7 @@ public class BocList:
       string argument = c_eventListItemCommandPrefix + columnIndex + "," + originalRowIndex;
       string postBackEvent = Page.ClientScript.GetPostBackEventReference (this, argument) + ";";
       string onClick = _hasClientScript ? c_onCommandClickScript : string.Empty;
-      command.RenderBegin (writer, postBackEvent, onClick, originalRowIndex, objectID);
+      command.RenderBegin (writer, postBackEvent, onClick, originalRowIndex, objectID, businessObject as ISecurableObject);
     }
 
     return isCommandEnabled;

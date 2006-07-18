@@ -214,9 +214,7 @@
     <Compile Include="StringCollectionCheckerTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\CommandTests\CommandTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="UI\Controls\CommandTests\BaseTest.cs" />
     <Compile Include="UI\Controls\CommandTests\CommandTestHelper.cs" />
     <Compile Include="UI\Controls\CommandTests\WxeFunctionCommandTest.cs" />
     <Compile Include="UI\Controls\CommandTests\EventCommandTest.cs" />
@@ -237,7 +235,7 @@
     <Compile Include="UI\Controls\LazyContainerTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\Controls\MenuTabTests\MenuTabTest.cs" />
+    <Compile Include="UI\Controls\MenuTabTests\BaseTest.cs" />
     <Compile Include="UI\Controls\MenuTabTests\SecurityTestWithVisible.cs" />
     <Compile Include="UI\Controls\MenuTabTests\SecurityTestWithEnabled.cs" />
     <Compile Include="UI\Controls\MenuTabTests\WcagTest.cs" />
@@ -251,7 +249,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Controls\TabbedMenuTest.cs" />
-    <Compile Include="UI\Controls\WebButtonTests\WebButtonTest.cs" />
+    <Compile Include="UI\Controls\WebButtonTests\BaseTest.cs" />
     <Compile Include="UI\Controls\WebButtonTests\SecurityTestWithEnabled.cs" />
     <Compile Include="UI\Controls\WebButtonTests\SecurityTestWithVisible.cs" />
     <Compile Include="UI\Controls\WebButtonTests\WcagTest.cs" />
@@ -259,6 +257,9 @@
     <Compile Include="UI\Controls\WebControlTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="UI\Controls\WebMenuItemTests\BaseTest.cs" />
+    <Compile Include="UI\Controls\WebMenuItemTests\SecurityTestWithEnabled.cs" />
+    <Compile Include="UI\Controls\WebMenuItemTests\SecurityTestWithVisible.cs" />
     <Compile Include="UI\Controls\WebTabCollectionTest.cs">
       <SubType>Code</SubType>
     </Compile>

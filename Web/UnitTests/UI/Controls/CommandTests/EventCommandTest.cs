@@ -18,7 +18,7 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 {
   [TestFixture]
-  public class EventCommandTest : CommandTest
+  public class EventCommandTest : BaseTest
   {
     private CommandTestHelper _testHelper;
 
@@ -35,71 +35,39 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       Command command = _testHelper.CreateEventCommand ();
       _testHelper.ReplayAll ();
 
-      bool hasAccess = command.HasAccess ();
+      bool hasAccess = command.HasAccess (null);
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasAccess_WithAccessGrantedAndSecurableObjectNotNull ()
+    public void HasAccess_WithAccessGranted ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
-      Command command = _testHelper.CreateEventCommandWithSecurableObject ();
+      Command command = _testHelper.CreateEventCommand ();
       command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), true);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = command.HasAccess ();
+      bool hasAccess = command.HasAccess (_testHelper.SecurableObject);
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
     }
 
     [Test]
-    public void HasAccess_WithAccessGrantedAndSecurableObjectNull ()
+    public void HasAccess_WithAccessDenied ()
     {
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
       Command command = _testHelper.CreateEventCommand ();
-      command.Click += TestHandler;
-      _testHelper.ExpectWebSecurityProviderHasAccess (null, new CommandClickEventHandler (TestHandler), true);
-      _testHelper.ReplayAll ();
-
-      bool hasAccess = command.HasAccess ();
-
-      _testHelper.VerifyAll ();
-      Assert.IsTrue (hasAccess);
-    }
-
-    [Test]
-    public void HasAccess_WithAccessDeniedAndSecurableObjectNotNull ()
-    {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
-      Command command = _testHelper.CreateEventCommandWithSecurableObject ();
       command.Click += TestHandler;
       _testHelper.ExpectWebSecurityProviderHasAccess (_testHelper.SecurableObject, new CommandClickEventHandler (TestHandler), false);
       _testHelper.ReplayAll ();
 
-      bool hasAccess = command.HasAccess ();
-
-      _testHelper.VerifyAll ();
-      Assert.IsFalse (hasAccess);
-    }
-
-    [Test]
-    public void HasAccess_WithAccessDeniedAndSecurableObjectNull ()
-    {
-      SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (_testHelper.WebSecurityProvider);
-      SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (_testHelper.WxeSecurityProvider);
-      Command command = _testHelper.CreateEventCommand ();
-      command.Click += TestHandler;
-      _testHelper.ExpectWebSecurityProviderHasAccess (null, new CommandClickEventHandler (TestHandler), false);
-      _testHelper.ReplayAll ();
-
-      bool hasAccess = command.HasAccess ();
+      bool hasAccess = command.HasAccess (_testHelper.SecurableObject);
 
       _testHelper.VerifyAll ();
       Assert.IsFalse (hasAccess);
@@ -114,7 +82,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _testHelper.ExpectOnceOnHasAccess (command, true);
       _testHelper.ReplayAll ();
 
-      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll ();
 
@@ -141,7 +109,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _testHelper.ExpectOnceOnHasAccess (command, false);
       _testHelper.ReplayAll ();
 
-      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick);
+      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, new string[0], _testHelper.OnClick, _testHelper.SecurableObject);
 
       _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");

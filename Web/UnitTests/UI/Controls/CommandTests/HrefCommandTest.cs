@@ -18,7 +18,7 @@ using Rubicon.Web.Utilities;
 namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
 {
   [TestFixture]
-  public class HrefCommandTest : CommandTest
+  public class HrefCommandTest : BaseTest
   {
     private CommandTestHelper _testHelper;
 
@@ -35,7 +35,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       Command command = _testHelper.CreateHrefCommand ();
       _testHelper.ReplayAll ();
 
-      bool hasAccess = command.HasAccess ();
+      bool hasAccess = command.HasAccess (null);
 
       _testHelper.VerifyAll ();
       Assert.IsTrue (hasAccess);
@@ -58,7 +58,15 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _testHelper.ExpectOnceOnHasAccess (command, true);
       _testHelper.ReplayAll ();
 
-      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, parameters, _testHelper.OnClick, additionalUrlParameters, true, new Style ());
+      command.RenderBegin (
+          _testHelper.HtmlWriter, 
+          _testHelper.PostBackEvent, 
+          parameters, 
+          _testHelper.OnClick, 
+          _testHelper.SecurableObject, 
+          additionalUrlParameters, 
+          true, 
+          new Style ());
 
       _testHelper.VerifyAll ();
 
@@ -88,7 +96,15 @@ namespace Rubicon.Web.UnitTests.UI.Controls.CommandTests
       _testHelper.ExpectOnceOnHasAccess (command, false);
       _testHelper.ReplayAll ();
 
-      command.RenderBegin (_testHelper.HtmlWriter, _testHelper.PostBackEvent, parameters, _testHelper.OnClick, additionalUrlParameters, true, new Style ());
+      command.RenderBegin (
+          _testHelper.HtmlWriter, 
+          _testHelper.PostBackEvent, 
+          parameters, 
+          _testHelper.OnClick, 
+          _testHelper.SecurableObject, 
+          additionalUrlParameters, 
+          true, 
+          new Style ());
 
       _testHelper.VerifyAll ();
       Assert.IsNotNull (_testHelper.HtmlWriter.Tag, "Missing Tag");

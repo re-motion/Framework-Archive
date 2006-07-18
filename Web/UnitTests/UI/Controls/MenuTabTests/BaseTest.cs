@@ -10,15 +10,13 @@ using Rubicon.Web.UI;
 using Rubicon.Web.UnitTests.AspNetFramework;
 using Rubicon.Web.UnitTests.Configuration;
 
-namespace Rubicon.Web.UnitTests.UI.Controls.WebButtonTests
+namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
 {
-  public class WebButtonTest : WebControlTest
+  public class BaseTest
   {
     [TearDown]
-    public override void TearDown ()
+    public virtual void TearDown ()
     {
-      base.TearDown ();
-
       WebConfigurationMock.Current = null;
       SecurityProviderRegistry.Instance.SetProvider<IWebSecurityProvider> (null);
       SecurityProviderRegistry.Instance.SetProvider<IWxeSecurityProvider> (null);
