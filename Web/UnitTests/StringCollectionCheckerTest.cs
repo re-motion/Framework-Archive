@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 using Rubicon.Development.UnitTesting;
 
-namespace Rubicon.Web.UnitTests.UnitTests
+namespace Rubicon.Web.UnitTests
 {
 
   [TestFixture]

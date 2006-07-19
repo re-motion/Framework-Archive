@@ -76,9 +76,9 @@ public class TestBocMenuItem: BocMenuItem
     // Set Text and Icon
   }
 
-  public override bool EvaluateDisabled()
+  public override bool EvaluateEnabled()
   {
-    return base.EvaluateDisabled ();
+    return base.EvaluateEnabled ();
     // if (base.EvaluateDisabled ())
     //   return true;
     // else

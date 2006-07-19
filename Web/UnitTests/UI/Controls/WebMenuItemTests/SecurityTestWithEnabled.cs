@@ -135,7 +135,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.WebMenuItemTests
     private WebMenuItem CreateWebMenuItemWithoutCommand ()
     {
       WebMenuItem menuItem = new WebMenuItem ();
-      menuItem.Command.Type = CommandType.WxeFunction;
+      menuItem.Command.Type = CommandType.None;
       menuItem.Command = null;
       menuItem.MissingPermissionBehavior = MissingPermissionBehavior.Disabled;
       menuItem.SecurableObject = _mockSecurableObject;
