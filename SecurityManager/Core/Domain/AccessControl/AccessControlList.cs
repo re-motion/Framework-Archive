@@ -35,6 +35,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public AccessControlList (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
+      Touch ();
     }
 
     protected AccessControlList (DataContainer dataContainer)
@@ -45,6 +46,16 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     }
 
     // methods and properties
+
+    public DateTime ChangedAt
+    {
+      get { return (DateTime) DataContainer["ChangedAt"]; }
+    }
+
+    public void Touch ()
+    {
+      DataContainer["ChangedAt"] = DateTime.Now;
+    }
 
     public SecurableClassDefinition Class
     {

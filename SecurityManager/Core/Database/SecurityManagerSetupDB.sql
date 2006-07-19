@@ -366,6 +366,7 @@ CREATE TABLE [dbo].[AccessControlList]
   [Timestamp] rowversion NOT NULL,
 
   -- AccessControlList columns
+  [ChangedAt] datetime NOT NULL,
   [SecurableClassID] uniqueidentifier NULL,
   [SecurableClassIDClassID] varchar (100) NULL,
 
@@ -657,9 +658,9 @@ CREATE VIEW [dbo].[StateUsageView] ([ID], [ClassID], [Timestamp], [StateCombinat
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[AccessControlListView] ([ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID])
+CREATE VIEW [dbo].[AccessControlListView] ([ID], [ClassID], [Timestamp], [ChangedAt], [SecurableClassID], [SecurableClassIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [ChangedAt], [SecurableClassID], [SecurableClassIDClassID]
     FROM [dbo].[AccessControlList]
     WHERE [ClassID] IN ('AccessControlList')
   WITH CHECK OPTION

@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
+using System.Threading;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {
@@ -244,6 +245,29 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Assert.AreSame (entry, ((Permission) entry.Permissions[0]).AccessControlEntry);
       Assert.AreSame (deleteAccessType, ((Permission) entry.Permissions[1]).AccessType);
       Assert.AreSame (entry, ((Permission) entry.Permissions[1]).AccessControlEntry);
+    }
+
+    [Test]
+    public void GetChangedAt_AfterCreation ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateOrderClassDefinitionWithProperties ());
+
+      Assert.AreNotEqual (DateTime.MinValue, acl.ChangedAt);
+    }
+
+    [Test]
+    public void Touch_AfterCreation ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlList acl = _testHelper.CreateAcl (_testHelper.CreateOrderClassDefinitionWithProperties ());
+
+      DateTime creationDate = acl.ChangedAt;
+
+      Thread.Sleep (50);
+      acl.Touch ();
+
+      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) creationDate.Ticks);
     }
   }
 }
