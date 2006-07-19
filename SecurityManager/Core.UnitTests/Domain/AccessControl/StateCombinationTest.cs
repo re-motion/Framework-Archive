@@ -167,6 +167,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       _testHelper.Transaction.Commit ();
     }
 
+    [Test]
+    public void SetAndGet_Index ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      StateCombination stateCombination = new StateCombination (_testHelper.Transaction);
+
+      stateCombination.Index = 1;
+      Assert.AreEqual (1, stateCombination.Index);
+    }
+
     private StateCombination GetStatelessCombinationForClass (SecurableClassDefinition classDefinition)
     {
       foreach (StateCombination currentCombination in classDefinition.StateCombinations)

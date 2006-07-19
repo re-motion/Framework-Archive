@@ -56,7 +56,15 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     private void Initialize ()
     {
+      StateCombinations.Added += new DomainObjectCollectionChangedEventHandler (StateCombinations_Added);
       AccessControlEntries.Added += new DomainObjectCollectionChangedEventHandler (AccessControlEntries_Added);
+    }
+
+    void StateCombinations_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    {
+      StateCombination stateCombination = (StateCombination) args.DomainObject;
+      stateCombination.Index = StateCombinations.Count - 1;
+      Touch ();
     }
 
     void AccessControlEntries_Added (object sender, DomainObjectCollectionChangedEventArgs args)
@@ -167,6 +175,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public StateCombination CreateStateCombination ()
     {
+      if (Class == null)
+        throw new InvalidOperationException ("Cannot create StateCombination if no SecurableClassDefinition is assigned to this AccessControlList.");
+      
       StateCombination stateCombination = new StateCombination (ClientTransaction);
       stateCombination.Class = Class;
       stateCombination.AccessControlList = this;
@@ -176,6 +187,9 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public AccessControlEntry CreateAccessControlEntry ()
     {
+      if (Class == null)
+        throw new InvalidOperationException ("Cannot create AccessControlEntry if no SecurableClassDefinition is assigned to this AccessControlList.");
+
       AccessControlEntry accessControlEntry = new AccessControlEntry (ClientTransaction);
       foreach (AccessTypeDefinition accessTypeDefinition in Class.AccessTypes)
         accessControlEntry.AttachAccessType (accessTypeDefinition);

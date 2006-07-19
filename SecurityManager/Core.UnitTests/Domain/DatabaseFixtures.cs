@@ -124,10 +124,36 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
       AccessControlList acl = new AccessControlList (transaction);
       acl.Class = classDefinition;
+      acl.CreateStateCombination ();
 
       for (int i = 0; i < 10; i++)
         acl.CreateAccessControlEntry ();
 
+      transaction.Commit ();
+
+      return acl;
+    }
+
+    public AccessControlList CreateAccessControlListWith10StateCombinations ()
+    {
+      CreateEmptyDomain ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
+      AccessControlList acl = new AccessControlList (transaction);
+      acl.Class = classDefinition;
+      acl.CreateAccessControlEntry ();
+
+      for (int i = 0; i < 10; i++)
+      {
+        StatePropertyDefinition stateProperty = new StatePropertyDefinition (transaction, Guid.NewGuid (), string.Format ("Property {0}", i));
+        StateDefinition stateDefinition = new StateDefinition (transaction, "value", 0);
+        stateProperty.AddState (stateDefinition);
+        classDefinition.AddStateProperty (stateProperty);
+        StateCombination stateCombination = acl.CreateStateCombination ();
+        stateCombination.AttachState (stateDefinition);
+      }
       transaction.Commit ();
 
       return acl;

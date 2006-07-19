@@ -338,6 +338,7 @@ CREATE TABLE [dbo].[StateCombination]
   [Timestamp] rowversion NOT NULL,
 
   -- StateCombination columns
+  [Index] int NOT NULL,
   [SecurableClassID] uniqueidentifier NULL,
   [SecurableClassIDClassID] varchar (100) NULL,
   [AccessControlListID] uniqueidentifier NULL,
@@ -643,9 +644,9 @@ CREATE VIEW [dbo].[AbstractRoleDefinitionView] ([ID], [ClassID], [Timestamp], [M
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[StateCombinationView] ([ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID], [AccessControlListID])
+CREATE VIEW [dbo].[StateCombinationView] ([ID], [ClassID], [Timestamp], [Index], [SecurableClassID], [SecurableClassIDClassID], [AccessControlListID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [SecurableClassID], [SecurableClassIDClassID], [AccessControlListID]
+  SELECT [ID], [ClassID], [Timestamp], [Index], [SecurableClassID], [SecurableClassIDClassID], [AccessControlListID]
     FROM [dbo].[StateCombination]
     WHERE [ClassID] IN ('StateCombination')
   WITH CHECK OPTION

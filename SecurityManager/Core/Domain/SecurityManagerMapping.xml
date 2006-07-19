@@ -305,6 +305,10 @@
       <entity name="StateCombination"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
+        </property>
         <relationProperty name="StateUsages" relationID="StateCombinationToStateUsage" cardinality="many" isMandatory="false" />
         <relationProperty name="Class" relationID="ClassToStateCombination" cardinality="one" isMandatory="true">
           <column>SecurableClassID</column>
@@ -342,7 +346,9 @@
         <relationProperty name="Class" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
           <column>SecurableClassID</column>
         </relationProperty>
-        <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="false" />
+        <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="true">
+          <sortExpression>[Index] ASC</sortExpression>
+        </relationProperty>
         <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true">
           <sortExpression>[Index] ASC</sortExpression>
         </relationProperty>
