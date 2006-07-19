@@ -135,7 +135,7 @@ namespace Rubicon.Web.UnitTests.UI.Controls.MenuTabTests
     private MainMenuTab CreateMainMenuTabWithoutCommand ()
     {
       MainMenuTab mainMenuTab = new MainMenuTab ();
-      mainMenuTab.Command.Type = CommandType.WxeFunction;
+      mainMenuTab.Command.Type = CommandType.None;
       mainMenuTab.Command = null;
       mainMenuTab.MissingPermissionBehavior = MissingPermissionBehavior.Invisible;
       

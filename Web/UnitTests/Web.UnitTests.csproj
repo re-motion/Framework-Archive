@@ -236,6 +236,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UI\Controls\MenuTabTests\BaseTest.cs" />
+    <Compile Include="UI\Controls\MenuTabTests\MainMenuTabTest.cs" />
     <Compile Include="UI\Controls\MenuTabTests\SecurityTestWithVisible.cs" />
     <Compile Include="UI\Controls\MenuTabTests\SecurityTestWithEnabled.cs" />
     <Compile Include="UI\Controls\MenuTabTests\WcagTest.cs" />

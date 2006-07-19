@@ -121,10 +121,20 @@ namespace Rubicon.Web.UI.Controls
       ArgumentUtility.CheckNotNull ("writer", writer);
       ArgumentUtility.CheckNotNull ("style", style);
 
-      _renderingCommand = GetCommandToRender ();
-      if (isEnabled && _renderingCommand != null && EvaluateEnabled ())
+      MenuTab activeTab = null;
+      if (isEnabled && EvaluateEnabled ())
       {
-        NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (this);
+        activeTab = GetActiveTab ();
+        _renderingCommand = activeTab.Command;
+      }
+      else
+      {
+        _renderingCommand = null;
+      }
+
+      if (_renderingCommand != null)
+      {
+        NameValueCollection additionalUrlParameters = TabbedMenu.GetUrlParameters (activeTab);
         _renderingCommand.RenderBegin (writer, GetPostBackClientEvent (), new string[0], string.Empty, null, additionalUrlParameters, false, style);
       }
       else
@@ -144,9 +154,9 @@ namespace Rubicon.Web.UI.Controls
       _renderingCommand = null;
     }
 
-    protected virtual NavigationCommand GetCommandToRender ()
+    protected virtual MenuTab GetActiveTab ()
     {
-      return Command;
+      return this;
     }
 
     public override void OnClick ()
@@ -203,6 +213,7 @@ namespace Rubicon.Web.UI.Controls
   public class MainMenuTab : MenuTab
   {
     private SubMenuTabCollection _subMenuTabs;
+    private MenuTab _activeTab;
 
     public MainMenuTab (string itemID, string text, IconInfo icon)
       : base (itemID, text, icon)
@@ -247,23 +258,30 @@ namespace Rubicon.Web.UI.Controls
       TabbedMenu.RefreshSubMenuTabStrip ();
     }
 
-    protected override NavigationCommand GetCommandToRender ()
+    protected override MenuTab GetActiveTab ()
     {
-      if (Command == null)
-        return null;
+      if (_activeTab != null)
+        return _activeTab;
 
       if (Command.Type == CommandType.None)
       {
         foreach (SubMenuTab subMenuTab in _subMenuTabs)
         {
-          bool isTabActive = subMenuTab.IsVisible && !subMenuTab.IsDisabled;
+          bool isTabActive = subMenuTab.EvaluateVisible () && subMenuTab.EvaluateEnabled ();
           bool isCommandActive = subMenuTab.Command != null && subMenuTab.Command.Type != CommandType.None;
           if (isTabActive && isCommandActive)
-            return subMenuTab.Command;
+          {
+            _activeTab = subMenuTab;
+            break;
+          }
         }
       }
+      else
+      {
+        _activeTab = this;
+      }
 
-      return Command;
+      return _activeTab;
     }
   }
 
@@ -272,12 +290,12 @@ namespace Rubicon.Web.UI.Controls
     private MainMenuTab _parent;
 
     public SubMenuTab (string itemID, string text, IconInfo icon)
-      : base (itemID, text, icon)
+      : base (itemID , text, icon)
     {
     }
 
     public SubMenuTab (string itemID, string text)
-      : this (itemID, text, null)
+      : this (itemID , text, null)
     {
     }
 
