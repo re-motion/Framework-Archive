@@ -256,7 +256,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    public void Get_AccessTypes ()
+    public void Get_AccessTypesFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       ObjectID classDefinitionID = dbFixtures.CreateSecurableClassDefinitionWith10AccessTypes ();

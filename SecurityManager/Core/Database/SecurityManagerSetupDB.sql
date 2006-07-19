@@ -381,6 +381,7 @@ CREATE TABLE [dbo].[AccessControlEntry]
 
   -- AccessControlEntry columns
   [ChangedAt] datetime NOT NULL,
+  [Index] int NOT NULL,
   [ClientSelection] int NOT NULL,
   [GroupSelection] int NOT NULL,
   [UserSelection] int NOT NULL,
@@ -666,9 +667,9 @@ CREATE VIEW [dbo].[AccessControlListView] ([ID], [ClassID], [Timestamp], [Change
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[AccessControlEntryView] ([ID], [ClassID], [Timestamp], [ChangedAt], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID])
+CREATE VIEW [dbo].[AccessControlEntryView] ([ID], [ClassID], [Timestamp], [ChangedAt], [Index], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [ChangedAt], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [ChangedAt], [Index], [ClientSelection], [GroupSelection], [UserSelection], [Priority], [AccessControlListID], [GroupID], [GroupTypeID], [PositionID], [UserID], [AbstractRoleID], [AbstractRoleIDClassID]
     FROM [dbo].[AccessControlEntry]
     WHERE [ClassID] IN ('AccessControlEntry')
   WITH CHECK OPTION

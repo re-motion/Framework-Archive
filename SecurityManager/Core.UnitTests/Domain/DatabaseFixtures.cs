@@ -36,10 +36,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
       ClientTransaction transaction = new ClientTransaction ();
 
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
-          transaction,
-          new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
-          "Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager.Domain");
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
 
       Culture germanCulture = new Culture (transaction, "de");
       Culture englishCulture = new Culture (transaction, "en");
@@ -83,10 +80,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
       ClientTransaction transaction = new ClientTransaction ();
 
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
-          transaction,
-          new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
-          "Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager.Domain");
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
 
       classDefinition.AddStateProperty (CreateFileStateProperty (transaction));
       classDefinition.AddStateProperty (CreateConfidentialityProperty (transaction));
@@ -109,10 +103,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
     private SecurableClassDefinition CreateSecurableClassDefinitionWith10AccessTypes (ClientTransaction transaction)
     {
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
-          transaction,
-          new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
-          "Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager.Domain");
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
 
       for (int i = 0; i < 10; i++)
       {
@@ -120,7 +111,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
         accessType.Index = i;
         classDefinition.AddAccessType (accessType);
       }
+      
       return classDefinition;
+    }
+
+    public AccessControlList CreateAccessControlListWith10AccessControlEntries ()
+    {
+      CreateEmptyDomain ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
+      AccessControlList acl = new AccessControlList (transaction);
+      acl.Class = classDefinition;
+
+      for (int i = 0; i < 10; i++)
+        acl.CreateAccessControlEntry ();
+
+      transaction.Commit ();
+
+      return acl;
     }
 
     public void CreateUsersWithDifferentClients ()
@@ -249,6 +259,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return user;
     }
 
+    private SecurableClassDefinition CreateSecurableClassDefinition (ClientTransaction transaction)
+    {
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
+          transaction,
+          new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
+          "Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition, Rubicon.SecurityManager.Domain");
+      return classDefinition;
+    }
+
     private GroupType CreateGroupType (ClientTransaction transaction, string name, Client client)
     {
       GroupType groupType = new GroupType (transaction);
@@ -308,7 +327,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return confidentialityProperty;
     }
 
-    private static AccessTypeDefinition CreateAccessType (ClientTransaction transaction, Guid metadataItemID, string name)
+    private AccessTypeDefinition CreateAccessType (ClientTransaction transaction, Guid metadataItemID, string name)
     {
       AccessTypeDefinition accessType = new AccessTypeDefinition (transaction);
       accessType.MetadataItemID = metadataItemID;

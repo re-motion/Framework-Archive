@@ -283,7 +283,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Get_Permissions ()
+    public void Get_PermissionsFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       ObjectID aceID = dbFixtures.CreateAccessControlEntryWith10Permissions ();
@@ -317,6 +317,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       ace.Touch ();
 
       Assert.Greater ((decimal) ace.ChangedAt.Ticks, (decimal)creationDate.Ticks);
+    }
+
+    [Test]
+    public void SetAndGet_Index ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+
+      ace.Index = 1;
+      Assert.AreEqual (1, ace.Index);
     }
   }
 }

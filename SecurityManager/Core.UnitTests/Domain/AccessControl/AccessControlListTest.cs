@@ -248,6 +248,26 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
+    public void CreateAccessControlEntry_TwoNewEntries ()
+    {
+      SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinitionWithProperties ();
+      AccessTypeDefinition readAccessType = _testHelper.AttachAccessType (classDefinition, Guid.NewGuid (), "Read", 0);
+      AccessTypeDefinition deleteAccessType = _testHelper.AttachAccessType (classDefinition, Guid.NewGuid (), "Delete", 1);
+      AccessControlList acl = _testHelper.CreateAcl (classDefinition);
+      DateTime changedAt = acl.ChangedAt;
+      Thread.Sleep (50);
+
+      AccessControlEntry ace0 = acl.CreateAccessControlEntry ();
+      AccessControlEntry acel = acl.CreateAccessControlEntry ();
+      Assert.AreEqual (2, acl.AccessControlEntries.Count);
+      Assert.AreSame (ace0, acl.AccessControlEntries[0]);
+      Assert.AreEqual (0, ace0.Index);
+      Assert.AreSame (acel, acl.AccessControlEntries[1]);
+      Assert.AreEqual (1, acel.Index);
+      Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+    }
+
+    [Test]
     public void GetChangedAt_AfterCreation ()
     {
       ClientTransaction transaction = new ClientTransaction ();
@@ -268,6 +288,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       acl.Touch ();
 
       Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) creationDate.Ticks);
+    }
+
+    [Test]
+    public void Get_AccessControlEntriesFromDatabase ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      AccessControlList expectedAcl = dbFixtures.CreateAccessControlListWith10AccessControlEntries ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID, transaction);
+
+      Assert.AreEqual (10, actualAcl.AccessControlEntries.Count);
+      for (int i = 0; i < 10; i++)
+        Assert.AreEqual (expectedAcl.AccessControlEntries[i].ID, actualAcl.AccessControlEntries[i].ID);
     }
   }
 }

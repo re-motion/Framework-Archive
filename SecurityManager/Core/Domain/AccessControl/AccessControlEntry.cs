@@ -140,6 +140,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       DataContainer["ChangedAt"] = DateTime.Now;
     }
 
+    public int Index
+    {
+      get { return (int) DataContainer["Index"]; }
+      set { DataContainer["Index"] = value; }
+    }
+
     public bool MatchesToken (SecurityToken token)
     {
       ArgumentUtility.CheckNotNull ("token", token);

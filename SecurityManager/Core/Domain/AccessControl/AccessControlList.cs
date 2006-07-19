@@ -36,6 +36,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       : base (clientTransaction)
     {
       Touch ();
+      Initialize ();
     }
 
     protected AccessControlList (DataContainer dataContainer)
@@ -46,6 +47,24 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     }
 
     // methods and properties
+
+    protected override void OnLoaded ()
+    {
+      base.OnLoaded ();
+      Initialize ();
+    }
+
+    private void Initialize ()
+    {
+      AccessControlEntries.Added += new DomainObjectCollectionChangedEventHandler (AccessControlEntries_Added);
+    }
+
+    void AccessControlEntries_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    {
+      AccessControlEntry ace = (AccessControlEntry) args.DomainObject;
+      ace.Index = AccessControlEntries.Count - 1;
+      Touch ();
+    }
 
     public DateTime ChangedAt
     {

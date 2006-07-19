@@ -344,7 +344,7 @@
         </relationProperty>
         <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="false" />
         <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true">
-          <sortExpression>[Priority] DESC</sortExpression>
+          <sortExpression>[Index] ASC</sortExpression>
         </relationProperty>
       </properties>
     </class>
@@ -358,6 +358,10 @@
           <type>dateTime</type>
           <column>ChangedAt</column>
           <nullable>false</nullable>
+        </property>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
         </property>
         <property name="Client">
           <type>Rubicon.SecurityManager.Domain.AccessControl.ClientSelection, Rubicon.SecurityManager</type>
