@@ -51,12 +51,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // methods and properties
 
-    public int Index
-    {
-      get { return (int) DataContainer["Index"]; }
-      set { DataContainer["Index"] = value; }
-    }
-
     public DomainObjectCollection References
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("References"); }

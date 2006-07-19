@@ -42,7 +42,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       return transaction.QueryManager.GetCollection (query);
     }
 
-    //TODO: Write Test
     public static DomainObjectCollection FindAllBaseClasses (ClientTransaction transaction)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);

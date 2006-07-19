@@ -53,6 +53,12 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     // methods and properties
 
+    public int Index
+    {
+      get { return (int) DataContainer["Index"]; }
+      set { DataContainer["Index"] = value; }
+    }
+
     public virtual Guid MetadataItemID
     {
       get { return (Guid) DataContainer["MetadataItemID"]; }

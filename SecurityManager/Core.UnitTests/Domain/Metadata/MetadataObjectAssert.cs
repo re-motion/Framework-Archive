@@ -18,6 +18,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       Assert.AreEqual (expected.MetadataItemID, actual.MetadataItemID, message);
       Assert.AreEqual (expected.Name, actual.Name, message);
+      Assert.AreEqual (expected.Index, actual.Index, message);
       Assert.AreEqual (expected.Value, actual.Value, message);
     }
 
@@ -29,8 +30,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public static void AreEqual (AccessTypeDefinition expected, AccessTypeDefinition actual, string message)
     {
       AreEqual ((EnumValueDefinition) expected, (EnumValueDefinition) actual, message);
-
-      Assert.AreEqual (expected.Index, actual.Index, message);
     }
 
 
@@ -42,6 +41,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public static void AreEqual (StateDefinition expected, StateDefinition actual, string message)
     {
       Assert.AreEqual (expected.Name, actual.Name, message);
+      Assert.AreEqual (expected.Index, actual.Index, message);
       Assert.AreEqual (expected.Value, actual.Value, message);
     }
 
@@ -49,6 +49,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       Assert.AreEqual (expected.MetadataItemID, actual.MetadataItemID, message);
       Assert.AreEqual (expected.Name, actual.Name, message);
+      Assert.AreEqual (expected.Index, actual.Index, message);
 
       Assert.AreEqual (expected.DefinedStates.Count, actual.DefinedStates.Count, message);
 
@@ -69,6 +70,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public static void AreEqual (SecurableClassDefinition expected, SecurableClassDefinition actual, string message, params object[] args)
     {
       Assert.AreEqual (expected.Name, actual.Name, message, args);
+      Assert.AreEqual (expected.Index, actual.Index, message);
     }
   }
 }

@@ -172,5 +172,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       Assert.IsNull (localizedName);
     }
+
+    [Test]
+    public void SetAndGet_Index ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      MetadataObject metadataObject = new SecurableClassDefinition (transaction);
+
+      metadataObject.Index = 1;
+      Assert.AreEqual (1, metadataObject.Index);
+    }
   }
 }

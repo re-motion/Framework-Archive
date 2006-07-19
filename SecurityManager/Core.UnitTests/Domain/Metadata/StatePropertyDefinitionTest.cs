@@ -23,7 +23,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void GetState_ValidName ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
 
       StateDefinition actualState = stateProperty.GetState (MetadataTestHelper.Confidentiality_ConfidentialName);
 
@@ -35,7 +35,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [ExpectedException (typeof (ArgumentException), "The state 'New' is not defined for the property 'Confidentiality'.\r\nParameter name: name")]
     public void GetState_InvalidName ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
 
       StateDefinition actualState = stateProperty.GetState ("New");
     }
@@ -43,21 +43,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void ContainsState_ValidName ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
       Assert.IsTrue (stateProperty.ContainsState (MetadataTestHelper.Confidentiality_ConfidentialName));
     }
 
     [Test]
     public void ContainsState_InvalidName ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
       Assert.IsFalse (stateProperty.ContainsState ("New"));
     }
 
     [Test]
     public void GetState_ValidValue ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
 
       StateDefinition actualState = stateProperty.GetState (MetadataTestHelper.Confidentiality_PrivateValue);
 
@@ -69,7 +69,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [ExpectedException (typeof (ArgumentException), "A state with the value 42 is not defined for the property 'Confidentiality'.\r\nParameter name: stateValue")]
     public void GetState_InvalidValue ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
 
       StateDefinition actualState = stateProperty.GetState (42);
     }
@@ -77,21 +77,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void ContainsState_ValidValue ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
       Assert.IsTrue (stateProperty.ContainsState (MetadataTestHelper.Confidentiality_PrivateValue));
     }
 
     [Test]
     public void ContainsState_InvalidValue ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
       Assert.IsFalse (stateProperty.ContainsState (42));
     }
 
     [Test]
     public void Indexer_ValidName ()
     {
-      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty ();
+      StatePropertyDefinition stateProperty = _testHelper.CreateConfidentialityProperty (0);
 
       StateDefinition actualState = stateProperty[MetadataTestHelper.Confidentiality_ConfidentialName];
 
@@ -100,7 +100,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    public void AddState_WithNameAndValue ()
+    public void AddState_WithNameAndValueAndImpliedIndex ()
     {
       StatePropertyDefinition stateProperty = _testHelper.CreateNewStateProperty ("NewProperty");
 

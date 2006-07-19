@@ -35,52 +35,76 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       get { return _transaction; }
     }
 
-    public AbstractRoleDefinition CreateClerkAbstractRole ()
+    public AbstractRoleDefinition CreateClerkAbstractRole (int index)
     {
-      return new AbstractRoleDefinition (_transaction, new Guid ("00000003-0001-0000-0000-000000000000"), "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain", 0);
+      AbstractRoleDefinition role = new AbstractRoleDefinition (_transaction, new Guid ("00000003-0001-0000-0000-000000000000"), "Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain", 0);
+      role.Index = index;
+
+      return role;
     }
 
-    public AbstractRoleDefinition CreateSecretaryAbstractRole ()
+    public AbstractRoleDefinition CreateSecretaryAbstractRole (int index)
     {
-      return new AbstractRoleDefinition (_transaction, new Guid ("00000003-0002-0000-0000-000000000000"), "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain", 1);
+      AbstractRoleDefinition role = new AbstractRoleDefinition (_transaction, new Guid ("00000003-0002-0000-0000-000000000000"), "Secretary|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain", 1);
+      role.Index = index;
+
+      return role;
     }
 
-    public AbstractRoleDefinition CreateAdministratorAbstractRole ()
+    public AbstractRoleDefinition CreateAdministratorAbstractRole (int index)
     {
-      return new AbstractRoleDefinition (_transaction, new Guid ("00000004-0001-0000-0000-000000000000"), "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRole, Rubicon.Security.UnitTests.TestDomain", 0);
+      AbstractRoleDefinition role = new AbstractRoleDefinition (_transaction, new Guid ("00000004-0001-0000-0000-000000000000"), "Administrator|Rubicon.Security.UnitTests.TestDomain.SpecialAbstractRole, Rubicon.Security.UnitTests.TestDomain", 0);
+      role.Index = index;
+
+      return role;
     }
 
-    public AccessTypeDefinition CreateAccessTypeCreate ()
+    public AccessTypeDefinition CreateAccessTypeCreate (int index)
     {
-      return new AccessTypeDefinition (_transaction, new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"), "Create|Rubicon.Security.GeneralAccessType, Rubicon.Security", 0);
+      AccessTypeDefinition type = new AccessTypeDefinition (_transaction, new Guid ("1d6d25bc-4e85-43ab-a42d-fb5a829c30d5"), "Create|Rubicon.Security.GeneralAccessType, Rubicon.Security", 0);
+      type.Index = index;
+
+      return type;
     }
 
-    public AccessTypeDefinition CreateAccessTypeRead ()
+    public AccessTypeDefinition CreateAccessTypeRead (int index)
     {
-      return new AccessTypeDefinition (_transaction, new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"), "Read|Rubicon.Security.GeneralAccessType, Rubicon.Security", 1);
+      AccessTypeDefinition type = new AccessTypeDefinition (_transaction, new Guid ("62dfcd92-a480-4d57-95f1-28c0f5996b3a"), "Read|Rubicon.Security.GeneralAccessType, Rubicon.Security", 1);
+      type.Index = index;
+
+      return type;
     }
 
-    public AccessTypeDefinition CreateAccessTypeEdit ()
+    public AccessTypeDefinition CreateAccessTypeEdit (int index)
     {
-      return new AccessTypeDefinition (_transaction, new Guid ("11186122-6de0-4194-b434-9979230c41fd"), "Edit|Rubicon.Security.GeneralAccessType, Rubicon.Security", 2);
+      AccessTypeDefinition type = new AccessTypeDefinition (_transaction, new Guid ("11186122-6de0-4194-b434-9979230c41fd"), "Edit|Rubicon.Security.GeneralAccessType, Rubicon.Security", 2);
+      type.Index = index;
+      
+      return type;
     }
 
-    public StatePropertyDefinition CreateConfidentialityProperty ()
+    public StatePropertyDefinition CreateConfidentialityProperty (int index)
     {
       StatePropertyDefinition property = new StatePropertyDefinition (_transaction, new Guid ("00000000-0000-0000-0001-000000000001"), "Confidentiality");
+      property.Index = index;
       property.AddState (Confidentiality_NormalName, Confidentiality_NormalValue);
       property.AddState (Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue);
       property.AddState (Confidentiality_PrivateName, Confidentiality_PrivateValue);
+      foreach (StateDefinition state in property.DefinedStates)
+        state.Index = state.Value;
 
       return property;
     }
 
-    public StatePropertyDefinition CreateFileStateProperty ()
+    public StatePropertyDefinition CreateFileStateProperty (int index)
     {
       StatePropertyDefinition property = new StatePropertyDefinition (_transaction, new Guid ("00000000-0000-0000-0002-000000000001"), "State");
+      property.Index = index;
       property.AddState (State_NewName, State_NewValue);
       property.AddState (State_NormalName, State_NormalValue);
       property.AddState (State_ArchivedName, State_ArchivedValue);
+      foreach (StateDefinition state in property.DefinedStates)
+        state.Index = state.Value;
 
       return property;
     }
@@ -102,7 +126,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
     public StateDefinition CreateState (string name, int value)
     {
-      return new StateDefinition (_transaction, name, value);
+      StateDefinition state = new StateDefinition (_transaction, name, value);
+      state.Index = value;
+
+      return state;
     }
   }
 }

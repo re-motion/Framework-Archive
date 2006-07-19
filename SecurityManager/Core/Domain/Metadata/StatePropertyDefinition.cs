@@ -132,6 +132,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       StateDefinition newStateDefinition = new StateDefinition (ClientTransaction);
       newStateDefinition.Name = stateName;
       newStateDefinition.Value = value;
+      newStateDefinition.Index = value;
 
       AddState (newStateDefinition);
     }

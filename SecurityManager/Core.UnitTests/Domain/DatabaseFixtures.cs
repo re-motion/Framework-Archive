@@ -55,7 +55,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       ClientTransaction transaction = new ClientTransaction ();
 
       AbstractRoleDefinition qualityManagerRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "QualityManager|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", 0);
+      qualityManagerRole.Index = 1;
       AbstractRoleDefinition developerRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "Developer|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", 1);
+      developerRole.Index = 0;
 
       Client client = CreateClient (transaction, "Testclient");
       Group rootGroup = CreateGroup (transaction, "rootGroup", "UnqiueIdentifier: rootGroup", null, client);

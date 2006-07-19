@@ -65,8 +65,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      SecurableClassDefinition class1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", class1.Name);
+      SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
+      Assert.AreEqual (0, actualClass1.Index);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", actualClass1.Name);
     }
 
     [Test]
@@ -91,11 +92,13 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      SecurableClassDefinition class1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", class1.Name);
+      SecurableClassDefinition actualClass1 = _importer.Classes[new Guid ("00000000-0000-0000-0001-000000000000")];
+      Assert.AreEqual (0, actualClass1.Index);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.File", actualClass1.Name);
 
-      SecurableClassDefinition class2 = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
-      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.Directory", class2.Name);
+      SecurableClassDefinition actualClass2 = _importer.Classes[new Guid ("00000000-0000-0000-0002-000000000000")];
+      Assert.AreEqual (1, actualClass2.Index);
+      Assert.AreEqual ("Rubicon.Security.UnitTests.TestDomain.Directory", actualClass2.Name);
     }
 
     [Test]
@@ -121,14 +124,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (3, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      AbstractRoleDefinition expectedRole = _testHelper.CreateClerkAbstractRole ();
-      MetadataObjectAssert.AreEqual (expectedRole, _importer.AbstractRoles[expectedRole.MetadataItemID], "Abstract Role Clerk");
+      AbstractRoleDefinition expectedRole1 = _testHelper.CreateClerkAbstractRole (0);
+      MetadataObjectAssert.AreEqual (expectedRole1, _importer.AbstractRoles[expectedRole1.MetadataItemID], "Abstract Role Clerk");
 
-      expectedRole = _testHelper.CreateSecretaryAbstractRole ();
-      MetadataObjectAssert.AreEqual (expectedRole, _importer.AbstractRoles[expectedRole.MetadataItemID], "Abstract Role Secretary");
+      AbstractRoleDefinition expectedRole2 = _testHelper.CreateSecretaryAbstractRole (1);
+      MetadataObjectAssert.AreEqual (expectedRole2, _importer.AbstractRoles[expectedRole2.MetadataItemID], "Abstract Role Secretary");
 
-      expectedRole = _testHelper.CreateAdministratorAbstractRole ();
-      MetadataObjectAssert.AreEqual (expectedRole, _importer.AbstractRoles[expectedRole.MetadataItemID], "Abstract Role Administrator");
+      AbstractRoleDefinition expectedRole3 = _testHelper.CreateAdministratorAbstractRole (2);
+      MetadataObjectAssert.AreEqual (expectedRole3, _importer.AbstractRoles[expectedRole3.MetadataItemID], "Abstract Role Administrator");
     }
 
     [Test]
@@ -154,17 +157,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (3, _importer.AccessTypes.Count, "Access type count");
 
-      AccessTypeDefinition expectedAccessType = _testHelper.CreateAccessTypeCreate ();
-      expectedAccessType.Index = 0;
-      MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Create");
+      AccessTypeDefinition expectedAccessType1 = _testHelper.CreateAccessTypeCreate (0);
+      MetadataObjectAssert.AreEqual (expectedAccessType1, _importer.AccessTypes[expectedAccessType1.MetadataItemID], "Access Type Create");
 
-      expectedAccessType = _testHelper.CreateAccessTypeRead ();
-      expectedAccessType.Index = 1;
-      MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Read");
+      AccessTypeDefinition expectedAccessType2 = _testHelper.CreateAccessTypeRead (1);
+      MetadataObjectAssert.AreEqual (expectedAccessType2, _importer.AccessTypes[expectedAccessType2.MetadataItemID], "Access Type Read");
 
-      expectedAccessType = _testHelper.CreateAccessTypeEdit ();
-      expectedAccessType.Index = 2;
-      MetadataObjectAssert.AreEqual (expectedAccessType, _importer.AccessTypes[expectedAccessType.MetadataItemID], "Access Type Edit");
+      AccessTypeDefinition expectedAccessType3 = _testHelper.CreateAccessTypeEdit (2);
+      MetadataObjectAssert.AreEqual (expectedAccessType3, _importer.AccessTypes[expectedAccessType3.MetadataItemID], "Access Type Edit");
     }
 
     [Test]
@@ -198,15 +198,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       Assert.AreEqual (0, _importer.AbstractRoles.Count, "Abstract role count");
       Assert.AreEqual (0, _importer.AccessTypes.Count, "Access type count");
 
-      StatePropertyDefinition expectedProperty = _testHelper.CreateFileStateProperty ();
-      StatePropertyDefinition actualProperty = _importer.StateProperties[expectedProperty.MetadataItemID];
-      Assert.IsNotNull (actualProperty, "State property not found");
-      MetadataObjectAssert.AreEqual (expectedProperty, actualProperty, "State property");
+      StatePropertyDefinition expectedProperty1 = _testHelper.CreateFileStateProperty (0);
+      StatePropertyDefinition actualProperty1 = _importer.StateProperties[expectedProperty1.MetadataItemID];
+      Assert.IsNotNull (actualProperty1, "State property not found");
+      MetadataObjectAssert.AreEqual (expectedProperty1, actualProperty1, "State property");
 
-      expectedProperty = _testHelper.CreateConfidentialityProperty ();
-      actualProperty = _importer.StateProperties[expectedProperty.MetadataItemID];
-      Assert.IsNotNull (actualProperty, "Confidentiality property not found");
-      MetadataObjectAssert.AreEqual (expectedProperty, actualProperty, "Confidentiality property");
+      StatePropertyDefinition expectedProperty2 = _testHelper.CreateConfidentialityProperty (1);
+      StatePropertyDefinition actualProperty2 = _importer.StateProperties[expectedProperty2.MetadataItemID];
+      Assert.IsNotNull (actualProperty2, "Confidentiality property not found");
+      MetadataObjectAssert.AreEqual (expectedProperty2, actualProperty2, "Confidentiality property");
     }
 
     [Test]

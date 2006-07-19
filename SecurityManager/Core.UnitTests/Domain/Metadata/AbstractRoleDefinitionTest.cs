@@ -62,6 +62,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DomainObjectCollection result = AbstractRoleDefinition.FindAll (_transaction);
 
       Assert.AreEqual (2, result.Count);
+      for (int i = 0; i < result.Count; i++)
+      {
+        AbstractRoleDefinition abstractRole = (AbstractRoleDefinition) result[i];
+        Assert.AreEqual (i, abstractRole.Index, "Wrong Index.");
+      }
     }
 
     [Test]

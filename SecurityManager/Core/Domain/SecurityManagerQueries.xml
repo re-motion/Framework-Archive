@@ -15,14 +15,14 @@
   <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAll" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [SecurableClassDefinitionView];
+      SELECT * FROM [SecurableClassDefinitionView] ORDER BY [Index] ASC;
     </statement>
   </query>
 
   <query id="Rubicon.SecurityManager.Domain.Metadata.SecurableClassDefinition.FindAllBaseClasses" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [SecurableClassDefinitionView] WHERE BaseSecurableClassID IS NULL;
+      SELECT * FROM [SecurableClassDefinitionView] WHERE BaseSecurableClassID IS NULL ORDER BY [Index] ASC;
     </statement>
   </query>
 
@@ -46,7 +46,7 @@
   <query id="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
-      SELECT * FROM [AbstractRoleDefinitionView];
+      SELECT * FROM [AbstractRoleDefinitionView] ORDER BY [Index] ASC;
     </statement>
   </query>
 

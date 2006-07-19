@@ -216,20 +216,29 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    public void FindAll_TwoFound ()
+    public void FindAll_TenFound ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
-
-      AccessControlTestHelper testHelper = new AccessControlTestHelper ();
-      SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
-      SecurableClassDefinition invoiceClass = testHelper.CreateInvoiceClassDefinition ();
-      testHelper.Transaction.Commit ();
+      SecurableClassDefinition[] expectedClassDefinitions = CreateTenSecurableClassDefinitions ();
 
       ClientTransaction transaction = new ClientTransaction ();
       DomainObjectCollection result = SecurableClassDefinition.FindAll (transaction);
 
-      Assert.AreEqual (2, result.Count);
+      Assert.AreEqual (10, result.Count);
+      for (int i = 0; i < result.Count; i++)
+        Assert.AreEqual (expectedClassDefinitions[i].ID, result[i].ID, "Wrong Index.");
+    }
+
+    [Test]
+    public void FindAllBaseClasses_TenFound ()
+    {
+      SecurableClassDefinition[] expectedClassDefinitions = CreateTenSecurableClassDefinitionsWithTenSubClassesEach ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      DomainObjectCollection result = SecurableClassDefinition.FindAllBaseClasses (transaction);
+
+      Assert.AreEqual (10, result.Count);
+      for (int i = 0; i < result.Count; i++)
+        Assert.AreEqual (expectedClassDefinitions[i].ID, result[i].ID, "Wrong Index.");
     }
 
     [Test]
@@ -240,6 +249,20 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       classDefinition.Name = "Namespace.TypeName, AssemblyName";
 
       Assert.AreEqual ("Namespace.TypeName, AssemblyName", classDefinition.DisplayName);
+    }
+
+    [Test]
+    public void GetDerivedClasses_TenFound ()
+    {
+      SecurableClassDefinition[] expectedBaseClassDefinitions = CreateTenSecurableClassDefinitionsWithTenSubClassesEach ();
+      SecurableClassDefinition expectedBaseClassDefinition = expectedBaseClassDefinitions[4];
+
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition actualBaseClassDefinition = SecurableClassDefinition.GetObject (expectedBaseClassDefinition.ID, transaction);
+
+      Assert.AreEqual (10, actualBaseClassDefinition.DerivedClasses.Count);
+      for (int i = 0; i < actualBaseClassDefinition.DerivedClasses.Count; i++)
+        Assert.AreEqual (expectedBaseClassDefinition.DerivedClasses[i].ID, actualBaseClassDefinition.DerivedClasses[i].ID, "Wrong Index.");
     }
 
     [Test]
@@ -418,6 +441,50 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       StateCombination notPaidCombination = testHelper.CreateStateCombination (orderClass, paymentProperty["None"]);
 
       testHelper.Transaction.Commit ();
+    }
+
+    private SecurableClassDefinition[] CreateTenSecurableClassDefinitionsWithTenSubClassesEach ()
+    {
+      return CreateTenSecurableClassDefinitions (true);
+    }
+
+    private SecurableClassDefinition[] CreateTenSecurableClassDefinitions ()
+    {
+      return CreateTenSecurableClassDefinitions (false);
+    }
+
+    private SecurableClassDefinition[] CreateTenSecurableClassDefinitions (bool createDerivedClasses)
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper ();
+      dbHelper.SetupDB ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition[] classDefinitions = new SecurableClassDefinition[10];
+      for (int i = 0; i < classDefinitions.Length; i++)
+      {
+        SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+        classDefinition.MetadataItemID = Guid.NewGuid ();
+        classDefinition.Name = string.Format ("Class {0}", i);
+        classDefinition.Index = i;
+        classDefinitions[i] = classDefinition;
+        if (createDerivedClasses)
+          CreateTenDerivedClasses (classDefinition);
+      }
+      transaction.Commit ();
+
+      return classDefinitions;
+    }
+
+    private void CreateTenDerivedClasses (SecurableClassDefinition baseClassDefinition)
+    {
+      for (int i = 0; i < 10; i++)
+      {
+        SecurableClassDefinition classDefinition = new SecurableClassDefinition (baseClassDefinition.ClientTransaction);
+        classDefinition.MetadataItemID = Guid.NewGuid ();
+        classDefinition.Name = string.Format ("{0} - Subsclass {0}", baseClassDefinition.Name, i);
+        classDefinition.Index = i;
+        classDefinition.BaseClass = baseClassDefinition;
+      }
     }
   }
 }
