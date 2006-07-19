@@ -247,26 +247,62 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     {
       ClientTransaction transaction = new ClientTransaction ();
       SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      DateTime changedAt = classDefinition.ChangedAt;
+      Thread.Sleep (50);
 
       AccessControlList accessControlList = classDefinition.CreateAccessControlList ();
 
       Assert.AreSame (classDefinition, accessControlList.Class);
       Assert.IsNotEmpty (accessControlList.AccessControlEntries);
       Assert.IsNotEmpty (accessControlList.StateCombinations);
+      Assert.Greater ((decimal) classDefinition.ChangedAt.Ticks, (decimal) changedAt.Ticks);
+    }
+
+    [Test]
+    public void CreateAccessControlList_TwoNewAcls ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+      DateTime changedAt = classDefinition.ChangedAt;
+      Thread.Sleep (50);
+
+      AccessControlList acccessControlList0 = classDefinition.CreateAccessControlList ();
+      AccessControlList acccessControlListl = classDefinition.CreateAccessControlList ();
+
+      Assert.AreEqual (2, classDefinition.AccessControlLists.Count);
+      Assert.AreSame (acccessControlList0, classDefinition.AccessControlLists[0]);
+      Assert.AreEqual (0, acccessControlList0.Index);
+      Assert.AreSame (acccessControlListl, classDefinition.AccessControlLists[1]);
+      Assert.AreEqual (1, acccessControlListl.Index);
+      Assert.Greater ((decimal) classDefinition.ChangedAt.Ticks, (decimal) changedAt.Ticks);
     }
 
     [Test]
     public void Get_AccessTypesFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      ObjectID classDefinitionID = dbFixtures.CreateSecurableClassDefinitionWith10AccessTypes ();
+      SecurableClassDefinition expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWith10AccessTypes ();
 
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = SecurableClassDefinition.GetObject (classDefinitionID, transaction);
+      SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID, transaction);
 
-      Assert.AreEqual (10, classDefinition.AccessTypes.Count);
+      Assert.AreEqual (10, actualClassDefinition.AccessTypes.Count);
       for (int i = 0; i < 10; i++)
-        Assert.AreEqual (string.Format ("Access Type {0}", i), ((AccessTypeDefinition) classDefinition.AccessTypes[i]).Name);
+        Assert.AreEqual (expectedClassDefinition.AccessTypes[i].ID, actualClassDefinition.AccessTypes[i].ID);
+    }
+
+    [Test]
+    public void Get_AccessControlListsFromDatabase ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      SecurableClassDefinition expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWith10AccessControlLists ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID, transaction);
+
+      Assert.AreEqual (10, actualClassDefinition.AccessControlLists.Count);
+      for (int i = 0; i < 10; i++)
+        Assert.AreEqual (expectedClassDefinition.AccessControlLists[i].ID, actualClassDefinition.AccessControlLists[i].ID);
     }
 
     [Test]

@@ -282,6 +282,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
       AccessControlEntry ace0 = acl.CreateAccessControlEntry ();
       AccessControlEntry acel = acl.CreateAccessControlEntry ();
+
       Assert.AreEqual (2, acl.AccessControlEntries.Count);
       Assert.AreSame (ace0, acl.AccessControlEntries[0]);
       Assert.AreEqual (0, ace0.Index);
@@ -311,6 +312,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       acl.Touch ();
 
       Assert.Greater ((decimal) acl.ChangedAt.Ticks, (decimal) creationDate.Ticks);
+    }
+
+    [Test]
+    public void SetAndGet_Index ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlList acl = new AccessControlList(_testHelper.Transaction);
+
+      acl.Index = 1;
+      Assert.AreEqual (1, acl.Index);
     }
 
     [Test]
@@ -356,6 +367,5 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlList acl = new AccessControlList (_testHelper.Transaction);
       acl.CreateAccessControlEntry ();      
     }
-
   }
 }

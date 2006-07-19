@@ -88,17 +88,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       transaction.Commit ();
     }
 
-    public ObjectID CreateSecurableClassDefinitionWith10AccessTypes ()
+    public SecurableClassDefinition CreateSecurableClassDefinitionWith10AccessTypes ()
     {
       CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
-
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWith10AccessTypes (transaction);
 
       transaction.Commit ();
 
-      return classDefinition.ID;
+      return classDefinition;
     }
 
     private SecurableClassDefinition CreateSecurableClassDefinitionWith10AccessTypes (ClientTransaction transaction)
@@ -115,12 +114,30 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return classDefinition;
     }
 
+    public SecurableClassDefinition CreateSecurableClassDefinitionWith10AccessControlLists ()
+    {
+      CreateEmptyDomain ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
+      for (int i = 0; i < 10; i++)
+      {
+        AccessControlList acl = new AccessControlList (transaction);
+        acl.Class = classDefinition;
+        acl.CreateAccessControlEntry ();
+        CreateStateCombination (transaction, acl, string.Format ("Property {0}", i));
+      }
+
+      transaction.Commit ();
+
+      return classDefinition;
+    }
+
     public AccessControlList CreateAccessControlListWith10AccessControlEntries ()
     {
       CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
-
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
       AccessControlList acl = new AccessControlList (transaction);
       acl.Class = classDefinition;
@@ -139,21 +156,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
-
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
       AccessControlList acl = new AccessControlList (transaction);
       acl.Class = classDefinition;
       acl.CreateAccessControlEntry ();
 
       for (int i = 0; i < 10; i++)
-      {
-        StatePropertyDefinition stateProperty = new StatePropertyDefinition (transaction, Guid.NewGuid (), string.Format ("Property {0}", i));
-        StateDefinition stateDefinition = new StateDefinition (transaction, "value", 0);
-        stateProperty.AddState (stateDefinition);
-        classDefinition.AddStateProperty (stateProperty);
-        StateCombination stateCombination = acl.CreateStateCombination ();
-        stateCombination.AttachState (stateDefinition);
-      }
+        CreateStateCombination (transaction, acl, string.Format ("Property {0}", i));
+
       transaction.Commit ();
 
       return acl;
@@ -360,6 +370,16 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       accessType.Name = name;
 
       return accessType;
+    }
+
+    private static void CreateStateCombination (ClientTransaction transaction, AccessControlList acl, string propertyName)
+    {
+      StatePropertyDefinition stateProperty = new StatePropertyDefinition (transaction, Guid.NewGuid (), propertyName);
+      StateDefinition stateDefinition = new StateDefinition (transaction, "value", 0);
+      stateProperty.AddState (stateDefinition);
+      acl.Class.AddStateProperty (stateProperty);
+      StateCombination stateCombination = acl.CreateStateCombination ();
+      stateCombination.AttachState (stateDefinition);
     }
   }
 }

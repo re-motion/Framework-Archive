@@ -218,7 +218,9 @@
         </relationProperty>
         <relationProperty name="StatePropertyReferences" relationID="ClassToStatePropertyReference" cardinality="many" isMandatory="false" />
         <relationProperty name="StateCombinations" relationID="ClassToStateCombination" cardinality="many" isMandatory="false" />
-        <relationProperty name="AccessControlLists" relationID="ClassToAccessControlList" cardinality="many" isMandatory="false" />
+        <relationProperty name="AccessControlLists" relationID="ClassToAccessControlList" cardinality="many" isMandatory="false" >
+          <sortExpression>[Index] ASC</sortExpression>
+        </relationProperty>
       </properties>
     </class>
 
@@ -342,6 +344,10 @@
           <type>dateTime</type>
           <column>ChangedAt</column>
           <nullable>false</nullable>
+        </property>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
         </property>
         <relationProperty name="Class" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
           <column>SecurableClassID</column>

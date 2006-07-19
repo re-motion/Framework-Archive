@@ -72,6 +72,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       : base (clientTransaction)
     {
       Touch ();
+      Initialize ();
     }
 
     protected SecurableClassDefinition (DataContainer dataContainer)
@@ -82,6 +83,24 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     // methods and properties
+
+    protected override void OnLoaded ()
+    {
+      base.OnLoaded ();
+      Initialize ();
+    }
+
+    private void Initialize ()
+    {
+      AccessControlLists.Added += new DomainObjectCollectionChangedEventHandler (AccessControlLists_Added);
+    }
+
+    void AccessControlLists_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    {
+      AccessControlList accessControlList = (AccessControlList) args.DomainObject;
+      accessControlList.Index = AccessControlLists.Count - 1;
+      Touch ();
+    }
 
     public SecurableClassDefinition BaseClass
     {
