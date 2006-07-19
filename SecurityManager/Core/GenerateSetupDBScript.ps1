@@ -1,4 +1,4 @@
-.\bin\Debug\DOGen.exe `
+.\..\..\Data\DomainObjects.CodeGenerator.Console\bin\Debug\DOGen.exe `
     "/mappingFile:Domain\SecurityManagerMapping.xml" `
     "/storageProvidersFile:Domain\SecurityManagerStorageProviders.xml" `
     "/sql" `

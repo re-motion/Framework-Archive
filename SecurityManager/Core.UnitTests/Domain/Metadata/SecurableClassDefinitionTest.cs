@@ -8,6 +8,7 @@ using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.UnitTests.Domain.AccessControl;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain;
+using System.Threading;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 {
@@ -21,6 +22,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       AccessTypeDefinition accessType0 = new AccessTypeDefinition (transaction);
       AccessTypeDefinition accessType1 = new AccessTypeDefinition (transaction);
       SecurableClassDefinitionWrapper classDefinitionWrapper = new SecurableClassDefinitionWrapper (new SecurableClassDefinition (transaction));
+      DateTime changedAt = classDefinitionWrapper.SecurableClassDefinition.ChangedAt;
+      Thread.Sleep (50);
 
       classDefinitionWrapper.SecurableClassDefinition.AddAccessType (accessType0);
       classDefinitionWrapper.SecurableClassDefinition.AddAccessType (accessType1);
@@ -31,6 +34,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       DomainObjectCollection references = classDefinitionWrapper.AccessTypeReferences;
       Assert.AreEqual (0, ((AccessTypeReference) references[0]).Index);
       Assert.AreEqual (1, ((AccessTypeReference) references[1]).Index);
+      Assert.Greater ((decimal) classDefinitionWrapper.SecurableClassDefinition.ChangedAt.Ticks, (decimal) changedAt.Ticks);
     }
 
     [Test]
