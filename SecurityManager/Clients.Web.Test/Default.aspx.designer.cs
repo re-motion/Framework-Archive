@@ -8,11 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Rubicon.SecurityManager.Clients.Web.Test
-{
-
-  public partial class _Default
-  {
-    protected System.Web.UI.HtmlControls.HtmlForm form1;
-  }
+namespace Rubicon.SecurityManager.Clients.Web.Test {
+    
+    public partial class _Default {
+        protected System.Web.UI.HtmlControls.HtmlForm form1;
+        protected System.Web.UI.WebControls.Button EvaluateSecurity;
+    }
 }

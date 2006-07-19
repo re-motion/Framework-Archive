@@ -163,6 +163,7 @@ CREATE TABLE [dbo].[Group]
   -- Group columns
   [Name] nvarchar (100) NOT NULL,
   [ShortName] nvarchar (10) NULL,
+  [UniqueIdentifier] nvarchar (100) NOT NULL,
   [ClientID] uniqueidentifier NULL,
   [ParentID] uniqueidentifier NULL,
   [GroupTypeID] uniqueidentifier NULL,
@@ -277,6 +278,7 @@ CREATE TABLE [dbo].[SecurableClassDefinition]
   [Name] nvarchar (200) NOT NULL,
 
   -- SecurableClassDefinition columns
+  [ChangedAt] datetime NOT NULL,
   [BaseSecurableClassID] uniqueidentifier NULL,
   [BaseSecurableClassIDClassID] varchar (100) NULL,
 
@@ -511,9 +513,9 @@ CREATE VIEW [dbo].[ClientView] ([ID], [ClassID], [Timestamp], [Name])
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[GroupView] ([ID], [ClassID], [Timestamp], [Name], [ShortName], [ClientID], [ParentID], [GroupTypeID])
+CREATE VIEW [dbo].[GroupView] ([ID], [ClassID], [Timestamp], [Name], [ShortName], [UniqueIdentifier], [ClientID], [ParentID], [GroupTypeID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [Name], [ShortName], [ClientID], [ParentID], [GroupTypeID]
+  SELECT [ID], [ClassID], [Timestamp], [Name], [ShortName], [UniqueIdentifier], [ClientID], [ParentID], [GroupTypeID]
     FROM [dbo].[Group]
     WHERE [ClassID] IN ('Group')
   WITH CHECK OPTION
@@ -559,17 +561,17 @@ CREATE VIEW [dbo].[UserView] ([ID], [ClassID], [Timestamp], [Title], [FirstName]
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[MetadataObjectView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [Index], [BaseSecurableClassID], [BaseSecurableClassIDClassID])
+CREATE VIEW [dbo].[MetadataObjectView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [Index], [ChangedAt], [BaseSecurableClassID], [BaseSecurableClassIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [Index], null, null
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [Value], [StatePropertyID], [StatePropertyIDClassID], [Index], null, null, null
     FROM [dbo].[EnumValueDefinition]
     WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
   UNION
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, null, [BaseSecurableClassID], [BaseSecurableClassIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, null, [ChangedAt], [BaseSecurableClassID], [BaseSecurableClassIDClassID]
     FROM [dbo].[SecurableClassDefinition]
     WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
   UNION
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, null, null, null
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], null, null, null, null, null, null, null
     FROM [dbo].[StatePropertyDefinition]
     WHERE [ClassID] IN ('EnumValueDefinition', 'StateDefinition', 'AccessTypeDefinition', 'AbstractRoleDefinition', 'SecurableClassDefinition', 'StatePropertyDefinition')
 GO
@@ -582,9 +584,9 @@ CREATE VIEW [dbo].[EnumValueDefinitionView] ([ID], [ClassID], [Timestamp], [Meta
   WITH CHECK OPTION
 GO
 
-CREATE VIEW [dbo].[SecurableClassDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [BaseSecurableClassID], [BaseSecurableClassIDClassID])
+CREATE VIEW [dbo].[SecurableClassDefinitionView] ([ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [ChangedAt], [BaseSecurableClassID], [BaseSecurableClassIDClassID])
   WITH SCHEMABINDING AS
-  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [BaseSecurableClassID], [BaseSecurableClassIDClassID]
+  SELECT [ID], [ClassID], [Timestamp], [MetadataItemID], [Name], [ChangedAt], [BaseSecurableClassID], [BaseSecurableClassIDClassID]
     FROM [dbo].[SecurableClassDefinition]
     WHERE [ClassID] IN ('SecurableClassDefinition')
   WITH CHECK OPTION

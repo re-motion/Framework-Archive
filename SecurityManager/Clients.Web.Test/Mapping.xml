@@ -87,6 +87,12 @@
           <nullable>true</nullable>
           <maxLength>10</maxLength>
         </property>
+        <property name="UniqueIdentifier">
+          <type>string</type>
+          <column>UniqueIdentifier</column>
+          <nullable>false</nullable>
+          <maxLength>100</maxLength>
+        </property>
         <relationProperty name="Client" relationID="ClientToGroup" cardinality="one" isMandatory="true">
           <column>ClientID</column>
           <oppositeClass>Client</oppositeClass>
@@ -254,6 +260,11 @@
       <entity name="SecurableClassDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="ChangedAt">
+          <type>dateTime</type>
+          <column>ChangedAt</column>
+          <nullable>false</nullable>
+        </property>
         <relationProperty name="BaseClass" relationID="DerivedToBaseClass" cardinality="one" isMandatory="false">
           <column>BaseSecurableClassID</column>
         </relationProperty>

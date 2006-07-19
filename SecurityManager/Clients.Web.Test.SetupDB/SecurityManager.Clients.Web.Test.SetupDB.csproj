@@ -44,12 +44,19 @@
     <Content Include="SecurityManagerSetupConstraints.sql" />
     <None Include="SecurityManagerSetupDB.sql" />
     <None Include="SetupDB.sql" />
+    <None Include="TestData\AccessTypeReference.csv" />
     <None Include="TestData\Client.csv" />
     <None Include="TestData\ConcretePosition.csv" />
+    <None Include="TestData\EnumValueDefinition.csv" />
+    <None Include="TestData\File.csv" />
+    <None Include="TestData\FileItem.csv" />
     <None Include="TestData\Group.csv" />
     <None Include="TestData\GroupType.csv" />
     <None Include="TestData\Position.csv" />
     <None Include="TestData\Role.csv" />
+    <None Include="TestData\SecurableClassDefinition.csv" />
+    <None Include="TestData\StatePropertyDefinition.csv" />
+    <None Include="TestData\StatePropertyReference.csv" />
     <None Include="TestData\User.csv" />
     <None Include="TestData\_TestData.xls" />
   </ItemGroup>
