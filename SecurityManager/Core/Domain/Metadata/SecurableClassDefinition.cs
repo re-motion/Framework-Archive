@@ -71,7 +71,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public SecurableClassDefinition (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
-      DataContainer["ChangedAt"] = DateTime.Now;
+      Touch ();
     }
 
     protected SecurableClassDefinition (DataContainer dataContainer)
@@ -98,6 +98,11 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public DateTime ChangedAt
     {
       get { return (DateTime) DataContainer["ChangedAt"]; }
+   }
+
+    public void Touch ()
+    {
+      DataContainer["ChangedAt"] = DateTime.Now;
     }
 
     public DomainObjectCollection StateProperties
@@ -187,11 +192,6 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       accessControlList.CreateAccessControlEntry ();
 
       return accessControlList;
-    }
-
-    public void Touch ()
-    {
-      DataContainer["ChangedAt"] = DateTime.Now;
     }
 
     public SecurableClassValidationResult Validate ()

@@ -6,6 +6,7 @@ using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using System.Threading;
 
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {
@@ -175,6 +176,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
       AccessTypeDefinition accessType0 = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid (), "Access Type 0", 0);
       AccessTypeDefinition accessType1 = new AccessTypeDefinition (_testHelper.Transaction, Guid.NewGuid (), "Access Type 1", 1);
+      DateTime changedAt = ace.ChangedAt;
+      Thread.Sleep (50);
 
       ace.AttachAccessType (accessType0);
       ace.AttachAccessType (accessType1);
@@ -186,6 +189,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Permission permission1 = (Permission) ace.Permissions[1];
       Assert.AreSame (accessType1, permission1.AccessType);
       Assert.AreEqual (1, permission1.Index);
+      Assert.Greater ((decimal) ace.ChangedAt.Ticks, (decimal) changedAt.Ticks);
     }
 
     [Test]
@@ -290,6 +294,29 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       Assert.AreEqual (10, ace.Permissions.Count);
       for (int i = 0; i < 10; i++)
         Assert.AreEqual (string.Format ("Access Type {0}", i), ((Permission) ace.Permissions[i]).AccessType.Name);
+    }
+
+    [Test]
+    public void GetChangedAt_AfterCreation ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+
+      Assert.AreNotEqual (DateTime.MinValue, ace.ChangedAt);
+    }
+
+    [Test]
+    public void Touch_AfterCreation ()
+    {
+      ClientTransaction transaction = new ClientTransaction ();
+      AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
+
+      DateTime creationDate = ace.ChangedAt;
+
+      Thread.Sleep (50);
+      ace.Touch ();
+
+      Assert.Greater ((decimal) ace.ChangedAt.Ticks, (decimal)creationDate.Ticks);
     }
   }
 }

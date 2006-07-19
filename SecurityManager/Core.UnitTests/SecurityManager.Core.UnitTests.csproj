@@ -112,9 +112,6 @@
       <Name>SecurityManager.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="bin\Debug\SecurityManagerSetupDB.sql" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <DatabaseFiles Include="..\Core\Database\SecurityManagerCreateDB.sql">

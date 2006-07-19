@@ -42,6 +42,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public AccessControlEntry (ClientTransaction clientTransaction)
       : base (clientTransaction)
     {
+      Touch ();
     }
 
     protected AccessControlEntry (DataContainer dataContainer)
@@ -129,6 +130,16 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       get { return new DomainObjectCollection (GetPermissions(), true); }
     }
 
+    public DateTime ChangedAt
+    {
+      get { return (DateTime) DataContainer["ChangedAt"]; }
+    }
+
+    public void Touch ()
+    {
+      DataContainer["ChangedAt"] = DateTime.Now;
+    }
+
     public bool MatchesToken (SecurityToken token)
     {
       ArgumentUtility.CheckNotNull ("token", token);
@@ -166,7 +177,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       permission.AccessType = accessType;
       permission.Allowed = NaBoolean.Null;
       permission.Index = Permissions.Count;
-      //TODO: Touch AccessControlEntry
+      Touch ();
 
       GetPermissions ().Add (permission);
     }

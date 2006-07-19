@@ -349,6 +349,11 @@
       <entity name="AccessControlEntry"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="ChangedAt">
+          <type>dateTime</type>
+          <column>ChangedAt</column>
+          <nullable>false</nullable>
+        </property>
         <property name="Client">
           <type>Rubicon.SecurityManager.Domain.AccessControl.ClientSelection, Rubicon.SecurityManager</type>
           <column>ClientSelection</column>

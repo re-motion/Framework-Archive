@@ -286,10 +286,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       DateTime creationDate = classDefinition.ChangedAt;
 
-      System.Threading.Thread.Sleep (500);
+      Thread.Sleep (50);
       classDefinition.Touch ();
 
-      Assert.AreNotEqual (creationDate, classDefinition.ChangedAt);
+      Assert.Greater ((decimal) classDefinition.ChangedAt.Ticks, (decimal) creationDate.Ticks);
     }
 
     [Test]
