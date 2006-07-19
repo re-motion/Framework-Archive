@@ -162,7 +162,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public DomainObjectCollection StateCombinations
     {
       get { return (DomainObjectCollection) GetRelatedObjects ("StateCombinations"); }
-      set { } // marks property StateCombinations as modifiable
+      // Property is not meant to be modifiable in UI
     }
 
     public DomainObjectCollection AccessControlLists

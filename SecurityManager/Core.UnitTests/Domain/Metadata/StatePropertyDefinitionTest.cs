@@ -132,5 +132,22 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
 
       Assert.AreEqual ("Value|Namespace.TypeName, Assembly", stateProperty.DisplayName);
     }
+
+    [Test]
+    public void GetDefinedStates ()
+    {
+      DatabaseHelper dbHelper = new DatabaseHelper();
+      dbHelper.SetupDB ();
+      StatePropertyDefinition expectdPropertyDefinition = _testHelper.CreateConfidentialityProperty (0);
+      _testHelper.Transaction.Commit ();
+
+      ClientTransaction transaction = new ClientTransaction ();
+      StatePropertyDefinition actualStatePropertyDefinition = StatePropertyDefinition.GetObject (expectdPropertyDefinition.ID, transaction);
+
+      Assert.AreEqual (3, actualStatePropertyDefinition.DefinedStates.Count);
+      for (int i = 0; i < actualStatePropertyDefinition.DefinedStates.Count; i++)
+        Assert.AreEqual (expectdPropertyDefinition.DefinedStates[i].ID, actualStatePropertyDefinition.DefinedStates[i].ID);
+    }
+
   }
 }

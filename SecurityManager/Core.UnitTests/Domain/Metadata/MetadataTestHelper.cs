@@ -90,8 +90,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       property.AddState (Confidentiality_NormalName, Confidentiality_NormalValue);
       property.AddState (Confidentiality_ConfidentialName, Confidentiality_ConfidentialValue);
       property.AddState (Confidentiality_PrivateName, Confidentiality_PrivateValue);
-      foreach (StateDefinition state in property.DefinedStates)
-        state.Index = state.Value;
 
       return property;
     }
@@ -103,8 +101,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       property.AddState (State_NewName, State_NewValue);
       property.AddState (State_NormalName, State_NormalValue);
       property.AddState (State_ArchivedName, State_ArchivedValue);
-      foreach (StateDefinition state in property.DefinedStates)
-        state.Index = state.Value;
 
       return property;
     }
