@@ -40,7 +40,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [ExpectedException (typeof (PermissionDeniedException))]
     public void OneCorrectAttribute_AccessDenied ()
     {
-      SetupNamePropertyReadAccessTypes (GeneralAccessType.Find);
+      SetupNamePropertyWriteAccessTypes (GeneralAccessType.Find);
       SetupSecurityServiceResult (GeneralAccessType.Edit);
       _mocks.ReplayAll ();
 
@@ -50,7 +50,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [Test]
     public void OneWrongAttribute_AccessAllowed ()
     {
-      SetupNamePropertyReadAccessTypes (GeneralAccessType.Find);
+      SetupNamePropertyWriteAccessTypes (GeneralAccessType.Find);
       SetupSecurityServiceResult (GeneralAccessType.Edit, GeneralAccessType.Find);
       _mocks.ReplayAll ();
 
@@ -63,7 +63,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
     [ExpectedException (typeof (ArgumentException), "The member 'Name' does not define required permissions.\r\nParameter name: requiredAccessTypeEnums")]
     public void NoAttributes_ThrowsException ()
     {
-      SetupNamePropertyReadAccessTypes ();
+      SetupNamePropertyWriteAccessTypes ();
       SetupSecurityServiceResult (GeneralAccessType.Edit, GeneralAccessType.Find);
       _mocks.ReplayAll ();
 
@@ -85,7 +85,7 @@ namespace Rubicon.Security.UnitTests.SecurityClientTests
       return new SecurityClient (_securityServiceMock, _permissionReflectorMock, new ThreadUserProvider (), new FunctionalSecurityStrategy ());
     }
 
-    private void SetupNamePropertyReadAccessTypes (params Enum[] accessTypes)
+    private void SetupNamePropertyWriteAccessTypes (params Enum[] accessTypes)
     {
       Expect.Call (_permissionReflectorMock.GetRequiredPropertyWritePermissions (typeof (SecurableObject), "Name")).Return (accessTypes);
     }
