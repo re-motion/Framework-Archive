@@ -57,17 +57,17 @@
     </statement>
   </query>
 
-  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier" type="collection">
-    <storageProviderID>SecurityManager</storageProviderID>
-    <statement>
-      SELECT * FROM [GroupView] WHERE [UniqueIdentifier] = @uniqueIdentifier;
-    </statement>
-  </query>
-
   <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.User.FindByClientID" type="collection">
     <storageProviderID>SecurityManager</storageProviderID>
     <statement>
       SELECT * FROM [UserView] WHERE ClientID = @clientID ORDER BY LastName;
+    </statement>
+  </query>
+
+  <query id="Rubicon.SecurityManager.Domain.OrganizationalStructure.Group.FindByUnqiueIdentifier" type="collection">
+    <storageProviderID>SecurityManager</storageProviderID>
+    <statement>
+      SELECT * FROM [GroupView] WHERE [UniqueIdentifier] = @uniqueIdentifier;
     </statement>
   </query>
 
