@@ -6,6 +6,7 @@ using Rubicon.Data.DomainObjects;
 using Rubicon.Data.DomainObjects.Queries;
 using System.Globalization;
 using System.Threading;
+using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.Metadata
 {
@@ -99,11 +100,15 @@ namespace Rubicon.SecurityManager.Domain.Metadata
 
     public LocalizedName GetLocalizedName (Culture culture)
     {
+      ArgumentUtility.CheckNotNull ("culture", culture);
+
       return GetLocalizedName (culture.CultureName);
     }
 
     public LocalizedName GetLocalizedName (string cultureName)
     {
+      ArgumentUtility.CheckNotNull ("cultureName", cultureName);
+      
       foreach (LocalizedName localizedName in LocalizedNames)
       {
         if (localizedName.Culture.CultureName == cultureName)

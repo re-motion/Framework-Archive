@@ -8,7 +8,7 @@ using Rubicon.Data.DomainObjects.Persistence.Rdbms;
 using Rubicon.ObjectBinding;
 using Rubicon.Data.DomainObjects.ObjectBinding;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
+namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure.GroupTests
 {
   [TestFixture]
   public class Test : DomainTest

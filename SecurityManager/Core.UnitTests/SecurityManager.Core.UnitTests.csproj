@@ -76,7 +76,7 @@
     <Compile Include="Domain\Metadata\AccessTypeReferenceTest.cs" />
     <Compile Include="Domain\Metadata\CultureTest.cs" />
     <Compile Include="Domain\Metadata\MetadataObjectTests\FindTest.cs" />
-    <Compile Include="Domain\Metadata\MetadataObjectTests\MetadataObjectTest.cs" />
+    <Compile Include="Domain\Metadata\MetadataObjectTests\Test.cs" />
     <Compile Include="Domain\Metadata\StateDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\CultureImporterTest.cs" />
     <Compile Include="Domain\Metadata\FindAbstractRolesQueryBuilderTest.cs" />
@@ -86,8 +86,8 @@
     <Compile Include="Domain\Metadata\SecurableClassDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\StatePropertyDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\SecurableClassDefinitionWrapper.cs" />
+    <Compile Include="Domain\OrganizationalStructure\GroupTests\Test.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTests\TestWithTwoClients.cs" />
-    <Compile Include="Domain\OrganizationalStructure\GroupTests\GroupTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\GroupTypeTest.cs" />
     <Compile Include="Domain\OrganizationalStructure\OrganisationalStructureTestHelper.cs" />
     <Compile Include="Domain\OrganizationalStructure\PositionTest.cs" />

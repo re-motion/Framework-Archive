@@ -10,7 +10,7 @@ using System.Threading;
 namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
 {
   [TestFixture]
-  public class LocalizationTest : DomainTest
+  public class FindTest : DomainTest
   {
     public override void TestFixtureSetUp ()
     {
