@@ -94,10 +94,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       AccessControlLists.Added += new DomainObjectCollectionChangedEventHandler (AccessControlLists_Added);
     }
 
-    void AccessControlLists_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    private void AccessControlLists_Added (object sender, DomainObjectCollectionChangedEventArgs args)
     {
       AccessControlList accessControlList = (AccessControlList) args.DomainObject;
-      accessControlList.Index = AccessControlLists.Count - 1;
+      DomainObjectCollection accessControlLists = AccessControlLists;
+      if (accessControlLists.Count == 1)
+        accessControlList.Index = 0;
+      else
+        accessControlList.Index = ((AccessControlList) accessControlLists[accessControlLists.Count - 2]).Index + 1;
       Touch ();
     }
 
@@ -175,10 +179,14 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     {
       AccessTypeReference reference = new AccessTypeReference (ClientTransaction);
       reference.AccessType = accessType;
-      reference.Index = AccessTypeReferences.Count;
+      AccessTypeReferences.Add (reference);
+      DomainObjectCollection accessTypeReferences = AccessTypeReferences;
+      if (accessTypeReferences.Count == 1)
+        reference.Index = 0;
+      else
+        reference.Index = ((AccessTypeReference) accessTypeReferences[accessTypeReferences.Count - 2]).Index + 1;
       Touch ();
 
-      AccessTypeReferences.Add (reference);
       _accessTypes = null;
     }
 

@@ -182,10 +182,13 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       Permission permission = new Permission (ClientTransaction);
       permission.AccessType = accessType;
       permission.Allowed = NaBoolean.Null;
-      permission.Index = Permissions.Count;
+      DomainObjectCollection permissions = GetPermissions ();
+      permissions.Add (permission);
+      if (permissions.Count == 1)
+        permission.Index = 0;
+      else
+        permission.Index = ((Permission) permissions[permissions.Count - 2]).Index + 1;
       Touch ();
-
-      GetPermissions ().Add (permission);
     }
 
     public void AllowAccess (AccessTypeDefinition accessType)

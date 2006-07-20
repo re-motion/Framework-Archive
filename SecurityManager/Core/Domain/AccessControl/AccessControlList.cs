@@ -60,17 +60,25 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       AccessControlEntries.Added += new DomainObjectCollectionChangedEventHandler (AccessControlEntries_Added);
     }
 
-    void StateCombinations_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    private void StateCombinations_Added (object sender, DomainObjectCollectionChangedEventArgs args)
     {
       StateCombination stateCombination = (StateCombination) args.DomainObject;
-      stateCombination.Index = StateCombinations.Count - 1;
+      DomainObjectCollection stateCombinations = StateCombinations;
+      if (stateCombinations.Count == 1)
+        stateCombination.Index = 0;
+      else
+        stateCombination.Index = ((StateCombination) stateCombinations[stateCombinations.Count - 2]).Index + 1;
       Touch ();
     }
 
-    void AccessControlEntries_Added (object sender, DomainObjectCollectionChangedEventArgs args)
+    private void AccessControlEntries_Added (object sender, DomainObjectCollectionChangedEventArgs args)
     {
       AccessControlEntry ace = (AccessControlEntry) args.DomainObject;
-      ace.Index = AccessControlEntries.Count - 1;
+      DomainObjectCollection accessControlEntries = AccessControlEntries;
+      if (accessControlEntries.Count == 1)
+        ace.Index = 0;
+      else
+        ace.Index = ((AccessControlEntry) accessControlEntries[accessControlEntries.Count - 2]).Index + 1;
       Touch ();
     }
 
