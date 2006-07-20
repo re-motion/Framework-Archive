@@ -7,8 +7,6 @@ using Rubicon.Utilities;
 
 namespace Rubicon.Data.DomainObjects.UnitTests.MockConstraints
 {
-  //TODO ES: rename file
-  //TODO ES: provide constructor overload (params object[] objects) if possible
   public class ContainsConstraint : AbstractConstraint
   {
     // types
@@ -20,6 +18,10 @@ namespace Rubicon.Data.DomainObjects.UnitTests.MockConstraints
     private List<IsIn> _constraints = new List<IsIn> ();
 
     // construction and disposing
+
+    public ContainsConstraint (params object[] objects) : this ((IEnumerable) objects)
+    {
+    }
 
     public ContainsConstraint (IEnumerable objects)
     {

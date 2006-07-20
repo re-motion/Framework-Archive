@@ -155,11 +155,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         _clientTransactionExtensionMock.RollingBack (null);
         LastCall.IgnoreArguments ();
-        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (new DomainObject[] { _order1, _customer1 }));
+        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1 ));
 
         _clientTransactionMockEventReceiver.RollingBack (null, null);
         LastCall.IgnoreArguments ();
-        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 2) & new ContainsConstraint (new DomainObject[] { _order1, _customer1 })));
+        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1 )));
 
         _order1MockEventReceiver.RolledBack (null, null);
         LastCall.IgnoreArguments ();
@@ -171,11 +171,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         _clientTransactionMockEventReceiver.RolledBack (null, null);
         LastCall.IgnoreArguments ();
-        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 2) & new ContainsConstraint (new DomainObject[] { _order1, _customer1 })));
+        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1 )));
 
         _clientTransactionExtensionMock.RolledBack (null);
         LastCall.IgnoreArguments ();
-        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (new DomainObject[] { _order1, _customer1 }));
+        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
       }
 
       _mockRepository.ReplayAll ();
@@ -238,11 +238,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         _clientTransactionMockEventReceiver.RolledBack (null, null);
         LastCall.IgnoreArguments ();
-        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 2) & new ContainsConstraint (new DomainObject[] { _order1, _customer1 })));
+        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1)));
 
         _clientTransactionExtensionMock.RolledBack (null);
         LastCall.IgnoreArguments ();
-        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (new DomainObject[] { _order1, _customer1 }));
+        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
       }
 
       _mockRepository.ReplayAll ();
@@ -334,11 +334,11 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
 
         _clientTransactionExtensionMock.RollingBack (null);
         LastCall.IgnoreArguments ();
-        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (new DomainObject[] { _order1, _customer1 }));
+        LastCall.Constraints (Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1));
 
         _clientTransactionMockEventReceiver.RollingBack (null, null);
         LastCall.IgnoreArguments ();
-        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 2) & new ContainsConstraint (new DomainObject[] { _order1, _customer1 })));
+        LastCall.Constraints (Is.Same (ClientTransactionMock), Property.ValueConstraint ("DomainObjects", Property.Value ("Count", 2) & new ContainsConstraint (_order1, _customer1)));
         LastCall.Do (new ClientTransactionEventHandler (ChangeCustomerNameBackToOriginalCallback));
 
         _clientTransactionExtensionMock.PropertyValueChanging (null, null, null, null);

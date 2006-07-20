@@ -693,7 +693,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
           LastCall.Constraints (Is.Same (newOrderTicket1), Is.NotNull ());
         }
         extension.Committing (null);
-        LastCall.Constraints (new ContainsConstraint (new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 }));
+        LastCall.Constraints (new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 ));
 
         using (mockRepository.Unordered ())
         {
@@ -716,7 +716,7 @@ namespace Rubicon.Data.DomainObjects.UnitTests.IntegrationTests
           LastCall.Constraints (Is.Same (newOrderTicket1), Is.NotNull ());
         }
         extension.Committed (null);
-        LastCall.Constraints (Property.Value ("Count", 6) & new ContainsConstraint (new DomainObject[] { newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 }));
+        LastCall.Constraints (Property.Value ("Count", 6) & new ContainsConstraint (newCustomer1, official2, newCeo2, newOrder1, newOrderItem2, newOrderTicket1 ));
       }
 
       mockRepository.ReplayAll ();
