@@ -14,10 +14,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void Find_PositionsByClientID ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreatePositionsWithDifferentClients ();
+      Client exptectedClient = dbFixtures.CreateOrganizationalStructureWithTwoClients ();
       ClientTransaction transaction = new ClientTransaction ();
 
-      DomainObjectCollection positions = Position.FindByClientID (dbFixtures.CurrentClient.ID, transaction);
+      DomainObjectCollection positions = Position.FindByClientID (exptectedClient.ID, transaction);
 
       Assert.AreEqual (2, positions.Count);
     }

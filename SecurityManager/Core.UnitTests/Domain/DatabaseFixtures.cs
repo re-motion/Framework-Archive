@@ -11,13 +11,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 {
   public class DatabaseFixtures
   {
-    private Client _currentClient;
     private OrganizationalStructureFactory _factory;
-
-    public Client CurrentClient
-    {
-      get { return _currentClient; }
-    }
 
     public DatabaseFixtures ()
     {
@@ -48,7 +42,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       transaction.Commit ();
     }
 
-    public void CreateOrganizationalStructure ()
+    public Client CreateOrganizationalStructureWithTwoClients ()
     {
       CreateEmptyDomain ();
 
@@ -59,21 +53,33 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       AbstractRoleDefinition developerRole = new AbstractRoleDefinition (transaction, Guid.NewGuid (), "Developer|Rubicon.SecurityManager.UnitTests.TestDomain.ProjectRole, Rubicon.SecurityManager.UnitTests", 1);
       developerRole.Index = 0;
 
-      Client client = CreateClient (transaction, "Testclient");
-      Group rootGroup = CreateGroup (transaction, "rootGroup", "UnqiueIdentifier: rootGroup", null, client);
-      Group parentOfOwnerGroup = CreateGroup (transaction, "parentOfOwnerGroup", "UnqiueIdentifier: parentOfOwnerGroup", rootGroup, client);
-      Group ownerGroup = CreateGroup (transaction, "ownerGroup", "UnqiueIdentifier: ownerGroup", parentOfOwnerGroup, client);
-      Group group = CreateGroup (transaction, "Testgroup", "UnqiueIdentifier: Testgroup", ownerGroup, client);
-      User user = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", group, client);
-      Position officialPosition = CreatePosition (transaction, "Official", client);
-      Position managerPosition = CreatePosition (transaction, "Manager", client);
+      Client client1 = CreateClient (transaction, "Testclient");
+      Group rootGroup = CreateGroup (transaction, "rootGroup", "UnqiueIdentifier: rootGroup", null, client1);
+      Group parentOfOwnerGroup = CreateGroup (transaction, "parentOfOwnerGroup", "UnqiueIdentifier: parentOfOwnerGroup", rootGroup, client1);
+      Group ownerGroup = CreateGroup (transaction, "ownerGroup", "UnqiueIdentifier: ownerGroup", parentOfOwnerGroup, client1);
+      Group group = CreateGroup (transaction, "Testgroup", "UnqiueIdentifier: Testgroup", ownerGroup, client1);
+      User user1 = CreateUser (transaction, "test.user", "test", "user", "Dipl.Ing.(FH)", group, client1);
+      User user2 = CreateUser (transaction, "other.test.user", "other test", "user", "Dipl.Ing.(FH)", group, client1);
+      Position officialPosition = CreatePosition (transaction, "Official", client1);
+      Position managerPosition = CreatePosition (transaction, "Manager", client1);
 
-      Role officialInGroup = CreateRole (transaction, user, group, officialPosition);
-      Role managerInGroup = CreateRole (transaction, user, group, managerPosition);
-      Role managerInOwnerGroup = CreateRole (transaction, user, ownerGroup, managerPosition);
-      Role officialInRootGroup = CreateRole (transaction, user, rootGroup, officialPosition);
+      Role officialInGroup = CreateRole (transaction, user1, group, officialPosition);
+      Role managerInGroup = CreateRole (transaction, user1, group, managerPosition);
+      Role managerInOwnerGroup = CreateRole (transaction, user1, ownerGroup, managerPosition);
+      Role officialInRootGroup = CreateRole (transaction, user1, rootGroup, officialPosition);
+      
+      GroupType groupType1 = CreateGroupType (transaction, "groupType 1", client1);
+      GroupType groupType2 = CreateGroupType (transaction, "groupType 2", client1);
+
+      Client client2 = CreateClient (transaction, "Client 2");
+      Group groupClient2 = CreateGroup (transaction, "Group Client 2", "UnqiueIdentifier: group Client 2", null, client2);
+      User userClient2 = CreateUser (transaction, "User.Client2", "User", "Client 2", string.Empty, groupClient2, client2);
+      Position position2 = CreatePosition (transaction, "Position Client 2", client2);
+      GroupType groupTypeClient2 = CreateGroupType (transaction, "GroupType Client 2", client2);
 
       transaction.Commit ();
+
+      return client1;
     }
 
     public void CreateSecurableClassDefinitionWithStates ()
@@ -171,73 +177,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return acl;
     }
 
-    public void CreateUsersWithDifferentClients ()
-    {
-      CreateEmptyDomain ();
-
-      ClientTransaction transaction = new ClientTransaction ();
-
-      _currentClient = CreateClient (transaction, "client 1");
-      Client client2 = CreateClient (transaction, "client 2");
-
-      Group group1 = CreateGroup (transaction, "group 1", "UnqiueIdentifier: group 1", null, _currentClient);
-      Group group2 = CreateGroup (transaction, "group 2", "UnqiueIdentifier: group 2", null, client2);
-
-      User user1 = CreateUser (transaction, "Hans", "Huber", "Huber.Hans", string.Empty, group1, _currentClient);
-      User user2 = CreateUser (transaction, "Martha", "Hauser", "Hauser.Martha", string.Empty, group1, _currentClient);
-      User user3 = CreateUser (transaction, "Heinz", "Zuber", "Zuber.Heinz", string.Empty, group2, client2);
-
-      transaction.Commit ();
-    }
-
-    public void CreateGroupsWithDifferentClients ()
-    {
-      CreateEmptyDomain ();
-
-      ClientTransaction transaction = new ClientTransaction ();
-
-      _currentClient = CreateClient (transaction, "client 1");
-      Client client2 = CreateClient (transaction, "client 2");
-
-      Group group1 = CreateGroup (transaction, "group 1", "UnqiueIdentifier: group 1", null, _currentClient);
-      Group group2 = CreateGroup (transaction, "group 2", "UnqiueIdentifier: group 2", null, _currentClient);
-      Group group3 = CreateGroup (transaction, "group 3", "UnqiueIdentifier: group 3", null, client2);
-
-      transaction.Commit ();
-    }
-
-    public void CreateGroupTypesWithDifferentClients ()
-    {
-      CreateEmptyDomain ();
-
-      ClientTransaction transaction = new ClientTransaction ();
-
-      _currentClient = CreateClient (transaction, "client 1");
-      Client client2 = CreateClient (transaction, "client 2");
-
-      GroupType groupType1 = CreateGroupType (transaction, "groupType 1", _currentClient);
-      GroupType groupType2 = CreateGroupType (transaction, "groupType 2", _currentClient);
-      GroupType groupType3 = CreateGroupType (transaction, "groupType 3", client2);
-
-      transaction.Commit ();
-    }
-
-    public void CreatePositionsWithDifferentClients ()
-    {
-      CreateEmptyDomain ();
-
-      ClientTransaction transaction = new ClientTransaction ();
-
-      _currentClient = CreateClient (transaction, "client 1");
-      Client client2 = CreateClient (transaction, "client 2");
-
-      Position position1 = CreatePosition (transaction, "position 1", _currentClient);
-      Position position2 = CreatePosition (transaction, "position 2", _currentClient);
-      Position position3 = CreatePosition (transaction, "position 3", client2);
-
-      transaction.Commit ();
-    }
-
     public void CreateAdministratorAbstractRole ()
     {
       CreateEmptyDomain ();
@@ -265,7 +204,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return ace.ID;
     }
 
-    public Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Client client)
+    private Group CreateGroup (ClientTransaction transaction, string name, string uniqueIdentifier, Group parent, Client client)
     {
       Group group = _factory.CreateGroup (transaction);
       group.Name = name;
@@ -276,7 +215,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return group;
     }
 
-    public Client CreateClient (ClientTransaction transaction, string name)
+    private Client CreateClient (ClientTransaction transaction, string name)
     {
       Client client = new Client (transaction);
       client.Name = name;
@@ -284,7 +223,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return client;
     }
 
-    public User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Client client)
+    private User CreateUser (ClientTransaction transaction, string userName, string firstName, string lastName, string title, Group group, Client client)
     {
       User user = _factory.CreateUser (transaction);
       user.UserName = userName;

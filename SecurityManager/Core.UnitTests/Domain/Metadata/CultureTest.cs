@@ -12,12 +12,17 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
   {
     private ClientTransaction _transaction;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+    
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames ();
+    }
+
     public override void SetUp ()
     {
       base.SetUp ();
-
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithLocalizedNames ();
 
       _transaction = new ClientTransaction ();
     }

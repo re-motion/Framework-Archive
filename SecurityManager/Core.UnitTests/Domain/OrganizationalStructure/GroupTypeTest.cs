@@ -16,10 +16,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     public void Find_GroupTypesByClientID ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateGroupTypesWithDifferentClients ();
+      Client exptectedClient = dbFixtures.CreateOrganizationalStructureWithTwoClients ();
       ClientTransaction transaction = new ClientTransaction ();
 
-      DomainObjectCollection groupTypes = GroupType.FindByClientID (dbFixtures.CurrentClient.ID, transaction);
+      DomainObjectCollection groupTypes = GroupType.FindByClientID (exptectedClient.ID, transaction);
 
       Assert.AreEqual (2, groupTypes.Count);
     }

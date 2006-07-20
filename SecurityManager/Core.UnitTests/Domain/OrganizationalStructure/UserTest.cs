@@ -12,22 +12,29 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
   public class UserTest : DomainTest
   {
     private DatabaseFixtures _dbFixtures;
-    private ClientTransaction _transaction;
+    private OrganisationalStructureTestHelper _testHelper;
+    private ObjectID _expectedClientID;
+
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+     
+      _dbFixtures = new DatabaseFixtures ();
+      Client client = _dbFixtures.CreateOrganizationalStructureWithTwoClients ();
+      _expectedClientID = client.ID;
+    }
 
     public override void SetUp ()
     {
       base.SetUp ();
 
-      _dbFixtures = new DatabaseFixtures ();
-      _transaction = new ClientTransaction ();
+      _testHelper = new OrganisationalStructureTestHelper ();
     }
 
     [Test]
     public void FindByUserName_ValidUser ()
     {
-      _dbFixtures.CreateOrganizationalStructure ();
-
-      User foundUser = User.FindByUserName (_transaction, "test.user");
+      User foundUser = User.FindByUserName (_testHelper.Transaction, "test.user");
 
       Assert.AreEqual ("test.user", foundUser.UserName);
     }
@@ -35,9 +42,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void FindByUserName_NotExistingUser ()
     {
-      _dbFixtures.CreateOrganizationalStructure ();
-
-      User foundUser = User.FindByUserName (_transaction, "not.existing");
+      User foundUser = User.FindByUserName (_testHelper.Transaction, "not.existing");
 
       Assert.IsNull (foundUser);
     }
@@ -45,10 +50,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_Empty ()
     {
-      _dbFixtures.CreateOrganizationalStructure ();
-
-      User testUser = User.FindByUserName (_transaction, "test.user");
-      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier (_transaction, "UnqiueIdentifier: parentOfOwnerGroup");
+      User testUser = User.FindByUserName (_testHelper.Transaction, "test.user");
+      Group parentOfOwnerGroup = Group.FindByUnqiueIdentifier (_testHelper.Transaction, "UnqiueIdentifier: parentOfOwnerGroup");
       List<Role> roles = testUser.GetRolesForGroup (parentOfOwnerGroup);
 
       Assert.AreEqual (0, roles.Count);
@@ -57,10 +60,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void GetRolesForGroup_TwoRoles ()
     {
-      _dbFixtures.CreateOrganizationalStructure ();
-
-      User testUser = User.FindByUserName (_transaction, "test.user");
-      Group testgroup = Group.FindByUnqiueIdentifier (_transaction, "UnqiueIdentifier: Testgroup");
+      User testUser = User.FindByUserName (_testHelper.Transaction, "test.user");
+      Group testgroup = Group.FindByUnqiueIdentifier (_testHelper.Transaction, "UnqiueIdentifier: Testgroup");
       List<Role> roles = testUser.GetRolesForGroup (testgroup);
 
       Assert.AreEqual (2, roles.Count);
@@ -69,9 +70,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [Test]
     public void Find_UsersByClientID ()
     {
-      _dbFixtures.CreateUsersWithDifferentClients ();
-
-      DomainObjectCollection users = User.FindByClientID (_dbFixtures.CurrentClient.ID, _transaction);
+      DomainObjectCollection users = User.FindByClientID (_expectedClientID, _testHelper.Transaction);
 
       Assert.AreEqual (2, users.Count);
     }
@@ -80,12 +79,10 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.OrganizationalStructure
     [ExpectedException (typeof (RdbmsProviderException))]
     public void UserName_SameNameTwice ()
     {
-      _dbFixtures.CreateOrganizationalStructure ();
-
       ClientTransaction transaction = new ClientTransaction ();
-      Client client = _dbFixtures.CreateClient (transaction, "Testclient");
-      Group group = _dbFixtures.CreateGroup (transaction, "TestGroup", "UnqiueIdentifier: TestGroup", null, client);
-      User newUser = _dbFixtures.CreateUser (transaction, "test.user", "Test", "User", "Ing.", group, client);
+      Client client = _testHelper.CreateClient (transaction, "Testclient");
+      Group group = _testHelper.CreateGroup (transaction, "TestGroup", "UnqiueIdentifier: TestGroup", null, client);
+      User newUser = _testHelper.CreateUser (transaction, "test.user", "Test", "User", "Ing.", group, client);
 
       transaction.Commit ();
     }

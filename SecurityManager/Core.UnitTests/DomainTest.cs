@@ -28,7 +28,7 @@ namespace Rubicon.SecurityManager.UnitTests
     // methods and properties
 
     [TestFixtureSetUp]
-    public void TestFixtureSetUp ()
+    public virtual void TestFixtureSetUp ()
     {
       MappingConfiguration.SetCurrent (new MappingConfiguration (@"SecurityManagerMapping.xml"));
       StorageProviderConfiguration.SetCurrent (new StorageProviderConfiguration (@"SecurityManagerStorageProviders.xml"));

@@ -14,6 +14,14 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     private ClientTransaction _transaction;
     private CultureImporter _importer;
 
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateSecurableClassDefinitionWithStates ();
+    }
+
     public override void SetUp ()
     {
       base.SetUp ();
@@ -40,9 +48,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Import_OneLocalizedName ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithStates ();
-
       string cultureXml = @"
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"">
@@ -65,9 +70,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
        + "could not be found.")]
     public void Import_NotExistingMetadataObject ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithStates ();
-
       string cultureXml = @"
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"">
@@ -83,9 +85,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [ExpectedException (typeof (ImportException), "The metadata object with the ID 'ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c' could not be found.")]
     public void Import_NotExistingMetadataObjectWithoutComment ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithStates ();
-
       string cultureXml = @"
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""ad1efa4c-cf5d-46b0-b775-d4e45f2dce7c"">
@@ -100,9 +99,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Import_MultipleLocalizedNames ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithStates ();
-
       string cultureXml = @"
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"">
@@ -131,9 +127,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [ExpectedException (typeof (System.Xml.Schema.XmlSchemaValidationException))]
     public void Import_InvalidXml ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithStates ();
-
       string cultureXml = @"
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName rf=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"">
@@ -151,9 +144,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void Import_LocalizedNamesTwice ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateSecurableClassDefinitionWithStates ();
-
       string cultureXml = @"
           <localizedNames xmlns=""http://www.rubicon-it.com/Security/Metadata/Localization/1.0"" culture=""de"">
             <localizedName ref=""b8621bc9-9ab3-4524-b1e4-582657d6b420"" comment=""Clerk|Rubicon.Security.UnitTests.TestDomain.DomainAbstractRole, Rubicon.Security.UnitTests.TestDomain"">

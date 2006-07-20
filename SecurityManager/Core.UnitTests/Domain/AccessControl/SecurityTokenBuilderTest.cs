@@ -15,11 +15,17 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
   [TestFixture]
   public class SecurityTokenBuilderTest : DomainTest
   {
+    public override void TestFixtureSetUp ()
+    {
+      base.TestFixtureSetUp ();
+
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateOrganizationalStructureWithTwoClients ();
+    }
+
     [Test]
     public void Create_AbstractRolesEmpty ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
 
@@ -32,8 +38,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithValidAbstractRole ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithQualityManagerRole ();
 
@@ -47,8 +51,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithValidAbstractRoles ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithQualityManagerAndDeveloperRoles ();
 
@@ -62,8 +64,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (AccessControlException), "The abstract role 'Undefined|Rubicon.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Rubicon.SecurityManager.UnitTests' could not be found.")]
     public void Create_WithNotExistingAbstractRole ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithAbstractRoles (ProjectRole.Developer, UndefinedAbstractRoles.Undefined, ProjectRole.QualityManager);
 
@@ -76,8 +76,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithValidUser ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
       IPrincipal user = CreateTestUser ();
@@ -92,8 +90,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (AccessControlException), "The user 'notexisting.user' could not be found.")]
     public void Create_WithNotExistingUser ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
       IPrincipal user = CreateNotExistingUser ();
@@ -105,8 +101,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithValidGroup ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
       IPrincipal user = CreateTestUser ();
@@ -120,8 +114,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithoutOwningGroup ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithoutOwnerGroup ();
       IPrincipal user = CreateTestUser ();
@@ -136,8 +128,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [ExpectedException (typeof (AccessControlException), "The group 'UnqiueIdentifier: NotExistingGroup' could not be found.")]
     public void Create_WithNotExistingOwningGroup ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateContextWithNotExistingOwnerGroup ();
       IPrincipal user = CreateTestUser ();
@@ -149,8 +139,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     public void Create_WithParentOwningGroup ()
     {
-      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      dbFixtures.CreateOrganizationalStructure ();
       ClientTransaction transaction = new ClientTransaction ();
       SecurityContext context = CreateStatelessContext ();
       IPrincipal user = CreateTestUser ();
