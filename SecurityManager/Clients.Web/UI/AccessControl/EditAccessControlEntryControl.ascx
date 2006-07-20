@@ -16,7 +16,12 @@
     </td>
   </tr>
   <tr>
-    <td></td>
+    <td><rubicon:SmartLabel ID="GroupLabel" runat="server" ForControl="GroupField" /></td>
+    <td><rubicon:BocEnumValue ID="GroupField" runat="server" PropertyIdentifier="Group" DataSourceControl="CurrentObject" >
+    </rubicon:BocEnumValue></td>
+  </tr> 
+  <tr>
+    <td><rubicon:SmartLabel ID="SpecificAbstractRoleLabel" runat="server" ForControl="SpecificAbstractRoleField"/> (4)</td>
     <td><rubicon:BocReferenceValue ID="SpecificAbstractRoleField" runat="server" PropertyIdentifier="SpecificAbstractRole" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition.FindAll" >
       <PersistedCommand>
         <rubicon:BocCommand />
@@ -24,7 +29,7 @@
     </rubicon:BocReferenceValue></td>
  </tr>
   <tr>
-    <td></td>
+    <td><rubicon:SmartLabel ID="SpecificPositionLabel" runat="server" ForControl="SpecificPositionField"/> (8)</td>
     <td><rubicon:BocReferenceValue ID="SpecificPositionField" runat="server" PropertyIdentifier="SpecificPosition" DataSourceControl="CurrentObject" Select="Rubicon.SecurityManager.Domain.OrganizationalStructure.Position.FindAll" >
       <PersistedCommand>
         <rubicon:BocCommand />

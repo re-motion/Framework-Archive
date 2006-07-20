@@ -105,6 +105,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessControlEntry.resx</DependentUpon>
     </Compile>
+    <Compile Include="Globalization\Domain\AccessControl\GroupSelection.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GroupSelection.resx</DependentUpon>
+    </Compile>
     <Compile Include="SecurityManagerException.cs" />
     <Compile Include="SecurityService.cs" />
   </ItemGroup>
@@ -116,6 +121,14 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AccessControlEntry.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupSelection.de.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Globalization\Domain\AccessControl\GroupSelection.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GroupSelection.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Globalization\Domain\OrganizationalStructure\Client.resx">
       <SubType>Designer</SubType>

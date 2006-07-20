@@ -26,7 +26,7 @@ namespace Rubicon.SecurityManager.Clients.Web.Test
     protected void EvaluateSecurity_Click (object sender, EventArgs e)
     {
       ISecurityService service = SecurityConfiguration.Current.SecurityService;
-      SecurityContext context = new SecurityContext (typeof (File), "1A", "{00000004-1000-0000-0000-000000000007}", "", new Dictionary<string, Enum> (), new Enum[] { DomainAbstractRole.Creator });
+      SecurityContext context = new SecurityContext (typeof (File), "1A", "{00000004-1000-0000-0000-000000000007}", "", new Dictionary<string, Enum> (), new Enum[] { DomainAbstractRoles.Creator });
       GenericPrincipal user = new GenericPrincipal(new GenericIdentity ("1A"), new string[0]);
       AccessType[] accessTypes = service.GetAccess (context, user);
     }

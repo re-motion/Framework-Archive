@@ -28,7 +28,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.AccessControl
     {
     }
 
-    protected SecurableClassDefinitionListFormFunction (params object[] args)
+    // TODO: Make protected once delegation works
+    public SecurableClassDefinitionListFormFunction (params object[] args)
       : base (args)
     {
     }

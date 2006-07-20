@@ -47,11 +47,13 @@
     <None Include="TestData\AccessTypeReference.csv" />
     <None Include="TestData\Client.csv" />
     <None Include="TestData\ConcretePosition.csv" />
+    <None Include="TestData\Culture.csv" />
     <None Include="TestData\EnumValueDefinition.csv" />
     <None Include="TestData\File.csv" />
     <None Include="TestData\FileItem.csv" />
     <None Include="TestData\Group.csv" />
     <None Include="TestData\GroupType.csv" />
+    <None Include="TestData\LocalizedName.csv" />
     <None Include="TestData\Position.csv" />
     <None Include="TestData\Role.csv" />
     <None Include="TestData\SecurableClassDefinition.csv" />

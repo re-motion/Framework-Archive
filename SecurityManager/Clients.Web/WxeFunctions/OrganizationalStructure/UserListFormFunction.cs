@@ -30,7 +30,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    protected UserListFormFunction (params object[] args)
+    // TODO: Make protected once delegation works
+    public UserListFormFunction (params object[] args)
       : base (args)
     {
     }

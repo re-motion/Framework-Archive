@@ -28,7 +28,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    protected GroupTypeListFormFunction (params object[] args)
+    // TODO: Make protected once delegation works
+    public GroupTypeListFormFunction (params object[] args)
       : base (args)
     {
     }

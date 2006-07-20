@@ -52,10 +52,10 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Domain\DomainAbstractRole.cs" />
     <Compile Include="Domain\BaseObject.cs" />
     <Compile Include="Domain\BaseSecurableObject.cs" />
     <Compile Include="Domain\Confidentiality.cs" />
+    <Compile Include="Domain\DomainAbstractRoles.cs" />
     <Compile Include="Domain\File.cs" />
     <Compile Include="Domain\FileItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

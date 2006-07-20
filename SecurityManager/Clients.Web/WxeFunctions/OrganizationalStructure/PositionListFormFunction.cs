@@ -30,7 +30,8 @@ namespace Rubicon.SecurityManager.Clients.Web.WxeFunctions.OrganizationalStructu
     {
     }
 
-    protected PositionListFormFunction (params object[] args)
+    // TODO: Make protected once delegation works
+    public PositionListFormFunction (params object[] args)
       : base (args)
     {
     }

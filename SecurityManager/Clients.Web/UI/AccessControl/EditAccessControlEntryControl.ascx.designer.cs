@@ -16,7 +16,11 @@ namespace Rubicon.SecurityManager.Clients.Web.UI.AccessControl {
         protected System.Web.UI.HtmlControls.HtmlTable FormGrid;
         protected System.Web.UI.HtmlControls.HtmlGenericControl AccessControlEntryTitle;
         protected Rubicon.Web.UI.Controls.WebButton DeleteAccessControlEntryButton;
+        protected Rubicon.Web.UI.Controls.SmartLabel GroupLabel;
+        protected Rubicon.ObjectBinding.Web.UI.Controls.BocEnumValue GroupField;
+        protected Rubicon.Web.UI.Controls.SmartLabel SpecificAbstractRoleLabel;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificAbstractRoleField;
+        protected Rubicon.Web.UI.Controls.SmartLabel SpecificPositionLabel;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocReferenceValue SpecificPositionField;
         protected Rubicon.Web.UI.Controls.SmartLabel PriorityLabel;
         protected Rubicon.ObjectBinding.Web.UI.Controls.BocTextValue PriorityField;

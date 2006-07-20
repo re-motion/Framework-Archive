@@ -489,23 +489,23 @@ ALTER TABLE [dbo].[StateCombination] ADD
   CONSTRAINT [FK_AccessControlListToStateCombination] FOREIGN KEY ([AccessControlListID]) REFERENCES [dbo].[AccessControlList] ([ID])
 
 ALTER TABLE [dbo].[StateUsage] ADD
-  CONSTRAINT [FK_StateCombinationToStateUsage] FOREIGN KEY ([StateCombinationID]) REFERENCES [dbo].[StateCombination] ([ID]),
-  CONSTRAINT [FK_StateDefinitionToStateUsage] FOREIGN KEY ([StateDefinitionID]) REFERENCES [dbo].[EnumValueDefinition] ([ID])
+  CONSTRAINT [FK_StateDefinitionToStateUsage] FOREIGN KEY ([StateDefinitionID]) REFERENCES [dbo].[EnumValueDefinition] ([ID]),
+  CONSTRAINT [FK_StateCombinationToStateUsage] FOREIGN KEY ([StateCombinationID]) REFERENCES [dbo].[StateCombination] ([ID])
 
 ALTER TABLE [dbo].[AccessControlList] ADD
   CONSTRAINT [FK_ClassToAccessControlList] FOREIGN KEY ([SecurableClassID]) REFERENCES [dbo].[SecurableClassDefinition] ([ID])
 
 ALTER TABLE [dbo].[AccessControlEntry] ADD
-  CONSTRAINT [FK_AccessControlListToAccessControlEntries] FOREIGN KEY ([AccessControlListID]) REFERENCES [dbo].[AccessControlList] ([ID]),
   CONSTRAINT [FK_GroupToAccessControlEntry] FOREIGN KEY ([GroupID]) REFERENCES [dbo].[Group] ([ID]),
   CONSTRAINT [FK_GroupTypeToAccessControlEntry] FOREIGN KEY ([GroupTypeID]) REFERENCES [dbo].[GroupType] ([ID]),
   CONSTRAINT [FK_PositionToAccessControlEntry] FOREIGN KEY ([PositionID]) REFERENCES [dbo].[Position] ([ID]),
   CONSTRAINT [FK_UserToAccessControlEntry] FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([ID]),
-  CONSTRAINT [FK_AbstractRoleToAccessControlEntry] FOREIGN KEY ([AbstractRoleID]) REFERENCES [dbo].[EnumValueDefinition] ([ID])
+  CONSTRAINT [FK_AbstractRoleToAccessControlEntry] FOREIGN KEY ([AbstractRoleID]) REFERENCES [dbo].[EnumValueDefinition] ([ID]),
+  CONSTRAINT [FK_AccessControlListToAccessControlEntries] FOREIGN KEY ([AccessControlListID]) REFERENCES [dbo].[AccessControlList] ([ID])
 
 ALTER TABLE [dbo].[Permission] ADD
-  CONSTRAINT [FK_AccessControlEntryToPermission] FOREIGN KEY ([AccessControlEntryID]) REFERENCES [dbo].[AccessControlEntry] ([ID]),
-  CONSTRAINT [FK_AccessTypeDefinitionToPermission] FOREIGN KEY ([AccessTypeDefinitionID]) REFERENCES [dbo].[EnumValueDefinition] ([ID])
+  CONSTRAINT [FK_AccessTypeDefinitionToPermission] FOREIGN KEY ([AccessTypeDefinitionID]) REFERENCES [dbo].[EnumValueDefinition] ([ID]),
+  CONSTRAINT [FK_AccessControlEntryToPermission] FOREIGN KEY ([AccessControlEntryID]) REFERENCES [dbo].[AccessControlEntry] ([ID])
 
 ALTER TABLE [dbo].[LocalizedName] ADD
   CONSTRAINT [FK_CultureToLocalizedName] FOREIGN KEY ([CultureID]) REFERENCES [dbo].[Culture] ([ID])

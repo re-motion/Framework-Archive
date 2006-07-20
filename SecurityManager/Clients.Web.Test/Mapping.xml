@@ -230,6 +230,10 @@
       <type>Rubicon.SecurityManager.Domain.Metadata.MetadataObject, Rubicon.SecurityManager</type>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
+        </property>
         <property name="MetadataItemID">
           <type>guid</type>
           <column>MetadataItemID</column>
@@ -268,13 +272,17 @@
         <relationProperty name="BaseClass" relationID="DerivedToBaseClass" cardinality="one" isMandatory="false">
           <column>BaseSecurableClassID</column>
         </relationProperty>
-        <relationProperty name="DerivedClasses" relationID="DerivedToBaseClass" cardinality="many" isMandatory="false" />
+        <relationProperty name="DerivedClasses" relationID="DerivedToBaseClass" cardinality="many" isMandatory="false">
+          <sortExpression>[Index] ASC</sortExpression>
+        </relationProperty>
         <relationProperty name="AccessTypeReferences" relationID="ClassToAccessTypeReference" cardinality="many" isMandatory="false" >
           <sortExpression>[Index] ASC</sortExpression>
         </relationProperty>
         <relationProperty name="StatePropertyReferences" relationID="ClassToStatePropertyReference" cardinality="many" isMandatory="false" />
         <relationProperty name="StateCombinations" relationID="ClassToStateCombination" cardinality="many" isMandatory="false" />
-        <relationProperty name="AccessControlLists" relationID="ClassToAccessControlList" cardinality="many" isMandatory="false" />
+        <relationProperty name="AccessControlLists" relationID="ClassToAccessControlList" cardinality="many" isMandatory="false" >
+          <sortExpression>[Index] ASC</sortExpression>
+        </relationProperty>
       </properties>
     </class>
 
@@ -298,7 +306,9 @@
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
         <relationProperty name="References" relationID="StatePropertyToStatePropertyReference" cardinality="many" isMandatory="false" />
-        <relationProperty name="DefinedStates" relationID="StatePropertyToState" cardinality="many" isMandatory="true" />
+        <relationProperty name="DefinedStates" relationID="StatePropertyToState" cardinality="many" isMandatory="true">
+          <sortExpression>[Index] ASC</sortExpression>
+        </relationProperty>
       </properties>
     </class>
 
@@ -337,10 +347,10 @@
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
-        <property name="Index">
-          <type>int32</type>
-          <column>Index</column>
-        </property>
+
+
+
+
         <relationProperty name="References" relationID="AccessTypeToAccessTypeReference" cardinality="many" isMandatory="false" />
         <relationProperty name="Permissions" relationID="AccessTypeDefinitionToPermission" cardinality="many" isMandatory="false" />
       </properties>
@@ -361,6 +371,10 @@
       <entity name="StateCombination"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
+        </property>
         <relationProperty name="StateUsages" relationID="StateCombinationToStateUsage" cardinality="many" isMandatory="false" />
         <relationProperty name="Class" relationID="ClassToStateCombination" cardinality="one" isMandatory="true">
           <column>SecurableClassID</column>
@@ -390,12 +404,23 @@
       <entity name="AccessControlList"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="ChangedAt">
+          <type>dateTime</type>
+          <column>ChangedAt</column>
+          <nullable>false</nullable>
+        </property>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
+        </property>
         <relationProperty name="Class" relationID="ClassToAccessControlList" cardinality="one" isMandatory="true">
           <column>SecurableClassID</column>
         </relationProperty>
-        <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="false" />
+        <relationProperty name="StateCombinations" relationID="AccessControlListToStateCombination" cardinality="many" isMandatory="true">
+          <sortExpression>[Index] ASC</sortExpression>
+        </relationProperty>
         <relationProperty name="AccessControlEntries" relationID="AccessControlListToAccessControlEntries" cardinality="many" isMandatory="true">
-          <sortExpression>[Priority] DESC</sortExpression>
+          <sortExpression>[Index] ASC</sortExpression>
         </relationProperty>
       </properties>
     </class>
@@ -405,6 +430,15 @@
       <entity name="AccessControlEntry"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+        <property name="ChangedAt">
+          <type>dateTime</type>
+          <column>ChangedAt</column>
+          <nullable>false</nullable>
+        </property>
+        <property name="Index">
+          <type>int32</type>
+          <column>Index</column>
+        </property>
         <property name="Client">
           <type>Rubicon.SecurityManager.Domain.AccessControl.ClientSelection, Rubicon.SecurityManager</type>
           <column>ClientSelection</column>
@@ -427,18 +461,23 @@
         </relationProperty>
         <relationProperty name="SpecificGroup" relationID="GroupToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>GroupID</column>
+
         </relationProperty>
         <relationProperty name="SpecificGroupType" relationID="GroupTypeToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>GroupTypeID</column>
+
         </relationProperty>
         <relationProperty name="SpecificPosition" relationID="PositionToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>PositionID</column>
+
         </relationProperty>
         <relationProperty name="SpecificUser" relationID="UserToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>UserID</column>
+
         </relationProperty>
         <relationProperty name="SpecificAbstractRole" relationID="AbstractRoleToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>AbstractRoleID</column>
+
         </relationProperty>
         <relationProperty name="Permissions" relationID="AccessControlEntryToPermission" cardinality="many" isMandatory="false" >
           <sortExpression>[Index] ASC</sortExpression>

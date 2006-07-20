@@ -91,7 +91,9 @@ public class DBUtility
         "StatePropertyDefinition",
         "EnumValueDefinition",
         "StatePropertyReference",
-        "AccessTypeReference"
+        "AccessTypeReference",
+        "Culture",
+        "LocalizedName"
    };
 
     if (resetTables)
