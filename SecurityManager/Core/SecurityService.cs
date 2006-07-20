@@ -7,11 +7,14 @@ using Rubicon.SecurityManager.Domain.AccessControl;
 using Rubicon.Utilities;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.Domain.Metadata;
+using log4net;
 
 namespace Rubicon.SecurityManager
 {
   public class SecurityService : ISecurityService
   {
+    private static ILog s_log = LogManager.GetLogger (typeof (SecurityService));
+
     private IAccessControlListFinder _accessControlListFinder;
     private ISecurityTokenBuilder _securityTokenBuilder;
 
@@ -40,8 +43,18 @@ namespace Rubicon.SecurityManager
       ArgumentUtility.CheckNotNull ("context", context);
       ArgumentUtility.CheckNotNull ("user", user);
 
-      AccessControlList acl = _accessControlListFinder.Find (transaction, context);
-      SecurityToken token = _securityTokenBuilder.CreateToken (transaction, user, context);
+      AccessControlList acl = null;
+      SecurityToken token = null;
+      try
+      {
+        acl = _accessControlListFinder.Find (transaction, context);
+        token = _securityTokenBuilder.CreateToken (transaction, user, context);
+      }
+      catch (AccessControlException e)
+      {
+        s_log.Error ("Error during evaluation of security query.", e);
+        return new AccessType[0];
+      }
 
       AccessTypeDefinition[] accessTypes = acl.GetAccessTypes (token);
       return Array.ConvertAll <AccessTypeDefinition, AccessType> (accessTypes, new Converter<AccessTypeDefinition,AccessType> (ConvertToAccessType));

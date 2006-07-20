@@ -25,8 +25,10 @@
         <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.dll" />
         <include name="${build.test.outputdir}/Rubicon.Data.DomainObjects.ObjectBinding.dll" />
         <include name="${build.test.outputdir}/Rubicon.SecurityManager.dll" />
+        <include name="${build.test.outputdir}/log4net.dll" />
         <include name="${build.test.outputdir}/NMock2.dll" />
         <include name="${build.test.outputdir}/nunit.framework.dll" />
+        <include name="${build.test.outputdir}/Rhino.Mocks.dll" />
         <include asis="true" name="System.dll"/>
         <include asis="true" name="System.Configuration.dll"/>
         <include asis="true" name="System.Xml.dll"/>

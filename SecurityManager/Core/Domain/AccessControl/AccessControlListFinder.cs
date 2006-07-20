@@ -11,6 +11,12 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   public class AccessControlListFinder : IAccessControlListFinder
   {
+    /// <exception cref="AccessControlException">
+    ///   The <see cref="SecurableClassDefinition"/> is not found.<br/>- or -<br/>
+    ///   A matching <see cref="AccessControlList"/> is not found.<br/>- or -<br/>
+    ///   <paramref name="context"/> is not state-less and a <see cref="StatePropertyDefinition"/> is missing.<br/>- or -<br/>
+    ///   <paramref name="context"/> is not state-less and contains an invalid state for a <see cref="StatePropertyDefinition"/>.
+    /// </exception>
     public AccessControlList Find (ClientTransaction transaction, SecurityContext context)
     {
       // TODO: make unit tests
@@ -18,11 +24,16 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       SecurableClassDefinition classDefinition = SecurableClassDefinition.FindByName (transaction, context.Class);
       if (classDefinition == null)
-        throw new AccessControlException (string.Format ("The class '{0}' cannot be found.", context.Class));
+        throw CreateAccessControlException ("The class '{0}' cannot be found.", context.Class);
 
       return Find (classDefinition, context);
     }
 
+    /// <exception cref="AccessControlException">
+    ///   A matching <see cref="AccessControlList"/> is not found.<br/>- or -<br/>
+    ///   <paramref name="context"/> is not state-less and a <see cref="StatePropertyDefinition"/> is missing.<br/>- or -<br/>
+    ///   <paramref name="context"/> is not state-less and contains an invalid state for a <see cref="StatePropertyDefinition"/>.
+    /// </exception>
     public AccessControlList Find (SecurableClassDefinition classDefinition, SecurityContext context)
     {
       ArgumentUtility.CheckNotNull ("classDefinition", classDefinition);

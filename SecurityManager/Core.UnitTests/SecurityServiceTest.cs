@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using NMock2;
+using Rhino.Mocks;
 using Rubicon.Security;
 
 using Rubicon.SecurityManager.UnitTests.TestDomain;
@@ -11,60 +11,83 @@ using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
 using System.Security.Principal;
 using Rubicon.SecurityManager.Domain.OrganizationalStructure;
+using log4net.Appender;
+using log4net.Config;
+using log4net;
 
 namespace Rubicon.SecurityManager.UnitTests
 {
   [TestFixture]
   public class SecurityServiceTest : DomainTest
   {
+    private MockRepository _mocks;
+    private IAccessControlListFinder _mockAclFinder;
+    private ISecurityTokenBuilder _mockTokenBuilder;
+
+    private SecurityService _service;
+    private SecurityContext _context;
+    private ClientTransaction _transaction;
+    private AccessControlEntry _ace;
+    private IPrincipal _principal;
+
+    private MemoryAppender _memoryAppender;
+
+    [SetUp]
+    public override void SetUp ()
+    {
+      base.SetUp();
+
+     _mocks = new MockRepository ();
+     _mockAclFinder = _mocks.CreateMock<IAccessControlListFinder> ();
+     _mockTokenBuilder = _mocks.CreateMock<ISecurityTokenBuilder> ();
+
+     _service = new SecurityService (_mockAclFinder, _mockTokenBuilder);
+     _context = new SecurityContext (typeof (Order), "Owner", "UnqiueIdentifier: OwnerGroup", "OwnerClient", null, null);
+     _transaction = new ClientTransaction ();
+     _ace = CreateAce (_transaction);
+     _principal = CreateUser ();
+  
+      _memoryAppender = new MemoryAppender();
+      BasicConfigurator.Configure(_memoryAppender); 
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+      LogManager.ResetConfiguration();
+    }
+
     [Test]
     public void GetAccess_WithoutAccess ()
     {
-      Mockery mocks = new Mockery ();
-      IAccessControlListFinder aclFinder = mocks.NewMock<IAccessControlListFinder> ();
-      ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
-
-      SecurityService service = new SecurityService (aclFinder, tokenBuilder);
-      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "UnqiueIdentifier: OwnerGroup", "OwnerClient", null, null);
-      ClientTransaction transaction = new ClientTransaction ();
-      AccessControlEntry ace = CreateAce (transaction);
-      IPrincipal principal = CreateUser ();
       SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
+      
+      Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));
+      Expect.Call (_mockTokenBuilder.CreateToken (_transaction, _principal, _context)).Return (token);
 
-      Expect.Once.On (tokenBuilder).Method ("CreateToken").With (transaction, principal, context).Will (Return.Value (token));
-      Expect.Once.On (aclFinder).Method ("Find").With (transaction, context).Will (Return.Value (CreateAcl (transaction, ace)));
+      _mocks.ReplayAll ();
 
-      AccessType[] accessTypes = service.GetAccess (transaction, context, principal);
+      AccessType[] accessTypes = _service.GetAccess (_transaction, _context, _principal);
 
-      mocks.VerifyAllExpectationsHaveBeenMet ();
-
+      _mocks.VerifyAll ();
       Assert.AreEqual (0, accessTypes.Length);
     }
 
     [Test]
     public void GetAccess_WithReadAccess ()
     {
-      Mockery mocks = new Mockery ();
-      IAccessControlListFinder aclFinder = mocks.NewMock<IAccessControlListFinder> ();
-      ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
-
-      SecurityService service = new SecurityService (aclFinder, tokenBuilder);
-      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "UnqiueIdentifier: OwnerGroup", "OwnerClient", null, null);
-      ClientTransaction transaction = new ClientTransaction ();
-      AccessControlEntry ace = CreateAce (transaction);
-      IPrincipal principal = CreateUser ();
-
       List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
-      roles.Add (ace.SpecificAbstractRole);
+      roles.Add (_ace.SpecificAbstractRole);
       SecurityToken token = new SecurityToken (null, new List<Group> (), roles);
 
-      Expect.Once.On (tokenBuilder).Method ("CreateToken").With (transaction, principal, context).Will (Return.Value (token));
-      Expect.Once.On (aclFinder).Method ("Find").With (transaction, context).Will (Return.Value (CreateAcl (transaction, ace)));
+      Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));
+      Expect.Call (_mockTokenBuilder.CreateToken (_transaction, _principal, _context)).Return(token);
 
-      AccessType[] accessTypes = service.GetAccess (transaction, context, principal);
+      _mocks.ReplayAll ();
 
-      mocks.VerifyAllExpectationsHaveBeenMet ();
+      AccessType[] accessTypes = _service.GetAccess (_transaction, _context, _principal);
 
+      _mocks.VerifyAll ();
       Assert.AreEqual (1, accessTypes.Length);
       Assert.Contains (AccessType.Get (EnumWrapper.Parse ("Read|MyTypeName")), accessTypes);
     }
@@ -72,29 +95,65 @@ namespace Rubicon.SecurityManager.UnitTests
     [Test]
     public void GetAccess_WithReadAccessFromInterface ()
     {
-      Mockery mocks = new Mockery ();
-      IAccessControlListFinder aclFinder = mocks.NewMock<IAccessControlListFinder> ();
-      ISecurityTokenBuilder tokenBuilder = mocks.NewMock<ISecurityTokenBuilder> ();
-
-      ISecurityService service = new SecurityService (aclFinder, tokenBuilder);
-      SecurityContext context = new SecurityContext (typeof (Order), "Owner", "UnqiueIdentifier: OwnerGroup", "OwnerClient", null, null);
-      ClientTransaction transaction = new ClientTransaction ();
-      AccessControlEntry ace = CreateAce (transaction);
-      IPrincipal principal = CreateUser ();
-
       List<AbstractRoleDefinition> roles = new List<AbstractRoleDefinition> ();
-      roles.Add (ace.SpecificAbstractRole);
+      roles.Add (_ace.SpecificAbstractRole);
       SecurityToken token = new SecurityToken (null, new List<Group> (), roles);
 
-      Expect.Once.On (tokenBuilder).Method ("CreateToken").With (Is.NotNull, Is.Same (principal), Is.Same (context)).Will (Return.Value (token));
-      Expect.Once.On (aclFinder).Method ("Find").With (Is.NotNull, Is.Same (context)).Will (Return.Value (CreateAcl (transaction, ace)));
+      Expect.Call (_mockAclFinder.Find (null, null)).Return (CreateAcl (_transaction, _ace)).Constraints (
+          Is.NotNull(), 
+          Is.Same (_context));
+      Expect.Call (_mockTokenBuilder.CreateToken (null, null, null)).Return (token).Constraints (
+          Is.NotNull(), 
+          Is.Same (_principal), 
+          Is.Same (_context));
 
-      AccessType[] accessTypes = service.GetAccess (context, principal);
+      _mocks.ReplayAll ();
 
-      mocks.VerifyAllExpectationsHaveBeenMet ();
+      AccessType[] accessTypes = _service.GetAccess (_context, _principal);
 
+      _mocks.VerifyAll ();
       Assert.AreEqual (1, accessTypes.Length);
       Assert.Contains (AccessType.Get (EnumWrapper.Parse ("Read|MyTypeName")), accessTypes);
+    }
+
+    [Test]
+    public void GetAccess_WithAccessControlExcptionFromAccessControlListFinder ()
+    {
+      SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
+      AccessControlException expectedException = new AccessControlException ();
+
+      Expect.Call (_mockAclFinder.Find (_transaction, _context)).Throw (expectedException);
+
+      _mocks.ReplayAll ();
+
+      AccessType[] accessTypes = _service.GetAccess (_transaction, _context, _principal);
+
+      _mocks.VerifyAll ();
+      Assert.AreEqual (0, accessTypes.Length);
+      log4net.Core.LoggingEvent[] events = _memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      Assert.AreSame (expectedException, events[0].ExceptionObject);
+      Assert.AreEqual (log4net.Core.Level.Error, events[0].Level);
+    }
+
+    [Test]
+    public void GetAccess_WithAccessControlExcptionFromSecurityTokenBuilder ()
+    {
+      SecurityToken token = new SecurityToken (null, new List<Group> (), new List<AbstractRoleDefinition> ());
+      AccessControlException expectedException = new AccessControlException ();
+
+      Expect.Call (_mockAclFinder.Find (_transaction, _context)).Return (CreateAcl (_transaction, _ace));
+      Expect.Call (_mockTokenBuilder.CreateToken (_transaction, _principal, _context)).Throw (expectedException);
+      _mocks.ReplayAll ();
+
+      AccessType[] accessTypes = _service.GetAccess (_transaction, _context, _principal);
+
+      _mocks.VerifyAll ();
+      Assert.AreEqual (0, accessTypes.Length);
+      log4net.Core.LoggingEvent[] events = _memoryAppender.GetEvents ();
+      Assert.AreEqual (1, events.Length);
+      Assert.AreSame (expectedException, events[0].ExceptionObject);
+      Assert.AreEqual (log4net.Core.Level.Error, events[0].Level);
     }
 
     private AccessControlList CreateAcl (ClientTransaction transaction, AccessControlEntry ace)

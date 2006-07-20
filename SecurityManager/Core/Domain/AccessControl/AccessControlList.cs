@@ -108,6 +108,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       set { } // marks property AccessControlEntries as modifiable
     }
 
+    //TODO: Use anonymous method
     public AccessControlEntry[] FindMatchingEntries (SecurityToken token)
     {
       ArgumentUtility.CheckNotNull ("token", token);
@@ -123,6 +124,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       return entries.ToArray ();
     }
 
+    //TODO: Use anonymous method
     public AccessControlEntry[] FilterAcesByPriority (AccessControlEntry[] aces)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("aces", aces);
@@ -145,6 +147,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       return filteredAces.ToArray ();
     }
 
+    //TODO: Use anonymous method
     public AccessTypeDefinition[] GetAccessTypes (SecurityToken token)
     {
       ArgumentUtility.CheckNotNull ("token", token);

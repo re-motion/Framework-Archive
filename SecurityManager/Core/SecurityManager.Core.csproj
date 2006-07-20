@@ -28,6 +28,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\prereq\Assemblies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -96,12 +100,12 @@
     <Compile Include="Domain\OrganizationalStructure\User.cs" />
     <Compile Include="Domain\QueryBuilder.cs" />
     <Compile Include="Domain\Metadata\SecurableClassValidationResult.cs" />
-    <Compile Include="Domain\SecurityManagerException.cs" />
     <Compile Include="Globalization\Domain\AccessControl\AccessControlEntry.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AccessControlEntry.resx</DependentUpon>
     </Compile>
+    <Compile Include="SecurityManagerException.cs" />
     <Compile Include="SecurityService.cs" />
   </ItemGroup>
   <ItemGroup>

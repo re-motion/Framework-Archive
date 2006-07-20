@@ -13,7 +13,7 @@ using Rubicon.SecurityManager.Domain.OrganizationalStructure;
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {
   [TestFixture]
-  public class SecurityTokenBuilderTest
+  public class SecurityTokenBuilderTest : DomainTest
   {
     [Test]
     public void Create_AbstractRolesEmpty ()
@@ -59,6 +59,21 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
+    [ExpectedException (typeof (AccessControlException), "The abstract role 'Undefined|Rubicon.SecurityManager.UnitTests.TestDomain.UndefinedAbstractRoles, Rubicon.SecurityManager.UnitTests' could not be found.")]
+    public void Create_WithNotExistingAbstractRole ()
+    {
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateOrganizationalStructure ();
+      ClientTransaction transaction = new ClientTransaction ();
+      SecurityContext context = CreateContextWithAbstractRoles (ProjectRole.Developer, UndefinedAbstractRoles.Undefined, ProjectRole.QualityManager);
+
+      SecurityTokenBuilder builder = new SecurityTokenBuilder ();
+      SecurityToken token = builder.CreateToken (transaction, CreateTestUser (), context);
+
+      Assert.AreEqual (2, token.AbstractRoles.Count);
+    }
+
+    [Test]
     public void Create_WithValidUser ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
@@ -74,7 +89,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The user 'notexisting.user' could not be found.\r\nParameter name: userName")]
+    [ExpectedException (typeof (AccessControlException), "The user 'notexisting.user' could not be found.")]
     public void Create_WithNotExistingUser ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
@@ -118,7 +133,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    [ExpectedException (typeof (ArgumentException), "The group 'UnqiueIdentifier: NotExistingGroup' could not be found.\r\nParameter name: groupUnqiueIdentifier")]
+    [ExpectedException (typeof (AccessControlException), "The group 'UnqiueIdentifier: NotExistingGroup' could not be found.")]
     public void Create_WithNotExistingGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();

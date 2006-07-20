@@ -15,6 +15,11 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 {
   public class SecurityTokenBuilder : ISecurityTokenBuilder
   {
+    /// <exception cref="AccessControlException">
+    ///   A matching <see cref="User"/> is not found for the <paramref name="principal"/>.<br/>- or -<br/>
+    ///   A matching <see cref="Group"/> is not found for the <paramref name="context"/>'s <see cref="SecurityContext.OwnerGroup"/>.<br/>- or -<br/>
+    ///   A matching <see cref="AbstractRoleDefinition"/> is not found for all entries in the <paramref name="context"/>'s <see cref="SecurityContext.AbstractRoles"/> collection.
+    /// </exception>
     public SecurityToken CreateToken (ClientTransaction transaction, IPrincipal principal, SecurityContext context)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
@@ -34,7 +39,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       User user = User.FindByUserName (transaction, userName);
       if (user == null)
-        throw new ArgumentException (string.Format ("The user '{0}' could not be found.", userName), "userName");
+        throw CreateAccessControlException ("The user '{0}' could not be found.", userName);
 
       return user;
     }
@@ -48,7 +53,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       Group group = Group.FindByUnqiueIdentifier (transaction, groupUniqueIdentifier);
       if (group == null)
-        throw new ArgumentException (string.Format ("The group '{0}' could not be found.", groupUniqueIdentifier), "groupUnqiueIdentifier");
+        throw CreateAccessControlException ("The group '{0}' could not be found.", groupUniqueIdentifier);
 
       groups.Add (group);
 
@@ -63,13 +68,44 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     private List<AbstractRoleDefinition> GetAbstractRoles (ClientTransaction transaction, EnumWrapper[] abstractRoleNames)
     {
-      List<AbstractRoleDefinition> abstractRoles = new List<AbstractRoleDefinition> ();
       DomainObjectCollection abstractRolesCollection = AbstractRoleDefinition.Find (transaction, abstractRoleNames);
+      
+      EnumWrapper? missingAbstractRoleName = FindFirstMissingAbstractRole (abstractRoleNames, abstractRolesCollection);
+      if (missingAbstractRoleName != null)
+        throw CreateAccessControlException ("The abstract role '{0}' could not be found.", missingAbstractRoleName);
 
+      List<AbstractRoleDefinition> abstractRoles = new List<AbstractRoleDefinition> ();
       foreach (AbstractRoleDefinition abstractRole in abstractRolesCollection)
         abstractRoles.Add (abstractRole);
 
       return abstractRoles;
+    }
+
+    private EnumWrapper? FindFirstMissingAbstractRole (EnumWrapper[] expectedAbstractRoles, DomainObjectCollection actualAbstractRolesCollection)
+    {
+      if (expectedAbstractRoles.Length == actualAbstractRolesCollection.Count)
+        return null;
+
+      AbstractRoleDefinition[] actualAbstractRoles = new AbstractRoleDefinition[actualAbstractRolesCollection.Count];
+      actualAbstractRolesCollection.CopyTo (actualAbstractRoles, 0);
+
+      foreach (EnumWrapper expectedAbstractRole in expectedAbstractRoles)
+      {
+        Predicate<AbstractRoleDefinition> match = delegate (AbstractRoleDefinition current) 
+            {
+              return current.Name.Equals (expectedAbstractRole.ToString (), StringComparison.Ordinal); 
+            };
+
+        if (!Array.Exists<AbstractRoleDefinition> (actualAbstractRoles, match))
+          return expectedAbstractRole;
+      }
+
+      return null;
+    }
+
+    private AccessControlException CreateAccessControlException (string message, params object[] args)
+    {
+      return new AccessControlException (string.Format (message, args));
     }
   }
 }

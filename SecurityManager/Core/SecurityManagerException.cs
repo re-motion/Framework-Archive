@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Rubicon.SecurityManager.Domain
+namespace Rubicon.SecurityManager
 {
   [Serializable]
   public class SecurityManagerException : Exception

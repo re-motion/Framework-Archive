@@ -11,7 +11,7 @@ using Rubicon.SecurityManager.Domain.Metadata;
 namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 {
   [TestFixture]
-  public class StateCombinationBuilderTest
+  public class StateCombinationBuilderTest : DomainTest
   {
     [Test]
     public void CreateAndAttach_FromClassWithoutStateProperties ()

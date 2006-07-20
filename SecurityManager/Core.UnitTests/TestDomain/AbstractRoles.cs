@@ -11,4 +11,10 @@ namespace Rubicon.SecurityManager.UnitTests.TestDomain
     QualityManager,
     Developer
   }
+
+  [AbstractRole]
+  public enum UndefinedAbstractRoles
+  {
+    Undefined
+  }
 }
