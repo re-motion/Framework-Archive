@@ -61,5 +61,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { throw new NotSupportedException ("States do not support MetadataItemID"); }
       set { throw new NotSupportedException ("States do not support MetadataItemID"); }
     }
+
+    private DomainObjectCollection Usages
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("Usages"); }
+    }
   }
 }

@@ -109,6 +109,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { SetRelatedObject ("Group", value); }
     }
 
+    private DomainObjectCollection AccessControlEntries
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
+    }
+
     public List<Role> GetRolesForGroup (Group group)
     {
       ArgumentUtility.CheckNotNull ("group", group);

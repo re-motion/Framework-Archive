@@ -116,6 +116,11 @@ namespace Rubicon.SecurityManager.Domain.OrganizationalStructure
       set { DataContainer["UniqueIdentifier"] = value; }
     }
 
+    private DomainObjectCollection AccessControlEntries
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
+    }
+
     //TODO: UnitTests
     public override string DisplayName
     {

@@ -49,6 +49,7 @@
           <column>GroupTypeID</column>
         </relationProperty>
         <relationProperty name="Roles" relationID="GroupToRole" cardinality="many" isMandatory="false" />
+        <relationProperty name="AccessControlEntries" relationID="GroupToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -68,6 +69,7 @@
           <column>ClientID</column>
           <oppositeClass>Client</oppositeClass>
         </relationProperty>
+        <relationProperty name="AccessControlEntries" relationID="GroupTypeToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -106,6 +108,7 @@
           <column>ClientID</column>
           <oppositeClass>Client</oppositeClass>
         </relationProperty>
+        <relationProperty name="AccessControlEntries" relationID="PositionToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -162,6 +165,7 @@
           <column>GroupID</column>
           <oppositeClass>Group</oppositeClass>
         </relationProperty>
+        <relationProperty name="AccessControlEntries" relationID="UserToAccessControlEntry" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -260,6 +264,7 @@
         <relationProperty name="StateProperty" relationID="StatePropertyToState" cardinality="one" isMandatory="true">
           <column>StatePropertyID</column>
         </relationProperty>
+        <relationProperty name="Usages" relationID="StateDefinitionToStateUsage" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -286,7 +291,12 @@
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
       <properties>
+
+
+
+
         <relationProperty name="References" relationID="AccessTypeToAccessTypeReference" cardinality="many" isMandatory="false" />
+        <relationProperty name="Permissions" relationID="AccessTypeDefinitionToPermission" cardinality="many" isMandatory="false" />
       </properties>
     </class>
 
@@ -294,7 +304,9 @@
       <type>Rubicon.SecurityManager.Domain.Metadata.AbstractRoleDefinition, Rubicon.SecurityManager</type>
       <entity name="EnumValueDefinition"/>
       <storageProviderID>SecurityManager</storageProviderID>
-      <properties />
+      <properties>
+        <relationProperty name="AccessControlEntries" relationID="AbstractRoleToAccessControlEntry" cardinality="many" isMandatory="false" />
+      </properties>
     </class>
 
     <!-- Access Control -->
@@ -327,7 +339,6 @@
         </relationProperty>
         <relationProperty name="StateDefinition" relationID="StateDefinitionToStateUsage" cardinality="one" isMandatory="true">
           <column>StateDefinitionID</column>
-          <oppositeClass>StateDefinition</oppositeClass>
         </relationProperty>
       </properties>
     </class>
@@ -394,23 +405,23 @@
         </relationProperty>
         <relationProperty name="SpecificGroup" relationID="GroupToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>GroupID</column>
-          <oppositeClass>Group</oppositeClass>
+
         </relationProperty>
         <relationProperty name="SpecificGroupType" relationID="GroupTypeToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>GroupTypeID</column>
-          <oppositeClass>GroupType</oppositeClass>
+
         </relationProperty>
         <relationProperty name="SpecificPosition" relationID="PositionToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>PositionID</column>
-          <oppositeClass>Position</oppositeClass>
+
         </relationProperty>
         <relationProperty name="SpecificUser" relationID="UserToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>UserID</column>
-          <oppositeClass>User</oppositeClass>
+
         </relationProperty>
         <relationProperty name="SpecificAbstractRole" relationID="AbstractRoleToAccessControlEntry" cardinality="one" isMandatory="false">
           <column>AbstractRoleID</column>
-          <oppositeClass>AbstractRoleDefinition</oppositeClass>
+
         </relationProperty>
         <relationProperty name="Permissions" relationID="AccessControlEntryToPermission" cardinality="many" isMandatory="false" >
           <sortExpression>[Index] ASC</sortExpression>
@@ -437,7 +448,6 @@
         </relationProperty>
         <relationProperty name="AccessType" relationID="AccessTypeDefinitionToPermission" cardinality="one" isMandatory="true">
           <column>AccessTypeDefinitionID</column>
-          <oppositeClass>AccessTypeDefinition</oppositeClass>
         </relationProperty>
       </properties>
     </class>

@@ -56,5 +56,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return (DomainObjectCollection) GetRelatedObjects ("References"); }
       set { } // marks property References as modifiable
     }
+
+    private DomainObjectCollection Permissions
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("Permissions"); }
+    }
   }
 }

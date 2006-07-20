@@ -72,5 +72,10 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     }
 
     // methods and properties
+
+    private DomainObjectCollection AccessControlEntries
+    {
+      get { return (DomainObjectCollection) GetRelatedObjects ("AccessControlEntries"); }
+    }
   }
 }
