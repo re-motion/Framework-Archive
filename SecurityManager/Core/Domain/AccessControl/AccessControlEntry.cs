@@ -159,7 +159,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       return true;
     }
 
-    //TODO: Use anonymous method
     public AccessTypeDefinition[] GetAllowedAccessTypes ()
     {
       List<AccessTypeDefinition> allowedAccessTypes = new List<AccessTypeDefinition>();

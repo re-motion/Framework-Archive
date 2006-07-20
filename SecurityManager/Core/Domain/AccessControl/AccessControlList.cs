@@ -108,7 +108,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       set { } // marks property AccessControlEntries as modifiable
     }
 
-    //TODO: Use anonymous method
     public AccessControlEntry[] FindMatchingEntries (SecurityToken token)
     {
       ArgumentUtility.CheckNotNull ("token", token);
@@ -124,7 +123,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       return entries.ToArray ();
     }
 
-    //TODO: Use anonymous method
     public AccessControlEntry[] FilterAcesByPriority (AccessControlEntry[] aces)
     {
       ArgumentUtility.CheckNotNullOrItemsNull ("aces", aces);
@@ -137,30 +135,23 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       Array.Sort (sortedAces, new AccessControlEntryPriorityComparer ());
       Array.Reverse (sortedAces);
 
-      List<AccessControlEntry> filteredAces = new List<AccessControlEntry> ();
-
       int highestPriority = sortedAces[0].ActualPriority;
 
-      for (int i = 0; i < sortedAces.Length && sortedAces[i].ActualPriority == highestPriority; i++)
-        filteredAces.Add (sortedAces[i]);
-
-      return filteredAces.ToArray ();
+      return Array.FindAll<AccessControlEntry> (
+          sortedAces, 
+          delegate (AccessControlEntry current) { return current.ActualPriority == highestPriority; });
     }
 
-    //TODO: Use anonymous method
     public AccessTypeDefinition[] GetAccessTypes (SecurityToken token)
     {
       ArgumentUtility.CheckNotNull ("token", token);
 
-      AccessControlEntry[] aces = FilterAcesByPriority (FindMatchingEntries (token));
-
       List<AccessTypeDefinition> accessTypes = new List<AccessTypeDefinition> ();
 
+      AccessControlEntry[] aces = FilterAcesByPriority (FindMatchingEntries (token));
       foreach (AccessControlEntry ace in aces)
       {
-        AccessTypeDefinition[] allowedAccessTypes = ace.GetAllowedAccessTypes ();
-
-        foreach (AccessTypeDefinition allowedAccessType in allowedAccessTypes)
+        foreach (AccessTypeDefinition allowedAccessType in ace.GetAllowedAccessTypes ())
         {
           if (!accessTypes.Contains (allowedAccessType))
             accessTypes.Add (allowedAccessType);
