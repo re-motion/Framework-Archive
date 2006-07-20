@@ -8,11 +8,11 @@ using Rubicon.Utilities;
 
 namespace Rubicon.SecurityManager.Domain.AccessControl
 {
-public enum GroupSelection
-{
-  All = 0,
-  GroupOfOwner,
-  SpecificGroup,
-  SpecificGroupType
-}
+  public enum GroupSelection
+  {
+    All = 0,
+    OwningGroup = 1,
+    SpecificGroup = 2,
+    SpecificGroupType = 3
+  }
 }

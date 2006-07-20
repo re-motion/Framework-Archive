@@ -23,13 +23,14 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     public SecurityToken CreateToken (ClientTransaction transaction, IPrincipal principal, SecurityContext context)
     {
       ArgumentUtility.CheckNotNull ("transaction", transaction);
+      ArgumentUtility.CheckNotNull ("principal", principal);
       ArgumentUtility.CheckNotNull ("context", context);
 
       User user = GetUser (transaction, principal.Identity.Name);
-      List<Group> groups = GetGroups (transaction, context.OwnerGroup);
+      List<Group> owningGroups = GetGroups (transaction, context.OwnerGroup);
       List<AbstractRoleDefinition> abstractRoles = GetAbstractRoles (transaction, context.AbstractRoles);
 
-      return new SecurityToken (user, groups, abstractRoles);
+      return new SecurityToken (user, owningGroups, abstractRoles);
     }
 
     private User GetUser (ClientTransaction transaction, string userName)

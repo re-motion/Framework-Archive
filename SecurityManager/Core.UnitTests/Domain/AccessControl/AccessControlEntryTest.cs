@@ -58,57 +58,82 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void MatchesToken_EmptyTokenAndAceWithPosition ()
+    public void MatchesToken_EmptyTokenAndAceWithPositionFromGroupOfOwner ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
       Position managerPosition = _testHelper.CreatePosition ("Manager", client);
-      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       SecurityToken token = _testHelper.CreateEmptyToken ();
 
       Assert.IsFalse (entry.MatchesToken (token));
     }
 
     [Test]
-    public void MatchesToken_TokenWithRoleAndAceWithPosition ()
+    public void MatchesToken_TokenWithRoleAndAceWithPositionFromOwningGroup ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
       Position managerPosition = _testHelper.CreatePosition ("Manager", client);
       Group group = _testHelper.CreateGroup ("Testgroup", null, client);
       User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
-      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       SecurityToken token = _testHelper.CreateTokenWithGroups (user, group);
 
       Assert.IsTrue (entry.MatchesToken (token));
     }
 
     [Test]
-    public void MatchesToken_TokenWithRoleAndAbstractRoleAndAceWithPosition ()
+    public void MatchesToken_TokenWithRoleAndAbstractRoleAndAceWithPositionFromOwningGroup ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
       Position managerPosition = _testHelper.CreatePosition ("Manager", client);
       Group group = _testHelper.CreateGroup ("Testgroup", null, client);
       User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
-      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       SecurityToken token = _testHelper.CreateToken (user, new Group[] { group }, new AbstractRoleDefinition[] { _testHelper.CreateTestAbstractRole() });
 
       Assert.IsTrue (entry.MatchesToken (token));
     }
 
     [Test]
-    public void MatchesToken_TokenWithRoleAndAceWithPositionAndAbstractRole ()
+    public void MatchesToken_TokenWithRoleAndAceWithPositionFromOwningGroupAndAbstractRole ()
     {
       Client client = _testHelper.CreateClient ("Testclient");
       Position managerPosition = _testHelper.CreatePosition ("Manager", client);
       Group group = _testHelper.CreateGroup ("Testgroup", null, client);
       User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
       Role role = _testHelper.CreateRole (user, group, managerPosition);
-      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.OwningGroup);
       entry.SpecificAbstractRole = _testHelper.CreateTestAbstractRole ();
       SecurityToken token = _testHelper.CreateTokenWithGroups (user, group);
 
       Assert.IsFalse (entry.MatchesToken (token));
+    }
+
+    [Test]
+    public void MatchesToken_EmptyTokenAndAceWithPositionFromAllGroups ()
+    {
+      Client client = _testHelper.CreateClient ("Testclient");
+      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.All);
+      SecurityToken token = _testHelper.CreateEmptyToken ();
+
+      Assert.IsFalse (entry.MatchesToken (token));
+    }
+
+    [Test]
+    public void MatchesToken_TokenWithRoleAndAceWithPositionFromAllGroups ()
+    {
+      Client client = _testHelper.CreateClient ("Testclient");
+      Position managerPosition = _testHelper.CreatePosition ("Manager", client);
+      Group group = _testHelper.CreateGroup ("Testgroup", null, client);
+      User user = _testHelper.CreateUser ("test.user", "Test", "User", "Dipl.Ing.(FH)", group, client);
+      Role role = _testHelper.CreateRole (user, group, managerPosition);
+      AccessControlEntry entry = _testHelper.CreateAceWithPosition (managerPosition, GroupSelection.All);
+      SecurityToken token = _testHelper.CreateToken (user, null, null);
+
+      Assert.IsTrue (entry.MatchesToken (token));
     }
 
     [Test]
@@ -242,7 +267,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void GetActualPriority_AceWithGroup ()
     {
       AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
-      ace.Group = GroupSelection.GroupOfOwner;
+      ace.Group = GroupSelection.OwningGroup;
 
       Assert.AreEqual (AccessControlEntry.GroupPriority, ace.ActualPriority);
     }
@@ -261,7 +286,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     {
       AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
       ace.User = UserSelection.Owner;
-      ace.Group = GroupSelection.GroupOfOwner;
+      ace.Group = GroupSelection.OwningGroup;
 
       int expectedPriority = AccessControlEntry.UserPriority + AccessControlEntry.GroupPriority;
       Assert.AreEqual (expectedPriority, ace.ActualPriority);
@@ -273,7 +298,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       AccessControlEntry ace = new AccessControlEntry (_testHelper.Transaction);
       ace.User = UserSelection.Owner;
       ace.SpecificAbstractRole = new AbstractRoleDefinition (_testHelper.Transaction, Guid.NewGuid (), "Test", 42);
-      ace.Group = GroupSelection.GroupOfOwner;
+      ace.Group = GroupSelection.OwningGroup;
       ace.Client = ClientSelection.ClientOfOwner;
 
       int expectedPriority = AccessControlEntry.UserPriority + AccessControlEntry.AbstractRolePriority + AccessControlEntry.GroupPriority

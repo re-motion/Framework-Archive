@@ -127,7 +127,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public DomainObjectCollection Permissions
     {
-      get { return new DomainObjectCollection (GetPermissions(), true); }
+      get { return new DomainObjectCollection (GetPermissions (), true); }
     }
 
     public DateTime ChangedAt
@@ -161,7 +161,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
     public AccessTypeDefinition[] GetAllowedAccessTypes ()
     {
-      List<AccessTypeDefinition> allowedAccessTypes = new List<AccessTypeDefinition>();
+      List<AccessTypeDefinition> allowedAccessTypes = new List<AccessTypeDefinition> ();
 
       foreach (Permission permission in Permissions)
       {
@@ -229,7 +229,22 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
           return true;
 
         case UserSelection.SpecificPosition:
-          return token.ContainsRoleForPosition (SpecificPosition);
+          return MatchPosition (token);
+
+        default:
+          return false;
+      }
+    }
+
+    private bool MatchPosition (SecurityToken token)
+    {
+      switch (Group)
+      {
+        case GroupSelection.All:
+          return token.ContainsRoleForUserGroupAndPosition (SpecificPosition);
+
+        case GroupSelection.OwningGroup:
+          return token.ContainsRoleForOwningGroupAndPosition (SpecificPosition);
 
         default:
           return false;

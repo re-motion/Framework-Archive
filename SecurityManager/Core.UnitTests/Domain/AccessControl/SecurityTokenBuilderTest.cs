@@ -114,11 +114,11 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      AccessControlObjectAssert.ContainsGroup ("UnqiueIdentifier: ownerGroup", token.Groups);
+      AccessControlObjectAssert.ContainsGroup ("UnqiueIdentifier: ownerGroup", token.OwningGroups);
     }
 
     [Test]
-    public void Create_WithoutGroup ()
+    public void Create_WithoutOwningGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateOrganizationalStructure ();
@@ -129,12 +129,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      Assert.AreEqual (0, token.Groups.Count);
+      Assert.AreEqual (0, token.OwningGroups.Count);
     }
 
     [Test]
     [ExpectedException (typeof (AccessControlException), "The group 'UnqiueIdentifier: NotExistingGroup' could not be found.")]
-    public void Create_WithNotExistingGroup ()
+    public void Create_WithNotExistingOwningGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateOrganizationalStructure ();
@@ -147,7 +147,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Create_WithParentGroup ()
+    public void Create_WithParentOwningGroup ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
       dbFixtures.CreateOrganizationalStructure ();
@@ -158,7 +158,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       SecurityTokenBuilder builder = new SecurityTokenBuilder ();
       SecurityToken token = builder.CreateToken (transaction, user, context);
 
-      AccessControlObjectAssert.ContainsGroup ("UnqiueIdentifier: rootGroup", token.Groups);
+      AccessControlObjectAssert.ContainsGroup ("UnqiueIdentifier: rootGroup", token.OwningGroups);
     }
 
     private IPrincipal CreateTestUser ()

@@ -314,11 +314,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
       return entry;
     }
 
-    public AccessControlEntry CreateAceWithPosition (Position position)
+    public AccessControlEntry CreateAceWithPosition (Position position, GroupSelection groupSelection)
     {
       AccessControlEntry entry = new AccessControlEntry (_transaction);
       entry.User = UserSelection.SpecificPosition;
       entry.SpecificPosition = position;
+      entry.Group = groupSelection;
 
       return entry;
     }
