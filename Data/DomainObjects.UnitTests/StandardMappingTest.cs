@@ -35,6 +35,8 @@ namespace Rubicon.Data.DomainObjects.UnitTests
     public void TestFixtureSetUp ()
     {
       MappingConfiguration.SetCurrent (s_mappingConfiguration);
+      TestMappingConfiguration.Reset ();
+
       _domainObjectIDs = new DomainObjectIDs ();
     }
 

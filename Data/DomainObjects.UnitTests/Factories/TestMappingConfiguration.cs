@@ -28,6 +28,14 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Factories
       }
     }
 
+    public static void Reset ()
+    {
+      lock (typeof (TestMappingConfiguration))
+      {
+        s_current = null;
+      }
+    }
+
     // member fields
 
     private ClassDefinitionCollection _classDefinitions;
