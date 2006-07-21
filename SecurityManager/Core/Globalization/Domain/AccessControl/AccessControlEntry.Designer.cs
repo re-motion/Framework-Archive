@@ -61,6 +61,15 @@ namespace Rubicon.SecurityManager.Globalization.Domain.AccessControl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        internal static string property_Group {
+            get {
+                return ResourceManager.GetString("property:Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority.
         /// </summary>
         internal static string property_Priority {
