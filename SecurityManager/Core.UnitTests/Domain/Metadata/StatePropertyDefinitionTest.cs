@@ -136,8 +136,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void GetDefinedStates ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper();
-      dbHelper.SetupDB ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
       StatePropertyDefinition expectdPropertyDefinition = _testHelper.CreateConfidentialityProperty (0);
       _testHelper.Transaction.Commit ();
 

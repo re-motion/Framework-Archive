@@ -118,8 +118,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
        "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
     public void Commit_TouchClassFromUsage ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
 
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
       StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);
@@ -145,8 +145,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
        "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
     public void Commit_TouchClass ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
 
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
       StatePropertyDefinition paymentProperty = _testHelper.CreatePaymentStateProperty (orderClass);

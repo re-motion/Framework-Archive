@@ -30,7 +30,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
 
       ClientTransaction transaction = new ClientTransaction ();
 
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
+      SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (transaction);
 
       Culture germanCulture = new Culture (transaction, "de");
       Culture englishCulture = new Culture (transaction, "en");
@@ -82,13 +82,36 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return client1;
     }
 
+    public SecurableClassDefinition[] CreateSecurableClassDefinitionsWithSubClassesEach (int classDefinitionCount, int derivedClassDefinitionCount)
+    {
+      CreateEmptyDomain ();
+      ClientTransaction transaction = new ClientTransaction ();
+
+      SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (transaction, classDefinitionCount, derivedClassDefinitionCount);
+      
+      transaction.Commit ();
+
+      return classDefinitions;
+    }
+
+    public SecurableClassDefinition[] CreateSecurableClassDefinitions (int classDefinitionCount)
+    {
+      CreateEmptyDomain ();
+      ClientTransaction transaction = new ClientTransaction ();
+
+      SecurableClassDefinition[] classDefinitions = CreateSecurableClassDefinitions (transaction, classDefinitionCount, 0);
+
+      transaction.Commit ();
+
+      return classDefinitions;
+    }
+
     public SecurableClassDefinition CreateSecurableClassDefinitionWithStates ()
     {
       CreateEmptyDomain ();
-
       ClientTransaction transaction = new ClientTransaction ();
 
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
+      SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (transaction);
 
       classDefinition.AddStateProperty (CreateFileStateProperty (transaction));
       classDefinition.AddStateProperty (CreateConfidentialityProperty (transaction));
@@ -101,8 +124,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public SecurableClassDefinition CreateSecurableClassDefinitionWithAccessTypes (int accessTypes)
     {
       CreateEmptyDomain ();
-
       ClientTransaction transaction = new ClientTransaction ();
+
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinitionWithAccessTypes (transaction, accessTypes);
 
       transaction.Commit ();
@@ -110,26 +133,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return classDefinition;
     }
 
-    private SecurableClassDefinition CreateSecurableClassDefinitionWithAccessTypes (ClientTransaction transaction, int accessTypes)
-    {
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
-
-      for (int i = 0; i < accessTypes; i++)
-      {
-        AccessTypeDefinition accessType = CreateAccessType (transaction, Guid.NewGuid (), string.Format ("Access Type {0}", i));
-        accessType.Index = i;
-        classDefinition.AddAccessType (accessType);
-      }
-      
-      return classDefinition;
-    }
-
     public SecurableClassDefinition CreateSecurableClassDefinitionWithAccessControlLists (int accessControlLists)
     {
       CreateEmptyDomain ();
-
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
+   
+      SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (transaction);
       for (int i = 0; i < accessControlLists; i++)
       {
         AccessControlList acl = new AccessControlList (transaction);
@@ -149,9 +158,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public AccessControlList CreateAccessControlListWithAccessControlEntries (int accessControlEntries)
     {
       CreateEmptyDomain ();
-
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
+
+      SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (transaction);
       AccessControlList acl = new AccessControlList (transaction);
       acl.Class = classDefinition;
       acl.CreateStateCombination ();
@@ -167,9 +176,9 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
     public AccessControlList CreateAccessControlListWithStateCombinations (int stateCombinations)
     {
       CreateEmptyDomain ();
-
       ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (transaction);
+   
+      SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (transaction);
       AccessControlList acl = new AccessControlList (transaction);
       acl.Class = classDefinition;
       acl.CreateAccessControlEntry ();
@@ -246,12 +255,57 @@ namespace Rubicon.SecurityManager.UnitTests.Domain
       return user;
     }
 
-    private SecurableClassDefinition CreateSecurableClassDefinition (ClientTransaction transaction)
+    private SecurableClassDefinition CreateOrderSecurableClassDefinition (ClientTransaction transaction)
     {
       SecurableClassDefinition classDefinition = CreateSecurableClassDefinition (
           transaction,
           new Guid ("b8621bc9-9ab3-4524-b1e4-582657d6b420"),
           "Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests");
+      return classDefinition;
+    }
+
+    private SecurableClassDefinition[] CreateSecurableClassDefinitions (
+        ClientTransaction transaction, 
+        int classDefinitionCount, 
+        int derivedClassDefinitionCount)
+    {
+      SecurableClassDefinition[] classDefinitions = new SecurableClassDefinition[classDefinitionCount];
+      for (int i = 0; i < classDefinitionCount; i++)
+      {
+        SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
+        classDefinition.MetadataItemID = Guid.NewGuid ();
+        classDefinition.Name = string.Format ("Class {0}", i);
+        classDefinition.Index = i;
+        classDefinitions[i] = classDefinition;
+        CreateDerivedSecurableClassDefinitions (classDefinition, derivedClassDefinitionCount);
+      }
+
+      return classDefinitions;
+    }
+
+    private void CreateDerivedSecurableClassDefinitions (SecurableClassDefinition baseClassDefinition, int classDefinitionCount)
+    {
+      for (int i = 0; i < classDefinitionCount; i++)
+      {
+        SecurableClassDefinition classDefinition = new SecurableClassDefinition (baseClassDefinition.ClientTransaction);
+        classDefinition.MetadataItemID = Guid.NewGuid ();
+        classDefinition.Name = string.Format ("{0} - Subsclass {0}", baseClassDefinition.Name, i);
+        classDefinition.Index = i;
+        classDefinition.BaseClass = baseClassDefinition;
+      }
+    }
+
+    private SecurableClassDefinition CreateSecurableClassDefinitionWithAccessTypes (ClientTransaction transaction, int accessTypes)
+    {
+      SecurableClassDefinition classDefinition = CreateOrderSecurableClassDefinition (transaction);
+
+      for (int i = 0; i < accessTypes; i++)
+      {
+        AccessTypeDefinition accessType = CreateAccessType (transaction, Guid.NewGuid (), string.Format ("Access Type {0}", i));
+        accessType.Index = i;
+        classDefinition.AddAccessType (accessType);
+      }
+
       return classDefinition;
     }
 

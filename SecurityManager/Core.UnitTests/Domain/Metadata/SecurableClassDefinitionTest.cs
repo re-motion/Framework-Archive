@@ -172,8 +172,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void FindByName_ValidClassName ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
 
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
       SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
@@ -189,8 +189,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void FindByName_InvalidClassName ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
 
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
       SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
@@ -206,8 +206,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void FindAll_EmptyResult ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
 
       ClientTransaction transaction = new ClientTransaction ();
       DomainObjectCollection result = SecurableClassDefinition.FindAll (transaction);
@@ -218,7 +218,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void FindAll_TenFound ()
     {
-      SecurableClassDefinition[] expectedClassDefinitions = CreateTenSecurableClassDefinitions ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      SecurableClassDefinition[] expectedClassDefinitions = dbFixtures.CreateSecurableClassDefinitions (10);
 
       ClientTransaction transaction = new ClientTransaction ();
       DomainObjectCollection result = SecurableClassDefinition.FindAll (transaction);
@@ -231,7 +232,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void FindAllBaseClasses_TenFound ()
     {
-      SecurableClassDefinition[] expectedClassDefinitions = CreateTenSecurableClassDefinitionsWithTenSubClassesEach ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      SecurableClassDefinition[] expectedClassDefinitions = dbFixtures.CreateSecurableClassDefinitionsWithSubClassesEach (10, 10);
 
       ClientTransaction transaction = new ClientTransaction ();
       DomainObjectCollection result = SecurableClassDefinition.FindAllBaseClasses (transaction);
@@ -254,7 +256,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     [Test]
     public void GetDerivedClasses_TenFound ()
     {
-      SecurableClassDefinition[] expectedBaseClassDefinitions = CreateTenSecurableClassDefinitionsWithTenSubClassesEach ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      SecurableClassDefinition[] expectedBaseClassDefinitions = dbFixtures.CreateSecurableClassDefinitionsWithSubClassesEach (10, 10);
       SecurableClassDefinition expectedBaseClassDefinition = expectedBaseClassDefinitions[4];
 
       ClientTransaction transaction = new ClientTransaction ();
@@ -430,8 +433,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
        "The securable class definition 'Rubicon.SecurityManager.UnitTests.TestDomain.Order' contains at least one state combination, which has been defined twice.")]
     public void Commit_TwoStateCombinations ()
     {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
+      DatabaseFixtures dbFixtures = new DatabaseFixtures ();
+      dbFixtures.CreateEmptyDomain ();
 
       AccessControlTestHelper testHelper = new AccessControlTestHelper ();
       SecurableClassDefinition orderClass = testHelper.CreateOrderClassDefinition ();
@@ -441,50 +444,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
       StateCombination notPaidCombination = testHelper.CreateStateCombination (orderClass, paymentProperty["None"]);
 
       testHelper.Transaction.Commit ();
-    }
-
-    private SecurableClassDefinition[] CreateTenSecurableClassDefinitionsWithTenSubClassesEach ()
-    {
-      return CreateTenSecurableClassDefinitions (true);
-    }
-
-    private SecurableClassDefinition[] CreateTenSecurableClassDefinitions ()
-    {
-      return CreateTenSecurableClassDefinitions (false);
-    }
-
-    private SecurableClassDefinition[] CreateTenSecurableClassDefinitions (bool createDerivedClasses)
-    {
-      DatabaseHelper dbHelper = new DatabaseHelper ();
-      dbHelper.SetupDB ();
-
-      ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition[] classDefinitions = new SecurableClassDefinition[10];
-      for (int i = 0; i < classDefinitions.Length; i++)
-      {
-        SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
-        classDefinition.MetadataItemID = Guid.NewGuid ();
-        classDefinition.Name = string.Format ("Class {0}", i);
-        classDefinition.Index = i;
-        classDefinitions[i] = classDefinition;
-        if (createDerivedClasses)
-          CreateTenDerivedClasses (classDefinition);
-      }
-      transaction.Commit ();
-
-      return classDefinitions;
-    }
-
-    private void CreateTenDerivedClasses (SecurableClassDefinition baseClassDefinition)
-    {
-      for (int i = 0; i < 10; i++)
-      {
-        SecurableClassDefinition classDefinition = new SecurableClassDefinition (baseClassDefinition.ClientTransaction);
-        classDefinition.MetadataItemID = Guid.NewGuid ();
-        classDefinition.Name = string.Format ("{0} - Subsclass {0}", baseClassDefinition.Name, i);
-        classDefinition.Index = i;
-        classDefinition.BaseClass = baseClassDefinition;
-      }
     }
   }
 }
