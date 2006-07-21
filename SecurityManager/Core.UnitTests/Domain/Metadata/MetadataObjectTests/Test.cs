@@ -14,8 +14,12 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
   {
     private ClientTransaction _transaction;
     private MetadataObject _metadataObject;
+    private Culture _cultureInvariant;
     private Culture _cultureDe;
+    private Culture _cultureDeAt;
     private Culture _cultureRu;
+    private CultureInfo _backupUICulture;
+    private CultureInfo _backupCulture;
 
     public override void SetUp ()
     {
@@ -23,26 +27,88 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
 
       _transaction = new ClientTransaction ();
       _metadataObject = new SecurableClassDefinition (_transaction);
+      _metadataObject.Name = "Technical Name";
+
+      _cultureInvariant = new Culture (_transaction, string.Empty);
       _cultureDe = new Culture (_transaction, "de");
+      _cultureDeAt = new Culture (_transaction, "de-AT");
       _cultureRu = new Culture (_transaction, "ru");
+
+      _backupCulture = Thread.CurrentThread.CurrentCulture;
+      _backupUICulture = Thread.CurrentThread.CurrentUICulture;
+    }
+
+    [TearDown]
+    public void TearDown ()
+    {
+      Thread.CurrentThread.CurrentCulture = _backupCulture;
+      Thread.CurrentThread.CurrentUICulture = _backupUICulture;
     }
 
     [Test]
-    public void DisplayName_German ()
+    public void DisplayName_NeutralCulture ()
     {
-      CreateLocalizedName (_metadataObject, _cultureDe, "Klasse");
+      CreateLocalizedName (_metadataObject, _cultureInvariant, "Class Invariant");
+      CreateLocalizedName (_metadataObject, _cultureDe, "Class de");
+      CreateLocalizedName (_metadataObject, _cultureDeAt, "Class de-AT");
+      Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo (_cultureDe.CultureName);
 
-      CultureInfo threadCulture = Thread.CurrentThread.CurrentCulture;
-      CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture ("de");
-      Thread.CurrentThread.CurrentUICulture = cultureInfo;
+      Assert.AreEqual ("Class de", _metadataObject.DisplayName);
+    }
 
-      Assert.AreEqual ("Klasse", _metadataObject.DisplayName);
+    [Test]
+    public void DisplayName_SpecificCulture ()
+    {
+      CreateLocalizedName (_metadataObject, _cultureInvariant, "Class Invariant");
+      CreateLocalizedName (_metadataObject, _cultureDe, "Class de");
+      CreateLocalizedName (_metadataObject, _cultureDeAt, "Class de-AT");
+      Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo (_cultureDeAt.CultureName);
+
+      Assert.AreEqual ("Class de-AT", _metadataObject.DisplayName);
+    }
+
+    [Test]
+    public void DisplayName_Invariant ()
+    {
+      CreateLocalizedName (_metadataObject, _cultureInvariant, "Class Invariant");
+      CreateLocalizedName (_metadataObject, _cultureDe, "Class de");
+      CreateLocalizedName (_metadataObject, _cultureDeAt, "Class de-AT");
+      Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
+      Assert.AreEqual ("Class Invariant", _metadataObject.DisplayName);
+    }
+
+    [Test]
+    public void DisplayName_UnknownCulture ()
+    {
+      Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo ("en");
+
+      Assert.AreEqual ("Technical Name", _metadataObject.DisplayName);
+    }
+
+    [Test]
+    public void DisplayName_FallbackToNeutralCulture ()
+    {
+      CreateLocalizedName (_metadataObject, _cultureInvariant, "Class Invariant");
+      CreateLocalizedName (_metadataObject, _cultureDe, "Class de");
+      Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo (_cultureDeAt.CultureName);
+
+      Assert.AreEqual ("Class de", _metadataObject.DisplayName);
+    }
+
+    [Test]
+    public void DisplayName_FallbackToInvariantCulture ()
+    {
+      CreateLocalizedName (_metadataObject, _cultureInvariant, "Class Invariant");
+      Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo (_cultureDeAt.CultureName);
+
+      Assert.AreEqual ("Class Invariant", _metadataObject.DisplayName);
     }
 
     [Test]
     public void GetLocalizedName_ExistingCulture ()
     {
-      LocalizedName expectedLocalizedName = CreateLocalizedName (_metadataObject, _cultureDe, "Klasse");
+      LocalizedName expectedLocalizedName = CreateLocalizedName (_metadataObject, _cultureDe, "Class de");
 
       Assert.AreSame (expectedLocalizedName, _metadataObject.GetLocalizedName (_cultureDe));
     }
@@ -56,15 +122,15 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.MetadataObjectTests
     [Test]
     public void GetLocalizedName_ExistingCultureName ()
     {
-      LocalizedName expectedLocalizedName = CreateLocalizedName (_metadataObject, _cultureDe, "Klasse");
+      LocalizedName expectedLocalizedName = CreateLocalizedName (_metadataObject, _cultureDe, "Class de");
 
-      Assert.AreSame (expectedLocalizedName, _metadataObject.GetLocalizedName (_cultureDe.CultureName));
+      Assert.AreSame (expectedLocalizedName, _metadataObject.GetLocalizedName ("de"));
     }
 
     [Test]
     public void GetLocalizedName_NotExistingCultureName ()
     {
-      LocalizedName localizedName = _metadataObject.GetLocalizedName (_cultureRu.CultureName);
+      LocalizedName localizedName = _metadataObject.GetLocalizedName ("ru");
 
       Assert.IsNull (localizedName);
     }

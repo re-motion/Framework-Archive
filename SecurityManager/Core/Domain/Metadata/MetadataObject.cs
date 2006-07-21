@@ -77,22 +77,16 @@ namespace Rubicon.SecurityManager.Domain.Metadata
       get { return GetRelatedObjects ("LocalizedNames"); }
     }
 
-    //TODO: Rewrite with Test
     public override string DisplayName
     {
       get
       {
-        LocalizedName localizedName = GetLocalizedName (CultureInfo.CurrentUICulture.Name);
-        if (localizedName != null)
-          return localizedName.Text;
-
-        localizedName = GetLocalizedName (CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
-        if (localizedName != null)
-          return localizedName.Text;
-
-        localizedName = GetLocalizedName (CultureInfo.InvariantCulture.Name);
-        if (localizedName != null)
-          return localizedName.Text;
+        foreach (CultureInfo cultureInfo in GetCultureHierachy (CultureInfo.CurrentUICulture))
+        {
+          LocalizedName localizedName = GetLocalizedName (cultureInfo.Name);
+          if (localizedName != null)
+            return localizedName.Text;
+        }
 
         return Name;
       }
@@ -108,14 +102,28 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     public LocalizedName GetLocalizedName (string cultureName)
     {
       ArgumentUtility.CheckNotNull ("cultureName", cultureName);
-      
+
       foreach (LocalizedName localizedName in LocalizedNames)
       {
-        if (localizedName.Culture.CultureName == cultureName)
+        if (localizedName.Culture.CultureName.Equals (cultureName, StringComparison.Ordinal))
           return localizedName;
       }
 
       return null;
+    }
+
+    private List<CultureInfo> GetCultureHierachy (CultureInfo cultureInfo)
+    {
+      List<CultureInfo> cultureHierarchy = new List<CultureInfo> ();
+
+      cultureHierarchy.Add (cultureInfo);
+      while (cultureInfo != cultureInfo.Parent) // Invariant culture is its own parent
+      {
+        cultureInfo = cultureInfo.Parent;
+        cultureHierarchy.Add (cultureInfo);
+      }
+
+      return cultureHierarchy;
     }
   }
 }

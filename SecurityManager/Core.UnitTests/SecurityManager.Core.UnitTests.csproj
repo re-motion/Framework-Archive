@@ -73,12 +73,10 @@
     <Compile Include="Domain\DatabaseHelper.cs" />
     <Compile Include="Domain\Metadata\AbstractRoleDefinitionTests\AbstractRoleDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\AbstractRoleDefinitionTests\TestWithTwoClients.cs" />
-    <Compile Include="Domain\Metadata\AccessTypeDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\AccessTypeReferenceTest.cs" />
     <Compile Include="Domain\Metadata\CultureTest.cs" />
     <Compile Include="Domain\Metadata\MetadataObjectTests\FindTest.cs" />
     <Compile Include="Domain\Metadata\MetadataObjectTests\Test.cs" />
-    <Compile Include="Domain\Metadata\StateDefinitionTest.cs" />
     <Compile Include="Domain\Metadata\CultureImporterTest.cs" />
     <Compile Include="Domain\Metadata\FindAbstractRolesQueryBuilderTest.cs" />
     <Compile Include="Domain\Metadata\MetadataImporterTest.cs" />

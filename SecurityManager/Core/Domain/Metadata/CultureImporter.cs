@@ -60,6 +60,7 @@ namespace Rubicon.SecurityManager.Domain.Metadata
     private Culture ImportCulture (XmlElement rootElement, XmlNamespaceManager namespaceManager)
     {
       string cultureName = rootElement.Attributes["culture"].Value;
+      // TODO: Convert to CultureInfo via GetCulture
       Culture culture = new Culture (_transaction, cultureName);
 
       _cultures.Add (culture);

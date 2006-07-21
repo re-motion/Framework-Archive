@@ -124,16 +124,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    public void Get_DisplayName ()
-    {
-      ClientTransaction transaction = new ClientTransaction ();
-      StatePropertyDefinition stateProperty = new StatePropertyDefinition (transaction);
-      stateProperty.Name = "Value|Namespace.TypeName, Assembly";
-
-      Assert.AreEqual ("Value|Namespace.TypeName, Assembly", stateProperty.DisplayName);
-    }
-
-    [Test]
     public void GetDefinedStates ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();

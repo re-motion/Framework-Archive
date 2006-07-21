@@ -31,14 +31,5 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata.AbstractRoleDefiniti
 
       Assert.AreEqual (0, result.Count);
     }
-
-    [Test]
-    public void Get_DisplayName ()
-    {
-      AbstractRoleDefinition abstractRole = new AbstractRoleDefinition (_transaction);
-      abstractRole.Name = "Value|Namespace.TypeName, Assembly";
-
-      Assert.AreEqual ("Value|Namespace.TypeName, Assembly", abstractRole.DisplayName);
-    }
   }
 }

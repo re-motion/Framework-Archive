@@ -244,16 +244,6 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     }
 
     [Test]
-    public void Get_DisplayName ()
-    {
-      ClientTransaction transaction = new ClientTransaction ();
-      SecurableClassDefinition classDefinition = new SecurableClassDefinition (transaction);
-      classDefinition.Name = "Namespace.TypeName, AssemblyName";
-
-      Assert.AreEqual ("Namespace.TypeName, AssemblyName", classDefinition.DisplayName);
-    }
-
-    [Test]
     public void GetDerivedClasses_TenFound ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
