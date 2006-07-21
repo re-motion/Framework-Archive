@@ -24,7 +24,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
 
       SecurableClassDefinition classDefinition = SecurableClassDefinition.FindByName (transaction, context.Class);
       if (classDefinition == null)
-        throw CreateAccessControlException ("The class '{0}' cannot be found.", context.Class);
+        throw CreateAccessControlException ("The securable class '{0}' cannot be found.", context.Class);
 
       return Find (classDefinition, context);
     }
@@ -48,7 +48,7 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
       }
 
       if (foundStateCombination == null)
-        throw CreateAccessControlException ("The ACL for the class '{0}' could not be found.", context.Class);
+        throw CreateAccessControlException ("The ACL for the securable class '{0}' could not be found.", context.Class);
 
       return foundStateCombination.AccessControlList;
     }

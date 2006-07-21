@@ -304,7 +304,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void Get_AccessTypesFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      SecurableClassDefinition expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWith10AccessTypes ();
+      SecurableClassDefinition expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessTypes (10);
 
       ClientTransaction transaction = new ClientTransaction ();
       SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID, transaction);
@@ -318,7 +318,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.Metadata
     public void Get_AccessControlListsFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      SecurableClassDefinition expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWith10AccessControlLists ();
+      SecurableClassDefinition expectedClassDefinition = dbFixtures.CreateSecurableClassDefinitionWithAccessControlLists (10);
 
       ClientTransaction transaction = new ClientTransaction ();
       SecurableClassDefinition actualClassDefinition = SecurableClassDefinition.GetObject (expectedClassDefinition.ID, transaction);

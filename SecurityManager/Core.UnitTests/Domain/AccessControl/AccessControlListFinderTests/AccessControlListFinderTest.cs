@@ -9,10 +9,10 @@ using Rubicon.SecurityManager.Domain.Metadata;
 using Rubicon.Data.DomainObjects;
 using Rubicon.SecurityManager.UnitTests.TestDomain;
 
-namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
+namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl.AccessControlListFinderTests
 {
   [TestFixture]
-  public class AccessControlListFinderTest : DomainTest
+  public class Find_BySecurableClassDefinition : DomainTest
   {
     private AccessControlTestHelper _testHelper;
 
@@ -23,7 +23,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Find_SecurableClassDefinitionWithoutStateProperties ()
+    public void Succeed_WithoutStateProperties ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
       AccessControlList acl = _testHelper.CreateAcl (classDefinition);
@@ -36,7 +36,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Find_SecurableClassDefinitionWithStates ()
+    public void Succeed_WithStates ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
       AccessControlList acl = _testHelper.GetAclForDeliveredAndUnpaidStates (classDefinition);
@@ -49,7 +49,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Find_SecurableClassDefinitionWithStatesAndStateless ()
+    public void Succeed_WithStatesAndStateless ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
       AccessControlList acl = _testHelper.GetAclForStateless (classDefinition);
@@ -63,7 +63,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     [Test]
     [ExpectedException (typeof (AccessControlException), "The state 'Payment' is missing in the security context.")]
-    public void Find_SecurityContextDoesNotContainAllStates ()
+    public void Fail_WithSecurityContextDoesNotContainAllStates ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
       _testHelper.CreateAclsForOrderAndPaymentStates (classDefinition);
@@ -76,7 +76,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     [Test]
     [ExpectedException (typeof (AccessControlException),
         "The state 'None' is not defined for the property 'State' of the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' or its base classes.")]
-    public void Find_SecurityContextContainsStateWithInvalidValue ()
+    public void Fail_WithSecurityContextContainsStateWithInvalidValue ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
       _testHelper.CreateAclsForOrderAndPaymentStates (classDefinition);
@@ -90,8 +90,8 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     [Test]
     [ExpectedException (typeof (AccessControlException),
-        "The ACL for the class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' could not be found.")]
-    public void Find_SecurityContextContainsInvalidState ()
+        "The ACL for the securable class 'Rubicon.SecurityManager.UnitTests.TestDomain.Order, Rubicon.SecurityManager.UnitTests' could not be found.")]
+    public void Fail_WithSecurityContextContainsInvalidState ()
     {
       SecurableClassDefinition classDefinition = _testHelper.CreateOrderClassDefinition ();
       _testHelper.CreateAclsForOrderAndPaymentStates (classDefinition);
@@ -108,7 +108,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Find_DerivedClassDefinitionWithPropertiesInBaseClass ()
+    public void Succeed_WithDerivedClassDefinitionAndPropertiesInBaseClass ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
       SecurableClassDefinition specialOrderClass = _testHelper.CreateSpecialOrderClassDefinition (orderClass);
@@ -122,7 +122,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Find_DerivedClassDefinitionWithSameProperties ()
+    public void Succeed_WithDerivedClassDefinitionAndSameProperties ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
       SecurableClassDefinition specialOrderClass = _testHelper.CreateSpecialOrderClassDefinition (orderClass);
@@ -137,7 +137,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     }
 
     [Test]
-    public void Find_DerivedClassDefinitionWithAdditionalProperty ()
+    public void Succeed_WithDerivedClassDefinitionAndAdditionalProperty ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
       SecurableClassDefinition premiumOrderClass = _testHelper.CreatePremiumOrderClassDefinition (orderClass);
@@ -153,7 +153,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
 
     [Test]
     [ExpectedException (typeof (AccessControlException), "The state 'Delivery' is missing in the security context.")]
-    public void Find_DerivedClassDefinitionWithAdditionalPropertyAndWrongSecurityContext ()
+    public void Fail_WithDerivedClassDefinitionAndMissingStatePropertyInSecurityContext ()
     {
       SecurableClassDefinition orderClass = _testHelper.CreateOrderClassDefinition ();
       SecurableClassDefinition premiumOrderClass = _testHelper.CreatePremiumOrderClassDefinition (orderClass);

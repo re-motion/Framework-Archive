@@ -328,7 +328,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Get_AccessControlEntriesFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      AccessControlList expectedAcl = dbFixtures.CreateAccessControlListWith10AccessControlEntries ();
+      AccessControlList expectedAcl = dbFixtures.CreateAccessControlListWithAccessControlEntries (10);
 
       ClientTransaction transaction = new ClientTransaction ();
       AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID, transaction);
@@ -342,7 +342,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Get_StateCombinationsFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      AccessControlList expectedAcl = dbFixtures.CreateAccessControlListWith10StateCombinations ();
+      AccessControlList expectedAcl = dbFixtures.CreateAccessControlListWithStateCombinations (10);
 
       ClientTransaction transaction = new ClientTransaction ();
       AccessControlList actualAcl = AccessControlList.GetObject (expectedAcl.ID, transaction);

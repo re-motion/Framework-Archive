@@ -311,7 +311,7 @@ namespace Rubicon.SecurityManager.UnitTests.Domain.AccessControl
     public void Get_PermissionsFromDatabase ()
     {
       DatabaseFixtures dbFixtures = new DatabaseFixtures ();
-      ObjectID aceID = dbFixtures.CreateAccessControlEntryWith10Permissions ();
+      ObjectID aceID = dbFixtures.CreateAccessControlEntryWithPermissions (10);
 
       ClientTransaction transaction = new ClientTransaction ();
       AccessControlEntry ace = AccessControlEntry.GetObject (aceID, transaction);
