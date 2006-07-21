@@ -75,7 +75,6 @@ namespace Rubicon.Data.DomainObjects.CodeGenerator.Sql
           return s_sqlTypeMapping["SerializedObjectID"];
       }
 
-      // TODO: Review with ES!
       if (propertyDefinition.MappingTypeName == "string")
       {
         if (propertyDefinition.MaxLength.IsNull)

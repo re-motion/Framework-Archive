@@ -114,8 +114,6 @@ public class CollectionEndPoint : RelationEndPoint, ICollectionChangeDelegate
   {
     if (_oppositeDomainObjects.Count == 0)
     {
-      // TODO: Review with ES!
-
       throw CreateMandatoryRelationNotSetException (
           GetDomainObject (),
           PropertyName,

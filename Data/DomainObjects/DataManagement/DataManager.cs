@@ -87,13 +87,7 @@ public class DataManager
 
   private bool ContainsState (StateType[] states, StateType state)
   {
-    foreach (StateType arrayState in states)
-    {
-      if (arrayState == state)
-        return true;
-    }
-
-    return false;
+    return (Array.IndexOf (states, state) >= 0);
   }
 
   public void RegisterExistingDataContainers (DataContainerCollection dataContainers)
@@ -168,7 +162,7 @@ public class DataManager
 
   private void BeginDelete (DomainObject domainObject, RelationEndPointCollection allAffectedRelationEndPoints)
   {
-    //TODO: Start here when implementing oldRelatedObject and NewRelatedObject on IClientTransactionExtension.RelationChanged () 
+    //TODO later: Start here when implementing oldRelatedObject and NewRelatedObject on IClientTransactionExtension.RelationChanged () 
     //      and RelationChanged events of ClientTransaction and DomainObject
     _clientTransaction.ObjectDeleting (domainObject);
     allAffectedRelationEndPoints.NotifyClientTransactionOfBeginDelete (domainObject);

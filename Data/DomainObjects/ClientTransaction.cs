@@ -152,8 +152,6 @@ public class ClientTransaction : ITransaction
   /// <returns><see langword="true"/> if at least one <see cref="DomainObject"/> in this <b>ClientTransaction</b> has been changed; otherwise, <see langword="false"/>.</returns>
   public virtual bool HasChanged ()
   {
-    // TODO: Review with ES!
-
     DomainObjectCollection changedDomainObjects = _dataManager.GetChangedDomainObjects ();
     return changedDomainObjects.Count > 0;
   }
@@ -186,8 +184,6 @@ public class ClientTransaction : ITransaction
   /// </summary>
   public virtual void Rollback ()
   {
-    // TODO: Review with ES!
-
     BeginRollback ();
     DomainObjectCollection changedButNotNewDomainObjects = _dataManager.GetDomainObjects (new StateType[] { StateType.Changed, StateType.Deleted });
     
@@ -662,10 +658,10 @@ public class ClientTransaction : ITransaction
 
   private void BeginCommit ()
   {
-    // TODO: Review with ES!
+    // TODO Doc: ES
     
     // Note regarding to Committing: 
-    // Every object raises a Committing event even another object's Committing event changes the first object's state back to original 
+    // Every object raises a Committing event even if another object's Committing event changes the first object's state back to original 
     // during its own Committing event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
     // Every object changed during a ClientTransaction raises a Committing event regardless of the Committing event order of specific objects.  
     // But: The same object is not included in the ClientTransaction's Committing event, because this order (DomainObject Committing events are raised
@@ -724,10 +720,10 @@ public class ClientTransaction : ITransaction
 
   private void BeginRollback ()
   {
-    // TODO: Review with ES!
+    // TODO Doc: ES
 
     // Note regarding to RollingBack: 
-    // Every object raises a RollingBack event even another object's RollingBack event changes the first object's state back to original 
+    // Every object raises a RollingBack event even if another object's RollingBack event changes the first object's state back to original 
     // during its own RollingBack event. Because the event order of .NET is not deterministic, this behavior is desired to ensure consistency: 
     // Every object changed during a ClientTransaction raises a RollingBack event regardless of the RollingBack event order of specific objects.  
     // But: The same object is not included in the ClientTransaction's RollingBack event, because this order (DomainObject RollingBack events are raised
@@ -753,7 +749,7 @@ public class ClientTransaction : ITransaction
           {
             domainObject.BeginRollback ();
 
-          if (!domainObject.IsDiscarded)
+            if (!domainObject.IsDiscarded)
               domainObjectRollingBackEventRaised.Add (domainObject);
           }
         }

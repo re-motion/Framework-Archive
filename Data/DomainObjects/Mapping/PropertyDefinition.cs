@@ -71,8 +71,6 @@ public class PropertyDefinition : ISerializable, IObjectReference
     {
       TypeInfo typeInfo = GetTypeInfo (mappingTypeName, isNullable);
 
-      // TODO: Review with ES! => Removed mandatory check for MaxLength with strings => Something else to do?
-
       if (typeInfo.Type != typeof (string) && typeInfo.Type != typeof (byte[]) && !maxLength.IsNull)
         throw CreateMappingException ("MaxLength parameter cannot be supplied with value of type '{0}'.", typeInfo.Type);
 

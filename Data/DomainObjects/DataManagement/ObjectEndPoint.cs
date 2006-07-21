@@ -116,8 +116,6 @@ public class ObjectEndPoint : RelationEndPoint, INullableObject
   {
     if (_oppositeObjectID == null)
     {
-      // TODO: Review with ES!
-
       throw CreateMandatoryRelationNotSetException (
           GetDomainObject (),
           PropertyName, 

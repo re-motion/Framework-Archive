@@ -127,8 +127,6 @@ namespace Rubicon.Data.DomainObjects.UnitTests.Transaction
       _collection.Insert (0, "Name", _extension2);
     }
 
-    //TODO check with ML if same extension may be added to the collection with different name. 
-
     [Test]
     public void PropertyChanging ()
     {
