@@ -58,7 +58,7 @@
     <Compile Include="DomainTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryPriorityComparerTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlEntryTest.cs" />
-    <Compile Include="Domain\AccessControl\AccessControlListFinderTests\AccessControlListFinderTest.cs" />
+    <Compile Include="Domain\AccessControl\AccessControlListFinderTests\Find_BySecurableClassDefinition.cs" />
     <Compile Include="Domain\AccessControl\AccessControlListFinderTests\Find_BySecurityContext.cs" />
     <Compile Include="Domain\AccessControl\AccessControlListTest.cs" />
     <Compile Include="Domain\AccessControl\AccessControlObjectAssert.cs" />
