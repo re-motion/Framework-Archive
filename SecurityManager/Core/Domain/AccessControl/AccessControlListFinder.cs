@@ -19,7 +19,6 @@ namespace Rubicon.SecurityManager.Domain.AccessControl
     /// </exception>
     public AccessControlList Find (ClientTransaction transaction, SecurityContext context)
     {
-      // TODO: make unit tests
       ArgumentUtility.CheckNotNull ("context", context);
 
       SecurableClassDefinition classDefinition = SecurableClassDefinition.FindByName (transaction, context.Class);
