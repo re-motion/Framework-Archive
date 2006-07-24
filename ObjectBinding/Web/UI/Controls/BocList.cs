@@ -4131,7 +4131,7 @@ public class BocList:
   ///   <see langword="null"/>.
   /// </param>
   /// <exception cref="InvalidOperationException">EnableMultipleSorting == False &amp;&amp; sortingOrder.Length > 1</exception>
-  public void SetSortingOrder (BocListSortingOrderEntry[] newSortingOrder)
+  public void SetSortingOrder (params BocListSortingOrderEntry[] newSortingOrder)
   {
     ArgumentUtility.CheckNotNullOrItemsNull ("newSortingOrder", newSortingOrder);
 
